@@ -1,0 +1,1 @@
+Software care permite translatarea criterilor de acceptanta a produselor IT in teste automate fara a fi necesare cunostinte de programare.

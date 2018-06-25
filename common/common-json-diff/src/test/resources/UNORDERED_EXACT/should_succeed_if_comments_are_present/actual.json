@@ -1,0 +1,4 @@
+{
+  // line comments should be allowed in actual
+  "name": /* block comments should be allowed in actual */ "John Doe"
+}

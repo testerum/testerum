@@ -1,0 +1,16 @@
+
+
+<ng-container *ngIf="this.arg == null; else hasArguments">
+    <span style="display: inline">
+        <<<span *ngIf="!isStepCall">{{paramStepPart.name}}</span>>>
+    </span>
+</ng-container>
+
+<ng-template #hasArguments>
+    <span class="param-parts">
+        <<
+            <span>{{getArgumentValue()}}</span>
+        >>
+    </span>
+
+</ng-template>

@@ -1,0 +1,31 @@
+<div class="node">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false">
+
+        <span *ngIf="!isEditMode()">{{getValueOfPrimitiveType()}}</span>
+
+        <input #input
+               *ngIf="isEditMode()"
+               [ngModel]="getValueOfPrimitiveType()"
+               (click)="$event.stopPropagation();"
+               (ngModelChange)="onValueChange($event)"
+               (blur)="saveValueToTree()"
+               type="text" class="node-attr-input-value">
+
+        <i *ngIf="isEditMode() && errorValue" class="error-icon"
+           title="This is not a valid value"></i>
+
+
+        <div class="button-panel btn-group"
+             *ngIf="isEditMode()"
+             [class.hidden]="!hasMouseOver">
+            <div
+                title="Delete" class="btn btn-default btn-xs btn-group"
+                (click)="deleteEntry();$event.stopPropagation();">
+                <span class="glyphicon glyphicon-trash"></span>
+            </div>
+        </div>
+    </div>
+</div>

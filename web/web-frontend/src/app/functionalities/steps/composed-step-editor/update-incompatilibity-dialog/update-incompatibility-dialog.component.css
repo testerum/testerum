@@ -1,0 +1,32 @@
+.error-dialog {
+}
+
+.modal-body {
+
+}
+
+.error-message {
+    text-align: center;
+    font-size: large;
+    white-space: pre-line
+}
+
+.affected-message {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.affected-path {
+    margin-left: 30px;
+    font-weight: normal;
+}
+
+.error-detail-toggle {
+    cursor: pointer;
+}
+
+.stack-trace-panel {
+    overflow: scroll;
+    height: 500px;
+    width: 100%;
+}

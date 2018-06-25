@@ -1,0 +1,11 @@
+Making Automation Tests accessible to testers, easy to setup
+
+Test Automation is not only about clicking the interface or calling an API.
+Is about setting the full environment in a certain state and then call the API.
+
+
+WHAT PROBLEM DO YOU SOLVE? WHAT PAIN DO YOU FIX?
+IT Market is imens, hear to stay and increasig. Product quality, mantanability is a issue this days.
+Automated testing is the say to keep qulity under control
+Create Sale Disturbance!
+What if we give the soft for free and ask money for libraries!

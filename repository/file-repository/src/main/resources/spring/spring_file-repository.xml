@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:/spring/spring_settings.xml"/>
+
+    <bean id="fileRepositoryObjectMapper" class="net.testerum.db_file.json.FileRepositoryObjectMapperFactory" factory-method="createKotlinObjectMapper"/>
+
+    <bean id="fileRepositoryService" class="net.testerum.db_file.FileRepositoryService">
+        <constructor-arg name="settingsManager" ref="settingsManager"/>
+    </bean>
+
+    <bean id="attachmentFileRepositoryService" class="net.testerum.db_file.AttachmentFileRepositoryService">
+        <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
+        <constructor-arg name="settingsManager" ref="settingsManager"/>
+    </bean>
+</beans>

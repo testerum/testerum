@@ -1,0 +1,5 @@
+.modal {
+    max-height: calc(100% - 20px);
+    overflow-y: auto;
+}
+

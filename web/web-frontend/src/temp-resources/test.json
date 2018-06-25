@@ -1,0 +1,99 @@
+{
+  "id": 1,
+  "path": "rest.login",
+  "text": "Successful login",
+  "description": "This step is used to make HTTP requests to servers",
+  "steps": [
+    {
+      "id": 121,
+      "path": "qutester.http",
+      "phase": "Given",
+      "text": [
+        {
+          "type": "TEXT",
+          "text": "I call "
+        },
+        {
+          "type": "PARAMETER",
+          "text": "request_method"
+        },
+        {
+          "type": "TEXT",
+          "text": " on "
+        },
+        {
+          "type": "PARAMETER",
+          "text": "request_url"
+        },
+        {
+          "type": "TEXT",
+          "text": " without body "
+        }
+      ],
+      "parameters": [
+        {
+          "id": 1,
+          "name": "request_method",
+          "type": "ENUM",
+          "allowedValues": [
+            "PUT",
+            "POST",
+            "PATCH"
+          ],
+          "value":"PUT"
+        },
+        {
+          "id": 2,
+          "name": "request_url",
+          "type": "TEXT"
+        }
+      ],
+      "description": "This step is used to make HTTP requests to servers"
+    },
+    {
+      "id": 122,
+      "path": "qutester.common",
+      "phase": "Given",
+      "text": [
+        {
+          "type": "TEXT",
+          "text": "I call "
+        },
+        {
+          "type": "PARAMETER",
+          "text": "request_method"
+        },
+        {
+          "type": "TEXT",
+          "text": " on "
+        },
+        {
+          "type": "PARAMETER",
+          "text": "request_url"
+        },
+        {
+          "type": "TEXT",
+          "text": " without body "
+        }
+      ],
+      "parameters": [
+        {
+          "id": 1,
+          "name": "request_method",
+          "type": "ENUM",
+          "allowedValues": [
+            "PUT",
+            "POST",
+            "PATCH"
+          ]
+        },
+        {
+          "id": 2,
+          "name": "request_url",
+          "type": "TEXT"
+        }
+      ],
+      "description": "This step is used to make HTTP requests to servers"
+    }
+  ]
+}

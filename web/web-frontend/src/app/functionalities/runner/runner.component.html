@@ -1,0 +1,15 @@
+<div class="main-container">
+
+    <split direction="horizontal">
+        <split-area [size]="15">
+
+            <results></results>
+
+        </split-area>
+        <split-area [size]="85" [visible]="isItemSelected">
+
+            <router-outlet></router-outlet>
+
+        </split-area>
+    </split>
+</div>

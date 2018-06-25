@@ -1,0 +1,12 @@
+
+
+export enum RunnerEventTypeEnum {
+    TEST_SUITE_START_EVENT,
+    TEST_SUITE_END_EVENT,
+    TEST_START_EVENT,
+    TEST_END_EVENT,
+    STEP_START_EVENT,
+    STEP_END_EVENT,
+    LOG_EVENT,
+    ERROR_EVENT
+}

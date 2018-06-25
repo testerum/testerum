@@ -1,0 +1,5 @@
+<div class="node-text"
+     dnd-draggable [dragEnabled]="true" [dragData]="model" [dropZones]="[model.resourceType.fileExtension]"
+     [class.tree-leaf-selected]="isSelected">
+    {{getName()}}
+</div>

@@ -1,0 +1,27 @@
+{
+  "=compareMode": "contains",
+  "user": [
+    "=compareMode: exact",
+    {
+      "id": "1",
+      "userName": "ionut",
+      "addressId": "%{ionut-addressId}"
+    },
+    {
+      "id": "2",
+      "userName": "cristi",
+      "addressId": "%{cristi-addressId}"
+    }
+  ],
+  "address": [
+    "=compareMode: exact",
+    {
+      "id": "%{ionut-addressId}",
+      "address": "Graan Voor Vish"
+    },
+    {
+      "id": "%{cristi-addressId}",
+      "address": "Graan Voor Vish"
+    }
+  ]
+}

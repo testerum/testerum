@@ -1,0 +1,5 @@
+{
+  "=compareMode": "contains",
+  // using a value greater than Long.MAX_VALUE (9223372036854775807) to force a BigInteger node
+  "field"       : 9223372036854775807000
+}

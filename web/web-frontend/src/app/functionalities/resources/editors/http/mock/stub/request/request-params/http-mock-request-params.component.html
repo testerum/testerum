@@ -1,0 +1,60 @@
+<table class="table table-bordered">
+    <colgroup>
+        <col span="1" style="width: 38%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 38%;">
+        <col *ngIf="isEditMode()" span="1" style="width: 4%;">
+    </colgroup>
+
+    <tr>
+        <th>Query Param Name</th>
+        <th>Compare Mode</th>
+        <th>Query Param Value</th>
+    </tr>
+
+    <!-- KEY -->
+    <tr *ngFor="let param of params; let last = last">
+        <td *ngIf="!param.isEmpty() || isEditMode()">
+            <span *ngIf="!isEditMode()">{{param.key}}</span>
+            <input *ngIf="isEditMode()"
+                   (change)="onNewKeyChange($event)"
+                   [(ngModel)]="param.key"
+                   type="text" pInputText class="form-control">
+        </td>
+
+        <!-- COMPARE -->
+        <td *ngIf="!param.isEmpty() || isEditMode()">
+            <span *ngIf="!isEditMode()">{{param.compareMode}}</span>
+            <select *ngIf="isEditMode()"
+                    class="form-control phase-input"
+                    #hadearCompareModeNgModel="ngModel"
+                    (change)="onChangeCompareMode(param, hadearCompareModeNgModel.value)"
+                    [ngModel]="param.compareMode" name="compareMode">
+
+                <option *ngFor="let compareMode of getCompareModes(); let i = index"
+                        [ngValue]="compareMode"
+                        [selected]="i==1">
+                    {{compareMode.toString()}}
+                </option>
+            </select>
+        </td>
+
+        <!-- VALUE -->
+        <td *ngIf="!param.isEmpty() || isEditMode()">
+            <span *ngIf="!isEditMode()">{{param.value}}</span>
+            <input *ngIf="isEditMode() && param.compareMode != HttpMockRequestParamsCompareMode.ABSENT"
+                   (change)="onNewValueChange($event)"
+                   [(ngModel)]="param.value"
+                   type="text" pInputText  class="form-control">
+        </td>
+
+        <!-- DELETE -->
+        <td *ngIf="!param.isEmpty() && isEditMode()">
+            <a href (click)="deleteParam(param);false;"
+               class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
+                <i  class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
+        </td>
+    </tr>
+
+</table>

@@ -1,0 +1,7 @@
+.node-text {
+    display: inline-block;
+}
+
+.tree-leaf-selected {
+    background-color: whitesmoke;
+}

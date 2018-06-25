@@ -1,0 +1,17 @@
+
+<span class="full-width input-group">
+    <input [value]="value"
+           [disabled]="disabled"
+           (change)="onChangeEvent($event)"
+           (keyup)="onChangeEvent($event)"
+           type="text" class="form-control full-width" name="directoryChooser">
+
+    <span class="input-group-btn">
+        <button class="btn btn-default" type="button" aria-label="Directory chooser"
+                [disabled]="disabled"
+                (click)="showDirectoryChooserModal()">
+            <i class="fa fa-folder-open text-info"></i>
+        </button>
+    </span>
+</span>
+<directory-chooser-dialog (nodeSelected)="onPathSelected($event)"></directory-chooser-dialog>

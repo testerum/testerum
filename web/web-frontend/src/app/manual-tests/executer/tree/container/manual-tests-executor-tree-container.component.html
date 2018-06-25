@@ -1,0 +1,34 @@
+<div class="node">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
+         (dblclick)="collapseNode()">
+
+        <i class="fa tree-node-new-icon" aria-hidden="true"
+
+           [class.node-not-executed]="ManualTestStatus.NOT_EXECUTED == model.testsState"
+           [class.node-passed]="ManualTestStatus.PASSED == model.testsState"
+           [class.node-failed]="ManualTestStatus.FAILED == model.testsState"
+           [class.node-blocked]="ManualTestStatus.BLOCKED == model.testsState"
+           [class.node-not-applicable]="ManualTestStatus.NOT_APPLICABLE == model.testsState"
+
+           [class.fa-spinner]="ManualTestStatus.NOT_EXECUTED == model.testsState"
+           [class.fa-check]="ManualTestStatus.PASSED == model.testsState"
+           [class.fa-times]="ManualTestStatus.FAILED == model.testsState"
+           [class.fa-ban]="ManualTestStatus.BLOCKED == model.testsState"
+           [class.fa-exclamation]="ManualTestStatus.NOT_APPLICABLE == model.testsState"></i>
+
+        <i class="fa tree-node-new-folder-icon" aria-hidden="true"
+           [class.fa-folder]="!isOpenedNode()"
+           [class.fa-folder-open]="isOpenedNode()"></i>
+
+        {{model.name}}
+    </div>
+
+    <json-children [jsonTreeNodeState]="jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

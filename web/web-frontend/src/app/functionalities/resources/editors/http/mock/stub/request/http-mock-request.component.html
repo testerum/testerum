@@ -1,0 +1,44 @@
+<!-- METHOD AND URL - VIEW -->
+<div class="my-line vertical-align" *ngIf="!isEditMode()">
+        <span class="http-method-view">
+            {{getModel().method}}
+        </span>
+    <span class="http-url-view">
+            {{getModel().url}}
+        </span>
+</div>
+
+<!-- METHOD AND URL - EDIT -->
+<div class="my-line vertical-align" *ngIf="isEditMode()">
+    <select class="form-control"
+            #requestModelNgModel="ngModel" [ngModel]="getModel().method" name="method"
+            (change)="methodChange(requestModelNgModel.value)">
+        <option *ngFor="let method of getHttpMethods()" [ngValue]="method">
+            {{method.toString()}}
+        </option>
+    </select>
+    <div class="full-width">
+        <input [(ngModel)]="getModel().url"
+               type="text" class="form-control" name="url" placeholder="Request Path">
+    </div>
+</div>
+
+<!-- REQUEST URL PARAMS -->
+<collapsable-panel #queryParamPanel title="Query Params" [collapsed]="getModel().hasEmptyParams()">
+    <http-mock-request-params [params]="getModel().params"></http-mock-request-params>
+</collapsable-panel>
+
+<!-- REQUEST HEADERS -->
+<collapsable-panel #headersPanel title="Headers" [collapsed]="getModel().hasEmptyHeaders()">
+    <http-mock-request-header [headers]="getModel().headers"></http-mock-request-header>
+</collapsable-panel>
+
+<!-- REQUEST BODY-->
+<collapsable-panel #bodyPanel [class.hidden]="!getModel().method.hasBody" title="Body" [collapsed]="getModel().hasEmptyBody()">
+    <http-mock-request-body></http-mock-request-body>
+</collapsable-panel>
+
+<!-- REQUEST SCENARIO -->
+<collapsable-panel #scenarioPanel title="Scenario" [collapsed]="getModel().hasEmptyScenario()">
+    <http-mock-request-scenario></http-mock-request-scenario>
+</collapsable-panel>

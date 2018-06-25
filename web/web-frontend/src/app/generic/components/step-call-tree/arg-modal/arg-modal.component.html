@@ -1,0 +1,65 @@
+
+<div bsModal #resourceModal="bs-modal" id="resourceModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <div class="modal-header-buttons">
+
+                    <button *ngIf="canBeSharedResource()"
+                            [class.hidden]="!isEditMode"
+                            (click)="selectSharedResource();$event.stopPropagation();"
+                            class="btn btn-default select-shared-button"
+                            type="button">
+                        Select shared resource...
+                    </button>
+
+                    <button (click)="cancel();$event.stopPropagation();" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <h4 class="modal-title" id="myModalLabel">
+                    {{modalTitle}}
+                </h4>
+            </div>
+
+            <!-- BODY-->
+            <div class="modal-body">
+                <div #modalBody></div>
+            </div>
+
+            <!-- FOOTER Buttons-->
+            <div class="modal-footer">
+                <span *ngIf="canBeSharedResource()"
+                      class="footer-left">
+                    <input id="isSharedResource" #isSharedResourceInput
+                           class="shared-input"
+                           [ngModel]="isSharedResource"
+                           (change)="toggleSharedResource(isSharedResourceInput)"
+                           type="checkbox" name="isSharedResource">
+                    <label for="isSharedResource" class="shared-label">Shared</label>
+
+                    <span *ngIf="isSharedResource" class="shared-path">
+                        <span class="shared-path-label">Path:</span>
+                        <span class="shared-path-value">{{sharedResourcePathAsString}}</span>
+                    </span>
+                </span>
+                <span class="footer-right">
+                    <button (click)="cancel();$event.stopPropagation();" type="button" class="btn btn-default">Close</button>
+                    <button
+                        *ngIf="isEditMode"
+                        (click)="update();$event.stopPropagation();"
+                        [disabled]="!isValid()"
+                        type="button" class="btn btn-primary">
+                        Ok
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<new-shared-resource-path-modal></new-shared-resource-path-modal>
+<select-shared-resource-modal></select-shared-resource-modal>

@@ -1,0 +1,43 @@
+.condensed-view-container {
+    font-family: "Hack Regular Nerd Font Complete", monospace;
+    font-size: 12px;
+    line-height: 1.1em;
+}
+
+.condensed-view-body {
+    white-space: pre-wrap;
+}
+
+.condensed-view-label {
+    color: darkgray;
+}
+
+.tab {
+    padding-left: 10px;
+}
+
+.space-on-top {
+    padding-top: 10px;
+}
+
+.area {
+    padding-top: 4px;
+}
+
+.condensed-view-key {
+    color: lightseagreen;
+}
+
+.condensed-view-value {
+    padding-left: 5px;
+}
+
+.condensed-view-key-with-compare {
+    color: black;
+}
+
+.condensed-view-compare-key-value {
+    color: lightseagreen;
+    padding-left: 5px;
+    font-size: 10px;
+}

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/mvc      http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       ">
+
+    <mvc:resources mapping="/index.html" location="/index.html" />
+
+    <bean id="attachmentsController" class="net.qutester.controller.attachments.AttachmentsController">
+        <constructor-arg name="attachmentFileRepositoryService" ref="attachmentFileRepositoryService"/>
+    </bean>
+
+    <bean id="featureController" class="net.qutester.controller.feature.FeatureController">
+        <constructor-arg name="featureService" ref="featureService"/>
+    </bean>
+
+    <bean id="manualTestsController" class="net.qutester.controller.manual.ManualTestsController">
+        <constructor-arg name="manualTestsService" ref="manualTestsService"/>
+    </bean>
+
+    <bean id="manualTestsRunnerController" class="net.qutester.controller.manual.ManualTestsRunnerController">
+        <constructor-arg name="manualTestsRunnerService" ref="manualTestsRunnerService"/>
+    </bean>
+
+    <bean id="stepsController" class="net.qutester.controller.BasicStepsController">
+        <constructor-arg name="stepService" ref="stepService"/>
+    </bean>
+
+    <bean id="composedStepController" class="net.qutester.controller.ComposedStepController">
+        <constructor-arg name="stepService" ref="stepService"/>
+        <constructor-arg name="stepUpdateService" ref="stepUpdateService"/>
+        <constructor-arg name="stepUpdateCompatibilityService" ref="stepUpdateCompatibilityService"/>
+    </bean>
+
+    <bean id="testsController" class="net.qutester.controller.TestsController">
+        <constructor-arg name="testsService" ref="testsService"/>
+    </bean>
+
+    <bean id="testRunnerReportController" class="net.qutester.controller.report.RunnerResultController">
+        <constructor-arg name="testRunnerResultService" ref="testRunnerReportService"/>
+    </bean>
+
+    <bean id="variablesController" class="net.qutester.controller.VariablesController">
+        <constructor-arg name="variablesService" ref="variablesService"/>
+    </bean>
+
+    <bean id="connectionController" class="net.qutester.controller.resources.rdbms.RdbmsController">
+        <constructor-arg name="networkService" ref="networkService"/>
+        <constructor-arg name="rdbmsService" ref="rdbmsService"/>
+        <constructor-arg name="rdbmsDriverConfigService" ref="rdbmsDriverConfigService"/>
+    </bean>
+
+    <bean id="httpController" class="net.qutester.controller.resources.http.HttpController">
+        <constructor-arg name="httpClientService" ref="httpClientService"/>
+    </bean>
+
+    <bean id="resourcesController" class="net.qutester.controller.resources.ResourcesController">
+        <constructor-arg name="resourcesService" ref="resourcesService"/>
+    </bean>
+
+    <bean id="configController" class="net.qutester.controller.config.ConfigController"/>
+
+    <bean id="fileSystemController" class="net.qutester.controller.config.FileSystemController">
+        <constructor-arg name="fileSystemService" ref="fileSytemService"/>
+    </bean>
+
+    <bean id="startConfigController" class="net.qutester.controller.config.SetupController">
+        <constructor-arg name="settingsManager" ref="settingsManager"/>
+        <constructor-arg name="stepService" ref="stepService"/>
+    </bean>
+
+    <bean id="settingsController" class="net.qutester.controller.config.SettingsController">
+        <constructor-arg name="settingsService" ref="settingsService"/>
+        <constructor-arg name="stepService" ref="stepService"/>
+    </bean>
+
+    <bean class="net.qutester.controller.error.ErrorController">
+        <constructor-arg name="genericErrorResponsePreparer">
+            <bean class="net.qutester.controller.error.model.response_preparers.generic.GenericErrorResponsePreparer"/>
+        </constructor-arg>
+        <constructor-arg name="errorResponsePreparerMap">
+            <map>
+                <entry key="net.qutester.exception.IllegalFileOperationException">
+                    <bean class="net.qutester.controller.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer"/>
+                </entry>
+
+                <entry key="net.qutester.exception.ValidationException">
+                    <bean class="net.qutester.controller.error.model.response_preparers.validation.ValidationErrorResponsePreparer"/>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="testsWebSocketController" class="net.qutester.controller.TestsWebSocketController">
+        <constructor-arg name="testRunnerEventBus" ref="testRunnerEventBus"/>
+        <constructor-arg name="testsRunnerService" ref="testsRunnerService"/>
+        <constructor-arg name="objectMapper" ref="testsRunnerJsonObjectMapper"/>
+    </bean>
+
+</beans>

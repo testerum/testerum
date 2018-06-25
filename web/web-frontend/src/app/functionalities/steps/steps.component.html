@@ -1,0 +1,23 @@
+<div class="main-container">
+
+    <split direction="horizontal">
+        <split-area [size]="40">
+
+            <!-- COMPOSED STEPS -->
+            <json-tree [treeModel]="stepsTreeService.composedStepsJsonTreeModel"
+                       [modelComponentMapping]="jsonModelComponentMapping">
+            </json-tree>
+
+            <!-- BASIC STEPS -->
+            <json-tree [treeModel]="stepsTreeService.basicStepsJsonTreeModel"
+                       [modelComponentMapping]="jsonModelComponentMapping">
+            </json-tree>
+
+        </split-area>
+        <split-area [size]="60" [visible]="isStepSelected">
+
+            <router-outlet></router-outlet>
+
+        </split-area>
+    </split>
+</div>

@@ -1,0 +1,53 @@
+<div class="node"
+     dnd-draggable [dragEnabled]="model.resourceType.canBeDeleted && hasMouseOver" [dragData]="model"
+     [dropZones]="[model.resourceType.fileExtension]">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
+         (dblclick)="collapseNode()"
+
+         [dropZones]="[model.resourceType.fileExtension]"
+         [allowDrop]="allowDrop()"
+         dnd-droppable (onDropSuccess)="copyResource($event)">
+
+        <i class="tree-node-icon {{model.resourceType.iconClass? model.resourceType.iconClass: 'tree-node-folder-icon'}}"></i>
+
+        {{model.name}}
+
+        <!-- BUTTONS RENDERING -->
+        <div class="button-panel btn-group"
+             [class.hidden]="!hasMouseOver">
+
+            <div *ngIf="model.resourceType.createSubResourceUrl"
+                 title="Create {{model.resourceType.name}}" class="btn btn-default btn-xs btn-group"
+                 (click)="showCreateSubResource();$event.stopPropagation();">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+            </div>
+
+            <div *ngIf="model.resourceType.canHaveChildrenContainers"
+                 title="Create Folder" class="btn btn-default btn-xs btn-group"
+                 (click)="showCreateDirectoryModal(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-folder-open"></span>
+            </div>
+
+            <div *ngIf="model.resourceType.canBeEdited"
+                 title="Edit Folder" class="btn btn-default btn-xs btn-group"
+                 (click)="showEditDirectoryNameModal(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </div>
+
+            <div *ngIf="model.resourceType.canBeDeleted"
+                 title="Delete Folder" class="btn btn-default btn-xs btn-group"
+                 (click)="deleteDirectory(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-trash"></span>
+            </div>
+        </div>
+    </div>
+
+    <json-children [jsonTreeNodeState]="jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

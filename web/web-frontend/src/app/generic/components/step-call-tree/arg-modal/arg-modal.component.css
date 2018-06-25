@@ -1,0 +1,74 @@
+.modal-dialog {
+    width: 50%;
+    max-width: 1200px;
+}
+
+.modal-content {
+    height: 100%;
+}
+
+.modal-body {
+    /* 100% = dialog height, 120px = header + footer */
+    max-height: calc(100% - 120px);
+    height: 100%;
+    overflow-x: hidden;
+}
+
+.footer-left {
+    float: left;
+    height: 32px;
+    align-items: center;
+    display: flex;
+}
+
+.footer-right {
+    float: right;
+    height: 32px;
+    align-items: center;
+    display: flex;
+}
+
+.shared-input {
+    width:20px;
+    height:20px;
+    margin: 0;
+}
+
+.shared-label {
+    margin: 0 5px;
+}
+
+.shared-path {
+    font-style: italic;
+    margin-left: 20px;
+}
+
+.shared-path-label {
+    font-weight: bold;
+}
+
+.modal-header {
+    display: grid;
+    grid-template-areas: 'header-left header-right'
+}
+
+.modal-title {
+    grid-area: header-left;
+}
+
+.modal-header-buttons {
+    grid-area: header-right;
+    align-self: center;
+    justify-self: end;
+
+    display: flex;
+    align-items: center;
+}
+
+.select-shared-button {
+    height: 25px;
+    padding: 0 12px;
+    margin-right: 50px;
+}
+
+

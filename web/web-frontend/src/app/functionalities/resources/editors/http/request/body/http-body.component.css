@@ -1,0 +1,32 @@
+
+.radio label {
+    margin-right: 10px;
+}
+
+.ace-editor-container {
+    position: relative;
+    min-height: 200px;
+}
+
+.ace-editor {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
+.body-options {
+    display: flex;
+    flex-flow: row;
+    min-height: 34px;
+}
+
+.body-type {
+    padding-top: 0;
+}
+
+.align-center {
+    align-items: center;
+    display: flex;
+}
+
+

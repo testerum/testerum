@@ -1,0 +1,5 @@
+{
+  "=compareMode": "exact",
+  // line comments should be allowed in expected
+  "name": /* block comments should be allowed in expected */ "John Doe"
+}

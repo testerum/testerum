@@ -1,0 +1,39 @@
+
+* {
+  margin:0px;
+  padding:0px;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-size: 14px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif
+}
+
+@font-face {
+    font-family: "Hack Regular Nerd Font Complete";
+    src: url("resources/fonts/hack-nerd-font/Hack-Regular-Nerd-Font-Complete.ttf");
+}
+
+.logs-split-area.horizontal-scroll {
+    overflow: auto !important;
+}
+
+.logs-split-area.horizontal-scroll .log-line {
+    white-space: pre;
+}
+
+.logs-split-area.horizontal-wrap {
+    overflow: inherit;
+}
+.logs-split-area.horizontal-wrap .log-line{
+    white-space: pre-wrap;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}

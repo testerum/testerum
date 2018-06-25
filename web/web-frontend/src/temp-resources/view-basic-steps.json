@@ -1,0 +1,115 @@
+[
+  {
+    "phase": "WHEN",
+    "packages": [
+      {
+        "name": "qutester.http",
+        "steps": [
+          {
+            "id": 123,
+            "path": "qutester.http",
+            "phase": [
+              "WHEN"
+            ],
+            "text": [
+              {
+                "type": "TEXT",
+                "value": "I call "
+              },
+              {
+                "type": "PARAMETER",
+                "value": "request_method"
+              },
+              {
+                "type": "TEXT",
+                "value": " on "
+              },
+              {
+                "type": "PARAMETER",
+                "value": "request_url"
+              },
+              {
+                "type": "TEXT",
+                "value": " with JSON "
+              },
+              {
+                "type": "PARAMETER",
+                "value": "request_body"
+              }
+            ],
+            "parameters": [
+              {
+                "id": 1,
+                "name": "request_method",
+                "type": "ENUM",
+                "allowedValues": [
+                  "PUT",
+                  "POST",
+                  "PATCH"
+                ]
+              },
+              {
+                "id": 2,
+                "name": "request_url",
+                "type": "TEXT"
+              },
+              {
+                "id": 3,
+                "name": "request_body",
+                "type": "TEXT"
+              }
+            ],
+            "description": "This step is used to make HTTP requests to servers"
+          },
+          {
+            "id": 124,
+            "path": "qutester.http",
+            "phase": [
+              "WHEN"
+            ],
+            "text": [
+              {
+                "type": "TEXT",
+                "value": "I call "
+              },
+              {
+                "type": "PARAMETER",
+                "value": "request_method"
+              },
+              {
+                "type": "TEXT",
+                "value": " on "
+              },
+              {
+                "type": "PARAMETER",
+                "value": "request_url"
+              },
+              {
+                "type": "TEXT",
+                "value": " without body "
+              }
+            ],
+            "parameters": [
+              {
+                "id": 1,
+                "name": "request_method",
+                "type": "ENUM",
+                "allowedValues": [
+                  "PUT",
+                  "POST",
+                  "PATCH"
+                ]
+              },
+              {
+                "id": 2,
+                "name": "request_url",
+                "type": "TEXT"
+              }
+            ],
+            "description": "This step is used to make HTTP requests to servers"
+          }
+        ]
+      }
+    ]
+  }
+]

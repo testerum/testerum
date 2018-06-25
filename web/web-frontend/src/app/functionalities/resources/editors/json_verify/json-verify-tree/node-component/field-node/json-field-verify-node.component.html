@@ -1,0 +1,100 @@
+<div class="node">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false">
+
+        <span *ngIf="!isEditMode()">{{getNameForUi()}}</span>
+
+        <input *ngIf="isEditMode()"
+               [ngModel]="getNameForUi()"
+               (click)="$event.stopPropagation();"
+               (ngModelChange)="onNameForUiChange($event)"
+               (blur)="saveName()"
+               type="text"
+               class="node-attr-input-value"
+               [class.unused-node]="!model.isDirty">
+
+        <i *ngIf="isEditMode() && errorName" class="error-icon"
+           title="This is not a valid field name"></i>
+
+        <span> : </span>
+
+
+        <span *ngIf="model.isValueAnArray()">{{'['}}</span>
+        <span *ngIf="model.isValueAnArray() && isCollapsed() && !model.isEmptyValue()"> ... ]</span>
+        <span *ngIf="model.isValueAnArray() &&  model.isEmptyValue()">]</span>
+
+        <span *ngIf="model.isValueAnObject()">{{'{'}}</span>
+        <span *ngIf="model.isValueAnObject() && isCollapsed() && !model.isEmptyValue()"> ... }</span>
+        <span *ngIf="model.isValueAnObject() &&  model.isEmptyValue()">{{'}'}}</span>
+
+        <!-- START VALUE AS PRIMITIVE-->
+        <span *ngIf="!model.isValueAContainer() && !isEditMode()">{{model.getValueOfPrimitiveType()}}</span>
+
+        <input *ngIf="!model.isValueAContainer() && isEditMode()"
+               [ngModel]="uiValue"
+               (click)="$event.stopPropagation();"
+               (ngModelChange)="onValueForUiChange($event)"
+               (blur)="saveValue()"
+               type="text" class="node-attr-input-value">
+        <!-- END VALUE AS PRIMITIVE-->
+
+
+        <!-- BUTTONS RENDERING -->
+        <div class="button-panel btn-group"
+             *ngIf="isEditMode() && model.isValueAContainer()"
+             [class.hidden]="!hasMouseOver">
+
+            <div
+                title="Add Array" class="btn btn-default btn-xs btn-group"
+                (click)="createArrayNode();$event.stopPropagation();">
+                <span class="glyphicon glyphicon-plus-sign"></span><span> [ ]</span>
+            </div>
+
+            <div
+                title="Add Object" class="btn btn-default btn-xs btn-group"
+                (click)="createObjectNode();$event.stopPropagation();">
+                <span class="glyphicon glyphicon-plus-sign"></span><span>{{" { }"}}</span>
+            </div>
+
+            <div
+                title="Add Null, Boolean, Number or String" class="btn btn-default btn-xs btn-group"
+                (click)="createPrimitiveNode();$event.stopPropagation();">
+                <span class="glyphicon glyphicon-plus-sign"></span><span> S</span>
+            </div>
+
+            <div
+                title="Delete" class="btn btn-default btn-xs btn-group"
+                (click)="deleteEntry();$event.stopPropagation();">
+                <span class="glyphicon glyphicon-trash"></span>
+            </div>
+        </div>
+
+        <div class="button-panel btn-group"
+             *ngIf="isEditMode() && !model.isValueAContainer()"
+             [class.hidden]="!hasMouseOver">
+            <div
+                title="Delete" class="btn btn-default btn-xs btn-group"
+                (click)="deleteEntry();$event.stopPropagation();">
+                <span class="glyphicon glyphicon-trash"></span>
+            </div>
+        </div>
+
+        <tree-node-compare-mode [editMode]="displayEditModeForCompareMode()"
+                                [selectedCompareMode]="model.compareMode"
+                                (change)="onCompareModeChange($event)"
+                                [class.hidden]="shouldHideCompareMode()">
+        </tree-node-compare-mode>
+    </div>
+
+    <json-children *ngIf="model.isValueAContainer()"
+                   [jsonTreeNodeState]="jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model.value"
+                   class="full-line">
+    </json-children>
+
+    <span *ngIf="model.isValueAnObject() && !isCollapsed() && !model.isEmptyValue()">{{'}'}}</span>
+    <span *ngIf="model.isValueAnArray() && !isCollapsed() && !model.isEmptyValue()">{{']'}}</span>
+</div>

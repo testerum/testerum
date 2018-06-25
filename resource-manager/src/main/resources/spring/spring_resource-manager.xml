@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="classpath:/spring/spring_file-repository.xml" />
+
+    <bean id="resourceManager" class="net.testerum.resource_manager.ResourceManager">
+        <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
+    </bean>
+
+    <bean id="resourceJsonObjectMapper" class="net.qutester.common.json.ObjectMapperFactory" factory-method="createKotlinObjectMapperWithPrettyFormatter"/>
+
+</beans>

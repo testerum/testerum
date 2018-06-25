@@ -1,0 +1,26 @@
+<div class="vertical-space"></div>
+
+<div class="button-container">
+    <button type="button" class="btn btn-primary"
+            routerLink="/manual/runner/create">Create new Test Plan</button>
+</div>
+
+<div class="vertical-space"></div>
+
+<div class="panel panel-default execution-card">
+    <h4 class="execution-title">Active Executions</h4>
+    <div class="panel-body" *ngFor="let activeRunner of manualTestsOverviewService.activeRunners">
+
+        <manual-tests-overview-runner [model]="activeRunner"></manual-tests-overview-runner>
+
+    </div>
+</div>
+
+<div class="panel panel-default execution-card">
+    <h4 class="execution-title">Finalized Executions</h4>
+    <div class="panel-body" *ngFor="let finalizedRunner of manualTestsOverviewService.finalizedRunners">
+
+        <manual-tests-overview-runner [model]="finalizedRunner"></manual-tests-overview-runner>
+
+    </div>
+</div>

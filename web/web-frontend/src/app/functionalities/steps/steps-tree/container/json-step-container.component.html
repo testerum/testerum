@@ -1,0 +1,49 @@
+<div class="node"
+     dnd-draggable [dragEnabled]="hasMouseOver" [dragData]="model" >
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
+         (dblclick)="collapseNode()"
+
+         dnd-droppable [allowDrop]="allowDrop()" (onDropSuccess)="copyResource($event)">
+
+        <i class="tree-node-icon {{'tree-node-folder-icon'}}"></i>
+
+        {{model.name}}
+
+        <!-- BUTTONS RENDERING -->
+        <div *ngIf="model.editable"
+             class="button-panel btn-group"
+             [class.hidden]="!hasMouseOver">
+
+            <div title="Create Composed Step" class="btn btn-default btn-xs btn-group"
+                 (click)="showCreateDirectory();$event.stopPropagation();">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+            </div>
+
+            <div title="Create Folder" class="btn btn-default btn-xs btn-group"
+                 (click)="showCreateDirectoryModal(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-folder-open"></span>
+            </div>
+
+            <div title="Edit Folder" class="btn btn-default btn-xs btn-group"
+                 *ngIf="!model.isRootPackage"
+                 (click)="showEditDirectoryNameModal(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </div>
+
+            <div title="Delete Folder" class="btn btn-default btn-xs btn-group"
+                 *ngIf="!model.isRootPackage"
+                 (click)="deleteDirectory(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-trash"></span>
+            </div>
+        </div>
+    </div>
+
+    <json-children [jsonTreeNodeState]="jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

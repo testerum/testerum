@@ -1,0 +1,10 @@
+.sql-editor {
+    border: 1px solid #ccc;
+    width: 100%;
+    overflow: auto;
+    height: 15px;
+}
+
+.expanded {
+    min-height: 300px;
+}

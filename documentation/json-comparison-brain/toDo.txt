@@ -1,0 +1,209 @@
+Rules for doesNotContain mode
+-----------------------------
+- forbid nested doesNotContain
+- the inherited mode from doesNotContain is contain
+
+
+
+
+
+
+
+
+
+
+
+--------- brainstorm start -------------
+mode=contains
+expected=[[1,2], [3,4]]
+actual  =[[5,2], [3,4]]
+
+mode=contains
+expected=[1, 2, 3, 4, 5]
+actual  =[5, 4, 3, 2, 1]
+
+mode=contains
+expected=[{a: 1}, {a: 2}, {a: 3}, {a: 4}, {a: 5}]
+actual  =[{a: 5}, {a: 4}, {a: 3}, {a: 2}, {a: 1}]
+
+mode=does not contain
+break
+expected=[1,2]
+actual  =[1,3]
+
+
+should not break
+expected={a: "@anything()"}
+actual  ={a: 2}
+
+CONTAINS=true
+expected=[ {a: 1} ]
+actual  =[ {a: 1}, {a: 2} ]
+
+
+DOES_NOT_CONTAIN=true
+expected=[ {"=compareMode": "doesNotContain", a: 1} ]
+actual  =[ {                                  a: 1}, {a: 2} ]
+
+DOES_NOT_CONTAIN=true
+expected=[[ 3 ]]
+actual  =[[ 1, 2 ]]
+
+
+Array
+- does not contain any of these elements
+
+Object
+- does not contain this field (regardless of value)
+- does not contain this field with this value
+
+
+
+{
+  "name"    : "John Doe",
+  "age"     : 27,
+  "gender"  : "MALE",
+  "address" : {
+    "streetName"  : "Josefine",
+    "streetNumber": 13.5,
+    "postCode"    : "123456"
+  },
+  "children": [
+    {
+      "name": "John Doe Jr.",
+      "age" : 3
+    },
+    {
+      "name": "Jane Doe Jr.",
+      "age" : 1
+    }
+  ]
+}
+
+
+{
+  "=compareMode": "exact",
+  "name": "John Doe",
+  "age": 27,
+  "gender": "MALE",
+  "address": {
+    "streetName": "Josefine",
+    "streetNumber": 13.50,
+    "postCode": "123456"
+  },
+  "children": [
+    {
+      "name": "John Doe Jr.",
+      "age": 3
+    },
+    {
+      "name": "Jane Doe Jr.",
+      "age": 1
+    }
+  ]
+}
+
+------------ brainstorm end ---------------
+
+[ ] implement @anything()
+
+[ ] use another character for escaping instead of backslash
+    - it's used to escape in JSON
+    - it's used to escape in function calls
+    - the above ends-up with the ridiculous regex "\\\\d+" to match some digits
+
+- errors:
+    - primitives
+        [✓] different values
+    - objects
+        [✓] field missing from actual
+        [✓] extra field in actual (missing from expected) - only in exact mode
+        [✓] field in actual has different type
+        [✓] field in actual has different value (for each type)
+    - arrays
+        [✓] different values
+        [✓] missing element from actual
+        [✓] extra element in actual (missing from expected) - only in exact mode
+        [✓] different order - only in exact mode
+
+implement (including ability to escape)
+[✓] @functions
+    [✓] check there are no memory leaks (that we release temporary created classes)
+[ ] %variables
+[✓] JsonCompareMode.CONTAINS
+[✓] JsonCompareMode.DOES_NOT_CONTAIN
+[✓] JsonCompareMode.UNORDERED_EXACT
+[ ] JsonCompareMode.DOES_NOT_CONTAIN
+[ ] more tests:
+    [ ] complex object (lots of nesting) equal
+    [ ] complex object (lots of nesting) different in a leaf
+    [ ] mixed compare modes
+
+
+Sample of Verify
+----------------
+[
+  "=compareMode: contains",
+  {
+    "=compareMode": "contains",
+    "id": "@isNotNull()",
+    "firstName": "Ion",
+    "lastLanem":  "Vasile",
+    "address": {
+      "=compareMode": "exact",
+      "street": "Graan voor Visch",
+      "number": 15901,
+      "somethingElse": {
+        "=compareMode": "contains",
+        "stuff": true
+      }
+    }
+  },
+  {
+    "=compareMode": "contains",
+    "id": "@isNotNull()",
+    "firstName": "Ion",
+    "lastLanem":  "Vasile",
+    "address": {
+      "=compareMode": "exact",
+      "street": "Graan voor Visch",
+      "number": 15901,
+      "somethingElse": {
+        "=compareMode": "contains",
+        "stuff": true
+      }
+    }
+  }
+]
+
+
+Comparison Modes for Objects
+----------------------------
+Field Name: "=compareMode"
+The default matching modes is "CONTAINS"
+
+Modes:
+EXACT:
+    a. all fields from expected exists in actual
+    b. there are no additional fields in actual that are not in expected
+    c. fields values are the same
+
+CONTAINS:
+    all requirements of EXACT except point B
+
+DOES-NOT-CONTAIN:
+    - for objects: verifies that none of the fields from the expected are in the actual
+    - for arrays: verified that none of the elements in the expected array are in the actual array
+
+Comparison Modes for Arrays
+----------------------------
+The default matching modes is "CONTAINS"
+
+Modes:
+EXACT:
+CONTAINS:
+DOES-NOT-CONTAIN:
+
+Item Count for Arrays
+---------------------
+Field Name: "%item-count"

@@ -1,0 +1,44 @@
+<i class="tree-node-icon tree-node-table-icon"></i>
+
+<span [class.unused-node]="!model.isUsed()"
+      [class.node-error]="model.hasError()"
+      class="node-text">
+    {{model.name}}
+</span>
+
+<i *ngIf="model.hasError()" class="error-icon"
+   title="This table doesn't exist in the current Database definition"></i>
+
+<ng-container>
+
+    <!-- BUTTONS RENDERING -->
+    <div class="button-panel btn-group" *ngIf="rdbmsVerifyTreeService.editMode">
+
+        <div *ngIf="model.hasError()"
+             title="Delete table rules" class="btn btn-default btn-xs btn-group"
+             (click)="deleteTable();$event.stopPropagation();">
+            <span class="glyphicon glyphicon-trash"></span>
+        </div>
+
+        <div
+            title="Create verify rule" class="btn btn-default btn-xs btn-group"
+            (click)="createVerifyRow();$event.stopPropagation();">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+        </div>
+
+        <div *ngIf="shouldShowCompareModeButton()"
+             title="Show compare mode attribute" class="btn btn-default btn-xs btn-group"
+             [class.active]="shouldShowCompareMode()"
+             (click)="toggleShowCompareMode();$event.stopPropagation();">
+            <span class="glyphicon glyphicon-screenshot"></span>
+        </div>
+
+    </div>
+
+    <tree-node-compare-mode *ngIf="shouldShowCompareMode()"
+                            [editMode]="rdbmsVerifyTreeService.editMode"
+                            [selectedCompareMode]="model.compareMode"
+                            (change)="onCompareModeChange($event)">
+    </tree-node-compare-mode>
+
+</ng-container>

@@ -1,0 +1,8 @@
+<div class="tree">
+    <tree-container *ngFor="let childContainer of treeModel?.childContainers; let last=last;"
+                    [modelComponentMapping]="modelComponentMapping"
+                    [treeId]="treeId"
+                    [model]="childContainer"
+                    [isLastNode]="last">
+    </tree-container>
+</div>

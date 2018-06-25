@@ -1,0 +1,37 @@
+.step-text-container {
+    line-height: 24px;
+    white-space: nowrap;
+    margin-right: 60px;
+}
+
+.phase {
+    color: mediumblue;
+    font-weight: bold;
+    text-align: right;
+    width: 50px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.step-text-container:hover .step-text-button-panel {
+    display: inline-block;
+}
+
+.step-text-button-panel {
+    margin-left: 10px;
+    display: none;
+    vertical-align: top;
+    left: -70px;
+}
+
+.step-parameters-container {
+    margin-left: 35px;
+}

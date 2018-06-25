@@ -1,0 +1,68 @@
+<div bsModal #infoModal="bs-modal" id="infoModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Variables
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col span="1" style="width: 31%;">
+                        <col span="1" style="width: 65%;">
+                        <col *ngIf="isEditMode()" span="1" style="width: 4%;">
+                    </colgroup>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                    </tr>
+
+                    <tr *ngFor="let variable of variables; let last = last">
+
+                        <!-- KEY -->
+                        <td *ngIf="!variable.isEmpty() || isEditMode()">
+                            <span *ngIf="!isEditMode()">{{variable.key}}</span>
+                            <input *ngIf="isEditMode()"
+                                   (change)="onNewKeyChange($event)"
+                                   [(ngModel)]="variable.key"
+                                   class="form-control">
+                        </td>
+
+                        <!-- VALUE -->
+                        <td *ngIf="!variable.isEmpty() || isEditMode()">
+                            <span *ngIf="!isEditMode()">{{variable.value}}</span>
+                            <input *ngIf="isEditMode()"
+                                   (change)="onNewValueChange($event)"
+                                   [(ngModel)]="variable.value"
+                                   type="text" pInputText  class="form-control">
+                        </td>
+
+                        <!-- DELETE -->
+                        <td *ngIf="!variable.isEmpty() && isEditMode()">
+                            <a href (click)="deleteVariable(variable);false;"
+                               class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
+                                <i  class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="modal-footer">
+                <ng-container *ngIf="!isEditMode()">
+                    <button (click)="enableEditMode();" class="btn btn-primary">Edit</button>
+                    <button (click)="close()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </ng-container>
+                <ng-container *ngIf="isEditMode()">
+                    <button (click)="cancel();" type="button" class="btn btn-default">Cancel</button>
+                    <button (click)="save()" class="btn btn-primary">Save</button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

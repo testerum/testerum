@@ -1,0 +1,57 @@
+<nav class="menu navbar navbar-inverse" *ngIf="shouldDisplay">
+    <ul class="nav navbar-nav">
+        <li>
+            <a [routerLink]="['/features']" routerLinkActive="active" class="main-item">
+                Features
+                <span *ngIf="shouldDisplayAutomatedItems">&gt;&gt;</span>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav navbar-nav sub-menu" [class.show-sub-menu]="shouldDisplayAutomatedItems">
+
+        <li>
+            <a [routerLink]="['/features']" routerLinkActive="active">Features</a>
+        </li>
+        <li >
+            <a [routerLink]="['/automated/runner']" routerLinkActive="active">Runner</a>
+        </li>
+        <li>
+            <a [routerLink]="['/automated/steps']" routerLinkActive="active">Steps</a>
+        </li>
+        <li>
+            <a [routerLink]="['/automated/resources']" routerLinkActive="active">Resources</a>
+        </li>
+    </ul>
+
+    <ul class="nav navbar-nav">
+        <li>
+            <a [routerLink]="['/manual']" routerLinkActive="active" class="main-item">
+                Manual Tests
+                <span *ngIf="shouldDisplayManualItems">&gt;&gt;</span>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="nav navbar-nav sub-menu" [class.show-sub-menu]="shouldDisplayManualItems">
+
+        <li>
+            <a [routerLink]="['/manual/tests']" routerLinkActive="active">Tests</a>
+        </li>
+        <li>
+            <a [routerLink]="['/manual/runner']" [class.active]="isManualRunnerItemActive">Runner</a>
+        </li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+        <li class="sub-item" [class.sub-item-show]="shouldDisplayAutomatedItems">
+            <a href="" (click)="showVariables(); false;">Variables</a>
+        </li>
+        <li>
+            <a [routerLink]="['/settings']" routerLinkActive="active" class="icon-menu-item">
+                <i  class="fa fa-cogs" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
+<variables></variables>

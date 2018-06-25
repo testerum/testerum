@@ -1,0 +1,9 @@
+{
+  "=compareMode": "exact",
+  "field"       : [
+    [1, 2, 3],
+    "aaa",
+    "bbb",
+    [1]
+  ]
+}

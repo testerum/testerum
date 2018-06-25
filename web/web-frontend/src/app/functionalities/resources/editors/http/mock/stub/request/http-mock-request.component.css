@@ -1,0 +1,16 @@
+.http-method-view {
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.http-url-view {
+    margin-left: 40px;
+}
+
+.http-parm-button-view {
+    margin-left: 50px;
+}
+
+.vertical-align {
+    align-items: flex-end !important;
+}

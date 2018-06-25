@@ -1,0 +1,30 @@
+<form (ngSubmit)="saveAction()" class="form-horizontal">
+
+    <!-- NAME -->
+    <div class="form-group row">
+        <label class="col-md-2 control-label">Name</label>
+        <div class="col-md-10 form-value" *ngIf="!isEditMode()">
+            {{name}}
+        </div>
+        <div class="col-md-10" *ngIf="isEditMode()">
+            <input required
+                   #nameNgModel="ngModel" [(ngModel)]="name"
+                   type="text" class="form-control" name="name">
+            <input-error [model]="nameNgModel"
+                         [errorMessages]="{
+                                        required: 'A name for this resource is required',
+                                        a_resource_with_the_same_name_already_exist: 'A resource with the same name already exists'
+                                     }"></input-error>
+        </div>
+    </div>
+
+    <!-- JSON SAMPLE -->
+    <div class="form-group column-content" *ngIf="shouldDisplayJsonSample()">
+        <div class="col-md-12 center-text">Setting a JSON sample will provide an autocomplete and validation</div>
+        <div class="col-md-9 center">
+            <json-editor [jsonText]="sampleJsonText" (change)="onSampleJsonTextChange($event)"></json-editor>
+        </div>
+    </div>
+
+    <json-verify-tree></json-verify-tree>
+</form>

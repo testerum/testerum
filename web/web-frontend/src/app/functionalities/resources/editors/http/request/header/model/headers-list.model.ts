@@ -1,0 +1,41 @@
+
+export class HeadersList {
+
+    static headers: Array<string> = [
+        "Accept",
+        "Accept-Charset",
+        "Accept-Datetime",
+        "Accept-Encoding",
+        "Accept-Language",
+        "Access-Control-Request-Headers",
+        "Access-Control-Request-Method",
+        "Authorization",
+        "Cache-Control",
+        "Connection",
+        "Cookie",
+        "Content-Length",
+        "Content-MD5",
+        "Content-Type",
+        "Date",
+        "Expect",
+        "Forwarded",
+        "From",
+        "Host",
+        "If-Match",
+        "If-Modified-Since",
+        "If-None-Match",
+        "If-Range",
+        "If-Unmodified-Since",
+        "Max-Forwards",
+        "Origin",
+        "Pragma",
+        "Proxy-Authorization",
+        "Range",
+        "Referer",
+        "TE",
+        "User-Agent",
+        "Upgrade",
+        "Via",
+        "Warning"
+    ]
+}

@@ -1,0 +1,28 @@
+<span [class.node-error]="model.hasError()">
+{{model.name}} :
+</span>
+
+<input *ngIf="rdbmsVerifyTreeService.editMode"
+       [class.node-error]="model.hasError()"
+       [(ngModel)]="model.value"
+       type="text" class="node-attr-input-value">
+
+<span *ngIf="!rdbmsVerifyTreeService.editMode"
+      [class.node-error]="model.hasError()">
+    {{model.value}}
+</span>
+
+<i *ngIf="model.hasError()" class="error-icon"
+   title="This field doesn't exist in the current Database definition"></i>
+
+
+<!-- BUTTONS RENDERING -->
+<div class="button-panel btn-group" *ngIf="rdbmsVerifyTreeService.editMode">
+
+    <div *ngIf="model.hasError()"
+         title="Delete table rules" class="btn btn-default btn-xs btn-group"
+         (click)="deleteField();$event.stopPropagation();">
+        <span class="glyphicon glyphicon-trash"></span>
+    </div>
+
+</div>

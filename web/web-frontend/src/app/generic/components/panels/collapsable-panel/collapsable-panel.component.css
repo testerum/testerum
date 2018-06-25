@@ -1,0 +1,42 @@
+
+.shell {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid #D5D5D5;
+    background: #ffffff;
+    color: #222222;
+    padding: .0em 1em;
+}
+
+.header {
+    display: block;
+    padding-left: 7px;
+    padding-right: 7px;
+    border: none;
+    width: inherit;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+.size1 {
+    font-size: 21px;
+}
+
+.size2 {
+    font-size: 17px;
+}
+
+.collapsed-header {
+    margin-left: 15px;
+}
+
+.icon {
+    width: 12px;
+    height: 21px;
+}
+
+.content-shell {
+    overflow: hidden;
+}
+

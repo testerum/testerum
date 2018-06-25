@@ -1,0 +1,126 @@
+<div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
+
+    <div class="condensed-view-label">Expected Request:</div>
+    <div class="tab">
+        <div>
+            <span style="color: #2b1bfb">{{model.expectedRequest.method}}</span>
+            <span style="padding-left: 5px">{{model.expectedRequest.url}}</span>
+        </div>
+
+        <div *ngIf="!model.expectedRequest.hasEmptyParams()">
+            <div class="condensed-view-label area">Params:</div>
+            <div class="tab" *ngFor="let param of model.expectedRequest.getRequestParamsWithValue()">
+                <span class="condensed-view-key-with-compare">{{param.key}}</span>
+                <span class="condensed-view-compare-key-value">{{param.compareMode}}</span>
+                <span class="condensed-view-value">{{param.value}}</span>
+            </div>
+        </div>
+
+        <div *ngIf="!model.expectedRequest.hasEmptyHeaders()">
+            <div class="condensed-view-label area">Headers:</div>
+            <div class="tab" *ngFor="let header of model.expectedRequest.getRequestHeadersWithValue()">
+                <span class="condensed-view-key-with-compare">{{header.key}}</span>
+                <span class="condensed-view-compare-key-value">{{header.compareMode}}</span>
+                <span class="condensed-view-value">{{header.value}}</span>
+            </div>
+        </div>
+
+        <div *ngIf="!model.expectedRequest.hasEmptyBody()">
+            <div class="condensed-view-label area">Body:</div>
+            <div class="tab condensed-view-body">{{model.expectedRequest.body.content}}</div>
+        </div>
+
+        <div *ngIf="!model.expectedRequest.hasEmptyScenario()">
+            <div class="condensed-view-label area">Scenario:</div>
+            <div >
+                <div class="tab" *ngIf="model.expectedRequest.scenario && !model.expectedRequest.scenario.isEmpty()">
+                    <div>
+                        <span class="condensed-view-label">Scenario Name:</span>
+                        <span class="condensed-view-value">{{model.expectedRequest.scenario.scenarioName}}</span>
+                    </div>
+                    <div>
+                        <span class="condensed-view-label">Current State:</span>
+                        <span class="condensed-view-value">{{model.expectedRequest.scenario.currentState}}</span>
+                    </div>
+                    <div>
+                        <span class="condensed-view-label">New State:</span>
+                        <span class="condensed-view-value">{{model.expectedRequest.scenario.newState}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="model.selectedResponse == HttpMockResponseType.MOCK">
+        <div class="condensed-view-label area">Mock Response:</div>
+        <div class="tab">
+
+            <div *ngIf="model.mockResponse.statusCode" class="area">
+                <span class="condensed-view-label">Status Code:</span>
+                <span class="condensed-view-value">{{model.mockResponse.statusCode}}</span>
+            </div>
+
+            <div *ngIf="model.mockResponse.getResponseHeadersWithValue().length != 0" class="area">
+                <div class="condensed-view-label">Headers:</div>
+                <div class="tab" *ngFor="let header of model.mockResponse.getResponseHeadersWithValue()">
+                    <span class="condensed-view-key">{{header.key}}</span>
+                    <span class="condensed-view-value">{{header.value}}</span>
+                </div>
+            </div>
+
+            <div *ngIf="!model.mockResponse.body.isEmpty()" class="area">
+                <div class="condensed-view-label">Body:</div>
+                <div class="tab condensed-view-body">{{model.mockResponse.body.content}}</div>
+            </div>
+
+            <div *ngIf="model.mockResponse.delay" class="area">
+                <span class="condensed-view-label">Delay:</span>
+                <span class="condensed-view-value">{{model.mockResponse.delay}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="model.selectedResponse == HttpMockResponseType.FAULT" class="area">
+        <span class="condensed-view-label">Mock Fault Response:</span>
+        <span class="condensed-view-value">{{model.faultResponse.enumAsString}}</span>
+    </div>
+
+    <div *ngIf="model.selectedResponse == HttpMockResponseType.PROXY" class="area">
+        <span class="condensed-view-label">Proxy Response:</span>
+        <span class="condensed-view-value">{{model.proxyResponse.proxyBaseUrl}}</span>
+    </div>
+</div>
+
+
+<!-- REGULAR RESPONSE -->
+<form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
+
+    <!-- NAME -->
+    <div class="my-line">
+        <label class="col-md-2 control-label">HTTP Mock Name</label>
+        <div class="col-md-10 form-value" *ngIf="!editMode">
+            {{name}}
+        </div>
+        <div class="col-md-10" *ngIf="editMode">
+            <input required
+                   #nameNgModel="ngModel" [(ngModel)]="name"
+                   type="text" class="form-control" name="name">
+            <input-error [model]="nameNgModel"
+                         [errorMessages]="{
+                                        required: 'A name for this resource is required',
+                                        a_resource_with_the_same_name_already_exist: 'A resource with the same name already exists'
+                                     }"></input-error>
+        </div>
+    </div>
+
+    <!-- REQUEST -->
+    <collapsable-panel title="Expected Request">
+        <http-mock-request></http-mock-request>
+    </collapsable-panel>
+
+
+    <!-- RESPONSE -->
+    <collapsable-panel title="Response" [collapsed]="false">
+        <http-mock-response></http-mock-response>
+    </collapsable-panel>
+</form>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="100 milliseconds">
+
+    <property name="log_pattern" value="%date{HH:mm:ss.SSS, UTC} [%-5level] thread=[%-17thread] %-40.40logger{40} - %msg  ||||| requestInfo=[%mdc{requestInfo}]%n" />
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${log_pattern}</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="net.qutester" level="DEBUG" />
+    <logger name="net.testerum" level="DEBUG" />
+
+    <logger name="net.qutester.db.mapper" level="INFO" />
+
+    <!--========== Spring ==========-->
+    <logger name="org.springframework" level="WARN" />
+
+    <!--========== Reflections ==========-->
+    <logger name="org.reflections.Reflections" level="ERROR" />
+
+
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>

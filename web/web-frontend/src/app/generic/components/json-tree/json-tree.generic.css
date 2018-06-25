@@ -1,0 +1,12 @@
+.node {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.full-line{
+    width: 100%;
+}
+
+.tree-leaf-selected {
+    background-color: whitesmoke;
+}

@@ -1,0 +1,53 @@
+1. scanner
+----------
+- should scan steps
+- should scan hooks
+- use build-time reflection info if available ( https://github.com/ronmamo/reflections )
+
+
+2. runner
+---------
+- the runner doesn't scan steps & hooks - it receives a JSON with the already-scanned steps & hook + run parameters (what to run)
+- outputs events to standard output
+- logs, including attachments (e.g. screenshots)
+- integration with Spring
+    - generic enough, so that integration with Guice & others is possible
+- annotations
+    - pattern similar to the one in the test file
+    - documentation in markdown format (use https://github.com/vsch/flexmark-java for parsing/rendering to html)
+        - for step
+        - for step param
+- step params transformers
+    - global
+    - per parameter, with annotation
+    - should support
+        - simple transformers (no-arg constructor)
+        - dependency injection
+- hooks
+    - before
+    - after
+    - before all
+    - after all
+- stacktrace enhancement to include file and line where it failed
+- variable resolver: put to context vars where a composed step passes some of its parameters to a step call
+
+
+3. reports
+----------
+- take the list of events (file, one JSON event per line) and produce nicely formatted html report
+
+
+4. better test & composite step parser
+--------------------------------------
+- use ANTLR to have line & column
+
+
+5. tags
+-------
+- to select what tests to run and what to ignore
+- to select what hooks to run and what to ignore
+- for JIRA links in the report, like in Serenity
+
+
+6. parametrized tests
+---------------------

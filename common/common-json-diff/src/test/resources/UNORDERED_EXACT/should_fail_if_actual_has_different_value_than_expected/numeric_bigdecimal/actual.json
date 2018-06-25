@@ -1,0 +1,4 @@
+{
+  // using a value greater than Double.MAX_VALUE (1.7976931348623157e308) to force a BigDecimal node
+  "field": 1.7976931348623157e308001
+}

@@ -1,0 +1,22 @@
+<div *ngIf="showPhase"
+     class="step-text-phase"
+     [class.fixed-phase-with]="showAsListItem">
+    {{getStepPhaseAsString()}}
+</div>
+
+<div class="step-text">
+<ng-container *ngFor="let patternPart of stepDef.stepPattern.patternParts; let i = index">
+    <div *ngIf="isParamPatternPart(patternPart)" class="step-text-parameter">
+        <step-text-param
+                [isStepCall]="stepCall != null"
+                [arg]="stepCall?.args[getParamIndexFromTextPartIndex(i)]"
+                [paramStepPart]="patternPart"
+                [variableHolder]="stepCall?.variableHolder"></step-text-param>
+    </div>
+    <div *ngIf="!isParamPatternPart(patternPart)"
+         [class.undefined-step-text-color]="isUndefinedStepDef()"
+         class="step-text-pattern">
+        {{patternPart.text}}
+    </div>
+</ng-container>
+</div>

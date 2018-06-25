@@ -1,0 +1,34 @@
+
+[
+  "%matching-mode=contains",
+  {
+    "%matching-mode": "contains",
+    "id": "@isNotNull()",
+    "firstName": "Ion",
+    "lastLanem":  "Vasile",
+    "address": {
+      "%matching-mode": "exact",
+      "street": "Graan voor Visch",
+      "number": 15901,
+      "somethingElse": {
+        "%matching-mode": "contains",
+        "stuff": true
+      }
+    }
+  },
+  {
+    "%matching-mode": "contains",
+    "id": "@isNotNull()",
+    "firstName": "Ion",
+    "lastLanem":  "Vasile",
+    "address": {
+      "%matching-mode": "exact",
+      "street": "Graan voor Visch",
+      "number": 15901,
+      "somethingElse": {
+        "%matching-mode": "contains",
+        "stuff": true
+      }
+    }
+  }
+]

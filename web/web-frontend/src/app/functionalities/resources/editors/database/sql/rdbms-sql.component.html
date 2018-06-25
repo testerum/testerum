@@ -1,0 +1,37 @@
+<div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
+    <div class="condensed-view-body">{{model.content}}</div>
+</div>
+
+
+<!-- REGULAR RESPONSE -->
+<form *ngIf="!condensedViewMode" class="form-horizontal">
+
+    <!-- NAME -->
+    <div class="form-group row">
+        <label class="col-md-2 control-label">Name</label>
+        <div class="col-md-10 form-value" *ngIf="!editMode">
+            {{name}}
+        </div>
+        <div class="col-md-10" *ngIf="editMode">
+            <input required
+                   #nameNgModel="ngModel" [(ngModel)]="name"
+                   type="text" class="form-control" name="name">
+            <input-error [model]="nameNgModel"
+                         [errorMessages]="{
+                                        required: 'Connection Name is required',
+                                        a_resource_with_the_same_name_already_exist: 'A resource with the same name already exists'
+                                     }"></input-error>
+        </div>
+    </div>
+
+    <!-- SQL EDITOR-->
+    <div class="form-group row">
+        <label class="col-md-2 control-label">SQL Script</label>
+        <div class="col-md-10 form-value">
+            <rdbms-sql-editor-component [sqlText]="model.content"
+                                        (change)="sqlChange($event)"
+                                        [editMode]="editMode"></rdbms-sql-editor-component>
+        </div>
+    </div>
+
+</form>

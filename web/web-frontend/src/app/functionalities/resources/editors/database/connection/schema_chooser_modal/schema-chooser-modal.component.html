@@ -1,0 +1,28 @@
+<div bsModal #schemaChooserModalComponent="bs-modal" id="areYouSureModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="cancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Database Chooser
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <ul class="list-group">
+                    <li class="list-group-item active schema-item"
+                        [class.active]="schema == selectedSchema"
+                        (click)="selectSchema(schema)"
+                        *ngFor="let schema of schemas">
+                        {{schema}}
+                    </li>
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button (click)="cancel()" type="button" class="btn btn-default">Cancel</button>
+                <button (click)="ok()" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,140 @@
+<split-panel-container>
+    <div>
+        <div class="panel-body">
+            <form #stepForm="ngForm" (ngSubmit)="saveAction()" class="form-horizontal">
+
+                <div class="form-group row">
+                    <label class="col-md-2 control-label">Path</label>
+                    <div class="col-md-10 form-value">
+                        {{getTestPathDirectoryAsString() || ""}}
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-md-2 control-label col-form-label" for="testName">Test Name</label>
+
+                    <div class="col-md-10 form-value" *ngIf="!isEditMode">
+                        {{manualTestModel.text || ""}}
+                    </div>
+                    <div class="col-md-10" *ngIf="isEditMode">
+                        <input id="testName" required
+                               #testName="ngModel" [(ngModel)]="manualTestModel.text"
+                               type="text" class="form-control" name="testName">
+                        <div *ngIf="testName.errors && (testName.dirty || testName.touched)"
+                             class="alert alert-danger">
+                            <div [hidden]="!testName.errors.required">
+                                Name is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAGS -->
+                <div class="form-group row">
+                    <label class="col-md-2 control-label" for="tags">Tags</label>
+                    <div class="col-md-10 form-value" *ngIf="!isEditMode">
+                        <ng-container *ngFor="let tag of manualTestModel.tags">
+                            <span class="label label-primary">{{tag}}</span>
+                        </ng-container>
+                    </div>
+                    <div class="col-md-10" *ngIf="isEditMode">
+                        <p-autoComplete #tagsElement [(ngModel)]="manualTestModel.tags" [suggestions]="tagsToShow" (completeMethod)="search($event)" [multiple]="true"
+                                        [dropdown]="true"  (onSelect)="onTagSelect($event)" [field]="field"
+                                        (keypress)="onTagsKeyUp($event);"
+                                        id="tags" name="tags"></p-autoComplete>
+                    </div>
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="form-group row">
+                    <label class="col-md-2 control-label" for="description">Description</label>
+                    <div class="col-md-10 form-value" *ngIf="!isEditMode"
+                         [innerHTML]="(manualTestModel.description || '') | safeHtml">
+                    </div>
+                    <div class="col-md-10" *ngIf="isEditMode">
+                        <p-editor [(ngModel)]="manualTestModel.description" [style]="{'height':'150px'}" id="description" name="description"></p-editor>
+                    </div>
+                </div>
+
+                <!-- STEPS -->
+                <p-table [value]="manualTestModel.steps" selectionMode="single">
+                    <ng-template pTemplate="caption">
+                        Steps
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="steps-column-index"></th>
+                            <th>Description</th>
+                            <th class="steps-column-action" *ngIf="isEditMode">Action</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-step let-index="rowIndex" let-rowData>
+                        <tr [pSelectableRow]="rowData" class="step-row">
+                            <td>{{index + 1}}</td>
+                            <td>
+                                <div *ngIf="!isEditMode">
+                                    <span *ngIf="!isEditMode" class="step-text-phase">
+                                        {{getPhaseText(step.phase, index) | titlecase}}
+                                    </span>
+
+                                    {{step.description}}
+                                </div>
+
+                                <div *ngIf="isEditMode" class="my-line">
+                                    <select class="form-control step-phase-chooser step-text-phase" [(ngModel)]="step.phase" [ngModelOptions]="{standalone: true}">
+                                        <option *ngFor="let enumName of getPhaseEnumValues()" [ngValue]="enumName">
+                                            {{StepPhaseEnum[enumName]}}
+                                        </option>
+                                    </select>
+
+                                    <input type="text" [(ngModel)]="step.description" pInputText [ngModelOptions]="{standalone: true}"
+                                           (ngModelChange)="checkAndAddIfNewEmptyStepIsRequired()"
+                                           class="steps-cell-input"/>
+                                </div>
+                            </td>
+
+                            <td *ngIf="isEditMode">
+                                <div class="btn-group step-button-panel">
+                                    <div title="Move Step Up" *ngIf="!isFirstStep" class="btn btn-default btn-xs btn-group"
+                                         [class.hide-step-button]="index == 0"
+                                         [class.hide]="index == manualTestModel.steps.length - 1"
+                                         (click)="moveStepUp(index); $event.stopPropagation()">
+                                        <span class="glyphicon glyphicon-arrow-up"></span>
+                                    </div>
+
+                                    <div title="Move Step Down" *ngIf="!isLastStep" class="btn btn-default btn-xs btn-group"
+                                         [class.hide-step-button]="index == manualTestModel.steps.length - 2"
+                                         [class.hide]="index == manualTestModel.steps.length - 1"
+                                         (click)="moveStepDown(index); $event.stopPropagation()">
+                                        <span class="glyphicon glyphicon-arrow-down"></span>
+                                    </div>
+
+                                    <div title="Remove Step" class="btn btn-default btn-xs btn-group"
+                                         [class.hide]="index == manualTestModel.steps.length - 1"
+                                         (click)="removeStep(index); $event.stopPropagation()">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+                <!-- ACTION BUTTONS -->
+                <div class="panel-footer-button">
+                    <ng-container *ngIf="!isEditMode">
+                        <button (click)="enableEditTestMode();" class="btn btn-primary">Edit</button>
+                    </ng-container>
+                    <ng-container *ngIf="isEditMode">
+                        <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
+                        <button *ngIf="!isCreateAction" (click)="deleteAction();" type="button" class="btn btn-danger">Delete</button>
+                        <button [disabled]="!stepForm.form.valid" class="btn btn-primary">Save</button>
+                    </ng-container>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    <are-you-sure-modal #areYouSureModalComponent></are-you-sure-modal>
+</split-panel-container>

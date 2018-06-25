@@ -1,0 +1,14 @@
+[
+  {
+    "%matching-mode": "contains",
+    "id": "@isNotNull()",
+    "firstName": "Ion",
+    "lastLanem":  "Vasile",
+    "address": {
+      "%match-exact": {
+        "street": "Graan voor Visch",
+        "number": 15901
+      }
+    }
+  }
+]

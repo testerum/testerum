@@ -1,0 +1,10 @@
+.modal {
+    max-height: calc(100% - 20px);
+    overflow-y: auto;
+}
+
+.file-chooser {
+    max-height: 300px;
+    overflow: auto;
+}
+

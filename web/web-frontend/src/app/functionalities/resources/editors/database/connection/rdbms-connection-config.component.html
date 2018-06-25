@@ -1,0 +1,231 @@
+<div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
+
+    <div class="condensed-view-label">Driver:</div>
+    <div class="tab">
+        <div>
+            <span class="condensed-view-label">Driver Name:</span>
+            <span class="condensed-view-value">{{model.driverName}}</span>
+        </div>
+        <div>
+            <span class="condensed-view-label">Driver JAR:</span>
+            <span class="condensed-view-value">{{model.driverJar}}</span>
+        </div>
+        <div>
+            <span class="condensed-view-label">Driver Class:</span>
+            <span class="condensed-view-value">{{model.driverClass}}</span>
+        </div>
+        <div>
+            <span class="condensed-view-label">Driver URL Pattern:</span>
+            <span class="condensed-view-value">{{model.driverUrlPattern}}</span>
+        </div>
+    </div>
+
+    <div *ngIf="!model.useCustomUrl" class="condensed-view-label">URL:</div>
+    <div *ngIf="!model.useCustomUrl" class="tab">
+        <div>
+            <span class="condensed-view-label">Host:</span>
+            <span class="condensed-view-value">{{model.host}}</span>
+        </div>
+        <div>
+            <span class="condensed-view-label">Port:</span>
+            <span class="condensed-view-value">{{model.port}}</span>
+        </div>
+    </div>
+
+    <div *ngIf="model.useCustomUrl">
+        <span class="condensed-view-label">Host:</span>
+        <span class="condensed-view-value">{{model.customUrl}}</span>
+    </div>
+
+    <div>
+        <span class="condensed-view-label">User:</span>
+        <span class="condensed-view-value">{{model.user}}</span>
+    </div>
+
+    <div>
+        <span class="condensed-view-label">Password:</span>
+        <span class="condensed-view-value">{{model.password}}</span>
+    </div>
+
+    <div>
+        <span class="condensed-view-label">Database:</span>
+        <span class="condensed-view-value">{{model.database}}</span>
+    </div>
+
+</div>
+
+<!-- REGULAR RESPONSE -->
+<form *ngIf="!condensedViewMode" class="form-horizontal">
+
+    <!-- CONNECTION NAME -->
+    <div class="form-group row">
+        <label class="col-md-2 control-label">Connection Name</label>
+        <div class="col-md-10 form-value" *ngIf="!editMode">
+            {{name}}
+        </div>
+        <div class="col-md-10" *ngIf="editMode">
+            <input id="name" required
+                   #nameNgModel="ngModel" [(ngModel)]="name"
+                   type="text" class="form-control" name="name">
+            <input-error [model]="nameNgModel"
+                         [errorMessages]="{
+                                required: 'Connection Name is required',
+                                a_resource_with_the_same_name_already_exist: 'A resource with the same name already exists'
+                             }"></input-error>
+        </div>
+    </div>
+
+    <!-- IS DEFAULT CONNECTION -->
+    <div class="form-group row">
+        <label class="col-md-2 control-label control-label">Is Default Connection</label>
+        <div class="col-md-10">
+            <input disabled="{{!editMode}}"
+                   [(ngModel)]="model.isDefaultConnection"
+                   type="checkbox" class="form-control" name="isDefaultConnection">
+        </div>
+    </div>
+
+    <!-- RDBMS -->
+    <div class="form-group row">
+        <label class="col-md-2 control-label control-label">RDBMS</label>
+        <div class="col-md-10 form-value" *ngIf="!editMode">
+            {{selectedDriver?.name}}
+        </div>
+        <div class="col-md-10" *ngIf="editMode">
+            <select class="form-control phase-input"
+                    #rdbmsNgModel="ngModel" [(ngModel)]="selectedDriver" name="rdbms"
+                    (change)="setSelectedDriverInModel()"
+                    required>
+                <option *ngFor="let driver of drivers" [ngValue]="driver">
+                    {{driver.name}}
+                </option>
+            </select>
+            <input-error [model]="rdbmsNgModel"
+                         [errorMessages]="{required: 'Database driver is required'}"></input-error>
+
+            <div class="help-block" *ngIf="selectedDriver">
+                <div>Driver Jar: {{selectedDriver?.driverJar}}</div>
+                <div>Driver Class: {{selectedDriver?.driverClass}}</div>
+                <div>Database Url Pattern: {{selectedDriver?.urlPattern}}</div>
+            </div>
+        </div>
+    </div>
+
+    <tabset class="tabs">
+        <tab heading="Basic URL" class="panel panel-default" [active]="!model.useCustomUrl"
+             (select)="useCustomUrl(false)" [disabled]="this.model.useCustomUrl && !this.editMode">
+
+            <!-- HOST NAME -->
+            <div class="form-group row">
+                <label class="col-md-2 control-label" for="host">Host Name or IP</label>
+                <div class="col-md-10 form-value" *ngIf="!editMode">
+                    {{model.host || ""}}
+                </div>
+                <div class="col-md-10" *ngIf="editMode">
+                    <input id="host"
+                           [(ngModel)]="model.host"
+                           type="text" class="form-control" name="host">
+                </div>
+            </div>
+
+            <!-- PORT -->
+            <div class="form-group row">
+                <label class="col-md-2 control-label" for="port">Port</label>
+                <div class="col-md-10 form-value" *ngIf="!editMode">
+                    {{model.port || ""}}
+                </div>
+                <div class="col-md-10" *ngIf="editMode">
+                    <input id="port" portValidator
+                           #port="ngModel" [(ngModel)]="model.port"
+                           type="text" class="form-control" name="port">
+                    <div *ngIf="port.errors && (port.dirty || port.touched)"
+                         class="alert alert-danger">
+                        <div [hidden]="!port.errors.portValidator">
+                            This is not a valid port
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PING button -->
+            <div class="form-group row">
+                <label class="col-md-2 control-label" for="host"></label>
+                <div class="col-md-10">
+                    <button (click)="ping();" [class.disabled]="!canCallPing()" type="button"
+                            class="btn btn-default">
+                        <span class="glyphicon glyphicon-transfer"></span>
+                        Check Host and Port (Ping)
+                    </button>
+                </div>
+            </div>
+
+        </tab>
+        <tab heading="Custom URL" class="panel panel-default"
+             (select)="useCustomUrl(true)" [active]="model.useCustomUrl"
+             [disabled]="!this.model.useCustomUrl && !this.editMode">
+
+            <!-- CUSTOM URL -->
+            <div class="form-group row">
+                <label class="col-md-2 control-label" for="host">URL</label>
+                <div class="col-md-10 form-value" *ngIf="!editMode">
+                    {{model.customUrl || ""}}
+                </div>
+                <div class="col-md-10" *ngIf="editMode">
+                    <input id="customUrl"
+                           [(ngModel)]="model.customUrl"
+                           type="text" class="form-control" name="customUrl">
+                </div>
+            </div>
+        </tab>
+    </tabset>
+
+    <!-- USER -->
+    <div class="form-group row">
+        <label class="col-md-2 control-label" for="host">User</label>
+        <div class="col-md-10 form-value" *ngIf="!editMode">
+            {{model.user || ""}}
+        </div>
+        <div class="col-md-10" *ngIf="editMode">
+            <input id="user"
+                   [(ngModel)]="model.user"
+                   type="text" class="form-control" name="user">
+        </div>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="form-group row">
+        <label class="col-md-2 control-label" for="host">Password</label>
+        <div class="col-md-10 form-value" *ngIf="!editMode">
+            {{maskedPassword() || ""}}
+        </div>
+        <div class="col-md-10" *ngIf="editMode">
+            <input id="password"
+                   [(ngModel)]="model.password"
+                   type="password" class="form-control" name="password">
+        </div>
+    </div>
+
+    <!-- DATABASE -->
+    <div class="form-group row">
+        <label class="col-md-2 control-label" for="host">Database</label>
+        <div class="col-md-10 form-value" *ngIf="!editMode">
+            {{model.database || ""}}
+        </div>
+        <div class="col-md-10 db-container" *ngIf="editMode">
+
+            <input id="database"
+                   [(ngModel)]="model.database"
+                   type="text" class="form-control db-input" name="database">
+
+            <button (click)="showSchemasChooser();" type="button" class="btn btn-default db-choose-button">
+                <span class="glyphicon glyphicon-list-alt"></span>
+                Select Database
+            </button>
+
+        </div>
+    </div>
+</form>
+
+
+<info-modal #infoModalComponent></info-modal>
+<schema-chooser-modal #schemaChooserModalComponent></schema-chooser-modal>

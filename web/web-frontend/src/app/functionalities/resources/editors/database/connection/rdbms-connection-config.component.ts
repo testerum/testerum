@@ -1,0 +1,162 @@
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {RdbmsService} from "../../../../../service/resources/rdbms/rdbms.service";
+import {RdbmsConnectionConfig} from "../../../../../model/resource/rdbms/rdbms-connection-config.model";
+import {RdbmsDriver} from "./model/rdbms-driver.model";
+import {ActivatedRoute, Router} from "@angular/router";
+import {InfoModalComponent} from "../../../../../generic/components/info_modal/info-modal.component";
+import {SchemaChooserModalComponent} from "./schema_chooser_modal/schema-chooser-modal.component";
+import {SchemaChooserModalListener} from "./schema_chooser_modal/schema-chooser-modal.listener";
+import {ResourceComponent} from "../../resource-component.interface";
+import {NgForm} from "@angular/forms";
+import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+
+@Component({
+    moduleId: module.id,
+    selector: 'db-connection',
+    templateUrl: 'rdbms-connection-config.component.html',
+    styleUrls: [
+        'rdbms-connection-config.component.css',
+        '../../resource-editor.css',
+        '../../../../../generic/css/generic.css',
+        '../../../../../generic/css/forms.css'
+    ]
+})
+
+export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConnectionConfig> implements OnInit, SchemaChooserModalListener {
+
+    @Input() name: string;
+    @Input() model:RdbmsConnectionConfig;
+    @Input() stepParameter?: ParamStepPatternPart;
+    @Input() editMode: boolean = false;
+    @Input() condensedViewMode: boolean = false;
+
+    @ViewChild(NgForm) form: NgForm;
+
+    @ViewChild(InfoModalComponent) infoModalComponent: InfoModalComponent;
+    @ViewChild(SchemaChooserModalComponent) schemaChooserModalComponent: SchemaChooserModalComponent;
+
+    drivers: Array<RdbmsDriver> = [];
+    selectedDriver: RdbmsDriver;
+
+    constructor(private router: Router,
+                private route: ActivatedRoute,
+                private dbConnectionService: RdbmsService) { super()
+    }
+
+    ngOnInit() {
+        if (this.model == null) {
+            this.model = new RdbmsConnectionConfig();
+        }
+
+        this.dbConnectionService.getDrivers().subscribe(
+            items => {
+                this.drivers = items;
+                if (this.model) {
+                    this.setSelectedDriver(this.model.driverName)
+                }
+            }
+        );
+
+        if (this.model && this.drivers) {
+            this.setSelectedDriver(this.model.driverName);
+        }
+    }
+
+    private maskedPassword(): string {
+        let result = "";
+
+        if (!this.model.password) {
+            return result;
+        }
+
+        for (let i = 0; i < this.model.password.length; i++) {
+            result += "*";
+        }
+        return result;
+    }
+
+    private setSelectedDriver(driverName: string): void {
+        if (!driverName || !this.drivers) {
+            return;
+        }
+
+        this.drivers.forEach(
+            item => {
+                if (item.name == driverName) {
+                    this.selectedDriver = item;
+                    return;
+                }
+            }
+        )
+    }
+
+    canCallPing(): boolean {
+        if (this.model.host && this.model.port) {
+            return true
+        }
+        return false;
+    }
+
+    ping(): void {
+        this.dbConnectionService
+            .ping(this.model.host, this.model.port)
+            .subscribe(
+                pingSuccessful => {
+                    this.infoModalComponent.show(
+                        "Ping Results",
+                        pingSuccessful ? "Ping Successful" : "No Ping Response",
+                        null,
+                        null
+                    )
+                }
+            )
+    }
+
+    showSchemasChooser(): void {
+        this.setSelectedDriverInModel();
+
+        this.dbConnectionService
+            .showSchemasChooser(this.model)
+            .subscribe(
+                dbSchema => {
+                    if (dbSchema.errorMessage) {
+                        this.infoModalComponent.show(
+                            "Database Results",
+                            dbSchema.errorMessage,
+                            null,
+                            null
+                        )
+                    } else {
+                        this.schemaChooserModalComponent.show(
+                            dbSchema.schemas,
+                            this
+                        )
+                    }
+
+                }
+            )
+    }
+
+    schemaChooserEventListener(chosenSchema: string): void {
+        this.model.database = chosenSchema;
+    }
+
+    useCustomUrl(value: boolean): void {
+        this.model.useCustomUrl = value;
+    }
+
+    private setSelectedDriverInModel() {
+        this.model.driverName = this.selectedDriver.name;
+        this.model.driverJar = this.selectedDriver.driverJar;
+        this.model.driverClass = this.selectedDriver.driverClass;
+        this.model.driverUrlPattern = this.selectedDriver.urlPattern;
+    }
+
+    isFormValid(): boolean {
+        return this.form.valid;
+    }
+
+    getForm(): NgForm {
+        return this.form;
+    }
+}

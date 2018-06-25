@@ -1,0 +1,7 @@
+:host ::ng-deep .editor-preview ol {
+    margin-left: 1.5em;
+}
+
+:host ::ng-deep .editor-preview ul {
+    margin-left: 1.5em;
+}

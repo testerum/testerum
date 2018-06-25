@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="spring_service_infrastructure.xml"/>
+    <import resource="spring_service_beans.xml"/>
+    <import resource="spring_testerum-scanner.xml"/>
+    <import resource="spring_resource-manager.xml"/>
+
+    <import resource="spring_file-repository.xml"/>
+    <import resource="classpath:/spring/spring_settings.xml"/>
+    <import resource="classpath:/spring_common-json-diff.xml"/>
+</beans>

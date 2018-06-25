@@ -1,0 +1,60 @@
+<table class="table table-bordered">
+    <colgroup>
+        <col span="1" style="width: 38%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 38%;">
+        <col *ngIf="isEditMode()" span="1" style="width: 4%;">
+    </colgroup>
+
+    <tr>
+        <th>Scenario Name</th>
+        <th>Required Scenario State</th>
+        <th>New Scenario state</th>
+    </tr>
+
+    <!-- KEY -->
+    <tr>
+        <td *ngIf="!getModel().isEmpty() || isEditMode()">
+            <span *ngIf="!isEditMode()">{{getModel().scenarioName}}</span>
+            <p-autoComplete *ngIf="isEditMode()"
+                            [(ngModel)]="getModel().scenarioName"
+                            [suggestions]="suggestionScenarioNames"
+                            (completeMethod)="filterSuggestionScenarioNames($event)"
+                            inputStyleClass="autocomplete-input form-control"
+                            class="autocomplete"
+                            [dropdown]="true"></p-autoComplete>
+        </td>
+
+        <!-- COMPARE -->
+        <td *ngIf="!getModel().isEmpty() || isEditMode()">
+            <span *ngIf="!isEditMode()">{{getModel().currentState}}</span>
+            <p-autoComplete *ngIf="isEditMode()"
+                            [(ngModel)]="getModel().currentState"
+                            [suggestions]="suggestionScenarioStates"
+                            (completeMethod)="filterSuggestionScenarioStates($event)"
+                            inputStyleClass="autocomplete-input form-control"
+                            class="autocomplete"
+                            [dropdown]="true"></p-autoComplete>
+        </td>
+
+        <!-- VALUE -->
+        <td *ngIf="!getModel().isEmpty() || isEditMode()">
+            <span *ngIf="!isEditMode()">{{getModel().newState}}</span>
+            <p-autoComplete *ngIf="isEditMode()"
+                            [(ngModel)]="getModel().newState"
+                            [suggestions]="suggestionScenarioStates"
+                            (completeMethod)="filterSuggestionScenarioStates($event)"
+                            inputStyleClass="autocomplete-input form-control"
+                            class="autocomplete"
+                            [dropdown]="true"></p-autoComplete>
+        </td>
+
+        <!-- DELETE -->
+        <td *ngIf="isEditMode() && isNotEmpty()">
+            <a href (click)="deleteScenario();false;"
+               class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
+                <i  class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
+        </td>
+    </tr>
+</table>

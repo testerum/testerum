@@ -1,0 +1,31 @@
+<div class="node-text"
+     title="{{getStatusTooltip()}}">
+
+    <div class="tree-node" [class.tree-node-selected]="isSelected">
+        <i class="fa tree-node-new-icon" aria-hidden="true"
+           [class.node-waiting]="model.executionResult == ExecutionStatusEnum.WAITING"
+           [class.node-executing]="model.executionResult == ExecutionStatusEnum.EXECUTING"
+           [class.node-passed]="model.executionResult == ExecutionStatusEnum.PASSED"
+           [class.node-failed]="model.executionResult == ExecutionStatusEnum.FAILED"
+           [class.node-error]="model.executionResult == ExecutionStatusEnum.ERROR"
+           [class.node-undefined]="model.executionResult == ExecutionStatusEnum.UNDEFINED"
+           [class.node-skipped]="model.executionResult == ExecutionStatusEnum.SKIPPED"
+
+
+           [class.fa-spinner]="model.executionResult == ExecutionStatusEnum.WAITING
+                               || model.executionResult == ExecutionStatusEnum.EXECUTING"
+           [class.fa-pulse]="model.state == ExecutionStatusEnum.WAITING
+                               || model.executionResult == ExecutionStatusEnum.EXECUTING"
+
+           [class.fa-check]="model.executionResult == ExecutionStatusEnum.PASSED"
+           [class.fa-times]="model.executionResult == ExecutionStatusEnum.FAILED"
+           [class.fa-exclamation-triangle]="model.executionResult == ExecutionStatusEnum.ERROR"
+           [class.fa-question]="model.executionResult == ExecutionStatusEnum.UNDEFINED"
+           [class.fa-angle-double-right]="model.executionResult == ExecutionStatusEnum.SKIPPED"></i>
+
+        <div (click)="showResultFile()"
+             [class.step-selected]="isSelected">
+            {{getNodeText()}}
+        </div>
+    </div>
+</div>

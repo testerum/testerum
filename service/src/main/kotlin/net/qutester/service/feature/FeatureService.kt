@@ -1,0 +1,118 @@
+package net.qutester.service.feature
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import net.qutester.common.json.ObjectMapperFactory
+import net.qutester.model.feature.Feature
+import net.qutester.model.file.Attachment
+import net.qutester.model.infrastructure.path.Path
+import net.qutester.model.repository.enums.FileType
+import net.testerum.db_file.AttachmentFileRepositoryService
+import net.testerum.db_file.FileRepositoryService
+import net.testerum.db_file.model.KnownPath
+import net.testerum.db_file.model.RepositoryFile
+import net.testerum.db_file.model.RepositoryFileChange
+import org.springframework.web.multipart.MultipartFile
+
+
+class FeatureService(private val fileRepositoryService: FileRepositoryService,
+                     private val attachmentFileRepositoryService: AttachmentFileRepositoryService) {
+
+    val objectMapper: ObjectMapper = ObjectMapperFactory.createKotlinObjectMapper()
+
+    val FEATURE_NAME: String = "info";
+
+    fun createFeature(feature: Feature): Feature {
+
+        val featurePath = Path(feature.path.directories, FEATURE_NAME, FileType.FEATURE.fileExtension)
+
+        val fileTestAsString = objectMapper.writeValueAsString(feature)
+
+        val createdRepositoryFile = fileRepositoryService.create(
+                RepositoryFileChange(
+                        null,
+                        RepositoryFile(
+                                KnownPath(featurePath, FileType.FEATURE),
+                                fileTestAsString
+                        )
+                )
+        )
+
+        val savedFeature = feature.copy(
+                path = createdRepositoryFile.knownPath.asPath()
+        )
+
+        return savedFeature
+    }
+
+    fun updateFeature(feature: Feature): Feature {
+
+        val oldPath = feature.path;
+        val newPath = Path(feature.path.directories, FEATURE_NAME, FileType.FEATURE.fileExtension)
+
+        val fileFeatureAsString = objectMapper.writeValueAsString(feature)
+
+        fileRepositoryService.update(
+                RepositoryFileChange(
+                        KnownPath(oldPath, FileType.FEATURE),
+                        RepositoryFile(
+                                KnownPath(newPath, FileType.FEATURE),
+                                fileFeatureAsString
+                        )
+                )
+        )
+
+        val savedFeature = feature.copy(
+                path = newPath
+        )
+
+        return savedFeature
+    }
+
+    fun remove(path: Path) {
+        fileRepositoryService.delete(knownPath = KnownPath(path, FileType.FEATURE))
+    }
+
+    fun getAllFeatures(): List<Feature> {
+
+        val features = mutableListOf<Feature>()
+
+        val allFeatureFiles = fileRepositoryService.getAllResourcesByType(FileType.FEATURE)
+        for (featureFile in allFeatureFiles) {
+            val feature = objectMapper.readValue<Feature>(featureFile.body)
+
+            val resolvedFeature = feature.copy(path = featureFile.knownPath.asPath())
+            features.add(resolvedFeature)
+        }
+
+        return features
+    }
+
+    fun getFeatureAtPath(path: Path): Feature? {
+        val filePath = path.copy(
+                fileName = FEATURE_NAME,
+                fileExtension = FileType.FEATURE.fileExtension
+        );
+
+        val featureKnownPath = KnownPath(filePath, FileType.FEATURE)
+        val featureFile = fileRepositoryService.getByPath(
+                featureKnownPath
+        ) ?: return null
+
+        val feature = objectMapper.readValue<Feature>(featureFile.body)
+
+        val attachmentsDetailsFromPath = attachmentFileRepositoryService.getAttachmentsDetailsFromPath(featureKnownPath)
+
+        return feature.copy(
+                path = featureFile.knownPath.asPath(),
+                attachments = attachmentsDetailsFromPath
+        )
+    }
+
+    fun uploadFiles(featurePath: Path, uploadingFiles: Array<MultipartFile>): List<Attachment> {
+        return attachmentFileRepositoryService.uploadFiles(
+                KnownPath(featurePath, FileType.FEATURE),
+                uploadingFiles
+        );
+    }
+}

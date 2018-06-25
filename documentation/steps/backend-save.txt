@@ -1,0 +1,69 @@
+
+ -- oldPath
+ -- newPath
+
+ -- old Step Def
+ -- new Step Def
+
+ ** Create **
+ * escape illegal characters (done)
+ * get unique absolute path (done)
+ * if steps with the same StepDef return Error (done)
+ * create File (done)
+ * resolve ComposedSteps (done)
+
+ ** Update **
+ * UI
+    * if(stepDef.isChanged)
+       * check change compatiblity
+          * if(!response.isUniqueStepPattern) display error, step pattern needs to be changed
+          * if(!response.isCompatible)
+             * display alert
+                * title: Warning
+                * text: The new Step definition is not compatible with the previews version. The following tests and steps will be broken:
+                * display: list of tests, list of directed AffectedSteps, list of transitive AffectedSteps
+                * buttons: Cancel & Continue
+    * else call Update
+
+ * Backend isIncompatibleChange
+    * getOldStepPattern
+    * getNewStepPattern
+    * if ( stepDef not changed) return compatible = true (done)
+    * if ((otherSteps-oldStep) with the same StepDef) return Error
+    * if ( stepDef changed is compatible) return compatible = true
+       * isCompatibleChange =>
+          * same number of parameters
+          * the parameter type didn't change
+    * if ( stepDef change is incompatible)
+       * return the paths of the tests that will fail
+       * return the paths of the steps directly affected by the change
+       * return the paths of the steps indirectly affected by the change
+
+ * Backend Update
+    * newPath = newPath."escape illegal path Characters" (done)
+    * getUniqueAbsolutePath(oldPath)
+       * if newPath != oldPath && otherPath == newPath append unique suffix
+
+    * if stepDef.isChanged
+       * if ((otherSteps-oldStep) with the same StepDef) return Error
+       * if isIncompatibleChange => oldParams != newParams
+          * change only the currentStepDef
+       * else
+          * iterate over all step calls ( ComposedStepCalls && TestStepCalls)
+             * if stepCallDef == oldStepDef => replace with new StepDef
+    * if newPath != oldPath delete oldPath
+
+
+
+Ingrijire batran - ofer cazare, mancare si 1800 ron
+
+
+Caut femeie serioasa pentru ingrijire batran.
+Munca pentru ingrijirea acestei persoanei se va face impreuna cu sotia acestuia care se afla in stare fizica foarte buna.
+Persoana de care se va avea grija nu este imobilizata la pat.
+
+Ofer cazare, mancare si 1800 ron. Localitate Predeal, judet Brasov.
+Pentru mai multe detali sunati la 0722 673 445
+
+
+0722 673 445

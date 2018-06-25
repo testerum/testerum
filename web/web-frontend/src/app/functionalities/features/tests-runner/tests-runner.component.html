@@ -1,0 +1,18 @@
+
+
+    <split direction="horizontal" style="position: relative">
+        <split-area [size]="30">
+            <runner-tree [treeModel]="runnerTreeService.rootNode" [pieModel]="pieModel"></runner-tree>
+        </split-area>
+        <split-area [size]="70" class="logs-split-area horizontal-scroll">
+
+            <div class="btn-group" style="position:absolute; top:0; right:1.2em; overflow-y: visible">
+                <div title="Close" class="btn btn-default btn-xs btn-group"
+                     (click)="close(); $event.stopPropagation()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </div>
+            </div>
+
+            <tests-runner-logs [logs]="testsRunnerLogsService.logs"></tests-runner-logs>
+        </split-area>
+    </split>

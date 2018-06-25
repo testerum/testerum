@@ -1,0 +1,22 @@
+.label-size {
+    width: 80px;
+}
+
+.step-text-phase {
+    color: mediumblue;
+    font-weight: bolder;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.step-action-panel {
+    margin-left: 10px;
+}
+
+.phase-input {
+    width: 95px;
+}

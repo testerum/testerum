@@ -1,0 +1,139 @@
+<div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
+    <div>
+        <span style="color: #2b1bfb">{{model.method}}</span>
+        <span style="padding-left: 5px">{{model.url}}</span>
+    </div>
+
+    <div *ngFor="let header of model.getHeadersWithValue()">
+        <div *ngIf="!header.isEmpty()">
+            <span class="condensed-view-key">{{header.key}}</span>:
+            <span class="condensed-view-value">{{header.value}}</span>
+        </div>
+    </div>
+    <div *ngIf="model.body.content" class="space-on-top condensed-view-body">{{model.body.content}}</div>
+</div>
+
+<form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
+
+    <!-- NAME -->
+    <div class="form-group row">
+        <label class="col-md-2 control-label">HTTP Request Name</label>
+        <div class="col-md-10 form-value" *ngIf="!isEditMode()">
+            {{name}}
+        </div>
+        <div class="col-md-10" *ngIf="isEditMode()">
+            <input required
+                   #nameNgModel="ngModel" [(ngModel)]="name"
+                   type="text" class="form-control" name="name">
+            <input-error [model]="nameNgModel"
+                         [errorMessages]="{
+                                        required: 'A name for this resource is required',
+                                        a_resource_with_the_same_name_already_exist: 'A resource with the same name already exists'
+                                     }"></input-error>
+        </div>
+    </div>
+
+    <!-- METHOD AND URL - VIEW -->
+    <div class="my-line" *ngIf="!isEditMode()">
+        <span class="http-method-view">
+            {{getModel().method}}
+        </span>
+        <span class="http-url-view">
+            {{getModel().url}}
+        </span>
+        <span class="http-parm-button-view">
+            <input (click)="showHideParams()"
+                   [class.active]="httpParams.shouldShow"
+                   [class.hidden]="httpParams.isEmpty()"
+                   class="btn btn-default"
+                   type="button" value="Params">
+
+            <a href (click)="executeRequest();false;"
+               class="btn btn-success" aria-label="Execute Request">
+                <i class="fa fa-play" aria-hidden="true"></i>
+            </a>
+        </span>
+    </div>
+
+    <!-- METHOD AND URL - EDIT -->
+    <div class="my-line" *ngIf="isEditMode()">
+        <select class="form-control"
+                #requestModelNgModel="ngModel" [ngModel]="getModel().method" name="method"
+                (change)="methodChange(requestModelNgModel.value)">
+            <option *ngFor="let method of getHttpMethods()" [ngValue]="method">
+                {{method.toString()}}
+            </option>
+        </select>
+        <div class="full-width">
+            <input required
+                   #urlNgModel="ngModel" [(ngModel)]="getModel().url" (ngModelChange)="urlChanged()"
+                   type="text" class="form-control" name="url" placeholder="URL">
+            <input-error [model]="urlNgModel"
+                         [errorMessages]="{
+                    required: 'An URL is required'
+                 }">
+            </input-error>
+        </div>
+        <input (click)="showHideParams()"
+               [class.active]="httpParams.shouldShow"
+               class="btn btn-default"
+               type="button" value="Params">
+
+        <a href (click)="executeRequest();false;"
+           class="btn btn-success" aria-label="Execute Request">
+            <i class="fa fa-play" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <!-- PARAMS -->
+    <http-params #httpParams></http-params>
+
+    <div class="vertical-space"></div>
+
+    <ul class="nav nav-tabs">
+        <li role="tab"
+            class="tab"
+            (click)="display(HttpPart.HEADERS);$event.stopPropagation();"
+            [class.active]="partToDisplay == HttpPart.HEADERS">
+            <a>Headers</a>
+        </li>
+        <li role="tab"
+            class="tab"
+            (click)="display(HttpPart.BODY);$event.stopPropagation();"
+            [class.active]="partToDisplay == HttpPart.BODY"
+            [class.disabled]="getModel().method == HttpMethod.GET"
+            [class.hidden]="getModel().method == HttpMethod.GET">
+
+            <a>Body</a>
+        </li>
+        <li role="tab"
+            class="tab"
+            (click)="display(HttpPart.RESPONSE);$event.stopPropagation();"
+            [class.active]="partToDisplay == HttpPart.RESPONSE"
+            [class.hidden]="hasResponseToDisplay()">
+
+            <a>
+                Response
+                <i (click)="closeResponseTab();$event.stopPropagation();" class="fa fa-close gray clickable" aria-hidden="true" aria-label="Close"></i>
+            </a>
+        </li>
+    </ul>
+
+    <div *ngIf="partToDisplay == HttpPart.HEADERS" class="panel panel-default">
+        <div class="panel-body">
+            <http-header [headers]="getModel().headers"></http-header>
+        </div>
+    </div>
+
+    <div *ngIf="partToDisplay == HttpPart.BODY" class="panel panel-default full-size-flex-element flex-panel">
+        <div class="panel-body full-size-flex-element flex-panel">
+            <http-body class="full-size-flex-element flex-panel"></http-body>
+        </div>
+    </div>
+
+    <div *ngIf="partToDisplay == HttpPart.RESPONSE" class="panel panel-default full-size-flex-element flex-panel">
+        <div class="panel-body full-size-flex-element flex-panel">
+            <http-request-response></http-request-response>
+        </div>
+    </div>
+</form>

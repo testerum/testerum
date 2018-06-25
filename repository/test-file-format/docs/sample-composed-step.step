@@ -1,0 +1,20 @@
+step-def: Given I login as <<username: string>>/<<password: string>> to <<host: string>>/<<port: int>>
+
+    description = <<
+       A composed step that allows us to bypass the login screen.
+       Will be useful from many tests.
+    >>
+
+    step: Given I go to page <<https://{{host}}:{{port}}/login?username={{encodeUriComponent(username)}}>>
+    step: When I type <<{{username}}>> into the <<.username>> input
+    step: When I type <<{{password}}>> into the <<.password>> input
+
+    step: When I type <<{{text}}>> into the <<.{{cssClassName}}>> input
+       var text = <<
+           I hereby pledge not to do any evil.
+           Cross my heart!
+       >>
+       var cssClassName = <<acknowledgementTextArea>>
+
+    step: When I set the <<.rememberMe>> checkbox to <<checked>>
+    step: When I click the <<.login>> button

@@ -1,0 +1,69 @@
+
+<div bsModal #resourceModal="bs-modal" id="resourceModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <button (click)="cancel();$event.stopPropagation();" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Resource File
+                </h4>
+            </div>
+
+            <!-- BODY-->
+            <div class="modal-body">
+
+                <form class="form-horizontal flex-panel">
+
+                    <!-- NAME -->
+                    <div class="form-group row">
+                        <label class="col-md-2 control-label">Name</label>
+                        <div class="col-md-10">
+                            <input required
+                                   #nameNgModel="ngModel" [(ngModel)]="name"
+                                   type="text" class="form-control" name="name">
+                            <input-error [model]="nameNgModel"
+                                         [errorMessages]="{
+                                        required: 'A name for this resource is required',
+                                        a_resource_with_the_same_name_already_exist: 'A resource with the same name already exists'
+                                     }"></input-error>
+                        </div>
+                    </div>
+
+
+                    <!-- LOCATION -->
+                    <div class="form-group row">
+                        <label class="col-md-2 control-label" style="padding-top: 0">Location</label>
+                        <div class="col-md-10">
+
+                            <path-chooser [paths]="resourcePaths"
+                                          [allowDirSelection]="true"
+                                          [showFiles]="false"
+                                          [resourceMapping]="resourceMapping"
+                                          (selectPath)="setSelectedDirectory($event)">
+                            </path-chooser>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- FOOTER Buttons-->
+            <div class="modal-footer">
+                <div class="footer-left-side">
+                    <label>Location:</label>
+                    <span>{{getNewResourcePathAsString()}}</span>
+                </div>
+                <div class="footer-right-side">
+                    <button (click)="cancel();$event.stopPropagation();" type="button" class="btn btn-default">Close
+                    </button>
+                    <button (click)="update();$event.stopPropagation();"
+                            [disabled]="!isValid()"
+                            type="button" class="btn btn-primary">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

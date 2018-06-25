@@ -1,0 +1,85 @@
+<split-panel-container>
+    <h1>Test / Acceptance Criteria</h1>
+
+    <div>
+        <div class="panel-body">
+            <form #stepForm="ngForm" class="form-horizontal">
+
+                <div class="form-group row">
+                    <label class="col-md-1 control-label">Path</label>
+                    <div class="col-md-11 form-value">
+                        {{getPathWithoutTestName()}}
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-md-1 control-label col-form-label" for="testName">Test Name</label>
+
+                    <div class="col-md-11 form-value" *ngIf="!isEditMode">
+                        {{testModel.text || ""}}
+                    </div>
+                    <div class="col-md-10" *ngIf="isEditMode">
+                        <input id="testName" required
+                               #testName="ngModel" [(ngModel)]="testModel.text"
+                               type="text" class="form-control" name="testName">
+                        <div *ngIf="testName.errors && (testName.dirty || testName.touched)"
+                             class="alert alert-danger">
+                            <div [hidden]="!testName.errors.required">
+                                Name is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-md-1 control-label" for="description">Description</label>
+                    <div class="col-md-11 form-value" *ngIf="!isEditMode">
+                        {{testModel.description || ""}}
+                    </div>
+                    <div class="col-md-10" *ngIf="isEditMode">
+                        <textarea [(ngModel)]="testModel.description" class="form-control" id="description"
+                                  name="description"></textarea>
+                    </div>
+                </div>
+
+
+                <div>
+                    <h4 class="inline"><strong>Steps</strong></h4>
+
+                    <!-- BUTTONS -->
+                    <div class="step-action-panel inline btn-group">
+
+                        <div title="Run Tests" class="btn btn-default btn-xs btn-group"
+                             (click)="runTest(); $event.stopPropagation()">
+                        <span class="glyphicon glyphicon-play"></span>
+                        </div>
+
+                        <div title="Add Step" class="btn btn-default btn-xs btn-group"
+                             *ngIf="isEditMode"
+                             (click)="openStepChooser(); $event.stopPropagation()">
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <step-call-tree [stepCalls]="testModel.stepCalls"></step-call-tree>
+
+                <div class="panel-footer-button">
+                    <ng-container *ngIf="!isEditMode">
+                        <button (click)="enableEditTestMode();" class="btn btn-primary">Edit</button>
+                    </ng-container>
+                    <ng-container *ngIf="isEditMode">
+                        <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
+                        <button *ngIf="!isCreateAction" (click)="deleteAction();;$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
+                        <button [disabled]="!stepForm.form.valid" (click)="saveAction();$event.stopPropagation();" class="btn btn-primary">Save</button>
+                    </ng-container>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <step-chooser #stepChooser></step-chooser>
+</split-panel-container>

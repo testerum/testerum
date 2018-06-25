@@ -1,0 +1,7 @@
+{
+  "=compareMode"      : "exact",
+  "pi"                : 3.14159265359,
+  "luckyNumber"       : 13,
+  "totalEuro"         : 21.5,
+  "scientificNotation": 0.00123
+}

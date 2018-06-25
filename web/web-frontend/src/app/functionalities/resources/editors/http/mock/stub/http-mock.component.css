@@ -1,0 +1,12 @@
+
+[role] {
+    cursor: pointer;
+}
+.active {
+    cursor: default;
+}
+.active > a {
+    cursor: default;
+}
+
+

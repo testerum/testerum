@@ -1,0 +1,18 @@
+<div class="main-container">
+    <split direction="horizontal">
+        <split-area [size]="40">
+
+            <json-tree [treeModel]="resourcesTreeService.getTreeRoot()"
+                       [modelComponentMapping]="modelComponentMapping"></json-tree>
+
+        </split-area>
+        <split-area [size]="60" [visible]="isStepSelected">
+
+            <router-outlet></router-outlet>
+
+        </split-area>
+    </split>
+
+    <are-you-sure-modal #areYouSureModalComponent></are-you-sure-modal>
+
+</div>

@@ -1,0 +1,58 @@
+<p-fileUpload name="files"
+              url="{{url}}"
+              (onUpload)="onUpload($event)"
+              [class.edit]="editMode"
+              [class.not-edit]="!editMode"
+              auto="true"
+              multiple="multiple">
+
+    <ng-template pTemplate="content">
+        <ol class="list">
+            <li *ngFor="let attachment of attachments" class="list-item">
+
+                <div *ngIf="isImage(attachment); else isNotImage">
+                    <a href="{{getAttachmentUrl(attachment)}}"
+                       class="img-thumbnail"
+                       title="{{getFileName(attachment)}}"
+                       target="_blank">
+                            <img src="{{getAttachmentUrl(attachment, true)}}"
+                                 class="">
+                    </a>
+                </div>
+
+                <ng-template #isNotImage>
+                    <a href="{{getAttachmentUrl(attachment)}}"
+                       class="img-thumbnail"
+                       title="{{getFileName(attachment)}}"
+                       download>
+                        <i class="fa {{getImageIconClassBasedOnMimeType(attachment)}} generic_thumbnail"
+                           aria-hidden="true"></i>
+                    </a>
+                </ng-template>
+
+                <div class="info">
+                    <div class="name-container">
+                        <span class="blender"></span>
+                        <a href="{{getAttachmentUrl(attachment)}}"
+                           class="attachment-name"
+                           title="{{getFileName(attachment)}}"
+                           download
+                        >{{getFileName(attachment)}}</a>
+                    </div>
+
+                    <div class="last-modified-container">{{getDateAsString(attachment)}}</div>
+                </div>
+
+                <div *ngIf="editMode"
+                     class="delete-button btn btn-danger"
+                     title="Delete attachment"
+                     (click)="delete(attachment)">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </div>
+            </li>
+        </ol>
+    </ng-template>
+
+</p-fileUpload>
+<are-you-sure-modal #areYouSureModalComponent></are-you-sure-modal>
+

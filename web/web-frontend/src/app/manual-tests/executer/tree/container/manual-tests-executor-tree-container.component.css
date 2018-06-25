@@ -1,0 +1,15 @@
+.node-not-executed {
+    color: darkgrey;;
+}
+.node-passed {
+    color: green;
+}
+.node-failed{
+    color: red;
+}
+.node-blocked{
+    color: #dca7a7;
+}
+.node-not-applicable{
+    color: #c8e5bc;
+}

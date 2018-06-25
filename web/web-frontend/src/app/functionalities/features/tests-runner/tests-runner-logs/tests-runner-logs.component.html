@@ -1,0 +1,23 @@
+<div class="logs-side-toolbar">
+    <div title="Toggle wrap" class="toggleWrapButton btn btn-default btn-xs btn-group"
+         (click)="toggleWrap(); $event.stopPropagation()">
+        <i class="fa fa-level-up fa-rotate-90" aria-hidden="true" style="font-size: 15px"></i>
+    </div>
+</div>
+
+<table class="table table-hover table-condensed">
+    <tbody #logsContainer>
+    <tr *ngFor="let log of logsToDisplay">
+        <td class="date-column">{{log.time | date:"HH:mm:ss"}}</td>
+        <td class="text-column">
+            <ng-container *ngFor="let textLine of log.textLines">
+                <p class="log-line"
+                   [class.log-type-log]="textLine.type == LogLineTypeEnum.LOG"
+                   [class.log-type-step]="textLine.type == LogLineTypeEnum.STEP"
+                   [class.log-type-exception]="textLine.type == LogLineTypeEnum.EXCEPTION">{{textLine.text}}</p>
+            </ng-container>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot #logsFooter></tfoot>
+</table>

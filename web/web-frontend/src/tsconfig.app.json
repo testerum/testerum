@@ -1,0 +1,35 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "./",
+    "module": "es2015",
+    "types": [],
+    "charset"                         : "utf8",
+    "pretty"                          : true,
+    "sourceMap"                       : true,
+    "emitBOM"                         : false,
+    "declaration"                     : false,
+    "experimentalDecorators"          : true,
+    "emitDecoratorMetadata"           : true,
+    "forceConsistentCasingInFileNames": true,
+    "locale"                          : "en-us",
+    "newLine"                         : "lf",
+    "allowUnreachableCode"            : false,
+    "allowUnusedLabels"               : false,
+    "noUnusedLocals"                  : false,
+    "alwaysStrict"                    : true,
+    //"strictNullChecks"                : true, // not supported yet with Angular
+    "noEmitOnError"                   : true,
+    "noFallthroughCasesInSwitch"      : true,
+    "noImplicitAny"                   : false,
+    "noImplicitReturns"               : true,
+    "noImplicitThis"                  : true,
+    "noStrictGenericChecks"           : false,
+    "removeComments"                  : true
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

@@ -1,0 +1,10 @@
+<person mode="contains">
+    <id value="isANumber"/>
+    <id>@isNotNull()</id>
+    <firstName>Ion</firstName>
+    <lastLanem>Vasile</lastLanem>
+    <address mode="match">
+        <street>Graan voor Visch</street>
+        <number>15901</number>
+    </address>
+</person>

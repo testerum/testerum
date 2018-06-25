@@ -1,0 +1,21 @@
+.step-text-container {
+    display: flex;
+    flex-direction: row;
+}
+.step-text-container:hover .step-button-panel {
+    display: inline-block;
+}
+
+.step-button-panel {
+    margin-left: 10px;
+    display: none;
+    vertical-align: top;
+    left: -70px;
+}
+
+.arrow-icon {
+    vertical-align: bottom;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+

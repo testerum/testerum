@@ -1,0 +1,16 @@
+.variable {
+    display: inline-block;
+}
+
+.param-parts {
+    display: flex;
+}
+
+.param-parts > span {
+    display: inline-block;
+    white-space: pre-wrap;
+}
+
+.variable-reference {
+    color: mediumseagreen;
+}

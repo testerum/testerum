@@ -1,0 +1,34 @@
+.tree-leaf {
+    cursor: pointer;
+    line-height: 24px;
+
+    display: inline-block;
+    white-space: nowrap;
+    padding: 0 4px 0 1px;
+    margin: 0;
+    vertical-align: top;
+}
+
+.tree-icon {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+
+    background-image: url(../../../../../../media/32px-tree.png);
+    background-repeat: no-repeat;
+
+    display: inline-block;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    text-align: center;
+}
+
+.tree-line-leaf {
+    background-position: -68px -4px;
+}
+
+.tree-leaf-selected {
+    background-color: whitesmoke;
+}

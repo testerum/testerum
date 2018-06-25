@@ -1,0 +1,18 @@
+package com.testerum.runner.transformer.builtin.lang
+
+import com.testerum.api.transformer.ParameterInfo
+import com.testerum.api.transformer.Transformer
+
+object IntegerTransformer : Transformer<Int> {
+
+    override fun canTransform(paramInfo: ParameterInfo): Boolean
+            = (paramInfo.type == java.lang.Integer::class.java) || (paramInfo.type == java.lang.Integer.TYPE)
+
+    override fun transform(toTransform: String, paramInfo: ParameterInfo): Int
+            = try {
+                java.lang.Integer.parseInt(toTransform)
+            } catch (e: Exception) {
+                throw IllegalArgumentException("[$toTransform] is not a valid Integer")
+            }
+
+}

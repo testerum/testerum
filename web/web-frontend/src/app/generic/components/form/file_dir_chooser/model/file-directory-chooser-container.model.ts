@@ -1,0 +1,73 @@
+
+import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
+import {JsonTreeNodeState} from "../../../json-tree/model/json-tree-node-state.model";
+import {Path} from "../../../../../model/infrastructure/path/path.model";
+import {JsonTreeContainerOptions} from "../../../json-tree/model/behavior/JsonTreeContainerOptions";
+
+export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
+
+    parent: FileDirectoryChooserContainerModel;
+    path: Path;
+    name: string;
+    private children: Array<FileDirectoryChooserContainerModel> = [];
+    jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
+
+    private options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
+
+    constructor(parent: FileDirectoryChooserContainerModel,
+                path: Path = null,
+                private containsChildren: boolean) {
+        this.parent = parent;
+        this.path = path;
+        this.name = path.directories[path.directories.length -1];
+        this.jsonTreeNodeState.showChildren = false;
+    }
+
+    getParent(): JsonTreeContainer {
+        return this.parent;
+    }
+
+    getChildren(): Array<FileDirectoryChooserContainerModel> {
+        return this.children;
+    }
+
+    hasChildren(): boolean {
+        return this.containsChildren
+    }
+
+    setChildren(children: Array<FileDirectoryChooserContainerModel>) {
+        for (let child of children) {
+            this.children.push(child)
+        }
+        this.sort()
+    }
+
+    sort() {
+        this.children.sort((left: FileDirectoryChooserContainerModel, right: FileDirectoryChooserContainerModel) => {
+            if(left.isContainer() && !right.isContainer()) {
+                return -1;
+            }
+
+            if(! left.isContainer() && right.isContainer()) {
+                return 1;
+            }
+
+            if(left.name.toUpperCase() < right.name.toUpperCase()) return -1;
+            if(left.name.toUpperCase() > right.name.toUpperCase()) return 1;
+
+            return 0;
+        });
+    }
+
+    isContainer(): boolean {
+        return true;
+    }
+
+    getNodeState(): JsonTreeNodeState {
+        return this.jsonTreeNodeState;
+    }
+
+    getOptions(): JsonTreeContainerOptions {
+        return this.options;
+    }
+}

@@ -1,0 +1,37 @@
+<div class="node-text">
+
+    <div (click)="setNodeAsSelected()"
+         [class.step-selected]="isSelected">
+        <step-text [stepDef]="model.stepDef"></step-text>
+    </div>
+
+    <ng-container *ngIf="model.stepDef?.stepPattern.getParamParts().length > 0">
+        <div [hidden]="!isSelected">
+            <i class="param-icon"></i>
+            <table class="step-parameters-table table table-hover">
+                <tr *ngFor="let parameter of model.stepDef.stepPattern.getParamParts()">
+                    <!-- NAME -->
+                    <td><strong>{{parameter.name}}</strong></td>
+
+                    <!-- TYPE -->
+                    <td>{{getParamUiNameByType(parameter.uiType)}}</td>
+
+                    <!--ENUM VALUES-->
+                    <td>
+                        <div *ngIf="parameter?.enumValues.length > 0">
+                            [
+                            <ng-container *ngFor="let enumValue of parameter.enumValues;let last = last">
+                                {{enumValue}}
+                                <ng-container *ngIf="!last">
+                                    ,&nbsp;
+                                </ng-container>
+                            </ng-container>
+                            ]
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </ng-container>
+
+</div>

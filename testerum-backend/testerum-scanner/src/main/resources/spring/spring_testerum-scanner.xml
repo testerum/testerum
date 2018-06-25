@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="spring_settings.xml" />
+
+    <bean id="stepLibraryCacheManger" class="com.testerum.scanner.step_lib_scanner.StepLibraryCacheManger">
+        <constructor-arg name="threadPool" ref="stepLibraryCacheMangerThreadPool" />
+    </bean>
+
+    <bean id="stepLibraryCacheMangerThreadPool" class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean">
+        <property name="corePoolSize"                     value="#{processorsCount - 1}" />
+        <property name="allowCoreThreadTimeOut"           value="false" />
+        <property name="waitForTasksToCompleteOnShutdown" value="false" />
+        <property name="daemon"                           value="false" />
+        <property name="exposeUnconfigurableExecutor"     value="true" />
+    </bean>
+
+    <bean id="processorsCount" factory-bean="runtime" factory-method="availableProcessors" />
+    <bean id="runtime" class="java.lang.Runtime" factory-method="getRuntime" />
+
+</beans>

@@ -1,0 +1,9 @@
+:host >>> .ui-autocomplete {
+    display: flex;
+    flex-flow: row;
+}
+
+:host >>> .ui-autocomplete-dropdown {
+    height: auto;
+}
+

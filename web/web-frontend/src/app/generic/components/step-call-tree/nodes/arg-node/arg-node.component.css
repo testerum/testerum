@@ -1,0 +1,5 @@
+.empty-body-label {
+    color: lightgrey;
+    display: flex;
+    justify-content: center;
+}

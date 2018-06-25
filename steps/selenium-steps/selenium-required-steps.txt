@@ -1,0 +1,98 @@
+element locators
+----------------
+[done] * by id                : id=username
+[done] * by name              : name=username
+[done] * by css selector      : css=.username
+[done] * by link text         : linkText=Continue
+[done] * by partial link text : linkTextContains=Continue
+[done] * by xpath             : xpath=//input[@id='username']
+[done] * by JS expression     : js=document.getElementById('username'), see org.openqa.selenium.JavascriptExecutor
+
+
+text match expression
+---------------------
+[done] * exact=stuff (or simply "stuff")
+[done] * contains=stuff (or "containsCaseSensitive=stuff")
+[done] * containsCaseInsensitive=stuff
+[done] * regex=.*stuff.* ("regex=(?i).*stuff.*" for case insensitive matches)
+
+
+commands
+--------
+[done] open(url)
+[done] click(elementLocator)
+sendKeys(elementLocator)
+clearText(elementLocator)
+submit(elementLocator)
+todo: work with multiple windows (tabs) (driver.windowHandle, driver.windowHandles, driver.switchTo()
+todo: execute javascript, see org.openqa.selenium.JavascriptExecutor
+
+todo: work with all standard form elements
+    * input
+        * classic
+            * button
+            * checkbox
+            * file
+            * hidden
+            * image
+            * password
+            * radio
+            * reset
+            * submit
+            * text
+        * html5
+            * color
+            * date
+            * datetime-local
+            * email
+            * month
+            * number
+            * range
+            * search
+            * tel
+            * time
+            * url
+            * week
+    * select + option
+        * dropdown
+        * list
+        * multi-selection
+    * textarea
+    * button
+
+
+waits
+-----
+[done] waitForCurrentPageTitleIs(textMatchExpression)
+[done] waitForCurrentPageTitleIsNot(textMatchExpression)
+[done] waitForElementPresent(elementLocator)
+[done] waitForElementNotPresent(elementLocator)
+waitForJavascriptExpressionToBecomeTrue(javascriptExpression, millisBetweenChecks)
+// todo: configuration for timeouts, e.g. for waitForJavascriptExpressionToBecomeTrue()
+
+
+assertions
+----------
+[done] assertElementPresent(elementLocator)
+[done] assertElementAbsent(elementLocator)
+[done] assertElementDisplayed(elementLocator)
+[done] assertElementHidden(elementLocator)
+[done] assertElementEnabled(elementLocator)
+[done] assertElementDisabled(elementLocator)
+[done] assertElementTextShouldBe(elementLocator, textMatchExpression)
+[done] assertElementTextShouldNotBe(elementLocator, textMatchExpression)
+[done] assertElementAttributeValueShouldBe(elementLocator, attributeName, textMatchExpression)
+[done] assertElementAttributeValueShouldNotBe(elementLocator, attributeName, textMatchExpression)
+todo: to discuss @ionut (WebDriver returns true or null for e.g. "disabled", and we don't have steps to check for null) assertElementAttributeValueAbsent(elementLocator, attributeName)
+[done] assertElementCssClassPresent(elementLocator, cssClass)
+[done] assertElementCssClassAbsent(elementLocator, cssClass)
+[done] assertElementCssValueShouldBe(elementLocator, propertyName, textMatchExpression)
+[done] assertElementCssValueShouldNotBe(elementLocator, propertyName, textMatchExpression)
+[done] assertCurrentPageTitleShouldBe(textMatchExpression)
+[done] assertCurrentPageTitleShouldNotBe(textMatchExpression)
+[done] assertCurrentUrlShouldBe(textMatchExpression)
+[done] assertCurrentUrlShouldNotBe(textMatchExpression)
+todo: WebElement.location
+todo: WebElement.rect
+todo: WebElement.size
+todo: assert javascript boolean expression

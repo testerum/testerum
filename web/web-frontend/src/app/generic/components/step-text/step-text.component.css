@@ -1,0 +1,32 @@
+
+.step-text-phase {
+    color: mediumblue;
+    font-weight: bolder;
+    display: inline-block;
+    vertical-align: top;
+    background-color: white; /*This is for the step-call-container to not show the doted background image*/
+}
+
+.fixed-phase-with {
+    width: 40px;
+    text-align: right;
+}
+
+.step-text {
+    white-space: normal;
+    display: inline-block;
+    margin-right: 60px;
+}
+
+.step-text-parameter {
+    color: royalblue;
+    display: inline-block;
+}
+
+.step-text-pattern {
+    display: inline-block;
+}
+
+.undefined-step-text-color {
+    color: red;
+}

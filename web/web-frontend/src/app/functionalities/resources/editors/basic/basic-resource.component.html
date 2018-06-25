@@ -1,0 +1,27 @@
+<div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
+    <span class="condensed-view-label">{{stepParameter?.name}}</span>
+    {{model.content}}
+</div>
+
+<form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
+
+    <div class="form-group row">
+        <label class="col-md-2 control-label" for="value">{{stepParameter?.name}}</label>
+        <div class="col-md-10 form-value" *ngIf="!editMode">
+            {{model.content || ""}}
+        </div>
+        <div class="col-md-10" *ngIf="editMode">
+            <input id="value"
+                   argValueValidator arg="arg" stepParameter="stepParameter"
+                   #valueNgModel="ngModel" [(ngModel)]="model.content"
+                   type="text" class="form-control" name="value">
+
+            <input-error [model]="valueNgModel"
+                         [errorMessages]="{
+                                        argValueValidator_notANumber: 'This field should be a valid number.'
+                                     }"></input-error>
+
+        </div>
+    </div>
+
+</form>

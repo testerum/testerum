@@ -1,0 +1,38 @@
+<div class="step-text-container">
+    <div class="phase"
+         (click)="toggleParameters()">
+        {{phaseText | titlecase}}
+    </div>
+    <step-text [stepDef]="stepCall.stepDef"
+               [stepCall]="stepCall"
+               [showPhase]="false"
+               (click)="toggleParameters()"
+               class="clickable inline"></step-text>
+
+    <!-- BUTTONS -->
+    <div *ngIf="isEditMode" class="step-text-button-panel btn-group">
+
+        <div title="Edit Test" class="btn btn-default btn-xs btn-group"
+             (click)="toggleParameters(); $event.stopPropagation()">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </div>
+
+        <div title="Move Test Up" *ngIf="!isFirstStep" class="btn btn-default btn-xs btn-group"
+             (click)="moveStepUp(); $event.stopPropagation()">
+            <span class="glyphicon glyphicon-arrow-up"></span>
+        </div>
+
+        <div title="Move Test Down" *ngIf="!isLastStep" class="btn btn-default btn-xs btn-group"
+             (click)="moveStepDown(); $event.stopPropagation()">
+            <span class="glyphicon glyphicon-arrow-down"></span>
+        </div>
+
+        <div title="Remove Step" class="btn btn-default btn-xs btn-group"
+             (click)="removeStep(); $event.stopPropagation()">
+            <span class="glyphicon glyphicon-trash"></span>
+        </div>
+    </div>
+</div>
+
+<div [hidden]="!showParameters" class="step-parameters-container">
+</div>

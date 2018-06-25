@@ -1,0 +1,9 @@
+/*Classes for acction panel*/
+:host-context(.tree-node-header:hover) .action-panel {
+    display: inline-block;
+}
+
+.action-panel {
+    margin-left: 5px;
+    display: none;
+}

@@ -1,0 +1,107 @@
+/*Classes for acction panel*/
+:host-context(.tree-node-header:hover) .hidden-button-panel {
+    display: inline-block;
+}
+
+.hidden-button-panel {
+    margin-left: 5px;
+    display: none;
+}
+
+.hidden-button-panel .btn {
+    margin:0;
+}
+
+.button-panel {
+    margin-left: 5px;
+}
+
+.unused-node {
+    color: darkgray;
+}
+
+.node-attr-label {
+    font-size: smaller;
+    color: darkblue;
+    font-weight: normal;
+    margin-left: 10px;
+    margin-bottom: 0px;
+    line-height: 20px;
+}
+
+.node-attr-value {
+    font-size: small;
+    color: darkviolet;
+    font-weight: normal;
+}
+
+.node-attr-input-value {
+    vertical-align: middle;
+    font-size: smaller;
+    line-height: normal;
+    margin-left: 5px;
+}
+
+.error-icon {
+    background-image: url(../../../media/error.png);
+    background-size: 15px 15px;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.tree-node-line {
+    background-position: -300px -4px;
+    background-repeat: repeat-y;
+    background-image: url(../../../media/32px-tree.png);
+}
+
+.tree-node-icon {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+
+    background-repeat: no-repeat;
+
+    display: inline-block;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    text-align: left;
+}
+
+.tree-node-new-icon {
+    font-size: 15px;
+    width: 15px;
+}
+.tree-node-new-folder-icon {
+    font-size: 15px;
+    width: 15px;
+    color: #c7c308;
+}
+
+.tree-node-closed-folder-icon {
+
+}
+/*TODO: this needs to be deleted, use tree-node-opened-folder-icon or tree-node-closed-folder-icon*/
+.tree-node-folder-icon {
+    background-image: url(../../../media/32px-tree.png);
+    background-position: -266px -4px;
+}
+.tree-node-database-icon {
+    background-image: url(../../../media/database.png);
+    background-size: 19px 19px;
+    background-position: -2px 1px;
+}
+.tree-node-table-icon {
+    background-image: url(../../../media/table.png);
+    background-size: 19px 19px;
+    background-position: 0 2px;
+}
+.tree-node-table-row-icon {
+    background-image: url(../../../media/table-row.png);
+    background-size: 19px 19px;
+    background-position: -1px 2px;
+}

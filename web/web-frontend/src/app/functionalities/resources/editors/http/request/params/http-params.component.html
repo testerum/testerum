@@ -1,0 +1,18 @@
+<table class="table table-bordered" [class.hidden]="!shouldShow" >
+    <tr>
+        <th>Key</th>
+        <th>Value</th>
+    </tr>
+
+    <tr *ngFor="let param of params; let last = last; let index = index;">
+        <td>
+            <span *ngIf="!editMode()">{{param.key}}</span>
+            <input *ngIf="editMode()" (ngModelChange)="onNewKeyChange($event, index)" [(ngModel)]="param.key" type="text" class="form-control">
+        </td>
+        <td>
+            <span *ngIf="!editMode()">{{param.value}}</span>
+            <input *ngIf="editMode()" (ngModelChange)="onNewValueChange($event, index)" [(ngModel)]="param.value" type="text" class="form-control">
+        </td>
+    </tr>
+
+</table>

@@ -1,0 +1,78 @@
+.tree-node {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    list-style-image: none;
+    white-space: nowrap;
+
+    min-height: 24px;
+    line-height: 24px;
+    margin-left: 24px;
+    min-width: 24px;
+    display: block;
+
+    background-position: -292px -4px;
+    background-repeat: repeat-y;
+    background-image: url(../../../../../media/32px-tree.png);
+}
+
+.tree-node-last {
+    background: 0 0;
+}
+
+.tree-node-header {
+    cursor: pointer;
+    line-height: 24px;
+    height: 24px;
+
+    display: inline-block;
+    white-space: nowrap;
+    padding: 0 4px 0 1px;
+    margin: 0;
+    vertical-align: top;
+}
+
+.tree-children {
+    display: block;
+
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    list-style-image: none;
+}
+
+.tree-icon {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+
+    background-image: url(../../../../../media/32px-tree.png);
+    background-repeat: no-repeat;
+
+    display: inline-block;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    text-align: center;
+}
+
+.tree-node-open > .tree-line-icon {
+    background-position: -132px -4px;
+}
+
+.tree-node-close > .tree-line-icon {
+    background-position: -100px -4px;
+}
+
+.tree-node-leaf > .tree-line-icon {
+    background-position: -60px -4px;
+}
+
+/* SHOW - HIDE CHILDREN*/
+.tree-node-open > tree-children {
+    display: block;
+}
+.tree-node-close > .tree-children {
+    display: none;
+}

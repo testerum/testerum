@@ -1,0 +1,24 @@
+<div class="main-container">
+    <!-- BASIC STEPS -->
+    <split direction="vertical">
+        <split-area [size]="50">
+            <split direction="horizontal">
+                <split-area [size]="40">
+
+                    <json-tree [treeModel]="testsTreeService.testsJsonTreeModel"
+                               [modelComponentMapping]="modelComponentMapping">
+                    </json-tree>
+
+                </split-area>
+                <split-area [size]="60" [visible]="isTestSelected">
+
+                    <router-outlet></router-outlet>
+
+                </split-area>
+            </split>
+        </split-area>
+        <split-area [size]="50" [visible]="runner.visible">
+            <tests-runner #runner ></tests-runner>
+        </split-area>
+    </split>
+</div>

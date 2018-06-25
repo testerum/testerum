@@ -1,0 +1,9 @@
+:host(.form-control) {
+    padding: 0;
+    position: static;
+}
+
+.fa {
+    font-size: 18px;
+}
+

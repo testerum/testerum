@@ -1,0 +1,44 @@
+<ng-container *ngIf="patternParts.length > 0 && patternHasParameters()">
+    <i class="param-icon"></i>
+
+    <div class="step-parameters-container">
+        <table class="step-parameters-table table table-hover">
+            <ng-container *ngFor="let patternPart of patternParts; let i = index">
+                <tr *ngIf="isParamPattern(patternPart)">
+                    <td>
+                        <strong>{{patternPart.name}}</strong>
+                    </td>
+                    <td>
+
+                        <ng-container *ngIf="!isEditMode">
+                            {{getParamUiName(patternPart.className)}}
+                        </ng-container>
+                        <select *ngIf="isEditMode"
+                                class="smaller-input form-control"
+                                [value]="patternPart.className"
+                                #selectItem (change)="onValueChanged(selectItem.value, patternPart)">
+                            <option *ngFor="let enumValue of getStepParamTypesValues()" value="{{enumValue.serverType}}">
+                                {{enumValue.uiName}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <div *ngIf="isEnumType(patternPart.className)">
+                            [
+                            <div *ngIf="!isEditMode" class="inline">
+                                {{patternPart.enumValues || ""}}
+                            </div>
+
+                            <div *ngIf="isEditMode" class="inline">
+                                <input [value]="patternPart.enumValues"
+                                       #allowedValueInput (change)="setAllowedValues(allowedValueInput.value, patternPart)"
+                                       type="text" class="smaller-input form-control">
+                            </div>
+                            ]
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+        </table>
+    </div>
+</ng-container>

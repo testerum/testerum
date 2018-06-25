@@ -1,0 +1,71 @@
+step-def: Given I login as <<userName: string>> to <<host: string>>
+
+    description = <<
+        Some stuff
+        Other stuff
+    >>
+
+    step: Given a clean database
+
+    step: When I execute the following SQL script <<  a \>\> b {{initUser}}>> on <<{{userDb}}>>
+        var initUser = <<
+            INSERT INTO User (userName, password) VALUES ('Ionut', 'Predeal');
+            INSERT INTO User (userName, password) VALUES ('Cristi', 'Baicoi');
+        >>
+        var userDb = <<
+            {
+              "driverName" : "MariaDb",
+              "driverJar" : "mariadb-java-client-2.0.2.jar",
+              "driverClass" : "org.mariadb.jdbc.Driver",
+              "driverUrlPattern" : "jdbc:mariadb://{HOST}[:{PORT}][/{DB}]",
+              "host" : "localhost",
+              "port" : 3306,
+              "user" : "root",
+              "password" : "root",
+              "database" : "rabo_bcc_test",
+            }
+        >>
+
+    step: Given I go to <</login>> page
+
+    step: Given I go to <<host {{'user'+host}} on {{url}}>> page
+        var url = <<http://example.com>>
+
+    step: Given I go to <<http://example.com>> page
+    step: When I type <<Ionut>> in <<.userName>> input
+    step: When I type <<Predeal>> in <<.pass>> input
+    step: And I press <<.submitButton>>
+
+
+
+
+
+
+variable-value: '{{' variable-value-content '}}'
+
+variable-value-content: string-literal | number-literal | boolean-literal | variable-reference
+
+string-literal: single-quote-string-literal | double-quote-string-literal
+
+single-quote-string-literal:
+    '\''
+
+single-quote-string-literal examples
+    'xxxx'
+    'McDonald\'s'
+    'C:\\Users'
+    'Double " quotes'
+    'Double \" quotes'
+
+double-quote-string-literal examples
+    "xxxx"
+    "The \"name\" is good"
+    "C:\\Users"
+    "Single ' quotes"
+    "Single \' quotes"
+
+number-literal: integer-literal | decimal-literal
+
+boolean-literal: 'true' | 'false'
+
+variable-reference: // valid identifier

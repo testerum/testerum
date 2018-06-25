@@ -1,0 +1,26 @@
+import {Component} from '@angular/core';
+import {HttpMockService} from "../../http-mock.service";
+import {HttpMockProxyResponse} from "../../model/response/http-mock-proxy-response.model";
+
+@Component({
+    moduleId: module.id,
+    selector: 'http-mock-proxy-response',
+    templateUrl: 'http-mock-proxy-response.component.html',
+    styleUrls: [
+        '../../../../../../../../generic/css/generic.css',
+        '../../../../../../../../generic/css/forms.css'
+    ]
+})
+export class HttpMockProxyResponseComponent {
+
+    constructor(private httpMockService:HttpMockService) {
+    }
+
+    getModel(): HttpMockProxyResponse {
+        return this.httpMockService.httpMock.proxyResponse
+    }
+
+    isEditMode(): boolean {
+        return this.httpMockService.editMode;
+    }
+}

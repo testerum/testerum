@@ -1,0 +1,32 @@
+.inline {
+    display: inline-block;
+}
+
+.step-parameters-table {
+    display: inline-block;
+    width: auto;
+    background-color: whitesmoke;
+    margin-bottom: 0;
+}
+
+.param-icon {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+
+    background-image: url(../../../../../media/32px-tree.png);
+    background-repeat: no-repeat;
+
+    display: inline-block;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    text-align: center;
+    background-position: -68px -4px;
+}
+
+.step-parameters-container {
+    display: inline-block;
+    padding-top: 7px;
+}

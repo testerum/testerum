@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>testerum</artifactId>
+        <groupId>com.testerum</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>common</artifactId>
+    
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>assertion-functions</module>
+        <module>common-expression-evaluator</module>
+        <module>common-json-diff</module>
+        <module>common-json-diff-util</module>
+        <module>common-parsing</module>
+        <module>common-spring</module>
+        <module>common-json</module>
+        <module>common-jdk</module>
+    </modules>
+</project>

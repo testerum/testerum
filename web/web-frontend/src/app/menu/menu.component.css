@@ -1,0 +1,42 @@
+.active {
+    color: #fff !important;
+    background-color: transparent;
+}
+
+.menu {
+    margin-bottom: 0;
+}
+
+.navbar-right {
+    margin-right: 0;
+}
+
+.icon-menu-item {
+    font-size: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.main-item {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.sub-menu {
+    height: 50px;
+    width: 1px;
+    opacity: 0;
+    transition: all .75s ease;
+    overflow: hidden;
+}
+.show-sub-menu {
+    opacity: 1;
+    width: 311px;
+}
+.sub-item {
+    opacity: 0;
+    transition: all .75s ease;
+}
+.sub-item-show {
+    opacity: 1;
+}

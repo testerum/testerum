@@ -1,0 +1,5 @@
+{
+  "=compareMode": "unorderedExact",
+  "name"        : "John Doe",
+  "age"         : 27
+}

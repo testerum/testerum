@@ -1,0 +1,46 @@
+
+
+<div class="radio">
+    <label>
+        <input type="radio" name="optionsRadios" [value]="HttpMockFaultResponse.NO_FAULT"
+               [disabled]="!isEditMode()"
+               [(ngModel)]="getModel().faultResponse">
+        {{HttpMockFaultResponse.NO_FAULT.toString()}}
+    </label>
+</div>
+
+<div class="radio">
+    <label>
+        <input type="radio" name="optionsRadios" [value]="HttpMockFaultResponse.CLOSE_SOCKET_WITH_NO_RESPONSE"
+               [disabled]="!isEditMode()"
+               [(ngModel)]="getModel().faultResponse">
+        {{HttpMockFaultResponse.CLOSE_SOCKET_WITH_NO_RESPONSE.toString()}}
+    </label>
+</div>
+
+<div class="radio">
+    <label>
+        <input type="radio" name="optionsRadios" [value]="HttpMockFaultResponse.SEND_BAD_HTTP_DATA_THEN_CLOSE_SOCKET"
+               [disabled]="!isEditMode()"
+               [(ngModel)]="getModel().faultResponse">
+        {{HttpMockFaultResponse.SEND_BAD_HTTP_DATA_THEN_CLOSE_SOCKET.toString()}}
+    </label>
+</div>
+
+<div class="radio">
+    <label>
+        <input type="radio" name="optionsRadios" [value]="HttpMockFaultResponse.SEND_200_RESPONSE_THEN_BAD_HTTP_DATA_THEN_CLOSE_SOCKET"
+               [disabled]="!isEditMode()"
+               [(ngModel)]="getModel().faultResponse">
+        {{HttpMockFaultResponse.SEND_200_RESPONSE_THEN_BAD_HTTP_DATA_THEN_CLOSE_SOCKET.toString()}}
+    </label>
+</div>
+
+<div class="radio">
+    <label>
+        <input type="radio" name="optionsRadios" [value]="HttpMockFaultResponse.PEER_CONNECTION_RESET"
+               [disabled]="!isEditMode()"
+               [(ngModel)]="getModel().faultResponse">
+        {{HttpMockFaultResponse.PEER_CONNECTION_RESET.toString()}}
+    </label>
+</div>

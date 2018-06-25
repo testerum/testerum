@@ -1,0 +1,62 @@
+<div class="full-size-flex-element flex-panel">
+
+    <div class="body-options">
+        <!-- BODY TYPE-->
+        <div class="radio body-type align-center">
+            <label *ngFor="let bodyType of HttpBodyType.enums">
+                <input type="radio"
+                       [(ngModel)]="body.bodyType"
+                       (ngModelChange)="setHeaderBasedOnBodyType($event)"
+                       [attr.disabled]="!httpCallService.editMode || bodyType == HttpBodyType.FORM_DATA || bodyType == HttpBodyType.BINARY?'':null"
+                       [value]="bodyType">
+                {{bodyType.toString()}}
+            </label>
+        </div>
+
+        <!-- CONTENT TYPE -->
+        <div *ngIf="body.bodyType == HttpBodyType.RAW" class="align-center">
+
+            <div class="btn-group" dropdown [autoClose]="true">
+
+                <a href dropdownToggle (click)="false">
+                    {{getContentType().toString()}}
+                    <span *ngIf="getContentType().contentType">
+                        ({{getContentType().contentType}})
+                    </span>
+                    <span class="caret"></span>
+                </a>
+
+                <ul *dropdownMenu class="dropdown-menu" role="menu">
+                    <li *ngFor="let httpContentType of HttpContentType.enums" role="menuitem">
+                        <a href (click)="setContentType(httpContentType);false;" class="dropdown-item">
+                            {{httpContentType.toString()}}
+                            <span *ngIf="httpContentType.contentType">
+                        ({{httpContentType.contentType}})
+                        </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div *ngIf="body.bodyType == HttpBodyType.RAW" class="full-size-flex-element ace-editor-container">
+        <ace-editor
+            #editor
+            [(text)]="body.content"
+            [mode]="aceEditorMode"
+            [theme]="'eclipse'"
+            [options]="options"
+            [readOnly]="!httpCallService.editMode"
+            [autoUpdateContent]="false"
+            [durationBeforeCallback]="1000"
+            class="ace-editor"></ace-editor>
+    </div>
+
+    <div *ngIf="body.bodyType == HttpBodyType.X_WWW_FORM_URLENCODED || body.bodyType == HttpBodyType.FORM_DATA"
+         class="full-size-flex-element flex-panel">
+        <http-body-type-form [editMode]="httpCallService.editMode"
+                             [bodyTypeForms]="body.contentAsForm"></http-body-type-form>
+    </div>
+</div>

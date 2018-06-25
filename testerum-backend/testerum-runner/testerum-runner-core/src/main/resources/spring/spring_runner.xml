@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/util     http://www.springframework.org/schema/util/spring-util.xsd
+       ">
+
+    <import resource="spring_service.xml" />
+
+    <import resource="spring_runner_transformers.xml" />
+    <import resource="spring_runner_execution_listeners.xml" />
+
+    <bean id="runner" class="com.testerum.runner.RunnerApplication">
+        <constructor-arg name="settingsManager"         ref="settingsManager" />
+        <constructor-arg name="eventsService"           ref="eventsService" />
+        <constructor-arg name="stepService"             ref="stepService" />
+        <constructor-arg name="testsService"            ref="testsService" />
+        <constructor-arg name="hooksService"            ref="hooksService" />
+        <constructor-arg name="variablesService"        ref="variablesService" />
+        <constructor-arg name="testVariables"           ref="testVariables" />
+        <constructor-arg name="executionListenerFinder" ref="executionListenerFinder" />
+        <constructor-arg name="globalTransformers"      ref="globalTransformers" />
+        <constructor-arg name="testerumLogger"          ref="testerumLogger"/>
+    </bean>
+
+    <!-- todo: the following is a hack; think of a proper solution -->
+    <!-- bean overridden here to prevent initialization (no point to initialize before setting the correct path to the repository, which we have from the command line) -->
+    <bean id="stepService" class="net.qutester.service.step.StepService">
+        <constructor-arg name="basicStepsService" ref="basicStepsService"/>
+        <constructor-arg name="composedStepsService" ref="composedStepsService"/>
+    </bean>
+
+    <bean id="settingsManager" class="com.testerum.runner.SettingsManagerFactory" factory-method="createSettingsManger" />
+
+    <bean id="eventsService" class="com.testerum.runner.events.EventsService">
+        <constructor-arg name="executionListenerFinder" ref="executionListenerFinder" />
+    </bean>
+
+    <bean id="testerumLogger" class="com.testerum.runner.logger.TesterumLoggerImpl">
+        <constructor-arg name="eventsService" ref="eventsService"/>
+    </bean>
+
+    <util:constant id="testVariables" static-field="com.testerum.runner.runner_tree.vars_context.TestVariablesImpl.INSTANCE" />
+
+</beans>

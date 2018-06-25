@@ -1,0 +1,6 @@
+{
+  "=compareMode": "contains",
+  "object"      : {
+    "field": "expected value"
+  }
+}

@@ -1,0 +1,6 @@
+.sql-editor {
+    border: 1px solid #ccc;
+    min-height: 500px;
+    width: 100%;
+    overflow: auto;
+}

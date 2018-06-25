@@ -1,0 +1,30 @@
+<table class="table table-bordered">
+    <colgroup>
+        <col span="1" style="width: 48%;">
+        <col span="1" style="width: 48%;">
+        <col *ngIf="editMode" span="1" style="width: 4%;">
+    </colgroup>
+
+    <tr>
+        <th>Key</th>
+        <th>Value</th>
+    </tr>
+
+    <tr *ngFor="let bodyForm of bodyTypeForms; let last = last">
+        <td *ngIf="!bodyForm.isEmpty() || editMode">
+            <span *ngIf="!editMode">{{bodyForm.key}}</span>
+            <input *ngIf="editMode" (change)="onNewKeyChange($event)" [(ngModel)]="bodyForm.key" type="text" class="form-control">
+        </td>
+        <td *ngIf="!bodyForm.isEmpty() || editMode">
+            <span *ngIf="!editMode">{{bodyForm.value}}</span>
+            <input *ngIf="editMode" (change)="onNewValueChange($event)" [(ngModel)]="bodyForm.value" type="text" class="form-control">
+        </td>
+        <td *ngIf="!bodyForm.isEmpty() && editMode">
+            <a href (click)="deleteFormEntry(bodyForm);false;"
+               class="btn btn-danger" *ngIf="editMode" aria-label="Delete">
+                <i  class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
+        </td>
+    </tr>
+
+</table>

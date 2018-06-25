@@ -1,0 +1,11 @@
+
+<div class="my-line">
+    <label class="col-md-2 control-label">Proxy base URL:</label>
+    <div class="col-md-10 form-value" *ngIf="!isEditMode()">
+        {{getModel().proxyBaseUrl}}
+    </div>
+    <div class="col-md-10" *ngIf="isEditMode()">
+        <input [(ngModel)]="getModel().proxyBaseUrl"
+               type="text" class="form-control" name="name">
+    </div>
+</div>

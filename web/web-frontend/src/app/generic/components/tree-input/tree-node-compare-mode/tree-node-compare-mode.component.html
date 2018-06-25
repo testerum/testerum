@@ -1,0 +1,17 @@
+<label for="compareMode" class="node-attr-label">compare mode: </label>
+<select *ngIf="editMode"
+        name="compareMode" id="compareMode"
+        class="node-attr-input-value"
+        (click)="$event.stopPropagation();"
+        #selectItem (change)="setCompareMode(selectItem.value)">
+
+    <option *ngFor="let compareMode of getAllCompareModes(); let i = index"
+            [selected]="compareMode.getText() == selectedCompareMode.getText()"
+            [value]="compareMode.getText()">{{compareMode.textForView}}
+    </option>
+
+</select>
+
+<span *ngIf="!editMode" class="node-attr-value">
+    {{selectedCompareMode.getText()}}
+</span>

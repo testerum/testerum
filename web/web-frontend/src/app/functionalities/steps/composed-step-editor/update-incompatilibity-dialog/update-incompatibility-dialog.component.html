@@ -1,0 +1,44 @@
+<div bsModal #infoModal="bs-modal" id="infoModal" class="modal fade error-dialog" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Warning
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="error-message">
+
+                    <div>The new Step definition is not compatible with the previews version.</div>
+                    <div>The following tests and steps will be broken:</div>
+                </div>
+
+                <div *ngIf="pathsForAffectedTests.length != 0" class="affected-message">
+                    Tests:
+                    <div *ngFor="let testPath of pathsForAffectedTests" class="affected-path">
+                        {{testPath.toString()}}
+                    </div>
+                </div>
+
+                <div *ngIf="pathsForDirectAffectedSteps.length != 0" class="affected-message">
+                    Direct Affected Steps:
+                    <div *ngFor="let stepPath of pathsForDirectAffectedSteps" class="affected-path">
+                        {{stepPath.toString()}}
+                    </div>
+                </div>
+
+                <div *ngIf="pathsForTransitiveAffectedSteps.length != 0" class="affected-message">
+                    Transitive Affected Steps:
+                    <div *ngFor="let stepPath of pathsForTransitiveAffectedSteps" class="affected-path">
+                        {{stepPath.toString()}}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button (click)="close()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button (click)="continue()" type="button" class="btn btn-primary" data-dismiss="modal">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+
+<div class="col-sm-6 col-sm-offset-3 my-panel-shell">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <i  class="fa fa-cogs" aria-hidden="true"></i>
+            <span class="my-panel-title">Settings</span>
+        </div>
+        <div class="panel-body">
+
+            <collapsable-panel *ngFor="let settingCategory of settingsCategories"
+                               title="{{settingCategory}}" [collapsed]="false">
+
+                <div class="vertical-space"
+                     *ngFor="let setting of settingsByCategory.get(settingCategory)">
+                    <p><span class="text-info">Setting key: </span>{{setting.key}}</p>
+                    <p><span class="text-info">Description: </span>{{setting.description}}</p>
+
+                    <div *ngIf="setting.type == SettingTypeEnum.TEXT && !isReadOnlyProperty(setting.key)">
+                        <input [(ngModel)]="setting.unresolvedValue"
+                               [disabled]="!isEditMode"
+                               type="text" class="form-control full-width">
+                    </div>
+
+                    <div *ngIf="setting.type == SettingTypeEnum.NUMBER && !isReadOnlyProperty(setting.key)">
+                        <input [(ngModel)]="setting.unresolvedValue"
+                               [disabled]="!isEditMode"
+                               type="number" class="form-control full-width">
+                    </div>
+
+                    <div *ngIf="isReadOnlyProperty(setting.key)">
+                        <input [(ngModel)]="setting.unresolvedValue"
+                               disabled
+                               type="text" class="form-control full-width">
+                    </div>
+
+                    <div *ngIf="setting.type == SettingTypeEnum.FILESYSTEM_DIRECTORY && !isReadOnlyProperty(setting.key)">
+                        <span class="full-width input-group">
+                            <file-dir-chooser [(ngModel)]="setting.unresolvedValue"
+                                              [disabled]="!isEditMode"
+                                              #repositoryPath="ngModel"
+                                              class="form-control"></file-dir-chooser>
+                        </span>
+                    </div>
+
+                    <div class="vertical-space"></div>
+                </div>
+
+            </collapsable-panel>
+
+
+            <!-- BUTTONS -->
+            <div class="modal-footer">
+
+                <ng-container *ngIf="!isEditMode">
+                    <button (click)="enableEditTestMode();" class="btn btn-primary">Edit</button>
+                </ng-container>
+                <ng-container *ngIf="isEditMode">
+                    <button (click)="resetToDefault();" type="button" class="btn btn-default pull-left">Reset to default</button>
+                    <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
+                    <button (click)="saveAction()" class="btn btn-primary">Save</button>
+                </ng-container>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

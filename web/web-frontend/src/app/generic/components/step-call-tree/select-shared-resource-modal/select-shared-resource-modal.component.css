@@ -1,0 +1,32 @@
+.modal-dialog {
+    height: 500px;
+    width: 80%;
+    max-width: 1200px;
+}
+
+.modal-content {
+    height: 100%;
+}
+
+.modal-body {
+    /* 100% = dialog height, 120px = header + footer */
+    max-height: calc(100% - 120px);
+    height: 100%;
+    overflow-x: hidden;
+}
+
+.modal-footer {
+    display: grid;
+    grid-template-areas:
+        'footer-left-side footer-right-side';
+}
+.footer-left-side {
+    grid-area: footer-left-side;
+    justify-self: start;
+    align-self: center;
+}
+
+.footer-right-side {
+    grid-area: footer-right-side;
+}
+

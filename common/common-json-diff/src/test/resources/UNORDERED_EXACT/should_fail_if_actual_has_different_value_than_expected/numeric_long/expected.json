@@ -1,0 +1,5 @@
+{
+  "=compareMode": "unorderedExact",
+  // using a value greater than Integer.MAX_VALUE (2147483647) to force a Long node
+  "field"       : 2147483647000
+}

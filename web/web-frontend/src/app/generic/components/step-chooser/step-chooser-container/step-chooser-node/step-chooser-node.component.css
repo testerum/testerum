@@ -1,0 +1,35 @@
+.node-text {
+    display: inline-block;
+}
+
+.tree-leaf-selected {
+    background-color: whitesmoke;
+}
+
+.param-icon {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+
+    background-image: url(../../../../../../media/32px-tree.png);
+    background-repeat: no-repeat;
+
+    display: inline-block;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    text-align: center;
+    background-position: -68px -4px;
+}
+
+.step-selected {
+    background-color: whitesmoke;
+}
+
+.step-parameters-table {
+    display: inline-block;
+    width: auto;
+    background-color: whitesmoke;
+    margin-bottom: 0;
+}

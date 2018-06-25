@@ -1,0 +1,37 @@
+# exclude IntelliJ project files
+.idea/
+*.iws
+*.ipr
+*.iml
+atlassian-ide-plugin.xml
+
+# ignore Eclipse project files
+.classpath
+.project
+.settings
+.springBeans
+
+# exclude maven target directories everywhere
+target/
+
+# exclude Cucumber Runtime Test Dendencies
+/files/repository/**/*.jar
+
+# Mac
+.DS_Store
+
+# VIM swap files
+*.swp
+
+# Log files
+*.log
+
+# Vagrant
+.vagrant/
+
+/ui/src/main/ngapp/src/app/**/*.js
+/ui/src/main/ngapp/src/app/**/*.js.map
+
+**/node_modules/
+package/
+

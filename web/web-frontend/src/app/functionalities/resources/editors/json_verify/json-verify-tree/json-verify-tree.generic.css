@@ -1,0 +1,31 @@
+.node {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.unused-node {
+    color: darkgray;
+    font-weight: bold;
+}
+
+.full-line{
+    width: 100%;
+}
+
+.node-text {
+    font-weight: bold;
+}
+
+.node-error {
+    text-decoration: underline;
+    text-decoration-color: red;
+}
+
+.error-icon {
+    background-image: url(../../../../../../media/error.png);
+    background-size: 15px 15px;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}

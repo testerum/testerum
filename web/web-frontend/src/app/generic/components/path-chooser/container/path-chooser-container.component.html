@@ -1,0 +1,42 @@
+<div class="node">
+
+    <div class="full-line"
+         [class.tree-leaf-selected]="isSelected && model.allowDirSelection"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
+         (click)="selectNode()"
+         (dblclick)="collapseNode()">
+
+        <i class="tree-node-icon {{'tree-node-folder-icon'}}"></i>
+
+        {{model.name}}
+
+        <!-- BUTTONS RENDERING -->
+        <div class="button-panel btn-group"
+             [class.hidden]="!hasMouseOver">
+
+            <div title="Create Folder" class="btn btn-default btn-xs btn-group"
+                 (click)="showCreateDirectoryModal(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-folder-open"></span>
+            </div>
+
+            <div title="Edit Folder" class="btn btn-default btn-xs btn-group"
+                 *ngIf="!model.isRootPackage"
+                 (click)="showEditDirectoryNameModal(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </div>
+
+            <div title="Delete Folder" class="btn btn-default btn-xs btn-group"
+                 *ngIf="!model.isRootPackage"
+                 (click)="deleteDirectory(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-trash"></span>
+            </div>
+        </div>
+    </div>
+
+    <json-children [jsonTreeNodeState]="jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

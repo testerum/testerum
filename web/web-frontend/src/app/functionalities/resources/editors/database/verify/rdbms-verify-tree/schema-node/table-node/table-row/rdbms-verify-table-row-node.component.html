@@ -1,0 +1,25 @@
+<i class="tree-node-icon tree-node-table-row-icon"></i>
+
+<!-- BUTTONS RENDERING -->
+<div class="button-panel btn-group" *ngIf="rdbmsVerifyTreeService.editMode">
+
+    <div title="Delete Entry Verifier" class="btn btn-default btn-xs btn-group"
+         (click)="deleteRow(); $event.stopPropagation()">
+        <span class="glyphicon glyphicon-trash"></span>
+    </div>
+
+    <div *ngIf="shouldShowCompareModeButton()"
+         title="Show compare mode attribute" class="btn btn-default btn-xs btn-group"
+         [class.active]="shouldShowCompareMode()"
+         (click)="toggleShowCompareMode();$event.stopPropagation();">
+        <span class="glyphicon glyphicon-screenshot"></span>
+    </div>
+
+</div>
+
+<tree-node-compare-mode *ngIf="shouldShowCompareMode()"
+                        [editMode]="rdbmsVerifyTreeService.editMode"
+                        [selectedCompareMode]="model.compareMode"
+                        (change)="onCompareModeChange($event)">
+</tree-node-compare-mode>
+

@@ -1,0 +1,15 @@
+.center-content {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-panel-shell {
+    margin-top: 30px;
+}
+.my-panel-title {
+    margin-left: 5px;
+}

@@ -1,0 +1,64 @@
+<table class="table table-bordered">
+    <colgroup>
+        <col span="1" style="width: 38%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 38%;">
+        <col *ngIf="isEditMode()" span="1" style="width: 4%;">
+    </colgroup>
+
+    <tr>
+        <th>Header Name</th>
+        <th>Compare Mode</th>
+        <th>Header Value</th>
+    </tr>
+
+    <!-- KEY -->
+    <tr *ngFor="let header of headers; let last = last">
+        <td *ngIf="!header.isEmpty() || isEditMode()">
+            <span *ngIf="!isEditMode()">{{header.key}}</span>
+            <p-autoComplete *ngIf="isEditMode()"
+                            (change)="onNewKeyChange($event)"
+                            [(ngModel)]="header.key"
+                            [suggestions]="suggestionHeaders"
+                            (completeMethod)="filterSuggestionHeaders($event)"
+                            inputStyleClass="autocomplete-input form-control"
+                            class="autocomplete"
+                            [dropdown]="true"></p-autoComplete>
+        </td>
+
+        <!-- COMPARE -->
+        <td *ngIf="!header.isEmpty() || isEditMode()">
+            <span *ngIf="!isEditMode()">{{header.compareMode}}</span>
+            <select *ngIf="isEditMode()"
+                    class="form-control phase-input"
+                    #hadearCompareModeNgModel="ngModel"
+                    (change)="onChangeCompareMode(header, hadearCompareModeNgModel.value)"
+                    [ngModel]="header.compareMode" name="compareMode">
+
+                <option *ngFor="let compareMode of getCompareModes(); let i = index"
+                        [ngValue]="compareMode"
+                        [selected]="i==1">
+                    {{compareMode.toString()}}
+                </option>
+            </select>
+        </td>
+
+        <!-- VALUE -->
+        <td *ngIf="!header.isEmpty() || isEditMode()">
+            <span *ngIf="!isEditMode()">{{header.value}}</span>
+            <input *ngIf="isEditMode() && header.compareMode != HttpMockRequestHeadersCompareMode.ABSENT"
+                   (change)="onNewValueChange($event)"
+                   [(ngModel)]="header.value"
+                   type="text" pInputText  class="form-control">
+        </td>
+
+        <!-- DELETE -->
+        <td *ngIf="!header.isEmpty() && isEditMode()">
+            <a href (click)="deleteHeader(header);false;"
+               class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
+                <i  class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
+        </td>
+    </tr>
+
+</table>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans.xsd
+       ">
+
+    <bean id="executionListenerFinder" class="com.testerum.runner.events.execution_listeners.ExecutionListenerFinder">
+        <constructor-arg name="treeListener" ref="treeToConsoleExecutionListener" />
+        <constructor-arg name="jsonListener" ref="jsonToConsoleExecutionListener" />
+    </bean>
+
+    <bean id="treeToConsoleExecutionListener" class="com.testerum.runner.events.execution_listeners.tree_to_console.TreeToConsoleExecutionListener" />
+
+    <bean id="jsonToConsoleExecutionListener" class="com.testerum.runner.events.execution_listeners.json_to_console.JsonToConsoleExecutionListener">
+        <constructor-arg name="objectMapper" ref="jsonToConsoleExecutionListenerObjectMapper"/>
+    </bean>
+
+    <bean id="jsonToConsoleExecutionListenerObjectMapper" class="net.qutester.common.json.ObjectMapperFactory" factory-method="createKotlinObjectMapper"/>
+
+</beans>

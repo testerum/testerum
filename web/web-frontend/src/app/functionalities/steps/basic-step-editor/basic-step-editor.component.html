@@ -1,0 +1,51 @@
+<split-panel-container>
+    <div>
+        <div class="panel-body">
+            <form #stepForm="ngForm" class="form-horizontal">
+
+                <!-- STEP -->
+                <div class="my-line">
+                    <span class="step-text-phase">
+                        {{StepPhaseEnum[model.phase] | titlecase}} &nbsp;
+                    </span>
+
+                    <!-- STEP PATTERN -->
+                    <span class="full-width">
+                        <div>
+                            {{pattern || ""}}
+                        </div>
+
+                        <basic-step-parameters [patternParts]="model.stepPattern.patternParts"></basic-step-parameters>
+                    </span>
+                </div>
+
+                <div class="vertical-space"></div>
+
+                <!-- CLASS -->
+                <div class="my-line">
+                    <label class="my-label label-size">Class</label>
+                    <span class="my-value">
+                        {{getJavaClass() || ""}}
+                    </span>
+                </div>
+                <!-- METHOD -->
+                <div class="my-line">
+                    <label class="my-label label-size">Method</label>
+                    <span class="my-value">
+                        {{getJavaMethod() || ""}}
+                    </span>
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="my-line" *ngIf="model.description">
+                    <label class="my-label label-size">Description</label>
+                    <div class="my-value">
+                        {{model.description || ""}}
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</split-panel-container>

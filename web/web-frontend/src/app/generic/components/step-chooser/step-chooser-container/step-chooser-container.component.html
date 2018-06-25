@@ -1,0 +1,16 @@
+<div class="node">
+
+    <div class="full-line"
+         (dblclick)="collapseNode()">
+
+        <i class="tree-node-icon {{'tree-node-folder-icon'}}"></i>
+
+        {{model.name}}
+    </div>
+
+    <json-children [jsonTreeNodeState]="jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

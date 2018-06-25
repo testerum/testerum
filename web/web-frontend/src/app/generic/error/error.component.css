@@ -1,0 +1,19 @@
+.error-dialog {
+}
+
+.error-message {
+    text-align: center;
+    font-size: large;
+    white-space: pre;
+}
+
+.error-detail-toggle {
+    cursor: pointer;
+}
+
+.stack-trace-panel {
+    overflow: scroll;
+    height: 500px;
+    width: 100%;
+    white-space: pre;
+}

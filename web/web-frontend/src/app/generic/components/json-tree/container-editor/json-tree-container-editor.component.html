@@ -1,0 +1,50 @@
+<form #currentForm="ngForm" (change)="isValid()" (submit)="ok()">
+
+    <div class="modal-header">
+        <button (click)="hide()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">
+            {{actionType == JsonTreeContainerEditorEnum.COPY?'Move?':""}}
+            {{actionType == JsonTreeContainerEditorEnum.DELETE?'Delete "'+name+'" directory?':""}}
+            {{actionType == JsonTreeContainerEditorEnum.UPDATE?'Rename "'+oldName+'" directory':""}}
+            {{actionType == JsonTreeContainerEditorEnum.CREATE?'Create directory':""}}
+        </h4>
+    </div>
+    <div class="modal-body">
+
+        <ng-container *ngIf="actionType == JsonTreeContainerEditorEnum.COPY">
+            <div>Are you shore you want to move</div>
+            <div class="tab bold">{{oldName}}</div>
+            <div>{{isFile? "file" : "directory"}} to</div>
+            <div class="tab bold">{{name}}</div>
+            <div>directory</div>
+        </ng-container>
+
+        {{actionType == JsonTreeContainerEditorEnum.DELETE?'Are you shore you want to delete "'+name+'" directory?':""}}
+
+        <div *ngIf="actionType == JsonTreeContainerEditorEnum.UPDATE || actionType == JsonTreeContainerEditorEnum.CREATE">
+            <label for="packageName">Directory Name: </label>
+            <input type="text"
+                   [(ngModel)]="name"
+                   #packageName="ngModel"
+                   class="form-control"
+                   required
+                   id="packageName" name="packageName">
+            <input-error [model]="packageName"
+                         [errorMessages]="{
+                                required: 'A name is required',
+                                directory_already_exists: 'A sibling directory with the same name already exists!'
+                         }"></input-error>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button (click)="hide()" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary"
+                [disabled]="currentForm && !currentForm.form.valid">
+            {{actionType == JsonTreeContainerEditorEnum.COPY?'Copy':""}}
+            {{actionType == JsonTreeContainerEditorEnum.DELETE?'Delete':""}}
+            {{actionType == JsonTreeContainerEditorEnum.UPDATE?'Rename':""}}
+            {{actionType == JsonTreeContainerEditorEnum.CREATE?'Create':""}}
+        </button>
+    </div>
+</form>

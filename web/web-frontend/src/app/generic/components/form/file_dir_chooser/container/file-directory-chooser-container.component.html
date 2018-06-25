@@ -1,0 +1,21 @@
+<div class="node">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
+         (click)="setSelected()"
+         (dblclick)="collapseNode()"
+         [class.tree-node-selected]="isSelected">
+
+        <i class="tree-node-icon {{'tree-node-folder-icon'}}"></i>
+
+        {{model.name}}
+
+    </div>
+
+    <json-children [jsonTreeNodeState]="jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

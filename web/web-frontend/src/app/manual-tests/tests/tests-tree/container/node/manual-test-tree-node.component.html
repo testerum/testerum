@@ -1,0 +1,9 @@
+<div class="node-text"
+     dnd-draggable [dragEnabled]="true" [dragData]="model">
+
+    <div (click)="showTest()"
+         [class.step-selected]="isSelected">
+        {{model.name}}
+    </div>
+
+</div>

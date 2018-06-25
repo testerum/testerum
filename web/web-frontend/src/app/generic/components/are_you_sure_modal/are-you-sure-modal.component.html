@@ -1,0 +1,19 @@
+<div bsModal #areYouSureModal="bs-modal" id="areYouSureModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="cancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    {{title}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                {{text}}
+            </div>
+            <div class="modal-footer">
+                <button (click)="ok()" type="button" class="btn btn-warning" data-dismiss="modal">Ok</button>
+                <button (click)="cancel()" type="button" class="btn btn-primary">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

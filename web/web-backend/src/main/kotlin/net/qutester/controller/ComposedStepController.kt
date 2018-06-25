@@ -1,0 +1,82 @@
+package net.qutester.controller
+
+import net.qutester.model.infrastructure.path.CopyPath
+import net.qutester.model.infrastructure.path.Path
+import net.qutester.model.infrastructure.path.RenamePath
+import net.qutester.model.step.ComposedStepDef
+import net.qutester.model.step.operation.UpdateComposedStepDef
+import net.qutester.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
+import net.qutester.service.step.StepService
+import net.qutester.service.step.StepUpdateCompatibilityService
+import net.qutester.service.step.StepUpdateService
+import org.slf4j.LoggerFactory
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+
+@RestController
+@RequestMapping("/steps/composed")
+class ComposedStepController(val stepService: StepService,
+                             val stepUpdateService: StepUpdateService,
+                             val stepUpdateCompatibilityService: StepUpdateCompatibilityService) {
+
+    private val LOG = LoggerFactory.getLogger(ComposedStepController::class.java)
+
+    @RequestMapping (method = [(RequestMethod.GET)])
+    @ResponseBody
+    fun getComposedSteps(): List<ComposedStepDef> {
+        return stepService.getComposedSteps()
+    }
+
+    @RequestMapping (params = ["path"], method = [(RequestMethod.GET)])
+    @ResponseBody
+    fun getComposedStepByPath(@RequestParam(value = "path") path:String): ResponseEntity<*> {
+        val step= stepService.getComposedStepByPath(Path.createInstance(path))
+
+        if (step == null) {
+            return ResponseEntity.notFound().build()
+        } else {
+            return ResponseEntity.ok(step)
+        }
+    }
+
+    @RequestMapping (params = ["path"], method = [(RequestMethod.DELETE)])
+    fun delete(@RequestParam(value = "path") path:String) {
+        stepService.remove(Path.createInstance(path))
+    }
+
+    @RequestMapping (path = ["/create"], method = [(RequestMethod.POST)])
+    @ResponseBody
+    fun create(@RequestBody composedStepDef: ComposedStepDef): ComposedStepDef {
+        return stepService.create(composedStepDef)
+    }
+
+    @RequestMapping (path = ["/update/check"], method = [(RequestMethod.POST)])
+    @ResponseBody
+    fun updateCheckCompatibility(@RequestBody updateComposedStepDef: UpdateComposedStepDef): CheckComposedStepDefUpdateCompatibilityResponse {
+        return stepUpdateCompatibilityService.checkUpdateCompatibility(updateComposedStepDef)
+    }
+
+    @RequestMapping (path = ["/update"], method = [(RequestMethod.POST)])
+    @ResponseBody
+    fun update(@RequestBody composedStepDef: ComposedStepDef): ComposedStepDef {
+        return stepUpdateService.update(composedStepDef)
+    }
+
+    @RequestMapping(path = ["/directory"], method = [(RequestMethod.PUT)])
+    @ResponseBody
+    fun renameDirectory(@RequestBody renamePath: RenamePath): Path {
+        return stepService.renameDirectory(renamePath)
+    }
+
+    @RequestMapping(path = ["/directory"], method = [(RequestMethod.DELETE)])
+    fun deleteDirectory(@RequestParam("path") pathAsString: String) {
+        stepService.deleteDirectory(
+                Path.createInstance(pathAsString)
+        )
+    }
+
+    @RequestMapping(path = ["/directory/move"], method = [(RequestMethod.POST)])
+    fun moveDirectoryOrFile(@RequestBody copyPath: CopyPath) {
+        stepService.moveDirectoryOrFile(copyPath)
+    }
+}

@@ -1,0 +1,2 @@
+- create a AST validator that applies after the parsing (checks stuff like variable references)
+- how to handle versioning of file formats? We may need to do backwards-incompatible changes in the future. With a version, we can provide automatically upgrade files, in many cases

@@ -1,0 +1,33 @@
+<div class="tree-node"
+     [class.tree-node-open]="!showChildren"
+     [class.tree-node-close]=" showChildren"
+     [class.tree-node-last]="isLastNode"> <!--tree-node-close tree-node-leaf-->
+
+    <i class="tree-icon tree-line-icon" (click)="toggleShowChildren()"></i>
+
+    <div class="tree-node-header" (click)="toggleShowChildren()">
+        <span #content></span>
+    </div>
+
+    <div class="tree-children"
+         [hidden]=showChildren>
+        <ng-container *ngIf="model">
+
+            <!-- CHILD COMPONENTS RENDERING-->
+            <tree-container *ngFor="let childContainer of model.getChildContainers(); let last=last;"
+                            [modelComponentMapping]="modelComponentMapping"
+                            [treeId]="treeId"
+                            [model]="childContainer"
+                            [isLastNode]="last && model.getChildNodes().length == 0"></tree-container>
+
+            <!-- STEPS RENDERING -->
+            <tree-node class="tree-node"
+                       *ngFor="let step of model.getChildNodes(); let last=last;"
+                       [modelComponentMapping]="modelComponentMapping"
+                       [class.tree-node-last]="last"
+                       [treeId]="treeId"
+                       [model]=step>
+            </tree-node>
+        </ng-container>
+    </div>
+</div>

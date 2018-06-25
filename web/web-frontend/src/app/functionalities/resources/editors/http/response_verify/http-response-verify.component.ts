@@ -1,0 +1,75 @@
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {ResourceService} from "../../../../../service/resources/resource.service";
+import {ResourcesTreeService} from "../../../tree/resources-tree.service";
+import {HttpResponseVerifyService} from "./http-response-verify.service";
+import {HttpResponseVerify} from "./model/http-response-verify.model";
+import {HttpResponseStatusCode} from "../../../../../model/resource/http/enum/http-response-status-code.enum";
+import {ResourceComponent} from "../../resource-component.interface";
+import {NgForm} from "@angular/forms";
+import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+
+@Component({
+    moduleId: module.id,
+    selector: 'http-response-verify',
+    templateUrl: 'http-response-verify.component.html',
+    styleUrls: [
+        'http-response-verify.component.css',
+        '../../resource-editor.css',
+        '../../../../../generic/css/generic.css',
+        '../../../../../generic/css/forms.css'
+    ]
+})
+export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseVerify> implements OnInit {
+
+    @Input() name: string;
+    @Input() model: HttpResponseVerify;
+    @Input() stepParameter?: ParamStepPatternPart;
+    @Input() private _editMode: boolean = false;
+    @Input() condensedViewMode: boolean = false;
+
+    @ViewChild(NgForm) form: NgForm;
+
+    constructor(private router: Router,
+                private route: ActivatedRoute,
+                private resourceService: ResourceService,
+                private resourcesTreeService: ResourcesTreeService,
+                private httpResponseVerifyService: HttpResponseVerifyService) {
+        super()
+    }
+
+    ngOnInit() {
+        if (this.model == null) {
+            this.model = new HttpResponseVerify();
+        }
+        this.httpResponseVerifyService.setHttpResponseVerify(this.model);
+    }
+
+    get editMode(): boolean {
+        return this._editMode;
+    }
+
+    set editMode(value: boolean) {
+        this._editMode = value;
+        if(this.httpResponseVerifyService) this.httpResponseVerifyService.setEditMode(value)
+    }
+
+    isFormValid(): boolean {
+        return this.form.valid;
+    }
+
+    getForm(): NgForm {
+        return this.form;
+    }
+
+    getStatusCodeText(): string {
+        let httpResponseStatusCode = HttpResponseStatusCode.fromStatusCodeNumber(
+            this.model.expectedStatusCode
+        );
+
+        if (httpResponseStatusCode != null) {
+            return httpResponseStatusCode.toString()
+        }
+        return "";
+    }
+}

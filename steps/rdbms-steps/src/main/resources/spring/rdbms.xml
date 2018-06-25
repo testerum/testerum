@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans.xsd
+       ">
+
+    <import resource="classpath:/spring/spring_file-repository.xml" />
+    <import resource="classpath:/spring/spring_resource-manager.xml" />
+    <import resource="classpath:/spring/spring_service.xml" />
+
+    <bean id="rdbmsConnectionManager" class="database.relational.connection_manager.RdbmsConnectionManager">
+        <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
+        <constructor-arg name="objectMapper"          ref="resourceJsonObjectMapper"/>
+        <constructor-arg name="rdbmsService"          ref="rdbmsService"/>
+        <constructor-arg name="testVariables"         ref="testerum.testVariables" />
+    </bean>
+
+    <bean id="rdbmsConnectionTransformer" class="database.relational.transformer.RdbmsConnectionTransformer">
+        <constructor-arg name="rdbmsConnectionManager" ref="rdbmsConnectionManager" />
+        <constructor-arg name="objectMapper"           ref="resourceJsonObjectMapper"/>
+        <constructor-arg name="testVariables"          ref="testerum.testVariables" />
+    </bean>
+
+    <bean id="rdbmsSqlTransformer" class="database.relational.transformer.RdbmsSqlTransformer">
+        <constructor-arg name="testVariables" ref="testerum.testVariables" />
+    </bean>
+
+    <bean id="rdbmsVerifyTransformer" class="database.relational.transformer.RdbmsVerifyTransformer">
+        <constructor-arg name="testVariables" ref="testerum.testVariables" />
+    </bean>
+
+</beans>

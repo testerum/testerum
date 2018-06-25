@@ -1,0 +1,66 @@
+<div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
+
+    <div *ngIf="model.expectedStatusCode" class="area">
+        <span class="condensed-view-label">Expected Status Code:</span>
+        <span class="condensed-view-value">{{model.expectedStatusCode}}</span>
+    </div>
+
+    <div *ngIf="model.getHeadersWithValue().length != 0" class="area">
+        <div class="condensed-view-label">Expected Headers:</div>
+        <div class="tab" *ngFor="let header of model.getHeadersWithValue()">
+            <span class="condensed-view-key-with-compare">{{header.key}}</span>
+            <span class="condensed-view-compare-key-value">{{header.compareMode}}</span>
+            <span class="condensed-view-value">{{header.value}}</span>
+        </div>
+    </div>
+
+    <div *ngIf="!model.expectedBody.isEmpty()">
+        <div class="area">
+            <span class="condensed-view-label">Body Matching:</span>
+            <span class="condensed-view-value">{{model.expectedBody.httpBodyVerifyMatchingType.enumAsString}}</span>
+        </div>
+        <div class="area">
+            <div class="condensed-view-label">Expected Body:</div>
+            <div class="condensed-view-body tab">{{model.expectedBody.bodyVerify}}</div>
+        </div>
+    </div>
+</div>
+
+<!-- REGULAR RESPONSE -->
+<form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
+
+    <!-- NAME -->
+    <div class="form-group row">
+        <label class="col-md-3 control-label">HTTP Response Verify Name</label>
+        <div class="col-md-9 form-value" *ngIf="!editMode">
+            {{name}}
+        </div>
+        <div class="col-md-9" *ngIf="editMode">
+            <input required
+                   #nameNgModel="ngModel" [(ngModel)]="name"
+                   type="text" class="form-control" name="name">
+            <input-error [model]="nameNgModel"
+                         [errorMessages]="{
+                                        required: 'A name for this resource is required',
+                                        a_resource_with_the_same_name_already_exist: 'A resource with the same name already exists'
+                                     }"></input-error>
+        </div>
+    </div>
+
+    <!-- STATUS CODE -->
+    <div class="form-group row">
+        <label class="col-md-3 control-label">Expected Status Code</label>
+        <div class="col-md-9 form-value" *ngIf="!editMode">
+            {{model.expectedStatusCode}} {{getStatusCodeText()?" - " + getStatusCodeText():""}}
+        </div>
+        <div class="col-md-2 my-line" *ngIf="editMode">
+            <input #statusCodeNgModel="ngModel" [(ngModel)]="model.expectedStatusCode"
+                   type="number" min="1" max="600" class="form-control input-3-letters" name="statusCode">
+            <span *ngIf="getStatusCodeText()" class="status-code-text">{{" - " + getStatusCodeText()}}</span>
+        </div>
+    </div>
+
+    <http-response-verify-header [headers]="model.expectedHeaders"></http-response-verify-header>
+
+    <http-response-verify-body></http-response-verify-body>
+</form>
