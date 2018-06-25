@@ -52,7 +52,7 @@ export class MenuComponent {
                 this.shouldDisplayManualItems = false;
                 this.isManualRunnerItemActive = false;
 
-                if (this.isUrlStartingWith("/features", event)) {
+                if (this.isUrlStartingWith("/features", event) || this.isUrlStartingWith("/automated", event)) {
                     this.shouldDisplayAutomatedItems = true;
                 }
                 if (this.isUrlStartingWith("/manual", event)) {
