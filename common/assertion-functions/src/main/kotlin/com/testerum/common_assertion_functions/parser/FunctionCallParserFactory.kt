@@ -4,7 +4,6 @@ import com.testerum.common.parsing.ParserFactory
 import com.testerum.common.parsing.util.CommonPatterns.INTEGER
 import com.testerum.common.parsing.util.CommonPatterns.LOWERCASE_LETTER
 import com.testerum.common.parsing.util.CommonPatterns.UPPERCASE_LETTER
-import com.testerum.common.parsing.util.CommonScanners.escapeSequence
 import com.testerum.common_assertion_functions.parser.ast.*
 import org.jparsec.Parser
 import org.jparsec.Parsers.or
@@ -12,6 +11,7 @@ import org.jparsec.Parsers.sequence
 import org.jparsec.Scanners.string
 import org.jparsec.pattern.CharPredicates
 import org.jparsec.pattern.Pattern
+import org.jparsec.pattern.Patterns
 import org.jparsec.pattern.Patterns.isChar
 import org.jparsec.pattern.Patterns.many
 import java.math.BigDecimal
@@ -135,6 +135,13 @@ object FunctionCallParserFactory : ParserFactory<FunctionCall> {
     private fun optionalWhitespace(): Parser<Void> {
         return many(CharPredicates.IS_WHITESPACE)
                 .toScanner("optional-whitespace")
+    }
+
+    private fun escapeSequence(): Parser<String> {
+        return Patterns.isChar('\\').next(Patterns.hasAtLeast(1))
+                .toScanner("escapeSequence")
+                .source()
+                .map { it.substring(1) }
     }
 
 }
