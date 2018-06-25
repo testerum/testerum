@@ -14,7 +14,7 @@ class FileTagsParserTest {
     )
 
     @Test
-    fun `should throw exception for missing "tags" keyword`() {
+    fun `should throw exception for missing tags keyword`() {
         val exception: ParserExecuterException = Assertions.assertThrows(ParserExecuterException::class.java) {
             parser.parse("= <<tag>>")
         }

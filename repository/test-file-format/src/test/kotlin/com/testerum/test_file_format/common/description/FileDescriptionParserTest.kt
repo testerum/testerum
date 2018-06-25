@@ -14,7 +14,7 @@ class FileDescriptionParserTest {
     )
 
     @Test
-    fun `should throw exception for missing "description" keyword`() {
+    fun `should throw exception for missing description keyword`() {
         val exception: ParserExecuterException = Assertions.assertThrows(ParserExecuterException::class.java) {
             parser.parse("= <<some description>>")
         }
