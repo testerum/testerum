@@ -4,8 +4,6 @@ import com.testerum.api.annotations.steps.Given;
 import com.testerum.api.annotations.steps.Then;
 import com.testerum.api.annotations.steps.When;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class BehaviorTests {
 
     @Given("the test without exceptions and run time of <<seconds>> seconds")
@@ -33,13 +31,13 @@ public class BehaviorTests {
     @Then("the test is failing and run time of <<seconds>> seconds")
     public void testFailing(final int seconds) {
         sleep(seconds);
-        assertThat(true).isFalse();
+
+        throw new AssertionError("failed");
     }
 
     @Then("the test is passing and run time of <<seconds>> seconds")
     public void testPassing(final int seconds) {
         sleep(seconds);
-        assertThat(true).isTrue();
     }
 
     private void sleep(final int seconds) {

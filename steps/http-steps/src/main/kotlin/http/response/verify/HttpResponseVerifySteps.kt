@@ -65,10 +65,10 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
             LOG.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
 
             Assert.fail(
-                    "Expected Response Body to match [${expectedBody}] but [${actualBody}] found. \n" +
+                    "Expected Response Body to match [$expectedBody] but [$actualBody] found. \n" +
                             "\t Matching message: [${compareResult.message}] \n" +
                             "\t Not matching element path: [${compareResult.jsonPath}] \n" +
-                            "\t Comparison Mode: [${compareMode}] \n" +
+                            "\t Comparison Mode: [$compareMode] \n" +
                             getContextInfoForLogging(httpRequest, httpResponse)
             )
         }
@@ -122,8 +122,8 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
             contextInfo: String) {
 
         Assert.fail(
-                "Expected Response Body [${expectedBody}] but [${actualBody}] found. \n" +
-                        "\tComparison Mode: [${compareMode}]\n" +
+                "Expected Response Body [$expectedBody] but [$actualBody] found. \n" +
+                        "\tComparison Mode: [$compareMode]\n" +
                         contextInfo
         )
     }
@@ -137,7 +137,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
             )
         } else {
             LOG.debug(
-                    "Response Body is valid: [${IS_EMPTY}] as expected"
+                    "Response Body is valid: [$IS_EMPTY] as expected"
             )
         }
     }
@@ -167,7 +167,6 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
                 if (expectedValue == null && actualValues.isNotEmpty()) {
                     assertFailMatchingHeaders(
                             expectedHeader,
-                            actualHeader,
                             expectedValue,
                             actualValues[0],
                             HttpResponseVerifyHeadersCompareMode.EXACT_MATCH,
@@ -211,7 +210,6 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
 
         assertFailMatchingHeaders(
                 expectedHeader,
-                actualHeader,
                 expectedValue,
                 actualValues[0],
                 HttpResponseVerifyHeadersCompareMode.EXACT_MATCH,
@@ -233,7 +231,6 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
 
         assertFailMatchingHeaders(
                 expectedHeader,
-                actualHeader,
                 expectedValue,
                 actualValues[0],
                 HttpResponseVerifyHeadersCompareMode.EXACT_MATCH,
@@ -254,7 +251,6 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
 
         assertFailMatchingHeaders(
                 expectedHeader,
-                actualHeader,
                 expectedValue,
                 actualValues[0],
                 HttpResponseVerifyHeadersCompareMode.REGEX_MATCH,
@@ -269,14 +265,13 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
         LOG.debug("Header Found: \n" +
                 "\t key=[${expectedHeader.key}], \n" +
                 "\t expectedValue=[${expectedHeader.value}], \n" +
-                "\t comparisonMode=[${compareMode}], \n" +
-                "\t actulaValue=[${actualValue}]"
+                "\t comparisonMode=[$compareMode], \n" +
+                "\t actulaValue=[$actualValue]"
         )
     }
 
     private fun assertFailMatchingHeaders(
             expectedHeader: HttpResponseHeaderVerify,
-            actualHeader: HttpResponseHeader,
             expectedValue: String?,
             actualValue: String?,
             compareMode: HttpResponseVerifyHeadersCompareMode,
@@ -284,8 +279,8 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
     ) {
 
         Assert.fail(
-                "Expected Response Header [${expectedHeader.key}] with value [${expectedValue}] but [${actualValue}] found. \n" +
-                        "\tComparison Mode: ${compareMode}.\n" +
+                "Expected Response Header [${expectedHeader.key}] with value [$expectedValue] but [$actualValue] found. \n" +
+                        "\tComparison Mode: $compareMode.\n" +
                         contextInfo
         )
     }

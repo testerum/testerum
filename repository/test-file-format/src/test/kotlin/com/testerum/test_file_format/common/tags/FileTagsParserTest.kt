@@ -1,9 +1,9 @@
 package com.testerum.test_file_format.common.tags
 
-import com.natpryce.hamkrest.assertion.assertThat
-import com.natpryce.hamkrest.equalTo
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common.parsing.executer.ParserExecuterException
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

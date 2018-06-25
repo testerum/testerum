@@ -1,7 +1,7 @@
 package com.testerum.common_assertion_functions.utils
 
-import com.natpryce.hamkrest.assertion.assertThat
-import com.natpryce.hamkrest.equalTo
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 
 class SimilarStringsFinderKtTest {

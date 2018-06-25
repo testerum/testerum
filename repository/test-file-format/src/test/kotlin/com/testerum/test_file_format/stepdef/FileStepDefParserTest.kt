@@ -1,7 +1,5 @@
 package com.testerum.test_file_format.stepdef
 
-import com.natpryce.hamkrest.assertion.assertThat
-import com.natpryce.hamkrest.equalTo
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
@@ -11,6 +9,8 @@ import com.testerum.test_file_format.common.step_call.phase.FileStepPhase
 import com.testerum.test_file_format.stepdef.signature.FileStepDefSignature
 import com.testerum.test_file_format.stepdef.signature.part.FileParamStepDefSignaturePart
 import com.testerum.test_file_format.stepdef.signature.part.FileTextStepDefSignaturePart
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 
 class FileStepDefParserTest {

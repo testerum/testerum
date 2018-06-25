@@ -1,9 +1,9 @@
 package com.testerum.test_file_format.test_util
 
-import com.natpryce.hamkrest.assertion.assertThat
-import com.natpryce.hamkrest.equalTo
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common.serializing.Serializer
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo
 import org.jparsec.Parser
 
 class SerializerTestRunner<T>(private val serializer: Serializer<T>,

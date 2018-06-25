@@ -1,7 +1,7 @@
 package com.testerum.test_file_format.common.step_call.phase
 
 import com.testerum.test_file_format.test_util.SerializerTestRunner
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class FileStepPhaseSerializerTest {
 

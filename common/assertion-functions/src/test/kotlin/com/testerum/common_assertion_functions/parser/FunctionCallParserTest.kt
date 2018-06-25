@@ -1,10 +1,10 @@
 package com.testerum.common_assertion_functions.parser
 
-import com.natpryce.hamkrest.assertion.assertThat
-import com.natpryce.hamkrest.equalTo
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common.parsing.executer.ParserExecuterException
 import com.testerum.common_assertion_functions.parser.ast.*
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

@@ -6,11 +6,12 @@ import org.garnishtest.modules.generic.variables_resolver.exceptions.Unterminate
 import org.garnishtest.modules.generic.variables_resolver.impl.MapBasedVariablesResolver;
 import org.garnishtest.modules.generic.variables_resolver.impl.escape.ValueEscaper;
 import org.garnishtest.modules.generic.variables_resolver.impl.escape.impl.ValueEscapers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.annotation.Nullable;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MapBasedVariablesResolverTest {
 
@@ -101,39 +102,54 @@ public class MapBasedVariablesResolverTest {
 
     }
 
-    @Test(expected = InvalidVariableNameException.class)
+    @Test
     public void should_throw_exception_if_we_set_a_variable_whose_name_contains_prefix() throws Exception {
         final MapBasedVariablesResolver variables = new MapBasedVariablesResolver(VAR_PREFIX, VAR_SUFFIX);
 
-        variables.set("the ${var", "value");
+        assertThrows(
+                InvalidVariableNameException.class,
+                () -> variables.set("the ${var", "value")
+        );
     }
 
-    @Test(expected = InvalidVariableNameException.class)
+    @Test
     public void should_throw_exception_if_we_set_a_variable_whose_name_contains_suffix() throws Exception {
         final MapBasedVariablesResolver variables = new MapBasedVariablesResolver(VAR_PREFIX, VAR_SUFFIX);
 
-        variables.set("the } var", "value");
+        assertThrows(
+                InvalidVariableNameException.class,
+                () -> variables.set("the } var", "value")
+        );
     }
 
-    @Test(expected = UnknownVariableException.class)
+    @Test
     public void should_throw_exception_for_unknown_variable_if_we_have_variables() throws Exception {
         final MapBasedVariablesResolver variables = new MapBasedVariablesResolver(VAR_PREFIX, VAR_SUFFIX);
         variables.set("var", "val");
 
-        variables.resolveVariablesInText("this ${variable} is not resolvable", ValueEscapers.none());
+        assertThrows(
+                UnknownVariableException.class,
+                () -> variables.resolveVariablesInText("this ${variable} is not resolvable", ValueEscapers.none())
+        );
     }
 
-    @Test(expected = UnknownVariableException.class)
+    @Test
     public void should_throw_exception_for_unknown_variable_if_we_do_not_have_variables() throws Exception {
         final MapBasedVariablesResolver variables = new MapBasedVariablesResolver(VAR_PREFIX, VAR_SUFFIX);
 
-        variables.resolveVariablesInText("this ${variable} is not resolvable", ValueEscapers.none());
+        assertThrows(
+                UnknownVariableException.class,
+                () -> variables.resolveVariablesInText("this ${variable} is not resolvable", ValueEscapers.none())
+        );
     }
 
-    @Test(expected = UnterminatedVariableException.class)
+    @Test
     public void should_not_allow_unterminated_variables() throws Exception {
         final MapBasedVariablesResolver variables = new MapBasedVariablesResolver(VAR_PREFIX, VAR_SUFFIX);
 
-        variables.resolveVariablesInText("this ${variable has not suffix", ValueEscapers.none());
+        assertThrows(
+                UnterminatedVariableException.class,
+                () -> variables.resolveVariablesInText("this ${variable has no suffix", ValueEscapers.none())
+        );
     }
 }

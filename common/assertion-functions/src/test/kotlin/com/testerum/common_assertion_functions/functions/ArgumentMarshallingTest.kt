@@ -2,10 +2,10 @@ package com.testerum.common_assertion_functions.functions
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.IntNode
-import com.natpryce.hamkrest.assertion.assertThat
-import com.natpryce.hamkrest.equalTo
 import com.testerum.common_assertion_functions.evaluator.FunctionEvaluator
 import com.testerum.common_assertion_functions.executer.DelegatingFunctionExecuterFactory
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.lang.RuntimeException

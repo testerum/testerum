@@ -33,7 +33,6 @@
         <maven.build.timestamp.format>yyyy-MM-dd_HH-mm-ss</maven.build.timestamp.format>
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
-
         <!--Kotlin settings-->
         <kotlin.version>1.2.50</kotlin.version>
         <kotlin.apiVersion>1.2</kotlin.apiVersion>
@@ -47,7 +46,6 @@
         <jackson.version>2.9.1</jackson.version>
         <flyway.version>4.1.2</flyway.version>
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
-        <junit.vintage.version>5.2.0</junit.vintage.version>
         <junit.platform.version>1.2.0</junit.platform.version>
     </properties>
 
@@ -731,19 +729,6 @@
 
 
             <!--==================== TESTS ====================-->
-            <!-- JUnit -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.12</version>
-            </dependency>
-
-            <!--AssertJ-->
-            <dependency>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-core</artifactId>
-                <version>3.8.0</version>
-            </dependency>
 
             <!-- junit 5 -->
             <dependency>
@@ -765,24 +750,10 @@
                 <version>${junit.jupiter.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.junit.vintage</groupId>
-                <artifactId>junit-vintage-engine</artifactId>
-                <scope>test</scope>
-                <version>${junit.vintage.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.junit.platform</groupId>
                 <artifactId>junit-platform-launcher</artifactId>
                 <scope>test</scope>
                 <version>${junit.platform.version}</version>
-            </dependency>
-
-            <!-- hamkrest -->
-            <dependency>
-                <groupId>com.natpryce</groupId>
-                <artifactId>hamkrest</artifactId>
-                <version>1.4.2.0</version>
-                <scope>test</scope>
             </dependency>
 
             <!-- java-hamcrest -->
@@ -928,6 +899,11 @@
                             <groupId>org.junit.platform</groupId>
                             <artifactId>junit-platform-surefire-provider</artifactId>
                             <version>${junit.platform.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.junit.jupiter</groupId>
+                            <artifactId>junit-jupiter-engine</artifactId>
+                            <version>${junit.jupiter.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>

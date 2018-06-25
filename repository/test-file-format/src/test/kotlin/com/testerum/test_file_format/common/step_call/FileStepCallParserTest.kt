@@ -1,12 +1,12 @@
 package com.testerum.test_file_format.common.step_call
 
-import com.natpryce.hamkrest.assertion.assertThat
-import com.natpryce.hamkrest.equalTo
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
 import com.testerum.test_file_format.common.step_call.phase.FileStepPhase
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 
 class FileStepCallParserTest {

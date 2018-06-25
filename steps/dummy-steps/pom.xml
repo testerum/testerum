@@ -23,12 +23,6 @@
 
         <!--==================== External Dependencies ====================-->
 
-        <!--AssertJ-->
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-        </dependency>
-
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
