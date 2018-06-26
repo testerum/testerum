@@ -143,10 +143,10 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
     }
 
 
-    fun getAllResourcesByTypeUnderPath(knownPath: KnownPath): List<RepositoryFile> {
+    fun getAllResourcesByTypeUnderPath(parentPath: KnownPath): List<RepositoryFile> {
         val result = mutableListOf<RepositoryFile>()
 
-        val rootPath = getAbsolutePath(knownPath)
+        val rootPath = getAbsolutePath(parentPath)
 
         if (!Files.exists(rootPath)) {
             Files.createDirectories(rootPath)
@@ -156,7 +156,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
         Files.find(
                 rootPath,
                 Integer.MAX_VALUE,
-                BiPredicate { path, attr -> (attr.isRegularFile && path.toString().endsWith(knownPath.fileType.fileExtension)) }
+                BiPredicate { path, attr -> (attr.isRegularFile && path.toString().endsWith(parentPath.fileType.fileExtension)) }
         ).use {
             it.forEach {
                 val relativePathAsString = it.toString().removePrefix(
@@ -165,7 +165,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
 
                 result.add(
                         RepositoryFile(
-                                KnownPath(relativePathAsString, knownPath.fileType),
+                                KnownPath(parentPath.toString() + "/" + relativePathAsString, parentPath.fileType),
                                 String(Files.readAllBytes(it))
                         )
                 )
