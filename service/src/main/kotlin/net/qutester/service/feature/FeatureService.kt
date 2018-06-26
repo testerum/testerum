@@ -82,12 +82,12 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                     KnownPath(Path(oldPath.directories, null, null), FileType.FEATURE),
                     feature.name
             )
-            newPath = newDirectoryPath;
+//            newPath = newDirectoryPath;
 //TODO Ionut: remove top uncoment bottom
-//            newPath = newDirectoryPath.copy(
-//                    fileName = oldPath.fileName,
-//                    fileExtension = oldPath.fileExtension
-//            )
+            newPath = newDirectoryPath.copy(
+                    fileName = oldPath.fileName,
+                    fileExtension = oldPath.fileExtension
+            )
         }
 
         val fileFeatureAsString = objectMapper.writeValueAsString(
