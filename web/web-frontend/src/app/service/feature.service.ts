@@ -10,6 +10,7 @@ import {Headers, RequestOptions, Response} from "@angular/http";
 import {ManualTestsService} from "../manual-tests/tests/service/manual-tests.service";
 import {ManualTestModel} from "../manual-tests/model/manual-test.model";
 import {Attachment} from "../model/file/attachment.model";
+import {RootServerTreeNode} from "../model/tree/root-server-tree-node.model";
 
 @Injectable()
 export class FeatureService {
@@ -18,6 +19,14 @@ export class FeatureService {
 
     constructor(private http: HttpClient,
                 private errorService: ErrorService) {
+    }
+
+    getFeatureTree(): Observable<RootServerTreeNode> {
+
+        return this.http
+            .get<any>(this.FEATURE_URL+"/tree")
+            .map(FeatureService.extractFeaturesTree)
+            .catch(err => {return this.errorService.handleHttpResponseException(err)});
     }
 
     getFeature(path: Path): Observable<Feature> {
@@ -78,39 +87,11 @@ export class FeatureService {
         if(res == null) return null;
         return new Feature().deserialize(res);
     }
-    //
-    // uploadFiles(path: Path, files: Array<File>): Observable<Array<Attachment>> {
-    //
-    //     let formData:FormData = new FormData();
-    //
-    //     for (const file of files) {
-    //         formData.append("fileUpload", file, file.name);
-    //     }
-    //     const httpOptions = {
-    //         headers: new HttpHeaders({
-    //             'Content-Type':  'multipart/form-data',
-    //             'Accept':  'application/json',
-    //         })
-    //     };
-    //
-    //     return this.http
-    //         .post<any>(this.FEATURE_URL+"/fileUpload", formData, httpOptions)
-    //         .map(FeatureService.extractAttachments)
-    //         .catch(err => {return this.errorService.handleHttpResponseException(err)});
-    //
-    // }
-    //
-    // private static extractAttachments(res:  HttpResponse<any>): Array<Attachment> {
-    //     let result: Array<Attachment> = [];
-    //     if(res == null) return result;
-    //
-    //     for (const resAttachment of res.body) {
-    //         result.push(
-    //             new Attachment().deserialize(resAttachment)
-    //         )
-    //     }
-    //     return result;
-    // }
+
+    private static extractFeaturesTree(res:  HttpResponse<RootServerTreeNode>): RootServerTreeNode {
+        if(res == null) return null;
+        return new RootServerTreeNode().deserialize(res);
+    }
 }
 
 

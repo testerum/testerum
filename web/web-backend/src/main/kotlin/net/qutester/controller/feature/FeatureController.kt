@@ -3,6 +3,8 @@ package net.qutester.controller.feature
 import net.qutester.model.feature.Feature
 import net.qutester.model.file.Attachment
 import net.qutester.model.infrastructure.path.Path
+import net.qutester.model.tree.RootTreeNode
+import net.qutester.model.tree.TreeNode
 import net.qutester.service.feature.FeatureService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -11,6 +13,12 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping("/features")
 class FeatureController(private val featureService: FeatureService) {
+
+    @RequestMapping (path = ["tree"], method = [RequestMethod.GET])
+    @ResponseBody
+    fun getFeaturesTree(): RootTreeNode {
+        return featureService.getFeaturesTree();
+    }
 
     @RequestMapping (method = [RequestMethod.GET])
     @ResponseBody

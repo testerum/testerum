@@ -144,9 +144,13 @@ class TestsService(private val testResolver: TestResolver,
     }
 
     fun getAllTests(): List<TestModel> {
+        return getTestsUnderPath(Path.createEmptyInstance())
+    }
+
+    fun getTestsUnderPath(path: Path): List<TestModel> {
         val uiTests = mutableListOf<TestModel>()
 
-        val allTestFiles = fileRepositoryService.getAllResourcesByType(FileType.TEST)
+        val allTestFiles = fileRepositoryService.getAllResourcesByTypeUnderPath(KnownPath(path, FileType.TEST))
         for (testFile in allTestFiles) {
             val fileTest = TEST_PARSER.parse(testFile.body)
             val unresolvedUiTest = fileToUiTestMapper.mapToUiModel(fileTest, testFile)

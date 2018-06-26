@@ -15,6 +15,7 @@ import {TestsRunnerService} from "../../tests-runner/tests-runner.service";
 import {JsonTreePathNode} from "../../../../generic/components/json-tree/model/path/json-tree-path-node.model";
 import {JsonTreeNodeEventModel} from "../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {Subscription} from "rxjs/Subscription";
+import {TestModel} from "../../../../model/test/test.model";
 
 @Component({
     moduleId: module.id,
@@ -33,6 +34,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     isSelected:boolean = false;
 
     selectedNodeSubscription: Subscription;
+    getTestsUnderPathSubscription: Subscription;
 
     constructor(private router: Router,
                 private jsonTreeService: JsonTreeService,
@@ -47,6 +49,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if(this.selectedNodeSubscription) this.selectedNodeSubscription.unsubscribe();
+        if(this.getTestsUnderPathSubscription) this.getTestsUnderPathSubscription.unsubscribe();
     }
 
     allowDrop():any {
@@ -59,8 +62,11 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     }
 
     runTests() {
-        let allChildTests = this.testsTreeService.getAllTestModelsUnderContainer(this.model);
-        this.testsRunnerService.runTests(allChildTests);
+        this.getTestsUnderPathSubscription = this.testsService.getAllAutomatedTestsUnderContaier(this.model.path).subscribe(
+            (tests:Array<TestModel>) => {
+                this.testsRunnerService.runTests(tests);
+            }
+        );
     }
 
     onStepSelected(selectedJsonTreeNodeEventModel:JsonTreeNodeEventModel) : void {

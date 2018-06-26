@@ -8,6 +8,8 @@ import {JsonTreePathUtil} from "../../../generic/components/json-tree/util/json-
 import {TestsService} from "../../../service/tests.service";
 import {TestModel} from "../../../model/test/test.model";
 import FeaturesTreeUtil from "./util/features-tree.util";
+import {FeatureService} from "../../../service/feature.service";
+import {RootServerTreeNode} from "../../../model/tree/root-server-tree-node.model";
 
 @Injectable()
 export class FeaturesTreeService {
@@ -15,13 +17,19 @@ export class FeaturesTreeService {
     testsJsonTreeModel: JsonTreeModel;
     testModels: Array<TestModel>;
 
-    constructor(private testsService: TestsService){
+    constructor(private testsService: TestsService,
+                private featureService: FeatureService){
     }
 
     initializeTestsTreeFromServer() {
         this.testsService.getTests().subscribe(
             testModels => this.setTestModels(testModels)
         );
+        // this.featureService.getFeatureTree().subscribe(
+        //     (rootNode: RootServerTreeNode) => {
+        //         console.log(rootNode)
+        //     }
+        // )
     }
 
     setTestModels(testModels: Array<TestModel>): void {
@@ -63,17 +71,5 @@ export class FeaturesTreeService {
                 this.sortChildren((it as FeatureTreeContainerModel).children)
             }
         })
-    }
-
-    getAllTestModelsUnderContainer(model: FeatureTreeContainerModel): Array<TestModel> {
-        let result: Array<TestModel> = [];
-
-        let containerPath: Path = model.path;
-        for (let testModel of this.testModels) {
-            if(testModel.path.toString().startsWith(containerPath.toString())) {
-                result.push(testModel)
-            }
-        }
-        return result;
     }
 }

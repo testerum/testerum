@@ -127,4 +127,11 @@ export class TestsService {
             .post(this.TESTS_URL + "/directory/move", body, options)
             .catch(err => {return this.errorService.handleHttpResponseException(err)});
     }
+
+    getAllAutomatedTestsUnderContaier(path: Path): Observable<Array<TestModel>>  {
+        return this.http
+            .get(this.TESTS_URL + "/automated/under-path", {params: {path: path.toString()}})
+            .map(TestsService.extractTestsModel)
+            .catch(err => {return this.errorService.handleHttpResponseException(err)} );
+    }
 }

@@ -6,6 +6,7 @@
     <bean id="featureService" class="net.qutester.service.feature.FeatureService">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
         <constructor-arg name="attachmentFileRepositoryService" ref="attachmentFileRepositoryService"/>
+        <constructor-arg name="testsService" ref="testsService"/>
     </bean>
 
     <bean id="manualTestsService" class="net.qutester.service.manual.ManualTestsService">

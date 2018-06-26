@@ -7,6 +7,9 @@ import net.qutester.model.feature.Feature
 import net.qutester.model.file.Attachment
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.repository.enums.FileType
+import net.qutester.model.test.TestModel
+import net.qutester.model.tree.*
+import net.qutester.service.tests.TestsService
 import net.testerum.db_file.AttachmentFileRepositoryService
 import net.testerum.db_file.FileRepositoryService
 import net.testerum.db_file.model.KnownPath
@@ -16,7 +19,8 @@ import org.springframework.web.multipart.MultipartFile
 
 
 class FeatureService(private val fileRepositoryService: FileRepositoryService,
-                     private val attachmentFileRepositoryService: AttachmentFileRepositoryService) {
+                     private val attachmentFileRepositoryService: AttachmentFileRepositoryService,
+                     private val testsService: TestsService) {
 
     val objectMapper: ObjectMapper = ObjectMapperFactory.createKotlinObjectMapper()
 
@@ -114,5 +118,62 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                 KnownPath(featurePath, FileType.FEATURE),
                 uploadingFiles
         );
+    }
+
+    fun getFeaturesTree(): RootTreeNode {
+        val rootNode = RootTreeNode("Features");
+
+        val features = getAllFeatures()
+        mapFeaturesToTree(features, rootNode)
+
+        val tests = testsService.getAllTests()
+        mapTestsToTree(tests, rootNode)
+
+        return rootNode;
+    }
+
+    private fun mapFeaturesToTree(features: List<Feature>, rootNode: RootTreeNode) {
+        for (feature in features) {
+            val featureDirs = feature.path.directories.toMutableList()
+            findOrCreateFeatureTreeNodes(featureDirs, rootNode)
+        }
+    }
+
+    private fun findOrCreateFeatureTreeNodes(featuresNames: MutableList<String>, parentNode: ContainerTreeNode): TreeNode {
+        if (featuresNames.isEmpty()) {
+            return parentNode;
+        }
+
+        val currentFeatureName = featuresNames.removeAt(0)
+
+        var treeNode: ContainerTreeNode? = parentNode.children.find { it is ContainerTreeNode && it.name == currentFeatureName } as? ContainerTreeNode
+        if (treeNode == null) {
+            treeNode = FeatureTreeNode(
+                    currentFeatureName,
+                    parentNode.path.copy(directories = parentNode.path.directories + currentFeatureName)
+            )
+            parentNode.children.add(treeNode)
+        }
+
+        return findOrCreateFeatureTreeNodes(
+                featuresNames,
+                treeNode
+        )
+    }
+
+    private fun mapTestsToTree(tests: List<TestModel>, rootNode: RootTreeNode) {
+        for (test in tests) {
+            val parentContainerTreeNode = findOrCreateFeatureTreeNodes(
+                    test.path.directories.toMutableList(),
+                    rootNode
+            ) as ContainerTreeNode
+
+            parentContainerTreeNode.children.add(
+                    TestTreeNode(
+                            test.text,
+                            test.path
+                    )
+            )
+        }
     }
 }

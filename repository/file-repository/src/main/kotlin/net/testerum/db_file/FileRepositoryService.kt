@@ -134,32 +134,38 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
     }
 
     fun getAllResourcesByType(fileType: FileType): List<RepositoryFile> {
+        return getAllResourcesByTypeUnderPath(
+                KnownPath(
+                        Path.createEmptyInstance(),
+                        fileType
+                )
+        )
+    }
+
+
+    fun getAllResourcesByTypeUnderPath(knownPath: KnownPath): List<RepositoryFile> {
         val result = mutableListOf<RepositoryFile>()
 
-        val repositoryDirPathAsString = settingsManager.getSettingValue(SystemSettings.REPOSITORY_DIRECTORY.key) ?: return emptyList()
+        val rootPath = getAbsolutePath(knownPath)
 
-        val rootPath = Paths.get(repositoryDirPathAsString)
-        val fileTypeRootPath = rootPath.resolve(fileType.relativeRootDirectory.toJavaPath())
-
-
-        if (!Files.exists(fileTypeRootPath)) {
-            Files.createDirectories(fileTypeRootPath)
+        if (!Files.exists(rootPath)) {
+            Files.createDirectories(rootPath)
             return emptyList()
         }
 
         Files.find(
-                fileTypeRootPath,
+                rootPath,
                 Integer.MAX_VALUE,
-                BiPredicate { path, attr -> (attr.isRegularFile && path.toString().endsWith(fileType.fileExtension)) }
+                BiPredicate { path, attr -> (attr.isRegularFile && path.toString().endsWith(knownPath.fileType.fileExtension)) }
         ).use {
             it.forEach {
                 val relativePathAsString = it.toString().removePrefix(
-                        fileTypeRootPath.toString() + File.separator
+                        rootPath.toString() + File.separator
                 )
 
                 result.add(
                         RepositoryFile(
-                                KnownPath(relativePathAsString, fileType),
+                                KnownPath(relativePathAsString, knownPath.fileType),
                                 String(Files.readAllBytes(it))
                         )
                 )
