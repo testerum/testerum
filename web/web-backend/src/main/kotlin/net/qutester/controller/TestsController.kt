@@ -31,13 +31,6 @@ class TestsController(private val testsService: TestsService) {
         return testsService.updateTest(updateTestModel);
     }
 
-    @RequestMapping (method = [RequestMethod.GET])
-    @ResponseBody
-    fun getTests(): List<TestModel> {
-        return testsService.getAllTests();
-    }
-
-
     @RequestMapping (path = ["/automated/under-path"],params = ["path"], method = [RequestMethod.GET])
     @ResponseBody
     fun getAutomatedTestsUnderPath(@RequestParam(value = "path") path:String):List<TestModel> {

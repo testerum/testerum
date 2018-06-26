@@ -45,7 +45,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private featureService: FeatureService,
-                private testsTreeService: FeaturesTreeService) {
+                private featuresTreeService: FeaturesTreeService) {
     }
 
     ngOnInit(): void {
@@ -118,7 +118,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
 
     deleteAction(): void {
         this.featureService.delete(this.model.path).subscribe(result => {
-            this.testsTreeService.initializeTestsTreeFromServer();
+            this.featuresTreeService.initializeTestsTreeFromServer();
             this.router.navigate(["automated/tests"]);
         });
     }
@@ -144,6 +144,6 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     private afterSaveHandler(savedModel: Feature) {
         this.model = savedModel;
         this.setEditMode(false);
-        this.testsTreeService.initializeTestsTreeFromServer();
+        this.featuresTreeService.initializeTestsTreeFromServer();
     }
 }

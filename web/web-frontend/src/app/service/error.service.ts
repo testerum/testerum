@@ -4,6 +4,7 @@ import {FullLogErrorResponse} from "../model/exception/full-log-error-response.m
 import {ErrorResponse} from "../model/exception/error-response.model";
 import {Observable} from "rxjs/Rx";
 import {ValidationErrorResponse} from "../model/exception/validation-error-response.model";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable()
 export class ErrorService {
@@ -15,36 +16,35 @@ export class ErrorService {
         return this.handleHttpResponseException(errorResponse);
     }
 
-    handleHttpResponseException(errorResponse: Response | any) {
-        if (errorResponse.status >= 400) {
-            let contentTypeHeader = errorResponse.headers.get('content-type');
+    handleHttpResponseException(httpErrorResponse: HttpErrorResponse | any) {
+        if (httpErrorResponse.status >= 400) {
+            let contentTypeHeader = httpErrorResponse.headers.get('content-type');
             if(contentTypeHeader) {
                 let contentTypeToLowerCase = contentTypeHeader.toLowerCase();
                 if (contentTypeToLowerCase.startsWith("application/json", 0)) {
 
-                    let json = JSON.parse(errorResponse.text());
-                    let errorCode = json["errorCode"];
+                    let errorResponse: ErrorResponse = httpErrorResponse.error;
 
-                    if (errorCode == ErrorCode.VALIDATION.enumAsString) {
-                        let validationException = new ValidationErrorResponse().deserialize(json);
+                    if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
+                        let validationException = new ValidationErrorResponse().deserialize(errorResponse);
                         this.errorEventEmitter.emit(validationException);
-                        return Observable.throw(errorResponse);
+                        return Observable.throw(httpErrorResponse);
                     }
 
-                    if (errorCode) {
-                        let fullLogErrorResponse = new FullLogErrorResponse().deserialize(json);
+                    if (errorResponse.errorCode.toString() == ErrorCode.GENERIC_ERROR.enumAsString) {
+                        let fullLogErrorResponse = new FullLogErrorResponse().deserialize(errorResponse);
                         this.errorEventEmitter.emit(fullLogErrorResponse);
                         console.error(fullLogErrorResponse);
-                        return Observable.throw(errorResponse);
+                        return Observable.throw(httpErrorResponse);
                     }
 
-                    this.errorEventEmitter.emit(errorCode);
-                    console.error(errorCode);
+                    this.errorEventEmitter.emit(errorResponse);
+                    console.error(errorResponse);
                 }
             }
         }
 
-        return Observable.throw(errorResponse)
+        return Observable.throw(httpErrorResponse)
     }
 
     showGenericValidationError(validationErrorResponse: ValidationErrorResponse) {

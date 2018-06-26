@@ -38,7 +38,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
                 private jsonTreeService: JsonTreeService,
-                private testsTreeService: FeaturesTreeService,
+                private featuresTreeService: FeaturesTreeService,
                 private testsService: TestsService,
                 private testsRunnerService: TestsRunnerService) {
     }
@@ -117,25 +117,6 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
         return childrenContainersName;
     }
 
-    showEditDirectoryNameModal(): void {
-        let siblingNames: Array<string> = this.getSiblingNames();
-
-        this.jsonTreeService.triggerUpdateContainerAction(this.model.name, siblingNames).subscribe(
-            (updateEvent: JsonTreeContainerEditorEvent) => {
-
-                this.testsService.renameDirectory(
-                    new RenamePath(this.model.path, updateEvent.newName)
-                ).subscribe(
-                    (responsePath: Path) => {
-                        this.model.name = updateEvent.newName;
-                        this.model.path = responsePath;
-                        this.testsTreeService.sort()
-                    }
-                )
-            }
-        )
-    }
-
     private getSiblingNames() {
         let siblingNames: Array<string> = [];
         let siblingContainers: Array<JsonTreePathNode> = this.model.parentContainer.getChildren();
@@ -156,7 +137,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
                 ).subscribe(
                     it => {
                         this.testsService.showTestsScreen();
-                        this.testsTreeService.initializeTestsTreeFromServer();
+                        this.featuresTreeService.initializeTestsTreeFromServer();
                     }
                 )
             }
@@ -179,7 +160,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
                     copyPath
                 ).subscribe(
                     it => {
-                        this.testsTreeService.copy(pathToCopy, destinationPath);
+                        this.featuresTreeService.copy(pathToCopy, destinationPath);
                     }
                 )
             }

@@ -220,10 +220,10 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
         val pathToRename: java.nio.file.Path = escapeAndGetAbsolutePath(knownPath)
         if (pathToRename.toFile().exists()) {
             val newPath = Files.move(pathToRename, pathToRename.resolveSibling(newName))
-            return Path.createInstance(newPath.toString())
+            return getRelativePathFromAbsolutePath(newPath, knownPath.fileType).toMyPath()
         }
         val newPath = pathToRename.resolveSibling(newName)
-        return getRelativePathFromAbsolutePath(newPath, FileType.TEST).toMyPath()
+        return getRelativePathFromAbsolutePath(newPath, knownPath.fileType).toMyPath()
     }
 
     /**
@@ -289,7 +289,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
     fun createParentDirectoryIfNotExisting(absoluteResourcePath: java.nio.file.Path) {
         val parentDir = absoluteResourcePath.parent
         if (!Files.exists(parentDir)) {
-            Files.createDirectories(parentDir)
+            Files.createDirectories(parentDir, *arrayOf())
         }
     }
 

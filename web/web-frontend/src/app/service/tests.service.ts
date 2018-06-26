@@ -60,13 +60,6 @@ export class TestsService {
                 .catch(err => {return this.errorService.handleHttpResponseException(err)});
     }
 
-    getTests(): Observable<Array<TestModel>> {
-        return this.http
-            .get(this.TESTS_URL)
-            .map(TestsService.extractTestsModel)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
-    }
-
     private static extractTestsModel(res: Response):Array<TestModel> {
         let json = res.json();
 

@@ -21,9 +21,6 @@ export class FeaturesTreeService {
     }
 
     initializeTestsTreeFromServer() {
-        this.testsService.getTests().subscribe(
-            testModels => this.setTestModels(testModels)
-        );
         this.featureService.getFeatureTree().subscribe(
             (rootNode: RootServerTreeNode) => {
                 console.log(rootNode);
@@ -32,10 +29,6 @@ export class FeaturesTreeService {
 
             }
         )
-    }
-
-    setTestModels(testModels: Array<TestModel>): void {
-        this.testModels = testModels;
     }
 
     copy(pathToCopy: Path, destinationPath: Path) {

@@ -3,6 +3,7 @@ package net.qutester.service.feature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import net.qutester.common.json.ObjectMapperFactory
+import net.qutester.exception.ValidationException
 import net.qutester.model.feature.Feature
 import net.qutester.model.file.Attachment
 import net.qutester.model.infrastructure.path.Path
@@ -51,14 +52,51 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
 
     fun updateFeature(feature: Feature): Feature {
 
-        val oldPath = feature.path;
-        val newPath = Path(feature.path.directories, FEATURE_NAME, FileType.FEATURE.fileExtension)
+        try {
+            return updateFeatureWithoutErrorHandling(feature)
+        } catch (e: FileAlreadyExistsException) {
+            throw ValidationException().addFiledValidationError(
+                    "name",
+                    "a_resource_with_the_same_name_already_exist"
+            )
+        } catch (e: java.nio.file.AccessDeniedException) {
+            throw ValidationException().addFiledValidationError(
+                    "name",
+                    "access_denied"
+            )
+        } catch (e: Exception) {
+            throw ValidationException().addFiledValidationError(
+                    "name",
+                    "access_denied"
+            )
+        }
+    }
 
-        val fileFeatureAsString = objectMapper.writeValueAsString(feature)
+    private fun updateFeatureWithoutErrorHandling(feature: Feature): Feature {
+        val oldPath = feature.path;
+        var newPath = oldPath;
+
+        val oldName = if (oldPath.directories.isEmpty()) null else oldPath.directories.last()
+        if (oldName != null && oldName != feature.name) {
+            val newDirectoryPath = fileRepositoryService.renameDirectory(
+                    KnownPath(Path(oldPath.directories, null, null), FileType.FEATURE),
+                    feature.name
+            )
+            newPath = newDirectoryPath;
+//TODO Ionut: remove top uncoment bottom
+//            newPath = newDirectoryPath.copy(
+//                    fileName = oldPath.fileName,
+//                    fileExtension = oldPath.fileExtension
+//            )
+        }
+
+        val fileFeatureAsString = objectMapper.writeValueAsString(
+                feature.copy(path = newPath)
+        )
 
         fileRepositoryService.update(
                 RepositoryFileChange(
-                        KnownPath(oldPath, FileType.FEATURE),
+                        KnownPath(newPath, FileType.FEATURE),
                         RepositoryFile(
                                 KnownPath(newPath, FileType.FEATURE),
                                 fileFeatureAsString

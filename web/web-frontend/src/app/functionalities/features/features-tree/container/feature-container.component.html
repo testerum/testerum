@@ -31,15 +31,9 @@
                 <span class="glyphicon glyphicon-plus-sign"></span>
             </div>
 
-            <div title="Create Folder" class="btn btn-default btn-xs btn-group"
+            <div title="Create Feature" class="btn btn-default btn-xs btn-group"
                  (click)="showCreateDirectoryModal(); $event.stopPropagation()">
                 <span class="glyphicon glyphicon-folder-open"></span>
-            </div>
-
-            <div *ngIf="model.editable"
-                 title="Edit Folder" class="btn btn-default btn-xs btn-group"
-                 (click)="showEditDirectoryNameModal(); $event.stopPropagation()">
-                <span class="glyphicon glyphicon-pencil"></span>
             </div>
 
             <div *ngIf="model.editable"

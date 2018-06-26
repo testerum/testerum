@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
-import {FileDirectoryChooserContainerModel} from "../../../../../generic/components/form/file_dir_chooser/model/file-directory-chooser-container.model";
 import {JsonTreeNodeState} from "../../../../../generic/components/json-tree/model/json-tree-node-state.model";
 import {ResultsDirectory} from "../model/results-directory.model";
 

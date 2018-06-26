@@ -13,14 +13,14 @@
                 </div>
                 <div class="col-md-10" *ngIf="isEditMode">
                     <input id="featureName" required
-                           #featureName="ngModel" [(ngModel)]="model.name"
+                           #nameNgModel="ngModel" [(ngModel)]="model.name"
                            type="text" class="form-control" name="featureName">
-                    <div *ngIf="featureName.errors && (featureName.dirty || featureName.touched)"
-                         class="alert alert-danger">
-                        <div [hidden]="!featureName.errors.required">
-                            Name is required
-                        </div>
-                    </div>
+                    <input-error [model]="nameNgModel"
+                                 [errorMessages]="{
+                                        required: 'A name for this feature is required',
+                                        a_resource_with_the_same_name_already_exist: 'A feature with the same name already exists',
+                                        access_denied: 'Couldn\'t create or update this feature. File access is denied'
+                                     }"></input-error>
                 </div>
             </div>
 

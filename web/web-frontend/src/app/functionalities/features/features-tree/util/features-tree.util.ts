@@ -16,7 +16,6 @@ export default class FeaturesTreeUtil {
     static mapServerTreeToFeaturesTreeModel(serverRootNode: RootServerTreeNode): JsonTreeModel {
 
         let rootPackage: FeatureTreeContainerModel = new FeatureTreeContainerModel(null,serverRootNode.name, serverRootNode.path);
-        rootPackage.id = "";
         rootPackage.isRootPackage = true;
         rootPackage.editable = false;
 
