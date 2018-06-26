@@ -17,7 +17,7 @@ export class  FeatureTreeContainerModel extends TestTreeNodeModel implements Jso
     private options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
     constructor(parentContainer: FeatureTreeContainerModel, name: string, path: Path = null) {
-        super(parentContainer, null, name, path);
+        super(parentContainer, name, path);
 
         this.jsonTreeNodeState.showChildren = true;
     }

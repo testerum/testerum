@@ -12,11 +12,9 @@ export class TestTreeNodeModel extends JsonTreePathNode implements Comparable<Te
 
     name: string;
     path: Path;
-    id: string; //TODO: to be removed when we have resources as file
 
-    constructor(parentContainer: FeatureTreeContainerModel, id: string, name: string, path?: Path) {
+    constructor(parentContainer: FeatureTreeContainerModel, name: string, path?: Path) {
         super(parentContainer, path);
-        this.id = id;
         this.name = name;
     }
 

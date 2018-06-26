@@ -15,7 +15,6 @@ import {RootServerTreeNode} from "../../../model/tree/root-server-tree-node.mode
 export class FeaturesTreeService {
 
     testsJsonTreeModel: JsonTreeModel;
-    testModels: Array<TestModel>;
 
     constructor(private testsService: TestsService,
                 private featureService: FeatureService){
@@ -25,17 +24,18 @@ export class FeaturesTreeService {
         this.testsService.getTests().subscribe(
             testModels => this.setTestModels(testModels)
         );
-        // this.featureService.getFeatureTree().subscribe(
-        //     (rootNode: RootServerTreeNode) => {
-        //         console.log(rootNode)
-        //     }
-        // )
+        this.featureService.getFeatureTree().subscribe(
+            (rootNode: RootServerTreeNode) => {
+                console.log(rootNode);
+                this.testsJsonTreeModel =  FeaturesTreeUtil.mapServerTreeToFeaturesTreeModel(rootNode);
+                this.sort();
+
+            }
+        )
     }
 
     setTestModels(testModels: Array<TestModel>): void {
         this.testModels = testModels;
-        this.testsJsonTreeModel =  FeaturesTreeUtil.mapTestModelToTestJsonTreeModel(testModels);
-        this.sort();
     }
 
     copy(pathToCopy: Path, destinationPath: Path) {

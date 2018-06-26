@@ -5,24 +5,22 @@ import {FeatureTreeContainerModel} from "../model/feature-tree-container.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {JsonTreePathUtil} from "../../../../generic/components/json-tree/util/json-tree-path.util";
 import {TestTreeNodeModel} from "../model/test-tree-node.model";
+import {RootServerTreeNode} from "../../../../model/tree/root-server-tree-node.model";
+import {ServerContainerTreeNode} from "../../../../model/tree/server-container-tree-node.model";
+import {JsonTreeContainer} from "../../../../generic/components/json-tree/model/json-tree-container.model";
+import {FeatureServerTreeNode} from "../../../../model/tree/feature-server-tree-node.model";
+import {TestServerTreeNode} from "../../../../model/tree/test-server-tree-node.model";
 
 export default class FeaturesTreeUtil {
 
-    static mapTestModelToTestJsonTreeModel(tests: Array<TestModel>): JsonTreeModel {
+    static mapServerTreeToFeaturesTreeModel(serverRootNode: RootServerTreeNode): JsonTreeModel {
 
-        let rootPackage: FeatureTreeContainerModel = new FeatureTreeContainerModel(null,"Features", new Path([], null, null));
-        rootPackage.id = "Features";
+        let rootPackage: FeatureTreeContainerModel = new FeatureTreeContainerModel(null,serverRootNode.name, serverRootNode.path);
+        rootPackage.id = "";
         rootPackage.isRootPackage = true;
         rootPackage.editable = false;
 
-        for (let test of tests) {
-            let testPath = test.path;
-            let testContainer: FeatureTreeContainerModel = this.getOrCreateTestTreeContainerWithName(testPath, rootPackage);
-
-            testContainer.children.push(
-                FeaturesTreeUtil.getStepTreeNode(testContainer, test)
-            );
-        }
+        FeaturesTreeUtil.mapServerNodeChildrenToTreeNode(serverRootNode, rootPackage);
 
         let treeModel: JsonTreeModel = new JsonTreeModel();
         treeModel.children = [rootPackage];
@@ -32,40 +30,20 @@ export default class FeaturesTreeUtil {
         return treeModel;
     }
 
-    private static getOrCreateTestTreeContainerWithName(stepPath: Path,
-                                                        parentContainer: FeatureTreeContainerModel) {
-        if (!stepPath) {
-            return parentContainer;
+    private static mapServerNodeChildrenToTreeNode(serverContainerNode: ServerContainerTreeNode, uiContainerNode: FeatureTreeContainerModel) {
+        for (const serverNode of serverContainerNode.children) {
+
+            if (serverNode instanceof FeatureServerTreeNode) {
+                let uiFeatureNode = new FeatureTreeContainerModel(uiContainerNode, serverNode.name, serverNode.path);
+                FeaturesTreeUtil.mapServerNodeChildrenToTreeNode(serverNode, uiFeatureNode);
+                uiFeatureNode.editable = true;
+                uiContainerNode.children.push(uiFeatureNode);
+            }
+
+            if (serverNode instanceof TestServerTreeNode) {
+                let uiTestNode = new TestTreeNodeModel(uiContainerNode, serverNode.name, serverNode.path);
+                uiContainerNode.children.push(uiTestNode)
+            }
         }
-
-        let result: FeatureTreeContainerModel = parentContainer;
-        for (let pathDirectory of stepPath.directories) {
-            result = FeaturesTreeUtil.getOrCreateContainer(pathDirectory, result)
-        }
-        return result;
-    }
-
-    private static getOrCreateContainer(childContainerName: string, parentContainer: FeatureTreeContainerModel) {
-        let childContainer: FeatureTreeContainerModel = JsonTreePathUtil.findNode(childContainerName, parentContainer.children) as FeatureTreeContainerModel;
-
-        if(childContainer == null) {
-            let childContainerPath = Path.createInstanceFromPath(parentContainer.path);
-            childContainerPath.directories.push(childContainerName);
-
-            childContainer = new FeatureTreeContainerModel(parentContainer, childContainerName, childContainerPath);
-            childContainer.editable = true;
-            parentContainer.children.push(childContainer);
-        }
-
-        return childContainer;
-    }
-
-    private static getStepTreeNode(parentContainer: FeatureTreeContainerModel, testModel: TestModel): TestTreeNodeModel {
-        return new TestTreeNodeModel(
-            parentContainer,
-            testModel.id,
-            testModel.text,
-            Path.createInstanceFromPath(testModel.path)
-        );
     }
 }
