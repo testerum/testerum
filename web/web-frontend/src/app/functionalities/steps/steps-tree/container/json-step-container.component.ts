@@ -133,6 +133,10 @@ export class JsonStepContainerComponent {
         this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
     }
 
+    isOpenedNode(): boolean {
+        return this.model.jsonTreeNodeState.showChildren
+    }
+
     copyResource(event: any) {
         let stepToCopyTreeNode: StepTreeNodeModel = event.dragData;
         let pathToCopy = stepToCopyTreeNode.path;

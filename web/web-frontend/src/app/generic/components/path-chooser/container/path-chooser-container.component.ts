@@ -102,6 +102,10 @@ export class PathChooserContainerComponent implements OnInit {
         this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
     }
 
+    isOpenedNode(): boolean {
+        return this.model.jsonTreeNodeState.showChildren
+    }
+
     selectNode() {
         this.pathChooserService.selectPathSubject.next(this.model.path)
     }

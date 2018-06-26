@@ -185,4 +185,8 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
             }
         )
     }
+
+    isOpenedNode(): boolean {
+        return this.model.jsonTreeNodeState.showChildren
+    }
 }

@@ -11,7 +11,7 @@
          [allowDrop]="allowDrop()"
          dnd-droppable (onDropSuccess)="copyResource($event)">
 
-        <i class="tree-node-icon {{model.resourceType.iconClass? model.resourceType.iconClass: 'tree-node-folder-icon'}}"></i>
+        <i class="tree-node-icon {{model.resourceType.iconClass}}"></i>
 
         {{model.name}}
 

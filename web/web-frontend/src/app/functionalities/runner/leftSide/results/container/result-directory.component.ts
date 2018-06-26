@@ -29,4 +29,8 @@ export class ResultDirectoryComponent implements OnInit {
     collapseNode() {
         this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
     }
+
+    isOpenedNode(): boolean {
+        return this.model.jsonTreeNodeState.showChildren
+    }
 }

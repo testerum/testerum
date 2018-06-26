@@ -53,4 +53,8 @@ export class FileDirectoryChooserContainerComponent implements OnInit, OnDestroy
     setSelected() {
         this.jsonTreeService.setSelectedNode(this.model);
     }
+
+    isOpenedNode(): boolean {
+        return this.model.jsonTreeNodeState.showChildren
+    }
 }
