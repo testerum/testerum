@@ -2,16 +2,12 @@ package net.qutester.service.step
 
 import net.qutester.exception.ValidationException
 import net.qutester.exception.model.ValidationModel
-import net.qutester.model.enums.ParamTypeEnum
 import net.qutester.model.enums.StepPhaseEnum
 import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.step.*
 import net.qutester.model.text.StepPattern
-import net.qutester.model.text.parts.ParamStepPatternPart
-import net.qutester.model.text.parts.StepPatternPart
-import net.qutester.model.text.parts.TextStepPatternPart
 import net.qutester.service.step.impl.BasicStepsService
 import net.qutester.service.step.impl.ComposedStepsService
 import net.qutester.service.step.impl.StepsResolver
@@ -46,11 +42,9 @@ open class StepService(val composedStepsService: ComposedStepsService,
 
             val basicSteps = basicStepsLoaderFuture.get()
 
-            val basicStepsWithUiTypes: List<BasicStepDef> = mapJavaToUiTypesForSteps(basicSteps)
-
             basicStepsMap.clear();
             basicStepsMap.putAll(
-                    basicStepsWithUiTypes.associateBy({StepHashUtil.calculateStepHash(it)}, {it})
+                    basicSteps.associateBy({StepHashUtil.calculateStepHash(it)}, {it})
             )
 
             val unresolvedComposedSteps = composedStepsLoaderFuture.get();
@@ -63,30 +57,6 @@ open class StepService(val composedStepsService: ComposedStepsService,
             // - if there was no exception, at this point all threads have finished
             // - if there was an exception, we don't care
             threadExecutor.shutdownNow()
-        }
-    }
-
-    private fun mapJavaToUiTypesForSteps(basicSteps: List<BasicStepDef>): List<BasicStepDef> = basicSteps.map { mapJavaToUiTypesForStep(it) }
-
-    private fun mapJavaToUiTypesForStep(stepDef: BasicStepDef): BasicStepDef = stepDef.copy(stepPattern = mapJavaToUiTypesForPattern(stepDef))
-
-    private fun mapJavaToUiTypesForPattern(stepDef: BasicStepDef): StepPattern {
-        val resolvedParams: List<StepPatternPart> = stepDef.stepPattern.patternParts.map { paramPart: StepPatternPart ->
-            mapJavaToUiTypesForPatternPart(paramPart)
-        }
-
-        return stepDef.stepPattern.copy(patternParts = resolvedParams)
-    }
-
-    private fun mapJavaToUiTypesForPatternPart(paramPart: StepPatternPart): StepPatternPart {
-        return when (paramPart) {
-            is TextStepPatternPart  -> paramPart
-            is ParamStepPatternPart -> {
-                val javaClassName: String = paramPart.type
-                val uiParamType: String = ParamTypeEnum.getByClass(javaClassName)?.name ?: javaClassName
-
-                paramPart.copy(type = uiParamType)
-            }
         }
     }
 

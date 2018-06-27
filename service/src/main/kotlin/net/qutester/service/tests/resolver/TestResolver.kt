@@ -1,7 +1,6 @@
 package net.qutester.service.tests.resolver
 
 import net.qutester.model.arg.Arg
-import net.qutester.model.enums.ParamTypeEnum
 import net.qutester.model.step.StepCall
 import net.qutester.model.step.StepDef
 import net.qutester.model.step.UndefinedStepDef
@@ -47,10 +46,7 @@ class TestResolver(private val stepService: StepService) {
         for ((i: Int, arg: Arg) in args.withIndex()) {
             val paramPart: ParamStepPatternPart = paramParts[i]
 
-            val javaClassName: String = paramPart.type
-            val uiParamType: String = ParamTypeEnum.getByClass(javaClassName)?.name ?: javaClassName
-
-            result += arg.copy(type = uiParamType)
+            result += arg.copy(type = paramPart.type)
         }
 
         return result
