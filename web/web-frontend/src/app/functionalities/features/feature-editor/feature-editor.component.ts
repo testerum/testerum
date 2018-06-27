@@ -14,6 +14,8 @@ import {Path} from "../../../model/infrastructure/path/path.model";
 import {MarkdownEditorComponent} from "../../../generic/components/markdown-editor/markdown-editor.component";
 import {Message} from "primeng/api";
 import {Attachment} from "../../../model/file/attachment.model";
+import {FormUtil} from "../../../utils/form.util";
+import {NgForm} from "@angular/forms";
 
 @Component({
     moduleId: module.id,
@@ -35,12 +37,10 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     pathSubscription: Subscription;
     fileUploadSubscription: Subscription;
 
+    @ViewChild(NgForm) form: NgForm;
     @ViewChild(MarkdownEditorComponent) markdownEditor: MarkdownEditorComponent;
 
     pathForTitle: string = "";
-
-    uploadedFiles: any[] = [];
-    msgs: Message[];
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -129,11 +129,17 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
         if(this.isCreateAction) {
             this.featureService
                 .create(this.model)
-                .subscribe(savedModel => this.afterSaveHandler(savedModel));
+                .subscribe(
+                    savedModel => this.afterSaveHandler(savedModel),
+                    error => FormUtil.setErrorsToForm(this.form, error)
+                );
         } else {
             this.featureService
                 .update(this.model)
-                .subscribe(savedModel => this.afterSaveHandler(savedModel));
+                .subscribe(
+                    savedModel => this.afterSaveHandler(savedModel),
+                    error => FormUtil.setErrorsToForm(this.form, error)
+                );
         }
     }
 

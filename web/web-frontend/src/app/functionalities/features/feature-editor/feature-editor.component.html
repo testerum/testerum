@@ -6,15 +6,16 @@
         <form #form="ngForm" class="form-horizontal">
 
             <div class="form-group row">
-                <label class="col-md-1 control-label col-form-label" for="featureName">Name</label>
+                <label class="col-md-1 control-label col-form-label" for="name">Name</label>
 
                 <div class="col-md-11 form-value" *ngIf="!isEditMode">
                     {{model.name || ""}}
                 </div>
                 <div class="col-md-10" *ngIf="isEditMode">
-                    <input id="featureName" required
+                    <input id="name" name="name"
+                           required
                            #nameNgModel="ngModel" [(ngModel)]="model.name"
-                           type="text" class="form-control" name="featureName">
+                           type="text" class="form-control" >
                     <input-error [model]="nameNgModel"
                                  [errorMessages]="{
                                         required: 'A name for this feature is required',

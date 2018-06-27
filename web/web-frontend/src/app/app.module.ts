@@ -38,7 +38,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ManualTestsModule} from "./manual-tests/manual-tests.module";
 import {ArgValueValidatorDirective} from "./generic/components/step-call-tree/arg-modal/validator/arg-value-validator.directive";
 import {FeatureService} from "./service/feature.service";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AttachmentsService} from "./service/attachments.service";
 
 @NgModule({
@@ -79,7 +79,6 @@ import {AttachmentsService} from "./service/attachments.service";
 
         ApplicationEventBus,
         ConfigService,
-        ErrorService,
 
         TestWebSocketService,
         StepsService,
@@ -95,6 +94,9 @@ import {AttachmentsService} from "./service/attachments.service";
         ResourceService,
         RdbmsService,
         HttpService,
+
+        ErrorService,
+        { provide: HTTP_INTERCEPTORS, useExisting: ErrorService,  multi: true }
     ],
     entryComponents: [
         FileDirChooserComponent,

@@ -64,11 +64,6 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                     "name",
                     "access_denied"
             )
-        } catch (e: Exception) {
-            throw ValidationException().addFiledValidationError(
-                    "name",
-                    "access_denied"
-            )
         }
     }
 
@@ -82,12 +77,12 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                     KnownPath(Path(oldPath.directories, null, null), FileType.FEATURE),
                     feature.name
             )
-//            newPath = newDirectoryPath;
+            throw RuntimeException("Test exception from Ionut")
 //TODO Ionut: remove top uncoment bottom
-            newPath = newDirectoryPath.copy(
-                    fileName = oldPath.fileName,
-                    fileExtension = oldPath.fileExtension
-            )
+//            newPath = newDirectoryPath.copy(
+//                    fileName = oldPath.fileName,
+//                    fileExtension = oldPath.fileExtension
+//            )
         }
 
         val fileFeatureAsString = objectMapper.writeValueAsString(

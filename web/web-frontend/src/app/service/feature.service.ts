@@ -52,8 +52,7 @@ export class FeatureService {
 
         return this.http
             .post<any>(this.FEATURE_URL, body, httpOptions)
-            .map(FeatureService.extractFeature)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .map(FeatureService.extractFeature);
     }
 
     delete(path: Path): Observable<void> {
@@ -79,8 +78,7 @@ export class FeatureService {
 
         return this.http
             .put<any>(this.FEATURE_URL, body, httpOptions)
-            .map(FeatureService.extractFeature)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .map(FeatureService.extractFeature);
     }
 
     private static extractFeature(res:  HttpResponse<Feature>): Feature {
