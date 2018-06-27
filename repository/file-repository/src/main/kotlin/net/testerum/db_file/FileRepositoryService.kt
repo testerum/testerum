@@ -163,9 +163,11 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
                         rootPath.toString() + File.separator
                 )
 
+                val relativePathToRoot = getRelativePathFromAbsolutePath(rootPath.resolve(relativePathAsString), parentPath.fileType)
+
                 result.add(
                         RepositoryFile(
-                                KnownPath(parentPath.toString() + "/" + relativePathAsString, parentPath.fileType),
+                                KnownPath(relativePathToRoot.toString(), parentPath.fileType),
                                 String(Files.readAllBytes(it))
                         )
                 )

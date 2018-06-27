@@ -6,7 +6,6 @@ import {FeatureTreeContainerModel} from "./model/feature-tree-container.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {JsonTreePathUtil} from "../../../generic/components/json-tree/util/json-tree-path.util";
 import {TestsService} from "../../../service/tests.service";
-import {TestModel} from "../../../model/test/test.model";
 import FeaturesTreeUtil from "./util/features-tree.util";
 import {FeatureService} from "../../../service/feature.service";
 import {RootServerTreeNode} from "../../../model/tree/root-server-tree-node.model";
