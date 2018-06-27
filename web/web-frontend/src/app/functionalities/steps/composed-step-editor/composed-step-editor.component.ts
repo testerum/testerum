@@ -21,6 +21,7 @@ import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/st
 import {UpdateComposedStepDef} from "../../../model/step/UpdateComposedStepDef";
 import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dialog/update-incompatibility-dialog.component";
 import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
+import {ResourceMapEnum} from "../../resources/editors/resource-map.enum";
 
 @Component({
     moduleId: module.id,
@@ -75,6 +76,10 @@ export class ComposedStepEditorComponent implements OnInit {
         stepCall.stepDef = choseStep;
         for (let stepParam of choseStep.stepPattern.getParamParts()) {
             let valueArg = new Arg();
+            valueArg.serverType = stepParam.serverType;
+            valueArg.uiType = stepParam.uiType;
+            valueArg.content = ResourceMapEnum.getResourceMapEnumByServerType(stepParam.uiType).getNewInstance();
+
             stepCall.args.push(valueArg);
         }
 
