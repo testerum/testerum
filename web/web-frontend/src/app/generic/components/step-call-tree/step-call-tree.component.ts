@@ -41,22 +41,25 @@ export class StepCallTreeComponent implements OnInit, OnChanges, DoCheck {
     getTreeModel(): JsonTreeModel {
         return this.stepCallTreeService.jsonTreeModel;
     }
-/*
+
     ngOnChanges(changes: SimpleChanges): void {
-        StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel);
+        // StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel);
+        if (this.stepCalls != this.stepCallTreeService.stepCalls) {
+            this.stepCallTreeService.initTreeModel(this.stepCalls)
+        }
     }
 
     ngDoCheck(): void {
-        if (this.stepCalls.length != this.jsonTreeModel.children.length) {
-            let isAddStepAction = this.stepCalls.length > this.jsonTreeModel.children.length;
-            StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel);
-
-            if (isAddStepAction) {
-                let lastStepCallNode: StepCallContainerModel = this.jsonTreeModel.children[this.jsonTreeModel.children.length-1] as StepCallContainerModel;
-                if (lastStepCallNode.stepCall.args.length != 0) {
-                    lastStepCallNode.jsonTreeNodeState.showChildren = true;
-                }
-            }
-        }
-    }*/
+        // if (this.stepCalls.length != this.jsonTreeModel.children.length) {
+        //     let isAddStepAction = this.stepCalls.length > this.jsonTreeModel.children.length;
+        //     StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel);
+        //
+        //     if (isAddStepAction) {
+        //         let lastStepCallNode: StepCallContainerModel = this.jsonTreeModel.children[this.jsonTreeModel.children.length-1] as StepCallContainerModel;
+        //         if (lastStepCallNode.stepCall.args.length != 0) {
+        //             lastStepCallNode.jsonTreeNodeState.showChildren = true;
+        //         }
+        //     }
+        // }
+    }
 }

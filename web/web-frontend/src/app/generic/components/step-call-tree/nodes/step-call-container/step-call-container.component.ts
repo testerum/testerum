@@ -101,9 +101,10 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     public removeStep(): void {
-        let stepIndex = this.findStepIndex();
-        this.model.parentContainer.getChildren().splice(stepIndex, 1);
-        this.triggerStepOrderChangedEvent();
+        if (this.stepCallOrderChangeSubscription) {
+            this.stepCallOrderChangeSubscription.unsubscribe();
+        }
+        this.stepCallTreeService.removeStepCall(this.model);
     }
 
     private findStepIndex(): number {

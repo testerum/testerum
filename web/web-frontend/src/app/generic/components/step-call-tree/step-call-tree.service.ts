@@ -3,6 +3,9 @@ import {ArgModalComponent} from "./arg-modal/arg-modal.component";
 import {StepCall} from "../../../model/step-call.model";
 import {JsonTreeModel} from "../json-tree/model/json-tree.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
+import {StepCallContainerComponent} from "./nodes/step-call-container/step-call-container.component";
+import {ArrayUtil} from "../../../utils/array.util";
+import {StepCallContainerModel} from "./model/step-call-container.model";
 
 @Injectable()
 export class StepCallTreeService {
@@ -34,5 +37,12 @@ export class StepCallTreeService {
         let stepCallContainer = StepCallTreeUtil.createStepCallContainerWithChildren(stepCall, this.jsonTreeModel);
         stepCallContainer.jsonTreeNodeState.showChildren = true;
         this.jsonTreeModel.getChildren().push(stepCallContainer)
+    }
+
+    removeStepCall(stepCallContainer: StepCallContainerModel) {
+        ArrayUtil.removeElementFromArray(this.stepCalls, stepCallContainer.stepCall);
+        ArrayUtil.removeElementFromArray(this.jsonTreeModel.getChildren(), stepCallContainer);
+        this.triggerStepCallOrderChangeEvent()
+
     }
 }
