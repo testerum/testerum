@@ -4,7 +4,6 @@ import net.qutester.model.feature.Feature
 import net.qutester.model.file.Attachment
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.tree.RootTreeNode
-import net.qutester.model.tree.TreeNode
 import net.qutester.service.feature.FeatureService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -17,36 +16,36 @@ class FeatureController(private val featureService: FeatureService) {
     @RequestMapping (path = ["tree"], method = [RequestMethod.GET])
     @ResponseBody
     fun getFeaturesTree(): RootTreeNode {
-        return featureService.getFeaturesTree();
+        return featureService.getFeaturesTree()
     }
 
     @RequestMapping (method = [RequestMethod.GET])
     @ResponseBody
     fun getAllFeatures(): List<Feature> {
-        return featureService.getAllFeatures();
+        return featureService.getAllFeatures()
     }
 
     @RequestMapping (params = ["path"], method = [RequestMethod.GET])
     @ResponseBody
     fun getFeatureAtPath(@RequestParam(value = "path") path:String): Feature? {
-        return featureService.getFeatureAtPath(Path.createInstance(path));
+        return featureService.getFeatureAtPath(Path.createInstance(path))
     }
 
     @RequestMapping (params = ["path"], method = [RequestMethod.DELETE])
     fun delete(@RequestParam(value = "path") path:String) {
-        featureService.remove(Path.createInstance(path));
+        featureService.remove(Path.createInstance(path))
     }
 
     @RequestMapping (method = [RequestMethod.POST])
     @ResponseBody
     fun create(@RequestBody feature: Feature): Feature {
-        return featureService.createFeature(feature);
+        return featureService.createFeature(feature)
     }
 
     @RequestMapping (method = [RequestMethod.PUT])
     @ResponseBody
     fun update(@RequestBody updateTestModel: Feature): Feature {
-        return featureService.updateFeature(updateTestModel);
+        return featureService.updateFeature(updateTestModel)
     }
 
     @RequestMapping (
