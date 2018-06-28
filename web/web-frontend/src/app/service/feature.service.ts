@@ -12,8 +12,7 @@ export class FeatureService {
 
     private FEATURE_URL = "/rest/features";
 
-    constructor(private http: HttpClient) {
-    }
+    constructor(private http: HttpClient) {}
 
     getFeatureTree(): Observable<RootServerTreeNode> {
 
