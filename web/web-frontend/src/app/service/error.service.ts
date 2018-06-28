@@ -33,24 +33,24 @@ export class ErrorService implements HttpInterceptor {
                                 if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
                                     let validationException = new ValidationErrorResponse().deserialize(errorResponse);
                                     console.warn(validationException);
-                                    return;
-                                }
 
+                                    return Observable.empty();
+                                }
                                 if (errorResponse.errorCode.toString() == ErrorCode.GENERIC_ERROR.enumAsString) {
                                     let fullLogErrorResponse = new FullLogErrorResponse().deserialize(errorResponse);
                                     this.errorEventEmitter.emit(fullLogErrorResponse);
                                     console.error(fullLogErrorResponse);
-                                    return;
-                                }
 
-                                this.errorEventEmitter.emit(errorResponse);
-                                console.error(errorResponse);
+                                    return Observable.empty();
+                                }
                             }
                         }
                     }
-
-                    return Observable.throw(httpErrorResponse)
                 }
+                this.errorEventEmitter.emit(err);
+                console.error(err);
+
+                return Observable.empty();
             }
         );
     }

@@ -8,7 +8,6 @@ import {Arg} from "../../../model/arg/arg.model";
 import {StepsService} from "../../../service/steps.service";
 import {StepsTreeService} from "../steps-tree/steps-tree.service";
 import {StepChooserComponent} from "../../../generic/components/step-chooser/step-chooser.component";
-import {StepListService} from "./step-list/step-list.service";
 import {StepTreeNodeModel} from "../steps-tree/model/step-tree-node.model";
 import {StepTreeContainerModel} from "../steps-tree/model/step-tree-container.model";
 import {IdUtils} from "../../../utils/id.util";
@@ -49,7 +48,6 @@ export class ComposedStepEditorComponent implements OnInit {
                 private route: ActivatedRoute,
                 private stepsService: StepsService,
                 private stepsTreeService: StepsTreeService,
-                private stepListService: StepListService,
                 private errorService: ErrorService,
                 private applicationEventBus: ApplicationEventBus) {
     }
@@ -84,7 +82,6 @@ export class ComposedStepEditorComponent implements OnInit {
         }
 
         this.model.addStepCall(stepCall);
-        this.stepListService.triggerStepOrderChangedEvent();
     }
 
     enableEditTestMode(): void {

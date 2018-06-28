@@ -13,15 +13,9 @@ import {JsonTreeService} from "./json-tree.service";
     templateUrl: 'json-tree.component.html',
     styleUrls:['json-tree.component.css']
 })
-export class JsonTreeComponent implements OnInit {
+export class JsonTreeComponent {
 
     @Input() treeModel:JsonTreeModel ;
     @Input() modelComponentMapping: ModelComponentMapping;
     @Input() allowContainerSelection: boolean = false;
-
-    constructor(private jsonTreeService: JsonTreeService) {
-    }
-
-    ngOnInit(): void {
-    }
 }

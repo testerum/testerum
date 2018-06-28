@@ -9,7 +9,6 @@ import {StepCall} from "../../../model/step-call.model";
 import {Arg} from "../../../model/arg/arg.model";
 import {StepChoseHandler} from "../../../generic/components/step-chooser/step-choosed-handler.interface";
 import {StepChooserComponent} from "../../../generic/components/step-chooser/step-chooser.component";
-import {StepListService} from "../../steps/composed-step-editor/step-list/step-list.service";
 import {StepDef} from "../../../model/step-def.model";
 import {FeaturesTreeService} from "../features-tree/features-tree.service";
 import {IdUtils} from "../../../utils/id.util";
@@ -18,6 +17,7 @@ import {StepCallTreeService} from "../../../generic/components/step-call-tree/st
 import {ResourceMapEnum} from "../../resources/editors/resource-map.enum";
 import {Subscription} from "rxjs/Subscription";
 import {Path} from "../../../model/infrastructure/path/path.model";
+import {StepCallTreeComponent} from "../../../generic/components/step-call-tree/step-call-tree.component";
 
 @Component({
     moduleId: module.id,
@@ -28,6 +28,8 @@ import {Path} from "../../../model/infrastructure/path/path.model";
 export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler {
 
     @ViewChild(StepChooserComponent) stepChooserComponent: StepChooserComponent;
+    @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
+
     StepPhaseEnum = StepPhaseEnum;
     testModel: TestModel = new TestModel;
     isEditExistingTest: boolean; //TODO: is this used?
@@ -42,7 +44,6 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
                 private testsTreeService: FeaturesTreeService,
                 private testsService: TestsService,
                 private testsRunnerService: TestsRunnerService,
-                private stepListService: StepListService,
                 private stepCallTreeService: StepCallTreeService) {
     }
 
@@ -80,7 +81,6 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
         }
 
         this.testModel.stepCalls.push(stepCall);
-        this.stepListService.triggerStepOrderChangedEvent();
     }
 
     setEditMode(isEditMode: boolean) {

@@ -11,9 +11,6 @@ import {DndModule} from "ng2-dnd";
 import {ComposedStepEditorComponent} from "./composed-step-editor/composed-step-editor.component";
 import {ComposedStepEditorResolver} from "./composed-step-editor/composed-step-editor.resolver";
 import {AngularSplitModule} from "angular-split";
-import {StepListComponent} from "./composed-step-editor/step-list/step-list.component";
-import {StepListService} from "./composed-step-editor/step-list/step-list.service";
-import {StepComponent} from "./composed-step-editor/step-list/step/step.component";
 import {ResourcesModule} from "../resources/resources.module";
 import {JsonStepContainerComponent} from "./steps-tree/container/json-step-container.component";
 import {JsonStepNodeComponent} from "./steps-tree/container/node/json-step-node.component";
@@ -46,16 +43,12 @@ import {ComposedStepParametersComponent} from "./composed-step-editor/composed-s
         StepsComponent,
         ComposedStepEditorComponent,
         UpdateIncompatibilityDialogComponent,
-        StepListComponent,
-        StepComponent,
     ],
     declarations: [
         JsonStepContainerComponent,
         JsonStepNodeComponent,
 
         StepsComponent,
-        StepListComponent,
-        StepComponent,
 
         ComposedStepEditorComponent,
         UpdateIncompatibilityDialogComponent,
@@ -71,7 +64,6 @@ import {ComposedStepParametersComponent} from "./composed-step-editor/composed-s
     providers: [
         StepsService,
         StepsTreeService,
-        StepListService,
 
         ComposedStepEditorResolver,
         BasicStepEditorResolver,
