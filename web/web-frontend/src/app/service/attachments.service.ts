@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import {ErrorService} from "./error.service";
 import {Path} from "../model/infrastructure/path/path.model";
 import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {Attachment} from "../model/file/attachment.model";
@@ -12,8 +11,7 @@ export class AttachmentsService {
 
     private ATTACHMENTS_URL = "/rest/attachments";
 
-    constructor(private http: HttpClient,
-                private errorService: ErrorService) {
+    constructor(private http: HttpClient) {
     }
 
     getAttachments(path: Path): Observable<Array<Attachment>> {
@@ -24,8 +22,7 @@ export class AttachmentsService {
 
         return this.http
             .get<any>(this.ATTACHMENTS_URL, httpOptions)
-            .map(AttachmentsService.extractAttachments)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .map(AttachmentsService.extractAttachments);
     }
 
     delete(path: Path): Observable<void> {
@@ -35,8 +32,7 @@ export class AttachmentsService {
         };
 
         return this.http
-            .delete<any>(this.ATTACHMENTS_URL, httpOptions)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .delete<any>(this.ATTACHMENTS_URL, httpOptions);
     }
 
     private static extractAttachments(res:  HttpResponse<any>): Array<Attachment> {

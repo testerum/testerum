@@ -3,7 +3,6 @@ import {ArgModalComponent} from "./arg-modal/arg-modal.component";
 import {StepCall} from "../../../model/step-call.model";
 import {JsonTreeModel} from "../json-tree/model/json-tree.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
-import {StepCallContainerComponent} from "./nodes/step-call-container/step-call-container.component";
 import {ArrayUtil} from "../../../utils/array.util";
 import {StepCallContainerModel} from "./model/step-call-container.model";
 
