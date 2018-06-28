@@ -21,6 +21,7 @@ import {UpdateComposedStepDef} from "../../../model/step/UpdateComposedStepDef";
 import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dialog/update-incompatibility-dialog.component";
 import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
 import {ResourceMapEnum} from "../../resources/editors/resource-map.enum";
+import {StepCallTreeService} from "../../../generic/components/step-call-tree/step-call-tree.service";
 
 @Component({
     moduleId: module.id,
@@ -48,6 +49,7 @@ export class ComposedStepEditorComponent implements OnInit {
                 private route: ActivatedRoute,
                 private stepsService: StepsService,
                 private stepsTreeService: StepsTreeService,
+                private stepCallTreeService: StepCallTreeService,
                 private errorService: ErrorService,
                 private applicationEventBus: ApplicationEventBus) {
     }
@@ -81,7 +83,7 @@ export class ComposedStepEditorComponent implements OnInit {
             stepCall.args.push(valueArg);
         }
 
-        this.model.addStepCall(stepCall);
+        this.stepCallTreeService.addStepCall(stepCall);
     }
 
     enableEditTestMode(): void {

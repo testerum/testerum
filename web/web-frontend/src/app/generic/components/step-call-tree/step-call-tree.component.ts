@@ -22,8 +22,6 @@ export class StepCallTreeComponent implements OnInit, OnChanges, DoCheck {
 
     @Input() stepCalls: Array<StepCall> = [];
 
-    jsonTreeModel: JsonTreeModel = new JsonTreeModel();
-
     @ViewChild(ArgModalComponent) argModal: ArgModalComponent;
 
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
@@ -37,8 +35,13 @@ export class StepCallTreeComponent implements OnInit, OnChanges, DoCheck {
 
     ngOnInit(): void {
         this.stepCallTreeService.argModal = this.argModal;
+        this.stepCallTreeService.initTreeModel(this.stepCalls)
     }
 
+    getTreeModel(): JsonTreeModel {
+        return this.stepCallTreeService.jsonTreeModel;
+    }
+/*
     ngOnChanges(changes: SimpleChanges): void {
         StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel);
     }
@@ -55,5 +58,5 @@ export class StepCallTreeComponent implements OnInit, OnChanges, DoCheck {
                 }
             }
         }
-    }
+    }*/
 }

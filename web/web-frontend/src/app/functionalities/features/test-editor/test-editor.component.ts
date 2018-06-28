@@ -28,7 +28,6 @@ import {StepCallTreeComponent} from "../../../generic/components/step-call-tree/
 export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler {
 
     @ViewChild(StepChooserComponent) stepChooserComponent: StepChooserComponent;
-    @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
 
     StepPhaseEnum = StepPhaseEnum;
     testModel: TestModel = new TestModel;
@@ -80,7 +79,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
             stepCall.args.push(valueArg)
         }
 
-        this.testModel.stepCalls.push(stepCall);
+        this.stepCallTreeService.addStepCall(stepCall);
     }
 
     setEditMode(isEditMode: boolean) {

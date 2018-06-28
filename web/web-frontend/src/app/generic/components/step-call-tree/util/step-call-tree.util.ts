@@ -21,36 +21,39 @@ export class StepCallTreeUtil {
     private static mapChildrenStepCallsToJsonTreeModel(stepCalls: Array<StepCall>, parentNode: JsonTreeContainer): Array<StepCallContainerModel> {
 
         let children: Array<StepCallContainerModel> = [];
-        let stepCallIndex = 0;
         for (const stepCall of stepCalls) {
-            let childStepCallContainerModel = StepCallTreeUtil.createStepCallContainer(stepCall, parentNode, stepCallIndex);
+            let childStepCallContainerModel = this.createStepCallContainerWithChildren(stepCall, parentNode);
             children.push(childStepCallContainerModel);
-
-            if (stepCall.args.length > 0) {
-                let paramsContainer = new ParamsContainerModel(childStepCallContainerModel);
-                paramsContainer.jsonTreeNodeState.showChildren = true;
-                childStepCallContainerModel.children.push(
-                    paramsContainer
-                );
-
-                stepCall.args.forEach((arg, index) => {
-                    let stepPatternParam: ParamStepPatternPart = stepCall.getStepPatternParamByIndex(index);
-                    let argNode = new ArgNodeModel(paramsContainer, arg, stepPatternParam);
-                    paramsContainer.children.push(argNode)
-                });
-            }
-
-            if(stepCall.stepDef instanceof ComposedStepDef) {
-                let subStepsContainer = new SubStepsContainerModel(childStepCallContainerModel);
-                childStepCallContainerModel.children.push(
-                    subStepsContainer
-                );
-
-                subStepsContainer.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCall.stepDef.stepCalls, subStepsContainer);
-            }
-            stepCallIndex++;
         }
         return children;
+    }
+
+    private static createStepCallContainerWithChildren(stepCall, parentNode: JsonTreeContainer) {
+        let childStepCallContainerModel = StepCallTreeUtil.createStepCallContainer(stepCall, parentNode, parentNode.getChildren().length);
+
+        if (stepCall.args.length > 0) {
+            let paramsContainer = new ParamsContainerModel(childStepCallContainerModel);
+            paramsContainer.jsonTreeNodeState.showChildren = true;
+            childStepCallContainerModel.children.push(
+                paramsContainer
+            );
+
+            stepCall.args.forEach((arg, index) => {
+                let stepPatternParam: ParamStepPatternPart = stepCall.getStepPatternParamByIndex(index);
+                let argNode = new ArgNodeModel(paramsContainer, arg, stepPatternParam);
+                paramsContainer.children.push(argNode)
+            });
+        }
+
+        if (stepCall.stepDef instanceof ComposedStepDef) {
+            let subStepsContainer = new SubStepsContainerModel(childStepCallContainerModel);
+            childStepCallContainerModel.children.push(
+                subStepsContainer
+            );
+
+            subStepsContainer.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCall.stepDef.stepCalls, subStepsContainer);
+        }
+        return childStepCallContainerModel;
     }
 
     private static createStepCallContainer(stepCall: StepCall, parentNode: JsonTreeContainer, indexInParent:number): StepCallContainerModel {
