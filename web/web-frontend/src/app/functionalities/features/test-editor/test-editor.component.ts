@@ -100,7 +100,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
 
     cancelAction(): void {
         if (this.isCreateAction) {
-            this.router.navigate(["features/tests"]);
+            this.router.navigate(["features"]);
         } else {
             this.testsService.getTest(this.testModel.path.toString()).subscribe(
                 result => {
@@ -114,7 +114,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
     deleteAction(): void {
         this.testsService.delete(this.testModel).subscribe(restul => {
             this.testsTreeService.initializeTestsTreeFromServer();
-            this.router.navigate(["features/tests"]);
+            this.router.navigate(["features"]);
         });
     }
 
