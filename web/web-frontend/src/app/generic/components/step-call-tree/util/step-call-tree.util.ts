@@ -28,7 +28,7 @@ export class StepCallTreeUtil {
         return children;
     }
 
-    private static createStepCallContainerWithChildren(stepCall, parentNode: JsonTreeContainer) {
+    public static createStepCallContainerWithChildren(stepCall, parentNode: JsonTreeContainer) {
         let childStepCallContainerModel = StepCallTreeUtil.createStepCallContainer(stepCall, parentNode, parentNode.getChildren().length);
 
         if (stepCall.args.length > 0) {

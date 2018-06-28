@@ -1,17 +1,11 @@
-
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {ErrorService} from "./error.service";
-import {Feature} from "../model/feature/feature.model";
 import {Path} from "../model/infrastructure/path/path.model";
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
-import {Headers, RequestOptions, Response} from "@angular/http";
-import {ManualTestsService} from "../manual-tests/tests/service/manual-tests.service";
-import {ManualTestModel} from "../manual-tests/model/manual-test.model";
+import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
 import {Attachment} from "../model/file/attachment.model";
-import {FeatureService} from "./feature.service";
 
 @Injectable()
 export class AttachmentsService {

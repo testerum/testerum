@@ -1,11 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {HttpResponseVerifyHeadersList} from "./model/http-response-verify-headers-list.model";
-import {ObjectUtil} from "../../../../../../utils/object.util";
 import {HttpResponseVerifyService} from "../http-response-verify.service";
 import {HttpResponseHeaderVerify} from "../model/http-response-header-verify.model";
-import {ConfigService} from "../../../../../../service/config.service";
-import {Config} from "../../../../../../model/infrastructure/config.model";
 import {HttpResponseVerifyHeadersCompareMode} from "../model/enums/http-response-verify-headers-compare-mode.enum";
 import {ArrayUtil} from "../../../../../../utils/array.util";
 

@@ -61,8 +61,6 @@
         <constructor-arg name="resourcesService" ref="resourcesService"/>
     </bean>
 
-    <bean id="configController" class="net.qutester.controller.config.ConfigController"/>
-
     <bean id="fileSystemController" class="net.qutester.controller.config.FileSystemController">
         <constructor-arg name="fileSystemService" ref="fileSytemService"/>
     </bean>

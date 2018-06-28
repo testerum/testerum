@@ -18,7 +18,6 @@ import {ResourcesModule} from "./functionalities/resources/resources.module";
 import {RdbmsService} from "./service/resources/rdbms/rdbms.service";
 import {ResourceService} from "./service/resources/resource.service";
 import {HttpService} from "./service/resources/http/http.service";
-import {ConfigService} from "./service/config.service";
 import {ErrorService} from "./service/error.service";
 import {ApplicationEventBus} from "./event-bus/application.eventbus";
 import {VariablesComponent} from "./functionalities/variables/variables.component";
@@ -78,7 +77,6 @@ import {AttachmentsService} from "./service/attachments.service";
         SetupGuard,
 
         ApplicationEventBus,
-        ConfigService,
 
         TestWebSocketService,
         StepsService,
