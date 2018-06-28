@@ -21,7 +21,7 @@ export class AttachmentsService {
         };
 
         return this.http
-            .get<any>(this.ATTACHMENTS_URL, httpOptions)
+            .get<Array<Attachment>>(this.ATTACHMENTS_URL, httpOptions)
             .map(AttachmentsService.extractAttachments);
     }
 
@@ -32,14 +32,14 @@ export class AttachmentsService {
         };
 
         return this.http
-            .delete<any>(this.ATTACHMENTS_URL, httpOptions);
+            .delete<void>(this.ATTACHMENTS_URL, httpOptions);
     }
 
-    private static extractAttachments(res:  HttpResponse<any>): Array<Attachment> {
+    private static extractAttachments(res: Array<Attachment>): Array<Attachment> {
         let result: Array<Attachment> = [];
         if(res == null) return result;
 
-        for (const resAttachment of res.body) {
+        for (const resAttachment of res) {
             result.push(
                 new Attachment().deserialize(resAttachment)
             )

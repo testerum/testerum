@@ -13,11 +13,11 @@ export class SettingsService {
 
     getSettings(): Observable<Array<Setting>> {
         return this.http
-            .get<any>(this.BASE_URL)
+            .get<Array<Setting>>(this.BASE_URL)
             .map(this.extractSettings);
     }
 
-    private extractSettings(res:  HttpResponse<Array<Setting>>): Array<Setting> {
+    private extractSettings(res:  Array<Setting>): Array<Setting> {
         let response: Array<Setting> = [];
         for (let settingAsJson of res) {
             let setting = new Setting().deserialize(settingAsJson);
@@ -36,7 +36,7 @@ export class SettingsService {
         };
 
         return this.http
-            .post<any>(this.BASE_URL, body, httpOptions)
+            .post<Array<Setting>>(this.BASE_URL, body, httpOptions)
             .map(this.extractSettings);
     }
 }

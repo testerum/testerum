@@ -1,10 +1,8 @@
 import {Injectable} from "@angular/core";
-import {Http, RequestOptions, Response, Headers} from "@angular/http";
 import { Observable } from 'rxjs/Observable';
-import {ErrorService} from "./error.service";
-import {Router} from "@angular/router";
 import {Subject} from "rxjs/Rx";
 import {Setup} from "../functionalities/config/setup/model/setup.model";
+import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 
 @Injectable()
 export class SetupService {
@@ -13,10 +11,7 @@ export class SetupService {
 
     private configIsSet: boolean = false;
 
-    constructor(private router: Router,
-                private http:Http,
-                private errorService: ErrorService) {
-    }
+    constructor(private http: HttpClient) {}
 
     isConfigSet(): Observable<boolean> {
         if(this.configIsSet) {
@@ -26,41 +21,29 @@ export class SetupService {
         }
 
         return this.http
-            .get(this.START_CONFIG_URL + "/is_completed")
-            .map(this.extractBooleanResponse)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .get<boolean>(this.START_CONFIG_URL + "/is_completed")
+            .map(this.extractBooleanResponse);
     }
 
-    private extractBooleanResponse(res: Response):boolean {
-        let response = res.json();
-        this.configIsSet = response;
-
-        return response;
+    private extractBooleanResponse(res:  boolean):boolean {
+        this.configIsSet = res;
+        return res;
     }
 
     save(model: Setup): Observable<Setup> {
         let body = model.serialize();
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
-        let responseSubject: Subject<Setup> = new Subject<Setup>();
-        this.http
-            .post(this.START_CONFIG_URL, body, options)
-            .subscribe(
-                (response: Response) => {
-                    responseSubject.next(
-                        SetupService.extractStartConfig(response)
-                    )
-                },
-                (err) => {
-                    this.errorService.handleHttpResponseException(err)
-                }
-            );
-
-        return responseSubject.asObservable();
+        return this.http
+            .put<Setup>(this.START_CONFIG_URL, body, httpOptions)
+            .map(SetupService.extractStartConfig);
     }
 
-    private static extractStartConfig(res: Response):Setup {
-        return new Setup().deserialize(res.json());
+    private static extractStartConfig(res:  Setup):Setup {
+        return new Setup().deserialize(res);
     }
 }

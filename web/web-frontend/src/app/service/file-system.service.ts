@@ -4,7 +4,7 @@ import {Path} from "../model/infrastructure/path/path.model";
 import {Router} from "@angular/router";
 import {FileDirectoryChooserContainerModel} from "../generic/components/form/file_dir_chooser/model/file-directory-chooser-container.model";
 import {FileSystemDirectory} from "../model/file/file-system-directory.model";
-import {HttpClient, HttpParams, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 
 @Injectable()
 export class FileSystemService {
@@ -22,11 +22,11 @@ export class FileSystemService {
         };
 
         return this.http
-            .get<any>(this.BASE_URL, httpOptions)
+            .get<FileDirectoryChooserContainerModel>(this.BASE_URL, httpOptions)
             .map(FileSystemService.extractFileDirectory);
     }
 
-    private static extractFileDirectory(res: HttpResponse<FileDirectoryChooserContainerModel>): FileDirectoryChooserContainerModel {
+    private static extractFileDirectory(res: FileDirectoryChooserContainerModel): FileDirectoryChooserContainerModel {
         let fileSystemDirectory = new FileSystemDirectory().deserialize(res);
 
         return FileSystemService.mapFileDirectoryToChooserModel(fileSystemDirectory, null);

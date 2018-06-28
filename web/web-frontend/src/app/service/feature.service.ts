@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Feature} from "../model/feature/feature.model";
 import {Path} from "../model/infrastructure/path/path.model";
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {RootServerTreeNode} from "../model/tree/root-server-tree-node.model";
 
 @Injectable()
@@ -17,7 +17,7 @@ export class FeatureService {
     getFeatureTree(): Observable<RootServerTreeNode> {
 
         return this.http
-            .get<any>(this.FEATURE_URL+"/tree")
+            .get<RootServerTreeNode>(this.FEATURE_URL+"/tree")
             .map(FeatureService.extractFeaturesTree);
     }
 
@@ -29,7 +29,7 @@ export class FeatureService {
         };
 
         return this.http
-            .get<any>(this.FEATURE_URL, httpOptions)
+            .get<Feature>(this.FEATURE_URL, httpOptions)
             .map(FeatureService.extractFeature);
     }
 
@@ -42,7 +42,7 @@ export class FeatureService {
         };
 
         return this.http
-            .post<any>(this.FEATURE_URL, body, httpOptions)
+            .post<Feature>(this.FEATURE_URL, body, httpOptions)
             .map(FeatureService.extractFeature);
     }
 
@@ -54,8 +54,7 @@ export class FeatureService {
         };
 
         return this.http
-            .delete<any>(this.FEATURE_URL, httpOptions)
-            .map(FeatureService.extractFeature);
+            .delete<void>(this.FEATURE_URL, httpOptions)
     }
 
     update(model: Feature): Observable<Feature> {
@@ -67,16 +66,16 @@ export class FeatureService {
         };
 
         return this.http
-            .put<any>(this.FEATURE_URL, body, httpOptions)
+            .put<Feature>(this.FEATURE_URL, body, httpOptions)
             .map(FeatureService.extractFeature);
     }
 
-    private static extractFeature(res:  HttpResponse<Feature>): Feature {
+    private static extractFeature(res: Feature): Feature {
         if(res == null) return null;
         return new Feature().deserialize(res);
     }
 
-    private static extractFeaturesTree(res:  HttpResponse<RootServerTreeNode>): RootServerTreeNode {
+    private static extractFeaturesTree(res: RootServerTreeNode): RootServerTreeNode {
         if(res == null) return null;
         return new RootServerTreeNode().deserialize(res);
     }
