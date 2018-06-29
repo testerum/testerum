@@ -3,13 +3,12 @@ import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterSta
 import {Observable} from "rxjs/Rx";
 import {Subject} from "rxjs/Rx";
 import {SetupService} from "../setup.service";
-import {Setup} from "../../functionalities/config/setup/model/setup.model";
 
 @Injectable()
 export class SetupGuard implements CanActivate, CanActivateChild {
 
     constructor(
-        private startCnfigService: SetupService,
+        private setupService: SetupService,
         private router: Router
     ) {}
 
@@ -29,7 +28,7 @@ export class SetupGuard implements CanActivate, CanActivateChild {
 
     private startConfigCanActivate() {
         let responseSubject: Subject<boolean> = new Subject<boolean>();
-        this.startCnfigService.isConfigSet().subscribe(
+        this.setupService.isConfigSet().subscribe(
             (isConfigSet: boolean) => {
                 if (isConfigSet) {
                     return responseSubject.next(true)

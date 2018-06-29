@@ -50,12 +50,6 @@ class ResourcesController(private val resourcesService: ResourcesService) {
         return resourcesService.getByPath(Path.createInstance(path));
     }
 
-    @RequestMapping(method = arrayOf(RequestMethod.GET), path = arrayOf("/exist"))
-    @ResponseBody
-    fun isThereAnyResourceAtPath(@RequestParam("path") path: String): Boolean {
-        return resourcesService.isThereAnyResourceAtPath(Path.createInstance(path));
-    }
-
     @RequestMapping(path = arrayOf("/directory"), method = arrayOf(RequestMethod.PUT))
     @ResponseBody
     fun renameDirectory(@RequestBody renamePath: RenamePath): Path {

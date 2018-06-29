@@ -1,37 +1,29 @@
-import {Http, RequestOptions, Response, Headers} from "@angular/http";
 import { Observable } from 'rxjs/Observable';
-import {Router} from "@angular/router";
-import {Subject} from "rxjs/Rx";
-import {ErrorService} from "../error.service";
 import {RunnerResultDirInfo} from "../../model/report/runner-result-dir-info.model";
 import {Injectable} from "@angular/core";
 import {Path} from "../../model/infrastructure/path/path.model";
 import {RunnerEvent} from "../../model/test/event/runner.event";
 import {TestWebSocketService} from "../test-web-socket.service";
+import {HttpClient, HttpParams} from "@angular/common/http";
 
 @Injectable()
 export class ResultService {
 
     private BASE_URL = "/rest/runResults";
 
-    constructor(private router: Router,
-                private http:Http,
-                private errorService: ErrorService) {
-    }
+    constructor(private http: HttpClient) {}
 
     getRunnerReportDirInfo(): Observable<Array<RunnerResultDirInfo>> {
 
         return this.http
-            .get(this.BASE_URL)
-            .map(ResultService.extractRunnerReportDirInfo)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .get<Array<RunnerResultDirInfo>>(this.BASE_URL)
+            .map(ResultService.extractRunnerReportDirInfo);
     }
 
-    private static extractRunnerReportDirInfo(res: Response): Array<RunnerResultDirInfo> {
-        let json = res.json();
+    private static extractRunnerReportDirInfo(res: Array<RunnerResultDirInfo>): Array<RunnerResultDirInfo> {
 
         let response: Array<RunnerResultDirInfo> = [];
-        for (let reportAsJson of json) {
+        for (let reportAsJson of res) {
             let report = new RunnerResultDirInfo().deserialize(reportAsJson);
             response.push(report)
         }
@@ -40,21 +32,24 @@ export class ResultService {
     }
 
     getResult(path: Path): Observable<Array<RunnerEvent>> {
+
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', path.toString())
+        };
+
         return this.http
-            .get(this.BASE_URL, {params: {path: path.toString()}})
-            .map(ResultService.extractRunnerResult)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)} );
+            .get<Array<RunnerEvent>>(this.BASE_URL, httpOptions)
+            .map(ResultService.extractRunnerResult);
     }
 
-    private static extractRunnerResult(res: Response):Array<RunnerEvent> {
-        let json = res.json();
+    private static extractRunnerResult(res: Array<RunnerEvent>):Array<RunnerEvent> {
         let result:Array<RunnerEvent> = [];
-        for (let event of json) {
+        for (let event of res) {
             result.push(
                 TestWebSocketService.deserializeRunnerEvent(event)
             )
         }
         return result;
     }
-
 }

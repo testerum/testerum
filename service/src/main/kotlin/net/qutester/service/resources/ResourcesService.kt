@@ -80,12 +80,6 @@ class ResourcesService(val validators: List<ResourceValidator>,
         return fileRepositoryService.getByPath(KnownPath(path, resourceTypeByExtension))?.mapToResource()
     }
 
-    fun isThereAnyResourceAtPath(path: Path): Boolean {
-        val resourceTypeByExtension = FileType.getResourceTypeByExtension(path)
-                ?: throw RuntimeException("Unknown FileType based on the path extension [${path}]")
-        return fileRepositoryService.existResourceAtPath(KnownPath(path, resourceTypeByExtension))
-    }
-
     fun <T> getResourceBodyAs (resourcePath: Path, resourceBodyClassType: Class<T>): T {
         val resource = getByPath(resourcePath)
 

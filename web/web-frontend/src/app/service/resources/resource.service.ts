@@ -12,6 +12,10 @@ import {RenamePath} from "../../model/infrastructure/path/rename-path.model";
 import {CopyPath} from "../../model/infrastructure/path/copy-path.model";
 import {Router} from "@angular/router";
 import {ErrorService} from "../error.service";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Feature} from "../../model/feature/feature.model";
+import {FeatureService} from "../feature.service";
+import {RootServerTreeNode} from "../../model/tree/root-server-tree-node.model";
 
 @Injectable()
 export class ResourceService {
@@ -19,49 +23,31 @@ export class ResourceService {
     private RESOURCES_URL = "/rest/resources";
 
     constructor(private router: Router,
-                private http: Http,
-                private errorService: ErrorService) {
-    }
-
-    isThereAnyResourceAtPath(path: Path):Observable<boolean> {
-        let params: URLSearchParams = new URLSearchParams();
-        params.set('path', path.toString());
-
-        return this.http
-            .get(this.RESOURCES_URL + "/exist", {search: params})
-            .map((response: Response, index: number) => ResourceService.extractBoolean(response))
-            .catch(err => {
-                return this.errorService.handleHttpResponseException(err)
-            });
-    }
-    private static extractBoolean(res: Response): boolean {
-        return res.json();
+                private http: HttpClient) {
     }
 
     /**
      * The second parameter is an optional parameter.
      * Needs to be provided only if the resource body is an instance of Serializable (custom object)*/
     getResource(path: Path, resourceBodyInstanceForDeserialization?: Serializable<any>): Observable<ResourceContext<any>> {
-        let params: URLSearchParams = new URLSearchParams();
-        params.set('path', path.toString());
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', path.toString())
+        };
 
         return this.http
-            .get(this.RESOURCES_URL, {search: params})
-            .map((response: Response, index: number) => ResourceService.extractResource(response, resourceBodyInstanceForDeserialization))
-            .catch(err => {
-                return this.errorService.handleHttpResponseException(err)
-            });
+            .get<ResourceContext<any>>(this.RESOURCES_URL, httpOptions)
+            .map((res: ResourceContext<any>) => ResourceService.extractResource(res, resourceBodyInstanceForDeserialization));
     }
 
     deleteResource(path: Path): Observable<void> {
-        let params: URLSearchParams = new URLSearchParams();
-        params.set('path', path.toString());
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', path.toString())
+        };
 
         return this.http
-            .delete(this.RESOURCES_URL, {search: params})
-            .catch(err => {
-                return this.errorService.handleHttpResponseException(err)
-            });
+            .delete<void>(this.RESOURCES_URL, httpOptions);
     }
 
     /**
@@ -74,36 +60,15 @@ export class ResourceService {
         }
 
         let body = resource.serialize();
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
-        let responseSubject: Subject<ResourceContext<any>> = new Subject<ResourceContext<any>>();
-
-        this.http
-            .post(this.RESOURCES_URL, body, options)
-            .subscribe(
-                (response: Response) => {
-                    responseSubject.next(
-                        ResourceService.extractResource(response, resourceBodyInstanceForDeserialization)
-                    )
-                },
-                (err) => {
-                    if (err.status === 400) {
-                        let json = JSON.parse(err.text());
-
-                        if (json['errorCode'] == "VALIDATION") {
-                            responseSubject.error(
-                                FormValidationModel.createaInstanceFromJson(json["validationModel"])
-                            )
-                        }
-
-                    } else {
-                        this.errorService.handleHttpResponseException(err)
-                    }
-                }
-            );
-
-        return responseSubject.asObservable();
+        return this.http
+            .post<any>(this.RESOURCES_URL, body, httpOptions)
+            .map(res => ResourceService.extractResource(res, resourceBodyInstanceForDeserialization));
     }
 
     private setNameToPath(resource: ResourceContext<any>) {
@@ -111,9 +76,8 @@ export class ResourceService {
         resource.path = new Path(oldPath.directories, resource.body.name, RdbmsConnectionResourceType.getInstanceForRoot().fileExtension);
     }
 
-    private static extractResource(res: Response, resourceBodyInstance?: Serializable<any>): ResourceContext<any> {
-
-        let resource = new ResourceContext<any>(resourceBodyInstance).deserialize(res.json());
+    private static extractResource(res: ResourceContext<any>, resourceBodyInstance?: Serializable<any>): ResourceContext<any> {
+        let resource = new ResourceContext<any>(resourceBodyInstance).deserialize(res);
         if (resource.body.hasOwnProperty("name")) {
             ResourceService.setNameFromPath(resource)
         }
@@ -127,61 +91,13 @@ export class ResourceService {
 
     getResourcePaths(resourceType: string): Observable<Array<Path>> {
         return this.http
-            .get(this.RESOURCES_URL + "/shared/paths/" + resourceType)
-            .map(ResourceService.extractPaths)
-            .catch(err => {
-                return this.errorService.handleHttpResponseException(err)
-            });
+            .get<Array<string>>(this.RESOURCES_URL + "/shared/paths/" + resourceType)
+            .map(ResourceService.extractPaths);
     }
 
-    renameDirectory(renamePath: RenamePath): Observable<Path> {
-
-        let body = renamePath.serialize();
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
-
-        return this.http
-            .put(this.RESOURCES_URL + "/directory", body, options)
-
-            .map((response: Response, index: number) => {
-                let json = response.json();
-                return Path.deserialize(json);
-            })
-            .catch(err => {
-                return this.errorService.handleHttpResponseException(err)
-            });
-    }
-
-    deleteDirectory(pathToDelete: Path): Observable<void> {
-        let params: URLSearchParams = new URLSearchParams();
-        params.set('path', pathToDelete.toString());
-
-        return this.http
-            .delete(this.RESOURCES_URL + "/directory", {search: params})
-            .catch(err => {
-                return this.errorService.handleHttpResponseException(err)
-            });
-    }
-
-    moveDirectoryOrFile(copyPath: CopyPath): Observable<void> {
-
-        let body = copyPath.serialize();
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
-
-        return this.http
-            .post(this.RESOURCES_URL + "/directory/move", body, options)
-            .catch(err => {
-                return this.errorService.handleHttpResponseException(err)
-            });
-    }
-
-    private static extractPaths(res: Response): Array<Path> {
-        let json = res.json();
-
+    private static extractPaths(res: Array<string>): Array<Path> {
         let response: Array<Path> = [];
-
-        for (let pathAsString of json) {
+        for (let pathAsString of res) {
             response.push(
                 Path.createInstance(pathAsString)
             )
@@ -190,9 +106,42 @@ export class ResourceService {
         return response;
     }
 
+    renameDirectory(renamePath: RenamePath): Observable<Path> {
+        let body = renamePath.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
+        return this.http
+            .put<Path>(this.RESOURCES_URL + "/directory", body, httpOptions)
+            .map(res => Path.deserialize(res));
+    }
+
+    deleteDirectory(pathToDelete: Path): Observable<void> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', pathToDelete.toString())
+        };
+
+        return this.http
+            .delete<void>(this.RESOURCES_URL + "/directory", httpOptions);
+    }
+
+    moveDirectoryOrFile(copyPath: CopyPath): Observable<void> {
+        let body = copyPath.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
+        return this.http
+            .post<void>(this.RESOURCES_URL + "/directory/move", body, httpOptions);
+    }
+
     showResourcesScreen() {
         this.router.navigate(["automated/resources"]);
     }
-
-
 }
