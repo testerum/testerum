@@ -1,7 +1,6 @@
-import {$WebSocket, WebSocketSendMode, WebSocketConfig} from 'angular2-websocket/angular2-websocket'
+import {$WebSocket, WebSocketConfig} from 'angular2-websocket/angular2-websocket'
 import {Injectable} from "@angular/core";
 import {TestModel} from "../model/test/test.model";
-import {Observable} from "rxjs/Observable";
 import {WebSocketEventListener} from "./event/web-socket-event.listener";
 import {IdUtils} from "../utils/id.util";
 import {RunnerEventTypeEnum} from "../model/test/event/enums/runner-event-type.enum";
@@ -14,7 +13,6 @@ import {StepStartEvent} from "../model/test/event/step-start.event";
 import {StepEndEvent} from "../model/test/event/step-end.event";
 import {RunnerErrorEvent} from "../model/test/event/runner-error.event";
 import {TextLogEvent} from "../model/test/event/text-log.event";
-import {ArrayUtil} from "../utils/array.util";
 
 @Injectable()
 export class TestWebSocketService {
