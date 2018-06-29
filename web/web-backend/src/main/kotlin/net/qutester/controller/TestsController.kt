@@ -43,12 +43,6 @@ class TestsController(private val testsService: TestsService) {
         return testsService.getTestAtPath(Path.createInstance(path));
     }
 
-    @RequestMapping(path = ["/directory"], method = [RequestMethod.PUT])
-    @ResponseBody
-    fun renameDirectory(@RequestBody renamePath: RenamePath): Path {
-        return testsService.renameDirectory(renamePath)
-    }
-
     @RequestMapping(path = ["/directory"], method = [RequestMethod.DELETE])
     fun deleteDirectory(@RequestParam("path") pathAsString: String) {
         testsService.deleteDirectory(Path.createInstance(pathAsString))

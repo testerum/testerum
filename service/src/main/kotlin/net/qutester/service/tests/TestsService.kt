@@ -176,13 +176,6 @@ class TestsService(private val testResolver: TestResolver,
         return resolvedUiTest
     }
 
-    fun renameDirectory(renamePath: RenamePath): Path {
-        return fileRepositoryService.renameDirectory(
-                KnownPath(renamePath.path,FileType.TEST),
-                renamePath.newName
-        )
-    }
-
     fun deleteDirectory(path: Path) {
         return fileRepositoryService.delete(
                 KnownPath(path, FileType.TEST)

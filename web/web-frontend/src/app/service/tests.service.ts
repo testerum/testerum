@@ -1,15 +1,11 @@
-
 import {Injectable} from "@angular/core";
-import {Http, RequestOptions, Response, Headers} from "@angular/http";
 import { Observable } from 'rxjs/Observable';
 import {TestModel} from "../model/test/test.model";
-import {TestWebSocketService} from "./test-web-socket.service";
-import {ErrorService} from "./error.service";
-import {RenamePath} from "../model/infrastructure/path/rename-path.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {Router} from "@angular/router";
 import {CopyPath} from "../model/infrastructure/path/copy-path.model";
 import {UpdateTestModel} from "../model/test/operation/update-test.model";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 
 
 @Injectable()
@@ -17,54 +13,60 @@ export class TestsService {
 
     private TESTS_URL = "/rest/tests";
 
-    constructor(private router: Router,
-                private http:Http,
-                private errorService: ErrorService) {
-    }
+    constructor(private http: HttpClient,
+                private router: Router) {}
 
     runTest(testModel:TestModel): Observable<void> {
         let body = testModel.serialize();
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-            .post(this.TESTS_URL+"/run/unsaved", body, options)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<void>(this.TESTS_URL+"/run/unsaved", body, httpOptions);
     }
 
     delete(testModel:TestModel): Observable<void> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', testModel.path.toString())
+        };
+
         return this.http
-                .delete(this.TESTS_URL, {params: {path: testModel.path.toString()}})
-                .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .delete<void>(this.TESTS_URL, httpOptions);
     }
 
     createTest(testModel:TestModel): Observable<TestModel> {
         let body = testModel.serialize();
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-                .post(this.TESTS_URL + "/create", body, options)
-                .map(TestsService.extractTestModel)
-                .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<TestModel>(this.TESTS_URL + "/create", body, httpOptions)
+            .map(TestsService.extractTestModel);
     }
 
     updateTest(updateTestModel:UpdateTestModel): Observable<TestModel> {
         let body = updateTestModel.serialize();
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-                .post(this.TESTS_URL + "/update", body, options)
-                .map(TestsService.extractTestModel)
-                .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<TestModel>(this.TESTS_URL + "/update", body, httpOptions)
+            .map(TestsService.extractTestModel);
     }
 
-    private static extractTestsModel(res: Response):Array<TestModel> {
-        let json = res.json();
-
+    private static extractTestsModel(res: Array<TestModel>):Array<TestModel> {
         let response:Array<TestModel> = [];
-        for(let testsModelAsJson of json) {
+        for(let testsModelAsJson of res) {
             let testsModel = new TestModel().deserialize(testsModelAsJson);
             response.push(testsModel)
         }
@@ -73,58 +75,56 @@ export class TestsService {
     }
 
     getTest(pathAsString: string): Observable<TestModel> {
-        return this.http
-            .get(this.TESTS_URL, {params: {path: pathAsString}})
-            .map(TestsService.extractTestModel)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)} );
-    }
 
-    private static extractTestModel(res: Response):TestModel {
-        let json = res.json();
-        return new TestModel().deserialize(json);
-    }
-
-    renameDirectory(renamePath: RenamePath): Observable<Path> {
-
-        let body = renamePath.serialize();
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', pathAsString)
+        };
 
         return this.http
-            .put(this.TESTS_URL + "/directory", body, options)
-
-            .map((response: Response, index: number) => {
-                let json = response.json();
-                return Path.deserialize(json);
-            })
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .get<TestModel>(this.TESTS_URL, httpOptions)
+            .map(TestsService.extractTestModel);
     }
 
-    deleteDirectory(pathToDelete: Path): Observable<void> {
+    private static extractTestModel(res: TestModel):TestModel {
+        return new TestModel().deserialize(res);
+    }
+
+    deleteDirectory(path: Path): Observable<void> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', path.toString())
+        };
+
         return this.http
-            .delete(this.TESTS_URL + "/directory", {params: {path: pathToDelete.toString()}})
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .delete<void>(this.TESTS_URL + "/directory", httpOptions);
     }
 
     showTestsScreen() {
-        this.router.navigate(["automated/tests"]);
+        this.router.navigate(["/features"]);
     }
 
     moveDirectoryOrFile(copyPath: CopyPath): Observable<void> {
-
         let body = copyPath.serialize();
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-            .post(this.TESTS_URL + "/directory/move", body, options)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<void>(this.TESTS_URL + "/directory/move", body, httpOptions);
     }
 
     getAllAutomatedTestsUnderContaier(path: Path): Observable<Array<TestModel>>  {
+
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', path.toString())
+        };
+
         return this.http
-            .get(this.TESTS_URL + "/automated/under-path", {params: {path: path.toString()}})
-            .map(TestsService.extractTestsModel)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)} );
+            .get<Array<TestModel>>(this.TESTS_URL + "/automated/under-path", httpOptions)
+            .map(TestsService.extractTestsModel);
     }
 }
