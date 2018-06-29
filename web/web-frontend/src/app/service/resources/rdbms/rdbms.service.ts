@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Http, RequestOptions, Response, Headers, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -8,7 +7,7 @@ import {RdbmsDriver} from "../../../functionalities/resources/editors/database/c
 import {RdbmsSchemas} from "../../../functionalities/resources/editors/database/connection/model/rdbms-schemas.model";
 import {RdbmsSchema} from "../../../model/resource/rdbms/schema/rdbms-schema.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
-import {ErrorService} from "../../error.service";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 
 @Injectable()
 export class RdbmsService {
@@ -17,66 +16,57 @@ export class RdbmsService {
     private DB_DRIVES_URL = "/rest/rdbms/drivers";
     private DB_SCHEMA_URL = "/rest/rdbms/schema";
 
-    constructor(private http: Http,
-                private errorService: ErrorService) {
-    }
+    constructor(private http: HttpClient) {}
 
     showSchemasChooser(dbConnection:RdbmsConnectionConfig): Observable<RdbmsSchemas> {
         let body = dbConnection.serialize();
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-            .post(this.DB_CONNECTION_URL + "/schemas", body, options)
-            .map(response => new RdbmsSchemas().deserialize(response.json()))
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<RdbmsSchemas>(this.DB_CONNECTION_URL + "/schemas", body, httpOptions)
+            .map(response => new RdbmsSchemas().deserialize(response));
     }
 
     ping(host:string, port:number): Observable<boolean> {
 
-        let pingParams: URLSearchParams = new URLSearchParams();
-        pingParams.set('host', host);
-        pingParams.set('port', ""+port);
-
-        let options = new RequestOptions({ search: pingParams });
+        const httpOptions = {
+            params: new HttpParams()
+                .append('host', host)
+                .append('port', ""+port)
+        };
 
         return this.http
-            .get(this.DB_CONNECTION_URL + "/ping", options)
-            .map(response => response.text() == "true")
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .get<boolean>(this.DB_CONNECTION_URL + "/ping", httpOptions)
     }
 
     getDrivers(): Observable<Array<RdbmsDriver>> {
         return this.http
-            .get(this.DB_DRIVES_URL)
-            .map(RdbmsService.extractDrivers)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .get<Array<RdbmsDriver>>(this.DB_DRIVES_URL)
+            .map(RdbmsService.extractDrivers);
     }
 
-    getSchema(path:Path):  Observable<RdbmsSchema> {
-        let params: URLSearchParams = new URLSearchParams();
-        params.set('path', path.toString());
-
-        return this.http
-            .get(this.DB_SCHEMA_URL, {search: params})
-            .map(RdbmsService.extractSchema)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
-    }
-
-    private static extractSchema(res: Response): RdbmsSchema {
-        let json = res.json();
-        return new RdbmsSchema().deserialize(json);
-    }
-
-    private static extractDrivers(res: Response): Array<RdbmsDriver> {
-        let json = res.json();
-
+    private static extractDrivers(res: Array<RdbmsDriver>): Array<RdbmsDriver> {
         let response: Array<RdbmsDriver> = [];
-        for (let dbDriverAsJson of json) {
+        for (let dbDriverAsJson of res) {
             let dbDriver = new RdbmsDriver().deserialize(dbDriverAsJson);
             response.push(dbDriver)
         }
 
         return response;
+    }
+
+    getSchema(path:Path):  Observable<RdbmsSchema> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', path.toString())
+        };
+
+        return this.http
+            .get<RdbmsSchema>(this.DB_SCHEMA_URL, httpOptions)
+            .map(res => new RdbmsSchema().deserialize(res));
     }
 }

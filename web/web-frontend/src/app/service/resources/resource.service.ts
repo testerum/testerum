@@ -1,21 +1,14 @@
 import {Injectable} from "@angular/core";
-import {Http, RequestOptions, Response, Headers, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {ResourceContext} from "../../model/resource/resource-context.model";
 import {RdbmsConnectionResourceType} from "../../functionalities/resources/tree/model/type/rdbms-connection.resource-type.model";
 import {Path} from "../../model/infrastructure/path/path.model";
-import {Subject} from "rxjs/Subject";
-import {FormValidationModel} from "../../model/exception/form-validation.model";
 import {RenamePath} from "../../model/infrastructure/path/rename-path.model";
 import {CopyPath} from "../../model/infrastructure/path/copy-path.model";
 import {Router} from "@angular/router";
-import {ErrorService} from "../error.service";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Feature} from "../../model/feature/feature.model";
-import {FeatureService} from "../feature.service";
-import {RootServerTreeNode} from "../../model/tree/root-server-tree-node.model";
 
 @Injectable()
 export class ResourceService {

@@ -1,105 +1,113 @@
-import {Headers, Http, RequestOptions, Response} from "@angular/http";
-import {Router} from "@angular/router";
-import {ErrorService} from "../../../service/error.service";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {ManualTestsRunner} from "../model/manual-tests-runner.model";
 import {UpdateManualTestRunner} from "../model/operation/update-manual-test.runner";
 import {UpdateManualTestExecutionModel} from "../model/operation/update-manual-test-execution.model";
-
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 
 @Injectable()
 export class ManualTestsRunnerService {
 
     private BASE_URL = "/rest/manualTestsRunner";
 
-    constructor(private router: Router,
-                private http:Http,
-                private errorService: ErrorService) {
-    }
+    constructor(private http: HttpClient) {}
 
     createTestRunner(manualTestRunner:ManualTestsRunner): Observable<ManualTestsRunner> {
         let body = manualTestRunner.serialize();
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-            .post(this.BASE_URL + "/create", body, options)
-            .map(ManualTestsRunnerService.extractTestsRunner)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<ManualTestsRunner>(this.BASE_URL + "/create", body, httpOptions)
+            .map(res => new ManualTestsRunner().deserialize(res));
     }
 
     getTests(): Observable<Array<ManualTestsRunner>> {
         return this.http
-            .get(this.BASE_URL)
-            .map(ManualTestsRunnerService.extractTestsRunners)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .get<Array<ManualTestsRunner>>(this.BASE_URL)
+            .map(ManualTestsRunnerService.extractTestsRunners);
     }
 
     getTestRunner(pathAsString: string): Observable<ManualTestsRunner> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', pathAsString)
+        };
+
         return this.http
-            .get(this.BASE_URL, {params: {path: pathAsString}})
-            .map(ManualTestsRunnerService.extractTestsRunner)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)} );
+            .get<ManualTestsRunner>(this.BASE_URL, httpOptions)
+            .map(res => new ManualTestsRunner().deserialize(res));
     }
 
     delete(manualTestRunner:ManualTestsRunner): Observable<void> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', manualTestRunner.path.toString())
+        };
+
         return this.http
-            .delete(this.BASE_URL, {params: {path: manualTestRunner.path.toString()}})
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .delete<void>(this.BASE_URL, httpOptions);
     }
 
     finalize(manualTestRunner:ManualTestsRunner): Observable<ManualTestsRunner> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', manualTestRunner.path.toString())
+        };
+
         return this.http
-            .post(this.BASE_URL + "/finalize", null,{params: {path: manualTestRunner.path.toString()}})
-            .map(ManualTestsRunnerService.extractTestsRunner)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<ManualTestsRunner>(this.BASE_URL + "/finalize", null, httpOptions)
+            .map(res => new ManualTestsRunner().deserialize(res));
     }
 
     bringBackInExecution(manualTestRunner:ManualTestsRunner): Observable<ManualTestsRunner> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', manualTestRunner.path.toString())
+        };
+
         return this.http
-            .post(this.BASE_URL + "/bringBackInExecution", null,{params: {path: manualTestRunner.path.toString()}})
-            .map(ManualTestsRunnerService.extractTestsRunner)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<ManualTestsRunner>(this.BASE_URL + "/bringBackInExecution", null, httpOptions)
+            .map(res => new ManualTestsRunner().deserialize(res));
     }
 
     updateTest(updateManualTestRunner:UpdateManualTestRunner): Observable<ManualTestsRunner> {
         let body = updateManualTestRunner.serialize();
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-            .post(this.BASE_URL + "/update", body, options)
-            .map(ManualTestsRunnerService.extractTestsRunner)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<ManualTestsRunner>(this.BASE_URL + "/update", body, httpOptions)
+            .map(res => new ManualTestsRunner().deserialize(res));
     }
 
 
     updateExecutedTest(updateManualTestExecution: UpdateManualTestExecutionModel): Observable<ManualTestsRunner> {
         let body = updateManualTestExecution.serialize();
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-            .post(this.BASE_URL + "/updateTestExecution", body, options)
-            .map(ManualTestsRunnerService.extractTestsRunner)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<ManualTestsRunner>(this.BASE_URL + "/updateTestExecution", body, httpOptions)
+            .map(res => new ManualTestsRunner().deserialize(res));
     }
 
-    private static extractTestsRunners(res: Response):Array<ManualTestsRunner> {
-        let json = res.json();
-
+    private static extractTestsRunners(res: Array<ManualTestsRunner>):Array<ManualTestsRunner> {
         let response:Array<ManualTestsRunner> = [];
-        for(let testsModelAsJson of json) {
+        for(let testsModelAsJson of res) {
             let testsModel = new ManualTestsRunner().deserialize(testsModelAsJson);
             response.push(testsModel)
         }
 
         return response;
-    }
-
-    private static extractTestsRunner(res: Response):ManualTestsRunner {
-        let json = res.json();
-        return new ManualTestsRunner().deserialize(json);
     }
 }

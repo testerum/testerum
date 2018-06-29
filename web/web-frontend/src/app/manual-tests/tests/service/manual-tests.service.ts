@@ -1,15 +1,13 @@
-
 import {Injectable} from "@angular/core";
-import {Http, RequestOptions, Response, Headers} from "@angular/http";
 import { Observable } from 'rxjs/Observable';
 import {Router} from "@angular/router";
-import {ErrorService} from "../../../service/error.service";
 import {ManualTestModel} from "../../model/manual-test.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {UpdateManualTestModel} from "../../model/operation/update-manual-test.model";
 import {RenamePath} from "../../../model/infrastructure/path/rename-path.model";
 import {CopyPath} from "../../../model/infrastructure/path/copy-path.model";
 import {ArrayUtil} from "../../../utils/array.util";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 
 
 @Injectable()
@@ -20,50 +18,54 @@ export class ManualTestsService {
     static manualTestsTags:Array<string> = [];
 
     constructor(private router: Router,
-                private http:Http,
-                private errorService: ErrorService) {
+                private http: HttpClient) {
     }
 
     delete(testModel:ManualTestModel): Observable<void> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', testModel.path.toString())
+        };
+
         return this.http
-                .delete(this.TESTS_URL, {params: {path: testModel.path.toString()}})
-                .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .delete<void>(this.TESTS_URL, httpOptions);
     }
 
     createTest(testModel:ManualTestModel): Observable<ManualTestModel> {
         let body = testModel.serialize();
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-                .post(this.TESTS_URL + "/create", body, options)
-                .map(ManualTestsService.extractTestModel)
-                .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<ManualTestModel>(this.TESTS_URL + "/create", body, httpOptions)
+            .map(res => new ManualTestModel().deserialize(res));
     }
 
     updateTest(updateManualTestModel:UpdateManualTestModel): Observable<ManualTestModel> {
         let body = updateManualTestModel.serialize();
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-                .post(this.TESTS_URL + "/update", body, options)
-                .map(ManualTestsService.extractTestModel)
-                .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .post<ManualTestModel>(this.TESTS_URL + "/update", body, httpOptions)
+            .map(res => new ManualTestModel().deserialize(res));
     }
 
     getTests(): Observable<Array<ManualTestModel>> {
         return this.http
-            .get(this.TESTS_URL)
-            .map(ManualTestsService.extractTestsModel)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .get<Array<ManualTestModel>>(this.TESTS_URL)
+            .map(ManualTestsService.extractTestsModel);
     }
 
-    private static extractTestsModel(res: Response):Array<ManualTestModel> {
-        let json = res.json();
-
+    private static extractTestsModel(res: Array<ManualTestModel>):Array<ManualTestModel> {
         let response:Array<ManualTestModel> = [];
-        for(let testsModelAsJson of json) {
+        for(let testsModelAsJson of res) {
             let testsModel = new ManualTestModel().deserialize(testsModelAsJson);
             response.push(testsModel)
         }
@@ -87,37 +89,37 @@ export class ManualTestsService {
     }
 
     getTest(pathAsString: string): Observable<ManualTestModel> {
-        return this.http
-            .get(this.TESTS_URL, {params: {path: pathAsString}})
-            .map(ManualTestsService.extractTestModel)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)} );
-    }
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', pathAsString)
+        };
 
-    private static extractTestModel(res: Response):ManualTestModel {
-        let json = res.json();
-        return new ManualTestModel().deserialize(json);
+        return this.http
+            .get<ManualTestModel>(this.TESTS_URL, httpOptions)
+            .map(res => new ManualTestModel().deserialize(res));
     }
 
     renameDirectory(renamePath: RenamePath): Observable<Path> {
-
         let body = renamePath.serialize();
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-            .put(this.TESTS_URL + "/directory", body, options)
-
-            .map((response: Response, index: number) => {
-                let json = response.json();
-                return Path.deserialize(json);
-            })
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .put<Path>(this.TESTS_URL + "/directory", body, httpOptions)
+            .map(res => Path.deserialize(res));
     }
 
     deleteDirectory(pathToDelete: Path): Observable<void> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', pathToDelete.toString())
+        };
+
         return this.http
-            .delete(this.TESTS_URL + "/directory", {params: {path: pathToDelete.toString()}})
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .delete<void>(this.TESTS_URL + "/directory", httpOptions);
     }
 
     showTestsScreen() {
@@ -125,13 +127,14 @@ export class ManualTestsService {
     }
 
     moveDirectoryOrFile(copyPath: CopyPath): Observable<void> {
-
         let body = copyPath.serialize();
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-            .post(this.TESTS_URL + "/directory/move", body, options)
-            .catch(err => {return this.errorService.handleHttpResponseException(err)});
+            .put<void>(this.TESTS_URL + "/directory/move", body, httpOptions)
     }
 }

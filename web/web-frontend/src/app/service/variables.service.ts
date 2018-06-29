@@ -1,24 +1,8 @@
 import {Injectable} from "@angular/core";
-import {Http, RequestOptions, Response, Headers} from "@angular/http";
 import { Observable } from 'rxjs/Observable';
-import {TestModel} from "../model/test/test.model";
-import {TestWebSocketService} from "./test-web-socket.service";
-import {ErrorService} from "./error.service";
-import {RenamePath} from "../model/infrastructure/path/rename-path.model";
-import {Path} from "../model/infrastructure/path/path.model";
-import {Router} from "@angular/router";
-import {CopyPath} from "../model/infrastructure/path/copy-path.model";
-import {UpdateTestModel} from "../model/test/operation/update-test.model";
 import {Variable} from "../model/variable/variable.model";
-import {ComposedStepDef} from "../model/composed-step-def.model";
-import {ValidationErrorResponse} from "../model/exception/validation-error-response.model";
-import {StepsService} from "./steps.service";
 import {JsonUtil} from "../utils/json.util";
-import {Subject} from "rxjs/Rx";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {FeatureService} from "./feature.service";
-import {RootServerTreeNode} from "../model/tree/root-server-tree-node.model";
-import {Feature} from "../model/feature/feature.model";
 
 @Injectable()
 export class VariablesService {

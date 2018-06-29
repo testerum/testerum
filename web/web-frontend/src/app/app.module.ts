@@ -8,7 +8,6 @@ import {AppRoutingModule} from "./app-routing.module";
 import {StepsModule} from "./functionalities/steps/steps.module";
 import {GenericModule} from "./generic/generic.module";
 import {CommonModule} from "@angular/common";
-import { HttpModule, JsonpModule } from '@angular/http';
 import {StepsService} from "./service/steps.service";
 import {FormsModule} from "@angular/forms";
 import {FeaturesModule} from "./functionalities/features/features.module";
@@ -45,10 +44,8 @@ import {AttachmentsService} from "./service/attachments.service";
         CommonModule,
         BrowserModule,
         BrowserAnimationsModule,
-        HttpModule,
         HttpClientModule,
         FormsModule,
-        JsonpModule,
         ModalModule.forRoot(),
 
         FeaturesModule,
