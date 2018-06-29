@@ -318,7 +318,9 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
         val rootDirectoryAsString = rootDirectory.toString()
         val absolutePathAsString = absolutePath.toString()
 
-        val relativePathAsString = absolutePathAsString.removePrefix(rootDirectoryAsString).removePrefix("\\")
+        val relativePathAsString = absolutePathAsString.removePrefix(rootDirectoryAsString)
+                                                              .removePrefix("\\")
+                                                              .removePrefix("/")
 
         return java.nio.file.Paths.get(relativePathAsString)
     }
