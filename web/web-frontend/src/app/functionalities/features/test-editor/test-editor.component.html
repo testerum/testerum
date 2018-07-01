@@ -51,7 +51,8 @@
                     <!-- BUTTONS -->
                     <div class="step-action-panel inline btn-group">
 
-                        <div title="Run Tests" class="btn btn-default btn-xs btn-group"
+                        <div *ngIf="!isEditMode"
+                             title="Run Tests" class="btn btn-default btn-xs btn-group"
                              (click)="runTest(); $event.stopPropagation()">
                         <span class="glyphicon glyphicon-play"></span>
                         </div>
