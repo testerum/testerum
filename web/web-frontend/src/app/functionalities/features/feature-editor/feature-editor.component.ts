@@ -49,28 +49,16 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.routeSubscription = this.route.data.subscribe(data => {
             this.model = data['featureModel'];
-            if (this.model) {
-                this.setEditMode(false);
-                this.isCreateAction = false;
-                this.initPathForTitle();
+            let actionParam = this.route.snapshot.params["action"];
 
-            } else {
+            if (actionParam == "create") {
                 this.setEditMode(true);
                 this.isCreateAction = true;
-
-
-                this.pathSubscription = this.route.params.subscribe(
-                    params => {
-                        let pathAsString = params['path'];
-                        let path = pathAsString ? Path.createInstance(pathAsString) : new Path([], null, null);
-
-                        this.model = new Feature();
-                        this.model.path = path;
-
-                        this.initPathForTitle();
-                    }
-                )
+            } else {
+                this.setEditMode(false);
+                this.isCreateAction = false;
             }
+            this.initPathForTitle();
         });
     }
 
@@ -124,6 +112,10 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     saveAction(): void {
         this.setDescription();
 
+        if (this.isCreateAction) {
+            this.model.path.directories.push(this.model.name);
+        }
+
         this.featureService
             .save(this.model)
             .subscribe(
@@ -141,6 +133,5 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
         this.setEditMode(false);
         this.featuresTreeService.initializeTestsTreeFromServer();
         this.urlService.navigateToFeature(this.model.path);
-
     }
 }

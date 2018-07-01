@@ -220,11 +220,20 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
 
     fun renameDirectory(knownPath: KnownPath, newName: String): Path {
         val pathToRename: java.nio.file.Path = escapeAndGetAbsolutePath(knownPath)
+        val newPath = pathToRename.resolveSibling(newName)
+
+
         if (pathToRename.toFile().exists()) {
-            val newPath = Files.move(pathToRename, pathToRename.resolveSibling(newName))
+            if (pathToRename.toString().equals(newPath.toString(), true) &&
+                    !pathToRename.toString().equals(newPath.toString(), false)) {
+                val tempPath = pathToRename.resolveSibling("temp31file10")
+                Files.move(pathToRename, tempPath)
+                Files.move(tempPath, newPath)
+            } else {
+                Files.move(pathToRename, newPath)
+            }
             return getRelativePathFromAbsolutePath(newPath, knownPath.fileType).toMyPath()
         }
-        val newPath = pathToRename.resolveSibling(newName)
         return getRelativePathFromAbsolutePath(newPath, knownPath.fileType).toMyPath()
     }
 

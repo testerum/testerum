@@ -1,6 +1,7 @@
 
 <div>
-    <h1>Feature <span class="path">{{pathForTitle}}</span></h1>
+    <h1 *ngIf="isCreateAction">Create SubFeature in <span class="path">{{pathForTitle}}</span></h1>
+    <h1 *ngIf="!isCreateAction">Feature <span class="path">{{pathForTitle}}</span></h1>
 
     <div class="panel-body">
         <form #form="ngForm" class="form-horizontal">

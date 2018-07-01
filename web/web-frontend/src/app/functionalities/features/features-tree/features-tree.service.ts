@@ -22,7 +22,6 @@ export class FeaturesTreeService {
     initializeTestsTreeFromServer() {
         this.featureService.getFeatureTree().subscribe(
             (rootNode: RootServerTreeNode) => {
-                console.log(rootNode);
                 this.testsJsonTreeModel =  FeaturesTreeUtil.mapServerTreeToFeaturesTreeModel(rootNode);
                 this.sort();
 

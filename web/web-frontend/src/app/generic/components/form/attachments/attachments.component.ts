@@ -26,7 +26,6 @@ export class AttachmentsComponent implements OnInit {
     }
 
     onUpload(event:any) {
-        console.log(event);
         let request: XMLHttpRequest = event.xhr;
         let responseAttachments: string = request.response;
         for (const responseAttachment of JSON.parse(responseAttachments)) {

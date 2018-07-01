@@ -14,7 +14,6 @@ export class MarkdownEditorComponent implements AfterViewInit {
 
     @Input()
     set value(value: string) {
-        console.log(value);
         if (this.simpleMDE) {
             if (!this.editMode) {
                 this.setEditMode(true);

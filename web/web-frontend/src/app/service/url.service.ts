@@ -15,6 +15,11 @@ export class UrlService {
         this.router.navigate(["/features"]);
     }
 
+    public navigateToCreateFeature(path: Path) {
+        if (!path) { throw new Error("A path should be provided")}
+        this.router.navigate(["/features/create", {path : path.toString()} ]);
+    }
+
     public navigateToFeature(path: Path) {
         if (!path) { throw new Error("A path should be provided")}
         this.router.navigate(["/features/show", {path : path.toString()} ]);

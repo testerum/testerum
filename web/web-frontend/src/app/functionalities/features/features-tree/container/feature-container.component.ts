@@ -1,16 +1,13 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {JsonTreeService} from "../../../../generic/components/json-tree/json-tree.service";
 import {JsonTreeContainerEditorEvent} from "../../../../generic/components/json-tree/container-editor/model/json-tree-container-editor.event";
-import {Path} from "../../../../model/infrastructure/path/path.model";
 import {JsonTreePathUtil} from "../../../../generic/components/json-tree/util/json-tree-path.util";
 import {CopyPath} from "../../../../model/infrastructure/path/copy-path.model";
 import {FeatureTreeContainerModel} from "../model/feature-tree-container.model";
 import {FeaturesTreeService} from "../features-tree.service";
 import {TestTreeNodeModel} from "../model/test-tree-node.model";
 import {TestsService} from "../../../../service/tests.service";
-import {ArrayUtil} from "../../../../utils/array.util";
 import {TestsRunnerService} from "../../tests-runner/tests-runner.service";
-import {JsonTreePathNode} from "../../../../generic/components/json-tree/model/path/json-tree-path-node.model";
 import {JsonTreeNodeEventModel} from "../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {Subscription} from "rxjs/Subscription";
 import {TestModel} from "../../../../model/test/test.model";
@@ -86,44 +83,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     }
 
     showCreateDirectoryModal(): void {
-        let childrenContainersName = this.getChildrenContainersName();
-
-        this.jsonTreeService.triggerCreateContainerAction(childrenContainersName).subscribe(
-            (createEvent: JsonTreeContainerEditorEvent) => {
-                let pathDirectories: Array<string> = ArrayUtil.copyArray(this.model.path.directories);
-                pathDirectories.push(createEvent.newName);
-
-                let newContainer = new FeatureTreeContainerModel(
-                    this.model,
-                    createEvent.newName,
-                    new Path(pathDirectories, null, null)
-                );
-                newContainer.editable = true;
-                this.model.children.push(newContainer);
-                this.model.sort();
-            }
-        )
-    }
-
-    private getChildrenContainersName() {
-        let childrenContainersName: Array<string> = [];
-        for (const child of this.model.children) {
-            if (child.isContainer()) {
-                childrenContainersName.push(child.name)
-            }
-        }
-        return childrenContainersName;
-    }
-
-    private getSiblingNames() {
-        let siblingNames: Array<string> = [];
-        let siblingContainers: Array<JsonTreePathNode> = this.model.parentContainer.getChildren();
-        for (const child of siblingContainers) {
-            if (child.isContainer()) {
-                siblingNames.push(child.name)
-            }
-        }
-        return siblingNames;
+        this.urlService.navigateToCreateFeature(this.model.path);
     }
 
     deleteDirectory(): void {

@@ -18,6 +18,13 @@ export class FeatureResolver implements Resolve<any> {
         let pathAsString = route.params['path'];
         let path = pathAsString ? Path.createInstance(pathAsString) : new Path([], null, null);
 
+        let actionParam = route.params["action"];
+        if (actionParam == "create") {
+            let feature = new Feature();
+            feature.path = path;
+            return feature
+        }
+
         return this.featureService.getFeature(pathAsString);
     }
 }

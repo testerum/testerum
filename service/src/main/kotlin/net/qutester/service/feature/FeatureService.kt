@@ -56,6 +56,29 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         return updateFeature(feature)
     }
 
+    private fun createFeature(feature: Feature): Feature {
+        val fileTestAsString = objectMapper.writeValueAsString(feature)
+        val featureDirPath = feature.path;
+        val featureFilePath = featureDirPath.copy(fileName = FEATURE_NAME, fileExtension = FileType.FEATURE.fileExtension)
+
+
+        val createdRepositoryFile = fileRepositoryService.create(
+                RepositoryFileChange(
+                        null,
+                        RepositoryFile(
+                                KnownPath(featureFilePath, FileType.FEATURE),
+                                fileTestAsString
+                        )
+                )
+        )
+
+        val savedFeature = feature.copy(
+                path = createdRepositoryFile.knownPath.asPath()
+        )
+
+        return savedFeature
+    }
+
     private fun updateFeature(feature: Feature): Feature {
         val newFeatureDirPath = renameDirectoryIfCase(feature)
         val newPath = newFeatureDirPath.copy(fileName = FEATURE_NAME, fileExtension = FileType.FEATURE.fileExtension)
@@ -77,7 +100,7 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         } else {
             fileRepositoryService.update(
                     RepositoryFileChange(
-                            newKnownPath,
+                            KnownPath(feature.path, FileType.FEATURE),
                             newRepositoryFile
                     )
             )
@@ -101,26 +124,6 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
             )
         }
         return oldDirPath
-    }
-
-    private fun createFeature(feature: Feature): Feature {
-        val fileTestAsString = objectMapper.writeValueAsString(feature)
-
-        val createdRepositoryFile = fileRepositoryService.create(
-                RepositoryFileChange(
-                        null,
-                        RepositoryFile(
-                                KnownPath(feature.path, FileType.FEATURE),
-                                fileTestAsString
-                        )
-                )
-        )
-
-        val savedFeature = feature.copy(
-                path = createdRepositoryFile.knownPath.asPath()
-        )
-
-        return savedFeature
     }
 
     fun remove(path: Path) {
