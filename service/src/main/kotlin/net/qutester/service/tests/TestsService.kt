@@ -114,27 +114,17 @@ class TestsService(private val testResolver: TestResolver,
     private fun saveExternalResource(arg: Arg): Arg {
         // todo: don't save if the content didn't change?
         val path: Path = arg.path
-                ?: return arg
+                ?: return arg // if we don't have a path, then this is an external resource
 
-        val renamed: Boolean = (path.fileName != arg.name)
+        val resourceContext: ResourceContext = resourcesService.save(
+                ResourceContext(
+                        oldPath = path,
+                        path = path,
+                        body = arg.content
+                )
+        )
 
-        val actualPath: Path = if (renamed) {
-            // todo: what if we both renamed and changed the content?
-            val newPath: Path = path.copy(fileName = arg.name)
-
-            resourcesService.moveDirectoryOrFile(
-                    CopyPath(path, newPath)
-            )
-        } else {
-            val resourceContext: ResourceContext = resourcesService.save(
-                    ResourceContext(
-                            path = path,
-                            body = arg.content
-                    )
-            )
-
-            resourceContext.path
-        }
+        val actualPath: Path = resourceContext.path
 
         return arg.copy(path = actualPath)
     }
