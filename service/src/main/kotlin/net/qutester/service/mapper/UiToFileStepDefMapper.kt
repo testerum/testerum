@@ -108,7 +108,7 @@ open class UiToFileStepDefMapper {
                     } else {
                         val argName: String? = arg.name
 
-                        val introduceVariable: Boolean = (argName != null) || (content.contains(NEWLINES_REGEX))
+                        val introduceVariable: Boolean = (argName?.isNotBlank() == true) || (content.contains(NEWLINES_REGEX))
 
                         if (introduceVariable) {
                             val varName: String = ArgNameCodec.argToVariableName(argName ?: patternPart.name)
