@@ -35,7 +35,6 @@ export class FeaturesComponent implements OnInit {
         this.router.events
             .filter(event => event instanceof NavigationEnd)
             .map(route => {
-                let router = this.router;
                 let leafRoute: any = this.router.routerState.snapshot.root;
                 while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
 

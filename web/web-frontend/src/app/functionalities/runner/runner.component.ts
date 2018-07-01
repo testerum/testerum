@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Params, Router} from "@angular/router";
-import {ResultService} from "../../service/report/result.service";
 
 @Component({
     selector: 'runner',

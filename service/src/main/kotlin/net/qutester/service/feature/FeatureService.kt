@@ -27,33 +27,9 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
 
     val FEATURE_NAME: String = "info";
 
-    fun createFeature(feature: Feature): Feature {
-
-        val featurePath = Path(feature.path.directories, FEATURE_NAME, FileType.FEATURE.fileExtension)
-
-        val fileTestAsString = objectMapper.writeValueAsString(feature)
-
-        val createdRepositoryFile = fileRepositoryService.create(
-                RepositoryFileChange(
-                        null,
-                        RepositoryFile(
-                                KnownPath(featurePath, FileType.FEATURE),
-                                fileTestAsString
-                        )
-                )
-        )
-
-        val savedFeature = feature.copy(
-                path = createdRepositoryFile.knownPath.asPath()
-        )
-
-        return savedFeature
-    }
-
-    fun updateFeature(feature: Feature): Feature {
-
+    fun save(feature: Feature): Feature {
         try {
-            return updateFeatureWithoutErrorHandling(feature)
+            return saveFeatureWithoutErrorHandling(feature)
         } catch (e: FileAlreadyExistsException) {
             throw ValidationException().addFiledValidationError(
                     "name",
@@ -67,38 +43,81 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         }
     }
 
-    private fun updateFeatureWithoutErrorHandling(feature: Feature): Feature {
-        val oldPath = feature.path;
-        var newPath = oldPath;
+    private fun saveFeatureWithoutErrorHandling(feature: Feature): Feature {
+        val featureDirKnownPath = KnownPath(
+                Path(feature.path.directories, null, null),
+                FileType.FEATURE
+        )
 
-        val oldName = if (oldPath.directories.isEmpty()) null else oldPath.directories.last()
-        if (oldName != null && oldName != feature.name) {
-            val newDirectoryPath = fileRepositoryService.renameDirectory(
-                    KnownPath(Path(oldPath.directories, null, null), FileType.FEATURE),
-                    feature.name
-            )
-            newPath = newDirectoryPath.copy(
-                    fileName = oldPath.fileName,
-                    fileExtension = oldPath.fileExtension
-            )
+        if (!fileRepositoryService.existResourceAtPath(featureDirKnownPath)) {
+            return createFeature(feature)
         }
 
-        val fileFeatureAsString = objectMapper.writeValueAsString(
+        return updateFeature(feature)
+    }
+
+    private fun updateFeature(feature: Feature): Feature {
+        val newFeatureDirPath = renameDirectoryIfCase(feature)
+        val newPath = newFeatureDirPath.copy(fileName = FEATURE_NAME, fileExtension = FileType.FEATURE.fileExtension)
+        val newKnownPath = KnownPath(newPath, FileType.FEATURE)
+
+        val featureAsString = objectMapper.writeValueAsString(
                 feature.copy(path = newPath)
         )
 
-        fileRepositoryService.update(
+        val newRepositoryFile = RepositoryFile(newKnownPath, featureAsString)
+
+        if (!fileRepositoryService.existResourceAtPath(newKnownPath)) {
+            fileRepositoryService.create(
+                    RepositoryFileChange(
+                            null,
+                            newRepositoryFile
+                    )
+            )
+        } else {
+            fileRepositoryService.update(
+                    RepositoryFileChange(
+                            newKnownPath,
+                            newRepositoryFile
+                    )
+            )
+        }
+
+        val savedFeature = feature.copy(
+                path = newPath
+        )
+
+        return savedFeature
+    }
+
+    private fun renameDirectoryIfCase(feature: Feature): Path {
+        val oldDirPath = feature.path.copy(fileName = null, fileExtension = null);
+
+        val oldName = if (oldDirPath.directories.isEmpty()) null else oldDirPath.directories.last()
+        if (oldName != null && oldName != feature.name) {
+            return fileRepositoryService.renameDirectory(
+                    KnownPath(Path(oldDirPath.directories, null, null), FileType.FEATURE),
+                    feature.name
+            )
+        }
+        return oldDirPath
+    }
+
+    private fun createFeature(feature: Feature): Feature {
+        val fileTestAsString = objectMapper.writeValueAsString(feature)
+
+        val createdRepositoryFile = fileRepositoryService.create(
                 RepositoryFileChange(
-                        KnownPath(newPath, FileType.FEATURE),
+                        null,
                         RepositoryFile(
-                                KnownPath(newPath, FileType.FEATURE),
-                                fileFeatureAsString
+                                KnownPath(feature.path, FileType.FEATURE),
+                                fileTestAsString
                         )
                 )
         )
 
         val savedFeature = feature.copy(
-                path = newPath
+                path = createdRepositoryFile.knownPath.asPath()
         )
 
         return savedFeature
@@ -132,9 +151,10 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         val featureKnownPath = KnownPath(filePath, FileType.FEATURE)
         val featureFile = fileRepositoryService.getByPath(
                 featureKnownPath
-        ) ?: return null
+        ) ?: return Feature(filePath, getFeatureName(filePath))
 
-        val feature = objectMapper.readValue<Feature>(featureFile.body)
+        var feature = objectMapper.readValue<Feature>(featureFile.body)
+        feature = feature.copy(name = getFeatureName(filePath))
 
         val attachmentsDetailsFromPath = attachmentFileRepositoryService.getAttachmentsDetailsFromPath(featureKnownPath)
 
@@ -206,5 +226,12 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                     )
             )
         }
+    }
+
+    private fun getFeatureName(featurePath: Path): String {
+        if (featurePath.directories.isEmpty()) {
+            return "";
+        }
+        return featurePath.directories.last()
     }
 }

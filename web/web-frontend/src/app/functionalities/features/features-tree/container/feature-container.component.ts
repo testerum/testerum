@@ -1,9 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
 import {JsonTreeService} from "../../../../generic/components/json-tree/json-tree.service";
 import {JsonTreeContainerEditorEvent} from "../../../../generic/components/json-tree/container-editor/model/json-tree-container-editor.event";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {RenamePath} from "../../../../model/infrastructure/path/rename-path.model";
 import {JsonTreePathUtil} from "../../../../generic/components/json-tree/util/json-tree-path.util";
 import {CopyPath} from "../../../../model/infrastructure/path/copy-path.model";
 import {FeatureTreeContainerModel} from "../model/feature-tree-container.model";
@@ -16,6 +14,7 @@ import {JsonTreePathNode} from "../../../../generic/components/json-tree/model/p
 import {JsonTreeNodeEventModel} from "../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {Subscription} from "rxjs/Subscription";
 import {TestModel} from "../../../../model/test/test.model";
+import {UrlService} from "../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -36,7 +35,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     selectedNodeSubscription: Subscription;
     getTestsUnderPathSubscription: Subscription;
 
-    constructor(private router: Router,
+    constructor(private urlService: UrlService,
                 private jsonTreeService: JsonTreeService,
                 private featuresTreeService: FeaturesTreeService,
                 private testsService: TestsService,
@@ -79,12 +78,11 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
 
     setSelected() {
         this.jsonTreeService.setSelectedNode(this.model);
-
-        this.router.navigate(["/features/show", {path : this.model.path.toString()} ]);
+        this.urlService.navigateToFeature(this.model.path);
     }
 
     showCreateTest() {
-        this.router.navigate(["/features/tests/create", { path : this.model.path.toString()}]);
+        this.urlService.navigateToCreateTest(this.model.path);
     }
 
     showCreateDirectoryModal(): void {

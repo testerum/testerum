@@ -38,6 +38,7 @@ import {ArgValueValidatorDirective} from "./generic/components/step-call-tree/ar
 import {FeatureService} from "./service/feature.service";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AttachmentsService} from "./service/attachments.service";
+import {UrlService} from "./service/url.service";
 
 @NgModule({
     imports: [
@@ -90,6 +91,7 @@ import {AttachmentsService} from "./service/attachments.service";
         RdbmsService,
         HttpService,
 
+        UrlService,
         ErrorService,
         { provide: HTTP_INTERCEPTORS, useExisting: ErrorService,  multi: true }
     ],

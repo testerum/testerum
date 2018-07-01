@@ -33,7 +33,7 @@ export class FeatureService {
             .map(FeatureService.extractFeature);
     }
 
-    create(model: Feature): Observable<Feature> {
+    save(model: Feature): Observable<Feature> {
         let body = model.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
@@ -43,11 +43,10 @@ export class FeatureService {
 
         return this.http
             .post<Feature>(this.FEATURE_URL, body, httpOptions)
-            .map(FeatureService.extractFeature);
+            .map(res => new Feature().deserialize(res));
     }
 
     delete(path: Path): Observable<void> {
-
         const httpOptions = {
             params: new HttpParams()
                 .append('path', path.toString())
@@ -55,19 +54,6 @@ export class FeatureService {
 
         return this.http
             .delete<void>(this.FEATURE_URL, httpOptions)
-    }
-
-    update(model: Feature): Observable<Feature> {
-        let body = model.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
-
-        return this.http
-            .put<Feature>(this.FEATURE_URL, body, httpOptions)
-            .map(FeatureService.extractFeature);
     }
 
     private static extractFeature(res: Feature): Feature {

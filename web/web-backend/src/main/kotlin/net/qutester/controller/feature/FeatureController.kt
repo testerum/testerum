@@ -38,14 +38,8 @@ class FeatureController(private val featureService: FeatureService) {
 
     @RequestMapping (method = [RequestMethod.POST])
     @ResponseBody
-    fun create(@RequestBody feature: Feature): Feature {
-        return featureService.createFeature(feature)
-    }
-
-    @RequestMapping (method = [RequestMethod.PUT])
-    @ResponseBody
-    fun update(@RequestBody updateTestModel: Feature): Feature {
-        return featureService.updateFeature(updateTestModel)
+    fun save(@RequestBody feature: Feature): Feature {
+        return featureService.save(feature)
     }
 
     @RequestMapping (

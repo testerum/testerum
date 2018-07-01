@@ -7,7 +7,7 @@ import net.qutester.model.infrastructure.path.Path
 
 data class Feature @JsonCreator constructor(@JsonProperty("path") val path: Path,
                                             @JsonProperty("name") val name: String,
-                                            @JsonProperty("description") val description: String?,
+                                            @JsonProperty("description") val description: String? = null,
                                             @JsonProperty("attachments") val attachments: List<Attachment> = emptyList()) {
 
     private val _id = path.toString()

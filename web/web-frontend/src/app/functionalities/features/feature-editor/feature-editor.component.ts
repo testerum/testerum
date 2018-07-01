@@ -1,10 +1,9 @@
 import {
-    AfterViewInit,
     Component,
     OnDestroy,
     OnInit, ViewChild,
 } from '@angular/core';
-import {Router, ActivatedRoute} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import 'rxjs/add/operator/switchMap';
 import {FeaturesTreeService} from "../features-tree/features-tree.service";
 import {Subscription} from "rxjs/Subscription";
@@ -12,10 +11,9 @@ import {Feature} from "../../../model/feature/feature.model";
 import {FeatureService} from "../../../service/feature.service";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {MarkdownEditorComponent} from "../../../generic/components/markdown-editor/markdown-editor.component";
-import {Message} from "primeng/api";
-import {Attachment} from "../../../model/file/attachment.model";
 import {FormUtil} from "../../../utils/form.util";
 import {NgForm} from "@angular/forms";
+import {UrlService} from "../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -42,8 +40,8 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
 
     pathForTitle: string = "";
 
-    constructor(private router: Router,
-                private route: ActivatedRoute,
+    constructor(private route: ActivatedRoute,
+                private urlService: UrlService,
                 private featureService: FeatureService,
                 private featuresTreeService: FeaturesTreeService) {
     }
@@ -105,7 +103,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     cancelAction(): void {
 
         if (this.isCreateAction) {
-            this.router.navigate(["features"]);
+            this.urlService.navigateToFeatures()
         } else {
             this.featureService.getFeature(this.model.path).subscribe(
                 result => {
@@ -119,28 +117,19 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     deleteAction(): void {
         this.featureService.delete(this.model.path).subscribe(result => {
             this.featuresTreeService.initializeTestsTreeFromServer();
-            this.router.navigate(["automated/tests"]);
+            this.urlService.navigateToFeatures();
         });
     }
 
     saveAction(): void {
         this.setDescription();
 
-        if(this.isCreateAction) {
-            this.featureService
-                .create(this.model)
-                .subscribe(
-                    savedModel => this.afterSaveHandler(savedModel),
-                    error => FormUtil.setErrorsToForm(this.form, error)
-                );
-        } else {
-            this.featureService
-                .update(this.model)
-                .subscribe(
-                    savedModel => this.afterSaveHandler(savedModel),
-                    error => FormUtil.setErrorsToForm(this.form, error)
-                );
-        }
+        this.featureService
+            .save(this.model)
+            .subscribe(
+                savedModel => this.afterSaveHandler(savedModel),
+                error => FormUtil.setErrorsToForm(this.form, error)
+            );
     }
 
     private setDescription() {
@@ -151,5 +140,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
         this.model = savedModel;
         this.setEditMode(false);
         this.featuresTreeService.initializeTestsTreeFromServer();
+        this.urlService.navigateToFeature(this.model.path);
+
     }
 }
