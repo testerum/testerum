@@ -27,6 +27,7 @@ import net.qutester.model.text.StepPattern
 import net.qutester.model.text.parts.ParamStepPatternPart
 import net.qutester.model.text.parts.StepPatternPart
 import net.qutester.model.text.parts.TextStepPatternPart
+import net.qutester.service.mapper.file_arg_transformer.FileArgTransformer
 import net.qutester.service.mapper.util.ArgNameCodec
 import net.qutester.util.StepHashUtil
 import net.testerum.db_file.model.KnownPath
@@ -179,7 +180,7 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
 
                         argPartWithResolvedVariables
                     } else {
-                        resource.body
+                        FileArgTransformer.fileFormatToJson(resource.body, fileType.resourceJavaType)
                     }
                 }
             }
