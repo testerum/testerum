@@ -1,12 +1,10 @@
-
 import {ResourceType} from "./resource-type.model";
-import {PathUtil} from "../../../../../utils/path.util";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 
 export class HttpMockServerResourceType implements ResourceType {
 
     readonly rootFilePath: Path = Path.createInstance("resources/HTTP/Mock/Server");
-    readonly fileExtension: string = "http.mock.server.json";
+    readonly fileExtension: string = "http.mock.server.yaml";
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "fa fa-server";

@@ -1,12 +1,10 @@
-
 import {ResourceType} from "./resource-type.model";
-import {PathUtil} from "../../../../../utils/path.util";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 
 export class HttpRequestResourceType implements ResourceType {
 
     readonly rootFilePath: Path = Path.createInstance("resources/HTTP/Request");
-    readonly fileExtension: string = "http.request.json";
+    readonly fileExtension: string = "http.request.yaml";
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "fa fa-share";

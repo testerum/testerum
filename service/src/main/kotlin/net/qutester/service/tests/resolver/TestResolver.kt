@@ -6,6 +6,7 @@ import net.qutester.model.step.StepDef
 import net.qutester.model.step.UndefinedStepDef
 import net.qutester.model.test.TestModel
 import net.qutester.model.text.parts.ParamStepPatternPart
+import net.qutester.service.mapper.file_arg_transformer.FileArgTransformer
 import net.qutester.service.step.StepService
 
 class TestResolver(private val stepService: StepService) {
@@ -46,7 +47,10 @@ class TestResolver(private val stepService: StepService) {
         for ((i: Int, arg: Arg) in args.withIndex()) {
             val paramPart: ParamStepPatternPart = paramParts[i]
 
-            result += arg.copy(type = paramPart.type)
+            result += arg.copy(
+                    type = paramPart.type,
+                    content = FileArgTransformer.fileFormatToJson(arg.content, paramPart.type)
+            )
         }
 
         return result

@@ -7,7 +7,6 @@ import com.testerum.test_file_format.testdef.FileTestDefSerializer
 import net.qutester.model.arg.Arg
 import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.manual.operation.UpdateTestModel
 import net.qutester.model.repository.enums.FileType
 import net.qutester.model.resources.ResourceContext
@@ -120,6 +119,7 @@ class TestsService(private val testResolver: TestResolver,
         val renamed: Boolean = (path.fileName != arg.name)
 
         val actualPath: Path = if (renamed) {
+            // todo: what if we both renamed and changed the content?
             val newPath: Path = path.copy(fileName = arg.name)
 
             resourcesService.moveDirectoryOrFile(

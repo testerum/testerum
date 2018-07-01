@@ -65,7 +65,7 @@ export class ResourceMapEnum {
     public static RDBMS_CONNECTION: ResourceMapEnum = new ResourceMapEnum(
         "database.relational.connection_manager.model.RdbmsClient",
         "RdbmsClient",
-        "rdbms.connection.json",
+        "rdbms.connection.yaml",
         RdbmsConnectionConfigComponent,
         () => {return new RdbmsConnectionConfig()},
         () => {return RdbmsConnectionResourceType.getInstanceForRoot()},
@@ -92,7 +92,7 @@ export class ResourceMapEnum {
     public static HTTP_REQUEST: ResourceMapEnum = new ResourceMapEnum(
         "net.qutester.model.resources.http.request.HttpRequest",
         "HttpRequest",
-        "http.request.json",
+        "http.request.yaml",
         HttpRequestComponent,
         () => {return new HttpRequest()},
         () => {return HttpRequestResourceType.getInstanceForRoot()},
@@ -101,7 +101,7 @@ export class ResourceMapEnum {
     public static HTTP_RESPONSE_VERIFY: ResourceMapEnum = new ResourceMapEnum(
         "http.response.verify.model.HttpResponseVerify",
         "HttpResponseVerify",
-        "http.response.verify.json",
+        "http.response.verify.yaml",
         HttpResponseVerifyComponent,
         () => {return new HttpResponseVerify()},
         () => {return HttpResponseVerifyResourceType.getInstanceForRoot()},
@@ -110,7 +110,7 @@ export class ResourceMapEnum {
     public static HTTP_MOCK_SERVER_VERIFY: ResourceMapEnum = new ResourceMapEnum(
         "net.qutester.model.resources.http.mock.server.HttpMockServer",
         "HttpMockServer",
-        "http.mock.server.json",
+        "http.mock.server.yaml",
         HttpMockServerComponent,
         () => {return new HttpMockServer()},
         () => {return HttpMockServerResourceType.getInstanceForRoot()},
@@ -119,7 +119,7 @@ export class ResourceMapEnum {
     public static HTTP_MOCK_STUB_VERIFY: ResourceMapEnum = new ResourceMapEnum(
         "net.qutester.model.resources.http.mock.stub.HttpMock",
         "HttpStub",
-        "http.stub.json",
+        "http.stub.yaml",
         HttpMockComponent,
         () => {return new HttpMock()},
         () => {return HttpMockStubResourceType.getInstanceForRoot()},
