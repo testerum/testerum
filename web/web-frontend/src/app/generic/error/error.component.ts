@@ -3,7 +3,6 @@ import {ErrorService} from "../../service/error.service";
 import {ModalDirective} from "ngx-bootstrap";
 import {ErrorResponse} from "../../model/exception/error-response.model";
 import {FullLogErrorResponse} from "../../model/exception/full-log-error-response.model";
-import {FormValidationModel} from "../../model/exception/form-validation.model";
 import {ValidationErrorResponse} from "../../model/exception/validation-error-response.model";
 
 @Component({
@@ -29,7 +28,7 @@ export class ErrorComponent implements OnInit {
     ngOnInit() {
         this.errorService.errorEventEmitter.subscribe(
             (error: ErrorResponse) => {
-                this.message = "An error has appear";
+                this.message = "An error occurred";
                 this.details = null;
                 this.shouldShowDetails = false;
                 this.shouldRefreshPage = true;
