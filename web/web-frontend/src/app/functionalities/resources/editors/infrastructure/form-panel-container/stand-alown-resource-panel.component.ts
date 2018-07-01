@@ -1,8 +1,13 @@
 import {
-    Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, OnDestroy,
+    Component,
+    ComponentFactory,
+    ComponentFactoryResolver,
+    ComponentRef,
+    OnDestroy,
     OnInit,
     Type,
-    ViewChild, ViewContainerRef
+    ViewChild,
+    ViewContainerRef
 } from '@angular/core';
 import {AreYouSureModalComponent} from "../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.component";
 import {AreYouSureModalEnum} from "../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
@@ -12,7 +17,6 @@ import {ResourceContext} from "../../../../../model/resource/resource-context.mo
 import {ResourceComponent} from "../../resource-component.interface";
 import {Subscription} from "rxjs/Subscription";
 import {ResourceService} from "../../../../../service/resources/resource.service";
-import {FormValidationModel} from "../../../../../model/exception/form-validation.model";
 import {FormUtil} from "../../../../../utils/form.util";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
@@ -132,12 +136,13 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
                 this.initialize();
                 this.refreshResourceTree();
             },
-            (formValidationModel: FormValidationModel) => {
+            (error: any) => {
                 let form = this.resourceComponentRef.instance.getForm();
                 if (!form) {
                     throw new Error("A form element should be define");
                 }
-                FormUtil.setErrorsToForm(form, formValidationModel);
+
+                FormUtil.setErrorsToForm(form, error);
             }
         );
     }
