@@ -1,8 +1,9 @@
 package net.qutester.service.feature
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import net.qutester.common.json.ObjectMapperFactory
+import com.testerum.common.parsing.executer.ParserExecuter
+import com.testerum.test_file_format.feature.FileFeature
+import com.testerum.test_file_format.feature.FileFeatureParserFactory
+import com.testerum.test_file_format.feature.FileFeatureSerializer
 import net.qutester.exception.ValidationException
 import net.qutester.model.feature.Feature
 import net.qutester.model.file.Attachment
@@ -23,9 +24,13 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                      private val attachmentFileRepositoryService: AttachmentFileRepositoryService,
                      private val testsService: TestsService) {
 
-    val objectMapper: ObjectMapper = ObjectMapperFactory.createKotlinObjectMapper()
+    companion object {
+        private val FEATURE_NAME: String = "info";
 
-    val FEATURE_NAME: String = "info";
+        private val FILE_PARSER: ParserExecuter<FileFeature> = ParserExecuter(
+                FileFeatureParserFactory.feature()
+        )
+    }
 
     fun save(feature: Feature): Feature {
         try {
@@ -57,7 +62,11 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
     }
 
     private fun createFeature(feature: Feature): Feature {
-        val fileTestAsString = objectMapper.writeValueAsString(feature)
+        val fileTestAsString: String = FileFeatureSerializer.serializeToString(
+                FileFeature(
+                        description = feature.description
+                )
+        )
         val featureDirPath = feature.path;
         val featureFilePath = featureDirPath.copy(fileName = FEATURE_NAME, fileExtension = FileType.FEATURE.fileExtension)
 
@@ -84,10 +93,11 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         val newPath = newFeatureDirPath.copy(fileName = FEATURE_NAME, fileExtension = FileType.FEATURE.fileExtension)
         val newKnownPath = KnownPath(newPath, FileType.FEATURE)
 
-        val featureAsString = objectMapper.writeValueAsString(
-                feature.copy(path = newPath)
+        val featureAsString: String = FileFeatureSerializer.serializeToString(
+                FileFeature(
+                        description = feature.description
+                )
         )
-
         val newRepositoryFile = RepositoryFile(newKnownPath, featureAsString)
 
         if (!fileRepositoryService.existResourceAtPath(newKnownPath)) {
@@ -131,15 +141,20 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
     }
 
     fun getAllFeatures(): List<Feature> {
-
         val features = mutableListOf<Feature>()
 
         val allFeatureFiles = fileRepositoryService.getAllResourcesByType(FileType.FEATURE)
         for (featureFile in allFeatureFiles) {
-            val feature = objectMapper.readValue<Feature>(featureFile.body)
+            val fileFeature: FileFeature = FILE_PARSER.parse(featureFile.body)
 
-            val resolvedFeature = feature.copy(path = featureFile.knownPath.asPath())
-            features.add(resolvedFeature)
+            val path: Path = featureFile.knownPath.asPath()
+            val feature = Feature(
+                    path = path,
+                    name = getFeatureName(path),
+                    description = fileFeature.description
+            )
+
+            features.add(feature)
         }
 
         return features
@@ -156,8 +171,14 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                 featureKnownPath
         ) ?: return Feature(filePath, getFeatureName(filePath))
 
-        var feature = objectMapper.readValue<Feature>(featureFile.body)
-        feature = feature.copy(name = getFeatureName(filePath))
+        val fileFeature: FileFeature = FILE_PARSER.parse(featureFile.body)
+
+        val featurePath: Path = featureFile.knownPath.asPath()
+        val feature = Feature(
+                path = featurePath,
+                name = getFeatureName(filePath),
+                description = fileFeature.description
+        )
 
         val attachmentsDetailsFromPath = attachmentFileRepositoryService.getAttachmentsDetailsFromPath(featureKnownPath)
 
