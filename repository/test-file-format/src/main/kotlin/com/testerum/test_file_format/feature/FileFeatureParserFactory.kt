@@ -18,24 +18,24 @@ object FileFeatureParserFactory : ParserFactory<FileFeature> {
     fun feature(): Parser<FileFeature> {
         return sequence(
                 featureDescription(),
-                featureTags(),
-                featureHooks()
-        ) { description: String?, tags: List<String>, hooks: List<HookWithType> ->
+                featureTags().asOptional(),
+                featureHooks().asOptional()
+        ) { description: Optional<String>, tags: Optional<List<String>>, hooks: Optional<List<HookWithType>> ->
             FileFeature(
-                    description = description,
-                    tags = tags,
-                    beforeHooks = hooks.filter { it.isBeforeHook }.map { it.hook },
-                    afterHooks = hooks.filter { !it.isBeforeHook }.map { it.hook }
+                    description = description.orElse(null),
+                    tags = tags.orElseGet { emptyList() },
+                    beforeHooks = hooks.orElseGet { emptyList() }.filter { it.isBeforeHook  }.map { it.hook },
+                    afterHooks  = hooks.orElseGet { emptyList() }.filter { !it.isBeforeHook }.map { it.hook }
             ) 
         }
     }
 
-    private fun featureDescription(): Parser<String?> {
+    private fun featureDescription(): Parser<Optional<String>> {
         return sequence(
                 optionalWhitespaceOrNewLines(),
                 description().asOptional(),
                 optionalWhitespaceOrNewLines()
-        ) {_: Void?, description: Optional<String>, _: Void? -> description.orElse(null) }
+        ) {_: Void?, description: Optional<String>, _: Void? -> description }
     }
 
     private fun featureTags(): Parser<List<String>> {

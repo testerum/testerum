@@ -17,7 +17,26 @@ class FileFeatureParserTest {
     )
 
     @Test
-    fun test() {
+    fun `should be able to parse only description`() {
+        assertThat(
+                parser.parse(
+                        """ |    description = <<
+                            |       This feature will do wonderful things.
+                            |       It will surpass your wildest expectations.
+                            |    >>
+                        """.trimMargin()
+                ),
+                equalTo(
+                        FileFeature(
+                                description =  """ |This feature will do wonderful things.
+                                                   |It will surpass your wildest expectations.""".trimMargin()
+                        )
+                )
+        )
+    }
+
+    @Test
+    fun `test everything`() {
         assertThat(
                 parser.parse(
                         """ |    description = <<
