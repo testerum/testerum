@@ -4,7 +4,7 @@ import {Path} from "../../../../../model/infrastructure/path/path.model";
 export class RdbmsConnectionResourceType implements ResourceType {
 
     readonly rootFilePath: Path = Path.createInstance("resources/RDBMS/Connections");
-    readonly fileExtension: string = "rdbms.connection.json";
+    readonly fileExtension: string = "rdbms.connection.yaml";
 
     readonly name: string = this.rootFilePath.getLastPathPart();
     readonly iconClass: string = "fa fa-plug";

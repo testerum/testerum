@@ -1,12 +1,10 @@
-
 import {ResourceType} from "./resource-type.model";
-import {PathUtil} from "../../../../../utils/path.util";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 
 export class HttpMockStubResourceType implements ResourceType {
 
     readonly rootFilePath: Path = Path.createInstance("resources/HTTP/Mock/Stub");
-    readonly fileExtension: string = "http.stub.json";
+    readonly fileExtension: string = "http.stub.yaml";
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "fa fa-refresh";
