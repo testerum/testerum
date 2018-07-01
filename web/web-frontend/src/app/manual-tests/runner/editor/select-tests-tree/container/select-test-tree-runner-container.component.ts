@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {Router} from "@angular/router";
 import {SelectTestTreeRunnerContainerModel} from "../model/select-test-tree-runner-container.model";
 import {ObjectUtil} from "../../../../../utils/object.util";
 import {SelectionStateEnum} from "../model/enum/selection-state.enum";
@@ -21,8 +20,7 @@ export class SelectTestTreeRunnerContainerComponent {
     @Input() model: SelectTestTreeRunnerContainerModel;
     hasMouseOver: boolean = false;
 
-    constructor(private router: Router,
-                private selectTestsTreeRunnerService: SelectTestsTreeRunnerService) {
+    constructor(private selectTestsTreeRunnerService: SelectTestsTreeRunnerService) {
     }
 
     isOpenedNode(): boolean {

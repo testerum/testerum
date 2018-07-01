@@ -1,5 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Router} from "@angular/router";
+import {Component, Input, OnInit} from '@angular/core';
 import {JsonTreeService} from "../../json-tree/json-tree.service";
 import {JsonTreeContainerEditorEvent} from "../../json-tree/container-editor/model/json-tree-container-editor.event";
 import {Path} from "../../../../model/infrastructure/path/path.model";
@@ -30,8 +29,7 @@ export class PathChooserContainerComponent implements OnInit {
 
     isSelected: boolean;
 
-    constructor(private router: Router,
-                private jsonTreeService: JsonTreeService,
+    constructor(private jsonTreeService: JsonTreeService,
                 private pathChooserService: PathChooserService) {
     }
 

@@ -1,14 +1,10 @@
-
 import {
     Component, OnInit, Input
 } from '@angular/core';
 import {RunnerTreeNodeModel} from "../model/runner-tree-node.model";
 import {ExecutionStatusEnum} from "../../../../../model/test/event/enums/execution-status.enum";
 import {RunnerTreeNodeSelectedListener} from "../event/runner-tree-node-selected.listener";
-import {TestsRunnerService} from "../../tests-runner.service";
 import {RunnerTreeService} from "../runner-tree.service";
-import {Router} from "@angular/router";
-import {RunnerTreeNodeTypeEnum} from "../model/enums/runner-tree-node-type.enum";
 
 @Component({
     moduleId: module.id,
@@ -28,8 +24,7 @@ export class RunnerTreeNodeComponent implements OnInit, RunnerTreeNodeSelectedLi
 
     RunnerTreeNodeStateEnum = ExecutionStatusEnum;
 
-    constructor(private router: Router,
-                private runnerTreeService:RunnerTreeService){}
+    constructor(private runnerTreeService:RunnerTreeService){}
 
     ngOnInit(): void {
         this.runnerTreeService.addSelectedRunnerTreeNodeListeners(this)

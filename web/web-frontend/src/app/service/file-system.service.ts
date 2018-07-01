@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs/Observable';
 import {Path} from "../model/infrastructure/path/path.model";
-import {Router} from "@angular/router";
 import {FileDirectoryChooserContainerModel} from "../generic/components/form/file_dir_chooser/model/file-directory-chooser-container.model";
 import {FileSystemDirectory} from "../model/file/file-system-directory.model";
 import {HttpClient, HttpParams} from "@angular/common/http";
@@ -11,8 +10,7 @@ export class FileSystemService {
 
     private BASE_URL = "/rest/file_system/directory_tree";
 
-    constructor(private router: Router,
-                private http: HttpClient) {
+    constructor(private http: HttpClient) {
     }
 
     getDirectoryTree(path: Path): Observable<FileDirectoryChooserContainerModel> {

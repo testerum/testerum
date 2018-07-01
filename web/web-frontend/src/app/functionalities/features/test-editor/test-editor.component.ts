@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {TestsService} from "../../../service/tests.service";
 import {TestModel} from "../../../model/test/test.model";
 import 'rxjs/add/operator/switchMap';
@@ -17,7 +17,7 @@ import {StepCallTreeService} from "../../../generic/components/step-call-tree/st
 import {ResourceMapEnum} from "../../resources/editors/resource-map.enum";
 import {Subscription} from "rxjs/Subscription";
 import {Path} from "../../../model/infrastructure/path/path.model";
-import {StepCallTreeComponent} from "../../../generic/components/step-call-tree/step-call-tree.component";
+import {UrlService} from "../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -38,8 +38,8 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
     routeSubscription: Subscription;
     editModeStepCallTreeSubscription: Subscription;
 
-    constructor(private router: Router,
-                private route: ActivatedRoute,
+    constructor(private route: ActivatedRoute,
+                private urlService: UrlService,
                 private testsTreeService: FeaturesTreeService,
                 private testsService: TestsService,
                 private testsRunnerService: TestsRunnerService,
@@ -100,7 +100,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
 
     cancelAction(): void {
         if (this.isCreateAction) {
-            this.router.navigate(["features"]);
+            this.urlService.navigateToFeatures()
         } else {
             this.testsService.getTest(this.testModel.path.toString()).subscribe(
                 result => {
@@ -114,7 +114,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
     deleteAction(): void {
         this.testsService.delete(this.testModel).subscribe(restul => {
             this.testsTreeService.initializeTestsTreeFromServer();
-            this.router.navigate(["features"]);
+            this.urlService.navigateToFeatures();
         });
     }
 
@@ -139,7 +139,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
         this.testModel = savedModel;
         this.setEditMode(false);
         this.testsTreeService.initializeTestsTreeFromServer();
-        this.router.navigate(["/features/tests/show", {path : savedModel.path.toString()} ]);
+        this.urlService.navigateToTest(savedModel.path);
     }
 
     runTest(): void {

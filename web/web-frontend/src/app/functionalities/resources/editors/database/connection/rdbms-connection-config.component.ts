@@ -2,7 +2,7 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {RdbmsService} from "../../../../../service/resources/rdbms/rdbms.service";
 import {RdbmsConnectionConfig} from "../../../../../model/resource/rdbms/rdbms-connection-config.model";
 import {RdbmsDriver} from "./model/rdbms-driver.model";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {InfoModalComponent} from "../../../../../generic/components/info_modal/info-modal.component";
 import {SchemaChooserModalComponent} from "./schema_chooser_modal/schema-chooser-modal.component";
 import {SchemaChooserModalListener} from "./schema_chooser_modal/schema-chooser-modal.listener";
@@ -38,8 +38,7 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
     drivers: Array<RdbmsDriver> = [];
     selectedDriver: RdbmsDriver;
 
-    constructor(private router: Router,
-                private route: ActivatedRoute,
+    constructor(private route: ActivatedRoute,
                 private dbConnectionService: RdbmsService) { super()
     }
 

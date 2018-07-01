@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ResourceService} from "../../../../../service/resources/resource.service";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
@@ -35,8 +35,7 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
     selectedRdbmsConnection: Path;
     availableRdbmsConnections: Array<Path> = [];
 
-    constructor(private router: Router,
-                private route: ActivatedRoute,
+    constructor(private route: ActivatedRoute,
                 private resourceService: ResourceService,
                 private rdbmsService: RdbmsService,
                 private resourcesTreeService: ResourcesTreeService,

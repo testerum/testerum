@@ -1,5 +1,4 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
 import {FileDirectoryChooserContainerModel} from "../model/file-directory-chooser-container.model";
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
@@ -27,8 +26,7 @@ export class FileDirectoryChooserContainerComponent implements OnInit, OnDestroy
 
     private selectedNodeSubscription: any;
 
-    constructor(private router: Router,
-                private jsonTreeService: JsonTreeService) {
+    constructor(private jsonTreeService: JsonTreeService) {
     }
 
     ngOnInit(): void {

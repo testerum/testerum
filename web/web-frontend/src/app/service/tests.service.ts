@@ -2,10 +2,10 @@ import {Injectable} from "@angular/core";
 import { Observable } from 'rxjs/Observable';
 import {TestModel} from "../model/test/test.model";
 import {Path} from "../model/infrastructure/path/path.model";
-import {Router} from "@angular/router";
 import {CopyPath} from "../model/infrastructure/path/copy-path.model";
 import {UpdateTestModel} from "../model/test/operation/update-test.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {UrlService} from "./url.service";
 
 
 @Injectable()
@@ -14,7 +14,7 @@ export class TestsService {
     private TESTS_URL = "/rest/tests";
 
     constructor(private http: HttpClient,
-                private router: Router) {}
+                private urlService: UrlService) {}
 
     runTest(testModel:TestModel): Observable<void> {
         let body = testModel.serialize();
@@ -101,7 +101,7 @@ export class TestsService {
     }
 
     showTestsScreen() {
-        this.router.navigate(["/features"]);
+        this.urlService.navigateToFeatures();
     }
 
     moveDirectoryOrFile(copyPath: CopyPath): Observable<void> {

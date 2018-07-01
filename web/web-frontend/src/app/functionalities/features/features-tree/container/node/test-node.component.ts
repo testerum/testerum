@@ -3,6 +3,7 @@ import {NavigationEnd, Params, Router} from "@angular/router";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {TestTreeNodeModel} from "../../model/test-tree-node.model";
+import {UrlService} from "../../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -16,6 +17,7 @@ export class TestNodeComponent implements OnInit {
     private isSelected:boolean = false;
 
     constructor(private router: Router,
+                private urlService: UrlService,
                 private jsonTreeService:JsonTreeService) {
         jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onTestSelected(item));
     }
@@ -53,6 +55,6 @@ export class TestNodeComponent implements OnInit {
     }
 
     showTest() {
-        this.router.navigate(["/features/tests/show", {path : this.model.path.toString()} ]);
+        this.urlService.navigateToTest(this.model.path);
     }
 }

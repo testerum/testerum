@@ -7,15 +7,15 @@ import {RdbmsConnectionResourceType} from "../../functionalities/resources/tree/
 import {Path} from "../../model/infrastructure/path/path.model";
 import {RenamePath} from "../../model/infrastructure/path/rename-path.model";
 import {CopyPath} from "../../model/infrastructure/path/copy-path.model";
-import {Router} from "@angular/router";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {UrlService} from "../url.service";
 
 @Injectable()
 export class ResourceService {
 
     private RESOURCES_URL = "/rest/resources";
 
-    constructor(private router: Router,
+    constructor(private urlService: UrlService,
                 private http: HttpClient) {
     }
 
@@ -135,6 +135,6 @@ export class ResourceService {
     }
 
     showResourcesScreen() {
-        this.router.navigate(["automated/resources"]);
+        this.urlService.navigateToResources();
     }
 }

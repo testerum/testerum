@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ResourceService} from "../../../../../service/resources/resource.service";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
 import {HttpRequest} from "../../../../../model/resource/http/http-request.model";
@@ -39,8 +39,7 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
 
     @ViewChild("httpParams") httpParams: HttpParamsComponent;
 
-    constructor(private router: Router,
-                private route: ActivatedRoute,
+    constructor(private route: ActivatedRoute,
                 private resourceService: ResourceService,
                 private resourcesTreeService: ResourcesTreeService,
                 private httpRequestService: HttpRequestService) {

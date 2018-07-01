@@ -1,5 +1,4 @@
 import {Component, OnInit, Input, OnDestroy} from '@angular/core';
-import {Router} from "@angular/router";
 import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
 import {PathChooserNodeModel} from "../../model/path-chooser-node.model";
@@ -19,8 +18,7 @@ export class PathChooserNodeComponent implements OnInit, OnDestroy {
 
     selectedNodeEventSubscription: Subscription;
 
-    constructor(private router: Router,
-                private treeService:JsonTreeService,
+    constructor(private treeService:JsonTreeService,
                 private pathChooserService: PathChooserService) {
     }
 

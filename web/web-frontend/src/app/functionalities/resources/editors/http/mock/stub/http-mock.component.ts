@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
 import {ResourceService} from "../../../../../../service/resources/resource.service";
 import {ResourcesTreeService} from "../../../../tree/resources-tree.service";
 import {HttpMockService} from "./http-mock.service";
@@ -32,8 +32,7 @@ export class HttpMockComponent extends ResourceComponent<HttpMock> implements On
 
     HttpMockResponseType = HttpMockResponseType;
 
-    constructor(private router: Router,
-                private route: ActivatedRoute,
+    constructor(private route: ActivatedRoute,
                 private resourceService: ResourceService,
                 private resourcesTreeService: ResourcesTreeService,
                 private httpMockService: HttpMockService) {

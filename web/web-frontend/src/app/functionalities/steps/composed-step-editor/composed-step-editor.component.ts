@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ComposedStepDef} from "../../../model/composed-step-def.model";
 import {StepDef} from "../../../model/step-def.model";
 import {StepCall} from "../../../model/step-call.model";
@@ -22,6 +22,7 @@ import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dia
 import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
 import {ResourceMapEnum} from "../../resources/editors/resource-map.enum";
 import {StepCallTreeService} from "../../../generic/components/step-call-tree/step-call-tree.service";
+import {UrlService} from "../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -45,8 +46,8 @@ export class ComposedStepEditorComponent implements OnInit {
 
     areChildComponentsValid: boolean = true;
 
-    constructor(private router: Router,
-                private route: ActivatedRoute,
+    constructor(private route: ActivatedRoute,
+                private urlService: UrlService,
                 private stepsService: StepsService,
                 private stepsTreeService: StepsTreeService,
                 private stepCallTreeService: StepCallTreeService,
@@ -92,7 +93,7 @@ export class ComposedStepEditorComponent implements OnInit {
 
     cancelAction(): void {
         if (this.isCreateAction) {
-            this.router.navigate(["automated/steps"]);
+            this.urlService.navigateToSteps();
         } else {
             this.stepsService.getComposedStepDef(this.model.path.toString()).subscribe(
                 result => {
@@ -106,7 +107,7 @@ export class ComposedStepEditorComponent implements OnInit {
     deleteAction(): void {
         this.stepsService.deleteComposedStepsDef(this.model).subscribe(restul => {
             this.stepsTreeService.initializeStepsTreeFromServer();
-            this.router.navigate(["automated/steps"]);
+            this.urlService.navigateToSteps();
         });
     }
 
@@ -164,7 +165,7 @@ export class ComposedStepEditorComponent implements OnInit {
         this.applicationEventBus.triggerAfterPageSaveEvent();
         this.isEditMode = false;
         this.stepsTreeService.initializeStepsTreeFromServer();
-        this.router.navigate(['/automated/steps/composed', {path: composedStepDef.path.toString()}]);
+        this.urlService.navigateToComposedStep(composedStepDef.path);
     };
 
     getPhaseEnumValues(): Array<StepPhaseEnum> {

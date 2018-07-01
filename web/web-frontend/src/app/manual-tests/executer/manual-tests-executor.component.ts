@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {ModelComponentMapping} from "../../model/infrastructure/model-component-mapping.model";
-import {SelectTestTreeRunnerContainerModel} from "../runner/editor/select-tests-tree/model/select-test-tree-runner-container.model";
-import {SelectTestTreeRunnerNodeModel} from "../runner/editor/select-tests-tree/model/select-test-tree-runner-node.model";
 import {ManualTestsExecutorTreeContainerComponent} from "./tree/container/manual-tests-executor-tree-container.component";
 import {ManualTestsExecutorTreeNodeComponent} from "./tree/container/node/manual-tests-executor-tree-node.component";
 import {ManualTestsExecutorTreeService} from "./tree/manual-tests-executor-tree.service";

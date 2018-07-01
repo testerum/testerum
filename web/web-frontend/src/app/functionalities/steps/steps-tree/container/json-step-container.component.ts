@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {Router} from "@angular/router";
 import {JsonTreeService} from "../../../../generic/components/json-tree/json-tree.service";
 import {JsonTreeContainerEditorEvent} from "../../../../generic/components/json-tree/container-editor/model/json-tree-container-editor.event";
 import {Path} from "../../../../model/infrastructure/path/path.model";
@@ -14,6 +13,7 @@ import {CopyPath} from "../../../../model/infrastructure/path/copy-path.model";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeNodeState} from "../../../../generic/components/json-tree/model/json-tree-node-state.model";
+import {UrlService} from "../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -33,7 +33,7 @@ export class JsonStepContainerComponent {
 
     hasMouseOver: boolean = false;
 
-    constructor(private router: Router,
+    constructor(private urlService: UrlService,
                 private jsonTreeService: JsonTreeService,
                 private stepsTreeService: StepsTreeService,
                 private stepsService: StepsService) {
@@ -51,7 +51,7 @@ export class JsonStepContainerComponent {
     }
 
     showCreateDirectory() {
-        this.router.navigate(["/automated/steps/composed/create", { path : this.model.path.toString()}]);
+        this.urlService.navigateToCreateComposedStep(this.model.path);
     }
 
     showCreateDirectoryModal(): void {

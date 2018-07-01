@@ -15,6 +15,7 @@ import {JsonSchemaExtractor} from "./json-schema/json-schema.extractor";
 import {JsonTreeNodeSerializable} from "../../../../generic/components/json-tree/model/serializable/json-tree-node-serialzable.model";
 import {FormValidationModel} from "../../../../model/exception/form-validation.model";
 import {FormUtil} from "../../../../utils/form.util";
+import {UrlService} from "../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -36,6 +37,7 @@ export class JsonVerifyComponent extends ResourceEditor<ArrayJsonVerify> impleme
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
+                private urlService: UrlService,
                 private resourceService: ResourceService,
                 private resourcesTreeService: ResourcesTreeService,
                 private jsonVerifyTreeService: JsonVerifyTreeService) {
@@ -111,7 +113,7 @@ export class JsonVerifyComponent extends ResourceEditor<ArrayJsonVerify> impleme
 
     cancelAction(): void {
         if (this.resource.isCreateNewResource()) {
-            this.router.navigate(["automated/resources"]);
+            this.urlService.navigateToResources();
         } else {
             this.resourceService.getResource(this.resource.path, new SerializationUtil()).subscribe(
                 result => {
@@ -127,7 +129,7 @@ export class JsonVerifyComponent extends ResourceEditor<ArrayJsonVerify> impleme
     deleteAction(): void {
         this.resourceService.deleteResource(this.resource.path).subscribe(result => {
             this.resourcesTreeService.initializeResources(this.rootResourceType, this.childrenResourceType);
-            this.router.navigate(["automated/resources"]);
+            this.urlService.navigateToResources();
         });
     }
 

@@ -1,8 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ManualTestStatus} from "../../model/enums/manual-test-status.enum";
 import {UpdateManualTestModel} from "../../model/operation/update-manual-test.model";
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
-import {ManualTestModel} from "../../model/manual-test.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ManualTestsExecutorTreeService} from "../tree/manual-tests-executor-tree.service";
 import {Path} from "../../../model/infrastructure/path/path.model";

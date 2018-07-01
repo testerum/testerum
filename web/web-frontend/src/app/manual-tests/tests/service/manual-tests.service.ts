@@ -123,7 +123,7 @@ export class ManualTestsService {
     }
 
     showTestsScreen() {
-        this.router.navigate(["automated/tests"]);
+        this.router.navigate(["manual/tests"]);
     }
 
     moveDirectoryOrFile(copyPath: CopyPath): Observable<void> {

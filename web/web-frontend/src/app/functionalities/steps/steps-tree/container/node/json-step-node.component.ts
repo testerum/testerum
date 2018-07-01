@@ -4,6 +4,7 @@ import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tre
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {StepTreeNodeModel} from "../../model/step-tree-node.model";
 import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
+import {UrlService} from "../../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -17,6 +18,7 @@ export class JsonStepNodeComponent implements OnInit {
     private isSelected:boolean = false;
 
     constructor(private router: Router,
+                private urlService: UrlService,
                 private treeService:JsonTreeService) {
         treeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onStepSelected(item));
     }
@@ -54,17 +56,17 @@ export class JsonStepNodeComponent implements OnInit {
     }
     private showViewer() {
         if (this.model.stepDef instanceof ComposedStepDef) {
-            this.router.navigate(['/automated/steps/composed', {path : this.model.path.toString()}]);
+            this.urlService.navigateToComposedStep(this.model.path)
         } else {
-            this.router.navigate(["/automated/steps/basic", {path : this.model.path.toString()}]);
+            this.urlService.navigateToBasicStep(this.model.path)
         }
     }
 
     showComposedStep() {
         if (this.model instanceof ComposedStepDef) {
-            this.router.navigate(['/automated/steps/composed', {path : this.model.path.toString()} ]);
+            this.urlService.navigateToComposedStep(this.model.path);
         } else {
-            this.router.navigate(["/automated/steps"]);
+            this.urlService.navigateToSteps();
         }
     }
 }

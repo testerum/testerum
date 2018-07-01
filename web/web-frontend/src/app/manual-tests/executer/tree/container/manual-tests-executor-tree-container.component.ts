@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {Router} from "@angular/router";
 import {ManualTestsExecutorTreeService} from "../manual-tests-executor-tree.service";
 import {ManualTestStatus} from "../../../model/enums/manual-test-status.enum";
 import {ManualTestsTreeExecutorContainerModel} from "../model/manual-tests-tree-executor-container.model";
@@ -21,8 +20,7 @@ export class ManualTestsExecutorTreeContainerComponent {
     hasMouseOver: boolean = false;
     ManualTestStatus = ManualTestStatus;
 
-    constructor(private router: Router,
-                private selectTestsTreeRunnerService: ManualTestsExecutorTreeService) {
+    constructor(private selectTestsTreeRunnerService: ManualTestsExecutorTreeService) {
     }
 
     isEditMode(): boolean {

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ComposedStepDef} from "../../../model/composed-step-def.model";
 
 @Component({
@@ -18,8 +18,7 @@ export class BasicStepEditorComponent implements OnInit {
 
     pattern: string;
 
-    constructor(private router: Router,
-                private route: ActivatedRoute) {
+    constructor(private route: ActivatedRoute) {
     }
 
     ngOnInit() {

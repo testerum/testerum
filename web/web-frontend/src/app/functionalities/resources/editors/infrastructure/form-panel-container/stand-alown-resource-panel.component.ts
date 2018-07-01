@@ -7,7 +7,7 @@ import {
 import {AreYouSureModalComponent} from "../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.component";
 import {AreYouSureModalEnum} from "../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {ResourceMapEnum} from "../../resource-map.enum";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ResourceContext} from "../../../../../model/resource/resource-context.model";
 import {ResourceComponent} from "../../resource-component.interface";
 import {Subscription} from "rxjs/Subscription";
@@ -16,6 +16,7 @@ import {FormValidationModel} from "../../../../../model/exception/form-validatio
 import {FormUtil} from "../../../../../utils/form.util";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
+import {UrlService} from "../../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -38,7 +39,7 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
     routeParamSubscription: Subscription;
 
     constructor(private route: ActivatedRoute,
-                private router: Router,
+                private urlService: UrlService,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private resourceService: ResourceService,
                 private resourcesTreeService: ResourcesTreeService,) {
@@ -105,7 +106,7 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
                 if (action == AreYouSureModalEnum.OK) {
                     this.resourceService.deleteResource(this.resource.path).subscribe(result => {
                         this.refreshResourceTree();
-                        this.router.navigate(["automated/resources"]);
+                        this.urlService.navigateToResources();
                     });
                 }
             }

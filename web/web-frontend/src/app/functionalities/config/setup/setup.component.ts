@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Setup} from "./model/setup.model";
 import {SetupService} from "../../../service/setup.service";
 import {Path} from "../../../model/infrastructure/path/path.model";
-import {Router} from "@angular/router";
+import {UrlService} from "../../../service/url.service";
 
 @Component({
     selector: 'setup',
@@ -14,7 +14,7 @@ export class SetupComponent implements OnInit {
 
     repositoryPathAsString: string;
 
-    constructor(private router: Router,
+    constructor(private urlService: UrlService,
                 private startConfigService: SetupService) {
     }
 
@@ -22,7 +22,7 @@ export class SetupComponent implements OnInit {
         this.startConfigService.isConfigSet().subscribe(
             (isConfigSet: boolean) => {
                 if(isConfigSet) {
-                    this.router.navigate(['']);
+                    this.urlService.navigateToRoot()
                 }
             }
         );
@@ -34,7 +34,7 @@ export class SetupComponent implements OnInit {
 
         this.startConfigService.save(startConfig).subscribe(
             result => {
-                this.router.navigate(['']);
+                this.urlService.navigateToRoot()
             }
         )
     }

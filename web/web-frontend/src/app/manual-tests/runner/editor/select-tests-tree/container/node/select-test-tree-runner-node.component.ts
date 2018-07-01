@@ -1,5 +1,4 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {NavigationEnd, Params, Router} from "@angular/router";
 import {JsonTreeNodeEventModel} from "../../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../../generic/components/json-tree/json-tree.service";
 import {SelectTestTreeRunnerNodeModel} from "../../model/select-test-tree-runner-node.model";
@@ -17,8 +16,7 @@ export class SelectTestTreeRunnerNodeComponent implements OnInit {
     @Input() model:SelectTestTreeRunnerNodeModel;
     private isSelected:boolean = false;
 
-    constructor(private router: Router,
-                private jsonTreeService:JsonTreeService,
+    constructor(private jsonTreeService:JsonTreeService,
                 private selectTestsTreeRunnerService: SelectTestsTreeRunnerService) {
     }
 

@@ -10,7 +10,7 @@ import {CopyPath} from "../model/infrastructure/path/copy-path.model";
 import {CheckComposedStepDefUpdateCompatibilityResponse} from "../model/step/CheckComposedStepDefUpdateCompatibilityResponse";
 import {UpdateComposedStepDef} from "../model/step/UpdateComposedStepDef";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {UrlService} from "./url.service";
 
 @Injectable()
 export class StepsService {
@@ -19,7 +19,7 @@ export class StepsService {
     private COMPOSED_STEPS_URL = "rest/steps/composed";
 
     constructor(private http: HttpClient,
-                private router: Router) {}
+                private urlService: UrlService) {}
 
     getComposedStepDef(pathAsString: string): Observable<ComposedStepDef> {
         const httpOptions = {
@@ -145,7 +145,7 @@ export class StepsService {
     }
 
     showStepsScreen() {
-        this.router.navigate(["automated/steps"]);
+        this.urlService.navigateToSteps();
     }
 
     moveDirectoryOrFile(model: CopyPath): Observable<void> {
