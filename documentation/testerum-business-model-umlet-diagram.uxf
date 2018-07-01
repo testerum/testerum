@@ -180,7 +180,7 @@ getParamStepPattern(): List&lt;ParamStepPatternPart&gt;
     <panel_attributes>ParamStepPatternPart
 --
 name: String
-className: String
+type: String
 description: String? = null
 enumValues: List&lt;String&gt; = emptyList()</panel_attributes>
     <additional_attributes/>
@@ -315,7 +315,7 @@ stepCalls: List&lt;StepCall&gt;</panel_attributes>
 --
 name: String?
 content: String
-className: String
+type: String
 path: Path?</panel_attributes>
     <additional_attributes/>
   </element>
