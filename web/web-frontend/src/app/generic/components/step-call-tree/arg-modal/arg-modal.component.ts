@@ -20,6 +20,7 @@ import {Resource} from "../../../../model/resource/resource.model";
 import {SelectSharedResourceModalComponent} from "../select-shared-resource-modal/select-shared-resource-modal.component";
 import {ResourceContext} from "../../../../model/resource/resource-context.model";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
+import {BasicResource} from "../../../../model/resource/basic/basic-resource.model";
 
 @Component({
     moduleId: module.id,
@@ -141,12 +142,14 @@ export class ArgModalComponent {
     update() {
         this.arg.name = this.resourceComponentRef.instance.name;
 
-        if(ObjectUtil.hasAMethodCalled(this.resourceComponentRef.instance.model, "clone")) {
-            let objectAsJson = JSON.parse(this.resourceComponentRef.instance.model.serialize());
+        let resource = this.resourceComponentRef.instance.model;
+        if(ObjectUtil.hasAMethodCalled(resource, "clone")) {
+            let serializedResource = resource.serialize();
+            let resourceAsJson = resource instanceof BasicResource ? serializedResource : JSON.parse(serializedResource);
             this.arg.content.reset();
-            this.arg.content.deserialize(objectAsJson)
+            this.arg.content.deserialize(resourceAsJson)
         } else {
-            this.arg.content = this.resourceComponentRef.instance.model
+            this.arg.content = resource
         }
         this.resourceModal.hide();
     }

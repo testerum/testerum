@@ -14,6 +14,7 @@ import {ArgNodeModel} from "../../model/arg-node.model";
 import {ResourceComponent} from "../../../../../functionalities/resources/editors/resource-component.interface";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
 import {ArgNodePanelComponent} from "./arg-node-panel/arg-node-panel.component";
+import {Arg} from "../../../../../model/arg/arg.model";
 
 @Component({
     selector: 'arg-node',
@@ -38,6 +39,9 @@ export class ArgNodeComponent implements OnInit {
                 private stepCallTreeService: StepCallTreeService) {
     }
 
+    getArg(): Arg {
+        return this.model.arg
+    }
     ngOnInit() {
         let paramRendererContainer: Type<any> = this.getResourceRenderer();
 

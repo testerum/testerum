@@ -2,7 +2,7 @@
     <arg-node-panel #argNodePanel [arg]="model.arg">
         <div #resourceContainer></div>
 
-        <div *ngIf="!model.arg || model.arg.content.isEmpty()"
+        <div *ngIf="!getArg() || getArg().content.isEmpty()"
              class="empty-body-label">
             Undefined
         </div>

@@ -24,11 +24,11 @@ export class BasicResource implements Resource<BasicResource> {
     }
 
     serialize(): string {
-        return JsonUtil.stringify(this.content);
+        return this.content;
     }
 
     clone(): BasicResource {
-        let objectAsJson = JSON.parse(this.serialize());
+        let objectAsJson = this.serialize() ? "" + this.serialize() : this.serialize();
         return new BasicResource().deserialize(objectAsJson);
     }
 
