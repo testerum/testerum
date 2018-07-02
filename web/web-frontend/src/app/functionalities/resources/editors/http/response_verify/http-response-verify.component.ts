@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ResourceService} from "../../../../../service/resources/resource.service";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
@@ -10,6 +10,7 @@ import {NgForm} from "@angular/forms";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
     moduleId: module.id,
     selector: 'http-response-verify',
     templateUrl: 'http-response-verify.component.html',
@@ -27,10 +28,12 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
     @Input() stepParameter?: ParamStepPatternPart;
     @Input() private _editMode: boolean = false;
     @Input() condensedViewMode: boolean = false;
+    @Input() isSharedResource: boolean = false;
 
     @ViewChild(NgForm) form: NgForm;
 
-    constructor(private route: ActivatedRoute,
+    constructor(private cd: ChangeDetectorRef,
+                private route: ActivatedRoute,
                 private resourceService: ResourceService,
                 private resourcesTreeService: ResourcesTreeService,
                 private httpResponseVerifyService: HttpResponseVerifyService) {
@@ -42,6 +45,10 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
             this.model = new HttpResponseVerify();
         }
         this.httpResponseVerifyService.setHttpResponseVerify(this.model);
+    }
+
+    refresh() {
+        this.cd.detectChanges();
     }
 
     get editMode(): boolean {

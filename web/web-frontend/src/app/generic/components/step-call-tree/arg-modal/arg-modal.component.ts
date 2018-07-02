@@ -84,6 +84,12 @@ export class ArgModalComponent {
         if(this.isSharedResourceInput) {
             this.isSharedResourceInput.nativeElement.checked = value;
         }
+        if (this.resourceComponentRef) {
+            this.resourceComponentRef.instance.isSharedResource = this.isSharedResource;
+            if (this.resourceComponentRef.instance.refresh) {
+                this.resourceComponentRef.instance.refresh()
+            }
+        }
     }
 
     private setResourceComponentInBody(resourceModelInBody: Resource<any>, name: string) {
@@ -102,9 +108,11 @@ export class ArgModalComponent {
         this.resourceComponentRef.instance.stepParameter = this.stepParameter;
         this.resourceComponentRef.instance.name = name;
         this.resourceComponentRef.instance.condensedViewMode = false;
-        this.resourceComponentRef.instance.editMode = true;
-
-        this.isEditMode = true;
+        this.resourceComponentRef.instance.editMode = this.isEditMode;
+        this.resourceComponentRef.instance.isSharedResource = this.isSharedResource;
+        if (this.resourceComponentRef.instance.refresh) {
+            this.resourceComponentRef.instance.refresh()
+        }
     }
 
     toggleSharedResource() {
@@ -117,6 +125,11 @@ export class ArgModalComponent {
                 (selectedPath: Path) => {
                     this.arg.path = selectedPath;
                     this.initializeIsSharedResource();
+
+                    this.resourceComponentRef.instance.name = this.arg.path.fileName;
+                    if (this.resourceComponentRef.instance.refresh) {
+                        this.resourceComponentRef.instance.refresh()
+                    }
                 }
             );
         }

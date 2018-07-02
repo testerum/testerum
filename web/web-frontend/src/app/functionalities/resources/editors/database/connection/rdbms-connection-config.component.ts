@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {RdbmsService} from "../../../../../service/resources/rdbms/rdbms.service";
 import {RdbmsConnectionConfig} from "../../../../../model/resource/rdbms/rdbms-connection-config.model";
 import {RdbmsDriver} from "./model/rdbms-driver.model";
@@ -11,6 +11,7 @@ import {NgForm} from "@angular/forms";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
     moduleId: module.id,
     selector: 'db-connection',
     templateUrl: 'rdbms-connection-config.component.html',
@@ -29,6 +30,7 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
     @Input() stepParameter?: ParamStepPatternPart;
     @Input() editMode: boolean = false;
     @Input() condensedViewMode: boolean = false;
+    @Input() isSharedResource: boolean = false;
 
     @ViewChild(NgForm) form: NgForm;
 
@@ -38,7 +40,8 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
     drivers: Array<RdbmsDriver> = [];
     selectedDriver: RdbmsDriver;
 
-    constructor(private route: ActivatedRoute,
+    constructor(private cd: ChangeDetectorRef,
+                private route: ActivatedRoute,
                 private dbConnectionService: RdbmsService) { super()
     }
 
@@ -59,6 +62,10 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
         if (this.model && this.drivers) {
             this.setSelectedDriver(this.model.driverName);
         }
+    }
+
+    refresh() {
+        this.cd.detectChanges();
     }
 
     private maskedPassword(): string {

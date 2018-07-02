@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ResourceService} from "../../../../../../service/resources/resource.service";
 import {ResourcesTreeService} from "../../../../tree/resources-tree.service";
@@ -10,6 +10,7 @@ import {HttpMockResponseType} from "./model/enums/http-mock-response-type.enum";
 import {ParamStepPatternPart} from "../../../../../../model/text/parts/param-step-pattern-part.model";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
     moduleId: module.id,
     selector: 'http-mock',
     templateUrl: 'http-mock.component.html',
@@ -27,12 +28,14 @@ export class HttpMockComponent extends ResourceComponent<HttpMock> implements On
     @Input() stepParameter?: ParamStepPatternPart;
     @Input() private _editMode: boolean = false;
     @Input() condensedViewMode: boolean = false;
+    @Input() isSharedResource: boolean = false;
 
     @ViewChild(NgForm) form: NgForm;
 
     HttpMockResponseType = HttpMockResponseType;
 
-    constructor(private route: ActivatedRoute,
+    constructor(private cd: ChangeDetectorRef,
+                private route: ActivatedRoute,
                 private resourceService: ResourceService,
                 private resourcesTreeService: ResourcesTreeService,
                 private httpMockService: HttpMockService) {
@@ -44,6 +47,10 @@ export class HttpMockComponent extends ResourceComponent<HttpMock> implements On
             this.model = new HttpMock();
         }
         this.httpMockService.setModel(this.model);
+    }
+
+    refresh() {
+        this.cd.detectChanges();
     }
 
     get editMode(): boolean {

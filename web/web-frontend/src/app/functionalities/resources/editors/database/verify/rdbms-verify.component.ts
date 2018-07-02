@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ResourceService} from "../../../../../service/resources/resource.service";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
@@ -12,6 +12,7 @@ import {NgForm} from "@angular/forms";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
     moduleId: module.id,
     selector: 'rdbms-verify',
     templateUrl: 'rdbms-verify.component.html',
@@ -29,13 +30,15 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
     @Input() stepParameter?: ParamStepPatternPart;
     @Input() private _editMode: boolean = false;
     @Input() condensedViewMode: boolean = false;
+    @Input() isSharedResource: boolean = false;
 
     @ViewChild(NgForm) form: NgForm;
 
     selectedRdbmsConnection: Path;
     availableRdbmsConnections: Array<Path> = [];
 
-    constructor(private route: ActivatedRoute,
+    constructor(private cd: ChangeDetectorRef,
+                private route: ActivatedRoute,
                 private resourceService: ResourceService,
                 private rdbmsService: RdbmsService,
                 private resourcesTreeService: ResourcesTreeService,
@@ -50,6 +53,10 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
         this.rdbmsVerifyTreeService.editMode = this._editMode;
         this.rdbmsVerifyTreeService.setSchemaVerifyResource(this.model);
         this.initAvailableRdbmsConnections();
+    }
+
+    refresh() {
+        this.cd.detectChanges();
     }
 
     get editMode(): boolean {

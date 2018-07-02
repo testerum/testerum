@@ -60,10 +60,10 @@
     <!-- CONNECTION NAME -->
     <div class="form-group row">
         <label class="col-md-2 control-label">Connection Name</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode">
+        <div class="col-md-10 form-value" *ngIf="!editMode || isSharedResource">
             {{name}}
         </div>
-        <div class="col-md-10" *ngIf="editMode">
+        <div class="col-md-10" *ngIf="editMode && !isSharedResource">
             <input id="name" required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">

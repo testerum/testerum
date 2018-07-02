@@ -32,10 +32,10 @@
     <!-- NAME -->
     <div class="form-group row">
         <label class="col-md-3 control-label">HTTP Response Verify Name</label>
-        <div class="col-md-9 form-value" *ngIf="!editMode">
+        <div class="col-md-9 form-value" *ngIf="!editMode || isSharedResource">
             {{name}}
         </div>
-        <div class="col-md-9" *ngIf="editMode">
+        <div class="col-md-9" *ngIf="editMode && !isSharedResource">
             <input required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">

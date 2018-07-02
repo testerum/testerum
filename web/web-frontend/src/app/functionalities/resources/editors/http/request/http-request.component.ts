@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ResourceService} from "../../../../../service/resources/resource.service";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
@@ -30,6 +30,7 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
     @Input() stepParameter?: ParamStepPatternPart;
     @Input() private _editMode: boolean = false;
     @Input() condensedViewMode: boolean = false;
+    @Input() isSharedResource: boolean = false;
 
     @ViewChild(NgForm) form: NgForm;
 
@@ -39,7 +40,8 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
 
     @ViewChild("httpParams") httpParams: HttpParamsComponent;
 
-    constructor(private route: ActivatedRoute,
+    constructor(private cd: ChangeDetectorRef,
+                private route: ActivatedRoute,
                 private resourceService: ResourceService,
                 private resourcesTreeService: ResourcesTreeService,
                 private httpRequestService: HttpRequestService) {
@@ -51,6 +53,10 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
             this.model = new HttpRequest();
         }
         this.initPartToDisplay(this.model);
+    }
+
+    refresh() {
+        this.cd.detectChanges();
     }
 
     private initPartToDisplay(httpRequest: HttpRequest) {

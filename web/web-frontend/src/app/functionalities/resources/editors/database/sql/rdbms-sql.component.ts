@@ -1,10 +1,11 @@
-import {Component, OnInit, ViewChild, Input} from '@angular/core';
+import {Component, OnInit, ViewChild, Input, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {ResourceComponent} from "../../resource-component.interface";
 import {BasicResource} from "../../../../../model/resource/basic/basic-resource.model";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
     moduleId: module.id,
     selector: 'rdbms-sql',
     templateUrl: 'rdbms-sql.component.html',
@@ -23,13 +24,21 @@ export class RdbmsSqlComponent extends ResourceComponent<BasicResource> implemen
     @Input() stepParameter?: ParamStepPatternPart;
     @Input() editMode: boolean = false;
     @Input() condensedViewMode: boolean = false;
+    @Input() isSharedResource: boolean = false;
 
     @ViewChild(NgForm) form: NgForm;
+
+    constructor(private cd: ChangeDetectorRef){
+    }
 
     ngOnInit() {
         if (this.model == null) {
             this.model = new BasicResource();
         }
+    }
+
+    refresh() {
+        this.cd.detectChanges();
     }
 
     isFormValid(): boolean {
