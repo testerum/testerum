@@ -100,6 +100,7 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
     setEditMode(): void {
         this.isEditMode = true;
         this.resourceComponentRef.instance.editMode = true;
+        this.resourceComponentRef.instance.refresh();
     }
 
     deleteAction(): void {

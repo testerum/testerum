@@ -35,6 +35,7 @@ export class HttpMockServerComponent extends ResourceComponent<HttpMockServer> i
     @ViewChild(NgForm) form: NgForm;
 
     constructor(private cd: ChangeDetectorRef) {
+        super();
     }
 
     ngOnInit() {

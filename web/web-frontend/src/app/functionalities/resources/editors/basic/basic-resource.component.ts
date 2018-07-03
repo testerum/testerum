@@ -36,6 +36,7 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
     @ViewChild(NgForm) form: NgForm;
 
     constructor(private cd: ChangeDetectorRef){
+        super();
     }
 
     ngOnInit() {

@@ -29,6 +29,7 @@ export class RdbmsSqlComponent extends ResourceComponent<BasicResource> implemen
     @ViewChild(NgForm) form: NgForm;
 
     constructor(private cd: ChangeDetectorRef){
+        super();
     }
 
     ngOnInit() {

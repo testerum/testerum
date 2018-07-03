@@ -56,6 +56,7 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
                 if (this.model) {
                     this.setSelectedDriver(this.model.driverName)
                 }
+                this.refresh();
             }
         );
 
