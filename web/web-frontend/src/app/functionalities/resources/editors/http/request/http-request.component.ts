@@ -24,7 +24,6 @@ import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-p
 })
 export class HttpRequestComponent extends ResourceComponent<HttpRequest> implements OnInit {
 
-
     @Input() name: string;
     @Input() model:HttpRequest;
     @Input() stepParameter?: ParamStepPatternPart;

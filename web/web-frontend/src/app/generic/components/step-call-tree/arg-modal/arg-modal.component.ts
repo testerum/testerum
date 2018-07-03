@@ -37,6 +37,7 @@ export class ArgModalComponent {
     arg:Arg;
     stepParameter: ParamStepPatternPart;
 
+    argPath: Path;
     isEditMode:boolean = true;
     isSharedResource = false;
     sharedResourcePathAsString: string;
@@ -56,6 +57,7 @@ export class ArgModalComponent {
 
     show() {
         this.resourceMapping = ResourceMapEnum.getResourceMapEnumByServerType(this.arg.uiType);
+        this.argPath = this.arg.path;
 
         this.initializeIsSharedResource();
 
@@ -68,15 +70,15 @@ export class ArgModalComponent {
 
     getArgName() {
         let argName = this.arg.name;
-        if (!this.arg.name && this.arg.path) {
-            argName = this.arg.path.fileName;
+        if (!this.arg.name && this.argPath) {
+            argName = this.argPath.fileName;
         }
         return argName;
     }
 
     private initializeIsSharedResource() {
-        this.setIsSharedResourceValue (this.arg.path != null);
-        this.sharedResourcePathAsString = this.arg.path ? "/"+this.arg.path.toString() : "";
+        this.setIsSharedResourceValue (this.argPath != null);
+        this.sharedResourcePathAsString = this.argPath ? "/"+this.argPath.toString() : "";
     }
 
     private setIsSharedResourceValue(value: boolean) {
@@ -117,16 +119,16 @@ export class ArgModalComponent {
 
     toggleSharedResource() {
         if (this.isSharedResource) {
-            this.arg.path = null;
+            this.argPath = null;
             this.setIsSharedResourceValue(false);
         } else {
             this.newSharedResourcePathModal.resourceMapping = this.resourceMapping;
             this.newSharedResourcePathModal.show().subscribe(
                 (selectedPath: Path) => {
-                    this.arg.path = selectedPath;
+                    this.argPath = selectedPath;
                     this.initializeIsSharedResource();
 
-                    this.resourceComponentRef.instance.name = this.arg.path.fileName;
+                    this.resourceComponentRef.instance.name = this.argPath.fileName;
                     if (this.resourceComponentRef.instance.refresh) {
                         this.resourceComponentRef.instance.refresh()
                     }
@@ -143,7 +145,7 @@ export class ArgModalComponent {
                     this.resourceService.getResource(selectedPath, this.arg.content.createInstance()).subscribe(
                         (resource: ResourceContext<any>) => {
                             this.setResourceComponentInBody(resource.body, selectedPath.fileName);
-                            this.arg.path = selectedPath;
+                            this.argPath = selectedPath;
                             this.initializeIsSharedResource()
                         }
                     )
@@ -154,6 +156,7 @@ export class ArgModalComponent {
 
     update() {
         this.arg.name = this.resourceComponentRef.instance.name;
+        this.arg.path = this.argPath;
 
         let resource = this.resourceComponentRef.instance.model;
         if(ObjectUtil.hasAMethodCalled(resource, "clone")) {
