@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {JsonVerifyTreeService} from "../../../json_verify/json-verify-tree/json-verify-tree.service";
 import {HttpResponseVerifyService} from "../http-response-verify.service";
 import {HttpBodyVerifyMatchingType} from "../model/enums/http-body-verify-matching-type.enum";
@@ -18,6 +18,8 @@ import {HttpResponseBodyVerify} from "../model/http-response-body-verify.model";
 
 export class HttpResponseVerifyBodyComponent implements OnInit {
 
+    @Input() expectedBody: HttpResponseBodyVerify;
+
     sampleJsonText: string;
 
     aceEditorModeOptions: Array<string>=[];
@@ -33,6 +35,11 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
     }
 
     ngOnInit() {
+        if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
+            let jsonVerifyAsJson = JSON.parse(this.expectedBody.bodyVerify);
+            let jsonTreeNode = new SerializationUtil().deserialize(jsonVerifyAsJson);
+            this.jsonVerifyTreeService.setJsonVerifyRootResource(jsonTreeNode);
+        }
     }
 
     isEditMode(): boolean {
@@ -40,7 +47,7 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
     }
 
     getModel(): HttpResponseBodyVerify {
-        return this.httpResponseVerifyService.getModel().expectedBody;
+        return this.expectedBody;
     }
 
     getHttpBodyVerifyMatchingTypes(): Array<HttpBodyVerifyMatchingType> {
@@ -52,7 +59,7 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
     }
 
     bodyVerifyMatchingTypeChange(value: HttpBodyVerifyMatchingType) {
-        this.httpResponseVerifyService.getModel().expectedBody.httpBodyVerifyMatchingType = value;
+        this.expectedBody.httpBodyVerifyMatchingType = value;
         switch (value) {
             case HttpBodyVerifyMatchingType.CONTAINS: this.aceEditorModeOptions = HttpBodyVerifyType.enums.map(it => it.toString()); break;
             case HttpBodyVerifyMatchingType.EXACT_MATCH: this.aceEditorModeOptions = HttpBodyVerifyType.enums.map(it => it.toString()); break;
@@ -61,13 +68,13 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
     }
 
     shouldDisplayBodyTypeChooser() {
-        let bodyVerifyType = this.httpResponseVerifyService.model.expectedBody.httpBodyVerifyMatchingType;
+        let bodyVerifyType = this.expectedBody.httpBodyVerifyMatchingType;
         return bodyVerifyType == HttpBodyVerifyMatchingType.CONTAINS ||
             bodyVerifyType == HttpBodyVerifyMatchingType.EXACT_MATCH
     }
 
     shouldDisplayAceEditor(): boolean {
-        let bodyVerifyType = this.httpResponseVerifyService.model.expectedBody.httpBodyVerifyMatchingType;
+        let bodyVerifyType = this.expectedBody.httpBodyVerifyMatchingType;
         return bodyVerifyType == HttpBodyVerifyMatchingType.CONTAINS ||
             bodyVerifyType == HttpBodyVerifyMatchingType.EXACT_MATCH ||
             bodyVerifyType == HttpBodyVerifyMatchingType.REGEX_MATCH;
@@ -95,9 +102,10 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
         return this.httpResponseVerifyService.editMode && ( this.jsonVerifyTreeService.isEmptyModel() || this.sampleJsonText != null);
     }
 
-    saveToModel() {
-        if(this.httpResponseVerifyService.model.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
-            this.httpResponseVerifyService.model.expectedBody.bodyVerify = this.jsonVerifyTreeService.rootNode.children[0].serialize();
+    onBeforeSave(): void {
+        console.log("before save");
+        if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
+            this.expectedBody.bodyVerify = this.jsonVerifyTreeService.rootNode.children[0].serialize();
         }
     }
 }

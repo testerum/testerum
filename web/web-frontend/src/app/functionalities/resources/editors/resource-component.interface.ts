@@ -15,4 +15,7 @@ export abstract class ResourceComponent<T extends Resource<T>> {
     abstract isFormValid(): boolean;
     abstract getForm(): NgForm;
     abstract refresh(): void;
+
+    onBeforeSave(): void {
+    }
 }

@@ -126,6 +126,7 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
     }
 
     saveAction() {
+        this.resourceComponentRef.instance.onBeforeSave();
 
         this.resource.path = new Path(this.resource.path.directories, this.resourceComponentRef.instance.name, this.resourceFileExtension);
         this.resource.body = this.resourceComponentRef.instance.model.serialize();

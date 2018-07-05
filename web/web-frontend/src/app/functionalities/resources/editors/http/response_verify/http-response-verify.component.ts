@@ -8,6 +8,7 @@ import {HttpResponseStatusCode} from "../../../../../model/resource/http/enum/ht
 import {ResourceComponent} from "../../resource-component.interface";
 import {NgForm} from "@angular/forms";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+import {HttpResponseVerifyBodyComponent} from "./body/http-response-verify-body.component";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -31,6 +32,7 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
     @Input() isSharedResource: boolean = false;
 
     @ViewChild(NgForm) form: NgForm;
+    @ViewChild(HttpResponseVerifyBodyComponent) httpResponseVerifyBodyComponent: HttpResponseVerifyBodyComponent;
 
     constructor(private cd: ChangeDetectorRef,
                 private route: ActivatedRoute,
@@ -77,5 +79,9 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
             return httpResponseStatusCode.toString()
         }
         return "";
+    }
+
+    onBeforeSave(): void {
+        this.httpResponseVerifyBodyComponent.onBeforeSave()
     }
 }
