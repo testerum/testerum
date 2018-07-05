@@ -11,7 +11,7 @@ import {ModelComponentMapping} from "../../../model/infrastructure/model-compone
     templateUrl: 'json-tree.component.html',
     styleUrls:['json-tree.component.css']
 })
-export class JsonTreeComponent implements OnInit {
+export class JsonTreeComponent {
 
     @Input() treeModel:JsonTreeModel ;
     @Input() modelComponentMapping: ModelComponentMapping;

@@ -2,6 +2,8 @@
 import {JsonTreeNode} from "./json-tree-node.model";
 import {JsonTreeContainerAbstract} from "./json-tree-container.abstract";
 import {T} from "@angular/core/src/render3";
+import {ObjectUtil} from "../../../../utils/object.util";
+import {JsonTreeContainer} from "./json-tree-container.model";
 
 export class JsonTreeModel extends JsonTreeContainerAbstract {
 
@@ -25,8 +27,8 @@ export class JsonTreeModel extends JsonTreeContainerAbstract {
 
     private addChildAndDescendentsToResult<T extends JsonTreeNode>(child: T, result: Array<T>) {
         result.push(child);
-        if(child.getChildren) {
-            for (const nephew of child.getChildren()) {
+        if(ObjectUtil.hasAMethodCalled(child, "getChildren")) {
+            for (const nephew of child["getChildren"]()) { //ugly, it should be  (child as JsonTreeContainer).getChildren(), but this throws exception
                 this.addChildAndDescendentsToResult(nephew, result);
             }
         }

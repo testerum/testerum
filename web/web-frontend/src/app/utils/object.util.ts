@@ -1,5 +1,3 @@
-import {JsonUtil} from "./json.util";
-
 export class ObjectUtil {
 
     static hasAMethodCalled(obj: any, methodName: string): boolean {

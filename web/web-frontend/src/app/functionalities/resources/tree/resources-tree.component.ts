@@ -4,7 +4,7 @@ import {JsonTreeModel} from "../../../generic/components/json-tree/model/json-tr
 import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
 import {Path} from "../../../model/infrastructure/path/path.model";
-import {TestTreeNodeModel} from "./model/test-tree-node.model";
+import {ResourcesTreeNode} from "./model/resources-tree-node.model";
 
 @Component({
     selector: 'resources-tree',
@@ -58,7 +58,7 @@ export class ResourcesTreeComponent implements OnChanges {
 
         if(!this.treeModel) { return; }
 
-        let allTreeNodes: Array<TestTreeNodeModel> = this.treeModel.getAllTreeNodes<TestTreeNodeModel>();
+        let allTreeNodes: Array<ResourcesTreeNode> = this.treeModel.getAllTreeNodes<ResourcesTreeNode>();
 
         for (const treeNode of allTreeNodes) {
             if (treeNode.path && treeNode.path.equals(selectedPath)) {

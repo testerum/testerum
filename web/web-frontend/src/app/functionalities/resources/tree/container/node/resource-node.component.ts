@@ -35,7 +35,7 @@ export class ResourceNodeComponent implements OnInit {
 
         this.treeService.selectedNodeEmitter.subscribe(
             (selectedNodeEvent:JsonTreeNodeEventModel) => {
-                this.onStepSelected(selectedNodeEvent.treeNode);
+                this.onStepSelected(selectedNodeEvent.treeNode as ResourcesTreeNode);
             }
         );
         if(this.treeService.selectedNode != null && this.treeService.selectedNode == this.model) {

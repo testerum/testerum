@@ -3,12 +3,12 @@ import {Path} from "../../../../../model/infrastructure/path/path.model";
 
 export class HttpResponseVerifyResourceType implements ResourceType {
 
-    readonly rootFilePath: Path = Path.createInstance("resources/HTTP/Response");
+    readonly rootFilePath: Path = Path.createInstance("resources/HTTP/Response Verify");
     readonly fileExtension: string = "http.response.verify.yaml";
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "fa fa-reply flip";
-    resourceUrl: string = "/automated/resources/http/response/";
+    resourceUrl: string = "/automated/resources/http/response_verify/";
     createSubResourceUrl:any[] = ["/automated/resources/http/response/create", {"path": this.rootFilePath}];
 
     canHaveChildrenContainers: boolean = true;
