@@ -63,6 +63,7 @@ import {HttpMockServerComponent} from "./editors/http/mock/server/http-mock-serv
 import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alown-resource-panel.component";
 import {ResourceResolver} from "./editors/resource.resolver";
 import {BasicResourceComponent} from "./editors/basic/basic-resource.component";
+import {ResourcesTreeComponent} from "./tree/resources-tree.component";
 
 @NgModule({
     imports: [
@@ -116,6 +117,7 @@ import {BasicResourceComponent} from "./editors/basic/basic-resource.component";
 
     ],
     declarations: [
+        ResourcesTreeComponent,
         ResourcesComponent,
         ResourcesContainerComponent,
         ResourceNodeComponent,

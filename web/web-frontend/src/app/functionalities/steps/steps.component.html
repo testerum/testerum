@@ -4,14 +4,14 @@
         <split-area [size]="40">
 
             <!-- COMPOSED STEPS -->
-            <json-tree [treeModel]="stepsTreeService.composedStepsJsonTreeModel"
+            <steps-tree [treeModel]="stepsTreeService.composedStepsJsonTreeModel"
                        [modelComponentMapping]="jsonModelComponentMapping">
-            </json-tree>
+            </steps-tree>
 
             <!-- BASIC STEPS -->
-            <json-tree [treeModel]="stepsTreeService.basicStepsJsonTreeModel"
+            <steps-tree [treeModel]="stepsTreeService.basicStepsJsonTreeModel"
                        [modelComponentMapping]="jsonModelComponentMapping">
-            </json-tree>
+            </steps-tree>
 
         </split-area>
         <split-area [size]="60" [visible]="isStepSelected">

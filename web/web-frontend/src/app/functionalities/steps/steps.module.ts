@@ -20,6 +20,8 @@ import {BasicStepEditorResolver} from "./basic-step-editor/basic-step-editor.res
 import {BasicStepParametersComponent} from "./basic-step-editor/basic-step-parameters/basic-step-parameters.component";
 import {CollapseModule, ModalModule, PopoverModule, SortableModule} from "ngx-bootstrap";
 import {ComposedStepParametersComponent} from "./composed-step-editor/composed-step-parameters/composed-step-parameters.component";
+import {StepTextComponent} from "../../generic/components/step-text/step-text.component";
+import {StepsTreeComponent} from "./steps-tree/steps-tree.component";
 
 @NgModule({
     imports: [
@@ -45,6 +47,7 @@ import {ComposedStepParametersComponent} from "./composed-step-editor/composed-s
         UpdateIncompatibilityDialogComponent,
     ],
     declarations: [
+        StepsTreeComponent,
         JsonStepContainerComponent,
         JsonStepNodeComponent,
 

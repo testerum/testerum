@@ -25,6 +25,7 @@ import {FeatureContainerComponent} from "./features-tree/container/feature-conta
 import {TooltipModule} from "primeng/primeng";
 import {FeatureResolver} from "./feature-editor/feature.resolver";
 import {FeatureEditorComponent} from "./feature-editor/feature-editor.component";
+import {FeaturesTreeComponent} from "./features-tree/features-tree.component";
 
 @NgModule({
     imports: [
@@ -47,6 +48,7 @@ import {FeatureEditorComponent} from "./feature-editor/feature-editor.component"
         TestsRunnerLogsComponent,
     ],
     declarations: [
+        FeaturesTreeComponent,
         FeaturesComponent,
         FeatureContainerComponent,
         TestNodeComponent,

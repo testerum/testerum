@@ -4,8 +4,6 @@ import {
 
 import {JsonTreeModel} from "./model/json-tree.model";
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";
-import {JsonTreeContainerEditor} from "./container-editor/json-tree-container-editor.component";
-import {JsonTreeService} from "./json-tree.service";
 
 @Component({
     moduleId: module.id,
@@ -13,7 +11,7 @@ import {JsonTreeService} from "./json-tree.service";
     templateUrl: 'json-tree.component.html',
     styleUrls:['json-tree.component.css']
 })
-export class JsonTreeComponent {
+export class JsonTreeComponent implements OnInit {
 
     @Input() treeModel:JsonTreeModel ;
     @Input() modelComponentMapping: ModelComponentMapping;

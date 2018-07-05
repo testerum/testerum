@@ -2,8 +2,8 @@
     <split direction="horizontal">
         <split-area [size]="40">
 
-            <json-tree [treeModel]="resourcesTreeService.getTreeRoot()"
-                       [modelComponentMapping]="modelComponentMapping"></json-tree>
+            <resources-tree [treeModel]="resourcesTreeService.getTreeRoot()"
+                            [modelComponentMapping]="modelComponentMapping"></resources-tree>
 
         </split-area>
         <split-area [size]="60" [visible]="isStepSelected">

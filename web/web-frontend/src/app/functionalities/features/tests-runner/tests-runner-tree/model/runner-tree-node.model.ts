@@ -19,25 +19,7 @@ export class RunnerTreeNodeModel {
     stepCall:StepCall;
 
     equals(other: RunnerTreeNodeModel): boolean {
-        if(other.id != this.id) {
-            return false
-        }
-
-        return this.areParentsEquals(other);
-    }
-
-    private areParentsEquals(other: RunnerTreeNodeModel): boolean {
-        if(other.parent == null && this.parent == null) {
-            return true;
-        }
-
-        if(this.parent != null && other.parent != null) {
-            if(this.parent.id == other.parent.id) {
-                return this.areParentsEquals(other.parent)
-            }
-        }
-
-        return false;
+        return other.id == this.id;
     }
 
     changeState(newState:ExecutionStatusEnum) {
@@ -82,5 +64,4 @@ export class RunnerTreeNodeModel {
 
         return false;
     }
-
 }

@@ -18,7 +18,7 @@ import {Subscription} from "rxjs/Subscription";
         '../container/json-container-node.component.css'
     ]
 })
-export class JsonLeafNodeComponent implements OnInit, OnDestroy {
+export class JsonLeafNodeComponent implements OnInit {
 
     @Input() model:JsonTreeNode;
 
@@ -29,9 +29,6 @@ export class JsonLeafNodeComponent implements OnInit, OnDestroy {
 
     @ViewChild('content', {read: ViewContainerRef}) content:ViewContainerRef;
 
-    isSelected:boolean = false;
-
-    selectedNodeSubscription: Subscription;
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
                 private jsonTreeService: JsonTreeService) {
     }
@@ -44,20 +41,6 @@ export class JsonLeafNodeComponent implements OnInit, OnDestroy {
 
         modelComponentRef.instance.model = this.model;
         modelComponentRef.instance.modelComponentMapping = this.modelComponentMapping;
-
-        this.selectedNodeSubscription = this.jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onStepSelected(item));
-    }
-
-    ngOnDestroy(): void {
-        if(this.selectedNodeSubscription) this.selectedNodeSubscription.unsubscribe();
-    }
-
-    onStepSelected(selectedJsonTreeNodeEventModel:JsonTreeNodeEventModel) : void {
-        if(selectedJsonTreeNodeEventModel.treeNode == this.model) {
-            this.isSelected = true;
-        } else {
-            this.isSelected = false;
-        }
     }
 
     setSelected() {

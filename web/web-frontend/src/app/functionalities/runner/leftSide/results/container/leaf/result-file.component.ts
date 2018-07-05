@@ -1,8 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NavigationEnd, Params, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {ResultFile} from "../../model/result-file.model";
 import {ExecutionStatusEnum} from "../../../../../../model/test/event/enums/execution-status.enum";
 import {StringUtils} from "../../../../../../utils/string-utils.util";
+import {JsonTreeNodeEventModel} from "../../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
+import {JsonTreeService} from "../../../../../../generic/components/json-tree/json-tree.service";
+import {ResourcesTreeNode} from "../../../../../resources/tree/model/resources-tree-node.model";
 
 @Component({
     selector: 'result-file',
@@ -17,29 +20,33 @@ export class ResultFileComponent implements OnInit {
 
     ExecutionStatusEnum = ExecutionStatusEnum;
 
-    constructor(private router: Router) {
+    constructor(private router: Router,
+                private activatedRoute: ActivatedRoute,
+                private treeService:JsonTreeService) {
     }
 
     ngOnInit(): void {
+        this.activatedRoute.children.forEach(
+            (childActivateRoute: ActivatedRoute) => {
+                childActivateRoute.params.subscribe( (params: Params) => {
+                    let selectedPath = params['path'];
 
-        this.router.events
-            .filter(event => event instanceof NavigationEnd)
-            .map(route => {
-                let router = this.router;
-                let leafRoute: any = this.router.routerState.snapshot.root;
-                while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
+                    if(selectedPath == this.model.path.toString()){
+                        this.treeService.setSelectedNode(this.model);
+                    }
+                })
+            }
+        );
 
-                return leafRoute.params
-            })
-            .subscribe((params: Params) => {
-                let selectedPath = params['path'];
+        this.treeService.selectedNodeEmitter.subscribe(
+            (selectedNodeEvent:JsonTreeNodeEventModel) => {
+                this.isSelected = selectedNodeEvent.treeNode == this.model;
 
-                if(selectedPath == this.model.path.toString()){
-                    this.isSelected = true;
-                } else {
-                    this.isSelected = false;
-                }
-            });
+            }
+        );
+        if(this.treeService.selectedNode != null && this.treeService.selectedNode == this.model) {
+            this.isSelected = true;
+        }
     }
 
     getNodeText(): string {
@@ -49,6 +56,7 @@ export class ResultFileComponent implements OnInit {
 
     showResultFile() {
         this.router.navigate(["/automated/runner/result", {path : this.model.path.toString()} ]);
+        this.treeService.setSelectedNode(this.model);
     }
 
     getStatusTooltip(): string {

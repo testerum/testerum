@@ -156,12 +156,12 @@ export class Path implements Serializable<Path> {
 
     equals(path: Path): boolean {
 
-        if (this.fileName !== path.fileName) return false;
-        if (this.fileExtension !== path.fileExtension) return false;
-        if (this.directories.length !== path.directories.length) return false;
+        if (this.fileName != path.fileName) return false;
+        if (this.fileExtension != path.fileExtension) return false;
+        if (this.directories.length != path.directories.length) return false;
 
         for (let i = 0; i < this.directories.length; i++) {
-            if(this.directories[i] !== path.directories[i]) return false;
+            if(this.directories[i] != path.directories[i]) return false;
         }
 
         return true;

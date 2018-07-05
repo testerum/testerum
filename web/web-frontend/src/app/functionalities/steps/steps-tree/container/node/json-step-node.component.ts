@@ -24,29 +24,14 @@ export class JsonStepNodeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
-        this.router.events
-            .filter(event => event instanceof NavigationEnd)
-            .map(route => {
-                let router = this.router;
-                let leafRoute: any = this.router.routerState.snapshot.root;
-                while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
-
-                return leafRoute.params
-            })
-            .subscribe((params: Params) => {
-                let selectedPath = params['id'];
-
-                if(selectedPath == this.model.path.toString()){
-                    this.treeService.setSelectedNode(this.model);
-                }
-            });
-
         this.treeService.selectedNodeEmitter.subscribe(
             (selectedNodeEvent:JsonTreeNodeEventModel) => {
                 this.isSelected = (selectedNodeEvent.treeNode as StepTreeNodeModel) == this.model;
             }
-        )
+        );
+        if(this.treeService.selectedNode != null && this.treeService.selectedNode == this.model) {
+            this.isSelected = true;
+        }
     }
 
     onStepSelected(item:JsonTreeNodeEventModel) {

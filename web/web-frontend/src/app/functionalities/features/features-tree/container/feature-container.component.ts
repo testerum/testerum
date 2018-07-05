@@ -41,6 +41,9 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.selectedNodeSubscription = this.jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onStepSelected(item));
+        if(this.jsonTreeService.selectedNode != null && this.jsonTreeService.selectedNode == this.model) {
+            this.isSelected = true;
+        }
     }
 
     ngOnDestroy(): void {

@@ -45,7 +45,11 @@ export class TestNodeComponent implements OnInit {
             (selectedNodeEvent:JsonTreeNodeEventModel) => {
                 this.isSelected = (selectedNodeEvent.treeNode as TestTreeNodeModel) == this.model;
             }
-        )
+        );
+
+        if(this.jsonTreeService.selectedNode != null && this.jsonTreeService.selectedNode == this.model) {
+            this.isSelected = true;
+        }
     }
 
     onTestSelected(item:JsonTreeNodeEventModel) {
