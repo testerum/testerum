@@ -1,15 +1,13 @@
 import {CompareMode} from "../../../../../../model/enums/compare-mode.enum";
-import {JsonUtil} from "../../../../../../utils/json.util";
-import {JsonTreeNode} from "../../../../../../generic/components/json-tree/model/json-tree-node.model";
 import {SerializableUnknown} from "../../../../../../model/infrastructure/serializable-unknown.model";
 import {SerializationUtil} from "./util/serialization.util";
-import {JsonTreeContainerAbstract} from "../../../../../../generic/components/json-tree/model/json-tree-container.abstract";
 import {JsonIntegrity} from "./infrastructure/json-integrity.interface";
 import {JsonTreeContainerSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-container-serializable.model";
 import {JsonTreeNodeSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-node-serialzable.model";
-import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
+import {Resource} from "../../../../../../model/resource/resource.model";
+import {HttpRequest} from "../../../../../../model/resource/http/http-request.model";
 
-export class ArrayJsonVerify extends JsonTreeContainerSerializable implements SerializableUnknown<ArrayJsonVerify>, JsonIntegrity {
+export class ArrayJsonVerify extends JsonTreeContainerSerializable implements SerializableUnknown<ArrayJsonVerify>, JsonIntegrity, Resource<ArrayJsonVerify> {
 
     compareMode: CompareMode = CompareMode.INHERIT;
     children: Array<JsonTreeNodeSerializable> = [];
@@ -67,5 +65,24 @@ export class ArrayJsonVerify extends JsonTreeContainerSerializable implements Se
 
         result += ']';
         return result;
+    }
+
+    reset() {
+        this.compareMode = CompareMode.INHERIT;
+        this.children.length = 0;
+        this.isDirty = true;
+    }
+
+    isEmpty(): boolean {
+        return this.children.length == 0;
+    }
+
+    clone(): HttpRequest {
+        let objectAsJson = JSON.parse(this.serialize());
+        return new ArrayJsonVerify().deserialize(objectAsJson);
+    }
+
+    createInstance(): ArrayJsonVerify {
+        return new ArrayJsonVerify();
     }
 }

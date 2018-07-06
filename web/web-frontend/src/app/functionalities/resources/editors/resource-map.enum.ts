@@ -24,6 +24,9 @@ import {RdbmsVerifyComponent} from "./database/verify/rdbms-verify.component";
 import {SchemaVerify} from "./database/verify/rdbms-verify-tree/model/schema-verify.model";
 import {RdbmsVerifyResourceType} from "../tree/model/type/rdbms-verify.resource-type.model";
 import {BasicResourceComponent} from "./basic/basic-resource.component";
+import {JsonVerifyComponent} from "./json_verify/json-verify.component";
+import {ArrayJsonVerify} from "./json_verify/json-verify-tree/model/array-json-verify.model";
+import {JsonVerifyResourceType} from "../tree/model/type/json-verify.resource-type.model";
 
 export class ResourceMapEnum {
     public static TEXT: ResourceMapEnum = new ResourceMapEnum(
@@ -125,6 +128,15 @@ export class ResourceMapEnum {
         () => {return HttpMockStubResourceType.getInstanceForRoot()},
         () => {return HttpMockStubResourceType.getInstanceForChildren()},
     );
+    public static JSON_VERIFY: ResourceMapEnum = new ResourceMapEnum(
+        "net.qutester.model.resources.json.verify.JsonVerify",
+        "JsonVerify",
+        "verify.json",
+        JsonVerifyComponent,
+        () => {return new ArrayJsonVerify()},
+        () => {return JsonVerifyResourceType.getInstanceForRoot()},
+        () => {return JsonVerifyResourceType.getInstanceForChildren()},
+    );
     public static ALL_PARAM_TYPES: Array<ResourceMapEnum> = [
         ResourceMapEnum.TEXT,
         ResourceMapEnum.NUMBER,
@@ -137,6 +149,7 @@ export class ResourceMapEnum {
         ResourceMapEnum.HTTP_RESPONSE_VERIFY,
         ResourceMapEnum.HTTP_MOCK_SERVER_VERIFY,
         ResourceMapEnum.HTTP_MOCK_STUB_VERIFY,
+        ResourceMapEnum.JSON_VERIFY,
     ];
 
     static getResourceMapEnumByServerType(serverType: string): ResourceMapEnum {

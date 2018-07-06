@@ -101,6 +101,7 @@ import {ResourcesTreeComponent} from "./tree/resources-tree.component";
         RdbmsSqlComponent,
         RdbmsVerifyComponent,
         BasicResourceComponent,
+        JsonVerifyComponent,
 
     ],
     exports: [

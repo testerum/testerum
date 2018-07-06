@@ -1,12 +1,12 @@
-<form (ngSubmit)="saveAction()" class="form-horizontal">
+<form class="form-horizontal">
 
     <!-- NAME -->
     <div class="form-group row">
         <label class="col-md-2 control-label">Name</label>
-        <div class="col-md-10 form-value" *ngIf="!isEditMode()">
+        <div class="col-md-10 form-value" *ngIf="!editMode">
             {{name}}
         </div>
-        <div class="col-md-10" *ngIf="isEditMode()">
+        <div class="col-md-10" *ngIf="editMode">
             <input required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
