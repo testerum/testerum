@@ -15,6 +15,7 @@ import {ResourceComponent} from "../../../../../functionalities/resources/editor
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
 import {ArgNodePanelComponent} from "./arg-node-panel/arg-node-panel.component";
 import {Arg} from "../../../../../model/arg/arg.model";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
     selector: 'arg-node',
@@ -35,23 +36,22 @@ export class ArgNodeComponent implements OnInit {
     @ViewChild(ArgNodePanelComponent) argNodePanelComponent:ArgNodePanelComponent;
     @ViewChild('resourceContainer', {read: ViewContainerRef}) content:ViewContainerRef;
 
+    private afterUpdateSubscription: Subscription;
+
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
                 private stepCallTreeService: StepCallTreeService) {
     }
 
-    getArg(): Arg {
-        return this.model.arg
-    }
     ngOnInit() {
         let paramRendererContainer: Type<any> = this.getResourceRenderer();
 
         const factory: ComponentFactory<any> = this.componentFactoryResolver.resolveComponentFactory(paramRendererContainer);
-        let parameterInputInterfaceRef: ComponentRef<ResourceComponent<any>> = this.content.createComponent(factory);
-        parameterInputInterfaceRef.instance.model = this.model.arg.content;
-        parameterInputInterfaceRef.instance.name = this.model.arg.name;
-        parameterInputInterfaceRef.instance.stepParameter = this.model.stepPatternParam;
-        parameterInputInterfaceRef.instance.condensedViewMode = true;
-        parameterInputInterfaceRef.instance.editMode = false;
+        let resourceComponentRef: ComponentRef<ResourceComponent<any>> = this.content.createComponent(factory);
+        resourceComponentRef.instance.model = this.model.arg.content;
+        resourceComponentRef.instance.name = this.model.arg.name;
+        resourceComponentRef.instance.stepParameter = this.model.stepPatternParam;
+        resourceComponentRef.instance.condensedViewMode = true;
+        resourceComponentRef.instance.editMode = false;
 
         this.argNodePanelComponent.editButtonClickedEventEmitter.subscribe(event => {
             let argModal = this.stepCallTreeService.argModal;
@@ -59,6 +59,23 @@ export class ArgNodeComponent implements OnInit {
             argModal.stepParameter = this.model.stepPatternParam;
             argModal.show();
         });
+
+        let argModal = this.stepCallTreeService.argModal;
+        this.afterUpdateSubscription = argModal.afterUpdateEventEmitter.subscribe(event =>{
+            resourceComponentRef.instance.refresh();
+        });
+    }
+    ngOnDestroy(): void {
+        if (this.afterUpdateSubscription) this.afterUpdateSubscription.unsubscribe();
+    }
+
+    getArg(): Arg {
+        return this.model.arg
+    }
+
+    argHasContent(): boolean {
+        let arg = this.getArg();
+        return arg || arg.content.isEmpty()
     }
 
     private getResourceRenderer():Type<any>  {

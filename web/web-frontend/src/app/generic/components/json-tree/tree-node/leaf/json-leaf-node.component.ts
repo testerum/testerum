@@ -1,13 +1,10 @@
-
 import {
     Component, OnInit, Input, ViewChild, ViewContainerRef,
-    ComponentFactoryResolver, ComponentFactory, ComponentRef, Output, EventEmitter, OnDestroy,
+    ComponentFactoryResolver, ComponentFactory, ComponentRef,
 } from '@angular/core';
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeNode} from "../../model/json-tree-node.model";
 import {JsonTreeService} from "../../json-tree.service";
-import {JsonTreeNodeEventModel} from "../../event/selected-json-tree-node-event.model";
-import {Subscription} from "rxjs/Subscription";
 
 @Component({
     moduleId: module.id,

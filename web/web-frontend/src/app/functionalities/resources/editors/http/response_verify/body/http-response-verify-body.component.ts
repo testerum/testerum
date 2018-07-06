@@ -103,7 +103,6 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
     }
 
     onBeforeSave(): void {
-        console.log("before save");
         if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
             this.expectedBody.bodyVerify = this.jsonVerifyTreeService.rootNode.children[0].serialize();
         }

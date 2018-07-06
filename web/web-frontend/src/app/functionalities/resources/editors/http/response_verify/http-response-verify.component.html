@@ -1,5 +1,4 @@
-<div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
-
+<div *ngIf="condensedViewMode" class="condensed-view-container">
     <div *ngIf="model.expectedStatusCode" class="area">
         <span class="condensed-view-label">Expected Status Code:</span>
         <span class="condensed-view-value">{{model.expectedStatusCode}}</span>

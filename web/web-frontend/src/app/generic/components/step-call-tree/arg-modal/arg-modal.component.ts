@@ -3,7 +3,7 @@ import {
     ComponentFactory,
     ComponentFactoryResolver,
     ComponentRef,
-    ElementRef,
+    ElementRef, EventEmitter,
     Type,
     ViewChild,
     ViewContainerRef
@@ -50,6 +50,7 @@ export class ArgModalComponent {
     @ViewChild(NewSharedResourcePathModalComponent) newSharedResourcePathModal: NewSharedResourcePathModalComponent;
     @ViewChild(SelectSharedResourceModalComponent) selectSharedResourceModal: SelectSharedResourceModalComponent;
 
+    afterUpdateEventEmitter: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
                 private resourceService: ResourceService) {
@@ -168,6 +169,8 @@ export class ArgModalComponent {
             this.arg.content = resource
         }
         this.resourceModal.hide();
+
+        this.afterUpdateEventEmitter.emit();
     }
 
     cancel() {
