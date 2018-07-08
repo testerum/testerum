@@ -37,8 +37,6 @@ class FileSystemService {
     private fun hasSubDirectories(directory: File): Boolean {
         val subFiles = directory.listFiles(File::isDirectory) ?: return false
 
-        return subFiles
-                .filter { !it.isHidden && it.canWrite() }
-                .isNotEmpty()
+        return subFiles.any()
     }
 }
