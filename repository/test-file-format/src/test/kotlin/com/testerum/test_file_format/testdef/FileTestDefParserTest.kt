@@ -119,4 +119,24 @@ class FileTestDefParserTest {
         )
     }
 
+    @Test
+    fun `should allow test with only description, but without steps`() {
+        assertThat(
+                parser.parse(
+                        """ |test-def: Empty test
+                            |
+                            |    description = <<some description>>
+                            |
+                        """.trimMargin()
+                ),
+                equalTo(
+                        FileTestDef(
+                                name = "Empty test",
+                                description =  "some description",
+                                steps = emptyList()
+                        )
+                )
+        )
+    }
+
 }

@@ -22,13 +22,14 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
                 optionalNewLines(),
                 optionalWhitespace(),
                 description().asOptional(),
+                optionalNewLines(),
                 sequence(
                         optionalNewLines(),
                         optionalWhitespace(),
                         stepCall(),
                         optionalNewLines()
                 ) { _, _, step, _ -> step }.many()
-        ) { _, _, testName, _, _, description, steps -> FileTestDef(testName, description.orElse(null), steps) }
+        ) { _, _, testName, _, _, description, _, steps -> FileTestDef(testName, description.orElse(null), steps) }
     }
 
     private fun testName() : Parser<String> {
