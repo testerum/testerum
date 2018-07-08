@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*
 open class SetupController(val settingsManager: SettingsManagerImpl,
                            val stepService: StepService) {
 
-    @RequestMapping(path = arrayOf("/is_completed"), method = arrayOf(RequestMethod.GET))
+    @RequestMapping(path = ["/is_completed"], method = [(RequestMethod.GET)])
     @ResponseBody
     fun isSetupCompleted(): Boolean {
         return settingsManager.isConfigSet()
     }
 
-    @RequestMapping (method = arrayOf(RequestMethod.POST))
+    @RequestMapping (method = [(RequestMethod.PUT)])
     @ResponseBody
     fun createConfig(@RequestBody setup: Setup): Setup {
         settingsManager.createConfig (
