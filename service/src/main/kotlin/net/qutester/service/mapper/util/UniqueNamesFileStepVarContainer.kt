@@ -6,31 +6,25 @@ import javax.annotation.concurrent.NotThreadSafe
 @NotThreadSafe
 class UniqueNamesFileStepVarContainer {
 
-    private val varsByName = mutableMapOf<String, MutableList<FileStepVar>>()
+    private val countByOldName = mutableMapOf<String, Int>()
+    private val vars = mutableListOf<FileStepVar>()
 
-    fun add(variable: FileStepVar) {
-        val vars: MutableList<FileStepVar> = varsByName.getOrPut(variable.name, ::ArrayList)
+    fun addAndReturnNewName(varName: String, varValue: String): String {
+        val oldNameCount: Int = countByOldName[varName] ?: 0
 
-        vars.add(variable)
-    }
-
-    fun getVars(): List<FileStepVar> {
-        val result = mutableListOf<FileStepVar>()
-
-        for ((_: String, vars: List<FileStepVar>) in varsByName) {
-            if (vars.size == 1) {
-                result.add(vars.first())
-            } else {
-                // variables with duplicate names ==> rename them
-                for ((i: Int, variable: FileStepVar) in vars.withIndex()) {
-                    result.add(
-                            variable.copy(name = "${variable.name}_${i + 1}")
-                    )
-                }
-            }
+        val newName: String = if (oldNameCount == 0) {
+            varName
+        } else {
+            "${varName}_${oldNameCount + 1}"
         }
 
-        return result
+        countByOldName[varName] = oldNameCount + 1
+
+        vars += FileStepVar(newName, varValue)
+
+        return newName
     }
+
+    fun getVars(): List<FileStepVar> = vars
 
 }

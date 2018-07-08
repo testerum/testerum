@@ -112,16 +112,16 @@ open class UiToFileStepDefMapper {
 
                         if (introduceVariable) {
                             val varName: String = ArgNameCodec.argToVariableName(argName ?: patternPart.name)
-                            val varReferenceExpression = FileExpressionArgPart(varName)
+
+                            val newVarName = varsContainer.addAndReturnNewName(varName, content)
+
+                            val varReferenceExpression = FileExpressionArgPart(newVarName)
                             val varReference: String = FileArgPartSerializer.serializeToString(varReferenceExpression)
 
                             result.add(
                                     FileArgStepCallPart(varReference)
                             )
 
-                            varsContainer.add(
-                                    FileStepVar(varName, content)
-                            )
                         } else {
                             result.add(
                                     FileArgStepCallPart(content)
