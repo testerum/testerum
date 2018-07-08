@@ -106,12 +106,16 @@ open class UiToFileStepDefMapper {
                                 FileArgStepCallPart("file:${path.fileName}.${path.fileExtension}")
                         )
                     } else {
-                        val argName: String? = arg.name
+                        val argName: String = if (arg.name?.isNotBlank() == true) {
+                            arg.name!!
+                        } else {
+                            patternPart.name
+                        }
 
-                        val introduceVariable: Boolean = (argName?.isNotBlank() == true) || (content.contains(NEWLINES_REGEX))
+                        val introduceVariable: Boolean = argName.isNotBlank() || content.contains(NEWLINES_REGEX) || (content.length > 80)
 
                         if (introduceVariable) {
-                            val varName: String = ArgNameCodec.argToVariableName(argName ?: patternPart.name)
+                            val varName: String = ArgNameCodec.argToVariableName(argName)
 
                             val newVarName = varsContainer.addAndReturnNewName(varName, content)
 
