@@ -77,7 +77,7 @@ export class ArrayJsonVerify extends JsonTreeContainerSerializable implements Se
         return this.children.length == 0;
     }
 
-    clone(): HttpRequest {
+    clone(): ArrayJsonVerify {
         let objectAsJson = JSON.parse(this.serialize());
         return new ArrayJsonVerify().deserialize(objectAsJson);
     }

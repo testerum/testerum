@@ -75,7 +75,7 @@ export class ArgNodeComponent implements OnInit {
 
     argHasContent(): boolean {
         let arg = this.getArg();
-        return arg || arg.content.isEmpty()
+        return (arg !== null) && (!arg.content.isEmpty());
     }
 
     private getResourceRenderer():Type<any>  {
