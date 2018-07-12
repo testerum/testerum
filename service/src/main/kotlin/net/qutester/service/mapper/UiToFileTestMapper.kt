@@ -11,6 +11,7 @@ open class UiToFileTestMapper(private val stepDefMapper: UiToFileStepDefMapper) 
         return FileTestDef(
                 uiTest.text,
                 fileDescription,
+                emptyList(),
                 stepDefMapper.mapStepCalls(uiTest.stepCalls)
         )
     }

@@ -37,7 +37,7 @@ open class UiToFileStepDefMapper {
         val fileDescription: String? = composedStepDef.description
         val fileSteps: List<FileStepCall> = mapStepCalls(composedStepDef.stepCalls)
 
-        return FileStepDef(fileStepDefSignature, fileDescription, fileSteps)
+        return FileStepDef(fileStepDefSignature, fileDescription, emptyList(), fileSteps)
     }
 
     private fun mapSignature(composedStepDef: ComposedStepDef): FileStepDefSignature {
