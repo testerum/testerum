@@ -59,6 +59,12 @@
 
                         <div title="Add Step" class="btn btn-default btn-xs btn-group"
                              *ngIf="isEditMode"
+                             (click)="addStep(); $event.stopPropagation()">
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                        </div>
+
+                        <div title="Add Step from Chooser" class="btn btn-default btn-xs btn-group"
+                             *ngIf="isEditMode"
                              (click)="openStepChooser(); $event.stopPropagation()">
                             <span class="glyphicon glyphicon-plus-sign"></span>
                         </div>

@@ -1,0 +1,4 @@
+Basic Steps -> Build In Steps
+Testerum -> Tester UI
+Horizonal Split
+Features (tree node) should be renamed to the "Project Name"

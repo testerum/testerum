@@ -64,9 +64,10 @@ import {PathChooserContainerComponent} from "./components/path-chooser/container
 import {PathChooserNodeComponent} from "./components/path-chooser/container/node/path-chooser-node.component";
 import {PathChooserService} from "./components/path-chooser/path-chooser.service";
 import {SelectSharedResourceModalComponent} from "./components/step-call-tree/select-shared-resource-modal/select-shared-resource-modal.component";
-import {FileUploadModule, LightboxModule} from "primeng/primeng";
+import {AutoCompleteModule, FileUploadModule} from "primeng/primeng";
 import {MarkdownEditorComponent} from "./components/markdown-editor/markdown-editor.component";
 import {AttachmentsComponent} from "./components/form/attachments/attachments.component";
+import {StepCallEditorContainerComponent} from "./components/step-call-tree/nodes/step-call-editor-container/step-call-editor-container.component";
 
 @NgModule({
     imports: [
@@ -79,7 +80,7 @@ import {AttachmentsComponent} from "./components/form/attachments/attachments.co
 
         ChartModule,
         FileUploadModule,
-
+        AutoCompleteModule,
     ],
     exports: [
         SafeHtmlPipe,
@@ -165,6 +166,7 @@ import {AttachmentsComponent} from "./components/form/attachments/attachments.co
 
         StepCallTreeComponent,
         StepCallContainerComponent,
+        StepCallEditorContainerComponent,
         SubStepsContainerComponent,
         ArgsContainerComponent,
         ArgNodeComponent,
@@ -203,6 +205,7 @@ import {AttachmentsComponent} from "./components/form/attachments/attachments.co
         ResourcesContainerComponent,
         ResourceNodeComponent,
         StepCallContainerComponent,
+        StepCallEditorContainerComponent,
         SubStepsContainerComponent,
         ArgsContainerComponent,
         ArgNodeComponent,

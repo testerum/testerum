@@ -16,7 +16,8 @@ import {JsonTreeNodeEventModel} from "../../event/selected-json-tree-node-event.
     selector: 'json-container-node',
     templateUrl: 'json-container-node.component.html',
     styleUrls:[
-        'json-container-node.component.css'
+        'json-container-node.component.css',
+        '../../../json-tree/json-tree.generic.css',
     ]
 })
 export class JsonContainerNodeComponent implements OnInit {

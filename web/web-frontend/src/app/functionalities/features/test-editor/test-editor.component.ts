@@ -18,6 +18,7 @@ import {ResourceMapEnum} from "../../resources/editors/resource-map.enum";
 import {Subscription} from "rxjs/Subscription";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {UrlService} from "../../../service/url.service";
+import {StepCallEditorContainerModel} from "../../../generic/components/step-call-tree/model/step-call-editor-container.model";
 
 @Component({
     moduleId: module.id,
@@ -62,6 +63,19 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
     ngOnDestroy(): void {
         if(this.routeSubscription) this.routeSubscription.unsubscribe();
         if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
+    }
+
+    addStep() {
+        let stepCallEditorContainerModel = new StepCallEditorContainerModel(
+            this.stepCallTreeService.jsonTreeModel,
+            this.stepCallTreeService.jsonTreeModel.getChildren().length,
+            null,
+            true
+        );
+        stepCallEditorContainerModel.jsonTreeNodeState.showChildren = false;
+        this.stepCallTreeService.jsonTreeModel.getChildren().push(
+            stepCallEditorContainerModel
+        )
     }
 
     openStepChooser() {

@@ -1,0 +1,19 @@
+
+.step-suggestion {
+    width: 100%;
+}
+
+.step-suggestion .ui-autocomplete {
+    width: 100%;
+}
+.step-suggestion .ui-autocomplete .ui-autocomplete-input{
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.step-call-action-text {
+    font-size: 10px;
+    font-weight: bold;
+    color: darkmagenta;
+}

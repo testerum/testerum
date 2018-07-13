@@ -13,6 +13,8 @@ import {ArgNodeModel} from "./model/arg-node.model";
 import {ArgNodeComponent} from "./nodes/arg-node/arg-node.component";
 import {ArgModalComponent} from "./arg-modal/arg-modal.component";
 import {StepCallTreeService} from "./step-call-tree.service";
+import {StepCallEditorContainerComponent} from "./nodes/step-call-editor-container/step-call-editor-container.component";
+import {StepCallEditorContainerModel} from "./model/step-call-editor-container.model";
 
 @Component({
     selector: 'step-call-tree',
@@ -26,6 +28,7 @@ export class StepCallTreeComponent implements OnInit, OnChanges, DoCheck {
 
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(StepCallContainerModel, StepCallContainerComponent)
+        .addPair(StepCallEditorContainerModel, StepCallEditorContainerComponent)
         .addPair(SubStepsContainerModel, SubStepsContainerComponent)
         .addPair(ParamsContainerModel, ArgsContainerComponent)
         .addPair(ArgNodeModel, ArgNodeComponent);
