@@ -28,6 +28,8 @@ class FileStepDefParserTest {
                             |       Will be useful from many tests.
                             |    >>
                             |
+                            |    tags = <<one, two>>
+                            |
                             |    step: Given I go to page <<https://{{host}}:{{port}}/login>>
                             |    step: When I type <<{{username}}>> into the <<.username>> input
                             |    step: When I type <<{{password}}>> into the <<.password>> input
@@ -60,6 +62,7 @@ class FileStepDefParserTest {
                                 ),
                                 description = """ |A composed step that allows us to bypass the login screen.
                                                   |Will be useful from many tests.""".trimMargin(),
+                                tags = listOf("one", "two"),
                                 steps = listOf(
                                         FileStepCall(
                                                 phase = FileStepPhase.GIVEN,
