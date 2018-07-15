@@ -41,12 +41,6 @@
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>service</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -100,7 +94,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>22.0</version>
         </dependency>
 
         <!-- Spring -->
@@ -199,6 +192,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!--==================== test dependencies ====================-->
@@ -238,18 +232,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-
-            <!-- Enforcer -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-            </plugin>
-
-            <!-- tattletale: search for duplicate classes across jars -->
-            <plugin>
-                <groupId>org.jboss.tattletale</groupId>
-                <artifactId>tattletale-maven</artifactId>
             </plugin>
 
             <plugin>

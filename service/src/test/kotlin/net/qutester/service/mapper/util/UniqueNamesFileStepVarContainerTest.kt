@@ -1,9 +1,9 @@
 package net.qutester.service.mapper.util
 
 import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasSize
-import org.junit.Assert.assertThat
 import org.junit.jupiter.api.Test
 
 class UniqueNamesFileStepVarContainerTest {

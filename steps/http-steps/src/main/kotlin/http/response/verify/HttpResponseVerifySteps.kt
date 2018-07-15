@@ -16,7 +16,6 @@ import net.qutester.model.resources.http.request.HttpRequest
 import net.qutester.model.resources.http.response.HttpResponse
 import net.qutester.model.resources.http.response.HttpResponseHeader
 import net.testerum.resource_manager.TestContext
-import org.junit.Assert
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -25,7 +24,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
     private val LOG = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
 
     @Then("I expect <<httpResponseVerify>> HTTP Response")
-    fun verifyHttpResponse(@Param(transformer= HttpResponseVerifyTransformer::class) httpResponseVerify: HttpResponseVerify) {
+    fun verifyHttpResponse(@Param(transformer = HttpResponseVerifyTransformer::class) httpResponseVerify: HttpResponseVerify) {
         val httpRequest: HttpRequest = testContext.getScenarioVariable("httpRequest") as HttpRequest
         val httpResponse: HttpResponse = testContext.getScenarioVariable("httpResponse") as HttpResponse
 
@@ -64,7 +63,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
         if (compareResult is DifferentJsonCompareResult) {
             LOG.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
 
-            Assert.fail(
+            throw AssertionError(
                     "Expected Response Body to match [$expectedBody] but [$actualBody] found. \n" +
                             "\t Matching message: [${compareResult.message}] \n" +
                             "\t Not matching element path: [${compareResult.jsonPath}] \n" +
@@ -91,7 +90,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
 
         if (compareMode == HttpBodyVerifyMatchingType.CONTAINS
                 && ((expectedBody == null) || !actualBody.contains(expectedBody))) {
-            assertFailMatchingBody (
+            assertFailMatchingBody(
                     expectedBody,
                     actualBody,
                     compareMode,
@@ -101,7 +100,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
 
         if (compareMode == HttpBodyVerifyMatchingType.REGEX_MATCH
                 && ((expectedBody == null) || !actualBody.contains(Regex(expectedBody)))) {
-            assertFailMatchingBody (
+            assertFailMatchingBody(
                     expectedBody,
                     actualBody,
                     compareMode,
@@ -111,7 +110,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
 
         LOG.debug(
                 "Response Body Match \n" +
-                getContextInfoForLogging(httpRequest, httpResponse)
+                        getContextInfoForLogging(httpRequest, httpResponse)
         )
     }
 
@@ -121,7 +120,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
             compareMode: HttpBodyVerifyMatchingType,
             contextInfo: String) {
 
-        Assert.fail(
+        throw AssertionError(
                 "Expected Response Body [$expectedBody] but [$actualBody] found. \n" +
                         "\tComparison Mode: [$compareMode]\n" +
                         contextInfo
@@ -131,7 +130,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
     private fun verifyBodyIsEmpty(httpRequest: HttpRequest, httpResponse: HttpResponse) {
         val actualBody = httpResponse.body
         if (actualBody.isNotEmpty()) {
-            Assert.fail(
+            throw AssertionError(
                     "Expected Http Response Body to be empty \n" +
                             getContextInfoForLogging(httpRequest, httpResponse)
             )
@@ -156,14 +155,14 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
                 val contextInfo = getContextInfoForLogging(httpRequest, httpResponse)
 
                 if (actualHeader == null) {
-                    Assert.fail(
+                    throw AssertionError(
                             "Expected Response Header: [${expectedHeader.key}] but no header with this key was found in the response: \n" +
                                     contextInfo
                     )
                 }
 
                 val expectedValue = expectedHeader.value
-                val actualValues = actualHeader!!.values
+                val actualValues = actualHeader.values
                 if (expectedValue == null && actualValues.isNotEmpty()) {
                     assertFailMatchingHeaders(
                             expectedHeader,
@@ -186,7 +185,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
     private fun verifyExpectedCode(httpResponseVerify: HttpResponseVerify, httpResponse: HttpResponse, httpRequest: HttpRequest) {
         if (httpResponseVerify.expectedStatusCode != null) {
             if (httpResponseVerify.expectedStatusCode != httpResponse.statusCode) {
-                Assert.fail(
+                throw AssertionError(
                         "Expected Status Code [${httpResponseVerify.expectedStatusCode}] but [${httpResponse.statusCode}] found \n" +
                                 getContextInfoForLogging(httpRequest, httpResponse)
                 )
@@ -278,7 +277,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
             contextInfo: String
     ) {
 
-        Assert.fail(
+        throw AssertionError(
                 "Expected Response Header [${expectedHeader.key}] with value [$expectedValue] but [$actualValue] found. \n" +
                         "\tComparison Mode: $compareMode.\n" +
                         contextInfo
@@ -288,13 +287,13 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
     private fun getContextInfoForLogging(httpRequest: HttpRequest, httpResponse: HttpResponse): String {
         var response =
                 "\t Http Request: [\n" +
-                "\t \t ${httpRequest.method} ${httpRequest.url} HTTP/1.1 \n"
+                        "\t \t ${httpRequest.method} ${httpRequest.url} HTTP/1.1 \n"
 
         for (header in httpRequest.headers) {
             response +=
-                "\t \t ${header.key}: ${header.value} \n"
+                    "\t \t ${header.key}: ${header.value} \n"
         }
-        if(httpRequest.body != null)
+        if (httpRequest.body != null)
             response +=
                     "\n" +
                     "\t \t ${httpRequest.body!!.content} \n"
@@ -314,7 +313,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
 
         response +=
                 "\n"
-                "\t \t ${String(httpResponse.body)} \n"
+        "\t \t ${String(httpResponse.body)} \n"
         response +=
                 "\t ]"
 
