@@ -5,7 +5,6 @@
     "baseUrl": "./",
     "module": "es2015",
     "types": [
-        "stringSimilarity"
     ],
     "charset"                         : "utf8",
     "pretty"                          : true,
