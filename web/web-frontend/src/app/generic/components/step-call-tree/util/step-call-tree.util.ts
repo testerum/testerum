@@ -7,6 +7,7 @@ import {SubStepsContainerModel} from "../model/sub-steps-container.model";
 import {ParamsContainerModel} from "../model/params-container.model";
 import {ArgNodeModel} from "../model/arg-node.model";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
+import {UndefinedStepDef} from "../../../../model/undefined-step-def.model";
 
 export class StepCallTreeUtil {
 
@@ -44,13 +45,15 @@ export class StepCallTreeUtil {
             });
         }
 
-        if (stepCall.stepDef instanceof ComposedStepDef) {
+        if (stepCall.stepDef instanceof ComposedStepDef || stepCall.stepDef instanceof UndefinedStepDef) {
             let subStepsContainer = new SubStepsContainerModel(childStepCallContainerModel);
             childStepCallContainerModel.children.push(
                 subStepsContainer
             );
 
-            subStepsContainer.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCall.stepDef.stepCalls, subStepsContainer);
+            if (stepCall.stepDef.stepCalls) {
+                subStepsContainer.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCall.stepDef.stepCalls, subStepsContainer);
+            }
         }
         return childStepCallContainerModel;
     }

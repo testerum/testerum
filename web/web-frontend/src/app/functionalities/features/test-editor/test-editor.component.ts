@@ -64,14 +64,24 @@ export class TestEditorComponent implements OnInit, OnDestroy {
     }
 
     addStep() {
+        let treeSteps = this.stepCallTreeService.jsonTreeModel.getChildren();
+
+        //remove the current editor if exists
+        if(treeSteps.length > 0 &&
+            treeSteps[treeSteps.length -1] instanceof StepCallEditorContainerModel) {
+            this.stepCallTreeService.removeStepCall(
+                treeSteps[treeSteps.length -1]
+            );
+        }
+
         let stepCallEditorContainerModel = new StepCallEditorContainerModel(
             this.stepCallTreeService.jsonTreeModel,
-            this.stepCallTreeService.jsonTreeModel.getChildren().length,
+            treeSteps.length,
             null,
             true
         );
         stepCallEditorContainerModel.jsonTreeNodeState.showChildren = false;
-        this.stepCallTreeService.jsonTreeModel.getChildren().push(
+        treeSteps.push(
             stepCallEditorContainerModel
         )
     }

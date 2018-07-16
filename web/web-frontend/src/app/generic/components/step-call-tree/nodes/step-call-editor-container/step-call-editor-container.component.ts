@@ -259,6 +259,8 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     onCancel() {
-        // this.stepCallTreeService.removeStepCall(this.model);
+        setTimeout(() => { // trick to allow in case we choose an option from sugestions
+            this.stepCallTreeService.removeStepCall(this.model);
+        });
     }
 }
