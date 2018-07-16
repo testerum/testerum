@@ -1,10 +1,36 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {StepCallContainerModel} from "../../model/step-call-container.model";
+import {
+    AfterViewChecked,
+    AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
+    Component,
+    ElementRef,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {StepCallTreeService} from "../../step-call-tree.service";
-import {StepTextComponent} from "../../../step-text/step-text.component";
 import {StepCallEditorContainerModel} from "../../model/step-call-editor-container.model";
 import {StepCallSuggestion} from "./model/step-call-suggestion.model";
-import {StringUtils} from "../../../../../utils/string-utils.util";
+import {StepsService} from "../../../../../service/steps.service";
+import {StepDef} from "../../../../../model/step-def.model";
+import {BasicStepDef} from "../../../../../model/basic-step-def.model";
+import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
+import {StepPhaseEnum, StepPhaseUtil} from "../../../../../model/enums/step-phase.enum";
+import * as stringSimilarity from 'string-similarity'
+import {StepCallContainerModel} from "../../model/step-call-container.model";
+import {StepCall} from "../../../../../model/step-call.model";
+import {StepTextUtil} from "./util/StepTextUtil";
+import {StepCallTreeUtil} from "../../util/step-call-tree.util";
+import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+import {Arg} from "../../../../../model/arg/arg.model";
+import {StepPatternParser} from "../../../../../model/text/parser/step-pattern-parser";
+import {StepPattern} from "../../../../../model/text/step-pattern.model";
+import {AutoComplete} from "primeng/primeng";
+import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
+import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
+import {StepChooserComponent} from "../../../step-chooser/step-chooser.component";
+import {StepChoseHandler} from "../../../step-chooser/step-choosed-handler.interface";
 
 @Component({
     selector: 'step-call-editor-container',
@@ -17,17 +43,25 @@ import {StringUtils} from "../../../../../utils/string-utils.util";
     ],
     encapsulation: ViewEncapsulation.None
 })
-export class StepCallEditorContainerComponent implements OnInit, OnDestroy {
+export class StepCallEditorContainerComponent implements OnInit, OnDestroy, AfterViewChecked, StepChoseHandler {
 
     stepText: string;
     @Input() model: StepCallEditorContainerModel;
+
+
+    existingStepsDefs: Array<StepDef> = [];
+    existingStepsText: Array<string> = [];
 
     suggestions: Array<StepCallSuggestion> = [];
 
     hasMouseOver: boolean = false;
     showParameters: boolean = true;
 
-    constructor(private stepCallTreeService: StepCallTreeService) {
+    @ViewChild("autoCompleteComponent") autocompleteComponent: AutoComplete;
+    @ViewChild(StepChooserComponent) stepChooserComponent: StepChooserComponent;
+
+    constructor(private stepCallTreeService: StepCallTreeService,
+                private stepsService: StepsService) {
     }
 
     private editModeSubscription: any;
@@ -38,11 +72,37 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy {
                 this.showParameters = editMode;
             }
         );
+        this.stepsService.getDefaultSteps().subscribe((basicSteps: Array<BasicStepDef>)=> {
+            basicSteps.forEach(value =>
+                this.existingStepsDefs.push(value)
+            );
+            this.addToExistingStepsText(basicSteps);
+        });
+        this.stepsService.getComposedStepDefs().subscribe((composedSteps: Array<ComposedStepDef>)=> {
+            composedSteps.forEach(value =>
+                this.existingStepsDefs.push(value)
+            );
+            this.addToExistingStepsText(composedSteps)
+        });
+    }
+
+    ngAfterViewChecked(): void {
+        setTimeout(() => {
+            this.autocompleteComponent.focusInput();
+        });
     }
 
     ngOnDestroy() {
         if (this.editModeSubscription) {
             this.editModeSubscription.unsubscribe();
+        }
+    }
+
+    private addToExistingStepsText(stepsDefs: Array<StepDef>) {
+        for (const stepsDef of stepsDefs) {
+            this.existingStepsText.push(
+                StepPhaseUtil.toCamelCaseString(stepsDef.phase) + " " +stepsDef.stepPattern.getPatternText()
+            )
         }
     }
 
@@ -63,54 +123,142 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy {
     }
 
     searchSuggestions(event) {
-        let newSuggestions: Array<StepCallSuggestion> = [];
-
         let query: string = event.query;
-        let lowerCaseQuery = query.toLowerCase();
 
-        if (!lowerCaseQuery.startsWith("when") && !lowerCaseQuery.startsWith("then")) {
-            if (lowerCaseQuery.startsWith("given")) {
-                let queryWithoutGiven = query.slice(5);
-                newSuggestions.push(
-                    new StepCallSuggestion("Given " + queryWithoutGiven, "Create Step -> "),
-                );
-            } else {
-                newSuggestions.push(
-                    new StepCallSuggestion("Given " + query, "Create Step -> "),
-                );
-            }
-        }
-        if (!lowerCaseQuery.startsWith("given") && !lowerCaseQuery.startsWith("then")) {
-            if (lowerCaseQuery.startsWith("when")) {
-                let queryWithoutGiven = query.slice(4);
-                newSuggestions.push(
-                    new StepCallSuggestion("When " + queryWithoutGiven, "Create Step -> "),
-                );
-            } else {
-                newSuggestions.push(
-                    new StepCallSuggestion("When " + query, "Create Step -> "),
-                );
-            }
-        }
-        if (!lowerCaseQuery.startsWith("given") && !lowerCaseQuery.startsWith("when")) {
-            if (lowerCaseQuery.startsWith("then")) {
-                let queryWithoutGiven = query.slice(4);
-                newSuggestions.push(
-                    new StepCallSuggestion("Then " + queryWithoutGiven, "Create Step -> "),
-                );
-            } else {
-                newSuggestions.push(
-                    new StepCallSuggestion("Then " + query, "Create Step -> "),
-                );
-            }
+        let newSuggestions: Array<StepCallSuggestion> = this.findSuggestionsFromExistingSteps(query);
+
+        if (newSuggestions.length > 0 && newSuggestions[0].matchingPercentage == 1) {
+            this.suggestions = newSuggestions;
+            return;
         }
 
-        newSuggestions.push(
-            new StepCallSuggestion("Given some virtual step"),
-            new StepCallSuggestion("Given some other virtual step"),
-            new StepCallSuggestion("Given some extra other virtual step"),
-        );
+        let queryStepPhase = StepTextUtil.getStepPhaseFromStepText(query);
+        let queryStepTextWithoutPhase = StepTextUtil.getStepTextWithoutStepPhase(query);
+
+        if (queryStepPhase != null) {
+            newSuggestions.unshift(
+                new StepCallSuggestion(queryStepPhase, queryStepTextWithoutPhase, 0,"Create Step -> ")
+            )
+        } else {
+            newSuggestions.unshift(
+                new StepCallSuggestion(StepPhaseEnum.GIVEN, queryStepTextWithoutPhase, 0,"Create Step -> "),
+                new StepCallSuggestion(StepPhaseEnum.WHEN, queryStepTextWithoutPhase, 0,"Create Step -> "),
+                new StepCallSuggestion(StepPhaseEnum.THEN, queryStepTextWithoutPhase, 0,"Create Step -> "),
+            )
+        }
 
         this.suggestions = newSuggestions;
+    }
+
+    private findSuggestionsFromExistingSteps(query: string) {
+        let suggestions: Array<StepCallSuggestion> = [];
+        let compareTwoStringsResults = stringSimilarity.findBestMatch(query, this.existingStepsText);
+        let compareArrayResults: Array<any> = compareTwoStringsResults.ratings;
+
+        let sortedCompareResults: Array<any> = compareArrayResults.sort((o1,o2) => {
+            return o2.rating - o1.rating;
+        });
+
+        let index = 0;
+        for (const compareResult of sortedCompareResults) {
+            suggestions.push(
+                new StepCallSuggestion(
+                    StepTextUtil.getStepPhaseFromStepText(compareResult.target),
+                    StepTextUtil.getStepTextWithoutStepPhase(compareResult.target),
+                    compareResult.rating
+                )
+            );
+
+            if (compareResult.rating < 0.2 || compareResult.rating == 1) {
+                break;
+            }
+            index ++;
+        }
+        return suggestions;
+    }
+
+    onSuggestionSelected(event: StepCallSuggestion) {
+
+        let newStepCall: StepCall = null;
+        if (event.actionText == null) {
+            newStepCall = this.createStepCallFromExistingStepDef(event);
+        } else {
+            newStepCall = new StepCall();
+            newStepCall.stepDef = new UndefinedStepDef();
+            newStepCall.stepDef.phase = event.phase;
+            newStepCall.stepDef.stepPattern = new StepPattern();
+            newStepCall.stepDef.stepPattern.setPatternText(event.stepCallText);
+            this.addEmptyArgsToStepCall(newStepCall);
+        }
+        this.addNewStepCallToTree(newStepCall);
+    }
+
+    private addNewStepCallToTree(newStepCall: StepCall) {
+        this.stepCallTreeService.removeStepCall(this.model);
+
+        let stepCallContainerModel = StepCallTreeUtil.createStepCallContainerWithChildren(newStepCall, this.stepCallTreeService.jsonTreeModel);
+        this.stepCallTreeService.jsonTreeModel.getChildren().push(
+            stepCallContainerModel
+        );
+        this.stepCallTreeService.stepCalls.push(newStepCall);
+
+        let stepCallEditorContainerModel = new StepCallEditorContainerModel(
+            this.stepCallTreeService.jsonTreeModel,
+            this.stepCallTreeService.jsonTreeModel.getChildren().length,
+            null,
+            true
+        );
+        stepCallEditorContainerModel.jsonTreeNodeState.showChildren = false;
+        this.stepCallTreeService.jsonTreeModel.getChildren().push(
+            stepCallEditorContainerModel
+        )
+    }
+
+    private createStepCallFromExistingStepDef(selectedStepCallSuggestion: StepCallSuggestion): StepCall {
+        let selectedStepCallDef: StepDef = this.getStepDefByStepText(selectedStepCallSuggestion);
+
+        let stepCall = new StepCall();
+        stepCall.stepDef = selectedStepCallDef;
+        this.addEmptyArgsToStepCall(stepCall);
+        return stepCall;
+    }
+
+    private addEmptyArgsToStepCall(stepCall: StepCall) {
+        let paramParts: Array<ParamStepPatternPart> =  stepCall.stepDef.stepPattern.getParamParts();
+        if (paramParts.length > 0) {
+            for (const paramPart of paramParts) {
+                stepCall.args.push(
+                    Arg.createArgInstanceFromParamStepPatternPart(paramPart)
+                );
+            }
+        }
+    }
+
+    private getStepDefByStepText(selectedStepCallSuggestion: StepCallSuggestion): StepDef {
+        for (const existingStepsDef of this.existingStepsDefs) {
+            if (existingStepsDef.phase == selectedStepCallSuggestion.phase
+                && existingStepsDef.stepPattern.getPatternText() == selectedStepCallSuggestion.stepCallText) {
+                return existingStepsDef;
+            }
+        }
+        throw new Error("this case should not have happed: No StepDef with Phase ["+StepPhaseUtil.toLowerCaseString(selectedStepCallSuggestion.phase)+"] and text ["+selectedStepCallSuggestion.stepCallText+"] was found")
+    }
+
+    selectStepFromPopup() {
+        this.stepChooserComponent.showStepChooserModal(this);
+    }
+
+    onStepChose(choseStep: StepDef): void {
+        this.stepCallTreeService.removeStepCall(this.model);
+
+        let stepCall = new StepCall();
+        stepCall.stepDef = choseStep;
+        this.addEmptyArgsToStepCall(stepCall);
+
+        this.addNewStepCallToTree(stepCall);
+    }
+
+    onCancel() {
+        // this.stepCallTreeService.removeStepCall(this.model);
     }
 }

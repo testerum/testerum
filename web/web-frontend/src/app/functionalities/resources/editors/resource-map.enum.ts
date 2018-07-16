@@ -27,45 +27,55 @@ import {BasicResourceComponent} from "./basic/basic-resource.component";
 import {JsonVerifyComponent} from "./json_verify/json-verify.component";
 import {ArrayJsonVerify} from "./json_verify/json-verify-tree/model/array-json-verify.model";
 import {JsonVerifyResourceType} from "../tree/model/type/json-verify.resource-type.model";
+import {BasicResourceType} from "../tree/model/type/basic.resource-type.model";
 
 export class ResourceMapEnum {
     public static TEXT: ResourceMapEnum = new ResourceMapEnum(
+        "java.lang.String",
         "TEXT",
         "Text",
         null,
         BasicResourceComponent,
         () => {return new BasicResource()},
         null,
-        null
+        () => {return new BasicResourceType()},
+        (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static NUMBER: ResourceMapEnum = new ResourceMapEnum(
+        "java.lang.Double",
         "NUMBER",
         "Number",
         null,
         BasicResourceComponent,
         () => {return new BasicResource()},
         null,
-        null
+        () => {return new BasicResourceType()},
+        (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static ENUM: ResourceMapEnum = new ResourceMapEnum(
+        "ENUM",
         "ENUM",
         "Enum",
         null,
         BasicResourceComponent,
         () => {return new BasicResource()},
         null,
-        null
+        () => {return new BasicResourceType()},
+        new BasicResource().deserialize
     );
     public static BOOLEAN: ResourceMapEnum = new ResourceMapEnum(
+        "java.lang.Boolean",
         "BOOLEAN",
         "Boolean",
         null,
         BasicResourceComponent,
         () => {return new BasicResource()},
         null,
-        null
+        () => {return new BasicResourceType()},
+        (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static RDBMS_CONNECTION: ResourceMapEnum = new ResourceMapEnum(
+        "database.relational.connection_manager.model.RdbmsClient",
         "database.relational.connection_manager.model.RdbmsClient",
         "RdbmsClient",
         "rdbms.connection.yaml",
@@ -73,8 +83,10 @@ export class ResourceMapEnum {
         () => {return new RdbmsConnectionConfig()},
         () => {return RdbmsConnectionResourceType.getInstanceForRoot()},
         () => {return RdbmsConnectionResourceType.getInstanceForChildren()},
+        (input:string) => {return new RdbmsConnectionConfig().deserialize(JSON.parse(input))}
     );
     public static RDBMS_SQL: ResourceMapEnum = new ResourceMapEnum(
+        "database.relational.model.RdbmsSql",
         "database.relational.model.RdbmsSql",
         "RdbmsSql",
         "sql",
@@ -82,8 +94,10 @@ export class ResourceMapEnum {
         () => {return new BasicResource()},
         () => {return RdbmsSqlResourceType.getInstanceForRoot()},
         () => {return RdbmsSqlResourceType.getInstanceForChildren()},
+        (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static RDBMS_VERIFY: ResourceMapEnum = new ResourceMapEnum(
+        "database.relational.model.RdbmsVerify",
         "database.relational.model.RdbmsVerify",
         "RdbmsVerify",
         "rdbms.verify.json",
@@ -91,8 +105,10 @@ export class ResourceMapEnum {
         () => {return new SchemaVerify()},
         () => {return RdbmsVerifyResourceType.getInstanceForRoot()},
         () => {return RdbmsVerifyResourceType.getInstanceForChildren()},
+        (input:string) => {return new SchemaVerify().deserialize(JSON.parse(input))}
     );
     public static HTTP_REQUEST: ResourceMapEnum = new ResourceMapEnum(
+        "net.qutester.model.resources.http.request.HttpRequest",
         "net.qutester.model.resources.http.request.HttpRequest",
         "HttpRequest",
         "http.request.yaml",
@@ -100,8 +116,10 @@ export class ResourceMapEnum {
         () => {return new HttpRequest()},
         () => {return HttpRequestResourceType.getInstanceForRoot()},
         () => {return HttpRequestResourceType.getInstanceForChildren()},
+        (input:string) => {return new HttpRequest().deserialize(JSON.parse(input))}
     );
     public static HTTP_RESPONSE_VERIFY: ResourceMapEnum = new ResourceMapEnum(
+        "http.response.verify.model.HttpResponseVerify",
         "http.response.verify.model.HttpResponseVerify",
         "HttpResponseVerify",
         "http.response.verify.yaml",
@@ -109,8 +127,10 @@ export class ResourceMapEnum {
         () => {return new HttpResponseVerify()},
         () => {return HttpResponseVerifyResourceType.getInstanceForRoot()},
         () => {return HttpResponseVerifyResourceType.getInstanceForChildren()},
+        (input:string) => {return new HttpResponseVerify().deserialize(JSON.parse(input))}
     );
     public static HTTP_MOCK_SERVER_VERIFY: ResourceMapEnum = new ResourceMapEnum(
+        "net.qutester.model.resources.http.mock.server.HttpMockServer",
         "net.qutester.model.resources.http.mock.server.HttpMockServer",
         "HttpMockServer",
         "http.mock.server.yaml",
@@ -118,8 +138,10 @@ export class ResourceMapEnum {
         () => {return new HttpMockServer()},
         () => {return HttpMockServerResourceType.getInstanceForRoot()},
         () => {return HttpMockServerResourceType.getInstanceForChildren()},
+        (input:string) => {return new HttpMockServer().deserialize(JSON.parse(input))}
     );
     public static HTTP_MOCK_STUB_VERIFY: ResourceMapEnum = new ResourceMapEnum(
+        "net.qutester.model.resources.http.mock.stub.HttpMock",
         "net.qutester.model.resources.http.mock.stub.HttpMock",
         "HttpStub",
         "http.stub.yaml",
@@ -127,8 +149,10 @@ export class ResourceMapEnum {
         () => {return new HttpMock()},
         () => {return HttpMockStubResourceType.getInstanceForRoot()},
         () => {return HttpMockStubResourceType.getInstanceForChildren()},
+        (input:string) => {return new HttpMock().deserialize(JSON.parse(input))}
     );
     public static JSON_VERIFY: ResourceMapEnum = new ResourceMapEnum(
+        "net.qutester.model.resources.json.verify.JsonVerify",
         "net.qutester.model.resources.json.verify.JsonVerify",
         "JsonVerify",
         "verify.json",
@@ -136,6 +160,7 @@ export class ResourceMapEnum {
         () => {return new ArrayJsonVerify()},
         () => {return JsonVerifyResourceType.getInstanceForRoot()},
         () => {return JsonVerifyResourceType.getInstanceForChildren()},
+        (input:string) => {return new ArrayJsonVerify().deserialize(JSON.parse(input))}
     );
     public static ALL_PARAM_TYPES: Array<ResourceMapEnum> = [
         ResourceMapEnum.TEXT,
@@ -161,6 +186,15 @@ export class ResourceMapEnum {
         return null;
     }
 
+    static getResourceMapEnumByUiType(uiType: string): ResourceMapEnum {
+        for (let paramType of ResourceMapEnum.ALL_PARAM_TYPES) {
+            if (paramType.uiType == uiType) {
+                return paramType;
+            }
+        }
+        return null;
+    }
+
     static getResourceMapEnumByFileExtension(fileExtension: string): ResourceMapEnum {
         for (let paramType of ResourceMapEnum.ALL_PARAM_TYPES) {
             if (paramType.fileExtension == fileExtension) {
@@ -170,37 +204,53 @@ export class ResourceMapEnum {
         return null;
     }
 
-    static getUiNameByServerType(serverType: string): string {
-        let paramType = ResourceMapEnum.getResourceMapEnumByServerType(serverType);
+    static getUiNameByUiType(uiType: string): string {
+        let paramType = ResourceMapEnum.getResourceMapEnumByUiType(uiType);
         if(paramType == null) {
-            return serverType;
+            return uiType;
         }
 
         return paramType.uiName;
     }
 
+    public static deserializeInputForUiType(input: Object, serverType: string): Resource<any> {
+        for (const argParamType of ResourceMapEnum.ALL_PARAM_TYPES) {
+            if (argParamType.uiType === serverType) {
+                return argParamType.contentTypeDeserializeFunction(input)
+            }
+        }
+
+        throw new Error("Unknown data SERVER_TYPE [" + serverType + "]");
+    }
+
     public readonly serverType: string;
+    public readonly uiType: string;
     public readonly uiName: string;
     public readonly fileExtension: string;
     public readonly newInstanceFunction: () => Resource<any>;
     public readonly resourceTypeInstanceForRootFunction: () => ResourceType;
     public readonly resourceTypeInstanceForChildrenFunction: () => ResourceType;
+    public readonly contentTypeDeserializeFunction: Function;
 
 
     private constructor(serverType: string,
+                        uiType: string,
                         uiName: string,
                         fileExtension: string,
                         public resourceComponent: Type<ResourceComponent<any>>,
                         newInstanceFunction: () => Resource<any>,
                         resourceTypeInstanceForRootFunction: () => ResourceType,
                         resourceTypeInstanceForChildrenFunction: () => ResourceType,
+                        contentTypeDeserializeFunction: Function
                         ) {
         this.serverType = serverType;
+        this.uiType = uiType;
         this.uiName = uiName;
         this.fileExtension = fileExtension;
         this.newInstanceFunction = newInstanceFunction;
         this.resourceTypeInstanceForRootFunction = resourceTypeInstanceForRootFunction;
         this.resourceTypeInstanceForChildrenFunction = resourceTypeInstanceForChildrenFunction;
+        this.contentTypeDeserializeFunction = contentTypeDeserializeFunction;
     }
 
     getNewInstance(): Resource<any> {

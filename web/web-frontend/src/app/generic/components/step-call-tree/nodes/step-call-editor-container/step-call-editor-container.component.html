@@ -19,41 +19,31 @@
                  class="tree-node-line" style="height: 100%"></div>
         </div>
 
-        <p-autoComplete [(ngModel)]="stepText"
+        <p-autoComplete #autoCompleteComponent
+                        [(ngModel)]="stepText"
                         field="stepCallText"
                         [suggestions]="suggestions"
                         (completeMethod)="searchSuggestions($event)"
                         [autoHighlight]="true"
-                        [forceSelection]="true"
+                        (onBlur)="onCancel()"
+                        (onSelect)="onSuggestionSelected($event)"
                         styleClass="step-suggestion"
                         class="step-suggestion">
             <ng-template let-stepCallSuggestion pTemplate="item">
                 <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
                     <span *ngIf="stepCallSuggestion.actionText" class="step-call-action-text">{{stepCallSuggestion.actionText}}</span>
-                    <span>{{stepCallSuggestion.stepCallText}}</span>
+                    <span>{{stepCallSuggestion.getPhaseAsString()}} {{stepCallSuggestion.stepCallText}}</span>
                 </div>
             </ng-template>
         </p-autoComplete>
 
         <!-- BUTTONS -->
-        <div *ngIf="isEditMode()" class="step-button-panel btn-group">
+        <div class="step-editor-button-panel btn-group">
 
-            <div *ngIf="!model.jsonTreeNodeState.showChildren"
-                title="Edit Test" class="btn btn-default btn-xs btn-group"
-                (click)="toggleParameters(); $event.stopPropagation()">
-                <span class="glyphicon glyphicon-pencil"></span>
+            <div title="Select Step" class="btn btn-default btn-xs btn-group"
+                 (click)="selectStepFromPopup(); $event.stopPropagation()">
+                <i class="fa fa-plus" aria-hidden="true"></i>
             </div>
-
-            <div title="Move Test Up" *ngIf="!isFirstStep" class="btn btn-default btn-xs btn-group"
-                 (click)="moveStepUp(); $event.stopPropagation()">
-                <span class="glyphicon glyphicon-arrow-up"></span>
-            </div>
-
-            <div title="Move Test Down" *ngIf="!isLastStep" class="btn btn-default btn-xs btn-group"
-                 (click)="moveStepDown(); $event.stopPropagation()">
-                <span class="glyphicon glyphicon-arrow-down"></span>
-            </div>
-
             <div title="Remove Step" class="btn btn-default btn-xs btn-group"
                  (click)="removeStep(); $event.stopPropagation()">
                 <span class="glyphicon glyphicon-trash"></span>
@@ -66,4 +56,6 @@
                    [model]="model"
                    class="full-line">
     </json-children>
+
+    <step-chooser #stepChooser></step-chooser>
 </div>

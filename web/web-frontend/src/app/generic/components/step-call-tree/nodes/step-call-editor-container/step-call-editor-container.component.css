@@ -1,19 +1,31 @@
 
 .step-suggestion {
-    width: 100%;
+    width: 600px;
 }
 
 .step-suggestion .ui-autocomplete {
-    width: 100%;
+    width: 600px;
 }
 .step-suggestion .ui-autocomplete .ui-autocomplete-input{
-    width: 100%;
+    width: 600px;
     padding-top: 0;
     padding-bottom: 0;
+}
+.step-suggestion .ui-autocomplete-list-item.ui-state-highlight .step-call-action-text{
+    color: #A9EB9F;
 }
 
 .step-call-action-text {
     font-size: 10px;
     font-weight: bold;
     color: darkmagenta;
+}
+
+.step-editor-button-panel {
+    display: none;
+    vertical-align: top;
+    align-items: center;
+}
+.node:hover .step-editor-button-panel {
+    display: flex;
 }

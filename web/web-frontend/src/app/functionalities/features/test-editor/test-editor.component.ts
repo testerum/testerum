@@ -26,9 +26,7 @@ import {StepCallEditorContainerModel} from "../../../generic/components/step-cal
     templateUrl: 'test-editor.component.html',
     styleUrls: ['test-editor.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css']
 })
-export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler {
-
-    @ViewChild(StepChooserComponent) stepChooserComponent: StepChooserComponent;
+export class TestEditorComponent implements OnInit, OnDestroy {
 
     StepPhaseEnum = StepPhaseEnum;
     testModel: TestModel = new TestModel;
@@ -76,24 +74,6 @@ export class TestEditorComponent implements OnInit, OnDestroy, StepChoseHandler 
         this.stepCallTreeService.jsonTreeModel.getChildren().push(
             stepCallEditorContainerModel
         )
-    }
-
-    openStepChooser() {
-        this.stepChooserComponent.showStepChooserModal(this);
-    }
-
-    onStepChose(choseStep: StepDef): void {
-        let stepCall = new StepCall();
-        stepCall.stepDef = choseStep;
-        for (let stepParam of choseStep.stepPattern.getParamParts()) {
-            let valueArg = new Arg();
-            valueArg.uiType = stepParam.uiType;
-            valueArg.serverType = stepParam.serverType;
-            valueArg.content = ResourceMapEnum.getResourceMapEnumByServerType(stepParam.uiType).getNewInstance();
-            stepCall.args.push(valueArg)
-        }
-
-        this.stepCallTreeService.addStepCall(stepCall);
     }
 
     setEditMode(isEditMode: boolean) {

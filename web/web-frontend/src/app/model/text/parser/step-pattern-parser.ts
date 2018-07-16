@@ -39,7 +39,8 @@ export class StepPatternParser {
     private static getParamPattern(match: RegExpExecArray): ParamStepPatternPart {
         let paramPart: ParamStepPatternPart = new ParamStepPatternPart;
         paramPart.name = match[1];
-        paramPart.uiType = ResourceMapEnum.TEXT.serverType;
+        paramPart.serverType = ResourceMapEnum.TEXT.serverType;
+        paramPart.uiType = ResourceMapEnum.TEXT.uiType;
         return paramPart;
     }
 

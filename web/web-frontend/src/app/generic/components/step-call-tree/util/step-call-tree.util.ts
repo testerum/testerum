@@ -1,4 +1,3 @@
-
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
 import {StepCall} from "../../../../model/step-call.model";
 import {StepCallContainerModel} from "../model/step-call-container.model";
@@ -28,7 +27,7 @@ export class StepCallTreeUtil {
         return children;
     }
 
-    public static createStepCallContainerWithChildren(stepCall, parentNode: JsonTreeContainer) {
+    public static createStepCallContainerWithChildren(stepCall, parentNode: JsonTreeContainer): StepCallContainerModel {
         let childStepCallContainerModel = StepCallTreeUtil.createStepCallContainer(stepCall, parentNode, parentNode.getChildren().length);
 
         if (stepCall.args.length > 0) {

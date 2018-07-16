@@ -51,7 +51,7 @@ export class ComposedStepParametersComponent implements OnInit {
     }
 
     getParamUiName(serverType: string): string {
-        return ResourceMapEnum.getUiNameByServerType(serverType)
+        return ResourceMapEnum.getUiNameByUiType(serverType)
     }
 
 }

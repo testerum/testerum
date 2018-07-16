@@ -57,7 +57,7 @@ export class ArgModalComponent {
     }
 
     show() {
-        this.resourceMapping = ResourceMapEnum.getResourceMapEnumByServerType(this.arg.uiType);
+        this.resourceMapping = ResourceMapEnum.getResourceMapEnumByUiType(this.arg.uiType);
         this.argPath = this.arg.path;
 
         this.initializeIsSharedResource();

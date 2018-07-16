@@ -72,7 +72,7 @@ export class ArgNodePanelComponent implements OnInit, OnDestroy {
     }
 
     getArgUiType(): string {
-        let resourceType = ResourceMapEnum.getResourceMapEnumByServerType(this.arg.uiType);
+        let resourceType = ResourceMapEnum.getResourceMapEnumByUiType(this.arg.uiType);
         if (resourceType) {
             return resourceType.uiName;
         }

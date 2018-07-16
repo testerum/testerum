@@ -75,11 +75,11 @@ export class ArgNodeComponent implements OnInit {
 
     argHasContent(): boolean {
         let arg = this.getArg();
-        return (arg !== null) && (!arg.content.isEmpty());
+        return (arg !== null) && (arg.content != null) && (!arg.content.isEmpty());
     }
 
     private getResourceRenderer():Type<any>  {
-        let paramTypeEnumByType = ResourceMapEnum.getResourceMapEnumByServerType(this.model.arg.uiType);
+        let paramTypeEnumByType = ResourceMapEnum.getResourceMapEnumByUiType(this.model.arg.uiType);
         if(paramTypeEnumByType) {
             return paramTypeEnumByType.resourceComponent;
         }

@@ -30,8 +30,8 @@ export class StepChooserNodeComponent implements OnInit {
        return this.model.name.split(".")[0]
     }
 
-    getParamUiNameByType(serverType: string): string {
-        return ResourceMapEnum.getResourceMapEnumByServerType(serverType).uiName;
+    getParamUiNameByType(uiType: string): string {
+        return ResourceMapEnum.getResourceMapEnumByUiType(uiType).uiName;
     }
 
     setNodeAsSelected() {

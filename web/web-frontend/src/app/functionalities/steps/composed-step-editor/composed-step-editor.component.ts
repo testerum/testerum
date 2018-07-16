@@ -79,7 +79,7 @@ export class ComposedStepEditorComponent implements OnInit {
             let valueArg = new Arg();
             valueArg.serverType = stepParam.serverType;
             valueArg.uiType = stepParam.uiType;
-            valueArg.content = ResourceMapEnum.getResourceMapEnumByServerType(stepParam.uiType).getNewInstance();
+            valueArg.content = ResourceMapEnum.getResourceMapEnumByUiType(stepParam.uiType).getNewInstance();
 
             stepCall.args.push(valueArg);
         }
