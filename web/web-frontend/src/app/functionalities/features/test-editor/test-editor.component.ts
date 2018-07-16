@@ -69,9 +69,7 @@ export class TestEditorComponent implements OnInit, OnDestroy {
         //remove the current editor if exists
         if(treeSteps.length > 0 &&
             treeSteps[treeSteps.length -1] instanceof StepCallEditorContainerModel) {
-            this.stepCallTreeService.removeStepCall(
-                treeSteps[treeSteps.length -1]
-            );
+            treeSteps.splice(treeSteps.length -1);
         }
 
         let stepCallEditorContainerModel = new StepCallEditorContainerModel(
