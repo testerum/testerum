@@ -36,25 +36,7 @@ export class SubStepsContainerComponent implements OnInit {
     }
 
     addSubStep() {
+        this.stepCallTreeService.addStepCallEditor(this.model);
         this.showChildren = true;
-
-        let treeSubSteps = this.model.getChildren();
-
-        //remove the current editor if exists
-        if(treeSubSteps.length > 0 &&
-            treeSubSteps[treeSubSteps.length -1] instanceof StepCallEditorContainerModel) {
-                treeSubSteps.splice(treeSubSteps.length -1)
-        }
-
-        let stepCallEditorContainerModel = new StepCallEditorContainerModel(
-            this.model,
-            treeSubSteps.length,
-            null,
-            false
-        );
-        stepCallEditorContainerModel.jsonTreeNodeState.showChildren = false;
-        treeSubSteps.push(
-            stepCallEditorContainerModel
-        )
     }
 }

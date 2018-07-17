@@ -20,13 +20,11 @@
         </div>
 
         <p-autoComplete #autoCompleteComponent
-                        [(ngModel)]="stepText"
-                        field="stepCallText"
                         [suggestions]="suggestions"
                         (completeMethod)="searchSuggestions($event)"
                         [autoHighlight]="true"
-                        (onBlur)="onCancel()"
                         (onSelect)="onSuggestionSelected($event)"
+                        (onKeyUp)="onKeyUp($event)"
                         styleClass="step-suggestion"
                         class="step-suggestion">
             <ng-template let-stepCallSuggestion pTemplate="item">

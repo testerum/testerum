@@ -1,8 +1,6 @@
 import {
     AfterViewChecked,
-    AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
     Component,
-    ElementRef,
     Input,
     OnDestroy,
     OnInit,
@@ -18,10 +16,8 @@ import {BasicStepDef} from "../../../../../model/basic-step-def.model";
 import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
 import {StepPhaseEnum, StepPhaseUtil} from "../../../../../model/enums/step-phase.enum";
 import * as stringSimilarity from 'string-similarity'
-import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {StepCall} from "../../../../../model/step-call.model";
 import {StepTextUtil} from "./util/StepTextUtil";
-import {StepCallTreeUtil} from "../../util/step-call-tree.util";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {StepPatternParser} from "../../../../../model/text/parser/step-pattern-parser";
@@ -46,9 +42,7 @@ import {ArrayUtil} from "../../../../../utils/array.util";
 })
 export class StepCallEditorContainerComponent implements OnInit, OnDestroy, AfterViewChecked, StepChoseHandler {
 
-    stepText: string;
     @Input() model: StepCallEditorContainerModel;
-
 
     existingStepsDefs: Array<StepDef> = [];
     existingStepsText: Array<string> = [];
@@ -178,6 +172,12 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         return suggestions;
     }
 
+    onKeyUp(event: KeyboardEvent) {
+        if (event.code == 'Escape') {
+            this.removeThisEditorFromTree()
+        }
+    }
+
     onSuggestionSelected(event: StepCallSuggestion) {
 
         let newStepCall: StepCall = null;
@@ -199,16 +199,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
 
         this.stepCallTreeService.addStepCallToParentContainer(newStepCall, this.model.parentContainer);
 
-        let stepCallEditorContainerModel = new StepCallEditorContainerModel(
-            this.model.parentContainer,
-            this.model.parentContainer.getChildren().length,
-            null,
-            true
-        );
-        stepCallEditorContainerModel.jsonTreeNodeState.showChildren = false;
-        this.model.parentContainer.getChildren().push(
-            stepCallEditorContainerModel
-        )
+        this.stepCallTreeService.addStepCallEditor(this.model.parentContainer);
     }
 
     private createStepCallFromExistingStepDef(selectedStepCallSuggestion: StepCallSuggestion): StepCall {
@@ -255,13 +246,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         this.addNewStepCallToTree(stepCall);
     }
 
-    onCancel() {
-        setTimeout(() => { // trick to allow in case we choose an option from sugestions
-            this.removeThisEditorFromTree();
-        });
-    }
-
     private removeThisEditorFromTree() {
-        ArrayUtil.removeElementFromArray(this.model.parentContainer.getChildren(), this.model);
+        this.stepCallTreeService.removeStepCallEditorIfExist();
     }
 }

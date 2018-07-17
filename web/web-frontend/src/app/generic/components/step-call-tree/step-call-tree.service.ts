@@ -5,10 +5,10 @@ import {JsonTreeModel} from "../json-tree/model/json-tree.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
 import {ArrayUtil} from "../../../utils/array.util";
 import {StepCallContainerModel} from "./model/step-call-container.model";
-import {JsonTreeContainerAbstract} from "../json-tree/model/json-tree-container.abstract";
 import {JsonTreeContainer} from "../json-tree/model/json-tree-container.model";
 import {ComposedStepDef} from "../../../model/composed-step-def.model";
 import {SubStepsContainerModel} from "./model/sub-steps-container.model";
+import {StepCallEditorContainerModel} from "./model/step-call-editor-container.model";
 
 @Injectable()
 export class StepCallTreeService {
@@ -20,6 +20,8 @@ export class StepCallTreeService {
     stepCallOrderChangeEventEmitter: EventEmitter<void> = new EventEmitter<void>();
 
     argModal: ArgModalComponent;
+
+    currentStepCallEditorModel: StepCallEditorContainerModel;
 
     setEditMode(editMode: boolean) {
         this.editModeEventEmitter.emit(editMode);
@@ -105,5 +107,30 @@ export class StepCallTreeService {
                 return null;
             }
         }
+    }
+
+    removeStepCallEditorIfExist() {
+        if (this.currentStepCallEditorModel) {
+            ArrayUtil.removeElementFromArray(this.currentStepCallEditorModel.parentContainer.getChildren(), this.currentStepCallEditorModel);
+            this.currentStepCallEditorModel = null;
+        }
+    }
+
+    addStepCallEditor(parentContainerModel: JsonTreeContainer) {
+        this.removeStepCallEditorIfExist();
+
+        let isRootStepCall = parentContainerModel instanceof JsonTreeModel;
+
+        let stepCallEditorContainerModel = new StepCallEditorContainerModel(
+            parentContainerModel,
+            parentContainerModel.getChildren().length,
+            null,
+            isRootStepCall
+        );
+        parentContainerModel.getChildren().push(
+            stepCallEditorContainerModel
+        );
+
+        this.currentStepCallEditorModel = stepCallEditorContainerModel;
     }
 }
