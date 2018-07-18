@@ -26,6 +26,7 @@
                         (onSelect)="onSuggestionSelected($event)"
                         (onKeyUp)="onKeyUp($event)"
                         styleClass="step-suggestion"
+                        [placeholder]="'Type to add step'"
                         class="step-suggestion">
             <ng-template let-stepCallSuggestion pTemplate="item">
                 <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">

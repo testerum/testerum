@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {SubStepsContainerModel} from "../../model/sub-steps-container.model";
 import {StepCallTreeService} from "../../step-call-tree.service";
-import {StepCallEditorContainerModel} from "../../model/step-call-editor-container.model";
 
 @Component({
     selector: 'sub-steps-container',
@@ -38,5 +36,6 @@ export class SubStepsContainerComponent implements OnInit {
     addSubStep() {
         this.stepCallTreeService.addStepCallEditor(this.model);
         this.showChildren = true;
+        this.model.jsonTreeNodeState.showChildren = true;
     }
 }

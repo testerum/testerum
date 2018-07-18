@@ -45,35 +45,29 @@ export class StepCallTreeService {
     }
 
     removeStepCall(stepCallContainer: StepCallContainerModel) {
-        this.removeStepCallContainerFromRoot(stepCallContainer, this.jsonTreeModel);
+        ArrayUtil.removeElementFromArray(stepCallContainer.parentContainer.getChildren(), stepCallContainer);
+
+        this.removeStepCallFromParent(stepCallContainer.stepCall, stepCallContainer.parentContainer);
 
         this.triggerStepCallOrderChangeEvent()
     }
 
-    private removeStepCallContainerFromRoot(stepCallContainerToRemove: StepCallContainerModel, rootNode: JsonTreeContainer) {
+    private removeStepCallFromParent(stepCallToRemove: StepCall, rootNode: JsonTreeContainer) {
+
+        if (rootNode instanceof JsonTreeModel) {
+            ArrayUtil.removeElementFromArray(this.stepCalls, stepCallToRemove);
+            return;
+        }
+
         for (const rootChild of rootNode.getChildren()) {
-            if (rootChild == stepCallContainerToRemove) {
-                if (rootChild.isContainer()) {
-                    this.removeStepCallFromParent(rootChild as JsonTreeContainer, stepCallContainerToRemove.stepCall);
-                }
-                ArrayUtil.removeElementFromArray(rootNode.getChildren(), stepCallContainerToRemove);
+            if(rootChild instanceof SubStepsContainerModel) {
+                this.removeStepCallFromParent(stepCallToRemove, rootChild);
                 return;
             }
 
-            if(rootChild instanceof StepCallContainerModel ||
-                rootChild instanceof SubStepsContainerModel) {
-                this.removeStepCallContainerFromRoot(stepCallContainerToRemove, rootChild)
+            if (rootChild instanceof StepCallContainerModel) {
+                ArrayUtil.removeElementFromArray((rootChild.stepCall.stepDef as ComposedStepDef).stepCalls, stepCallToRemove);
             }
-        }
-    }
-
-    private removeStepCallFromParent(treeContainer: JsonTreeContainer, stepCallToRemove: StepCall) {
-        if (treeContainer instanceof StepCallContainerModel) {
-            if (treeContainer.stepCall.stepDef instanceof ComposedStepDef) {
-                ArrayUtil.removeElementFromArray(treeContainer.stepCall.stepDef.stepCalls, stepCallToRemove);
-            }
-        } else {
-            this.removeStepCallFromParent(treeContainer.getParent(), stepCallToRemove);
         }
     }
 

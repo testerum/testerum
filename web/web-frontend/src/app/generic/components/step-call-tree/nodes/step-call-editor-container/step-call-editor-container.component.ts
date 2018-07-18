@@ -1,6 +1,6 @@
 import {
     AfterViewChecked,
-    Component,
+    Component, ElementRef, HostListener,
     Input,
     OnDestroy,
     OnInit,
@@ -50,23 +50,19 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     suggestions: Array<StepCallSuggestion> = [];
 
     hasMouseOver: boolean = false;
-    showParameters: boolean = true;
 
     @ViewChild("autoCompleteComponent") autocompleteComponent: AutoComplete;
+
     @ViewChild(StepChooserComponent) stepChooserComponent: StepChooserComponent;
 
+    private onDocumentClick: (event) => void;
+
     constructor(private stepCallTreeService: StepCallTreeService,
-                private stepsService: StepsService) {
+                private stepsService: StepsService,
+                private element: ElementRef) {
     }
 
-    private editModeSubscription: any;
     ngOnInit() {
-        if(!this.isEditMode()) this.showParameters = false;
-        this.editModeSubscription = this.stepCallTreeService.editModeEventEmitter.subscribe(
-            (editMode: boolean) => {
-                this.showParameters = editMode;
-            }
-        );
         this.stepsService.getDefaultSteps().subscribe((basicSteps: Array<BasicStepDef>)=> {
             basicSteps.forEach(value =>
                 this.existingStepsDefs.push(value)
@@ -79,18 +75,44 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
             );
             this.addToExistingStepsText(composedSteps)
         });
+
+        this.onDocumentClick = (event) => {
+            if (StepCallEditorContainerComponent.hasAscendant(event.target, this.element.nativeElement)) {
+                // we clicked inside the p-autoComplete
+                return;
+            }
+
+            this.stepCallTreeService.removeStepCallEditorIfExist();
+        };
+        document.addEventListener('click', this.onDocumentClick, true);
     }
 
+    private isFocusSet = false;
     ngAfterViewChecked(): void {
-        setTimeout(() => {
-            this.autocompleteComponent.focusInput();
-        });
+        if (!this.isFocusSet) {
+            this.isFocusSet = true;
+            setTimeout(() => {
+                this.autocompleteComponent.focusInput();
+            });
+        }
+    }
+
+    private static hasAscendant(element, ascendantElement) {
+        let current = element;
+
+        while (current != null) {
+            if (current.tagName === ascendantElement.tagName) {
+                return true;
+            }
+
+            current = current.parentNode;
+        }
+
+        return false;
     }
 
     ngOnDestroy() {
-        if (this.editModeSubscription) {
-            this.editModeSubscription.unsubscribe();
-        }
+        document.removeEventListener('click', this.onDocumentClick);
     }
 
     private addToExistingStepsText(stepsDefs: Array<StepDef>) {
@@ -107,10 +129,6 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
 
     isEditMode(): boolean {
         return this.stepCallTreeService.isEditMode;
-    }
-
-    toggleParameters() {
-        this.showParameters = !this.showParameters;
     }
 
     public removeStep(): void {
@@ -185,7 +203,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
             newStepCall = this.createStepCallFromExistingStepDef(event);
         } else {
             newStepCall = new StepCall();
-            newStepCall.stepDef = new UndefinedStepDef();
+            newStepCall.stepDef = new ComposedStepDef();
             newStepCall.stepDef.phase = event.phase;
             newStepCall.stepDef.stepPattern = new StepPattern();
             newStepCall.stepDef.stepPattern.setPatternText(event.stepCallText);
@@ -249,4 +267,5 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     private removeThisEditorFromTree() {
         this.stepCallTreeService.removeStepCallEditorIfExist();
     }
+
 }

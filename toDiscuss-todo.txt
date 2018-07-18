@@ -1,0 +1,11 @@
+StepCall should have a status
+    - if a subStep is Undefined a parent step Call should have a status that reflects this state
+    - A ComponsedStep without no child steps should have a special STATUS
+
+How do we show to the user is about to edit an and existing Step Call and he will brake some other tests
+
+Creating ComposedStep in the test screen
+    - What is the path of this step, how the user can set a path
+        - As a default this path can be the test path. User can change the location of this step later on the Steps screen
+    - if the ComposedStep has parameters, how can the user set the type of this params
+    - how a user can edit a new added step

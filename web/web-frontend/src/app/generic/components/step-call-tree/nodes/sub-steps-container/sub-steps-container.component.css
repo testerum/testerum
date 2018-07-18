@@ -1,4 +1,9 @@
-.step-button-panel[_ngcontent-c22] {
+.step-text-container:hover .sub-steps-button-panel {
+    display: inline-block;
+}
+
+.sub-steps-button-panel {
     margin-left: 5px;
-    left: 0;
+    display: none;
+    vertical-align: top;
 }

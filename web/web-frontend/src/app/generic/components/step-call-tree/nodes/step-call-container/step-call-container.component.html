@@ -7,7 +7,7 @@
 
         <div *ngIf="model.isRootStepCall"
             style="display: flex; flex-direction: column;"
-            (click)="collapseNode();$event.stopPropagation();">
+            (click)="collapseNode();">
 
             <i *ngIf="model.children.length > 0"
                style="width: 10px;"
