@@ -33,4 +33,45 @@ export class JsonTreeModel extends JsonTreeContainerAbstract {
             }
         }
     }
+
+    getAllLeafNodes<T extends JsonTreeNode>(): Array<T> {
+        let result: Array<T> = [];
+        for (const child of this.children) {
+            this.addChildLeafNodesToResult(child, result)
+        }
+        return result;
+    }
+
+    private addChildLeafNodesToResult<T extends JsonTreeNode>(child: T, result: Array<T>) {
+        if (!child.isContainer()) {
+            result.push(child);
+        } else {
+            for (const nephew of child["getChildren"]()) { //ugly, it should be  (child as JsonTreeContainer).getChildren(), but this throws exception
+                this.addChildLeafNodesToResult(nephew, result);
+            }
+        }
+    }
+
+    refreshContainerVisibilityBasedOnChildVisibility(): void {
+        for (const child of this.getChildren()) {
+            if (child.isContainer()) {
+                this.calculateContainerVisibilityBasedOnChildVisibility(child as JsonTreeContainer);
+            }
+        }
+    }
+
+    private calculateContainerVisibilityBasedOnChildVisibility(parentNode: JsonTreeContainer): void {
+        let hasVisibleChild = false;
+        for (const child of parentNode.getChildren()) {
+            if (child.isContainer()) {
+                this.calculateContainerVisibilityBasedOnChildVisibility(child as JsonTreeContainer);
+            }
+
+            if (!child.isHidden()) {
+                hasVisibleChild = true;
+            }
+        }
+
+        this.setHidden(!hasVisibleChild);
+    }
 }

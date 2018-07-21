@@ -30,6 +30,11 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
+            <artifactId>common-string</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.testerum</groupId>
             <artifactId>common-json-diff</artifactId>
         </dependency>
 

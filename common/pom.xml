@@ -23,5 +23,6 @@
         <module>common-spring</module>
         <module>common-json</module>
         <module>common-jdk</module>
+        <module>common-string</module>
     </modules>
 </project>

@@ -8,6 +8,7 @@ export abstract class JsonTreeContainerAbstract implements JsonTreeContainer{
 
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
     parentContainer: JsonTreeContainer;
+    hidden: boolean = false;
 
     private _options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
@@ -29,12 +30,19 @@ export abstract class JsonTreeContainerAbstract implements JsonTreeContainer{
         return this.getChildren().length != 0;
     }
 
-
     getNodeState(): JsonTreeNodeState {
         return this.jsonTreeNodeState;
     }
 
     getOptions(): JsonTreeContainerOptions {
         return this._options;
+    }
+
+    isHidden(): boolean {
+        return this.hidden;
+    }
+
+    setHidden(isHidden: boolean) {
+        this.hidden = isHidden;
     }
 }

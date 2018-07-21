@@ -2,7 +2,6 @@ package net.qutester.controller
 
 import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.manual.operation.UpdateTestModel
 import net.qutester.model.test.TestModel
 import net.qutester.service.tests.TestsService
@@ -52,5 +51,4 @@ class TestsController(private val testsService: TestsService) {
     fun moveDirectoryOrFile(@RequestBody copyPath: CopyPath) {
         testsService.moveDirectoryOrFile(copyPath)
     }
-
 }

@@ -1,0 +1,38 @@
+.line-filters {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.filters-label {
+    margin-right: 10px;
+}
+
+.line-search {
+}
+
+.line-tags {
+
+}
+
+.full-width {
+    width: 100%;
+}
+
+.ui-autocomplete {
+    display: flex;
+    align-items: center;
+}
+
+.ui-inputgroup {
+    margin-top: 1px;
+}
+
+.ui-inputgroup-addon {
+    width: 30px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

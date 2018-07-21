@@ -5,6 +5,7 @@ import {JsonTreeContainer} from "../json-tree-container.model";
 export abstract class JsonTreeNodeSerializable implements JsonTreeNode, Serializable<any> {
 
     parentContainer: JsonTreeContainer;
+    hidden: boolean;
 
     constructor(parentContainer: JsonTreeContainer) {
         this.parentContainer = parentContainer;
@@ -16,6 +17,14 @@ export abstract class JsonTreeNodeSerializable implements JsonTreeNode, Serializ
 
     isContainer(): boolean {
         return false;
+    }
+
+    isHidden(): boolean {
+        return this.hidden;
+    }
+
+    setHidden(isHidden: boolean) {
+        this.hidden = isHidden;
     }
 
     abstract deserialize(input: Object): any;

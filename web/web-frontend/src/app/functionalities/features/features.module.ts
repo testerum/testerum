@@ -22,10 +22,18 @@ import {TestsRunnerLogsService} from "./tests-runner/tests-runner-logs/tests-run
 import {FeaturesTreeService} from "./features-tree/features-tree.service";
 import {TestNodeComponent} from "./features-tree/container/node/test-node.component";
 import {FeatureContainerComponent} from "./features-tree/container/feature-container.component";
-import {TooltipModule} from "primeng/primeng";
+import {
+    AutoCompleteModule,
+    ButtonModule, InputTextModule,
+    SelectButtonModule,
+    SplitButtonModule,
+    ToolbarModule,
+    TooltipModule
+} from "primeng/primeng";
 import {FeatureResolver} from "./feature-editor/feature.resolver";
 import {FeatureEditorComponent} from "./feature-editor/feature-editor.component";
 import {FeaturesTreeComponent} from "./features-tree/features-tree.component";
+import {FeaturesTreeFilterComponent} from "./features-tree/features-tree-filter/features-tree-filter.component";
 
 @NgModule({
     imports: [
@@ -38,16 +46,22 @@ import {FeaturesTreeComponent} from "./features-tree/features-tree.component";
         AngularSplitModule,
 
         TooltipModule,
+        ToolbarModule,
+        SelectButtonModule,
+        AutoCompleteModule,
+        InputTextModule,
 
         GenericModule,
         StepsModule,
     ],
     exports: [
+        FeaturesTreeFilterComponent,
         FeaturesComponent,
         RunnerTreeComponent,
         TestsRunnerLogsComponent,
     ],
     declarations: [
+        FeaturesTreeFilterComponent,
         FeaturesTreeComponent,
         FeaturesComponent,
         FeatureContainerComponent,

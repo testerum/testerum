@@ -11,6 +11,7 @@ export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
     name: string;
     private children: Array<FileDirectoryChooserContainerModel> = [];
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
+    hidden: boolean = false;
 
     private options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
@@ -69,5 +70,13 @@ export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
 
     getOptions(): JsonTreeContainerOptions {
         return this.options;
+    }
+
+    isHidden(): boolean {
+        return this.hidden;
+    }
+
+    setHidden(isHidden: boolean) {
+        this.hidden = isHidden;
     }
 }

@@ -6,6 +6,7 @@ import {Feature} from "../model/feature/feature.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {RootServerTreeNode} from "../model/tree/root-server-tree-node.model";
+import {FeaturesTreeFilter} from "../model/feature/filter/features-tree-filter.model";
 
 @Injectable()
 export class FeatureService {
@@ -14,10 +15,16 @@ export class FeatureService {
 
     constructor(private http: HttpClient) {}
 
-    getFeatureTree(): Observable<RootServerTreeNode> {
+    getFeatureTree(featureTreeFilter: FeaturesTreeFilter): Observable<RootServerTreeNode> {
+        let body = featureTreeFilter.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-            .get<RootServerTreeNode>(this.FEATURE_URL+"/tree")
+            .post<RootServerTreeNode>(this.FEATURE_URL+"/tree", body, httpOptions)
             .map(FeatureService.extractFeaturesTree);
     }
 

@@ -3,14 +3,15 @@
     <split direction="vertical">
         <split-area [size]="50">
             <split direction="horizontal">
-                <split-area [size]="40">
+                <split-area [size]="30">
+                    <features-tree-filter [treeModel]="testsTreeService.testsJsonTreeModel"></features-tree-filter>
 
                     <features-tree [treeModel]="testsTreeService.testsJsonTreeModel"
                                    [modelComponentMapping]="modelComponentMapping">
                     </features-tree>
 
                 </split-area>
-                <split-area [size]="60" [visible]="isTestSelected">
+                <split-area [size]="70" [visible]="isTestSelected">
 
                     <router-outlet></router-outlet>
 

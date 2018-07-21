@@ -3,6 +3,7 @@ package net.qutester.controller.feature
 import net.qutester.model.feature.Feature
 import net.qutester.model.file.Attachment
 import net.qutester.model.infrastructure.path.Path
+import net.qutester.model.feature.filter.FeaturesTreeFilter
 import net.qutester.model.tree.RootTreeNode
 import net.qutester.service.feature.FeatureService
 import org.springframework.http.MediaType
@@ -13,10 +14,10 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/features")
 class FeatureController(private val featureService: FeatureService) {
 
-    @RequestMapping (path = ["tree"], method = [RequestMethod.GET])
+    @RequestMapping (path = ["tree"], method = [RequestMethod.POST])
     @ResponseBody
-    fun getFeaturesTree(): RootTreeNode {
-        return featureService.getFeaturesTree()
+    fun getFeaturesTree(@RequestBody featuresTreeFilter: FeaturesTreeFilter): RootTreeNode {
+        return featureService.getFeaturesTree(featuresTreeFilter)
     }
 
     @RequestMapping (method = [RequestMethod.GET])

@@ -43,4 +43,25 @@ export class JsonLeafNodeComponent implements OnInit {
     setSelected() {
         this.jsonTreeService.setSelectedNode(this.model);
     }
+
+    isLastVisibleNode(): boolean {
+        let siblings = this.model.getParent().getChildren();
+        let currentNodeFound = false;
+        for (const sibling of siblings) {
+            if (sibling == this.model) {
+                currentNodeFound = true;
+                continue;
+            }
+
+            if (!currentNodeFound) {
+                continue;
+            }
+
+            if (!sibling.isHidden()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

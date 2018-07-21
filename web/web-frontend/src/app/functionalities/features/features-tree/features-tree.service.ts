@@ -9,6 +9,7 @@ import {TestsService} from "../../../service/tests.service";
 import FeaturesTreeUtil from "./util/features-tree.util";
 import {FeatureService} from "../../../service/feature.service";
 import {RootServerTreeNode} from "../../../model/tree/root-server-tree-node.model";
+import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-filter.model";
 
 @Injectable()
 export class FeaturesTreeService {
@@ -20,11 +21,21 @@ export class FeaturesTreeService {
     }
 
     initializeTestsTreeFromServer() {
-        this.featureService.getFeatureTree().subscribe(
+        this.featureService.getFeatureTree(FeaturesTreeFilter.createEmptyFilter()).subscribe(
             (rootNode: RootServerTreeNode) => {
                 this.testsJsonTreeModel =  FeaturesTreeUtil.mapServerTreeToFeaturesTreeModel(rootNode);
                 this.sort();
+            }
+        )
+    }
 
+    refreshTestTreeFromServer(featureTreeFilter: FeaturesTreeFilter) {
+        this.featureService.getFeatureTree(featureTreeFilter).subscribe(
+            (rootNode: RootServerTreeNode) => {
+                let newFeaturesTree = FeaturesTreeUtil.mapServerTreeToFeaturesTreeModel(rootNode);
+                this.testsJsonTreeModel.children = newFeaturesTree.getChildren();
+
+                this.sort();
             }
         )
     }

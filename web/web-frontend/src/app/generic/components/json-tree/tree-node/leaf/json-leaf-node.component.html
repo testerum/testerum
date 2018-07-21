@@ -1,6 +1,7 @@
 <ng-container>
     <div class="tree-node tree-node-line"
-         [class.tree-node-last]="isLastNode"> <!--tree-node-close tree-node-leaf-->
+         [class.hidden]="model.isHidden()"
+         [class.tree-node-last]="isLastVisibleNode()"> <!--tree-node-close tree-node-leaf-->
 
         <i class="tree-icon tree-line-icon tree-line-leaf"></i>
 

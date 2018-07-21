@@ -1,0 +1,69 @@
+<p-toolbar>
+    <div class="line-filters">
+        <span class="filters-label">Filters:</span>
+
+        <p-selectButton [options]="testTypesFilters"
+                        (onChange)="buttonStateChanged($event)"
+                        [(ngModel)]="selectedTestTypesFilters"
+                        multiple="multiple">
+            <ng-template let-item>
+                <div [class.active]="item.value == automatedButtonValue && isAutomatedButtonActive"
+                     [class.btn-primary]="item.value == automatedButtonValue && isAutomatedButtonActive"
+                     [class.active]="item.value == manualButtonValue && isManualButtonActive"
+                     [class.btn-primary]="item.value == manualButtonValue && isManualButtonActive"
+                     [class.active]="item.value == searchButtonValue && isSearchButtonActive"
+                     [class.btn-primary]="item.value == searchButtonValue && isSearchButtonActive"
+                     [class.active]="item.value == tagsButtonValue && isTagsButtonActive"
+                     [class.btn-primary]="item.value == tagsButtonValue && isTagsButtonActive"
+                     pTooltip="{{(item.value == automatedButtonValue && isAutomatedButtonActive?'Hide ':'Show ') + item.title}}"
+                     tooltipPosition="bottom"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa {{item.icon}}" aria-hidden="true"></i>
+                </div>
+            </ng-template>
+        </p-selectButton>
+    </div>
+
+    <div class="ui-inputgroup line-search full-width"
+         *ngIf="isSearchButtonActive">
+        <span class="ui-inputgroup-addon"
+              pTooltip="Search"
+              tooltipPosition="bottom"
+              (click)="filter()">
+            <i class="fa fa-search"></i>
+        </span>
+        <input id="float-input"
+               [(ngModel)]="searchText"
+               (blur)="onSearchInputDeFocus($event)"
+               (keydown)="onSearchInputKey($event)"
+               placeholder="Search"
+               type="text"
+               pInputText
+               pTooltip="Search"
+               tooltipPosition="bottom"
+               class="full-width">
+    </div>
+
+    <div class="ui-inputgroup line-tags full-width"
+         *ngIf="isTagsButtonActive">
+        <span class="ui-inputgroup-addon"
+              tooltipPosition="bottom"
+              pTooltip="Tags"
+              (click)="filter()">
+            <i class="fa fa-tag"></i>
+        </span>
+        <p-autoComplete #tagsElement [(ngModel)]="selectedTags" [suggestions]="tagsToShow"
+                        (completeMethod)="searchTags($event)" [multiple]="true"
+                        [dropdown]="true" (onSelect)="onTagSelect($event)" [field]="field"
+                        (keypress)="onTagsKeyUp($event);"
+                        placeholder="Tags"
+                        tooltipPosition="bottom"
+                        pTooltip="Tags"
+                        id="tags" name="tags"></p-autoComplete>
+
+    </div>
+
+
+
+
+</p-toolbar>

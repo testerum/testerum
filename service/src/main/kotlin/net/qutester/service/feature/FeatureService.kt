@@ -1,11 +1,13 @@
 package net.qutester.service.feature
 
 import com.testerum.common.parsing.executer.ParserExecuter
+import com.testerum.common.string.containsSearchStringParts
 import com.testerum.test_file_format.feature.FileFeature
 import com.testerum.test_file_format.feature.FileFeatureParserFactory
 import com.testerum.test_file_format.feature.FileFeatureSerializer
 import net.qutester.exception.ValidationException
 import net.qutester.model.feature.Feature
+import net.qutester.model.feature.filter.FeaturesTreeFilter
 import net.qutester.model.file.Attachment
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.repository.enums.FileType
@@ -195,16 +197,66 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         );
     }
 
-    fun getFeaturesTree(): RootTreeNode {
+    fun getFeaturesTree(featuresTreeFilter: FeaturesTreeFilter): RootTreeNode {
         val rootNode = RootTreeNode("Features");
 
         val features = getAllFeatures()
-        mapFeaturesToTree(features, rootNode)
+        val filteredFeatures = filterFeatures(featuresTreeFilter, features)
+        mapFeaturesToTree(filteredFeatures, rootNode)
 
         val tests = testsService.getAllTests()
-        mapTestsToTree(tests, rootNode)
+        val filteredTests = filterTests(featuresTreeFilter, tests)
+        mapTestsToTree(filteredTests, rootNode)
 
         return rootNode;
+    }
+
+    private fun filterFeatures(featuresTreeFilter: FeaturesTreeFilter, features: List<Feature>): List<Feature> {
+        val results = mutableListOf<Feature>()
+        for (feature in features) {
+            var featureIsMatchFilter = false;
+
+            if (feature.path.toString().containsSearchStringParts(featuresTreeFilter.search)) {
+                featureIsMatchFilter = true;
+            }
+
+            if (feature.name.containsSearchStringParts(featuresTreeFilter.search)) {
+                featureIsMatchFilter = true;
+            }
+
+            if (feature.description.containsSearchStringParts(featuresTreeFilter.search)) {
+                featureIsMatchFilter = true;
+            }
+
+            //TODO: TAGS filter
+            if (featureIsMatchFilter) {
+                results.add(feature)
+            }
+        }
+
+        return results;
+    }
+
+    private fun filterTests(featuresTreeFilter: FeaturesTreeFilter, tests: List<TestModel>): List<TestModel> {
+        val results = mutableListOf<TestModel>()
+        for (test in tests) {
+            var testMatchFilter = false;
+
+            if (test.path.toString().containsSearchStringParts(featuresTreeFilter.search)) {
+                testMatchFilter = true;
+            }
+
+            if (test.text.containsSearchStringParts(featuresTreeFilter.search)) {
+                testMatchFilter = true;
+            }
+
+            //TODO: add AUTOMATED, MANUAL and TAGS filter
+            if (testMatchFilter) {
+                results.add(test)
+            }
+        }
+
+        return results;
     }
 
     private fun mapFeaturesToTree(features: List<Feature>, rootNode: RootTreeNode) {

@@ -5,6 +5,7 @@ import {JsonTreeNode} from "./json-tree-node.model";
 export abstract class JsonTreeNodeAbstract implements JsonTreeNode {
 
     parentContainer: JsonTreeContainer;
+    hidden: boolean = false;
 
     constructor(parentContainer: JsonTreeContainer) {
         this.parentContainer = parentContainer;
@@ -16,5 +17,13 @@ export abstract class JsonTreeNodeAbstract implements JsonTreeNode {
 
     isContainer(): boolean {
         return false;
+    }
+
+    isHidden(): boolean {
+        return this.hidden;
+    }
+
+    setHidden(isHidden: boolean) {
+        this.hidden = isHidden;
     }
 }

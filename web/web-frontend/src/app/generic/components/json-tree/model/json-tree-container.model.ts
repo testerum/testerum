@@ -7,6 +7,8 @@ export interface JsonTreeContainer extends JsonTreeNode {
 
     getParent(): JsonTreeContainer;
     isContainer(): boolean;
+    isHidden(): boolean;
+    setHidden(isHidden: boolean);
 
     getChildren(): Array<JsonTreeNode>;
     hasChildren(): boolean;
