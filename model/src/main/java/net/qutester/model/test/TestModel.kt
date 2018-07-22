@@ -8,6 +8,7 @@ import net.qutester.util.indent
 
 
 data class TestModel @JsonCreator constructor(@JsonProperty("path") val path: Path,
+                                              @JsonProperty("isManual") @get:JsonProperty("isManual") val isManual: Boolean,
                                               @JsonProperty("text") val text: String, // todo: rename to "name"
                                               @JsonProperty("description") val description: String?,
                                               @JsonProperty("stepCalls") val stepCalls: List<StepCall> = emptyList()) {
@@ -24,7 +25,14 @@ data class TestModel @JsonCreator constructor(@JsonProperty("path") val path: Pa
     fun toDebugTree(destination: StringBuilder,
                     indentLevel: Int) {
         destination.indent(indentLevel)
-        destination.append("TEST: ").append(text).append("\n")
+
+        if (isManual) {
+            destination.append("MANUAL_TEST: ")
+        } else {
+            destination.append("TEST: ")
+        }
+
+        destination.append(text).append("\n")
 
         for (stepCall in stepCalls) {
             stepCall.toDebugTree(destination, indentLevel + 1)

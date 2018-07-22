@@ -246,7 +246,8 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
             parentContainerTreeNode.children.add(
                     TestTreeNode(
                             test.text,
-                            test.path
+                            test.path,
+                            test.isManual
                     )
             )
         }

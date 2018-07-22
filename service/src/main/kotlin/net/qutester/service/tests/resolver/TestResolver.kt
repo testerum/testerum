@@ -31,10 +31,11 @@ class TestResolver(private val stepService: StepService) {
         }
 
         return TestModel(
-                testModel.path,
-                testModel.text,
-                testModel.description,
-                resolvedStepCalls
+                path = testModel.path,
+                isManual = testModel.isManual,
+                text = testModel.text,
+                description = testModel.description,
+                stepCalls = resolvedStepCalls
         )
     }
 

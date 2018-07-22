@@ -1,4 +1,4 @@
-import {TreeNodeModel} from "./../infrastructure/tree-node.model";
+import {TreeNodeModel} from "../infrastructure/tree-node.model";
 import {JsonUtil} from "../../utils/json.util";
 import {IdUtils} from "../../utils/id.util";
 import {StepCall} from "../step-call.model";
@@ -7,6 +7,7 @@ import {Path} from "../infrastructure/path/path.model";
 export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 
     id:string = IdUtils.getTemporaryId();
+    isManual: boolean;
     path:Path;
     text:string;
     description:string;
@@ -15,6 +16,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
     deserialize(input: Object): TestModel {
         this.id = input['id'];
         this.path = Path.deserialize(input["path"]);
+        this.isManual = input['isManual'];
         this.text = input['text'];
         this.description = input['description'];
 
@@ -30,6 +32,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
             '{' +
             '"id":' + JsonUtil.stringify(this.id) + ',' +
             '"path":' + JsonUtil.serializeSerializable(this.path) + ',' +
+            '"isManual":' + this.isManual + ',' +
             '"text":' + JsonUtil.stringify(this.text) + ',' +
             '"description":' + JsonUtil.stringify(this.description) + ',' +
             '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) +
