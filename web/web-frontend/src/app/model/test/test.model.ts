@@ -7,7 +7,7 @@ import {Path} from "../infrastructure/path/path.model";
 export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 
     id:string = IdUtils.getTemporaryId();
-    isManual: boolean;
+    isManual: boolean = false;
     path:Path;
     text:string;
     description:string;
