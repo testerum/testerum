@@ -100,7 +100,7 @@ export class TestEditorComponent implements OnInit, OnDestroy {
 
     deleteAction(): void {
         this.testsService.delete(this.testModel).subscribe(restul => {
-            this.testsTreeService.initializeTestsTreeFromServer();
+            this.testsTreeService.initializeTestsTreeFromServer(null);
             this.urlService.navigateToFeatures();
         });
     }
@@ -125,7 +125,7 @@ export class TestEditorComponent implements OnInit, OnDestroy {
     private afterSaveHandler(savedModel: TestModel) {
         this.testModel = savedModel;
         this.setEditMode(false);
-        this.testsTreeService.initializeTestsTreeFromServer();
+        this.testsTreeService.initializeTestsTreeFromServer(savedModel.path);
         this.urlService.navigateToTest(savedModel.path);
     }
 

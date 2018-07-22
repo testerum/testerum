@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {ResultFile} from "../../model/result-file.model";
 import {ExecutionStatusEnum} from "../../../../../../model/test/event/enums/execution-status.enum";
@@ -6,6 +6,7 @@ import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {JsonTreeNodeEventModel} from "../../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../../generic/components/json-tree/json-tree.service";
 import {ResourcesTreeNode} from "../../../../../resources/tree/model/resources-tree-node.model";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
     selector: 'result-file',
@@ -13,40 +14,31 @@ import {ResourcesTreeNode} from "../../../../../resources/tree/model/resources-t
     styleUrls:['result-file.component.css']
 })
 
-export class ResultFileComponent implements OnInit {
+export class ResultFileComponent implements OnInit, OnDestroy {
 
     @Input() model:ResultFile;
     private isSelected:boolean = false;
 
     ExecutionStatusEnum = ExecutionStatusEnum;
 
+    selectedNodeSubscription: Subscription;
+
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private treeService:JsonTreeService) {
+                private jsonTreeService:JsonTreeService) {
+        this.selectedNodeSubscription = jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onNodeSelected(item));
     }
 
     ngOnInit(): void {
-        this.activatedRoute.children.forEach(
-            (childActivateRoute: ActivatedRoute) => {
-                childActivateRoute.params.subscribe( (params: Params) => {
-                    let selectedPath = params['path'];
+        this.isSelected = this.jsonTreeService.isSelectedNodeEqualsWithTreeNode(this.model);
+    }
 
-                    if(selectedPath == this.model.path.toString()){
-                        this.treeService.setSelectedNode(this.model);
-                    }
-                })
-            }
-        );
+    ngOnDestroy(): void {
+        if(this.selectedNodeSubscription) this.selectedNodeSubscription.unsubscribe();
+    }
 
-        this.treeService.selectedNodeEmitter.subscribe(
-            (selectedNodeEvent:JsonTreeNodeEventModel) => {
-                this.isSelected = selectedNodeEvent.treeNode == this.model;
-
-            }
-        );
-        if(this.treeService.selectedNode != null && this.treeService.selectedNode == this.model) {
-            this.isSelected = true;
-        }
+    onNodeSelected(selectedJsonTreeNodeEventModel:JsonTreeNodeEventModel) {
+        this.isSelected = selectedJsonTreeNodeEventModel.treeNode == this.model;
     }
 
     getNodeText(): string {
@@ -56,7 +48,7 @@ export class ResultFileComponent implements OnInit {
 
     showResultFile() {
         this.router.navigate(["/automated/runner/result", {path : this.model.path.toString()} ]);
-        this.treeService.setSelectedNode(this.model);
+        this.jsonTreeService.setSelectedNode(this.model);
     }
 
     getStatusTooltip(): string {

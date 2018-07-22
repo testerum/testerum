@@ -10,6 +10,10 @@ import {ResultFileComponent} from "./container/leaf/result-file.component";
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
 import {JsonTreeContainerAbstract} from "../../../../generic/components/json-tree/model/json-tree-container.abstract";
 import {JsonTreeContainer} from "../../../../generic/components/json-tree/model/json-tree-container.model";
+import {Path} from "../../../../model/infrastructure/path/path.model";
+import {JsonTreeExpandUtil} from "../../../../generic/components/json-tree/util/json-tree-expand.util";
+import {JsonTreeService} from "../../../../generic/components/json-tree/json-tree.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'results',
@@ -24,10 +28,15 @@ export class ResultsComponent implements OnInit {
         .addPair(ResultsDirectory, ResultDirectoryComponent)
         .addPair(ResultFile, ResultFileComponent);
 
-    constructor(private resultService: ResultService) {
+    constructor(private resultService: ResultService,
+                private jsonTreeService: JsonTreeService,
+                private activatedRoute: ActivatedRoute,) {
     }
 
     ngOnInit() {
+        let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path']: null;
+        let path: Path = pathAsString !=null ? Path.createInstance(pathAsString) : null;
+
         this.resultService.getRunnerReportDirInfo().subscribe(
             (results: Array<RunnerResultDirInfo>) => {
                 this.directoryTreeModel.children.length = 0;
@@ -44,6 +53,10 @@ export class ResultsComponent implements OnInit {
                 for (const resultDir of this.directoryTreeModel.children) {
                     (resultDir as ResultsDirectory).resultFiles.sort((a,b) => (a as ResultFile).name > (b as ResultFile).name ? -1 : 1)
                 }
+
+                let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(this.directoryTreeModel, path);
+                this.jsonTreeService.setSelectedNode(selectedNode);
+
             }
         )
     }

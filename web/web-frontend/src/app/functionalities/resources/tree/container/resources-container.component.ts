@@ -12,6 +12,7 @@ import {ResourcesTreeNode} from "../model/resources-tree-node.model";
 import {CopyPath} from "../../../../model/infrastructure/path/copy-path.model";
 import {JsonTreePathUtil} from "../../../../generic/components/json-tree/util/json-tree-path.util";
 import {ArrayUtil} from "../../../../utils/array.util";
+import {JsonTreePathContainer} from "../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
 
 @Component({
     moduleId: module.id,
@@ -110,7 +111,7 @@ export class ResourcesContainerComponent {
         let siblingContainers = this.model.parentContainer.getChildren();
         for (const child of siblingContainers) {
             if (child.isContainer()) {
-                siblingNames.push(child.name)
+                siblingNames.push((child as JsonTreePathContainer).name)
             }
         }
         return siblingNames;

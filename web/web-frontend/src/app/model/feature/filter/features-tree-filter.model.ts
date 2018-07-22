@@ -1,7 +1,5 @@
-import {Feature} from "../feature.model";
-import {Attachment} from "../../file/attachment.model";
-import {Path} from "../../infrastructure/path/path.model";
 import {JsonUtil} from "../../../utils/json.util";
+import {StringUtils} from "../../../utils/string-utils.util";
 
 export class FeaturesTreeFilter implements Serializable<FeaturesTreeFilter>{
     showAutomatedTests: boolean = true;
@@ -11,6 +9,22 @@ export class FeaturesTreeFilter implements Serializable<FeaturesTreeFilter>{
 
     static createEmptyFilter() {
         return new FeaturesTreeFilter();
+    }
+
+    isEmpty(): boolean {
+        if (this.showAutomatedTests != this.showManualTest) {
+            return false;
+        }
+
+        if (!StringUtils.isEmpty(this.search)) {
+            return false;
+        }
+
+        if (this.tags.length > 0) {
+            return false;
+        }
+
+        return true
     }
 
     deserialize(input: Object): FeaturesTreeFilter {
@@ -33,6 +47,4 @@ export class FeaturesTreeFilter implements Serializable<FeaturesTreeFilter>{
             ',"tags":'+JsonUtil.serializeArray(this.tags)+
             '}'
     }
-
-
 }

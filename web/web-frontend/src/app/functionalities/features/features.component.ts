@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {NavigationEnd, Params, Router} from "@angular/router";
+import {ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, ParamMap, Params, Route, Router} from "@angular/router";
 import {ModelComponentMapping} from "../../model/infrastructure/model-component-mapping.model";
 import {FeatureContainerComponent} from "./features-tree/container/feature-container.component";
 import {TestNodeComponent} from "./features-tree/container/node/test-node.component";
 import {TestTreeNodeModel} from "./features-tree/model/test-tree-node.model";
 import {FeatureTreeContainerModel} from "./features-tree/model/feature-tree-container.model";
 import {FeaturesTreeService} from "./features-tree/features-tree.service";
+import {switchMap} from "rxjs/operators";
+import {Path} from "../../model/infrastructure/path/path.model";
 
 @Component({
     moduleId: module.id,
@@ -16,21 +18,15 @@ import {FeaturesTreeService} from "./features-tree/features-tree.service";
 export class FeaturesComponent implements OnInit {
 
     isTestSelected: boolean = true;
-    modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
-        .addPair(FeatureTreeContainerModel, FeatureContainerComponent)
-        .addPair(TestTreeNodeModel, TestNodeComponent);
 
-    testsTreeService: FeaturesTreeService;
+    featuresTreeService: FeaturesTreeService;
 
-    constructor(testsTreeService: FeaturesTreeService,
+    constructor(featuresTreeService: FeaturesTreeService,
                 private router: Router) {
-
-        this.testsTreeService = testsTreeService;
+        this.featuresTreeService = featuresTreeService;
     }
 
     ngOnInit() {
-        this.testsTreeService.initializeTestsTreeFromServer();
-
 
         this.router.events
             .filter(event => event instanceof NavigationEnd)

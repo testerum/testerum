@@ -48,6 +48,8 @@ export class ResourcesTreeService {
             this.getRdbmsResourcesRoot()
         );
         this.sort();
+
+        this.fixParentFieldForEachNode(this.root);
     }
 
     getTreeRoot(): JsonTreeModel {
@@ -197,5 +199,23 @@ export class ResourcesTreeService {
 
         let newParent:ResourcesTreeContainer = JsonTreePathUtil.getNode(this.root, destinationPath) as ResourcesTreeContainer;
         newParent.sort();
+    }
+
+    private fixParentFieldForEachNode(tree: JsonTreeModel) {
+        for (const child of tree.getChildren()) {
+            (child as ResourcesTreeNode).parentContainer = tree;
+            if (child.isContainer()) {
+                this.fixParentFieldForChild(child as ResourcesTreeContainer)
+            }
+        }
+    }
+
+    private fixParentFieldForChild(parent: ResourcesTreeContainer) {
+        for (const child of parent.getChildren()) {
+            child.parentContainer = parent;
+            if (child.isContainer()) {
+                this.fixParentFieldForChild((child as ResourcesTreeContainer))
+            }
+        }
     }
 }

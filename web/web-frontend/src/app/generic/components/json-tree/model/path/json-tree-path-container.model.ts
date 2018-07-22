@@ -18,7 +18,7 @@ export abstract class JsonTreePathContainer extends JsonTreePathNode implements 
         super(parentContainer, path);
     }
 
-    abstract getChildren(): Array<JsonTreePathNode>;
+    abstract getChildren(): Array<JsonTreeNode>;
 
     getParent(): JsonTreePathContainer {
         return this.parentContainer;

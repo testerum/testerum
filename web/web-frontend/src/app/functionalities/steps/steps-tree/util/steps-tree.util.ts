@@ -37,6 +37,7 @@ export default class StepsTreeUtil {
 
         let treeModel: JsonTreeModel = new JsonTreeModel();
         treeModel.children = [rootPackage];
+        rootPackage.parentContainer = treeModel;
 
         return treeModel;
     }

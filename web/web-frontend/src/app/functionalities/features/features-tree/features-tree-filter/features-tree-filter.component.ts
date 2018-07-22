@@ -5,6 +5,8 @@ import {ArrayUtil} from "../../../../utils/array.util";
 import {JsonTreeContainer} from "../../../../generic/components/json-tree/model/json-tree-container.model";
 import {FeaturesTreeService} from "../features-tree.service";
 import {FeaturesTreeFilter} from "../../../../model/feature/filter/features-tree-filter.model";
+import {Path} from "../../../../model/infrastructure/path/path.model";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'features-tree-filter',
@@ -37,7 +39,8 @@ export class FeaturesTreeFilterComponent implements OnInit {
     isSearchButtonActive = false;
     isTagsButtonActive = false;
 
-    constructor(private featureTreeService: FeaturesTreeService) {
+    constructor(private activatedRoute: ActivatedRoute,
+                private featureTreeService: FeaturesTreeService) {
         this.testTypesFilters = [
             {title: 'Automated Tests', value: this.automatedButtonValue, icon: 'fa-cog'},
             {title: 'Manual Tests', value: this.manualButtonValue, icon: 'fa-hand-paper-o'},
@@ -121,6 +124,14 @@ export class FeaturesTreeFilterComponent implements OnInit {
             featuresTreeFilter.tags = this.selectedTags;
         }
 
-        this.featureTreeService.refreshTestTreeFromServer(featuresTreeFilter);
+        this.featureTreeService.treeFilter = featuresTreeFilter;
+
+        let path = this.getCurrentPathFromUrl();
+        this.featureTreeService.initializeTestsTreeFromServer(path, 100);
+    }
+
+    private getCurrentPathFromUrl(): Path {
+        let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path'] : null;
+        return pathAsString != null ? Path.createInstance(pathAsString) : null;
     }
 }

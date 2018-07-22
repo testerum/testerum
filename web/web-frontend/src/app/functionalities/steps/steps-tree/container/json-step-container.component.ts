@@ -14,6 +14,7 @@ import {ArrayUtil} from "../../../../utils/array.util";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeNodeState} from "../../../../generic/components/json-tree/model/json-tree-node-state.model";
 import {UrlService} from "../../../../service/url.service";
+import {JsonTreePathContainer} from "../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
 
 @Component({
     moduleId: module.id,
@@ -107,7 +108,7 @@ export class JsonStepContainerComponent {
         let siblingContainers = this.model.parentContainer.getChildren();
         for (const child of siblingContainers) {
             if (child.isContainer()) {
-                siblingNames.push(child.name)
+                siblingNames.push((child as JsonTreePathContainer).name)
             }
         }
         return siblingNames;

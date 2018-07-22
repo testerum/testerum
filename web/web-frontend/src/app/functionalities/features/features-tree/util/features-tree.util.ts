@@ -23,6 +23,7 @@ export default class FeaturesTreeUtil {
 
         let treeModel: JsonTreeModel = new JsonTreeModel();
         treeModel.children = [rootPackage];
+        rootPackage.parentContainer = treeModel;
 
         rootPackage.sort();
 

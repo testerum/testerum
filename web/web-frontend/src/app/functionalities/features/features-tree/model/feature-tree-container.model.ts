@@ -6,7 +6,7 @@ import {TestTreeNodeModel} from "./test-tree-node.model";
 import {Comparable} from "../../../../model/infrastructure/comparable.model";
 import {JsonTreeContainerOptions} from "../../../../generic/components/json-tree/model/behavior/JsonTreeContainerOptions";
 
-export class  FeatureTreeContainerModel extends TestTreeNodeModel implements JsonTreeContainer, Comparable<TestTreeNodeModel> {
+export class FeatureTreeContainerModel extends TestTreeNodeModel implements JsonTreeContainer, Comparable<TestTreeNodeModel> {
 
     children: Array<TestTreeNodeModel> = [];
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();

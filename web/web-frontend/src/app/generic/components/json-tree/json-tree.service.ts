@@ -8,23 +8,42 @@ import {Path} from "../../../model/infrastructure/path/path.model";
 import {BsModalService} from "ngx-bootstrap";
 import {JsonTreeContainer} from "./model/json-tree-container.model";
 import {FeatureTreeContainerModel} from "../../../functionalities/features/features-tree/model/feature-tree-container.model";
+import {TreeNodeModel} from "../../../model/infrastructure/tree-node.model";
+import {JsonTreeModel} from "./model/json-tree.model";
 @Injectable()
 export class JsonTreeService {
 
-    selectedNode: JsonTreeNode;
     selectedNodeEmitter: EventEmitter<JsonTreeNodeEventModel> = new EventEmitter<JsonTreeNodeEventModel>();
     expendedNodeEmitter: EventEmitter<JsonTreeNodeEventModel> = new EventEmitter<JsonTreeNodeEventModel>();
 
     constructor(private modalService: BsModalService) {
-        this.selectedNodeEmitter.subscribe((item: JsonTreeNodeEventModel) => this.selectedNode = item.treeNode);
     }
 
-    setSelectedNode(selectedStep: JsonTreeNode) {
-        this.selectedNodeEmitter.emit(
-            new JsonTreeNodeEventModel(selectedStep)
-        );
+    setSelectedNode(selectedNode: JsonTreeNode) {
+        if(selectedNode == null) return;
 
-        this.selectedNode = selectedStep;
+        let tree = this.getTreeRootFromOfNode(selectedNode);
+        tree.selectedNode = selectedNode;
+
+        this.selectedNodeEmitter.emit(
+            new JsonTreeNodeEventModel(selectedNode)
+        );
+    }
+
+    isSelectedNodeEqualsWithTreeNode(node: JsonTreeNode): boolean {
+        let tree = this.getTreeRootFromOfNode(node);
+        return tree.selectedNode == node;
+    }
+
+    private getTreeRootFromOfNode(node: JsonTreeNode): JsonTreeModel {
+        let nodeParent = node;
+        while (nodeParent.getParent() != null) {
+            nodeParent = nodeParent.getParent();
+            if(nodeParent != null && nodeParent instanceof JsonTreeModel) {
+                return nodeParent;
+            }
+        }
+        throw Error("We expect to navigate from node to root tree, see what is the root cause of this bug")
     }
 
     triggerExpendedNodeEvent(jsonTreeContainer:JsonTreeContainer) {

@@ -1,13 +1,13 @@
 
 import {JsonTreeNode} from "./json-tree-node.model";
-import {JsonTreeContainerAbstract} from "./json-tree-container.abstract";
-import {T} from "@angular/core/src/render3";
 import {ObjectUtil} from "../../../../utils/object.util";
 import {JsonTreeContainer} from "./json-tree-container.model";
+import {JsonTreePathContainer} from "./path/json-tree-path-container.model";
 
-export class JsonTreeModel extends JsonTreeContainerAbstract {
+export class JsonTreeModel extends JsonTreePathContainer {
 
     children:Array<JsonTreeNode> = [];
+    selectedNode: JsonTreeNode;
 
     constructor() {
         super(null);

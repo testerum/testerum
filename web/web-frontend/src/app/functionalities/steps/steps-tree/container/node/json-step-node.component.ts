@@ -1,10 +1,11 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {NavigationEnd, Params, Router} from "@angular/router";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {StepTreeNodeModel} from "../../model/step-tree-node.model";
 import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
 import {UrlService} from "../../../../../service/url.service";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
     moduleId: module.id,
@@ -12,33 +13,35 @@ import {UrlService} from "../../../../../service/url.service";
     templateUrl: 'json-step-node.component.html',
     styleUrls:['json-step-node.component.css']
 })
-export class JsonStepNodeComponent implements OnInit {
+export class JsonStepNodeComponent implements OnInit, OnDestroy {
 
     @Input() model:StepTreeNodeModel;
     private isSelected:boolean = false;
 
+    selectedNodeSubscription: Subscription;
+
     constructor(private router: Router,
                 private urlService: UrlService,
-                private treeService:JsonTreeService) {
-        treeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onStepSelected(item));
+                private jsonTreeService:JsonTreeService) {
+        this.selectedNodeSubscription = jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onNodeSelected(item));
     }
 
     ngOnInit(): void {
-        this.treeService.selectedNodeEmitter.subscribe(
-            (selectedNodeEvent:JsonTreeNodeEventModel) => {
-                this.isSelected = (selectedNodeEvent.treeNode as StepTreeNodeModel) == this.model;
-            }
-        );
-        if(this.treeService.selectedNode != null && this.treeService.selectedNode == this.model) {
-            this.isSelected = true;
-        }
+        this.isSelected = this.jsonTreeService.isSelectedNodeEqualsWithTreeNode(this.model);
     }
 
-    onStepSelected(item:JsonTreeNodeEventModel) {
-        if(item.treeNode == this.model) {
+    ngOnDestroy(): void {
+        if(this.selectedNodeSubscription) this.selectedNodeSubscription.unsubscribe();
+    }
+
+    onNodeSelected(selectedJsonTreeNodeEventModel:JsonTreeNodeEventModel) {
+        this.isSelected = selectedJsonTreeNodeEventModel.treeNode == this.model;
+
+        if(this.isSelected) {
             this.showViewer();
         }
     }
+
     private showViewer() {
         if (this.model.stepDef instanceof ComposedStepDef) {
             this.urlService.navigateToComposedStep(this.model.path)

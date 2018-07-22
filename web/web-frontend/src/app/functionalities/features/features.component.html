@@ -4,11 +4,9 @@
         <split-area [size]="50">
             <split direction="horizontal">
                 <split-area [size]="30">
-                    <features-tree-filter [treeModel]="testsTreeService.testsJsonTreeModel"></features-tree-filter>
+                    <features-tree-filter [treeModel]="featuresTreeService.treeModel"></features-tree-filter>
 
-                    <features-tree [treeModel]="testsTreeService.testsJsonTreeModel"
-                                   [modelComponentMapping]="modelComponentMapping">
-                    </features-tree>
+                    <features-tree></features-tree>
 
                 </split-area>
                 <split-area [size]="70" [visible]="isTestSelected">

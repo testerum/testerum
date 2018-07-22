@@ -11,6 +11,7 @@ import {ManualTestsTreeService} from "../manual-tests-tree.service";
 import {ManualTestTreeNodeModel} from "../model/manual-test-tree-node.model";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {ManualTestsService} from "../../service/manual-tests.service";
+import {JsonTreePathContainer} from "../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
 
 @Component({
     moduleId: module.id,
@@ -104,7 +105,7 @@ export class ManualTestTreeContainerComponent {
         let siblingContainers = this.model.parentContainer.getChildren();
         for (const child of siblingContainers) {
             if (child.isContainer()) {
-                siblingNames.push(child.name)
+                siblingNames.push((child as JsonTreePathContainer).name)
             }
         }
         return siblingNames;

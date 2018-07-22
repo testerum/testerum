@@ -37,18 +37,20 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
                 private featuresTreeService: FeaturesTreeService,
                 private testsService: TestsService,
                 private testsRunnerService: TestsRunnerService) {
+        this.selectedNodeSubscription = jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onFeatureSelected(item));
     }
 
     ngOnInit(): void {
-        this.selectedNodeSubscription = this.jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onStepSelected(item));
-        if(this.jsonTreeService.selectedNode != null && this.jsonTreeService.selectedNode == this.model) {
-            this.isSelected = true;
-        }
+        this.isSelected = this.jsonTreeService.isSelectedNodeEqualsWithTreeNode(this.model);
     }
 
     ngOnDestroy(): void {
         if(this.selectedNodeSubscription) this.selectedNodeSubscription.unsubscribe();
         if(this.getTestsUnderPathSubscription) this.getTestsUnderPathSubscription.unsubscribe();
+    }
+
+    onFeatureSelected(selectedJsonTreeNodeEventModel:JsonTreeNodeEventModel) : void {
+        this.isSelected = selectedJsonTreeNodeEventModel.treeNode == this.model;
     }
 
     allowDrop():any {
@@ -66,14 +68,6 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
                 this.testsRunnerService.runTests(tests);
             }
         );
-    }
-
-    onStepSelected(selectedJsonTreeNodeEventModel:JsonTreeNodeEventModel) : void {
-        if(selectedJsonTreeNodeEventModel.treeNode == this.model) {
-            this.isSelected = true;
-        } else {
-            this.isSelected = false;
-        }
     }
 
     setSelected() {
@@ -98,7 +92,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
                 ).subscribe(
                     it => {
                         this.testsService.showTestsScreen();
-                        this.featuresTreeService.initializeTestsTreeFromServer();
+                        this.featuresTreeService.initializeTestsTreeFromServer(null);
                     }
                 )
             }

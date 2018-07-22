@@ -10,45 +10,46 @@ import FeaturesTreeUtil from "./util/features-tree.util";
 import {FeatureService} from "../../../service/feature.service";
 import {RootServerTreeNode} from "../../../model/tree/root-server-tree-node.model";
 import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-filter.model";
+import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
+import {JsonTreeContainer} from "../../../generic/components/json-tree/model/json-tree-container.model";
+import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
 
 @Injectable()
 export class FeaturesTreeService {
 
-    testsJsonTreeModel: JsonTreeModel;
+    treeModel: JsonTreeModel;
+    treeFilter: FeaturesTreeFilter = FeaturesTreeFilter.createEmptyFilter();
 
-    constructor(private testsService: TestsService,
+    constructor(private jsonTreeService: JsonTreeService,
+                private testsService: TestsService,
                 private featureService: FeatureService){
     }
 
-    initializeTestsTreeFromServer() {
-        this.featureService.getFeatureTree(FeaturesTreeFilter.createEmptyFilter()).subscribe(
+    initializeTestsTreeFromServer(selectedPath: Path, expandToLevel: number = 2) {
+        this.featureService.getFeatureTree(this.treeFilter).subscribe(
             (rootNode: RootServerTreeNode) => {
-                this.testsJsonTreeModel =  FeaturesTreeUtil.mapServerTreeToFeaturesTreeModel(rootNode);
-                this.sort();
-            }
-        )
-    }
+                let newJsonTree = FeaturesTreeUtil.mapServerTreeToFeaturesTreeModel(rootNode);
 
-    refreshTestTreeFromServer(featureTreeFilter: FeaturesTreeFilter) {
-        this.featureService.getFeatureTree(featureTreeFilter).subscribe(
-            (rootNode: RootServerTreeNode) => {
-                let newFeaturesTree = FeaturesTreeUtil.mapServerTreeToFeaturesTreeModel(rootNode);
-                this.testsJsonTreeModel.children = newFeaturesTree.getChildren();
+                JsonTreeExpandUtil.expandTreeToLevel(newJsonTree, expandToLevel);
+                let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(newJsonTree, selectedPath);
+                this.sort(newJsonTree);
 
-                this.sort();
+                this.treeModel = newJsonTree;
+
+                this.jsonTreeService.setSelectedNode(selectedNode);
             }
         )
     }
 
     copy(pathToCopy: Path, destinationPath: Path) {
-        JsonTreePathUtil.copy(this.testsJsonTreeModel, pathToCopy, destinationPath);
+        JsonTreePathUtil.copy(this.treeModel, pathToCopy, destinationPath);
 
-        let newParent:FeatureTreeContainerModel = JsonTreePathUtil.getNode(this.testsJsonTreeModel, destinationPath) as FeatureTreeContainerModel;
+        let newParent:FeatureTreeContainerModel = JsonTreePathUtil.getNode(this.treeModel, destinationPath) as FeatureTreeContainerModel;
         newParent.sort();
     }
 
-    sort(): void {
-        this.sortChildren(this.testsJsonTreeModel.children);
+    private sort(testsJsonTreeModel: JsonTreeModel): void {
+        this.sortChildren(testsJsonTreeModel.children);
     }
 
     private sortChildren(children: Array<JsonTreeNode>) {
