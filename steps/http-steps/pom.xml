@@ -44,7 +44,13 @@
             <artifactId>step-transformer-utils</artifactId>
         </dependency>
 
+
         <!--==================== External Dependencies ====================-->
+
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+        </dependency>
 
         <!-- Spring -->
         <dependency>

@@ -19,6 +19,7 @@ class FileTestDefSerializerTest {
         testRunner.execute(
                 original = FileTestDef(
                         name = "The name of the test",
+                        isManual = false,
                         description = """ |This is a wonderful test.
                                           |It tests many cools things.
                                           |Just read it and you'll see what I mean.""".trimMargin(),
@@ -82,6 +83,7 @@ class FileTestDefSerializerTest {
                 FileTestDefSerializer.serializeToString(
                         FileTestDef(
                                 name = "The name of the test",
+                                isManual = false,
                                 description = """ |This is a wonderful test.
                                           |It tests many cools things.
                                           |Just read it and you'll see what I mean.""".trimMargin(),
@@ -108,6 +110,20 @@ class FileTestDefSerializerTest {
                                 )
                         ),
                         2
+                )
+        )
+    }
+
+    @Test
+    fun `manual test`() {
+        assertEquals(
+                """|manual-test-def: Some test
+                   |""".trimMargin(),
+                FileTestDefSerializer.serializeToString(
+                        FileTestDef(
+                                name = "Some test",
+                                isManual = true
+                        )
                 )
         )
     }

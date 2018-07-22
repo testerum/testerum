@@ -34,10 +34,10 @@
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
         <!--Kotlin settings-->
-        <kotlin.version>1.2.50</kotlin.version>
+        <kotlin.version>1.2.51</kotlin.version>
         <kotlin.apiVersion>1.2</kotlin.apiVersion>
         <kotlin.languageVersion>1.2</kotlin.languageVersion>
-        <kotlin.jvmTarget>1.8</kotlin.jvmTarget>
+        <kotlin.jvmTarget>${maven.compiler.target}</kotlin.jvmTarget>
 
         <!--========== dependencies versions ==========-->
         <slf4j.version>1.7.12</slf4j.version>
@@ -237,6 +237,12 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>4.5.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Wiremock -->
@@ -583,7 +589,17 @@
             <dependency>
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-server</artifactId>
-                <version>3.7.1</version>
+                <version>3.13.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>javax.servlet-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- jansi -->
@@ -780,36 +796,6 @@
     <build>
         <pluginManagement>
             <plugins>
-
-                <!-- tattletale: search for duplicate classes across jars -->
-                <plugin>
-                    <groupId>org.jboss.tattletale</groupId>
-                    <artifactId>tattletale-maven</artifactId>
-                    <version>1.1.2.Final</version>
-                    <executions>
-                        <execution>
-                            <id>tattle-tale</id>
-                            <!-- needs to run after WAR package has been built -->
-                            <phase>pre-integration-test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <source>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</source>
-                        <destination>${project.reporting.outputDirectory}/tattletale</destination>
-                        <reports>
-                            <report>jar</report>
-                            <report>multiplejars</report>
-                        </reports>
-                        <profiles>
-                            <profile>java8</profile>
-                        </profiles>
-                        <failOnWarn>true</failOnWarn>
-                    </configuration>
-                </plugin>
-
                 <!-- jgit buildnumber plugin to get tag name -->
                 <plugin>
                     <groupId>ru.concerteza.buildnumber</groupId>
@@ -852,6 +838,34 @@
                             <exclude>ngapp/**</exclude>
                         </excludes>
                     </configuration>
+                </plugin>
+
+                <!-- maven-clean-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
+                <!-- maven-install-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+
+                <!-- maven-site-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.7.1</version>
+                </plugin>
+
+                <!-- maven-deploy-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
                 </plugin>
 
                 <!-- maven-war-plugin -->
@@ -939,7 +953,16 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>1.0</version>
+                    <version>1.4.1</version>
+
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>extra-enforcer-rules</artifactId>
+                            <version>1.0-beta-9</version>
+                        </dependency>
+                    </dependencies>
+
                     <executions>
                         <execution>
                             <id>enforce-banned-dependencies</id>
@@ -958,12 +981,38 @@
 
                                     <bannedDependencies>
                                         <excludes>
-                                            <exclude>commons-logging</exclude><!-- using slf4j instead -->
-                                            <exclude>com.google.collections</exclude><!-- using guava instead -->
-                                            <!--<exclude>org.jboss.logging</exclude>-->
+                                            <exclude>commons-logging</exclude>        <!-- using slf4j instead -->
+                                            <exclude>org.jboss.logging</exclude>      <!-- using slf4j instead -->
+                                            <!--<exclude>com.google.collections</exclude> &lt;!&ndash; using guava instead &ndash;&gt;-->
                                         </excludes>
                                     </bannedDependencies>
+
+                                    <enforceBytecodeVersion>
+                                        <maxJdkVersion>${maven.compiler.target}</maxJdkVersion>
+                                    </enforceBytecodeVersion>
+
+                                    <banDuplicateClasses>
+                                        <findAllDuplicates>true</findAllDuplicates>
+                                        <ignoreWhenIdentical>false</ignoreWhenIdentical>
+                                    </banDuplicateClasses>
+
+                                    <requireSameVersions>
+                                        <dependencies>
+                                            <dependency>org.slf4j:*</dependency>
+                                        </dependencies>
+                                    </requireSameVersions>
+                                    <requireSameVersions>
+                                        <dependencies>
+                                            <dependency>org.springframework:*</dependency>
+                                        </dependencies>
+                                    </requireSameVersions>
+                                    <requireSameVersions>
+                                        <dependencies>
+                                            <dependency>com.fasterxml.jackson.core:*</dependency>
+                                        </dependencies>
+                                    </requireSameVersions>
                                 </rules>
+
                                 <fail>true</fail>
                             </configuration>
                         </execution>
@@ -1138,10 +1187,46 @@
         </pluginManagement>
 
         <plugins>
+            <!-- maven-clean-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>delete-package-dirs</id>
+
+                        <phase>clean</phase>
+
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${basedir}/package/basic_steps</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${basedir}/package/runner</directory>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
             <!-- jgit buildnumber plugin to get tag name -->
             <plugin>
                 <groupId>ru.concerteza.buildnumber</groupId>
                 <artifactId>maven-jgit-buildnumber-plugin</artifactId>
+            </plugin>
+
+            <!-- Enforcer -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

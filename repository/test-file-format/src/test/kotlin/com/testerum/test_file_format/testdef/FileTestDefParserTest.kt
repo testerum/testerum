@@ -45,6 +45,7 @@ class FileTestDefParserTest {
                 equalTo(
                         FileTestDef(
                                 name = "Successful login",
+                                isManual = false,
                                 description =  """ |A composed step that allows us to bypass the login screen.
                                                    |Will be useful from many tests.""".trimMargin(),
                                 tags = listOf("one", "two", "three"),
@@ -135,7 +136,25 @@ class FileTestDefParserTest {
                 equalTo(
                         FileTestDef(
                                 name = "Empty test",
+                                isManual = false,
                                 description =  "some description",
+                                steps = emptyList()
+                        )
+                )
+        )
+    }
+
+    @Test
+    fun `manual test`() {
+        assertThat(
+                parser.parse(
+                        """ |manual-test-def: A test
+                        """.trimMargin()
+                ),
+                equalTo(
+                        FileTestDef(
+                                name = "A test",
+                                isManual = true,
                                 steps = emptyList()
                         )
                 )

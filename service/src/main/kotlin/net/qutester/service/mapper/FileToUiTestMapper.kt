@@ -9,10 +9,11 @@ open class FileToUiTestMapper(private val fileToUiStepMapper: FileToUiStepMapper
     fun mapToUiModel(fileTestDef: FileTestDef, testFile: RepositoryFile): TestModel {
 
         return TestModel(
-                testFile.knownPath.asPath(),
-                fileTestDef.name,
-                fileTestDef.description,
-                fileToUiStepMapper.mapStepsCalls(
+                path = testFile.knownPath.asPath(),
+                isManual = fileTestDef.isManual,
+                text = fileTestDef.name,
+                description = fileTestDef.description,
+                stepCalls = fileToUiStepMapper.mapStepsCalls(
                         fileTestDef.steps,
                         testFile.knownPath.toString()
                 )

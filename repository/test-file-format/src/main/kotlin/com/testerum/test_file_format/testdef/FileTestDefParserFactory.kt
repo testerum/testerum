@@ -2,13 +2,13 @@ package com.testerum.test_file_format.testdef
 
 import com.testerum.common.parsing.ParserFactory
 import com.testerum.common.parsing.util.CommonPatterns.NOT_NEWLINE
-import com.testerum.common.parsing.util.CommonScanners.optionalWhitespace
 import com.testerum.common.parsing.util.CommonScanners.optionalWhitespaceOrNewLines
 import com.testerum.test_file_format.common.description.FileDescriptionParserFactory.description
 import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.FileStepCallParserFactory.stepCall
 import com.testerum.test_file_format.common.tags.FileTagsParserFactory.tags
 import org.jparsec.Parser
+import org.jparsec.Parsers.or
 import org.jparsec.Parsers.sequence
 import org.jparsec.Scanners.string
 import java.util.*
@@ -24,14 +24,17 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
                 testDescription(),
                 testTags(),
                 testStepCalls()
-        ) { _, testName, description, tags, steps -> FileTestDef(testName, description, tags, steps) }
+        ) { testType, testName, description, tags, steps -> FileTestDef(testName, testType == TestType.MANUAL, description, tags, steps) }
     }
 
-    private fun testDefKeyword(): Parser<Void> {
+    private fun testDefKeyword(): Parser<TestType> {
         return sequence(
-                string("test-def:"),
+                or(
+                        string("test-def:").source(),
+                        string("manual-test-def:").source()
+                ),
                 string(" ")
-        )
+        ) { header, _ -> if (header == "test-def:") TestType.AUTOMATIC else TestType.MANUAL }
     }
 
     private fun testName() : Parser<String> {
@@ -63,6 +66,12 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
                 stepCall(),
                 optionalWhitespaceOrNewLines()
         ) { _, step, _ -> step }.many()
+    }
+
+    private enum class TestType {
+        AUTOMATIC,
+        MANUAL,
+        ;
     }
 
 }

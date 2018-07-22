@@ -9,10 +9,11 @@ open class UiToFileTestMapper(private val stepDefMapper: UiToFileStepDefMapper) 
         val fileDescription: String? = uiTest.description
 
         return FileTestDef(
-                uiTest.text,
-                fileDescription,
-                emptyList(),
-                stepDefMapper.mapStepCalls(uiTest.stepCalls)
+                name = uiTest.text,
+                isManual =  uiTest.isManual,
+                description = fileDescription,
+                tags = emptyList(),
+                steps = stepDefMapper.mapStepCalls(uiTest.stepCalls)
         )
     }
 
