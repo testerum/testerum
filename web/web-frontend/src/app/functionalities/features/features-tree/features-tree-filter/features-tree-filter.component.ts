@@ -127,8 +127,12 @@ export class FeaturesTreeFilterComponent implements OnInit {
 
     }
 
-    onExpandEvent() {
+    onExpandSelectedNodeEvent() {
         let nodeToExpand = this.treeModel.selectedNode ? this.treeModel.selectedNode : this.treeModel;
         JsonTreeExpandUtil.expandNode(nodeToExpand);
+    }
+
+    onExpandToLevelEvent(level: number) {
+        JsonTreeExpandUtil.expandTreeToLevel(this.treeModel, level+1);
     }
 }

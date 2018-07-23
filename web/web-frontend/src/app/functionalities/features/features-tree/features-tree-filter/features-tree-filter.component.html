@@ -37,19 +37,42 @@
             </div>
         </div>
 
-        <div class="btn-group" role="group">
-            <div pTooltip="Expand selected node"
-                 tooltipPosition="bottom"
-                 (click)="onExpandEvent()"
-                 class="btn btn-default btn-xs btn-group">
-                <i class="fa fa-expand" aria-hidden="true"></i>
+        <div>
+            <div class="btn-group" role="group">
+                <div pTooltip="Expand selected node"
+                     tooltipPosition="bottom"
+                     (click)="onExpandSelectedNodeEvent()"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-expand" aria-hidden="true"></i>
+                </div>
+
+                <div pTooltip="Collapse selected node"
+                     tooltipPosition="bottom"
+                     (click)="onCollapseEvent()"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-compress" aria-hidden="true"></i>
+                </div>
             </div>
 
-            <div pTooltip="Collapse selected node"
-                 tooltipPosition="bottom"
-                 (click)="onCollapseEvent()"
-                 class="btn btn-default btn-xs btn-group">
-                <i class="fa fa-compress" aria-hidden="true"></i>
+            <div class="btn-group" role="group">
+                <div pTooltip="Expand to level 1"
+                     tooltipPosition="bottom"
+                     (click)="onExpandToLevelEvent(1)"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-expand" aria-hidden="true">1</i>
+                </div>
+                <div pTooltip="Expand to level 2"
+                     tooltipPosition="bottom"
+                     (click)="onExpandToLevelEvent(2)"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-expand" aria-hidden="true">2</i>
+                </div>
+                <div pTooltip="Expand to level 3"
+                     tooltipPosition="bottom"
+                     (click)="onExpandToLevelEvent(3)"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-expand" aria-hidden="true">3</i>
+                </div>
             </div>
         </div>
     </div>
