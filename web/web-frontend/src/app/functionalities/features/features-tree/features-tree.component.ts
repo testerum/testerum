@@ -36,51 +36,9 @@ export class FeaturesTreeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path']: null;
-        let path: Path = pathAsString !=null ? Path.createInstance(pathAsString) : null;
+        let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path'] : null;
+        let path: Path = pathAsString != null ? Path.createInstance(pathAsString) : null;
 
         this.featuresTreeService.initializeTestsTreeFromServer(path);
-
-        this.activatedRoute.children.forEach(
-            (childActivateRoute: ActivatedRoute) => {
-                childActivateRoute.params.subscribe( (params: Params) => {
-                        this.handleSelectedRouteParams(params)
-                    }
-                )
-            }
-        );
-
-        this.router.events
-            .filter(
-                event => event instanceof NavigationEnd
-            )
-            .map(route => {
-                let leafRoute: any = this.router.routerState.snapshot.root;
-                while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
-
-                return leafRoute.params
-            })
-            .subscribe((params: Params) => {
-                this.handleSelectedRouteParams(params);
-            });
-    }
-
-    private handleSelectedRouteParams(params: Params) {
-        let selectedPathAsString = params['path'];
-
-        if (!selectedPathAsString) { return; }
-        let selectedPath = Path.createInstance(selectedPathAsString);
-
-        if(!this.featuresTreeService.treeModel) { return; }
-
-        let allTreeNodes: Array<TestTreeNodeModel> = this.featuresTreeService.treeModel.getAllTreeNodes<TestTreeNodeModel>();
-
-        for (const treeNode of allTreeNodes) {
-            if (treeNode.path && treeNode.path.equals(selectedPath)) {
-                this.treeService.setSelectedNode(treeNode);
-                JsonTreeExpandUtil.expandTreeToNode(treeNode);
-                break;
-            }
-        }
     }
 }

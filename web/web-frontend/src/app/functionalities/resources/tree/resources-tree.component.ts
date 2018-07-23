@@ -5,6 +5,8 @@ import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {ResourcesTreeNode} from "./model/resources-tree-node.model";
+import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
+import {ResourcesTreeService} from "./resources-tree.service";
 
 @Component({
     selector: 'resources-tree',
@@ -15,25 +17,22 @@ import {ResourcesTreeNode} from "./model/resources-tree-node.model";
     `
 })
 
-export class ResourcesTreeComponent implements OnChanges {
+export class ResourcesTreeComponent implements OnInit {
 
     @Input() treeModel:JsonTreeModel ;
     @Input() modelComponentMapping: ModelComponentMapping;
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private treeService:JsonTreeService) {
+                private resourcesTreeService: ResourcesTreeService,
+                private jsonTreeService: JsonTreeService) {
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        this.activatedRoute.children.forEach(
-            (childActivateRoute: ActivatedRoute) => {
-                childActivateRoute.params.subscribe( (params: Params) => {
-                        this.handleSelectedRouteParams(params)
-                    }
-                )
-            }
-        );
+    ngOnInit(): void {
+        let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path']: null;
+        let path: Path = pathAsString !=null ? Path.createInstance(pathAsString) : null;
+
+        this.resourcesTreeService.initializeResourceTreeFromServer(path);
 
         this.router.events
             .filter(
@@ -58,13 +57,7 @@ export class ResourcesTreeComponent implements OnChanges {
 
         if(!this.treeModel) { return; }
 
-        let allTreeNodes: Array<ResourcesTreeNode> = this.treeModel.getAllTreeNodes<ResourcesTreeNode>();
-
-        for (const treeNode of allTreeNodes) {
-            if (treeNode.path && treeNode.path.equals(selectedPath)) {
-                this.treeService.setSelectedNode(treeNode);
-                break;
-            }
-        }
+        let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(this.treeModel, selectedPath);
+        this.jsonTreeService.setSelectedNode(selectedNode);
     }
 }

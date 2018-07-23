@@ -126,7 +126,7 @@ export class ResourcesContainerComponent {
                 ).subscribe(
                     it => {
                         this.resourceService.showResourcesScreen();
-                        this.resourcesTreeService.initializeRoot();
+                        this.resourcesTreeService.initializeResourceTreeFromServer();
                     }
                 )
             }

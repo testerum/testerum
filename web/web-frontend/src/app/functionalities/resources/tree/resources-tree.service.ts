@@ -18,11 +18,14 @@ import {JsonTreePathUtil} from "../../../generic/components/json-tree/util/json-
 import {HttpMockStubResourceType} from "./model/type/http-mock-stub.resource-type.model";
 import {HttpMockServerResourceType} from "./model/type/http-mock-server.resource-type.model";
 import {HttpMockResourceType} from "./model/type/http-mock.resource-type.model";
+import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
+import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
 
 @Injectable()
 export class ResourcesTreeService {
 
     private root: JsonTreeModel = new JsonTreeModel();
+    private currentSelectedPath: Path;
 
     private resourceContainers: Array<ResourcesTreeContainer> = [
         new ResourcesTreeContainer(null, HttpRequestResourceType.getInstanceForRoot()),
@@ -35,11 +38,12 @@ export class ResourcesTreeService {
         new ResourcesTreeContainer(null, RdbmsVerifyResourceType.getInstanceForRoot())
     ];
 
-    constructor(private resourceService: ResourceService) {
-        this.initializeRoot();
+    constructor(private resourceService: ResourceService,
+                private jsonTreeService:JsonTreeService) {
     }
 
-    initializeRoot() {
+    initializeResourceTreeFromServer(selectedPath: Path) {
+        this.currentSelectedPath = selectedPath;
         this.root.children.length = 0;
 
         this.root.children.push(
@@ -47,9 +51,6 @@ export class ResourcesTreeService {
             this.getJsonVerifyResourcesRoot(),
             this.getRdbmsResourcesRoot()
         );
-        this.sort();
-
-        this.fixParentFieldForEachNode(this.root);
     }
 
     getTreeRoot(): JsonTreeModel {
@@ -114,10 +115,19 @@ export class ResourcesTreeService {
             paths => paths.forEach(
                 path => {
                     this.addPathToRoot(container, path, childrenResourceType);
-                    this.sort()
+                    this.fixTreeAfterNodesLoad()
                 }
             )
         )
+    }
+
+    private fixTreeAfterNodesLoad() {
+        this.sort();
+
+        this.fixParentFieldForEachNode(this.root);
+
+        let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(this.root, this.currentSelectedPath);
+        this.jsonTreeService.setSelectedNode(selectedNode);
     }
 
     private getResourceContainerByResourceType(resourceType: ResourceType): ResourcesTreeContainer {
