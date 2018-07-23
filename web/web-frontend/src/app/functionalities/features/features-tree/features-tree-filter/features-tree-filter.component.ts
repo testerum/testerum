@@ -7,6 +7,7 @@ import {FeaturesTreeService} from "../features-tree.service";
 import {FeaturesTreeFilter} from "../../../../model/feature/filter/features-tree-filter.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {ActivatedRoute} from "@angular/router";
+import {JsonTreeExpandUtil} from "../../../../generic/components/json-tree/util/json-tree-expand.util";
 
 @Component({
     selector: 'features-tree-filter',
@@ -18,9 +19,6 @@ export class FeaturesTreeFilterComponent implements OnInit {
 
     @Input() treeModel:JsonTreeModel;
 
-    testTypesFilters: any[];
-    selectedTestTypesFilters: any[] = [];
-
     @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allTheTags: Array<string> = [];
     selectedTags: Array<string> = [];
@@ -29,11 +27,6 @@ export class FeaturesTreeFilterComponent implements OnInit {
 
     searchText: string;
 
-    private automatedButtonValue = "automated";
-    private manualButtonValue = "manual";
-    private searchButtonValue = "search";
-    private tagsButtonValue = "tags";
-
     isAutomatedButtonActive = false;
     isManualButtonActive = false;
     isSearchButtonActive = false;
@@ -41,12 +34,6 @@ export class FeaturesTreeFilterComponent implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,
                 private featureTreeService: FeaturesTreeService) {
-        this.testTypesFilters = [
-            {title: 'Automated Tests', value: this.automatedButtonValue, icon: 'fa-cog'},
-            {title: 'Manual Tests', value: this.manualButtonValue, icon: 'fa-hand-paper-o'},
-            {title: 'Search text', value: this.searchButtonValue, icon: 'fa-search'},
-            {title: 'Filter by tags', value: this.tagsButtonValue, icon: 'fa-tag'},
-        ];
     }
 
     ngOnInit() {
@@ -93,22 +80,21 @@ export class FeaturesTreeFilterComponent implements OnInit {
             this.filter();
         }
     }
-
-    buttonStateChanged(event: any) {
-        let oldIsAutomatedButtonActive = this.isAutomatedButtonActive;
-        let oldIsManualButtonActive = this.isManualButtonActive;
-        let oldIsSearchButtonActive = this.isSearchButtonActive;
-        let oldIsTagsButtonActive = this.isTagsButtonActive;
-
-        this.isAutomatedButtonActive = this.selectedTestTypesFilters.find(item => item.value == this.automatedButtonValue) != null;
-        this.isManualButtonActive = this.selectedTestTypesFilters.find(item => item.value == this.manualButtonValue) != null;
-        this.isSearchButtonActive = this.selectedTestTypesFilters.find(item => item.value == this.searchButtonValue) != null;
-        this.isTagsButtonActive = this.selectedTestTypesFilters.find(item => item.value == this.tagsButtonValue) != null;
-
-        if (oldIsAutomatedButtonActive != this.isAutomatedButtonActive) this.filter();
-        if (oldIsManualButtonActive != this.isManualButtonActive) this.filter();
-        if (oldIsSearchButtonActive != this.isSearchButtonActive && !this.isSearchButtonActive) this.filter();
-        if (oldIsTagsButtonActive != this.isTagsButtonActive && !this.isTagsButtonActive) this.filter();
+    onAutomatedButtonClickEvent() {
+        this.isAutomatedButtonActive = !this.isAutomatedButtonActive;
+        this.filter()
+    }
+    onManualButtonClickEvent() {
+        this.isManualButtonActive = !this.isManualButtonActive;
+        this.filter()
+    }
+    onSearchButtonClickEvent() {
+        this.isSearchButtonActive = !this.isSearchButtonActive;
+        if(!this.isSearchButtonActive) this.filter()
+    }
+    onTagsButtonClickEvent() {
+        this.isTagsButtonActive = !this.isTagsButtonActive;
+        if(!this.isTagsButtonActive) this.filter()
     }
 
     filter(): void {
@@ -133,5 +119,16 @@ export class FeaturesTreeFilterComponent implements OnInit {
     private getCurrentPathFromUrl(): Path {
         let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path'] : null;
         return pathAsString != null ? Path.createInstance(pathAsString) : null;
+    }
+
+    onCollapseEvent() {
+        let nodeToExpand = this.treeModel.selectedNode ? this.treeModel.selectedNode : this.treeModel;
+        JsonTreeExpandUtil.collapseNode(nodeToExpand);
+
+    }
+
+    onExpandEvent() {
+        let nodeToExpand = this.treeModel.selectedNode ? this.treeModel.selectedNode : this.treeModel;
+        JsonTreeExpandUtil.expandNode(nodeToExpand);
     }
 }

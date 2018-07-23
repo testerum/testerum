@@ -46,4 +46,26 @@ export class JsonTreeExpandUtil {
             parentContainer = parentContainer.getParent();
         }
     }
+
+    static expandNode(nodeToExpand: JsonTreeNode) {
+        if (nodeToExpand.isContainer()) {
+            let containerToExpand = nodeToExpand as JsonTreeContainer;
+            containerToExpand.getNodeState().showChildren = true;
+
+            for (const child of containerToExpand.getChildren()) {
+                JsonTreeExpandUtil.expandNode(child);
+            }
+        }
+    }
+
+    static collapseNode(nodeToExpand: JsonTreeNode) {
+        if (nodeToExpand.isContainer()) {
+            let containerToExpand = nodeToExpand as JsonTreeContainer;
+            containerToExpand.getNodeState().showChildren = false;
+
+            for (const child of containerToExpand.getChildren()) {
+                JsonTreeExpandUtil.collapseNode(child);
+            }
+        }
+    }
 }

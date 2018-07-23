@@ -1,6 +1,6 @@
 .line-filters {
     display: flex;
-    justify-content: left;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -8,11 +8,8 @@
     margin-right: 10px;
 }
 
-.line-search {
-}
-
-.line-tags {
-
+.btn-xs {
+    width: 24px;
 }
 
 .full-width {

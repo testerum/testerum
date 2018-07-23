@@ -1,27 +1,57 @@
 <p-toolbar>
     <div class="line-filters">
-        <span class="filters-label">Filters:</span>
-
-        <p-selectButton [options]="testTypesFilters"
-                        (onChange)="buttonStateChanged($event)"
-                        [(ngModel)]="selectedTestTypesFilters"
-                        multiple="multiple">
-            <ng-template let-item>
-                <div [class.active]="item.value == automatedButtonValue && isAutomatedButtonActive"
-                     [class.btn-primary]="item.value == automatedButtonValue && isAutomatedButtonActive"
-                     [class.active]="item.value == manualButtonValue && isManualButtonActive"
-                     [class.btn-primary]="item.value == manualButtonValue && isManualButtonActive"
-                     [class.active]="item.value == searchButtonValue && isSearchButtonActive"
-                     [class.btn-primary]="item.value == searchButtonValue && isSearchButtonActive"
-                     [class.active]="item.value == tagsButtonValue && isTagsButtonActive"
-                     [class.btn-primary]="item.value == tagsButtonValue && isTagsButtonActive"
-                     pTooltip="{{(item.value == automatedButtonValue && isAutomatedButtonActive?'Hide ':'Show ') + item.title}}"
+        <div class="filters-group">
+            <span class="filters-label">Filters:</span>
+            <div class="btn-group" role="group">
+                <div pTooltip="{{isAutomatedButtonActive?'Hide ':'Show '}} Automated Tests"
                      tooltipPosition="bottom"
+                     (click)="onAutomatedButtonClickEvent()"
+                     [class.active]="isAutomatedButtonActive"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa {{item.icon}}" aria-hidden="true"></i>
+                    <i class="fa fa-bolt" aria-hidden="true"></i>
                 </div>
-            </ng-template>
-        </p-selectButton>
+
+                <div pTooltip="{{isManualButtonActive?'Hide ':'Show '}} Manual Tests"
+                     tooltipPosition="bottom"
+                     (click)="onManualButtonClickEvent()"
+                     [class.active]="isManualButtonActive"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
+                </div>
+
+                <div pTooltip="{{isSearchButtonActive?'Hide ':'Show '}} Search Text"
+                     tooltipPosition="bottom"
+                     (click)="onSearchButtonClickEvent()"
+                     [class.active]="isSearchButtonActive"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </div>
+
+                <div pTooltip="{{isTagsButtonActive?'Hide ':'Show '}} Filter by Tags"
+                     tooltipPosition="bottom"
+                     (click)="onTagsButtonClickEvent()"
+                     [class.active]="isTagsButtonActive"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-tag" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-group" role="group">
+            <div pTooltip="Expand selected node"
+                 tooltipPosition="bottom"
+                 (click)="onExpandEvent()"
+                 class="btn btn-default btn-xs btn-group">
+                <i class="fa fa-expand" aria-hidden="true"></i>
+            </div>
+
+            <div pTooltip="Collapse selected node"
+                 tooltipPosition="bottom"
+                 (click)="onCollapseEvent()"
+                 class="btn btn-default btn-xs btn-group">
+                <i class="fa fa-compress" aria-hidden="true"></i>
+            </div>
+        </div>
     </div>
 
     <div class="ui-inputgroup line-search full-width"
@@ -62,8 +92,5 @@
                         id="tags" name="tags"></p-autoComplete>
 
     </div>
-
-
-
 
 </p-toolbar>
