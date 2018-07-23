@@ -27,7 +27,7 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                      private val testsService: TestsService) {
 
     companion object {
-        private val FEATURE_NAME: String = "info";
+        private val FEATURE_NAME: String = "info"
 
         private val FILE_PARSER: ParserExecuter<FileFeature> = ParserExecuter(
                 FileFeatureParserFactory.feature()
@@ -66,10 +66,11 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
     private fun createFeature(feature: Feature): Feature {
         val fileTestAsString: String = FileFeatureSerializer.serializeToString(
                 FileFeature(
-                        description = feature.description
+                        description = feature.description,
+                        tags = feature.tags
                 )
         )
-        val featureDirPath = feature.path;
+        val featureDirPath = feature.path
         val featureFilePath = featureDirPath.copy(fileName = FEATURE_NAME, fileExtension = FileType.FEATURE.fileExtension)
 
 
@@ -83,11 +84,9 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                 )
         )
 
-        val savedFeature = feature.copy(
+        return feature.copy(
                 path = createdRepositoryFile.knownPath.asPath()
         )
-
-        return savedFeature
     }
 
     private fun updateFeature(feature: Feature): Feature {
@@ -97,7 +96,8 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
 
         val featureAsString: String = FileFeatureSerializer.serializeToString(
                 FileFeature(
-                        description = feature.description
+                        description = feature.description,
+                        tags = feature.tags
                 )
         )
         val newRepositoryFile = RepositoryFile(newKnownPath, featureAsString)
@@ -126,7 +126,7 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
     }
 
     private fun renameDirectoryIfCase(feature: Feature): Path {
-        val oldDirPath = feature.path.copy(fileName = null, fileExtension = null);
+        val oldDirPath = feature.path.copy(fileName = null, fileExtension = null)
 
         val oldName = if (oldDirPath.directories.isEmpty()) null else oldDirPath.directories.last()
         if (oldName != null && oldName != feature.name) {
@@ -153,7 +153,8 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
             val feature = Feature(
                     path = path,
                     name = getFeatureName(path),
-                    description = fileFeature.description
+                    description = fileFeature.description,
+                    tags = fileFeature.tags
             )
 
             features.add(feature)
@@ -166,12 +167,11 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         val filePath = path.copy(
                 fileName = FEATURE_NAME,
                 fileExtension = FileType.FEATURE.fileExtension
-        );
+        )
 
         val featureKnownPath = KnownPath(filePath, FileType.FEATURE)
-        val featureFile = fileRepositoryService.getByPath(
-                featureKnownPath
-        ) ?: return Feature(filePath, getFeatureName(filePath))
+        val featureFile = fileRepositoryService.getByPath(featureKnownPath)
+                ?: return Feature(filePath, getFeatureName(filePath))
 
         val fileFeature: FileFeature = FILE_PARSER.parse(featureFile.body)
 
@@ -179,7 +179,8 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         val feature = Feature(
                 path = featurePath,
                 name = getFeatureName(filePath),
-                description = fileFeature.description
+                description = fileFeature.description,
+                tags = fileFeature.tags
         )
 
         val attachmentsDetailsFromPath = attachmentFileRepositoryService.getAttachmentsDetailsFromPath(featureKnownPath)
@@ -194,11 +195,11 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         return attachmentFileRepositoryService.uploadFiles(
                 KnownPath(featurePath, FileType.FEATURE),
                 uploadingFiles
-        );
+        )
     }
 
     fun getFeaturesTree(featuresTreeFilter: FeaturesTreeFilter): RootTreeNode {
-        val rootNode = RootTreeNode("Features");
+        val rootNode = RootTreeNode("Features")
 
         val features = getAllFeatures()
         val filteredFeatures = filterFeatures(featuresTreeFilter, features)
@@ -208,24 +209,24 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         val filteredTests = filterTests(featuresTreeFilter, tests)
         mapTestsToTree(filteredTests, rootNode)
 
-        return rootNode;
+        return rootNode
     }
 
     private fun filterFeatures(featuresTreeFilter: FeaturesTreeFilter, features: List<Feature>): List<Feature> {
         val results = mutableListOf<Feature>()
         for (feature in features) {
-            var featureIsMatchFilter = false;
+            var featureIsMatchFilter = false
 
             if (feature.path.toString().containsSearchStringParts(featuresTreeFilter.search)) {
-                featureIsMatchFilter = true;
+                featureIsMatchFilter = true
             }
 
             if (feature.name.containsSearchStringParts(featuresTreeFilter.search)) {
-                featureIsMatchFilter = true;
+                featureIsMatchFilter = true
             }
 
             if (feature.description.containsSearchStringParts(featuresTreeFilter.search)) {
-                featureIsMatchFilter = true;
+                featureIsMatchFilter = true
             }
 
             //TODO: TAGS filter
@@ -234,20 +235,20 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
             }
         }
 
-        return results;
+        return results
     }
 
     private fun filterTests(featuresTreeFilter: FeaturesTreeFilter, tests: List<TestModel>): List<TestModel> {
         val results = mutableListOf<TestModel>()
         for (test in tests) {
-            var testMatchFilter = false;
+            var testMatchFilter = false
 
             if (test.path.toString().containsSearchStringParts(featuresTreeFilter.search)) {
-                testMatchFilter = true;
+                testMatchFilter = true
             }
 
             if (test.text.containsSearchStringParts(featuresTreeFilter.search)) {
-                testMatchFilter = true;
+                testMatchFilter = true
             }
 
             //TODO: add AUTOMATED, MANUAL and TAGS filter
@@ -256,7 +257,7 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
             }
         }
 
-        return results;
+        return results
     }
 
     private fun mapFeaturesToTree(features: List<Feature>, rootNode: RootTreeNode) {
@@ -268,7 +269,7 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
 
     private fun findOrCreateFeatureTreeNodes(featuresNames: MutableList<String>, parentNode: ContainerTreeNode): TreeNode {
         if (featuresNames.isEmpty()) {
-            return parentNode;
+            return parentNode
         }
 
         val currentFeatureName = featuresNames.removeAt(0)
@@ -307,7 +308,7 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
 
     private fun getFeatureName(featurePath: Path): String {
         if (featurePath.directories.isEmpty()) {
-            return "";
+            return ""
         }
         return featurePath.directories.last()
     }
