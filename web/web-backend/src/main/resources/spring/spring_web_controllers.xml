@@ -43,6 +43,10 @@
         <constructor-arg name="testRunnerResultService" ref="testRunnerReportService"/>
     </bean>
 
+    <bean id="tagsController" class="net.qutester.controller.TagsController">
+        <constructor-arg name="tagsService" ref="tagsService" />
+    </bean>
+
     <bean id="variablesController" class="net.qutester.controller.VariablesController">
         <constructor-arg name="variablesService" ref="variablesService"/>
     </bean>

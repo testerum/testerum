@@ -79,6 +79,12 @@
         <constructor-arg name="fileToUiTestMapper" ref="fileToUiTestMapper"/>
     </bean>
 
+    <bean id="tagsService" class="net.qutester.service.tags.TagsService">
+        <constructor-arg name="featureService" ref="featureService" />
+        <constructor-arg name="testsService"   ref="testsService" />
+        <constructor-arg name="stepService"    ref="stepService" />
+    </bean>
+
     <bean id="testRunnerReportService" class="net.qutester.service.tests_runner.TestRunnerResultService">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
         <constructor-arg name="objectMapper" ref="fileRepositoryObjectMapper"/>
