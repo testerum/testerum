@@ -1,7 +1,6 @@
 package net.qutester.service.mapper
 
 import com.testerum.test_file_format.common.step_call.FileStepCall
-import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
@@ -33,11 +32,13 @@ open class UiToFileStepDefMapper {
     }
 
     fun mapToFileModel(composedStepDef: ComposedStepDef): FileStepDef {
-        val fileStepDefSignature: FileStepDefSignature = mapSignature(composedStepDef)
-        val fileDescription: String? = composedStepDef.description
-        val fileSteps: List<FileStepCall> = mapStepCalls(composedStepDef.stepCalls)
 
-        return FileStepDef(fileStepDefSignature, fileDescription, emptyList(), fileSteps)
+        return FileStepDef(
+                signature = mapSignature(composedStepDef),
+                description = composedStepDef.description,
+                tags = composedStepDef.tags,
+                steps = mapStepCalls(composedStepDef.stepCalls)
+        )
     }
 
     private fun mapSignature(composedStepDef: ComposedStepDef): FileStepDefSignature {

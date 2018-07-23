@@ -56,6 +56,7 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
                 phase = uiStepPhase,
                 stepPattern = uiStepPattern,
                 description = fileStepDef.description,
+                tags = fileStepDef.tags,
                 stepCalls = mapStepsCalls(fileStepDef.steps, stepCallIdPrefix)
         )
     }
