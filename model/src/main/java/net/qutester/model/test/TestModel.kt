@@ -11,6 +11,7 @@ data class TestModel @JsonCreator constructor(@JsonProperty("path") val path: Pa
                                               @JsonProperty("isManual") @get:JsonProperty("isManual") val isManual: Boolean,
                                               @JsonProperty("text") val text: String, // todo: rename to "name"
                                               @JsonProperty("description") val description: String?,
+                                              @JsonProperty("tags") val tags: List<String> = emptyList(),
                                               @JsonProperty("stepCalls") val stepCalls: List<StepCall> = emptyList()) {
 
     private val _id = path.toString()

@@ -11,6 +11,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
     path:Path;
     text:string;
     description:string;
+    tags: Array<string> = [];
     stepCalls:Array<StepCall> = [];
 
     deserialize(input: Object): TestModel {
@@ -19,6 +20,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
         this.isManual = input['isManual'];
         this.text = input['text'];
         this.description = input['description'];
+        this.tags = input['tags'];
 
         for (let stepCall of (input['stepCalls']) || []) {
             this.stepCalls.push(new StepCall().deserialize(stepCall));
@@ -35,6 +37,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
             '"isManual":' + this.isManual + ',' +
             '"text":' + JsonUtil.stringify(this.text) + ',' +
             '"description":' + JsonUtil.stringify(this.description) + ',' +
+            '"tags":' + JsonUtil.stringify(this.tags) + ',' +
             '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) +
             '}'
     }

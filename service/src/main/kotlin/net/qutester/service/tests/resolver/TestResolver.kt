@@ -35,6 +35,7 @@ class TestResolver(private val stepService: StepService) {
                 isManual = testModel.isManual,
                 text = testModel.text,
                 description = testModel.description,
+                tags = testModel.tags,
                 stepCalls = resolvedStepCalls
         )
     }
