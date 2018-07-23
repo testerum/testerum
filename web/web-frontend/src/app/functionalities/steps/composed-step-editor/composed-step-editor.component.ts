@@ -23,6 +23,9 @@ import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
 import {ResourceMapEnum} from "../../resources/editors/resource-map.enum";
 import {StepCallTreeService} from "../../../generic/components/step-call-tree/step-call-tree.service";
 import {UrlService} from "../../../service/url.service";
+import {AutoComplete} from "primeng/primeng";
+import {TagsService} from "../../../service/tags.service";
+import {ArrayUtil} from "../../../utils/array.util";
 
 @Component({
     moduleId: module.id,
@@ -46,12 +49,18 @@ export class ComposedStepEditorComponent implements OnInit {
 
     areChildComponentsValid: boolean = true;
 
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    allKnownTags: Array<string> = [];
+    tagsToShow:string[] = [];
+    currentTagSearch:string;
+
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
                 private stepsService: StepsService,
                 private stepsTreeService: StepsTreeService,
                 private stepCallTreeService: StepCallTreeService,
                 private errorService: ErrorService,
+                private tagsService: TagsService,
                 private applicationEventBus: ApplicationEventBus) {
     }
 
@@ -88,7 +97,40 @@ export class ComposedStepEditorComponent implements OnInit {
     }
 
     enableEditTestMode(): void {
+        this.tagsService.getTags().subscribe(tags => {
+            ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
+        });
+
         this.isEditMode = true;
+    }
+
+
+    onSearchTag(event) {
+        this.currentTagSearch = event.query;
+
+        let newTagsToShow = ArrayUtil.filterArray(
+            this.allKnownTags,
+            event.query
+        );
+        for (let currentTag of this.model.tags) {
+            ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
+        }
+        this.tagsToShow = newTagsToShow
+    }
+
+    onTagsKeyUp(event) {
+        if(event.key =="Enter") {
+            if (this.currentTagSearch) {
+                this.model.tags.push(this.currentTagSearch);
+                this.currentTagSearch = null;
+                this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
+                event.preventDefault();
+            }
+        }
+    }
+
+    onTagSelect(event) {
+        this.currentTagSearch = null;
     }
 
     cancelAction(): void {

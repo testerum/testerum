@@ -5,20 +5,16 @@ import {TestModel} from "../../../model/test/test.model";
 import 'rxjs/add/operator/switchMap';
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
 import {TestsRunnerService} from "../tests-runner/tests-runner.service";
-import {StepCall} from "../../../model/step-call.model";
-import {Arg} from "../../../model/arg/arg.model";
-import {StepChoseHandler} from "../../../generic/components/step-chooser/step-choosed-handler.interface";
-import {StepChooserComponent} from "../../../generic/components/step-chooser/step-chooser.component";
-import {StepDef} from "../../../model/step-def.model";
 import {FeaturesTreeService} from "../features-tree/features-tree.service";
 import {IdUtils} from "../../../utils/id.util";
 import {UpdateTestModel} from "../../../model/test/operation/update-test.model";
 import {StepCallTreeService} from "../../../generic/components/step-call-tree/step-call-tree.service";
-import {ResourceMapEnum} from "../../resources/editors/resource-map.enum";
 import {Subscription} from "rxjs/Subscription";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {UrlService} from "../../../service/url.service";
-import {StepCallEditorContainerModel} from "../../../generic/components/step-call-tree/model/step-call-editor-container.model";
+import {AutoComplete} from "primeng/primeng";
+import {TagsService} from "../../../service/tags.service";
+import {ArrayUtil} from "../../../utils/array.util";
 
 @Component({
     moduleId: module.id,
@@ -34,6 +30,11 @@ export class TestEditorComponent implements OnInit, OnDestroy {
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
 
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    allKnownTags: Array<string> = [];
+    tagsToShow:string[] = [];
+    currentTagSearch:string;
+
     routeSubscription: Subscription;
     editModeStepCallTreeSubscription: Subscription;
 
@@ -42,7 +43,8 @@ export class TestEditorComponent implements OnInit, OnDestroy {
                 private testsTreeService: FeaturesTreeService,
                 private testsService: TestsService,
                 private testsRunnerService: TestsRunnerService,
-                private stepCallTreeService: StepCallTreeService) {
+                private stepCallTreeService: StepCallTreeService,
+                private tagsService: TagsService) {
     }
 
     ngOnInit(): void {
@@ -64,18 +66,48 @@ export class TestEditorComponent implements OnInit, OnDestroy {
     }
 
     addStep() {
-
         this.stepCallTreeService.addStepCallEditor(this.stepCallTreeService.jsonTreeModel);
-
     }
 
     setEditMode(isEditMode: boolean) {
+        this.tagsService.getTags().subscribe(tags => {
+            ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
+        });
+
         this.isEditMode = isEditMode;
         this.stepCallTreeService.setEditMode(isEditMode);
     }
 
     enableEditTestMode(): void {
         this.setEditMode(true);
+    }
+
+    onSearchTag(event) {
+        this.currentTagSearch = event.query;
+
+        let newTagsToShow = ArrayUtil.filterArray(
+            this.allKnownTags,
+            event.query
+        );
+        for (let currentTag of this.testModel.tags) {
+            ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
+        }
+        this.tagsToShow = newTagsToShow
+    }
+
+    onTagsKeyUp(event) {
+        if(event.key =="Enter") {
+            if (this.currentTagSearch) {
+                this.testModel.tags.push(this.currentTagSearch);
+                this.currentTagSearch = null;
+                this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
+                event.preventDefault();
+            }
+        }
+    }
+
+    onTagSelect(event) {
+        this.currentTagSearch = null;
     }
 
     getPathWithoutTestName(): string {

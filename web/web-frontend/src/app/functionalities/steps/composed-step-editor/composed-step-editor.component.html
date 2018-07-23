@@ -62,6 +62,31 @@
 
                 <div *ngIf="isEditMode" class="vertical-space"></div>
 
+                <!-- TAGS -->
+                <div class="form-group row" *ngIf="!isEditMode && model.tags.length > 0 ">
+                    <label class="col-md-1 control-label" for="tags">Tags</label>
+                    <div class="col-md-11 form-value" *ngIf="!isEditMode">
+                        <ng-container *ngFor="let tag of model.tags">
+                            <span class="label label-primary">{{tag}}</span>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="isEditMode">
+                    <label class="col-md-1 control-label" for="tags">Tags</label>
+                    <div class="col-md-11">
+                        <p-autoComplete #tagsElement
+                                        [(ngModel)]="model.tags"
+                                        [suggestions]="tagsToShow"
+                                        (completeMethod)="onSearchTag($event)"
+                                        (onSelect)="onTagSelect($event)"
+                                        (keypress)="onTagsKeyUp($event);"
+                                        [delay]="0"
+                                        [multiple]="true"
+                                        [dropdown]="true"
+                                        id="tags" name="tags"></p-autoComplete>
+                    </div>
+                </div>
+
                 <!-- DESCRIPTION -->
                 <div class="my-line">
                     <label class="my-label label-size" for="description">Description</label>

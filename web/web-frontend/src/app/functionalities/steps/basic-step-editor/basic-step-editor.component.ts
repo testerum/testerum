@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
 import {ActivatedRoute} from "@angular/router";
 import {ComposedStepDef} from "../../../model/composed-step-def.model";
+import {BasicStepDef} from "../../../model/basic-step-def.model";
 
 @Component({
     moduleId: module.id,
@@ -14,7 +15,7 @@ export class BasicStepEditorComponent implements OnInit {
 
     StepPhaseEnum = StepPhaseEnum;
 
-    model: ComposedStepDef = new ComposedStepDef();
+    model: BasicStepDef = new BasicStepDef();
 
     pattern: string;
 

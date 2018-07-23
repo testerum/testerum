@@ -22,6 +22,7 @@ import {CollapseModule, ModalModule, PopoverModule, SortableModule} from "ngx-bo
 import {ComposedStepParametersComponent} from "./composed-step-editor/composed-step-parameters/composed-step-parameters.component";
 import {StepTextComponent} from "../../generic/components/step-text/step-text.component";
 import {StepsTreeComponent} from "./steps-tree/steps-tree.component";
+import {AutoCompleteModule} from "primeng/primeng";
 
 @NgModule({
     imports: [
@@ -33,6 +34,8 @@ import {StepsTreeComponent} from "./steps-tree/steps-tree.component";
         DndModule.forRoot(),
         PopoverModule.forRoot(),
         AngularSplitModule,
+
+        AutoCompleteModule,
 
         StepsRoutingModule,
         GenericModule,
