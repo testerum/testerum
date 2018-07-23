@@ -20,6 +20,9 @@ class UndefinedStepDef @JsonCreator constructor(
     override val description: String?
         get() = null
 
+    override val tags: List<String>
+        get() = emptyList()
+
     override fun toString() = buildString {
         append(phase)
         append(" ")

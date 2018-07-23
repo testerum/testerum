@@ -3,11 +3,6 @@ import {StepPhaseEnum} from "./enums/step-phase.enum";
 import {StepCall} from "./step-call.model";
 import {JsonUtil} from "../utils/json.util";
 import {IdUtils} from "../utils/id.util";
-import {VariableEvent, VariableEventType} from "../generic/variable/variable-event.model";
-import {VariableHolder} from "../generic/variable/variable-holder.model";
-import {Variable} from "../generic/variable/variable.model";
-import {ParamStepPatternPart} from "./text/parts/param-step-pattern-part.model";
-import {TextStepPatternPart} from "./text/parts/text-step-pattern-part.model";
 import {StepPattern} from "./text/step-pattern.model";
 import {Path} from "./infrastructure/path/path.model";
 
@@ -18,6 +13,7 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
     phase: StepPhaseEnum;
     stepPattern: StepPattern = new StepPattern;
     description: string;
+    tags: Array<string> = [];
 
     stepCalls: Array<StepCall> = [];
 
@@ -34,6 +30,7 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
         this.phase = StepPhaseEnum["" + input["phase"]];
         this.stepPattern = new StepPattern().deserialize(input["stepPattern"]);
         this.description = input["description"];
+        this.tags = input["tags"];
 
         for (let stepCallAsJson of input["stepCalls"]) {
             let stepCall = new StepCall().deserialize(stepCallAsJson);
@@ -52,6 +49,7 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
             '"path":' + JsonUtil.serializeSerializable(this.path) + ',' +
             '"stepPattern":' + this.stepPattern.serialize() + ',' +
             '"description":' + JsonUtil.stringify(this.description) + ',' +
+            '"tags":' + JsonUtil.stringify(this.tags) + ',' +
             '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) +
             '}'
     }

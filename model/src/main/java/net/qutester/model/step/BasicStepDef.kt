@@ -11,6 +11,7 @@ data class BasicStepDef @JsonCreator constructor(
         @JsonProperty("phase") override val phase: StepPhaseEnum,
         @JsonProperty("stepPattern") override val stepPattern: StepPattern,
         @JsonProperty("description") override val description: String? = null,
+        @JsonProperty("tags") override val tags: List<String> = emptyList(),
         @JsonProperty("className") val className: String,
         @JsonProperty("methodName") val methodName: String
 ): StepDef {
