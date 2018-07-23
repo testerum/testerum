@@ -1,4 +1,3 @@
-
 import {StepDef} from "./step-def.model";
 import {JsonUtil} from "../utils/json.util";
 import {IdUtils} from "../utils/id.util";
@@ -12,6 +11,7 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
     phase: StepPhaseEnum;
     stepPattern:StepPattern = new StepPattern();
     description: string;
+    tags: Array<string> = [];
 
     className: string;
     methodName: string;
@@ -22,6 +22,7 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
         this.phase = StepPhaseEnum[""+input["phase"]];
         this.stepPattern = new StepPattern().deserialize(input["stepPattern"]);
         this.description = input["description"];
+        this.tags = input["tags"];
         this.className = input["className"];
         this.methodName = input["methodName"];
 
@@ -37,6 +38,7 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
             '"phase":'+ JsonUtil.stringify(StepPhaseEnum[this.phase].toUpperCase())+','+
             '"stepPattern":' + this.stepPattern.serialize() + ',' +
             '"description":' + JsonUtil.stringify(this.description) + ',' +
+            '"tags":' + JsonUtil.stringify(this.tags) + ',' +
             '"className":' + JsonUtil.stringify(this.className) + ',' +
             '"methodName":' + JsonUtil.stringify(this.methodName) +
             '}'

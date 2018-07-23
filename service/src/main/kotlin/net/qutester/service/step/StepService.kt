@@ -106,14 +106,7 @@ open class StepService(val composedStepsService: ComposedStepsService,
                 )
             }
 
-            val resolvedComposedStep = ComposedStepDef(
-                    path = unresolvedComposedStep.path,
-                    phase = unresolvedComposedStep.phase,
-                    stepPattern = unresolvedComposedStep.stepPattern,
-                    description = unresolvedComposedStep.description,
-                    stepCalls = resolvedStepCalls
-            )
-            result.put(unresolvedComposedStep.id, resolvedComposedStep)
+            result[unresolvedComposedStep.id] = unresolvedComposedStep.copy(stepCalls = resolvedStepCalls)
         }
 
         return result
@@ -138,25 +131,14 @@ open class StepService(val composedStepsService: ComposedStepsService,
             )
         }
 
-        val resolvedComposedStep = ComposedStepDef(
-                path = unresolvedComposedStep.path,
-                phase = unresolvedComposedStep.phase,
-                stepPattern = unresolvedComposedStep.stepPattern,
-                description = unresolvedComposedStep.description,
-                stepCalls = resolvedStepCalls
-        )
-
-        return resolvedComposedStep
+        return unresolvedComposedStep.copy(stepCalls = resolvedStepCalls)
     }
 
     fun getStepDefByPhaseAndPattern(stepPhase: StepPhaseEnum, stepPattern: StepPattern): StepDef {
         val stepHash = StepHashUtil.calculateStepHash(stepPhase, stepPattern)
-        val resolvedStepDef = steps.get(stepHash)
-        if (resolvedStepDef == null) {
-            return UndefinedStepDef(stepPhase, stepPattern)
-        }
 
-        return resolvedStepDef
+        return steps[stepHash]
+                ?: UndefinedStepDef(stepPhase, stepPattern)
     }
 
     fun getAllSteps(): List<StepDef> {

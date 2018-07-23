@@ -22,6 +22,7 @@ interface StepDef {
     val phase: StepPhaseEnum
     val stepPattern: StepPattern //TODO: rename to StepSignature
     val description: String?
+    val tags: List<String>
 
     @JsonIgnore
     fun getText(): String {

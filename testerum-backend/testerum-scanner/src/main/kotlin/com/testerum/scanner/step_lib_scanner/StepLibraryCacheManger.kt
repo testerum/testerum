@@ -326,7 +326,8 @@ class StepLibraryCacheManger(private val threadPool: ExecutorService) {
                 stepPattern = StepPattern(scannerParts),
                 className = method.declaringClass.name,
                 methodName = method.name,
-                description = phaseAnnotation.description
+                description = phaseAnnotation.description,
+                tags = phaseAnnotation.tags
         )
     }
 
@@ -445,11 +446,18 @@ class StepLibraryCacheManger(private val threadPool: ExecutorService) {
             is Then  -> if (annotation.description == "") null else annotation.description
             else     -> throw IllegalArgumentException("unsupported annotation [${annotation.annotationClass}]")
         }
+        private val _tags: List<String> = when (annotation) {
+            is Given -> annotation.tags.toList()
+            is When  -> annotation.tags.toList()
+            is Then  -> annotation.tags.toList()
+            else     -> throw IllegalArgumentException("unsupported annotation [${annotation.annotationClass}]")
+        }
 
 
         val phase: StepPhaseEnum = _phase
         val pattern: String = _pattern
         val description: String? = _description
+        val tags: List<String> = _tags
     }
 
     private class HookPhaseAnnotation(annotation: Annotation) {
