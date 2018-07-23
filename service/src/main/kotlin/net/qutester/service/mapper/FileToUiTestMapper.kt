@@ -13,6 +13,7 @@ open class FileToUiTestMapper(private val fileToUiStepMapper: FileToUiStepMapper
                 isManual = fileTestDef.isManual,
                 text = fileTestDef.name,
                 description = fileTestDef.description,
+                tags = fileTestDef.tags,
                 stepCalls = fileToUiStepMapper.mapStepsCalls(
                         fileTestDef.steps,
                         testFile.knownPath.toString()

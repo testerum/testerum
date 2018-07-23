@@ -5,13 +5,11 @@ import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.manual.operation.UpdateTestModel
 import net.qutester.model.test.TestModel
 import net.qutester.service.tests.TestsService
-import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/tests")
 class TestsController(private val testsService: TestsService) {
-    private val LOG = LoggerFactory.getLogger(TestsController::class.java)
 
     @RequestMapping (params = ["path"], method = [RequestMethod.DELETE])
     fun delete(@RequestParam(value = "path") path:String) {
