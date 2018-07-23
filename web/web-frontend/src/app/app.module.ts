@@ -39,6 +39,7 @@ import {FeatureService} from "./service/feature.service";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AttachmentsService} from "./service/attachments.service";
 import {UrlService} from "./service/url.service";
+import {TagsService} from "./service/tags.service";
 
 @NgModule({
     imports: [
@@ -86,6 +87,7 @@ import {UrlService} from "./service/url.service";
         ResultService,
         FeatureService,
         AttachmentsService,
+        TagsService,
 
         ResourceService,
         RdbmsService,

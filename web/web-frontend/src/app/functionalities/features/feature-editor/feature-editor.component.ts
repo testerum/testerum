@@ -14,6 +14,10 @@ import {MarkdownEditorComponent} from "../../../generic/components/markdown-edit
 import {FormUtil} from "../../../utils/form.util";
 import {NgForm} from "@angular/forms";
 import {UrlService} from "../../../service/url.service";
+import {AutoComplete} from "primeng/primeng";
+import {ArrayUtil} from "../../../utils/array.util";
+import {ManualTestsService} from "../../../manual-tests/tests/service/manual-tests.service";
+import {TagsService} from "../../../service/tags.service";
 
 @Component({
     moduleId: module.id,
@@ -31,6 +35,11 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
 
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    allKnownTags: Array<string> = [];
+    tagsToShow:string[] = [];
+    currentTagSearch:string;
+
     routeSubscription: Subscription;
     pathSubscription: Subscription;
     fileUploadSubscription: Subscription;
@@ -43,7 +52,9 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
                 private featureService: FeatureService,
-                private featuresTreeService: FeaturesTreeService) {
+                private featuresTreeService: FeaturesTreeService,
+                private tagsService: TagsService,
+                ) {
     }
 
     ngOnInit(): void {
@@ -69,12 +80,44 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     }
 
     setEditMode(value: boolean) {
+        this.tagsService.getTags().subscribe(tags => {
+            ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
+        });
+
         this.isEditMode = value;
         this.markdownEditor.setEditMode(value);
     }
 
     enableEditTestMode(): void {
         this.setEditMode(true);
+    }
+
+    onSearchTag(event) {
+        this.currentTagSearch = event.query;
+
+        let newTagsToShow = ArrayUtil.filterArray(
+            this.allKnownTags,
+            event.query
+        );
+        for (let currentTag of this.model.tags) {
+            ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
+        }
+        this.tagsToShow = newTagsToShow
+    }
+
+    onTagsKeyUp(event) {
+        if(event.key =="Enter") {
+            if (this.currentTagSearch) {
+                this.model.tags.push(this.currentTagSearch);
+                this.currentTagSearch = null;
+                this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
+                event.preventDefault();
+            }
+        }
+    }
+
+    onTagSelect(event) {
+        this.currentTagSearch = null;
     }
 
     getFeatureUploadUrl(): string {
