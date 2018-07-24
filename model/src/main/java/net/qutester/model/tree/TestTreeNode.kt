@@ -6,6 +6,5 @@ import net.qutester.model.infrastructure.path.Path
 
 data class TestTreeNode @JsonCreator constructor(
         @JsonProperty("name") override val name: String,
-        @JsonProperty("path") override val path: Path,
-        @JsonProperty("isManual") @get:JsonProperty("isManual") val isManual: Boolean
+        @JsonProperty("path") override val path: Path
 ): TreeNode

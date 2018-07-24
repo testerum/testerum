@@ -18,27 +18,41 @@ object FileFeatureSerializer : BaseSerializer<FileFeature>() {
     }
 
     private fun serializeDescription(description: String?, destination: Writer, indentLevel: Int) {
-        description?.let {
-            FileDescriptionSerializer.serialize(it, destination, indentLevel)
-            destination.write("\n")
+        if (description == null || description.isEmpty()) {
+            return
         }
-        destination.write("\n")
+
+        FileDescriptionSerializer.serialize(description, destination, indentLevel)
     }
 
     private fun serializeTags(tags: List<String>, destination: Writer, indentLevel: Int) {
-        if (tags.isNotEmpty()) {
-            FileTagsSerializer.serialize(tags, destination, indentLevel)
-            destination.write("\n")
+        if (!tags.isNotEmpty()) {
+            return
         }
+
+        destination.write("\n")
+        FileTagsSerializer.serialize(tags, destination, indentLevel)
     }
 
     private fun serializeBeforeHooks(beforeHooks: List<FileStepCall>, destination: Writer, indentLevel: Int) {
+        if (beforeHooks.isEmpty()) {
+            return
+        }
+
+        destination.write("\n")
+
         for (beforeHook in beforeHooks) {
             FileBeforeHookSerializer.serialize(beforeHook, destination, indentLevel)
         }
     }
 
     private fun serializeAfterHooks(afterHooks: List<FileStepCall>, destination: Writer, indentLevel: Int) {
+        if (afterHooks.isEmpty()) {
+            return
+        }
+
+        destination.write("\n")
+
         for (afterHook in afterHooks) {
             FileAfterHookSerializer.serialize(afterHook, destination, indentLevel)
         }

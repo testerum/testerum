@@ -7,7 +7,6 @@ import com.testerum.test_file_format.common.step_call.FileStepCallSerializer
 import com.testerum.test_file_format.common.tags.FileTagsSerializer
 import com.testerum.test_file_format.stepdef.signature.FileStepDefSignature
 import com.testerum.test_file_format.stepdef.signature.FileStepDefSignatureSerializer
-import com.testerum.test_file_format.testdef.FileTestDefSerializer
 import java.io.Writer
 
 object FileStepDefSerializer : BaseSerializer<FileStepDef>() {
@@ -15,9 +14,6 @@ object FileStepDefSerializer : BaseSerializer<FileStepDef>() {
     override fun serialize(source: FileStepDef, destination: Writer, indentLevel: Int) {
         serializeSignature(source.signature, destination, indentLevel)
         serializeDescription(source.description, destination, indentLevel + 1)
-
-        destination.write("\n")
-
         serializeTags(source.tags, destination, indentLevel + 1)
         serializeSteps(source.steps, destination, indentLevel + 1)
     }
@@ -28,21 +24,30 @@ object FileStepDefSerializer : BaseSerializer<FileStepDef>() {
     }
 
     private fun serializeDescription(description: String?, destination: Writer, indentLevel: Int) {
-        description?.let {
-            destination.write("\n")
-            FileDescriptionSerializer.serialize(it, destination, indentLevel)
-            destination.write("\n")
+        if (description == null || description.isEmpty()) {
+            return
         }
+
+        destination.write("\n")
+        FileDescriptionSerializer.serialize(description, destination, indentLevel)
     }
 
     private fun serializeTags(tags: List<String>, destination: Writer, indentLevel: Int) {
-        if (tags.isNotEmpty()) {
-            FileTagsSerializer.serialize(tags, destination, indentLevel)
-            destination.write("\n")
+        if (!tags.isNotEmpty()) {
+            return
         }
+
+        destination.write("\n")
+        FileTagsSerializer.serialize(tags, destination, indentLevel)
     }
 
     private fun serializeSteps(steps: List<FileStepCall>, destination: Writer, indentLevel: Int) {
+        if (steps.isEmpty()) {
+            return
+        }
+
+        destination.write("\n")
+
         for (step in steps) {
             FileStepCallSerializer.serialize(step, destination, indentLevel)
         }

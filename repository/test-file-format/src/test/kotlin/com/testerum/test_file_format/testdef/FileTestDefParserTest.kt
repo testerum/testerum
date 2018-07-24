@@ -6,6 +6,7 @@ import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
 import com.testerum.test_file_format.common.step_call.phase.FileStepPhase
+import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
@@ -45,7 +46,7 @@ class FileTestDefParserTest {
                 equalTo(
                         FileTestDef(
                                 name = "Successful login",
-                                isManual = false,
+                                properties = FileTestDefProperties(isManual = false, isDisabled = false),
                                 description =  """ |A composed step that allows us to bypass the login screen.
                                                    |Will be useful from many tests.""".trimMargin(),
                                 tags = listOf("one", "two", "three"),
@@ -136,7 +137,7 @@ class FileTestDefParserTest {
                 equalTo(
                         FileTestDef(
                                 name = "Empty test",
-                                isManual = false,
+                                properties = FileTestDefProperties(isManual = false, isDisabled = false),
                                 description =  "some description",
                                 steps = emptyList()
                         )
@@ -145,16 +146,18 @@ class FileTestDefParserTest {
     }
 
     @Test
-    fun `manual test`() {
+    fun `manual, disabled test`() {
         assertThat(
                 parser.parse(
-                        """ |manual-test-def: A test
+                        """ |test-def: A test
+                            |
+                            |    test-properties = <<manual, disabled>>
                         """.trimMargin()
                 ),
                 equalTo(
                         FileTestDef(
                                 name = "A test",
-                                isManual = true,
+                                properties = FileTestDefProperties(isManual = true, isDisabled = true),
                                 steps = emptyList()
                         )
                 )
