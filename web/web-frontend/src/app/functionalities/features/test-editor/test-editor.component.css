@@ -13,3 +13,25 @@
     display: flex;
 }
 
+#manualSwitch .ui-inputswitch-on {
+    background: #5cb85c !important;
+    color: white;
+}
+
+#manualSwitch .ui-inputswitch-off {
+    background: #f0ad4e !important;
+    color: white;
+}
+
+
+#disabledSwitch .ui-inputswitch-on {
+    background: #5cb85c !important;
+    color: white;
+}
+
+#disabledSwitch .ui-inputswitch-off {
+    background: #d9534f !important;
+    color: white;
+}
+
+

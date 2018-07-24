@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {TestsService} from "../../../service/tests.service";
 import {TestModel} from "../../../model/test/test.model";
@@ -20,7 +20,8 @@ import {ArrayUtil} from "../../../utils/array.util";
     moduleId: module.id,
     selector: 'test-editor',
     templateUrl: 'test-editor.component.html',
-    styleUrls: ['test-editor.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css']
+    styleUrls: ['test-editor.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class TestEditorComponent implements OnInit, OnDestroy {
 
