@@ -8,6 +8,7 @@ import {FeaturesTreeFilter} from "../../../../model/feature/filter/features-tree
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {ActivatedRoute} from "@angular/router";
 import {JsonTreeExpandUtil} from "../../../../generic/components/json-tree/util/json-tree-expand.util";
+import {TagsService} from "../../../../service/tags.service";
 
 @Component({
     selector: 'features-tree-filter',
@@ -20,7 +21,7 @@ export class FeaturesTreeFilterComponent implements OnInit {
     @Input() treeModel:JsonTreeModel;
 
     @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
-    allTheTags: Array<string> = [];
+    allKnownTags: Array<string> = [];
     selectedTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;
@@ -33,34 +34,27 @@ export class FeaturesTreeFilterComponent implements OnInit {
     isTagsButtonActive = false;
 
     constructor(private activatedRoute: ActivatedRoute,
-                private featureTreeService: FeaturesTreeService) {
+                private featureTreeService: FeaturesTreeService,
+                private tagsService: TagsService) {
     }
 
     ngOnInit() {
-        this.allTheTags = ["owner", "create", "pets", "vets"]; //TODO: thsi need to load from tests service
-    }
-
-    onTagsKeyUp(event) {
-        if(event.key =="Enter") {
-            if (this.currentTagSearch) {
-                this.selectedTags.push(this.currentTagSearch);
-                this.currentTagSearch = null;
-                this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
-                event.preventDefault();
-            }
-        }
     }
 
     onTagSelect(event) {
         this.currentTagSearch = null;
+        this.filter();
+    }
+
+    onTagUnSelect(event) {
+        this.filter();
     }
 
     searchTags(event) {
-        (((((this.treeModel.getChildren()[0] as JsonTreeContainer).getChildren()[1] as JsonTreeContainer).getChildren()[0] as JsonTreeContainer).getChildren()[1] as JsonTreeContainer).getChildren()[8] as JsonTreeContainer).setHidden(true);
         this.currentTagSearch = event.query;
 
         let newTagsToShow = ArrayUtil.filterArray(
-            this.allTheTags,
+            this.allKnownTags,
             event.query
         );
         for (let currentTag of this.selectedTags) {
@@ -94,7 +88,13 @@ export class FeaturesTreeFilterComponent implements OnInit {
     }
     onTagsButtonClickEvent() {
         this.isTagsButtonActive = !this.isTagsButtonActive;
-        if(!this.isTagsButtonActive) this.filter()
+        if (this.isTagsButtonActive) {
+            this.tagsService.getTags().subscribe(tags => {
+                ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
+            });
+        } else {
+            this.filter();
+        }
     }
 
     filter(): void {

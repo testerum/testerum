@@ -215,22 +215,10 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
     private fun filterFeatures(featuresTreeFilter: FeaturesTreeFilter, features: List<Feature>): List<Feature> {
         val results = mutableListOf<Feature>()
         for (feature in features) {
-            var featureIsMatchFilter = false
+            var featureIsMatchSearchFilterCriteria = featureMatchesSearchFilterCriteria(feature, featuresTreeFilter)
+            var featureIsMatchTagsFilterCriteria = tagListMatchesTagsFilterCriteria(feature.tags, featuresTreeFilter)
 
-            if (feature.path.toString().containsSearchStringParts(featuresTreeFilter.search)) {
-                featureIsMatchFilter = true
-            }
-
-            if (feature.name.containsSearchStringParts(featuresTreeFilter.search)) {
-                featureIsMatchFilter = true
-            }
-
-            if (feature.description.containsSearchStringParts(featuresTreeFilter.search)) {
-                featureIsMatchFilter = true
-            }
-
-            //TODO: TAGS filter
-            if (featureIsMatchFilter) {
+            if (featureIsMatchSearchFilterCriteria && featureIsMatchTagsFilterCriteria) {
                 results.add(feature)
             }
         }
@@ -238,26 +226,59 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         return results
     }
 
+    private fun tagListMatchesTagsFilterCriteria(tags: List<String>, featuresTreeFilter: FeaturesTreeFilter): Boolean {
+        val featureUpperCasedTags = tags.map { it.toUpperCase() }
+        for (filterTag in featuresTreeFilter.tags) {
+            if (!featureUpperCasedTags.contains(filterTag.toUpperCase())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private fun featureMatchesSearchFilterCriteria(feature: Feature, featuresTreeFilter: FeaturesTreeFilter): Boolean {
+        var featureIsMatchFilter = false
+
+        if (feature.path.toString().containsSearchStringParts(featuresTreeFilter.search)) {
+            featureIsMatchFilter = true
+        }
+
+        if (feature.name.containsSearchStringParts(featuresTreeFilter.search)) {
+            featureIsMatchFilter = true
+        }
+
+        if (feature.description.containsSearchStringParts(featuresTreeFilter.search)) {
+            featureIsMatchFilter = true
+        }
+        return featureIsMatchFilter
+    }
+
     private fun filterTests(featuresTreeFilter: FeaturesTreeFilter, tests: List<TestModel>): List<TestModel> {
         val results = mutableListOf<TestModel>()
         for (test in tests) {
-            var testMatchFilter = false
+            val testMatchesTestFilter = testMatchesSearchFilter(test, featuresTreeFilter)
+            val testIsMatchTagsFilterCriteria = tagListMatchesTagsFilterCriteria(test.tags, featuresTreeFilter)
 
-            if (test.path.toString().containsSearchStringParts(featuresTreeFilter.search)) {
-                testMatchFilter = true
-            }
-
-            if (test.text.containsSearchStringParts(featuresTreeFilter.search)) {
-                testMatchFilter = true
-            }
-
-            //TODO: add AUTOMATED, MANUAL and TAGS filter
-            if (testMatchFilter) {
+            if (testMatchesTestFilter && testIsMatchTagsFilterCriteria) {
                 results.add(test)
             }
         }
 
         return results
+    }
+
+    private fun testMatchesSearchFilter(test: TestModel, featuresTreeFilter: FeaturesTreeFilter): Boolean {
+        var testMatchesTestFilter = false
+
+        if (test.path.toString().containsSearchStringParts(featuresTreeFilter.search)) {
+            testMatchesTestFilter = true
+        }
+
+        if (test.text.containsSearchStringParts(featuresTreeFilter.search)) {
+            testMatchesTestFilter = true
+        }
+        return testMatchesTestFilter
     }
 
     private fun mapFeaturesToTree(features: List<Feature>, rootNode: RootTreeNode) {

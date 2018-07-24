@@ -105,10 +105,15 @@
               (click)="filter()">
             <i class="fa fa-tag"></i>
         </span>
-        <p-autoComplete #tagsElement [(ngModel)]="selectedTags" [suggestions]="tagsToShow"
-                        (completeMethod)="searchTags($event)" [multiple]="true"
-                        [dropdown]="true" (onSelect)="onTagSelect($event)" [field]="field"
-                        (keypress)="onTagsKeyUp($event);"
+        <p-autoComplete #tagsElement
+                        [(ngModel)]="selectedTags"
+                        [suggestions]="tagsToShow"
+                        (completeMethod)="searchTags($event)"
+                        (onSelect)="onTagSelect($event)"
+                        (onUnselect)="onTagUnSelect($event)"
+                        [delay]="0"
+                        [multiple]="true"
+                        [dropdown]="true"
                         placeholder="Tags"
                         tooltipPosition="bottom"
                         pTooltip="Tags"
