@@ -227,14 +227,11 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
     }
 
     private fun tagListMatchesTagsFilterCriteria(tags: List<String>, featuresTreeFilter: FeaturesTreeFilter): Boolean {
-        val featureUpperCasedTags = tags.map { it.toUpperCase() }
-        for (filterTag in featuresTreeFilter.tags) {
-            if (!featureUpperCasedTags.contains(filterTag.toUpperCase())) {
-                return false;
-            }
-        }
+        val featureUpperCasedTags = tags.map(String::toUpperCase)
 
-        return true;
+        return featureUpperCasedTags.containsAll(
+                featuresTreeFilter.tags.map(String::toUpperCase)
+        )
     }
 
     private fun featureMatchesSearchFilterCriteria(feature: Feature, featuresTreeFilter: FeaturesTreeFilter): Boolean {
