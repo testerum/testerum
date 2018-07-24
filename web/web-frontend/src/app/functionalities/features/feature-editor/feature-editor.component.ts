@@ -80,9 +80,11 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     }
 
     setEditMode(value: boolean) {
-        this.tagsService.getTags().subscribe(tags => {
-            ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
-        });
+        if (value == true) {
+            this.tagsService.getTags().subscribe(tags => {
+                ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
+            });
+        }
 
         this.isEditMode = value;
         this.markdownEditor.setEditMode(value);

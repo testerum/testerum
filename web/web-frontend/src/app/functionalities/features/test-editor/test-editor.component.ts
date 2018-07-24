@@ -79,9 +79,11 @@ export class TestEditorComponent implements OnInit, OnDestroy {
     }
 
     setEditMode(isEditMode: boolean) {
-        this.tagsService.getTags().subscribe(tags => {
-            ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
-        });
+        if (isEditMode) {
+            this.tagsService.getTags().subscribe(tags => {
+                ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
+            });
+        }
 
         this.isEditMode = isEditMode;
         this.stepCallTreeService.setEditMode(isEditMode);
