@@ -215,8 +215,8 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
     private fun filterFeatures(featuresTreeFilter: FeaturesTreeFilter, features: List<Feature>): List<Feature> {
         val results = mutableListOf<Feature>()
         for (feature in features) {
-            var featureIsMatchSearchFilterCriteria = featureMatchesSearchFilterCriteria(feature, featuresTreeFilter)
-            var featureIsMatchTagsFilterCriteria = tagListMatchesTagsFilterCriteria(feature.tags, featuresTreeFilter)
+            val featureIsMatchSearchFilterCriteria = featureMatchesSearchFilterCriteria(feature, featuresTreeFilter)
+            val featureIsMatchTagsFilterCriteria = tagListMatchesTagsFilterCriteria(feature.tags, featuresTreeFilter)
 
             if (featureIsMatchSearchFilterCriteria && featureIsMatchTagsFilterCriteria) {
                 results.add(feature)
@@ -254,15 +254,21 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
     private fun filterTests(featuresTreeFilter: FeaturesTreeFilter, tests: List<TestModel>): List<TestModel> {
         val results = mutableListOf<TestModel>()
         for (test in tests) {
+            val testMatchesTypeFilter = testMatchesTypeFilter(test, featuresTreeFilter)
             val testMatchesTestFilter = testMatchesSearchFilter(test, featuresTreeFilter)
             val testIsMatchTagsFilterCriteria = tagListMatchesTagsFilterCriteria(test.tags, featuresTreeFilter)
 
-            if (testMatchesTestFilter && testIsMatchTagsFilterCriteria) {
+            if (testMatchesTypeFilter && testMatchesTestFilter && testIsMatchTagsFilterCriteria) {
                 results.add(test)
             }
         }
 
         return results
+    }
+
+    private fun testMatchesTypeFilter(test: TestModel, featuresTreeFilter: FeaturesTreeFilter): Boolean {
+        return test.properties.isManual == featuresTreeFilter.showManualTest ||
+                !test.properties.isManual == featuresTreeFilter.showAutomatedTests
     }
 
     private fun testMatchesSearchFilter(test: TestModel, featuresTreeFilter: FeaturesTreeFilter): Boolean {

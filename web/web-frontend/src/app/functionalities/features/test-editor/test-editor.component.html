@@ -52,7 +52,7 @@
                                 <span *ngIf="testModel.properties.isDisabled" class="label label-danger">Disabled</span>
                             </div>
                             <div *ngIf="isEditMode">
-                                <p-inputSwitch onLabel="Enabled" offLabel="Disabled"
+                                <p-inputSwitch onLabel="Enabled" offLabel="&nbsp;Disabled"
                                                [ngModel]="!testModel.properties.isDisabled"
                                                (onChange)="onIsDisabledChangeEvent($event)"
                                                name="disabledSwitch" id="disabledSwitch"></p-inputSwitch>
