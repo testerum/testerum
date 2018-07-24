@@ -1,7 +1,9 @@
 package net.qutester.service.mapper
 
 import com.testerum.test_file_format.testdef.FileTestDef
+import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
 import net.qutester.model.test.TestModel
+import net.qutester.model.test.TestProperties
 import net.testerum.db_file.model.RepositoryFile
 
 open class FileToUiTestMapper(private val fileToUiStepMapper: FileToUiStepMapper) {
@@ -10,7 +12,7 @@ open class FileToUiTestMapper(private val fileToUiStepMapper: FileToUiStepMapper
 
         return TestModel(
                 path = testFile.knownPath.asPath(),
-                isManual = fileTestDef.isManual,
+                properties = mapTestProperties(fileTestDef.properties),
                 text = fileTestDef.name,
                 description = fileTestDef.description,
                 tags = fileTestDef.tags,
@@ -20,4 +22,10 @@ open class FileToUiTestMapper(private val fileToUiStepMapper: FileToUiStepMapper
                 )
         )
     }
+
+    private fun mapTestProperties(properties: FileTestDefProperties) = TestProperties(
+            isManual = properties.isManual,
+            isDisabled = properties.isDisabled
+    )
+
 }

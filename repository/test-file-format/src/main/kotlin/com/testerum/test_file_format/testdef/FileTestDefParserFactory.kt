@@ -7,8 +7,9 @@ import com.testerum.test_file_format.common.description.FileDescriptionParserFac
 import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.FileStepCallParserFactory.stepCall
 import com.testerum.test_file_format.common.tags.FileTagsParserFactory.tags
+import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
+import com.testerum.test_file_format.testdef.properties.FileTestDefPropertiesParserFactory.testProperties
 import org.jparsec.Parser
-import org.jparsec.Parsers.or
 import org.jparsec.Parsers.sequence
 import org.jparsec.Scanners.string
 import java.util.*
@@ -21,20 +22,18 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
         return sequence(
                 testDefKeyword(),
                 testName(),
+                testTestProperties(),
                 testDescription(),
                 testTags(),
                 testStepCalls()
-        ) { testType, testName, description, tags, steps -> FileTestDef(testName, testType == TestType.MANUAL, description, tags, steps) }
+        ) { _, testName, properties, description, tags, steps -> FileTestDef(testName, properties, description, tags, steps) }
     }
 
-    private fun testDefKeyword(): Parser<TestType> {
+    private fun testDefKeyword(): Parser<Void> {
         return sequence(
-                or(
-                        string("test-def:").source(),
-                        string("manual-test-def:").source()
-                ),
+                string("test-def:"),
                 string(" ")
-        ) { header, _ -> if (header == "test-def:") TestType.AUTOMATIC else TestType.MANUAL }
+        )
     }
 
     private fun testName() : Parser<String> {
@@ -42,6 +41,14 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
                 .many1()
                 .toScanner("testName")
                 .source()
+    }
+
+    private fun testTestProperties(): Parser<FileTestDefProperties> {
+        return sequence(
+                optionalWhitespaceOrNewLines(),
+                testProperties().asOptional(),
+                optionalWhitespaceOrNewLines()
+        ) {_: Void?, properties: Optional<FileTestDefProperties>, _: Void? -> properties.orElse(FileTestDefProperties.DEFAULT) }
     }
 
     private fun testDescription(): Parser<String?> {
@@ -66,12 +73,6 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
                 stepCall(),
                 optionalWhitespaceOrNewLines()
         ) { _, step, _ -> step }.many()
-    }
-
-    private enum class TestType {
-        AUTOMATIC,
-        MANUAL,
-        ;
     }
 
 }

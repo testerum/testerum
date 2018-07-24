@@ -21,7 +21,7 @@ object FileDescriptionSerializer : BaseSerializer<String>() {
         indent(destination, indentLevel)
         destination.write("description = <<")
         destination.write(escapeMultiLineString(lines.first()))
-        destination.write(">>")
+        destination.write(">>\n")
     }
 
     private fun serializeMultiLine(destination: Writer, indentLevel: Int, lines: List<String>) {
@@ -37,7 +37,7 @@ object FileDescriptionSerializer : BaseSerializer<String>() {
         }
 
         indent(destination, indentLevel)
-        destination.write(">>")
+        destination.write(">>\n")
     }
 
 }

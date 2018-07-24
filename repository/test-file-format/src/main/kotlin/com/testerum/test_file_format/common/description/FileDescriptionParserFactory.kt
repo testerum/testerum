@@ -2,6 +2,7 @@ package com.testerum.test_file_format.common.description
 
 import com.testerum.common.parsing.ParserFactory
 import com.testerum.common.parsing.util.CommonScanners.optionalWhitespace
+import com.testerum.common.parsing.util.CommonScanners.optionalWhitespaceOrNewLines
 import com.testerum.test_file_format.common.util.TestFileFormatScanners.multiLineAngleText
 import org.jparsec.Parser
 import org.jparsec.Parsers.sequence
@@ -17,8 +18,9 @@ object FileDescriptionParserFactory : ParserFactory<String> {
                 optionalWhitespace(),
                 string("="),
                 optionalWhitespace(),
-                multiLineAngleText()
-        ) { _, _, _, _, descriptionText -> descriptionText }
+                multiLineAngleText(),
+                optionalWhitespaceOrNewLines()
+        ) { _, _, _, _, descriptionText, _ -> descriptionText }
     }
 
 }

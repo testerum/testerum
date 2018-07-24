@@ -4,6 +4,7 @@ import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
 import com.testerum.test_file_format.common.step_call.phase.FileStepPhase
 import com.testerum.test_file_format.test_util.SerializerTestRunner
+import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -19,7 +20,7 @@ class FileTestDefSerializerTest {
         testRunner.execute(
                 original = FileTestDef(
                         name = "The name of the test",
-                        isManual = false,
+                        properties = FileTestDefProperties(isManual = false, isDisabled = false),
                         description = """ |This is a wonderful test.
                                           |It tests many cools things.
                                           |Just read it and you'll see what I mean.""".trimMargin(),
@@ -83,7 +84,7 @@ class FileTestDefSerializerTest {
                 FileTestDefSerializer.serializeToString(
                         FileTestDef(
                                 name = "The name of the test",
-                                isManual = false,
+                                properties = FileTestDefProperties(isManual = false, isDisabled = false),
                                 description = """ |This is a wonderful test.
                                           |It tests many cools things.
                                           |Just read it and you'll see what I mean.""".trimMargin(),
@@ -115,14 +116,16 @@ class FileTestDefSerializerTest {
     }
 
     @Test
-    fun `manual test`() {
+    fun `manual, disabled test`() {
         assertEquals(
-                """|manual-test-def: Some test
+                """|test-def: Some test
+                   |
+                   |    test-properties = <<manual, disabled>>
                    |""".trimMargin(),
                 FileTestDefSerializer.serializeToString(
                         FileTestDef(
                                 name = "Some test",
-                                isManual = true
+                                properties = FileTestDefProperties(isManual = true, isDisabled = true)
                         )
                 )
         )

@@ -32,7 +32,7 @@ class TestResolver(private val stepService: StepService) {
 
         return TestModel(
                 path = testModel.path,
-                isManual = testModel.isManual,
+                properties = testModel.properties,
                 text = testModel.text,
                 description = testModel.description,
                 tags = testModel.tags,

@@ -15,7 +15,8 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = "",
                 indentLevel = 0,
-                expected = """description = <<>>"""
+                expected = """|description = <<>>
+                              |""".trimMargin()
         )
     }
 
@@ -24,7 +25,8 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = "a simple description",
                 indentLevel = 0,
-                expected = """description = <<a simple description>>"""
+                expected = """|description = <<a simple description>>
+                              |""".trimMargin()
         )
     }
 
@@ -39,7 +41,8 @@ class FileDescriptionSerializerTest {
                                |    First line
                                |    Second line
                                |    Another line
-                               |>>""".trimMargin()
+                               |>>
+                               |""".trimMargin()
 
         )
     }
@@ -65,7 +68,8 @@ class FileDescriptionSerializerTest {
                                |            2.1.1
                                |            2.1.2
                                |    Another line
-                               |>>""".trimMargin()
+                               |>>
+                               |""".trimMargin()
 
         )
     }
@@ -75,7 +79,8 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = """2 \ 1""",
                 indentLevel = 0,
-                expected = """description = <<2 \ 1>>"""
+                expected = """|description = <<2 \ 1>>
+                              |""".trimMargin()
         )
     }
 
@@ -84,7 +89,8 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = """2 > 1""",
                 indentLevel = 0,
-                expected = """description = <<2 > 1>>"""
+                expected = """|description = <<2 > 1>>
+                              |""".trimMargin()
         )
     }
 
@@ -93,7 +99,8 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = """2 >> 1""",
                 indentLevel = 0,
-                expected = """description = <<2 \>> 1>>"""
+                expected = """|description = <<2 \>> 1>>
+                              |""".trimMargin()
         )
     }
 
@@ -102,7 +109,8 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = """2 \>> 1""",
                 indentLevel = 0,
-                expected = """description = <<2 \\>> 1>>"""
+                expected = """|description = <<2 \\>> 1>>
+                              |""".trimMargin()
         )
     }
 
@@ -111,7 +119,8 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = """5000 >> 200 >> 1""",
                 indentLevel = 0,
-                expected = """description = <<5000 \>> 200 \>> 1>>"""
+                expected = """|description = <<5000 \>> 200 \>> 1>>
+                              |""".trimMargin()
         )
     }
 
@@ -126,7 +135,8 @@ class FileDescriptionSerializerTest {
                                |    First line
                                |    2 \ 1
                                |    Another line
-                               |>>""".trimMargin()
+                               |>>
+                               |""".trimMargin()
 
         )
     }
@@ -142,7 +152,8 @@ class FileDescriptionSerializerTest {
                                |    First line
                                |    2 > 1
                                |    Another line
-                               |>>""".trimMargin()
+                               |>>
+                               |""".trimMargin()
 
         )
     }
@@ -158,7 +169,8 @@ class FileDescriptionSerializerTest {
                                |    First line
                                |    2 \>> 1
                                |    Another line
-                               |>>""".trimMargin()
+                               |>>
+                               |""".trimMargin()
 
         )
     }
@@ -174,7 +186,8 @@ class FileDescriptionSerializerTest {
                                |    First line
                                |    2 \\>> 1
                                |    Another line
-                               |>>""".trimMargin()
+                               |>>
+                               |""".trimMargin()
 
         )
     }
@@ -192,7 +205,8 @@ class FileDescriptionSerializerTest {
                                |    5000 \>> 200
                                |    200 \>> 1
                                |    Another line
-                               |>>""".trimMargin()
+                               |>>
+                               |""".trimMargin()
 
         )
     }

@@ -76,6 +76,7 @@ class FileFeatureSerializerTest {
                               |before-hook: Given a clean database
                               |before-hook: When writing <<file:Insert Owner.sql>> in <<file:{{rdbmsConnectionResource}}>> database
                               |    var rdbmsConnectionResource = <<Petclinic MySql.rdbms.connection.json>>
+                              |
                               |after-hook: When I take a screenshot
                               |after-hook: When I write debug information to <<file:{{rdbmsConnectionResource}}>>
                               |    var rdbmsConnectionResource = <<Logging Db.rdbms.connection.json>>
@@ -96,6 +97,7 @@ class FileFeatureSerializerTest {
                    |        before-hook: Given a clean database
                    |        before-hook: When writing <<file:Insert Owner.sql>> in <<file:{{rdbmsConnectionResource}}>> database
                    |            var rdbmsConnectionResource = <<Petclinic MySql.rdbms.connection.json>>
+                   |
                    |        after-hook: When I take a screenshot
                    |        after-hook: When I write debug information to <<file:{{rdbmsConnectionResource}}>>
                    |            var rdbmsConnectionResource = <<Logging Db.rdbms.connection.json>>
