@@ -14,7 +14,7 @@
 
 
                 <div class="form-group row">
-                    <label class="col-md-1 control-label col-form-label" for="testName">Test Name</label>
+                    <label class="col-md-1 control-label col-form-label" for="testName">Name</label>
 
                     <div class="col-md-11 form-value" *ngIf="!isEditMode">
                         {{testModel.text || ""}}
@@ -27,6 +27,35 @@
                              class="alert alert-danger">
                             <div [hidden]="!testName.errors.required">
                                 Name is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TEST TYPE & DISABLED -->
+                <div class="form-group row">
+                    <label class="col-md-1 control-label" for="manualSwitch">Type</label>
+                    <div class="col-md-11 form-value type-and-disabled-values">
+                        <div *ngIf="!isEditMode" class="type-container">
+                            <span *ngIf="!testModel.properties.isManual" class="label label-success">Automated</span>
+                            <span *ngIf="testModel.properties.isManual" class="label label-warning">Manual</span>
+                        </div>
+                        <div *ngIf="isEditMode" class="type-container">
+                            <p-inputSwitch onLabel="Automated" offLabel="Manual"
+                                           [ngModel]="!testModel.properties.isManual"
+                                           (onChange)="onIsManualChangeEvent($event)"
+                                           name="manualSwitch" id="manualSwitch"></p-inputSwitch>
+                        </div>
+
+                        <div class="disabled-container">
+                            <div *ngIf="!isEditMode">
+                                <span *ngIf="testModel.properties.isDisabled" class="label label-danger">Disabled</span>
+                            </div>
+                            <div *ngIf="isEditMode">
+                                <p-inputSwitch onLabel="Enabled" offLabel="Disabled"
+                                               [ngModel]="!testModel.properties.isDisabled"
+                                               (onChange)="onIsDisabledChangeEvent($event)"
+                                               name="disabledSwitch" id="disabledSwitch"></p-inputSwitch>
                             </div>
                         </div>
                     </div>

@@ -65,6 +65,14 @@ export class TestEditorComponent implements OnInit, OnDestroy {
         if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
     }
 
+    onIsManualChangeEvent(event: any) {
+        this.testModel.properties.isManual = !event.checked;
+    }
+
+    onIsDisabledChangeEvent(event: any) {
+        this.testModel.properties.isDisabled = !event.checked;
+    }
+
     addStep() {
         this.stepCallTreeService.addStepCallEditor(this.stepCallTreeService.jsonTreeModel);
     }

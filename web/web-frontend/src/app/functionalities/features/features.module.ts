@@ -24,9 +24,8 @@ import {TestNodeComponent} from "./features-tree/container/node/test-node.compon
 import {FeatureContainerComponent} from "./features-tree/container/feature-container.component";
 import {
     AutoCompleteModule,
-    ButtonModule, InputTextModule,
+    InputSwitchModule, InputTextModule,
     SelectButtonModule,
-    SplitButtonModule,
     ToolbarModule,
     TooltipModule
 } from "primeng/primeng";
@@ -50,6 +49,7 @@ import {FeaturesTreeFilterComponent} from "./features-tree/features-tree-filter/
         SelectButtonModule,
         AutoCompleteModule,
         InputTextModule,
+        InputSwitchModule,
 
         GenericModule,
         StepsModule,

@@ -5,3 +5,11 @@
     margin-left: 10px;
 }
 
+.disabled-container {
+    margin-left: 10px;
+}
+
+.type-and-disabled-values {
+    display: flex;
+}
+
