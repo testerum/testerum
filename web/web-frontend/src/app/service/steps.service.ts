@@ -44,7 +44,7 @@ export class StepsService {
         };
 
         return this.http
-            .post<RootServerTreeNode>(this.COMPOSED_STEPS_URL, body, httpOptions)
+            .post<Array<ComposedStepDef>>(this.COMPOSED_STEPS_URL, body, httpOptions)
             .map(StepsService.extractComposedStepDefs);
     }
 
@@ -106,7 +106,7 @@ export class StepsService {
         };
 
         return this.http
-            .post<RootServerTreeNode>(this.BASIC_STEPS_URL, body, httpOptions)
+            .post<Array<BasicStepDef>>(this.BASIC_STEPS_URL, body, httpOptions)
             .map(StepsService.extractBasicStepsDef);
     }
 
