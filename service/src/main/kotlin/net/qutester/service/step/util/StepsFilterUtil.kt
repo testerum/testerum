@@ -9,18 +9,18 @@ import net.qutester.model.step.filter.StepsTreeFilter
 object StepsFilterUtil {
 
     fun isStepMatchingFilter(step: StepDef, stepsTreeFilter: StepsTreeFilter): Boolean {
-        val testMatchesTypeFilter = testMatchesTypeFilter(step, stepsTreeFilter)
-        val testMatchesTestFilter = testMatchesSearchFilter(step, stepsTreeFilter)
-        val testIsMatchTagsFilterCriteria = tagListMatchesTagsFilterCriteria(step.tags, stepsTreeFilter)
+        val stepMatchesTypeFilter = stepMatchesTypeFilter(step, stepsTreeFilter)
+        val stepMatchesTestFilter = stepMatchesSearchFilter(step, stepsTreeFilter)
+        val stepIsMatchTagsFilterCriteria = tagListMatchesTagsFilterCriteria(step.tags, stepsTreeFilter)
 
-        if (testMatchesTypeFilter && testMatchesTestFilter && testIsMatchTagsFilterCriteria) {
+        if (stepMatchesTypeFilter && stepMatchesTestFilter && stepIsMatchTagsFilterCriteria) {
             return true;
         }
 
         return false;
     }
 
-    private fun testMatchesTypeFilter(step: StepDef, stepsTreeFilter: StepsTreeFilter): Boolean {
+    private fun stepMatchesTypeFilter(step: StepDef, stepsTreeFilter: StepsTreeFilter): Boolean {
         return step is ComposedStepDef == stepsTreeFilter.showComposedTests ||
                 step is BasicStepDef == stepsTreeFilter.showBasicTest
     }
@@ -33,7 +33,7 @@ object StepsFilterUtil {
         )
     }
 
-    private fun testMatchesSearchFilter(step: StepDef, stepsTreeFilter: StepsTreeFilter): Boolean {
+    private fun stepMatchesSearchFilter(step: StepDef, stepsTreeFilter: StepsTreeFilter): Boolean {
         var stepMatchesTestFilter = false
 
         if (step.path.toString().containsSearchStringParts(stepsTreeFilter.search)) {

@@ -11,13 +11,15 @@
             </div>
 
             <div class="modal-body">
+                <step-chooser-tree-filter></step-chooser-tree-filter>
+
                 <!-- COMPOSED STEPS -->
-                <json-tree [treeModel]="composedStepsJsonTreeModel"
+                <json-tree [treeModel]="stepChooserService.composedStepsJsonTreeModel"
                            [modelComponentMapping]="jsonModelComponentMapping">
                 </json-tree>
 
                 <!-- BASIC STEPS -->
-                <json-tree [treeModel]="basicStepsJsonTreeModel"
+                <json-tree [treeModel]="stepChooserService.basicStepsJsonTreeModel"
                            [modelComponentMapping]="jsonModelComponentMapping">
                 </json-tree>
             </div>

@@ -64,10 +64,18 @@ import {PathChooserContainerComponent} from "./components/path-chooser/container
 import {PathChooserNodeComponent} from "./components/path-chooser/container/node/path-chooser-node.component";
 import {PathChooserService} from "./components/path-chooser/path-chooser.service";
 import {SelectSharedResourceModalComponent} from "./components/step-call-tree/select-shared-resource-modal/select-shared-resource-modal.component";
-import {AutoCompleteModule, FileUploadModule} from "primeng/primeng";
+import {
+    AutoCompleteModule,
+    FileUploadModule,
+    InputTextModule,
+    SelectButtonModule,
+    ToolbarModule,
+    TooltipModule
+} from "primeng/primeng";
 import {MarkdownEditorComponent} from "./components/markdown-editor/markdown-editor.component";
 import {AttachmentsComponent} from "./components/form/attachments/attachments.component";
 import {StepCallEditorContainerComponent} from "./components/step-call-tree/nodes/step-call-editor-container/step-call-editor-container.component";
+import {StepChooserTreeFilterComponent} from "./components/step-chooser/step-chooser-tree-filter/step-chooser-tree-filter.component";
 
 @NgModule({
     imports: [
@@ -81,6 +89,10 @@ import {StepCallEditorContainerComponent} from "./components/step-call-tree/node
         ChartModule,
         FileUploadModule,
         AutoCompleteModule,
+        TooltipModule,
+        ToolbarModule,
+        SelectButtonModule,
+        InputTextModule,
     ],
     exports: [
         SafeHtmlPipe,
@@ -151,6 +163,7 @@ import {StepCallEditorContainerComponent} from "./components/step-call-tree/node
         InputErrorComponent,
 
         SplitPanelContainerComponent,
+        StepChooserTreeFilterComponent,
         StepChooserComponent,
         StepChooserContainerComponent,
         StepChooserNodeComponent,

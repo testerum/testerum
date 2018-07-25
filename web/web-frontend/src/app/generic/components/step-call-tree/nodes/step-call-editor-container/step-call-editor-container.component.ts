@@ -63,7 +63,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     ngOnInit() {
-        this.stepsService.getDefaultSteps().subscribe((basicSteps: Array<BasicStepDef>)=> {
+        this.stepsService.getBasicSteps().subscribe((basicSteps: Array<BasicStepDef>)=> {
             basicSteps.forEach(value =>
                 this.existingStepsDefs.push(value)
             );

@@ -24,7 +24,6 @@ export class StepsComponent implements OnInit {
         .addPair(StepTreeContainerModel, JsonStepContainerComponent)
         .addPair(StepTreeNodeModel, JsonStepNodeComponent);
 
-    stepsService:StepsService;
     stepsTreeService:StepsTreeService;
 
     constructor(stepsTreeService:StepsTreeService,

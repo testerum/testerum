@@ -13,6 +13,8 @@ import {StepTreeContainerModel} from "../../../functionalities/steps/steps-tree/
 import {StepTreeNodeModel} from "../../../functionalities/steps/steps-tree/model/step-tree-node.model";
 import {JsonTreeModel} from "../json-tree/model/json-tree.model";
 import {StepChooserNodeComponent} from "./step-chooser-container/step-chooser-node/step-chooser-node.component";
+import {Path} from "../../../model/infrastructure/path/path.model";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     moduleId: module.id,
@@ -30,21 +32,22 @@ export class StepChooserComponent implements OnInit {
 
     stepChoseHandler:StepChoseHandler;
 
-    basicStepsJsonTreeModel: JsonTreeModel;
-    composedStepsJsonTreeModel: JsonTreeModel;
-
-    constructor(private stepChooserService: StepChooserService,
-                private stepsService: StepsService) {
+    stepChooserService: StepChooserService;
+    constructor(private activatedRoute: ActivatedRoute,
+                stepChooserService: StepChooserService) {
+        this.stepChooserService = stepChooserService;
     }
 
     ngOnInit() {
-        this.stepsService.getDefaultSteps().subscribe(
-            steps => this.basicStepsJsonTreeModel = StepsTreeUtil.mapStepsDefToStepJsonTreeModel(steps, false)
-        );
     }
 
     showStepChooserModelWithoutStepReference(stepChoseHandler:StepChoseHandler, stepIdToRemove:string) {
-        this.loadComposedStepsWithoutStep(stepIdToRemove);
+        this.stepChooserService.stepIdToRemove = stepIdToRemove;
+
+        let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path'] : null;
+        let path: Path = pathAsString != null ? Path.createInstance(pathAsString) : null;
+
+        this.stepChooserService.initializeStepsTreeFromServer(path);
 
         this.stepChoseHandler = stepChoseHandler;
 
@@ -52,45 +55,7 @@ export class StepChooserComponent implements OnInit {
     }
 
     showStepChooserModal(stepChoseHandler:StepChoseHandler) {
-        this.loadComposedStepsWithoutStep(null);
-
-        this.stepChoseHandler = stepChoseHandler;
-
-        this.stepChooser.show()
-    }
-
-    private loadComposedStepsWithoutStep(stepIdToRemove:string) {
-        this.stepsService.getComposedStepDefs().subscribe(
-            composedSteps => {
-                let filteredComposedSteps = composedSteps.filter(composedStep => !this.hasOrContainsStepsWithId(composedStep, stepIdToRemove));
-
-                this.composedStepsJsonTreeModel = StepsTreeUtil.mapStepsDefToStepJsonTreeModel(filteredComposedSteps, true)
-            }
-        );
-    }
-
-    private hasOrContainsStepsWithId(composedStep: ComposedStepDef, stepIdToRemove: string) {
-        if(composedStep.id == stepIdToRemove) {
-            return true
-        }
-        return this.containsStepsWithId(composedStep, stepIdToRemove);
-    }
-
-    private containsStepsWithId(composedStep: ComposedStepDef, stepIdToRemove: string) {
-        for (let stepCall of composedStep.stepCalls) {
-            let childComposedStepDef = stepCall.stepDef;
-            if(childComposedStepDef instanceof ComposedStepDef) {
-                if(childComposedStepDef.id == stepIdToRemove) {
-                    return true
-                }
-                let childStepContainsStepToRemove = this.containsStepsWithId(childComposedStepDef, stepIdToRemove);
-
-                if(childStepContainsStepToRemove) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        this.showStepChooserModelWithoutStepReference(stepChoseHandler, null);
     }
 
     hide() {

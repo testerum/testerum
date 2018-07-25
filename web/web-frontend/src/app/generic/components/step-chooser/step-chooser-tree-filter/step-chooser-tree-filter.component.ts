@@ -3,18 +3,18 @@ import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {ActivatedRoute} from "@angular/router";
-import {JsonTreeExpandUtil} from "../../../../generic/components/json-tree/util/json-tree-expand.util";
+import {JsonTreeExpandUtil} from "../../json-tree/util/json-tree-expand.util";
 import {TagsService} from "../../../../service/tags.service";
-import {StepsTreeService} from "../steps-tree.service";
 import {StepsTreeFilter} from "../../../../model/step/filter/steps-tree-filter.model";
+import {StepChooserService} from "../step-chooser.service";
 
 @Component({
-    selector: 'steps-tree-filter',
-    templateUrl: 'steps-tree-filter.component.html',
-    styleUrls: ['steps-tree-filter.component.css'],
+    selector: 'step-chooser-tree-filter',
+    templateUrl: 'step-chooser-tree-filter.component.html',
+    styleUrls: ['step-chooser-tree-filter.component.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class StepsTreeFilterComponent {
+export class StepChooserTreeFilterComponent {
 
     @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
@@ -30,7 +30,7 @@ export class StepsTreeFilterComponent {
     isTagsButtonActive = false;
 
     constructor(private activatedRoute: ActivatedRoute,
-                private stepsTreeService: StepsTreeService,
+                private stepChooserService: StepChooserService,
                 private tagsService: TagsService) {
     }
 
@@ -103,10 +103,10 @@ export class StepsTreeFilterComponent {
             stepsTreeFilter.tags = this.selectedTags;
         }
 
-        this.stepsTreeService.treeFilter = stepsTreeFilter;
+        this.stepChooserService.treeFilter = stepsTreeFilter;
 
         let path = this.getCurrentPathFromUrl();
-        this.stepsTreeService.initializeStepsTreeFromServer(path, 100);
+        this.stepChooserService.initializeStepsTreeFromServer(path, 100);
     }
 
     private getCurrentPathFromUrl(): Path {
@@ -115,15 +115,15 @@ export class StepsTreeFilterComponent {
     }
 
     onExpandAllEvent() {
-        let composedTree = this.stepsTreeService.composedStepsJsonTreeModel;
-        let basicTree = this.stepsTreeService.basicStepsJsonTreeModel;
+        let composedTree = this.stepChooserService.composedStepsJsonTreeModel;
+        let basicTree = this.stepChooserService.basicStepsJsonTreeModel;
 
         JsonTreeExpandUtil.expandNode(composedTree);
         JsonTreeExpandUtil.expandNode(basicTree);
     }
 
     onExpandToLevelEvent(level: number) {
-        JsonTreeExpandUtil.expandTreeToLevel(this.stepsTreeService.basicStepsJsonTreeModel, level+1);
-        JsonTreeExpandUtil.expandTreeToLevel(this.stepsTreeService.composedStepsJsonTreeModel, level+1);
+        JsonTreeExpandUtil.expandTreeToLevel(this.stepChooserService.basicStepsJsonTreeModel, level+1);
+        JsonTreeExpandUtil.expandTreeToLevel(this.stepChooserService.composedStepsJsonTreeModel, level+1);
     }
 }

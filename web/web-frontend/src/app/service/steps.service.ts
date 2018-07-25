@@ -97,7 +97,7 @@ export class StepsService {
             .map(StepsService.extractComposedStepDef);
     }
 
-    getDefaultSteps(stepTreeFilter: StepsTreeFilter = new StepsTreeFilter()): Observable<Array<BasicStepDef>> {
+    getBasicSteps(stepTreeFilter: StepsTreeFilter = new StepsTreeFilter()): Observable<Array<BasicStepDef>> {
         let body = stepTreeFilter.serialize();
         const httpOptions = {
             headers: new HttpHeaders({

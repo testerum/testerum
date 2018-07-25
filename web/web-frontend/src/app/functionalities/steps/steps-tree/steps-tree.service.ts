@@ -31,9 +31,11 @@ export class StepsTreeService {
             composedStepsDefs => this.setComposedStepsModel(composedStepsDefs, selectedPath, expandToLevel)
         );
 
-        this.stepsService.getDefaultSteps(this.treeFilter).subscribe(
-            steps => this.setBasicStepsModel(steps, selectedPath, expandToLevel)
-        );
+        if (this.basicStepsJsonTreeModel.children.length == 0) {
+            this.stepsService.getBasicSteps(this.treeFilter).subscribe(
+                steps => this.setBasicStepsModel(steps, selectedPath, expandToLevel)
+            );
+        }
     }
 
     setBasicStepsModel(steps: Array<BasicStepDef>, selectedPath: Path, expandToLevel: number): void {
