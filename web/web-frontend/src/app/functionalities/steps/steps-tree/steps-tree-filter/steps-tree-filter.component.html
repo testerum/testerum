@@ -1,0 +1,122 @@
+<p-toolbar>
+    <div class="line-filters">
+        <div class="filters-group">
+            <span class="filters-label">Filters:</span>
+            <div class="btn-group" role="group">
+                <div pTooltip="{{isComposedButtonActive?'Hide ':'Show '}} Composed Steps"
+                     tooltipPosition="bottom"
+                     (click)="onComposedButtonClickEvent()"
+                     [class.active]="isComposedButtonActive"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-random" aria-hidden="true"></i>
+                </div>
+
+                <div pTooltip="{{isBasicButtonActive?'Hide ':'Show '}} Basic Steps"
+                     tooltipPosition="bottom"
+                     (click)="onBasicButtonClickEvent()"
+                     [class.active]="isBasicButtonActive"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                </div>
+
+                <div pTooltip="{{isSearchButtonActive?'Hide ':'Show '}} Search Text"
+                     tooltipPosition="bottom"
+                     (click)="onSearchButtonClickEvent()"
+                     [class.active]="isSearchButtonActive"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </div>
+
+                <div pTooltip="{{isTagsButtonActive?'Hide ':'Show '}} Filter by Tags"
+                     tooltipPosition="bottom"
+                     (click)="onTagsButtonClickEvent()"
+                     [class.active]="isTagsButtonActive"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-tag" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="btn-group" role="group">
+                <div pTooltip="Expand selected node"
+                     tooltipPosition="bottom"
+                     (click)="onExpandSelectedNodeEvent()"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-expand" aria-hidden="true"></i>
+                </div>
+
+                <div pTooltip="Collapse selected node"
+                     tooltipPosition="bottom"
+                     (click)="onCollapseEvent()"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-compress" aria-hidden="true"></i>
+                </div>
+            </div>
+
+            <div class="btn-group" role="group">
+                <div pTooltip="Expand to level 1"
+                     tooltipPosition="bottom"
+                     (click)="onExpandToLevelEvent(1)"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-expand" aria-hidden="true">1</i>
+                </div>
+                <div pTooltip="Expand to level 2"
+                     tooltipPosition="bottom"
+                     (click)="onExpandToLevelEvent(2)"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-expand" aria-hidden="true">2</i>
+                </div>
+                <div pTooltip="Expand to level 3"
+                     tooltipPosition="bottom"
+                     (click)="onExpandToLevelEvent(3)"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa fa-expand" aria-hidden="true">3</i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui-inputgroup line-search full-width"
+         *ngIf="isSearchButtonActive">
+        <span class="ui-inputgroup-addon"
+              pTooltip="Search"
+              tooltipPosition="bottom"
+              (click)="filter()">
+            <i class="fa fa-search"></i>
+        </span>
+        <input id="float-input"
+               [(ngModel)]="searchText"
+               (blur)="onSearchInputDeFocus($event)"
+               (keydown)="onSearchInputKey($event)"
+               placeholder="Search"
+               type="text"
+               pInputText
+               pTooltip="Search"
+               tooltipPosition="bottom"
+               class="full-width">
+    </div>
+
+    <div class="ui-inputgroup line-tags full-width"
+         *ngIf="isTagsButtonActive">
+        <span class="ui-inputgroup-addon"
+              tooltipPosition="bottom"
+              pTooltip="Tags"
+              (click)="filter()">
+            <i class="fa fa-tag"></i>
+        </span>
+        <p-autoComplete #tagsElement
+                        [(ngModel)]="selectedTags"
+                        [suggestions]="tagsToShow"
+                        (completeMethod)="searchTags($event)"
+                        (onSelect)="onTagSelect($event)"
+                        (onUnselect)="onTagUnSelect($event)"
+                        [delay]="0"
+                        [multiple]="true"
+                        [dropdown]="true"
+                        placeholder="Tags"
+                        tooltipPosition="bottom"
+                        pTooltip="Tags"
+                        id="tags" name="tags"></p-autoComplete>
+    </div>
+</p-toolbar>

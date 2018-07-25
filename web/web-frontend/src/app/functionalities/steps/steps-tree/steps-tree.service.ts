@@ -9,8 +9,10 @@ import {StepTreeNodeModel} from "./model/step-tree-node.model";
 import {StepTreeContainerModel} from "./model/step-tree-container.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {JsonTreePathUtil} from "../../../generic/components/json-tree/util/json-tree-path.util";
-import {TreeContainerModel} from "../../../model/infrastructure/tree-container.model";
 import {JsonTreeContainer} from "../../../generic/components/json-tree/model/json-tree-container.model";
+import {StepsTreeFilter} from "../../../model/step/filter/steps-tree-filter.model";
+import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
+import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
 
 @Injectable()
 export class StepsTreeService {
@@ -18,28 +20,47 @@ export class StepsTreeService {
     basicStepsJsonTreeModel: JsonTreeModel = new JsonTreeModel();
     composedStepsJsonTreeModel: JsonTreeModel = new JsonTreeModel();
 
-    constructor(private stepsService: StepsService){
+    treeFilter: StepsTreeFilter = StepsTreeFilter.createEmptyFilter();
+
+    constructor(private stepsService: StepsService,
+                private jsonTreeService: JsonTreeService,){
     }
 
-    initializeStepsTreeFromServer() {
-        this.stepsService.getComposedStepDefs().subscribe(
-            composedStepsDefs => this.setComposedStepsModel(composedStepsDefs)
+    initializeStepsTreeFromServer(selectedPath: Path = null, expandToLevel: number = 2) {
+        this.stepsService.getComposedStepDefs(this.treeFilter).subscribe(
+            composedStepsDefs => this.setComposedStepsModel(composedStepsDefs, selectedPath, expandToLevel)
+        );
+
+        this.stepsService.getDefaultSteps(this.treeFilter).subscribe(
+            steps => this.setBasicStepsModel(steps, selectedPath, expandToLevel)
         );
     }
 
-    setBasicStepsModel(steps: Array<BasicStepDef>): void {
-        this.basicStepsJsonTreeModel = StepsTreeUtil.mapStepsDefToStepJsonTreeModel(steps, false);
-        this.sort()
+    setBasicStepsModel(steps: Array<BasicStepDef>, selectedPath: Path, expandToLevel: number): void {
+        let newTree = StepsTreeUtil.mapStepsDefToStepJsonTreeModel(steps, false);
+        this.sort(newTree);
+
+        JsonTreeExpandUtil.expandTreeToLevel(newTree, expandToLevel);
+        let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(newTree, selectedPath);
+
+        this.basicStepsJsonTreeModel = newTree;
+        this.jsonTreeService.setSelectedNode(selectedNode);
+
     }
 
-    setComposedStepsModel(steps: Array<ComposedStepDef>): void {
-        this.composedStepsJsonTreeModel =  StepsTreeUtil.mapStepsDefToStepJsonTreeModel(steps, true);
-        this.sort()
+    setComposedStepsModel(steps: Array<ComposedStepDef>, selectedPath: Path = null, expandToLevel: number = 2): void {
+        let newTree = StepsTreeUtil.mapStepsDefToStepJsonTreeModel(steps, true);
+        this.sort(newTree);
+
+        JsonTreeExpandUtil.expandTreeToLevel(newTree, expandToLevel);
+        let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(newTree, selectedPath);
+
+        this.composedStepsJsonTreeModel = newTree;
+        this.jsonTreeService.setSelectedNode(selectedNode);
     }
 
-    sort(): void {
-        this.sortChildren(this.basicStepsJsonTreeModel.children);
-        this.sortChildren(this.composedStepsJsonTreeModel.children);
+    sort(tree: JsonTreeModel): void {
+        this.sortChildren(tree.children);
     }
 
     private sortChildren(children: Array<JsonTreeNode>) {

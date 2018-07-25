@@ -4,6 +4,7 @@ import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.step.ComposedStepDef
+import net.qutester.model.step.filter.StepsTreeFilter
 import net.qutester.model.step.operation.UpdateComposedStepDef
 import net.qutester.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
 import net.qutester.service.step.StepService
@@ -21,10 +22,10 @@ class ComposedStepController(val stepService: StepService,
 
     private val LOG = LoggerFactory.getLogger(ComposedStepController::class.java)
 
-    @RequestMapping (method = [(RequestMethod.GET)])
+    @RequestMapping (method = [(RequestMethod.POST)])
     @ResponseBody
-    fun getComposedSteps(): List<ComposedStepDef> {
-        return stepService.getComposedSteps()
+    fun getComposedSteps(@RequestBody stepsTreeFilter: StepsTreeFilter): List<ComposedStepDef> {
+        return stepService.getComposedSteps(stepsTreeFilter)
     }
 
     @RequestMapping (params = ["path"], method = [(RequestMethod.GET)])

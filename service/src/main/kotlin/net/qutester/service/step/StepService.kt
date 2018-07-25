@@ -7,10 +7,12 @@ import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.step.*
+import net.qutester.model.step.filter.StepsTreeFilter
 import net.qutester.model.text.StepPattern
 import net.qutester.service.step.impl.BasicStepsService
 import net.qutester.service.step.impl.ComposedStepsService
 import net.qutester.service.step.impl.StepsResolver
+import net.qutester.service.step.util.StepsFilterUtil
 import net.qutester.service.step.util.getStepWithTheSameStepDef
 import net.qutester.util.StepHashUtil
 import java.util.concurrent.Callable
@@ -145,24 +147,24 @@ open class StepService(val composedStepsService: ComposedStepsService,
         return ArrayList(steps.values)
     }
 
-    fun getBasicSteps(): List<BasicStepDef> {
+    fun getBasicSteps(stepsTreeFilter: StepsTreeFilter = StepsTreeFilter()): List<BasicStepDef> {
         stepsMapLoadersLatch.await();
 
         val result = mutableListOf<BasicStepDef>()
         for (stepDef in steps.values) {
-            if (stepDef is BasicStepDef) {
+            if (stepDef is BasicStepDef && StepsFilterUtil.isStepMatchingFilter(stepDef, stepsTreeFilter)) {
                 result.add(stepDef)
             }
         }
         return result;
     }
 
-    fun getComposedSteps(): List<ComposedStepDef> {
+    fun getComposedSteps(stepsTreeFilter: StepsTreeFilter = StepsTreeFilter()): List<ComposedStepDef> {
         stepsMapLoadersLatch.await()
 
         val result = mutableListOf<ComposedStepDef>()
         for (stepDef in steps.values) {
-            if (stepDef is ComposedStepDef) {
+            if (stepDef is ComposedStepDef && StepsFilterUtil.isStepMatchingFilter(stepDef, stepsTreeFilter)) {
                 result.add(stepDef)
             }
         }

@@ -11,6 +11,9 @@ import {CheckComposedStepDefUpdateCompatibilityResponse} from "../model/step/Che
 import {UpdateComposedStepDef} from "../model/step/UpdateComposedStepDef";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
+import {StepsTreeFilter} from "../model/step/filter/steps-tree-filter.model";
+import {FeatureService} from "./feature.service";
+import {RootServerTreeNode} from "../model/tree/root-server-tree-node.model";
 
 @Injectable()
 export class StepsService {
@@ -32,9 +35,16 @@ export class StepsService {
             .map(StepsService.extractComposedStepDef);
     }
 
-    getComposedStepDefs(): Observable<Array<ComposedStepDef>> {
+    getComposedStepDefs(stepTreeFilter: StepsTreeFilter = new StepsTreeFilter()): Observable<Array<ComposedStepDef>> {
+        let body = stepTreeFilter.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
         return this.http
-            .get<Array<ComposedStepDef>>(this.COMPOSED_STEPS_URL)
+            .post<RootServerTreeNode>(this.COMPOSED_STEPS_URL, body, httpOptions)
             .map(StepsService.extractComposedStepDefs);
     }
 
@@ -87,9 +97,16 @@ export class StepsService {
             .map(StepsService.extractComposedStepDef);
     }
 
-    getDefaultSteps(): Observable<Array<BasicStepDef>> {
+    getDefaultSteps(stepTreeFilter: StepsTreeFilter = new StepsTreeFilter()): Observable<Array<BasicStepDef>> {
+        let body = stepTreeFilter.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
         return this.http
-            .get<Array<BasicStepDef>>(this.BASIC_STEPS_URL)
+            .post<RootServerTreeNode>(this.BASIC_STEPS_URL, body, httpOptions)
             .map(StepsService.extractBasicStepsDef);
     }
 

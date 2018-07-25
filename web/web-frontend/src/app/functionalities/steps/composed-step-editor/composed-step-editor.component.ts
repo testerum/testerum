@@ -104,7 +104,6 @@ export class ComposedStepEditorComponent implements OnInit {
         this.isEditMode = true;
     }
 
-
     onSearchTag(event) {
         this.currentTagSearch = event.query;
 
@@ -206,7 +205,7 @@ export class ComposedStepEditorComponent implements OnInit {
     private actionsAfterSave(composedStepDef: ComposedStepDef): void {
         this.applicationEventBus.triggerAfterPageSaveEvent();
         this.isEditMode = false;
-        this.stepsTreeService.initializeStepsTreeFromServer();
+        this.stepsTreeService.initializeStepsTreeFromServer(composedStepDef.path);
         this.urlService.navigateToComposedStep(composedStepDef.path);
     };
 

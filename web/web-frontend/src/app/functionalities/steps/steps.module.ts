@@ -22,7 +22,15 @@ import {CollapseModule, ModalModule, PopoverModule, SortableModule} from "ngx-bo
 import {ComposedStepParametersComponent} from "./composed-step-editor/composed-step-parameters/composed-step-parameters.component";
 import {StepTextComponent} from "../../generic/components/step-text/step-text.component";
 import {StepsTreeComponent} from "./steps-tree/steps-tree.component";
-import {AutoCompleteModule} from "primeng/primeng";
+import {
+    AutoCompleteModule,
+    InputSwitchModule,
+    InputTextModule,
+    SelectButtonModule,
+    ToolbarModule,
+    TooltipModule
+} from "primeng/primeng";
+import {StepsTreeFilterComponent} from "./steps-tree/steps-tree-filter/steps-tree-filter.component";
 
 @NgModule({
     imports: [
@@ -35,7 +43,11 @@ import {AutoCompleteModule} from "primeng/primeng";
         PopoverModule.forRoot(),
         AngularSplitModule,
 
+        TooltipModule,
+        ToolbarModule,
+        SelectButtonModule,
         AutoCompleteModule,
+        InputTextModule,
 
         StepsRoutingModule,
         GenericModule,
@@ -50,6 +62,8 @@ import {AutoCompleteModule} from "primeng/primeng";
         UpdateIncompatibilityDialogComponent,
     ],
     declarations: [
+        StepsTreeFilterComponent,
+
         StepsTreeComponent,
         JsonStepContainerComponent,
         JsonStepNodeComponent,

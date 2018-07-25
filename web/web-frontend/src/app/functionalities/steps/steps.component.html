@@ -2,6 +2,7 @@
 
     <split direction="horizontal">
         <split-area [size]="40">
+            <steps-tree-filter></steps-tree-filter>
 
             <!-- COMPOSED STEPS -->
             <steps-tree [treeModel]="stepsTreeService.composedStepsJsonTreeModel"
@@ -14,7 +15,7 @@
             </steps-tree>
 
         </split-area>
-        <split-area [size]="60" [visible]="isStepSelected">
+        <split-area [size]="60">
 
             <router-outlet></router-outlet>
 

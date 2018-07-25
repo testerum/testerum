@@ -5,13 +5,11 @@ import {TestTreeNodeModel} from "./model/test-tree-node.model";
 import {FeatureTreeContainerModel} from "./model/feature-tree-container.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {JsonTreePathUtil} from "../../../generic/components/json-tree/util/json-tree-path.util";
-import {TestsService} from "../../../service/tests.service";
 import FeaturesTreeUtil from "./util/features-tree.util";
 import {FeatureService} from "../../../service/feature.service";
 import {RootServerTreeNode} from "../../../model/tree/root-server-tree-node.model";
 import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-filter.model";
 import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
-import {JsonTreeContainer} from "../../../generic/components/json-tree/model/json-tree-container.model";
 import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
 
 @Injectable()
@@ -21,7 +19,6 @@ export class FeaturesTreeService {
     treeFilter: FeaturesTreeFilter = FeaturesTreeFilter.createEmptyFilter();
 
     constructor(private jsonTreeService: JsonTreeService,
-                private testsService: TestsService,
                 private featureService: FeatureService){
     }
 
