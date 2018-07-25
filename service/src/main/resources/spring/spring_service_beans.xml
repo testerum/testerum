@@ -32,6 +32,7 @@
     <bean id="stepService" class="net.qutester.service.step.StepService" init-method="init">
         <constructor-arg name="basicStepsService" ref="basicStepsService"/>
         <constructor-arg name="composedStepsService" ref="composedStepsService"/>
+        <constructor-arg name="warningService" ref="warningService"/>
     </bean>
 
     <bean id="stepUpdateCompatibilityService" class="net.qutester.service.step.StepUpdateCompatibilityService">
@@ -44,6 +45,7 @@
         <constructor-arg name="composedStepsService" ref="composedStepsService"/>
         <constructor-arg name="testsService" ref="testsService"/>
         <constructor-arg name="stepUpdateCompatibilityService" ref="stepUpdateCompatibilityService"/>
+        <constructor-arg name="warningService" ref="warningService"/>
     </bean>
 
     <bean id="scannerService" class="net.qutester.service.scanner.ScannerService" init-method="init">
@@ -96,8 +98,9 @@
         <constructor-arg name="jsonObjectMapper" ref="jsonObjectMapper"/>
     </bean>
 
-    <bean id="fileSytemService" class="net.qutester.service.config.FileSystemService">
-    </bean>
+    <bean id="fileSytemService" class="net.qutester.service.config.FileSystemService" />
+
+    <bean id="warningService" class="net.qutester.service.warning.WarningService" />
 
     <bean id="networkService" class="net.qutester.service.resources.rdbms.NetworkService">
         <constructor-arg name="jsonObjectMapper" ref="jsonObjectMapper"/>

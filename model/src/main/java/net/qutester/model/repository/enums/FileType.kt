@@ -1,5 +1,6 @@
 package net.qutester.model.repository.enums
 
+import net.qutester.model.feature.Feature
 import net.qutester.model.infrastructure.path.Path
 
 enum class FileType constructor(val relativeRootDirectory: Path,
@@ -18,7 +19,7 @@ enum class FileType constructor(val relativeRootDirectory: Path,
     HTTP_MOCK_STUB(Path.createInstance("resources/HTTP/Mock/Stub"),"http.stub.yaml", "net.qutester.model.resources.http.mock.stub.HttpMock"),
     JSON_VERIFY(Path.createInstance("resources/JSON/Verify"),"verify.json"),
 
-    FEATURE(Path.createInstance("features"), "feat"),
+    FEATURE(Path.createInstance("features"), Feature.FILE_EXTENSION),
     TEST(Path.createInstance(   "features"), "test"),
 
     STEP(Path.createInstance(     "composed_steps"), "step"),

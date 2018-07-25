@@ -10,6 +10,26 @@ data class Path @JsonCreator constructor(
         @JsonProperty("fileName") val fileName: String?,
         @JsonProperty("fileExtension") val fileExtension: String?) {
 
+    companion object {
+        val EMPTY = Path(emptyList(), null, null)
+
+        fun createInstance(pathAsString: String): Path {
+
+            var pathsPart = pathAsString.split("/", "\\")
+            var fileName:String? = null;
+            var extension:String? = null;
+
+            val lastPathPart = pathsPart.last().toString()
+            if (lastPathPart.contains('.')) {
+                pathsPart = pathsPart.dropLast(1)
+                fileName = lastPathPart.substringBefore(".")
+                extension = lastPathPart.substringAfter(".")
+            }
+
+            return Path(pathsPart.map { it.toString() }, fileName, extension)
+        }
+    }
+
     @JsonIgnore
     fun toJavaPath(): java.nio.file.Path {
         return Paths.get(this.toString())
@@ -35,27 +55,6 @@ data class Path @JsonCreator constructor(
 
         }
         return result
-    }
-
-    companion object {
-        fun createInstance(pathAsString: String): Path {
-
-            var pathsPart = pathAsString.split("/", "\\")
-            var fileName:String? = null;
-            var extension:String? = null;
-
-            val lastPathPart = pathsPart.last().toString()
-            if (lastPathPart.contains('.')) {
-                pathsPart = pathsPart.dropLast(1)
-                fileName = lastPathPart.substringBefore(".")
-                extension = lastPathPart.substringAfter(".")
-            }
-            return Path(pathsPart.map { it.toString() }, fileName, extension)
-        }
-
-        fun createEmptyInstance(): Path {
-            return Path(emptyList(), null, null)
-        }
     }
 
     @JsonIgnore

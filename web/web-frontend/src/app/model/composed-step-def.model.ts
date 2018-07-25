@@ -5,6 +5,7 @@ import {JsonUtil} from "../utils/json.util";
 import {IdUtils} from "../utils/id.util";
 import {StepPattern} from "./text/step-pattern.model";
 import {Path} from "./infrastructure/path/path.model";
+import {Warning} from "./warning/Warning";
 
 export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
 
@@ -16,6 +17,9 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
     tags: Array<string> = [];
 
     stepCalls: Array<StepCall> = [];
+
+    warnings: Array<Warning> = [];
+    descendantsHaveWarnings: boolean = false;
 
     addStepCall(stepCall:StepCall): void {
         this.stepCalls.push(stepCall);
@@ -30,12 +34,23 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
         this.phase = StepPhaseEnum["" + input["phase"]];
         this.stepPattern = new StepPattern().deserialize(input["stepPattern"]);
         this.description = input["description"];
-        this.tags = input["tags"];
+        this.tags = input["tags"] || [];
 
-        for (let stepCallAsJson of input["stepCalls"]) {
-            let stepCall = new StepCall().deserialize(stepCallAsJson);
-            this.addStepCall(stepCall)
+        this.stepCalls = [];
+        for (let stepCall of (input["stepCalls"] || [])) {
+            this.addStepCall(
+                new StepCall().deserialize(stepCall)
+            )
         }
+
+        this.warnings = [];
+        for (let warning of (input['warnings'] || [])) {
+            this.warnings.push(
+                new Warning().deserialize(warning)
+            );
+        }
+
+        this.descendantsHaveWarnings = input['descendantsHaveWarnings'];
 
         return this;
     }
@@ -50,7 +65,8 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
             '"stepPattern":' + this.stepPattern.serialize() + ',' +
             '"description":' + JsonUtil.stringify(this.description) + ',' +
             '"tags":' + JsonUtil.stringify(this.tags) + ',' +
-            '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) +
+            '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) + ',' +
+            '"warnings": []' +
             '}'
     }
 

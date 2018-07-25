@@ -14,13 +14,15 @@ import net.qutester.service.step.impl.ComposedStepsService
 import net.qutester.service.step.impl.StepsResolver
 import net.qutester.service.step.util.StepsFilterUtil
 import net.qutester.service.step.util.getStepWithTheSameStepDef
+import net.qutester.service.warning.WarningService
 import net.qutester.util.StepHashUtil
 import java.util.concurrent.Callable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 
-open class StepService(val composedStepsService: ComposedStepsService,
-                       val basicStepsService: BasicStepsService) {
+open class StepService(private val composedStepsService: ComposedStepsService,
+                       private val basicStepsService: BasicStepsService,
+                       private val warningService: WarningService) {
 
     @Volatile private var steps: MutableMap<String, StepDef> = HashMap<String, StepDef>()
     private val basicStepsMap: HashMap<String, BasicStepDef> = hashMapOf()
@@ -176,10 +178,11 @@ open class StepService(val composedStepsService: ComposedStepsService,
 
         val composedSteps = getComposedSteps()
         for (composedStep in composedSteps) {
-            if (composedStep.path.equals(searchedPath)) {
-                return composedStep
+            if (composedStep.path == searchedPath) {
+                return warningService.composedStepWithWarnings(composedStep)
             }
         }
+
         return null
     }
 
@@ -219,8 +222,9 @@ open class StepService(val composedStepsService: ComposedStepsService,
         val savedComposedStep = composedStepsService.create(composedStepDef)
         reinitializeComposedSteps()
         val resolvedSavedComposedStep = resolveComposedStep(savedComposedStep)
+        val resolvedSavedComposedStepWithWarnings = warningService.composedStepWithWarnings(resolvedSavedComposedStep)
 
-        return resolvedSavedComposedStep
+        return resolvedSavedComposedStepWithWarnings
     }
 
     fun update(composedStepDef: ComposedStepDef): ComposedStepDef {

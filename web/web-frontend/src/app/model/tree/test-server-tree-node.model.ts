@@ -6,11 +6,13 @@ export class TestServerTreeNode implements Serializable<TestServerTreeNode>, Ser
     name: string;
     properties: TestProperties;
     path: Path;
+    hasOwnOrDescendantWarnings: boolean = false;
 
     deserialize(input: Object): TestServerTreeNode {
         this.name = input["name"];
         this.path = Path.deserialize(input["path"]);
         this.properties = new TestProperties().deserialize(input['properties']);
+        this.hasOwnOrDescendantWarnings = input["hasOwnOrDescendantWarnings"];
 
         return this;
     }
