@@ -10,11 +10,13 @@ import net.qutester.model.text.StepPattern
 import net.qutester.service.step.impl.ComposedStepsService
 import net.qutester.service.step.util.isStepPatternChangeCompatible
 import net.qutester.service.tests.TestsService
+import net.qutester.service.warning.WarningService
 
-class StepUpdateService(val stepService: StepService,
-                        val composedStepsService: ComposedStepsService,
-                        val testsService: TestsService,
-                        val stepUpdateCompatibilityService: StepUpdateCompatibilityService) {
+class StepUpdateService(private val stepService: StepService,
+                        private val composedStepsService: ComposedStepsService,
+                        private val testsService: TestsService,
+                        private val stepUpdateCompatibilityService: StepUpdateCompatibilityService,
+                        private val warningService: WarningService) {
 
     fun update(composedStepDef: ComposedStepDef): ComposedStepDef {
         val oldStepPath = composedStepDef.path
@@ -24,7 +26,10 @@ class StepUpdateService(val stepService: StepService,
         val oldStepPattern = oldStep.stepPattern
         val newStepPattern = composedStepDef.stepPattern
         if(oldStepPattern == newStepPattern){
-            return stepService.update(composedStepDef)
+            val updatedStep = stepService.update(composedStepDef)
+            val updatedStepWithWarnings = warningService.composedStepWithWarnings(updatedStep)
+
+            return updatedStepWithWarnings
         }
 
         if (stepUpdateCompatibilityService.isOtherStepWithTheSameStepPattern(oldStepPattern, newStepPattern)) {
@@ -36,7 +41,10 @@ class StepUpdateService(val stepService: StepService,
             updateStepsThatUsesOldStep(oldStep, composedStepDef)
         }
 
-        return  stepService.update(composedStepDef)
+        val updatedStep = stepService.update(composedStepDef)
+        val updatedStepWithWarnings = warningService.composedStepWithWarnings(updatedStep)
+
+        return updatedStepWithWarnings
     }
 
     private fun updateStepsThatUsesOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef) {

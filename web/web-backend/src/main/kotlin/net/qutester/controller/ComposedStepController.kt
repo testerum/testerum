@@ -20,8 +20,6 @@ class ComposedStepController(val stepService: StepService,
                              val stepUpdateService: StepUpdateService,
                              val stepUpdateCompatibilityService: StepUpdateCompatibilityService) {
 
-    private val LOG = LoggerFactory.getLogger(ComposedStepController::class.java)
-
     @RequestMapping (method = [(RequestMethod.POST)])
     @ResponseBody
     fun getComposedSteps(@RequestBody stepsTreeFilter: StepsTreeFilter): List<ComposedStepDef> {
@@ -31,12 +29,12 @@ class ComposedStepController(val stepService: StepService,
     @RequestMapping (params = ["path"], method = [(RequestMethod.GET)])
     @ResponseBody
     fun getComposedStepByPath(@RequestParam(value = "path") path:String): ResponseEntity<*> {
-        val step= stepService.getComposedStepByPath(Path.createInstance(path))
+        val step: ComposedStepDef? = stepService.getComposedStepByPath(Path.createInstance(path))
 
-        if (step == null) {
-            return ResponseEntity.notFound().build()
+        return if (step == null) {
+            ResponseEntity.notFound().build()
         } else {
-            return ResponseEntity.ok(step)
+            ResponseEntity.ok(step)
         }
     }
 

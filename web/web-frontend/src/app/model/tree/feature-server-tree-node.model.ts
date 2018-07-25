@@ -7,10 +7,12 @@ export class FeatureServerTreeNode implements Serializable<FeatureServerTreeNode
     name: string;
     path: Path;
     children: Array<ServerTreeNode> = [];
+    hasOwnOrDescendantWarnings: boolean = false;
 
     deserialize(input: Object): FeatureServerTreeNode {
         this.name = input["name"];
         this.path = Path.deserialize(input["path"]);
+        this.hasOwnOrDescendantWarnings = input["hasOwnOrDescendantWarnings"];
 
         for (const child of input["children"]) {
             if (child["@type"] == "FEATURE_NODE") {

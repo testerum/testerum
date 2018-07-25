@@ -136,7 +136,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
     fun getAllResourcesByType(fileType: FileType): List<RepositoryFile> {
         return getAllResourcesByTypeUnderPath(
                 KnownPath(
-                        Path.createEmptyInstance(),
+                        Path.EMPTY,
                         fileType
                 )
         )

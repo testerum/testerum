@@ -1,17 +1,31 @@
 package net.qutester.model.step
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import net.qutester.model.arg.Arg
 import net.qutester.model.text.parts.ParamStepPatternPart
 import net.qutester.model.text.parts.TextStepPatternPart
+import net.qutester.model.warning.Warning
 import net.qutester.util.indent
 
 data class StepCall @JsonCreator constructor(
         @JsonProperty("id") val id: String,
         @JsonProperty("stepDef") val stepDef: StepDef,
-        @JsonProperty("args") val args: List<Arg>
+        @JsonProperty("args") val args: List<Arg>,
+        @JsonProperty("warnings") val warnings: List<Warning> = emptyList()
 ) {
+
+    private val _descendantsHaveWarnings: Boolean = (stepDef is ComposedStepDef) && (stepDef.hasOwnOrDescendantWarnings)
+
+    @get:JsonProperty("descendantsHaveWarnings")
+    val descendantsHaveWarnings: Boolean
+        get() = _descendantsHaveWarnings
+
+    @get:JsonIgnore
+    val hasOwnOrDescendantWarnings: Boolean
+        get() = warnings.isNotEmpty() || descendantsHaveWarnings
+
 
     override fun toString() = buildString { toString(this, 0) }
 

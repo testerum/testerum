@@ -8,10 +8,12 @@ export class RootServerTreeNode implements Serializable<RootServerTreeNode>, Ser
     name: string;
     path: Path;
     children: Array<ServerTreeNode> = [];
+    hasOwnOrDescendantWarnings: boolean = false;
 
     deserialize(input: Object): RootServerTreeNode {
         this.name = input["name"];
         this.path = Path.deserialize(input["path"]);
+        this.hasOwnOrDescendantWarnings = input["hasOwnOrDescendantWarnings"];
 
         for (const child of input["children"]) {
             if (child["@type"] == "FEATURE_NODE") {

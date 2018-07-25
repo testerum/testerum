@@ -10,6 +10,7 @@ import {VariableHolder} from "../generic/variable/variable-holder.model";
 import {TextStepPatternPart} from "./text/parts/text-step-pattern-part.model";
 import {ParamStepPatternPart} from "./text/parts/param-step-pattern-part.model";
 import {UndefinedStepDef} from "./undefined-step-def.model";
+import {Warning} from "./warning/Warning";
 
 export class StepCall implements Serializable<StepCall> {
 
@@ -17,6 +18,9 @@ export class StepCall implements Serializable<StepCall> {
     stepDef: StepDef;
     args: Array<Arg> = [];
     variableHolder: VariableHolder = new VariableHolder();
+
+    warnings: Array<Warning> = [];
+    descendantsHaveWarnings: boolean = false;
 
     deserialize(input: Object): StepCall {
         this.id = input["id"];
@@ -30,9 +34,20 @@ export class StepCall implements Serializable<StepCall> {
             this.stepDef = new UndefinedStepDef().deserialize(input["stepDef"]);
         }
 
-        for (let argJson of input["args"] || []) {
+        this.args = [];
+        for (let argJson of (input["args"] || [])) {
             this.args.push(new Arg().deserialize(argJson));
         }
+
+        this.warnings = [];
+        for (let warning of (input['warnings'] || [])) {
+            this.warnings.push(
+                new Warning().deserialize(warning)
+            );
+        }
+
+        this.descendantsHaveWarnings = input['descendantsHaveWarnings'];
+
         return this;
     }
 
@@ -41,7 +56,8 @@ export class StepCall implements Serializable<StepCall> {
             '{' +
             '"id":' + JsonUtil.stringify(this.id) + ',' +
             '"stepDef":' + this.stepDef.serialize() + ',' +
-            '"args":' + JsonUtil.serializeArrayOfSerializable(this.args) +
+            '"args":' + JsonUtil.serializeArrayOfSerializable(this.args) + ',' +
+            '"warnings": []' +
             '}'
     }
 

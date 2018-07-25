@@ -12,7 +12,8 @@ import net.qutester.model.file.Attachment
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.repository.enums.FileType
 import net.qutester.model.test.TestModel
-import net.qutester.model.tree.*
+import net.qutester.model.tree.RootTreeNode
+import net.qutester.model.tree.builder.TreeNodeBuilder
 import net.qutester.service.tests.TestsService
 import net.testerum.db_file.AttachmentFileRepositoryService
 import net.testerum.db_file.FileRepositoryService
@@ -27,8 +28,6 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                      private val testsService: TestsService) {
 
     companion object {
-        private val FEATURE_NAME: String = "info"
-
         private val FILE_PARSER: ParserExecuter<FileFeature> = ParserExecuter(
                 FileFeatureParserFactory.feature()
         )
@@ -71,7 +70,7 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
                 )
         )
         val featureDirPath = feature.path
-        val featureFilePath = featureDirPath.copy(fileName = FEATURE_NAME, fileExtension = FileType.FEATURE.fileExtension)
+        val featureFilePath = featureDirPath.copy(fileName = Feature.FILE_NAME_WITHOUT_EXTENSION, fileExtension = Feature.FILE_EXTENSION)
 
 
         val createdRepositoryFile = fileRepositoryService.create(
@@ -91,7 +90,10 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
 
     private fun updateFeature(feature: Feature): Feature {
         val newFeatureDirPath = renameDirectoryIfCase(feature)
-        val newPath = newFeatureDirPath.copy(fileName = FEATURE_NAME, fileExtension = FileType.FEATURE.fileExtension)
+        val newPath = newFeatureDirPath.copy(
+                fileName = Feature.FILE_NAME_WITHOUT_EXTENSION,
+                fileExtension = Feature.FILE_EXTENSION
+        )
         val newKnownPath = KnownPath(newPath, FileType.FEATURE)
 
         val featureAsString: String = FileFeatureSerializer.serializeToString(
@@ -165,8 +167,8 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
 
     fun getFeatureAtPath(path: Path): Feature? {
         val filePath = path.copy(
-                fileName = FEATURE_NAME,
-                fileExtension = FileType.FEATURE.fileExtension
+                fileName = Feature.FILE_NAME_WITHOUT_EXTENSION,
+                fileExtension = Feature.FILE_EXTENSION
         )
 
         val featureKnownPath = KnownPath(filePath, FileType.FEATURE)
@@ -199,17 +201,22 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
     }
 
     fun getFeaturesTree(featuresTreeFilter: FeaturesTreeFilter): RootTreeNode {
-        val rootNode = RootTreeNode("Features")
+        val rootNodeBuilder = TreeNodeBuilder()
 
-        val features = getAllFeatures()
-        val filteredFeatures = filterFeatures(featuresTreeFilter, features)
-        mapFeaturesToTree(filteredFeatures, rootNode)
 
-        val tests = testsService.getAllTests()
-        val filteredTests = filterTests(featuresTreeFilter, tests)
-        mapTestsToTree(filteredTests, rootNode)
+        val features: List<Feature> = getAllFeatures()
+        val filteredFeatures: List<Feature> = filterFeatures(featuresTreeFilter, features)
+        filteredFeatures.forEach {
+            rootNodeBuilder.addFeature(it)
+        }
 
-        return rootNode
+        val tests: List<TestModel> = testsService.getAllTests()
+        val filteredTests: List<TestModel> = filterTests(featuresTreeFilter, tests)
+        filteredTests.forEach {
+            rootNodeBuilder.addTest(it)
+        }
+
+        return rootNodeBuilder.build()
     }
 
     private fun filterFeatures(featuresTreeFilter: FeaturesTreeFilter, features: List<Feature>): List<Feature> {
@@ -284,56 +291,11 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         return testMatchesTestFilter
     }
 
-    private fun mapFeaturesToTree(features: List<Feature>, rootNode: RootTreeNode) {
-        for (feature in features) {
-            val featureDirs = feature.path.directories.toMutableList()
-            findOrCreateFeatureTreeNodes(featureDirs, rootNode)
-        }
-    }
-
-    private fun findOrCreateFeatureTreeNodes(featuresNames: MutableList<String>, parentNode: ContainerTreeNode): TreeNode {
-        if (featuresNames.isEmpty()) {
-            return parentNode
-        }
-
-        val currentFeatureName = featuresNames.removeAt(0)
-
-        var treeNode: ContainerTreeNode? = parentNode.children.find { it is ContainerTreeNode && it.name == currentFeatureName } as? ContainerTreeNode
-        if (treeNode == null) {
-            treeNode = FeatureTreeNode(
-                    currentFeatureName,
-                    parentNode.path.copy(directories = parentNode.path.directories + currentFeatureName)
-            )
-            parentNode.children.add(treeNode)
-        }
-
-        return findOrCreateFeatureTreeNodes(
-                featuresNames,
-                treeNode
-        )
-    }
-
-    private fun mapTestsToTree(tests: List<TestModel>, rootNode: RootTreeNode) {
-        for (test in tests) {
-            val parentContainerTreeNode = findOrCreateFeatureTreeNodes(
-                    test.path.directories.toMutableList(),
-                    rootNode
-            ) as ContainerTreeNode
-
-            parentContainerTreeNode.children.add(
-                    TestTreeNode(
-                            name = test.text,
-                            path = test.path,
-                            properties = test.properties
-                    )
-            )
-        }
-    }
-
     private fun getFeatureName(featurePath: Path): String {
         if (featurePath.directories.isEmpty()) {
             return ""
         }
         return featurePath.directories.last()
     }
+
 }

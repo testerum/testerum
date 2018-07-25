@@ -16,6 +16,7 @@ import net.qutester.service.mapper.FileToUiTestMapper
 import net.qutester.service.mapper.UiToFileTestMapper
 import net.qutester.service.resources.ResourcesService
 import net.qutester.service.tests.resolver.TestResolver
+import net.qutester.service.warning.WarningService
 import net.testerum.db_file.FileRepositoryService
 import net.testerum.db_file.model.KnownPath
 import net.testerum.db_file.model.RepositoryFile
@@ -27,7 +28,8 @@ class TestsService(private val testResolver: TestResolver,
                    private val fileRepositoryService: FileRepositoryService,
                    private val resourcesService: ResourcesService,
                    private val uiToFileTestMapper: UiToFileTestMapper,
-                   private val fileToUiTestMapper: FileToUiTestMapper) {
+                   private val fileToUiTestMapper: FileToUiTestMapper,
+                   private val warningService: WarningService) {
 
     companion object {
         private val TEST_PARSER = ParserExecuter(FileTestDefParserFactory.testDef())
@@ -57,7 +59,9 @@ class TestsService(private val testResolver: TestResolver,
                 path = createdRepositoryFile.knownPath.asPath()
         )
 
-        return resolvedTestModel!!
+        val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedTestModel!!)
+
+        return resolvedUiTestWithWarnings
     }
 
     fun updateTest(updateTestModel: UpdateTestModel): TestModel {
@@ -87,8 +91,9 @@ class TestsService(private val testResolver: TestResolver,
         val resolvedTestModel = getTestAtPath(
                 path = newPath
         )
+        val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedTestModel!!)
 
-        return resolvedTestModel!!
+        return resolvedUiTestWithWarnings
     }
 
     private fun saveExternalResources(testModel: TestModel): TestModel {
@@ -134,7 +139,7 @@ class TestsService(private val testResolver: TestResolver,
     }
 
     fun getAllTests(): List<TestModel> {
-        return getTestsUnderPath(Path.createEmptyInstance())
+        return getTestsUnderPath(Path.EMPTY)
     }
 
     fun getTestsUnderPath(path: Path): List<TestModel> {
@@ -148,7 +153,9 @@ class TestsService(private val testResolver: TestResolver,
                     unresolvedUiTest,
                     throwExceptionOnNotFound = false
             )
-            uiTests.add(resolvedUiTest)
+            val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest)
+
+            uiTests.add(resolvedUiTestWithWarnings)
         }
 
         return uiTests
@@ -162,8 +169,9 @@ class TestsService(private val testResolver: TestResolver,
         val fileTest = TEST_PARSER.parse(testFile.body)
         val unresolvedUiTest = fileToUiTestMapper.mapToUiModel(fileTestDef = fileTest, testFile = testFile)
         val resolvedUiTest = testResolver.resolveComposedSteps(unresolvedUiTest, throwExceptionOnNotFound = false)
+        val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest)
 
-        return resolvedUiTest
+        return resolvedUiTestWithWarnings
     }
 
     fun deleteDirectory(path: Path) {
@@ -178,4 +186,5 @@ class TestsService(private val testResolver: TestResolver,
                 KnownPath(copyPath.destinationPath, FileType.TEST)
         )
     }
+
 }

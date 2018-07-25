@@ -18,7 +18,9 @@ export class Feature implements Serializable<Feature>, TreeNodeModel {
         this.path = Path.deserialize(input["path"]);
         this.name = input['name'];
         this.description = input['description'];
-        this.tags = input['tags'];
+        this.tags = input['tags'] || [];
+
+        this.attachments = [];
         for (let attachment of (input['attachments'] || [])) {
             this.attachments.push(new Attachment().deserialize(attachment));
         }

@@ -4,16 +4,21 @@ import {IdUtils} from "../../utils/id.util";
 import {StepCall} from "../step-call.model";
 import {Path} from "../infrastructure/path/path.model";
 import {TestProperties} from "./test-properties.model";
+import {Warning} from "../warning/Warning";
 
 export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 
     id:string = IdUtils.getTemporaryId();
-    properties: TestProperties;
     path:Path;
+    properties: TestProperties;
     text:string;
     description:string;
     tags: Array<string> = [];
+
     stepCalls:Array<StepCall> = [];
+
+    warnings: Array<Warning> = [];
+    descendantsHaveWarnings: boolean = false;
 
     deserialize(input: Object): TestModel {
         this.id = input['id'];
@@ -21,11 +26,23 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
         this.properties = new TestProperties().deserialize(input['properties']);
         this.text = input['text'];
         this.description = input['description'];
-        this.tags = input['tags'];
+        this.tags = input['tags'] || [];
 
-        for (let stepCall of (input['stepCalls']) || []) {
-            this.stepCalls.push(new StepCall().deserialize(stepCall));
+        this.stepCalls = [];
+        for (let stepCall of (input['stepCalls'] || [])) {
+            this.stepCalls.push(
+                new StepCall().deserialize(stepCall)
+            );
         }
+
+        this.warnings = [];
+        for (let warning of (input['warnings'] || [])) {
+            this.warnings.push(
+                new Warning().deserialize(warning)
+            );
+        }
+
+        this.descendantsHaveWarnings = input['descendantsHaveWarnings'];
 
         return this;
     }

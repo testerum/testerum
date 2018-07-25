@@ -12,7 +12,7 @@ class FileSystemController(val fileSystemService: FileSystemService) {
     @RequestMapping(path = arrayOf("/directory_tree"), method = arrayOf(RequestMethod.GET))
     @ResponseBody
     fun getDirectoryTree(@RequestParam(value = "path") pathAsString:String): FileSystemDirectory {
-        var path: Path = Path.createEmptyInstance();
+        var path: Path = Path.EMPTY
         if (pathAsString.isNotEmpty()) {
             path = Path.createInstance(pathAsString)
         }
