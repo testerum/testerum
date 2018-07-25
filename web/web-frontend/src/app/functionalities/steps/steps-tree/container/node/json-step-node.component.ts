@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
-import {NavigationEnd, Params, Router} from "@angular/router";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {StepTreeNodeModel} from "../../model/step-tree-node.model";
@@ -11,7 +11,7 @@ import {Subscription} from "rxjs/Subscription";
     moduleId: module.id,
     selector: 'json-step-node',
     templateUrl: 'json-step-node.component.html',
-    styleUrls:['json-step-node.component.css']
+    styleUrls:['json-step-node.component.scss']
 })
 export class JsonStepNodeComponent implements OnInit, OnDestroy {
 

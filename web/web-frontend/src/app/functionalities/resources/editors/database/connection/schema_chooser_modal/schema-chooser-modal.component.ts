@@ -6,7 +6,7 @@ import {ModalDirective} from "ngx-bootstrap";
     moduleId: module.id,
     selector: 'schema-chooser-modal',
     templateUrl: 'schema-chooser-modal.component.html',
-    styleUrls: ["schema-chooser-modal.component.css"]
+    styleUrls: ["schema-chooser-modal.component.scss"]
 })
 export class SchemaChooserModalComponent {
 

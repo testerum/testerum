@@ -1,11 +1,11 @@
-import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NgModel} from "@angular/forms";
 
 @Component({
     moduleId: module.id,
     selector: 'input-error',
     templateUrl: 'input-error.component.html',
-    styleUrls: ["input-error.component.css"]
+    styleUrls: ["input-error.component.scss"]
 })
 
 export class InputErrorComponent implements OnInit {

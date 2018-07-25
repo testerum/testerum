@@ -7,7 +7,7 @@ import {RdbmsVerifyTreeService} from "../../../rdbms-verify-tree.service";
     moduleId: module.id,
     selector: 'json-verify-table-row-node',
     templateUrl: 'rdbms-verify-table-row-node.component.html',
-    styleUrls:['../../../../../../../../../generic/css/tree.css']
+    styleUrls:['../../../../../../../../../generic/css/tree.scss']
 })
 export class RdbmsVerifyTableRowNodeComponent implements OnInit {
 

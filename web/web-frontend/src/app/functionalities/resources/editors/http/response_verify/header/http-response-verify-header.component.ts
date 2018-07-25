@@ -10,7 +10,7 @@ import {ArrayUtil} from "../../../../../../utils/array.util";
     moduleId: module.id,
     selector: 'http-response-verify-header',
     templateUrl: 'http-response-verify-header.component.html',
-    styleUrls: ["http-response-verify-header.component.css"]
+    styleUrls: ["http-response-verify-header.component.scss"]
 })
 export class HttpResponseVerifyHeaderComponent {
 

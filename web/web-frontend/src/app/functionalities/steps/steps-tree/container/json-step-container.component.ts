@@ -21,9 +21,9 @@ import {JsonTreePathContainer} from "../../../../generic/components/json-tree/mo
     selector: 'json-step-container',
     templateUrl: 'json-step-container.component.html',
     styleUrls: [
-        'json-step-container.component.css',
-        '../../../../generic/components/json-tree/json-tree.generic.css',
-        '../../../../generic/css/tree.css'
+        'json-step-container.component.scss',
+        '../../../../generic/components/json-tree/json-tree.generic.scss',
+        '../../../../generic/css/tree.scss'
     ]
 })
 export class JsonStepContainerComponent {

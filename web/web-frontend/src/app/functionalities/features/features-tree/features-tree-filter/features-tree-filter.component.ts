@@ -2,7 +2,6 @@ import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/c
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../utils/array.util";
-import {JsonTreeContainer} from "../../../../generic/components/json-tree/model/json-tree-container.model";
 import {FeaturesTreeService} from "../features-tree.service";
 import {FeaturesTreeFilter} from "../../../../model/feature/filter/features-tree-filter.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
@@ -13,7 +12,7 @@ import {TagsService} from "../../../../service/tags.service";
 @Component({
     selector: 'features-tree-filter',
     templateUrl: 'features-tree-filter.component.html',
-    styleUrls: ['features-tree-filter.component.css'],
+    styleUrls: ['features-tree-filter.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class FeaturesTreeFilterComponent implements OnInit {

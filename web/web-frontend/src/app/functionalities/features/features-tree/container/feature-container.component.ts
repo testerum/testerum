@@ -18,9 +18,9 @@ import {UrlService} from "../../../../service/url.service";
     selector: 'feature-container',
     templateUrl: 'feature-container.component.html',
     styleUrls: [
-        'feature-container.component.css',
-        '../../../../generic/components/json-tree/json-tree.generic.css',
-        '../../../../generic/css/tree.css'
+        'feature-container.component.scss',
+        '../../../../generic/components/json-tree/json-tree.generic.scss',
+        '../../../../generic/css/tree.scss'
     ]
 })
 export class FeatureContainerComponent implements OnInit, OnDestroy {

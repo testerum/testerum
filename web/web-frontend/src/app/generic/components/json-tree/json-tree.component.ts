@@ -1,6 +1,4 @@
-import {
-    Component, Input, OnInit, ViewChild
-} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {JsonTreeModel} from "./model/json-tree.model";
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";
@@ -9,7 +7,7 @@ import {ModelComponentMapping} from "../../../model/infrastructure/model-compone
     moduleId: module.id,
     selector: 'json-tree',
     templateUrl: 'json-tree.component.html',
-    styleUrls:['json-tree.component.css']
+    styleUrls:['json-tree.component.scss']
 })
 export class JsonTreeComponent {
 

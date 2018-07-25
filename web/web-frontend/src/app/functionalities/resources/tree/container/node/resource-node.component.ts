@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {ResourcesTreeNode} from "../../model/resources-tree-node.model";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
@@ -9,7 +9,7 @@ import {Subscription} from "rxjs/Subscription";
     moduleId: module.id,
     selector: 'resource-node',
     templateUrl: 'resource-node.component.html',
-    styleUrls:['resource-node.component.css']
+    styleUrls:['resource-node.component.scss']
 })
 export class ResourceNodeComponent implements OnInit, OnDestroy {
 

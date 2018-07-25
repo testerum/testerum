@@ -9,7 +9,7 @@ import {ArrayUtil} from "../../../../../../../../../utils/array.util";
     moduleId: module.id,
     selector: 'http-mock-response-headers',
     templateUrl: 'http-mock-response-headers.component.html',
-    styleUrls: ["http-mock-response-headers.component.css"]
+    styleUrls: ["http-mock-response-headers.component.scss"]
 })
 
 export class HttpMockResponseHeadersComponent {

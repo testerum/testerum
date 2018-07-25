@@ -7,7 +7,7 @@ import 'brace/theme/crimson_editor';
     moduleId: module.id,
     selector: 'rdbms-sql-editor-component',
     templateUrl: 'rdbms-sql-editor.component.html',
-    styleUrls: ['rdbms-sql-editor.component.css']
+    styleUrls: ['rdbms-sql-editor.component.scss']
 })
 
 export class RdbmsSqlEditorComponent {

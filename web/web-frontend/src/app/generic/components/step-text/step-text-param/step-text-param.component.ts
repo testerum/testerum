@@ -1,16 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
 import {Arg} from "../../../../model/arg/arg.model";
 import {VariableHolder} from "../../../variable/variable-holder.model";
-import {ResourceMapEnum} from "../../../../functionalities/resources/editors/resource-map.enum";
-import {Path} from "../../../../model/infrastructure/path/path.model";
 import {BasicResource} from "../../../../model/resource/basic/basic-resource.model";
 
 @Component({
     moduleId: module.id,
     selector: 'step-text-param',
     templateUrl: 'step-text-param.component.html',
-    styleUrls: ['step-text-param.component.css']
+    styleUrls: ['step-text-param.component.scss']
 })
 
 export class StepTextParamComponent {

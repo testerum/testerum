@@ -9,10 +9,10 @@ import {SelectTestsTreeRunnerService} from "../select-tests-tree-runner.service"
     selector: 'feature-container',
     templateUrl: 'select-test-tree-runner-container.component.html',
     styleUrls: [
-        'select-test-tree-runner-container.component.css',
-        '../../../../../generic/components/json-tree/json-tree.generic.css',
-        '../../../../../generic/css/generic.css',
-        '../../../../../generic/css/tree.css'
+        'select-test-tree-runner-container.component.scss',
+        '../../../../../generic/components/json-tree/json-tree.generic.scss',
+        '../../../../../generic/css/generic.scss',
+        '../../../../../generic/css/tree.scss'
     ]
 })
 export class SelectTestTreeRunnerContainerComponent {

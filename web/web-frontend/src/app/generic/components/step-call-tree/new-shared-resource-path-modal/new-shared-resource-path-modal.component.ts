@@ -1,26 +1,10 @@
-import {
-    Component,
-    ComponentFactory,
-    ComponentFactoryResolver,
-    ComponentRef,
-    EventEmitter, Input,
-    OnInit,
-    Output, Type,
-    ViewChild, ViewContainerRef
-} from "@angular/core";
+import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import {ModalDirective} from "ngx-bootstrap";
-import {Arg} from "../../../../model/arg/arg.model";
-import {ResourceComponent} from "../../../../functionalities/resources/editors/resource-component.interface";
-import {ArgNodeComponent} from "../nodes/arg-node/arg-node.component";
 import {ResourceMapEnum} from "../../../../functionalities/resources/editors/resource-map.enum";
-import {JsonUtil} from "../../../../utils/json.util";
-import {ObjectUtil} from "../../../../utils/object.util";
 import {ResourceService} from "../../../../service/resources/resource.service";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {PathChooserContainerModel} from "../../path-chooser/model/path-chooser-container.model";
 import {PathChooserComponent} from "../../path-chooser/path-chooser.component";
 import {NgForm} from "@angular/forms";
-import {Setting} from "../../../../functionalities/config/settings/model/setting.model";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 
@@ -29,9 +13,9 @@ import {Observable} from "rxjs/Observable";
     selector: 'new-shared-resource-path-modal',
     templateUrl: 'new-shared-resource-path-modal.component.html',
     styleUrls: [
-        'new-shared-resource-path-modal.component.css',
-        '../../../../generic/css/generic.css',
-        '../../../../generic/css/forms.css'
+        'new-shared-resource-path-modal.component.scss',
+        '../../../../generic/css/generic.scss',
+        '../../../../generic/css/forms.scss'
     ],
 })
 export class NewSharedResourcePathModalComponent implements OnInit {

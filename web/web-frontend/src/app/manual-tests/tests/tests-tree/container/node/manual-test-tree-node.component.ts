@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NavigationEnd, Params, Router} from "@angular/router";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
@@ -8,7 +8,7 @@ import {ManualTestTreeNodeModel} from "../../model/manual-test-tree-node.model";
     moduleId: module.id,
     selector: 'json-test-node',
     templateUrl: 'manual-test-tree-node.component.html',
-    styleUrls:['manual-test-tree-node.component.css']
+    styleUrls:['manual-test-tree-node.component.scss']
 })
 export class ManualTestTreeNodeComponent implements OnInit {
 

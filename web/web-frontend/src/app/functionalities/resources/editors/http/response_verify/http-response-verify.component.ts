@@ -16,10 +16,10 @@ import {HttpResponseVerifyBodyComponent} from "./body/http-response-verify-body.
     selector: 'http-response-verify',
     templateUrl: 'http-response-verify.component.html',
     styleUrls: [
-        'http-response-verify.component.css',
-        '../../resource-editor.css',
-        '../../../../../generic/css/generic.css',
-        '../../../../../generic/css/forms.css'
+        'http-response-verify.component.scss',
+        '../../resource-editor.scss',
+        '../../../../../generic/css/generic.scss',
+        '../../../../../generic/css/forms.scss'
     ]
 })
 export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseVerify> implements OnInit {

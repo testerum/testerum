@@ -1,19 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, ParamMap, Params, Route, Router} from "@angular/router";
-import {ModelComponentMapping} from "../../model/infrastructure/model-component-mapping.model";
-import {FeatureContainerComponent} from "./features-tree/container/feature-container.component";
-import {TestNodeComponent} from "./features-tree/container/node/test-node.component";
-import {TestTreeNodeModel} from "./features-tree/model/test-tree-node.model";
-import {FeatureTreeContainerModel} from "./features-tree/model/feature-tree-container.model";
+import {NavigationEnd, Params, Router} from "@angular/router";
 import {FeaturesTreeService} from "./features-tree/features-tree.service";
-import {switchMap} from "rxjs/operators";
-import {Path} from "../../model/infrastructure/path/path.model";
 
 @Component({
     moduleId: module.id,
     selector: 'features',
     templateUrl: 'features.component.html',
-    styleUrls: ["features.component.css", "../../generic/css/main-container.css"]
+    styleUrls: ["features.component.scss", "../../generic/css/main-container.scss"]
 })
 export class FeaturesComponent implements OnInit {
 

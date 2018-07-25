@@ -9,7 +9,7 @@ import {ValidationErrorResponse} from "../../model/exception/validation-error-re
     moduleId: module.id,
     selector: 'error',
     templateUrl: 'error.component.html',
-    styleUrls:['error.component.css', '../../generic/css/generic.css']
+    styleUrls:['error.component.scss', '../../generic/css/generic.scss']
 })
 
 export class ErrorComponent implements OnInit {

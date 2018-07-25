@@ -33,7 +33,7 @@
                 "resources/css/bootstrap.min.css",
                 "resources/css/bootstrap-theme.min.css",
 
-                "styles.css"
+                "styles.scss"
             ],
             "scripts": [
                 "../node_modules/simplemde/dist/simplemde.min.js",
@@ -73,7 +73,7 @@
         }
     },
     "defaults": {
-        "styleExt": "css",
+        "styleExt": "scss",
         "component": {},
         "build": {
             "showCircularDependencies": false

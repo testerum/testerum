@@ -1,6 +1,4 @@
-import {
-    Component, OnInit, Input
-} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {RunnerTreeNodeModel} from "../model/runner-tree-node.model";
 import {ExecutionStatusEnum} from "../../../../../model/test/event/enums/execution-status.enum";
 import {RunnerTreeNodeSelectedListener} from "../event/runner-tree-node-selected.listener";
@@ -10,7 +8,7 @@ import {RunnerTreeService} from "../runner-tree.service";
     moduleId: module.id,
     selector: 'runner-tree-node',
     templateUrl: 'runner-tree-node.component.html',
-    styleUrls:['runner-tree-node.component.css']
+    styleUrls:['runner-tree-node.component.scss']
 })
 export class RunnerTreeNodeComponent implements OnInit, RunnerTreeNodeSelectedListener {
 

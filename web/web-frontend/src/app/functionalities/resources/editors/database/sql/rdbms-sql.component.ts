@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, Input, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {ResourceComponent} from "../../resource-component.interface";
 import {BasicResource} from "../../../../../model/resource/basic/basic-resource.model";
@@ -10,10 +10,10 @@ import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-p
     selector: 'rdbms-sql',
     templateUrl: 'rdbms-sql.component.html',
     styleUrls: [
-        'rdbms-sql.component.css',
-        '../../resource-editor.css',
-        '../../../../../generic/css/generic.css',
-        '../../../../../generic/css/forms.css'
+        'rdbms-sql.component.scss',
+        '../../resource-editor.scss',
+        '../../../../../generic/css/generic.scss',
+        '../../../../../generic/css/forms.scss'
     ]
 })
 

@@ -5,23 +5,19 @@ import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
 import {JsonTreeChildrenRenderer} from "../../../../../../../generic/components/json-tree/children-renderer/json-tree-children-renderer.abstract";
 import {FieldJsonVerify} from "../../model/field-json-verify.model";
 import {ArrayJsonVerify} from "../../model/array-json-verify.model";
-import {BooleanJsonVerify} from "../../model/boolean-json-verify.model";
-import {NullJsonVerify} from "../../model/null-json-verify.model";
-import {NumberJsonVerify} from "../../model/number-json-verify.model";
 import {StringJsonVerify} from "../../model/string-json-verify.model";
 import {JsonTreeNode} from "../../../../../../../generic/components/json-tree/model/json-tree-node.model";
 import {ObjectUtil} from "../../../../../../../utils/object.util";
 import {SerializationUtil} from "../../model/util/serialization.util";
-import {JsonTreeContainer} from "../../../../../../../generic/components/json-tree/model/json-tree-container.model";
 
 @Component({
     moduleId: module.id,
     selector: 'json-field-verify-node',
     templateUrl: 'json-field-verify-node.component.html',
     styleUrls: [
-        'json-field-verify-node.component.css',
-        '../../json-verify-tree.generic.css',
-        '../../../../../../../generic/css/tree.css'
+        'json-field-verify-node.component.scss',
+        '../../json-verify-tree.generic.scss',
+        '../../../../../../../generic/css/tree.scss'
     ]
 })
 export class JsonFieldVerifyNodeComponent extends JsonTreeChildrenRenderer implements OnInit {

@@ -10,9 +10,9 @@ import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tre
     selector: 'file-directory-chooser-container',
     templateUrl: 'file-directory-chooser-container.component.html',
     styleUrls: [
-        'file-directory-chooser-container.component.css',
-        '../../../../../generic/components/json-tree/json-tree.generic.css',
-        '../../../../../generic/css/tree.css'
+        'file-directory-chooser-container.component.scss',
+        '../../../../../generic/components/json-tree/json-tree.generic.scss',
+        '../../../../../generic/css/tree.scss'
     ]
 })
 export class FileDirectoryChooserContainerComponent implements OnInit, OnDestroy {

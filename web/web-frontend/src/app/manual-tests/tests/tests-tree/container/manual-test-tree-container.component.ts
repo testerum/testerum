@@ -18,9 +18,9 @@ import {JsonTreePathContainer} from "../../../../generic/components/json-tree/mo
     selector: 'feature-container',
     templateUrl: 'manual-test-tree-container.component.html',
     styleUrls: [
-        'manual-test-tree-container.component.css',
-        '../../../../generic/components/json-tree/json-tree.generic.css',
-        '../../../../generic/css/tree.css'
+        'manual-test-tree-container.component.scss',
+        '../../../../generic/components/json-tree/json-tree.generic.scss',
+        '../../../../generic/css/tree.scss'
     ]
 })
 export class ManualTestTreeContainerComponent {

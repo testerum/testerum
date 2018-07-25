@@ -1,14 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {Observable} from "rxjs/Rx";
 import {Subject} from "rxjs/Subject";
-import {ComposedStepDef} from "../../../../model/composed-step-def.model";
 
 @Component({
     selector: 'update-incompatibility-dialog',
     templateUrl: 'update-incompatibility-dialog.component.html',
-    styleUrls: ['update-incompatibility-dialog.component.css', '../../../../generic/css/generic.css']
+    styleUrls: ['update-incompatibility-dialog.component.scss', '../../../../generic/css/generic.scss']
 })
 export class UpdateIncompatibilityDialogComponent {
 

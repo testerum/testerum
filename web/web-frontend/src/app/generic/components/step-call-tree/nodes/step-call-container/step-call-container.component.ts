@@ -7,10 +7,10 @@ import {StepTextComponent} from "../../../step-text/step-text.component";
     selector: 'step-call-container',
     templateUrl: 'step-call-container.component.html',
     styleUrls: [
-        'step-call-container.component.css',
-        '../step-call-tree.css',
-        '../../../json-tree/json-tree.generic.css',
-        '../../../../../generic/css/tree.css',
+        'step-call-container.component.scss',
+        '../step-call-tree.scss',
+        '../../../json-tree/json-tree.generic.scss',
+        '../../../../../generic/css/tree.scss',
     ]
 })
 export class StepCallContainerComponent implements OnInit, OnDestroy {

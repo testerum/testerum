@@ -7,7 +7,7 @@ import {ResourceMapEnum} from "../../../resources/editors/resource-map.enum";
     moduleId: module.id,
     selector: 'composed-step-parameters',
     templateUrl: 'composed-step-parameters.component.html',
-    styleUrls: ['composed-step-parameters.component.css', '../../../../generic/css/generic.css']
+    styleUrls: ['composed-step-parameters.component.scss', '../../../../generic/css/generic.scss']
 })
 export class ComposedStepParametersComponent implements OnInit {
 

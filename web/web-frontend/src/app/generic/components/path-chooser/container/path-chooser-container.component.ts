@@ -16,9 +16,9 @@ import {JsonTreeNodeEventModel} from "../../json-tree/event/selected-json-tree-n
     selector: 'path-chooser-container',
     templateUrl: 'path-chooser-container.component.html',
     styleUrls: [
-        'path-chooser-container.component.css',
-        '../../../../generic/components/json-tree/json-tree.generic.css',
-        '../../../../generic/css/tree.css'
+        'path-chooser-container.component.scss',
+        '../../../../generic/components/json-tree/json-tree.generic.scss',
+        '../../../../generic/css/tree.scss'
     ]
 })
 export class PathChooserContainerComponent implements OnInit {

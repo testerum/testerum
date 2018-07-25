@@ -6,9 +6,9 @@ import {StepTreeContainerModel} from "../../../../functionalities/steps/steps-tr
     selector: 'step-chooser-container',
     templateUrl: 'step-chooser-container.component.html',
     styleUrls: [
-        'step-chooser-container.component.css',
-        '../../../../generic/components/json-tree/json-tree.generic.css',
-        '../../../../generic/css/tree.css'
+        'step-chooser-container.component.scss',
+        '../../../../generic/components/json-tree/json-tree.generic.scss',
+        '../../../../generic/css/tree.scss'
     ]
 })
 export class StepChooserContainerComponent {

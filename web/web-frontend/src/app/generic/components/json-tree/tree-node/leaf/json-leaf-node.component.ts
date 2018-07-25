@@ -1,6 +1,12 @@
 import {
-    Component, OnInit, Input, ViewChild, ViewContainerRef,
-    ComponentFactoryResolver, ComponentFactory, ComponentRef,
+    Component,
+    ComponentFactory,
+    ComponentFactoryResolver,
+    ComponentRef,
+    Input,
+    OnInit,
+    ViewChild,
+    ViewContainerRef,
 } from '@angular/core';
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeNode} from "../../model/json-tree-node.model";
@@ -11,8 +17,8 @@ import {JsonTreeService} from "../../json-tree.service";
     selector: 'json-leaf-node',
     templateUrl: 'json-leaf-node.component.html',
     styleUrls:[
-        'json-leaf-node.component.css',
-        '../container/json-container-node.component.css'
+        'json-leaf-node.component.scss',
+        '../container/json-container-node.component.scss'
     ]
 })
 export class JsonLeafNodeComponent implements OnInit {

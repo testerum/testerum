@@ -31,7 +31,7 @@ import {ArrayUtil} from "../../../utils/array.util";
     moduleId: module.id,
     selector: 'composed-step-editor',
     templateUrl: 'composed-step-editor.component.html',
-    styleUrls: ['./composed-step-editor.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css']
+    styleUrls: ['./composed-step-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
 })
 
 export class ComposedStepEditorComponent implements OnInit {

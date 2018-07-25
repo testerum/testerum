@@ -7,7 +7,7 @@ import {ResourceMapEnum} from "../../../resources/editors/resource-map.enum";
     moduleId: module.id,
     selector: 'basic-step-parameters',
     templateUrl: 'basic-step-parameters.component.html',
-    styleUrls: ['basic-step-parameters.component.css', '../../../../generic/css/generic.css']
+    styleUrls: ['basic-step-parameters.component.scss', '../../../../generic/css/generic.scss']
 })
 export class BasicStepParametersComponent {
 

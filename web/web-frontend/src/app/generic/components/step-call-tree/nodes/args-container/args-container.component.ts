@@ -6,10 +6,10 @@ import {ParamsContainerModel} from "../../model/params-container.model";
     selector: 'args-container',
     templateUrl: 'args-container.component.html',
     styleUrls: [
-        'args-container.component.css',
-        '../step-call-tree.css',
-        '../../../json-tree/json-tree.generic.css',
-        '../../../../../generic/css/tree.css',
+        'args-container.component.scss',
+        '../step-call-tree.scss',
+        '../../../json-tree/json-tree.generic.scss',
+        '../../../../../generic/css/tree.scss',
     ]
 })
 export class ArgsContainerComponent implements OnInit {

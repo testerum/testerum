@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
-import {NavigationEnd, Params, Router} from "@angular/router";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {TestTreeNodeModel} from "../../model/test-tree-node.model";
@@ -10,7 +10,7 @@ import {Subscription} from "rxjs/Subscription";
     moduleId: module.id,
     selector: 'json-test-node',
     templateUrl: 'test-node.component.html',
-    styleUrls:['test-node.component.css']
+    styleUrls:['test-node.component.scss']
 })
 export class TestNodeComponent implements OnInit, OnDestroy {
 

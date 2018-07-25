@@ -6,7 +6,7 @@ import {ManualTestsRunnerStatus} from "../../model/enums/manual-tests-runner-sta
 @Component({
     selector: 'manual-tests-overview-runner',
     templateUrl: 'manual-tests-overview-runner.component.html',
-    styleUrls: ['manual-tests-overview-runner.component.css']
+    styleUrls: ['manual-tests-overview-runner.component.scss']
 })
 
 export class ManualTestsOverviewRunnerComponent implements OnInit {

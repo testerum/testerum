@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tree-node-event.model";
 import {StepTreeNodeModel} from "../../../../../functionalities/steps/steps-tree/model/step-tree-node.model";
 import {StepChooserService} from "../../step-chooser.service";
@@ -8,7 +8,7 @@ import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/
     moduleId: module.id,
     selector: 'step-chooser-node',
     templateUrl: 'step-chooser-node.component.html',
-    styleUrls:['step-chooser-node.component.css']
+    styleUrls:['step-chooser-node.component.scss']
 })
 export class StepChooserNodeComponent implements OnInit {
 

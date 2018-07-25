@@ -1,6 +1,7 @@
 import {
     AfterViewChecked,
-    Component, ElementRef, HostListener,
+    Component,
+    ElementRef,
     Input,
     OnDestroy,
     OnInit,
@@ -20,23 +21,19 @@ import {StepCall} from "../../../../../model/step-call.model";
 import {StepTextUtil} from "./util/StepTextUtil";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {Arg} from "../../../../../model/arg/arg.model";
-import {StepPatternParser} from "../../../../../model/text/parser/step-pattern-parser";
 import {StepPattern} from "../../../../../model/text/step-pattern.model";
 import {AutoComplete} from "primeng/primeng";
-import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
-import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
 import {StepChooserComponent} from "../../../step-chooser/step-chooser.component";
 import {StepChoseHandler} from "../../../step-chooser/step-choosed-handler.interface";
-import {ArrayUtil} from "../../../../../utils/array.util";
 
 @Component({
     selector: 'step-call-editor-container',
     templateUrl: 'step-call-editor-container.component.html',
     styleUrls: [
-        'step-call-editor-container.component.css',
-        '../step-call-tree.css',
-        '../../../json-tree/json-tree.generic.css',
-        '../../../../../generic/css/tree.css',
+        'step-call-editor-container.component.scss',
+        '../step-call-tree.scss',
+        '../../../json-tree/json-tree.generic.scss',
+        '../../../../../generic/css/tree.scss',
     ],
     encapsulation: ViewEncapsulation.None
 })

@@ -8,10 +8,10 @@ import {ManualTestsTreeExecutorContainerModel} from "../model/manual-tests-tree-
     selector: 'feature-container',
     templateUrl: 'manual-tests-executor-tree-container.component.html',
     styleUrls: [
-        'manual-tests-executor-tree-container.component.css',
-        '../../../../generic/components/json-tree/json-tree.generic.css',
-        '../../../../generic/css/generic.css',
-        '../../../../generic/css/tree.css'
+        'manual-tests-executor-tree-container.component.scss',
+        '../../../../generic/components/json-tree/json-tree.generic.scss',
+        '../../../../generic/css/generic.scss',
+        '../../../../generic/css/tree.scss'
     ]
 })
 export class ManualTestsExecutorTreeContainerComponent {

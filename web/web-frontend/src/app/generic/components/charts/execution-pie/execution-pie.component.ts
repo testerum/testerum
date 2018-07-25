@@ -1,11 +1,11 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ExecutionPieModel} from "./model/execution-pie.model";
 import {ExecutionPieService} from "./execution-pie.service";
 
 @Component({
     selector: 'execution-pie',
     templateUrl: 'execution-pie.component.html',
-    styleUrls: ['execution-pie.component.css']
+    styleUrls: ['execution-pie.component.scss']
 })
 
 export class ExecutionPieComponent implements OnInit {

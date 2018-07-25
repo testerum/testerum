@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
 import {StepTextPartEnum} from "../../../model/enums/step-text-part.enum";
 import {StepDef} from "../../../model/step-def.model";
@@ -12,7 +12,7 @@ import {StringUtils} from "../../../utils/string-utils.util";
     moduleId: module.id,
     selector: 'step-text',
     templateUrl: 'step-text.component.html',
-    styleUrls: ['step-text.component.css']
+    styleUrls: ['step-text.component.scss']
 })
 export class StepTextComponent<T extends StepDef> implements OnInit {
 

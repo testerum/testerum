@@ -4,7 +4,7 @@ import {NavigationEnd, Params, Router} from "@angular/router";
 @Component({
     selector: 'runner',
     templateUrl: 'runner.component.html',
-    styleUrls: ["../../generic/css/main-container.css"]
+    styleUrls: ["../../generic/css/main-container.scss"]
 })
 
 export class RunnerComponent implements OnInit {

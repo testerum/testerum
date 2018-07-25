@@ -3,7 +3,8 @@ import {
     ComponentFactory,
     ComponentFactoryResolver,
     ComponentRef,
-    ElementRef, EventEmitter,
+    ElementRef,
+    EventEmitter,
     Type,
     ViewChild,
     ViewContainerRef
@@ -27,8 +28,8 @@ import {BasicResource} from "../../../../model/resource/basic/basic-resource.mod
     selector: 'arg-modal',
     templateUrl: 'arg-modal.component.html',
     styleUrls: [
-        'arg-modal.component.css',
-        '../../../../generic/css/generic.css'
+        'arg-modal.component.scss',
+        '../../../../generic/css/generic.scss'
     ],
 })
 export class ArgModalComponent {

@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
 import * as SimpleMDE from 'simplemde'
 
 @Component({
     selector: 'markdown-editor',
     templateUrl: 'markdown-editor.component.html',
-    styleUrls: ['markdown-editor.component.css']
+    styleUrls: ['markdown-editor.component.scss']
 })
 
 export class MarkdownEditorComponent implements AfterViewInit {

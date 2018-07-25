@@ -4,7 +4,6 @@ import {JsonVerifyTreeService} from "../../json-verify-tree.service";
 import {JsonTreeChildrenRenderer} from "../../../../../../../generic/components/json-tree/children-renderer/json-tree-children-renderer.abstract";
 import {ObjectJsonVerify} from "../../model/object-json-verify.model";
 import {StringJsonVerify} from "../../model/string-json-verify.model";
-import {SerializationUtil} from "../../model/util/serialization.util";
 import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
 
 @Component({
@@ -12,10 +11,10 @@ import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
     selector: 'json-array-verify-node',
     templateUrl: 'json-array-verify-node.component.html',
     styleUrls:[
-        'json-array-verify-node.component.css',
-        '../../json-verify-tree.generic.css',
-        '../../../../../../../generic/css/tree.css',
-        '../../../../../../../generic/css/generic.css'
+        'json-array-verify-node.component.scss',
+        '../../json-verify-tree.generic.scss',
+        '../../../../../../../generic/css/tree.scss',
+        '../../../../../../../generic/css/generic.scss'
     ]
 })
 

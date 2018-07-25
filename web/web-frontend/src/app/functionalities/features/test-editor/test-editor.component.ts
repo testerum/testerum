@@ -20,7 +20,7 @@ import {ArrayUtil} from "../../../utils/array.util";
     moduleId: module.id,
     selector: 'test-editor',
     templateUrl: 'test-editor.component.html',
-    styleUrls: ['test-editor.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css'],
+    styleUrls: ['test-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class TestEditorComponent implements OnInit, OnDestroy {

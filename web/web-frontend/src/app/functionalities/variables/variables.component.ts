@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {HttpMockRequestHeader} from "../resources/editors/http/mock/stub/model/request/http-mock-request-header.model";
 import {Variable} from "../../model/variable/variable.model";
 import {StringUtils} from "../../utils/string-utils.util";
 import {ArrayUtil} from "../../utils/array.util";
@@ -10,7 +9,7 @@ import {VariablesService} from "../../service/variables.service";
     moduleId: module.id,
     selector: 'variables',
     templateUrl: 'variables.component.html',
-    styleUrls: ['variables.component.css']
+    styleUrls: ['variables.component.scss']
 })
 
 export class VariablesComponent implements OnInit {

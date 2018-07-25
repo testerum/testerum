@@ -1,6 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Attachment} from "../../../../model/file/attachment.model";
-import {StringUtils} from "../../../../utils/string-utils.util";
 import {DateUtil} from "../../../../utils/date.util";
 import {AttachmentsService} from "../../../../service/attachments.service";
 import {ArrayUtil} from "../../../../utils/array.util";
@@ -10,7 +9,7 @@ import {AreYouSureModalEnum} from "../../are_you_sure_modal/are-you-sure-modal.e
 @Component({
     selector: 'attachments-component',
     templateUrl: 'attachments.component.html',
-    styleUrls: ['attachments.component.css']
+    styleUrls: ['attachments.component.scss']
 })
 export class AttachmentsComponent implements OnInit {
 

@@ -12,7 +12,7 @@ import {HttpResponseBodyVerify} from "../model/http-response-body-verify.model";
     selector: 'http-response-verify-body',
     templateUrl: 'http-response-verify-body.component.html',
     styleUrls: [
-        'http-response-verify-body.component.css'
+        'http-response-verify-body.component.scss'
     ]
 })
 

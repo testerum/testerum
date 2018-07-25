@@ -1,13 +1,13 @@
 import {Component, ViewChild} from "@angular/core";
 import {VariablesComponent} from "../functionalities/variables/variables.component";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {trigger, state, style, animate, transition} from '@angular/animations';
+import {NavigationEnd, Router} from "@angular/router";
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
     moduleId: module.id,
     selector: "menu",
     templateUrl: "menu.component.html",
-    styleUrls: ["menu.component.css"],
+    styleUrls: ["menu.component.scss"],
     animations: [
         trigger('subMenu', [
             state('inactive', style({
