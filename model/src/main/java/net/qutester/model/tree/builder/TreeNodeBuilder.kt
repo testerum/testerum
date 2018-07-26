@@ -21,14 +21,19 @@ class TreeNodeBuilder {
         nodesByPath[emptyList()] = this // add root
     }
 
-    fun addFeature(feature: Feature) = addNode(feature)
-
-    fun addTest(test: TestModel) = addNode(test)
-
-    private fun addNode(payload: HasPath) {
-        val node: TreeNodeBuilder = getNodeByPath(payload.path.directories)
+    fun addFeature(feature: Feature) {
+        val node: TreeNodeBuilder = getNodeByPath(feature.path.directories)
 
         node.payload = payload
+    }
+
+    fun addTest(test: TestModel) {
+        val parentNode: TreeNodeBuilder = getNodeByPath(test.path.directories)
+
+        val node = TreeNodeBuilder()
+        parentNode.children += node
+
+        node.payload = test
     }
 
     private fun getNodeByPath(path: List<String>): TreeNodeBuilder {
