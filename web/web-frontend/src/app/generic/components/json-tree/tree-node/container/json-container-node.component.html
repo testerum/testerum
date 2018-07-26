@@ -8,7 +8,7 @@
 
         <i *ngIf="model.getOptions().displayLines" class="tree-icon tree-line-icon" (click)="toggleShowHideChildren();$event.stopPropagation();"></i>
 
-        <div class="tree-node-header full-line" (click)="toggleShowChildren();$event.stopPropagation();">
+        <div class="tree-node-header" (click)="toggleShowChildren();$event.stopPropagation();">
             <span #content></span>
         </div>
     </div>
