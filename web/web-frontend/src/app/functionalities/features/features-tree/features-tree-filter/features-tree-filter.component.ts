@@ -120,12 +120,6 @@ export class FeaturesTreeFilterComponent implements OnInit {
         return pathAsString != null ? Path.createInstance(pathAsString) : null;
     }
 
-    onCollapseEvent() {
-        let nodeToExpand = this.treeModel.selectedNode ? this.treeModel.selectedNode : this.treeModel;
-        JsonTreeExpandUtil.collapseNode(nodeToExpand);
-
-    }
-
     onExpandSelectedNodeEvent() {
         let nodeToExpand = this.treeModel.selectedNode ? this.treeModel.selectedNode : this.treeModel;
         JsonTreeExpandUtil.expandNode(nodeToExpand);
