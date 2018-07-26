@@ -24,7 +24,7 @@ import {TestNodeComponent} from "./features-tree/container/node/test-node.compon
 import {FeatureContainerComponent} from "./features-tree/container/feature-container.component";
 import {
     AutoCompleteModule,
-    InputSwitchModule, InputTextModule,
+    InputSwitchModule, InputTextModule, MessageModule, MessagesModule,
     SelectButtonModule,
     ToolbarModule,
     TooltipModule
@@ -50,6 +50,8 @@ import {FeaturesTreeFilterComponent} from "./features-tree/features-tree-filter/
         AutoCompleteModule,
         InputTextModule,
         InputSwitchModule,
+        MessagesModule,
+        MessageModule,
 
         GenericModule,
         StepsModule,

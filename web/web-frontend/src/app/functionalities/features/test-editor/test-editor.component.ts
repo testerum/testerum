@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterContentInit, Component, DoCheck, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {TestsService} from "../../../service/tests.service";
 import {TestModel} from "../../../model/test/test.model";
@@ -12,7 +12,7 @@ import {StepCallTreeService} from "../../../generic/components/step-call-tree/st
 import {Subscription} from "rxjs/Subscription";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {UrlService} from "../../../service/url.service";
-import {AutoComplete} from "primeng/primeng";
+import {AutoComplete, Message} from "primeng/primeng";
 import {TagsService} from "../../../service/tags.service";
 import {ArrayUtil} from "../../../utils/array.util";
 
@@ -23,10 +23,11 @@ import {ArrayUtil} from "../../../utils/array.util";
     styleUrls: ['test-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class TestEditorComponent implements OnInit, OnDestroy {
+export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
 
     StepPhaseEnum = StepPhaseEnum;
     testModel: TestModel = new TestModel;
+    oldTestModel: TestModel;
     isEditExistingTest: boolean; //TODO: is this used?
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
@@ -35,6 +36,9 @@ export class TestEditorComponent implements OnInit, OnDestroy {
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;
+
+    warnings: Message[] = [];
+    oldWarnings: Message[] = [];
 
     routeSubscription: Subscription;
     editModeStepCallTreeSubscription: Subscription;
@@ -49,6 +53,8 @@ export class TestEditorComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.oldTestModel = this.testModel;
+
         this.routeSubscription = this.route.data.subscribe(data => {
             this.testModel = data['testModel'];
             this.isEditExistingTest =  IdUtils.isTemporaryId(this.testModel.id);
@@ -58,7 +64,23 @@ export class TestEditorComponent implements OnInit, OnDestroy {
         this.editModeStepCallTreeSubscription = this.stepCallTreeService.editModeEventEmitter.subscribe( (editMode: boolean) => {
                 this.isEditMode = editMode;
             }
-        )
+        );
+    }
+
+    ngDoCheck(): void {
+        if (this.oldTestModel != this.testModel) {
+            this.refreshWarnings();
+            this.oldTestModel = this.testModel;
+        }
+    }
+
+    private refreshWarnings() {
+        this.warnings = [];
+        for (const warning of this.testModel.warnings) {
+            this.warnings.push(
+                {severity: 'warn', summary: warning.message}
+            )
+        }
     }
 
     ngOnDestroy(): void {
