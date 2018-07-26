@@ -1,13 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    ViewChild
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {BasicResource} from "../../../../model/resource/basic/basic-resource.model";
 import {ResourceComponent} from "../resource-component.interface";
@@ -19,10 +10,10 @@ import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-patt
     selector: 'basic-resource',
     templateUrl: 'basic-resource.component.html',
     styleUrls: [
-        'basic-resource.component.css',
-        '../resource-editor.css',
-        '../../../../generic/css/generic.css',
-        '../../../../generic/css/forms.css'
+        'basic-resource.component.scss',
+        '../resource-editor.scss',
+        '../../../../generic/css/generic.scss',
+        '../../../../generic/css/forms.scss'
     ]
 })
 export class BasicResourceComponent extends ResourceComponent<BasicResource> implements OnInit {

@@ -1,11 +1,11 @@
-import {Component, forwardRef, Input, Output, ViewChild} from '@angular/core';
+import {Component, forwardRef, Input, ViewChild} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {DirectoryChooserDialogComponent} from "./dialog/directory-chooser-dialog.component";
 
 @Component({
     selector: 'file-dir-chooser',
     templateUrl: 'file-dir-chooser.component.html',
-    styleUrls: ["file-dir-chooser.component.css"],
+    styleUrls: ["file-dir-chooser.component.scss"],
     providers: [
         { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => FileDirChooserComponent), multi: true},
         { provide: NG_VALIDATORS, useExisting: forwardRef(() => FileDirChooserComponent), multi: true }

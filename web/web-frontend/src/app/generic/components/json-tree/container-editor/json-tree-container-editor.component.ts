@@ -1,21 +1,17 @@
-import {Component, EventEmitter, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, ViewChild} from '@angular/core';
 import {JsonTreeContainerEditorEvent} from "./model/json-tree-container-editor.event";
 import {JsonTreeContainerEditorEnum} from "./model/enums/json-tree-container-editor.enum";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {BsModalRef, ModalDirective} from "ngx-bootstrap";
-import {JsonTreeContainer} from "../model/json-tree-container.model";
-import {ValidationResultModel} from "../../../../model/infrastructure/validation-result.model";
-import {StringUtils} from "../../../../utils/string-utils.util";
+import {BsModalRef} from "ngx-bootstrap";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {NgForm} from "@angular/forms";
 import {FormUtil} from "../../../../utils/form.util";
-import {isValid} from "ngx-bootstrap/chronos/create/valid";
 
 @Component({
     moduleId: module.id,
     selector: 'json-tree-container-editor',
     templateUrl: 'json-tree-container-editor.component.html',
-    styleUrls:['json-tree-container-editor.component.css', '../../../../generic/css/generic.css', '../../../../generic/css/forms.css']
+    styleUrls:['json-tree-container-editor.component.scss', '../../../../generic/css/generic.scss', '../../../../generic/css/forms.scss']
 })
 export class JsonTreeContainerEditor {
     @Input() title: string;

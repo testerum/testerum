@@ -16,7 +16,7 @@ import {ManualTestsRunnerStatus} from "../../runner/model/enums/manual-tests-run
 @Component({
     selector: 'manual-tests-executor-editor',
     templateUrl: 'manual-tests-executor-editor.component.html',
-    styleUrls: ['manual-tests-executor-editor.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css']
+    styleUrls: ['manual-tests-executor-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
 
 })
 

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {HttpMockService} from "../http-mock.service";
 import {HttpResponseStatusCode} from "../../../../../../../model/resource/http/enum/http-response-status-code.enum";
 import {HttpMockResponse} from "../model/response/http-mock-response.model";
@@ -9,9 +9,9 @@ import {HttpMockResponseType} from "../model/enums/http-mock-response-type.enum"
     selector: 'http-mock-response',
     templateUrl: 'http-mock-response.component.html',
     styleUrls: [
-        'http-mock-response.component.css',
-        '../../../../../../../generic/css/generic.css',
-        '../../../../../../../generic/css/forms.css'
+        'http-mock-response.component.scss',
+        '../../../../../../../generic/css/generic.scss',
+        '../../../../../../../generic/css/forms.scss'
     ]
 })
 

@@ -1,11 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ControlValueAccessor} from "@angular/forms";
 import {ManualTestStepStatus} from "../../../model/enums/manual-test-step-status.enum";
 
 @Component({
     selector: 'step-status',
     templateUrl: 'step-status.component.html',
-    styleUrls: ['step-status.component.css']
+    styleUrls: ['step-status.component.scss']
 })
 
 export class StepStatusComponent implements OnInit {

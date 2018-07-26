@@ -26,7 +26,7 @@ import {UrlService} from "../../../../../service/url.service";
     moduleId: module.id,
     selector: 'stand-alown-resource-panel',
     templateUrl: 'stand-alown-resource-panel.component.html',
-    styleUrls: ['stand-alown-resource-panel.component.css']
+    styleUrls: ['stand-alown-resource-panel.component.scss']
 })
 
 export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {

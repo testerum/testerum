@@ -1,11 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    Input,
-    OnInit,
-    ViewChild
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {HttpMockServer} from "./model/http-mock-server.model";
 import {NgForm} from "@angular/forms";
 import {ResourceComponent} from "../../../resource-component.interface";
@@ -17,10 +10,10 @@ import {ParamStepPatternPart} from "../../../../../../model/text/parts/param-ste
     selector: 'http-mock-server',
     templateUrl: 'http-mock-server.component.html',
     styleUrls: [
-        'http-mock-server.component.css',
-        '../../../resource-editor.css',
-        '../../../../../../generic/css/generic.css',
-        '../../../../../../generic/css/forms.css'
+        'http-mock-server.component.scss',
+        '../../../resource-editor.scss',
+        '../../../../../../generic/css/generic.scss',
+        '../../../../../../generic/css/forms.scss'
     ]
 })
 export class HttpMockServerComponent extends ResourceComponent<HttpMockServer> implements OnInit {

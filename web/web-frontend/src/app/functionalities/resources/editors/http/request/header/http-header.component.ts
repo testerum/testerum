@@ -1,12 +1,7 @@
-import {
-    AfterViewInit, Component, DoCheck, ElementRef, Input, OnChanges, OnInit, Renderer,
-    Renderer2
-} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {HttpRequestHeader} from "../../../../../../model/resource/http/http-request-header.model";
 import {HeadersList} from "./model/headers-list.model";
-import {ObjectUtils} from "primeng/components/utils/objectutils";
-import {ObjectUtil} from "../../../../../../utils/object.util";
 import {HttpRequestService} from "../http-request.service";
 import {ArrayUtil} from "../../../../../../utils/array.util";
 
@@ -14,7 +9,7 @@ import {ArrayUtil} from "../../../../../../utils/array.util";
     moduleId: module.id,
     selector: 'http-header',
     templateUrl: 'http-header.component.html',
-    styleUrls: ["http-header.component.css"]
+    styleUrls: ["http-header.component.scss"]
 })
 
 export class HttpHeaderComponent implements OnInit {

@@ -1,14 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
 import {ActivatedRoute} from "@angular/router";
-import {ComposedStepDef} from "../../../model/composed-step-def.model";
 import {BasicStepDef} from "../../../model/basic-step-def.model";
 
 @Component({
     moduleId: module.id,
     selector: 'composed-step-editor',
     templateUrl: 'basic-step-editor.component.html',
-    styleUrls: ['./basic-step-editor.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css']
+    styleUrls: ['./basic-step-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
 })
 
 export class BasicStepEditorComponent implements OnInit {

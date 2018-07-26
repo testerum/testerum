@@ -1,17 +1,16 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ResultFile} from "../../model/result-file.model";
 import {ExecutionStatusEnum} from "../../../../../../model/test/event/enums/execution-status.enum";
 import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {JsonTreeNodeEventModel} from "../../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../../generic/components/json-tree/json-tree.service";
-import {ResourcesTreeNode} from "../../../../../resources/tree/model/resources-tree-node.model";
 import {Subscription} from "rxjs/Subscription";
 
 @Component({
     selector: 'result-file',
     templateUrl: 'result-file.component.html',
-    styleUrls:['result-file.component.css']
+    styleUrls:['result-file.component.scss']
 })
 
 export class ResultFileComponent implements OnInit, OnDestroy {

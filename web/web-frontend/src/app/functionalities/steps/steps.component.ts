@@ -1,7 +1,7 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {StepsService} from "../../service/steps.service";
 import {StepsTreeService} from "./steps-tree/steps-tree.service";
-import {ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Params, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ModelComponentMapping} from "../../model/infrastructure/model-component-mapping.model";
 import {StepTreeContainerModel} from "./steps-tree/model/step-tree-container.model";
 import {StepTreeNodeModel} from "./steps-tree/model/step-tree-node.model";
@@ -13,7 +13,7 @@ import {Path} from "../../model/infrastructure/path/path.model";
     moduleId: module.id,
     selector: 'steps',
     templateUrl: 'steps.component.html',
-    styleUrls: ["../../generic/css/main-container.css"]
+    styleUrls: ["../../generic/css/main-container.scss"]
 
 })
 export class StepsComponent implements OnInit {

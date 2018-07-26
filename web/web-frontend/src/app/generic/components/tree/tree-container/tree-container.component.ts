@@ -1,7 +1,12 @@
-
 import {
-    Component, OnInit, Input, ViewChild, ElementRef, Type, ViewContainerRef,
-    ComponentFactoryResolver, ComponentFactory, ComponentRef
+    Component,
+    ComponentFactory,
+    ComponentFactoryResolver,
+    ComponentRef,
+    Input,
+    OnInit,
+    ViewChild,
+    ViewContainerRef
 } from '@angular/core';
 import {TreeContainerModel} from "../../../../model/infrastructure/tree-container.model";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
@@ -10,7 +15,7 @@ import {ModelComponentMapping} from "../../../../model/infrastructure/model-comp
     moduleId: module.id,
     selector: 'tree-container',
     templateUrl: 'tree-container.component.html',
-    styleUrls:['tree-container.component.css']
+    styleUrls:['tree-container.component.scss']
 })
 export class TreeContainerComponent implements OnInit {
 

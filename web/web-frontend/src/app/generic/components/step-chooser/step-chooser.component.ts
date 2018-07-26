@@ -1,5 +1,4 @@
-
-import {Component, OnInit, ViewChild, Type} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {StepChooserService} from "./step-chooser.service";
 import {StepChoseHandler} from "./step-choosed-handler.interface";
@@ -20,7 +19,7 @@ import {ActivatedRoute} from "@angular/router";
     moduleId: module.id,
     selector: 'step-chooser',
     templateUrl: 'step-chooser.component.html',
-    styleUrls: ['step-chooser.component.css']
+    styleUrls: ['step-chooser.component.scss']
 })
 export class StepChooserComponent implements OnInit {
 

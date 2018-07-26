@@ -8,7 +8,7 @@ import {AceEditorComponent} from "ng2-ace-editor";
     moduleId: module.id,
     selector: 'json-editor',
     templateUrl: 'json-editor.component.html',
-    styleUrls: ['json-editor.component.css']
+    styleUrls: ['json-editor.component.scss']
 })
 
 export class JsonEditorComponent implements OnInit {

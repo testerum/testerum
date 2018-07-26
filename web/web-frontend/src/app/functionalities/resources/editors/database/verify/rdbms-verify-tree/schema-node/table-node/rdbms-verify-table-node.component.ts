@@ -9,7 +9,7 @@ import {CompareMode} from "../../../../../../../../model/enums/compare-mode.enum
     moduleId: module.id,
     selector: 'rdbms-verify-table-node',
     templateUrl: 'rdbms-verify-table-node.component.html',
-    styleUrls:['../../rdbms-verify-tree.generic.css', '../../../../../../../../generic/css/tree.css']
+    styleUrls:['../../rdbms-verify-tree.generic.scss', '../../../../../../../../generic/css/tree.scss']
 })
 export class RdbmsVerifyTableNodeComponent implements OnInit {
 

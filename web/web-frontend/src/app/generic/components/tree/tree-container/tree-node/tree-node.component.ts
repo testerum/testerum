@@ -1,6 +1,12 @@
 import {
-    Component, Input, Type, ViewContainerRef, ViewChild, ComponentFactoryResolver,
-    ComponentRef, ComponentFactory, OnInit
+    Component,
+    ComponentFactory,
+    ComponentFactoryResolver,
+    ComponentRef,
+    Input,
+    OnInit,
+    ViewChild,
+    ViewContainerRef
 } from '@angular/core';
 import {TreeNodeModel} from "../../../../../model/infrastructure/tree-node.model";
 import {TreeService} from "../../tree.service";
@@ -11,7 +17,7 @@ import {ModelComponentMapping} from "../../../../../model/infrastructure/model-c
     moduleId: module.id,
     selector: 'tree-node',
     templateUrl: 'tree-node.component.html',
-    styleUrls:['tree-node.component.css']
+    styleUrls:['tree-node.component.scss']
 })
 export class TreeNodeComponent implements OnInit {
 

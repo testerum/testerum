@@ -10,7 +10,7 @@ import {TestsRunnerLogsService} from "./tests-runner-logs.service";
     moduleId: module.id,
     selector: 'tests-runner-logs',
     templateUrl: 'tests-runner-logs.component.html',
-    styleUrls: ["tests-runner-logs.component.css"]
+    styleUrls: ["tests-runner-logs.component.scss"]
 })
 
 export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDestroy, RunnerTreeNodeSelectedListener {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FieldVerify} from "../../../../model/field-verify.model";
 import {RdbmsVerifyTreeService} from "../../../../rdbms-verify-tree.service";
 
@@ -6,7 +6,7 @@ import {RdbmsVerifyTreeService} from "../../../../rdbms-verify-tree.service";
     moduleId: module.id,
     selector: 'json-verify-table-row-node',
     templateUrl: 'rdbms-verify-field-node.component.html',
-    styleUrls:['../../../../rdbms-verify-tree.generic.css', '../../../../../../../../../../generic/css/tree.css']
+    styleUrls:['../../../../rdbms-verify-tree.generic.scss', '../../../../../../../../../../generic/css/tree.scss']
 })
 export class RdbmsVerifyFieldNodeComponent {
 

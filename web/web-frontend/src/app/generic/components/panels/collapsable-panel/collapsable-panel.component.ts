@@ -1,11 +1,11 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
     moduleId: module.id,
     selector: 'collapsable-panel',
     templateUrl: 'collapsable-panel.component.html',
-    styleUrls: ["collapsable-panel.component.css"],
+    styleUrls: ["collapsable-panel.component.scss"],
     animations: [
         trigger('expandCollapse', [
             state('open', style({

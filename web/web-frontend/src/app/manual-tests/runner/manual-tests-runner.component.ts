@@ -4,7 +4,7 @@ import {NavigationEnd, Params, Router} from "@angular/router";
 @Component({
     selector: 'manual-tests-runner',
     templateUrl: 'manual-tests-runner.component.html',
-    styleUrls: ['manual-tests-runner.component.css', '../../generic/css/forms.css', "../../generic/css/main-container.css"]
+    styleUrls: ['manual-tests-runner.component.scss', '../../generic/css/forms.scss', "../../generic/css/main-container.scss"]
 })
 
 export class ManualTestsRunnerComponent implements OnInit {

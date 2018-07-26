@@ -16,15 +16,13 @@ import {ManualTestsExecutorTreeService} from "../../executer/tree/manual-tests-e
 import {ManualTestsExecutorTreeNodeComponent} from "../../executer/tree/container/node/manual-tests-executor-tree-node.component";
 import {ManualTestsOverviewService} from "../overview/manual-tests-overview.service";
 import {ManualTestsRunnerStatus} from "../model/enums/manual-tests-runner-status.enum";
-import {ModalDirective} from "ngx-bootstrap";
-import {AreYouSureModalListener} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.listener";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalComponent} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.component";
 
 @Component({
     selector: 'manual-test-runner-editor',
     templateUrl: 'manual-tests-runner-editor.component.html',
-    styleUrls: ['manual-tests-runner-editor.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css']
+    styleUrls: ['manual-tests-runner-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
 })
 
 export class ManualTestsRunnerEditorComponent implements OnInit {

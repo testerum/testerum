@@ -1,6 +1,5 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {HttpMockService} from "../http-mock.service";
-import {HttpMock} from "../model/http-mock.model";
 import {HttpMockRequestMethod} from "../model/enums/http-mock-request-method";
 import {HttpMockRequest} from "../model/request/http-mock-request.model";
 import {CollapsablePanelComponent} from "../../../../../../../generic/components/panels/collapsable-panel/collapsable-panel.component";
@@ -10,9 +9,9 @@ import {CollapsablePanelComponent} from "../../../../../../../generic/components
     selector: 'http-mock-request',
     templateUrl: 'http-mock-request.component.html',
     styleUrls: [
-        'http-mock-request.component.css',
-        '../../../../../../../generic/css/generic.css',
-        '../../../../../../../generic/css/forms.css'
+        'http-mock-request.component.scss',
+        '../../../../../../../generic/css/generic.scss',
+        '../../../../../../../generic/css/forms.scss'
     ]
 })
 

@@ -1,8 +1,4 @@
-import {
-    Component,
-    OnDestroy,
-    OnInit, ViewChild,
-} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild,} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import 'rxjs/add/operator/switchMap';
 import {FeaturesTreeService} from "../features-tree/features-tree.service";
@@ -16,14 +12,13 @@ import {NgForm} from "@angular/forms";
 import {UrlService} from "../../../service/url.service";
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../utils/array.util";
-import {ManualTestsService} from "../../../manual-tests/tests/service/manual-tests.service";
 import {TagsService} from "../../../service/tags.service";
 
 @Component({
     moduleId: module.id,
     selector: 'feature-editor',
     templateUrl: 'feature-editor.component.html',
-    styleUrls: ['feature-editor.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css']
+    styleUrls: ['feature-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
 })
 export class FeatureEditorComponent implements OnInit, OnDestroy {
     markdownEditorOptions = {

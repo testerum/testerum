@@ -7,7 +7,7 @@ import {UrlService} from "../../../service/url.service";
 @Component({
     selector: 'setup',
     templateUrl: 'setup.component.html',
-    styleUrls: ['setup.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css']
+    styleUrls: ['setup.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
 })
 
 export class SetupComponent implements OnInit {

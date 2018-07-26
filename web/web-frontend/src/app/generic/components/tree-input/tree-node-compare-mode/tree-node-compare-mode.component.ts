@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CompareMode} from "../../../../model/enums/compare-mode.enum";
 
 @Component({
     moduleId: module.id,
     selector: 'tree-node-compare-mode',
     templateUrl: 'tree-node-compare-mode.component.html',
-    styleUrls:["../../../css/tree.css"]
+    styleUrls:["../../../css/tree.scss"]
 })
 
 export class TreeNodeCompareModeComponent {

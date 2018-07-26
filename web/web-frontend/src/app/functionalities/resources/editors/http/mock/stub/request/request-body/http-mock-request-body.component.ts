@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpMockService} from "../../http-mock.service";
 import {HttpMockRequestBody} from "../../model/request/http-mock-request-body.model";
 import {SerializationUtil} from "../../../../../json_verify/json-verify-tree/model/util/serialization.util";
@@ -7,7 +7,6 @@ import {HttpMockRequestBodyMatchingType} from "../../model/enums/http-mock-reque
 import {HttpMockRequestBodyVerifyType} from "../../model/enums/http-mock-request-body-verify-type.enum";
 import {JsonVerifyTreeService} from "../../../../../json_verify/json-verify-tree/json-verify-tree.service";
 import {HttpMock} from "../../model/http-mock.model";
-import {JsonVerifyTreeComponent} from "../../../../../json_verify/json-verify-tree/json-verify-tree.component";
 import {EmptyJsonVerify} from "../../../../../json_verify/json-verify-tree/model/empty-json-verify.model";
 
 @Component({
@@ -15,9 +14,9 @@ import {EmptyJsonVerify} from "../../../../../json_verify/json-verify-tree/model
     selector: 'http-mock-request-body',
     templateUrl: 'http-mock-request-body.component.html',
     styleUrls: [
-        'http-mock-request-body.component.css',
-        '../../../../../../../../generic/css/generic.css',
-        '../../../../../../../../generic/css/forms.css'
+        'http-mock-request-body.component.scss',
+        '../../../../../../../../generic/css/generic.scss',
+        '../../../../../../../../generic/css/forms.scss'
     ]
 })
 

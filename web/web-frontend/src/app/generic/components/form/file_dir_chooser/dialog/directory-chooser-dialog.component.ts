@@ -3,7 +3,6 @@ import {ModalDirective} from "ngx-bootstrap";
 import {FileDirectoryChooserService} from "../file-directory-chooser.service";
 import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tree-node-event.model";
 import {FileDirectoryChooserContainerModel} from "../model/file-directory-chooser-container.model";
-import {SetupService} from "../../../../../service/setup.service";
 import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
 import {ArrayUtil} from "../../../../../utils/array.util";
 import {JsonTreeContainerEditorEvent} from "../../../json-tree/container-editor/model/json-tree-container-editor.event";
@@ -14,7 +13,7 @@ import {JsonTreeService} from "../../../json-tree/json-tree.service";
     moduleId: module.id,
     selector: 'directory-chooser-dialog',
     templateUrl: 'directory-chooser-dialog.component.html',
-    styleUrls: ['directory-chooser-dialog.component.css']
+    styleUrls: ['directory-chooser-dialog.component.scss']
 })
 
 export class DirectoryChooserDialogComponent implements OnInit, OnDestroy {

@@ -7,7 +7,7 @@ import {HttpMockRequestScenarioService} from "./http-mock-request-scenario.servi
     moduleId: module.id,
     selector: 'http-mock-request-scenario',
     templateUrl: 'http-mock-request-scenario.component.html',
-    styleUrls: ["http-mock-request-scenario.component.css"]
+    styleUrls: ["http-mock-request-scenario.component.scss"]
 })
 export class HttpMockRequestScenarioComponent implements OnInit {
 

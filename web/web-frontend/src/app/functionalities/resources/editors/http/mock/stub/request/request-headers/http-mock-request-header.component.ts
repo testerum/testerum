@@ -10,7 +10,7 @@ import {ArrayUtil} from "../../../../../../../../utils/array.util";
     moduleId: module.id,
     selector: 'http-mock-request-header',
     templateUrl: 'http-mock-request-header.component.html',
-    styleUrls: ["http-mock-request-header.component.css"]
+    styleUrls: ["http-mock-request-header.component.scss"]
 })
 export class HttpMockRequestHeaderComponent {
 

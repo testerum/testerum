@@ -16,10 +16,10 @@ import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-p
     selector: 'db-connection',
     templateUrl: 'rdbms-connection-config.component.html',
     styleUrls: [
-        'rdbms-connection-config.component.css',
-        '../../resource-editor.css',
-        '../../../../../generic/css/generic.css',
-        '../../../../../generic/css/forms.css'
+        'rdbms-connection-config.component.scss',
+        '../../resource-editor.scss',
+        '../../../../../generic/css/generic.scss',
+        '../../../../../generic/css/forms.scss'
     ]
 })
 

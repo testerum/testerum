@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from "@angular/core";
+import {Component, Input, ViewChild} from "@angular/core";
 import {ModalDirective} from "ngx-bootstrap";
 import {ResourceMapEnum} from "../../../../functionalities/resources/editors/resource-map.enum";
 import {ResourceService} from "../../../../service/resources/resource.service";
@@ -13,9 +13,9 @@ import {Observable} from "rxjs/Observable";
     selector: 'select-shared-resource-modal',
     templateUrl: 'select-shared-resource-modal.component.html',
     styleUrls: [
-        'select-shared-resource-modal.component.css',
-        '../../../../generic/css/generic.css',
-        '../../../../generic/css/forms.css'
+        'select-shared-resource-modal.component.scss',
+        '../../../../generic/css/generic.scss',
+        '../../../../generic/css/forms.scss'
     ],
 })
 export class SelectSharedResourceModalComponent {

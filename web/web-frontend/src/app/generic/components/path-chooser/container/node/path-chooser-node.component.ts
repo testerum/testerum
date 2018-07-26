@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
 import {PathChooserNodeModel} from "../../model/path-chooser-node.model";
@@ -9,7 +9,7 @@ import {Subscription} from "rxjs/Subscription";
     moduleId: module.id,
     selector: 'path-chooser-node',
     templateUrl: 'path-chooser-node.component.html',
-    styleUrls:['path-chooser-node.component.css']
+    styleUrls:['path-chooser-node.component.scss']
 })
 export class PathChooserNodeComponent implements OnInit, OnDestroy {
 

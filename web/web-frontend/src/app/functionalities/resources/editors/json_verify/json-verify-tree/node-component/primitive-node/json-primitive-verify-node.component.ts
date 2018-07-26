@@ -13,7 +13,7 @@ import {ObjectUtil} from "../../../../../../../utils/object.util";
     moduleId: module.id,
     selector: 'json-string-verify-node',
     templateUrl: 'json-primitive-verify-node.component.html',
-    styleUrls: ['../../json-verify-tree.generic.css', '../../../../../../../generic/css/tree.css']
+    styleUrls: ['../../json-verify-tree.generic.scss', '../../../../../../../generic/css/tree.scss']
 })
 export class JsonPrimitiveVerifyNodeComponent {
 

@@ -6,10 +6,10 @@ import {StepCallTreeService} from "../../step-call-tree.service";
     selector: 'sub-steps-container',
     templateUrl: 'sub-steps-container.component.html',
     styleUrls: [
-        'sub-steps-container.component.css',
-        '../step-call-tree.css',
-        '../../../json-tree/json-tree.generic.css',
-        '../../../../../generic/css/tree.css',
+        'sub-steps-container.component.scss',
+        '../step-call-tree.scss',
+        '../../../json-tree/json-tree.generic.scss',
+        '../../../../../generic/css/tree.scss',
     ]
 })
 

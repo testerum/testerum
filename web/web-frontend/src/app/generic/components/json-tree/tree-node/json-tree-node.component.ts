@@ -1,7 +1,15 @@
-
 import {
-    Component, OnInit, Input, ViewChild, Type, ViewContainerRef,
-    ComponentFactoryResolver, ComponentFactory, ComponentRef, Output, EventEmitter, OnChanges, SimpleChanges
+    Component,
+    ComponentFactory,
+    ComponentFactoryResolver,
+    ComponentRef,
+    Input,
+    OnChanges,
+    OnInit,
+    SimpleChanges,
+    Type,
+    ViewChild,
+    ViewContainerRef
 } from '@angular/core';
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeNode} from "../model/json-tree-node.model";
@@ -13,7 +21,7 @@ import {JsonLeafNodeComponent} from "./leaf/json-leaf-node.component";
     moduleId: module.id,
     selector: 'json-tree-node',
     templateUrl: 'json-tree-node.component.html',
-    styleUrls:['json-tree-node.component.css']
+    styleUrls:['json-tree-node.component.scss']
 })
 export class JsonTreeNodeComponent implements OnInit, OnChanges {
 

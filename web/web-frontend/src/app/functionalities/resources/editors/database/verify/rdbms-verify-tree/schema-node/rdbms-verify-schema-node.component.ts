@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {SchemaVerify} from "../model/schema-verify.model";
-import {TreeModel} from "../../../../../../../generic/components/tree/model/tree.model";
 import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
 import {RdbmsVerifyTreeService} from "../rdbms-verify-tree.service";
 
@@ -8,7 +7,7 @@ import {RdbmsVerifyTreeService} from "../rdbms-verify-tree.service";
     moduleId: module.id,
     selector: 'rdbms-verify-schema-node',
     templateUrl: 'rdbms-verify-schema-node.component.html',
-    styleUrls:['../rdbms-verify-tree.generic.css', '../../../../../../../generic/css/tree.css']
+    styleUrls:['../rdbms-verify-tree.generic.scss', '../../../../../../../generic/css/tree.scss']
 })
 
 export class RdbmsVerifySchemaNodeComponent {

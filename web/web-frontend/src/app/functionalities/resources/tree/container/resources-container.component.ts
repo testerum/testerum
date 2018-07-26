@@ -19,9 +19,9 @@ import {JsonTreePathContainer} from "../../../../generic/components/json-tree/mo
     selector: 'resources-container',
     templateUrl: 'resources-container.component.html',
     styleUrls: [
-        'resources-container.component.css',
-        '../../../../generic/components/json-tree/json-tree.generic.css',
-        '../../../../generic/css/tree.css'
+        'resources-container.component.scss',
+        '../../../../generic/components/json-tree/json-tree.generic.scss',
+        '../../../../generic/css/tree.scss'
     ]
 })
 export class ResourcesContainerComponent {

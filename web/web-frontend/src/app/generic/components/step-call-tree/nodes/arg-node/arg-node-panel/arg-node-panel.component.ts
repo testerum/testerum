@@ -9,7 +9,7 @@ import {Subscription} from "rxjs/Subscription";
     moduleId: module.id,
     selector: 'arg-node-panel',
     templateUrl: 'arg-node-panel.component.html',
-    styleUrls: ["arg-node-panel.component.css"],
+    styleUrls: ["arg-node-panel.component.scss"],
     animations: [
         trigger('expandCollapse', [
             state('open', style({

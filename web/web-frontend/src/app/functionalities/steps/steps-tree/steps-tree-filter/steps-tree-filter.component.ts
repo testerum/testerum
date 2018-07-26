@@ -11,7 +11,7 @@ import {StepsTreeFilter} from "../../../../model/step/filter/steps-tree-filter.m
 @Component({
     selector: 'steps-tree-filter',
     templateUrl: 'steps-tree-filter.component.html',
-    styleUrls: ['steps-tree-filter.component.css'],
+    styleUrls: ['steps-tree-filter.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class StepsTreeFilterComponent {

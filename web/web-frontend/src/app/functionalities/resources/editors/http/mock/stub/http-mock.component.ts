@@ -15,10 +15,10 @@ import {ParamStepPatternPart} from "../../../../../../model/text/parts/param-ste
     selector: 'http-mock',
     templateUrl: 'http-mock.component.html',
     styleUrls: [
-        'http-mock.component.css',
-        '../../../resource-editor.css',
-        '../../../../../../generic/css/generic.css',
-        '../../../../../../generic/css/forms.css'
+        'http-mock.component.scss',
+        '../../../resource-editor.scss',
+        '../../../../../../generic/css/generic.scss',
+        '../../../../../../generic/css/forms.scss'
     ]
 })
 export class HttpMockComponent extends ResourceComponent<HttpMock> implements OnInit {

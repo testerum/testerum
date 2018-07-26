@@ -21,10 +21,10 @@ import {Subscription} from "rxjs/Subscription";
     selector: 'arg-node',
     templateUrl: 'arg-node.component.html',
     styleUrls: [
-        'arg-node.component.css',
-        '../step-call-tree.css',
-        '../../../json-tree/json-tree.generic.css',
-        '../../../../../generic/css/tree.css',
+        'arg-node.component.scss',
+        '../step-call-tree.scss',
+        '../../../json-tree/json-tree.generic.scss',
+        '../../../../../generic/css/tree.scss',
     ]
 })
 export class ArgNodeComponent implements OnInit {

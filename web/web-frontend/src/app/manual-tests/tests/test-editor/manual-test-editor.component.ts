@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from "@angular/router";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import 'rxjs/add/operator/switchMap';
 import {ManualTestsTreeService} from "../tests-tree/manual-tests-tree.service";
 import {IdUtils} from "../../../utils/id.util";
@@ -12,7 +12,6 @@ import {ArrayUtil} from "../../../utils/array.util";
 import {ManualTestStepModel} from "../../model/manual-step.model";
 import {StringUtils} from "../../../utils/string-utils.util";
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
-import {StepCall} from "../../../model/step-call.model";
 import {AreYouSureModalComponent} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.component";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 
@@ -20,7 +19,7 @@ import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_moda
     moduleId: module.id,
     selector: 'test-editor',
     templateUrl: 'manual-test-editor.component.html',
-    styleUrls: ['manual-test-editor.component.css', '../../../generic/css/generic.css', '../../../generic/css/forms.css']
+    styleUrls: ['manual-test-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
 })
 export class ManualTestEditorComponent implements OnInit {
 
