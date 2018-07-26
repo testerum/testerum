@@ -3,7 +3,7 @@ import {WarningType} from "./WarningType";
 export class Warning implements Serializable<Warning> {
 
     type: WarningType;
-    message: String;
+    message: string;
 
     deserialize(input: Object): Warning {
         this.type = WarningType["" + input['type']];

@@ -34,7 +34,7 @@ export class MapPathChooserUtil {
         return treeModel;
     }
 
-    private static mapPathPartsToPathChooserModal(pathDirectories: Array<String>,
+    private static mapPathPartsToPathChooserModal(pathDirectories: Array<string>,
                                                   fileName: string,
                                                   fileExtension: string,
                                                   parentContainer: JsonTreeContainer,
@@ -67,7 +67,7 @@ export class MapPathChooserUtil {
         );
     }
 
-    private static mapDirectoryToPathChooserContainer(directory: String,
+    private static mapDirectoryToPathChooserContainer(directory: string,
                                                       parentContainer: JsonTreeContainer,
                                                       allowDirSelection: boolean): PathChooserContainerModel {
         let parentContainerPathDirectories = [];
