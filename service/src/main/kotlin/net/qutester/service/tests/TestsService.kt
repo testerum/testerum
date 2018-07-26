@@ -55,13 +55,11 @@ class TestsService(private val testResolver: TestResolver,
                 )
         )
 
-        val resolvedTestModel = getTestAtPath(
+        val resolvedUiTestWithWarnings = getTestAtPath(
                 path = createdRepositoryFile.knownPath.asPath()
         )
 
-        val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedTestModel!!)
-
-        return resolvedUiTestWithWarnings
+        return resolvedUiTestWithWarnings!!
     }
 
     fun updateTest(updateTestModel: UpdateTestModel): TestModel {
@@ -88,12 +86,11 @@ class TestsService(private val testResolver: TestResolver,
                 )
         )
 
-        val resolvedTestModel = getTestAtPath(
+        val resolvedUiTestWithWarnings = getTestAtPath(
                 path = newPath
         )
-        val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedTestModel!!)
 
-        return resolvedUiTestWithWarnings
+        return resolvedUiTestWithWarnings!!
     }
 
     private fun saveExternalResources(testModel: TestModel): TestModel {

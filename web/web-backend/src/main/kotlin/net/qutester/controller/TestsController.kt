@@ -13,13 +13,13 @@ class TestsController(private val testsService: TestsService) {
 
     @RequestMapping (params = ["path"], method = [RequestMethod.DELETE])
     fun delete(@RequestParam(value = "path") path:String) {
-        testsService.remove(Path.createInstance(path));
+        testsService.remove(Path.createInstance(path))
     }
 
     @RequestMapping (path = ["/create"], method = [RequestMethod.POST])
     @ResponseBody
     fun create(@RequestBody testModel: TestModel): TestModel {
-        return testsService.createTest(testModel);
+        return testsService.createTest(testModel)
     }
 
     @RequestMapping (path = ["/update"], method = [RequestMethod.POST])
