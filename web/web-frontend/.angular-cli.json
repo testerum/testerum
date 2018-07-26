@@ -33,7 +33,7 @@
                 "resources/css/bootstrap.min.css",
                 "resources/css/bootstrap-theme.min.css",
 
-                "styles.scss"
+                "resources/css/testerum-styles.scss"
             ],
             "scripts": [
                 "../node_modules/simplemde/dist/simplemde.min.js",

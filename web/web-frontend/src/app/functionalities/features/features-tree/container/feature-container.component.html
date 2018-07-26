@@ -2,6 +2,7 @@
      dnd-draggable [dragEnabled]="hasMouseOver" [dragData]="model" >
 
     <div class="full-line"
+
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false"
          (click)="setSelected()"
@@ -13,7 +14,8 @@
            [class.fa-folder]="!isOpenedNode()"
            [class.fa-folder-open]="isOpenedNode()"></i>
 
-        <span [class.tree-leaf-selected]="isSelected">
+        <span [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
+              [class.tree-leaf-selected]="isSelected">
             {{model.name}}
         </span>
 

@@ -2,6 +2,7 @@
      dnd-draggable [dragEnabled]="true" [dragData]="model">
 
     <div (click)="showTest()"
+         [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
          [class.step-selected]="isSelected">
         {{model.name}}
     </div>

@@ -15,7 +15,7 @@ body {
 
 @font-face {
     font-family: "Hack Regular Nerd Font Complete";
-    src: url("resources/fonts/hack-nerd-font/Hack-Regular-Nerd-Font-Complete.ttf");
+    src: url("../fonts/hack-nerd-font/Hack-Regular-Nerd-Font-Complete.ttf");
 }
 
 .logs-split-area.horizontal-scroll {
@@ -35,4 +35,21 @@ body {
 
 .nav-tabs {
     border-bottom: none;
+}
+
+
+.error_squiggly {
+    display: inline-block;
+    position: relative;
+}
+.error_squiggly:before {
+    content: "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+    font: bold 0.6em serif;
+    letter-spacing: -0.1em;
+    color: red;
+    position: absolute;
+    width: 100%;
+    bottom: -0.4em;
+    left: 0;
+    overflow: hidden;
 }

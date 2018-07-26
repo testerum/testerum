@@ -15,7 +15,13 @@ export default class FeaturesTreeUtil {
 
     static mapServerTreeToFeaturesTreeModel(serverRootNode: RootServerTreeNode): JsonTreeModel {
 
-        let rootPackage: FeatureTreeContainerModel = new FeatureTreeContainerModel(null,serverRootNode.name, serverRootNode.path);
+        let rootPackage: FeatureTreeContainerModel = new FeatureTreeContainerModel(
+            null,
+            serverRootNode.name,
+            serverRootNode.path,
+            serverRootNode.hasOwnOrDescendantWarnings
+        );
+
         rootPackage.isRootPackage = true;
         rootPackage.editable = false;
 
@@ -34,14 +40,14 @@ export default class FeaturesTreeUtil {
         for (const serverNode of serverContainerNode.children) {
 
             if (serverNode instanceof FeatureServerTreeNode) {
-                let uiFeatureNode = new FeatureTreeContainerModel(uiContainerNode, serverNode.name, serverNode.path);
+                let uiFeatureNode = new FeatureTreeContainerModel(uiContainerNode, serverNode.name, serverNode.path, serverNode.hasOwnOrDescendantWarnings);
                 FeaturesTreeUtil.mapServerNodeChildrenToTreeNode(serverNode, uiFeatureNode);
                 uiFeatureNode.editable = true;
                 uiContainerNode.children.push(uiFeatureNode);
             }
 
             if (serverNode instanceof TestServerTreeNode) {
-                let uiTestNode = new TestTreeNodeModel(uiContainerNode, serverNode.name, serverNode.path);
+                let uiTestNode = new TestTreeNodeModel(uiContainerNode, serverNode.name, serverNode.path, serverNode.hasOwnOrDescendantWarnings);
                 uiContainerNode.children.push(uiTestNode)
             }
         }
