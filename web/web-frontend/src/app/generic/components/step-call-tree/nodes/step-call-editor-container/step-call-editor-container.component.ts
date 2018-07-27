@@ -25,6 +25,7 @@ import {StepPattern} from "../../../../../model/text/step-pattern.model";
 import {AutoComplete} from "primeng/primeng";
 import {StepChooserComponent} from "../../../step-chooser/step-chooser.component";
 import {StepChoseHandler} from "../../../step-chooser/step-choosed-handler.interface";
+import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
 
 @Component({
     selector: 'step-call-editor-container',
@@ -194,13 +195,12 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     onSuggestionSelected(event: StepCallSuggestion) {
-
         let newStepCall: StepCall = null;
         if (event.actionText == null) {
             newStepCall = this.createStepCallFromExistingStepDef(event);
         } else {
             newStepCall = new StepCall();
-            newStepCall.stepDef = new ComposedStepDef();
+            newStepCall.stepDef = new UndefinedStepDef();
             newStepCall.stepDef.phase = event.phase;
             newStepCall.stepDef.stepPattern = new StepPattern();
             newStepCall.stepDef.stepPattern.setPatternText(event.stepCallText);

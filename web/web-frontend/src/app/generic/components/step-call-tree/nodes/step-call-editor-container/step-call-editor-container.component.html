@@ -23,6 +23,7 @@
                         [suggestions]="suggestions"
                         (completeMethod)="searchSuggestions($event)"
                         [autoHighlight]="true"
+                        [delay]="0"
                         (onSelect)="onSuggestionSelected($event)"
                         (onKeyUp)="onKeyUp($event)"
                         styleClass="step-suggestion"
