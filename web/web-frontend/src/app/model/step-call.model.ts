@@ -11,6 +11,7 @@ import {TextStepPatternPart} from "./text/parts/text-step-pattern-part.model";
 import {ParamStepPatternPart} from "./text/parts/param-step-pattern-part.model";
 import {UndefinedStepDef} from "./undefined-step-def.model";
 import {Warning} from "./warning/Warning";
+import {ArrayUtil} from "../utils/array.util";
 
 export class StepCall implements Serializable<StepCall> {
 
@@ -19,8 +20,30 @@ export class StepCall implements Serializable<StepCall> {
     args: Array<Arg> = [];
     variableHolder: VariableHolder = new VariableHolder();
 
-    warnings: Array<Warning> = [];
-    descendantsHaveWarnings: boolean = false;
+    private warnings: Array<Warning> = [];
+    private descendantsHaveWarnings: boolean = false;
+
+    private allWarnings;
+    getAllWarnings(): Array<Warning> {
+        if (this.allWarnings != null) {
+            return this.allWarnings;
+        }
+
+        this.allWarnings = [];
+        this.warnings.forEach(it => this.allWarnings.push(it));
+        if (this.stepDef instanceof ComposedStepDef) {
+            (this.stepDef as ComposedStepDef).warnings.forEach(it => this.allWarnings.push(it));
+        }
+        return this.allWarnings;
+    }
+
+    getAnyDescendantsHaveWarnings(): boolean {
+        if(this.descendantsHaveWarnings) return true;
+        if (this.stepDef instanceof ComposedStepDef) {
+            return (this.stepDef as ComposedStepDef).descendantsHaveWarnings;
+        }
+        return false;
+    }
 
     deserialize(input: Object): StepCall {
         this.id = input["id"];

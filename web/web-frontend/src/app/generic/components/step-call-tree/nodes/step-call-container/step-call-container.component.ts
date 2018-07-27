@@ -128,12 +128,6 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     hasWarnings(): boolean {
-        return this.model.stepCall.descendantsHaveWarnings || this.model.stepCall.warnings.length > 0;
-    }
-
-    onShowWarning() {
-        if (this.model.stepCall.warnings.length > 0) {
-
-        }
+        return this.model.stepCall.getAnyDescendantsHaveWarnings() || this.model.stepCall.getAllWarnings().length > 0;
     }
 }
