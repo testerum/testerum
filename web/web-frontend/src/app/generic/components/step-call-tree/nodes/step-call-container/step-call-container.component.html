@@ -20,7 +20,7 @@
         </div>
 
         <div [class.error_squiggly]="hasWarnings()"
-             [popover]="warningPopTemplate" popoverTitle="Warning" containerClass="popover-warning" triggers="" #pop="bs-popover"
+             [popover]="warningPopTemplate" containerClass="popover-warning" triggers="" #pop="bs-popover"
              (mouseenter)="model.stepCall.warnings.length > 0 ? pop.show():null"
              (mouseleave)="model.stepCall.warnings.length > 0 ? pop.hide():null">
 
