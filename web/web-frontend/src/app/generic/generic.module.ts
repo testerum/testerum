@@ -67,7 +67,7 @@ import {SelectSharedResourceModalComponent} from "./components/step-call-tree/se
 import {
     AutoCompleteModule,
     FileUploadModule,
-    InputTextModule,
+    InputTextModule, MessageService,
     SelectButtonModule,
     ToolbarModule,
     TooltipModule
@@ -203,6 +203,8 @@ import {StepChooserTreeFilterComponent} from "./components/step-chooser/step-cho
         FileDirectoryChooserService,
         ExecutionPieService,
         PathChooserService,
+
+        MessageService,
     ],
     entryComponents: [
         ManualTestsExecutorTreeContainerComponent,

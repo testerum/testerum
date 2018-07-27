@@ -20,8 +20,10 @@
             "prefix": "app",
             "styles": [
                 "../node_modules/font-awesome/css/font-awesome.min.css",
-                "../node_modules/primeng/resources/primeng.min.css",
+
+                "../node_modules/primeicons/primeicons.css",
                 "../node_modules/primeng/resources/themes/omega/theme.css",
+                "../node_modules/primeng/resources/primeng.min.css",
 
                 "../node_modules/quill/dist/quill.core.css",
                 "../node_modules/quill/dist/quill.snow.css",

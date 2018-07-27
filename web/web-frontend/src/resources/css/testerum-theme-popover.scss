@@ -1,0 +1,16 @@
+
+.popover-warning .popover-title{
+    background-color: $error-color;
+    color: white;
+    font-weight: bold;
+}
+
+.popover-warning .popover-content{
+    color: $error-color;
+    display: flex;
+}
+
+.popover-warning .fa {
+    font-size: 1.4em;
+    margin-right: 10px;
+}

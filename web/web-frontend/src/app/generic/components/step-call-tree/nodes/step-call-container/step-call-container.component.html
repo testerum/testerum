@@ -19,11 +19,22 @@
                  class="tree-node-line" style="height: 100%"></div>
         </div>
 
+        <div [class.error_squiggly]="hasWarnings()"
+             [popover]="warningPopTemplate" popoverTitle="Warning" containerClass="popover-warning" triggers="" #pop="bs-popover"
+             (mouseenter)="model.stepCall.warnings.length > 0 ? pop.show():null"
+             (mouseleave)="model.stepCall.warnings.length > 0 ? pop.hide():null">
 
-        <step-text [stepDef]="model.stepCall.stepDef"
-                   [stepCall]="model.stepCall"
-                   [showPhase]="true"
-                   [showAsListItem]="true"></step-text>
+            <step-text [stepDef]="model.stepCall.stepDef"
+                       [stepCall]="model.stepCall"
+                       [showPhase]="true"
+                       [showAsListItem]="true"></step-text>
+        </div>
+        <ng-template #warningPopTemplate>
+            <i *ngIf="hasWarnings()" class="fa fa-exclamation-triangle error_color" aria-hidden="true"></i>
+            <div *ngFor="let warning of model.stepCall.warnings">
+                <div>{{warning.message}}</div>
+            </div>
+        </ng-template>
 
         <!-- BUTTONS -->
         <div *ngIf="isEditMode()" class="step-button-panel btn-group">
@@ -57,3 +68,5 @@
                    class="full-line">
     </json-children>
 </div>
+
+

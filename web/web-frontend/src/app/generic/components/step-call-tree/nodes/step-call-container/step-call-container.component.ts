@@ -126,4 +126,14 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     public triggerStepOrderChangedEvent():void {
         this.stepCallTreeService.triggerStepCallOrderChangeEvent();
     }
+
+    hasWarnings(): boolean {
+        return this.model.stepCall.descendantsHaveWarnings || this.model.stepCall.warnings.length > 0;
+    }
+
+    onShowWarning() {
+        if (this.model.stepCall.warnings.length > 0) {
+
+        }
+    }
 }

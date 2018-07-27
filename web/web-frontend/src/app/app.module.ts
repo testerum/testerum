@@ -40,6 +40,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AttachmentsService} from "./service/attachments.service";
 import {UrlService} from "./service/url.service";
 import {TagsService} from "./service/tags.service";
+import {ToastModule} from "primeng/toast";
 
 @NgModule({
     imports: [
