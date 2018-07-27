@@ -1,0 +1,16 @@
+
+.error_squiggly {
+    display: inline-block;
+    position: relative;
+}
+.error_squiggly:before {
+    content: "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+    font: bold 0.6em serif;
+    letter-spacing: -0.1em;
+    color: $error-color;
+    position: absolute;
+    width: 100%;
+    bottom: -0.4em;
+    left: 0;
+    overflow: hidden;
+}

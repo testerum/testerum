@@ -25,7 +25,7 @@ import {FeatureContainerComponent} from "./features-tree/container/feature-conta
 import {
     AutoCompleteModule,
     InputSwitchModule, InputTextModule, MessageModule, MessagesModule,
-    SelectButtonModule,
+    SelectButtonModule, ToggleButtonModule,
     ToolbarModule,
     TooltipModule
 } from "primeng/primeng";
@@ -49,7 +49,7 @@ import {FeaturesTreeFilterComponent} from "./features-tree/features-tree-filter/
         SelectButtonModule,
         AutoCompleteModule,
         InputTextModule,
-        InputSwitchModule,
+        ToggleButtonModule,
         MessagesModule,
         MessageModule,
 

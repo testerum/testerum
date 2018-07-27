@@ -1,3 +1,12 @@
 $error-color: #d9534f;
+$success-color: #5cb85c;
+$info-color: #31b0d5;
+$warning-color: #f0ad4e;
+$primary-color: #337ab7;
 
 .error_color {color: $error-color;}
+.success-color {color: $success-color;}
+.info-color {color: $info-color;}
+.warning-color {color: $warning-color;}
+.primary-color {color: $primary-color;}
+

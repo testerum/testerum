@@ -34,17 +34,18 @@
 
                 <!-- TEST TYPE & DISABLED -->
                 <div class="form-group row">
-                    <label class="col-md-1 control-label" for="manualSwitch">Type</label>
+                    <label class="col-md-1 control-label" for="testTypeSwitch">Type</label>
                     <div class="col-md-11 form-value type-and-disabled-values">
                         <div *ngIf="!isEditMode" class="type-container">
                             <span *ngIf="!testModel.properties.isManual" class="label label-success">Automated</span>
                             <span *ngIf="testModel.properties.isManual" class="label label-warning">Manual</span>
                         </div>
                         <div *ngIf="isEditMode" class="type-container">
-                            <p-inputSwitch onLabel="Automated" offLabel="Manual"
-                                           [ngModel]="!testModel.properties.isManual"
-                                           (onChange)="onIsManualChangeEvent($event)"
-                                           name="manualSwitch" id="manualSwitch"></p-inputSwitch>
+
+                            <p-toggleButton onLabel="Manual" offLabel="Automated"
+                                            onIcon="fa fa_my-manual-test" offIcon="fa fa_my-automated-test" [(ngModel)]="testModel.properties.isManual"
+                                            styleClass="toggle-test-type"
+                                            name="testTypeSwitch" id="testTypeSwitch"></p-toggleButton>
                         </div>
 
                         <div class="disabled-container">
@@ -52,10 +53,12 @@
                                 <span *ngIf="testModel.properties.isDisabled" class="label label-danger">Disabled</span>
                             </div>
                             <div *ngIf="isEditMode">
-                                <p-inputSwitch onLabel="Enabled" offLabel="&nbsp;Disabled"
-                                               [ngModel]="!testModel.properties.isDisabled"
-                                               (onChange)="onIsDisabledChangeEvent($event)"
-                                               name="disabledSwitch" id="disabledSwitch"></p-inputSwitch>
+
+
+                                <p-toggleButton onLabel="Disabled" offLabel="Enabled"
+                                                onIcon="fa fa-times" offIcon="fa fa-check" [(ngModel)]="testModel.properties.isDisabled"
+                                                styleClass="toggle-test-state"
+                                                name="testStateSwitch" id="testStateSwitch"></p-toggleButton>
                             </div>
                         </div>
                     </div>

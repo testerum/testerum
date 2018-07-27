@@ -88,14 +88,6 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
         if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
     }
 
-    onIsManualChangeEvent(event: any) {
-        this.testModel.properties.isManual = !event.checked;
-    }
-
-    onIsDisabledChangeEvent(event: any) {
-        this.testModel.properties.isDisabled = !event.checked;
-    }
-
     addStep() {
         this.stepCallTreeService.addStepCallEditor(this.stepCallTreeService.jsonTreeModel);
     }

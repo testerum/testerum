@@ -1,3 +1,4 @@
+@import "../../../../resources/css/testerum-variables.scss";
 .inline {
     display: inline-block;
 }
@@ -13,25 +14,24 @@
     display: flex;
 }
 
-#manualSwitch .ui-inputswitch-on {
-    background: #5cb85c !important;
-    color: white;
+.toggle-test-type {
+    width: 8em;
+    background-color: $success-color !important;
+    color: white !important;;
 }
 
-#manualSwitch .ui-inputswitch-off {
-    background: #f0ad4e !important;
-    color: white;
+.toggle-test-type.ui-state-active {
+    background-color: $warning-color !important;
+    color: white !important;
 }
 
-
-#disabledSwitch .ui-inputswitch-on {
-    background: #5cb85c !important;
-    color: white;
+.toggle-test-state {
+    width: 8em;
+    background-color: $success-color !important;
+    color: white !important;
 }
 
-#disabledSwitch .ui-inputswitch-off {
-    background: #d9534f !important;
-    color: white;
+.toggle-test-state.ui-state-active {
+    background-color: $error-color !important;;
+    color: white !important;
 }
-
-
