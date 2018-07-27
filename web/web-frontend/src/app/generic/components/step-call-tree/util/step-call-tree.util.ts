@@ -45,7 +45,7 @@ export class StepCallTreeUtil {
             });
         }
 
-        if (stepCall.stepDef instanceof ComposedStepDef || stepCall.stepDef instanceof UndefinedStepDef) {
+        if (stepCall.stepDef instanceof ComposedStepDef) {
             let subStepsContainer = new SubStepsContainerModel(childStepCallContainerModel);
             childStepCallContainerModel.children.push(
                 subStepsContainer
@@ -53,6 +53,14 @@ export class StepCallTreeUtil {
 
             if (stepCall.stepDef.stepCalls) {
                 subStepsContainer.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCall.stepDef.stepCalls, subStepsContainer);
+            }
+
+            subStepsContainer.descendantsHaveWarnings = false;
+            for (const childStepCall of stepCall.stepDef.stepCalls) {
+                if (childStepCall.getAllWarnings().length > 0 || childStepCall.getAnyDescendantsHaveWarnings()) {
+                    subStepsContainer.descendantsHaveWarnings = true;
+                    break;
+                }
             }
         }
         return childStepCallContainerModel;

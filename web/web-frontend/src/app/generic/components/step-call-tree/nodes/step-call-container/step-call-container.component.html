@@ -9,6 +9,7 @@
             style="display: flex; flex-direction: column;"
             (click)="collapseNode();">
 
+            <div *ngIf="model.children.length == 0" style="width: 15px"></div>
             <i *ngIf="model.children.length > 0"
                style="width: 10px;"
                class="fa arrow-icon"
@@ -28,13 +29,13 @@
             </step-text>
 
             <!-- WARNING ICON -->
-            <i *ngIf="hasWarnings()" class="fa fa-exclamation-triangle error_color" aria-hidden="true"
+            <i *ngIf="hasOwnWarnings()" class="fa fa-exclamation-triangle error_color" aria-hidden="true"
                [popover]="warningPopTemplate" containerClass="popover-warning" triggers="" #pop="bs-popover"
                (mouseenter)="model.stepCall.getAllWarnings().length > 0 ? pop.show():null"
                (mouseleave)="model.stepCall.getAllWarnings().length > 0 ? pop.hide():null">
             </i>
             <ng-template #warningPopTemplate>
-                <i *ngIf="hasWarnings()" class="fa fa-exclamation-triangle error_color" aria-hidden="true"></i>
+                <i class="fa fa-exclamation-triangle error_color" aria-hidden="true"></i>
                 <div *ngFor="let warning of model.stepCall.getAllWarnings()">
                     <div>{{warning.message}}</div>
                 </div>

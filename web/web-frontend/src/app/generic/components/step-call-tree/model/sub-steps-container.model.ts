@@ -12,6 +12,7 @@ export class SubStepsContainerModel extends JsonTreeContainerAbstract {
     children: Array<StepCallContainerModel> = [];
     private options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
+    descendantsHaveWarnings: boolean = false;
 
     constructor(parentContainer: JsonTreeContainer) {
         super(parentContainer);
