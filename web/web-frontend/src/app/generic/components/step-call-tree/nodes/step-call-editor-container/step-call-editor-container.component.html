@@ -3,7 +3,7 @@
     <div class="full-line step-text-container"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false"
-         (dblclick)="collapseNode()">
+         (click)="collapseNode();$event.stopPropagation();">
 
         <div *ngIf="model.isRootStepCall"
             style="display: flex; flex-direction: column;"

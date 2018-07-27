@@ -3,7 +3,7 @@
     <div class="full-line step-text-container"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false"
-         (dblclick)="collapseNode()">
+         (click)="collapseNode();$event.stopPropagation();">
 
         <i class="fa fa-cog tree-node-icon" aria-hidden="true"></i>
         <span [class.error_squiggly]="model.descendantsHaveWarnings">Sub-Steps</span>

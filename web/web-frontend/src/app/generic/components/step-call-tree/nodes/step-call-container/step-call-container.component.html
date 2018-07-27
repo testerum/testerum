@@ -3,11 +3,10 @@
     <div class="full-line step-text-container"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false"
-         (dblclick)="collapseNode()">
+         (click)="collapseNode();$event.stopPropagation();">
 
         <div *ngIf="model.isRootStepCall"
-            style="display: flex; flex-direction: column;"
-            (click)="collapseNode();">
+            style="display: flex; flex-direction: column;">
 
             <div *ngIf="model.children.length == 0" style="width: 15px"></div>
             <i *ngIf="model.children.length > 0"
@@ -41,7 +40,6 @@
                 </div>
             </ng-template>
         </div>
-
 
         <!-- BUTTONS -->
         <div *ngIf="isEditMode()" class="step-button-panel btn-group">
