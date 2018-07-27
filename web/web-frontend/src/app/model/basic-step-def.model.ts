@@ -4,6 +4,7 @@ import {IdUtils} from "../utils/id.util";
 import {StepPhaseEnum} from "./enums/step-phase.enum";
 import {StepPattern} from "./text/step-pattern.model";
 import {Path} from "./infrastructure/path/path.model";
+import {Warning} from "./warning/Warning";
 
 export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
     id:string = IdUtils.getTemporaryId();
@@ -16,6 +17,9 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
     className: string;
     methodName: string;
 
+    warnings: Array<Warning> = [];
+    descendantsHaveWarnings: boolean = false;
+
     deserialize(input: Object): BasicStepDef {
         this.id = input["id"];
         this.path = Path.deserialize(input["path"]);
@@ -25,6 +29,15 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
         this.tags = input["tags"];
         this.className = input["className"];
         this.methodName = input["methodName"];
+
+        this.warnings = [];
+        for (let warning of (input['warnings'] || [])) {
+            this.warnings.push(
+                new Warning().deserialize(warning)
+            );
+        }
+
+        this.descendantsHaveWarnings = input['descendantsHaveWarnings'];
 
         return this;
     }
@@ -40,7 +53,8 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
             '"description":' + JsonUtil.stringify(this.description) + ',' +
             '"tags":' + JsonUtil.stringify(this.tags) + ',' +
             '"className":' + JsonUtil.stringify(this.className) + ',' +
-            '"methodName":' + JsonUtil.stringify(this.methodName) +
+            '"methodName":' + JsonUtil.stringify(this.methodName) + ',' +
+            '"warnings": []' +
             '}'
     }
 

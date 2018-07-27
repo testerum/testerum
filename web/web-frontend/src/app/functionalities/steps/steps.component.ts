@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {StepsService} from "../../service/steps.service";
 import {StepsTreeService} from "./steps-tree/steps-tree.service";
 import {ActivatedRoute} from "@angular/router";
 import {ModelComponentMapping} from "../../model/infrastructure/model-component-mapping.model";

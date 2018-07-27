@@ -5,7 +5,7 @@ import 'rxjs/add/operator/catch';
 import {Feature} from "../model/feature/feature.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {RootServerTreeNode} from "../model/tree/root-server-tree-node.model";
+import {ServerRootMainNode} from "../model/main_tree/server-root-main-node.model";
 import {FeaturesTreeFilter} from "../model/feature/filter/features-tree-filter.model";
 
 @Injectable()
@@ -15,7 +15,7 @@ export class FeatureService {
 
     constructor(private http: HttpClient) {}
 
-    getFeatureTree(featureTreeFilter: FeaturesTreeFilter): Observable<RootServerTreeNode> {
+    getFeatureTree(featureTreeFilter: FeaturesTreeFilter): Observable<ServerRootMainNode> {
         let body = featureTreeFilter.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
@@ -24,7 +24,7 @@ export class FeatureService {
         };
 
         return this.http
-            .post<RootServerTreeNode>(this.FEATURE_URL+"/tree", body, httpOptions)
+            .post<ServerRootMainNode>(this.FEATURE_URL+"/tree", body, httpOptions)
             .map(FeatureService.extractFeaturesTree);
     }
 
@@ -68,9 +68,9 @@ export class FeatureService {
         return new Feature().deserialize(res);
     }
 
-    private static extractFeaturesTree(res: RootServerTreeNode): RootServerTreeNode {
+    private static extractFeaturesTree(res: ServerRootMainNode): ServerRootMainNode {
         if(res == null) return null;
-        return new RootServerTreeNode().deserialize(res);
+        return new ServerRootMainNode().deserialize(res);
     }
 }
 

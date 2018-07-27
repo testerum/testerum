@@ -3,20 +3,19 @@ package net.qutester.model.test
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import net.qutester.model.infrastructure.path.HasPath
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.step.StepCall
 import net.qutester.model.warning.Warning
 import net.qutester.util.indent
 
 
-data class TestModel @JsonCreator constructor(@JsonProperty("path") override val path: Path,
+data class TestModel @JsonCreator constructor(@JsonProperty("path") val path: Path,
                                               @JsonProperty("properties") val properties: TestProperties,
                                               @JsonProperty("text") val text: String, // todo: rename to "name"
                                               @JsonProperty("description") val description: String?,
                                               @JsonProperty("tags") val tags: List<String> = emptyList(),
                                               @JsonProperty("stepCalls") val stepCalls: List<StepCall> = emptyList(),
-                                              @JsonProperty("warnings") val warnings: List<Warning> = emptyList()) : HasPath {
+                                              @JsonProperty("warnings") val warnings: List<Warning> = emptyList()) {
 
     private val _id = path.toString()
 

@@ -115,6 +115,12 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
+                <artifactId>common-kotlin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
                 <artifactId>common-string</artifactId>
                 <version>${project.version}</version>
             </dependency>

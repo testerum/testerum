@@ -12,14 +12,14 @@ import {UpdateComposedStepDef} from "../model/step/UpdateComposedStepDef";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
 import {StepsTreeFilter} from "../model/step/filter/steps-tree-filter.model";
-import {FeatureService} from "./feature.service";
-import {RootServerTreeNode} from "../model/tree/root-server-tree-node.model";
+import {RootStepNode} from "../model/step_tree/root-step-node.model";
 
 @Injectable()
 export class StepsService {
 
     private BASIC_STEPS_URL = "/rest/steps/basic";
-    private COMPOSED_STEPS_URL = "rest/steps/composed";
+    private COMPOSED_STEPS_URL = "/rest/steps/composed";
+    private STEPS_TREE_URL = "/rest/steps/tree";
 
     constructor(private http: HttpClient,
                 private urlService: UrlService) {}
@@ -191,4 +191,22 @@ export class StepsService {
     private static extractBasicStepDef(res: BasicStepDef): BasicStepDef {
         return new BasicStepDef().deserialize(res);
     }
+
+    getStepsTree(stepTreeFilter: StepsTreeFilter = new StepsTreeFilter()): Observable<RootStepNode> {
+        let body = stepTreeFilter.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
+        return this.http
+            .post<RootStepNode>(this.STEPS_TREE_URL, body, httpOptions)
+            .map(StepsService.extractRootStepNode);
+    }
+
+    private static extractRootStepNode(res: RootStepNode): RootStepNode {
+        return new RootStepNode().deserialize(res);
+    }
+
 }

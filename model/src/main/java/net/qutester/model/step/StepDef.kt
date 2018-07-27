@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 import net.qutester.model.enums.StepPhaseEnum
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.text.StepPattern
+import net.qutester.model.warning.Warning
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -23,6 +24,13 @@ interface StepDef {
     val stepPattern: StepPattern //TODO: rename to StepSignature
     val description: String?
     val tags: List<String>
+
+    val warnings: List<Warning>
+    val descendantsHaveWarnings: Boolean
+
+    @get:JsonIgnore
+    val hasOwnOrDescendantWarnings: Boolean
+        get() = warnings.isNotEmpty() || descendantsHaveWarnings
 
     @JsonIgnore
     fun getText(): String {

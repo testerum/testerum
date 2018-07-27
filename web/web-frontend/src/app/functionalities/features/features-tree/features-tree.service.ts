@@ -7,7 +7,7 @@ import {Path} from "../../../model/infrastructure/path/path.model";
 import {JsonTreePathUtil} from "../../../generic/components/json-tree/util/json-tree-path.util";
 import FeaturesTreeUtil from "./util/features-tree.util";
 import {FeatureService} from "../../../service/feature.service";
-import {RootServerTreeNode} from "../../../model/tree/root-server-tree-node.model";
+import {ServerRootMainNode} from "../../../model/main_tree/server-root-main-node.model";
 import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-filter.model";
 import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
 import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
@@ -24,7 +24,7 @@ export class FeaturesTreeService {
 
     initializeTestsTreeFromServer(selectedPath: Path, expandToLevel: number = 2) {
         this.featureService.getFeatureTree(this.treeFilter).subscribe(
-            (rootNode: RootServerTreeNode) => {
+            (rootNode: ServerRootMainNode) => {
                 let newJsonTree = FeaturesTreeUtil.mapServerTreeToFeaturesTreeModel(rootNode);
 
                 JsonTreeExpandUtil.expandTreeToLevel(newJsonTree, expandToLevel);

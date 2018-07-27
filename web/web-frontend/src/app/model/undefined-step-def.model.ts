@@ -1,11 +1,10 @@
-
 import {StepDef} from "./step-def.model";
-import {ComposedStepDef} from "./composed-step-def.model";
 import {IdUtils} from "../utils/id.util";
 import {StepPhaseEnum} from "./enums/step-phase.enum";
 import {Path} from "./infrastructure/path/path.model";
 import {StepPattern} from "./text/step-pattern.model";
 import {JsonUtil} from "../utils/json.util";
+import {Warning} from "./warning/Warning";
 
 export class UndefinedStepDef implements StepDef, Serializable<UndefinedStepDef> {
 
@@ -15,12 +14,24 @@ export class UndefinedStepDef implements StepDef, Serializable<UndefinedStepDef>
     stepPattern: StepPattern = new StepPattern;
     description: string;
 
+    warnings: Array<Warning> = [];
+    descendantsHaveWarnings: boolean = false;
+
     deserialize(input: Object): UndefinedStepDef {
         this.id = input["id"];
         this.path = null;
         this.phase = StepPhaseEnum["" + input["phase"]];
         this.stepPattern = new StepPattern().deserialize(input["stepPattern"]);
         this.description = input["description"];
+
+        this.warnings = [];
+        for (let warning of (input['warnings'] || [])) {
+            this.warnings.push(
+                new Warning().deserialize(warning)
+            );
+        }
+
+        this.descendantsHaveWarnings = input['descendantsHaveWarnings'];
 
         return this;
     }
@@ -33,7 +44,8 @@ export class UndefinedStepDef implements StepDef, Serializable<UndefinedStepDef>
             '"phase":' + JsonUtil.stringify(StepPhaseEnum[this.phase].toUpperCase()) + ',' +
             '"path":'+ JsonUtil.serializeSerializable(this.path)+','+
             '"stepPattern":' + this.stepPattern.serialize() +','+
-            '"description":' + JsonUtil.stringify(this.description) +
+            '"description":' + JsonUtil.stringify(this.description) + ',' +
+            '"warnings": []' +
             '}'
     }
 

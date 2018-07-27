@@ -10,10 +10,10 @@ import net.qutester.model.feature.Feature
 import net.qutester.model.feature.filter.FeaturesTreeFilter
 import net.qutester.model.file.Attachment
 import net.qutester.model.infrastructure.path.Path
+import net.qutester.model.main_tree.RootMainNode
+import net.qutester.model.main_tree.builder.MainTreeBuilder
 import net.qutester.model.repository.enums.FileType
 import net.qutester.model.test.TestModel
-import net.qutester.model.tree.RootTreeNode
-import net.qutester.model.tree.builder.TreeNodeBuilder
 import net.qutester.service.tests.TestsService
 import net.testerum.db_file.AttachmentFileRepositoryService
 import net.testerum.db_file.FileRepositoryService
@@ -200,8 +200,8 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         )
     }
 
-    fun getFeaturesTree(featuresTreeFilter: FeaturesTreeFilter): RootTreeNode {
-        val rootNodeBuilder = TreeNodeBuilder()
+    fun getFeaturesTree(featuresTreeFilter: FeaturesTreeFilter): RootMainNode {
+        val rootNodeBuilder = MainTreeBuilder()
 
 
         val features: List<Feature> = getAllFeatures()

@@ -8,6 +8,8 @@ import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.step.*
 import net.qutester.model.step.filter.StepsTreeFilter
+import net.qutester.model.step_tree.RootStepNode
+import net.qutester.model.step_tree.builder.StepTreeBuilder
 import net.qutester.model.text.StepPattern
 import net.qutester.service.step.impl.BasicStepsService
 import net.qutester.service.step.impl.ComposedStepsService
@@ -158,7 +160,8 @@ open class StepService(private val composedStepsService: ComposedStepsService,
                 result.add(stepDef)
             }
         }
-        return result;
+
+        return result
     }
 
     fun getComposedSteps(stepsTreeFilter: StepsTreeFilter = StepsTreeFilter()): List<ComposedStepDef> {
@@ -314,6 +317,22 @@ open class StepService(private val composedStepsService: ComposedStepsService,
         reinitializeSteps(
                 composedStepsService.getComposedSteps()
         )
+    }
+
+    fun getStepTree(stepsTreeFilter: StepsTreeFilter): RootStepNode {
+        val basicSteps = getBasicSteps(stepsTreeFilter)
+        val composedSteps = getComposedSteps(stepsTreeFilter)
+
+        val treeBuilder = StepTreeBuilder()
+
+        basicSteps.forEach {
+            treeBuilder.addBasicStepDef(it)
+        }
+        composedSteps.forEach {
+            treeBuilder.addComposedStepDef(it)
+        }
+
+        return treeBuilder.build()
     }
 }
 
