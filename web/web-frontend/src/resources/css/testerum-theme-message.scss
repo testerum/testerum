@@ -1,0 +1,10 @@
+.error-message .ui-messages-icon {
+    @extend .fa;
+    @extend .fa-exclamation-triangle;
+    color: $error-color;
+    font-size: 2em;
+}
+
+.error-message {
+    color: $error-color;
+}

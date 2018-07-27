@@ -38,7 +38,6 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     currentTagSearch:string;
 
     warnings: Message[] = [];
-    oldWarnings: Message[] = [];
 
     routeSubscription: Subscription;
     editModeStepCallTreeSubscription: Subscription;
@@ -78,7 +77,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
         this.warnings = [];
         for (const warning of this.testModel.warnings) {
             this.warnings.push(
-                {severity: 'warn', summary: warning.message}
+                {severity: 'error', summary: warning.message}
             )
         }
     }

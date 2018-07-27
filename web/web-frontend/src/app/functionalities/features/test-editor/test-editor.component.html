@@ -99,7 +99,7 @@
                     </div>
                 </div>
 
-                <p-messages *ngIf="warnings.length > 0" severity="warn" [(value)]="warnings"></p-messages>
+                <p-messages *ngIf="warnings.length > 0" [(value)]="warnings" styleClass="error-message"></p-messages>
 
                 <div>
                     <h4 class="inline"><strong>Steps</strong></h4>
