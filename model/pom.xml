@@ -14,6 +14,12 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
+        <!-- common-kotlin -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-kotlin</artifactId>
+        </dependency>
+
         <!-- testerum api -->
         <dependency>
             <groupId>com.testerum</groupId>

@@ -25,7 +25,7 @@
         <constructor-arg name="manualTestsRunnerService" ref="manualTestsRunnerService"/>
     </bean>
 
-    <bean id="stepsController" class="net.qutester.controller.BasicStepsController">
+    <bean id="basicStepsController" class="net.qutester.controller.BasicStepsController">
         <constructor-arg name="stepService" ref="stepService"/>
     </bean>
 
@@ -37,6 +37,10 @@
         <constructor-arg name="stepService" ref="stepService"/>
         <constructor-arg name="stepUpdateService" ref="stepUpdateService"/>
         <constructor-arg name="stepUpdateCompatibilityService" ref="stepUpdateCompatibilityService"/>
+    </bean>
+
+    <bean id="stepsTreeController" class="net.qutester.controller.StepsTreeController">
+        <constructor-arg name="stepService" ref="stepService"/>
     </bean>
 
     <bean id="testsController" class="net.qutester.controller.TestsController">
