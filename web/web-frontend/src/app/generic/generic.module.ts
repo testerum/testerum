@@ -76,6 +76,7 @@ import {MarkdownEditorComponent} from "./components/markdown-editor/markdown-edi
 import {AttachmentsComponent} from "./components/form/attachments/attachments.component";
 import {StepCallEditorContainerComponent} from "./components/step-call-tree/nodes/step-call-editor-container/step-call-editor-container.component";
 import {StepChooserTreeFilterComponent} from "./components/step-chooser/step-chooser-tree-filter/step-chooser-tree-filter.component";
+import {FocusDirective} from "./directives/focus.directive";
 
 @NgModule({
     imports: [
@@ -96,6 +97,8 @@ import {StepChooserTreeFilterComponent} from "./components/step-chooser/step-cho
     ],
     exports: [
         SafeHtmlPipe,
+
+        FocusDirective,
 
         ErrorComponent,
 
@@ -139,6 +142,8 @@ import {StepChooserTreeFilterComponent} from "./components/step-chooser/step-cho
     ],
     declarations: [
         SafeHtmlPipe,
+
+        FocusDirective,
 
         ErrorComponent,
 

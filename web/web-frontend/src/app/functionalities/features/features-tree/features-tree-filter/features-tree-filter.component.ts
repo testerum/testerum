@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../utils/array.util";
@@ -13,7 +13,8 @@ import {TagsService} from "../../../../service/tags.service";
     selector: 'features-tree-filter',
     templateUrl: 'features-tree-filter.component.html',
     styleUrls: ['features-tree-filter.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
 })
 export class FeaturesTreeFilterComponent implements OnInit {
 

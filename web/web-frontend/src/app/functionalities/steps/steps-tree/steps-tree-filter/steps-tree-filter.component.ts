@@ -1,4 +1,4 @@
-import {Component, ViewChild, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {Path} from "../../../../model/infrastructure/path/path.model";
@@ -12,7 +12,8 @@ import {StepsTreeFilter} from "../../../../model/step/filter/steps-tree-filter.m
     selector: 'steps-tree-filter',
     templateUrl: 'steps-tree-filter.component.html',
     styleUrls: ['steps-tree-filter.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
 })
 export class StepsTreeFilterComponent {
 

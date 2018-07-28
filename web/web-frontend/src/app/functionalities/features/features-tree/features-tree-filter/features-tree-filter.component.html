@@ -76,7 +76,7 @@
               (click)="filter()">
             <i class="fa fa-search"></i>
         </span>
-        <input id="float-input"
+        <input focus="true"
                [(ngModel)]="searchText"
                (blur)="onSearchInputDeFocus($event)"
                (keydown)="onSearchInputKey($event)"
@@ -97,6 +97,7 @@
             <i class="fa fa-tag"></i>
         </span>
         <p-autoComplete #tagsElement
+                        focus="true"
                         [(ngModel)]="selectedTags"
                         [suggestions]="tagsToShow"
                         (completeMethod)="searchTags($event)"
