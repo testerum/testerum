@@ -26,6 +26,10 @@ import {AutoComplete} from "primeng/primeng";
 import {StepChooserComponent} from "../../../step-chooser/step-chooser.component";
 import {StepChoseHandler} from "../../../step-chooser/step-choosed-handler.interface";
 import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
+import {MessageService} from "../../../../../service/message.service";
+import {MessageKey} from "../../../../../model/messages/message.enum";
+import {Warning} from "../../../../../model/warning/Warning";
+import {WarningType} from "../../../../../model/warning/WarningType";
 
 @Component({
     selector: 'step-call-editor-container',
@@ -57,6 +61,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
 
     constructor(private stepCallTreeService: StepCallTreeService,
                 private stepsService: StepsService,
+                private messageService: MessageService,
                 private element: ElementRef) {
     }
 
@@ -195,6 +200,8 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     onSuggestionSelected(event: StepCallSuggestion) {
+        console.log(this.messageService.getMessage(MessageKey.WARNING_COMPOSED_STEP_WITHOUT_STEP_CALLS));
+
         let newStepCall: StepCall = null;
         if (event.actionText == null) {
             newStepCall = this.createStepCallFromExistingStepDef(event);
@@ -204,6 +211,12 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
             newStepCall.stepDef.phase = event.phase;
             newStepCall.stepDef.stepPattern = new StepPattern();
             newStepCall.stepDef.stepPattern.setPatternText(event.stepCallText);
+
+            let warning = new Warning();
+            warning.type = WarningType.UNDEFINED_STEP_CALL;
+            warning.message = this.messageService.getMessage(MessageKey.WARNING_UNDEFINED_STEP_CALL);
+            newStepCall.addWarning(warning);
+
             this.addEmptyArgsToStepCall(newStepCall);
         }
         this.addNewStepCallToTree(newStepCall);
@@ -218,6 +231,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     private createStepCallFromExistingStepDef(selectedStepCallSuggestion: StepCallSuggestion): StepCall {
+
         let selectedStepCallDef: StepDef = this.getStepDefByStepText(selectedStepCallSuggestion);
 
         let stepCall = new StepCall();

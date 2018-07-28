@@ -1,4 +1,4 @@
-import {NgModule}      from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent}  from './app.component';
@@ -41,6 +41,7 @@ import {AttachmentsService} from "./service/attachments.service";
 import {UrlService} from "./service/url.service";
 import {TagsService} from "./service/tags.service";
 import {ToastModule} from "primeng/toast";
+import {MessageService} from "./service/message.service";
 
 @NgModule({
     imports: [
@@ -96,7 +97,10 @@ import {ToastModule} from "primeng/toast";
 
         UrlService,
         ErrorService,
-        { provide: HTTP_INTERCEPTORS, useExisting: ErrorService,  multi: true }
+        { provide: HTTP_INTERCEPTORS, useExisting: ErrorService,  multi: true },
+
+        MessageService,
+        { provide: APP_INITIALIZER, useFactory: initMessages, deps: [MessageService], multi: true },
     ],
     entryComponents: [
         FileDirChooserComponent,
@@ -105,4 +109,11 @@ import {ToastModule} from "primeng/toast";
     bootstrap: [AppComponent]
 })
 export class AppModule {
+}
+
+
+export function initMessages(messageService: MessageService){
+    // Do initing of services that is required before app loads
+    // NOTE: this factory needs to return a function (that then returns a promise)
+    return () => messageService.init();
 }

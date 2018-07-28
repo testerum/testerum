@@ -102,6 +102,8 @@
 
     <bean id="warningService" class="net.qutester.service.warning.WarningService" />
 
+    <bean id="messageService" class="net.qutester.service.message.MessageService"/>
+
     <bean id="networkService" class="net.qutester.service.resources.rdbms.NetworkService">
         <constructor-arg name="jsonObjectMapper" ref="jsonObjectMapper"/>
     </bean>

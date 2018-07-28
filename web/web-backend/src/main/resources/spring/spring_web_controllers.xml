@@ -29,6 +29,10 @@
         <constructor-arg name="stepService" ref="stepService"/>
     </bean>
 
+    <bean id="messageController" class="net.qutester.controller.message.MessageController">
+        <constructor-arg name="messageService" ref="messageService"/>
+    </bean>
+
     <bean id="composedStepController" class="net.qutester.controller.ComposedStepController">
         <constructor-arg name="stepService" ref="stepService"/>
         <constructor-arg name="stepUpdateService" ref="stepUpdateService"/>

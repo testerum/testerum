@@ -37,6 +37,10 @@ export class StepCall implements Serializable<StepCall> {
         return this.allWarnings;
     }
 
+    addWarning(warning: Warning) {
+        this.warnings.push(warning)
+    }
+
     getAnyDescendantsHaveWarnings(): boolean {
         if(this.descendantsHaveWarnings) return true;
         if (this.stepDef instanceof ComposedStepDef) {
