@@ -66,7 +66,8 @@ export class JsonStepContainerComponent {
                 let newContainer = new StepTreeContainerModel(
                     this.model,
                     new Path(pathDirectories, null, null),
-                    true
+                    true,
+                    this.model.hasOwnOrDescendantWarnings
                 );
                 newContainer.editable = true;
                 this.model.children.push(newContainer);

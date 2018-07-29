@@ -147,7 +147,7 @@ export class StepsService {
         };
 
         return this.http
-            .post<Path>(this.COMPOSED_STEPS_URL + "/directory", body, httpOptions)
+            .put<Path>(this.COMPOSED_STEPS_URL + "/directory", body, httpOptions)
             .map(res => Path.deserialize(res));
     }
 

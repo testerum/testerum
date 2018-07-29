@@ -17,6 +17,7 @@ export default class StepsTreeUtil {
 
         let composedStepRootContainer: StepTreeContainerModel = new StepTreeContainerModel(treeModel, Path.createInstanceOfEmptyPath(), true);
         composedStepRootContainer.name = "Composed Steps";
+        composedStepRootContainer.editable = true;
         composedStepRootContainer.isRootPackage = true;
         composedStepRootContainer.hasOwnOrDescendantWarnings = rootStepNode.composedStepsRoot.hasOwnOrDescendantWarnings;
         StepsTreeUtil.mapComposedStepChildren(rootStepNode.composedStepsRoot.children, composedStepRootContainer);
@@ -44,6 +45,7 @@ export default class StepsTreeUtil {
                     composedStepNode.hasOwnOrDescendantWarnings
                 );
                 composedStepTreeContainer.name = composedStepNode.name;
+                composedStepTreeContainer.editable = true;
 
                 parentContainer.children.push(composedStepTreeContainer);
 
