@@ -1,35 +1,35 @@
-package net.qutester.model.step_tree.builder
+package net.qutester.model.step.tree.builder
 
 import com.testerum.common_kotlin.withAdditional
 import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.step_tree.ComposedContainerStepNode
-import net.qutester.model.step_tree.ComposedStepNode
-import net.qutester.model.step_tree.ComposedStepStepNode
+import net.qutester.model.step.BasicStepDef
+import net.qutester.model.step.tree.BasicContainerStepNode
+import net.qutester.model.step.tree.BasicStepNode
+import net.qutester.model.step.tree.BasicStepStepNode
 import net.qutester.util.tree_builder.TreeBuilder
 import net.qutester.util.tree_builder.TreeBuilderCustomizer
 
-class ComposedStepTreeBuilder {
+class BasicStepTreeBuilder {
 
-    private val builder = TreeBuilder(ComposedStepTreeBuilderCustomizer)
+    private val builder = TreeBuilder(BasicStepTreeBuilderCustomizer)
 
-    fun addComposedStepDef(composedStepDef: ComposedStepDef): Unit = builder.add(composedStepDef)
+    fun addBasicStepDef(basicStepDef: BasicStepDef): Unit = builder.add(basicStepDef)
 
-    fun build(): ComposedContainerStepNode = builder.build() as ComposedContainerStepNode
+    fun build(): BasicContainerStepNode = builder.build() as BasicContainerStepNode
 
     override fun toString(): String = builder.toString()
 
-    private object ComposedStepTreeBuilderCustomizer : TreeBuilderCustomizer {
-        override fun getPath(payload: Any): List<String> = (payload as ComposedStepDef).path.directories.withAdditional(getLabel(payload))
+    private object BasicStepTreeBuilderCustomizer : TreeBuilderCustomizer {
+        override fun getPath(payload: Any): List<String> = (payload as BasicStepDef).path.directories.withAdditional(getLabel(payload))
 
         override fun isContainer(payload: Any): Boolean = false
 
-        override fun getRootLabel(): String = "Composed Steps"
+        override fun getRootLabel(): String = "Basic Steps"
 
-        override fun getLabel(payload: Any): String = (payload as ComposedStepDef).toString()
+        override fun getLabel(payload: Any): String = (payload as BasicStepDef).toString()
 
         override fun getLeafPayloadComparator(): Comparator<Any> = compareBy {
-            val stepDef: ComposedStepDef = it as ComposedStepDef
+            val stepDef: BasicStepDef = it as BasicStepDef
 
             // using ordinal because we want the order in the enum (GIVEN, WHEN, THEN)
             // the lexicographic order is wrong (GIVEN, THEN, WHEN)
@@ -38,11 +38,11 @@ class ComposedStepTreeBuilder {
 
         override fun createRootNode(childrenNodes: List<Any>): Any {
             @Suppress("UNCHECKED_CAST")
-            val children: List<ComposedStepNode> = childrenNodes as List<ComposedStepNode>
+            val children: List<BasicStepNode> = childrenNodes as List<BasicStepNode>
 
             val hasOwnOrDescendantWarnings: Boolean = children.any { it.hasOwnOrDescendantWarnings }
 
-            return ComposedContainerStepNode(
+            return BasicContainerStepNode(
                     path = Path.EMPTY,
                     hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings,
                     name = getRootLabel(),
@@ -54,11 +54,11 @@ class ComposedStepTreeBuilder {
             return when (payload) {
                 null -> {
                     @Suppress("UNCHECKED_CAST")
-                    val children: List<ComposedStepNode> = childrenNodes as List<ComposedStepNode>
+                    val children: List<BasicStepNode> = childrenNodes as List<BasicStepNode>
 
                     val hasOwnOrDescendantWarnings: Boolean = children.any { it.hasOwnOrDescendantWarnings }
 
-                    ComposedContainerStepNode(
+                    BasicContainerStepNode(
                             path = Path(
                                     directories = path,
                                     fileName = null,
@@ -69,7 +69,7 @@ class ComposedStepTreeBuilder {
                             children = children
                     )
                 }
-                is ComposedStepDef -> ComposedStepStepNode(
+                is BasicStepDef -> BasicStepStepNode(
                         path = payload.path,
                         hasOwnOrDescendantWarnings = payload.hasOwnOrDescendantWarnings,
                         stepDef = payload
@@ -78,5 +78,4 @@ class ComposedStepTreeBuilder {
             }
         }
     }
-
 }

@@ -8,8 +8,9 @@ import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.step.*
 import net.qutester.model.step.filter.StepsTreeFilter
-import net.qutester.model.step_tree.RootStepNode
-import net.qutester.model.step_tree.builder.StepTreeBuilder
+import net.qutester.model.step.tree.ComposedContainerStepNode
+import net.qutester.model.step.tree.RootStepNode
+import net.qutester.model.step.tree.builder.StepTreeBuilder
 import net.qutester.model.text.StepPattern
 import net.qutester.service.step.impl.BasicStepsService
 import net.qutester.service.step.impl.ComposedStepsService
@@ -26,7 +27,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
                        private val basicStepsService: BasicStepsService,
                        private val warningService: WarningService) {
 
-    @Volatile private var steps: MutableMap<String, StepDef> = HashMap<String, StepDef>()
+    @Volatile private var steps: MutableMap<String, StepDef> = hashMapOf()
     private val basicStepsMap: HashMap<String, BasicStepDef> = hashMapOf()
 
     private val stepsMapLoadersLatch = CountDownLatch(1)
@@ -43,8 +44,12 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     fun loadSteps() {
         val threadExecutor = Executors.newFixedThreadPool(2)
         try {
-            val basicStepsLoaderFuture = threadExecutor.submit(BasicStepLoader(basicStepsService))
-            val composedStepsLoaderFuture = threadExecutor.submit(ComposedStepLoader(composedStepsService))
+            val basicStepsLoaderFuture = threadExecutor.submit(
+                    Callable { basicStepsService.getBasicSteps() }
+            )
+            val composedStepsLoaderFuture = threadExecutor.submit(
+                    Callable { composedStepsService.getComposedSteps() }
+            )
 
             val basicSteps = basicStepsLoaderFuture.get()
 
@@ -334,16 +339,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
 
         return treeBuilder.build()
     }
-}
 
-private class BasicStepLoader(val basicStepsService: BasicStepsService) : Callable<List<BasicStepDef>> {
-    override fun call(): List<BasicStepDef> {
-        return basicStepsService.getBasicSteps()
-    }
-}
+    fun getDirectoriesTree(): ComposedContainerStepNode = composedStepsService.getDirectoriesTree()
 
-private class ComposedStepLoader(val composedStepsService: ComposedStepsService) : Callable<List<ComposedStepDef>> {
-    override fun call(): List<ComposedStepDef> {
-        return composedStepsService.getComposedSteps()
-    }
 }

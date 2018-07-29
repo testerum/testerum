@@ -9,6 +9,8 @@ import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.repository.enums.FileType
 import net.qutester.model.step.ComposedStepDef
+import net.qutester.model.step.tree.ComposedContainerStepNode
+import net.qutester.model.step.tree.builder.ComposedStepDirectoryTreeBuilder
 import net.qutester.service.mapper.FileToUiStepMapper
 import net.qutester.service.mapper.UiToFileStepDefMapper
 import net.testerum.db_file.FileRepositoryService
@@ -16,6 +18,7 @@ import net.testerum.db_file.model.KnownPath
 import net.testerum.db_file.model.RepositoryFile
 import net.testerum.db_file.model.RepositoryFileChange
 import java.io.StringWriter
+import java.nio.file.Files
 
 open class ComposedStepsService(val jsonObjectMapper: ObjectMapper,
                                 val uiToFileStepDefMapper: UiToFileStepDefMapper,
@@ -30,7 +33,7 @@ open class ComposedStepsService(val jsonObjectMapper: ObjectMapper,
 
         val steps: MutableList<ComposedStepDef> = mutableListOf();
 
-        val allStepFiles = fileRepositoryService.getAllResourcesByType(FileType.STEP)
+        val allStepFiles = fileRepositoryService.getAllResourcesByType(FileType.COMPOSED_STEP)
         for (stepFile in allStepFiles) {
             val stepDef = COMPOSED_STEP_PARSER.parse(stepFile.body)
             val composedStepDef: ComposedStepDef = fileToUiStepMapper.mapToUiModel(stepDef, stepFile)
@@ -42,12 +45,12 @@ open class ComposedStepsService(val jsonObjectMapper: ObjectMapper,
 
     fun remove(path: Path) {
         fileRepositoryService.delete(
-                knownPath = KnownPath(path, FileType.STEP)
+                knownPath = KnownPath(path, FileType.COMPOSED_STEP)
         )
     }
 
     fun create(composedStepDef: ComposedStepDef): ComposedStepDef {
-        val stepPath = Path(composedStepDef.path.directories, composedStepDef.getText(), FileType.STEP.fileExtension)
+        val stepPath = Path(composedStepDef.path.directories, composedStepDef.getText(), FileType.COMPOSED_STEP.fileExtension)
 
         val stepAsString = serializeComposedStepDefToFileFormat(composedStepDef)
 
@@ -55,7 +58,7 @@ open class ComposedStepsService(val jsonObjectMapper: ObjectMapper,
                 RepositoryFileChange(
                         null,
                         RepositoryFile(
-                                KnownPath(stepPath, FileType.STEP),
+                                KnownPath(stepPath, FileType.COMPOSED_STEP),
                                 stepAsString
                         )
                 )
@@ -70,15 +73,15 @@ open class ComposedStepsService(val jsonObjectMapper: ObjectMapper,
 
     fun update(composedStepDef: ComposedStepDef): ComposedStepDef {
         val oldStepPath = composedStepDef.path
-        val newStepPath = Path(oldStepPath.directories, composedStepDef.getText(), FileType.STEP.fileExtension)
+        val newStepPath = Path(oldStepPath.directories, composedStepDef.getText(), FileType.COMPOSED_STEP.fileExtension)
 
         val stepAsString = serializeComposedStepDefToFileFormat(composedStepDef)
 
         fileRepositoryService.update(
                 RepositoryFileChange(
-                        KnownPath(oldStepPath, FileType.STEP),
+                        KnownPath(oldStepPath, FileType.COMPOSED_STEP),
                         RepositoryFile(
-                                KnownPath(newStepPath, FileType.STEP),
+                                KnownPath(newStepPath, FileType.COMPOSED_STEP),
                                 stepAsString
                         )
                 )
@@ -101,21 +104,37 @@ open class ComposedStepsService(val jsonObjectMapper: ObjectMapper,
 
     fun renameDirectory(renamePath: RenamePath): Path {
         return fileRepositoryService.renameDirectory(
-                KnownPath(renamePath.path, FileType.STEP),
+                KnownPath(renamePath.path, FileType.COMPOSED_STEP),
                 renamePath.newName
         )
     }
 
     fun deleteDirectory(pathToDelete: Path) {
         fileRepositoryService.delete(
-                KnownPath(pathToDelete, FileType.STEP)
+                KnownPath(pathToDelete, FileType.COMPOSED_STEP)
         )
     }
 
     fun moveDirectoryOrFile(copyPath: CopyPath) {
         fileRepositoryService.moveDirectoryOrFile(
-                copyPath = KnownPath(copyPath.copyPath, FileType.STEP),
-                destinationKnownPath = KnownPath(copyPath.destinationPath, FileType.STEP)
+                copyPath = KnownPath(copyPath.copyPath, FileType.COMPOSED_STEP),
+                destinationKnownPath = KnownPath(copyPath.destinationPath, FileType.COMPOSED_STEP)
         )
     }
+
+    fun getDirectoriesTree(): ComposedContainerStepNode {
+        val treeBuilder = ComposedStepDirectoryTreeBuilder()
+
+        fileRepositoryService.walkDirectoryTree(FileType.COMPOSED_STEP) { rootDir, path ->
+            if (Files.isDirectory(path) && (path != rootDir)) {
+                val relativeDirectory = rootDir.relativize(path)
+                val relativeDirectoryPathParts: List<String> = relativeDirectory.map { it.fileName.toString() }
+
+                treeBuilder.addComposedStepDirectory(relativeDirectoryPathParts)
+            }
+        }
+
+        return treeBuilder.build()
+    }
+
 }

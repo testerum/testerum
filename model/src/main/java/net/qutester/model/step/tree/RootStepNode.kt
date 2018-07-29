@@ -1,4 +1,4 @@
-package net.qutester.model.step_tree
+package net.qutester.model.step.tree
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty

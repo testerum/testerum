@@ -1,8 +1,8 @@
-package net.qutester.model.step_tree.builder
+package net.qutester.model.step.tree.builder
 
 import net.qutester.model.step.BasicStepDef
 import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.step_tree.RootStepNode
+import net.qutester.model.step.tree.RootStepNode
 
 class StepTreeBuilder {
 
