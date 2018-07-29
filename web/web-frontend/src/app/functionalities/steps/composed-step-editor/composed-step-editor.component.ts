@@ -1,31 +1,18 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
 import {ActivatedRoute} from "@angular/router";
 import {ComposedStepDef} from "../../../model/composed-step-def.model";
-import {StepDef} from "../../../model/step-def.model";
-import {StepCall} from "../../../model/step-call.model";
-import {Arg} from "../../../model/arg/arg.model";
 import {StepsService} from "../../../service/steps.service";
 import {StepsTreeService} from "../steps-tree/steps-tree.service";
-import {StepChooserComponent} from "../../../generic/components/step-chooser/step-chooser.component";
-import {StepTreeNodeModel} from "../steps-tree/model/step-tree-node.model";
-import {StepTreeContainerModel} from "../steps-tree/model/step-tree-container.model";
 import {IdUtils} from "../../../utils/id.util";
 import {FormValidationModel} from "../../../model/exception/form-validation.model";
 import {ErrorService} from "../../../service/error.service";
 import {FormUtil} from "../../../utils/form.util";
-import {NgForm} from "@angular/forms";
 import {ValidationErrorResponse} from "../../../model/exception/validation-error-response.model";
 import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/step/CheckComposedStepDefUpdateCompatibilityResponse";
 import {UpdateComposedStepDef} from "../../../model/step/UpdateComposedStepDef";
-import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dialog/update-incompatibility-dialog.component";
 import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
-import {ResourceMapEnum} from "../../resources/editors/resource-map.enum";
-import {StepCallTreeService} from "../../../generic/components/step-call-tree/step-call-tree.service";
 import {UrlService} from "../../../service/url.service";
-import {AutoComplete} from "primeng/primeng";
-import {TagsService} from "../../../service/tags.service";
-import {ArrayUtil} from "../../../utils/array.util";
+import {ComposedStepViewComponent} from "./composed-step-view/coposed-step-view.component";
 
 @Component({
     moduleId: module.id,
@@ -36,31 +23,17 @@ import {ArrayUtil} from "../../../utils/array.util";
 
 export class ComposedStepEditorComponent implements OnInit {
 
-    @ViewChild(StepChooserComponent) stepChooserComponent: StepChooserComponent;
-    @ViewChild(UpdateIncompatibilityDialogComponent) updateIncompatibilityDialogComponent: UpdateIncompatibilityDialogComponent;
-    @ViewChild(NgForm) form: NgForm;
-    StepPhaseEnum = StepPhaseEnum;
-
-    model: ComposedStepDef = new ComposedStepDef();
+    model: ComposedStepDef;
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
 
-    pattern: string;
-
-    areChildComponentsValid: boolean = true;
-
-    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
-    allKnownTags: Array<string> = [];
-    tagsToShow:string[] = [];
-    currentTagSearch:string;
+    @ViewChild(ComposedStepViewComponent) composedStepViewComponent: ComposedStepViewComponent;
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
                 private stepsService: StepsService,
                 private stepsTreeService: StepsTreeService,
-                private stepCallTreeService: StepCallTreeService,
                 private errorService: ErrorService,
-                private tagsService: TagsService,
                 private applicationEventBus: ApplicationEventBus) {
     }
 
@@ -68,68 +41,14 @@ export class ComposedStepEditorComponent implements OnInit {
         this.route.data.subscribe(data => {
             this.model = data['composedStepDef'];
             this.isEditMode = IdUtils.isTemporaryId(this.model.id);
-            this.pattern = this.model.stepPattern.getPatternText();
+            this.composedStepViewComponent.isEditMode = IdUtils.isTemporaryId(this.model.id);
             this.isCreateAction = !this.model.path.fileName
         });
     }
 
-    onPatternChanged() {
-        this.model.stepPattern.setPatternText(this.pattern)
-    }
-
-    openStepChooser() {
-        this.stepChooserComponent.showStepChooserModelWithoutStepReference(this, this.model.path);
-    }
-
-    onStepChose(choseStep: StepDef): void {
-        let stepCall = new StepCall();
-        stepCall.stepDef = choseStep;
-        for (let stepParam of choseStep.stepPattern.getParamParts()) {
-            let valueArg = new Arg();
-            valueArg.serverType = stepParam.serverType;
-            valueArg.uiType = stepParam.uiType;
-            valueArg.content = ResourceMapEnum.getResourceMapEnumByUiType(stepParam.uiType).getNewInstance();
-
-            stepCall.args.push(valueArg);
-        }
-
-        this.stepCallTreeService.addStepCall(stepCall);
-    }
-
-    enableEditTestMode(): void {
-        this.tagsService.getTags().subscribe(tags => {
-            ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
-        });
-
+    enableEditTestMode() {
         this.isEditMode = true;
-    }
-
-    onSearchTag(event) {
-        this.currentTagSearch = event.query;
-
-        let newTagsToShow = ArrayUtil.filterArray(
-            this.allKnownTags,
-            event.query
-        );
-        for (let currentTag of this.model.tags) {
-            ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
-        }
-        this.tagsToShow = newTagsToShow
-    }
-
-    onTagsKeyUp(event) {
-        if(event.key =="Enter") {
-            if (this.currentTagSearch) {
-                this.model.tags.push(this.currentTagSearch);
-                this.currentTagSearch = null;
-                this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
-                event.preventDefault();
-            }
-        }
-    }
-
-    onTagSelect(event) {
-        this.currentTagSearch = null;
+        this.composedStepViewComponent.enableEditTestMode();
     }
 
     cancelAction(): void {
@@ -159,7 +78,7 @@ export class ComposedStepEditorComponent implements OnInit {
                     this.actionsAfterSave(composedStepDef);
                 },
                 (validationErrorResponse: ValidationErrorResponse) => {
-                    FormUtil.setErrorsToForm(this.form, validationErrorResponse.validationModel);
+                    FormUtil.setErrorsToForm(this.composedStepViewComponent.form, validationErrorResponse.validationModel);
                     this.errorService.showGenericValidationError(validationErrorResponse);
                 }
             );
@@ -170,7 +89,7 @@ export class ComposedStepEditorComponent implements OnInit {
                     if(!compatibilityResponse.isUniqueStepPattern) {
                         let formValidationModel = new FormValidationModel();
                         formValidationModel.fieldsWithValidationErrors.set("stepPattern", "step_pattern_already_exists");
-                        FormUtil.setErrorsToForm(this.form, formValidationModel);
+                        FormUtil.setErrorsToForm(this.composedStepViewComponent.form, formValidationModel);
                         return;
                     }
 
@@ -196,7 +115,7 @@ export class ComposedStepEditorComponent implements OnInit {
                 this.actionsAfterSave(composedStepDef);
             },
             (validationErrorResponse: ValidationErrorResponse) => {
-                FormUtil.setErrorsToForm(this.form, validationErrorResponse.validationModel);
+                FormUtil.setErrorsToForm(this.composedStepViewComponent.form, validationErrorResponse.validationModel);
                 this.errorService.showGenericValidationError(validationErrorResponse);
             }
         );
@@ -208,21 +127,4 @@ export class ComposedStepEditorComponent implements OnInit {
         this.stepsTreeService.initializeStepsTreeFromServer(composedStepDef.path);
         this.urlService.navigateToComposedStep(composedStepDef.path);
     };
-
-    getPhaseEnumValues(): Array<StepPhaseEnum> {
-        return [StepPhaseEnum.GIVEN, StepPhaseEnum.WHEN, StepPhaseEnum.THEN]
-    }
-
-    allowDrop(): any {
-        return (dragData: StepTreeNodeModel) => {
-            let isTheSameStep = dragData.path.equals(this.model.path);
-            let isStepContainer = dragData instanceof StepTreeContainerModel;
-            return this.isEditMode && !isStepContainer && !isTheSameStep;
-        }
-    }
-
-    onTreeNodeDrop($event: any) {
-        let stepToCopyTreeNode: StepTreeNodeModel = $event.dragData;
-        this.onStepChose(stepToCopyTreeNode.stepDef)
-    }
 }

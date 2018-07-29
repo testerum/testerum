@@ -1,141 +1,27 @@
 <split-panel-container>
     <div>
         <div class="panel-body">
-            <form #stepForm="ngForm" class="form-horizontal">
 
-                <!-- STEP -->
-                <div class="my-line">
-                    <span *ngIf="!isEditMode" class="step-text-phase">
-                        {{StepPhaseEnum[model.phase] | titlecase}} &nbsp;
-                    </span>
+            <composed-step-view #composedStepView
+                                [model]="model"
+                                [isEditMode]="isEditMode"
+                                [isCreateAction]="isCreateAction">
+            </composed-step-view>
 
-                    <!-- STEP PHASE -->
-                    <span *ngIf="isEditMode">
-                        <select class="form-control"
-                                #testPhase="ngModel" [(ngModel)]="model.phase" name="testPhase"
-                                required>
-                            <option *ngFor="let enumName of getPhaseEnumValues()" [value]="enumName">
-                                {{StepPhaseEnum[enumName]}}
-                            </option>
-                        </select>
-                        <div *ngIf="testPhase.errors && (testPhase.dirty || testPhase.touched)"
-                             class="alert alert-danger">
-                            <div [hidden]="!testPhase.errors.required">
-                                Phase is required
-                            </div>
-                        </div>
-                    </span>
-
-                    <!-- STEP PATTERN -->
-                    <span class="full-width">
-                        <div *ngIf="!isEditMode">
-                            {{pattern || ""}}
-                        </div>
-
-                        <span *ngIf="isEditMode">
-                            <input id="stepPattern" required
-                                   #stepPattern="ngModel" [(ngModel)]="pattern"
-                                   (ngModelChange)="onPatternChanged()"
-                                   type="text" class="form-control full-width" name="stepPattern"
-                                   placeholder="Step pattern">
-                            <input-error [model]="stepPattern"
-                                         [errorMessages]="{
-                                            required: 'A step definition is required',
-                                            step_pattern_already_exists: 'This step definition already exists'
-                                     }"></input-error>
-                        </span>
-
-                        <composed-step-parameters [patternParts]="model.stepPattern.patternParts"
-                                                  [isEditMode]="isEditMode"></composed-step-parameters>
-                    </span>
-                </div>
-
-                <div class="vertical-space"></div>
-
-                <!-- PATH -->
-                <div class="my-line">
-                    <label class="my-label label-size">Path</label>
-                    <span class="my-value">
-                        {{model.path?.toString() || ""}}
-                    </span>
-                </div>
-
-                <div *ngIf="isEditMode" class="vertical-space"></div>
-
-                <!-- TAGS -->
-                <div class="form-group row" *ngIf="!isEditMode && model.tags.length > 0 ">
-                    <label class="col-md-1 control-label" for="tags">Tags</label>
-                    <div class="col-md-11 form-value" *ngIf="!isEditMode">
-                        <ng-container *ngFor="let tag of model.tags">
-                            <span class="label label-primary">{{tag}}</span>
-                        </ng-container>
-                    </div>
-                </div>
-                <div class="form-group row" *ngIf="isEditMode">
-                    <label class="col-md-1 control-label" for="tags">Tags</label>
-                    <div class="col-md-11">
-                        <p-autoComplete #tagsElement
-                                        [(ngModel)]="model.tags"
-                                        [suggestions]="tagsToShow"
-                                        (completeMethod)="onSearchTag($event)"
-                                        (onSelect)="onTagSelect($event)"
-                                        (keypress)="onTagsKeyUp($event);"
-                                        [delay]="0"
-                                        [multiple]="true"
-                                        [dropdown]="true"
-                                        id="tags" name="tags"></p-autoComplete>
-                    </div>
-                </div>
-
-                <!-- DESCRIPTION -->
-                <div class="my-line">
-                    <label class="my-label label-size" for="description">Description</label>
-                    <div class="my-value" *ngIf="!isEditMode">
-                        {{model.description || ""}}
-                    </div>
-                    <div class="my-value full-width" *ngIf="isEditMode">
-                        <textarea [(ngModel)]="model.description" class="form-control" id="description"
-                                  name="description"></textarea>
-                    </div>
-                </div>
-
-                <!-- SUB-STEPS-->
-                <div dnd-droppable [allowDrop]="allowDrop()" (onDropSuccess)="onTreeNodeDrop($event)">
-                    <div>
-                        <h4 class="inline"><strong>Steps</strong></h4>
-
-                        <!-- BUTTONS -->
-                        <div class="step-action-panel inline btn-group">
-                            <div title="Add Step" class="btn btn-default btn-xs btn-group"
-                                 *ngIf="isEditMode"
-                                 (click)="openStepChooser(); $event.stopPropagation()">
-                                <span class="glyphicon glyphicon-plus-sign"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <step-call-tree [stepCalls]="model.stepCalls"></step-call-tree>
-
-
-
-                <div class="panel-footer-button">
-                    <ng-container *ngIf="!isEditMode">
-                        <button (click)="enableEditTestMode();" class="btn btn-primary">Edit</button>
-                    </ng-container>
-                    <ng-container *ngIf="isEditMode">
-                        <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
-                        <button *ngIf="!isCreateAction" (click)="deleteAction();" type="button" class="btn btn-danger">Delete</button>
-                        <button [disabled]="!stepForm.form.valid || !areChildComponentsValid" (click)="saveAction()"
-                                class="btn btn-primary">
-                            Save
-                        </button>
-                    </ng-container>
-                </div>
-            </form>
+            <div class="panel-footer-button">
+                <ng-container *ngIf="!isEditMode">
+                    <button (click)="enableEditTestMode();" class="btn btn-primary">Edit</button>
+                </ng-container>
+                <ng-container *ngIf="isEditMode">
+                    <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
+                    <button *ngIf="!isCreateAction" (click)="deleteAction();" type="button" class="btn btn-danger">Delete</button>
+                    <button [disabled]="!composedStepView.form.valid || !composedStepView.areChildComponentsValid"
+                            (click)="saveAction()"
+                            class="btn btn-primary">
+                        Save
+                    </button>
+                </ng-container>
+            </div>
         </div>
     </div>
-
-    <step-chooser #stepChooser></step-chooser>
-    <update-incompatibility-dialog #updateIncompatibilityDialog></update-incompatibility-dialog>
 </split-panel-container>
