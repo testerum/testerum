@@ -2,6 +2,7 @@ import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {StepCallTreeService} from "../../step-call-tree.service";
 import {StepTextComponent} from "../../../step-text/step-text.component";
+import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
 
 @Component({
     selector: 'step-call-container',
@@ -71,12 +72,15 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         return this.stepCallTreeService.isEditMode;
     }
 
+    isUndefinedStep(): boolean {
+        return this.model.stepCall.stepDef instanceof UndefinedStepDef;
+    }
+
     onStepOrderChangedEvent(): void {
         this.initPropertiesThatDependsOnStepOrder()
     }
 
-    toggleParameters() {
-        this.showParameters = !this.showParameters;
+    editStep() {
     }
 
     public moveStepUp(): void {

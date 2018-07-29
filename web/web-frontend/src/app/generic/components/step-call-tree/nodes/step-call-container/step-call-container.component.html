@@ -42,20 +42,30 @@
         </div>
 
         <!-- BUTTONS -->
+        <div *ngIf="isUndefinedStep() && isEditMode()"
+             class="step-button-panel-hide-on-hover btn-group">
+            <div *ngIf="!model.jsonTreeNodeState.showChildren"
+                 title="Define Step" class="btn btn-default btn-xs btn-group"
+                 (click)="editStep(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </div>
+        </div>
+
         <div *ngIf="isEditMode()" class="step-button-panel btn-group">
 
             <div *ngIf="!model.jsonTreeNodeState.showChildren"
-                title="Edit Test" class="btn btn-default btn-xs btn-group"
-                (click)="toggleParameters(); $event.stopPropagation()">
+                 title="{{isUndefinedStep() ? 'Define Step': 'Edit Step'}}"
+                 class="btn btn-default btn-xs btn-group"
+                (click)="editStep(); $event.stopPropagation()">
                 <span class="glyphicon glyphicon-pencil"></span>
             </div>
 
-            <div title="Move Test Up" *ngIf="!isFirstStep" class="btn btn-default btn-xs btn-group"
+            <div title="Move Step Up" *ngIf="!isFirstStep" class="btn btn-default btn-xs btn-group"
                  (click)="moveStepUp(); $event.stopPropagation()">
                 <span class="glyphicon glyphicon-arrow-up"></span>
             </div>
 
-            <div title="Move Test Down" *ngIf="!isLastStep" class="btn btn-default btn-xs btn-group"
+            <div title="Move Step Down" *ngIf="!isLastStep" class="btn btn-default btn-xs btn-group"
                  (click)="moveStepDown(); $event.stopPropagation()">
                 <span class="glyphicon glyphicon-arrow-down"></span>
             </div>

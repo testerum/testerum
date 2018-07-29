@@ -5,11 +5,22 @@
 .step-text-container:hover .step-button-panel {
     display: inline-block;
 }
-
 .step-button-panel {
     margin-left: 5px;
     display: none;
     vertical-align: top;
+}
+
+.step-text-container:hover .step-button-panel-hide-on-hover {
+    display: none;
+}
+.step-button-panel-hide-on-hover {
+    @extend .step-button-panel;
+    display: inline-block;
+}
+.step-button-panel-visible {
+    @extend .step-button-panel;
+    display: inline-block;
 }
 
 .arrow-icon {
