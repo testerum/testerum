@@ -4,8 +4,11 @@ import {JsonTreeNodeState} from "../../../../generic/components/json-tree/model/
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {StepTreeNodeModel} from "./step-tree-node.model";
 import {JsonTreeContainerOptions} from "../../../../generic/components/json-tree/model/behavior/JsonTreeContainerOptions";
+import {JsonTreePathContainer} from "../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
 
 export class StepTreeContainerModel extends StepTreeNodeModel implements JsonTreeContainer {
+
+    name: string;
 
     children: Array<StepTreeNodeModel> = [];
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
@@ -14,12 +17,15 @@ export class StepTreeContainerModel extends StepTreeNodeModel implements JsonTre
     editable:boolean = false;
     isComposedStepContainer: boolean;
 
+    hasOwnOrDescendantWarnings: boolean = false;
+
     private options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
-    constructor(parentContainer: StepTreeContainerModel, path: Path = null, isComposedStepContainer: boolean) {
-        super(parentContainer, path);
+    constructor(parentContainer: JsonTreePathContainer, path: Path = null, isComposedStepContainer: boolean, hasOwnOrDescendantWarnings: boolean = false) {
+        super(parentContainer, path, null, isComposedStepContainer, hasOwnOrDescendantWarnings);
         this.jsonTreeNodeState.showChildren = true;
         this.isComposedStepContainer = isComposedStepContainer;
+        this.hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings;
     }
 
     getChildren(): Array<StepTreeNodeModel> {
@@ -40,8 +46,8 @@ export class StepTreeContainerModel extends StepTreeNodeModel implements JsonTre
                 return 1;
             }
 
-            let leftNodeText = left.isContainer() ? left.name : left.stepDef.toString();
-            let rightNodeText = right.isContainer() ? right.name : right.stepDef.toString();
+            let leftNodeText = left.toString();
+            let rightNodeText = right.toString();
 
             if (leftNodeText.toUpperCase() < rightNodeText.toUpperCase()) return -1;
             if (leftNodeText.toUpperCase() > rightNodeText.toUpperCase()) return 1;
@@ -70,5 +76,9 @@ export class StepTreeContainerModel extends StepTreeNodeModel implements JsonTre
 
     getOptions(): JsonTreeContainerOptions {
         return this.options;
+    }
+
+    toString(): string {
+        return this.name;
     }
 }

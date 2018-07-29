@@ -1,4 +1,4 @@
-import {Path} from "../infrastructure/path/path.model";
+import {Path} from "../../infrastructure/path/path.model";
 import {BasicStepNode} from "./basic-step-node.model";
 import {BasicStepStepNode} from "./basic-step-step-node.model";
 

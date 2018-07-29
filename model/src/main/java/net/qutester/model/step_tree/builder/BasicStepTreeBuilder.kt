@@ -72,8 +72,7 @@ class BasicStepTreeBuilder {
                 is BasicStepDef -> BasicStepStepNode(
                         path = payload.path,
                         hasOwnOrDescendantWarnings = payload.hasOwnOrDescendantWarnings,
-                        phase = payload.phase,
-                        stepPattern = payload.stepPattern
+                        stepDef = payload
                 )
                 else -> throw unknownPayloadException(payload)
             }

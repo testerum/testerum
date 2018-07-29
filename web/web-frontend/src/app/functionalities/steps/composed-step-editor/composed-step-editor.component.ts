@@ -78,7 +78,7 @@ export class ComposedStepEditorComponent implements OnInit {
     }
 
     openStepChooser() {
-        this.stepChooserComponent.showStepChooserModelWithoutStepReference(this, this.model.id);
+        this.stepChooserComponent.showStepChooserModelWithoutStepReference(this, this.model.path);
     }
 
     onStepChose(choseStep: StepDef): void {
@@ -215,7 +215,7 @@ export class ComposedStepEditorComponent implements OnInit {
 
     allowDrop(): any {
         return (dragData: StepTreeNodeModel) => {
-            let isTheSameStep = dragData.stepDef == this.model;
+            let isTheSameStep = dragData.path.equals(this.model.path);
             let isStepContainer = dragData instanceof StepTreeContainerModel;
             return this.isEditMode && !isStepContainer && !isTheSameStep;
         }

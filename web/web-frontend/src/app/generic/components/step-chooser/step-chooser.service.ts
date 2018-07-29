@@ -16,16 +16,19 @@ import {StepTreeContainerModel} from "../../../functionalities/steps/steps-tree/
 import {StepsTreeFilter} from "../../../model/step/filter/steps-tree-filter.model";
 import {StepsService} from "../../../service/steps.service";
 import {JsonTreeService} from "../json-tree/json-tree.service";
+import {RootStepNode} from "../../../model/step/tree/root-step-node.model";
+import {ComposedContainerStepNode} from "../../../model/step/tree/composed-container-step-node.model";
+import {ComposedStepNode} from "../../../model/step/tree/composed-step-node.model";
+import {ArrayUtil} from "../../../utils/array.util";
 
 @Injectable()
 export class StepChooserService {
 
-    stepIdToRemove: string;
+    stepPathToRemove: Path;
 
     treeFilter: StepsTreeFilter = StepsTreeFilter.createEmptyFilter();
 
-    basicStepsJsonTreeModel: JsonTreeModel;
-    composedStepsJsonTreeModel: JsonTreeModel;
+    treeModel: JsonTreeModel;
 
     selectedStep:StepTreeNodeModel;
     selectedNodeObserver: EventEmitter<JsonTreeNodeEventModel> = new EventEmitter<JsonTreeNodeEventModel>();
@@ -36,45 +39,36 @@ export class StepChooserService {
     }
 
     initializeStepsTreeFromServer(selectedPath: Path = null, expandToLevel: number = 2) {
-        this.stepsService.getComposedStepDefs(this.treeFilter).subscribe(
-            composedStepsDefs => this.setComposedStepsModel(this.stepIdToRemove, composedStepsDefs, selectedPath, expandToLevel)
-        );
-
-        this.stepsService.getBasicSteps(this.treeFilter).subscribe(
-            steps => this.setBasicStepsModel(steps, selectedPath, expandToLevel)
+        this.stepsService.getStepsTree(this.treeFilter).subscribe(
+            (rootStepNode:RootStepNode) => this.setTreeModel(this.stepPathToRemove, rootStepNode, selectedPath, expandToLevel)
         );
     }
 
-    setBasicStepsModel(steps: Array<BasicStepDef>, selectedPath: Path, expandToLevel: number): void {
-        let newTree = StepsTreeUtil.mapStepsDefToStepJsonTreeModel(steps, false);
-        this.sort(newTree);
+    setTreeModel(stepPathToRemove:Path, rootStepNode:RootStepNode, selectedPath: Path = null, expandToLevel: number = 2): void {
+        this.filterNodeFromRootStepNode(rootStepNode.composedStepsRoot, stepPathToRemove);
+        let newTree = StepsTreeUtil.mapRootStepToStepJsonTreeModel(rootStepNode);
 
         JsonTreeExpandUtil.expandTreeToLevel(newTree, expandToLevel);
         let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(newTree, selectedPath);
 
-        this.basicStepsJsonTreeModel = newTree;
-        this.jsonTreeService.setSelectedNode(selectedNode);
-
-    }
-
-    setComposedStepsModel(stepIdToRemove:string, steps: Array<ComposedStepDef>, selectedPath: Path = null, expandToLevel: number = 2): void {
-        let filteredComposedSteps = steps.filter(composedStep => !this.hasOrContainsStepsWithId(composedStep, stepIdToRemove));
-
-        let newTree = StepsTreeUtil.mapStepsDefToStepJsonTreeModel(filteredComposedSteps, true);
-        this.sort(newTree);
-
-        JsonTreeExpandUtil.expandTreeToLevel(newTree, expandToLevel);
-        let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(newTree, selectedPath);
-
-        this.composedStepsJsonTreeModel = newTree;
+        this.treeModel = newTree;
         this.jsonTreeService.setSelectedNode(selectedNode);
     }
 
-    private hasOrContainsStepsWithId(composedStep: ComposedStepDef, stepIdToRemove: string) {
-        if(composedStep.id == stepIdToRemove) {
-            return true
+    private filterNodeFromRootStepNode(composedContainerStepNode: ComposedContainerStepNode, stepPathToRemove: Path) {
+        let childToRemove: ComposedStepNode = null;
+        for (const child of composedContainerStepNode.children) {
+            if (child.path.equals(stepPathToRemove)) {
+                childToRemove = child;
+            } else {
+                if (child instanceof ComposedContainerStepNode) {
+                    this.filterNodeFromRootStepNode(child, this.stepPathToRemove)
+                }
+            }
         }
-        return this.containsStepsWithId(composedStep, stepIdToRemove);
+        if (childToRemove != null) {
+            ArrayUtil.removeElementFromArray(composedContainerStepNode.children, childToRemove);
+        }
     }
 
     private containsStepsWithId(composedStep: ComposedStepDef, stepIdToRemove: string) {
@@ -92,38 +86,6 @@ export class StepChooserService {
             }
         }
         return false;
-    }
-
-
-    sort(tree: JsonTreeModel): void {
-        this.sortChildren(tree.children);
-    }
-
-    private sortChildren(children: Array<JsonTreeNode>) {
-
-        children.sort((left: StepTreeNodeModel, right: StepTreeNodeModel) => {
-            if (left.isContainer() && !right.isContainer()) {
-                return -1;
-            }
-
-            if (!left.isContainer() && right.isContainer()) {
-                return 1;
-            }
-
-            let leftNodeText = left.isContainer() ? left.name : left.stepDef.toString();
-            let rightNodeText = right.isContainer() ? right.name : right.stepDef.toString();
-
-            if (leftNodeText.toUpperCase() < rightNodeText.toUpperCase()) return -1;
-            if (leftNodeText.toUpperCase() > rightNodeText.toUpperCase()) return 1;
-
-            return 0;
-        });
-
-        children.forEach( it => {
-            if(it.isContainer()) {
-                this.sortChildren((it as StepTreeContainerModel).children)
-            }
-        })
     }
 
     setSelectedStep(selectedStep: StepTreeNodeModel) {

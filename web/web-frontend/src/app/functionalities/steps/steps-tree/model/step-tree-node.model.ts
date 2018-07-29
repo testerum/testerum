@@ -5,14 +5,29 @@ import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {StepPattern} from "../../../../model/text/step-pattern.model";
 import {StepDef} from "../../../../model/step-def.model";
 import {StepTreeContainerModel} from "./step-tree-container.model";
+import {JsonTreePathContainer} from "../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
 
 export class StepTreeNodeModel extends JsonTreePathNode {
 
-    name: string;
     readonly path: Path;
     stepDef: StepDef;
+    isComposedStep: boolean;
 
-    constructor(parentContainer: StepTreeContainerModel, path?: Path) {
+    hasOwnOrDescendantWarnings: boolean = false;
+
+    constructor(parentContainer: JsonTreePathContainer,
+                path: Path,
+                stepDef: StepDef,
+                isComposedStep: boolean,
+                hasOwnOrDescendantWarnings: boolean = false) {
+
         super(parentContainer, path);
+        this.stepDef = stepDef;
+        this.isComposedStep = isComposedStep;
+        this.hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings;
+    }
+
+    toString(): string {
+        return this.stepDef.toString();
     }
 }

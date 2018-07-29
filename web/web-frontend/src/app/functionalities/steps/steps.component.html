@@ -4,13 +4,7 @@
         <split-area [size]="40">
             <steps-tree-filter></steps-tree-filter>
 
-            <!-- COMPOSED STEPS -->
-            <steps-tree [treeModel]="stepsTreeService.composedStepsJsonTreeModel"
-                       [modelComponentMapping]="jsonModelComponentMapping">
-            </steps-tree>
-
-            <!-- BASIC STEPS -->
-            <steps-tree [treeModel]="stepsTreeService.basicStepsJsonTreeModel"
+            <steps-tree [treeModel]="stepsTreeService.treeModel"
                        [modelComponentMapping]="jsonModelComponentMapping">
             </steps-tree>
 

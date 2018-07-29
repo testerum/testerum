@@ -1,7 +1,7 @@
 <div class="node-text"
      dnd-draggable [dragEnabled]="true" [dragData]="model">
 
-    <div (click)="showComposedStep()"
+    <div (click)="showViewer()"
          [class.step-selected]="isSelected">
         <step-text [stepDef]="model.stepDef"></step-text>
     </div>

@@ -40,8 +40,8 @@ export class StepChooserComponent implements OnInit {
     ngOnInit() {
     }
 
-    showStepChooserModelWithoutStepReference(stepChoseHandler:StepChoseHandler, stepIdToRemove:string) {
-        this.stepChooserService.stepIdToRemove = stepIdToRemove;
+    showStepChooserModelWithoutStepReference(stepChoseHandler:StepChoseHandler, stepPathToRemove:Path) {
+        this.stepChooserService.stepPathToRemove = stepPathToRemove;
 
         let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path'] : null;
         let path: Path = pathAsString != null ? Path.createInstance(pathAsString) : null;

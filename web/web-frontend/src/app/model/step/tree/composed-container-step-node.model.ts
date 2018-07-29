@@ -1,4 +1,4 @@
-import {Path} from "../infrastructure/path/path.model";
+import {Path} from "../../infrastructure/path/path.model";
 import {ComposedStepNode} from "./composed-step-node.model";
 import {ComposedStepStepNode} from "./composed-step-step-node.model";
 

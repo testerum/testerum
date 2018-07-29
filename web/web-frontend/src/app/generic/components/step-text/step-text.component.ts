@@ -14,7 +14,7 @@ import {StringUtils} from "../../../utils/string-utils.util";
     templateUrl: 'step-text.component.html',
     styleUrls: ['step-text.component.scss']
 })
-export class StepTextComponent<T extends StepDef> implements OnInit {
+export class StepTextComponent<T extends StepDef> {
 
     @Input() stepDef: T;
     @Input() stepCall:StepCall;
@@ -24,10 +24,6 @@ export class StepTextComponent<T extends StepDef> implements OnInit {
     @Input() showPhaseAsAnd = false;
 
     StepPhaseEnum = StepPhaseEnum;
-    StepTextPartEnum = StepTextPartEnum;
-
-    ngOnInit() {
-    }
 
     getStepPhaseAsString(): string {
         if(this.showPhaseAsAnd) {

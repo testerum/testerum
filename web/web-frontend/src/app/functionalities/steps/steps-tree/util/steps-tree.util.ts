@@ -1,91 +1,98 @@
-import {StepsPackageModel} from "../../../../model/steps-package.model";
-import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
-import {StepDef} from "../../../../model/step-def.model";
-import {BasicStepDef} from "../../../../model/basic-step-def.model";
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
 import {StepTreeContainerModel} from "../model/step-tree-container.model";
 import {StepTreeNodeModel} from "../model/step-tree-node.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {JsonTreePathUtil} from "../../../../generic/components/json-tree/util/json-tree-path.util";
-import {TreeModel} from "../../../../generic/components/tree/model/tree.model";
-import {PathUtil} from "../../../../utils/path.util";
+import {RootStepNode} from "../../../../model/step/tree/root-step-node.model";
+import {ComposedStepNode} from "../../../../model/step/tree/composed-step-node.model";
+import {ComposedContainerStepNode} from "../../../../model/step/tree/composed-container-step-node.model";
+import {ComposedStepStepNode} from "../../../../model/step/tree/composed-step-step-node.model";
+import {BasicStepNode} from "../../../../model/step/tree/basic-step-node.model";
+import {BasicContainerStepNode} from "../../../../model/step/tree/basic-container-step-node.model";
+import {BasicStepStepNode} from "../../../../model/step/tree/basic-step-step-node.model";
 
 export default class StepsTreeUtil {
 
-    static mapStepsDefToStepJsonTreeModel(steps: Array<StepDef>, isComposedStep: boolean): JsonTreeModel {
-
-        let orderedSteps = this.orderStepsByPhase(steps);
-
-        let rootPackage: StepTreeContainerModel = new StepTreeContainerModel(null, new Path([], null, null), isComposedStep);
-        rootPackage.isRootPackage = true;
-        if (isComposedStep) {
-            rootPackage.name = "Composed Steps";
-            rootPackage.editable = true;
-        } else {
-            rootPackage.name = "Basic Steps";
-            rootPackage.editable = false;
-        }
-
-        for (let step of steps) {
-            let stepPath = step.path;
-            let stepContainer: StepTreeContainerModel = this.getOrCreateStepTreeContainerWithName(stepPath, rootPackage, isComposedStep);
-
-            stepContainer.children.push(
-                StepsTreeUtil.getStepTreeNode(stepContainer, step)
-            );
-        }
-
+    static mapRootStepToStepJsonTreeModel(rootStepNode: RootStepNode): JsonTreeModel {
         let treeModel: JsonTreeModel = new JsonTreeModel();
-        treeModel.children = [rootPackage];
-        rootPackage.parentContainer = treeModel;
+
+        let composedStepRootContainer: StepTreeContainerModel = new StepTreeContainerModel(treeModel, Path.createInstanceOfEmptyPath(), true);
+        composedStepRootContainer.name = "Composed Steps";
+        composedStepRootContainer.isRootPackage = true;
+        composedStepRootContainer.hasOwnOrDescendantWarnings = rootStepNode.composedStepsRoot.hasOwnOrDescendantWarnings;
+        StepsTreeUtil.mapComposedStepChildren(rootStepNode.composedStepsRoot.children, composedStepRootContainer);
+
+        let basicStepRootContainer: StepTreeContainerModel = new StepTreeContainerModel(treeModel, Path.createInstanceOfEmptyPath(), false);
+        basicStepRootContainer.name = "Basic Steps";
+        basicStepRootContainer.isRootPackage = true;
+        basicStepRootContainer.hasOwnOrDescendantWarnings = rootStepNode.basicStepsRoot.hasOwnOrDescendantWarnings;
+        StepsTreeUtil.mapBasicStepChildren(rootStepNode.basicStepsRoot.children, basicStepRootContainer);
+
+        treeModel.children.push(composedStepRootContainer);
+        treeModel.children.push(basicStepRootContainer);
 
         return treeModel;
     }
 
+    private static mapComposedStepChildren(composedStepNodes: ComposedStepNode[], parentContainer: StepTreeContainerModel) {
+        for (const composedStepNode of composedStepNodes) {
+            if (composedStepNode instanceof ComposedContainerStepNode) {
 
-    private static getOrCreateStepTreeContainerWithName(stepPath: Path,
-                                                        parentContainer: StepTreeContainerModel,
-                                                        isComposedStep: boolean): StepTreeContainerModel {
-        if (!stepPath) {
-            return parentContainer;
-        }
+                let composedStepTreeContainer: StepTreeContainerModel = new StepTreeContainerModel(
+                    parentContainer,
+                    composedStepNode.path,
+                    true,
+                    composedStepNode.hasOwnOrDescendantWarnings
+                );
+                composedStepTreeContainer.name = composedStepNode.name;
 
-        let result: StepTreeContainerModel = parentContainer;
-        for (let pathDirectory of stepPath.directories) {
-            result = StepsTreeUtil.getOrCreateContainer(pathDirectory, result, isComposedStep)
-        }
-        return result;
-    }
+                parentContainer.children.push(composedStepTreeContainer);
 
-    private static getOrCreateContainer(childContainerName: string, parentContainer: StepTreeContainerModel, isComposedStep: boolean) {
-        let childContainer: StepTreeContainerModel = JsonTreePathUtil.findNode(childContainerName, parentContainer.children)  as StepTreeContainerModel;
-
-        if(childContainer == null) {
-            let childContainerPath = Path.createInstanceFromPath(parentContainer.path);
-            childContainerPath.directories.push(childContainerName);
-
-            childContainer = new StepTreeContainerModel(parentContainer, childContainerPath, isComposedStep);
-            if (isComposedStep) {
-                childContainer.editable = true;
+                StepsTreeUtil.mapComposedStepChildren(composedStepNode.children, composedStepTreeContainer);
+                continue;
             }
-            parentContainer.children.push(childContainer);
-        }
 
-        return childContainer;
-    }
+            if (composedStepNode instanceof ComposedStepStepNode) {
+                let composedStepTreeNode = new StepTreeNodeModel(
+                    parentContainer,
+                    composedStepNode.path,
+                    composedStepNode.stepDef,
+                    true,
+                    composedStepNode.hasOwnOrDescendantWarnings
+                );
 
-    private static orderStepsByPhase(steps: Array<StepDef>): Array<StepDef> {
-        return steps.sort(
-            (n1: StepDef, n2: StepDef) => {
-
-                return n1.phase - n2.phase
+                parentContainer.children.push(composedStepTreeNode);
             }
-        )
+        }
     }
+    private static mapBasicStepChildren(basicStepNodes: BasicStepNode[], parentContainer: StepTreeContainerModel) {
+        for (const basicStepNode of basicStepNodes) {
+            if (basicStepNode instanceof BasicContainerStepNode) {
 
-    private static getStepTreeNode(parentContainer: StepTreeContainerModel, stepDef: StepDef): StepTreeNodeModel {
-        let node = new StepTreeNodeModel(parentContainer, Path.createInstanceFromPath(stepDef.path));
-        node.stepDef = stepDef;
-        return node;
+                let basicStepTreeContainer: StepTreeContainerModel = new StepTreeContainerModel(
+                    parentContainer,
+                    basicStepNode.path,
+                    false,
+                    basicStepNode.hasOwnOrDescendantWarnings
+                );
+                basicStepTreeContainer.name = basicStepNode.path.directories[basicStepNode.path.directories.length - 1];
+
+                parentContainer.children.push(basicStepTreeContainer);
+
+                this.mapBasicStepChildren(basicStepNode.children, basicStepTreeContainer);
+                continue;
+            }
+
+            if (basicStepNode instanceof BasicStepStepNode) {
+                let basicStepTreeNode = new StepTreeNodeModel(
+                    parentContainer,
+                    basicStepNode.path,
+                    basicStepNode.stepDef,
+                    false,
+                    basicStepNode.hasOwnOrDescendantWarnings
+                );
+
+                parentContainer.children.push(basicStepTreeNode);
+            }
+        }
     }
 }

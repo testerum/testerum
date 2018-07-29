@@ -12,7 +12,7 @@ import {UpdateComposedStepDef} from "../model/step/UpdateComposedStepDef";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
 import {StepsTreeFilter} from "../model/step/filter/steps-tree-filter.model";
-import {RootStepNode} from "../model/step_tree/root-step-node.model";
+import {RootStepNode} from "../model/step/tree/root-step-node.model";
 
 @Injectable()
 export class StepsService {

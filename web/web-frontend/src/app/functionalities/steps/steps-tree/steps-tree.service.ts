@@ -13,12 +13,12 @@ import {JsonTreeContainer} from "../../../generic/components/json-tree/model/jso
 import {StepsTreeFilter} from "../../../model/step/filter/steps-tree-filter.model";
 import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
 import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
+import {RootStepNode} from "../../../model/step/tree/root-step-node.model";
 
 @Injectable()
 export class StepsTreeService {
 
-    basicStepsJsonTreeModel: JsonTreeModel = new JsonTreeModel();
-    composedStepsJsonTreeModel: JsonTreeModel = new JsonTreeModel();
+    treeModel: JsonTreeModel = new JsonTreeModel();
 
     treeFilter: StepsTreeFilter = StepsTreeFilter.createEmptyFilter();
 
@@ -27,46 +27,18 @@ export class StepsTreeService {
     }
 
     initializeStepsTreeFromServer(selectedPath: Path = null, expandToLevel: number = 2) {
-        this.stepsService.getComposedStepDefs(this.treeFilter).subscribe(
-            composedStepsDefs => this.setComposedStepsModel(composedStepsDefs, selectedPath, expandToLevel)
-        );
+       this.stepsService.getStepsTree(this.treeFilter).subscribe((rootStepNode:RootStepNode) => {
+           let newTree = StepsTreeUtil.mapRootStepToStepJsonTreeModel(rootStepNode);
 
-        if (this.basicStepsJsonTreeModel.children.length == 0) {
-            this.stepsService.getBasicSteps(this.treeFilter).subscribe(
-                steps => this.setBasicStepsModel(steps, selectedPath, expandToLevel)
-            );
-        }
+           JsonTreeExpandUtil.expandTreeToLevel(newTree, expandToLevel);
+           let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(newTree, selectedPath);
+
+           this.treeModel = newTree;
+           this.jsonTreeService.setSelectedNode(selectedNode);
+       });
     }
 
-    setBasicStepsModel(steps: Array<BasicStepDef>, selectedPath: Path, expandToLevel: number): void {
-        let newTree = StepsTreeUtil.mapStepsDefToStepJsonTreeModel(steps, false);
-        this.sort(newTree);
-
-        JsonTreeExpandUtil.expandTreeToLevel(newTree, expandToLevel);
-        let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(newTree, selectedPath);
-
-        this.basicStepsJsonTreeModel = newTree;
-        this.jsonTreeService.setSelectedNode(selectedNode);
-
-    }
-
-    setComposedStepsModel(steps: Array<ComposedStepDef>, selectedPath: Path = null, expandToLevel: number = 2): void {
-        let newTree = StepsTreeUtil.mapStepsDefToStepJsonTreeModel(steps, true);
-        this.sort(newTree);
-
-        JsonTreeExpandUtil.expandTreeToLevel(newTree, expandToLevel);
-        let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(newTree, selectedPath);
-
-        this.composedStepsJsonTreeModel = newTree;
-        this.jsonTreeService.setSelectedNode(selectedNode);
-    }
-
-    sort(tree: JsonTreeModel): void {
-        this.sortChildren(tree.children);
-    }
-
-    private sortChildren(children: Array<JsonTreeNode>) {
-
+    sortChildren(children: Array<JsonTreeNode>) {
         children.sort((left: StepTreeNodeModel, right: StepTreeNodeModel) => {
             if (left.isContainer() && !right.isContainer()) {
                 return -1;
@@ -76,8 +48,8 @@ export class StepsTreeService {
                 return 1;
             }
 
-            let leftNodeText = left.isContainer() ? left.name : left.stepDef.toString();
-            let rightNodeText = right.isContainer() ? right.name : right.stepDef.toString();
+            let leftNodeText = left.toString();
+            let rightNodeText = right.toString();
 
             if (leftNodeText.toUpperCase() < rightNodeText.toUpperCase()) return -1;
             if (leftNodeText.toUpperCase() > rightNodeText.toUpperCase()) return 1;
@@ -93,9 +65,9 @@ export class StepsTreeService {
     }
 
     copy(pathToCopy: Path, destinationPath: Path) {
-        JsonTreePathUtil.copy(this.composedStepsJsonTreeModel, pathToCopy, destinationPath);
+        JsonTreePathUtil.copy(this.treeModel, pathToCopy, destinationPath);
 
-        let composedRoot = (this.composedStepsJsonTreeModel.children[0] as JsonTreeContainer);
+        let composedRoot = (this.treeModel.children[0] as JsonTreeContainer);
 
         let newParent:StepTreeContainerModel = JsonTreePathUtil.getNode(
             composedRoot,

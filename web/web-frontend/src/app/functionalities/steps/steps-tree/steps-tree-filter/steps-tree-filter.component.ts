@@ -116,15 +116,10 @@ export class StepsTreeFilterComponent {
     }
 
     onExpandAllEvent() {
-        let composedTree = this.stepsTreeService.composedStepsJsonTreeModel;
-        let basicTree = this.stepsTreeService.basicStepsJsonTreeModel;
-
-        JsonTreeExpandUtil.expandNode(composedTree);
-        JsonTreeExpandUtil.expandNode(basicTree);
+        JsonTreeExpandUtil.expandNode(this.stepsTreeService.treeModel);
     }
 
     onExpandToLevelEvent(level: number) {
-        JsonTreeExpandUtil.expandTreeToLevel(this.stepsTreeService.basicStepsJsonTreeModel, level+1);
-        JsonTreeExpandUtil.expandTreeToLevel(this.stepsTreeService.composedStepsJsonTreeModel, level+1);
+        JsonTreeExpandUtil.expandTreeToLevel(this.stepsTreeService.treeModel, level+1);
     }
 }

@@ -42,19 +42,11 @@ export class JsonStepNodeComponent implements OnInit, OnDestroy {
         }
     }
 
-    private showViewer() {
-        if (this.model.stepDef instanceof ComposedStepDef) {
+    showViewer() {
+        if (this.model.isComposedStep) {
             this.urlService.navigateToComposedStep(this.model.path)
         } else {
             this.urlService.navigateToBasicStep(this.model.path)
-        }
-    }
-
-    showComposedStep() {
-        if (this.model instanceof ComposedStepDef) {
-            this.urlService.navigateToComposedStep(this.model.path);
-        } else {
-            this.urlService.navigateToSteps();
         }
     }
 }
