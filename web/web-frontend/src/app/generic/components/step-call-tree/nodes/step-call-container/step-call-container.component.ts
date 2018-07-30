@@ -5,6 +5,9 @@ import {StepTextComponent} from "../../../step-text/step-text.component";
 import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
 import {StepModalService} from "../../step-modal/step-modal.service";
 import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
+import {ArrayUtil} from "../../../../../utils/array.util";
+import {Arg} from "../../../../../model/arg/arg.model";
+import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
 
 @Component({
     selector: 'step-call-container',
@@ -85,10 +88,59 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     editStep() {
+        let stepToEdit;
+        if (this.model.stepCall.stepDef instanceof ComposedStepDef) {
+            stepToEdit = this.model.stepCall.stepDef;
+        }else
+        if (this.isUndefinedStep()) {
+            let currentStep: UndefinedStepDef = this.model.stepCall.stepDef;
+            stepToEdit = new ComposedStepDef();
+            stepToEdit.phase = currentStep.phase;
+            stepToEdit.stepPattern = currentStep.stepPattern;
+        } else {
+            throw new Error("This step is not editable");
+        }
+
         this.stepModalService.showStepModal(
-            this.model.stepCall.stepDef as ComposedStepDef,
+            stepToEdit,
             this.viewContainerRef
-        );
+        ).subscribe((newStepDef: ComposedStepDef) => {
+            this.model.stepCall.stepDef = newStepDef;
+            this.refreshStepCallArgsBasedOnStepDef()
+        });
+    }
+
+    private refreshStepCallArgsBasedOnStepDef() {
+        let oldArgs: Arg[] = ArrayUtil.copyArrayOfObjects(this.model.stepCall.args);
+        this.model.stepCall.args.length = 0;
+
+        for (let stepParam of this.model.stepCall.stepDef.stepPattern.getParamParts()) {
+            let newArg = null;
+
+            let oldArg = this.getArgFromListByNameAndType(oldArgs, stepParam.name, stepParam.uiType);
+            if (oldArg) {
+                newArg = oldArg;
+            } else {
+                newArg = new Arg();
+                newArg.name = stepParam.name;
+                newArg.serverType = stepParam.serverType;
+                newArg.uiType = stepParam.uiType;
+                newArg.content = ResourceMapEnum.getResourceMapEnumByUiType(stepParam.uiType).getNewInstance();
+
+            }
+
+            this.model.stepCall.args.push(newArg);
+        }
+    }
+
+    private getArgFromListByNameAndType(args: Array<Arg>, name: string, uiType: string): Arg {
+        for (const arg of args) {
+            if (arg.name == name && arg.uiType == uiType) {
+                return arg;
+            }
+        }
+
+        return null;
     }
 
     public moveStepUp(): void {

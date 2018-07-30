@@ -36,8 +36,9 @@ export class ComposedStepParametersComponent implements OnInit {
         return false;
     }
 
-    onValueChanged(value:string, paramPatternPart:ParamStepPatternPart):void {
-        paramPatternPart.uiType = value;
+    onValueChanged(uiType:string, paramPatternPart:ParamStepPatternPart):void {
+        paramPatternPart.uiType = uiType;
+        paramPatternPart.serverType = ResourceMapEnum.getResourceMapEnumByUiType(uiType).serverType;
     }
 
     setAllowedValues(value:string, paramPatternPart:ParamStepPatternPart): void {

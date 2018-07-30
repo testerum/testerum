@@ -17,7 +17,7 @@
                                 class="smaller-input form-control"
                                 [value]="patternPart.className"
                                 #selectItem (change)="onValueChanged(selectItem.value, patternPart)">
-                            <option *ngFor="let enumValue of getStepParamTypesValues()" value="{{enumValue.serverType}}">
+                            <option *ngFor="let enumValue of getStepParamTypesValues()" value="{{enumValue.uiType}}">
                                 {{enumValue.uiName}}
                             </option>
                         </select>

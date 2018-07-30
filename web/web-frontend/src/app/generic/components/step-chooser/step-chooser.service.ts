@@ -56,6 +56,8 @@ export class StepChooserService {
     }
 
     private filterNodeFromRootStepNode(composedContainerStepNode: ComposedContainerStepNode, stepPathToRemove: Path) {
+        if(this.stepPathToRemove == null) return;
+
         let childToRemove: ComposedStepNode = null;
         for (const child of composedContainerStepNode.children) {
             if (child.path.equals(stepPathToRemove)) {

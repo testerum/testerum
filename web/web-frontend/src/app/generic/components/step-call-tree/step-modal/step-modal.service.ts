@@ -22,7 +22,6 @@ export class StepModalService {
         const factory = this.componentFactoryResolver.resolveComponentFactory(StepModalComponent);
         let stepModalComponentRef = modalViewContainerRef.createComponent(factory);
         stepModalComponentRef.instance.model = modelClone;
-        stepModalComponentRef.instance.isCreateAction = !modelClone.path;
         stepModalComponentRef.instance.stepModalService = this;
 
         this.stepModalComponent = stepModalComponentRef.instance;

@@ -108,6 +108,10 @@ export class Path implements Serializable<Path> {
     }
 
     deserialize(input: Object): Path {
+        if (!input) {
+            return null;
+        }
+
         let directories: Array<string> = [];
         for (let directory of input["directories"]) {
             directories.push(directory);

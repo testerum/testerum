@@ -60,6 +60,7 @@ export class ComposedStepViewComponent implements AfterContentChecked {
         stepCall.stepDef = choseStep;
         for (let stepParam of choseStep.stepPattern.getParamParts()) {
             let valueArg = new Arg();
+            valueArg.name = stepParam.name;
             valueArg.serverType = stepParam.serverType;
             valueArg.uiType = stepParam.uiType;
             valueArg.content = ResourceMapEnum.getResourceMapEnumByUiType(stepParam.uiType).getNewInstance();
