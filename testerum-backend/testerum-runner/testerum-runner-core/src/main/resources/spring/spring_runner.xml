@@ -30,6 +30,7 @@
     <bean id="stepService" class="net.qutester.service.step.StepService">
         <constructor-arg name="basicStepsService" ref="basicStepsService"/>
         <constructor-arg name="composedStepsService" ref="composedStepsService"/>
+        <constructor-arg name="warningService" ref="warningService"/>
     </bean>
 
     <bean id="settingsManager" class="com.testerum.runner.SettingsManagerFactory" factory-method="createSettingsManger" />

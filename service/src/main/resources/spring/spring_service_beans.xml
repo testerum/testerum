@@ -79,6 +79,7 @@
         <constructor-arg name="resourcesService" ref="resourcesService"/>
         <constructor-arg name="uiToFileTestMapper" ref="uiToFileTestMapper"/>
         <constructor-arg name="fileToUiTestMapper" ref="fileToUiTestMapper"/>
+        <constructor-arg name="warningService" ref="warningService"/>
     </bean>
 
     <bean id="tagsService" class="net.qutester.service.tags.TagsService">
