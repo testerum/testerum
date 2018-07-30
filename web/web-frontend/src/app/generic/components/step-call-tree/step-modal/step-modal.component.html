@@ -1,0 +1,39 @@
+
+<div bsModal #modal="bs-modal" id="modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <div class="modal-header-buttons">
+                    <button (click)="cancel();$event.stopPropagation();" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <h4 class="modal-title" id="myModalLabel">
+                    {{modalTitle}}
+                </h4>
+            </div>
+
+            <!-- BODY-->
+            <div class="modal-body">
+                <composed-step-view #composedStepView
+                                    [model]="model"
+                                    [isCreateAction]="isCreateAction"
+                                    [isEditMode]="true">
+                </composed-step-view>
+            </div>
+
+            <!-- FOOTER Buttons-->
+            <div class="modal-footer">
+                <button (click)="onCancelAction();" type="button" class="btn btn-default">Cancel</button>
+                <button [disabled]="!composedStepView.form.valid || !composedStepView.areChildComponentsValid"
+                        (click)="onOkAction()"
+                        class="btn btn-primary">
+                    Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

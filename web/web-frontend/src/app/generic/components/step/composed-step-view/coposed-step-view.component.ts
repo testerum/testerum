@@ -1,7 +1,6 @@
 import {AfterContentChecked, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
-import {UpdateIncompatibilityDialogComponent} from "../update-incompatilibity-dialog/update-incompatibility-dialog.component";
-import {StepChooserComponent} from "../../../../generic/components/step-chooser/step-chooser.component";
+import {StepChooserComponent} from "../../step-chooser/step-chooser.component";
 import {NgForm} from "@angular/forms";
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {AutoComplete} from "primeng/primeng";
@@ -9,11 +8,11 @@ import {Arg} from "../../../../model/arg/arg.model";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {StepDef} from "../../../../model/step-def.model";
 import {StepCall} from "../../../../model/step-call.model";
-import {ResourceMapEnum} from "../../../resources/editors/resource-map.enum";
-import {StepTreeNodeModel} from "../../steps-tree/model/step-tree-node.model";
-import {StepTreeContainerModel} from "../../steps-tree/model/step-tree-container.model";
-import {StepCallTreeService} from "../../../../generic/components/step-call-tree/step-call-tree.service";
+import {StepTreeNodeModel} from "../../../../functionalities/steps/steps-tree/model/step-tree-node.model";
+import {StepTreeContainerModel} from "../../../../functionalities/steps/steps-tree/model/step-tree-container.model";
+import {StepCallTreeService} from "../../step-call-tree/step-call-tree.service";
 import {TagsService} from "../../../../service/tags.service";
+import {ResourceMapEnum} from "../../../../functionalities/resources/editors/resource-map.enum";
 
 @Component({
     selector: 'composed-step-view',
@@ -28,11 +27,9 @@ export class ComposedStepViewComponent implements AfterContentChecked {
     @Input() isCreateAction: boolean = false;
 
     @ViewChild(StepChooserComponent) stepChooserComponent: StepChooserComponent;
-    @ViewChild(UpdateIncompatibilityDialogComponent) updateIncompatibilityDialogComponent: UpdateIncompatibilityDialogComponent;
     @ViewChild(NgForm) form: NgForm;
     StepPhaseEnum = StepPhaseEnum;
 
-    isCreateAction: boolean = false;
     pattern: string;
 
     areChildComponentsValid: boolean = true;

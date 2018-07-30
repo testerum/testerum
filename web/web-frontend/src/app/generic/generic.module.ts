@@ -77,6 +77,10 @@ import {AttachmentsComponent} from "./components/form/attachments/attachments.co
 import {StepCallEditorContainerComponent} from "./components/step-call-tree/nodes/step-call-editor-container/step-call-editor-container.component";
 import {StepChooserTreeFilterComponent} from "./components/step-chooser/step-chooser-tree-filter/step-chooser-tree-filter.component";
 import {FocusDirective} from "./directives/focus.directive";
+import {StepModalComponent} from "./components/step-call-tree/step-modal/step-modal.component";
+import {StepModalService} from "./components/step-call-tree/step-modal/step-modal.service";
+import {ComposedStepViewComponent} from "./components/step/composed-step-view/coposed-step-view.component";
+import {ComposedStepParametersComponent} from "./components/step/composed-step-view/composed-step-parameters/composed-step-parameters.component";
 
 @NgModule({
     imports: [
@@ -136,6 +140,8 @@ import {FocusDirective} from "./directives/focus.directive";
 
         StepCallTreeComponent,
 
+        ComposedStepViewComponent,
+
         PathChooserComponent,
         MarkdownEditorComponent,
         AttachmentsComponent,
@@ -192,6 +198,10 @@ import {FocusDirective} from "./directives/focus.directive";
         ArgModalComponent,
         NewSharedResourcePathModalComponent,
         SelectSharedResourceModalComponent,
+        StepModalComponent,
+
+        ComposedStepViewComponent,
+        ComposedStepParametersComponent,
 
         PathChooserComponent,
         PathChooserContainerComponent,
@@ -208,6 +218,7 @@ import {FocusDirective} from "./directives/focus.directive";
         FileDirectoryChooserService,
         ExecutionPieService,
         PathChooserService,
+        StepModalService,
 
         MessageService,
     ],
@@ -235,6 +246,8 @@ import {FocusDirective} from "./directives/focus.directive";
         JsonContainerNodeComponent,
         JsonLeafNodeComponent,
         JsonTreeContainerEditor,
+
+        StepModalComponent,
 
         // ARG renderer components
         HttpRequestComponent,

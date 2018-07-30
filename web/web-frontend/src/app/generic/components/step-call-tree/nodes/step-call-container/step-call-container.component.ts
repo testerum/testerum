@@ -1,8 +1,10 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {StepCallTreeService} from "../../step-call-tree.service";
 import {StepTextComponent} from "../../../step-text/step-text.component";
 import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
+import {StepModalService} from "../../step-modal/step-modal.service";
+import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
 
 @Component({
     selector: 'step-call-container',
@@ -23,7 +25,9 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     hasMouseOver: boolean = false;
     showParameters: boolean = true;
 
-    constructor(private stepCallTreeService: StepCallTreeService) {
+    constructor(private stepCallTreeService: StepCallTreeService,
+                private stepModalService: StepModalService,
+                private viewContainerRef: ViewContainerRef) {
     }
 
     private editModeSubscription: any;
@@ -81,6 +85,10 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     editStep() {
+        this.stepModalService.showStepModal(
+            this.model.stepCall.stepDef as ComposedStepDef,
+            this.viewContainerRef
+        );
     }
 
     public moveStepUp(): void {

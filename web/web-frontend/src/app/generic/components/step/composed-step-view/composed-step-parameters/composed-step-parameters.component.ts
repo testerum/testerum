@@ -1,13 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {StepPatternPart} from "../../../../model/text/parts/step-pattern-part.model";
-import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
-import {ResourceMapEnum} from "../../../resources/editors/resource-map.enum";
+import {StepPatternPart} from "../../../../../model/text/parts/step-pattern-part.model";
+import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
 
 @ Component({
     moduleId: module.id,
     selector: 'composed-step-parameters',
     templateUrl: 'composed-step-parameters.component.html',
-    styleUrls: ['composed-step-parameters.component.scss', '../../../../generic/css/generic.scss']
+    styleUrls: ['composed-step-parameters.component.scss', '../../../../css/generic.scss']
 })
 export class ComposedStepParametersComponent implements OnInit {
 

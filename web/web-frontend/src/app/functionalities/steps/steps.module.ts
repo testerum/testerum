@@ -18,7 +18,6 @@ import {BasicStepEditorComponent} from "./basic-step-editor/basic-step-editor.co
 import {BasicStepEditorResolver} from "./basic-step-editor/basic-step-editor.resolver";
 import {BasicStepParametersComponent} from "./basic-step-editor/basic-step-parameters/basic-step-parameters.component";
 import {CollapseModule, ModalModule, PopoverModule, SortableModule} from "ngx-bootstrap";
-import {ComposedStepParametersComponent} from "./composed-step-editor/composed-step-parameters/composed-step-parameters.component";
 import {StepsTreeComponent} from "./steps-tree/steps-tree.component";
 import {
     AutoCompleteModule,
@@ -28,7 +27,7 @@ import {
     TooltipModule
 } from "primeng/primeng";
 import {StepsTreeFilterComponent} from "./steps-tree/steps-tree-filter/steps-tree-filter.component";
-import {ComposedStepViewComponent} from "./composed-step-editor/composed-step-view/coposed-step-view.component";
+import {ComposedStepViewComponent} from "../../generic/components/step/composed-step-view/coposed-step-view.component";
 
 @NgModule({
     imports: [
@@ -56,7 +55,6 @@ import {ComposedStepViewComponent} from "./composed-step-editor/composed-step-vi
         JsonStepNodeComponent,
 
         StepsComponent,
-        ComposedStepViewComponent,
         ComposedStepEditorComponent,
         UpdateIncompatibilityDialogComponent,
     ],
@@ -69,10 +67,8 @@ import {ComposedStepViewComponent} from "./composed-step-editor/composed-step-vi
 
         StepsComponent,
 
-        ComposedStepViewComponent,
         ComposedStepEditorComponent,
         UpdateIncompatibilityDialogComponent,
-        ComposedStepParametersComponent,
 
         BasicStepEditorComponent,
         BasicStepParametersComponent,
@@ -80,6 +76,7 @@ import {ComposedStepViewComponent} from "./composed-step-editor/composed-step-vi
     entryComponents: [
         JsonStepContainerComponent,
         JsonStepNodeComponent,
+        ComposedStepViewComponent,
     ],
     providers: [
         StepsService,

@@ -12,7 +12,8 @@ import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/st
 import {UpdateComposedStepDef} from "../../../model/step/UpdateComposedStepDef";
 import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
 import {UrlService} from "../../../service/url.service";
-import {ComposedStepViewComponent} from "./composed-step-view/coposed-step-view.component";
+import {ComposedStepViewComponent} from "../../../generic/components/step/composed-step-view/coposed-step-view.component";
+import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dialog/update-incompatibility-dialog.component";
 
 @Component({
     moduleId: module.id,
@@ -28,6 +29,7 @@ export class ComposedStepEditorComponent implements OnInit {
     isCreateAction: boolean = false;
 
     @ViewChild(ComposedStepViewComponent) composedStepViewComponent: ComposedStepViewComponent;
+    @ViewChild(UpdateIncompatibilityDialogComponent) updateIncompatibilityDialogComponent: UpdateIncompatibilityDialogComponent;
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
