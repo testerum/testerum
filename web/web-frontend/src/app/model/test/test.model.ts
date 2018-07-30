@@ -10,7 +10,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 
     id:string = IdUtils.getTemporaryId();
     path:Path;
-    properties: TestProperties;
+    properties: TestProperties  = new TestProperties();
     text:string;
     description:string;
     tags: Array<string> = [];
