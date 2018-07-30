@@ -96,7 +96,7 @@ open class UiToFileStepDefMapper {
                     val arg: Arg = stepCall.args[currentParamArgIndex]
                     currentParamArgIndex++
 
-                    val content: String = FileArgTransformer.jsonToFileFormat(arg.content, arg.type)
+                    val content: String = FileArgTransformer.jsonToFileFormat(arg.content.orEmpty(), arg.type)
 
                     val path: Path? = arg.path
                     if (path != null) {

@@ -116,13 +116,13 @@ class TestsService(private val testResolver: TestResolver,
     private fun saveExternalResource(arg: Arg): Arg {
         // todo: don't save if the content didn't change?
         val path: Path = arg.path
-                ?: return arg // if we don't have a path, then this is an external resource
+                ?: return arg // if we don't have a path, then this is an internal resource
 
         val resourceContext: ResourceContext = resourcesService.save(
                 ResourceContext(
                         oldPath = path,
                         path = path,
-                        body = arg.content
+                        body = arg.content.orEmpty()
                 )
         )
 

@@ -18,6 +18,11 @@
     <dependencies>
         <!--==================== internal dependencies ====================-->
 
+        <!-- common-kotlin -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-kotlin</artifactId>
+        </dependency>
         <!-- common-parsing -->
         <dependency>
             <groupId>com.testerum</groupId>

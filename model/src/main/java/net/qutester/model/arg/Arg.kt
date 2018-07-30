@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import net.qutester.model.infrastructure.path.Path
 
 data class Arg @JsonCreator constructor(@JsonProperty("name") val name: String?,
-                                        @JsonProperty("content") val content: String,
+                                        @JsonProperty("content") val content: String?,
                                         @JsonProperty("type") val type: String,
                                         @JsonProperty("path") val path: Path?) {
 

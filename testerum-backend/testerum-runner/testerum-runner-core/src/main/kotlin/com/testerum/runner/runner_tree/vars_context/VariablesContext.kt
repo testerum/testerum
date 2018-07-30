@@ -63,9 +63,12 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
             = dynamicVars.set(name, value)
 
     fun resolveIn(arg: Arg): Any? {
+        val content = arg.content
+                ?: return null
+
         val resolvedArgParts = mutableListOf<Any?>()
 
-        val parts: List<FileArgPart> = ARG_PART_PARSER.parse(arg.content)
+        val parts: List<FileArgPart> = ARG_PART_PARSER.parse(content)
 
         for (part: FileArgPart in parts) {
             val resolvedArgPartPart: Any? = when (part) {

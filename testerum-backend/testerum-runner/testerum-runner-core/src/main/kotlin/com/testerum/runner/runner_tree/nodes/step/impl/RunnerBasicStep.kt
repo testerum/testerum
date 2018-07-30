@@ -47,7 +47,7 @@ class RunnerBasicStep(stepCall: StepCall,
 
         val untransformedStepMethodArguments: List<Any?> = stepCall.args.map { vars.resolveIn(it) }
 
-        val stepMethodArguments: List<Any?> = transformMethodArguments(untransformedStepMethodArguments, stepMethod, context.transformerFactory)
+        val stepMethodArguments: List<Any?> = transformMethodArguments(untransformedStepMethodArguments, stepMethod, context.transformerFactory, stepCall.stepDef.stepPattern.getParamStepPattern())
 
         try {
             stepMethod.invoke(stepInstance, *stepMethodArguments.toTypedArray())
@@ -76,7 +76,8 @@ class RunnerBasicStep(stepCall: StepCall,
 
     private fun transformMethodArguments(untransformedArgs: List<Any?>,
                                          stepMethod: Method,
-                                         transformerFactory: TransformerFactory): List<Any?> {
+                                         transformerFactory: TransformerFactory,
+                                         paramParts: List<ParamStepPatternPart>): List<Any?> {
         val result = mutableListOf<Any?>()
 
         val params: Array<Parameter> = stepMethod.parameters
@@ -86,22 +87,40 @@ class RunnerBasicStep(stepCall: StepCall,
             try {
                 val untransformedArg: Any? = untransformedArgs[i]
 
+                val annotation: Param? = param.getAnnotation(Param::class.java)
+
                 val paramInfo = ParameterInfo(
                         type             = param.type,
                         parametrizedType = param.parameterizedType,
-                        transformerClass = param.getAnnotation(Param::class.java)?.transformer?.java
+                        transformerClass = annotation?.transformer?.java,
+                        required         = annotation?.required ?: true
                 )
+
+                if (paramInfo.required && untransformedArg == null) {
+                    throw IllegalArgumentException("argument [${getParamName(paramParts, i, param)}] is required, but no value was provided")
+                }
+
                 val transformer: Transformer<Any?>? = transformerFactory.getTransformer(paramInfo)
 
                 val transformedArg: Any? = transformArgument(untransformedArg, transformer, paramInfo)
 
                 result.add(transformedArg)
             } catch (e: Exception) {
-                throw RuntimeException("failed to prepare value for parameter [${param.name}] of method [$stepMethod]", e)
+                throw RuntimeException("failed to prepare value for parameter [${getParamName(paramParts, i, param)}] of method [$stepMethod]", e)
             }
         }
 
         return result
+    }
+
+    private fun getParamName(paramParts: List<ParamStepPatternPart>,
+                             index: Int,
+                             param: Parameter): String {
+        return if (index >= paramParts.size) {
+            param.name
+        } else {
+            paramParts[index].name
+        }
     }
 
     private fun transformArgument(untransformedArg: Any?,

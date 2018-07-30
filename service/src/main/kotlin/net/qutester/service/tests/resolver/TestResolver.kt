@@ -1,5 +1,6 @@
 package net.qutester.service.tests.resolver
 
+import com.testerum.common_kotlin.emptyToNull
 import net.qutester.model.arg.Arg
 import net.qutester.model.step.StepCall
 import net.qutester.model.step.StepDef
@@ -51,7 +52,7 @@ class TestResolver(private val stepService: StepService) {
 
             result += arg.copy(
                     type = paramPart.type,
-                    content = FileArgTransformer.fileFormatToJson(arg.content, paramPart.type)
+                    content = FileArgTransformer.fileFormatToJson(arg.content.orEmpty(), paramPart.type).emptyToNull()
             )
         }
 
