@@ -116,7 +116,7 @@ export class TestsService {
             .post<void>(this.TESTS_URL + "/directory/move", body, httpOptions);
     }
 
-    getAllAutomatedTestsUnderContaier(path: Path): Observable<Array<TestModel>>  {
+    getAllAutomatedTestsUnderContainer(path: Path): Observable<Array<TestModel>>  {
 
         const httpOptions = {
             params: new HttpParams()
