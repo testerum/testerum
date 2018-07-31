@@ -20,6 +20,10 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
     warnings: Array<Warning> = [];
     descendantsHaveWarnings: boolean = false;
 
+    get hasOwnOrDescendantWarnings(): boolean {
+        return this.warnings.length > 0 || this.descendantsHaveWarnings;
+    }
+
     deserialize(input: Object): BasicStepDef {
         this.id = input["id"];
         this.path = Path.deserialize(input["path"]);

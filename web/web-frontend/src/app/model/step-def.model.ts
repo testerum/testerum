@@ -14,6 +14,8 @@ export interface StepDef extends Serializable<any>, TreeNodeModel {
     warnings: Array<Warning>;
     descendantsHaveWarnings: boolean;
 
+    hasOwnOrDescendantWarnings: boolean
+
     clone():StepDef;
     toString(): string;
 }
