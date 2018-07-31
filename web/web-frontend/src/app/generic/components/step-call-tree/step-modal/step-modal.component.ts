@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
 import {ModalDirective} from "ngx-bootstrap";
-import {ComposedStepViewComponent} from "../../step/composed-step-view/coposed-step-view.component";
+import {ComposedStepViewComponent} from "../../step/composed-step-view/composed-step-view.component";
 import {StepModalService} from "./step-modal.service";
 import {Subject} from "rxjs/Subject";
 import {AppComponent} from "../../../../app.component";
@@ -26,7 +26,7 @@ export class StepModalComponent implements AfterViewInit, OnDestroy {
     isCreateAction: boolean = false;
 
     @ViewChild("modal") modal: ModalDirective;
-    @ViewChild(ComposedStepViewComponent) composedStepViewComponent: ComposedStepViewComponent;
+    @ViewChild("composedStepView") composedStepViewComponent: ComposedStepViewComponent;
 
     modalComponentRef: ComponentRef<StepModalComponent>;
     modalSubject: Subject<ComposedStepDef>;

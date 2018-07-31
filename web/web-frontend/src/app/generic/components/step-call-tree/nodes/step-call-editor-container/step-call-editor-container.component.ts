@@ -8,7 +8,6 @@ import {
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import {StepCallTreeService} from "../../step-call-tree.service";
 import {StepCallEditorContainerModel} from "../../model/step-call-editor-container.model";
 import {StepCallSuggestion} from "./model/step-call-suggestion.model";
 import {StepsService} from "../../../../../service/steps.service";
@@ -29,6 +28,7 @@ import {MessageKey} from "../../../../../model/messages/message.enum";
 import {Warning} from "../../../../../model/warning/Warning";
 import {WarningType} from "../../../../../model/warning/WarningType";
 import {StepChooserService} from "../../../step-chooser/step-chooser.service";
+import {StepCallTreeState} from "../../step-call-tree.state";
 
 @Component({
     selector: 'step-call-editor-container',
@@ -44,6 +44,7 @@ import {StepChooserService} from "../../../step-chooser/step-chooser.service";
 export class StepCallEditorContainerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     @Input() model: StepCallEditorContainerModel;
+    @Input() treeState: StepCallTreeState;
 
     existingStepsDefs: Array<StepDef> = [];
     existingStepsText: Array<string> = [];
@@ -56,8 +57,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
 
     private onDocumentClick: (event) => void;
 
-    constructor(private stepCallTreeService: StepCallTreeService,
-                private stepsService: StepsService,
+    constructor(private stepsService: StepsService,
                 private stepChooserService: StepChooserService,
                 private messageService: MessageService,
                 private element: ElementRef) {
@@ -83,7 +83,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
                 return;
             }
 
-            this.stepCallTreeService.removeStepCallEditorIfExist();
+            this.treeState.removeStepCallEditorIfExist();
         };
         document.addEventListener('click', this.onDocumentClick, true);
     }
@@ -129,7 +129,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     isEditMode(): boolean {
-        return this.stepCallTreeService.isEditMode;
+        return this.treeState.isEditMode;
     }
 
     public removeStep(): void {
@@ -223,9 +223,9 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     private addNewStepCallToTree(newStepCall: StepCall) {
         this.removeThisEditorFromTree();
 
-        this.stepCallTreeService.addStepCallToParentContainer(newStepCall, this.model.parentContainer);
+        this.treeState.addStepCallToParentContainer(newStepCall, this.model.parentContainer);
 
-        this.stepCallTreeService.addStepCallEditor(this.model.parentContainer);
+        this.treeState.addStepCallEditor(this.model.parentContainer);
     }
 
     private createStepCallFromExistingStepDef(selectedStepCallSuggestion: StepCallSuggestion): StepCall {
@@ -272,7 +272,6 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     private removeThisEditorFromTree() {
-        this.stepCallTreeService.removeStepCallEditorIfExist();
+        this.treeState.removeStepCallEditorIfExist();
     }
-
 }

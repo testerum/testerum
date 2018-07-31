@@ -9,13 +9,13 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import {StepCallTreeService} from "../../step-call-tree.service";
 import {ArgNodeModel} from "../../model/arg-node.model";
 import {ResourceComponent} from "../../../../../functionalities/resources/editors/resource-component.interface";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
 import {ArgNodePanelComponent} from "./arg-node-panel/arg-node-panel.component";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {Subscription} from "rxjs/Subscription";
+import {StepCallTreeState} from "../../step-call-tree.state";
 
 @Component({
     selector: 'arg-node',
@@ -29,6 +29,7 @@ import {Subscription} from "rxjs/Subscription";
 })
 export class ArgNodeComponent implements OnInit {
     @Input() model: ArgNodeModel;
+    @Input() treeState: StepCallTreeState;
 
     hasMouseOver: boolean = false;
     showChildren: boolean = true;
@@ -38,8 +39,7 @@ export class ArgNodeComponent implements OnInit {
 
     private afterUpdateSubscription: Subscription;
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver,
-                private stepCallTreeService: StepCallTreeService) {
+    constructor(private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
     ngOnInit() {
@@ -54,13 +54,13 @@ export class ArgNodeComponent implements OnInit {
         resourceComponentRef.instance.editMode = false;
 
         this.argNodePanelComponent.editButtonClickedEventEmitter.subscribe(event => {
-            let argModal = this.stepCallTreeService.argModal;
+            let argModal = this.treeState.argModal;
             argModal.arg = this.model.arg;
             argModal.stepParameter = this.model.stepPatternParam;
             argModal.show();
         });
 
-        let argModal = this.stepCallTreeService.argModal;
+        let argModal = this.treeState.argModal;
         this.afterUpdateSubscription = argModal.afterUpdateEventEmitter.subscribe(event =>{
             resourceComponentRef.instance.refresh();
         });
@@ -88,6 +88,6 @@ export class ArgNodeComponent implements OnInit {
     }
 
     isEditMode(): boolean {
-        return this.stepCallTreeService.isEditMode;
+        return this.treeState.isEditMode;
     }
 }

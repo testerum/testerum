@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {SubStepsContainerModel} from "../../model/sub-steps-container.model";
-import {StepCallTreeService} from "../../step-call-tree.service";
+import {StepCallTreeState} from "../../step-call-tree.state";
 
 @Component({
     selector: 'sub-steps-container',
@@ -13,16 +13,14 @@ import {StepCallTreeService} from "../../step-call-tree.service";
     ]
 })
 
-export class SubStepsContainerComponent implements OnInit {
+export class SubStepsContainerComponent {
     @Input() model: SubStepsContainerModel;
+    @Input() treeState: StepCallTreeState;
 
     hasMouseOver: boolean = false;
     showChildren: boolean = true;
 
-    constructor(private stepCallTreeService: StepCallTreeService) {
-    }
-
-    ngOnInit() {
+    constructor() {
     }
 
     collapseNode() {
@@ -30,11 +28,11 @@ export class SubStepsContainerComponent implements OnInit {
     }
 
     isEditMode(): boolean {
-        return this.stepCallTreeService.isEditMode;
+        return this.treeState.isEditMode;
     }
 
     addSubStep() {
-        this.stepCallTreeService.addStepCallEditor(this.model);
+        this.treeState.addStepCallEditor(this.model);
         this.showChildren = true;
         this.model.jsonTreeNodeState.showChildren = true;
     }

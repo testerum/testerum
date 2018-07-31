@@ -51,7 +51,6 @@ import {ExecutionPieComponent} from "./components/charts/execution-pie/execution
 import {ExecutionPieService} from "./components/charts/execution-pie/execution-pie.service";
 import {StepCallTreeComponent} from "./components/step-call-tree/step-call-tree.component";
 import {StepCallContainerComponent} from "./components/step-call-tree/nodes/step-call-container/step-call-container.component";
-import {StepCallTreeService} from "./components/step-call-tree/step-call-tree.service";
 import {SubStepsContainerComponent} from "./components/step-call-tree/nodes/sub-steps-container/sub-steps-container.component";
 import {ArgsContainerComponent} from "./components/step-call-tree/nodes/args-container/args-container.component";
 import {ArgNodeComponent} from "./components/step-call-tree/nodes/arg-node/arg-node.component";
@@ -79,7 +78,7 @@ import {StepChooserTreeFilterComponent} from "./components/step-chooser/step-cho
 import {FocusDirective} from "./directives/focus.directive";
 import {StepModalComponent} from "./components/step-call-tree/step-modal/step-modal.component";
 import {StepModalService} from "./components/step-call-tree/step-modal/step-modal.service";
-import {ComposedStepViewComponent} from "./components/step/composed-step-view/coposed-step-view.component";
+import {ComposedStepViewComponent} from "./components/step/composed-step-view/composed-step-view.component";
 import {ComposedStepParametersComponent} from "./components/step/composed-step-view/composed-step-parameters/composed-step-parameters.component";
 
 @NgModule({
@@ -213,7 +212,6 @@ import {ComposedStepParametersComponent} from "./components/step/composed-step-v
     providers: [
         TreeService,
         JsonTreeService,
-        StepCallTreeService,
         StepChooserService,
         FileDirectoryChooserService,
         ExecutionPieService,

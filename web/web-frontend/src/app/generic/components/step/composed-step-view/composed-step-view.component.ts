@@ -1,6 +1,5 @@
 import {AfterContentChecked, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
-import {StepChooserComponent} from "../../step-chooser/step-chooser.component";
 import {NgForm} from "@angular/forms";
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {AutoComplete} from "primeng/primeng";
@@ -10,10 +9,10 @@ import {StepDef} from "../../../../model/step-def.model";
 import {StepCall} from "../../../../model/step-call.model";
 import {StepTreeNodeModel} from "../../../../functionalities/steps/steps-tree/model/step-tree-node.model";
 import {StepTreeContainerModel} from "../../../../functionalities/steps/steps-tree/model/step-tree-container.model";
-import {StepCallTreeService} from "../../step-call-tree/step-call-tree.service";
 import {TagsService} from "../../../../service/tags.service";
 import {ResourceMapEnum} from "../../../../functionalities/resources/editors/resource-map.enum";
 import {StepChooserService} from "../../step-chooser/step-chooser.service";
+import {StepCallTreeComponent} from "../../step-call-tree/step-call-tree.component";
 
 @Component({
     selector: 'composed-step-view',
@@ -39,8 +38,9 @@ export class ComposedStepViewComponent implements AfterContentChecked {
     tagsToShow:string[] = [];
     currentTagSearch:string;
 
-    constructor(private stepCallTreeService: StepCallTreeService,
-                private stepChooserService: StepChooserService,
+    @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
+
+    constructor(private stepChooserService: StepChooserService,
                 private tagsService: TagsService,) {
     }
 
@@ -71,7 +71,7 @@ export class ComposedStepViewComponent implements AfterContentChecked {
             stepCall.args.push(valueArg);
         }
 
-        this.stepCallTreeService.addStepCall(stepCall);
+        this.stepCallTreeComponent.treeState.addStepCall(stepCall);
     }
 
     enableEditTestMode(): void {

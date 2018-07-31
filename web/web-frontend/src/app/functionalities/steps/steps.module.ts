@@ -27,7 +27,7 @@ import {
     TooltipModule
 } from "primeng/primeng";
 import {StepsTreeFilterComponent} from "./steps-tree/steps-tree-filter/steps-tree-filter.component";
-import {ComposedStepViewComponent} from "../../generic/components/step/composed-step-view/coposed-step-view.component";
+import {ComposedStepViewComponent} from "../../generic/components/step/composed-step-view/composed-step-view.component";
 
 @NgModule({
     imports: [

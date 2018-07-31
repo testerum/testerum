@@ -1,5 +1,7 @@
 <div>
-    <arg-node-panel #argNodePanel [arg]="model.arg">
+    <arg-node-panel #argNodePanel
+                    [arg]="model.arg"
+                    [treeState]="treeState">
         <div #resourceContainer></div>
 
         <div *ngIf="!argHasContent()"

@@ -1,4 +1,4 @@
-import {Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {StepCall} from "../../../model/step-call.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
 import {JsonTreeModel} from "../json-tree/model/json-tree.model";
@@ -12,19 +12,22 @@ import {ParamsContainerModel} from "./model/params-container.model";
 import {ArgNodeModel} from "./model/arg-node.model";
 import {ArgNodeComponent} from "./nodes/arg-node/arg-node.component";
 import {ArgModalComponent} from "./arg-modal/arg-modal.component";
-import {StepCallTreeService} from "./step-call-tree.service";
 import {StepCallEditorContainerComponent} from "./nodes/step-call-editor-container/step-call-editor-container.component";
 import {StepCallEditorContainerModel} from "./model/step-call-editor-container.model";
+import {StepCallTreeState} from "./step-call-tree.state";
 
 @Component({
     selector: 'step-call-tree',
     templateUrl: 'step-call-tree.component.html'
 })
-export class StepCallTreeComponent implements OnInit, OnChanges, DoCheck {
+export class StepCallTreeComponent implements OnInit, OnChanges {
 
     @Input() stepCalls: Array<StepCall> = [];
 
     @ViewChild(ArgModalComponent) argModal: ArgModalComponent;
+
+    jsonTreeModel: JsonTreeModel = new JsonTreeModel();
+    treeState: StepCallTreeState = new StepCallTreeState();
 
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(StepCallContainerModel, StepCallContainerComponent)
@@ -33,36 +36,26 @@ export class StepCallTreeComponent implements OnInit, OnChanges, DoCheck {
         .addPair(ParamsContainerModel, ArgsContainerComponent)
         .addPair(ArgNodeModel, ArgNodeComponent);
 
-    constructor(private stepCallTreeService: StepCallTreeService) {
+    constructor() {
     }
 
     ngOnInit(): void {
-        this.stepCallTreeService.argModal = this.argModal;
-        this.stepCallTreeService.initTreeModel(this.stepCalls)
+        this.treeState.jsonTreeModel = this.jsonTreeModel;
+        this.treeState.argModal = this.argModal;
+        this.initTree();
     }
 
-    getTreeModel(): JsonTreeModel {
-        return this.stepCallTreeService.jsonTreeModel;
+    private initTree() {
+        StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel);
+        this.treeState.stepCalls = this.stepCalls
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        // StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel);
-        if (this.stepCalls != this.stepCallTreeService.stepCalls) {
-            this.stepCallTreeService.initTreeModel(this.stepCalls)
+        if (this.stepCalls != this.treeState.stepCalls) {
+            this.initTree();
         }
     }
 
-    ngDoCheck(): void {
-        // if (this.stepCalls.length != this.jsonTreeModel.children.length) {
-        //     let isAddStepAction = this.stepCalls.length > this.jsonTreeModel.children.length;
-        //     StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel);
-        //
-        //     if (isAddStepAction) {
-        //         let lastStepCallNode: StepCallContainerModel = this.jsonTreeModel.children[this.jsonTreeModel.children.length-1] as StepCallContainerModel;
-        //         if (lastStepCallNode.stepCall.args.length != 0) {
-        //             lastStepCallNode.jsonTreeNodeState.showChildren = true;
-        //         }
-        //     }
-        // }
-    }
+
+
 }

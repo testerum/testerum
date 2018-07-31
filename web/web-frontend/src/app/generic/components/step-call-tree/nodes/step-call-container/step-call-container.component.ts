@@ -1,6 +1,5 @@
 import {Component, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {StepCallContainerModel} from "../../model/step-call-container.model";
-import {StepCallTreeService} from "../../step-call-tree.service";
 import {StepTextComponent} from "../../../step-text/step-text.component";
 import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
 import {StepModalService} from "../../step-modal/step-modal.service";
@@ -8,7 +7,7 @@ import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
 import {ArrayUtil} from "../../../../../utils/array.util";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
-import {AppComponent} from "../../../../../app.component";
+import {StepCallTreeState} from "../../step-call-tree.state";
 
 @Component({
     selector: 'step-call-container',
@@ -23,27 +22,27 @@ import {AppComponent} from "../../../../../app.component";
 export class StepCallContainerComponent implements OnInit, OnDestroy {
 
     @Input() model: StepCallContainerModel;
+    @Input() treeState: StepCallTreeState;
 
     @ViewChild(StepTextComponent) stepTextComponent: StepTextComponent<any>;
 
     hasMouseOver: boolean = false;
     showParameters: boolean = true;
 
-    constructor(private stepCallTreeService: StepCallTreeService,
-                private stepModalService: StepModalService) {
+    constructor(private stepModalService: StepModalService) {
     }
 
     private editModeSubscription: any;
     private stepCallOrderChangeSubscription: any;
     ngOnInit() {
         if(!this.isEditMode()) this.showParameters = false;
-        this.editModeSubscription = this.stepCallTreeService.editModeEventEmitter.subscribe(
+        this.editModeSubscription = this.treeState.editModeEventEmitter.subscribe(
             (editMode: boolean) => {
                 this.showParameters = editMode;
             }
         );
 
-        this.stepCallOrderChangeSubscription = this.stepCallTreeService.stepCallOrderChangeEventEmitter.subscribe(
+        this.stepCallOrderChangeSubscription = this.treeState.stepCallOrderChangeEventEmitter.subscribe(
             event => {
                 this.onStepOrderChangedEvent()
             }
@@ -76,7 +75,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     isEditMode(): boolean {
-        return this.stepCallTreeService.isEditMode;
+        return this.treeState.isEditMode;
     }
 
     isUndefinedStep(): boolean {
@@ -167,7 +166,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         if (this.stepCallOrderChangeSubscription) {
             this.stepCallOrderChangeSubscription.unsubscribe();
         }
-        this.stepCallTreeService.removeStepCall(this.model);
+        this.treeState.removeStepCall(this.model);
     }
 
     private findStepIndex(): number {
@@ -187,7 +186,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     public triggerStepOrderChangedEvent():void {
-        this.stepCallTreeService.triggerStepCallOrderChangeEvent();
+        this.treeState.triggerStepCallOrderChangeEvent();
     }
 
     hasWarnings(): boolean {

@@ -12,7 +12,7 @@ import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/st
 import {UpdateComposedStepDef} from "../../../model/step/UpdateComposedStepDef";
 import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
 import {UrlService} from "../../../service/url.service";
-import {ComposedStepViewComponent} from "../../../generic/components/step/composed-step-view/coposed-step-view.component";
+import {ComposedStepViewComponent} from "../../../generic/components/step/composed-step-view/composed-step-view.component";
 import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dialog/update-incompatibility-dialog.component";
 
 @Component({

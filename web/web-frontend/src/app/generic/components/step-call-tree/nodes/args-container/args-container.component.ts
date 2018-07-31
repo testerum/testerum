@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {StepCallTreeService} from "../../step-call-tree.service";
 import {ParamsContainerModel} from "../../model/params-container.model";
+import {StepCallTreeState} from "../../step-call-tree.state";
 
 @Component({
     selector: 'args-container',
@@ -12,17 +12,14 @@ import {ParamsContainerModel} from "../../model/params-container.model";
         '../../../../../generic/css/tree.scss',
     ]
 })
-export class ArgsContainerComponent implements OnInit {
+export class ArgsContainerComponent {
     @Input() model: ParamsContainerModel;
+    @Input() treeState: StepCallTreeState;
 
     hasMouseOver: boolean = false;
     showChildren: boolean = true;
 
-    constructor(private stepCallTreeService: StepCallTreeService) {
-    }
-
-    ngOnInit() {
-
+    constructor() {
     }
 
     collapseNode() {
@@ -30,6 +27,6 @@ export class ArgsContainerComponent implements OnInit {
     }
 
     isEditMode(): boolean {
-        return this.stepCallTreeService.isEditMode;
+        return this.treeState.isEditMode;
     }
 }

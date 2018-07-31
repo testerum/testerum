@@ -11,6 +11,7 @@ import {
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeContainer} from "../../model/json-tree-container.model";
 import {JsonTreeService} from "../../json-tree.service";
+import {TreeState} from "../../model/state/TreeState";
 
 @Component({
     moduleId: module.id,
@@ -24,6 +25,7 @@ import {JsonTreeService} from "../../json-tree.service";
 export class JsonContainerNodeComponent implements OnInit {
 
     @Input() model:JsonTreeContainer;
+    @Input() treeState:TreeState;
 
     @Input() isLastNode:boolean = false;
     @Input() isRootNode:boolean = false;
@@ -43,6 +45,7 @@ export class JsonContainerNodeComponent implements OnInit {
         let modelComponentRef: ComponentRef<any> = this.content.createComponent(factory);
 
         modelComponentRef.instance.model = this.model;
+        modelComponentRef.instance.treeState = this.treeState;
         modelComponentRef.instance.modelComponentMapping = this.modelComponentMapping;
     }
 

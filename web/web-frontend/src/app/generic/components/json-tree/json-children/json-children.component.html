@@ -6,6 +6,7 @@
     <json-tree-node *ngFor="let child of model.getChildren(); let last=last;"
                     [modelComponentMapping]="modelComponentMapping"
                     [model]="child"
+                    [treeState]="treeState"
                     [isLastNode]="last"
                     [hidden]="!model.getNodeState().showChildren">
     </json-tree-node>

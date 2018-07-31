@@ -8,13 +8,13 @@ import {TestsRunnerService} from "../tests-runner/tests-runner.service";
 import {FeaturesTreeService} from "../features-tree/features-tree.service";
 import {IdUtils} from "../../../utils/id.util";
 import {UpdateTestModel} from "../../../model/test/operation/update-test.model";
-import {StepCallTreeService} from "../../../generic/components/step-call-tree/step-call-tree.service";
 import {Subscription} from "rxjs/Subscription";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {UrlService} from "../../../service/url.service";
 import {AutoComplete, Message} from "primeng/primeng";
 import {TagsService} from "../../../service/tags.service";
 import {ArrayUtil} from "../../../utils/array.util";
+import {StepCallTreeComponent} from "../../../generic/components/step-call-tree/step-call-tree.component";
 
 @Component({
     moduleId: module.id,
@@ -37,17 +37,19 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     tagsToShow:string[] = [];
     currentTagSearch:string;
 
+    @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
+
     warnings: Message[] = [];
 
-    routeSubscription: Subscription;
-    editModeStepCallTreeSubscription: Subscription;
+    private routeSubscription: Subscription;
+    private editModeStepCallTreeSubscription: Subscription;
+
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
                 private testsTreeService: FeaturesTreeService,
                 private testsService: TestsService,
                 private testsRunnerService: TestsRunnerService,
-                private stepCallTreeService: StepCallTreeService,
                 private tagsService: TagsService) {
     }
 
@@ -60,7 +62,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             this.setEditMode(IdUtils.isTemporaryId(this.testModel.id));
             this.isCreateAction = !this.testModel.path.fileName
         });
-        this.editModeStepCallTreeSubscription = this.stepCallTreeService.editModeEventEmitter.subscribe( (editMode: boolean) => {
+        this.editModeStepCallTreeSubscription = this.stepCallTreeComponent.treeState.editModeEventEmitter.subscribe( (editMode: boolean) => {
                 this.isEditMode = editMode;
             }
         );
@@ -88,7 +90,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     }
 
     addStep() {
-        this.stepCallTreeService.addStepCallEditor(this.stepCallTreeService.jsonTreeModel);
+        this.stepCallTreeComponent.treeState.addStepCallEditor(this.stepCallTreeComponent.jsonTreeModel);
     }
 
     setEditMode(isEditMode: boolean) {
@@ -99,7 +101,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
         }
 
         this.isEditMode = isEditMode;
-        this.stepCallTreeService.setEditMode(isEditMode);
+        this.stepCallTreeComponent.treeState.setEditMode(isEditMode);
     }
 
     enableEditTestMode(): void {
