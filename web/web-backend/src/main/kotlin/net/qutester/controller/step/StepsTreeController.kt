@@ -1,4 +1,4 @@
-package net.qutester.controller
+package net.qutester.controller.step
 
 import net.qutester.model.step.filter.StepsTreeFilter
 import net.qutester.model.step.tree.RootStepNode

@@ -1,4 +1,4 @@
-package net.qutester.controller
+package net.qutester.controller.step
 
 import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path

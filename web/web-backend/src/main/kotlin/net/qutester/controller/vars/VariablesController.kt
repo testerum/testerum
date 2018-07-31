@@ -1,4 +1,4 @@
-package net.qutester.controller
+package net.qutester.controller.vars
 
 import net.qutester.model.variable.Variable
 import net.qutester.service.variables.VariablesService
