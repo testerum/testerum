@@ -334,7 +334,9 @@ open class StepService(private val composedStepsService: ComposedStepsService,
             treeBuilder.addBasicStepDef(it)
         }
         composedSteps.forEach {
-            treeBuilder.addComposedStepDef(it)
+            val composedStepWithWarnings = warningService.composedStepWithWarnings(it, keepExistingWarnings = true)
+
+            treeBuilder.addComposedStepDef(composedStepWithWarnings)
         }
 
         return treeBuilder.build()
