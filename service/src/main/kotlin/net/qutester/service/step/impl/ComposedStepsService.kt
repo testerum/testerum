@@ -30,7 +30,6 @@ open class ComposedStepsService(val uiToFileStepDefMapper: UiToFileStepDefMapper
     }
 
     fun getComposedSteps(): List<ComposedStepDef> {
-
         val steps: MutableList<ComposedStepDef> = mutableListOf();
 
         val allStepFiles = fileRepositoryService.getAllResourcesByType(FileType.COMPOSED_STEP)
@@ -64,11 +63,9 @@ open class ComposedStepsService(val uiToFileStepDefMapper: UiToFileStepDefMapper
                 )
         )
 
-        val resolvedComposedStepDef = composedStepDef.copy(
+        return composedStepDef.copy(
                 path = createdRepositoryFile.knownPath.asPath()
         )
-
-        return resolvedComposedStepDef
     }
 
     fun update(composedStepDef: ComposedStepDef): ComposedStepDef {

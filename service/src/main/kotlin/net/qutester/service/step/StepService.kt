@@ -53,16 +53,16 @@ open class StepService(private val composedStepsService: ComposedStepsService,
 
             val basicSteps = basicStepsLoaderFuture.get()
 
-            basicStepsMap.clear();
+            basicStepsMap.clear()
             basicStepsMap.putAll(
                     basicSteps.associateBy({StepHashUtil.calculateStepHash(it)}, {it})
             )
 
-            val unresolvedComposedSteps = composedStepsLoaderFuture.get();
+            val unresolvedComposedSteps = composedStepsLoaderFuture.get()
 
             reinitializeSteps(unresolvedComposedSteps)
 
-            stepsMapLoadersLatch.countDown();
+            stepsMapLoadersLatch.countDown()
         } finally {
             // Shutdown forcefully (don't wait for executing thread). This is safe because:
             // - if there was no exception, at this point all threads have finished
@@ -79,48 +79,9 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     }
 
     fun reinitializeComposedSteps() {
-        val unresolvedComposedSteps = composedStepsService.getComposedSteps();
-        val resolvedComposedSteps: HashMap<String, ComposedStepDef> = resolveComposedStepsOnLoad(unresolvedComposedSteps);
+        val unresolvedComposedSteps = composedStepsService.getComposedSteps()
 
-        val tempSteps = HashMap<String, StepDef>()
-        tempSteps.putAll(basicStepsMap)
-        tempSteps.putAll(resolvedComposedSteps)
-
-        steps = tempSteps
-    }
-
-    private fun resolveComposedStepsOnLoad(unresolvedComposedSteps: List<ComposedStepDef>): HashMap<String, ComposedStepDef> {
-        val result: HashMap<String, ComposedStepDef> = hashMapOf()
-
-        val allSteps = mutableMapOf<String, StepDef>()
-        for (unresolvedComposedStep in unresolvedComposedSteps) {
-            allSteps[StepHashUtil.calculateStepHash(unresolvedComposedStep)] = unresolvedComposedStep
-        }
-        allSteps.putAll(basicStepsMap)
-
-        for (unresolvedComposedStep in unresolvedComposedSteps) {
-            val resolvedStepCalls = mutableListOf<StepCall>()
-
-            for (unresolvedStepCall in unresolvedComposedStep.stepCalls) {
-                var resolvedStepDef = allSteps.get(StepHashUtil.calculateStepHash(unresolvedStepCall.stepDef))
-
-                if (resolvedStepDef == null) {
-                    resolvedStepDef = UndefinedStepDef(unresolvedStepCall.stepDef.phase, unresolvedStepCall.stepDef.stepPattern)
-                }
-
-                resolvedStepCalls.add(
-                        StepCall(
-                                unresolvedStepCall.id,
-                                resolvedStepDef,
-                                unresolvedStepCall.args
-                        )
-                )
-            }
-
-            result[unresolvedComposedStep.id] = unresolvedComposedStep.copy(stepCalls = resolvedStepCalls)
-        }
-
-        return result
+        reinitializeSteps(unresolvedComposedSteps)
     }
 
     private fun resolveComposedStep(unresolvedComposedStep: ComposedStepDef): ComposedStepDef {
@@ -157,7 +118,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     }
 
     fun getBasicSteps(stepsTreeFilter: StepsTreeFilter = StepsTreeFilter()): List<BasicStepDef> {
-        stepsMapLoadersLatch.await();
+        stepsMapLoadersLatch.await()
 
         val result = mutableListOf<BasicStepDef>()
         for (stepDef in steps.values) {
@@ -178,11 +139,12 @@ open class StepService(private val composedStepsService: ComposedStepsService,
                 result.add(stepDef)
             }
         }
-        return result;
+
+        return result
     }
 
     fun getComposedStepByPath(searchedPath: Path): ComposedStepDef? {
-        stepsMapLoadersLatch.await();
+        stepsMapLoadersLatch.await()
 
         val composedSteps = getComposedSteps()
         for (composedStep in composedSteps) {
@@ -195,7 +157,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     }
 
     fun getBasicStepByPath(searchedPath: Path): BasicStepDef? {
-        stepsMapLoadersLatch.await();
+        stepsMapLoadersLatch.await()
 
         val basicSteps = getBasicSteps()
         for (basicStep in basicSteps) {
@@ -207,7 +169,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     }
 
     fun create(composedStepDef: ComposedStepDef): ComposedStepDef {
-        stepsMapLoadersLatch.await();
+        stepsMapLoadersLatch.await()
 
         val stepDefWithCollision = getStepWithTheSameStepDef(composedStepDef, steps.values.toList())
         if (stepDefWithCollision != null) {
@@ -236,7 +198,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     }
 
     fun update(composedStepDef: ComposedStepDef): ComposedStepDef {
-        stepsMapLoadersLatch.await();
+        stepsMapLoadersLatch.await()
 
         val savedComposedStep = composedStepsService.update(composedStepDef)
         reinitializeComposedSteps()
@@ -246,9 +208,9 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     }
 
     fun remove(path: Path) {
-        stepsMapLoadersLatch.await();
+        stepsMapLoadersLatch.await()
 
-        val composedStepByPath = getComposedStepByPath(path);
+        val composedStepByPath = getComposedStepByPath(path)
         if (composedStepByPath != null) {
             setUnresolvedStepsCallsOf(composedStepByPath)
             steps.remove(StepHashUtil.calculateStepHash(composedStepByPath.phase, composedStepByPath.stepPattern))
@@ -261,10 +223,10 @@ open class StepService(private val composedStepsService: ComposedStepsService,
         for (stepEntry in steps) {
             val stepDef = stepEntry.value
             if (!(stepDef is ComposedStepDef)) {
-                continue;
+                continue
             }
 
-            var hasStepThatNeedsToBeSetAsUndefined = false;
+            var hasStepThatNeedsToBeSetAsUndefined = false
             val resolvedStepCalls = mutableListOf<StepCall>()
 
             for (stepCall in stepDef.stepCalls) {
@@ -275,7 +237,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
                             stepCall.args
                     )
                     resolvedStepCalls.add(undefinedStepCall1)
-                    hasStepThatNeedsToBeSetAsUndefined = true;
+                    hasStepThatNeedsToBeSetAsUndefined = true
                 } else {
                     resolvedStepCalls.add(stepCall)
                 }
@@ -293,9 +255,9 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     }
 
     fun renameDirectory(renamePath: RenamePath): Path {
-        stepsMapLoadersLatch.await();
+        stepsMapLoadersLatch.await()
 
-        val renamedPath = composedStepsService.renameDirectory(renamePath);
+        val renamedPath = composedStepsService.renameDirectory(renamePath)
 
         reinitializeSteps(
                 composedStepsService.getComposedSteps()
@@ -305,9 +267,9 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     }
 
     fun deleteDirectory(pathToDelete: Path) {
-        stepsMapLoadersLatch.await();
+        stepsMapLoadersLatch.await()
 
-        composedStepsService.deleteDirectory(pathToDelete);
+        composedStepsService.deleteDirectory(pathToDelete)
 
         reinitializeSteps(
                 composedStepsService.getComposedSteps()
@@ -315,9 +277,9 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     }
 
     fun moveDirectoryOrFile(copyPath: CopyPath) {
-        stepsMapLoadersLatch.await();
+        stepsMapLoadersLatch.await()
 
-        composedStepsService.moveDirectoryOrFile(copyPath);
+        composedStepsService.moveDirectoryOrFile(copyPath)
 
         reinitializeSteps(
                 composedStepsService.getComposedSteps()
