@@ -150,7 +150,7 @@ class TestsService(private val testResolver: TestResolver,
                     unresolvedUiTest,
                     throwExceptionOnNotFound = false
             )
-            val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest)
+            val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest, keepExistingWarnings = true)
 
             uiTests.add(resolvedUiTestWithWarnings)
         }
@@ -166,7 +166,7 @@ class TestsService(private val testResolver: TestResolver,
         val fileTest = TEST_PARSER.parse(testFile.body)
         val unresolvedUiTest = fileToUiTestMapper.mapToUiModel(fileTestDef = fileTest, testFile = testFile)
         val resolvedUiTest = testResolver.resolveComposedSteps(unresolvedUiTest, throwExceptionOnNotFound = false)
-        val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest)
+        val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest, keepExistingWarnings = true)
 
         return resolvedUiTestWithWarnings
     }
@@ -182,6 +182,11 @@ class TestsService(private val testResolver: TestResolver,
                 KnownPath(copyPath.copyPath, FileType.TEST),
                 KnownPath(copyPath.destinationPath, FileType.TEST)
         )
+    }
+
+    fun getWarnings(testModel: TestModel,
+                    keepExistingWarnings: Boolean): TestModel {
+        return warningService.testWithWarnings(testModel, keepExistingWarnings)
     }
 
 }

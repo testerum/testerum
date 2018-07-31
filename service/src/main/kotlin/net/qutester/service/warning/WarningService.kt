@@ -9,9 +9,14 @@ import net.qutester.model.warning.Warning
 
 class WarningService {
 
-    fun testWithWarnings(test: TestModel): TestModel {
+    fun testWithWarnings(test: TestModel,
+                         keepExistingWarnings: Boolean): TestModel {
         // fill-in own warnings
-        val warnings: MutableList<Warning> = test.warnings.toMutableList()
+        val warnings: MutableList<Warning> = if (keepExistingWarnings) {
+            test.warnings.toMutableList()
+        } else {
+            mutableListOf()
+        }
 
         addTestWarnings(warnings, test)
 
@@ -20,7 +25,7 @@ class WarningService {
 
         for (stepCall in test.stepCalls) {
             stepCallsWithWarnings.add(
-                    stepCallWithWarnings(stepCall)
+                    stepCallWithWarnings(stepCall, keepExistingWarnings)
             )
         }
 
@@ -31,16 +36,21 @@ class WarningService {
         )
     }
 
-    private fun stepCallWithWarnings(stepCall: StepCall): StepCall {
+    private fun stepCallWithWarnings(stepCall: StepCall,
+                                     keepExistingWarnings: Boolean): StepCall {
         // fill-in own warnings
-        val warnings: MutableList<Warning> = stepCall.warnings.toMutableList()
+        val warnings: MutableList<Warning> = if (keepExistingWarnings) {
+            stepCall.warnings.toMutableList()
+        } else {
+            mutableListOf()
+        }
 
         addStepCallWarnings(warnings, stepCall)
 
         // check children
         val stepDef: StepDef = stepCall.stepDef
         if (stepDef is ComposedStepDef) {
-            val stepDefWithWarnings = composedStepWithWarnings(stepDef)
+            val stepDefWithWarnings = composedStepWithWarnings(stepDef, keepExistingWarnings)
 
             return stepCall.copy(
                     stepDef = stepDefWithWarnings,
@@ -54,9 +64,14 @@ class WarningService {
         )
     }
 
-    fun composedStepWithWarnings(stepDef: ComposedStepDef): ComposedStepDef {
+    fun composedStepWithWarnings(stepDef: ComposedStepDef,
+                                 keepExistingWarnings: Boolean): ComposedStepDef {
         // fill-in own warnings
-        val warnings: MutableList<Warning> = stepDef.warnings.toMutableList()
+        val warnings: MutableList<Warning> = if (keepExistingWarnings) {
+            stepDef.warnings.toMutableList()
+        } else {
+            mutableListOf()
+        }
 
         addComposedStepDefWarnings(warnings, stepDef)
 
@@ -65,7 +80,7 @@ class WarningService {
 
         for (childStepCall in stepDef.stepCalls) {
             childStepCallsWithWarnings.add(
-                    stepCallWithWarnings(childStepCall)
+                    stepCallWithWarnings(childStepCall, keepExistingWarnings)
             )
         }
 
@@ -94,7 +109,7 @@ class WarningService {
     }
 
     private fun addComposedStepDefWarnings(warnings: MutableList<Warning>,
-                                   stepDef: ComposedStepDef) {
+                                           stepDef: ComposedStepDef) {
         // missing children steps
         if (stepDef.stepCalls.isEmpty()) {
             warnings += Warning.COMPOSED_STEP_WITHOUT_STEP_CALLS

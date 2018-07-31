@@ -187,7 +187,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
         val composedSteps = getComposedSteps()
         for (composedStep in composedSteps) {
             if (composedStep.path == searchedPath) {
-                return warningService.composedStepWithWarnings(composedStep)
+                return warningService.composedStepWithWarnings(composedStep, keepExistingWarnings = true)
             }
         }
 
@@ -230,7 +230,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
         val savedComposedStep = composedStepsService.create(composedStepDef)
         reinitializeComposedSteps()
         val resolvedSavedComposedStep = resolveComposedStep(savedComposedStep)
-        val resolvedSavedComposedStepWithWarnings = warningService.composedStepWithWarnings(resolvedSavedComposedStep)
+        val resolvedSavedComposedStepWithWarnings = warningService.composedStepWithWarnings(resolvedSavedComposedStep, keepExistingWarnings = true)
 
         return resolvedSavedComposedStepWithWarnings
     }

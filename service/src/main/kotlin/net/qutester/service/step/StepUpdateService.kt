@@ -27,7 +27,7 @@ class StepUpdateService(private val stepService: StepService,
         val newStepPattern = composedStepDef.stepPattern
         if(oldStepPattern == newStepPattern){
             val updatedStep = stepService.update(composedStepDef)
-            val updatedStepWithWarnings = warningService.composedStepWithWarnings(updatedStep)
+            val updatedStepWithWarnings = warningService.composedStepWithWarnings(updatedStep, keepExistingWarnings = true)
 
             return updatedStepWithWarnings
         }
@@ -42,7 +42,7 @@ class StepUpdateService(private val stepService: StepService,
         }
 
         val updatedStep = stepService.update(composedStepDef)
-        val updatedStepWithWarnings = warningService.composedStepWithWarnings(updatedStep)
+        val updatedStepWithWarnings = warningService.composedStepWithWarnings(updatedStep, keepExistingWarnings = true)
 
         return updatedStepWithWarnings
     }

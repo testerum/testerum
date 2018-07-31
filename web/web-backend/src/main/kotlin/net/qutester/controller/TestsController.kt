@@ -11,32 +11,32 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/tests")
 class TestsController(private val testsService: TestsService) {
 
-    @RequestMapping (params = ["path"], method = [RequestMethod.DELETE])
-    fun delete(@RequestParam(value = "path") path:String) {
+    @RequestMapping(params = ["path"], method = [RequestMethod.DELETE])
+    fun delete(@RequestParam(value = "path") path: String) {
         testsService.remove(Path.createInstance(path))
     }
 
-    @RequestMapping (path = ["/create"], method = [RequestMethod.POST])
+    @RequestMapping(path = ["/create"], method = [RequestMethod.POST])
     @ResponseBody
     fun create(@RequestBody testModel: TestModel): TestModel {
         return testsService.createTest(testModel)
     }
 
-    @RequestMapping (path = ["/update"], method = [RequestMethod.POST])
+    @RequestMapping(path = ["/update"], method = [RequestMethod.POST])
     @ResponseBody
     fun update(@RequestBody updateTestModel: UpdateTestModel): TestModel {
         return testsService.updateTest(updateTestModel);
     }
 
-    @RequestMapping (path = ["/automated/under-path"],params = ["path"], method = [RequestMethod.GET])
+    @RequestMapping(path = ["/automated/under-path"], params = ["path"], method = [RequestMethod.GET])
     @ResponseBody
-    fun getAutomatedTestsUnderPath(@RequestParam(value = "path") path:String):List<TestModel> {
+    fun getAutomatedTestsUnderPath(@RequestParam(value = "path") path: String): List<TestModel> {
         return testsService.getTestsUnderPath(Path.createInstance(path));
     }
 
-    @RequestMapping (params = ["path"], method = [RequestMethod.GET])
+    @RequestMapping(params = ["path"], method = [RequestMethod.GET])
     @ResponseBody
-    fun getTestAtPath(@RequestParam(value = "path") path:String): TestModel? {
+    fun getTestAtPath(@RequestParam(value = "path") path: String): TestModel? {
         return testsService.getTestAtPath(Path.createInstance(path));
     }
 
@@ -48,5 +48,11 @@ class TestsController(private val testsService: TestsService) {
     @RequestMapping(path = ["/directory/move"], method = [RequestMethod.POST])
     fun moveDirectoryOrFile(@RequestBody copyPath: CopyPath) {
         testsService.moveDirectoryOrFile(copyPath)
+    }
+
+    @RequestMapping(path = ["/warnings"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun getWarnings(@RequestBody testModel: TestModel): TestModel {
+        return testsService.getWarnings(testModel, keepExistingWarnings = false)
     }
 }
