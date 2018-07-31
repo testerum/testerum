@@ -8,6 +8,7 @@ import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
 import {ArrayUtil} from "../../../../../utils/array.util";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
+import {AppComponent} from "../../../../../app.component";
 
 @Component({
     selector: 'step-call-container',
@@ -29,8 +30,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     showParameters: boolean = true;
 
     constructor(private stepCallTreeService: StepCallTreeService,
-                private stepModalService: StepModalService,
-                private viewContainerRef: ViewContainerRef) {
+                private stepModalService: StepModalService) {
     }
 
     private editModeSubscription: any;
@@ -102,8 +102,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         }
 
         this.stepModalService.showStepModal(
-            stepToEdit,
-            this.viewContainerRef
+            stepToEdit
         ).subscribe((newStepDef: ComposedStepDef) => {
             this.model.stepCall.stepDef = newStepDef;
             this.refreshStepCallArgsBasedOnStepDef()

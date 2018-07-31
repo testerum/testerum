@@ -1,0 +1,15 @@
+.modal-dialog {
+    height: 90%;
+    width: 1000px;
+}
+.modal-content {
+    height: 100%;
+}
+
+.modal-body {
+    /* 100% = dialog height, 120px = header + footer */
+    height: calc(100% - 150px);
+    overflow-y: auto;
+    padding: 0;
+    margin: 15px;
+}

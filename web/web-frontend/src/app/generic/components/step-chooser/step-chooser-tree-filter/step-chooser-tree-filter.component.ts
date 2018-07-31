@@ -1,8 +1,6 @@
 import {Component, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../utils/array.util";
-import {Path} from "../../../../model/infrastructure/path/path.model";
-import {ActivatedRoute} from "@angular/router";
 import {JsonTreeExpandUtil} from "../../json-tree/util/json-tree-expand.util";
 import {TagsService} from "../../../../service/tags.service";
 import {StepsTreeFilter} from "../../../../model/step/filter/steps-tree-filter.model";
@@ -29,8 +27,7 @@ export class StepChooserTreeFilterComponent {
     isSearchButtonActive = false;
     isTagsButtonActive = false;
 
-    constructor(private activatedRoute: ActivatedRoute,
-                private stepChooserService: StepChooserService,
+    constructor(private stepChooserService: StepChooserService,
                 private tagsService: TagsService) {
     }
 
@@ -105,13 +102,7 @@ export class StepChooserTreeFilterComponent {
 
         this.stepChooserService.treeFilter = stepsTreeFilter;
 
-        let path = this.getCurrentPathFromUrl();
-        this.stepChooserService.initializeStepsTreeFromServer(path, 100);
-    }
-
-    private getCurrentPathFromUrl(): Path {
-        let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path'] : null;
-        return pathAsString != null ? Path.createInstance(pathAsString) : null;
+        this.stepChooserService.initializeStepsTreeFromServer();
     }
 
     onExpandAllEvent() {

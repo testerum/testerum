@@ -23,13 +23,12 @@ import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-p
 import {Arg} from "../../../../../model/arg/arg.model";
 import {StepPattern} from "../../../../../model/text/step-pattern.model";
 import {AutoComplete} from "primeng/primeng";
-import {StepChooserComponent} from "../../../step-chooser/step-chooser.component";
-import {StepChoseHandler} from "../../../step-chooser/step-choosed-handler.interface";
 import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
 import {MessageService} from "../../../../../service/message.service";
 import {MessageKey} from "../../../../../model/messages/message.enum";
 import {Warning} from "../../../../../model/warning/Warning";
 import {WarningType} from "../../../../../model/warning/WarningType";
+import {StepChooserService} from "../../../step-chooser/step-chooser.service";
 
 @Component({
     selector: 'step-call-editor-container',
@@ -42,7 +41,7 @@ import {WarningType} from "../../../../../model/warning/WarningType";
     ],
     encapsulation: ViewEncapsulation.None
 })
-export class StepCallEditorContainerComponent implements OnInit, OnDestroy, AfterViewChecked, StepChoseHandler {
+export class StepCallEditorContainerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     @Input() model: StepCallEditorContainerModel;
 
@@ -55,12 +54,11 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
 
     @ViewChild("autoCompleteComponent") autocompleteComponent: AutoComplete;
 
-    @ViewChild(StepChooserComponent) stepChooserComponent: StepChooserComponent;
-
     private onDocumentClick: (event) => void;
 
     constructor(private stepCallTreeService: StepCallTreeService,
                 private stepsService: StepsService,
+                private stepChooserService: StepChooserService,
                 private messageService: MessageService,
                 private element: ElementRef) {
     }
@@ -262,17 +260,15 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     selectStepFromPopup() {
-        this.stepChooserComponent.showStepChooserModal(this);
-    }
+        this.stepChooserService.showStepChooserModal().subscribe((stepDef: StepDef) => {
+            this.removeThisEditorFromTree();
 
-    onStepChose(choseStep: StepDef): void {
-        this.removeThisEditorFromTree();
+            let stepCall = new StepCall();
+            stepCall.stepDef = stepDef;
+            this.addEmptyArgsToStepCall(stepCall);
 
-        let stepCall = new StepCall();
-        stepCall.stepDef = choseStep;
-        this.addEmptyArgsToStepCall(stepCall);
-
-        this.addNewStepCallToTree(stepCall);
+            this.addNewStepCallToTree(stepCall);
+        })
     }
 
     private removeThisEditorFromTree() {

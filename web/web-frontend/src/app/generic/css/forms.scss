@@ -36,7 +36,8 @@ input[type=checkbox]:focus {
     display: flex;
     min-height: 34px;
     flex-direction: row;
-    align-items: baseline;
+    align-items: center;
+    margin: 0.5em 0;
 }
 
 .my-label {
@@ -48,6 +49,7 @@ input[type=checkbox]:focus {
 
 .my-value {
     margin-left: 40px;
+    width: 100%;
 }
 
 .vertical-space {

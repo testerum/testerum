@@ -13,6 +13,7 @@ import {StepTreeContainerModel} from "../../../../functionalities/steps/steps-tr
 import {StepCallTreeService} from "../../step-call-tree/step-call-tree.service";
 import {TagsService} from "../../../../service/tags.service";
 import {ResourceMapEnum} from "../../../../functionalities/resources/editors/resource-map.enum";
+import {StepChooserService} from "../../step-chooser/step-chooser.service";
 
 @Component({
     selector: 'composed-step-view',
@@ -26,7 +27,6 @@ export class ComposedStepViewComponent implements AfterContentChecked {
     @Input() isEditMode: boolean;
     @Input() isCreateAction: boolean = false;
 
-    @ViewChild(StepChooserComponent) stepChooserComponent: StepChooserComponent;
     @ViewChild(NgForm) form: NgForm;
     StepPhaseEnum = StepPhaseEnum;
 
@@ -40,6 +40,7 @@ export class ComposedStepViewComponent implements AfterContentChecked {
     currentTagSearch:string;
 
     constructor(private stepCallTreeService: StepCallTreeService,
+                private stepChooserService: StepChooserService,
                 private tagsService: TagsService,) {
     }
 
@@ -52,7 +53,9 @@ export class ComposedStepViewComponent implements AfterContentChecked {
     }
 
     openStepChooser() {
-        this.stepChooserComponent.showStepChooserModelWithoutStepReference(this, this.model.path);
+        this.stepChooserService.showStepChooserModal(this.model.path).subscribe( (stepDef: StepDef) => {
+            this.onStepChose(stepDef);
+        });
     }
 
     onStepChose(choseStep: StepDef): void {

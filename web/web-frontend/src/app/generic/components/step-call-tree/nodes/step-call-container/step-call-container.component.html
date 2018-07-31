@@ -53,8 +53,7 @@
 
         <div *ngIf="isEditMode()" class="step-button-panel btn-group">
 
-            <div *ngIf="!model.jsonTreeNodeState.showChildren"
-                 title="{{isUndefinedStep() ? 'Define Step': 'Edit Step'}}"
+            <div title="{{isUndefinedStep() ? 'Define Step': 'Edit Step'}}"
                  class="btn btn-default btn-xs btn-group"
                 (click)="editStep(); $event.stopPropagation()">
                 <span class="glyphicon glyphicon-pencil"></span>

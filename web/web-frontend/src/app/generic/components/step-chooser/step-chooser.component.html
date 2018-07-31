@@ -1,10 +1,10 @@
-<div bsModal #stepChooser="bs-modal" id="stepChooser" class="modal fade" tabindex="-1" role="dialog">
+<div bsModal #modal="bs-modal" id="stepChooser" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
             <!-- HEADER -->
             <div class="modal-header">
-                <button (click)="hide()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button (click)="onCancelAction()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">
                     Step Chooser
                 </h4>
@@ -20,8 +20,8 @@
 
             <!-- FOOTER Buttons-->
             <div class="modal-footer">
-                <button (click)="hide()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button (click)="addStep()" type="button" class="btn btn-primary">Add Step</button>
+                <button (click)="onCancelAction()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button (click)="onStepChooseAction()" type="button" class="btn btn-primary">Add Step</button>
             </div>
         </div>
     </div>

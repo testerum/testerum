@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ComponentFactoryResolver, ViewContainerRef} from '@angular/core';
 import {MessageService} from "./service/message.service";
 
 @Component({
@@ -8,7 +8,14 @@ import {MessageService} from "./service/message.service";
 })
 export class AppComponent  {
 
-    constructor(messageService: MessageService) {
-        messageService.init()
+    static rootViewContainerRef: ViewContainerRef;
+    static componentFactoryResolver: ComponentFactoryResolver;
+    constructor(messageService: MessageService,
+                private viewContainerRef: ViewContainerRef,
+                private componentFactoryResolver: ComponentFactoryResolver) {
+        messageService.init();
+
+        AppComponent.rootViewContainerRef = viewContainerRef;
+        AppComponent.componentFactoryResolver = componentFactoryResolver
     }
 }

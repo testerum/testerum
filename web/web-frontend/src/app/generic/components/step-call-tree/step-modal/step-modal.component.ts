@@ -1,7 +1,7 @@
 import {
     AfterViewInit,
     Component,
-    ComponentFactoryResolver,
+    ComponentFactoryResolver, ComponentRef,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -11,6 +11,8 @@ import {ComposedStepDef} from "../../../../model/composed-step-def.model";
 import {ModalDirective} from "ngx-bootstrap";
 import {ComposedStepViewComponent} from "../../step/composed-step-view/coposed-step-view.component";
 import {StepModalService} from "./step-modal.service";
+import {Subject} from "rxjs/Subject";
+import {AppComponent} from "../../../../app.component";
 
 @Component({
     selector: 'step-modal',
@@ -18,15 +20,16 @@ import {StepModalService} from "./step-modal.service";
     styleUrls: ['step-modal.component.scss']
 })
 
-export class StepModalComponent implements AfterViewInit {
+export class StepModalComponent implements AfterViewInit, OnDestroy {
 
     model: ComposedStepDef;
     isCreateAction: boolean = false;
 
-    stepModalService: StepModalService;
-
     @ViewChild("modal") modal: ModalDirective;
     @ViewChild(ComposedStepViewComponent) composedStepViewComponent: ComposedStepViewComponent;
+
+    modalComponentRef: ComponentRef<StepModalComponent>;
+    modalSubject: Subject<ComposedStepDef>;
 
     constructor() {
     }
@@ -35,11 +38,27 @@ export class StepModalComponent implements AfterViewInit {
         this.modal.show();
     }
 
-    onCancelAction() {
-        this.stepModalService.onCancelAction();
+    ngOnDestroy(): void {
+        this.clearStepModal();
     }
 
     onOkAction() {
-        this.stepModalService.onOkAction()
+        this.modalSubject.next(this.model);
+        this.clearStepModal();
+    }
+
+    onCancelAction() {
+        this.clearStepModal();
+    }
+
+    private clearStepModal() {
+        this.modalSubject.complete();
+        this.modal.hide();
+
+        let modalIndex = AppComponent.rootViewContainerRef.indexOf(this.modalComponentRef);
+        AppComponent.rootViewContainerRef.remove(modalIndex);
+
+        this.modalComponentRef = null;
+        this.modalSubject = null;
     }
 }

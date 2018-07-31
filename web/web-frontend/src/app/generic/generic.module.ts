@@ -248,6 +248,7 @@ import {ComposedStepParametersComponent} from "./components/step/composed-step-v
         JsonTreeContainerEditor,
 
         StepModalComponent,
+        StepChooserComponent,
 
         // ARG renderer components
         HttpRequestComponent,

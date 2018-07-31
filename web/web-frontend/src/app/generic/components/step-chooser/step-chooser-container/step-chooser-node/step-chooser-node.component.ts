@@ -3,6 +3,7 @@ import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tre
 import {StepTreeNodeModel} from "../../../../../functionalities/steps/steps-tree/model/step-tree-node.model";
 import {StepChooserService} from "../../step-chooser.service";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
+import {JsonTreeService} from "../../../json-tree/json-tree.service";
 
 @Component({
     moduleId: module.id,
@@ -15,15 +16,18 @@ export class StepChooserNodeComponent implements OnInit {
     @Input() model:StepTreeNodeModel;
     private isSelected:boolean = false;
 
-    constructor(private stepChooserService: StepChooserService) {
+    constructor(private jsonTreeService: JsonTreeService) {
     }
 
     ngOnInit(): void {
-        this.stepChooserService.selectedNodeObserver.subscribe(
-            (selectedNodeEvent:JsonTreeNodeEventModel) => {
-                this.isSelected = (selectedNodeEvent.treeNode as StepTreeNodeModel) == this.model;
-            }
-        )
+        this.jsonTreeService.selectedNodeEmitter.subscribe( (selectedNodeEvent:JsonTreeNodeEventModel) => {
+            this.isSelected = (selectedNodeEvent.treeNode as StepTreeNodeModel) == this.model;
+        });
+        // this.stepChooserService.selectedNodeObserver.subscribe(
+        //     (selectedNodeEvent:JsonTreeNodeEventModel) => {
+        //         this.isSelected = (selectedNodeEvent.treeNode as StepTreeNodeModel) == this.model;
+        //     }
+        // )
     }
 
     getName() {
@@ -35,6 +39,7 @@ export class StepChooserNodeComponent implements OnInit {
     }
 
     setNodeAsSelected() {
-        this.stepChooserService.setSelectedStep(this.model)
+        // this.stepChooserService.setSelectedStep(this.model)
+        this.jsonTreeService.setSelectedNode(this.model);
     }
 }

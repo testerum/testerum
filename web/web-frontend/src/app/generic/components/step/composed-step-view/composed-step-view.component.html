@@ -2,75 +2,71 @@
 
     <!-- STEP -->
     <div class="my-line">
-                    <span *ngIf="!isEditMode" class="step-text-phase">
-                        {{StepPhaseEnum[model.phase] | titlecase}} &nbsp;
-                    </span>
+        <span *ngIf="!isEditMode" class="step-text-phase">
+            {{StepPhaseEnum[model.phase] | titlecase}} &nbsp;
+        </span>
 
         <!-- STEP PHASE -->
         <span *ngIf="isEditMode">
-                        <select class="form-control"
-                                #testPhase="ngModel" [(ngModel)]="model.phase" name="testPhase"
-                                required>
-                            <option *ngFor="let enumName of getPhaseEnumValues()" [value]="enumName">
-                                {{StepPhaseEnum[enumName]}}
-                            </option>
-                        </select>
-                        <div *ngIf="testPhase.errors && (testPhase.dirty || testPhase.touched)"
-                             class="alert alert-danger">
-                            <div [hidden]="!testPhase.errors.required">
-                                Phase is required
-                            </div>
-                        </div>
-                    </span>
+            <select class="form-control"
+                    #testPhase="ngModel" [(ngModel)]="model.phase" name="testPhase"
+                    required>
+                <option *ngFor="let enumName of getPhaseEnumValues()" [value]="enumName">
+                    {{StepPhaseEnum[enumName]}}
+                </option>
+            </select>
+            <div *ngIf="testPhase.errors && (testPhase.dirty || testPhase.touched)"
+                 class="alert alert-danger">
+                <div [hidden]="!testPhase.errors.required">
+                    Phase is required
+                </div>
+            </div>
+        </span>
 
         <!-- STEP PATTERN -->
         <span class="full-width">
-                        <div *ngIf="!isEditMode">
-                            {{pattern || ""}}
-                        </div>
+            <div *ngIf="!isEditMode">
+                {{pattern || ""}}
+            </div>
 
-                        <span *ngIf="isEditMode">
-                            <input id="stepPattern" required
-                                   #stepPattern="ngModel" [(ngModel)]="pattern"
-                                   (ngModelChange)="onPatternChanged()"
-                                   type="text" class="form-control full-width" name="stepPattern"
-                                   placeholder="Step pattern">
-                            <input-error [model]="stepPattern"
-                                         [errorMessages]="{
-                                            required: 'A step definition is required',
-                                            step_pattern_already_exists: 'This step definition already exists'
-                                     }"></input-error>
-                        </span>
+            <span *ngIf="isEditMode">
+                <input id="stepPattern" required
+                       #stepPattern="ngModel" [(ngModel)]="pattern"
+                       (ngModelChange)="onPatternChanged()"
+                       type="text" class="form-control full-width" name="stepPattern"
+                       placeholder="Step pattern">
+                <input-error [model]="stepPattern"
+                             [errorMessages]="{
+                                required: 'A step definition is required',
+                                step_pattern_already_exists: 'This step definition already exists'
+                         }"></input-error>
+            </span>
 
-                        <composed-step-parameters [patternParts]="model.stepPattern.patternParts"
-                                                  [isEditMode]="isEditMode"></composed-step-parameters>
-                    </span>
+            <composed-step-parameters [patternParts]="model.stepPattern.patternParts"
+                                      [isEditMode]="isEditMode"></composed-step-parameters>
+        </span>
     </div>
-
-    <div class="vertical-space"></div>
 
     <!-- PATH -->
     <div class="my-line">
         <label class="my-label label-size">Path</label>
         <span class="my-value">
-                        {{model.path?.toString() || ""}}
-                    </span>
+            {{model.path?.toString() || ""}}
+        </span>
     </div>
 
-    <div *ngIf="isEditMode" class="vertical-space"></div>
-
     <!-- TAGS -->
-    <div class="form-group row" *ngIf="!isEditMode && model.tags.length > 0 ">
-        <label class="col-md-1 control-label" for="tags">Tags</label>
-        <div class="col-md-11 form-value" *ngIf="!isEditMode">
+    <div class="my-line" *ngIf="!isEditMode && model.tags.length > 0 ">
+        <label class="my-label label-size" for="tags">Tags</label>
+        <div class="my-value" *ngIf="!isEditMode">
             <ng-container *ngFor="let tag of model.tags">
                 <span class="label label-primary">{{tag}}</span>
             </ng-container>
         </div>
     </div>
-    <div class="form-group row" *ngIf="isEditMode">
-        <label class="col-md-1 control-label" for="tags">Tags</label>
-        <div class="col-md-11">
+    <div class="my-line" *ngIf="isEditMode">
+        <label class="my-label label-size" for="tags">Tags</label>
+        <div class="my-value">
             <p-autoComplete #tagsElement
                             [(ngModel)]="model.tags"
                             [suggestions]="tagsToShow"
@@ -90,9 +86,9 @@
         <div class="my-value" *ngIf="!isEditMode">
             {{model.description || ""}}
         </div>
-        <div class="my-value full-width" *ngIf="isEditMode">
-                        <textarea [(ngModel)]="model.description" class="form-control" id="description"
-                                  name="description"></textarea>
+        <div class="my-value" *ngIf="isEditMode">
+            <textarea [(ngModel)]="model.description" class="form-control" id="description"
+                      name="description"></textarea>
         </div>
     </div>
 
@@ -112,7 +108,5 @@
         </div>
     </div>
 
-    <!--<step-call-tree [stepCalls]="model.stepCalls"></step-call-tree>-->
+    <step-call-tree [stepCalls]="model.stepCalls"></step-call-tree>
 </form>
-
-<step-chooser #stepChooser></step-chooser>
