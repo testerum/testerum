@@ -85,4 +85,10 @@ class ComposedStepController(val stepService: StepService,
         return stepService.getDirectoriesTree()
     }
 
+    @RequestMapping(path = ["/warnings"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun getWarnings(@RequestBody composedStepDef: ComposedStepDef): ComposedStepDef {
+        return stepService.getWarnings(composedStepDef, keepExistingWarnings = false)
+    }
+
 }

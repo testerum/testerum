@@ -227,4 +227,17 @@ export class StepsService {
         return new ComposedContainerStepNode().deserialize(res);
     }
 
+    getWarnings(model: ComposedStepDef): Observable<ComposedStepDef> {
+        let body = model.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
+        return this.http
+            .post<ComposedStepDef>(this.COMPOSED_STEPS_URL + "/warnings", body, httpOptions)
+            .map(StepsService.extractComposedStepDef);
+    }
+
 }

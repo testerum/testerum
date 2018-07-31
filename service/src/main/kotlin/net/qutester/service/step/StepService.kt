@@ -342,4 +342,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
 
     fun getDirectoriesTree(): ComposedContainerStepNode = composedStepsService.getDirectoriesTree()
 
+    fun getWarnings(composedStepDef: ComposedStepDef, keepExistingWarnings: Boolean): ComposedStepDef
+            = composedStepsService.getWarnings(composedStepDef, keepExistingWarnings)
+
 }

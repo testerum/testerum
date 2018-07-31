@@ -1,6 +1,5 @@
 package net.qutester.service.step.impl
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.test_file_format.stepdef.FileStepDefParserFactory
 import com.testerum.test_file_format.stepdef.FileStepDefSerializer
@@ -13,6 +12,7 @@ import net.qutester.model.step.tree.ComposedContainerStepNode
 import net.qutester.model.step.tree.builder.ComposedStepDirectoryTreeBuilder
 import net.qutester.service.mapper.FileToUiStepMapper
 import net.qutester.service.mapper.UiToFileStepDefMapper
+import net.qutester.service.warning.WarningService
 import net.testerum.db_file.FileRepositoryService
 import net.testerum.db_file.model.KnownPath
 import net.testerum.db_file.model.RepositoryFile
@@ -20,10 +20,10 @@ import net.testerum.db_file.model.RepositoryFileChange
 import java.io.StringWriter
 import java.nio.file.Files
 
-open class ComposedStepsService(val jsonObjectMapper: ObjectMapper,
-                                val uiToFileStepDefMapper: UiToFileStepDefMapper,
+open class ComposedStepsService(val uiToFileStepDefMapper: UiToFileStepDefMapper,
                                 val fileToUiStepMapper: FileToUiStepMapper,
-                                val fileRepositoryService: FileRepositoryService) {
+                                val fileRepositoryService: FileRepositoryService,
+                                val warningService: WarningService) {
 
     companion object {
         private val COMPOSED_STEP_PARSER = ParserExecuter(FileStepDefParserFactory.stepDef())
@@ -136,5 +136,8 @@ open class ComposedStepsService(val jsonObjectMapper: ObjectMapper,
 
         return treeBuilder.build()
     }
+
+    fun getWarnings(composedStepDef: ComposedStepDef, keepExistingWarnings: Boolean): ComposedStepDef
+            = warningService.composedStepWithWarnings(composedStepDef, keepExistingWarnings)
 
 }

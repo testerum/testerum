@@ -184,9 +184,7 @@ class TestsService(private val testResolver: TestResolver,
         )
     }
 
-    fun getWarnings(testModel: TestModel,
-                    keepExistingWarnings: Boolean): TestModel {
-        return warningService.testWithWarnings(testModel, keepExistingWarnings)
-    }
+    fun getWarnings(testModel: TestModel, keepExistingWarnings: Boolean): TestModel
+            = warningService.testWithWarnings(testModel, keepExistingWarnings)
 
 }
