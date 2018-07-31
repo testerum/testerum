@@ -100,4 +100,9 @@ export class ArgNodePanelComponent implements OnInit, OnDestroy {
 
     onAnimateEnd() {
     }
+
+    hasOwnWarnings(): boolean {
+        return this.arg.warnings.length > 0;
+    }
+
 }

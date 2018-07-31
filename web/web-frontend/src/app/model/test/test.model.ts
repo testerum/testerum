@@ -60,7 +60,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
             '"text":' + JsonUtil.stringify(this.text) + ',' +
             '"description":' + JsonUtil.stringify(this.description) + ',' +
             '"tags":' + JsonUtil.stringify(this.tags) + ',' +
-            '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls)  + ',' +
+            '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) + ',' +
             '"warnings": []' +
             '}'
     }

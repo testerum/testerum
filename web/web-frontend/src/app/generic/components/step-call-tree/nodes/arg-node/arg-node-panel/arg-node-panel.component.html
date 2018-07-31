@@ -9,9 +9,25 @@
            [class.fa-caret-down]="animationState == 'open'"
            aria-hidden="true"></i>
 
-        <span>{{getArgName()}}</span>
-        <span *ngIf="getArgName()">:</span>
-        <span>{{getArgUiType()}}</span>
+        <span [class.error_squiggly]="arg.hasOwnOrDescendantWarnings">
+            <span>{{getArgName()}}</span>
+            <span *ngIf="getArgName()">:</span>
+            <span>{{getArgUiType()}}</span>
+        </span>
+
+        <!-- WARNING ICON -->
+        <i *ngIf="hasOwnWarnings()" class="fa fa-exclamation-triangle error_color" aria-hidden="true"
+           [popover]="warningPopTemplate" containerClass="popover-warning" triggers="" container="body" #pop="bs-popover"
+           (mouseenter)="pop.show()"
+           (mouseleave)="pop.hide()">
+        </i>
+
+        <ng-template #warningPopTemplate>
+            <i class="fa fa-exclamation-triangle error_color" aria-hidden="true"></i>
+            <div *ngFor="let warning of arg.warnings">
+                <div>{{warning.message}}</div>
+            </div>
+        </ng-template>
 
         <div [attr.title]="arg.content?'Edit':'Add'"
              class="btn btn-default btn-xs btn-group"
