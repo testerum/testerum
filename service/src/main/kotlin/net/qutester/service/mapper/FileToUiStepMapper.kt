@@ -3,6 +3,7 @@ package net.qutester.service.mapper
 import com.testerum.common.expression_evaluator.ExpressionEvaluator
 import com.testerum.common.expression_evaluator.UnknownVariableException
 import com.testerum.common.parsing.executer.ParserExecuter
+import com.testerum.common_kotlin.emptyToNull
 import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
@@ -193,7 +194,7 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
 
         return Arg(
                 name = computeArgName(argParts),
-                content = argContent,
+                content = argContent.emptyToNull(),
                 type = "TEXT", // this can only be known after we resolve the step definitions
                 path = path
         )

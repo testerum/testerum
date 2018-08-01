@@ -1,4 +1,4 @@
-package net.qutester.controller
+package net.qutester.controller.step
 
 import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path
@@ -7,10 +7,10 @@ import net.qutester.model.step.ComposedStepDef
 import net.qutester.model.step.filter.StepsTreeFilter
 import net.qutester.model.step.operation.UpdateComposedStepDef
 import net.qutester.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
+import net.qutester.model.step.tree.ComposedContainerStepNode
 import net.qutester.service.step.StepService
 import net.qutester.service.step.StepUpdateCompatibilityService
 import net.qutester.service.step.StepUpdateService
-import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -78,4 +78,17 @@ class ComposedStepController(val stepService: StepService,
     fun moveDirectoryOrFile(@RequestBody copyPath: CopyPath) {
         stepService.moveDirectoryOrFile(copyPath)
     }
+
+    @RequestMapping("/directory-tree", method = [RequestMethod.GET])
+    @ResponseBody
+    fun getDirectoriesTree(): ComposedContainerStepNode {
+        return stepService.getDirectoriesTree()
+    }
+
+    @RequestMapping(path = ["/warnings"], method = [RequestMethod.POST])
+    @ResponseBody
+    fun getWarnings(@RequestBody composedStepDef: ComposedStepDef): ComposedStepDef {
+        return stepService.getWarnings(composedStepDef, keepExistingWarnings = false)
+    }
+
 }

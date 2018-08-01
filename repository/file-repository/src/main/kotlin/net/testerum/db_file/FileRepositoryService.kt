@@ -16,14 +16,18 @@ import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
+import java.util.*
 import java.util.function.BiPredicate
 
 
 class FileRepositoryService(private val settingsManager: SettingsManager) {
-    private val LOG = LoggerFactory.getLogger(FileRepositoryService::class.java)
 
-    private val REGEX_TO_REPLACE_ILEAGAL_FILE_REGEX = Regex("[^a-zA-Z0-9-_\\s\\[\\]]")
-    private val REPLACEMENT_CHAR_OF_ILEAGAL_FILE_CHARS = "_"
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(FileRepositoryService::class.java)
+
+        private val REGEX_TO_REPLACE_ILEAGAL_FILE_REGEX = Regex("[^a-zA-Z0-9-_\\s\\[\\]]")
+        private val REPLACEMENT_CHAR_OF_ILEAGAL_FILE_CHARS = "_"
+    }
 
     fun create(repositoryFileChange: RepositoryFileChange): RepositoryFile {
         val escapedRelativeKnownPath = escapeIllegalCharactersInPath(repositoryFileChange.repositoryFile.knownPath)
@@ -112,7 +116,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
         val absoluteResourcePath: java.nio.file.Path = escapeAndGetAbsolutePath(escapedRelativeKnownPath)
 
         if (!absoluteResourcePath.toFile().exists()) {
-            LOG.warn("Couldn't load the resource from path [$absoluteResourcePath]. The resource couldn't be found!")
+            LOGGER.warn("Couldn't load the resource from path [$absoluteResourcePath]. The resource couldn't be found!")
             return null
         }
 
@@ -127,7 +131,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
         val absoluteResourcePath: java.nio.file.Path = escapeAndGetAbsolutePath(escapedRelativeKnownPath)
 
         if (!absoluteResourcePath.toFile().exists()) {
-            LOG.warn("Couldn't load the resource from path [$absoluteResourcePath]. The resource couldn't be found!")
+            LOGGER.warn("Couldn't load the resource from path [$absoluteResourcePath]. The resource couldn't be found!")
             return null
         }
         return absoluteResourcePath
@@ -155,11 +159,11 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
 
         Files.find(
                 rootPath,
-                Integer.MAX_VALUE,
+                Int.MAX_VALUE,
                 BiPredicate { path, attr -> (attr.isRegularFile && path.toString().endsWith(parentPath.fileType.fileExtension)) }
-        ).use {
-            it.forEach {
-                val relativePathAsString = it.toString().removePrefix(
+        ).use { pathStream ->
+            pathStream.forEach { path ->
+                val relativePathAsString = path.toString().removePrefix(
                         rootPath.toString() + File.separator
                 )
 
@@ -168,7 +172,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
                 result.add(
                         RepositoryFile(
                                 KnownPath(relativePathToRoot.toString(), parentPath.fileType),
-                                String(Files.readAllBytes(it))
+                                String(Files.readAllBytes(path))
                         )
                 )
             }
@@ -226,7 +230,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
         if (pathToRename.toFile().exists()) {
             if (pathToRename.toString().equals(newPath.toString(), true) &&
                     !pathToRename.toString().equals(newPath.toString(), false)) {
-                val tempPath = pathToRename.resolveSibling("temp31file10")
+                val tempPath = pathToRename.resolveSibling(UUID.randomUUID().toString())
                 Files.move(pathToRename, tempPath)
                 Files.move(tempPath, newPath)
             } else {
@@ -317,7 +321,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
         val rootPath = Paths.get(repositoryDirPathAsString)
         val rootDirectory = rootPath.resolve(escapedKnownPath.fileType.relativeRootDirectory.toJavaPath())
 
-        return rootDirectory.resolve(escapedKnownPath.toString())
+        return rootDirectory.resolve(escapedKnownPath.toString()).toAbsolutePath().normalize()
     }
 
     fun getRelativePathFromAbsolutePath(absolutePath: java.nio.file.Path, fileType: FileType): java.nio.file.Path {
@@ -350,5 +354,18 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
         )
 
         return KnownPath(escapedDirectories, escapedFileName, knownPath.fileExtension, knownPath.fileType)
+    }
+
+    fun walkDirectoryTree(type: FileType,
+                          process: (rootDir: java.nio.file.Path, path: java.nio.file.Path) -> Unit) {
+        val rootPath = getAbsolutePath(
+                KnownPath(Path.EMPTY, type)
+        )
+
+        Files.walk(rootPath).use { pathStream ->
+            pathStream.forEach { path ->
+                process(rootPath, path.toAbsolutePath().normalize())
+            }
+        }
     }
 }

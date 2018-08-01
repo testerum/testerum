@@ -25,7 +25,7 @@
         <constructor-arg name="manualTestsRunnerService" ref="manualTestsRunnerService"/>
     </bean>
 
-    <bean id="basicStepsController" class="net.qutester.controller.BasicStepsController">
+    <bean id="basicStepsController" class="net.qutester.controller.step.BasicStepsController">
         <constructor-arg name="stepService" ref="stepService"/>
     </bean>
 
@@ -33,17 +33,17 @@
         <constructor-arg name="messageService" ref="messageService"/>
     </bean>
 
-    <bean id="composedStepController" class="net.qutester.controller.ComposedStepController">
+    <bean id="composedStepController" class="net.qutester.controller.step.ComposedStepController">
         <constructor-arg name="stepService" ref="stepService"/>
         <constructor-arg name="stepUpdateService" ref="stepUpdateService"/>
         <constructor-arg name="stepUpdateCompatibilityService" ref="stepUpdateCompatibilityService"/>
     </bean>
 
-    <bean id="stepsTreeController" class="net.qutester.controller.StepsTreeController">
+    <bean id="stepsTreeController" class="net.qutester.controller.step.StepsTreeController">
         <constructor-arg name="stepService" ref="stepService"/>
     </bean>
 
-    <bean id="testsController" class="net.qutester.controller.TestsController">
+    <bean id="testsController" class="net.qutester.controller.test.TestsController">
         <constructor-arg name="testsService" ref="testsService"/>
     </bean>
 
@@ -51,11 +51,11 @@
         <constructor-arg name="testRunnerResultService" ref="testRunnerReportService"/>
     </bean>
 
-    <bean id="tagsController" class="net.qutester.controller.TagsController">
+    <bean id="tagsController" class="net.qutester.controller.tag.TagsController">
         <constructor-arg name="tagsService" ref="tagsService" />
     </bean>
 
-    <bean id="variablesController" class="net.qutester.controller.VariablesController">
+    <bean id="variablesController" class="net.qutester.controller.vars.VariablesController">
         <constructor-arg name="variablesService" ref="variablesService"/>
     </bean>
 
@@ -104,7 +104,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="testsWebSocketController" class="net.qutester.controller.TestsWebSocketController">
+    <bean id="testsWebSocketController" class="net.qutester.controller.runner.TestsWebSocketController">
         <constructor-arg name="testRunnerEventBus" ref="testRunnerEventBus"/>
         <constructor-arg name="testsRunnerService" ref="testsRunnerService"/>
         <constructor-arg name="objectMapper" ref="testsRunnerJsonObjectMapper"/>

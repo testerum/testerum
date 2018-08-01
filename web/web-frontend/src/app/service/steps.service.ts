@@ -13,12 +13,14 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
 import {StepsTreeFilter} from "../model/step/filter/steps-tree-filter.model";
 import {RootStepNode} from "../model/step/tree/root-step-node.model";
+import {ComposedContainerStepNode} from "../model/step/tree/composed-container-step-node.model";
 
 @Injectable()
 export class StepsService {
 
     private BASIC_STEPS_URL = "/rest/steps/basic";
     private COMPOSED_STEPS_URL = "/rest/steps/composed";
+    private COMPOSED_STEPS_DIRECTORY_TREE_URL = "/rest/steps/composed/directory-tree";
     private STEPS_TREE_URL = "/rest/steps/tree";
 
     constructor(private http: HttpClient,
@@ -207,6 +209,35 @@ export class StepsService {
 
     private static extractRootStepNode(res: RootStepNode): RootStepNode {
         return new RootStepNode().deserialize(res);
+    }
+
+    getComposedStepsDirectoryTree(): Observable<ComposedContainerStepNode> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
+        return this.http
+            .get<ComposedContainerStepNode>(this.COMPOSED_STEPS_DIRECTORY_TREE_URL, httpOptions)
+            .map(StepsService.extractComposedContainerStepNode);
+    }
+
+    private static extractComposedContainerStepNode(res: ComposedContainerStepNode): ComposedContainerStepNode {
+        return new ComposedContainerStepNode().deserialize(res);
+    }
+
+    getWarnings(model: ComposedStepDef): Observable<ComposedStepDef> {
+        let body = model.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
+        return this.http
+            .post<ComposedStepDef>(this.COMPOSED_STEPS_URL + "/warnings", body, httpOptions)
+            .map(StepsService.extractComposedStepDef);
     }
 
 }

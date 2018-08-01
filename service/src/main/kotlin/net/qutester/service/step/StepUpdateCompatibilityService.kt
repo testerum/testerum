@@ -1,24 +1,25 @@
 package net.qutester.service.step
 
 import net.qutester.exception.ServerStateChangedException
-import net.qutester.model.step.ComposedStepDef
 import net.qutester.model.infrastructure.path.Path
+import net.qutester.model.step.ComposedStepDef
 import net.qutester.model.step.operation.UpdateComposedStepDef
 import net.qutester.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
 import net.qutester.model.test.TestModel
 import net.qutester.model.text.StepPattern
-import net.qutester.service.tests.TestsService
 import net.qutester.service.step.util.hasTheSameStepPattern
 import net.qutester.service.step.util.isCallingStepPattern
 import net.qutester.service.step.util.isOtherStepWithTheSameStepPattern
 import net.qutester.service.step.util.isStepPatternChangeCompatible
+import net.qutester.service.tests.TestsService
 import net.qutester.service.tests.util.isTestUsingStepPattern
 
 class StepUpdateCompatibilityService (var stepService: StepService,
                                       var testsService: TestsService) {
 
     fun checkUpdateCompatibility(updateComposedStepDef: UpdateComposedStepDef): CheckComposedStepDefUpdateCompatibilityResponse {
-        val oldStepPattern = stepService.getComposedStepByPath(updateComposedStepDef.oldPath)?.stepPattern ?: throw ServerStateChangedException()
+        val oldStepPattern = stepService.getComposedStepByPath(updateComposedStepDef.oldPath)?.stepPattern
+                ?: throw ServerStateChangedException()
         val newStepPattern = updateComposedStepDef.composedStepDef.stepPattern
 
         if (oldStepPattern.hasTheSameStepPattern(newStepPattern)) {
@@ -35,7 +36,7 @@ class StepUpdateCompatibilityService (var stepService: StepService,
 
         val pathsForAffectedTests: List<Path> = findTestsThatUsesStepPatternAsChild(oldStepPattern).map { it.path }
         val pathsForDirectAffectedSteps: List<Path> = findStepsThatUsesStepPatternAsDirectChild(oldStepPattern).map { it.path }
-        val pathsForTransitiveAffectedSteps: List<Path> = findStepsThatUsesStepPatternAsTransitiveChild(oldStepPattern) - pathsForDirectAffectedSteps;
+        val pathsForTransitiveAffectedSteps: List<Path> = findStepsThatUsesStepPatternAsTransitiveChild(oldStepPattern) - pathsForDirectAffectedSteps
 
 
         return CheckComposedStepDefUpdateCompatibilityResponse(

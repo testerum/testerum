@@ -8,9 +8,10 @@ import kotlin.reflect.KClass
 @Retention
 @MustBeDocumented
 annotation class Param (
-
         val description: String = "",
 
-        val transformer: KClass<out Transformer<Any?>> = NoTransformer::class
+        val transformer: KClass<out Transformer<Any?>> = NoTransformer::class,
+
+        val required: Boolean = true
 
 )

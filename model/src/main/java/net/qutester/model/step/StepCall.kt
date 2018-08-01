@@ -3,11 +3,11 @@ package net.qutester.model.step
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.testerum.common_kotlin.indent
 import net.qutester.model.arg.Arg
 import net.qutester.model.text.parts.ParamStepPatternPart
 import net.qutester.model.text.parts.TextStepPatternPart
 import net.qutester.model.warning.Warning
-import net.qutester.util.indent
 
 data class StepCall @JsonCreator constructor(
         @JsonProperty("id") val id: String,
@@ -56,7 +56,7 @@ data class StepCall @JsonCreator constructor(
 
                     // todo: escape ">>" (should we also escape "<<"?)
                     if (arg.path == null) {
-                        destination.append(arg.content)
+                        destination.append(arg.content.orEmpty())
                     } else {
                         destination.append("file:").append(arg.path)
                     }

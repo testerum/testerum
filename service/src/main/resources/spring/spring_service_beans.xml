@@ -63,10 +63,10 @@
     </bean>
 
     <bean id="composedStepsService" class="net.qutester.service.step.impl.ComposedStepsService">
-        <constructor-arg name="jsonObjectMapper" ref="jsonObjectMapper"/>
         <constructor-arg name="uiToFileStepDefMapper" ref="uiToFileStepDefMapper"/>
         <constructor-arg name="fileToUiStepMapper" ref="fileToUiStepMapper"/>
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
+        <constructor-arg name="warningService" ref="warningService"/>
     </bean>
 
     <bean id="testResolver" class="net.qutester.service.tests.resolver.TestResolver">

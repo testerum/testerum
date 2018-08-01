@@ -3,10 +3,10 @@ package net.qutester.model.test
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.testerum.common_kotlin.indent
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.step.StepCall
 import net.qutester.model.warning.Warning
-import net.qutester.util.indent
 
 
 data class TestModel @JsonCreator constructor(@JsonProperty("path") val path: Path,

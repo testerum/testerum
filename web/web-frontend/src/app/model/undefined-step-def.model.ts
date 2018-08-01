@@ -17,6 +17,10 @@ export class UndefinedStepDef implements StepDef, Serializable<UndefinedStepDef>
     warnings: Array<Warning> = [];
     descendantsHaveWarnings: boolean = false;
 
+    get hasOwnOrDescendantWarnings(): boolean {
+        return this.warnings.length > 0 || this.descendantsHaveWarnings;
+    }
+
     deserialize(input: Object): UndefinedStepDef {
         this.id = input["id"];
         this.path = null;

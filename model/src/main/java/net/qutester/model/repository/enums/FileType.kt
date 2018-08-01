@@ -22,7 +22,7 @@ enum class FileType constructor(val relativeRootDirectory: Path,
     FEATURE(Path.createInstance("features"), Feature.FILE_EXTENSION),
     TEST(Path.createInstance(   "features"), "test"),
 
-    STEP(Path.createInstance(     "composed_steps"), "step"),
+    COMPOSED_STEP(Path.createInstance(     "composed_steps"), "step"),
     RESULT(Path.createInstance(   "results"),        "result"),
     RESOURCE(Path.createInstance( "resources"),      "not_known"),
     VARIABLES(Path.createInstance("variables"),      "json"),

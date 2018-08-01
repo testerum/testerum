@@ -11,7 +11,6 @@ import {TextStepPatternPart} from "./text/parts/text-step-pattern-part.model";
 import {ParamStepPatternPart} from "./text/parts/param-step-pattern-part.model";
 import {UndefinedStepDef} from "./undefined-step-def.model";
 import {Warning} from "./warning/Warning";
-import {ArrayUtil} from "../utils/array.util";
 
 export class StepCall implements Serializable<StepCall> {
 
@@ -22,6 +21,10 @@ export class StepCall implements Serializable<StepCall> {
 
     private warnings: Array<Warning> = [];
     private descendantsHaveWarnings: boolean = false;
+
+    get hasOwnOrDescendantWarnings(): boolean {
+        return this.warnings.length > 0 || this.descendantsHaveWarnings;
+    }
 
     private allWarnings;
     getAllWarnings(): Array<Warning> {

@@ -116,13 +116,13 @@ class TestsService(private val testResolver: TestResolver,
     private fun saveExternalResource(arg: Arg): Arg {
         // todo: don't save if the content didn't change?
         val path: Path = arg.path
-                ?: return arg // if we don't have a path, then this is an external resource
+                ?: return arg // if we don't have a path, then this is an internal resource
 
         val resourceContext: ResourceContext = resourcesService.save(
                 ResourceContext(
                         oldPath = path,
                         path = path,
-                        body = arg.content
+                        body = arg.content.orEmpty()
                 )
         )
 
@@ -150,7 +150,7 @@ class TestsService(private val testResolver: TestResolver,
                     unresolvedUiTest,
                     throwExceptionOnNotFound = false
             )
-            val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest)
+            val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest, keepExistingWarnings = true)
 
             uiTests.add(resolvedUiTestWithWarnings)
         }
@@ -166,7 +166,7 @@ class TestsService(private val testResolver: TestResolver,
         val fileTest = TEST_PARSER.parse(testFile.body)
         val unresolvedUiTest = fileToUiTestMapper.mapToUiModel(fileTestDef = fileTest, testFile = testFile)
         val resolvedUiTest = testResolver.resolveComposedSteps(unresolvedUiTest, throwExceptionOnNotFound = false)
-        val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest)
+        val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest, keepExistingWarnings = true)
 
         return resolvedUiTestWithWarnings
     }
@@ -183,5 +183,8 @@ class TestsService(private val testResolver: TestResolver,
                 KnownPath(copyPath.destinationPath, FileType.TEST)
         )
     }
+
+    fun getWarnings(testModel: TestModel, keepExistingWarnings: Boolean): TestModel
+            = warningService.testWithWarnings(testModel, keepExistingWarnings)
 
 }

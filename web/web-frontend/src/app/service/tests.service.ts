@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Observable';
 import {TestModel} from "../model/test/test.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {CopyPath} from "../model/infrastructure/path/copy-path.model";
@@ -116,7 +116,7 @@ export class TestsService {
             .post<void>(this.TESTS_URL + "/directory/move", body, httpOptions);
     }
 
-    getAllAutomatedTestsUnderContaier(path: Path): Observable<Array<TestModel>>  {
+    getAllAutomatedTestsUnderContainer(path: Path): Observable<Array<TestModel>>  {
 
         const httpOptions = {
             params: new HttpParams()
@@ -127,4 +127,18 @@ export class TestsService {
             .get<Array<TestModel>>(this.TESTS_URL + "/automated/under-path", httpOptions)
             .map(TestsService.extractTestsModel);
     }
+
+    getWarnings(testModel:TestModel): Observable<TestModel> {
+        let body = testModel.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
+        return this.http
+            .post<TestModel>(this.TESTS_URL + "/warnings", body, httpOptions)
+            .map(TestsService.extractTestModel);
+    }
+
 }

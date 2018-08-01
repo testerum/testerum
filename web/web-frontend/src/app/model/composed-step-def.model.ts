@@ -21,6 +21,10 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
     warnings: Array<Warning> = [];
     descendantsHaveWarnings: boolean = false;
 
+    get hasOwnOrDescendantWarnings(): boolean {
+        return this.warnings.length > 0 || this.descendantsHaveWarnings;
+    }
+
     addStepCall(stepCall:StepCall): void {
         this.stepCalls.push(stepCall);
         this.stepPattern.ownVariableHolders.addEventListener(

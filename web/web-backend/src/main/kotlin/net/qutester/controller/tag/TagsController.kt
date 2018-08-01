@@ -1,4 +1,4 @@
-package net.qutester.controller
+package net.qutester.controller.tag
 
 import net.qutester.service.tags.TagsService
 import org.springframework.web.bind.annotation.RequestMapping
