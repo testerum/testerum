@@ -91,11 +91,11 @@ export class StepCall implements Serializable<StepCall> {
             '}'
     }
 
-    getTextWithParamValues(previewsPhase: StepPhaseEnum): string {
+    getTextWithParamValues(previousPhase: StepPhaseEnum): string {
         let paramIndex = 0;
 
         let phaseAsString: string = StepPhaseEnum[this.stepDef.phase];
-        if (this.stepDef.phase == previewsPhase) {
+        if (this.stepDef.phase == previousPhase) {
             phaseAsString = "And"
         }
         let stepText = StringUtils.toTitleCase(phaseAsString) + " ";
