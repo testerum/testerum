@@ -2,6 +2,7 @@ package http.response.verify
 
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then
+import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
 import com.testerum.common.json_diff.impl.node_comparer.JsonCompareResult
@@ -15,18 +16,17 @@ import http.response.verify.transformer.HttpResponseVerifyTransformer
 import net.qutester.model.resources.http.request.HttpRequest
 import net.qutester.model.resources.http.response.HttpResponse
 import net.qutester.model.resources.http.response.HttpResponseHeader
-import net.testerum.resource_manager.TestContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
 class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
-                              @Autowired val testContext: TestContext) {
+                              @Autowired val variables: TestVariables) {
     private val LOG = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
 
     @Then("I expect <<httpResponseVerify>> HTTP Response")
     fun verifyHttpResponse(@Param(transformer = HttpResponseVerifyTransformer::class) httpResponseVerify: HttpResponseVerify) {
-        val httpRequest: HttpRequest = testContext.getScenarioVariable("httpRequest") as HttpRequest
-        val httpResponse: HttpResponse = testContext.getScenarioVariable("httpResponse") as HttpResponse
+        val httpRequest: HttpRequest = variables["httpRequest"] as HttpRequest
+        val httpResponse: HttpResponse = variables["httpResponse"] as HttpResponse
 
         LOG.debug("Verifying HTTP Response [\n$httpResponse\n]")
 

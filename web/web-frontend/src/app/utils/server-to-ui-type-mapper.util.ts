@@ -46,7 +46,7 @@ export class ServerToUiTypeMapperUtil {
     public static mapServerToUi(serverType: string): string {
         let uiType = ServerToUiTypeMapperUtil.SERVER_TYPE_TO_UI_TYPE_MAP.get(serverType);
         if (uiType === undefined) {
-            throw new Error("Unknown data server type [" + serverType + "]");
+            return 'TEXT';
         }
 
         return uiType;

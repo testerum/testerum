@@ -1,18 +1,53 @@
 package com.testerum.common.expression_evaluator
 
+import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.UuidScriptingHelper
+import delight.nashornsandbox.NashornSandbox
+import delight.nashornsandbox.NashornSandboxes
+import javax.script.Bindings
+
 object ExpressionEvaluator {
 
-    /**
-     * @throws UnknownVariableException
-     */
-    fun evaluate(expression: String,
-                 context: Map<String, Any>): Any {
-        // for now, the expression can be a single variable reference
-        // later, we can use a Java script engine instead
-        val variableName = expression.trim()
+    // todo: make these configurable
+    private val helpers = listOf<ScriptingHelper>(
+            UuidScriptingHelper
+    )
 
-        return context[variableName]
-                ?: throw UnknownVariableException("variable [$variableName] cannot be found in the context")
+    private val sandbox: NashornSandbox = NashornSandboxes.create().apply {
+        allowPrintFunctions(true)
+
+        disallowAllClasses()
+
+        for (helper in helpers) {
+            for (allowedClass in helper.allowedClasses) {
+                allow(allowedClass)
+            }
+        }
+    }
+
+    fun evaluate(expression: String,
+                 context: Map<String, Any?>): Any? {
+        val bindings: Bindings = sandbox.createBindings().apply {
+            putAll(context)
+        }
+
+        try {
+            val enhancedExpression = enhanceExpression(expression)
+
+            return sandbox.eval(enhancedExpression, bindings)
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    private fun enhanceExpression(expression: String): String = buildString {
+        for (helper in helpers) {
+            append(helper.script)
+            append("\n")
+            append("\n")
+
+            append(expression)
+        }
     }
 
 }

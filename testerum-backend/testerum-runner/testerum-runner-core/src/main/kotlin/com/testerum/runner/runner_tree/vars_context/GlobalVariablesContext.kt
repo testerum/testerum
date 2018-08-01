@@ -18,4 +18,6 @@ class GlobalVariablesContext private constructor(private val vars: Map<String, S
         return vars[name]!!
     }
 
+    fun toMap(): Map<String, Any?> = vars
+
 }

@@ -22,4 +22,6 @@ class DynamicVariablesContext {
         return vars.put(name, value)
     }
 
+    fun toMap(): Map<String, Any?> = vars
+
 }
