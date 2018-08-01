@@ -4,6 +4,7 @@ import {JsonUtil} from "../../utils/json.util";
 import {ServerToUiTypeMapperUtil} from "../../utils/server-to-ui-type-mapper.util";
 import {ParamStepPatternPart} from "../text/parts/param-step-pattern-part.model";
 import {ResourceMapEnum} from "../../functionalities/resources/editors/resource-map.enum";
+import {Warning} from "../warning/Warning";
 
 export class Arg implements Serializable<Arg> {
 
@@ -14,6 +15,13 @@ export class Arg implements Serializable<Arg> {
     uiType: string;
     path: Path;
 
+    warnings: Array<Warning> = [];
+    descendantsHaveWarnings: boolean = false;
+
+    get hasOwnOrDescendantWarnings(): boolean {
+        return this.warnings.length > 0 || this.descendantsHaveWarnings;
+    }
+
     deserialize(input: Object): Arg {
         this.name = input["name"];
         this.serverType = input["type"];
@@ -23,6 +31,16 @@ export class Arg implements Serializable<Arg> {
         }
 
         this.content = ResourceMapEnum.deserializeInputForUiType(input["content"], this.uiType);
+
+        this.warnings = [];
+        for (let warning of (input['warnings'] || [])) {
+            this.warnings.push(
+                new Warning().deserialize(warning)
+            );
+        }
+
+        this.descendantsHaveWarnings = input['descendantsHaveWarnings'];
+
         return this;
     }
 
@@ -42,6 +60,7 @@ export class Arg implements Serializable<Arg> {
             ',"type":' + JsonUtil.stringify(this.uiType) +
             ',"path":' + JsonUtil.stringify(this.path) +
             ',"content":' + content +
+            ',"warnings": []' +
             '}';
     }
 

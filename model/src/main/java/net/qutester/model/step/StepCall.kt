@@ -16,7 +16,9 @@ data class StepCall @JsonCreator constructor(
         @JsonProperty("warnings") val warnings: List<Warning> = emptyList()
 ) {
 
-    private val _descendantsHaveWarnings: Boolean = (stepDef is ComposedStepDef) && (stepDef.hasOwnOrDescendantWarnings)
+    private val _descendantsHaveWarnings: Boolean
+            = ((stepDef is ComposedStepDef) && (stepDef.hasOwnOrDescendantWarnings))
+              || args.any { it.hasOwnOrDescendantWarnings }
 
     @get:JsonProperty("descendantsHaveWarnings")
     val descendantsHaveWarnings: Boolean

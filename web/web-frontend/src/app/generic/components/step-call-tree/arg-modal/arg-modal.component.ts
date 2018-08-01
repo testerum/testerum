@@ -130,7 +130,9 @@ export class ArgModalComponent {
                     this.argPath = selectedPath;
                     this.initializeIsSharedResource();
 
-                    this.resourceComponentRef.instance.name = this.argPath.fileName;
+                    if (this.argPath) {
+                        this.resourceComponentRef.instance.name = this.argPath.fileName;
+                    }
                     if (this.resourceComponentRef.instance.refresh) {
                         this.resourceComponentRef.instance.refresh()
                     }

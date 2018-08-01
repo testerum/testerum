@@ -28,21 +28,18 @@ import net.qutester.model.text.StepPattern
 import net.qutester.model.text.parts.ParamStepPatternPart
 import net.qutester.model.text.parts.StepPatternPart
 import net.qutester.model.text.parts.TextStepPatternPart
+import net.qutester.model.warning.Warning
 import net.qutester.service.mapper.file_arg_transformer.FileArgTransformer
 import net.qutester.service.mapper.util.ArgNameCodec
 import net.qutester.util.StepHashUtil
 import net.testerum.db_file.model.KnownPath
 import net.testerum.db_file.model.RepositoryFile
 import net.testerum.resource_manager.ResourceManager
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.lang.Exception
 
 open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
 
     companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(FileToUiStepMapper::class.java)
-
         private val ARG_PART_PARSER: ParserExecuter<List<FileArgPart>> = ParserExecuter(FileArgPartParserFactory.argParts())
     }
 
@@ -131,6 +128,7 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
 
     private fun mapStepCallArg(argStepCallPart: FileArgStepCallPart, vars: List<FileStepVar>): Arg {
         val argParts: List<FileArgPart> = ARG_PART_PARSER.parse(argStepCallPart.text)
+        val warnings = mutableListOf<Warning>()
 
         // 1. resolve variables
         // todo: re-write this code to make it easier to understand
@@ -160,27 +158,25 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
 
         // 2. load resource if text starts with "file:" (ignore if it's escaped)
         var path: Path? = null
-        val argContent: String = when {
+        val argContent: String? = when {
             argPartWithResolvedVariables.startsWith("file:") -> {
                 val pathAsString: String = argPartWithResolvedVariables.removePrefix("file:")
 
-                // todo: don't return as text - return as unresolved Arg
                 val fileType: FileType? = FileType.getByFileName(pathAsString)
                 if (fileType == null) {
-                    LOGGER.warn("cannot find a file type for [$pathAsString], returning arg as TEXT")
+                    warnings += Warning.externalResourceOfUnknownType(pathAsString)
 
-                    argPartWithResolvedVariables
+                    null
                 } else {
                     val knownPath = KnownPath(pathAsString, fileType)
 
                     path = knownPath.asPath()
 
-                    // todo: don't return as text - return as unresolved Arg
                     val resource: ResourceContext? = resourceManager.getResourceByPath(knownPath)
                     if (resource == null) {
-                        LOGGER.warn("cannot load the resource at [$pathAsString] (of type [$fileType]), returning arg as TEXT")
+                        warnings += Warning.externalResourceNotFound("${fileType.relativeRootDirectory}/$pathAsString")
 
-                        argPartWithResolvedVariables
+                        null
                     } else {
                         FileArgTransformer.fileFormatToJson(resource.body, fileType.resourceJavaType)
                     }
@@ -196,7 +192,8 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
                 name = computeArgName(argParts),
                 content = argContent.emptyToNull(),
                 type = "TEXT", // this can only be known after we resolve the step definitions
-                path = path
+                path = path,
+                warnings = warnings
         )
     }
 
