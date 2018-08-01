@@ -3,6 +3,7 @@ package com.testerum.runner
 import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.transformer.Transformer
+import com.testerum.common_kotlin.runWithThreadContextClassLoader
 import com.testerum.runner.BannerPrinter.printBanner
 import com.testerum.runner.cmdline.exiter.model.ExitCode
 import com.testerum.runner.cmdline.params.model.CmdlineParams
@@ -133,7 +134,10 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
         val globalVars = GlobalVariablesContext.from(
                 variablesService.getVariablesAsMap()
         )
-        val executionStatus: ExecutionStatus = suite.run(runnerContext, globalVars)
+
+        val executionStatus: ExecutionStatus = runWithThreadContextClassLoader(stepsClassLoader) {
+            suite.run(runnerContext, globalVars)
+        }
 
         return if (executionStatus == ExecutionStatus.PASSED) {
             ExitCode.OK
