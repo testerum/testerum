@@ -41,7 +41,6 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
         this.stepCallTreeComponentService.jsonTreeModel = this.jsonTreeModel;
         this.stepCallTreeComponentService.argModal = this.argModal;
         this.initTree();
-        console.log(this.stepCallTreeComponentService.id)
     }
 
     initTree() {

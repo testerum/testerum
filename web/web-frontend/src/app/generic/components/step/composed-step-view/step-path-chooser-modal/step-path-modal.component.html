@@ -18,6 +18,15 @@
 
             <!-- BODY-->
             <div class="modal-body">
+
+                <!-- PATH -->
+                <div class="my-line">
+                    <label class="my-label label-size">Selected Path: </label>
+                    <span class="my-value">
+                        {{getSelectedPathAsString()}}
+                    </span>
+                </div>
+
                 <json-tree [treeModel]="treeModel"
                            [modelComponentMapping]="modelComponentMapping">
                 </json-tree>
@@ -26,7 +35,7 @@
             <!-- FOOTER Buttons-->
             <div class="modal-footer">
                 <button (click)="onCancelAction();" type="button" class="btn btn-default">Cancel</button>
-                <button [disabled]="true"
+                <button [disabled]="!isStepSelected()"
                         (click)="onOkAction()"
                         class="btn btn-primary">
                     Ok

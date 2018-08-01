@@ -14,7 +14,7 @@ import {StepPathModalComponentService} from "./step-path-modal.component-service
 @Component({
     selector: 'step-path-modal',
     templateUrl: 'step-path-modal.component.html',
-    styleUrls: ['step-path-modal.component.scss'],
+    styleUrls: ['step-path-modal.component.scss', '../../../../../generic/css/generic.scss', '../../../../../generic/css/forms.scss'],
     providers:[StepPathModalComponentService]
 })
 
@@ -54,6 +54,14 @@ export class StepPathModalComponent implements OnInit, AfterViewInit, OnDestroy 
 
     onCancelAction() {
         this.clearStepModal();
+    }
+
+    isStepSelected(): boolean {
+        return this.stepPathModalComponentService.selectedStepPathContainer != null;
+    }
+
+    getSelectedPathAsString(): string {
+        return this.stepPathModalComponentService.selectedStepPathContainer ? this.stepPathModalComponentService.selectedStepPathContainer.path.toString() : "";
     }
 
     private clearStepModal() {
