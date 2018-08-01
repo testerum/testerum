@@ -104,7 +104,9 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
             stepToEdit
         ).subscribe((newStepDef: ComposedStepDef) => {
             this.model.stepCall.stepDef = newStepDef;
-            this.refreshStepCallArgsBasedOnStepDef()
+            this.refreshStepCallArgsBasedOnStepDef();
+
+            this.treeState.triggerWarningRecalculationChangesEvent();
         });
     }
 

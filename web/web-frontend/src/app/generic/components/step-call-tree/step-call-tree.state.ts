@@ -18,6 +18,7 @@ export class StepCallTreeState implements TreeState {
     isEditMode: boolean;
     editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
     stepCallOrderChangeEventEmitter: EventEmitter<void> = new EventEmitter<void>();
+    warningRecalculationChangesEventEmitter: EventEmitter<void> = new EventEmitter<void>();
 
     argModal: ArgModalComponent; //TODO Ionut: remove this, this Modal should be a stand alone compoent as StepChooserModal
 
@@ -26,6 +27,10 @@ export class StepCallTreeState implements TreeState {
     setEditMode(editMode: boolean) {
         this.editModeEventEmitter.emit(editMode);
         this.isEditMode = editMode
+    }
+
+    triggerWarningRecalculationChangesEvent(): void {
+        this.warningRecalculationChangesEventEmitter.emit();
     }
 
     triggerStepCallOrderChangeEvent(): void {

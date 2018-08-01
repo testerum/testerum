@@ -44,7 +44,6 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     private routeSubscription: Subscription;
     private editModeStepCallTreeSubscription: Subscription;
 
-
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
                 private testsTreeService: FeaturesTreeService,
@@ -66,6 +65,13 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
                 this.isEditMode = editMode;
             }
         );
+
+        this.stepCallTreeComponent.treeState.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
+            this.testsService.getWarnings(this.testModel).subscribe((newTestModel:TestModel) => {
+                ArrayUtil.replaceElementsInArray(this.testModel.stepCalls, newTestModel.stepCalls);
+                this.stepCallTreeComponent.initTree();
+            })
+        })
     }
 
     ngDoCheck(): void {
