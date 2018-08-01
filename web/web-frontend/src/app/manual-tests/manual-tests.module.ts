@@ -6,7 +6,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {DndModule} from "ng2-dnd";
 import {ManualTestsComponent} from "./tests/manual-tests.component";
-import {AngularSplitModule} from "angular-split";
+import {AngularSplitModule} from "angular-split-ng6";
 import {ManualTestsTreeService} from "./tests/tests-tree/manual-tests-tree.service";
 import {ManualTestsService} from "./tests/service/manual-tests.service";
 import {ManualTestTreeContainerComponent} from "./tests/tests-tree/container/manual-test-tree-container.component";

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ComponentRef, OnDestroy, OnInit, ViewChild,} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs";
 import {StepsService} from "../../../../../service/steps.service";
 import {ComposedContainerStepNode} from "../../../../../model/step/tree/composed-container-step-node.model";
 import {Path} from "../../../../../model/infrastructure/path/path.model";

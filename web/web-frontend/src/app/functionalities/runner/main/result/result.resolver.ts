@@ -1,5 +1,6 @@
+import {switchMap} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
-import {Resolve, ActivatedRouteSnapshot, Params, ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, ActivatedRouteSnapshot, Params, Resolve} from "@angular/router";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {ResultService} from "../../../../service/report/result.service";
 
@@ -9,7 +10,7 @@ export class ResultResolver implements Resolve<any> {
     private testId:string;
     constructor(private route: ActivatedRoute,
                 private resultService: ResultService) {
-        this.route.params.switchMap((params: Params) => this.testId = params['id']);
+        this.route.params.pipe(switchMap((params: Params) => this.testId = params['id']));
     }
 
     resolve(route: ActivatedRouteSnapshot) {

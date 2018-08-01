@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import 'rxjs/add/operator/switchMap';
+
 import {ManualTestsTreeService} from "../tests-tree/manual-tests-tree.service";
 import {IdUtils} from "../../../utils/id.util";
 import {ManualTestModel} from "../../model/manual-test.model";

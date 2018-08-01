@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ResourcesTreeNode} from "../../model/resources-tree-node.model";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 
 @Component({
     moduleId: module.id,

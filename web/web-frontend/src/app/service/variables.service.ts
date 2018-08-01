@@ -1,5 +1,6 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Variable} from "../model/variable/variable.model";
 import {JsonUtil} from "../utils/json.util";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
@@ -14,8 +15,8 @@ export class VariablesService {
 
     getVariables(): Observable<Array<Variable>> {
         return this.http
-            .get<Array<Variable>>(this.VARIABLES_URL)
-            .map(VariablesService.extractVariablesModel);
+            .get<Array<Variable>>(this.VARIABLES_URL).pipe(
+            map(VariablesService.extractVariablesModel));
     }
 
     save(model: Array<Variable>): Observable<Array<Variable>> {
@@ -27,8 +28,8 @@ export class VariablesService {
         };
 
         return this.http
-            .post<Array<Variable>>(this.VARIABLES_URL, body, httpOptions)
-            .map(VariablesService.extractVariablesModel);
+            .post<Array<Variable>>(this.VARIABLES_URL, body, httpOptions).pipe(
+            map(VariablesService.extractVariablesModel));
     }
 
     private static extractVariablesModel(res: Array<Variable>):Array<Variable> {

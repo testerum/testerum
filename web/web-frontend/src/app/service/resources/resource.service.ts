@@ -1,7 +1,8 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import {Observable} from 'rxjs';
+
+
 import {ResourceContext} from "../../model/resource/resource-context.model";
 import {RdbmsConnectionResourceType} from "../../functionalities/resources/tree/model/type/rdbms-connection.resource-type.model";
 import {Path} from "../../model/infrastructure/path/path.model";
@@ -29,8 +30,8 @@ export class ResourceService {
         };
 
         return this.http
-            .get<ResourceContext<any>>(this.RESOURCES_URL, httpOptions)
-            .map((res: ResourceContext<any>) => ResourceService.extractResource(res, resourceBodyInstanceForDeserialization));
+            .get<ResourceContext<any>>(this.RESOURCES_URL, httpOptions).pipe(
+            map((res: ResourceContext<any>) => ResourceService.extractResource(res, resourceBodyInstanceForDeserialization)));
     }
 
     deleteResource(path: Path): Observable<void> {
@@ -60,8 +61,8 @@ export class ResourceService {
         };
 
         return this.http
-            .post<any>(this.RESOURCES_URL, body, httpOptions)
-            .map(res => ResourceService.extractResource(res, resourceBodyInstanceForDeserialization));
+            .post<any>(this.RESOURCES_URL, body, httpOptions).pipe(
+            map(res => ResourceService.extractResource(res, resourceBodyInstanceForDeserialization)));
     }
 
     private setNameToPath(resource: ResourceContext<any>) {
@@ -84,8 +85,8 @@ export class ResourceService {
 
     getResourcePaths(resourceType: string): Observable<Array<Path>> {
         return this.http
-            .get<Array<string>>(this.RESOURCES_URL + "/shared/paths/" + resourceType)
-            .map(ResourceService.extractPaths);
+            .get<Array<string>>(this.RESOURCES_URL + "/shared/paths/" + resourceType).pipe(
+            map(ResourceService.extractPaths));
     }
 
     private static extractPaths(res: Array<string>): Array<Path> {
@@ -108,8 +109,8 @@ export class ResourceService {
         };
 
         return this.http
-            .put<Path>(this.RESOURCES_URL + "/directory", body, httpOptions)
-            .map(res => Path.deserialize(res));
+            .put<Path>(this.RESOURCES_URL + "/directory", body, httpOptions).pipe(
+            map(res => Path.deserialize(res)));
     }
 
     deleteDirectory(pathToDelete: Path): Observable<void> {

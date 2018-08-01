@@ -2,8 +2,8 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Arg} from "../../../../../../model/arg/arg.model";
 import {ResourceMapEnum} from "../../../../../../functionalities/resources/editors/resource-map.enum";
-import {Subscription} from "rxjs/Subscription";
 import {StepCallTreeComponentService} from "../../../step-call-tree.component-service";
+import {Subscription} from "rxjs";
 
 @Component({
     moduleId: module.id,

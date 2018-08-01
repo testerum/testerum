@@ -1,3 +1,4 @@
+import {filter, map} from 'rxjs/operators';
 import {Component, Input, OnInit} from '@angular/core';
 import {NavigationEnd, Params, Router} from "@angular/router";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
@@ -22,15 +23,15 @@ export class ManualTestTreeNodeComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.router.events
-            .filter(event => event instanceof NavigationEnd)
-            .map(route => {
+        this.router.events.pipe(
+            filter(event => event instanceof NavigationEnd),
+            map(route => {
                 let router = this.router;
                 let leafRoute: any = this.router.routerState.snapshot.root;
                 while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
 
                 return leafRoute.params
-            })
+            }),)
             .subscribe((params: Params) => {
                 let selectedPath = params['id'];
 

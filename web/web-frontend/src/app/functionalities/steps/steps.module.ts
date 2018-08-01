@@ -9,7 +9,7 @@ import {FormsModule} from "@angular/forms";
 import {DndModule} from "ng2-dnd";
 import {ComposedStepEditorComponent} from "./composed-step-editor/composed-step-editor.component";
 import {ComposedStepEditorResolver} from "./composed-step-editor/composed-step-editor.resolver";
-import {AngularSplitModule} from "angular-split";
+import {AngularSplitModule} from "angular-split-ng6";
 import {ResourcesModule} from "../resources/resources.module";
 import {JsonStepContainerComponent} from "./steps-tree/container/json-step-container.component";
 import {JsonStepNodeComponent} from "./steps-tree/container/node/json-step-node.component";

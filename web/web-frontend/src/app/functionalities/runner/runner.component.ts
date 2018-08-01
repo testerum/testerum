@@ -1,3 +1,4 @@
+import {filter, map} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Params, Router} from "@angular/router";
 
@@ -15,15 +16,15 @@ export class RunnerComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.router.events
-            .filter(event => event instanceof NavigationEnd)
-            .map(route => {
+        this.router.events.pipe(
+            filter(event => event instanceof NavigationEnd),
+            map(route => {
                 let router = this.router;
                 let leafRoute: any = this.router.routerState.snapshot.root;
                 while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
 
                 return leafRoute.params
-            })
+            }),)
             .subscribe((params: Params) => {
                     let action = params['path'];
                     if (action) {

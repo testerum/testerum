@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {ResourcesRoutingModule} from "./resources-routing.module";
 import {ResourcesComponent} from "./resources.component";
-import {AngularSplitModule} from "angular-split";
+import {AngularSplitModule} from "angular-split-ng6";
 import {DndModule} from "ng2-dnd";
 import {ModalModule, TabsModule} from "ngx-bootstrap";
 import {FormsModule} from "@angular/forms";

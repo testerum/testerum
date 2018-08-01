@@ -1,5 +1,6 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {TestModel} from "../model/test/test.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {CopyPath} from "../model/infrastructure/path/copy-path.model";
@@ -47,8 +48,8 @@ export class TestsService {
         };
 
         return this.http
-            .post<TestModel>(this.TESTS_URL + "/create", body, httpOptions)
-            .map(TestsService.extractTestModel);
+            .post<TestModel>(this.TESTS_URL + "/create", body, httpOptions).pipe(
+            map(TestsService.extractTestModel));
     }
 
     updateTest(updateTestModel:UpdateTestModel): Observable<TestModel> {
@@ -60,8 +61,8 @@ export class TestsService {
         };
 
         return this.http
-            .post<TestModel>(this.TESTS_URL + "/update", body, httpOptions)
-            .map(TestsService.extractTestModel);
+            .post<TestModel>(this.TESTS_URL + "/update", body, httpOptions).pipe(
+            map(TestsService.extractTestModel));
     }
 
     private static extractTestsModel(res: Array<TestModel>):Array<TestModel> {
@@ -82,8 +83,8 @@ export class TestsService {
         };
 
         return this.http
-            .get<TestModel>(this.TESTS_URL, httpOptions)
-            .map(TestsService.extractTestModel);
+            .get<TestModel>(this.TESTS_URL, httpOptions).pipe(
+            map(TestsService.extractTestModel));
     }
 
     private static extractTestModel(res: TestModel):TestModel {
@@ -124,8 +125,8 @@ export class TestsService {
         };
 
         return this.http
-            .get<Array<TestModel>>(this.TESTS_URL + "/automated/under-path", httpOptions)
-            .map(TestsService.extractTestsModel);
+            .get<Array<TestModel>>(this.TESTS_URL + "/automated/under-path", httpOptions).pipe(
+            map(TestsService.extractTestsModel));
     }
 
     getWarnings(testModel:TestModel): Observable<TestModel> {
@@ -137,8 +138,8 @@ export class TestsService {
         };
 
         return this.http
-            .post<TestModel>(this.TESTS_URL + "/warnings", body, httpOptions)
-            .map(TestsService.extractTestModel);
+            .post<TestModel>(this.TESTS_URL + "/warnings", body, httpOptions).pipe(
+            map(TestsService.extractTestModel));
     }
 
 }

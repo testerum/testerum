@@ -1,7 +1,6 @@
 import {ComponentFactoryResolver, Injectable} from "@angular/core";
 import {StepPathModalComponent} from "./step-path-modal.component";
-import {Observable} from "rxjs/Observable";
-import {Subject} from "rxjs/Subject";
+import {Observable, Subject} from "rxjs";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {AppComponent} from "../../../../../app.component";
 

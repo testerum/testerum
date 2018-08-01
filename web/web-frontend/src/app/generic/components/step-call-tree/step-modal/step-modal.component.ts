@@ -1,18 +1,8 @@
-import {
-    AfterViewInit,
-    Component,
-    ComponentFactoryResolver, ComponentRef,
-    OnDestroy,
-    OnInit,
-    ViewChild,
-    ViewContainerRef
-} from '@angular/core';
+import {AfterViewInit, Component, ComponentRef, OnDestroy, ViewChild} from '@angular/core';
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
 import {ModalDirective} from "ngx-bootstrap";
 import {ComposedStepViewComponent} from "../../step/composed-step-view/composed-step-view.component";
-import {StepModalService} from "./step-modal.service";
-import {Subject} from "rxjs/Subject";
-import {AppComponent} from "../../../../app.component";
+import {Subject} from "rxjs";
 
 @Component({
     selector: 'step-modal',

@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit, ViewChild,} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import 'rxjs/add/operator/switchMap';
+
 import {FeaturesTreeService} from "../features-tree/features-tree.service";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 import {Feature} from "../../../model/feature/feature.model";
 import {FeatureService} from "../../../service/feature.service";
 import {Path} from "../../../model/infrastructure/path/path.model";

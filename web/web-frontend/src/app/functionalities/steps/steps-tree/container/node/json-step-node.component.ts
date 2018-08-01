@@ -3,9 +3,8 @@ import {Router} from "@angular/router";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {StepTreeNodeModel} from "../../model/step-tree-node.model";
-import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
 import {UrlService} from "../../../../../service/url.service";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 
 @Component({
     moduleId: module.id,

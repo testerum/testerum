@@ -1,7 +1,8 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import {Observable} from 'rxjs';
+
+
 import {RdbmsConnectionConfig} from "../../../model/resource/rdbms/rdbms-connection-config.model";
 import {RdbmsDriver} from "../../../functionalities/resources/editors/database/connection/model/rdbms-driver.model";
 import {RdbmsSchemas} from "../../../functionalities/resources/editors/database/connection/model/rdbms-schemas.model";
@@ -27,8 +28,8 @@ export class RdbmsService {
         };
 
         return this.http
-            .post<RdbmsSchemas>(this.DB_CONNECTION_URL + "/schemas", body, httpOptions)
-            .map(response => new RdbmsSchemas().deserialize(response));
+            .post<RdbmsSchemas>(this.DB_CONNECTION_URL + "/schemas", body, httpOptions).pipe(
+            map(response => new RdbmsSchemas().deserialize(response)));
     }
 
     ping(host:string, port:number): Observable<boolean> {
@@ -45,8 +46,8 @@ export class RdbmsService {
 
     getDrivers(): Observable<Array<RdbmsDriver>> {
         return this.http
-            .get<Array<RdbmsDriver>>(this.DB_DRIVES_URL)
-            .map(RdbmsService.extractDrivers);
+            .get<Array<RdbmsDriver>>(this.DB_DRIVES_URL).pipe(
+            map(RdbmsService.extractDrivers));
     }
 
     private static extractDrivers(res: Array<RdbmsDriver>): Array<RdbmsDriver> {
@@ -66,7 +67,7 @@ export class RdbmsService {
         };
 
         return this.http
-            .get<RdbmsSchema>(this.DB_SCHEMA_URL, httpOptions)
-            .map(res => new RdbmsSchema().deserialize(res));
+            .get<RdbmsSchema>(this.DB_SCHEMA_URL, httpOptions).pipe(
+            map(res => new RdbmsSchema().deserialize(res)));
     }
 }
