@@ -23,7 +23,7 @@ data class Warning(val type: WarningType,
         )
 
         fun externalResourceNotFound(resourcePath: String): Warning {
-            val messageTemplate = MessageKey.WARNING_EXTERNAL_RESOURCE_NOT_FOUND.defaultValue
+            val messageTemplate = MessageKey.WARNING_ARG_EXTERNAL_RESOURCE_NOT_FOUND.defaultValue
 
             val message = MessageFormat.format(messageTemplate, resourcePath)
 
@@ -34,7 +34,7 @@ data class Warning(val type: WarningType,
         }
 
         fun externalResourceOfUnknownType(resourcePath: String): Warning {
-            val messageTemplate = MessageKey.WARNING_EXTERNAL_RESOURCE_OF_UNKNOWN_TYPE.defaultValue
+            val messageTemplate = MessageKey.WARNING_ARG_EXTERNAL_RESOURCE_OF_UNKNOWN_TYPE.defaultValue
 
             val message = MessageFormat.format(messageTemplate, resourcePath)
 
