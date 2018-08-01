@@ -13,6 +13,8 @@ import {TagsService} from "../../../../service/tags.service";
 import {ResourceMapEnum} from "../../../../functionalities/resources/editors/resource-map.enum";
 import {StepChooserService} from "../../step-chooser/step-chooser.service";
 import {StepCallTreeComponent} from "../../step-call-tree/step-call-tree.component";
+import {StepPathModalService} from "./step-path-chooser-modal/step-path-modal.service";
+import {Path} from "../../../../model/infrastructure/path/path.model";
 
 @Component({
     selector: 'composed-step-view',
@@ -30,6 +32,7 @@ export class ComposedStepViewComponent implements AfterContentChecked {
     StepPhaseEnum = StepPhaseEnum;
 
     pattern: string;
+    selectedPath: Path;
 
     areChildComponentsValid: boolean = true;
 
@@ -41,11 +44,18 @@ export class ComposedStepViewComponent implements AfterContentChecked {
     @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
 
     constructor(private stepChooserService: StepChooserService,
-                private tagsService: TagsService,) {
+                private stepPathModalService: StepPathModalService,
+                private tagsService: TagsService) {
     }
 
     ngAfterContentChecked(): void {
         this.pattern = this.model.stepPattern.getPatternText();
+    }
+
+    onBeforeSave() {
+        if (this.model.path == null) {
+            this.model.path = this.selectedPath;
+        }
     }
 
     onPatternChanged() {
@@ -71,7 +81,7 @@ export class ComposedStepViewComponent implements AfterContentChecked {
             stepCall.args.push(valueArg);
         }
 
-        this.stepCallTreeComponent.treeState.addStepCall(stepCall);
+        this.stepCallTreeComponent.stepCallTreeComponentService.addStepCall(stepCall);
     }
 
     enableEditTestMode(): void {
@@ -125,5 +135,11 @@ export class ComposedStepViewComponent implements AfterContentChecked {
     onTreeNodeDrop($event: any) {
         let stepToCopyTreeNode: StepTreeNodeModel = $event.dragData;
         this.onStepChose(stepToCopyTreeNode.stepDef)
+    }
+
+    onSelectStepPath() {
+        this.stepPathModalService.showModal().subscribe((selectedPath: Path)=> {
+            this.selectedPath = selectedPath;
+        })
     }
 }

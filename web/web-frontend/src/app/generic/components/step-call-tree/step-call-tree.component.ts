@@ -14,11 +14,12 @@ import {ArgNodeComponent} from "./nodes/arg-node/arg-node.component";
 import {ArgModalComponent} from "./arg-modal/arg-modal.component";
 import {StepCallEditorContainerComponent} from "./nodes/step-call-editor-container/step-call-editor-container.component";
 import {StepCallEditorContainerModel} from "./model/step-call-editor-container.model";
-import {StepCallTreeState} from "./step-call-tree.state";
+import {StepCallTreeComponentService} from "./step-call-tree.component-service";
 
 @Component({
     selector: 'step-call-tree',
-    templateUrl: 'step-call-tree.component.html'
+    templateUrl: 'step-call-tree.component.html',
+    providers: [StepCallTreeComponentService]
 })
 export class StepCallTreeComponent implements OnInit, OnChanges {
 
@@ -27,8 +28,6 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
     @ViewChild(ArgModalComponent) argModal: ArgModalComponent;
 
     jsonTreeModel: JsonTreeModel = new JsonTreeModel();
-    treeState: StepCallTreeState = new StepCallTreeState();
-
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(StepCallContainerModel, StepCallContainerComponent)
         .addPair(StepCallEditorContainerModel, StepCallEditorContainerComponent)
@@ -36,26 +35,23 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
         .addPair(ParamsContainerModel, ArgsContainerComponent)
         .addPair(ArgNodeModel, ArgNodeComponent);
 
-    constructor() {
-    }
+    constructor(public stepCallTreeComponentService: StepCallTreeComponentService) { }
 
     ngOnInit(): void {
-        this.treeState.jsonTreeModel = this.jsonTreeModel;
-        this.treeState.argModal = this.argModal;
+        this.stepCallTreeComponentService.jsonTreeModel = this.jsonTreeModel;
+        this.stepCallTreeComponentService.argModal = this.argModal;
         this.initTree();
+        console.log(this.stepCallTreeComponentService.id)
     }
 
     initTree() {
         StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel);
-        this.treeState.stepCalls = this.stepCalls
+        this.stepCallTreeComponentService.stepCalls = this.stepCalls
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (this.stepCalls != this.treeState.stepCalls) {
+        if (this.stepCalls != this.stepCallTreeComponentService.stepCalls) {
             this.initTree();
         }
     }
-
-
-
 }

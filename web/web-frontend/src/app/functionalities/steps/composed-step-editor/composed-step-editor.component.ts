@@ -74,6 +74,7 @@ export class ComposedStepEditorComponent implements OnInit {
     }
 
     saveAction(): void {
+        this.composedStepViewComponent.onBeforeSave();
         if (this.isCreateAction) {
             this.stepsService.createComposedStepDef(this.model).subscribe(
                 composedStepDef => {

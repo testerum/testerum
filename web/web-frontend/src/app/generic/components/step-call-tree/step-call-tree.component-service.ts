@@ -1,5 +1,4 @@
-import {TreeState} from "../json-tree/model/state/TreeState";
-import {EventEmitter} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import {StepCallEditorContainerModel} from "./model/step-call-editor-container.model";
 import {ArgModalComponent} from "./arg-modal/arg-modal.component";
 import {JsonTreeContainer} from "../json-tree/model/json-tree-container.model";
@@ -11,7 +10,8 @@ import {SubStepsContainerModel} from "./model/sub-steps-container.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
 import {ArrayUtil} from "../../../utils/array.util";
 
-export class StepCallTreeState implements TreeState {
+@Injectable()
+export class StepCallTreeComponentService {
     jsonTreeModel: JsonTreeModel;
     stepCalls: Array<StepCall> = [];
 
@@ -23,6 +23,17 @@ export class StepCallTreeState implements TreeState {
     argModal: ArgModalComponent; //TODO Ionut: remove this, this Modal should be a stand alone compoent as StepChooserModal
 
     currentStepCallEditorModel: StepCallEditorContainerModel;
+
+    id: string = this.guid();
+
+    private guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    }
 
     setEditMode(editMode: boolean) {
         this.editModeEventEmitter.emit(editMode);

@@ -7,7 +7,6 @@ import {JsonTreeContainerOptions} from "../behavior/JsonTreeContainerOptions";
 
 export abstract class JsonTreePathContainer extends JsonTreePathNode implements JsonTreeContainer {
 
-
     name: string;
     readonly path: Path;
     parentContainer: JsonTreePathContainer;

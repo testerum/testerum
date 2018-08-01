@@ -69,8 +69,7 @@ export class StepChooserService {
         this.modalSubject.complete();
         this.modalComponent.modal.hide();
 
-        let modalIndex = AppComponent.rootViewContainerRef.indexOf(this.modalComponentRef);
-        AppComponent.rootViewContainerRef.remove(modalIndex);
+        this.modalComponentRef.destroy();
 
         this.modalComponentRef = null;
         this.modalComponent = null;

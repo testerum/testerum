@@ -1,0 +1,32 @@
+<div class="node">
+
+    <div class="full-line"
+         [class.tree-leaf-selected]="isSelected && model"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
+         (click)="selectNode()"
+         (dblclick)="collapseNode()">
+
+        <i class="fa tree-node-new-folder-icon" aria-hidden="true"
+           [class.fa-folder]="!isOpenedNode()"
+           [class.fa-folder-open]="isOpenedNode()"></i>
+
+        {{model.name}}
+
+        <!-- BUTTONS RENDERING -->
+        <div class="button-panel btn-group"
+             [class.hidden]="!hasMouseOver">
+
+            <div title="Create Folder" class="btn btn-default btn-xs btn-group"
+                 (click)="showCreateDirectoryModal(); $event.stopPropagation()">
+                <span class="glyphicon glyphicon-folder-open"></span>
+            </div>
+        </div>
+    </div>
+
+    <json-children [jsonTreeNodeState]="jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

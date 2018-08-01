@@ -61,12 +61,12 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             this.setEditMode(IdUtils.isTemporaryId(this.testModel.id));
             this.isCreateAction = !this.testModel.path.fileName
         });
-        this.editModeStepCallTreeSubscription = this.stepCallTreeComponent.treeState.editModeEventEmitter.subscribe( (editMode: boolean) => {
+        this.editModeStepCallTreeSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.editModeEventEmitter.subscribe( (editMode: boolean) => {
                 this.isEditMode = editMode;
             }
         );
 
-        this.stepCallTreeComponent.treeState.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
+        this.stepCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
             this.testsService.getWarnings(this.testModel).subscribe((newTestModel:TestModel) => {
                 ArrayUtil.replaceElementsInArray(this.testModel.stepCalls, newTestModel.stepCalls);
                 this.stepCallTreeComponent.initTree();
@@ -96,7 +96,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     }
 
     addStep() {
-        this.stepCallTreeComponent.treeState.addStepCallEditor(this.stepCallTreeComponent.jsonTreeModel);
+        this.stepCallTreeComponent.stepCallTreeComponentService.addStepCallEditor(this.stepCallTreeComponent.jsonTreeModel);
     }
 
     setEditMode(isEditMode: boolean) {
@@ -107,7 +107,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
         }
 
         this.isEditMode = isEditMode;
-        this.stepCallTreeComponent.treeState.setEditMode(isEditMode);
+        this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
     }
 
     enableEditTestMode(): void {

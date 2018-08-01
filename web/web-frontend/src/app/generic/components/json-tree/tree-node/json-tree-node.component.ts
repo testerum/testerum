@@ -16,7 +16,6 @@ import {JsonTreeNode} from "../model/json-tree-node.model";
 import {JsonTreeNodeState} from "../model/json-tree-node-state.model";
 import {JsonContainerNodeComponent} from "./container/json-container-node.component";
 import {JsonLeafNodeComponent} from "./leaf/json-leaf-node.component";
-import {TreeState} from "../model/state/TreeState";
 
 @Component({
     moduleId: module.id,
@@ -31,7 +30,6 @@ export class JsonTreeNodeComponent implements OnInit, OnChanges {
     @Input() allowContainerSelection: boolean = false;
 
     @Input() model:JsonTreeNode;
-    @Input() treeState:TreeState;
     @Input() modelComponentMapping: ModelComponentMapping;
 
     @ViewChild('childRoot', {read: ViewContainerRef}) childRoot:ViewContainerRef;
@@ -45,13 +43,12 @@ export class JsonTreeNodeComponent implements OnInit, OnChanges {
         if (!this.model) {
             return;
         }
-        let componentOfModel:Type<any> = this.model.isContainer()? JsonContainerNodeComponent : JsonLeafNodeComponent;
+        let componentOfModel:Type<any> = this.model.isContainer()? JsonContainerNodeComponent: JsonLeafNodeComponent;
         const factory:ComponentFactory<any> = this.componentFactoryResolver.resolveComponentFactory(componentOfModel);
 
         this.modelComponentRef = this.childRoot.createComponent(factory);
 
         this.modelComponentRef.instance.model = this.model;
-        this.modelComponentRef.instance.treeState = this.treeState;
         this.modelComponentRef.instance.modelComponentMapping = this.modelComponentMapping;
         this.modelComponentRef.instance.isLastNode = this.isLastNode;
         this.modelComponentRef.instance.isRootNode = this.isRootNode;

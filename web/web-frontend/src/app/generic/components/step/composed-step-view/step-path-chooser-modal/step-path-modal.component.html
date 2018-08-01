@@ -1,0 +1,37 @@
+
+<div bsModal #modal="bs-modal" id="modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <div class="modal-header-buttons">
+                    <button (click)="onCancelAction();$event.stopPropagation();" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <h4 class="modal-title" id="myModalLabel">
+                    Step Path Chooser
+                </h4>
+            </div>
+
+            <!-- BODY-->
+            <div class="modal-body">
+                <json-tree [treeModel]="treeModel"
+                           [modelComponentMapping]="modelComponentMapping">
+                </json-tree>
+            </div>
+
+            <!-- FOOTER Buttons-->
+            <div class="modal-footer">
+                <button (click)="onCancelAction();" type="button" class="btn btn-default">Cancel</button>
+                <button [disabled]="true"
+                        (click)="onOkAction()"
+                        class="btn btn-primary">
+                    Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

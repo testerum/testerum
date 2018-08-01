@@ -49,10 +49,24 @@
 
     <!-- PATH -->
     <div class="my-line">
-        <label class="my-label label-size">Path</label>
-        <span class="my-value">
+        <label class="my-label label-size" for="pathInput">Path</label>
+        <span class="my-value" *ngIf="model.path">
             {{model.path?.toString() || ""}}
         </span>
+        <div class="my-value input-group" *ngIf="!model.path">
+            <input [ngModel]="selectedPath?.toString()"
+                   readonly
+                   type="text"
+                   class="form-control"
+                   id="pathInput" name="pathInput">
+            <span class="input-group-btn">
+                <button (click)="onSelectStepPath()"
+                        class="btn btn-default"
+                        type="button">
+                    Select Path
+                </button>
+            </span>
+        </div>
     </div>
 
     <!-- TAGS -->

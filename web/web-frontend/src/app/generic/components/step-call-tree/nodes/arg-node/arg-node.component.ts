@@ -15,7 +15,7 @@ import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/
 import {ArgNodePanelComponent} from "./arg-node-panel/arg-node-panel.component";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {Subscription} from "rxjs/Subscription";
-import {StepCallTreeState} from "../../step-call-tree.state";
+import {StepCallTreeComponentService} from "../../step-call-tree.component-service";
 
 @Component({
     selector: 'arg-node',
@@ -29,7 +29,6 @@ import {StepCallTreeState} from "../../step-call-tree.state";
 })
 export class ArgNodeComponent implements OnInit {
     @Input() model: ArgNodeModel;
-    @Input() treeState: StepCallTreeState;
 
     hasMouseOver: boolean = false;
     showChildren: boolean = true;
@@ -39,7 +38,8 @@ export class ArgNodeComponent implements OnInit {
 
     private afterUpdateSubscription: Subscription;
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+    constructor(private componentFactoryResolver: ComponentFactoryResolver,
+                private stepCallTreeComponentService: StepCallTreeComponentService) {
     }
 
     ngOnInit() {
@@ -54,13 +54,13 @@ export class ArgNodeComponent implements OnInit {
         resourceComponentRef.instance.editMode = false;
 
         this.argNodePanelComponent.editButtonClickedEventEmitter.subscribe(event => {
-            let argModal = this.treeState.argModal;
+            let argModal = this.stepCallTreeComponentService.argModal;
             argModal.arg = this.model.arg;
             argModal.stepParameter = this.model.stepPatternParam;
             argModal.show();
         });
 
-        let argModal = this.treeState.argModal;
+        let argModal = this.stepCallTreeComponentService.argModal;
         this.afterUpdateSubscription = argModal.afterUpdateEventEmitter.subscribe(event =>{
             resourceComponentRef.instance.refresh();
         });
@@ -88,6 +88,6 @@ export class ArgNodeComponent implements OnInit {
     }
 
     isEditMode(): boolean {
-        return this.treeState.isEditMode;
+        return this.stepCallTreeComponentService.isEditMode;
     }
 }

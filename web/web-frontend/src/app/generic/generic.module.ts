@@ -80,6 +80,9 @@ import {StepModalComponent} from "./components/step-call-tree/step-modal/step-mo
 import {StepModalService} from "./components/step-call-tree/step-modal/step-modal.service";
 import {ComposedStepViewComponent} from "./components/step/composed-step-view/composed-step-view.component";
 import {ComposedStepParametersComponent} from "./components/step/composed-step-view/composed-step-parameters/composed-step-parameters.component";
+import {StepPathModalService} from "./components/step/composed-step-view/step-path-chooser-modal/step-path-modal.service";
+import {StepPathModalComponent} from "./components/step/composed-step-view/step-path-chooser-modal/step-path-modal.component";
+import {StepPathContainerComponent} from "./components/step/composed-step-view/step-path-chooser-modal/nodes/step-path-container.component";
 
 @NgModule({
     imports: [
@@ -198,6 +201,8 @@ import {ComposedStepParametersComponent} from "./components/step/composed-step-v
         NewSharedResourcePathModalComponent,
         SelectSharedResourceModalComponent,
         StepModalComponent,
+        StepPathModalComponent,
+        StepPathContainerComponent,
 
         ComposedStepViewComponent,
         ComposedStepParametersComponent,
@@ -217,6 +222,7 @@ import {ComposedStepParametersComponent} from "./components/step/composed-step-v
         ExecutionPieService,
         PathChooserService,
         StepModalService,
+        StepPathModalService,
 
         MessageService,
     ],
@@ -244,9 +250,11 @@ import {ComposedStepParametersComponent} from "./components/step/composed-step-v
         JsonContainerNodeComponent,
         JsonLeafNodeComponent,
         JsonTreeContainerEditor,
+        StepPathContainerComponent,
 
         StepModalComponent,
         StepChooserComponent,
+        StepPathModalComponent,
 
         // ARG renderer components
         HttpRequestComponent,

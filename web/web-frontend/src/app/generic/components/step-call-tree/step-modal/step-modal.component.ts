@@ -43,6 +43,7 @@ export class StepModalComponent implements AfterViewInit, OnDestroy {
     }
 
     onOkAction() {
+        this.composedStepViewComponent.onBeforeSave();
         this.modalSubject.next(this.model);
         this.clearStepModal();
     }
@@ -55,8 +56,7 @@ export class StepModalComponent implements AfterViewInit, OnDestroy {
         this.modalSubject.complete();
         this.modal.hide();
 
-        let modalIndex = AppComponent.rootViewContainerRef.indexOf(this.modalComponentRef);
-        AppComponent.rootViewContainerRef.remove(modalIndex);
+        this.modalComponentRef.destroy();
 
         this.modalComponentRef = null;
         this.modalSubject = null;

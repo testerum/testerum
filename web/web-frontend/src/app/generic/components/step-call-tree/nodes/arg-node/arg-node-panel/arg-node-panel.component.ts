@@ -3,7 +3,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Arg} from "../../../../../../model/arg/arg.model";
 import {ResourceMapEnum} from "../../../../../../functionalities/resources/editors/resource-map.enum";
 import {Subscription} from "rxjs/Subscription";
-import {StepCallTreeState} from "../../../step-call-tree.state";
+import {StepCallTreeComponentService} from "../../../step-call-tree.component-service";
 
 @Component({
     moduleId: module.id,
@@ -27,7 +27,6 @@ import {StepCallTreeState} from "../../../step-call-tree.state";
 export class ArgNodePanelComponent implements OnInit, OnDestroy {
 
     @Input() arg: Arg;
-    @Input() treeState: StepCallTreeState;
 
     collapsed: boolean = false;
     animationState: string = 'open';
@@ -44,12 +43,12 @@ export class ArgNodePanelComponent implements OnInit, OnDestroy {
     editButtonClickedEventEmitter: EventEmitter<void> = new EventEmitter<void>();
 
     editModeSubscription: Subscription;
-    constructor(){
+    constructor(private stepCallTreeComponentService: StepCallTreeComponentService){
     }
 
     ngOnInit(): void {
-        this.isEditMode = this.treeState.isEditMode;
-        this.editModeSubscription = this.treeState.editModeEventEmitter.subscribe(
+        this.isEditMode = this.stepCallTreeComponentService.isEditMode;
+        this.editModeSubscription = this.stepCallTreeComponentService.editModeEventEmitter.subscribe(
             (editMode: boolean) => {this.isEditMode = editMode}
         );
     }
@@ -60,7 +59,7 @@ export class ArgNodePanelComponent implements OnInit, OnDestroy {
 
     editOrViewResourceInModal() {
         if (!this.isEditMode) {
-            this.treeState.editModeEventEmitter.emit(true);
+            this.stepCallTreeComponentService.editModeEventEmitter.emit(true);
         }
         this.editButtonClickedEventEmitter.emit();
     }
