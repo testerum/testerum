@@ -8,7 +8,7 @@ import {EmptyJsonVerify} from "../../model/empty-json-verify.model";
     moduleId: module.id,
     selector: 'json-empty-verify-node',
     templateUrl: 'json-empty-verify-node.component.html',
-    styleUrls:['../../json-verify-tree.generic.scss', '../../../../../../../generic/css/tree.scss', '../../../../../../../generic/css/generic.scss']
+    styleUrls:['../../json-verify-tree.generic.scss', '../../../../../../../generic/css/tree.scss']
 })
 export class JsonEmptyVerifyNodeComponent {
 

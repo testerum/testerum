@@ -20,7 +20,7 @@ import {MarkdownEditorComponent} from "../../../generic/components/markdown-edit
     moduleId: module.id,
     selector: 'test-editor',
     templateUrl: 'test-editor.component.html',
-    styleUrls: ['test-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss'],
+    styleUrls: ['test-editor.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{

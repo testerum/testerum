@@ -18,7 +18,7 @@ import {TagsService} from "../../../service/tags.service";
     moduleId: module.id,
     selector: 'feature-editor',
     templateUrl: 'feature-editor.component.html',
-    styleUrls: ['feature-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
+    styleUrls: ['feature-editor.component.scss']
 })
 export class FeatureEditorComponent implements OnInit, OnDestroy {
     markdownEditorOptions = {

@@ -19,7 +19,7 @@ import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dia
     moduleId: module.id,
     selector: 'composed-step-editor',
     templateUrl: 'composed-step-editor.component.html',
-    styleUrls: ['./composed-step-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
+    styleUrls: ['./composed-step-editor.component.scss']
 })
 
 export class ComposedStepEditorComponent implements OnInit {

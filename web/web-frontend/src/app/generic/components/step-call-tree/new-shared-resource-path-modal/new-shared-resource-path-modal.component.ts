@@ -12,9 +12,7 @@ import {Observable, Subject} from "rxjs";
     selector: 'new-shared-resource-path-modal',
     templateUrl: 'new-shared-resource-path-modal.component.html',
     styleUrls: [
-        'new-shared-resource-path-modal.component.scss',
-        '../../../../generic/css/generic.scss',
-        '../../../../generic/css/forms.scss'
+        'new-shared-resource-path-modal.component.scss'
     ],
 })
 export class NewSharedResourcePathModalComponent implements OnInit {

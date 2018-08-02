@@ -10,7 +10,6 @@ import {ManualTestsTreeExecutorContainerModel} from "../model/manual-tests-tree-
     styleUrls: [
         'manual-tests-executor-tree-container.component.scss',
         '../../../../generic/components/json-tree/json-tree.generic.scss',
-        '../../../../generic/css/generic.scss',
         '../../../../generic/css/tree.scss'
     ]
 })

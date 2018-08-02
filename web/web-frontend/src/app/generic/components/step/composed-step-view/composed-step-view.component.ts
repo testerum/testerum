@@ -19,7 +19,7 @@ import {Path} from "../../../../model/infrastructure/path/path.model";
 @Component({
     selector: 'composed-step-view',
     templateUrl: 'composed-step-view.component.html',
-    styleUrls: ['composed-step-view.component.scss', '../../../../generic/css/generic.scss', '../../../../generic/css/forms.scss'],
+    styleUrls: ['composed-step-view.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 

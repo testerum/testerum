@@ -19,7 +19,7 @@ import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_moda
     moduleId: module.id,
     selector: 'test-editor',
     templateUrl: 'manual-test-editor.component.html',
-    styleUrls: ['manual-test-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
+    styleUrls: ['manual-test-editor.component.scss']
 })
 export class ManualTestEditorComponent implements OnInit {
 

@@ -6,8 +6,7 @@ import {HttpRequestService} from "../http-request.service";
 @Component({
     moduleId: module.id,
     selector: 'http-params',
-    templateUrl: 'http-params.component.html',
-    styleUrls: ['../../../../../../generic/css/generic.scss']
+    templateUrl: 'http-params.component.html'
 })
 
 export class HttpParamsComponent implements OnInit {

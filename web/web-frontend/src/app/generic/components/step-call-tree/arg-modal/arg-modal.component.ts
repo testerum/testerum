@@ -28,8 +28,7 @@ import {BasicResource} from "../../../../model/resource/basic/basic-resource.mod
     selector: 'arg-modal',
     templateUrl: 'arg-modal.component.html',
     styleUrls: [
-        'arg-modal.component.scss',
-        '../../../../generic/css/generic.scss'
+        'arg-modal.component.scss'
     ],
 })
 export class ArgModalComponent {

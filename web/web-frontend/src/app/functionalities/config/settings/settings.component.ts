@@ -8,7 +8,7 @@ import {SettingTypeEnum} from "./model/setting-type.enum";
 @Component({
     selector: 'settings',
     templateUrl: 'settings.component.html',
-    styleUrls: ['settings.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss'],
+    styleUrls: ['settings.component.scss'],
 })
 
 export class SettingsComponent implements OnInit {

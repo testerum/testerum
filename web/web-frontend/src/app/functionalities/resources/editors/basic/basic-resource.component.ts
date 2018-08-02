@@ -11,9 +11,7 @@ import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-patt
     templateUrl: 'basic-resource.component.html',
     styleUrls: [
         'basic-resource.component.scss',
-        '../resource-editor.scss',
-        '../../../../generic/css/generic.scss',
-        '../../../../generic/css/forms.scss'
+        '../resource-editor.scss'
     ]
 })
 export class BasicResourceComponent extends ResourceComponent<BasicResource> implements OnInit {

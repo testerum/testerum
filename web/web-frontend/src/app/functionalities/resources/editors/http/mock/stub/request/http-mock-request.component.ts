@@ -9,9 +9,7 @@ import {CollapsablePanelComponent} from "../../../../../../../generic/components
     selector: 'http-mock-request',
     templateUrl: 'http-mock-request.component.html',
     styleUrls: [
-        'http-mock-request.component.scss',
-        '../../../../../../../generic/css/generic.scss',
-        '../../../../../../../generic/css/forms.scss'
+        'http-mock-request.component.scss'
     ]
 })
 

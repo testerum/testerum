@@ -11,7 +11,7 @@ import {ManualTestsTreeExecutorNodeModel} from "./tree/model/manual-tests-tree-e
 @Component({
     selector: 'manual-tests-executor',
     templateUrl: 'manual-tests-executor.component.html',
-    styleUrls: ['manual-tests-executor.component.scss', '../../generic/css/forms.scss', "../../generic/css/main-container.scss"]
+    styleUrls: ['manual-tests-executor.component.scss', "../../generic/css/main-container.scss"]
 })
 
 export class ManualTestsExecutorComponent implements OnInit {

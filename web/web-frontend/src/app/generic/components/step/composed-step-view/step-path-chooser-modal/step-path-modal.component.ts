@@ -14,7 +14,7 @@ import {StepPathModalComponentService} from "./step-path-modal.component-service
 @Component({
     selector: 'step-path-modal',
     templateUrl: 'step-path-modal.component.html',
-    styleUrls: ['step-path-modal.component.scss', '../../../../../generic/css/generic.scss', '../../../../../generic/css/forms.scss'],
+    styleUrls: ['step-path-modal.component.scss'],
     providers:[StepPathModalComponentService]
 })
 

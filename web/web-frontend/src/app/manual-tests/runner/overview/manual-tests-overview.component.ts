@@ -4,7 +4,7 @@ import {ManualTestsOverviewService} from "./manual-tests-overview.service";
 @Component({
     selector: 'manual-tests-overview',
     templateUrl: 'manual-tests-overview.component.html',
-    styleUrls: ['manual-tests-overview.component.scss', '../../../generic/css/forms.scss']
+    styleUrls: ['manual-tests-overview.component.scss']
 })
 
 export class ManualTestsOverviewComponent implements OnInit {

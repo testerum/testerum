@@ -13,8 +13,7 @@ import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
     styleUrls:[
         'json-array-verify-node.component.scss',
         '../../json-verify-tree.generic.scss',
-        '../../../../../../../generic/css/tree.scss',
-        '../../../../../../../generic/css/generic.scss'
+        '../../../../../../../generic/css/tree.scss'
     ]
 })
 

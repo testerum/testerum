@@ -18,9 +18,7 @@ import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-p
     templateUrl: 'rdbms-verify.component.html',
     styleUrls: [
         'rdbms-verify.component.scss',
-        '../../resource-editor.scss',
-        '../../../../../generic/css/generic.scss',
-        '../../../../../generic/css/forms.scss'
+        '../../resource-editor.scss'
     ]
 })
 export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implements OnInit {

@@ -6,7 +6,7 @@ import {Observable, Subject} from "rxjs";
 @Component({
     selector: 'update-incompatibility-dialog',
     templateUrl: 'update-incompatibility-dialog.component.html',
-    styleUrls: ['update-incompatibility-dialog.component.scss', '../../../../generic/css/generic.scss']
+    styleUrls: ['update-incompatibility-dialog.component.scss']
 })
 export class UpdateIncompatibilityDialogComponent {
 

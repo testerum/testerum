@@ -11,9 +11,7 @@ import {ParamStepPatternPart} from "../../../../../../model/text/parts/param-ste
     templateUrl: 'http-mock-server.component.html',
     styleUrls: [
         'http-mock-server.component.scss',
-        '../../../resource-editor.scss',
-        '../../../../../../generic/css/generic.scss',
-        '../../../../../../generic/css/forms.scss'
+        '../../../resource-editor.scss'
     ]
 })
 export class HttpMockServerComponent extends ResourceComponent<HttpMockServer> implements OnInit {

@@ -14,8 +14,7 @@ import 'brace/theme/eclipse';
     selector: 'http-body',
     templateUrl: 'http-body.component.html',
     styleUrls: [
-        'http-body.component.scss',
-        '../../../../../../generic/css/generic.scss'
+        'http-body.component.scss'
     ]
 })
 

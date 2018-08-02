@@ -22,7 +22,7 @@ import {AreYouSureModalComponent} from "../../../generic/components/are_you_sure
 @Component({
     selector: 'manual-test-runner-editor',
     templateUrl: 'manual-tests-runner-editor.component.html',
-    styleUrls: ['manual-tests-runner-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
+    styleUrls: ['manual-tests-runner-editor.component.scss']
 })
 
 export class ManualTestsRunnerEditorComponent implements OnInit {

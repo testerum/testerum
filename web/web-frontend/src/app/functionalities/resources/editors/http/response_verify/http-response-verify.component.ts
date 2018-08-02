@@ -17,9 +17,7 @@ import {HttpResponseVerifyBodyComponent} from "./body/http-response-verify-body.
     templateUrl: 'http-response-verify.component.html',
     styleUrls: [
         'http-response-verify.component.scss',
-        '../../resource-editor.scss',
-        '../../../../../generic/css/generic.scss',
-        '../../../../../generic/css/forms.scss'
+        '../../resource-editor.scss'
     ]
 })
 export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseVerify> implements OnInit {

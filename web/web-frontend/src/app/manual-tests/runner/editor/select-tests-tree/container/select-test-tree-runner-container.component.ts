@@ -11,7 +11,6 @@ import {SelectTestsTreeRunnerService} from "../select-tests-tree-runner.service"
     styleUrls: [
         'select-test-tree-runner-container.component.scss',
         '../../../../../generic/components/json-tree/json-tree.generic.scss',
-        '../../../../../generic/css/generic.scss',
         '../../../../../generic/css/tree.scss'
     ]
 })

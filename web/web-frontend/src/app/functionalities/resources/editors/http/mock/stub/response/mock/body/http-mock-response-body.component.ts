@@ -9,9 +9,7 @@ import {HttpMockResponse} from "../../../model/response/http-mock-response.model
     selector: 'http-mock-response-body',
     templateUrl: 'http-mock-response-body.component.html',
     styleUrls: [
-        'http-mock-response-body.component.scss',
-        '../../../../../../../../../generic/css/generic.scss',
-        '../../../../../../../../../generic/css/forms.scss'
+        'http-mock-response-body.component.scss'
     ]
 })
 

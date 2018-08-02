@@ -17,9 +17,7 @@ import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-p
     templateUrl: 'http-request.component.html',
     styleUrls: [
         'http-request.component.scss',
-        '../../resource-editor.scss',
-        '../../../../../generic/css/generic.scss',
-        '../../../../../generic/css/forms.scss'
+        '../../resource-editor.scss'
     ]
 })
 export class HttpRequestComponent extends ResourceComponent<HttpRequest> implements OnInit {

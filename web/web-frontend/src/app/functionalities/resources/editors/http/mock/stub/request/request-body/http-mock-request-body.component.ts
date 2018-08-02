@@ -14,9 +14,7 @@ import {EmptyJsonVerify} from "../../../../../json_verify/json-verify-tree/model
     selector: 'http-mock-request-body',
     templateUrl: 'http-mock-request-body.component.html',
     styleUrls: [
-        'http-mock-request-body.component.scss',
-        '../../../../../../../../generic/css/generic.scss',
-        '../../../../../../../../generic/css/forms.scss'
+        'http-mock-request-body.component.scss'
     ]
 })
 

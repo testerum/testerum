@@ -7,7 +7,7 @@ import {BasicStepDef} from "../../../model/basic-step-def.model";
     moduleId: module.id,
     selector: 'composed-step-editor',
     templateUrl: 'basic-step-editor.component.html',
-    styleUrls: ['./basic-step-editor.component.scss', '../../../generic/css/generic.scss', '../../../generic/css/forms.scss']
+    styleUrls: ['./basic-step-editor.component.scss']
 })
 
 export class BasicStepEditorComponent implements OnInit {

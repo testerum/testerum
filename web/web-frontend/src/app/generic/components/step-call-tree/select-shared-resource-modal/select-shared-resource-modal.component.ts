@@ -12,9 +12,7 @@ import {Observable, Subject} from "rxjs";
     selector: 'select-shared-resource-modal',
     templateUrl: 'select-shared-resource-modal.component.html',
     styleUrls: [
-        'select-shared-resource-modal.component.scss',
-        '../../../../generic/css/generic.scss',
-        '../../../../generic/css/forms.scss'
+        'select-shared-resource-modal.component.scss'
     ],
 })
 export class SelectSharedResourceModalComponent {

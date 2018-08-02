@@ -11,9 +11,7 @@ import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-p
     templateUrl: 'rdbms-sql.component.html',
     styleUrls: [
         'rdbms-sql.component.scss',
-        '../../resource-editor.scss',
-        '../../../../../generic/css/generic.scss',
-        '../../../../../generic/css/forms.scss'
+        '../../resource-editor.scss'
     ]
 })
 

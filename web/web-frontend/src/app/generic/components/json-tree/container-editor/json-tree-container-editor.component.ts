@@ -11,7 +11,7 @@ import {FormUtil} from "../../../../utils/form.util";
     moduleId: module.id,
     selector: 'json-tree-container-editor',
     templateUrl: 'json-tree-container-editor.component.html',
-    styleUrls:['json-tree-container-editor.component.scss', '../../../../generic/css/generic.scss', '../../../../generic/css/forms.scss']
+    styleUrls:['json-tree-container-editor.component.scss']
 })
 export class JsonTreeContainerEditor {
     @Input() title: string;

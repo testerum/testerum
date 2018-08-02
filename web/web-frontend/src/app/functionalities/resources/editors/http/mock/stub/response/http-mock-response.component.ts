@@ -9,9 +9,7 @@ import {HttpMockResponseType} from "../model/enums/http-mock-response-type.enum"
     selector: 'http-mock-response',
     templateUrl: 'http-mock-response.component.html',
     styleUrls: [
-        'http-mock-response.component.scss',
-        '../../../../../../../generic/css/generic.scss',
-        '../../../../../../../generic/css/forms.scss'
+        'http-mock-response.component.scss'
     ]
 })
 

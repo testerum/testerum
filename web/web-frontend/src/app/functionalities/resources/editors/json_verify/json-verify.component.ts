@@ -14,9 +14,7 @@ import {NgForm} from "@angular/forms";
     selector: 'json-verify',
     templateUrl: 'json-verify.component.html',
     styleUrls: [
-        'json-verify.component.scss',
-        '../../../../generic/css/generic.scss',
-        '../../../../generic/css/forms.scss'
+        'json-verify.component.scss'
     ]
 })
 export class JsonVerifyComponent extends ResourceComponent<ArrayJsonVerify> implements OnInit {
