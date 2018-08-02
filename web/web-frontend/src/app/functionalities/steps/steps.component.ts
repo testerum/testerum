@@ -11,8 +11,7 @@ import {Path} from "../../model/infrastructure/path/path.model";
 @Component({
     moduleId: module.id,
     selector: 'steps',
-    templateUrl: 'steps.component.html',
-    styleUrls: ["../../generic/css/main-container.scss"]
+    templateUrl: 'steps.component.html'
 
 })
 export class StepsComponent implements OnInit {

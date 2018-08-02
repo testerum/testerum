@@ -7,7 +7,7 @@ import {FeaturesTreeService} from "./features-tree/features-tree.service";
     moduleId: module.id,
     selector: 'features',
     templateUrl: 'features.component.html',
-    styleUrls: ["features.component.scss", "../../generic/css/main-container.scss"]
+    styleUrls: ["features.component.scss"]
 })
 export class FeaturesComponent implements OnInit {
 

@@ -12,7 +12,7 @@ import {ManualTestsTreeService} from "./tests-tree/manual-tests-tree.service";
     moduleId: module.id,
     selector: 'tests',
     templateUrl: 'manual-tests.component.html',
-    styleUrls: ["manual-tests.component.scss", "../../generic/css/main-container.scss"]
+    styleUrls: ["manual-tests.component.scss"]
 })
 export class ManualTestsComponent implements OnInit {
 

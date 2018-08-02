@@ -65,3 +65,7 @@ h1 {
 h1 .path {
     color: darkgrey;
 }
+
+.main-container {
+    height: calc(100% - 53px);
+}

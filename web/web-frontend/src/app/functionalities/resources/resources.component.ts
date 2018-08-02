@@ -11,8 +11,7 @@ import {ResourcesTreeNode} from "./tree/model/resources-tree-node.model";
 @Component({
     moduleId: module.id,
     selector: 'resources',
-    templateUrl: 'resources.component.html',
-    styleUrls: ["../../generic/css/main-container.scss"]
+    templateUrl: 'resources.component.html'
 })
 
 export class ResourcesComponent implements OnInit {
