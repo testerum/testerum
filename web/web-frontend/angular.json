@@ -36,8 +36,7 @@
             "scripts": [
               "node_modules/simplemde/dist/simplemde.min.js",
               "node_modules/quill/dist/quill.js",
-              "node_modules/chart.js/dist/Chart.js",
-              "node_modules/string-similarity/compare-strings.js"
+              "node_modules/chart.js/dist/Chart.js"
             ]
           },
           "configurations": {
