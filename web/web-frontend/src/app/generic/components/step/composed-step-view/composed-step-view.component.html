@@ -1,7 +1,7 @@
 <form #stepForm="ngForm" class="form-horizontal">
 
     <!-- STEP -->
-    <div class="my-line">
+    <div class="my-line" style="align-items: baseline">
         <span *ngIf="!isEditMode" class="step-text-phase">
             {{StepPhaseEnum[model.phase] | titlecase}} &nbsp;
         </span>
@@ -57,7 +57,7 @@
             <input [ngModel]="selectedPath?.toString()"
                    readonly
                    type="text"
-                   class="form-control"
+                   class="path-input form-control"
                    id="pathInput" name="pathInput">
             <span class="input-group-btn">
                 <button (click)="onSelectStepPath()"
@@ -90,6 +90,7 @@
                             [delay]="0"
                             [multiple]="true"
                             [dropdown]="true"
+                            styleClass="tags-input"
                             id="tags" name="tags"></p-autoComplete>
         </div>
     </div>

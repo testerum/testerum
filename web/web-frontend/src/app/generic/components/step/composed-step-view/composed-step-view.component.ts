@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterContentChecked, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
 import {NgForm} from "@angular/forms";
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
@@ -19,10 +19,11 @@ import {Path} from "../../../../model/infrastructure/path/path.model";
 @Component({
     selector: 'composed-step-view',
     templateUrl: 'composed-step-view.component.html',
-    styleUrls: ['composed-step-view.component.scss', '../../../../generic/css/generic.scss', '../../../../generic/css/forms.scss']
+    styleUrls: ['composed-step-view.component.scss', '../../../../generic/css/generic.scss', '../../../../generic/css/forms.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 
-export class ComposedStepViewComponent implements AfterContentChecked {
+export class ComposedStepViewComponent implements OnInit, AfterContentChecked {
 
     @Input() model: ComposedStepDef;
     @Input() isEditMode: boolean;
@@ -46,6 +47,12 @@ export class ComposedStepViewComponent implements AfterContentChecked {
     constructor(private stepChooserService: StepChooserService,
                 private stepPathModalService: StepPathModalService,
                 private tagsService: TagsService) {
+    }
+
+    ngOnInit(): void {
+        if (this.isEditMode) {
+            this.loadAllTags()
+        }
     }
 
     ngAfterContentChecked(): void {
@@ -85,11 +92,14 @@ export class ComposedStepViewComponent implements AfterContentChecked {
     }
 
     enableEditTestMode(): void {
+        this.loadAllTags();
+        this.isEditMode = true;
+    }
+
+    private loadAllTags() {
         this.tagsService.getTags().subscribe(tags => {
             ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
         });
-
-        this.isEditMode = true;
     }
 
     onSearchTag(event) {

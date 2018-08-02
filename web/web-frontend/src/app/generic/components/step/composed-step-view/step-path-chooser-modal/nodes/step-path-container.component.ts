@@ -7,6 +7,7 @@ import {JsonTreeContainerEditorEvent} from "../../../../json-tree/container-edit
 import {ArrayUtil} from "../../../../../../utils/array.util";
 import {Path} from "../../../../../../model/infrastructure/path/path.model";
 import {StepPathModalComponentService} from "../step-path-modal.component-service";
+import {ManualTestTreeNodeModel} from "../../../../../../manual-tests/tests/tests-tree/model/manual-test-tree-node.model";
 
 @Component({
     moduleId: module.id,
@@ -34,6 +35,10 @@ export class StepPathContainerComponent implements OnInit {
 
     ngOnInit(): void {
         this.stepPathModalComponentService.selectedNodeEmitter.subscribe((item:StepPathContainerModel) => this.onStepSelected(item));
+
+        if (this.stepPathModalComponentService.selectedStepPathContainer == this.model) {
+            this.isSelected = true;
+        }
     }
 
     private onStepSelected(selectedModel:StepPathContainerModel) : void {
@@ -53,6 +58,8 @@ export class StepPathContainerComponent implements OnInit {
                     new Path(pathDirectories, null, null),
                 );
                 this.model.children.push(newContainer);
+                this.model.sort();
+                this.stepPathModalComponentService.triggerNodeSelected(newContainer);
             }
         )
     }
@@ -76,6 +83,6 @@ export class StepPathContainerComponent implements OnInit {
     }
 
     selectNode() {
-        this.stepPathModalComponentService.selectedNodeEmitter.next(this.model)
+        this.stepPathModalComponentService.triggerNodeSelected(this.model)
     }
 }

@@ -11,4 +11,8 @@ export class StepPathModalComponentService {
             this.selectedStepPathContainer = selectedNode;
         })
     }
+
+    triggerNodeSelected(selectedNode: StepPathContainerModel) {
+        this.selectedNodeEmitter.next(selectedNode);
+    }
 }
