@@ -64,8 +64,12 @@ export class TestWebSocketService {
                 this.handleMessage(res);
 
             },
-            function(e) { console.log('Error: ' + e.message); },
-            function() { console.log('Completed'); }
+            function(e) {
+                console.log('Error: ' + e.message);
+            },
+            function() {
+                // console.log('Completed');
+            }
         );
     }
 
@@ -77,13 +81,13 @@ export class TestWebSocketService {
         if(this.webSocket != null) {
             this.webSocket.send(payload).subscribe(
                 (msg:any)=> {
-                    console.log("webSocket-next", msg.data);
+                    // console.log("webSocket-next", msg.data);
                 },
                 (msg:any)=> {
                     console.log("webSocket-error", msg);
                 },
                 ()=> {
-                    console.log("webSocket-complete");
+                    // console.log("webSocket-complete");
                 }
             );
         }
