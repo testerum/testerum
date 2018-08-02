@@ -50,6 +50,11 @@ input[type=checkbox]:focus {
     padding-right: 0;
 }
 
+.my-label-top {
+    @extend .my-label;
+    align-self: baseline;
+}
+
 .my-value {
     display: block;
     margin-left: 40px;

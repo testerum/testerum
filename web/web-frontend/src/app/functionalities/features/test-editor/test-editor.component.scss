@@ -2,6 +2,15 @@
 .inline {
     display: inline-block;
 }
+
+.label-size {
+    width: 7em;
+}
+
+.type-value-container {
+    display: flex !important;
+}
+
 .step-action-panel {
     margin-left: 10px;
 }
