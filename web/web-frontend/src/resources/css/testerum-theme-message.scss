@@ -6,5 +6,11 @@
 }
 
 .error-message {
-    color: $error-color;
+    color: $alert-text-color;
+    background-color: $alert-background-color;
+    border-color: $alert-background-color;
+}
+.error-message .ui-messages-close{
+    color: $alert-text-color;
+    background-color: $alert-background-color;
 }

@@ -89,12 +89,12 @@
 
                 <div class="my-line" *ngIf="testModel.description || isEditMode">
                     <label class="my-label label-size" for="description">Description</label>
-                    <div class="my-value" *ngIf="!isEditMode">
-                        {{testModel.description || ""}}
-                    </div>
-                    <div class="my-value" *ngIf="isEditMode">
-                        <textarea [(ngModel)]="testModel.description" class="form-control" id="description"
-                                  name="description"></textarea>
+                    <div class="my-value">
+                        <markdown-editor #markdownEditor
+                                         [value]="testModel.description"
+                                         [options]="markdownEditorOptions"
+                                         class="markdown-editor-dynamic-size"
+                                         id="description"></markdown-editor>
                     </div>
                 </div>
 

@@ -15,6 +15,7 @@ import {AutoComplete, Message} from "primeng/primeng";
 import {TagsService} from "../../../service/tags.service";
 import {ArrayUtil} from "../../../utils/array.util";
 import {StepCallTreeComponent} from "../../../generic/components/step-call-tree/step-call-tree.component";
+import {MarkdownEditorComponent} from "../../../generic/components/markdown-editor/markdown-editor.component";
 
 @Component({
     moduleId: module.id,
@@ -24,6 +25,10 @@ import {StepCallTreeComponent} from "../../../generic/components/step-call-tree/
     encapsulation: ViewEncapsulation.None
 })
 export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
+    markdownEditorOptions = {
+        status: false,
+        spellChecker: false
+    };
 
     StepPhaseEnum = StepPhaseEnum;
     testModel: TestModel = new TestModel;
@@ -38,6 +43,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     currentTagSearch:string;
 
     @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
+    @ViewChild(MarkdownEditorComponent) markdownEditor: MarkdownEditorComponent;
 
     warnings: Message[] = [];
 
@@ -108,6 +114,9 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
 
         this.isEditMode = isEditMode;
         this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
+        if(this.markdownEditor) {
+            this.markdownEditor.setEditMode(isEditMode);
+        }
     }
 
     enableEditTestMode(): void {
@@ -170,6 +179,8 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     }
 
     saveAction(): void {
+        this.setDescription();
+
         if(this.isCreateAction) {
             this.testsService
                 .createTest(this.testModel)
@@ -184,6 +195,9 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
                 .updateTest(updateTestModel)
                 .subscribe(savedModel => this.afterSaveHandler(savedModel));
         }
+    }
+    private setDescription() {
+        this.testModel.description = this.markdownEditor.value;
     }
 
     private afterSaveHandler(savedModel: TestModel) {

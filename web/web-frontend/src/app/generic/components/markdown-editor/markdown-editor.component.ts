@@ -1,14 +1,14 @@
-import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as SimpleMDE from 'simplemde'
 
 @Component({
     selector: 'markdown-editor',
     templateUrl: 'markdown-editor.component.html',
-    styleUrls: ['markdown-editor.component.scss']
+    styleUrls: ['markdown-editor.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class MarkdownEditorComponent implements AfterViewInit {
-
 
     private _value: string;
 
