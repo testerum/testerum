@@ -33,7 +33,7 @@ export class ComposedStepViewComponent implements OnInit, AfterContentChecked {
     StepPhaseEnum = StepPhaseEnum;
 
     pattern: string;
-    selectedPath: Path;
+    hasPathDefined = true;
 
     areChildComponentsValid: boolean = true;
 
@@ -50,8 +50,12 @@ export class ComposedStepViewComponent implements OnInit, AfterContentChecked {
     }
 
     ngOnInit(): void {
+        if (this.model.path == null) {
+            this.hasPathDefined = false
+        }
+
         if (this.isEditMode) {
-            this.loadAllTags()
+            this.loadAllTags();
         }
     }
 
@@ -60,9 +64,6 @@ export class ComposedStepViewComponent implements OnInit, AfterContentChecked {
     }
 
     onBeforeSave() {
-        if (this.model.path == null) {
-            this.model.path = this.selectedPath;
-        }
     }
 
     onPatternChanged() {
@@ -149,7 +150,7 @@ export class ComposedStepViewComponent implements OnInit, AfterContentChecked {
 
     onSelectStepPath() {
         this.stepPathModalService.showModal().subscribe((selectedPath: Path)=> {
-            this.selectedPath = selectedPath;
+            this.model.path = selectedPath;
         })
     }
 }

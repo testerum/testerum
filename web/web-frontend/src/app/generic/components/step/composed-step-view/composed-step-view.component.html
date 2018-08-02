@@ -50,12 +50,14 @@
     <!-- PATH -->
     <div class="my-line">
         <label class="my-label label-size" for="pathInput">Path</label>
-        <span class="my-value" *ngIf="model.path">
+        <span class="my-value" *ngIf="hasPathDefined">
             {{model.path?.toString() || ""}}
         </span>
-        <div class="my-value input-group" *ngIf="!model.path">
-            <input [ngModel]="selectedPath?.toString()"
-                   readonly
+        <div class="my-value input-group" *ngIf="!hasPathDefined">
+            <div>
+            <input [ngModel]="model.path?.toString()"
+                   #pathInput="ngModel"
+                   readonly required
                    type="text"
                    class="path-input form-control"
                    id="pathInput" name="pathInput">
@@ -66,6 +68,12 @@
                     Select Path
                 </button>
             </span>
+            </div>
+            <input-error [model]="pathInput"
+                         [errorMessages]="{
+                                required: 'A path is required'
+                         }">
+            </input-error>
         </div>
     </div>
 

@@ -11,8 +11,11 @@ select {
 }
 
 .form-value {
-    padding-top: 7px;
     margin-bottom: 0;
+}
+
+.control-label {
+    padding-top: 0 !important;
 }
 
 input[type=checkbox] {
@@ -48,8 +51,7 @@ input[type=checkbox]:focus {
 }
 
 .my-value {
-    display: flex;
-    justify-content: left;
+    display: block;
     margin-left: 40px;
     width: 100%;
 }
