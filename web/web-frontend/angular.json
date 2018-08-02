@@ -7,6 +7,7 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -25,8 +26,6 @@
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/quill/dist/quill.core.css",
-              "node_modules/quill/dist/quill.snow.css",
               "node_modules/ng2-dnd/bundles/style.css",
               "node_modules/simplemde/dist/simplemde.min.css",
               "src/resources/css/bootstrap.min.css",
@@ -35,7 +34,6 @@
             ],
             "scripts": [
               "node_modules/simplemde/dist/simplemde.min.js",
-              "node_modules/quill/dist/quill.js",
               "node_modules/chart.js/dist/Chart.js"
             ]
           },
@@ -85,16 +83,12 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
               "node_modules/simplemde/dist/simplemde.min.js",
-              "node_modules/quill/dist/quill.js",
-              "node_modules/chart.js/dist/Chart.js",
-              "node_modules/string-similarity/compare-strings.js"
+              "node_modules/chart.js/dist/Chart.js"
             ],
             "styles": [
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/quill/dist/quill.core.css",
-              "node_modules/quill/dist/quill.snow.css",
               "node_modules/ng2-dnd/bundles/style.css",
               "node_modules/simplemde/dist/simplemde.min.css",
               "src/resources/css/bootstrap.min.css",
@@ -147,14 +141,5 @@
       }
     }
   },
-  "defaultProject": "Testerum",
-  "schematics": {
-    "@schematics/angular:component": {
-      "prefix": "app",
-      "styleext": "scss"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "app"
-    }
-  }
+  "defaultProject": "Testerum"
 }

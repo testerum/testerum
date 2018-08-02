@@ -1,8 +1,6 @@
-
 import {Variable} from "./variable.model";
 import {VariableEventListener} from "./variable-event.listener";
 import {VariableEvent, VariableEventType} from "./variable-event.model";
-import {variable} from "@angular/compiler/src/output/output_ast";
 
 export class VariableHolder implements VariableEventListener {
 
