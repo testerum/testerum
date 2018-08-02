@@ -1,4 +1,5 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {filter, map} from 'rxjs/operators';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeModel} from "../../../generic/components/json-tree/model/json-tree.model";
 import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
@@ -35,16 +36,16 @@ export class StepsTreeComponent implements OnChanges {
             }
         );
 
-        this.router.events
-            .filter(
+        this.router.events.pipe(
+            filter(
                 event => event instanceof NavigationEnd
-            )
-            .map(route => {
+            ),
+            map(route => {
                 let leafRoute: any = this.router.routerState.snapshot.root;
                 while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
 
                 return leafRoute.params
-            })
+            }),)
             .subscribe((params: Params) => {
                 this.handleSelectedRouteParams(params);
             });

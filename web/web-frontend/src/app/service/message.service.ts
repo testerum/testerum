@@ -1,6 +1,6 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Message} from "../model/messages/message.model";
-import {Setting} from "../functionalities/config/settings/model/setting.model";
 import {MessageKey} from "../model/messages/message.enum";
 import {HttpClient} from "@angular/common/http";
 
@@ -17,8 +17,8 @@ export class MessageService {
     init() {
         return new Promise((resolve, reject) => {
             this.http
-                .get<Array<Message>>(this.BASE_URL)
-                .map(this.extractMessages)
+                .get<Array<Message>>(this.BASE_URL).pipe(
+                map(this.extractMessages))
                 .subscribe( result => {
                     this.messages = result;
                     resolve(true);

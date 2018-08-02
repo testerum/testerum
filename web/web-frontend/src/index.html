@@ -1,11 +1,18 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Testerum</title>
-  <link rel="shortcut icon" type="image/png" href="favicon.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <base href="/">
+    <meta charset="utf-8">
+    <title>Testerum</title>
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="/">
+
+    <script type="text/javascript">
+        // fix for fxmontigny/ng2-ace-editor error on Angular 6, see https://github.com/fxmontigny/ng2-ace-editor/issues/87 for details
+        if (global === undefined) {
+            var global = window;
+        }
+    </script>
 </head>
 <body>
 <my-app>Loading ...</my-app>

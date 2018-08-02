@@ -12,9 +12,8 @@
            [class.fa-folder]="!isOpenedNode()"
            [class.fa-folder-open]="isOpenedNode()"></i>
 
-        <span [class.error_squiggly]="model.hasOwnOrDescendantWarnings">
-            {{model.name}}
-        </span>
+        <span class="node-text"
+              [class.error_squiggly]="model.hasOwnOrDescendantWarnings">{{model.name}}</span>
 
         <!-- BUTTONS RENDERING -->
         <div *ngIf="model.editable"

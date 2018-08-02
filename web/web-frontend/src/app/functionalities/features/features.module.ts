@@ -11,7 +11,7 @@ import {TestsService} from "../../service/tests.service";
 import {TestEditorComponent} from "./test-editor/test-editor.component";
 import {StepsModule} from "../steps/steps.module";
 import {TestResolver} from "./test-editor/test.resolver";
-import {AngularSplitModule} from "angular-split";
+import {AngularSplitModule} from "angular-split-ng6";
 import {TestsRunnerComponent} from "./tests-runner/tests-runner.component";
 import {TestsRunnerService} from "./tests-runner/tests-runner.service";
 import {RunnerTreeService} from "./tests-runner/tests-runner-tree/runner-tree.service";

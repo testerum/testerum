@@ -1,8 +1,10 @@
+import {EMPTY, Observable, throwError as observableThrowError} from 'rxjs';
+
+import {tap} from 'rxjs/operators';
 import {EventEmitter, Injectable} from "@angular/core";
 import {ErrorCode} from "../model/exception/enums/error-code.enum";
 import {FullLogErrorResponse} from "../model/exception/full-log-error-response.model";
 import {ErrorResponse} from "../model/exception/error-response.model";
-import {Observable} from "rxjs/Rx";
 import {ValidationErrorResponse} from "../model/exception/validation-error-response.model";
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 
@@ -17,7 +19,7 @@ export class ErrorService implements HttpInterceptor {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        return next.handle(request).do(
+        return next.handle(request).pipe(tap(
             (event: HttpEvent<any>) => {},
             (err: any) => {
                 if (err instanceof HttpErrorResponse) {
@@ -34,14 +36,14 @@ export class ErrorService implements HttpInterceptor {
                                     let validationException = new ValidationErrorResponse().deserialize(errorResponse);
                                     console.warn(validationException);
 
-                                    return Observable.empty();
+                                    return EMPTY;
                                 }
                                 if (errorResponse.errorCode.toString() == ErrorCode.GENERIC_ERROR.enumAsString) {
                                     let fullLogErrorResponse = new FullLogErrorResponse().deserialize(errorResponse);
                                     this.errorEventEmitter.emit(fullLogErrorResponse);
                                     console.error(fullLogErrorResponse);
 
-                                    return Observable.empty();
+                                    return EMPTY;
                                 }
                             }
                         }
@@ -50,9 +52,9 @@ export class ErrorService implements HttpInterceptor {
                 this.errorEventEmitter.emit(err);
                 console.error(err);
 
-                return Observable.empty();
+                return EMPTY;
             }
-        );
+        ));
     }
 
 
@@ -68,14 +70,14 @@ export class ErrorService implements HttpInterceptor {
                     if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
                         let validationException = new ValidationErrorResponse().deserialize(errorResponse);
                         this.errorEventEmitter.emit(validationException);
-                        return Observable.throw(httpErrorResponse);
+                        return observableThrowError(httpErrorResponse);
                     }
 
                     if (errorResponse.errorCode.toString() == ErrorCode.GENERIC_ERROR.enumAsString) {
                         let fullLogErrorResponse = new FullLogErrorResponse().deserialize(errorResponse);
                         this.errorEventEmitter.emit(fullLogErrorResponse);
                         console.error(fullLogErrorResponse);
-                        return Observable.throw(httpErrorResponse);
+                        return observableThrowError(httpErrorResponse);
                     }
 
                     this.errorEventEmitter.emit(errorResponse);
@@ -84,7 +86,7 @@ export class ErrorService implements HttpInterceptor {
             }
         }
 
-        return Observable.throw(httpErrorResponse)
+        return observableThrowError(httpErrorResponse)
     }
 
     showGenericValidationError(validationErrorResponse: ValidationErrorResponse) {

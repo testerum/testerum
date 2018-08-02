@@ -1,3 +1,4 @@
+import {filter, map} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {ModelComponentMapping} from "../../model/infrastructure/model-component-mapping.model";
@@ -36,14 +37,14 @@ export class ManualTestsExecutorComponent implements OnInit {
             this.manualTestsExecutorTreeService.initializeTestsTree(manualTestsRunner);
         });
 
-        this.router.events
-            .filter(event => event instanceof NavigationEnd)
-            .map(route => {
+        this.router.events.pipe(
+            filter(event => event instanceof NavigationEnd),
+            map(route => {
                 let leafRoute: any = this.router.routerState.snapshot.root;
                 while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
 
                 return leafRoute.params
-            })
+            }),)
             .subscribe((params: Params) => {
                     let testPath = params['testPath'];
                     if (testPath) {

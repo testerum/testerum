@@ -1,6 +1,6 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
-import { Observable } from 'rxjs/Observable';
-import {Subject} from "rxjs/Rx";
+import {Observable, Subject} from 'rxjs';
 import {Setup} from "../functionalities/config/setup/model/setup.model";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
@@ -21,8 +21,8 @@ export class SetupService {
         }
 
         return this.http
-            .get<boolean>(this.START_CONFIG_URL + "/is_completed")
-            .map(this.extractBooleanResponse);
+            .get<boolean>(this.START_CONFIG_URL + "/is_completed").pipe(
+            map(this.extractBooleanResponse));
     }
 
     private extractBooleanResponse(res:  boolean):boolean {
@@ -39,8 +39,8 @@ export class SetupService {
         };
 
         return this.http
-            .put<Setup>(this.START_CONFIG_URL, body, httpOptions)
-            .map(SetupService.extractStartConfig);
+            .put<Setup>(this.START_CONFIG_URL, body, httpOptions).pipe(
+            map(SetupService.extractStartConfig));
     }
 
     private static extractStartConfig(res:  Setup):Setup {

@@ -1,8 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {Observable} from "rxjs/Rx";
-import {Subject} from "rxjs/Subject";
+import {Observable, Subject} from "rxjs";
 
 @Component({
     selector: 'update-incompatibility-dialog',

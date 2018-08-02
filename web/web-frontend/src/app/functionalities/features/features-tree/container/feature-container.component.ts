@@ -9,7 +9,7 @@ import {TestTreeNodeModel} from "../model/test-tree-node.model";
 import {TestsService} from "../../../../service/tests.service";
 import {TestsRunnerService} from "../../tests-runner/tests-runner.service";
 import {JsonTreeNodeEventModel} from "../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 import {TestModel} from "../../../../model/test/test.model";
 import {UrlService} from "../../../../service/url.service";
 

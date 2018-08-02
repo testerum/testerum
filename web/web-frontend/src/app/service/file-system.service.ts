@@ -1,5 +1,6 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Path} from "../model/infrastructure/path/path.model";
 import {FileDirectoryChooserContainerModel} from "../generic/components/form/file_dir_chooser/model/file-directory-chooser-container.model";
 import {FileSystemDirectory} from "../model/file/file-system-directory.model";
@@ -20,8 +21,8 @@ export class FileSystemService {
         };
 
         return this.http
-            .get<FileDirectoryChooserContainerModel>(this.BASE_URL, httpOptions)
-            .map(FileSystemService.extractFileDirectory);
+            .get<FileDirectoryChooserContainerModel>(this.BASE_URL, httpOptions).pipe(
+            map(FileSystemService.extractFileDirectory));
     }
 
     private static extractFileDirectory(res: FileDirectoryChooserContainerModel): FileDirectoryChooserContainerModel {

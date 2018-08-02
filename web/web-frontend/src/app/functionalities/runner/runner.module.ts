@@ -4,7 +4,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {RunnerComponent} from "./runner.component";
 import {RunnerRoutingModule} from "./runner-routing.module";
-import {AngularSplitModule} from "angular-split";
+import {AngularSplitModule} from "angular-split-ng6";
 import {ResultsComponent} from "./leftSide/results/results.component";
 import {ResultDirectoryComponent} from "./leftSide/results/container/result-directory.component";
 import {ResultFileComponent} from "./leftSide/results/container/leaf/result-file.component";

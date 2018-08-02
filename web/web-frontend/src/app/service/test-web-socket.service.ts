@@ -92,8 +92,6 @@ export class TestWebSocketService {
     private handleMessage(res: MessageEvent) {
         let runnerEventAsJson = JSON.parse(res.data);
 
-        console.log("runnerEventReceived", runnerEventAsJson);
-
         let eventTypeAsString:string = runnerEventAsJson["@type"];
         if(RunnerEventTypeEnum.TEST_SUITE_END_EVENT == RunnerEventTypeEnum[eventTypeAsString]) {
             this.close();

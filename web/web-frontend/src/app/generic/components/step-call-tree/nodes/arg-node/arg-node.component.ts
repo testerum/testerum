@@ -14,7 +14,7 @@ import {ResourceComponent} from "../../../../../functionalities/resources/editor
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
 import {ArgNodePanelComponent} from "./arg-node-panel/arg-node-panel.component";
 import {Arg} from "../../../../../model/arg/arg.model";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 import {StepCallTreeComponentService} from "../../step-call-tree.component-service";
 
 @Component({

@@ -1,5 +1,6 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Router} from "@angular/router";
 import {ManualTestModel} from "../../model/manual-test.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
@@ -40,8 +41,8 @@ export class ManualTestsService {
         };
 
         return this.http
-            .post<ManualTestModel>(this.TESTS_URL + "/create", body, httpOptions)
-            .map(res => new ManualTestModel().deserialize(res));
+            .post<ManualTestModel>(this.TESTS_URL + "/create", body, httpOptions).pipe(
+            map(res => new ManualTestModel().deserialize(res)));
     }
 
     updateTest(updateManualTestModel:UpdateManualTestModel): Observable<ManualTestModel> {
@@ -53,14 +54,14 @@ export class ManualTestsService {
         };
 
         return this.http
-            .post<ManualTestModel>(this.TESTS_URL + "/update", body, httpOptions)
-            .map(res => new ManualTestModel().deserialize(res));
+            .post<ManualTestModel>(this.TESTS_URL + "/update", body, httpOptions).pipe(
+            map(res => new ManualTestModel().deserialize(res)));
     }
 
     getTests(): Observable<Array<ManualTestModel>> {
         return this.http
-            .get<Array<ManualTestModel>>(this.TESTS_URL)
-            .map(ManualTestsService.extractTestsModel);
+            .get<Array<ManualTestModel>>(this.TESTS_URL).pipe(
+            map(ManualTestsService.extractTestsModel));
     }
 
     private static extractTestsModel(res: Array<ManualTestModel>):Array<ManualTestModel> {
@@ -95,8 +96,8 @@ export class ManualTestsService {
         };
 
         return this.http
-            .get<ManualTestModel>(this.TESTS_URL, httpOptions)
-            .map(res => new ManualTestModel().deserialize(res));
+            .get<ManualTestModel>(this.TESTS_URL, httpOptions).pipe(
+            map(res => new ManualTestModel().deserialize(res)));
     }
 
     renameDirectory(renamePath: RenamePath): Observable<Path> {
@@ -108,8 +109,8 @@ export class ManualTestsService {
         };
 
         return this.http
-            .put<Path>(this.TESTS_URL + "/directory", body, httpOptions)
-            .map(res => Path.deserialize(res));
+            .put<Path>(this.TESTS_URL + "/directory", body, httpOptions).pipe(
+            map(res => Path.deserialize(res)));
     }
 
     deleteDirectory(pathToDelete: Path): Observable<void> {

@@ -1,24 +1,16 @@
-import {
-    Component,
-    EventEmitter,
-    Input, OnDestroy,
-    OnInit,
-    Output,
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output,} from '@angular/core';
 import {JsonTreeModel} from "../json-tree/model/json-tree.model";
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {MapPathChooserUtil} from "./util/map-path-chooser.util";
-import {ResourceService} from "../../../service/resources/resource.service";
 import {PathChooserContainerModel} from "./model/path-chooser-container.model";
 import {PathChooserNodeModel} from "./model/path-chooser-node.model";
 import {PathChooserContainerComponent} from "./container/path-chooser-container.component";
 import {PathChooserNodeComponent} from "./container/node/path-chooser-node.component";
 import {ResourceMapEnum} from "../../../functionalities/resources/editors/resource-map.enum";
 import {PathChooserService} from "./path-chooser.service";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 import {JsonTreeNodeEventModel} from "../json-tree/event/selected-json-tree-node-event.model";
-import {StepTreeNodeModel} from "../../../functionalities/steps/steps-tree/model/step-tree-node.model";
 import {JsonTreeService} from "../json-tree/json-tree.service";
 
 @Component({

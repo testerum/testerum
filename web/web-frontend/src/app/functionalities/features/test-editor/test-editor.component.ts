@@ -1,14 +1,13 @@
-import {AfterContentInit, Component, DoCheck, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, DoCheck, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {TestsService} from "../../../service/tests.service";
 import {TestModel} from "../../../model/test/test.model";
-import 'rxjs/add/operator/switchMap';
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
 import {TestsRunnerService} from "../tests-runner/tests-runner.service";
 import {FeaturesTreeService} from "../features-tree/features-tree.service";
 import {IdUtils} from "../../../utils/id.util";
 import {UpdateTestModel} from "../../../model/test/operation/update-test.model";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {UrlService} from "../../../service/url.service";
 import {AutoComplete, Message} from "primeng/primeng";

@@ -1,7 +1,8 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import {Observable} from 'rxjs';
+
+
 import {Feature} from "../model/feature/feature.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
@@ -24,8 +25,8 @@ export class FeatureService {
         };
 
         return this.http
-            .post<ServerRootMainNode>(this.FEATURE_URL+"/tree", body, httpOptions)
-            .map(FeatureService.extractFeaturesTree);
+            .post<ServerRootMainNode>(this.FEATURE_URL+"/tree", body, httpOptions).pipe(
+            map(FeatureService.extractFeaturesTree));
     }
 
     getFeature(path: Path): Observable<Feature> {
@@ -36,8 +37,8 @@ export class FeatureService {
         };
 
         return this.http
-            .get<Feature>(this.FEATURE_URL, httpOptions)
-            .map(FeatureService.extractFeature);
+            .get<Feature>(this.FEATURE_URL, httpOptions).pipe(
+            map(FeatureService.extractFeature));
     }
 
     save(model: Feature): Observable<Feature> {
@@ -49,8 +50,8 @@ export class FeatureService {
         };
 
         return this.http
-            .post<Feature>(this.FEATURE_URL, body, httpOptions)
-            .map(res => new Feature().deserialize(res));
+            .post<Feature>(this.FEATURE_URL, body, httpOptions).pipe(
+            map(res => new Feature().deserialize(res)));
     }
 
     delete(path: Path): Observable<void> {

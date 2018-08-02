@@ -4,7 +4,7 @@ import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tre
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {TestTreeNodeModel} from "../../model/test-tree-node.model";
 import {UrlService} from "../../../../../service/url.service";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 
 @Component({
     moduleId: module.id,

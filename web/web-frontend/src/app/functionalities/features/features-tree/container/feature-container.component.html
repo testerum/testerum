@@ -14,10 +14,9 @@
            [class.fa-folder]="!isOpenedNode()"
            [class.fa-folder-open]="isOpenedNode()"></i>
 
-        <span [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
-              [class.tree-leaf-selected]="isSelected">
-            {{model.name}}
-        </span>
+        <span class="node-text"
+              [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
+              [class.tree-leaf-selected]="isSelected">{{model.name}}</span>
 
         <!-- BUTTONS RENDERING -->
         <div class="button-panel btn-group"

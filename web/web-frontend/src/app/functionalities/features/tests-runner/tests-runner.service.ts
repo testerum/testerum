@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {TestModel} from "../../../model/test/test.model";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
+import {Observable, Subject} from "rxjs";
 import {TestWebSocketService} from "../../../service/test-web-socket.service";
 import {RunnerTreeService} from "./tests-runner-tree/runner-tree.service";
 import {TestsRunnerLogsService} from "./tests-runner-logs/tests-runner-logs.service";

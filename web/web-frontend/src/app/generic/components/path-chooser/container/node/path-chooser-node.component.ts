@@ -3,7 +3,7 @@ import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tre
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
 import {PathChooserNodeModel} from "../../model/path-chooser-node.model";
 import {PathChooserService} from "../../path-chooser.service";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 
 @Component({
     moduleId: module.id,

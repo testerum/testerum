@@ -1,8 +1,6 @@
 import {Injectable} from "@angular/core";
-import { Observable } from 'rxjs/Observable';
-import {Subject} from "rxjs/Rx";
-import {Setup} from "../functionalities/config/setup/model/setup.model";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Observable} from 'rxjs';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable()
 export class TagsService {

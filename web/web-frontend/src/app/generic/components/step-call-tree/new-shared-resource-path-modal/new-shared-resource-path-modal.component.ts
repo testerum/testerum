@@ -5,8 +5,7 @@ import {ResourceService} from "../../../../service/resources/resource.service";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {PathChooserComponent} from "../../path-chooser/path-chooser.component";
 import {NgForm} from "@angular/forms";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
+import {Observable, Subject} from "rxjs";
 
 @Component({
     moduleId: module.id,

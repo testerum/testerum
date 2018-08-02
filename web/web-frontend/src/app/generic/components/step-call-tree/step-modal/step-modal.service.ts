@@ -1,8 +1,7 @@
-import {ComponentFactoryResolver, ComponentRef, Injectable, ViewContainerRef} from "@angular/core";
+import {ComponentFactoryResolver, Injectable} from "@angular/core";
 import {StepModalComponent} from "./step-modal.component";
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
-import {Observable} from "rxjs/Observable";
-import {Subject} from "rxjs/Subject";
+import {Observable, Subject} from "rxjs";
 import {AppComponent} from "../../../../app.component";
 
 @Injectable()

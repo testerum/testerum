@@ -7,9 +7,7 @@ import {FileDirectoryChooserContainerModel} from "./model/file-directory-chooser
 import {FileDirectoryChooserContainerComponent} from "./container/file-directory-chooser-container.component";
 import {JsonTreeService} from "../../json-tree/json-tree.service";
 import {JsonTreeNodeEventModel} from "../../json-tree/event/selected-json-tree-node-event.model";
-import {Setting} from "../../../../functionalities/config/settings/model/setting.model";
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
+import {Observable, Subject} from "rxjs";
 
 @Injectable()
 export class FileDirectoryChooserService {

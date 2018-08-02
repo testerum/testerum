@@ -5,7 +5,7 @@ import {ExecutionStatusEnum} from "../../../../../../model/test/event/enums/exec
 import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {JsonTreeNodeEventModel} from "../../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../../generic/components/json-tree/json-tree.service";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'result-file',

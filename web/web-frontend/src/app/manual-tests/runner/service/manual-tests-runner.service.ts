@@ -1,5 +1,6 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {ManualTestsRunner} from "../model/manual-tests-runner.model";
 import {UpdateManualTestRunner} from "../model/operation/update-manual-test.runner";
 import {UpdateManualTestExecutionModel} from "../model/operation/update-manual-test-execution.model";
@@ -21,14 +22,14 @@ export class ManualTestsRunnerService {
         };
 
         return this.http
-            .post<ManualTestsRunner>(this.BASE_URL + "/create", body, httpOptions)
-            .map(res => new ManualTestsRunner().deserialize(res));
+            .post<ManualTestsRunner>(this.BASE_URL + "/create", body, httpOptions).pipe(
+            map(res => new ManualTestsRunner().deserialize(res)));
     }
 
     getTests(): Observable<Array<ManualTestsRunner>> {
         return this.http
-            .get<Array<ManualTestsRunner>>(this.BASE_URL)
-            .map(ManualTestsRunnerService.extractTestsRunners);
+            .get<Array<ManualTestsRunner>>(this.BASE_URL).pipe(
+            map(ManualTestsRunnerService.extractTestsRunners));
     }
 
     getTestRunner(pathAsString: string): Observable<ManualTestsRunner> {
@@ -38,8 +39,8 @@ export class ManualTestsRunnerService {
         };
 
         return this.http
-            .get<ManualTestsRunner>(this.BASE_URL, httpOptions)
-            .map(res => new ManualTestsRunner().deserialize(res));
+            .get<ManualTestsRunner>(this.BASE_URL, httpOptions).pipe(
+            map(res => new ManualTestsRunner().deserialize(res)));
     }
 
     delete(manualTestRunner:ManualTestsRunner): Observable<void> {
@@ -59,8 +60,8 @@ export class ManualTestsRunnerService {
         };
 
         return this.http
-            .post<ManualTestsRunner>(this.BASE_URL + "/finalize", null, httpOptions)
-            .map(res => new ManualTestsRunner().deserialize(res));
+            .post<ManualTestsRunner>(this.BASE_URL + "/finalize", null, httpOptions).pipe(
+            map(res => new ManualTestsRunner().deserialize(res)));
     }
 
     bringBackInExecution(manualTestRunner:ManualTestsRunner): Observable<ManualTestsRunner> {
@@ -70,8 +71,8 @@ export class ManualTestsRunnerService {
         };
 
         return this.http
-            .post<ManualTestsRunner>(this.BASE_URL + "/bringBackInExecution", null, httpOptions)
-            .map(res => new ManualTestsRunner().deserialize(res));
+            .post<ManualTestsRunner>(this.BASE_URL + "/bringBackInExecution", null, httpOptions).pipe(
+            map(res => new ManualTestsRunner().deserialize(res)));
     }
 
     updateTest(updateManualTestRunner:UpdateManualTestRunner): Observable<ManualTestsRunner> {
@@ -83,8 +84,8 @@ export class ManualTestsRunnerService {
         };
 
         return this.http
-            .post<ManualTestsRunner>(this.BASE_URL + "/update", body, httpOptions)
-            .map(res => new ManualTestsRunner().deserialize(res));
+            .post<ManualTestsRunner>(this.BASE_URL + "/update", body, httpOptions).pipe(
+            map(res => new ManualTestsRunner().deserialize(res)));
     }
 
 
@@ -97,8 +98,8 @@ export class ManualTestsRunnerService {
         };
 
         return this.http
-            .post<ManualTestsRunner>(this.BASE_URL + "/updateTestExecution", body, httpOptions)
-            .map(res => new ManualTestsRunner().deserialize(res));
+            .post<ManualTestsRunner>(this.BASE_URL + "/updateTestExecution", body, httpOptions).pipe(
+            map(res => new ManualTestsRunner().deserialize(res)));
     }
 
     private static extractTestsRunners(res: Array<ManualTestsRunner>):Array<ManualTestsRunner> {

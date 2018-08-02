@@ -1,8 +1,9 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Setting} from "../functionalities/config/settings/model/setting.model";
 import {JsonUtil} from "../utils/json.util";
-import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable()
 export class SettingsService {
@@ -13,8 +14,8 @@ export class SettingsService {
 
     getSettings(): Observable<Array<Setting>> {
         return this.http
-            .get<Array<Setting>>(this.BASE_URL)
-            .map(this.extractSettings);
+            .get<Array<Setting>>(this.BASE_URL).pipe(
+            map(this.extractSettings));
     }
 
     private extractSettings(res:  Array<Setting>): Array<Setting> {
@@ -36,7 +37,7 @@ export class SettingsService {
         };
 
         return this.http
-            .post<Array<Setting>>(this.BASE_URL, body, httpOptions)
-            .map(this.extractSettings);
+            .post<Array<Setting>>(this.BASE_URL, body, httpOptions).pipe(
+            map(this.extractSettings));
     }
 }

@@ -1,5 +1,4 @@
-
-import {ComponentFactoryResolver, ComponentRef, EventEmitter, Injectable, OnInit} from "@angular/core";
+import {ComponentRef, EventEmitter, Injectable} from "@angular/core";
 import {StepDef} from "../../../model/step-def.model";
 import {JsonTreeNodeEventModel} from "../json-tree/event/selected-json-tree-node-event.model";
 import {StepTreeNodeModel} from "../../../functionalities/steps/steps-tree/model/step-tree-node.model";
@@ -9,13 +8,11 @@ import StepsTreeUtil from "../../../functionalities/steps/steps-tree/util/steps-
 import {JsonTreeExpandUtil} from "../json-tree/util/json-tree-expand.util";
 import {StepsTreeFilter} from "../../../model/step/filter/steps-tree-filter.model";
 import {StepsService} from "../../../service/steps.service";
-import {JsonTreeService} from "../json-tree/json-tree.service";
 import {RootStepNode} from "../../../model/step/tree/root-step-node.model";
 import {ComposedContainerStepNode} from "../../../model/step/tree/composed-container-step-node.model";
 import {ComposedStepNode} from "../../../model/step/tree/composed-step-node.model";
 import {ArrayUtil} from "../../../utils/array.util";
-import {Observable} from "rxjs/Observable";
-import {Subject} from "rxjs/Subject";
+import {Observable, Subject} from "rxjs";
 import {AppComponent} from "../../../app.component";
 import {StepChooserComponent} from "./step-chooser.component";
 

@@ -15,7 +15,7 @@ import {ResourceMapEnum} from "../../resource-map.enum";
 import {ActivatedRoute} from "@angular/router";
 import {ResourceContext} from "../../../../../model/resource/resource-context.model";
 import {ResourceComponent} from "../../resource-component.interface";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 import {ResourceService} from "../../../../../service/resources/resource.service";
 import {FormUtil} from "../../../../../utils/form.util";
 import {Path} from "../../../../../model/infrastructure/path/path.model";

@@ -1,5 +1,5 @@
 import {Path} from "../../../model/infrastructure/path/path.model";
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs";
 import {Injectable} from "@angular/core";
 
 @Injectable()
