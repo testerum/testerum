@@ -6,13 +6,11 @@ import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.manual.ManualTest
 import net.qutester.model.manual.operation.UpdateManualTestModel
 import net.qutester.service.manual.ManualTestsService
-import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/manualTests")
 class ManualTestsController(private val manualTestsService: ManualTestsService) {
-    private val LOG = LoggerFactory.getLogger(ManualTestsController::class.java)
 
     @RequestMapping (params = ["path"], method = [RequestMethod.DELETE])
     fun delete(@RequestParam(value = "path") path:String) {

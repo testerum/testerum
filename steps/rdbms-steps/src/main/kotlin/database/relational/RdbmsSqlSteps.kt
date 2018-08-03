@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
 class RdbmsSqlSteps(@Autowired val rdbmsConnectionManager: RdbmsConnectionManager) {
-    private val LOG = LoggerFactory.getLogger(RdbmsSqlSteps::class.java)
 
+    companion object {
+        private val LOG = LoggerFactory.getLogger(RdbmsSqlSteps::class.java)
+    }
 
     @When(value = "writing <<SQL>> in <<relationalDatabaseClient>> database",
           description = "This steps is executing the provided SQL in the Relational Database")

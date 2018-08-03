@@ -21,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired
 
 class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
                               @Autowired val variables: TestVariables) {
-    private val LOG = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
+    companion object {
+        private val LOG = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
+    }
 
     @Then("I expect <<httpResponseVerify>> HTTP Response")
     fun verifyHttpResponse(@Param(transformer = HttpResponseVerifyTransformer::class) httpResponseVerify: HttpResponseVerify) {

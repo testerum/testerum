@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletRequest
 class ErrorController(val errorResponsePreparerMap: Map<Class<out Throwable>, ErrorResponsePreparer<Throwable, ErrorResponse>>,
                       val genericErrorResponsePreparer: GenericErrorResponsePreparer) {
 
-    private val LOGGER = LoggerFactory.getLogger(ErrorController::class.java)
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(ErrorController::class.java)
+    }
 
     @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun errorPage(@NonNull request: HttpServletRequest): ResponseEntity<ErrorResponse> {

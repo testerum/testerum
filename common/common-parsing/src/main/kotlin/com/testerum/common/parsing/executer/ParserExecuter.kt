@@ -5,11 +5,13 @@ import org.jparsec.Parser
 import org.jparsec.error.ParserException
 import java.io.InputStream
 import java.nio.charset.Charset
-import java.util.LinkedHashSet
+import java.util.*
 
 class ParserExecuter<T>(private val parser: Parser<T>) {
 
-    private val NEWLINE_REGEX = Regex("\r\n|\n")
+    companion object {
+        private val NEWLINE_REGEX = Regex("\r\n|\n")
+    }
 
     fun parse(inputStream: InputStream, charset: Charset = Charsets.UTF_8)
             = parse(

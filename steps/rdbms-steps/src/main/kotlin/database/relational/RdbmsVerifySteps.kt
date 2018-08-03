@@ -17,8 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired
 class RdbmsVerifySteps (@Autowired val jsonComparer: JsonComparer,
                         @Autowired val rdbmsConnectionManager: RdbmsConnectionManager) {
 
-    private val LOG = LoggerFactory.getLogger(RdbmsVerifySteps::class.java)
-
+    companion object {
+        private val LOG = LoggerFactory.getLogger(RdbmsVerifySteps::class.java)
+    }
 
     @Then("verify database state is like in <<rdbmsVerify>> file")
     fun testDefaultDatabaseState(@Param(transformer= RdbmsVerifyTransformer::class) rdbmsVerify: RdbmsVerify) {
@@ -57,4 +58,5 @@ class RdbmsVerifySteps (@Autowired val jsonComparer: JsonComparer,
             throw AssertionError("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
         }
     }
+
 }
