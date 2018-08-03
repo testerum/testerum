@@ -17,20 +17,20 @@
         <div *ngIf="model.hasError()"
              title="Delete table rules" class="btn btn-default btn-xs btn-group"
              (click)="deleteTable();$event.stopPropagation();">
-            <span class="glyphicon glyphicon-trash"></span>
+            <i class="fa fa-trash" aria-hidden="true"></i>
         </div>
 
         <div
             title="Create verify rule" class="btn btn-default btn-xs btn-group"
             (click)="createVerifyRow();$event.stopPropagation();">
-            <span class="glyphicon glyphicon-plus-sign"></span>
+            <i class="fa fa-plus" aria-hidden="true"></i>
         </div>
 
         <div *ngIf="shouldShowCompareModeButton()"
              title="Show compare mode attribute" class="btn btn-default btn-xs btn-group"
              [class.active]="shouldShowCompareMode()"
              (click)="toggleShowCompareMode();$event.stopPropagation();">
-            <span class="glyphicon glyphicon-screenshot"></span>
+            <i class="fa fa-crosshairs" aria-hidden="true"></i>
         </div>
 
     </div>

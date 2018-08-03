@@ -1,4 +1,4 @@
-
+NUME: testerUi
  shared resources cant be edited online
  change buttons on edit pages DELETE & EDIT  --- OK APPLY CANCEL    
 

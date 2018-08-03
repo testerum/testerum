@@ -100,20 +100,20 @@
                                          [class.hide-step-button]="index == 0"
                                          [class.hide]="index == manualTestModel.steps.length - 1"
                                          (click)="moveStepUp(index); $event.stopPropagation()">
-                                        <span class="glyphicon glyphicon-arrow-up"></span>
+                                        <i class="fa fa-arrow-up" aria-hidden="true"></i>
                                     </div>
 
                                     <div title="Move Step Down" *ngIf="!isLastStep" class="btn btn-default btn-xs btn-group"
                                          [class.hide-step-button]="index == manualTestModel.steps.length - 2"
                                          [class.hide]="index == manualTestModel.steps.length - 1"
                                          (click)="moveStepDown(index); $event.stopPropagation()">
-                                        <span class="glyphicon glyphicon-arrow-down"></span>
+                                        <i class="fa fa-arrow-down" aria-hidden="true"></i>
                                     </div>
 
                                     <div title="Remove Step" class="btn btn-default btn-xs btn-group"
                                          [class.hide]="index == manualTestModel.steps.length - 1"
                                          (click)="removeStep(index); $event.stopPropagation()">
-                                        <span class="glyphicon glyphicon-trash"></span>
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
                                     </div>
                                 </div>
                             </td>

@@ -5,16 +5,21 @@
 }
 
 .btn {
-    padding: .25em .5em .25em .5em;
+    padding: 6px 12px;
     line-height: 1;
 }
 
 .btn-xs {
-    width: 24px;
+    width: 22px !important;
     height: 20px;
+    padding: 0.25em 0.2em;
 }
 
 .alert {
     padding: 5px;
     margin-bottom: 5px;
+}
+
+.label {
+    margin-right: 1px;
 }

@@ -19,19 +19,19 @@
 
             <div title="Create Folder" class="btn btn-default btn-xs btn-group"
                  (click)="showCreateDirectoryModal(); $event.stopPropagation()">
-                <span class="glyphicon glyphicon-folder-open"></span>
+                <i class="fa fa-folder-open" aria-hidden="true"></i>
             </div>
 
             <div title="Edit Folder" class="btn btn-default btn-xs btn-group"
                  *ngIf="!model.isRootPackage"
                  (click)="showEditDirectoryNameModal(); $event.stopPropagation()">
-                <span class="glyphicon glyphicon-pencil"></span>
+                <i class="fa fa-pencil" aria-hidden="true"></i>
             </div>
 
             <div title="Delete Folder" class="btn btn-default btn-xs btn-group"
                  *ngIf="!model.isRootPackage"
                  (click)="deleteDirectory(); $event.stopPropagation()">
-                <span class="glyphicon glyphicon-trash"></span>
+                <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
         </div>
     </div>
