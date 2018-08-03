@@ -1,12 +1,17 @@
 .form-control {
-    padding: .25em .25em .25em .5em;
-    height: inherit;
+    padding: 2px 8px;
+    height: 25px;
     line-height: 1;
+    width: inherit;
 }
 
 .btn {
     padding: 6px 12px;
     line-height: 1;
+}
+
+.btn-input {
+    height: 25px;
 }
 
 .btn-xs {
