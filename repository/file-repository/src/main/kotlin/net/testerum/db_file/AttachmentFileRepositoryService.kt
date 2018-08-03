@@ -10,7 +10,6 @@ import java.nio.file.StandardOpenOption
 import java.nio.file.attribute.BasicFileAttributeView
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.stream.Collector
 import java.util.stream.Collectors.toList
 
 
@@ -20,7 +19,7 @@ class AttachmentFileRepositoryService(private val settingsManager: SettingsManag
     private val ATTACHMENTS_DIR = "_attachments"
 
     fun uploadFiles(entityPath: KnownPath, uploadFiles: Array<MultipartFile>): List<Attachment> {
-        val uploadedFilePaths = mutableListOf<Attachment>();
+        val uploadedFilePaths = mutableListOf<Attachment>()
 
         for (uploadFile in uploadFiles) {
             uploadedFilePaths.add(
@@ -28,7 +27,7 @@ class AttachmentFileRepositoryService(private val settingsManager: SettingsManag
             )
         }
 
-        return uploadedFilePaths;
+        return uploadedFilePaths
     }
 
     private fun uploadFile(entityPath: KnownPath, uploadFile: MultipartFile): Attachment {
@@ -54,7 +53,7 @@ class AttachmentFileRepositoryService(private val settingsManager: SettingsManag
                 StandardOpenOption.WRITE
         )
 
-        return getAttachmentDetailsFromPath(escapedRelativeKnownPath)!!;
+        return getAttachmentDetailsFromPath(escapedRelativeKnownPath)!!
     }
 
     public fun getAttachmentDetailsFromPath(knownPath: KnownPath): Attachment? {
@@ -62,10 +61,10 @@ class AttachmentFileRepositoryService(private val settingsManager: SettingsManag
         val absoluteResourcePath: java.nio.file.Path = fileRepositoryService.escapeAndGetAbsolutePath(escapedRelativeKnownPath)
 
         if (!absoluteResourcePath.toFile().exists()) {
-            return null;
+            return null
         }
 
-        val mimeType = Files.probeContentType(absoluteResourcePath);
+        val mimeType = Files.probeContentType(absoluteResourcePath)
 
         val fileBasicView = Files.getFileAttributeView(absoluteResourcePath, BasicFileAttributeView::class.java)
         val fileAttributes = fileBasicView.readAttributes()
@@ -82,10 +81,10 @@ class AttachmentFileRepositoryService(private val settingsManager: SettingsManag
         val absoluteResourcePath: java.nio.file.Path = fileRepositoryService.escapeAndGetAbsolutePath(escapedRelativeKnownPath)
 
         if (!absoluteResourcePath.toFile().exists()) {
-            return null;
+            return null
         }
 
-        return absoluteResourcePath.toFile().readBytes();
+        return absoluteResourcePath.toFile().readBytes()
     }
 
     fun getAttachmentsDetailsFromPath(knownPath: KnownPath): List<Attachment> {
@@ -100,13 +99,13 @@ class AttachmentFileRepositoryService(private val settingsManager: SettingsManag
         val absoluteResourcePath = fileRepositoryService.escapeAndGetAbsolutePath(escapedRelativeKnownPath)
 
         if (!absoluteResourcePath.toFile().exists()) {
-            return emptyList();
+            return emptyList()
         }
         val attachmentsFiles = Files.list(absoluteResourcePath)
                 .filter({ it.toFile().isFile })
                 .collect(toList())
 
-        val result = mutableListOf<Attachment>();
+        val result = mutableListOf<Attachment>()
         for (attachmentsFile in attachmentsFiles) {
             val relativeJavaPathAsString = fileRepositoryService.getRelativePathFromAbsolutePath(attachmentsFile.toAbsolutePath(), knownPath.fileType).toString()
             val path = Path.createInstance(relativeJavaPathAsString)

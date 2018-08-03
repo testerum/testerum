@@ -6,8 +6,8 @@ enum class DatabaseConnectionUrlPatternsEnum(private val variable: String) {
     PORT("PORT"),
     DB("DB");
 
-    private val optionalRegex = Regex("""\[([^]]*)\{\Q${variable}\E\}([^]]*)\]""");
-    private val requiredRegex = Regex("""\{\Q${variable}\E\}""");
+    private val optionalRegex = Regex("""\[([^]]*)\{\Q${variable}\E\}([^]]*)\]""")
+    private val requiredRegex = Regex("""\{\Q${variable}\E\}""")
 
     fun replace(pattern: String, variableValue: String): String {
         var result = pattern

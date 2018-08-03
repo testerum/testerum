@@ -7,8 +7,8 @@ import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.manual.ManualTest
-import net.qutester.model.repository.enums.FileType
 import net.qutester.model.manual.operation.UpdateManualTestModel
+import net.qutester.model.repository.enums.FileType
 import net.testerum.db_file.FileRepositoryService
 import net.testerum.db_file.model.KnownPath
 import net.testerum.db_file.model.RepositoryFile
@@ -45,7 +45,7 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
     fun updateTest(updateManualTestModel: UpdateManualTestModel): ManualTest {
         val manualTest = updateManualTestModel.manualTest
 
-        val oldPath = updateManualTestModel.oldPath;
+        val oldPath = updateManualTestModel.oldPath
         val newPath = Path(manualTest.path.directories, manualTest.text, FileType.MANUAL_TEST.fileExtension)
 
         val fileTestAsString = objectMapper.writeValueAsString(manualTest)

@@ -16,31 +16,31 @@ class ManualTestsController(private val manualTestsService: ManualTestsService) 
 
     @RequestMapping (params = arrayOf("path"), method = arrayOf(RequestMethod.DELETE))
     fun delete(@RequestParam(value = "path") path:String) {
-        manualTestsService.remove(Path.createInstance(path));
+        manualTestsService.remove(Path.createInstance(path))
     }
 
     @RequestMapping (path = arrayOf("/create"), method = arrayOf(RequestMethod.POST))
     @ResponseBody
     fun create(@RequestBody manualTest: ManualTest): ManualTest {
-        return manualTestsService.createTest(manualTest);
+        return manualTestsService.createTest(manualTest)
     }
 
     @RequestMapping (path = arrayOf("/update"), method = arrayOf(RequestMethod.POST))
     @ResponseBody
     fun update(@RequestBody updateManualTestModel: UpdateManualTestModel): ManualTest {
-        return manualTestsService.updateTest(updateManualTestModel);
+        return manualTestsService.updateTest(updateManualTestModel)
     }
 
     @RequestMapping (method = arrayOf(RequestMethod.GET))
     @ResponseBody
     fun getTests(): List<ManualTest> {
-        return manualTestsService.getAllTests();
+        return manualTestsService.getAllTests()
     }
 
     @RequestMapping (params = arrayOf("path"), method = arrayOf(RequestMethod.GET))
     @ResponseBody
     fun getTestAtPath(@RequestParam(value = "path") path:String): ManualTest? {
-        return manualTestsService.getTestAtPath(Path.createInstance(path));
+        return manualTestsService.getTestAtPath(Path.createInstance(path))
     }
 
     @RequestMapping(path = arrayOf("/directory"), method = arrayOf(RequestMethod.PUT))

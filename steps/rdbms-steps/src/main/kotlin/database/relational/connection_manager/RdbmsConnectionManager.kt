@@ -41,7 +41,7 @@ class RdbmsConnectionManager(private val fileRepositoryService: FileRepositorySe
             }
         }
 
-        return null;
+        return null
     }
 
     fun getRdbmsClient(connectionConfig: RdbmsConnectionConfig): RdbmsClient {

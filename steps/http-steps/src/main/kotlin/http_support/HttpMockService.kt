@@ -21,7 +21,7 @@ import javax.annotation.PreDestroy
 
 class HttpMockService(val jsonComparer: JsonComparer) {
 
-    private val servers: MutableMap<Int, WireMockServer> = mutableMapOf();
+    private val servers: MutableMap<Int, WireMockServer> = mutableMapOf()
 
     @PreDestroy
     fun destroy() {
@@ -118,7 +118,7 @@ class HttpMockService(val jsonComparer: JsonComparer) {
 
     private fun addExpectedBody(mappingBuilder: MappingBuilder, expectedRequest: HttpMockRequest) {
         if (expectedRequest.body != null) {
-            val pattern: StringValuePattern?;
+            val pattern: StringValuePattern?
             val body = expectedRequest.body!!
             when (body.matchingType) {
                 HttpMockRequestBodyMatchingType.EXACT_MATCH -> pattern = equalTo(body.content)
@@ -144,7 +144,7 @@ class HttpMockService(val jsonComparer: JsonComparer) {
 
     private fun addExpectedHeaders(mappingBuilder: MappingBuilder, expectedRequest: HttpMockRequest) {
         expectedRequest.headers?.forEach {
-            val pattern: StringValuePattern?;
+            val pattern: StringValuePattern?
             when (it.compareMode) {
                 HttpMockRequestHeadersCompareMode.EXACT_MATCH -> pattern = equalTo(it.value)
                 HttpMockRequestHeadersCompareMode.CONTAINS -> pattern = containing(it.value)
@@ -159,7 +159,7 @@ class HttpMockService(val jsonComparer: JsonComparer) {
 
     private fun addExpectedParams(mappingBuilder: MappingBuilder, expectedRequest: HttpMockRequest) {
         expectedRequest.params?.forEach {
-            val pattern: StringValuePattern?;
+            val pattern: StringValuePattern?
             when (it.compareMode) {
                 HttpMockRequestParamsCompareMode.EXACT_MATCH -> pattern = equalTo(it.value)
                 HttpMockRequestParamsCompareMode.CONTAINS -> pattern = containing(it.value)

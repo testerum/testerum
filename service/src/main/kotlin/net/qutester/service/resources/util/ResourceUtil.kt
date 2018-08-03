@@ -11,5 +11,5 @@ fun ResourceContext.isUpdateResource(): Boolean {
 }
 
 fun ResourceContext.isRelocateResource(): Boolean {
-    return isUpdateResource() && oldPath != path;
+    return isUpdateResource() && oldPath != path
 }

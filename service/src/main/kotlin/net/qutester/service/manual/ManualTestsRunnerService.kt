@@ -4,14 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import net.qutester.common.json.ObjectMapperFactory
 import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.manual.ManualTest
 import net.qutester.model.manual.enums.ManualTestStatus
 import net.qutester.model.manual.runner.ManualTestExe
-import net.qutester.model.repository.enums.FileType
-import net.qutester.model.manual.runner.operation.UpdateManualTestsRunnerModel
 import net.qutester.model.manual.runner.ManualTestsRunner
 import net.qutester.model.manual.runner.enums.ManualTestsRunnerStatus
 import net.qutester.model.manual.runner.operation.UpdateManualTestExecutionModel
+import net.qutester.model.manual.runner.operation.UpdateManualTestsRunnerModel
+import net.qutester.model.repository.enums.FileType
 import net.testerum.db_file.FileRepositoryService
 import net.testerum.db_file.model.KnownPath
 import net.testerum.db_file.model.RepositoryFile
@@ -24,7 +23,7 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
     val objectMapper: ObjectMapper = ObjectMapperFactory.createKotlinObjectMapper()
 
     fun createTest(manualTestsRunner: ManualTestsRunner): ManualTestsRunner {
-        val manualTestsRunnerToSave = manualTestsRunner.copy(createdDate = LocalDateTime.now());
+        val manualTestsRunnerToSave = manualTestsRunner.copy(createdDate = LocalDateTime.now())
 
         val fileName = getFileName(manualTestsRunnerToSave)
 
@@ -48,15 +47,15 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
     }
 
     private fun getFileName(manualTestsRunner: ManualTestsRunner): String {
-        var fileName = if (manualTestsRunner.environment != null) manualTestsRunner.environment + "_" else "";
-        fileName += if (manualTestsRunner.applicationVersion != null) manualTestsRunner.applicationVersion else "";
+        var fileName = if (manualTestsRunner.environment != null) manualTestsRunner.environment + "_" else ""
+        fileName += if (manualTestsRunner.applicationVersion != null) manualTestsRunner.applicationVersion else ""
         return fileName
     }
 
     fun updateTest(updateManualTestsRunnerModel: UpdateManualTestsRunnerModel): ManualTestsRunner {
         val resolvedManualTestsRunner = resolveRunnerWithCurrentStateFromFile(updateManualTestsRunnerModel)
 
-        val oldPath = updateManualTestsRunnerModel.oldPath;
+        val oldPath = updateManualTestsRunnerModel.oldPath
 
         val fileName = getFileName(updateManualTestsRunnerModel.manualTestsRunner)
         val newPath = Path(resolvedManualTestsRunner.path.directories, fileName, FileType.MANUAL_TESTS_RUNNER.fileExtension)
@@ -83,7 +82,7 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
     private fun resolveRunnerWithCurrentStateFromFile(updateManualTestsRunnerModel: UpdateManualTestsRunnerModel): ManualTestsRunner {
         val manualTestsRunner = updateManualTestsRunnerModel.manualTestsRunner
 
-        val resolvedTests: MutableList<ManualTestExe> = mutableListOf();
+        val resolvedTests: MutableList<ManualTestExe> = mutableListOf()
 
         val testsToExecute = manualTestsRunner.testsToExecute
         val oldTestRunner = getTestsRunnerAtPath(updateManualTestsRunnerModel.oldPath)?: return manualTestsRunner
@@ -176,23 +175,23 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
     }
 
     private fun resolveManualTestsRunner(manualTest: ManualTestsRunner, testFile: RepositoryFile): ManualTestsRunner {
-        var totalTests: Int = 0;
-        var passedTests: Int = 0;
-        var failedTests: Int = 0;
-        var blockedTests: Int = 0;
-        var notApplicableTests: Int = 0;
-        var notExecutedTests: Int = 0;
+        var totalTests: Int = 0
+        var passedTests: Int = 0
+        var failedTests: Int = 0
+        var blockedTests: Int = 0
+        var notApplicableTests: Int = 0
+        var notExecutedTests: Int = 0
 
         for (test in manualTest.testsToExecute) {
-            totalTests++;
+            totalTests++
 
             when (test.testStatus) {
-                ManualTestStatus.PASSED -> passedTests++;
-                ManualTestStatus.FAILED -> failedTests++;
-                ManualTestStatus.BLOCKED -> blockedTests++;
-                ManualTestStatus.NOT_APPLICABLE -> notApplicableTests++;
-                ManualTestStatus.NOT_EXECUTED -> notExecutedTests++;
-                ManualTestStatus.IN_PROGRESS -> notExecutedTests++;
+                ManualTestStatus.PASSED -> passedTests++
+                ManualTestStatus.FAILED -> failedTests++
+                ManualTestStatus.BLOCKED -> blockedTests++
+                ManualTestStatus.NOT_APPLICABLE -> notApplicableTests++
+                ManualTestStatus.NOT_EXECUTED -> notExecutedTests++
+                ManualTestStatus.IN_PROGRESS -> notExecutedTests++
             }
         }
 

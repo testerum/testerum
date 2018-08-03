@@ -17,6 +17,6 @@ open class VariablesController(var variablesService: VariablesService) {
     @RequestMapping (method = arrayOf(RequestMethod.POST))
     @ResponseBody
     fun save(@RequestBody variables: List<Variable>): List<Variable> {
-        return variablesService.save(variables);
+        return variablesService.save(variables)
     }
 }

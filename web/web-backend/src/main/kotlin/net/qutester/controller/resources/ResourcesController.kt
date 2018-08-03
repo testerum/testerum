@@ -3,8 +3,8 @@ package net.qutester.controller.resources
 import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.infrastructure.path.RenamePath
-import net.qutester.model.resources.ResourceContext
 import net.qutester.model.repository.enums.FileType
+import net.qutester.model.resources.ResourceContext
 import net.qutester.service.resources.ResourcesService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -19,7 +19,7 @@ class ResourcesController(private val resourcesService: ResourcesService) {
     @RequestMapping(method = arrayOf(RequestMethod.POST))
     @ResponseBody
     fun save(@RequestBody resourceContext: ResourceContext): ResourceContext {
-        return resourcesService.save(resourceContext);
+        return resourcesService.save(resourceContext)
     }
 
     @RequestMapping(path = arrayOf("/shared/paths/{resourceType:.+}"), method = arrayOf(RequestMethod.GET))
@@ -41,19 +41,19 @@ class ResourcesController(private val resourcesService: ResourcesService) {
     @RequestMapping(method = arrayOf(RequestMethod.DELETE))
     @ResponseBody
     fun delete(@RequestParam("path") path: String) {
-        resourcesService.delete(path);
+        resourcesService.delete(path)
     }
 
     @RequestMapping(method = arrayOf(RequestMethod.GET))
     @ResponseBody
     fun getByPath(@RequestParam("path") path: String): ResourceContext? {
-        return resourcesService.getByPath(Path.createInstance(path));
+        return resourcesService.getByPath(Path.createInstance(path))
     }
 
     @RequestMapping(path = arrayOf("/directory"), method = arrayOf(RequestMethod.PUT))
     @ResponseBody
     fun renameDirectory(@RequestBody renamePath: RenamePath): Path {
-        return resourcesService.renameDirectory(renamePath);
+        return resourcesService.renameDirectory(renamePath)
     }
 
     @RequestMapping(path = arrayOf("/directory"), method = arrayOf(RequestMethod.DELETE))
@@ -63,6 +63,6 @@ class ResourcesController(private val resourcesService: ResourcesService) {
 
     @RequestMapping(path = arrayOf("/directory/move"), method = arrayOf(RequestMethod.POST))
     fun moveDirectoryOrFile(@RequestBody copyPath: CopyPath) {
-        resourcesService.moveDirectoryOrFile(copyPath);
+        resourcesService.moveDirectoryOrFile(copyPath)
     }
 }

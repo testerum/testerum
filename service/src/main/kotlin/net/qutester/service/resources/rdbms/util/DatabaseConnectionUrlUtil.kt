@@ -18,7 +18,7 @@ fun RdbmsConnectionConfig.resolveConnectionUrl(): String {
 }
 
 private fun replaceOptional(pattern: String, variable:String, variableValue: String?): String {
-    val optionalRegex = Regex("""\[([^]]*)\{\Q${variable}\E\}([^]]*)\]""");
+    val optionalRegex = Regex("""\[([^]]*)\{\Q${variable}\E\}([^]]*)\]""")
 
     return optionalRegex.replace(pattern) { matchResult ->
         if (variableValue == null || variableValue.isBlank()) {
@@ -32,7 +32,7 @@ private fun replaceOptional(pattern: String, variable:String, variableValue: Str
     }
 }
 private fun replaceRequired(pattern: String, variable:String, variableValue: String?): String {
-    val requiredRegex = Regex("""\{\Q${variable}\E\}""");
+    val requiredRegex = Regex("""\{\Q${variable}\E\}""")
 
     return requiredRegex.replace(pattern, variableValue?:"")
 }

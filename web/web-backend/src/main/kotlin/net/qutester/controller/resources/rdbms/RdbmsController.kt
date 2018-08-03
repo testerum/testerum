@@ -29,18 +29,18 @@ class RdbmsController(private val networkService: NetworkService,
     fun ping(@RequestParam("host") host: String,
              @RequestParam("port") port: Int): Boolean {
 
-        return networkService.respondsToPing(host, port);
+        return networkService.respondsToPing(host, port)
     }
 
     @RequestMapping(path = arrayOf("/drivers"), method = arrayOf(RequestMethod.GET))
     @ResponseBody
     fun getRdbmsDrivers(): List<RdbmsDriver> {
-        return rdbmsDriverConfigService.getDriversConfiguration();
+        return rdbmsDriverConfigService.getDriversConfiguration()
     }
 
     @RequestMapping(path = arrayOf("/schema"), method = arrayOf(RequestMethod.GET))
     @ResponseBody
     fun getRdbmsSchema(@RequestParam("path") rdbmsConnectionResourcePath: String): RdbmsSchema {
-        return rdbmsService.getSchema(Path.createInstance(rdbmsConnectionResourcePath));
+        return rdbmsService.getSchema(Path.createInstance(rdbmsConnectionResourcePath))
     }
 }

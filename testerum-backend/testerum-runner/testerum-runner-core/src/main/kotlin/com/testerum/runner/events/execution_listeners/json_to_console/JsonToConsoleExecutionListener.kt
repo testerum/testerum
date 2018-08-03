@@ -9,8 +9,8 @@ class JsonToConsoleExecutionListener(private var objectMapper: ObjectMapper) : E
 
     companion object {
         // note: if you change these, also change it in net.qutester.service.tests_runner.event_processor.TestRunnerEventProcessor
-        const val TESTERUM_EVENT_PREFIX = "-->testerum\u0000-->";
-        const val TESTERUM_EVENT_SUFFIX = "<--testerum\u0000<--";
+        const val TESTERUM_EVENT_PREFIX = "-->testerum\u0000-->"
+        const val TESTERUM_EVENT_SUFFIX = "<--testerum\u0000<--"
     }
 
     private val appendable: Appendable = System.out

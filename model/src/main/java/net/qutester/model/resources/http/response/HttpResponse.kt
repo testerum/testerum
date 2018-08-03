@@ -52,7 +52,7 @@ class HttpResponse @JsonCreator constructor(
 
         if (body.isNotEmpty()) {
             response +=  "\n"
-            response += String(body);
+            response += String(body)
         }
 
         return response

@@ -21,8 +21,8 @@ open class SetupController(val settingsManager: SettingsManagerImpl,
     fun createConfig(@RequestBody setup: Setup): Setup {
         settingsManager.createConfig (
                 setup.repositoryPath.toJavaPath()
-        );
-        stepService.reinitializeComposedSteps();
+        )
+        stepService.reinitializeComposedSteps()
 
         return setup
     }

@@ -12,8 +12,8 @@ data class StepPattern  @JsonCreator constructor(
 ) {
     @JsonIgnore
     fun getAsText():String {
-        var result = "";
-        var isFirstPart = true;
+        var result = ""
+        var isFirstPart = true
         for (patternPart in patternParts) {
 
             if (!isFirstPart) {
@@ -28,9 +28,9 @@ data class StepPattern  @JsonCreator constructor(
                 result += "["+ patternPart.name + "]"
             }
 
-            isFirstPart = false;
+            isFirstPart = false
         }
-        return result;
+        return result
     }
 
     @JsonIgnore

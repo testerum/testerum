@@ -19,7 +19,7 @@ open class BasicStepsController(val stepService: StepService) {
     @RequestMapping (params = ["path"], method = [RequestMethod.GET])
     @ResponseBody
     fun getBasicStepByPath(@RequestParam(value = "path") path:String): BasicStepDef? {
-        return stepService.getBasicStepByPath(Path.createInstance(path));
+        return stepService.getBasicStepByPath(Path.createInstance(path))
     }
 
 }

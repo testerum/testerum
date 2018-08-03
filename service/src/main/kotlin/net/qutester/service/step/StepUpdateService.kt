@@ -70,7 +70,7 @@ class StepUpdateService(private val stepService: StepService,
     private fun updateTestsThatUsesOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef) {
         val testsThatUsesOldStep = stepUpdateCompatibilityService.findTestsThatUsesStepPatternAsChild(oldStep.stepPattern)
         for (testToUpdate in testsThatUsesOldStep) {
-            var updatedTest = testToUpdate;
+            var updatedTest = testToUpdate
             for ((index, stepCall) in testToUpdate.stepCalls.withIndex()) {
                 if (stepCall.stepDef.stepPattern == oldStep.stepPattern) {
                     updatedTest = updateStepPatternAtStepCallForTest(updatedTest, index, newStep.stepPattern)

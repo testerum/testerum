@@ -15,14 +15,14 @@ class RunnerResultController(private val testRunnerResultService: TestRunnerResu
     @RequestMapping (method = arrayOf(RequestMethod.GET))
     @ResponseBody
     fun getResults(): List<RunnerResultsDirInfo> {
-        return testRunnerResultService.getResultInfo();
+        return testRunnerResultService.getResultInfo()
     }
 
 
     @RequestMapping (params = arrayOf("path"), method = arrayOf(RequestMethod.GET))
     @ResponseBody
     fun getResultAtPath(@RequestParam(value = "path") path:String): List<RunnerEvent>? {
-        return testRunnerResultService.getResultAtPath(Path.createInstance(path));
+        return testRunnerResultService.getResultAtPath(Path.createInstance(path))
     }
 
 }

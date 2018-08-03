@@ -34,11 +34,11 @@ interface StepDef {
 
     @JsonIgnore
     fun getText(): String {
-        var result: String = phase.name;
-        result += " ";
+        var result: String = phase.name
+        result += " "
 
-        result += stepPattern.getAsText();
+        result += stepPattern.getAsText()
 
-        return result;
+        return result
     }
 }

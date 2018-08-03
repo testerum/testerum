@@ -22,7 +22,7 @@ open class SettingsController(val settingsService: SettingsService,
     fun saveSettings(@RequestBody uiSettings: List<UiSetting>): List<UiSetting> {
         val settingWithValues = uiSettings.map { it.toSettingWithValue() }
         val settingsAfterSave = settingsService.save(settingWithValues)
-        stepService.loadSteps();
+        stepService.loadSteps()
 
         return settingsAfterSave.map { it.toUiSetting() }
     }
