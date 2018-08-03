@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*
 class RunnerResultController(private val testRunnerResultService: TestRunnerResultService) {
     private val LOG = LoggerFactory.getLogger(RunnerResultController::class.java)
 
-    @RequestMapping (method = arrayOf(RequestMethod.GET))
+    @RequestMapping (method = [RequestMethod.GET])
     @ResponseBody
     fun getResults(): List<RunnerResultsDirInfo> {
         return testRunnerResultService.getResultInfo()
     }
 
 
-    @RequestMapping (params = arrayOf("path"), method = arrayOf(RequestMethod.GET))
+    @RequestMapping (params = ["path"], method = [RequestMethod.GET])
     @ResponseBody
     fun getResultAtPath(@RequestParam(value = "path") path:String): List<RunnerEvent>? {
         return testRunnerResultService.getResultAtPath(Path.createInstance(path))

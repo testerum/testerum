@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.*
 class ResourcesController(private val resourcesService: ResourcesService) {
     private val LOG = LoggerFactory.getLogger(ResourcesController::class.java)
 
-    @RequestMapping(method = arrayOf(RequestMethod.POST))
+    @RequestMapping(method = [RequestMethod.POST])
     @ResponseBody
     fun save(@RequestBody resourceContext: ResourceContext): ResourceContext {
         return resourcesService.save(resourceContext)
     }
 
-    @RequestMapping(path = arrayOf("/shared/paths/{resourceType:.+}"), method = arrayOf(RequestMethod.GET))
+    @RequestMapping(path = ["/shared/paths/{resourceType:.+}"], method = [RequestMethod.GET])
     @ResponseBody
     fun getResourcesPath(@PathVariable(value = "resourceType") resourceTypeAsString: String): ResponseEntity<List<String>> {
         val resourceType = FileType.getByFileExtension(resourceTypeAsString)
@@ -38,30 +38,30 @@ class ResourcesController(private val resourcesService: ResourcesService) {
         return ResponseEntity(response, HttpStatus.OK)
     }
 
-    @RequestMapping(method = arrayOf(RequestMethod.DELETE))
+    @RequestMapping(method = [RequestMethod.DELETE])
     @ResponseBody
     fun delete(@RequestParam("path") path: String) {
         resourcesService.delete(path)
     }
 
-    @RequestMapping(method = arrayOf(RequestMethod.GET))
+    @RequestMapping(method = [RequestMethod.GET])
     @ResponseBody
     fun getByPath(@RequestParam("path") path: String): ResourceContext? {
         return resourcesService.getByPath(Path.createInstance(path))
     }
 
-    @RequestMapping(path = arrayOf("/directory"), method = arrayOf(RequestMethod.PUT))
+    @RequestMapping(path = ["/directory"], method = [RequestMethod.PUT])
     @ResponseBody
     fun renameDirectory(@RequestBody renamePath: RenamePath): Path {
         return resourcesService.renameDirectory(renamePath)
     }
 
-    @RequestMapping(path = arrayOf("/directory"), method = arrayOf(RequestMethod.DELETE))
+    @RequestMapping(path = ["/directory"], method = [RequestMethod.DELETE])
     fun deleteDirectory(@RequestParam("path") pathAsString: String) {
         resourcesService.deleteDirectory(pathAsString)
     }
 
-    @RequestMapping(path = arrayOf("/directory/move"), method = arrayOf(RequestMethod.POST))
+    @RequestMapping(path = ["/directory/move"], method = [RequestMethod.POST])
     fun moveDirectoryOrFile(@RequestBody copyPath: CopyPath) {
         resourcesService.moveDirectoryOrFile(copyPath)
     }

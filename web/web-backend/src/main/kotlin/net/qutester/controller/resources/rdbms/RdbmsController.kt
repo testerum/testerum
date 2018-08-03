@@ -17,14 +17,14 @@ class RdbmsController(private val networkService: NetworkService,
                       private val rdbmsDriverConfigService: RdbmsDriverConfigService) {
 
 
-    @RequestMapping(path = arrayOf("/schemas"), method = arrayOf(RequestMethod.POST))
+    @RequestMapping(path = ["/schemas"], method = [RequestMethod.POST])
     @ResponseBody
     fun schemas(@RequestBody rdbmsConnectionConfig: RdbmsConnectionConfig): RdbmsSchemasNames {
 
         return rdbmsService.getSchemas(rdbmsConnectionConfig)
     }
 
-    @RequestMapping(path = arrayOf("/ping"), method = arrayOf(RequestMethod.GET))
+    @RequestMapping(path = ["/ping"], method = [RequestMethod.GET])
     @ResponseBody
     fun ping(@RequestParam("host") host: String,
              @RequestParam("port") port: Int): Boolean {
@@ -32,13 +32,13 @@ class RdbmsController(private val networkService: NetworkService,
         return networkService.respondsToPing(host, port)
     }
 
-    @RequestMapping(path = arrayOf("/drivers"), method = arrayOf(RequestMethod.GET))
+    @RequestMapping(path = ["/drivers"], method = [RequestMethod.GET])
     @ResponseBody
     fun getRdbmsDrivers(): List<RdbmsDriver> {
         return rdbmsDriverConfigService.getDriversConfiguration()
     }
 
-    @RequestMapping(path = arrayOf("/schema"), method = arrayOf(RequestMethod.GET))
+    @RequestMapping(path = ["/schema"], method = [RequestMethod.GET])
     @ResponseBody
     fun getRdbmsSchema(@RequestParam("path") rdbmsConnectionResourcePath: String): RdbmsSchema {
         return rdbmsService.getSchema(Path.createInstance(rdbmsConnectionResourcePath))

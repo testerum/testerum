@@ -28,8 +28,8 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
 
     @RequestMapping(
             path = ["/info"],
-            params = arrayOf("path"),
-            method = arrayOf(RequestMethod.GET))
+            params = ["path"],
+            method = [RequestMethod.GET])
     @ResponseBody
     fun getAttachmentsInfo(@RequestParam(value = "path") path: String): List<Attachment> {
         val knownPath = KnownPath(Path.createInstance(path), FileType.FEATURE)
@@ -37,7 +37,7 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
         return attachmentsDetails
     }
 
-    @RequestMapping(params = arrayOf("path"), method = arrayOf(RequestMethod.GET))
+    @RequestMapping(params = ["path"], method = [RequestMethod.GET])
     @ResponseBody
     fun getAttachmentFile(@RequestParam(value = "path") path: String,
                           @RequestParam(value = "thumbnail", required = false) thumbnail: Boolean = false,

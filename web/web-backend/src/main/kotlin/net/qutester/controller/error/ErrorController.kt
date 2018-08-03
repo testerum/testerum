@@ -19,7 +19,7 @@ class ErrorController(val errorResponsePreparerMap: Map<Class<out Throwable>, Er
 
     private val LOGGER = LoggerFactory.getLogger(ErrorController::class.java)
 
-    @RequestMapping(produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun errorPage(@NonNull request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         val exception = request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) as Throwable?
         val nestedException = if(exception is NestedServletException) exception.cause else exception
