@@ -5,14 +5,16 @@
 }
 
 .btn {
-padding: .25em .5em .25em .5em;
+    padding: .25em .5em .25em .5em;
+    line-height: 1;
 }
 
 .btn-xs {
-padding:0;
+    width: 24px;
+    height: 20px;
 }
 
 .alert {
-padding: 5px;
-margin-bottom: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
 }
