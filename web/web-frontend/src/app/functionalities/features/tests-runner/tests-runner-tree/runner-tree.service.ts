@@ -1,5 +1,4 @@
-
-import {Injectable,EventEmitter} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import {BasicStepDef} from "../../../../model/basic-step-def.model";
 import {TreeNodeModel} from "../../../../model/infrastructure/tree-node.model";
 import {TestModel} from "../../../../model/test/test.model";
@@ -62,14 +61,14 @@ export class RunnerTreeService implements WebSocketEventListener {
             runnerTreeNode.changeState(runnerEvent.status);
 
             switch (runnerEvent.status) {
-                case ExecutionStatusEnum.PASSED: this.executionPieService.model.incrementPassed(); break;
-                case ExecutionStatusEnum.FAILED: this.executionPieService.model.incrementFailed(); break;
-                case ExecutionStatusEnum.ERROR: this.executionPieService.model.incrementError(); break;
-                case ExecutionStatusEnum.UNDEFINED: this.executionPieService.model.incrementUndefined(); break;
-                case ExecutionStatusEnum.SKIPPED: this.executionPieService.model.incrementSkipped(); break;
+                case ExecutionStatusEnum.PASSED: this.executionPieService.pieModel.incrementPassed(); break;
+                case ExecutionStatusEnum.FAILED: this.executionPieService.pieModel.incrementFailed(); break;
+                case ExecutionStatusEnum.ERROR: this.executionPieService.pieModel.incrementError(); break;
+                case ExecutionStatusEnum.UNDEFINED: this.executionPieService.pieModel.incrementUndefined(); break;
+                case ExecutionStatusEnum.SKIPPED: this.executionPieService.pieModel.incrementSkipped(); break;
             }
 
-            this.executionPieService.model.waitingToExecute --;
+            this.executionPieService.pieModel.waitingToExecute --;
         }
         if(runnerEvent instanceof StepStartEvent) {
             let runnerTreeNode:RunnerTreeNodeModel = this.rootNode.findNode(runnerEvent.eventKey);
@@ -96,7 +95,7 @@ export class RunnerTreeService implements WebSocketEventListener {
     }
 
     initialize(testModels: Array<TestModel>): void {
-        this.addTestToTreeModel(testModels, this.rootNode, this.executionPieService.model);
+        this.addTestToTreeModel(testModels, this.rootNode, this.executionPieService.pieModel);
     }
 
     private addTestToTreeModel(testModels: Array<TestModel>, rootNode: RunnerTreeNodeModel, pieModel: ExecutionPieModel) {

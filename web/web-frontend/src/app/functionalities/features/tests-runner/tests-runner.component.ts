@@ -1,9 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {TestsRunnerService} from "./tests-runner.service";
-import {TestModel} from "../../../model/test/test.model";
 import {TestsRunnerLogsService} from "./tests-runner-logs/tests-runner-logs.service";
 import {RunnerTreeService} from "./tests-runner-tree/runner-tree.service";
-import {ExecutionPieModel} from "../../../generic/components/charts/execution-pie/model/execution-pie.model";
 
 @Component({
     moduleId: module.id,
@@ -13,29 +11,22 @@ import {ExecutionPieModel} from "../../../generic/components/charts/execution-pi
 
 export class TestsRunnerComponent {
 
-    public visible:boolean = false;
-    public pieModel: ExecutionPieModel = new ExecutionPieModel();
-
     public runnerTreeService: RunnerTreeService;
     public testsRunnerLogsService:TestsRunnerLogsService;
 
-    constructor(testsRunnerService: TestsRunnerService,
+    constructor(private testsRunnerService: TestsRunnerService,
                 runnerTreeService: RunnerTreeService,
                 testsRunnerLogsService: TestsRunnerLogsService) {
-
-        testsRunnerService.getTestModel().subscribe(
-            testModels => this.setTestModel(testModels)
-        );
 
         this.runnerTreeService = runnerTreeService;
         this.testsRunnerLogsService = testsRunnerLogsService;
     }
 
-    private setTestModel(testModels:Array<TestModel>) {
-        this.visible = true;
+    isTestRunnerVisible(): boolean {
+        return this.testsRunnerService.isTestRunnerVisible;
     }
 
     close() {
-        this.visible = false;
+        this.testsRunnerService.isTestRunnerVisible = false;
     }
 }

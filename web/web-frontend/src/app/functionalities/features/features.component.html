@@ -3,20 +3,20 @@
     <split direction="vertical">
         <split-area [size]="50">
             <split direction="horizontal">
-                <split-area [size]="30">
+                <split-area [size]="20">
                     <features-tree-filter [treeModel]="featuresTreeService.treeModel"></features-tree-filter>
 
                     <features-tree></features-tree>
 
                 </split-area>
-                <split-area [size]="70" [visible]="isTestSelected">
+                <split-area [size]="80" [visible]="isTestSelected">
 
                     <router-outlet></router-outlet>
 
                 </split-area>
             </split>
         </split-area>
-        <split-area [size]="50" [visible]="runner.visible">
+        <split-area [size]="50" [visible]="isTestRunnerVisible()">
             <tests-runner #runner ></tests-runner>
         </split-area>
     </split>
