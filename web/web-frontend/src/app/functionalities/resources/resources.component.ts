@@ -16,7 +16,7 @@ import {ResourcesTreeNode} from "./tree/model/resources-tree-node.model";
 
 export class ResourcesComponent implements OnInit {
 
-    private isStepSelected: boolean = true;
+    isStepSelected: boolean = true;
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(ResourcesTreeContainer, ResourcesContainerComponent)
         .addPair(ResourcesTreeNode, ResourceNodeComponent);

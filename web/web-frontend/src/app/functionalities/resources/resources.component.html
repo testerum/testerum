@@ -1,12 +1,12 @@
 <div class="main-container">
     <split direction="horizontal">
-        <split-area [size]="40">
+        <split-area [size]="30">
 
             <resources-tree [treeModel]="resourcesTreeService.getTreeRoot()"
                             [modelComponentMapping]="modelComponentMapping"></resources-tree>
 
         </split-area>
-        <split-area [size]="60" [visible]="isStepSelected">
+        <split-area [size]="70" [visible]="isStepSelected">
 
             <router-outlet></router-outlet>
 
