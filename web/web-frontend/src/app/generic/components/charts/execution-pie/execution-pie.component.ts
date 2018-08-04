@@ -10,7 +10,6 @@ import {ExecutionPieService} from "./execution-pie.service";
 
 export class ExecutionPieComponent implements OnInit {
 
-    @Input() model: ExecutionPieModel = new ExecutionPieModel();
     @Input() width: string;
     @Input() height: string;
     @Input() showLegend: boolean = true;
@@ -19,12 +18,9 @@ export class ExecutionPieComponent implements OnInit {
 
     pieChartOptions:any;
 
-    constructor(private executionPieService: ExecutionPieService) {
-    }
+    constructor(private executionPieService: ExecutionPieService) { }
 
     ngOnInit(): void {
-        this.executionPieService.setExecutionPieModel(this.model);
-
         this.pieChartOptions = {
             animation: false,
             legend: {
@@ -32,15 +28,15 @@ export class ExecutionPieComponent implements OnInit {
             }
         };
 
-        this.pieChartData = this.getPieDataFromModel(this.model);
-        this.model.changeEventEmitter.subscribe(
+        this.pieChartData = ExecutionPieComponent.getPieDataFromModel(this.executionPieService.pieModel);
+        this.executionPieService.pieModel.changeEventEmitter.subscribe(
             event => {
-                this.pieChartData = this.getPieDataFromModel(this.model);
+                this.pieChartData = ExecutionPieComponent.getPieDataFromModel(this.executionPieService.pieModel);
             }
         );
     }
 
-    getPieDataFromModel(model: ExecutionPieModel): any {
+    private static getPieDataFromModel(model: ExecutionPieModel): any {
         return {
             labels: [
                 'Waiting to execute',
@@ -63,5 +59,9 @@ export class ExecutionPieComponent implements OnInit {
                 hoverBackgroundColor: ["#c0bebc", "#5cb85c", "#FF6384", "#ff0000", "#FFCE56", "#aae8ff"]
             }]
         };
+    }
+
+    model(): ExecutionPieModel {
+        return this.executionPieService.pieModel;
     }
 }

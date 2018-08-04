@@ -31,7 +31,7 @@ class SettingsManagerImpl : SettingsManager {
                 )
             }
 
-            return instance;
+            return instance
         }
     }
 
@@ -110,7 +110,7 @@ class SettingsManagerImpl : SettingsManager {
         val keyValueSettings: Map<String, String?> = unresolvedNewSettingWithValues.map { it.setting.key to it.unresolvedValue }.toMap()
         val resolvedKeyValueSettings: Map<String, String?> = resolveValues(keyValueSettings)
 
-        val resolvedSettings: MutableMap<String, SettingWithValue> = mutableMapOf();
+        val resolvedSettings: MutableMap<String, SettingWithValue> = mutableMapOf()
         for (resolvedKeyValueSetting in resolvedKeyValueSettings) {
             resolvedSettings.put(
                     resolvedKeyValueSetting.key,
@@ -157,7 +157,7 @@ class SettingsManagerImpl : SettingsManager {
             val resolvedValue = propertyToResolveValue.replace(propRefPattern.toRegex(), escapedVariableToResolveValue)
             resolvedKeyValueMap.put(propertyToResolveKey, resolvedValue)
         }
-        return resolvedKeyValueMap;
+        return resolvedKeyValueMap
     }
 
     private fun getPropertyToResolve(keyValueMap: Map<String, String?>): Pair<String, String>? {
@@ -188,7 +188,7 @@ class SettingsManagerImpl : SettingsManager {
 
     private fun saveToPropertyFile(propertiesMap: MutableMap<String, String>) {
 
-        val properties = Properties();
+        val properties = Properties()
         properties.putAll(propertiesMap)
 
         Files.newBufferedWriter(settingsFile, Charsets.UTF_8).use { writer ->
@@ -208,7 +208,7 @@ class SettingsManagerImpl : SettingsManager {
                             unresolvedValue = this.getSetting(SystemSettings.REPOSITORY_DIRECTORY.key)!!.unresolvedValue
                     )
                 } else {
-                    settingWithValueToSave = settingWithValue;
+                    settingWithValueToSave = settingWithValue
                 }
             }
 
@@ -231,6 +231,6 @@ class SettingsManagerImpl : SettingsManager {
 
         registerPossibleUnresolvedValues(settingsAsPropMap)
 
-        return this.settings.values.toList();
+        return this.settings.values.toList()
     }
 }

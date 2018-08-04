@@ -23,7 +23,7 @@ data class BasicStepDef @JsonCreator constructor(@JsonProperty("phase") override
 
         val packagesWithClass: List<String> = className.split('.')
         val packages: List<String> = packagesWithClass.dropLast(1)
-        val classNameWithoutPackages = packagesWithClass.last();
+        val classNameWithoutPackages = packagesWithClass.last()
 
         return@run Path(packages, classNameWithoutPackages, methodName +"(" + paramTypes.joinToString(",")+")")
     }

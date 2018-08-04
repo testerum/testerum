@@ -9,6 +9,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import lombok.NonNull;
 
+import static com.fasterxml.jackson.module.kotlin.ExtensionsKt.jacksonObjectMapper;
+
 public final class ObjectMapperFactory {
 
     private ObjectMapperFactory() {}
@@ -32,7 +34,7 @@ public final class ObjectMapperFactory {
     }
 
     public static ObjectMapper createKotlinObjectMapper() {
-        final ObjectMapper objectMapper = com.fasterxml.jackson.module.kotlin.ExtensionsKt.jacksonObjectMapper();
+        final ObjectMapper objectMapper = jacksonObjectMapper();
 
         objectMapper.registerModule(new AfterburnerModule());
         objectMapper.registerModule(new JavaTimeModule());
@@ -50,7 +52,7 @@ public final class ObjectMapperFactory {
     }
 
     public static ObjectMapper createKotlinObjectMapperWithPrettyFormatter() {
-        final ObjectMapper objectMapper = com.fasterxml.jackson.module.kotlin.ExtensionsKt.jacksonObjectMapper();
+        final ObjectMapper objectMapper = jacksonObjectMapper();
 
         objectMapper.registerModule(new AfterburnerModule());
         objectMapper.registerModule(new JavaTimeModule());

@@ -158,7 +158,7 @@ object DelegatingFunctionExecuterFactory {
             )
         }
 
-        val executerFullyQualifiedClassName = "${packageName}.${executerSimpleClassName}";
+        val executerFullyQualifiedClassName = "${packageName}.${executerSimpleClassName}"
         val functionExecuterClass: Class<*> = compiler.classLoader.loadClass(executerFullyQualifiedClassName)
 
         return functionExecuterClass

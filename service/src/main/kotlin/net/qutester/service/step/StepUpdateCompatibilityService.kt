@@ -76,7 +76,7 @@ class StepUpdateCompatibilityService (var stepService: StepService,
     }
 
     fun findTestsThatUsesStepPatternAsChild(searchedStepPattern: StepPattern): List<TestModel> {
-        val result: MutableList<TestModel> = mutableListOf();
+        val result: MutableList<TestModel> = mutableListOf()
 
         val allTests = testsService.getAllTests()
         for (test in allTests) {

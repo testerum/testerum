@@ -1,11 +1,21 @@
-
 import {HttpBodyVerifyMatchingType} from "./enums/http-body-verify-matching-type.enum";
 import {HttpBodyVerifyType} from "./enums/http-body-verify-type.enum";
 import {JsonUtil} from "../../../../../../utils/json.util";
 
 export class HttpResponseBodyVerify implements Serializable<HttpResponseBodyVerify> {
 
-    httpBodyVerifyMatchingType: HttpBodyVerifyMatchingType;
+    private _httpBodyVerifyMatchingType: HttpBodyVerifyMatchingType;
+    get httpBodyVerifyMatchingType(): HttpBodyVerifyMatchingType {
+        return this._httpBodyVerifyMatchingType;
+    }
+    set httpBodyVerifyMatchingType(value: HttpBodyVerifyMatchingType) {
+        this._httpBodyVerifyMatchingType = value;
+
+        if (value == HttpBodyVerifyMatchingType.JSON_VERIFY) {
+            this.httpBodyType = HttpBodyVerifyType.JSON;
+        }
+    }
+
     httpBodyType: HttpBodyVerifyType = HttpBodyVerifyType.TEXT;
     bodyVerify: string;
 
@@ -20,12 +30,12 @@ export class HttpResponseBodyVerify implements Serializable<HttpResponseBodyVeri
     }
 
     deserialize(input: Object): HttpResponseBodyVerify {
-        if (input['httpBodyVerifyMatchingType']) {
-            this.httpBodyVerifyMatchingType = HttpBodyVerifyMatchingType.fromSerialization(input['httpBodyVerifyMatchingType']);
-        }
-
         if (input['httpBodyType']) {
             this.httpBodyType = HttpBodyVerifyType.fromSerialization(input['httpBodyType']);
+        }
+
+        if (input['httpBodyVerifyMatchingType']) {
+            this.httpBodyVerifyMatchingType = HttpBodyVerifyMatchingType.fromSerialization(input['httpBodyVerifyMatchingType']);
         }
 
         if (input['bodyVerify']) {

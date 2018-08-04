@@ -6,12 +6,12 @@ import net.qutester.model.repository.enums.FileType
 import net.testerum.db_file.AttachmentFileRepositoryService
 import net.testerum.db_file.model.KnownPath
 import org.springframework.web.bind.annotation.*
+import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
+import java.io.OutputStream
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletResponse
-import java.io.OutputStream
-import java.awt.Image
 
 
 @RestController
@@ -28,16 +28,16 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
 
     @RequestMapping(
             path = ["/info"],
-            params = arrayOf("path"),
-            method = arrayOf(RequestMethod.GET))
+            params = ["path"],
+            method = [RequestMethod.GET])
     @ResponseBody
     fun getAttachmentsInfo(@RequestParam(value = "path") path: String): List<Attachment> {
         val knownPath = KnownPath(Path.createInstance(path), FileType.FEATURE)
         val attachmentsDetails = attachmentFileRepositoryService.getAttachmentsDetailsFromPath(knownPath)
-        return attachmentsDetails;
+        return attachmentsDetails
     }
 
-    @RequestMapping(params = arrayOf("path"), method = arrayOf(RequestMethod.GET))
+    @RequestMapping(params = ["path"], method = [RequestMethod.GET])
     @ResponseBody
     fun getAttachmentFile(@RequestParam(value = "path") path: String,
                           @RequestParam(value = "thumbnail", required = false) thumbnail: Boolean = false,
@@ -46,24 +46,24 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
         val attachmentDetails = attachmentFileRepositoryService.getAttachmentDetailsFromPath(knownPath)
 
         response.reset()
-        response.bufferSize = DEFAULT_BUFFER_SIZE;
+        response.bufferSize = DEFAULT_BUFFER_SIZE
 
         if (attachmentDetails?.mimeType != null
                 && attachmentDetails.mimeType!!.startsWith("image/")
                 && thumbnail) {
-            response.setHeader("Content-Type", "image/jpeg");
-            getImageThumbnail(knownPath, response.getOutputStream());
-            return;
+            response.setHeader("Content-Type", "image/jpeg")
+            getImageThumbnail(knownPath, response.getOutputStream())
+            return
         }
 
         if (attachmentDetails?.mimeType != null) {
-            response.setHeader("Content-Type", attachmentDetails.mimeType);
-            response.setHeader("Content-Disposition", "inline; filename=" + attachmentDetails.path.fileName + "." + attachmentDetails.path.fileExtension);
+            response.setHeader("Content-Type", attachmentDetails.mimeType)
+            response.setHeader("Content-Disposition", "inline; filename=" + attachmentDetails.path.fileName + "." + attachmentDetails.path.fileExtension)
         }
 
         response.getOutputStream().write(
                 attachmentFileRepositoryService.getAttachment(knownPath)
-        );
+        )
     }
 
     private fun getImageThumbnail(knownPath: KnownPath, outputStream: OutputStream) {

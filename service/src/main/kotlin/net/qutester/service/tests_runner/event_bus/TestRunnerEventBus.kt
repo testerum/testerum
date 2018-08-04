@@ -4,7 +4,7 @@ import com.testerum.runner.events.model.RunnerEvent
 
 class TestRunnerEventBus {
 
-    private val eventListeners: MutableList<TestRunnerEventListener> = mutableListOf();
+    private val eventListeners: MutableList<TestRunnerEventListener> = mutableListOf()
 
     fun addEventListener(eventListener: TestRunnerEventListener) {
         eventListeners.add(eventListener)

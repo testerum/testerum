@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/variables")
 open class VariablesController(var variablesService: VariablesService) {
 
-    @RequestMapping (method = arrayOf(RequestMethod.GET))
+    @RequestMapping (method = [RequestMethod.GET])
     @ResponseBody
     fun getVariables(): List<Variable> {
         return variablesService.getVariables()
     }
 
-    @RequestMapping (method = arrayOf(RequestMethod.POST))
+    @RequestMapping (method = [RequestMethod.POST])
     @ResponseBody
     fun save(@RequestBody variables: List<Variable>): List<Variable> {
-        return variablesService.save(variables);
+        return variablesService.save(variables)
     }
 }

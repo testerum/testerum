@@ -25,19 +25,19 @@ class TestsController(private val testsService: TestsService) {
     @RequestMapping(path = ["/update"], method = [RequestMethod.POST])
     @ResponseBody
     fun update(@RequestBody updateTestModel: UpdateTestModel): TestModel {
-        return testsService.updateTest(updateTestModel);
+        return testsService.updateTest(updateTestModel)
     }
 
     @RequestMapping(path = ["/automated/under-path"], params = ["path"], method = [RequestMethod.GET])
     @ResponseBody
     fun getAutomatedTestsUnderPath(@RequestParam(value = "path") path: String): List<TestModel> {
-        return testsService.getTestsUnderPath(Path.createInstance(path));
+        return testsService.getTestsUnderPath(Path.createInstance(path))
     }
 
     @RequestMapping(params = ["path"], method = [RequestMethod.GET])
     @ResponseBody
     fun getTestAtPath(@RequestParam(value = "path") path: String): TestModel? {
-        return testsService.getTestAtPath(Path.createInstance(path));
+        return testsService.getTestAtPath(Path.createInstance(path))
     }
 
     @RequestMapping(path = ["/directory"], method = [RequestMethod.DELETE])

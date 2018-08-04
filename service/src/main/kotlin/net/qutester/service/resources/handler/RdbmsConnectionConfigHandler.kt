@@ -21,7 +21,7 @@ class RdbmsConnectionConfigHandler(val objectMapper: ObjectMapper,
         )
 
         if (!connection.isDefaultConnection) {
-            return responseResource;
+            return responseResource
         }
 
         val allConnectionResources = fileRepositoryService.getAllResourcesByType(FileType.RDBMS_CONNECTION)

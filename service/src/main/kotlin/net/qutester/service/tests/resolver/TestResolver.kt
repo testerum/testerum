@@ -21,7 +21,7 @@ class TestResolver(private val stepService: StepService) {
             val resolvedStepDef = stepService.getStepDefByPhaseAndPattern(stepPhase = stepDef.phase, stepPattern = stepDef.stepPattern)
 
             if (throwExceptionOnNotFound && resolvedStepDef is UndefinedStepDef) {
-                throw RuntimeException("The step [${stepDef.getText()}] has bean deleted");
+                throw RuntimeException("The step [${stepDef.getText()}] has bean deleted")
             }
 
             resolvedStepCalls += StepCall(

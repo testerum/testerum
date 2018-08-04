@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/http")
 class HttpController(private val httpClientService: HttpClientService) {
 
-    @RequestMapping(path = arrayOf("/execute"), method = arrayOf(RequestMethod.POST))
+    @RequestMapping(path = ["/execute"], method = [RequestMethod.POST])
     @ResponseBody
     fun schemas(@RequestBody httpRequest: HttpRequest): HttpResponse {
         return httpClientService.executeHttpRequest(httpRequest)

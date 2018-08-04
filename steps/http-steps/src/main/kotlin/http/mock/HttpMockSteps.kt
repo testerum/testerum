@@ -14,7 +14,7 @@ class HttpMockSteps(@Autowired val httpMockService: HttpMockService) {
 
     @BeforeEachTest
     fun beforeTest() {
-        httpMockService.clearAllStubs();
+        httpMockService.clearAllStubs()
     }
 
     @Given("The HTTP Mock Server <<httpMockServer>> with the Mock Request <<httpMock>>")

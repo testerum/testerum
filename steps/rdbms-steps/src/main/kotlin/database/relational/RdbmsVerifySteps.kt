@@ -28,7 +28,7 @@ class RdbmsVerifySteps (@Autowired val jsonComparer: JsonComparer,
             throw RuntimeException("No default RDBMS connections is specified")
         }
 
-        val serializedSchemaAsJsonString = RdbmsToJsonSerializer.serializeSchemaAsJsonString(defaultRdbmsClient);
+        val serializedSchemaAsJsonString = RdbmsToJsonSerializer.serializeSchemaAsJsonString(defaultRdbmsClient)
 
         val compareResult: JsonCompareResult = jsonComparer.compare(rdbmsVerify.verifyJsonAsString, serializedSchemaAsJsonString)
         if (compareResult is DifferentJsonCompareResult) {
@@ -45,7 +45,7 @@ class RdbmsVerifySteps (@Autowired val jsonComparer: JsonComparer,
     fun testConnectionDetails(@Param(transformer= RdbmsConnectionTransformer::class) rdbmsClient: RdbmsClient,
                               @Param(transformer= RdbmsVerifyTransformer::class) rdbmsVerify: RdbmsVerify) {
 
-        val serializedSchemaAsJsonString = RdbmsToJsonSerializer.serializeSchemaAsJsonString(rdbmsClient);
+        val serializedSchemaAsJsonString = RdbmsToJsonSerializer.serializeSchemaAsJsonString(rdbmsClient)
 
         val compareResult: JsonCompareResult = jsonComparer.compare(rdbmsVerify.verifyJsonAsString, serializedSchemaAsJsonString)
         if (compareResult is DifferentJsonCompareResult) {

@@ -2,6 +2,7 @@ import {filter, map} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Params, Router} from "@angular/router";
 import {FeaturesTreeService} from "./features-tree/features-tree.service";
+import {TestsRunnerService} from "./tests-runner/tests-runner.service";
 
 @Component({
     moduleId: module.id,
@@ -13,15 +14,12 @@ export class FeaturesComponent implements OnInit {
 
     isTestSelected: boolean = true;
 
-    featuresTreeService: FeaturesTreeService;
 
-    constructor(featuresTreeService: FeaturesTreeService,
-                private router: Router) {
-        this.featuresTreeService = featuresTreeService;
-    }
+    constructor(public featuresTreeService: FeaturesTreeService,
+                private testsRunnerService: TestsRunnerService,
+                private router: Router) { }
 
     ngOnInit() {
-
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(route => {
@@ -39,5 +37,9 @@ export class FeaturesComponent implements OnInit {
                     }
                 }
             );
+    }
+
+    isTestRunnerVisible(): boolean {
+        return this.testsRunnerService.isTestRunnerVisible;
     }
 }

@@ -16,7 +16,7 @@ class TestContext {
     }
 
     fun getScenarioVariable(key: String): Any? {
-        return scenarioVariables.get(key);
+        return scenarioVariables.get(key)
     }
 
     fun addGlobalVariable(key: String, value: Any) {
@@ -28,12 +28,12 @@ class TestContext {
     }
 
     fun getGlobalVariable(key: String): Any? {
-        return globalVariables.get(key);
+        return globalVariables.get(key)
     }
 
     @AfterEachTest
     fun afterScenario() {
-        scenarioVariables.clear();
+        scenarioVariables.clear()
     }
 
 }

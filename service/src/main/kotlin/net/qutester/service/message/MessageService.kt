@@ -12,6 +12,6 @@ class MessageService {
                     Message(messageKey, messageKey.defaultValue)
             )
         }
-        return result;
+        return result
     }
 }

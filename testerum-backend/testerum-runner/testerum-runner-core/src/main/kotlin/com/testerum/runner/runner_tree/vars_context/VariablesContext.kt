@@ -1,7 +1,7 @@
 package com.testerum.runner.runner_tree.vars_context
 
 import com.testerum.api.test_context.test_vars.VariableNotFoundException
-import com.testerum.common.expression_evaluator.UnknownVariableException
+import com.testerum.common.expression_evaluator.ExpressionEvaluator
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
@@ -62,6 +62,17 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
     fun setDynamicVariable(name: String, value: Any?): Any?
             = dynamicVars.set(name, value)
 
+    private fun toMap(): Map<String, Any?> {
+        // todo: this looks slow...
+        val result = hashMapOf<String, Any?>()
+
+        result.putAll(globalVars.toMap())
+        result.putAll(dynamicVars.toMap())
+        result.putAll(argsVars)
+
+        return result
+    }
+
     fun resolveIn(arg: Arg): Any? {
         val content = arg.content
                 ?: return null
@@ -75,10 +86,8 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
                 is FileTextArgPart       -> part.text
                 is FileExpressionArgPart -> {
                     try {
-                        // todo: use ExpressionEvaluator
-                        // ExpressionEvaluator.evaluate(part.text, varsMap).toString()
-                        get(part.text.trim())
-                    } catch (e: UnknownVariableException) {
+                         ExpressionEvaluator.evaluate(part.text, this.toMap())
+                    } catch (e: Exception) {
                         part.text
                     }
                 }
@@ -99,10 +108,10 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
 
     fun resolveIn(text: String): String
             = variableUsageRegex.replace(text) { matchResult ->
-                val varName = matchResult.groups[1]!!.value
+                val expression = matchResult.groups[1]!!.value
                         .trim()
 
-                return@replace get(varName).toString()
+                return@replace ExpressionEvaluator.evaluate(expression, this.toMap()).toString()
             }
 
 }

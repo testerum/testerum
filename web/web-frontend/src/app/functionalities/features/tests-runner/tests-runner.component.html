@@ -1,18 +1,16 @@
+<split direction="horizontal" style="position: relative">
+    <split-area [size]="20">
+        <runner-tree [treeModel]="runnerTreeService.rootNode"></runner-tree>
+    </split-area>
+    <split-area [size]="80" class="logs-split-area horizontal-scroll">
 
-
-    <split direction="horizontal" style="position: relative">
-        <split-area [size]="30">
-            <runner-tree [treeModel]="runnerTreeService.rootNode" [pieModel]="pieModel"></runner-tree>
-        </split-area>
-        <split-area [size]="70" class="logs-split-area horizontal-scroll">
-
-            <div class="btn-group" style="position:absolute; top:0; right:1.2em; overflow-y: visible">
-                <div title="Close" class="btn btn-default btn-xs btn-group"
-                     (click)="close(); $event.stopPropagation()">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </div>
+        <div class="btn-group" style="position:absolute; top:0; right:1.2em; overflow-y: visible">
+            <div title="Close" class="btn btn-default btn-xs btn-group"
+                 (click)="close(); $event.stopPropagation()">
+                <i class="fa fa-times" aria-hidden="true"></i>
             </div>
+        </div>
 
-            <tests-runner-logs [logs]="testsRunnerLogsService.logs"></tests-runner-logs>
-        </split-area>
-    </split>
+        <tests-runner-logs [logs]="testsRunnerLogsService.logs"></tests-runner-logs>
+    </split-area>
+</split>

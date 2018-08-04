@@ -16,6 +16,6 @@ class ValidationException : RuntimeException {
 
     fun addFiledValidationError(filedName:String, errorCode:String): ValidationException {
         validationModel.fieldsWithValidationErrors.put(filedName, errorCode)
-        return this;
+        return this
     }
 }

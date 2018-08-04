@@ -20,10 +20,10 @@ data class RepositoryFile @JsonCreator constructor(
 }
 
 fun ResourceContext.mapToRepositoryFile(): RepositoryFile {
-    var resourceFileType: FileType? = null;
+    var resourceFileType: FileType? = null
     for (fileType in FileType.values()) {
         if(this.path.toString().startsWith(fileType.relativeRootDirectory.toString())) {
-            resourceFileType = fileType;
+            resourceFileType = fileType
         }
     }
 

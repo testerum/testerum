@@ -14,10 +14,10 @@ object StepsFilterUtil {
         val stepIsMatchTagsFilterCriteria = tagListMatchesTagsFilterCriteria(step.tags, stepsTreeFilter)
 
         if (stepMatchesTypeFilter && stepMatchesTestFilter && stepIsMatchTagsFilterCriteria) {
-            return true;
+            return true
         }
 
-        return false;
+        return false
     }
 
     private fun stepMatchesTypeFilter(step: StepDef, stepsTreeFilter: StepsTreeFilter): Boolean {

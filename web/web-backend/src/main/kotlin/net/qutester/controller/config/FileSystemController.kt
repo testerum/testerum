@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/file_system")
 class FileSystemController(val fileSystemService: FileSystemService) {
 
-    @RequestMapping(path = arrayOf("/directory_tree"), method = arrayOf(RequestMethod.GET))
+    @RequestMapping(path = ["/directory_tree"], method = [RequestMethod.GET])
     @ResponseBody
     fun getDirectoryTree(@RequestParam(value = "path") pathAsString:String): FileSystemDirectory {
         var path: Path = Path.EMPTY

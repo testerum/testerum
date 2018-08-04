@@ -12,7 +12,7 @@ fun getStepWithTheSameStepDef(stepDef: StepDef, existingSteps: List<StepDef>): S
             return existingStep
         }
     }
-    return null;
+    return null
 }
 
 fun StepPattern.hasTheSameStepPattern(otherStepPattern: StepPattern): Boolean {
@@ -55,7 +55,7 @@ private fun isOtherStepWithTheSameStepPattern(allStepPatterns: List<StepPattern>
 
         val areStepsConflicting: Boolean = stepPattern.areStepPatternsConflicting(searchedStepPattern)
         if (areStepsConflicting) {
-            return true;
+            return true
         }
     }
 
@@ -82,7 +82,7 @@ fun StepPattern.areStepPatternsConflicting(otherStepPattern: StepPattern): Boole
 
         return false
     }
-    return true;
+    return true
 }
 
 fun StepPattern.isStepPatternChangeCompatible(otherStepPattern: StepPattern): Boolean {

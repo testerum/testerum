@@ -4,9 +4,6 @@ import {ExecutionPieModel} from "./model/execution-pie.model";
 @Injectable()
 export class ExecutionPieService {
 
-    model: ExecutionPieModel;
+    readonly pieModel: ExecutionPieModel = new ExecutionPieModel();
 
-    setExecutionPieModel(model: ExecutionPieModel) {
-        this.model = model;
-    }
 }

@@ -16,8 +16,8 @@ data class Path @JsonCreator constructor(
         fun createInstance(pathAsString: String): Path {
 
             var pathsPart = pathAsString.split("/", "\\")
-            var fileName:String? = null;
-            var extension:String? = null;
+            var fileName:String? = null
+            var extension:String? = null
 
             val lastPathPart = pathsPart.last().toString()
             if (lastPathPart.contains('.')) {
@@ -36,7 +36,7 @@ data class Path @JsonCreator constructor(
     }
 
     override fun toString(): String {
-        var result = "";
+        var result = ""
         for ((index, directory) in directories.withIndex()) {
             result += directory
             if (index < directories.size - 1) {
@@ -78,7 +78,7 @@ data class Path @JsonCreator constructor(
 
     @JsonIgnore
     fun isEmpty(): Boolean {
-        return directories.isEmpty() && fileName == null && fileExtension == null;
+        return directories.isEmpty() && fileName == null && fileExtension == null
     }
 }
 

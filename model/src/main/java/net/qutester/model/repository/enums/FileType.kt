@@ -62,10 +62,10 @@ enum class FileType constructor(val relativeRootDirectory: Path,
             for (fileType in values()) {
                 if (relativePath.startsWith(fileType.relativeRootDirectory.toString()) &&
                         relativePath.endsWith(fileType.fileExtension)) {
-                    return fileType;
+                    return fileType
                 }
             }
-            return null;
+            return null
         }
 
     }

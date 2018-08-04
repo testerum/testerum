@@ -1,7 +1,5 @@
 package net.qutester.service.mapper
 
-import com.testerum.common.expression_evaluator.ExpressionEvaluator
-import com.testerum.common.expression_evaluator.UnknownVariableException
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common_kotlin.emptyToNull
 import com.testerum.test_file_format.common.step_call.FileStepCall
@@ -142,14 +140,8 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
 
             for (argPart: FileArgPart in argParts) {
                 val resolvedArgPartPart: String = when (argPart) {
-                    is FileTextArgPart -> argPart.text
-                    is FileExpressionArgPart -> {
-                        try {
-                            ExpressionEvaluator.evaluate(argPart.text, varsMap).toString()
-                        } catch (e: UnknownVariableException) {
-                            FileArgPartSerializer.serializeToString(argPart)
-                        }
-                    }
+                    is FileTextArgPart       -> argPart.text
+                    is FileExpressionArgPart -> varsMap[argPart.text] ?: FileArgPartSerializer.serializeToString(argPart)
                 }
 
                 append(resolvedArgPartPart)
@@ -189,7 +181,7 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
         // 3. (not here, but where we resolve the step definitions) call transformer (transform from e.g. YML to JSON)
 
         return Arg(
-                name = computeArgName(argParts),
+                name = computeArgName(argParts, vars),
                 content = argContent.emptyToNull(),
                 type = "TEXT", // this can only be known after we resolve the step definitions
                 path = path,
@@ -197,7 +189,8 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
         )
     }
 
-    private fun computeArgName(argParts: List<FileArgPart>): String {
+    private fun computeArgName(argParts: List<FileArgPart>,
+                               vars: List<FileStepVar>): String? {
         if (argParts.size != 1) {
             return ""
         }
@@ -208,7 +201,14 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
         // since the only expressions we support is variables, we assume that the entire text is the variable name
         val variableName: String = expressionArgPart.text.trim()
 
-        return ArgNameCodec.variableToArgName(variableName)
+        val variableExists = vars.any { it.name == variableName }
+
+        return if (variableExists) {
+             ArgNameCodec.variableToArgName(variableName)
+        } else {
+            null
+        }
+
     }
 
 }

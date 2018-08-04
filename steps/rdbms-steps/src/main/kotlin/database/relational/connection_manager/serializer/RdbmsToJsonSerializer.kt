@@ -67,13 +67,13 @@ object RdbmsToJsonSerializer {
     }
 
     private fun getRdbmsDataTables(jdbcConnection: Connection, rdbmsClient: RdbmsClient): MutableList<RdbmsDataTable> {
-        val tablesName: MutableList<String> = mutableListOf();
+        val tablesName: MutableList<String> = mutableListOf()
 
         val tablesResultSet: ResultSet = jdbcConnection.metaData.getTables(
                 rdbmsClient.rdbmsConnectionConfig.database,
                 rdbmsClient.rdbmsConnectionConfig.database,
                 null,
-                arrayOf("TABLE", "VIEW"));
+                arrayOf("TABLE", "VIEW"))
 
         try {
             while (tablesResultSet.next()) {
@@ -90,7 +90,7 @@ object RdbmsToJsonSerializer {
             tablesResultSet.close()
         }
 
-        val result: MutableList<RdbmsDataTable> = mutableListOf();
+        val result: MutableList<RdbmsDataTable> = mutableListOf()
         for (tableName in tablesName) {
             result.add(
                     getRdbmsDataTable(tableName, jdbcConnection)
@@ -102,8 +102,8 @@ object RdbmsToJsonSerializer {
     private fun getRdbmsDataTable(tableName: String, jdbcConnection: Connection): RdbmsDataTable {
         val rows = mutableListOf<RdbmsDataTableRow>()
 
-        var createStatement: Statement? = null;
-        var rs: ResultSet? = null;
+        var createStatement: Statement? = null
+        var rs: ResultSet? = null
         try {
             createStatement = jdbcConnection.createStatement()
             rs = createStatement.executeQuery(

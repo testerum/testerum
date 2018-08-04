@@ -8,25 +8,25 @@ open class NetworkService(val jsonObjectMapper: ObjectMapper) {
 
     fun respondsToPing(host: String, port: Int): Boolean {
 
-        var socket: Socket? = null;
+        var socket: Socket? = null
 
         try {
             val address = InetSocketAddress(host, port)
 
             if (address.isUnresolved) {
-                return false;
+                return false
             }
 
             socket = Socket()
             socket.connect(address, 3000)
         } catch (ex: Exception) {
-            return false;
+            return false
         } finally {
             if (socket != null) {
                 socket.close()
             }
         }
 
-        return true;
+        return true
     }
 }

@@ -6,9 +6,7 @@ import {TestsRunnerLogModel} from "../../../features/tests-runner/tests-runner-l
 import {RunnerTreeService} from "../../../features/tests-runner/tests-runner-tree/runner-tree.service";
 import {ExecutionStatusEnum} from "../../../../model/test/event/enums/execution-status.enum";
 import {RunnerTreeNodeModel} from "../../../features/tests-runner/tests-runner-tree/model/runner-tree-node.model";
-import {ExecutionPieModel} from "../../../../generic/components/charts/execution-pie/model/execution-pie.model";
 import {RunnerTreeNodeTypeEnum} from "../../../features/tests-runner/tests-runner-tree/model/enums/runner-tree-node-type.enum";
-import {ExecutionPieService} from "../../../../generic/components/charts/execution-pie/execution-pie.service";
 import {RunnerEventTypeEnum} from "../../../../model/test/event/enums/runner-event-type.enum";
 import {SuiteEndEvent} from "../../../../model/test/event/suite-end.event";
 import {TestStartEvent} from "../../../../model/test/event/test-start.event";
@@ -17,6 +15,7 @@ import {StepStartEvent} from "../../../../model/test/event/step-start.event";
 import {StepEndEvent} from "../../../../model/test/event/step-end.event";
 import {SuiteStartEvent} from "../../../../model/test/event/suite-start.event";
 import {TestsRunnerLogsComponent} from "../../../features/tests-runner/tests-runner-logs/tests-runner-logs.component";
+import {ExecutionPieService} from "../../../../generic/components/charts/execution-pie/execution-pie.service";
 
 @Component({
     selector: 'result',
@@ -26,14 +25,14 @@ import {TestsRunnerLogsComponent} from "../../../features/tests-runner/tests-run
 export class ResultComponent implements OnInit {
 
     treeRootNode: RunnerTreeNodeModel;
-    pieModel: ExecutionPieModel = new ExecutionPieModel();
     logs: Array<TestsRunnerLogModel> = [];
     runnerEvents: Array<RunnerEvent> = [];
 
     @ViewChild(TestsRunnerLogsComponent) testsRunnerLogsComponent: TestsRunnerLogsComponent;
 
     constructor(private route: ActivatedRoute,
-                private runnerTreeService: RunnerTreeService) {
+                private runnerTreeService: RunnerTreeService,
+                private executionPieService: ExecutionPieService) {
     }
 
     ngOnInit() {
@@ -58,7 +57,7 @@ export class ResultComponent implements OnInit {
     }
 
     private initializeResultTree(eventsFromServer: Array<RunnerEvent>) {
-        this.pieModel.reset();
+        this.executionPieService.pieModel.reset();
 
         let treeRootNode = this.runnerTreeService.createRootRunnerNode();
 
@@ -87,7 +86,7 @@ export class ResultComponent implements OnInit {
             }
 
             if (event.eventType == RunnerEventTypeEnum.TEST_START_EVENT) {
-                this.pieModel.totalTests++;
+                this.executionPieService.pieModel.totalTests++;
 
                 let currentTest = event as TestStartEvent;
 
@@ -104,7 +103,7 @@ export class ResultComponent implements OnInit {
             if (event.eventType == RunnerEventTypeEnum.TEST_END_EVENT) {
                 let testEndEvent = event as TestEndEvent;
                 currentTestNode.state = testEndEvent.status;
-                this.pieModel.incrementBasedOnState(testEndEvent.status)
+                this.executionPieService.pieModel.incrementBasedOnState(testEndEvent.status)
             }
 
             if (event.eventType == RunnerEventTypeEnum.STEP_START_EVENT) {
