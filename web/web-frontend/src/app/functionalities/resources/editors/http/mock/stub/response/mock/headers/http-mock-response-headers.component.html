@@ -8,6 +8,7 @@
     <tr>
         <th>Header Name</th>
         <th>Header Value</th>
+        <th *ngIf="isEditMode()"></th>
     </tr>
 
     <!-- KEY -->
@@ -20,7 +21,7 @@
                             [suggestions]="suggestionHeaders"
                             (completeMethod)="filterSuggestionHeaders($event)"
                             inputStyleClass="autocomplete-input form-control"
-                            class="autocomplete"
+                            class="autocomplete-full-width"
                             [dropdown]="true"></p-autoComplete>
         </td>
 
@@ -30,7 +31,7 @@
             <input *ngIf="isEditMode()"
                    (change)="onNewValueChange($event)"
                    [(ngModel)]="header.value"
-                   type="text" pInputText  class="form-control">
+                   type="text" pInputText  class="form-control full-width">
         </td>
 
         <!-- DELETE -->

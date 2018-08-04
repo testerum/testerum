@@ -1,3 +1,11 @@
+.label-size {
+    width: 7em;
+}
+
+.my-value {
+    display: flex;
+}
+
 [role] {
     cursor: pointer;
 }
@@ -17,5 +25,7 @@
 }
 
 .status-code-text {
+    display: flex;
+    align-items: center;
     margin-left: 10px;
 }

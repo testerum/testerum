@@ -5,6 +5,7 @@
     width: inherit;
 }
 
+//BUTTON
 .btn {
     padding: 6px 12px;
     line-height: 1;
@@ -25,10 +26,12 @@
     margin-bottom: 5px;
 }
 
+// LABEL
 .label {
     margin-right: 1px;
 }
 
+// TABLE
 .table {
     border-collapse:separate;
     border:solid lightgray 1px;
@@ -51,4 +54,14 @@
 }
 .table tbody tr td:first-child, th:first-child {
     border-left: none;
+}
+
+//NAV TAB
+.nav-tabs .tab a {
+    padding: 5px 15px;
+}
+
+//RADIO
+.radio label input {
+    margin: 0;
 }

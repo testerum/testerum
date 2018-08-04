@@ -6,8 +6,7 @@ import {HttpMockProxyResponse} from "../../model/response/http-mock-proxy-respon
     moduleId: module.id,
     selector: 'http-mock-proxy-response',
     templateUrl: 'http-mock-proxy-response.component.html',
-    styleUrls: [
-    ]
+    styleUrls: ["http-mock-proxy-response.component.scss"]
 })
 export class HttpMockProxyResponseComponent {
 
