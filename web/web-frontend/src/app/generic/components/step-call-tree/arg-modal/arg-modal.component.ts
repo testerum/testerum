@@ -33,7 +33,7 @@ import {BasicResource} from "../../../../model/resource/basic/basic-resource.mod
 })
 export class ArgModalComponent {
 
-    modalTitle = "HTTP Request";
+    modalTitle;
     arg:Arg;
     stepParameter: ParamStepPatternPart;
 
@@ -59,6 +59,7 @@ export class ArgModalComponent {
     show() {
         this.resourceMapping = ResourceMapEnum.getResourceMapEnumByUiType(this.arg.uiType);
         this.argPath = this.arg.path;
+        this.modalTitle = this.resourceMapping.uiName;
 
         this.initializeIsSharedResource();
 
