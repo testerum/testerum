@@ -1,12 +1,12 @@
 <div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
-    <span class="condensed-view-label">{{stepParameter?.name}}</span>
+    <span class="condensed-view-label">{{name}}</span>
     {{model.content}}
 </div>
 
 <form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
 
     <div class="my-line">
-        <label class="my-label label-size" for="value">{{stepParameter?.name}}</label>
+        <label class="my-label label-size" for="value">{{name}}</label>
         <div class="my-value" *ngIf="!editMode">
             {{model.content || ""}}
         </div>
