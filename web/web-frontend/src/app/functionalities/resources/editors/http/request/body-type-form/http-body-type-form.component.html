@@ -1,23 +1,24 @@
 <table class="table">
     <colgroup>
-        <col span="1" style="width: 48%;">
-        <col span="1" style="width: 48%;">
-        <col *ngIf="editMode" span="1" style="width: 4%;">
+        <col span="1">
+        <col span="1">
+        <col *ngIf="editMode" span="1" style="width: 2em;">
     </colgroup>
 
     <tr>
         <th>Key</th>
         <th>Value</th>
+        <th></th>
     </tr>
 
     <tr *ngFor="let bodyForm of bodyTypeForms; let last = last">
         <td *ngIf="!bodyForm.isEmpty() || editMode">
             <span *ngIf="!editMode">{{bodyForm.key}}</span>
-            <input *ngIf="editMode" (change)="onNewKeyChange($event)" [(ngModel)]="bodyForm.key" type="text" class="form-control">
+            <input *ngIf="editMode" (change)="onNewKeyChange($event)" [(ngModel)]="bodyForm.key" type="text" class="form-control full-width">
         </td>
         <td *ngIf="!bodyForm.isEmpty() || editMode">
             <span *ngIf="!editMode">{{bodyForm.value}}</span>
-            <input *ngIf="editMode" (change)="onNewValueChange($event)" [(ngModel)]="bodyForm.value" type="text" class="form-control">
+            <input *ngIf="editMode" (change)="onNewValueChange($event)" [(ngModel)]="bodyForm.value" type="text" class="form-control full-width">
         </td>
         <td *ngIf="!bodyForm.isEmpty() && editMode">
             <a href (click)="deleteFormEntry(bodyForm);false;"
@@ -26,5 +27,4 @@
             </a>
         </td>
     </tr>
-
 </table>

@@ -7,7 +7,8 @@ import {ArrayUtil} from "../../../../../../utils/array.util";
 @Component({
     moduleId: module.id,
     selector: 'http-body-type-form',
-    templateUrl: 'http-body-type-form.component.html'
+    templateUrl: 'http-body-type-form.component.html',
+    styleUrls: ['http-body-type-form.component.scss']
 })
 
 export class HttpBodyTypeFormComponent implements OnInit {
