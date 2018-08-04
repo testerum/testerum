@@ -1,5 +1,4 @@
-<fieldset class="shell"
-          >
+<fieldset class="shell">
     <legend class="header"
             [class.size1]="heading == 1"
             [class.size2]="heading == 2"
@@ -12,7 +11,8 @@
         <span>{{title}}</span>
     </legend>
 
-    <div class="content-shell"
+    <div [class.content-shell]="!collapsed"
+         [class.content-shell-hidden]="collapsed"
          [@expandCollapse] ="animationState"
          (@expandCollapse.done)="onAnimateEnd()">
         <ng-content></ng-content>

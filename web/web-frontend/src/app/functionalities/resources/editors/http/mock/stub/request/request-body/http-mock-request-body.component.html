@@ -1,73 +1,75 @@
 
+<div class="body-container">
 
-<div class="my-line ">
+    <div class="my-line">
 
-    <!-- BODY MATCHING -->
-    <label class="my-label label-size">Body Matching:</label>
-    <div class="my-value" *ngIf="!isEditMode()">
-        {{getModel().matchingType?.toString()}}
-    </div>
-
-    <div class="my-value" *ngIf="isEditMode()">
-        <select class="form-control phase-input"
-                (change)="bodyMatchingTypeChange(bodyVerifyMatchingTypeNgModel.value)"
-                #bodyVerifyMatchingTypeNgModel="ngModel"
-                [(ngModel)]="getModel().matchingType" name="bodyMatchintType">
-
-            <option [value]="null"></option>
-            <option *ngFor="let bodyMatchingType of getBodyMatchingTypes(); let i = index"
-                    [ngValue]="bodyMatchingType">
-                {{bodyMatchingType?bodyMatchingType.toString():""}}
-            </option>
-        </select>
-    </div>
-
-    <!-- BODY TYPE -->
-    <ng-container *ngIf="shouldDisplayBodyTypeChooser()">
-        <label class="my-label label-size">Body Type:</label>
+        <!-- BODY MATCHING -->
+        <label class="my-label label-size">Body Matching:</label>
         <div class="my-value" *ngIf="!isEditMode()">
-            {{getModel().bodyType?.toString()}}
+            {{getModel().matchingType?.toString()}}
         </div>
 
         <div class="my-value" *ngIf="isEditMode()">
             <select class="form-control phase-input"
-                    [(ngModel)]="getModel().bodyType" name="bodyType">
+                    (change)="bodyMatchingTypeChange(bodyVerifyMatchingTypeNgModel.value)"
+                    #bodyVerifyMatchingTypeNgModel="ngModel"
+                    [(ngModel)]="getModel().matchingType" name="bodyMatchintType">
 
-                <option *ngFor="let bodyVerifyType of getBodyVerifyTypes(); let i = index"
-                        [ngValue]="bodyVerifyType">
-                    {{bodyVerifyType.toString()}}
+                <option [value]="null"></option>
+                <option *ngFor="let bodyMatchingType of getBodyMatchingTypes(); let i = index"
+                        [ngValue]="bodyMatchingType">
+                    {{bodyMatchingType?bodyMatchingType.toString():""}}
                 </option>
             </select>
         </div>
-    </ng-container>
-</div>
 
-<!-- BODY TYPE JSON VERIFY-->
-<ng-container *ngIf="getModel().matchingType == HttpMockRequestBodyMatchingType.JSON_VERIFY">
+        <!-- BODY TYPE -->
+        <ng-container *ngIf="shouldDisplayBodyTypeChooser()">
+            <label class="my-label label-size">Body Type:</label>
+            <div class="my-value" *ngIf="!isEditMode()">
+                {{getModel().bodyType?.toString()}}
+            </div>
 
-    <!-- JSON SAMPLE -->
-    <div class="form-group column-content" *ngIf="shouldDisplayJsonSample()">
-        <div class="my-value center-text">Setting a JSON sample will provide an autocomplete and validation</div>
-        <div class="my-value center">
-            <json-editor [jsonText]="sampleJsonText" (change)="onSampleJsonTextChange($event)"></json-editor>
-        </div>
+            <div class="my-value" *ngIf="isEditMode()">
+                <select class="form-control phase-input"
+                        [(ngModel)]="getModel().bodyType" name="bodyType">
+
+                    <option *ngFor="let bodyVerifyType of getBodyVerifyTypes(); let i = index"
+                            [ngValue]="bodyVerifyType">
+                        {{bodyVerifyType.toString()}}
+                    </option>
+                </select>
+            </div>
+        </ng-container>
     </div>
 
-    <json-verify-tree></json-verify-tree>
-</ng-container>
+    <!-- BODY TYPE JSON VERIFY-->
+    <ng-container *ngIf="getModel().matchingType == HttpMockRequestBodyMatchingType.JSON_VERIFY">
 
-<!-- BODY TYPE JSON VERIFY-->
-<div *ngIf="shouldDisplayAceEditor()"
-     class="full-size-flex-element ace-editor-container">
-    <ace-editor
-        #editor
-        [(text)]="getModel().content"
-        [mode]="getModel().bodyType.editorMode"
-        [theme]="'eclipse'"
-        [options]="options"
-        [readOnly]="!isEditMode()"
-        [autoUpdateContent]="false"
-        [durationBeforeCallback]="1000"
-        class="ace-editor"></ace-editor>
+        <!-- JSON SAMPLE -->
+        <div class="form-group column-content" *ngIf="shouldDisplayJsonSample()">
+            <div class="my-value center-text">Setting a JSON sample will provide an autocomplete and validation</div>
+            <div class="my-value center">
+                <json-editor [jsonText]="sampleJsonText" (change)="onSampleJsonTextChange($event)"></json-editor>
+            </div>
+        </div>
 
+        <json-verify-tree></json-verify-tree>
+    </ng-container>
+
+    <!-- BODY TYPE JSON VERIFY-->
+    <div *ngIf="shouldDisplayAceEditor()"
+         class="full-size-flex-element ace-editor-container">
+        <ace-editor
+            #editor
+            [(text)]="getModel().content"
+            [mode]="getModel().bodyType.editorMode"
+            [theme]="'eclipse'"
+            [options]="options"
+            [readOnly]="!isEditMode()"
+            [autoUpdateContent]="false"
+            [durationBeforeCallback]="1000"
+            class="ace-editor"></ace-editor>
+
+    </div>
 </div>

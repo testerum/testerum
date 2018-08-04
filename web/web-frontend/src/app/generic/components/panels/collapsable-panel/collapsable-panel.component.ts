@@ -40,6 +40,7 @@ export class CollapsablePanelComponent {
             this.animationState = "open";
         } else {
             this.animationState = "close";
+            this.collapsed = true; //this is only here and not on open to control the CSS "overflow: hidden;" required to autocomplete inputs
         }
     }
 
@@ -54,5 +55,10 @@ export class CollapsablePanelComponent {
     }
 
     onAnimateEnd() {
+        if(this.animationState == "close") {
+            this.collapsed = true;
+        } else {
+            this.collapsed = false;
+        }
     }
 }

@@ -36,7 +36,10 @@
     height: 21px;
 }
 
-.content-shell {
+.content-shell-hidden {
     overflow: hidden;
+}
+.content-shell {
+    overflow: inherit;
 }
 
