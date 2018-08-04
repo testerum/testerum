@@ -3,25 +3,25 @@
         <div class="page-body">
             <form #stepForm="ngForm" (ngSubmit)="saveAction()" class="form-horizontal">
 
-                <div class="form-group row">
-                    <label class="col-md-2 control-label">Path</label>
-                    <div class="col-md-10 form-value">
+                <div class="my-line">
+                    <label class="my-label label-size">Path</label>
+                    <div class="my-value">
                         {{getTestPathDirectoryAsString() || ""}}
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label class="col-md-2 control-label col-form-label">Test Name</label>
+                <div class="my-line">
+                    <label class="my-label label-size col-form-label">Test Name</label>
 
-                    <div class="col-md-10 form-value">
+                    <div class="my-value">
                         {{manualTestExeModel.text || ""}}
                     </div>
                 </div>
 
                 <!-- TAGS -->
-                <div class="form-group row">
-                    <label class="col-md-2 control-label">Tags</label>
-                    <div class="col-md-10 form-value">
+                <div class="my-line">
+                    <label class="my-label label-size">Tags</label>
+                    <div class="my-value">
                         <ng-container *ngFor="let tag of manualTestExeModel.tags">
                             <span class="label label-primary">{{tag}}</span>
                         </ng-container>
@@ -29,9 +29,9 @@
                 </div>
 
                 <!-- DESCRIPTION -->
-                <div class="form-group row">
-                    <label class="col-md-2 control-label">Description</label>
-                    <div class="col-md-10 form-value"
+                <div class="my-line">
+                    <label class="my-label label-size">Description</label>
+                    <div class="my-value"
                          [innerHTML]="(manualTestExeModel.description || '') | safeHtml">
                     </div>
                 </div>
@@ -73,9 +73,9 @@
                 </p-table>
 
                 <!-- TEST STATUS -->
-                <div class="form-group row">
-                    <label class="col-md-2 control-label" for="testStatus">Test Result</label>
-                    <div class="col-md-10 form-value">
+                <div class="my-line">
+                    <label class="my-label label-size" for="testStatus">Test Result</label>
+                    <div class="my-value">
 
                         <p-dropdown name="testStatus" id="testStatus"
                                     [readonly]="isTestSuiteFinalized()"
@@ -127,16 +127,16 @@
                 </div>
 
                 <!-- COMMENT -->
-                <div class="form-group row"
+                <div class="my-line"
                      *ngIf="manualTestExeModel.testStatus == ManualTestStatus.FAILED
                             || manualTestExeModel.testStatus == ManualTestStatus.BLOCKED
                             || manualTestExeModel.testStatus == ManualTestStatus.NOT_APPLICABLE">
-                    <label class="col-md-2 control-label" for="comments">Comment</label>
+                    <label class="my-label label-size" for="comments">Comment</label>
 
-                    <div class="col-md-10 form-value" *ngIf="isTestSuiteFinalized()"
+                    <div class="my-value" *ngIf="isTestSuiteFinalized()"
                          [innerHTML]="(manualTestExeModel.comments || '') | safeHtml">
                     </div>
-                    <div class="col-md-10" *ngIf="!isTestSuiteFinalized()">
+                    <div class="my-value" *ngIf="!isTestSuiteFinalized()">
                         <p-editor [(ngModel)]="manualTestExeModel.comments"
                                   (onTextChange)="onTestChange()"
                                   [style]="{'height':'150px'}"

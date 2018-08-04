@@ -17,9 +17,9 @@
                 <form class="form-horizontal flex-panel">
 
                     <!-- NAME -->
-                    <div class="form-group row">
-                        <label class="col-md-2 control-label">Name</label>
-                        <div class="col-md-10">
+                    <div class="my-line">
+                        <label class="my-label label-size">Name</label>
+                        <div class="my-value">
                             <input required
                                    #nameNgModel="ngModel" [(ngModel)]="name"
                                    type="text" class="form-control" name="name">
@@ -33,9 +33,9 @@
 
 
                     <!-- LOCATION -->
-                    <div class="form-group row">
-                        <label class="col-md-2 control-label" style="padding-top: 0">Location</label>
-                        <div class="col-md-10">
+                    <div class="my-line">
+                        <label class="my-label label-size" style="padding-top: 0">Location</label>
+                        <div class="my-value">
 
                             <path-chooser [paths]="resourcePaths"
                                           [allowDirSelection]="true"

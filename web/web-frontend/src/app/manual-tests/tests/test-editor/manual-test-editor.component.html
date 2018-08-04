@@ -3,21 +3,21 @@
         <div class="page-body">
             <form #stepForm="ngForm" (ngSubmit)="saveAction()" class="form-horizontal">
 
-                <div class="form-group row">
-                    <label class="col-md-2 control-label">Path</label>
-                    <div class="col-md-10 form-value">
+                <div class="my-line">
+                    <label class="my-label label-size">Path</label>
+                    <div class="my-value">
                         {{getTestPathDirectoryAsString() || ""}}
                     </div>
                 </div>
 
 
-                <div class="form-group row">
-                    <label class="col-md-2 control-label col-form-label" for="testName">Test Name</label>
+                <div class="my-line">
+                    <label class="my-label label-size col-form-label" for="testName">Test Name</label>
 
-                    <div class="col-md-10 form-value" *ngIf="!isEditMode">
+                    <div class="my-value" *ngIf="!isEditMode">
                         {{manualTestModel.text || ""}}
                     </div>
-                    <div class="col-md-10" *ngIf="isEditMode">
+                    <div class="my-value" *ngIf="isEditMode">
                         <input id="testName" required
                                #testName="ngModel" [(ngModel)]="manualTestModel.text"
                                type="text" class="form-control" name="testName">
@@ -31,14 +31,14 @@
                 </div>
 
                 <!-- TAGS -->
-                <div class="form-group row">
-                    <label class="col-md-2 control-label" for="tags">Tags</label>
-                    <div class="col-md-10 form-value" *ngIf="!isEditMode">
+                <div class="my-line">
+                    <label class="my-label label-size" for="tags">Tags</label>
+                    <div class="my-value" *ngIf="!isEditMode">
                         <ng-container *ngFor="let tag of manualTestModel.tags">
                             <span class="label label-primary">{{tag}}</span>
                         </ng-container>
                     </div>
-                    <div class="col-md-10" *ngIf="isEditMode">
+                    <div class="my-value" *ngIf="isEditMode">
                         <p-autoComplete #tagsElement [(ngModel)]="manualTestModel.tags" [suggestions]="tagsToShow" (completeMethod)="search($event)" [multiple]="true"
                                         [dropdown]="true"  (onSelect)="onTagSelect($event)" [field]="field"
                                         (keypress)="onTagsKeyUp($event);"
@@ -47,12 +47,12 @@
                 </div>
 
                 <!-- DESCRIPTION -->
-                <div class="form-group row">
-                    <label class="col-md-2 control-label" for="description">Description</label>
-                    <div class="col-md-10 form-value" *ngIf="!isEditMode"
+                <div class="my-line">
+                    <label class="my-label label-size" for="description">Description</label>
+                    <div class="my-value" *ngIf="!isEditMode"
                          [innerHTML]="(manualTestModel.description || '') | safeHtml">
                     </div>
-                    <div class="col-md-10" *ngIf="isEditMode">
+                    <div class="my-value" *ngIf="isEditMode">
                         <p-editor [(ngModel)]="manualTestModel.description" [style]="{'height':'150px'}" id="description" name="description"></p-editor>
                     </div>
                 </div>

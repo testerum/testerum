@@ -1,3 +1,8 @@
 .ui-autocomplete {
     display: flex;
+    height: 25px;
+}
+
+.autocomplete-full-width input {
+    width: 100%;
 }

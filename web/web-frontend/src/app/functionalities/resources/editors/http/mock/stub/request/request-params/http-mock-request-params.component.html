@@ -1,15 +1,16 @@
-<table class="table table-bordered">
+<table class="table">
     <colgroup>
-        <col span="1" style="width: 38%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 38%;">
-        <col *ngIf="isEditMode()" span="1" style="width: 4%;">
+        <col span="1">
+        <col span="1" style="width: 13em;">
+        <col span="1">
+        <col *ngIf="isEditMode()" span="1" style="width: 2em;">
     </colgroup>
 
     <tr>
         <th>Query Param Name</th>
         <th>Compare Mode</th>
         <th>Query Param Value</th>
+        <th *ngIf="isEditMode()"></th>
     </tr>
 
     <!-- KEY -->
@@ -19,14 +20,14 @@
             <input *ngIf="isEditMode()"
                    (change)="onNewKeyChange($event)"
                    [(ngModel)]="param.key"
-                   type="text" pInputText class="form-control">
+                   type="text" pInputText class="form-control full-width">
         </td>
 
         <!-- COMPARE -->
         <td *ngIf="!param.isEmpty() || isEditMode()">
             <span *ngIf="!isEditMode()">{{param.compareMode}}</span>
             <select *ngIf="isEditMode()"
-                    class="form-control phase-input"
+                    class="form-control phase-input full-width"
                     #hadearCompareModeNgModel="ngModel"
                     (change)="onChangeCompareMode(param, hadearCompareModeNgModel.value)"
                     [ngModel]="param.compareMode" name="compareMode">
@@ -45,7 +46,7 @@
             <input *ngIf="isEditMode() && param.compareMode != HttpMockRequestParamsCompareMode.ABSENT"
                    (change)="onNewValueChange($event)"
                    [(ngModel)]="param.value"
-                   type="text" pInputText  class="form-control">
+                   type="text" pInputText  class="form-control full-width">
         </td>
 
         <!-- DELETE -->

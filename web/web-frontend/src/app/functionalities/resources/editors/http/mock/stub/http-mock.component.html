@@ -97,11 +97,11 @@
 
     <!-- NAME -->
     <div class="my-line">
-        <label class="col-md-2 control-label">HTTP Mock Name</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode || isSharedResource">
+        <label class="my-label label-size">Name</label>
+        <div class="my-value" *ngIf="!editMode || isSharedResource">
             {{name}}
         </div>
-        <div class="col-md-10" *ngIf="editMode && !isSharedResource">
+        <div class="my-value" *ngIf="editMode && !isSharedResource">
             <input required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">

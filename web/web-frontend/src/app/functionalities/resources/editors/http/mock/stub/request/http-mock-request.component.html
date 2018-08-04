@@ -1,15 +1,15 @@
 <!-- METHOD AND URL - VIEW -->
-<div class="my-line vertical-align" *ngIf="!isEditMode()">
-        <span class="http-method-view">
-            {{getModel().method}}
-        </span>
+<div class="my-line" *ngIf="!isEditMode()">
+    <span class="http-method-view">
+        {{getModel().method}}
+    </span>
     <span class="http-url-view">
-            {{getModel().url}}
-        </span>
+        {{getModel().url}}
+    </span>
 </div>
 
 <!-- METHOD AND URL - EDIT -->
-<div class="my-line vertical-align" *ngIf="isEditMode()">
+<div class="my-line" *ngIf="isEditMode()">
     <select class="form-control"
             #requestModelNgModel="ngModel" [ngModel]="getModel().method" name="method"
             (change)="methodChange(requestModelNgModel.value)">

@@ -1,15 +1,16 @@
-<table class="table table-bordered">
+<table class="table table-striped">
     <colgroup>
-        <col span="1" style="width: 38%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 38%;">
-        <col *ngIf="isEditMode()" span="1" style="width: 4%;">
+        <col span="1">
+        <col span="1" style="width: 13em;">
+        <col span="1">
+        <col *ngIf="isEditMode()" span="1" style="width: 2em;">
     </colgroup>
 
     <tr>
         <th>Header Name</th>
         <th>Compare Mode</th>
         <th>Header Value</th>
+        <th *ngIf="isEditMode()"></th>
     </tr>
 
     <!-- KEY -->
@@ -21,8 +22,8 @@
                             [(ngModel)]="header.key"
                             [suggestions]="suggestionHeaders"
                             (completeMethod)="filterSuggestionHeaders($event)"
-                            inputStyleClass="autocomplete-input form-control"
-                            class="autocomplete"
+                            inputStyleClass="form-control"
+                            class="autocomplete-full-width"
                             [dropdown]="true"></p-autoComplete>
         </td>
 
@@ -30,7 +31,7 @@
         <td *ngIf="!header.isEmpty() || isEditMode()">
             <span *ngIf="!isEditMode()">{{header.compareMode}}</span>
             <select *ngIf="isEditMode()"
-                    class="form-control phase-input"
+                    class="form-control phase-input full-width"
                     #hadearCompareModeNgModel="ngModel"
                     (change)="onChangeCompareMode(header, hadearCompareModeNgModel.value)"
                     [ngModel]="header.compareMode" name="compareMode">
@@ -49,7 +50,7 @@
             <input *ngIf="isEditMode() && header.compareMode != HttpMockRequestHeadersCompareMode.ABSENT"
                    (change)="onNewValueChange($event)"
                    [(ngModel)]="header.value"
-                   type="text" pInputText  class="form-control">
+                   type="text" pInputText  class="form-control full-width">
         </td>
 
         <!-- DELETE -->
@@ -60,5 +61,4 @@
             </a>
         </td>
     </tr>
-
 </table>

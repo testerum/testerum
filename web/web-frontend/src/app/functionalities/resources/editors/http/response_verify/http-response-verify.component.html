@@ -29,12 +29,12 @@
 <form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
 
     <!-- NAME -->
-    <div class="form-group row">
-        <label class="col-md-3 control-label">HTTP Response Verify Name</label>
-        <div class="col-md-9 form-value" *ngIf="!editMode || isSharedResource">
+    <div class="my-line">
+        <label class="my-label label-size">HTTP Response Verify Name</label>
+        <div class="my-value" *ngIf="!editMode || isSharedResource">
             {{name}}
         </div>
-        <div class="col-md-9" *ngIf="editMode && !isSharedResource">
+        <div class="my-value" *ngIf="editMode && !isSharedResource">
             <input required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
@@ -47,12 +47,12 @@
     </div>
 
     <!-- STATUS CODE -->
-    <div class="form-group row">
-        <label class="col-md-3 control-label">Expected Status Code</label>
-        <div class="col-md-9 form-value" *ngIf="!editMode">
+    <div class="my-line">
+        <label class="my-label label-size">Expected Status Code</label>
+        <div class="my-value" *ngIf="!editMode">
             {{model.expectedStatusCode}} {{getStatusCodeText()?" - " + getStatusCodeText():""}}
         </div>
-        <div class="col-md-9 my-line" *ngIf="editMode">
+        <div class="my-value my-line" *ngIf="editMode">
             <input #statusCodeNgModel="ngModel" [(ngModel)]="model.expectedStatusCode"
                    type="number" min="1" max="600" class="form-control input-3-letters" name="statusCode">
             <span *ngIf="getStatusCodeText()" class="status-code-text">{{" - " + getStatusCodeText()}}</span>

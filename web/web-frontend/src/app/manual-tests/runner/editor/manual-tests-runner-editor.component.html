@@ -4,13 +4,13 @@
             <form #pageForm="ngForm" (ngSubmit)="saveAction()" class="form-horizontal">
 
                 <!-- ENVIRONMENT -->
-                <div class="form-group row">
-                    <label class="col-md-2 control-label col-form-label" for="environment">Environment to test</label>
+                <div class="my-line">
+                    <label class="my-label label-size col-form-label" for="environment">Environment to test</label>
 
-                    <div class="col-md-10 form-value" *ngIf="!isEditMode">
+                    <div class="my-value" *ngIf="!isEditMode">
                         {{manualTestRunner.environment || ""}}
                     </div>
-                    <div class="col-md-10" *ngIf="isEditMode">
+                    <div class="my-value" *ngIf="isEditMode">
                         <input id="environment" required
                                #environment="ngModel" [(ngModel)]="manualTestRunner.environment"
                                type="text" class="form-control" name="environment">
@@ -24,13 +24,13 @@
                 </div>
 
                 <!-- APPLICATION VERSION -->
-                <div class="form-group row">
-                    <label class="col-md-2 control-label col-form-label" for="applicationVersion">Application version</label>
+                <div class="my-line">
+                    <label class="my-label label-size col-form-label" for="applicationVersion">Application version</label>
 
-                    <div class="col-md-10 form-value" *ngIf="!isEditMode">
+                    <div class="my-value" *ngIf="!isEditMode">
                         {{manualTestRunner.applicationVersion || ""}}
                     </div>
-                    <div class="col-md-10" *ngIf="isEditMode">
+                    <div class="my-value" *ngIf="isEditMode">
                         <input id="applicationVersion" required
                                #applicationVersion="ngModel" [(ngModel)]="manualTestRunner.applicationVersion"
                                type="text" class="form-control" name="applicationVersion">

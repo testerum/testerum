@@ -1,12 +1,12 @@
 <form class="form-horizontal">
 
     <!-- NAME -->
-    <div class="form-group row">
-        <label class="col-md-2 control-label">Name</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode">
+    <div class="my-line">
+        <label class="my-label label-size">Name</label>
+        <div class="my-value" *ngIf="!editMode">
             {{name}}
         </div>
-        <div class="col-md-10" *ngIf="editMode">
+        <div class="my-value" *ngIf="editMode">
             <input required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
@@ -20,8 +20,8 @@
 
     <!-- JSON SAMPLE -->
     <div class="form-group column-content" *ngIf="shouldDisplayJsonSample()">
-        <div class="col-md-12 center-text">Setting a JSON sample will provide an autocomplete and validation</div>
-        <div class="col-md-9 center">
+        <div class="my-value center-text">Setting a JSON sample will provide an autocomplete and validation</div>
+        <div class="my-value center">
             <json-editor [jsonText]="sampleJsonText" (change)="onSampleJsonTextChange($event)"></json-editor>
         </div>
     </div>

@@ -26,12 +26,12 @@
     <div class="panel-body">
 
         <!-- STATUS CODE -->
-        <div class="form-group row">
-            <label class="col-md-3 control-label">Status Code</label>
-            <div class="col-md-9 form-value" *ngIf="!isEditMode()">
+        <div class="my-line">
+            <label class="my-label label-size">Status Code</label>
+            <div class="my-value" *ngIf="!isEditMode()">
                 {{getModel().statusCode}} {{getStatusCodeText()?" - " + getStatusCodeText():""}}
             </div>
-            <div class="col-md-5 my-line" *ngIf="isEditMode()">
+            <div class="my-value my-line" *ngIf="isEditMode()">
                 <input #statusCodeNgModel="ngModel" [(ngModel)]="getModel().statusCode"
                        type="number" min="1" max="600" class="form-control input-3-letters" name="statusCode">
                 <span *ngIf="getStatusCodeText()" class="status-code-text">{{" - " + getStatusCodeText()}}</span>
@@ -45,12 +45,12 @@
         <http-mock-response-body></http-mock-response-body>
 
         <!-- DELAY -->
-        <div class="form-group row">
-            <label class="col-md-3 control-label">Delay (ms)</label>
-            <div class="col-md-3 form-value" *ngIf="!isEditMode()">
+        <div class="my-line">
+            <label class="my-label label-size">Delay (ms)</label>
+            <div class="my-value" *ngIf="!isEditMode()">
                 {{getModel().delay || ""}}
             </div>
-            <div class="col-md-9" *ngIf="isEditMode()">
+            <div class="my-value" *ngIf="isEditMode()">
                 <input id="port" isNumberValidator
                        #delay="ngModel" [(ngModel)]="getModel().delay"
                        type="text" class="form-control input-delay" name="delay">

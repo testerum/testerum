@@ -5,12 +5,12 @@
 
 <form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
 
-    <div class="form-group row">
-        <label class="col-md-2 control-label" for="value">{{stepParameter?.name}}</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode">
+    <div class="my-line">
+        <label class="my-label label-size" for="value">{{stepParameter?.name}}</label>
+        <div class="my-value" *ngIf="!editMode">
             {{model.content || ""}}
         </div>
-        <div class="col-md-10" *ngIf="editMode">
+        <div class="my-value" *ngIf="editMode">
             <input id="value"
                    argValueValidator arg="arg" stepParameter="stepParameter"
                    #valueNgModel="ngModel" [(ngModel)]="model.content"
@@ -23,5 +23,4 @@
 
         </div>
     </div>
-
 </form>

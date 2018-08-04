@@ -16,12 +16,12 @@
 <form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
 
     <!-- NAME -->
-    <div class="form-group row">
-        <label class="col-md-2 control-label">HTTP Request Name</label>
-        <div class="col-md-10 form-value" *ngIf="!isEditMode() || isSharedResource">
+    <div class="my-line">
+        <label class="my-label label-size">HTTP Request Name</label>
+        <div class="my-value" *ngIf="!isEditMode() || isSharedResource">
             {{name}}
         </div>
-        <div class="col-md-10" *ngIf="isEditMode() && !isSharedResource">
+        <div class="my-value" *ngIf="isEditMode() && !isSharedResource">
             <input required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">

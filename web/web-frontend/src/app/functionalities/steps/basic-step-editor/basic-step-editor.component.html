@@ -37,9 +37,9 @@
                 </div>
 
                 <!-- TAGS -->
-                <div class="form-group row" *ngIf="!isEditMode && model.tags.length > 0 ">
-                    <label class="col-md-1 control-label">Tags</label>
-                    <div class="col-md-11 form-value" *ngIf="!isEditMode">
+                <div class="my-line" *ngIf="!isEditMode && model.tags.length > 0 ">
+                    <label class="my-label label-size">Tags</label>
+                    <div class="my-value" *ngIf="!isEditMode">
                         <ng-container *ngFor="let tag of model.tags">
                             <span class="label label-primary">{{tag}}</span>
                         </ng-container>

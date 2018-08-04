@@ -1,13 +1,13 @@
 
-<div class="form-group row">
+<div class="my-line">
 
     <!-- BODY MATCHING -->
-    <label class="col-md-3 control-label">Body Matching:</label>
-    <div class="col-md-2 form-value" *ngIf="!isEditMode()">
+    <label class="my-label label-size">Body Matching:</label>
+    <div class="my-value" *ngIf="!isEditMode()">
         {{getModel().httpBodyVerifyMatchingType?.toString()}}
     </div>
 
-    <div class="col-md-2" *ngIf="isEditMode()">
+    <div class="my-value" *ngIf="isEditMode()">
         <select class="form-control phase-input"
                 (change)="bodyVerifyMatchingTypeChange(bodyVerifyMatchingTypeNgModel.value)"
                 #bodyVerifyMatchingTypeNgModel="ngModel"
@@ -23,12 +23,12 @@
 
     <!-- BODY TYPE -->
     <ng-container *ngIf="shouldDisplayBodyTypeChooser()">
-        <label class="col-md-3 control-label">Body Type:</label>
-        <div class="col-md-2 form-value" *ngIf="!isEditMode()">
+        <label class="my-label label-size">Body Type:</label>
+        <div class="my-value" *ngIf="!isEditMode()">
             {{getModel().httpBodyType?.toString()}}
         </div>
 
-        <div class="col-md-2" *ngIf="isEditMode()">
+        <div class="my-value" *ngIf="isEditMode()">
             <select class="form-control phase-input"
                     [(ngModel)]="getModel().httpBodyType" name="bodyType">
 
@@ -46,8 +46,8 @@
 
     <!-- JSON SAMPLE -->
     <div class="form-group column-content" *ngIf="shouldDisplayJsonSample()">
-        <div class="col-md-12 center-text">Setting a JSON sample will provide an autocomplete and validation</div>
-        <div class="col-md-9 center">
+        <div class="my-value center-text">Setting a JSON sample will provide an autocomplete and validation</div>
+        <div class="my-value center">
             <json-editor [jsonText]="sampleJsonText" (change)="onSampleJsonTextChange($event)"></json-editor>
         </div>
     </div>

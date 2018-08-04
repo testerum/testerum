@@ -7,12 +7,12 @@
 <form *ngIf="!condensedViewMode" class="form-horizontal">
 
     <!-- NAME -->
-    <div class="form-group row">
-        <label class="col-md-2 control-label">Name</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode || isSharedResource">
+    <div class="my-line">
+        <label class="my-label label-size">Name</label>
+        <div class="my-value" *ngIf="!editMode || isSharedResource">
             {{name}}
         </div>
-        <div class="col-md-10" *ngIf="editMode && !isSharedResource">
+        <div class="my-value" *ngIf="editMode && !isSharedResource">
             <input required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
@@ -25,9 +25,9 @@
     </div>
 
     <!-- SQL EDITOR-->
-    <div class="form-group row">
-        <label class="col-md-2 control-label">SQL Script</label>
-        <div class="col-md-10 form-value">
+    <div class="my-line">
+        <label class="my-label label-size">SQL Script</label>
+        <div class="my-value">
             <rdbms-sql-editor-component [sqlText]="model.content"
                                         (change)="sqlChange($event)"
                                         [editMode]="editMode"></rdbms-sql-editor-component>

@@ -58,12 +58,12 @@
 <form *ngIf="!condensedViewMode" class="form-horizontal">
 
     <!-- CONNECTION NAME -->
-    <div class="form-group row">
-        <label class="col-md-2 control-label">Connection Name</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode || isSharedResource">
+    <div class="my-line">
+        <label class="my-label label-size">Connection Name</label>
+        <div class="my-value" *ngIf="!editMode || isSharedResource">
             {{name}}
         </div>
-        <div class="col-md-10" *ngIf="editMode && !isSharedResource">
+        <div class="my-value" *ngIf="editMode && !isSharedResource">
             <input id="name" required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
@@ -76,9 +76,9 @@
     </div>
 
     <!-- IS DEFAULT CONNECTION -->
-    <div class="form-group row">
-        <label class="col-md-2 control-label control-label">Is Default Connection</label>
-        <div class="col-md-10">
+    <div class="my-line">
+        <label class="my-label label-size control-label">Is Default Connection</label>
+        <div class="my-value">
             <input disabled="{{!editMode}}"
                    [(ngModel)]="model.isDefaultConnection"
                    type="checkbox" class="form-control" name="isDefaultConnection">
@@ -86,12 +86,12 @@
     </div>
 
     <!-- RDBMS -->
-    <div class="form-group row">
-        <label class="col-md-2 control-label control-label">RDBMS</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode">
+    <div class="my-line">
+        <label class="my-label label-size control-label">RDBMS</label>
+        <div class="my-value" *ngIf="!editMode">
             {{selectedDriver?.name}}
         </div>
-        <div class="col-md-10" *ngIf="editMode">
+        <div class="my-value" *ngIf="editMode">
             <select class="form-control phase-input"
                     #rdbmsNgModel="ngModel" [(ngModel)]="selectedDriver" name="rdbms"
                     (change)="setSelectedDriverInModel()"
@@ -116,12 +116,12 @@
              (select)="useCustomUrl(false)" [disabled]="this.model.useCustomUrl && !this.editMode">
 
             <!-- HOST NAME -->
-            <div class="form-group row">
-                <label class="col-md-2 control-label" for="host">Host Name or IP</label>
-                <div class="col-md-10 form-value" *ngIf="!editMode">
+            <div class="my-line">
+                <label class="my-label label-size" for="host">Host Name or IP</label>
+                <div class="my-value" *ngIf="!editMode">
                     {{model.host || ""}}
                 </div>
-                <div class="col-md-10" *ngIf="editMode">
+                <div class="my-value" *ngIf="editMode">
                     <input id="host"
                            [(ngModel)]="model.host"
                            type="text" class="form-control" name="host">
@@ -129,12 +129,12 @@
             </div>
 
             <!-- PORT -->
-            <div class="form-group row">
-                <label class="col-md-2 control-label" for="port">Port</label>
-                <div class="col-md-10 form-value" *ngIf="!editMode">
+            <div class="my-line">
+                <label class="my-label label-size" for="port">Port</label>
+                <div class="my-value" *ngIf="!editMode">
                     {{model.port || ""}}
                 </div>
-                <div class="col-md-10" *ngIf="editMode">
+                <div class="my-value" *ngIf="editMode">
                     <input id="port" portValidator
                            #port="ngModel" [(ngModel)]="model.port"
                            type="text" class="form-control" name="port">
@@ -148,9 +148,9 @@
             </div>
 
             <!-- PING button -->
-            <div class="form-group row">
-                <label class="col-md-2 control-label" for="host"></label>
-                <div class="col-md-10">
+            <div class="my-line">
+                <label class="my-label label-size" for="host"></label>
+                <div class="my-value">
                     <button (click)="ping();" [class.disabled]="!canCallPing()" type="button"
                             class="btn btn-default">
                         <i class="fa fa-exchange" aria-hidden="true"></i>
@@ -165,12 +165,12 @@
              [disabled]="!this.model.useCustomUrl && !this.editMode">
 
             <!-- CUSTOM URL -->
-            <div class="form-group row">
-                <label class="col-md-2 control-label" for="host">URL</label>
-                <div class="col-md-10 form-value" *ngIf="!editMode">
+            <div class="my-line">
+                <label class="my-label label-size" for="host">URL</label>
+                <div class="my-value" *ngIf="!editMode">
                     {{model.customUrl || ""}}
                 </div>
-                <div class="col-md-10" *ngIf="editMode">
+                <div class="my-value" *ngIf="editMode">
                     <input id="customUrl"
                            [(ngModel)]="model.customUrl"
                            type="text" class="form-control" name="customUrl">
@@ -180,12 +180,12 @@
     </tabset>
 
     <!-- USER -->
-    <div class="form-group row">
-        <label class="col-md-2 control-label" for="host">User</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode">
+    <div class="my-line">
+        <label class="my-label label-size" for="host">User</label>
+        <div class="my-value" *ngIf="!editMode">
             {{model.user || ""}}
         </div>
-        <div class="col-md-10" *ngIf="editMode">
+        <div class="my-value" *ngIf="editMode">
             <input id="user"
                    [(ngModel)]="model.user"
                    type="text" class="form-control" name="user">
@@ -193,12 +193,12 @@
     </div>
 
     <!-- PASSWORD -->
-    <div class="form-group row">
-        <label class="col-md-2 control-label" for="host">Password</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode">
+    <div class="my-line">
+        <label class="my-label label-size" for="host">Password</label>
+        <div class="my-value" *ngIf="!editMode">
             {{maskedPassword() || ""}}
         </div>
-        <div class="col-md-10" *ngIf="editMode">
+        <div class="my-value" *ngIf="editMode">
             <input id="password"
                    [(ngModel)]="model.password"
                    type="password" class="form-control" name="password">
@@ -206,12 +206,12 @@
     </div>
 
     <!-- DATABASE -->
-    <div class="form-group row">
-        <label class="col-md-2 control-label" for="host">Database</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode">
+    <div class="my-line">
+        <label class="my-label label-size" for="host">Database</label>
+        <div class="my-value" *ngIf="!editMode">
             {{model.database || ""}}
         </div>
-        <div class="col-md-10 db-container" *ngIf="editMode">
+        <div class="my-value db-container" *ngIf="editMode">
 
             <input id="database"
                    [(ngModel)]="model.database"

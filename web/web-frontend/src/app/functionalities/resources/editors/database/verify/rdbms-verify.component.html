@@ -6,12 +6,12 @@
 <form *ngIf="!condensedViewMode" class="form-horizontal">
 
     <!-- NAME -->
-    <div class="form-group row">
-        <label class="col-md-2 control-label">Name</label>
-        <div class="col-md-10 form-value" *ngIf="!editMode || isSharedResource">
+    <div class="my-line">
+        <label class="my-label label-size">Name</label>
+        <div class="my-value" *ngIf="!editMode || isSharedResource">
             {{name}}
         </div>
-        <div class="col-md-10" *ngIf="editMode && !isSharedResource">
+        <div class="my-value" *ngIf="editMode && !isSharedResource">
             <input required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
@@ -24,9 +24,9 @@
     </div>
 
     <!-- RDBMS CONNECTION -->
-    <div class="form-group row" *ngIf="editMode">
-        <label class="col-md-2 control-label">RDBMS Connection</label>
-        <div class="col-md-10">
+    <div class="my-line" *ngIf="editMode">
+        <label class="my-label label-size">RDBMS Connection</label>
+        <div class="my-value">
             <select name="rdbmsConnection"
                     class="form-control inline"
                     [ngModel]="selectedRdbmsConnection"
