@@ -1,4 +1,4 @@
-<split direction="horizontal" style="position: relative">
+<split direction="horizontal" style="position: relative" *ngIf="isTestRunnerVisible()">
     <split-area [size]="20">
         <runner-tree [treeModel]="runnerTreeService.rootNode"></runner-tree>
     </split-area>
