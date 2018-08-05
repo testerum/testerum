@@ -5,13 +5,11 @@ import net.qutester.model.manual.runner.ManualTestsRunner
 import net.qutester.model.manual.runner.operation.UpdateManualTestExecutionModel
 import net.qutester.model.manual.runner.operation.UpdateManualTestsRunnerModel
 import net.qutester.service.manual.ManualTestsRunnerService
-import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/manualTestsRunner")
 class ManualTestsRunnerController(private val manualTestsRunnerService: ManualTestsRunnerService) {
-    private val LOG = LoggerFactory.getLogger(ManualTestsRunnerController::class.java)
 
     @RequestMapping (path = ["/create"], method = [RequestMethod.POST])
     @ResponseBody

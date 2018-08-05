@@ -12,7 +12,10 @@ import net.testerum.db_file.model.RepositoryFileChange
 
 class VariablesService(val fileRepositoryService: FileRepositoryService,
                        val jsonObjectMapper: ObjectMapper) {
-    private val VARIABLES_FILE_PATH: Path = Path.createInstance("variables.json")
+
+    companion object {
+        private val VARIABLES_FILE_PATH: Path = Path.createInstance("variables.json")
+    }
 
     fun save(variables: List<Variable>): List<Variable> {
 

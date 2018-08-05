@@ -6,7 +6,6 @@ import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.repository.enums.FileType
 import net.qutester.model.resources.ResourceContext
 import net.qutester.service.resources.ResourcesService
-import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/resources")
 class ResourcesController(private val resourcesService: ResourcesService) {
-    private val LOG = LoggerFactory.getLogger(ResourcesController::class.java)
 
     @RequestMapping(method = [RequestMethod.POST])
     @ResponseBody

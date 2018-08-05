@@ -12,7 +12,9 @@ import java.util.function.BiPredicate
 import java.util.stream.Stream
 
 class RdbmsDriverConfigService(val settingsManager: SettingsManager) {
-    private val LOG = LoggerFactory.getLogger(RdbmsDriverConfigService::class.java)
+    companion object {
+        private val LOG = LoggerFactory.getLogger(RdbmsDriverConfigService::class.java)
+    }
 
     private var driversConfig: MutableList<RdbmsDriver> = mutableListOf<RdbmsDriver>()
 

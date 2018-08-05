@@ -8,9 +8,11 @@ import com.testerum.common_assertion_functions.parser.ast.FunctionCall
 
 class FunctionEvaluator(private val delegatingFunctionExecuter: DelegatingFunctionExecuter) {
 
-    private val PARSER_EXECUTER = ParserExecuter(
-            FunctionCallParserFactory.functionCall()
-    )
+    companion object {
+        private val PARSER_EXECUTER = ParserExecuter(
+                FunctionCallParserFactory.functionCall()
+        )
+    }
 
     fun evaluate(functionCallText: String, actualNode: JsonNode) {
         val functionCall: FunctionCall = PARSER_EXECUTER.parse(functionCallText)

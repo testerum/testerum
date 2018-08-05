@@ -13,7 +13,9 @@ import java.nio.file.Path
 class WebDriverShutdownHook @Autowired constructor(private val webDriverManager: WebDriverManager,
                                                    private val testContext: TestContext) {
 
-    private val LOGGER: Logger = LoggerFactory.getLogger(WebDriverShutdownHook::class.java)
+    companion object {
+        private val LOGGER: Logger = LoggerFactory.getLogger(WebDriverShutdownHook::class.java)
+    }
 
     @AfterEachTest(order = Int.MAX_VALUE /*to make this hook runs last*/)
     fun destroyWebDriver() {

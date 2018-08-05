@@ -16,7 +16,9 @@ import java.util.stream.Collectors.toList
 class AttachmentFileRepositoryService(private val settingsManager: SettingsManager,
                                       private val fileRepositoryService: FileRepositoryService) {
 
-    private val ATTACHMENTS_DIR = "_attachments"
+    companion object {
+        private val ATTACHMENTS_DIR = "_attachments"
+    }
 
     fun uploadFiles(entityPath: KnownPath, uploadFiles: Array<MultipartFile>): List<Attachment> {
         val uploadedFilePaths = mutableListOf<Attachment>()
