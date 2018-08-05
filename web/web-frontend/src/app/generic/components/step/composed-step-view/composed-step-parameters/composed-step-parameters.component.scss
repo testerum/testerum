@@ -30,3 +30,16 @@
     display: inline-block;
     padding-top: 7px;
 }
+
+.table {
+    padding: 5px 0;
+}
+.table tbody tr {
+    border-spacing: 2px;
+}
+
+.table tbody tr td {
+    border: 0;
+    padding: 0 7px;
+    vertical-align: middle;
+}

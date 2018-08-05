@@ -6,16 +6,15 @@
             <ng-container *ngFor="let patternPart of patternParts; let i = index">
                 <tr *ngIf="isParamPattern(patternPart)">
                     <td>
-                        <strong>{{patternPart.name}}</strong>
+                        <strong>{{asParam(patternPart).name}}</strong>
                     </td>
                     <td>
-
                         <ng-container *ngIf="!isEditMode">
-                            {{getParamUiName(patternPart.className)}}
+                            {{getParamUiName(asParam(patternPart).uiType)}}
                         </ng-container>
                         <select *ngIf="isEditMode"
                                 class="smaller-input form-control"
-                                [value]="patternPart.className"
+                                [value]="asParam(patternPart).uiType"
                                 #selectItem (change)="onValueChanged(selectItem.value, patternPart)">
                             <option *ngFor="let enumValue of getStepParamTypesValues()" value="{{enumValue.uiType}}">
                                 {{enumValue.uiName}}
@@ -23,18 +22,18 @@
                         </select>
                     </td>
                     <td>
-                        <div *ngIf="isEnumType(patternPart.className)">
-                            [
+                        <div *ngIf="isEnumType(asParam(patternPart).serverType)" style="display: flex">
+                            [&nbsp;
                             <div *ngIf="!isEditMode" class="inline">
-                                {{patternPart.enumValues || ""}}
+                                {{asParam(patternPart).enumValues || ""}}
                             </div>
 
                             <div *ngIf="isEditMode" class="inline">
-                                <input [value]="patternPart.enumValues"
+                                <input [value]="asParam(patternPart).enumValues"
                                        #allowedValueInput (change)="setAllowedValues(allowedValueInput.value, patternPart)"
                                        type="text" class="smaller-input form-control">
                             </div>
-                            ]
+                            &nbsp;]
                         </div>
                     </td>
                 </tr>

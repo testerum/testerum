@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {StepPatternPart} from "../../../../../model/text/parts/step-pattern-part.model";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
+import {BasicResourceComponent} from "../../../../../functionalities/resources/editors/basic/basic-resource.component";
 
 @ Component({
     moduleId: module.id,
@@ -14,12 +15,23 @@ export class ComposedStepParametersComponent implements OnInit {
     @Input() patternParts: Array<StepPatternPart>;
     @Input() isEditMode: boolean = false;
 
+    ParamStepPatternPart = ParamStepPatternPart;
+
     ngOnInit(): void {
     }
 
     getStepParamTypesValues():Array<ResourceMapEnum> {
-        return ResourceMapEnum.ALL_PARAM_TYPES
+        let resourceMapEnums = ResourceMapEnum.ALL_PARAM_TYPES;
+
+        let results: ResourceMapEnum[] = [];
+        for (const resourceMapEnum of resourceMapEnums) {
+            if (resourceMapEnum.resourceComponent == BasicResourceComponent) {
+                results.push(resourceMapEnum);
+            }
+        }
+        return results
     }
+
     patternHasParameters(): boolean {
         for (let part of this.patternParts) {
             if (part instanceof ParamStepPatternPart) {
@@ -55,4 +67,7 @@ export class ComposedStepParametersComponent implements OnInit {
         return ResourceMapEnum.getUiNameByUiType(serverType)
     }
 
+    asParam(patternPart: StepPatternPart): ParamStepPatternPart {
+        return patternPart as ParamStepPatternPart;
+    }
 }
