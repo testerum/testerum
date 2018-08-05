@@ -761,6 +761,20 @@
                 <version>0.1.16</version>
             </dependency>
 
+            <!-- zt-exec -->
+            <dependency>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>zt-exec</artifactId>
+                <version>1.10</version>
+            </dependency>
+
+            <!-- zt-process-killer -->
+            <dependency>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>zt-process-killer</artifactId>
+                <version>1.8</version>
+            </dependency>
+
 
             <!--==================== TESTS ====================-->
 

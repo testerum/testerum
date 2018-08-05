@@ -77,11 +77,16 @@
             <artifactId>httpclient</artifactId>
         </dependency>
 
-        <!-- ProcessExecutor -->
+        <!-- zt-exec -->
         <dependency>
             <groupId>org.zeroturnaround</groupId>
             <artifactId>zt-exec</artifactId>
-            <version>1.9</version>
+        </dependency>
+
+        <!-- zt-process-killer -->
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-process-killer</artifactId>
         </dependency>
 
         <!-- Kotlin -->

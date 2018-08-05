@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 
 import {RunnerTreeNodeModel} from "./model/runner-tree-node.model";
+import {TestsRunnerService} from "../tests-runner.service";
 
 @Component({
     moduleId: module.id,
@@ -11,5 +12,11 @@ import {RunnerTreeNodeModel} from "./model/runner-tree-node.model";
 export class RunnerTreeComponent {
 
     @Input() treeModel:RunnerTreeNodeModel;
+
+    constructor(private testsRunnerService: TestsRunnerService) {}
+
+    stopTests() {
+        this.testsRunnerService.stopExecution();
+    }
 
 }

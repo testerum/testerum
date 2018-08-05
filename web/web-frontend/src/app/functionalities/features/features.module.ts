@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import {FeaturesRoutingModule} from "./features-routing.module";
 import {GenericModule} from "../../generic/generic.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
-import {ModalModule, CollapseModule} from "ngx-bootstrap";
+import {CollapseModule, ModalModule} from "ngx-bootstrap";
 import {DndModule} from "ng2-dnd";
 import {FeaturesComponent} from "./features.component";
 import {TestsService} from "../../service/tests.service";
@@ -24,8 +24,11 @@ import {TestNodeComponent} from "./features-tree/container/node/test-node.compon
 import {FeatureContainerComponent} from "./features-tree/container/feature-container.component";
 import {
     AutoCompleteModule,
-    InputSwitchModule, InputTextModule, MessageModule, MessagesModule,
-    SelectButtonModule, ToggleButtonModule,
+    InputTextModule,
+    MessageModule,
+    MessagesModule,
+    SelectButtonModule,
+    ToggleButtonModule,
     ToolbarModule,
     TooltipModule
 } from "primeng/primeng";
@@ -33,6 +36,7 @@ import {FeatureResolver} from "./feature-editor/feature.resolver";
 import {FeatureEditorComponent} from "./feature-editor/feature-editor.component";
 import {FeaturesTreeComponent} from "./features-tree/features-tree.component";
 import {FeaturesTreeFilterComponent} from "./features-tree/features-tree-filter/features-tree-filter.component";
+import {TestsRunnerTreeToolbarComponent} from './tests-runner/tests-runner-tree/tests-runner-tree-toolbar/tests-runner-tree-toolbar.component';
 
 @NgModule({
     imports: [
@@ -76,6 +80,8 @@ import {FeaturesTreeFilterComponent} from "./features-tree/features-tree-filter/
         TestsRunnerLogsComponent,
 
         FeatureEditorComponent,
+
+        TestsRunnerTreeToolbarComponent,
     ],
     entryComponents: [
 

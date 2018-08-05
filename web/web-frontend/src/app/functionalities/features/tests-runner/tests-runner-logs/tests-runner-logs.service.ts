@@ -1,6 +1,4 @@
-import {EventEmitter, Injectable, ViewChild, ViewContainerRef} from '@angular/core';
-import {TestWebSocketService} from "../../../../service/test-web-socket.service";
-import {WebSocketEventListener} from "../../../../service/event/web-socket-event.listener";
+import {EventEmitter, Injectable} from '@angular/core';
 import {RunnerEvent} from "../../../../model/test/event/runner.event";
 import {TestsRunnerLogModel} from "./model/tests-runner-log.model";
 import {StepEndEvent} from "../../../../model/test/event/step-end.event";
@@ -10,32 +8,40 @@ import {TestStartEvent} from "../../../../model/test/event/test-start.event";
 import {SuiteEndEvent} from "../../../../model/test/event/suite-end.event";
 import {SuiteStartEvent} from "../../../../model/test/event/suite-start.event";
 import {ExecutionStatusEnum} from "../../../../model/test/event/enums/execution-status.enum";
-import {RunnerTreeNodeSelectedListener} from "../tests-runner-tree/event/runner-tree-node-selected.listener";
-import {RunnerTreeNodeModel} from "../tests-runner-tree/model/runner-tree-node.model";
-import {RunnerTreeService} from "../tests-runner-tree/runner-tree.service";
 import {StepCall} from "../../../../model/step-call.model";
 import {RunnerErrorEvent} from "../../../../model/test/event/runner-error.event";
 import {TextLogEvent} from "../../../../model/test/event/text-log.event";
+import {TestsRunnerService} from "../tests-runner.service";
+import {Subscription} from "rxjs";
 
 @Injectable()
-export class TestsRunnerLogsService implements WebSocketEventListener {
+export class TestsRunnerLogsService {
 
     logs: Array<TestsRunnerLogModel> = [];
     logAddedEventEmitter: EventEmitter<TestsRunnerLogModel> = new EventEmitter<TestsRunnerLogModel>();
     emptyLogsEventEmitter: EventEmitter<void> = new EventEmitter<void>();
 
-    constructor(private testWebSocketService: TestWebSocketService) {
+    private runnerEventSubscription: Subscription = null;
+
+    constructor(private testsRunnerService: TestsRunnerService) {
+        testsRunnerService.startTestExecutionObservable.subscribe(() => {
+            this.onStartTestExecution();
+        })
     }
 
-    initialize() {
-        this.testWebSocketService.removeWebSocketEventListener(this);
-        this.testWebSocketService.addWebSocketEventListener(this);
+    private onStartTestExecution() {
+        if (this.runnerEventSubscription) {
+            this.runnerEventSubscription.unsubscribe();
+        }
+        this.runnerEventSubscription = this.testsRunnerService.runnerEventObservable.subscribe((runnerEvent) => {
+            this.onRunnerEvent(runnerEvent);
+        });
 
         this.logs.length = 0;
         this.emptyLogsEventEmitter.emit();
     }
 
-    onWebSocketMessage(runnerEvent: RunnerEvent): void {
+    private onRunnerEvent(runnerEvent: RunnerEvent): void {
         let logEvent: TestsRunnerLogModel = TestsRunnerLogsService.transformEvent(runnerEvent);
 
         this.logs.push(logEvent);

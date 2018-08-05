@@ -44,7 +44,11 @@
     </bean>
 
     <bean id="testsController" class="net.qutester.controller.test.TestsController">
-        <constructor-arg name="testsService" ref="testsService"/>
+        <constructor-arg name="testsService"          ref="testsService"/>
+    </bean>
+
+    <bean id="testExecutionController" class="net.qutester.controller.runner.TestExecutionController">
+        <constructor-arg name="testsExecutionService" ref="testsExecutionService"/>
     </bean>
 
     <bean id="testRunnerReportController" class="net.qutester.controller.report.RunnerResultController">
@@ -105,8 +109,7 @@
     </bean>
 
     <bean id="testsWebSocketController" class="net.qutester.controller.runner.TestsWebSocketController">
-        <constructor-arg name="testRunnerEventBus" ref="testRunnerEventBus"/>
-        <constructor-arg name="testsRunnerService" ref="testsRunnerService"/>
+        <constructor-arg name="testsExecutionService" ref="testsExecutionService"/>
         <constructor-arg name="objectMapper" ref="testsRunnerJsonObjectMapper"/>
     </bean>
 

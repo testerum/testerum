@@ -3,8 +3,7 @@ import {Observable} from 'rxjs';
 import {RunnerResultDirInfo} from "../../model/report/runner-result-dir-info.model";
 import {Injectable} from "@angular/core";
 import {Path} from "../../model/infrastructure/path/path.model";
-import {RunnerEvent} from "../../model/test/event/runner.event";
-import {TestWebSocketService} from "../test-web-socket.service";
+import {RunnerEvent, RunnerEventMarshaller} from "../../model/test/event/runner.event";
 import {HttpClient, HttpParams} from "@angular/common/http";
 
 @Injectable()
@@ -40,15 +39,15 @@ export class ResultService {
         };
 
         return this.http
-            .get<Array<RunnerEvent>>(this.BASE_URL, httpOptions).pipe(
-            map(ResultService.extractRunnerResult));
+            .get<Array<RunnerEvent>>(this.BASE_URL, httpOptions)
+            .pipe(map(ResultService.extractRunnerResult));
     }
 
     private static extractRunnerResult(res: Array<RunnerEvent>):Array<RunnerEvent> {
         let result:Array<RunnerEvent> = [];
         for (let event of res) {
             result.push(
-                TestWebSocketService.deserializeRunnerEvent(event)
+                RunnerEventMarshaller.deserializeRunnerEvent(event)
             )
         }
         return result;

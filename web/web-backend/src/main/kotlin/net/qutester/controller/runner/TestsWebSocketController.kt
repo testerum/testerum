@@ -2,85 +2,93 @@ package net.qutester.controller.runner
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.testerum.runner.events.model.RunnerErrorEvent
-import com.testerum.runner.events.model.RunnerEvent
-import com.testerum.runner.events.model.SuiteEndEvent
+import net.qutester.model.infrastructure.path.Path
+import net.qutester.model.repository.enums.FileType
 import net.qutester.model.test.TestModel
-import net.qutester.service.tests_runner.TestsRunnerService
-import net.qutester.service.tests_runner.event_bus.TestRunnerEventBus
-import net.qutester.service.tests_runner.event_bus.TestRunnerEventListener
+import net.qutester.service.tests_runner.execution.TestsExecutionService
+import net.qutester.service.tests_runner.result.TestRunnerResultService
+import net.testerum.db_file.FileRepositoryService
+import net.testerum.db_file.model.KnownPath
 import org.slf4j.LoggerFactory
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.handler.TextWebSocketHandler
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-class TestsWebSocketController(
-        val testRunnerEventBus: TestRunnerEventBus,
-        val testsRunnerService: TestsRunnerService,
-        val objectMapper: ObjectMapper) : TextWebSocketHandler(), TestRunnerEventListener {
+class TestsWebSocketController(private val testsExecutionService: TestsExecutionService,
+                               private val objectMapper: ObjectMapper,
+                               private val fileRepositoryService: FileRepositoryService,
+                               private val testRunnerResultService: TestRunnerResultService) : TextWebSocketHandler() {
 
-    private val LOG = LoggerFactory.getLogger(TestsWebSocketController::class.java)
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(TestsWebSocketController::class.java)
 
-    var sessions: MutableMap<Long, SessionInfo> = mutableMapOf()
-
-    var connectionOnExecutionId: Long? = null;
-    var sessionOnExecution: WebSocketSession? = null
-
-    init {
-        testRunnerEventBus.addEventListener(this)
+        private const val HANDLER_KEY_PAYLOAD_SEPARATOR = ":"
+        private val FILE_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH-mm-ss_SSS")
     }
 
-    @Throws(Exception::class)
-    override fun handleTextMessage(session: WebSocketSession?, message: TextMessage?) {
-        val payload = message!!.payload;
-        if (payload.startsWith("EXECUTE_TEST")) {
-//TODO: allow multiple clients to trigger multiple tests in the same time but only one instance running at the same time
+    private val handlerMapping = mapOf<String /*handlerKey*/, (session: WebSocketSession, payload: String) -> Unit /*handler*/>(
+            "EXECUTE-TESTS" to this::executeTestsHandler
+    )
 
-            val payloadWithoutPrefix = payload.removePrefix("EXECUTE_TEST-")
-            val webSocketConnectionId: Long = payloadWithoutPrefix.substringBefore(";").toLong()
-            val testModelsAsJson = payloadWithoutPrefix.substringAfter(";")
-            val testModels: List<TestModel> = objectMapper.readValue<List<TestModel>>(testModelsAsJson)
+    override fun handleTextMessage(session: WebSocketSession, message: TextMessage) {
+        val messagePayload: String = message.payload
 
-            if (sessionOnExecution == null) {
-                connectionOnExecutionId = webSocketConnectionId;
-                sessionOnExecution = session;
-            } else {
-                sessions.put(webSocketConnectionId, SessionInfo(session!!, testModels));
+        for ((handlerKey, handler) in handlerMapping) {
+            if (messagePayload.startsWith(handlerKey + HANDLER_KEY_PAYLOAD_SEPARATOR)) {
+                val payload: String = messagePayload.substring(handlerKey.length + HANDLER_KEY_PAYLOAD_SEPARATOR.length)
+
+                try {
+                    handler(session, payload)
+                } catch (e: Exception) {
+                    LOGGER.error("failed to handle WS message; handlerKey=[$handlerKey]", e)
+                    throw e
+                }
             }
-
-            testsRunnerService.executeTests(
-                    testModels.map { it.path }
-            )
-        }
-        if (payload.startsWith("CLOSE-")) {
-            // todo: what should happen here? should we delete this if?
         }
     }
 
-    private fun closeCurrentSession() {
-        sessionOnExecution?.close()
-        sessionOnExecution = null;
-        connectionOnExecutionId = null;
+    private fun executeTestsHandler(session: WebSocketSession,
+                                    payload: String) {
+        val indexOfSeparator = payload.indexOf(HANDLER_KEY_PAYLOAD_SEPARATOR)
+
+        val executionIdAsText: String = payload.substring(0, indexOfSeparator)
+        val testModelsAsText: String = payload.substring(indexOfSeparator + 1)
+
+        val executionId: Long = executionIdAsText.toLong()
+
+        val testModels: List<TestModel> = objectMapper.readValue(testModelsAsText)
+        val testPaths: List<Path> = testModels.map { it.path }
+
+        val resultFilePath = createResultsFile()
+
+        testsExecutionService.startExecution(executionId, testPaths) { event ->
+            if (session.isOpen) {
+                // send to UI
+                val eventAsString = objectMapper.writeValueAsString(event)
+                session.sendMessage(TextMessage(eventAsString))
+
+                // save to file
+                testRunnerResultService.saveEvent(event, resultFilePath)
+            } else {
+                LOGGER.warn("webSocket communication is closed; will stop test execution")
+                testsExecutionService.stopExecution(executionId)
+            }
+        }
     }
 
-    override fun testSuiteEvent(runnerEvent: RunnerEvent) {
-        val session = sessionOnExecution
+    private fun createResultsFile(): Path {
+        val localDate: LocalDateTime = LocalDateTime.now()
+        val directoryName: String = localDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
+        val fileName: String = localDate.format(FILE_NAME_FORMATTER)
 
-        if (session != null && session.isOpen) {
-            val eventAsString = objectMapper.writeValueAsString(runnerEvent)
-            session.sendMessage(TextMessage(eventAsString))
-        } else {
-            LOG.warn("webSocket communication is closed")
-        }
+        val resultFilePath = Path(listOf(directoryName), fileName, FileType.RESULT.fileExtension)
+        fileRepositoryService.createFile(
+                KnownPath(resultFilePath, FileType.RESULT)
+        )
 
-        if (runnerEvent is SuiteEndEvent ||
-                runnerEvent is RunnerErrorEvent) {
-            closeCurrentSession();
-        }
+        return resultFilePath
     }
+
 }
-
-data class SessionInfo(
-        val session: WebSocketSession,
-        val testModels: List<TestModel>
-)

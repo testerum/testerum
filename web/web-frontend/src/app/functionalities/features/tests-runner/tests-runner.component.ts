@@ -11,16 +11,9 @@ import {RunnerTreeService} from "./tests-runner-tree/runner-tree.service";
 
 export class TestsRunnerComponent {
 
-    public runnerTreeService: RunnerTreeService;
-    public testsRunnerLogsService:TestsRunnerLogsService;
-
     constructor(private testsRunnerService: TestsRunnerService,
-                runnerTreeService: RunnerTreeService,
-                testsRunnerLogsService: TestsRunnerLogsService) {
-
-        this.runnerTreeService = runnerTreeService;
-        this.testsRunnerLogsService = testsRunnerLogsService;
-    }
+                public runnerTreeService: RunnerTreeService,
+                public testsRunnerLogsService: TestsRunnerLogsService) { }
 
     isTestRunnerVisible(): boolean {
         return this.testsRunnerService.isTestRunnerVisible;
@@ -28,5 +21,6 @@ export class TestsRunnerComponent {
 
     close() {
         this.testsRunnerService.isTestRunnerVisible = false;
+        this.testsRunnerService.stopExecution();
     }
 }

@@ -1,7 +1,7 @@
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
-import {AppComponent}  from './app.component';
+import {AppComponent} from './app.component';
 import {MenuComponent} from "./menu/menu.component";
 import {PageNotFoundComponent} from "./generic/components/page_not_found/page-not-found.component";
 import {AppRoutingModule} from "./app-routing.module";
@@ -12,7 +12,6 @@ import {StepsService} from "./service/steps.service";
 import {FormsModule} from "@angular/forms";
 import {FeaturesModule} from "./functionalities/features/features.module";
 import {TestsService} from "./service/tests.service";
-import {TestWebSocketService} from "./service/test-web-socket.service";
 import {ResourcesModule} from "./functionalities/resources/resources.module";
 import {RdbmsService} from "./service/resources/rdbms/rdbms.service";
 import {ResourceService} from "./service/resources/resource.service";
@@ -40,7 +39,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AttachmentsService} from "./service/attachments.service";
 import {UrlService} from "./service/url.service";
 import {TagsService} from "./service/tags.service";
-import {ToastModule} from "primeng/toast";
 import {MessageService} from "./service/message.service";
 
 @NgModule({
@@ -79,7 +77,6 @@ import {MessageService} from "./service/message.service";
 
         ApplicationEventBus,
 
-        TestWebSocketService,
         StepsService,
         TestsService,
         VariablesService,

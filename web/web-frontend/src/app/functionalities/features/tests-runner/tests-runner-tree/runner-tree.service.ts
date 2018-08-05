@@ -4,8 +4,6 @@ import {TreeNodeModel} from "../../../../model/infrastructure/tree-node.model";
 import {TestModel} from "../../../../model/test/test.model";
 import {RunnerTreeNodeModel} from "./model/runner-tree-node.model";
 import {RunnerTreeNodeTypeEnum} from "./model/enums/runner-tree-node-type.enum";
-import {TestWebSocketService} from "../../../../service/test-web-socket.service";
-import {WebSocketEventListener} from "../../../../service/event/web-socket-event.listener";
 import {RunnerEvent} from "../../../../model/test/event/runner.event";
 import {SuiteStartEvent} from "../../../../model/test/event/suite-start.event";
 import {ExecutionStatusEnum} from "../../../../model/test/event/enums/execution-status.enum";
@@ -21,9 +19,11 @@ import {StepCall} from "../../../../model/step-call.model";
 import {RunnerErrorEvent} from "../../../../model/test/event/runner-error.event";
 import {ExecutionPieService} from "../../../../generic/components/charts/execution-pie/execution-pie.service";
 import {ExecutionPieModel} from "../../../../generic/components/charts/execution-pie/model/execution-pie.model";
+import {TestsRunnerService} from "../tests-runner.service";
+import {Subscription} from "rxjs";
 
 @Injectable()
-export class RunnerTreeService implements WebSocketEventListener {
+export class RunnerTreeService {
 
     rootNode: RunnerTreeNodeModel = this.createRootRunnerNode();
 
@@ -33,15 +33,18 @@ export class RunnerTreeService implements WebSocketEventListener {
     private selectedRunnerTreeNode:RunnerTreeNodeModel = null;
     private selectedRunnerTreeNodeListeners: Array<RunnerTreeNodeSelectedListener> = [];
 
-    constructor(testWebSocketService:TestWebSocketService,
+    private runnerEventSubscription: Subscription = null;
+
+    constructor(private testsRunnerService: TestsRunnerService,
                 private executionPieService: ExecutionPieService) {
-        testWebSocketService.addWebSocketEventListener(this);
+        this.testsRunnerService.startTestExecutionObservable.subscribe((testModels) => {
+            this.onStartTestExecution(testModels)
+        });
 
         this.selectedStepObserver.subscribe((item: BasicStepDef) => this.selectedStep = item);
     }
 
-    onWebSocketMessage(runnerEvent: RunnerEvent): void {
-
+    private onRunnerEvent(runnerEvent: RunnerEvent): void {
         if(runnerEvent instanceof SuiteStartEvent) {
             let runnerTreeNode:RunnerTreeNodeModel = this.rootNode;
             runnerTreeNode.eventKey = runnerEvent.eventKey;
@@ -94,7 +97,14 @@ export class RunnerTreeService implements WebSocketEventListener {
         }
     }
 
-    initialize(testModels: Array<TestModel>): void {
+    private onStartTestExecution(testModels: Array<TestModel>): void {
+        if (this.runnerEventSubscription) {
+            this.runnerEventSubscription.unsubscribe();
+        }
+        this.runnerEventSubscription = this.testsRunnerService.runnerEventObservable.subscribe((runnerEvent) => {
+            this.onRunnerEvent(runnerEvent);
+        });
+
         this.addTestToTreeModel(testModels, this.rootNode, this.executionPieService.pieModel);
     }
 

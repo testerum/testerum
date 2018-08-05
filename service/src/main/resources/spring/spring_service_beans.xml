@@ -17,13 +17,10 @@
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
     </bean>
 
-    <bean id="testsRunnerService" class="net.qutester.service.tests_runner.TestsRunnerService">
+    <bean id="testsExecutionService" class="net.qutester.service.tests_runner.execution.TestsExecutionService">
         <constructor-arg name="settingsManager" ref="settingsManager"/>
         <constructor-arg name="jsonObjectMapper" ref="testsRunnerJsonObjectMapper"/>
-        <constructor-arg name="testRunnerEventBus" ref="testRunnerEventBus"/>
     </bean>
-
-    <bean id="testRunnerEventBus" class="net.qutester.service.tests_runner.event_bus.TestRunnerEventBus"/>
 
     <bean id="settingsService" class="net.qutester.service.config.SettingsService">
         <constructor-arg name="settingsManager" ref="settingsManager"/>
@@ -88,10 +85,9 @@
         <constructor-arg name="stepService"    ref="stepService" />
     </bean>
 
-    <bean id="testRunnerReportService" class="net.qutester.service.tests_runner.TestRunnerResultService">
+    <bean id="testRunnerReportService" class="net.qutester.service.tests_runner.result.TestRunnerResultService">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
         <constructor-arg name="objectMapper" ref="fileRepositoryObjectMapper"/>
-        <constructor-arg name="testRunnerEventBus" ref="testRunnerEventBus"/>
     </bean>
 
     <bean id="variablesService" class="net.qutester.service.variables.VariablesService">
