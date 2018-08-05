@@ -61,7 +61,7 @@ export class ResourceMapEnum {
         () => {return new BasicResource()},
         null,
         () => {return new BasicResourceType()},
-        new BasicResource().deserialize
+        (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static BOOLEAN: ResourceMapEnum = new ResourceMapEnum(
         "java.lang.Boolean",
@@ -213,14 +213,14 @@ export class ResourceMapEnum {
         return paramType.uiName;
     }
 
-    public static deserializeInputForUiType(input: Object, serverType: string): Resource<any> {
+    public static deserializeInputForUiType(input: Object, uiType: string): Resource<any> {
         for (const argParamType of ResourceMapEnum.ALL_PARAM_TYPES) {
-            if (argParamType.uiType === serverType) {
+            if (argParamType.uiType === uiType) {
                 return argParamType.contentTypeDeserializeFunction(input)
             }
         }
 
-        throw new Error("Unknown data SERVER_TYPE [" + serverType + "]");
+        throw new Error("Unknown data SERVER_TYPE [" + uiType + "]");
     }
 
     public readonly serverType: string;
