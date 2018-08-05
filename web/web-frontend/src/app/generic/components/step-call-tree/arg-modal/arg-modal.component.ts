@@ -72,7 +72,10 @@ export class ArgModalComponent {
 
     getArgName() {
         let argName = this.arg.name;
-        if (!this.arg.name && this.argPath) {
+        if (!argName && this.stepParameter) {
+            argName = this.stepParameter.name
+        }
+        if (!argName && this.argPath) {
             argName = this.argPath.fileName;
         }
         return argName;
