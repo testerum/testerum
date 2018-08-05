@@ -1,6 +1,7 @@
 package selenium.actions.hooks
 
 import com.testerum.api.annotations.hooks.AfterEachTest
+import com.testerum.api.annotations.hooks.BeforeAllTests
 import com.testerum.api.test_context.TestContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -16,6 +17,16 @@ class WebDriverShutdownHook @Autowired constructor(private val webDriverManager:
     companion object {
         private val LOGGER: Logger = LoggerFactory.getLogger(WebDriverShutdownHook::class.java)
     }
+
+    @BeforeAllTests
+    fun registerShutdownHook() {
+        // register a JVM shutdown hook, to prevent drivers & browsers from remaining open,
+        // when the runner is stopped with e.g. a SIGTERM
+        Runtime.getRuntime().addShutdownHook(Thread {
+            destroyWebDriver()
+        })
+    }
+
 
     @AfterEachTest(order = Int.MAX_VALUE /*to make this hook runs last*/)
     fun destroyWebDriver() {
