@@ -2,6 +2,7 @@ package com.testerum.service.manual
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.testerum.common_json.ObjectMapperFactory
 import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath
 import com.testerum.file_repository.model.RepositoryFile
@@ -12,7 +13,6 @@ import com.testerum.model.infrastructure.path.RenamePath
 import com.testerum.model.manual.ManualTest
 import com.testerum.model.manual.operation.UpdateManualTestModel
 import com.testerum.model.repository.enums.FileType
-import net.qutester.common.json.ObjectMapperFactory
 
 
 class ManualTestsService(private val fileRepositoryService: FileRepositoryService) {

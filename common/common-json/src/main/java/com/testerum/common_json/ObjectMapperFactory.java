@@ -1,4 +1,4 @@
-package net.qutester.common.json;
+package com.testerum.common_json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;

@@ -119,7 +119,7 @@
 
     <bean id="httpClient" class="org.apache.http.impl.client.HttpClients" factory-method="createDefault" destroy-method="close" />
 
-    <bean id="resourceJsonObjectMapper" class="net.qutester.common.json.ObjectMapperFactory" factory-method="createKotlinObjectMapperWithPrettyFormatter"/>
+    <bean id="resourceJsonObjectMapper" class="com.testerum.common_json.ObjectMapperFactory" factory-method="createKotlinObjectMapperWithPrettyFormatter"/>
 
     <bean id="resourcesService" class="com.testerum.service.resources.ResourcesService">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>

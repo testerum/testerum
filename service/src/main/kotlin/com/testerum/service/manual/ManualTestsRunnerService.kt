@@ -2,6 +2,7 @@ package com.testerum.service.manual
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.testerum.common_json.ObjectMapperFactory
 import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath
 import com.testerum.file_repository.model.RepositoryFile
@@ -14,7 +15,6 @@ import com.testerum.model.manual.runner.enums.ManualTestsRunnerStatus
 import com.testerum.model.manual.runner.operation.UpdateManualTestExecutionModel
 import com.testerum.model.manual.runner.operation.UpdateManualTestsRunnerModel
 import com.testerum.model.repository.enums.FileType
-import net.qutester.common.json.ObjectMapperFactory
 import java.time.LocalDateTime
 
 

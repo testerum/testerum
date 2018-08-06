@@ -9,6 +9,6 @@
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
     </bean>
 
-    <bean id="resourceJsonObjectMapper" class="net.qutester.common.json.ObjectMapperFactory" factory-method="createKotlinObjectMapperWithPrettyFormatter"/>
+    <bean id="resourceJsonObjectMapper" class="com.testerum.common_json.ObjectMapperFactory" factory-method="createKotlinObjectMapperWithPrettyFormatter"/>
 
 </beans>

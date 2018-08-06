@@ -16,6 +16,6 @@
         <constructor-arg name="objectMapper" ref="jsonToConsoleExecutionListenerObjectMapper"/>
     </bean>
 
-    <bean id="jsonToConsoleExecutionListenerObjectMapper" class="net.qutester.common.json.ObjectMapperFactory" factory-method="createKotlinObjectMapper"/>
+    <bean id="jsonToConsoleExecutionListenerObjectMapper" class="com.testerum.common_json.ObjectMapperFactory" factory-method="createKotlinObjectMapper"/>
 
 </beans>

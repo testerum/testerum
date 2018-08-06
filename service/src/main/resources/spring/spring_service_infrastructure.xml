@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="jsonObjectMapper" class="net.qutester.common.json.ObjectMapperFactory" factory-method="createObjectMapper">
+    <bean id="jsonObjectMapper" class="com.testerum.common_json.ObjectMapperFactory" factory-method="createObjectMapper">
         <constructor-arg name="subTypes">
             <list>
                 <value>com.testerum.model.step.BasicStepDef</value>
@@ -12,6 +12,6 @@
         </constructor-arg>
     </bean>
 
-    <bean id="testsRunnerJsonObjectMapper" class="net.qutester.common.json.ObjectMapperFactory" factory-method="createKotlinObjectMapper"/>
+    <bean id="testsRunnerJsonObjectMapper" class="com.testerum.common_json.ObjectMapperFactory" factory-method="createKotlinObjectMapper"/>
 
 </beans>
