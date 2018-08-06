@@ -3,14 +3,14 @@ package net.qutester.service.tests_runner.result
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.file_repository.FileRepositoryService
+import com.testerum.file_repository.model.KnownPath
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.SuiteEndEvent
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.repository.enums.FileType
 import net.qutester.model.run_result.RunnerResultFileInfo
 import net.qutester.model.run_result.RunnerResultsDirInfo
-import net.testerum.db_file.FileRepositoryService
-import net.testerum.db_file.model.KnownPath
 import java.nio.file.Files
 
 class TestRunnerResultService(val fileRepositoryService: FileRepositoryService,
@@ -40,7 +40,7 @@ class TestRunnerResultService(val fileRepositoryService: FileRepositoryService,
                         )
                 )
             } else {
-                val runResult = result.get(indexOfInResult)
+                val runResult = result[indexOfInResult]
 
                 val updatedRunResult = runResult.copy(runnerResultFilesInfo = runResult.runnerResultFilesInfo + runnerResultFileInfo)
 
@@ -56,11 +56,11 @@ class TestRunnerResultService(val fileRepositoryService: FileRepositoryService,
         val runnerEvents: List<RunnerEvent> = getResultAtPath(runResultPath)
 
         var status:ExecutionStatus? = null
-        var durationMilis: Long? = null
+        var durationMillis: Long? = null
         for (runnerEvent in runnerEvents) {
             if (runnerEvent is SuiteEndEvent) {
                 status = runnerEvent.status
-                durationMilis = runnerEvent.durationMillis
+                durationMillis = runnerEvent.durationMillis
             }
         }
 
@@ -68,7 +68,7 @@ class TestRunnerResultService(val fileRepositoryService: FileRepositoryService,
                 path = runResultPath,
                 name = runResultPath.fileName!!,
                 executionResult = status,
-                durationMillis = durationMilis
+                durationMillis = durationMillis
         )
     }
 
@@ -85,7 +85,7 @@ class TestRunnerResultService(val fileRepositoryService: FileRepositoryService,
                 val runnerEvent = objectMapper.readValue<RunnerEvent>(eventAsString)
                 resultEvents.add(runnerEvent)
             } catch (e: Exception) {
-                throw RuntimeException("The result file at [${absoluteResourcePath}] couldn't be deserialized", e)
+                throw RuntimeException("The result file at [$absoluteResourcePath] couldn't be deserialized", e)
             }
         }
 

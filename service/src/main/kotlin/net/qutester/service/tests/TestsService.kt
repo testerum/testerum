@@ -1,6 +1,10 @@
 package net.qutester.service.tests
 
 import com.testerum.common.parsing.executer.ParserExecuter
+import com.testerum.file_repository.FileRepositoryService
+import com.testerum.file_repository.model.KnownPath
+import com.testerum.file_repository.model.RepositoryFile
+import com.testerum.file_repository.model.RepositoryFileChange
 import com.testerum.test_file_format.testdef.FileTestDef
 import com.testerum.test_file_format.testdef.FileTestDefParserFactory
 import com.testerum.test_file_format.testdef.FileTestDefSerializer
@@ -17,10 +21,6 @@ import net.qutester.service.mapper.UiToFileTestMapper
 import net.qutester.service.resources.ResourcesService
 import net.qutester.service.tests.resolver.TestResolver
 import net.qutester.service.warning.WarningService
-import net.testerum.db_file.FileRepositoryService
-import net.testerum.db_file.model.KnownPath
-import net.testerum.db_file.model.RepositoryFile
-import net.testerum.db_file.model.RepositoryFileChange
 import java.io.StringWriter
 
 
@@ -166,9 +166,8 @@ class TestsService(private val testResolver: TestResolver,
         val fileTest = TEST_PARSER.parse(testFile.body)
         val unresolvedUiTest = fileToUiTestMapper.mapToUiModel(fileTestDef = fileTest, testFile = testFile)
         val resolvedUiTest = testResolver.resolveComposedSteps(unresolvedUiTest, throwExceptionOnNotFound = false)
-        val resolvedUiTestWithWarnings: TestModel = warningService.testWithWarnings(resolvedUiTest, keepExistingWarnings = true)
 
-        return resolvedUiTestWithWarnings
+        return warningService.testWithWarnings(resolvedUiTest, keepExistingWarnings = true)
     }
 
     fun deleteDirectory(path: Path) {

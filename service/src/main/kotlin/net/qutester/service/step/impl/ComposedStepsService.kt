@@ -1,6 +1,10 @@
 package net.qutester.service.step.impl
 
 import com.testerum.common.parsing.executer.ParserExecuter
+import com.testerum.file_repository.FileRepositoryService
+import com.testerum.file_repository.model.KnownPath
+import com.testerum.file_repository.model.RepositoryFile
+import com.testerum.file_repository.model.RepositoryFileChange
 import com.testerum.test_file_format.stepdef.FileStepDefParserFactory
 import com.testerum.test_file_format.stepdef.FileStepDefSerializer
 import net.qutester.model.infrastructure.path.CopyPath
@@ -13,10 +17,6 @@ import net.qutester.model.step.tree.builder.ComposedStepDirectoryTreeBuilder
 import net.qutester.service.mapper.FileToUiStepMapper
 import net.qutester.service.mapper.UiToFileStepDefMapper
 import net.qutester.service.warning.WarningService
-import net.testerum.db_file.FileRepositoryService
-import net.testerum.db_file.model.KnownPath
-import net.testerum.db_file.model.RepositoryFile
-import net.testerum.db_file.model.RepositoryFileChange
 import java.io.StringWriter
 import java.nio.file.Files
 
@@ -84,19 +84,15 @@ open class ComposedStepsService(val uiToFileStepDefMapper: UiToFileStepDefMapper
                 )
         )
 
-        val resolvedComposedStepDef = composedStepDef.copy(
-                path = newStepPath
-        )
-
-        return resolvedComposedStepDef
+        return composedStepDef.copy(path = newStepPath)
     }
 
     private fun serializeComposedStepDefToFileFormat(composedStepDef: ComposedStepDef): String {
         val fileStepDef = uiToFileStepDefMapper.mapToFileModel(composedStepDef)
         val destination = StringWriter()
         FileStepDefSerializer.serialize(fileStepDef, destination, 0)
-        val stepAsString = destination.toString()
-        return stepAsString
+
+        return destination.toString()
     }
 
     fun renameDirectory(renamePath: RenamePath): Path {

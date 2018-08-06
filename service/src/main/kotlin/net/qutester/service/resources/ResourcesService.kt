@@ -1,6 +1,11 @@
 package net.qutester.service.resources
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.testerum.file_repository.FileRepositoryService
+import com.testerum.file_repository.model.KnownPath
+import com.testerum.file_repository.model.RepositoryFile
+import com.testerum.file_repository.model.RepositoryFileChange
+import com.testerum.file_repository.model.mapToRepositoryFileChange
 import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.infrastructure.path.RenamePath
@@ -10,11 +15,6 @@ import net.qutester.service.mapper.file_arg_transformer.FileArgTransformer
 import net.qutester.service.resources.handler.ResourceHandler
 import net.qutester.service.resources.util.isRelocateResource
 import net.qutester.service.resources.validators.ResourceValidator
-import net.testerum.db_file.FileRepositoryService
-import net.testerum.db_file.model.KnownPath
-import net.testerum.db_file.model.RepositoryFile
-import net.testerum.db_file.model.RepositoryFileChange
-import net.testerum.db_file.model.mapToRepositoryFileChange
 
 class ResourcesService(val validators: List<ResourceValidator>,
                        val handlers: Map<FileType, ResourceHandler>,
@@ -52,10 +52,8 @@ class ResourcesService(val validators: List<ResourceValidator>,
 
     private fun handleResource(fileType: FileType, resourceContext: ResourceContext): ResourceContext {
         val resourceHandler = handlers[fileType]
+                ?: return resourceContext
 
-        if (resourceHandler == null) {
-            return resourceContext
-        }
         return resourceHandler.handle(resourceContext)
     }
 
@@ -73,11 +71,8 @@ class ResourcesService(val validators: List<ResourceValidator>,
 
     fun delete(pathAsString: String) {
         val path = Path.createInstance(pathAsString)
-        val fileType: FileType? = FileType.getResourceTypeByExtension(path)
-
-        if (fileType == null) {
-            throw RuntimeException("Unrecognized resource type [${path.fileExtension}]]")
-        }
+        val fileType: FileType = FileType.getResourceTypeByExtension(path)
+                ?: throw RuntimeException("Unrecognized resource type [${path.fileExtension}]]")
 
         fileRepositoryService.delete(
                 KnownPath(path, fileType)
@@ -99,21 +94,15 @@ class ResourcesService(val validators: List<ResourceValidator>,
 
     fun <T> getResourceBodyAs (resourcePath: Path, resourceBodyClassType: Class<T>): T {
         val resource = getByPath(resourcePath)
-
-        if (resource == null) {
-            throw RuntimeException ("No resource on the path ["+resourcePath.toString()+"] was found")
-        }
+                ?: throw RuntimeException ("No resource on the path ["+resourcePath.toString()+"] was found")
 
         return objectMapper.readValue(resource.body, resourceBodyClassType)
     }
 
     fun renameDirectory(renamePath: RenamePath): Path {
 
-        val fileType: FileType? = FileType.getResourceTypeByExtension(renamePath.path)
-
-        if (fileType == null) {
-            throw RuntimeException("Unrecognized resource type [${renamePath.path.fileExtension}]]")
-        }
+        val fileType: FileType = FileType.getResourceTypeByExtension(renamePath.path)
+                ?: throw RuntimeException("Unrecognized resource type [${renamePath.path.fileExtension}]]")
 
         return fileRepositoryService.renameDirectory(
                 knownPath = KnownPath(renamePath.path, fileType),

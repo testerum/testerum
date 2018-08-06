@@ -1,4 +1,4 @@
-package net.testerum.db_file.model
+package com.testerum.file_repository.model
 
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.repository.enums.FileType

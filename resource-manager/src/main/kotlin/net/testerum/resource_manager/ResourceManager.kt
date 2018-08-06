@@ -1,8 +1,8 @@
 package net.testerum.resource_manager
 
+import com.testerum.file_repository.FileRepositoryService
+import com.testerum.file_repository.model.KnownPath
 import net.qutester.model.resources.ResourceContext
-import net.testerum.db_file.FileRepositoryService
-import net.testerum.db_file.model.KnownPath
 
 class ResourceManager(private val fileRepositoryService: FileRepositoryService) {
 

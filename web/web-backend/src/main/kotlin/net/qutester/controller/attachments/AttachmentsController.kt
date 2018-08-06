@@ -1,10 +1,10 @@
 package net.qutester.controller.attachments
 
+import com.testerum.file_repository.AttachmentFileRepositoryService
+import com.testerum.file_repository.model.KnownPath
 import net.qutester.model.file.Attachment
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.repository.enums.FileType
-import net.testerum.db_file.AttachmentFileRepositoryService
-import net.testerum.db_file.model.KnownPath
 import org.springframework.web.bind.annotation.*
 import java.awt.Image
 import java.awt.image.BufferedImage
@@ -33,8 +33,8 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
     @ResponseBody
     fun getAttachmentsInfo(@RequestParam(value = "path") path: String): List<Attachment> {
         val knownPath = KnownPath(Path.createInstance(path), FileType.FEATURE)
-        val attachmentsDetails = attachmentFileRepositoryService.getAttachmentsDetailsFromPath(knownPath)
-        return attachmentsDetails
+
+        return attachmentFileRepositoryService.getAttachmentsDetailsFromPath(knownPath)
     }
 
     @RequestMapping(params = ["path"], method = [RequestMethod.GET])
@@ -52,7 +52,7 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
                 && attachmentDetails.mimeType!!.startsWith("image/")
                 && thumbnail) {
             response.setHeader("Content-Type", "image/jpeg")
-            getImageThumbnail(knownPath, response.getOutputStream())
+            getImageThumbnail(knownPath, response.outputStream)
             return
         }
 
@@ -61,7 +61,7 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
             response.setHeader("Content-Disposition", "inline; filename=" + attachmentDetails.path.fileName + "." + attachmentDetails.path.fileExtension)
         }
 
-        response.getOutputStream().write(
+        response.outputStream.write(
                 attachmentFileRepositoryService.getAttachment(knownPath)
         )
     }
@@ -75,9 +75,9 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
     }
 
     private fun resizeImage(sourceImage: BufferedImage, targetWidth: Int, targetHeight: Int): BufferedImage {
-        val determineImageScale = determineImageScale(sourceImage.getWidth(), sourceImage.getHeight(), targetWidth, targetHeight)
-        val dstImage = scaleImage(sourceImage, determineImageScale)
-        return dstImage
+        val determineImageScale = determineImageScale(sourceImage.width, sourceImage.height, targetWidth, targetHeight)
+
+        return scaleImage(sourceImage, determineImageScale)
     }
 
     private fun scaleImage(sourceImage: BufferedImage, scaledWidth: Double): BufferedImage {
@@ -96,6 +96,7 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
     private fun determineImageScale(sourceWidth: Int, sourceHeight: Int, targetWidth: Int, targetHeight: Int): Double {
         val scalex = targetWidth.toDouble() / sourceWidth
         val scaley = targetHeight.toDouble() / sourceHeight
+
         return Math.min(scalex, scaley)
     }
 }

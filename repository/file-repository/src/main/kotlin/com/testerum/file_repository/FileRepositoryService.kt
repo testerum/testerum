@@ -1,14 +1,14 @@
-package net.testerum.db_file
+package com.testerum.file_repository
 
 import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.file_repository.model.KnownPath
+import com.testerum.file_repository.model.RepositoryFile
+import com.testerum.file_repository.model.RepositoryFileChange
 import com.testerum.settings.SystemSettings
 import net.qutester.exception.IllegalFileOperationException
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.infrastructure.path.toMyPath
 import net.qutester.model.repository.enums.FileType
-import net.testerum.db_file.model.KnownPath
-import net.testerum.db_file.model.RepositoryFile
-import net.testerum.db_file.model.RepositoryFileChange
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.charset.StandardCharsets.UTF_8
@@ -25,8 +25,8 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
     companion object {
         private val LOGGER = LoggerFactory.getLogger(FileRepositoryService::class.java)
 
-        private val REGEX_TO_REPLACE_ILEAGAL_FILE_REGEX = Regex("[^a-zA-Z0-9-_\\s\\[\\]]")
-        private val REPLACEMENT_CHAR_OF_ILEAGAL_FILE_CHARS = "_"
+        private val REGEX_TO_REPLACE_ILLEGAL_FILE_REGEX = Regex("[^a-zA-Z0-9-_\\s\\[\\]]")
+        private const val REPLACEMENT_CHAR_OF_ILLEGAL_FILE_CHARS = "_"
     }
 
     fun create(repositoryFileChange: RepositoryFileChange): RepositoryFile {
@@ -53,11 +53,10 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
         val oldKnownPath = repositoryFileChange.oldKnownPath!!
         val newKnownPath = escapeIllegalCharactersInPath(repositoryFileChange.repositoryFile.knownPath)
 
-        val absoluteResourcePath: java.nio.file.Path
-        if(oldKnownPath != newKnownPath) {
-            absoluteResourcePath = getAbsoluteUniquePath(newKnownPath)
+        val absoluteResourcePath: java.nio.file.Path = if (oldKnownPath != newKnownPath) {
+            getAbsoluteUniquePath(newKnownPath)
         } else {
-            absoluteResourcePath = escapeAndGetAbsolutePath(newKnownPath)
+            escapeAndGetAbsolutePath(newKnownPath)
         }
 
         createParentDirectoryIfNotExisting(absoluteResourcePath)
@@ -86,12 +85,12 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
             return  absoluteResourcePath
         }
 
-        var fileNameSuffixNumber: Int = 1
+        var fileNameSuffixNumber = 1
         var uniqueAttemptPath = absoluteResourcePath
         while (Files.exists(uniqueAttemptPath)) {
-            val uniqueAttemptKnownPath = KnownPath (
+            val uniqueAttemptKnownPath = KnownPath(
                     escapedRelativeKnownPath.directories,
-                    escapedRelativeKnownPath.fileName+"-"+fileNameSuffixNumber,
+                    escapedRelativeKnownPath.fileName + "-" + fileNameSuffixNumber,
                     escapedRelativeKnownPath.fileExtension,
                     escapedRelativeKnownPath.fileType
             )
@@ -120,7 +119,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
             return null
         }
 
-        return RepositoryFile (
+        return RepositoryFile(
                 escapedRelativeKnownPath,
                 String(Files.readAllBytes(absoluteResourcePath))
         )
@@ -191,11 +190,11 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
                     fileTypeRootPath,
                     Integer.MAX_VALUE,
                     BiPredicate { path, attr -> (attr.isRegularFile && path.toString().endsWith(fileType.fileExtension)) }
-            ).use {
-                it.forEach {
+            ).use { pathStream ->
+                pathStream.forEach {path ->
                     result.add(
                             Path.createInstance(
-                                    it.toString().removePrefix(
+                                    path.toString().removePrefix(
                                             fileTypeRootPath.toString() + File.separator
                                     )
                             )
@@ -277,7 +276,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
 
             val rootPath = Paths.get(settingsManager.getSettingValue(SystemSettings.REPOSITORY_DIRECTORY.key))
             val relativeFilePath = rootPath.relativize(problemFile.toPath())
-            throw IllegalFileOperationException("$fileTypeAsString [${relativeFilePath.toString()}] already exists", e)
+            throw IllegalFileOperationException("$fileTypeAsString [$relativeFilePath] already exists", e)
         }
     }
 
@@ -304,7 +303,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
     fun createParentDirectoryIfNotExisting(absoluteResourcePath: java.nio.file.Path) {
         val parentDir = absoluteResourcePath.parent
         if (!Files.exists(parentDir)) {
-            Files.createDirectories(parentDir, *arrayOf())
+            Files.createDirectories(parentDir)
         }
     }
 
@@ -342,15 +341,15 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
         val escapedDirectories: MutableList<String> = mutableListOf()
         for (directory in knownPath.directories) {
             val escapedDir = directory.replace(
-                    REGEX_TO_REPLACE_ILEAGAL_FILE_REGEX,
-                    REPLACEMENT_CHAR_OF_ILEAGAL_FILE_CHARS
+                    REGEX_TO_REPLACE_ILLEGAL_FILE_REGEX,
+                    REPLACEMENT_CHAR_OF_ILLEGAL_FILE_CHARS
             )
             escapedDirectories.add(escapedDir)
         }
 
         val escapedFileName = knownPath.fileName?.replace(
-                REGEX_TO_REPLACE_ILEAGAL_FILE_REGEX,
-                REPLACEMENT_CHAR_OF_ILEAGAL_FILE_CHARS
+                REGEX_TO_REPLACE_ILLEGAL_FILE_REGEX,
+                REPLACEMENT_CHAR_OF_ILLEGAL_FILE_CHARS
         )
 
         return KnownPath(escapedDirectories, escapedFileName, knownPath.fileExtension, knownPath.fileType)

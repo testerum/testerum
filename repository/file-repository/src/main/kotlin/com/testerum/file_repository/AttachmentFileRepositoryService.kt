@@ -1,9 +1,8 @@
-package net.testerum.db_file
+package com.testerum.file_repository
 
-import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.file_repository.model.KnownPath
 import net.qutester.model.file.Attachment
 import net.qutester.model.infrastructure.path.Path
-import net.testerum.db_file.model.KnownPath
 import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
@@ -13,11 +12,10 @@ import java.time.ZoneId
 import java.util.stream.Collectors.toList
 
 
-class AttachmentFileRepositoryService(private val settingsManager: SettingsManager,
-                                      private val fileRepositoryService: FileRepositoryService) {
+class AttachmentFileRepositoryService(private val fileRepositoryService: FileRepositoryService) {
 
     companion object {
-        private val ATTACHMENTS_DIR = "_attachments"
+        private const val ATTACHMENTS_DIR = "_attachments"
     }
 
     fun uploadFiles(entityPath: KnownPath, uploadFiles: Array<MultipartFile>): List<Attachment> {
@@ -58,7 +56,7 @@ class AttachmentFileRepositoryService(private val settingsManager: SettingsManag
         return getAttachmentDetailsFromPath(escapedRelativeKnownPath)!!
     }
 
-    public fun getAttachmentDetailsFromPath(knownPath: KnownPath): Attachment? {
+    fun getAttachmentDetailsFromPath(knownPath: KnownPath): Attachment? {
         val escapedRelativeKnownPath = fileRepositoryService.escapeIllegalCharactersInPath(knownPath)
         val absoluteResourcePath: java.nio.file.Path = fileRepositoryService.escapeAndGetAbsolutePath(escapedRelativeKnownPath)
 
@@ -104,7 +102,7 @@ class AttachmentFileRepositoryService(private val settingsManager: SettingsManag
             return emptyList()
         }
         val attachmentsFiles = Files.list(absoluteResourcePath)
-                .filter({ it.toFile().isFile })
+                .filter { it.toFile().isFile }
                 .collect(toList())
 
         val result = mutableListOf<Attachment>()

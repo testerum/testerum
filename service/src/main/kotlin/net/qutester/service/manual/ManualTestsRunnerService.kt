@@ -2,6 +2,10 @@ package net.qutester.service.manual
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.testerum.file_repository.FileRepositoryService
+import com.testerum.file_repository.model.KnownPath
+import com.testerum.file_repository.model.RepositoryFile
+import com.testerum.file_repository.model.RepositoryFileChange
 import net.qutester.common.json.ObjectMapperFactory
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.manual.enums.ManualTestStatus
@@ -11,10 +15,6 @@ import net.qutester.model.manual.runner.enums.ManualTestsRunnerStatus
 import net.qutester.model.manual.runner.operation.UpdateManualTestExecutionModel
 import net.qutester.model.manual.runner.operation.UpdateManualTestsRunnerModel
 import net.qutester.model.repository.enums.FileType
-import net.testerum.db_file.FileRepositoryService
-import net.testerum.db_file.model.KnownPath
-import net.testerum.db_file.model.RepositoryFile
-import net.testerum.db_file.model.RepositoryFileChange
 import java.time.LocalDateTime
 
 
@@ -103,7 +103,7 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
     }
 
     fun finalize(path: Path): ManualTestsRunner {
-        val testsRunner = getTestsRunnerAtPath(path)?: throw RuntimeException("The Test Runner [${path.toString()}] couldn't be found")
+        val testsRunner = getTestsRunnerAtPath(path)?: throw RuntimeException("The Test Runner [$path] couldn't be found")
 
         val updatedTestsRunner = testsRunner.copy(
                 status = ManualTestsRunnerStatus.FINISHED,
@@ -126,7 +126,7 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
     }
 
     fun bringBackInExecution(path: Path): ManualTestsRunner {
-        val testsRunner = getTestsRunnerAtPath(path)?: throw RuntimeException("The Test Runner [${path.toString()}] couldn't be found")
+        val testsRunner = getTestsRunnerAtPath(path)?: throw RuntimeException("The Test Runner [$path] couldn't be found")
 
         val updatedTestsRunner = testsRunner.copy(
                 status = ManualTestsRunnerStatus.IN_EXECUTION,
@@ -175,12 +175,12 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
     }
 
     private fun resolveManualTestsRunner(manualTest: ManualTestsRunner, testFile: RepositoryFile): ManualTestsRunner {
-        var totalTests: Int = 0
-        var passedTests: Int = 0
-        var failedTests: Int = 0
-        var blockedTests: Int = 0
-        var notApplicableTests: Int = 0
-        var notExecutedTests: Int = 0
+        var totalTests = 0
+        var passedTests = 0
+        var failedTests = 0
+        var blockedTests = 0
+        var notApplicableTests = 0
+        var notExecutedTests = 0
 
         for (test in manualTest.testsToExecute) {
             totalTests++
@@ -211,10 +211,7 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
         val newTestsToExecute = oldTestsRunner.testsToExecute.toMutableList()
         val oldTestInRunner = newTestsToExecute.first { it.path == updateManualTestExecutionModel.manualTest.path }
 
-        newTestsToExecute.set(
-                newTestsToExecute.indexOf(oldTestInRunner),
-                updateManualTestExecutionModel.manualTest
-        )
+        newTestsToExecute[newTestsToExecute.indexOf(oldTestInRunner)] = updateManualTestExecutionModel.manualTest
 
         val newTestsRunner = oldTestsRunner.copy(
                 testsToExecute = newTestsToExecute

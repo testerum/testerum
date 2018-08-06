@@ -2,6 +2,10 @@ package net.qutester.service.manual
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.testerum.file_repository.FileRepositoryService
+import com.testerum.file_repository.model.KnownPath
+import com.testerum.file_repository.model.RepositoryFile
+import com.testerum.file_repository.model.RepositoryFileChange
 import net.qutester.common.json.ObjectMapperFactory
 import net.qutester.model.infrastructure.path.CopyPath
 import net.qutester.model.infrastructure.path.Path
@@ -9,10 +13,6 @@ import net.qutester.model.infrastructure.path.RenamePath
 import net.qutester.model.manual.ManualTest
 import net.qutester.model.manual.operation.UpdateManualTestModel
 import net.qutester.model.repository.enums.FileType
-import net.testerum.db_file.FileRepositoryService
-import net.testerum.db_file.model.KnownPath
-import net.testerum.db_file.model.RepositoryFile
-import net.testerum.db_file.model.RepositoryFileChange
 
 
 class ManualTestsService(private val fileRepositoryService: FileRepositoryService) {
@@ -35,11 +35,9 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
                 )
         )
 
-        val resolvedTestModel = manualTest.copy(
+        return manualTest.copy(
                 path = createdRepositoryFile.knownPath.asPath()
         )
-
-        return resolvedTestModel
     }
 
     fun updateTest(updateManualTestModel: UpdateManualTestModel): ManualTest {
@@ -60,11 +58,7 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
                 )
         )
 
-        val resolvedTestModel = manualTest.copy(
-                path = newPath
-        )
-
-        return resolvedTestModel
+        return manualTest.copy(path = newPath)
     }
 
     fun remove(path: Path) {
@@ -92,14 +86,15 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
         ) ?: return null
 
         val manualTest = objectMapper.readValue<ManualTest>(testFile.body)
-        val resolvedManualTest = manualTest.copy(path = testFile.knownPath.asPath())
 
-        return resolvedManualTest
+        return manualTest.copy(
+                path = testFile.knownPath.asPath()
+        )
     }
 
     fun renameDirectory(renamePath: RenamePath): Path {
         return fileRepositoryService.renameDirectory(
-                KnownPath(renamePath.path,FileType.MANUAL_TEST),
+                KnownPath(renamePath.path, FileType.MANUAL_TEST),
                 renamePath.newName
         )
     }

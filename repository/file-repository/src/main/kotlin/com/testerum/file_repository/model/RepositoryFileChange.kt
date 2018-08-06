@@ -1,4 +1,4 @@
-package net.testerum.db_file.model
+package com.testerum.file_repository.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -7,20 +7,11 @@ import net.qutester.model.resources.ResourceContext
 
 data class RepositoryFileChange @JsonCreator constructor(
         @JsonProperty("oldKnownPath") val oldKnownPath: KnownPath?,
-        @JsonProperty("repositoryFile") val repositoryFile: RepositoryFile) {
-
-    fun mapToResource(): ResourceContext {
-        return ResourceContext(
-                repositoryFile.knownPath.asPath(),
-                oldKnownPath?.asPath(),
-                repositoryFile.body
-        )
-    }
-}
+        @JsonProperty("repositoryFile") val repositoryFile: RepositoryFile)
 
 fun ResourceContext.mapToRepositoryFileChange(fileType: FileType): RepositoryFileChange {
     return RepositoryFileChange(
-            if(oldPath != null) KnownPath(oldPath!!, fileType) else null,
+            if (oldPath != null) KnownPath(oldPath!!, fileType) else null,
             RepositoryFile(
                     KnownPath(this.path, fileType),
                     this.body

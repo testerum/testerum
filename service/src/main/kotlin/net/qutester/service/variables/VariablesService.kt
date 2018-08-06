@@ -2,13 +2,13 @@ package net.qutester.service.variables
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.testerum.file_repository.FileRepositoryService
+import com.testerum.file_repository.model.KnownPath
+import com.testerum.file_repository.model.RepositoryFile
+import com.testerum.file_repository.model.RepositoryFileChange
 import net.qutester.model.infrastructure.path.Path
 import net.qutester.model.repository.enums.FileType
 import net.qutester.model.variable.Variable
-import net.testerum.db_file.FileRepositoryService
-import net.testerum.db_file.model.KnownPath
-import net.testerum.db_file.model.RepositoryFile
-import net.testerum.db_file.model.RepositoryFileChange
 
 class VariablesService(val fileRepositoryService: FileRepositoryService,
                        val jsonObjectMapper: ObjectMapper) {

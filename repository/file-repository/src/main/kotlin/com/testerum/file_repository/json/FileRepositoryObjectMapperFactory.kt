@@ -1,4 +1,4 @@
-package net.testerum.db_file.json
+package com.testerum.file_repository.json
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature

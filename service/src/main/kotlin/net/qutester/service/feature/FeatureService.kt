@@ -2,6 +2,11 @@ package net.qutester.service.feature
 
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common.string.containsSearchStringParts
+import com.testerum.file_repository.AttachmentFileRepositoryService
+import com.testerum.file_repository.FileRepositoryService
+import com.testerum.file_repository.model.KnownPath
+import com.testerum.file_repository.model.RepositoryFile
+import com.testerum.file_repository.model.RepositoryFileChange
 import com.testerum.test_file_format.feature.FileFeature
 import com.testerum.test_file_format.feature.FileFeatureParserFactory
 import com.testerum.test_file_format.feature.FileFeatureSerializer
@@ -15,11 +20,6 @@ import net.qutester.model.main_tree.builder.MainTreeBuilder
 import net.qutester.model.repository.enums.FileType
 import net.qutester.model.test.TestModel
 import net.qutester.service.tests.TestsService
-import net.testerum.db_file.AttachmentFileRepositoryService
-import net.testerum.db_file.FileRepositoryService
-import net.testerum.db_file.model.KnownPath
-import net.testerum.db_file.model.RepositoryFile
-import net.testerum.db_file.model.RepositoryFileChange
 import org.springframework.web.multipart.MultipartFile
 
 
@@ -120,11 +120,7 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
             )
         }
 
-        val savedFeature = feature.copy(
-                path = newPath
-        )
-
-        return savedFeature
+        return feature.copy(path = newPath)
     }
 
     private fun renameDirectoryIfCase(feature: Feature): Path {

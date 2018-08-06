@@ -2,6 +2,8 @@ package net.qutester.service.mapper
 
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common_kotlin.emptyToNull
+import com.testerum.file_repository.model.KnownPath
+import com.testerum.file_repository.model.RepositoryFile
 import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
@@ -30,8 +32,6 @@ import net.qutester.model.warning.Warning
 import net.qutester.service.mapper.file_arg_transformer.FileArgTransformer
 import net.qutester.service.mapper.util.ArgNameCodec
 import net.qutester.util.StepHashUtil
-import net.testerum.db_file.model.KnownPath
-import net.testerum.db_file.model.RepositoryFile
 import net.testerum.resource_manager.ResourceManager
 import java.lang.Exception
 
