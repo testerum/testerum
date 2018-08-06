@@ -5,7 +5,7 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.resources.ResourceContext
-import net.qutester.service.resources.ResourcesService
+import com.testerum.service.resources.ResourcesService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

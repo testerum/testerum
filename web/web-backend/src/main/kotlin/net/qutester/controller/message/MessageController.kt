@@ -1,7 +1,7 @@
 package net.qutester.controller.message
 
 import com.testerum.model.message.Message
-import net.qutester.service.message.MessageService
+import com.testerum.service.message.MessageService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody

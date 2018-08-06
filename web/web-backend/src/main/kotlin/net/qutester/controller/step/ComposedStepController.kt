@@ -8,9 +8,9 @@ import com.testerum.model.step.filter.StepsTreeFilter
 import com.testerum.model.step.operation.UpdateComposedStepDef
 import com.testerum.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
 import com.testerum.model.step.tree.ComposedContainerStepNode
-import net.qutester.service.step.StepService
-import net.qutester.service.step.StepUpdateCompatibilityService
-import net.qutester.service.step.StepUpdateService
+import com.testerum.service.step.StepService
+import com.testerum.service.step.StepUpdateCompatibilityService
+import com.testerum.service.step.StepUpdateService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

@@ -1,8 +1,8 @@
 package net.qutester.controller.config
 
 import com.testerum.model.config.Setup
+import com.testerum.service.step.StepService
 import com.testerum.settings.private_api.SettingsManagerImpl
-import net.qutester.service.step.StepService
 import org.springframework.web.bind.annotation.*
 
 @RestController

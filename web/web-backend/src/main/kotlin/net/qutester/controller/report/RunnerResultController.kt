@@ -3,7 +3,7 @@ package net.qutester.controller.report
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.run_result.RunnerResultsDirInfo
 import com.testerum.runner.events.model.RunnerEvent
-import net.qutester.service.tests_runner.result.TestRunnerResultService
+import com.testerum.service.tests_runner.result.TestRunnerResultService
 import org.springframework.web.bind.annotation.*
 
 @RestController

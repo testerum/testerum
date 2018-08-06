@@ -13,7 +13,9 @@
     </bean>
 
     <!-- todo: break dependency with service -->
-    <bean id="httpClientService" class="net.qutester.service.resources.http.HttpClientService"/>
+    <bean id="httpClientService" class="com.testerum.service.resources.http.HttpClientService">
+        <constructor-arg name="httpClient" ref="httpClient" />
+    </bean>
 
     <bean id="httpRequestTransformer" class="http.request.transformer.HttpRequestTransformer">
         <constructor-arg name="objectMapper"    ref="resourceJsonObjectMapper" />

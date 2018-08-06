@@ -6,8 +6,8 @@ import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.HttpResponse
+import com.testerum.service.resources.http.HttpClientService
 import http.request.transformer.HttpRequestTransformer
-import net.qutester.service.resources.http.HttpClientService
 import org.springframework.beans.factory.annotation.Autowired
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")

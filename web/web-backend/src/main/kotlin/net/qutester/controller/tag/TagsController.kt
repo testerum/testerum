@@ -1,6 +1,6 @@
 package net.qutester.controller.tag
 
-import net.qutester.service.tags.TagsService
+import com.testerum.service.tags.TagsService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController

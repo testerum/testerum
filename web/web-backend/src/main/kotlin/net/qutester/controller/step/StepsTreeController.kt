@@ -2,7 +2,7 @@ package net.qutester.controller.step
 
 import com.testerum.model.step.filter.StepsTreeFilter
 import com.testerum.model.step.tree.RootStepNode
-import net.qutester.service.step.StepService
+import com.testerum.service.step.StepService
 import org.springframework.web.bind.annotation.*
 
 @RestController

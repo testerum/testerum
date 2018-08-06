@@ -2,7 +2,7 @@ package net.qutester.controller.resources.http
 
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.HttpResponse
-import net.qutester.service.resources.http.HttpClientService
+import com.testerum.service.resources.http.HttpClientService
 import org.springframework.web.bind.annotation.*
 
 @RestController

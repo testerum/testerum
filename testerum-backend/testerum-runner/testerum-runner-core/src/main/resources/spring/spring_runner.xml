@@ -27,7 +27,7 @@
 
     <!-- todo: the following is a hack; think of a proper solution -->
     <!-- bean overridden here to prevent initialization (no point to initialize before setting the correct path to the repository, which we have from the command line) -->
-    <bean id="stepService" class="net.qutester.service.step.StepService">
+    <bean id="stepService" class="com.testerum.service.step.StepService">
         <constructor-arg name="basicStepsService" ref="basicStepsService"/>
         <constructor-arg name="composedStepsService" ref="composedStepsService"/>
         <constructor-arg name="warningService" ref="warningService"/>

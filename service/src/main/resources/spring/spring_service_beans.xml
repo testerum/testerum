@@ -3,41 +3,41 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="featureService" class="net.qutester.service.feature.FeatureService">
+    <bean id="featureService" class="com.testerum.service.feature.FeatureService">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
         <constructor-arg name="attachmentFileRepositoryService" ref="attachmentFileRepositoryService"/>
         <constructor-arg name="testsService" ref="testsService"/>
     </bean>
 
-    <bean id="manualTestsService" class="net.qutester.service.manual.ManualTestsService">
+    <bean id="manualTestsService" class="com.testerum.service.manual.ManualTestsService">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
     </bean>
 
-    <bean id="manualTestsRunnerService" class="net.qutester.service.manual.ManualTestsRunnerService">
+    <bean id="manualTestsRunnerService" class="com.testerum.service.manual.ManualTestsRunnerService">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
     </bean>
 
-    <bean id="testsExecutionService" class="net.qutester.service.tests_runner.execution.TestsExecutionService">
+    <bean id="testsExecutionService" class="com.testerum.service.tests_runner.execution.TestsExecutionService">
         <constructor-arg name="settingsManager" ref="settingsManager"/>
         <constructor-arg name="jsonObjectMapper" ref="testsRunnerJsonObjectMapper"/>
     </bean>
 
-    <bean id="settingsService" class="net.qutester.service.config.SettingsService">
+    <bean id="settingsService" class="com.testerum.service.config.SettingsService">
         <constructor-arg name="settingsManager" ref="settingsManager"/>
     </bean>
 
-    <bean id="stepService" class="net.qutester.service.step.StepService" init-method="init">
+    <bean id="stepService" class="com.testerum.service.step.StepService" init-method="init">
         <constructor-arg name="basicStepsService" ref="basicStepsService"/>
         <constructor-arg name="composedStepsService" ref="composedStepsService"/>
         <constructor-arg name="warningService" ref="warningService"/>
     </bean>
 
-    <bean id="stepUpdateCompatibilityService" class="net.qutester.service.step.StepUpdateCompatibilityService">
+    <bean id="stepUpdateCompatibilityService" class="com.testerum.service.step.StepUpdateCompatibilityService">
         <constructor-arg name="stepService" ref="stepService"/>
         <constructor-arg name="testsService" ref="testsService"/>
     </bean>
 
-    <bean id="stepUpdateService" class="net.qutester.service.step.StepUpdateService">
+    <bean id="stepUpdateService" class="com.testerum.service.step.StepUpdateService">
         <constructor-arg name="stepService" ref="stepService"/>
         <constructor-arg name="composedStepsService" ref="composedStepsService"/>
         <constructor-arg name="testsService" ref="testsService"/>
@@ -45,32 +45,32 @@
         <constructor-arg name="warningService" ref="warningService"/>
     </bean>
 
-    <bean id="scannerService" class="net.qutester.service.scanner.ScannerService" init-method="init">
+    <bean id="scannerService" class="com.testerum.service.scanner.ScannerService" init-method="init">
         <constructor-arg name="settingsManager" ref="settingsManager" />
         <constructor-arg name="stepLibraryCacheManger" ref="stepLibraryCacheManger" />
     </bean>
 
-    <bean id="basicStepsService" class="net.qutester.service.step.impl.BasicStepsService">
+    <bean id="basicStepsService" class="com.testerum.service.step.impl.BasicStepsService">
         <constructor-arg name="scannerService" ref="scannerService"/>
         <constructor-arg name="settingsManager" ref="settingsManager"/>
     </bean>
 
-    <bean id="hooksService" class="net.qutester.service.hooks.HooksService">
+    <bean id="hooksService" class="com.testerum.service.hooks.HooksService">
         <constructor-arg name="scannerService" ref="scannerService" />
     </bean>
 
-    <bean id="composedStepsService" class="net.qutester.service.step.impl.ComposedStepsService">
+    <bean id="composedStepsService" class="com.testerum.service.step.impl.ComposedStepsService">
         <constructor-arg name="uiToFileStepDefMapper" ref="uiToFileStepDefMapper"/>
         <constructor-arg name="fileToUiStepMapper" ref="fileToUiStepMapper"/>
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
         <constructor-arg name="warningService" ref="warningService"/>
     </bean>
 
-    <bean id="testResolver" class="net.qutester.service.tests.resolver.TestResolver">
+    <bean id="testResolver" class="com.testerum.service.tests.resolver.TestResolver">
         <constructor-arg name="stepService" ref="stepService"/>
     </bean>
 
-    <bean id="testsService" class="net.qutester.service.tests.TestsService">
+    <bean id="testsService" class="com.testerum.service.tests.TestsService">
         <constructor-arg name="testResolver" ref="testResolver"/>
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
         <constructor-arg name="resourcesService" ref="resourcesService"/>
@@ -79,43 +79,41 @@
         <constructor-arg name="warningService" ref="warningService"/>
     </bean>
 
-    <bean id="tagsService" class="net.qutester.service.tags.TagsService">
+    <bean id="tagsService" class="com.testerum.service.tags.TagsService">
         <constructor-arg name="featureService" ref="featureService" />
         <constructor-arg name="testsService"   ref="testsService" />
         <constructor-arg name="stepService"    ref="stepService" />
     </bean>
 
-    <bean id="testRunnerResultService" class="net.qutester.service.tests_runner.result.TestRunnerResultService">
+    <bean id="testRunnerResultService" class="com.testerum.service.tests_runner.result.TestRunnerResultService">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
         <constructor-arg name="objectMapper" ref="fileRepositoryObjectMapper"/>
     </bean>
 
-    <bean id="variablesService" class="net.qutester.service.variables.VariablesService">
+    <bean id="variablesService" class="com.testerum.service.variables.VariablesService">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
         <constructor-arg name="jsonObjectMapper" ref="jsonObjectMapper"/>
     </bean>
 
-    <bean id="fileSytemService" class="net.qutester.service.config.FileSystemService" />
+    <bean id="fileSytemService" class="com.testerum.service.config.FileSystemService" />
 
-    <bean id="warningService" class="net.qutester.service.warning.WarningService" />
+    <bean id="warningService" class="com.testerum.service.warning.WarningService" />
 
-    <bean id="messageService" class="net.qutester.service.message.MessageService"/>
+    <bean id="messageService" class="com.testerum.service.message.MessageService"/>
 
-    <bean id="networkService" class="net.qutester.service.resources.rdbms.NetworkService">
-        <constructor-arg name="jsonObjectMapper" ref="jsonObjectMapper"/>
-    </bean>
+    <bean id="networkService" class="com.testerum.service.resources.rdbms.NetworkService" />
 
-    <bean id="rdbmsDriverConfigService" class="net.qutester.service.resources.rdbms.RdbmsDriverConfigService">
+    <bean id="rdbmsDriverConfigService" class="com.testerum.service.resources.rdbms.RdbmsDriverConfigService">
         <constructor-arg name="settingsManager" ref="settingsManager"/>
     </bean>
 
-    <bean id="rdbmsService" class="net.qutester.service.resources.rdbms.RdbmsService">
+    <bean id="rdbmsService" class="com.testerum.service.resources.rdbms.RdbmsService">
         <constructor-arg name="settingsManager" ref="settingsManager"/>
         <constructor-arg name="resourcesService" ref="resourcesService"/>
         <constructor-arg name="rdbmsDriverConfigService" ref="rdbmsDriverConfigService"/>
     </bean>
 
-    <bean id="httpClientService" class="net.qutester.service.resources.http.HttpClientService">
+    <bean id="httpClientService" class="com.testerum.service.resources.http.HttpClientService">
         <constructor-arg name="httpClient" ref="httpClient" />
     </bean>
 
@@ -123,16 +121,16 @@
 
     <bean id="resourceJsonObjectMapper" class="net.qutester.common.json.ObjectMapperFactory" factory-method="createKotlinObjectMapperWithPrettyFormatter"/>
 
-    <bean id="resourcesService" class="net.qutester.service.resources.ResourcesService">
+    <bean id="resourcesService" class="com.testerum.service.resources.ResourcesService">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
         <constructor-arg name="objectMapper" ref="resourceJsonObjectMapper"/>
         <constructor-arg name="validators">
             <list>
-                <bean class="net.qutester.service.resources.validators.RdbmsConnectionConfigValidator">
+                <bean class="com.testerum.service.resources.validators.RdbmsConnectionConfigValidator">
                     <constructor-arg name="objectMapper" ref="resourceJsonObjectMapper"/>
                 </bean>
 
-                <bean class="net.qutester.service.resources.validators.PathConflictValidation">
+                <bean class="com.testerum.service.resources.validators.PathConflictValidation">
                     <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
                 </bean>
             </list>
@@ -140,26 +138,26 @@
         <constructor-arg name="handlers" ref="resourceHandlers"/>
     </bean>
 
-    <util:map id="resourceHandlers" key-type="com.testerum.model.repository.enums.FileType" value-type="net.qutester.service.resources.handler.ResourceHandler">
+    <util:map id="resourceHandlers" key-type="com.testerum.model.repository.enums.FileType" value-type="com.testerum.service.resources.handler.ResourceHandler">
         <entry key="RDBMS_CONNECTION">
-            <bean class="net.qutester.service.resources.handler.RdbmsConnectionConfigHandler">
+            <bean class="com.testerum.service.resources.handler.RdbmsConnectionConfigHandler">
                 <constructor-arg name="objectMapper" ref="resourceJsonObjectMapper"/>
                 <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
             </bean>
         </entry>
     </util:map>
 
-    <bean id="uiToFileStepDefMapper" class="net.qutester.service.mapper.UiToFileStepDefMapper"/>
+    <bean id="uiToFileStepDefMapper" class="com.testerum.service.mapper.UiToFileStepDefMapper"/>
 
-    <bean id="fileToUiStepMapper" class="net.qutester.service.mapper.FileToUiStepMapper">
+    <bean id="fileToUiStepMapper" class="com.testerum.service.mapper.FileToUiStepMapper">
         <constructor-arg name="resourceManager" ref="resourceManager" />
     </bean>
 
-    <bean id="uiToFileTestMapper" class="net.qutester.service.mapper.UiToFileTestMapper">
+    <bean id="uiToFileTestMapper" class="com.testerum.service.mapper.UiToFileTestMapper">
         <constructor-arg name="stepDefMapper" ref="uiToFileStepDefMapper"/>
     </bean>
 
-    <bean id="fileToUiTestMapper" class="net.qutester.service.mapper.FileToUiTestMapper">
+    <bean id="fileToUiTestMapper" class="com.testerum.service.mapper.FileToUiTestMapper">
         <constructor-arg name="fileToUiStepMapper" ref="fileToUiStepMapper"/>
     </bean>
 

@@ -2,7 +2,7 @@ package net.qutester.controller.config
 
 import com.testerum.model.config.dir_tree.FileSystemDirectory
 import com.testerum.model.infrastructure.path.Path
-import net.qutester.service.config.FileSystemService
+import com.testerum.service.config.FileSystemService
 import org.springframework.web.bind.annotation.*
 
 @RestController

@@ -1,6 +1,6 @@
 package net.qutester.controller.runner
 
-import net.qutester.service.tests_runner.execution.TestsExecutionService
+import com.testerum.service.tests_runner.execution.TestsExecutionService
 import org.springframework.web.bind.annotation.*
 
 @RestController

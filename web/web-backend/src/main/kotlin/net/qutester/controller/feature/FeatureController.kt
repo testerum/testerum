@@ -5,7 +5,7 @@ import com.testerum.model.feature.filter.FeaturesTreeFilter
 import com.testerum.model.file.Attachment
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.main_tree.RootMainNode
-import net.qutester.service.feature.FeatureService
+import com.testerum.service.feature.FeatureService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile

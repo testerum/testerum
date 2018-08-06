@@ -4,7 +4,7 @@ import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.manual.operation.UpdateTestModel
 import com.testerum.model.test.TestModel
-import net.qutester.service.tests.TestsService
+import com.testerum.service.tests.TestsService
 import org.springframework.web.bind.annotation.*
 
 @RestController

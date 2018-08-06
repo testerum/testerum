@@ -1,7 +1,7 @@
 package net.qutester.controller.vars
 
 import com.testerum.model.variable.Variable
-import net.qutester.service.variables.VariablesService
+import com.testerum.service.variables.VariablesService
 import org.springframework.web.bind.annotation.*
 
 @RestController

@@ -8,9 +8,9 @@ import com.testerum.file_repository.FileRepositoryService
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.resources.ResourceContext
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
+import com.testerum.service.resources.rdbms.RdbmsService
 import com.testerum.step_transformer_utils.JsonVariableReplacer
 import database.relational.connection_manager.model.RdbmsClient
-import net.qutester.service.resources.rdbms.RdbmsService
 
 class RdbmsConnectionManager(private val fileRepositoryService: FileRepositoryService,
                              private val objectMapper: ObjectMapper,

@@ -7,8 +7,8 @@ import com.testerum.file_repository.model.KnownPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.test.TestModel
-import net.qutester.service.tests_runner.execution.TestsExecutionService
-import net.qutester.service.tests_runner.result.TestRunnerResultService
+import com.testerum.service.tests_runner.execution.TestsExecutionService
+import com.testerum.service.tests_runner.result.TestRunnerResultService
 import org.slf4j.LoggerFactory
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession

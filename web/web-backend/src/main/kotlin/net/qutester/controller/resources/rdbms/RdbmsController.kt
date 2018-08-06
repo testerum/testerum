@@ -5,9 +5,9 @@ import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 import com.testerum.model.resources.rdbms.connection.RdbmsDriver
 import com.testerum.model.resources.rdbms.connection.RdbmsSchemasNames
 import com.testerum.model.resources.rdbms.schema.RdbmsSchema
-import net.qutester.service.resources.rdbms.NetworkService
-import net.qutester.service.resources.rdbms.RdbmsDriverConfigService
-import net.qutester.service.resources.rdbms.RdbmsService
+import com.testerum.service.resources.rdbms.NetworkService
+import com.testerum.service.resources.rdbms.RdbmsDriverConfigService
+import com.testerum.service.resources.rdbms.RdbmsService
 import org.springframework.web.bind.annotation.*
 
 @RestController

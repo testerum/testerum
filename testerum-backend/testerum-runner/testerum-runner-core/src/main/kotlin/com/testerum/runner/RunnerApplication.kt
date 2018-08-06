@@ -31,12 +31,12 @@ import com.testerum.runner.test_context.TestContextImpl
 import com.testerum.runner.transformer.TransformerFactory
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
+import com.testerum.service.hooks.HooksService
+import com.testerum.service.step.StepService
+import com.testerum.service.tests.TestsService
+import com.testerum.service.variables.VariablesService
 import com.testerum.settings.SystemSettings
 import com.testerum.settings.private_api.SettingsManagerImpl
-import net.qutester.service.hooks.HooksService
-import net.qutester.service.step.StepService
-import net.qutester.service.tests.TestsService
-import net.qutester.service.variables.VariablesService
 import org.fusesource.jansi.AnsiConsole
 import java.net.URL
 import java.net.URLClassLoader

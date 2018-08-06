@@ -4,7 +4,7 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.manual.runner.ManualTestsRunner
 import com.testerum.model.manual.runner.operation.UpdateManualTestExecutionModel
 import com.testerum.model.manual.runner.operation.UpdateManualTestsRunnerModel
-import net.qutester.service.manual.ManualTestsRunnerService
+import com.testerum.service.manual.ManualTestsRunnerService
 import org.springframework.web.bind.annotation.*
 
 @RestController

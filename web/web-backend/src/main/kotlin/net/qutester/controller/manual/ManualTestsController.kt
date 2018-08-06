@@ -5,7 +5,7 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath
 import com.testerum.model.manual.ManualTest
 import com.testerum.model.manual.operation.UpdateManualTestModel
-import net.qutester.service.manual.ManualTestsService
+import com.testerum.service.manual.ManualTestsService
 import org.springframework.web.bind.annotation.*
 
 @RestController
