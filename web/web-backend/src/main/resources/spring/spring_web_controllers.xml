@@ -9,106 +9,106 @@
 
     <mvc:resources mapping="/index.html" location="/index.html" />
 
-    <bean id="attachmentsController" class="net.qutester.controller.attachments.AttachmentsController">
+    <bean id="attachmentsController" class="com.testerum.web_backend.controller.attachments.AttachmentsController">
         <constructor-arg name="attachmentFileRepositoryService" ref="attachmentFileRepositoryService"/>
     </bean>
 
-    <bean id="featureController" class="net.qutester.controller.feature.FeatureController">
+    <bean id="featureController" class="com.testerum.web_backend.controller.feature.FeatureController">
         <constructor-arg name="featureService" ref="featureService"/>
     </bean>
 
-    <bean id="manualTestsController" class="net.qutester.controller.manual.ManualTestsController">
+    <bean id="manualTestsController" class="com.testerum.web_backend.controller.manual.ManualTestsController">
         <constructor-arg name="manualTestsService" ref="manualTestsService"/>
     </bean>
 
-    <bean id="manualTestsRunnerController" class="net.qutester.controller.manual.ManualTestsRunnerController">
+    <bean id="manualTestsRunnerController" class="com.testerum.web_backend.controller.manual.ManualTestsRunnerController">
         <constructor-arg name="manualTestsRunnerService" ref="manualTestsRunnerService"/>
     </bean>
 
-    <bean id="basicStepsController" class="net.qutester.controller.step.BasicStepsController">
+    <bean id="basicStepsController" class="com.testerum.web_backend.controller.step.BasicStepsController">
         <constructor-arg name="stepService" ref="stepService"/>
     </bean>
 
-    <bean id="messageController" class="net.qutester.controller.message.MessageController">
+    <bean id="messageController" class="com.testerum.web_backend.controller.message.MessageController">
         <constructor-arg name="messageService" ref="messageService"/>
     </bean>
 
-    <bean id="composedStepController" class="net.qutester.controller.step.ComposedStepController">
+    <bean id="composedStepController" class="com.testerum.web_backend.controller.step.ComposedStepController">
         <constructor-arg name="stepService" ref="stepService"/>
         <constructor-arg name="stepUpdateService" ref="stepUpdateService"/>
         <constructor-arg name="stepUpdateCompatibilityService" ref="stepUpdateCompatibilityService"/>
     </bean>
 
-    <bean id="stepsTreeController" class="net.qutester.controller.step.StepsTreeController">
+    <bean id="stepsTreeController" class="com.testerum.web_backend.controller.step.StepsTreeController">
         <constructor-arg name="stepService" ref="stepService"/>
     </bean>
 
-    <bean id="testsController" class="net.qutester.controller.test.TestsController">
+    <bean id="testsController" class="com.testerum.web_backend.controller.test.TestsController">
         <constructor-arg name="testsService"          ref="testsService"/>
     </bean>
 
-    <bean id="testExecutionController" class="net.qutester.controller.runner.TestExecutionController">
+    <bean id="testExecutionController" class="com.testerum.web_backend.controller.runner.TestExecutionController">
         <constructor-arg name="testsExecutionService" ref="testsExecutionService"/>
     </bean>
 
-    <bean id="testRunnerReportController" class="net.qutester.controller.report.RunnerResultController">
+    <bean id="testRunnerReportController" class="com.testerum.web_backend.controller.report.RunnerResultController">
         <constructor-arg name="testRunnerResultService" ref="testRunnerResultService"/>
     </bean>
 
-    <bean id="tagsController" class="net.qutester.controller.tag.TagsController">
+    <bean id="tagsController" class="com.testerum.web_backend.controller.tag.TagsController">
         <constructor-arg name="tagsService" ref="tagsService" />
     </bean>
 
-    <bean id="variablesController" class="net.qutester.controller.vars.VariablesController">
+    <bean id="variablesController" class="com.testerum.web_backend.controller.vars.VariablesController">
         <constructor-arg name="variablesService" ref="variablesService"/>
     </bean>
 
-    <bean id="connectionController" class="net.qutester.controller.resources.rdbms.RdbmsController">
+    <bean id="connectionController" class="com.testerum.web_backend.controller.resources.rdbms.RdbmsController">
         <constructor-arg name="networkService" ref="networkService"/>
         <constructor-arg name="rdbmsService" ref="rdbmsService"/>
         <constructor-arg name="rdbmsDriverConfigService" ref="rdbmsDriverConfigService"/>
     </bean>
 
-    <bean id="httpController" class="net.qutester.controller.resources.http.HttpController">
+    <bean id="httpController" class="com.testerum.web_backend.controller.resources.http.HttpController">
         <constructor-arg name="httpClientService" ref="httpClientService"/>
     </bean>
 
-    <bean id="resourcesController" class="net.qutester.controller.resources.ResourcesController">
+    <bean id="resourcesController" class="com.testerum.web_backend.controller.resources.ResourcesController">
         <constructor-arg name="resourcesService" ref="resourcesService"/>
     </bean>
 
-    <bean id="fileSystemController" class="net.qutester.controller.config.FileSystemController">
+    <bean id="fileSystemController" class="com.testerum.web_backend.controller.config.FileSystemController">
         <constructor-arg name="fileSystemService" ref="fileSytemService"/>
     </bean>
 
-    <bean id="startConfigController" class="net.qutester.controller.config.SetupController">
+    <bean id="startConfigController" class="com.testerum.web_backend.controller.config.SetupController">
         <constructor-arg name="settingsManager" ref="settingsManager"/>
         <constructor-arg name="stepService" ref="stepService"/>
     </bean>
 
-    <bean id="settingsController" class="net.qutester.controller.config.SettingsController">
+    <bean id="settingsController" class="com.testerum.web_backend.controller.config.SettingsController">
         <constructor-arg name="settingsService" ref="settingsService"/>
         <constructor-arg name="stepService" ref="stepService"/>
     </bean>
 
-    <bean class="net.qutester.controller.error.ErrorController">
+    <bean class="com.testerum.web_backend.controller.error.ErrorController">
         <constructor-arg name="genericErrorResponsePreparer">
-            <bean class="net.qutester.controller.error.model.response_preparers.generic.GenericErrorResponsePreparer"/>
+            <bean class="com.testerum.web_backend.controller.error.model.response_preparers.generic.GenericErrorResponsePreparer"/>
         </constructor-arg>
         <constructor-arg name="errorResponsePreparerMap">
             <map>
                 <entry key="com.testerum.model.exception.IllegalFileOperationException">
-                    <bean class="net.qutester.controller.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer"/>
+                    <bean class="com.testerum.web_backend.controller.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer"/>
                 </entry>
 
                 <entry key="com.testerum.model.exception.ValidationException">
-                    <bean class="net.qutester.controller.error.model.response_preparers.validation.ValidationErrorResponsePreparer"/>
+                    <bean class="com.testerum.web_backend.controller.error.model.response_preparers.validation.ValidationErrorResponsePreparer"/>
                 </entry>
             </map>
         </constructor-arg>
     </bean>
 
-    <bean id="testsWebSocketController" class="net.qutester.controller.runner.TestsWebSocketController">
+    <bean id="testsWebSocketController" class="com.testerum.web_backend.controller.runner.TestsWebSocketController">
         <constructor-arg name="testsExecutionService"   ref="testsExecutionService"/>
         <constructor-arg name="objectMapper"            ref="testsRunnerJsonObjectMapper"/>
         <constructor-arg name="fileRepositoryService"   ref="fileRepositoryService"/>

@@ -9,10 +9,9 @@
         </encoder>
     </appender>
 
-    <logger name="net.qutester" level="DEBUG" />
-    <logger name="net.testerum" level="DEBUG" />
+    <logger name="com.testerum" level="DEBUG" />
 
-    <logger name="net.qutester.db.mapper" level="INFO" />
+    <logger name="com.qutester.db.mapper" level="INFO" />
 
     <!--========== Spring ==========-->
     <logger name="org.springframework" level="WARN" />

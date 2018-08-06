@@ -17,7 +17,7 @@
     <!--====== FILE UPLOAD CONFIGURATION ======-->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 
-    <bean id="exceptionHandlerControllerAdvice" class="net.qutester.controller.error.ExceptionHandlerControllerAdvice" />
+    <bean id="exceptionHandlerControllerAdvice" class="com.testerum.web_backend.controller.error.ExceptionHandlerControllerAdvice" />
 
     <bean id="versionPropertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:/web-version.properties"/>
