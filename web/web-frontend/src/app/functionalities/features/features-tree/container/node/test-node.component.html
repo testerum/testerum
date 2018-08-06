@@ -1,9 +1,15 @@
 <div class="node-text"
      dnd-draggable [dragEnabled]="true" [dragData]="model">
 
+
     <div (click)="showTest()"
          [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
          [class.step-selected]="isSelected">
+
+        <i *ngIf="model.testProperties.isManual && !model.testProperties.isDisabled" class="fa_my-manual-test" aria-hidden="true"></i>
+        <i *ngIf="!model.testProperties.isManual && !model.testProperties.isDisabled" class="fa_my-automated-test" aria-hidden="true"></i>
+        <i *ngIf="model.testProperties.isDisabled" class="fa_my-disabled-test" aria-hidden="true"></i>
+
         {{model.name}}
     </div>
 

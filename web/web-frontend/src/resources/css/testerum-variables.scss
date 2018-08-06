@@ -7,9 +7,14 @@ $primary-color: #337ab7;
 $alert-text-color: #a94442;
 $alert-background-color: #dca7a7;
 
+$manual-test-color: #333333;
+$automated-test-color: #333333;
+
 .error_color {color: $error-color;}
 .success-color {color: $success-color;}
 .info-color {color: $info-color;}
 .warning-color {color: $warning-color;}
 .primary-color {color: $primary-color;}
+.manual-test-background-color {background-color: $manual-test-color;}
+.automated-test-background-color {background-color: $automated-test-color;}
 

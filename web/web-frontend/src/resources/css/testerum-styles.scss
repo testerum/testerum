@@ -35,7 +35,7 @@ body {
 .fa_my-automated-test {
     @extend .fas;
     @extend .fa-bolt;
-    color: $success-color
+    color: $automated-test-color
 }
 .fa_my-automated-test_white {
     @extend .fa_my-automated-test;
@@ -45,11 +45,17 @@ body {
 .fa_my-manual-test {
     @extend .fas;
     @extend .fa-hand-paper;
-    color: $info-color;
+    color: $manual-test-color;
 }
 .fa_my-manual-test_white {
     @extend .fa_my-manual-test;
     color: white;
+}
+
+.fa_my-disabled-test {
+    @extend .fas;
+    @extend .fa-ban;
+    color: $error-color;
 }
 
 .fa_my-expand {
@@ -57,7 +63,7 @@ body {
     @extend .nf-fa-expand;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
 }
 .fa_my-expand span {
     line-height: 0.5;

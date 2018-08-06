@@ -42,7 +42,7 @@ export default class FeaturesTreeUtil {
             }
 
             if (serverNode instanceof ServerTestMainNode) {
-                let uiTestNode = new TestTreeNodeModel(uiContainerNode, serverNode.name, serverNode.path, serverNode.hasOwnOrDescendantWarnings);
+                let uiTestNode = new TestTreeNodeModel(uiContainerNode, serverNode.name, serverNode.path, serverNode.properties, serverNode.hasOwnOrDescendantWarnings);
                 uiContainerNode.children.push(uiTestNode)
             }
         }

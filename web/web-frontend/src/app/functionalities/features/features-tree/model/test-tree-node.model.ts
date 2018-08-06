@@ -7,18 +7,21 @@ import {StepDef} from "../../../../model/step-def.model";
 import {TestModel} from "../../../../model/test/test.model";
 import {Comparable} from "../../../../model/infrastructure/comparable.model";
 import {FeatureTreeContainerModel} from "./feature-tree-container.model";
+import {TestProperties} from "../../../../model/test/test-properties.model";
 
 export class TestTreeNodeModel extends JsonTreePathNode implements Comparable<TestTreeNodeModel> {
 
     name: string;
     path: Path;
 
+    testProperties: TestProperties
     hasOwnOrDescendantWarnings: boolean = false;
 
-    constructor(parentContainer: FeatureTreeContainerModel, name: string, path?: Path, hasOwnOrDescendantWarnings: boolean = false) {
+    constructor(parentContainer: FeatureTreeContainerModel, name: string, path?: Path, testProperties: TestProperties = new TestProperties(), hasOwnOrDescendantWarnings: boolean = false) {
         super(parentContainer, path);
         this.name = name;
         this.hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings;
+        this.testProperties = testProperties;
     }
 
     compareTo(other: TestTreeNodeModel): number {
