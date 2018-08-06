@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/util     http://www.springframework.org/schema/util/spring-util.xsd
+       ">
+
+    <util:list id="globalTransformers" value-type="com.testerum.api.transformer.Transformer">
+        <ref bean="booleanTransformer" />
+        <ref bean="characterTransformer" />
+        <ref bean="byteTransformer" />
+        <ref bean="shortTransformer" />
+        <ref bean="integerTransformer" />
+        <ref bean="longTransformer" />
+        <ref bean="floatTransformer" />
+        <ref bean="doubleTransformer" />
+
+        <ref bean="bigIntegerTransformer" />
+        <ref bean="bigDecimalTransformer" />
+
+        <ref bean="atomicBooleanTransformer" />
+        <ref bean="atomicIntegerTransformer" />
+        <ref bean="atomicLongTransformer" />
+
+        <ref bean="enumTransformer" />
+    </util:list>
+
+    <util:constant id="booleanTransformer"   static-field="com.testerum.runner_cmdline.transformer.builtin.lang.BooleanTransformer.INSTANCE" />
+    <util:constant id="characterTransformer" static-field="com.testerum.runner_cmdline.transformer.builtin.lang.CharacterTransformer.INSTANCE" />
+    <util:constant id="byteTransformer"      static-field="com.testerum.runner_cmdline.transformer.builtin.lang.ByteTransformer.INSTANCE" />
+    <util:constant id="shortTransformer"     static-field="com.testerum.runner_cmdline.transformer.builtin.lang.ShortTransformer.INSTANCE" />
+    <util:constant id="integerTransformer"   static-field="com.testerum.runner_cmdline.transformer.builtin.lang.IntegerTransformer.INSTANCE" />
+    <util:constant id="longTransformer"      static-field="com.testerum.runner_cmdline.transformer.builtin.lang.LongTransformer.INSTANCE" />
+    <util:constant id="floatTransformer"     static-field="com.testerum.runner_cmdline.transformer.builtin.lang.FloatTransformer.INSTANCE" />
+    <util:constant id="doubleTransformer"    static-field="com.testerum.runner_cmdline.transformer.builtin.lang.DoubleTransformer.INSTANCE" />
+
+    <util:constant id="bigIntegerTransformer" static-field="com.testerum.runner_cmdline.transformer.builtin.math.BigIntegerTransformer.INSTANCE" />
+    <util:constant id="bigDecimalTransformer" static-field="com.testerum.runner_cmdline.transformer.builtin.math.BigDecimalTransformer.INSTANCE" />
+
+    <bean id="atomicBooleanTransformer" class="com.testerum.runner_cmdline.transformer.builtin.atomic.AtomicBooleanTransformer" c:booleanTransformer-ref="booleanTransformer" />
+    <bean id="atomicIntegerTransformer" class="com.testerum.runner_cmdline.transformer.builtin.atomic.AtomicIntegerTransformer" c:integerTransformer-ref="integerTransformer" />
+    <bean id="atomicLongTransformer"    class="com.testerum.runner_cmdline.transformer.builtin.atomic.AtomicLongTransformer"    c:longTransformer-ref="longTransformer" />
+
+    <util:constant id="enumTransformer" static-field="com.testerum.runner_cmdline.transformer.builtin.enums.EnumTransformer.INSTANCE" />
+
+</beans>

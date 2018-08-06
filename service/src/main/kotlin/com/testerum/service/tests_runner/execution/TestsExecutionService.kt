@@ -130,7 +130,7 @@ class TestsExecutionService(private val settingsManager: SettingsManager,
 
         commandLine += "-Dtesterum.packageDirectory=${getPackageDir().toWindowsFriendly()}"
 
-        commandLine += "com.testerum.runner.TesterumRunner"
+        commandLine += "com.testerum.runner_cmdline.TesterumRunner"
         commandLine += "@${argsFile.toWindowsFriendly()}"
 
         LOGGER.debug("commandLine = {}", commandLine)

@@ -16,7 +16,7 @@
 
     <modules>
         <module>testerum-runner-api</module>
-        <module>testerum-runner-core</module>
+        <module>testerum-runner-cmdline</module>
         <module>testerum-runner-spring</module>
     </modules>
 
