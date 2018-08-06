@@ -1,4 +1,4 @@
-package net.testerum.common.jdk.throwable
+package com.testerum.common_jdk.throwable
 
 import java.io.StringWriter
 
