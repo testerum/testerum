@@ -1,24 +1,24 @@
 package net.qutester.service.step
 
-import net.qutester.exception.ValidationException
-import net.qutester.exception.model.ValidationModel
-import net.qutester.model.enums.StepPhaseEnum
-import net.qutester.model.infrastructure.path.CopyPath
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.infrastructure.path.RenamePath
-import net.qutester.model.step.*
-import net.qutester.model.step.filter.StepsTreeFilter
-import net.qutester.model.step.tree.ComposedContainerStepNode
-import net.qutester.model.step.tree.RootStepNode
-import net.qutester.model.step.tree.builder.StepTreeBuilder
-import net.qutester.model.text.StepPattern
+import com.testerum.model.enums.StepPhaseEnum
+import com.testerum.model.exception.ValidationException
+import com.testerum.model.exception.model.ValidationModel
+import com.testerum.model.infrastructure.path.CopyPath
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.infrastructure.path.RenamePath
+import com.testerum.model.step.*
+import com.testerum.model.step.filter.StepsTreeFilter
+import com.testerum.model.step.tree.ComposedContainerStepNode
+import com.testerum.model.step.tree.RootStepNode
+import com.testerum.model.step.tree.builder.StepTreeBuilder
+import com.testerum.model.text.StepPattern
+import com.testerum.model.util.StepHashUtil
 import net.qutester.service.step.impl.BasicStepsService
 import net.qutester.service.step.impl.ComposedStepsService
 import net.qutester.service.step.impl.StepsResolver
 import net.qutester.service.step.util.StepsFilterUtil
 import net.qutester.service.step.util.getStepWithTheSameStepDef
 import net.qutester.service.warning.WarningService
-import net.qutester.util.StepHashUtil
 import java.util.concurrent.Callable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
@@ -55,7 +55,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
 
             basicStepsMap.clear()
             basicStepsMap.putAll(
-                    basicSteps.associateBy({StepHashUtil.calculateStepHash(it)}, {it})
+                    basicSteps.associateBy({ StepHashUtil.calculateStepHash(it)}, {it})
             )
 
             val unresolvedComposedSteps = composedStepsLoaderFuture.get()
@@ -88,7 +88,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
         val resolvedStepCalls = mutableListOf<StepCall>()
 
         for (unresolvedStepCall in unresolvedComposedStep.stepCalls) {
-            var resolvedStepDef = steps.get(StepHashUtil.calculateStepHash(unresolvedStepCall.stepDef))
+            var resolvedStepDef = steps[StepHashUtil.calculateStepHash(unresolvedStepCall.stepDef)]
 
             if (resolvedStepDef == null) {
                 resolvedStepDef = UndefinedStepDef(unresolvedComposedStep.phase, unresolvedComposedStep.stepPattern)
@@ -161,7 +161,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
 
         val basicSteps = getBasicSteps()
         for (basicStep in basicSteps) {
-            if (basicStep.path.equals(searchedPath)) {
+            if (basicStep.path == searchedPath) {
                 return basicStep
             }
         }
@@ -181,9 +181,9 @@ open class StepService(private val composedStepsService: ComposedStepsService,
             }
             val validationModel = ValidationModel(
                     "Another step with the same definition exists. \n" +
-                            "The conflicting step has type [$stepInCollisionType] and is at path [${stepInCollisionPath}]"
+                            "The conflicting step has type [$stepInCollisionType] and is at path [$stepInCollisionPath]"
             )
-            validationModel.fieldsWithValidationErrors.put("stepPattern", "step_pattern_already_exists")
+            validationModel.fieldsWithValidationErrors["stepPattern"] = "step_pattern_already_exists"
             throw ValidationException(
                     validationModel
             )
@@ -192,9 +192,8 @@ open class StepService(private val composedStepsService: ComposedStepsService,
         val savedComposedStep = composedStepsService.create(composedStepDef)
         reinitializeComposedSteps()
         val resolvedSavedComposedStep = resolveComposedStep(savedComposedStep)
-        val resolvedSavedComposedStepWithWarnings = warningService.composedStepWithWarnings(resolvedSavedComposedStep, keepExistingWarnings = true)
 
-        return resolvedSavedComposedStepWithWarnings
+        return warningService.composedStepWithWarnings(resolvedSavedComposedStep, keepExistingWarnings = true)
     }
 
     fun update(composedStepDef: ComposedStepDef): ComposedStepDef {
@@ -202,9 +201,8 @@ open class StepService(private val composedStepsService: ComposedStepsService,
 
         val savedComposedStep = composedStepsService.update(composedStepDef)
         reinitializeComposedSteps()
-        val resolvedSavedComposedStep = resolveComposedStep(savedComposedStep)
 
-        return resolvedSavedComposedStep
+        return resolveComposedStep(savedComposedStep)
     }
 
     fun remove(path: Path) {
@@ -221,10 +219,8 @@ open class StepService(private val composedStepsService: ComposedStepsService,
 
     private fun setUnresolvedStepsCallsOf(stepDefToSetAsUnresolved: StepDef) {
         for (stepEntry in steps) {
-            val stepDef = stepEntry.value
-            if (!(stepDef is ComposedStepDef)) {
-                continue
-            }
+            val stepDef = stepEntry.value as? ComposedStepDef
+                    ?: continue
 
             var hasStepThatNeedsToBeSetAsUndefined = false
             val resolvedStepCalls = mutableListOf<StepCall>()

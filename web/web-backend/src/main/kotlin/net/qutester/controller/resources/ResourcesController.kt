@@ -1,10 +1,10 @@
 package net.qutester.controller.resources
 
-import net.qutester.model.infrastructure.path.CopyPath
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.infrastructure.path.RenamePath
-import net.qutester.model.repository.enums.FileType
-import net.qutester.model.resources.ResourceContext
+import com.testerum.model.infrastructure.path.CopyPath
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.infrastructure.path.RenamePath
+import com.testerum.model.repository.enums.FileType
+import com.testerum.model.resources.ResourceContext
 import net.qutester.service.resources.ResourcesService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -24,9 +24,8 @@ class ResourcesController(private val resourcesService: ResourcesService) {
     @ResponseBody
     fun getResourcesPath(@PathVariable(value = "resourceType") resourceTypeAsString: String): ResponseEntity<List<String>> {
         val resourceType = FileType.getByFileExtension(resourceTypeAsString)
-        if (resourceType == null) {
-            return ResponseEntity(HttpStatus.BAD_REQUEST)
-        }
+                ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
+
         val paths: List<Path> = resourcesService.getPathOfSharedResources(resourceType)
 
         val response: MutableList<String> = mutableListOf()

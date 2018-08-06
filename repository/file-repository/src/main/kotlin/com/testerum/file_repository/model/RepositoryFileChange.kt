@@ -2,8 +2,8 @@ package com.testerum.file_repository.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import net.qutester.model.repository.enums.FileType
-import net.qutester.model.resources.ResourceContext
+import com.testerum.model.repository.enums.FileType
+import com.testerum.model.resources.ResourceContext
 
 data class RepositoryFileChange @JsonCreator constructor(
         @JsonProperty("oldKnownPath") val oldKnownPath: KnownPath?,

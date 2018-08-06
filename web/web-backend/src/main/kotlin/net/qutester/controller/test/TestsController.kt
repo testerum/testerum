@@ -1,9 +1,9 @@
 package net.qutester.controller.test
 
-import net.qutester.model.infrastructure.path.CopyPath
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.manual.operation.UpdateTestModel
-import net.qutester.model.test.TestModel
+import com.testerum.model.infrastructure.path.CopyPath
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.manual.operation.UpdateTestModel
+import com.testerum.model.test.TestModel
 import net.qutester.service.tests.TestsService
 import org.springframework.web.bind.annotation.*
 

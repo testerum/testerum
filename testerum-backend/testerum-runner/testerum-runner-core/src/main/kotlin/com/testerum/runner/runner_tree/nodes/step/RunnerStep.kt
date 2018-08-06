@@ -1,5 +1,7 @@
 package com.testerum.runner.runner_tree.nodes.step
 
+import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.model.step.StepCall
 import com.testerum.runner.events.model.StepEndEvent
 import com.testerum.runner.events.model.StepStartEvent
 import com.testerum.runner.events.model.error.ExceptionDetail
@@ -7,11 +9,9 @@ import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner.runner_tree.runner_context.RunnerContext
 import com.testerum.runner.runner_tree.vars_context.VariablesContext
-import com.testerum.api.test_context.ExecutionStatus
-import net.qutester.model.step.StepCall
 
 abstract class RunnerStep(val stepCall: StepCall,
-                          val indexInParent: Int) : RunnerTreeNode() {
+                          indexInParent: Int) : RunnerTreeNode() {
 
     override lateinit var parent: RunnerTreeNode
     override val positionInParent = PositionInParent(stepCall.id, indexInParent)

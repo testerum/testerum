@@ -2,9 +2,9 @@ package net.qutester.controller.attachments
 
 import com.testerum.file_repository.AttachmentFileRepositoryService
 import com.testerum.file_repository.model.KnownPath
-import net.qutester.model.file.Attachment
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.repository.enums.FileType
+import com.testerum.model.file.Attachment
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.repository.enums.FileType
 import org.springframework.web.bind.annotation.*
 import java.awt.Image
 import java.awt.image.BufferedImage
@@ -19,25 +19,7 @@ import javax.servlet.http.HttpServletResponse
 class AttachmentsController(private val attachmentFileRepositoryService: AttachmentFileRepositoryService) {
 
 
-    @RequestMapping (params = ["path"], method = [RequestMethod.DELETE])
-    fun delete(@RequestParam(value = "path") path:String) {
-        attachmentFileRepositoryService.delete(
-                KnownPath(Path.createInstance(path), FileType.FEATURE)
-        )
-    }
-
-    @RequestMapping(
-            path = ["/info"],
-            params = ["path"],
-            method = [RequestMethod.GET])
-    @ResponseBody
-    fun getAttachmentsInfo(@RequestParam(value = "path") path: String): List<Attachment> {
-        val knownPath = KnownPath(Path.createInstance(path), FileType.FEATURE)
-
-        return attachmentFileRepositoryService.getAttachmentsDetailsFromPath(knownPath)
-    }
-
-    @RequestMapping(params = ["path"], method = [RequestMethod.GET])
+    @RequestMapping(method = [RequestMethod.GET], path = [""], params = ["path"])
     @ResponseBody
     fun getAttachmentFile(@RequestParam(value = "path") path: String,
                           @RequestParam(value = "thumbnail", required = false) thumbnail: Boolean = false,
@@ -80,6 +62,13 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
         return scaleImage(sourceImage, determineImageScale)
     }
 
+    private fun determineImageScale(sourceWidth: Int, sourceHeight: Int, targetWidth: Int, targetHeight: Int): Double {
+        val scalex = targetWidth.toDouble() / sourceWidth
+        val scaley = targetHeight.toDouble() / sourceHeight
+
+        return Math.min(scalex, scaley)
+    }
+
     private fun scaleImage(sourceImage: BufferedImage, scaledWidth: Double): BufferedImage {
         val scaledImage = sourceImage.getScaledInstance((sourceImage.width * scaledWidth).toInt(), (sourceImage.height * scaledWidth).toInt(), Image.SCALE_SMOOTH)
         val bufferedImage = BufferedImage(
@@ -93,10 +82,19 @@ class AttachmentsController(private val attachmentFileRepositoryService: Attachm
         return bufferedImage
     }
 
-    private fun determineImageScale(sourceWidth: Int, sourceHeight: Int, targetWidth: Int, targetHeight: Int): Double {
-        val scalex = targetWidth.toDouble() / sourceWidth
-        val scaley = targetHeight.toDouble() / sourceHeight
-
-        return Math.min(scalex, scaley)
+    @RequestMapping(method = [RequestMethod.DELETE], path = [""], params = ["path"])
+    fun delete(@RequestParam(value = "path") path: String) {
+        attachmentFileRepositoryService.delete(
+                KnownPath(Path.createInstance(path), FileType.FEATURE)
+        )
     }
+
+    @RequestMapping(method = [RequestMethod.GET], path = ["/info"], params = ["path"])
+    @ResponseBody
+    fun getAttachmentsInfo(@RequestParam(value = "path") path: String): List<Attachment> {
+        val knownPath = KnownPath(Path.createInstance(path), FileType.FEATURE)
+
+        return attachmentFileRepositoryService.getAttachmentsDetailsFromPath(knownPath)
+    }
+
 }

@@ -4,12 +4,13 @@ import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
 import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.test_vars.TestVariables
+import com.testerum.model.resources.http.request.HttpRequest
+import com.testerum.model.resources.http.response.HttpResponse
 import http.request.transformer.HttpRequestTransformer
-import net.qutester.model.resources.http.request.HttpRequest
-import net.qutester.model.resources.http.response.HttpResponse
 import net.qutester.service.resources.http.HttpClientService
 import org.springframework.beans.factory.annotation.Autowired
 
+@Suppress("MemberVisibilityCanBePrivate", "unused")
 class HttpRequestSteps @Autowired constructor(val httpClientService: HttpClientService,
                                               val variables: TestVariables,
                                               val logger: TesterumLogger) {

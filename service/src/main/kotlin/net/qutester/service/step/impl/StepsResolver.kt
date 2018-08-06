@@ -1,11 +1,11 @@
 package net.qutester.service.step.impl
 
-import net.qutester.model.arg.Arg
-import net.qutester.model.step.BasicStepDef
-import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.step.StepDef
-import net.qutester.model.text.parts.ParamStepPatternPart
-import net.qutester.util.StepHashUtil
+import com.testerum.model.arg.Arg
+import com.testerum.model.step.BasicStepDef
+import com.testerum.model.step.ComposedStepDef
+import com.testerum.model.step.StepDef
+import com.testerum.model.text.parts.ParamStepPatternPart
+import com.testerum.model.util.StepHashUtil
 
 class StepsResolver(private val unresolvedComposedStepsMap: Map<String, ComposedStepDef>,
                     basicStepsMap: Map<String, BasicStepDef>) {

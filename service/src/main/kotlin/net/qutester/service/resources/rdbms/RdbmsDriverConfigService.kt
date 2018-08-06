@@ -2,8 +2,8 @@ package net.qutester.service.resources.rdbms
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.model.resources.rdbms.connection.RdbmsDriver
 import com.testerum.settings.SystemSettings
-import net.qutester.model.resources.rdbms.connection.RdbmsDriver
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.Path
@@ -16,7 +16,7 @@ class RdbmsDriverConfigService(val settingsManager: SettingsManager) {
         private val LOG = LoggerFactory.getLogger(RdbmsDriverConfigService::class.java)
     }
 
-    private var driversConfig: MutableList<RdbmsDriver> = mutableListOf<RdbmsDriver>()
+    private var driversConfig: MutableList<RdbmsDriver> = mutableListOf()
 
     fun getDriversConfiguration(): List<RdbmsDriver> {
         if (driversConfig.isNotEmpty()) {

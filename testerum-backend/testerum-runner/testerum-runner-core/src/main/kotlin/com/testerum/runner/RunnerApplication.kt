@@ -4,6 +4,12 @@ import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.transformer.Transformer
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
+import com.testerum.model.repository.enums.FileType
+import com.testerum.model.step.BasicStepDef
+import com.testerum.model.step.ComposedStepDef
+import com.testerum.model.step.StepCall
+import com.testerum.model.step.UndefinedStepDef
+import com.testerum.model.test.TestModel
 import com.testerum.runner.BannerPrinter.printBanner
 import com.testerum.runner.cmdline.exiter.model.ExitCode
 import com.testerum.runner.cmdline.params.model.CmdlineParams
@@ -27,12 +33,6 @@ import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import com.testerum.settings.SystemSettings
 import com.testerum.settings.private_api.SettingsManagerImpl
-import net.qutester.model.repository.enums.FileType
-import net.qutester.model.step.BasicStepDef
-import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.step.StepCall
-import net.qutester.model.step.UndefinedStepDef
-import net.qutester.model.test.TestModel
 import net.qutester.service.hooks.HooksService
 import net.qutester.service.step.StepService
 import net.qutester.service.tests.TestsService
@@ -239,8 +239,8 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
 
         return when (stepDef) {
             is UndefinedStepDef -> RunnerUndefinedStep(stepCall, indexInParent)
-            is BasicStepDef     -> RunnerBasicStep(stepCall, indexInParent)
-            is ComposedStepDef  -> {
+            is BasicStepDef -> RunnerBasicStep(stepCall, indexInParent)
+            is ComposedStepDef -> {
                 val nestedSteps = mutableListOf<RunnerStep>()
 
                 for ((nestedIndexInParent, nestedStepCall) in stepDef.stepCalls.withIndex()) {
@@ -268,7 +268,7 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
                     .toAbsolutePath()
                     .relativize(testPath)
 
-            val testerumPath = net.qutester.model.infrastructure.path.Path.createInstance(relativeTestPath.toString())
+            val testerumPath = com.testerum.model.infrastructure.path.Path.createInstance(relativeTestPath.toString())
 
             return testsService.getTestAtPath(testerumPath)
                     ?: throw RuntimeException("could not find test at [${testPath.toAbsolutePath().normalize()}]")

@@ -17,6 +17,12 @@ import com.testerum.api.annotations.steps.Then
 import com.testerum.api.annotations.steps.When
 import com.testerum.api.test_context.settings.model.Setting
 import com.testerum.common.parsing.executer.ParserExecuter
+import com.testerum.model.enums.StepPhaseEnum
+import com.testerum.model.step.BasicStepDef
+import com.testerum.model.text.StepPattern
+import com.testerum.model.text.parts.ParamStepPatternPart
+import com.testerum.model.text.parts.StepPatternPart
+import com.testerum.model.text.parts.TextStepPatternPart
 import com.testerum.scanner.step_lib_scanner.model.ScannerBasicStepLibrary
 import com.testerum.scanner.step_lib_scanner.model.ScannerBasicStepScanResult
 import com.testerum.scanner.step_lib_scanner.model.ScannerLibraryFile
@@ -26,12 +32,6 @@ import com.testerum.scanner.step_lib_scanner.step_pattern_parser.ScannerStepPatt
 import com.testerum.scanner.step_lib_scanner.step_pattern_parser.model.ParamSimpleBasicStepPatternPart
 import com.testerum.scanner.step_lib_scanner.step_pattern_parser.model.SimpleBasicStepPatternPart
 import com.testerum.scanner.step_lib_scanner.step_pattern_parser.model.TextSimpleBasicStepPatternPart
-import net.qutester.model.enums.StepPhaseEnum
-import net.qutester.model.step.BasicStepDef
-import net.qutester.model.text.StepPattern
-import net.qutester.model.text.parts.ParamStepPatternPart
-import net.qutester.model.text.parts.StepPatternPart
-import net.qutester.model.text.parts.TextStepPatternPart
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.scanners.MethodParameterScanner
@@ -299,13 +299,9 @@ class StepLibraryCacheManger(private val threadPool: ExecutorService) {
                     val enumValues: List<String>
 
                     val enumConstants: Array<out Any>? = param.type.enumConstants
-                    if (enumConstants == null) {
-                        enumValues = emptyList()
-                    } else {
-                        enumValues = enumConstants
-                                .map { (it as Enum<*>).name }
-                                .toList()
-                    }
+                    enumValues = enumConstants?.map { (it as Enum<*>).name }
+                                              ?.toList()
+                                              ?: emptyList()
 
                     val paramAnnotation: Param? = param.getAnnotation(Param::class.java)
 

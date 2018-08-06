@@ -1,10 +1,10 @@
 package com.testerum.runner.runner_tree.nodes.step.impl
 
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.model.step.StepCall
 import com.testerum.runner.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner.runner_tree.runner_context.RunnerContext
 import com.testerum.runner.runner_tree.vars_context.VariablesContext
-import net.qutester.model.step.StepCall
 
 class RunnerComposedStep(stepCall: StepCall,
                          indexInParent: Int,

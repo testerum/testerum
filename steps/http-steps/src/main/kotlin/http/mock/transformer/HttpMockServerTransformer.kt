@@ -6,8 +6,8 @@ import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.api.transformer.ParameterInfo
 import com.testerum.api.transformer.Transformer
+import com.testerum.model.resources.http.mock.server.HttpMockServer
 import com.testerum.step_transformer_utils.JsonVariableReplacer
-import net.qutester.model.resources.http.mock.server.HttpMockServer
 
 class HttpMockServerTransformer(val objectMapper: ObjectMapper,
                                 testVariables: TestVariables): Transformer<HttpMockServer> {

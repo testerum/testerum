@@ -1,6 +1,6 @@
 package database.relational.connection_manager.model
 
-import net.qutester.model.resources.rdbms.connection.RdbmsConnectionConfig
+import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 import net.qutester.service.resources.rdbms.util.resolveConnectionUrl
 import org.garnishtest.modules.generic.db_util.scripts.DbScriptsExecutor
 import org.garnishtest.modules.generic.variables_resolver.impl.MapBasedVariablesResolver

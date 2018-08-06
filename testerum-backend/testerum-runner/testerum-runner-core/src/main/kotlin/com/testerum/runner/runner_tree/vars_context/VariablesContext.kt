@@ -3,14 +3,14 @@ package com.testerum.runner.runner_tree.vars_context
 import com.testerum.api.test_context.test_vars.VariableNotFoundException
 import com.testerum.common.expression_evaluator.ExpressionEvaluator
 import com.testerum.common.parsing.executer.ParserExecuter
+import com.testerum.model.arg.Arg
+import com.testerum.model.step.StepCall
+import com.testerum.model.step.StepDef
+import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
-import net.qutester.model.arg.Arg
-import net.qutester.model.step.StepCall
-import net.qutester.model.step.StepDef
-import net.qutester.model.text.parts.ParamStepPatternPart
 
 class VariablesContext private constructor(private val argsVars: Map<String, Any?>,
                                            private val dynamicVars: DynamicVariablesContext,
@@ -96,13 +96,10 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
             resolvedArgParts += resolvedArgPartPart
         }
 
-        return if (resolvedArgParts.isEmpty()) {
-            ""
-        } else if (resolvedArgParts.size == 1) {
-            // not doing joinToString() to preserve the type
-            resolvedArgParts[0]
-        } else {
-            resolvedArgParts.joinToString(separator = "")
+        return when {
+            resolvedArgParts.isEmpty() -> ""
+            resolvedArgParts.size == 1 -> resolvedArgParts[0] // not doing joinToString() to preserve the type
+            else                       -> resolvedArgParts.joinToString(separator = "")
         }
     }
 

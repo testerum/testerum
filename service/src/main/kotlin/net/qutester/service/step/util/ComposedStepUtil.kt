@@ -1,10 +1,10 @@
 package net.qutester.service.step.util
 
-import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.step.StepDef
-import net.qutester.model.text.StepPattern
-import net.qutester.model.text.parts.ParamStepPatternPart
-import net.qutester.model.text.parts.TextStepPatternPart
+import com.testerum.model.step.ComposedStepDef
+import com.testerum.model.step.StepDef
+import com.testerum.model.text.StepPattern
+import com.testerum.model.text.parts.ParamStepPatternPart
+import com.testerum.model.text.parts.TextStepPatternPart
 
 fun getStepWithTheSameStepDef(stepDef: StepDef, existingSteps: List<StepDef>): StepDef? {
     for (existingStep in existingSteps) {
@@ -95,9 +95,7 @@ fun StepPattern.isStepPatternChangeCompatible(otherStepPattern: StepPattern): Bo
     for (patternPart in this.patternParts) {
         if (patternPart is ParamStepPatternPart) {
             val otherParamPatternPart = otherStepPattern.getParamPatternPartByIndex(currentParamIndex)
-            if (otherParamPatternPart == null) {
-                return false
-            }
+                    ?: return false
 
             if (patternPart.type != otherParamPatternPart.type) {
                 return false
@@ -111,13 +109,14 @@ fun StepPattern.isStepPatternChangeCompatible(otherStepPattern: StepPattern): Bo
 }
 
 private fun StepPattern.getParamPatternPartByIndex(searchedParamPatternIndex: Int): ParamStepPatternPart? {
-    var currentParamPattentPartIndex = 0
+    var currentParamPatternPartIndex = 0
+
     for (patternPart in patternParts) {
         if (patternPart is ParamStepPatternPart) {
-            if (currentParamPattentPartIndex == searchedParamPatternIndex) {
+            if (currentParamPatternPartIndex == searchedParamPatternIndex) {
                 return patternPart
             }
-            currentParamPattentPartIndex ++
+            currentParamPatternPartIndex ++
         }
     }
 

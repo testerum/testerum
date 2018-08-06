@@ -1,6 +1,6 @@
 package net.qutester.service.resources.util
 
-import net.qutester.model.resources.ResourceContext
+import com.testerum.model.resources.ResourceContext
 
 fun ResourceContext.isCreateResource(): Boolean {
     return oldPath == null

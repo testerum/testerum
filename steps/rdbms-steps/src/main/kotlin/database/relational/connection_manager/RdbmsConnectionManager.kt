@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.file_repository.FileRepositoryService
+import com.testerum.model.repository.enums.FileType
+import com.testerum.model.resources.ResourceContext
+import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 import com.testerum.step_transformer_utils.JsonVariableReplacer
 import database.relational.connection_manager.model.RdbmsClient
-import net.qutester.model.repository.enums.FileType
-import net.qutester.model.resources.ResourceContext
-import net.qutester.model.resources.rdbms.connection.RdbmsConnectionConfig
 import net.qutester.service.resources.rdbms.RdbmsService
 
 class RdbmsConnectionManager(private val fileRepositoryService: FileRepositoryService,

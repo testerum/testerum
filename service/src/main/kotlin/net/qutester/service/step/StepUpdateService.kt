@@ -1,12 +1,12 @@
 package net.qutester.service.step
 
-import net.qutester.exception.ServerStateChangedException
-import net.qutester.model.manual.operation.UpdateTestModel
-import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.step.StepCall
-import net.qutester.model.step.StepDef
-import net.qutester.model.test.TestModel
-import net.qutester.model.text.StepPattern
+import com.testerum.model.exception.ServerStateChangedException
+import com.testerum.model.manual.operation.UpdateTestModel
+import com.testerum.model.step.ComposedStepDef
+import com.testerum.model.step.StepCall
+import com.testerum.model.step.StepDef
+import com.testerum.model.test.TestModel
+import com.testerum.model.text.StepPattern
 import net.qutester.service.step.impl.ComposedStepsService
 import net.qutester.service.step.util.isStepPatternChangeCompatible
 import net.qutester.service.tests.TestsService
@@ -27,9 +27,8 @@ class StepUpdateService(private val stepService: StepService,
         val newStepPattern = composedStepDef.stepPattern
         if(oldStepPattern == newStepPattern){
             val updatedStep = stepService.update(composedStepDef)
-            val updatedStepWithWarnings = warningService.composedStepWithWarnings(updatedStep, keepExistingWarnings = true)
 
-            return updatedStepWithWarnings
+            return warningService.composedStepWithWarnings(updatedStep, keepExistingWarnings = true)
         }
 
         if (stepUpdateCompatibilityService.isOtherStepWithTheSameStepPattern(oldStepPattern, newStepPattern)) {
@@ -42,9 +41,8 @@ class StepUpdateService(private val stepService: StepService,
         }
 
         val updatedStep = stepService.update(composedStepDef)
-        val updatedStepWithWarnings = warningService.composedStepWithWarnings(updatedStep, keepExistingWarnings = true)
 
-        return updatedStepWithWarnings
+        return warningService.composedStepWithWarnings(updatedStep, keepExistingWarnings = true)
     }
 
     private fun updateStepsThatUsesOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef) {

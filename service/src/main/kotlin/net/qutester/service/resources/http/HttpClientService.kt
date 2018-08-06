@@ -1,11 +1,11 @@
 package net.qutester.service.resources.http
 
 import com.google.common.collect.LinkedHashMultimap
-import net.qutester.model.resources.http.request.HttpRequest
-import net.qutester.model.resources.http.request.HttpRequestBody
-import net.qutester.model.resources.http.request.enums.HttpRequestMethod
-import net.qutester.model.resources.http.response.HttpResponse
-import net.qutester.model.resources.http.response.HttpResponseHeader
+import com.testerum.model.resources.http.request.HttpRequest
+import com.testerum.model.resources.http.request.HttpRequestBody
+import com.testerum.model.resources.http.request.enums.HttpRequestMethod
+import com.testerum.model.resources.http.response.HttpResponse
+import com.testerum.model.resources.http.response.HttpResponseHeader
 import org.apache.http.HttpEntityEnclosingRequest
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.*

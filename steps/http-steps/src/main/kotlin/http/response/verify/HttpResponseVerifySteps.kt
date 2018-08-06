@@ -6,6 +6,9 @@ import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
 import com.testerum.common.json_diff.impl.node_comparer.JsonCompareResult
+import com.testerum.model.resources.http.request.HttpRequest
+import com.testerum.model.resources.http.response.HttpResponse
+import com.testerum.model.resources.http.response.HttpResponseHeader
 import http.response.verify.model.HttpBodyVerifyMatchingType
 import http.response.verify.model.HttpBodyVerifyMatchingType.*
 import http.response.verify.model.HttpResponseHeaderVerify
@@ -13,16 +16,14 @@ import http.response.verify.model.HttpResponseVerify
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode.CONTAINS
 import http.response.verify.transformer.HttpResponseVerifyTransformer
-import net.qutester.model.resources.http.request.HttpRequest
-import net.qutester.model.resources.http.response.HttpResponse
-import net.qutester.model.resources.http.response.HttpResponseHeader
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
+@Suppress("unused")
 class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
                               @Autowired val variables: TestVariables) {
     companion object {
-        private val LOG = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
+        private val LOGGER = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
     }
 
     @Then("I expect <<httpResponseVerify>> HTTP Response")
@@ -30,13 +31,13 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
         val httpRequest: HttpRequest = variables["httpRequest"] as HttpRequest
         val httpResponse: HttpResponse = variables["httpResponse"] as HttpResponse
 
-        LOG.debug("Verifying HTTP Response [\n$httpResponse\n]")
+        LOGGER.debug("Verifying HTTP Response [\n$httpResponse\n]")
 
         verifyExpectedCode(httpResponseVerify, httpResponse, httpRequest)
         verifyExpectedHeaders(httpResponseVerify, httpResponse, httpRequest)
         verifyExpectedBody(httpResponseVerify, httpRequest, httpResponse)
 
-        LOG.debug("Http Request executed successfully")
+        LOGGER.debug("Http Request executed successfully")
     }
 
     private fun verifyExpectedBody(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: HttpResponse) {
@@ -63,7 +64,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
 
         val compareResult: JsonCompareResult = jsonComparer.compare(expectedBody!!, actualBody)
         if (compareResult is DifferentJsonCompareResult) {
-            LOG.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
+            LOGGER.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
 
             throw AssertionError(
                     "Expected Response Body to match [$expectedBody] but [$actualBody] found. \n" +
@@ -110,7 +111,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
             )
         }
 
-        LOG.debug(
+        LOGGER.debug(
                 "Response Body Match \n" +
                         getContextInfoForLogging(httpRequest, httpResponse)
         )
@@ -137,7 +138,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
                             getContextInfoForLogging(httpRequest, httpResponse)
             )
         } else {
-            LOG.debug(
+            LOGGER.debug(
                     "Response Body is valid: [$IS_EMPTY] as expected"
             )
         }
@@ -147,9 +148,7 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
         if (httpResponseVerify.expectedHeaders != null) {
             for (expectedHeader in httpResponseVerify.expectedHeaders!!) {
                 val expectedHeaderKey = expectedHeader.key
-                if (expectedHeaderKey == null) {
-                    continue
-                }
+                        ?: continue
 
                 val compareMode = getCompareMode(expectedHeader)
                 val actualHeader = getActualHeader(httpResponse, expectedHeaderKey)
@@ -263,11 +262,11 @@ class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
                                actualValue: String,
                                compareMode: HttpResponseVerifyHeadersCompareMode) {
 
-        LOG.debug("Header Found: \n" +
+        LOGGER.debug("Header Found: \n" +
                 "\t key=[${expectedHeader.key}], \n" +
                 "\t expectedValue=[${expectedHeader.value}], \n" +
                 "\t comparisonMode=[$compareMode], \n" +
-                "\t actulaValue=[$actualValue]"
+                "\t actualValue=[$actualValue]"
         )
     }
 

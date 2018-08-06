@@ -1,12 +1,12 @@
 package net.qutester.service.tests.resolver
 
 import com.testerum.common_kotlin.emptyToNull
-import net.qutester.model.arg.Arg
-import net.qutester.model.step.StepCall
-import net.qutester.model.step.StepDef
-import net.qutester.model.step.UndefinedStepDef
-import net.qutester.model.test.TestModel
-import net.qutester.model.text.parts.ParamStepPatternPart
+import com.testerum.model.arg.Arg
+import com.testerum.model.step.StepCall
+import com.testerum.model.step.StepDef
+import com.testerum.model.step.UndefinedStepDef
+import com.testerum.model.test.TestModel
+import com.testerum.model.text.parts.ParamStepPatternPart
 import net.qutester.service.mapper.file_arg_transformer.FileArgTransformer
 import net.qutester.service.step.StepService
 

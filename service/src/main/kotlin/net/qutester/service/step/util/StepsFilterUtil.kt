@@ -1,10 +1,10 @@
 package net.qutester.service.step.util
 
 import com.testerum.common.string.containsSearchStringParts
-import net.qutester.model.step.BasicStepDef
-import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.step.StepDef
-import net.qutester.model.step.filter.StepsTreeFilter
+import com.testerum.model.step.BasicStepDef
+import com.testerum.model.step.ComposedStepDef
+import com.testerum.model.step.StepDef
+import com.testerum.model.step.filter.StepsTreeFilter
 
 object StepsFilterUtil {
 

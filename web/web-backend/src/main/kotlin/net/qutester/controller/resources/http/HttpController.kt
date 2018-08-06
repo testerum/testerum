@@ -1,7 +1,7 @@
 package net.qutester.controller.resources.http
 
-import net.qutester.model.resources.http.request.HttpRequest
-import net.qutester.model.resources.http.response.HttpResponse
+import com.testerum.model.resources.http.request.HttpRequest
+import com.testerum.model.resources.http.response.HttpResponse
 import net.qutester.service.resources.http.HttpClientService
 import org.springframework.web.bind.annotation.*
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/http")
 class HttpController(private val httpClientService: HttpClientService) {
 
-    @RequestMapping(path = ["/execute"], method = [RequestMethod.POST])
+    @RequestMapping(method = [RequestMethod.POST], path = ["/execute"])
     @ResponseBody
     fun schemas(@RequestBody httpRequest: HttpRequest): HttpResponse {
         return httpClientService.executeHttpRequest(httpRequest)

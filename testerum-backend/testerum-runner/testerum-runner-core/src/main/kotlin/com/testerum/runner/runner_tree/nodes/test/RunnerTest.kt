@@ -1,6 +1,7 @@
 package com.testerum.runner.runner_tree.nodes.test
 
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.model.test.TestModel
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.error.ExceptionDetail
@@ -13,7 +14,6 @@ import com.testerum.runner.runner_tree.vars_context.DynamicVariablesContext
 import com.testerum.runner.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner.runner_tree.vars_context.VariablesContext
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
-import net.qutester.model.test.TestModel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

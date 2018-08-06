@@ -1,7 +1,7 @@
 package com.testerum.file_repository.model
 
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.repository.enums.FileType
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.repository.enums.FileType
 
 data class KnownPath(val directories: List<String>,
                      val fileName: String?,

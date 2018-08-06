@@ -1,5 +1,13 @@
 package net.qutester.service.mapper
 
+import com.testerum.model.arg.Arg
+import com.testerum.model.enums.StepPhaseEnum
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.step.ComposedStepDef
+import com.testerum.model.step.StepCall
+import com.testerum.model.text.parts.ParamStepPatternPart
+import com.testerum.model.text.parts.StepPatternPart
+import com.testerum.model.text.parts.TextStepPatternPart
 import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileStepCallPart
@@ -12,14 +20,6 @@ import com.testerum.test_file_format.stepdef.signature.FileStepDefSignature
 import com.testerum.test_file_format.stepdef.signature.part.FileParamStepDefSignaturePart
 import com.testerum.test_file_format.stepdef.signature.part.FileStepDefSignaturePart
 import com.testerum.test_file_format.stepdef.signature.part.FileTextStepDefSignaturePart
-import net.qutester.model.arg.Arg
-import net.qutester.model.enums.StepPhaseEnum
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.step.StepCall
-import net.qutester.model.text.parts.ParamStepPatternPart
-import net.qutester.model.text.parts.StepPatternPart
-import net.qutester.model.text.parts.TextStepPatternPart
 import net.qutester.service.mapper.file_arg_transformer.FileArgTransformer
 import net.qutester.service.mapper.util.ArgNameCodec
 import net.qutester.service.mapper.util.UniqueNamesFileStepVarContainer
@@ -62,7 +62,7 @@ open class UiToFileStepDefMapper {
 
     private fun mapSignaturePart(part: StepPatternPart): FileStepDefSignaturePart {
         return when (part) {
-            is TextStepPatternPart  -> FileTextStepDefSignaturePart(part.text)
+            is TextStepPatternPart -> FileTextStepDefSignaturePart(part.text)
             is ParamStepPatternPart -> FileParamStepDefSignaturePart(part.name, part.type) //TODO: what about the part.regex and part.enumValues
             else                    -> throw Exception("unknown StepPatternPart [${part.javaClass.name}]")
         }

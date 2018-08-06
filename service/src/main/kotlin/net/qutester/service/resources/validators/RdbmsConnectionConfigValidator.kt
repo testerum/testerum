@@ -2,9 +2,9 @@ package net.qutester.service.resources.validators
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import net.qutester.model.repository.enums.FileType
-import net.qutester.model.resources.ResourceContext
-import net.qutester.model.resources.rdbms.connection.RdbmsConnectionConfig
+import com.testerum.model.repository.enums.FileType
+import com.testerum.model.resources.ResourceContext
+import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 import javax.xml.bind.ValidationException
 
 class RdbmsConnectionConfigValidator(val objectMapper: ObjectMapper) : ResourceValidator {
@@ -17,7 +17,7 @@ class RdbmsConnectionConfigValidator(val objectMapper: ObjectMapper) : ResourceV
         try {
             objectMapper.readValue<RdbmsConnectionConfig>(resourceContext.body)
         } catch (e: Exception) {
-            throw ValidationException("The following String is not a valid Rdbms Conneciton Config Json: [${resourceContext.body}]")
+            throw ValidationException("The following String is not a valid Rdbms Connection Config Json: [${resourceContext.body}]")
         }
     }
 }

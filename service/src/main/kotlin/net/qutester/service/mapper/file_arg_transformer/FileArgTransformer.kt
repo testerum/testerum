@@ -12,13 +12,13 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 object FileArgTransformer {
 
     private val ARG_TYPES_TO_TRANSFORM: Set<String> = setOf(
-            "net.qutester.model.resources.rdbms.connection.RdbmsConnectionConfig",
+            "com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig",
 
-            "net.qutester.model.resources.http.request.HttpRequest",
+            "com.testerum.model.resources.http.request.HttpRequest",
             "http.response.verify.model.HttpResponseVerify",
 
-            "net.qutester.model.resources.http.mock.server.HttpMockServer",
-            "net.qutester.model.resources.http.mock.stub.HttpMock"
+            "com.testerum.model.resources.http.mock.server.HttpMockServer",
+            "com.testerum.model.resources.http.mock.stub.HttpMock"
     )
 
     private val JSON_MAPPER: ObjectMapper = ObjectMapper().apply {

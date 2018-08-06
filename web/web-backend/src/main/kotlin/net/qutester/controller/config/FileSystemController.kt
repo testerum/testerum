@@ -1,7 +1,7 @@
 package net.qutester.controller.config
 
-import net.qutester.model.config.dir_tree.FileSystemDirectory
-import net.qutester.model.infrastructure.path.Path
+import com.testerum.model.config.dir_tree.FileSystemDirectory
+import com.testerum.model.infrastructure.path.Path
 import net.qutester.service.config.FileSystemService
 import org.springframework.web.bind.annotation.*
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/file_system")
 class FileSystemController(val fileSystemService: FileSystemService) {
 
-    @RequestMapping(path = ["/directory_tree"], method = [RequestMethod.GET])
+    @RequestMapping(method = [RequestMethod.GET], path = ["/directory_tree"])
     @ResponseBody
     fun getDirectoryTree(@RequestParam(value = "path") pathAsString:String): FileSystemDirectory {
         var path: Path = Path.EMPTY
@@ -18,4 +18,5 @@ class FileSystemController(val fileSystemService: FileSystemService) {
         }
         return fileSystemService.getDirectoryTree(path)
     }
+
 }

@@ -2,7 +2,7 @@ package com.testerum.file_repository.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import net.qutester.model.resources.ResourceContext
+import com.testerum.model.resources.ResourceContext
 
 data class RepositoryFile @JsonCreator constructor(
         /** Full path to the file (path + name + extension). Acts as ID*/

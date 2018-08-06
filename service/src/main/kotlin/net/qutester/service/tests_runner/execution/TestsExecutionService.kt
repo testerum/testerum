@@ -2,13 +2,13 @@ package net.qutester.service.tests_runner.execution
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.repository.enums.FileType
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.settings.SystemSettings
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.repository.enums.FileType
 import net.qutester.service.tests_runner.execution.stopper.ProcessKillerTestExecutionStopper
 import net.qutester.service.tests_runner.execution.stopper.TestExecutionStopper
 import org.slf4j.Logger
@@ -185,7 +185,7 @@ class TestsExecutionService(private val settingsManager: SettingsManager,
     }
 
     private fun createArgsFile(args: List<String>): java.nio.file.Path {
-        val argsFile: java.nio.file.Path = Files.createTempFile("testerum-runnner-", ".cmdline-options").toAbsolutePath().normalize()
+        val argsFile: java.nio.file.Path = Files.createTempFile("testerum-runner-", ".cmdline-options").toAbsolutePath().normalize()
         argsFile.toFile().deleteOnExit()
 
         Files.write(argsFile, args)

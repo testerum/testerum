@@ -1,12 +1,12 @@
 package net.qutester.service.step
 
-import net.qutester.exception.ServerStateChangedException
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.step.operation.UpdateComposedStepDef
-import net.qutester.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
-import net.qutester.model.test.TestModel
-import net.qutester.model.text.StepPattern
+import com.testerum.model.exception.ServerStateChangedException
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.step.ComposedStepDef
+import com.testerum.model.step.operation.UpdateComposedStepDef
+import com.testerum.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
+import com.testerum.model.test.TestModel
+import com.testerum.model.text.StepPattern
 import net.qutester.service.step.util.hasTheSameStepPattern
 import net.qutester.service.step.util.isCallingStepPattern
 import net.qutester.service.step.util.isOtherStepWithTheSameStepPattern

@@ -5,9 +5,9 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.RepositoryFile
 import com.testerum.file_repository.model.RepositoryFileChange
-import net.qutester.model.repository.enums.FileType
-import net.qutester.model.resources.ResourceContext
-import net.qutester.model.resources.rdbms.connection.RdbmsConnectionConfig
+import com.testerum.model.repository.enums.FileType
+import com.testerum.model.resources.ResourceContext
+import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 
 class RdbmsConnectionConfigHandler(val objectMapper: ObjectMapper,
                                    val fileRepositoryService: FileRepositoryService): ResourceHandler {

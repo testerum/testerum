@@ -1,9 +1,9 @@
 package com.testerum.scanner.step_lib_scanner.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.api.test_context.settings.model.Setting
-import net.qutester.model.step.BasicStepDef
+import com.testerum.model.step.BasicStepDef
+import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 
 data class ScannerBasicStepLibrary(val jarFile: ScannerLibraryFile,
                                    val steps: List<BasicStepDef>,

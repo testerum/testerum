@@ -1,16 +1,17 @@
 package net.qutester.service.resources.rdbms
 
 import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.model.enums.ParamTypeEnum
+import com.testerum.model.exception.ValidationException
+import com.testerum.model.exception.model.ValidationModel
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
+import com.testerum.model.resources.rdbms.connection.RdbmsDriver
+import com.testerum.model.resources.rdbms.connection.RdbmsSchemasNames
+import com.testerum.model.resources.rdbms.schema.RdbmsField
+import com.testerum.model.resources.rdbms.schema.RdbmsSchema
+import com.testerum.model.resources.rdbms.schema.RdbmsTable
 import com.testerum.settings.SystemSettings
-import net.qutester.exception.ValidationException
-import net.qutester.exception.model.ValidationModel
-import net.qutester.model.enums.ParamTypeEnum
-import net.qutester.model.resources.rdbms.connection.RdbmsConnectionConfig
-import net.qutester.model.resources.rdbms.connection.RdbmsDriver
-import net.qutester.model.resources.rdbms.connection.RdbmsSchemasNames
-import net.qutester.model.resources.rdbms.schema.RdbmsField
-import net.qutester.model.resources.rdbms.schema.RdbmsSchema
-import net.qutester.model.resources.rdbms.schema.RdbmsTable
 import net.qutester.service.resources.ResourcesService
 import net.qutester.service.resources.rdbms.util.readListOfString
 import net.qutester.service.resources.rdbms.util.resolveConnectionUrl
@@ -24,7 +25,7 @@ class RdbmsService(val settingsManager: SettingsManager,
                    private val resourcesService: ResourcesService,
                    private val rdbmsDriverConfigService: RdbmsDriverConfigService) {
 
-    private val drivers: MutableMap<String, Driver> = mutableMapOf<String, Driver>()
+    private val drivers: MutableMap<String, Driver> = mutableMapOf()
 
     fun getDriverInstance(rdbmsConnectionConfig: RdbmsConnectionConfig): Driver {
         val driverKey = rdbmsConnectionConfig.driverJar
@@ -36,32 +37,38 @@ class RdbmsService(val settingsManager: SettingsManager,
         val jdbcDriverDirectory = settingsManager.getSettingValue(SystemSettings.JDBC_DRIVERS_DIRECTORY)
 
         val driverUrl = URL("file:" + jdbcDriverDirectory + File.separator + rdbmsConnectionConfig.driverJar)
-        val driverJarClassLoder = URLClassLoader(arrayOf(driverUrl), this.javaClass.classLoader)
-        val driverClass = Class.forName(rdbmsConnectionConfig.driverClass, true, driverJarClassLoder)
+        val driverJarClassLoader = URLClassLoader(arrayOf(driverUrl), this.javaClass.classLoader)
+        val driverClass = Class.forName(rdbmsConnectionConfig.driverClass, true, driverJarClassLoader)
         val driverInstance: Driver = driverClass.newInstance() as Driver
-        drivers.put(driverKey, driverInstance)
+        drivers[driverKey] = driverInstance
 
         return driverInstance
     }
 
     fun getSchemas(rdbmsConnectionConfig: RdbmsConnectionConfig): RdbmsSchemasNames {
-        try {
+        return try {
             val dbConnectionWithoutDatabase = rdbmsConnectionConfig.copy(database = null)
 
             val driverConfig: RdbmsDriver? = getDriverConfigByDriverName(rdbmsConnectionConfig.driverName)
-            if (driverConfig != null && driverConfig.listSchemasQuery != null) {
-                return readSchemasFromQuery(dbConnectionWithoutDatabase, driverConfig.listSchemasQuery!!)
+
+            if (driverConfig?.listSchemasQuery != null) {
+                readSchemasFromQuery(dbConnectionWithoutDatabase, driverConfig.listSchemasQuery!!)
             } else {
-                return readSchemasFromMetaData(dbConnectionWithoutDatabase)
+                readSchemasFromMetaData(dbConnectionWithoutDatabase)
             }
         } catch (e: Exception) {
-            return RdbmsSchemasNames(errorMessage = "" + e.message)
+            RdbmsSchemasNames(errorMessage = "" + e.message)
         }
     }
 
     private fun readSchemasFromQuery(rdbmsConnectionConfig: RdbmsConnectionConfig, listSchemasQuery: String): RdbmsSchemasNames {
-        val schemas: List<String> = executeQuery(rdbmsConnectionConfig, listSchemasQuery, { resultSet -> resultSet.readListOfString() })
-        return RdbmsSchemasNames(schemas.sorted())
+        val schemas: List<String> = executeQuery(rdbmsConnectionConfig, listSchemasQuery) { resultSet ->
+            resultSet.readListOfString()
+        }
+
+        return RdbmsSchemasNames(
+                schemas.sorted()
+        )
     }
 
     private fun <T> executeQuery(rdbmsConnectionConfig: RdbmsConnectionConfig, query: String, resultSetExtractor: (resultSet: ResultSet) -> T): T {
@@ -93,17 +100,20 @@ class RdbmsService(val settingsManager: SettingsManager,
             return RdbmsSchemasNames(schemas = databases.filter { it.isNotBlank() }.sorted())
 
         } finally {
-            if (connection != null) {
-                connection.close()
-            }
+            connection?.close()
         }
     }
 
     private fun getConnection(rdbmsConnectionConfig: RdbmsConnectionConfig): Connection {
         val driver: Driver = getDriverInstance(rdbmsConnectionConfig)
-        val properties = Properties()
-        if (rdbmsConnectionConfig.user != null) properties.put("user", rdbmsConnectionConfig.user)
-        if (rdbmsConnectionConfig.password != null) properties.put("password", rdbmsConnectionConfig.password)
+        val properties = Properties().apply {
+            if (rdbmsConnectionConfig.user != null) {
+                this["user"] = rdbmsConnectionConfig.user
+            }
+            if (rdbmsConnectionConfig.password != null) {
+                this["password"] = rdbmsConnectionConfig.password
+            }
+        }
 
         return driver.connect(rdbmsConnectionConfig.resolveConnectionUrl(), properties)
     }
@@ -112,13 +122,13 @@ class RdbmsService(val settingsManager: SettingsManager,
         return rdbmsDriverConfigService.getDriversConfiguration().find { it.name == driverName }
     }
 
-    fun getSchema(resourcePath: net.qutester.model.infrastructure.path.Path): RdbmsSchema {
+    fun getSchema(resourcePath: Path): RdbmsSchema {
         val connectionConfig = resourcesService.getResourceBodyAs(resourcePath, RdbmsConnectionConfig::class.java)
 
        return getSchema(connectionConfig)
     }
 
-    fun getSchema(rdbmsConnectionConfig: RdbmsConnectionConfig): RdbmsSchema {
+    private fun getSchema(rdbmsConnectionConfig: RdbmsConnectionConfig): RdbmsSchema {
         val connection: Connection
         try {
             connection = getConnection(rdbmsConnectionConfig)
@@ -130,7 +140,7 @@ class RdbmsService(val settingsManager: SettingsManager,
             throw ValidationException(
                     ValidationModel(
                             globalValidationMessage = "The database connection couldn't be established using the provided details",
-                            globalValidationMessageDetails ="RDBMS Connection Config = [\n\t${configAsString}\n]"
+                            globalValidationMessageDetails = "RDBMS Connection Config = [\n\t$configAsString\n]"
                     )
             )
         }
@@ -151,7 +161,7 @@ class RdbmsService(val settingsManager: SettingsManager,
                 arrayOf("TABLE", "VIEW")
         )
 
-        try {
+        tablesResultSet.use { 
             while (tablesResultSet.next()) {
                 val tableName = tablesResultSet.getString(3)
                 if (tableName == null || tableName.startsWith("BIN$")) {
@@ -168,8 +178,6 @@ class RdbmsService(val settingsManager: SettingsManager,
                         table
                 )
             }
-        } finally {
-            tablesResultSet.close()
         }
 
         return result

@@ -2,9 +2,9 @@ package net.qutester.service.resources.validators
 
 import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath
-import net.qutester.exception.ValidationException
-import net.qutester.model.repository.enums.FileType
-import net.qutester.model.resources.ResourceContext
+import com.testerum.model.exception.ValidationException
+import com.testerum.model.repository.enums.FileType
+import com.testerum.model.resources.ResourceContext
 import net.qutester.service.resources.util.isCreateResource
 import net.qutester.service.resources.util.isRelocateResource
 

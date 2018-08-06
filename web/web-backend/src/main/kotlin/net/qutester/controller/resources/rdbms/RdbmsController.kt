@@ -1,10 +1,10 @@
 package net.qutester.controller.resources.rdbms
 
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.resources.rdbms.connection.RdbmsConnectionConfig
-import net.qutester.model.resources.rdbms.connection.RdbmsDriver
-import net.qutester.model.resources.rdbms.connection.RdbmsSchemasNames
-import net.qutester.model.resources.rdbms.schema.RdbmsSchema
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
+import com.testerum.model.resources.rdbms.connection.RdbmsDriver
+import com.testerum.model.resources.rdbms.connection.RdbmsSchemasNames
+import com.testerum.model.resources.rdbms.schema.RdbmsSchema
 import net.qutester.service.resources.rdbms.NetworkService
 import net.qutester.service.resources.rdbms.RdbmsDriverConfigService
 import net.qutester.service.resources.rdbms.RdbmsService
@@ -17,14 +17,14 @@ class RdbmsController(private val networkService: NetworkService,
                       private val rdbmsDriverConfigService: RdbmsDriverConfigService) {
 
 
-    @RequestMapping(path = ["/schemas"], method = [RequestMethod.POST])
+    @RequestMapping(method = [RequestMethod.POST], path = ["/schemas"])
     @ResponseBody
     fun schemas(@RequestBody rdbmsConnectionConfig: RdbmsConnectionConfig): RdbmsSchemasNames {
 
         return rdbmsService.getSchemas(rdbmsConnectionConfig)
     }
 
-    @RequestMapping(path = ["/ping"], method = [RequestMethod.GET])
+    @RequestMapping(method = [RequestMethod.GET], path = ["/ping"])
     @ResponseBody
     fun ping(@RequestParam("host") host: String,
              @RequestParam("port") port: Int): Boolean {
@@ -32,13 +32,13 @@ class RdbmsController(private val networkService: NetworkService,
         return networkService.respondsToPing(host, port)
     }
 
-    @RequestMapping(path = ["/drivers"], method = [RequestMethod.GET])
+    @RequestMapping(method = [RequestMethod.GET], path = ["/drivers"])
     @ResponseBody
     fun getRdbmsDrivers(): List<RdbmsDriver> {
         return rdbmsDriverConfigService.getDriversConfiguration()
     }
 
-    @RequestMapping(path = ["/schema"], method = [RequestMethod.GET])
+    @RequestMapping(method = [RequestMethod.GET], path = ["/schema"])
     @ResponseBody
     fun getRdbmsSchema(@RequestParam("path") rdbmsConnectionResourcePath: String): RdbmsSchema {
         return rdbmsService.getSchema(Path.createInstance(rdbmsConnectionResourcePath))

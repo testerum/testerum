@@ -1,8 +1,8 @@
 package net.qutester.service.tests.util
 
-import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.test.TestModel
-import net.qutester.model.text.StepPattern
+import com.testerum.model.step.ComposedStepDef
+import com.testerum.model.test.TestModel
+import com.testerum.model.text.StepPattern
 import net.qutester.service.step.util.hasTheSameStepPattern
 import net.qutester.service.step.util.isCallingStepPattern
 

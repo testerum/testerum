@@ -1,7 +1,7 @@
 package net.qutester.service.message
 
-import net.qutester.model.message.Message
-import net.qutester.model.message.MessageKey
+import com.testerum.model.message.Message
+import com.testerum.model.message.MessageKey
 
 class MessageService {
 

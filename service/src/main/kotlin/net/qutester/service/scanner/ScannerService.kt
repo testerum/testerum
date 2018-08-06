@@ -1,12 +1,12 @@
 package net.qutester.service.scanner
 
 import com.testerum.api.test_context.settings.model.Setting
+import com.testerum.model.step.BasicStepDef
 import com.testerum.scanner.step_lib_scanner.StepLibraryCacheManger
 import com.testerum.scanner.step_lib_scanner.model.ScannerBasicStepScanResult
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.settings.SystemSettings
 import com.testerum.settings.private_api.SettingsManagerImpl
-import net.qutester.model.step.BasicStepDef
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths

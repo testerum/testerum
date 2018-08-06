@@ -1,8 +1,8 @@
 package net.qutester.controller.step
 
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.step.BasicStepDef
-import net.qutester.model.step.filter.StepsTreeFilter
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.step.BasicStepDef
+import com.testerum.model.step.filter.StepsTreeFilter
 import net.qutester.service.step.StepService
 import org.springframework.web.bind.annotation.*
 
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/steps/basic")
 open class BasicStepsController(val stepService: StepService) {
 
-    @RequestMapping (method = [RequestMethod.POST])
+    @RequestMapping(method = [RequestMethod.POST], path = [""])
     @ResponseBody
     fun getBasicSteps(@RequestBody stepsTreeFilter: StepsTreeFilter): List<BasicStepDef> {
         return stepService.getBasicSteps(stepsTreeFilter)
     }
 
-    @RequestMapping (params = ["path"], method = [RequestMethod.GET])
+    @RequestMapping(method = [RequestMethod.GET], path = [""], params = ["path"])
     @ResponseBody
-    fun getBasicStepByPath(@RequestParam(value = "path") path:String): BasicStepDef? {
+    fun getBasicStepByPath(@RequestParam(value = "path") path: String): BasicStepDef? {
         return stepService.getBasicStepByPath(Path.createInstance(path))
     }
 

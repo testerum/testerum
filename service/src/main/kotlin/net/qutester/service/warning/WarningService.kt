@@ -1,11 +1,11 @@
 package net.qutester.service.warning
 
-import net.qutester.model.step.ComposedStepDef
-import net.qutester.model.step.StepCall
-import net.qutester.model.step.StepDef
-import net.qutester.model.step.UndefinedStepDef
-import net.qutester.model.test.TestModel
-import net.qutester.model.warning.Warning
+import com.testerum.model.step.ComposedStepDef
+import com.testerum.model.step.StepCall
+import com.testerum.model.step.StepDef
+import com.testerum.model.step.UndefinedStepDef
+import com.testerum.model.test.TestModel
+import com.testerum.model.warning.Warning
 
 class WarningService {
 

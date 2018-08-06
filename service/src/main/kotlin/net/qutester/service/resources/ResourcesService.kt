@@ -6,11 +6,11 @@ import com.testerum.file_repository.model.KnownPath
 import com.testerum.file_repository.model.RepositoryFile
 import com.testerum.file_repository.model.RepositoryFileChange
 import com.testerum.file_repository.model.mapToRepositoryFileChange
-import net.qutester.model.infrastructure.path.CopyPath
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.infrastructure.path.RenamePath
-import net.qutester.model.repository.enums.FileType
-import net.qutester.model.resources.ResourceContext
+import com.testerum.model.infrastructure.path.CopyPath
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.infrastructure.path.RenamePath
+import com.testerum.model.repository.enums.FileType
+import com.testerum.model.resources.ResourceContext
 import net.qutester.service.mapper.file_arg_transformer.FileArgTransformer
 import net.qutester.service.resources.handler.ResourceHandler
 import net.qutester.service.resources.util.isRelocateResource

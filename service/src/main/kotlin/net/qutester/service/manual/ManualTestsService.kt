@@ -6,13 +6,13 @@ import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath
 import com.testerum.file_repository.model.RepositoryFile
 import com.testerum.file_repository.model.RepositoryFileChange
+import com.testerum.model.infrastructure.path.CopyPath
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.infrastructure.path.RenamePath
+import com.testerum.model.manual.ManualTest
+import com.testerum.model.manual.operation.UpdateManualTestModel
+import com.testerum.model.repository.enums.FileType
 import net.qutester.common.json.ObjectMapperFactory
-import net.qutester.model.infrastructure.path.CopyPath
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.infrastructure.path.RenamePath
-import net.qutester.model.manual.ManualTest
-import net.qutester.model.manual.operation.UpdateManualTestModel
-import net.qutester.model.repository.enums.FileType
 
 
 class ManualTestsService(private val fileRepositoryService: FileRepositoryService) {

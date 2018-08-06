@@ -6,10 +6,10 @@ import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.api.transformer.ParameterInfo
 import com.testerum.api.transformer.Transformer
+import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 import com.testerum.step_transformer_utils.JsonVariableReplacer
 import database.relational.connection_manager.RdbmsConnectionManager
 import database.relational.connection_manager.model.RdbmsClient
-import net.qutester.model.resources.rdbms.connection.RdbmsConnectionConfig
 
 class RdbmsConnectionTransformer(private val rdbmsConnectionManager: RdbmsConnectionManager,
                                  private val objectMapper: ObjectMapper,

@@ -52,7 +52,7 @@
     </bean>
 
     <bean id="testRunnerReportController" class="net.qutester.controller.report.RunnerResultController">
-        <constructor-arg name="testRunnerResultService" ref="testRunnerReportService"/>
+        <constructor-arg name="testRunnerResultService" ref="testRunnerResultService"/>
     </bean>
 
     <bean id="tagsController" class="net.qutester.controller.tag.TagsController">
@@ -97,11 +97,11 @@
         </constructor-arg>
         <constructor-arg name="errorResponsePreparerMap">
             <map>
-                <entry key="net.qutester.exception.IllegalFileOperationException">
+                <entry key="com.testerum.model.exception.IllegalFileOperationException">
                     <bean class="net.qutester.controller.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer"/>
                 </entry>
 
-                <entry key="net.qutester.exception.ValidationException">
+                <entry key="com.testerum.model.exception.ValidationException">
                     <bean class="net.qutester.controller.error.model.response_preparers.validation.ValidationErrorResponsePreparer"/>
                 </entry>
             </map>
@@ -109,8 +109,10 @@
     </bean>
 
     <bean id="testsWebSocketController" class="net.qutester.controller.runner.TestsWebSocketController">
-        <constructor-arg name="testsExecutionService" ref="testsExecutionService"/>
-        <constructor-arg name="objectMapper" ref="testsRunnerJsonObjectMapper"/>
+        <constructor-arg name="testsExecutionService"   ref="testsExecutionService"/>
+        <constructor-arg name="objectMapper"            ref="testsRunnerJsonObjectMapper"/>
+        <constructor-arg name="fileRepositoryService"   ref="fileRepositoryService"/>
+        <constructor-arg name="testRunnerResultService" ref="testRunnerResultService"/>
     </bean>
 
 </beans>

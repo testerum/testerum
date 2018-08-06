@@ -2,8 +2,8 @@ package com.testerum.runner.events.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.testerum.model.step.StepCall
 import com.testerum.runner.events.model.position.EventKey
-import net.qutester.model.step.StepCall
 import java.time.LocalDateTime
 
 data class StepStartEvent @JsonCreator constructor(

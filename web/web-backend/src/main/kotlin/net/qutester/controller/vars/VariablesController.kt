@@ -1,6 +1,6 @@
 package net.qutester.controller.vars
 
-import net.qutester.model.variable.Variable
+import com.testerum.model.variable.Variable
 import net.qutester.service.variables.VariablesService
 import org.springframework.web.bind.annotation.*
 

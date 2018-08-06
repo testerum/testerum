@@ -1,9 +1,9 @@
 package net.qutester.controller.error.model.response_preparers.validation
 
-import net.qutester.controller.error.model.ErrorResponse
+import com.testerum.model.exception.ValidationException
 import net.qutester.controller.error.model.ErrorCode
+import net.qutester.controller.error.model.ErrorResponse
 import net.qutester.controller.error.model.response_preparers.ErrorResponsePreparer
-import net.qutester.exception.ValidationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 

@@ -10,13 +10,13 @@ import com.github.tomakehurst.wiremock.matching.MatchResult
 import com.github.tomakehurst.wiremock.matching.StringValuePattern
 import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.EqualJsonCompareResult
-import net.qutester.model.resources.http.mock.server.HttpMockServer
-import net.qutester.model.resources.http.mock.stub.HttpMock
-import net.qutester.model.resources.http.mock.stub.enums.HttpMockFaultResponse
-import net.qutester.model.resources.http.mock.stub.enums.HttpMockRequestBodyMatchingType
-import net.qutester.model.resources.http.mock.stub.enums.HttpMockRequestHeadersCompareMode
-import net.qutester.model.resources.http.mock.stub.enums.HttpMockRequestParamsCompareMode
-import net.qutester.model.resources.http.mock.stub.request.HttpMockRequest
+import com.testerum.model.resources.http.mock.server.HttpMockServer
+import com.testerum.model.resources.http.mock.stub.HttpMock
+import com.testerum.model.resources.http.mock.stub.enums.HttpMockFaultResponse
+import com.testerum.model.resources.http.mock.stub.enums.HttpMockRequestBodyMatchingType
+import com.testerum.model.resources.http.mock.stub.enums.HttpMockRequestHeadersCompareMode
+import com.testerum.model.resources.http.mock.stub.enums.HttpMockRequestParamsCompareMode
+import com.testerum.model.resources.http.mock.stub.request.HttpMockRequest
 import javax.annotation.PreDestroy
 
 class HttpMockService(val jsonComparer: JsonComparer) {
@@ -26,18 +26,6 @@ class HttpMockService(val jsonComparer: JsonComparer) {
     @PreDestroy
     fun destroy() {
         servers.values.forEach{it.shutdownServer()}
-    }
-
-    fun addServerIfNotPresent(httpMockServer: HttpMockServer): WireMockServer {
-        val port = httpMockServer.port
-        
-        if(!servers.containsKey(httpMockServer.port)) {
-            val server: WireMockServer = WireMockServer(options().port(httpMockServer.port))
-            server.start()
-            servers.put(port,server)
-        }
-
-        return servers[port]!!
     }
 
     fun addHttpStub(httpMockServer: HttpMockServer, httpMock: HttpMock) {
@@ -64,6 +52,18 @@ class HttpMockService(val jsonComparer: JsonComparer) {
         mappingBuilder.willReturn(responseBuilder)
 
         server.stubFor(mappingBuilder)
+    }
+
+    private fun addServerIfNotPresent(httpMockServer: HttpMockServer): WireMockServer {
+        val port = httpMockServer.port
+
+        if(!servers.containsKey(httpMockServer.port)) {
+            val server = WireMockServer(options().port(httpMockServer.port))
+            server.start()
+            servers[port] = server
+        }
+
+        return servers[port]!!
     }
 
     private fun addProxyResponse(responseBuilder: ResponseDefinitionBuilder, httpMock: HttpMock) {
@@ -144,13 +144,12 @@ class HttpMockService(val jsonComparer: JsonComparer) {
 
     private fun addExpectedHeaders(mappingBuilder: MappingBuilder, expectedRequest: HttpMockRequest) {
         expectedRequest.headers?.forEach {
-            val pattern: StringValuePattern?
-            when (it.compareMode) {
-                HttpMockRequestHeadersCompareMode.EXACT_MATCH -> pattern = equalTo(it.value)
-                HttpMockRequestHeadersCompareMode.CONTAINS -> pattern = containing(it.value)
-                HttpMockRequestHeadersCompareMode.REGEX_MATCH -> pattern = matching(it.value)
-                HttpMockRequestHeadersCompareMode.ABSENT -> pattern = absent()
-                HttpMockRequestHeadersCompareMode.DOES_NOT_MATCH -> pattern = notMatching(it.value)
+            val pattern: StringValuePattern? = when (it.compareMode) {
+                HttpMockRequestHeadersCompareMode.EXACT_MATCH    -> equalTo(it.value)
+                HttpMockRequestHeadersCompareMode.CONTAINS       -> containing(it.value)
+                HttpMockRequestHeadersCompareMode.REGEX_MATCH    -> matching(it.value)
+                HttpMockRequestHeadersCompareMode.ABSENT         -> absent()
+                HttpMockRequestHeadersCompareMode.DOES_NOT_MATCH -> notMatching(it.value)
             }
 
             mappingBuilder.withHeader(it.key, pattern)
@@ -159,13 +158,12 @@ class HttpMockService(val jsonComparer: JsonComparer) {
 
     private fun addExpectedParams(mappingBuilder: MappingBuilder, expectedRequest: HttpMockRequest) {
         expectedRequest.params?.forEach {
-            val pattern: StringValuePattern?
-            when (it.compareMode) {
-                HttpMockRequestParamsCompareMode.EXACT_MATCH -> pattern = equalTo(it.value)
-                HttpMockRequestParamsCompareMode.CONTAINS -> pattern = containing(it.value)
-                HttpMockRequestParamsCompareMode.REGEX_MATCH -> pattern = matching(it.value)
-                HttpMockRequestParamsCompareMode.ABSENT -> pattern = absent()
-                HttpMockRequestParamsCompareMode.DOES_NOT_MATCH -> pattern = notMatching(it.value)
+            val pattern: StringValuePattern? = when (it.compareMode) {
+                HttpMockRequestParamsCompareMode.EXACT_MATCH    -> equalTo(it.value)
+                HttpMockRequestParamsCompareMode.CONTAINS       -> containing(it.value)
+                HttpMockRequestParamsCompareMode.REGEX_MATCH    -> matching(it.value)
+                HttpMockRequestParamsCompareMode.ABSENT         -> absent()
+                HttpMockRequestParamsCompareMode.DOES_NOT_MATCH -> notMatching(it.value)
             }
 
             mappingBuilder.withQueryParam(it.key, pattern)

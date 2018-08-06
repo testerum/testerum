@@ -1,8 +1,8 @@
 package com.testerum.file_repository
 
 import com.testerum.file_repository.model.KnownPath
-import net.qutester.model.file.Attachment
-import net.qutester.model.infrastructure.path.Path
+import com.testerum.model.file.Attachment
+import com.testerum.model.infrastructure.path.Path
 import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
@@ -68,7 +68,7 @@ class AttachmentFileRepositoryService(private val fileRepositoryService: FileRep
 
         val fileBasicView = Files.getFileAttributeView(absoluteResourcePath, BasicFileAttributeView::class.java)
         val fileAttributes = fileBasicView.readAttributes()
-        return Attachment (
+        return Attachment(
                 knownPath.asPath(),
                 mimeType,
                 fileAttributes.size(),

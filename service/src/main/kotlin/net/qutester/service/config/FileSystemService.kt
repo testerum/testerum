@@ -1,7 +1,7 @@
 package net.qutester.service.config
 
-import net.qutester.model.config.dir_tree.FileSystemDirectory
-import net.qutester.model.infrastructure.path.Path
+import com.testerum.model.config.dir_tree.FileSystemDirectory
+import com.testerum.model.infrastructure.path.Path
 import java.io.File
 
 class FileSystemService {

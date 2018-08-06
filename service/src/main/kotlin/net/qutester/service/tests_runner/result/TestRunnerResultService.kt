@@ -5,12 +5,12 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.repository.enums.FileType
+import com.testerum.model.run_result.RunnerResultFileInfo
+import com.testerum.model.run_result.RunnerResultsDirInfo
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.SuiteEndEvent
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.repository.enums.FileType
-import net.qutester.model.run_result.RunnerResultFileInfo
-import net.qutester.model.run_result.RunnerResultsDirInfo
 import java.nio.file.Files
 
 class TestRunnerResultService(val fileRepositoryService: FileRepositoryService,

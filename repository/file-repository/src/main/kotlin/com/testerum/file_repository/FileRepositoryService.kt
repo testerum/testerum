@@ -4,11 +4,11 @@ import com.testerum.api.test_context.settings.SettingsManager
 import com.testerum.file_repository.model.KnownPath
 import com.testerum.file_repository.model.RepositoryFile
 import com.testerum.file_repository.model.RepositoryFileChange
+import com.testerum.model.exception.IllegalFileOperationException
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.infrastructure.path.toMyPath
+import com.testerum.model.repository.enums.FileType
 import com.testerum.settings.SystemSettings
-import net.qutester.exception.IllegalFileOperationException
-import net.qutester.model.infrastructure.path.Path
-import net.qutester.model.infrastructure.path.toMyPath
-import net.qutester.model.repository.enums.FileType
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.charset.StandardCharsets.UTF_8
