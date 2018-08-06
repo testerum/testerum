@@ -7,6 +7,8 @@ $fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts';
 @import "testerum-variables.scss";
 @import "testerum-theme.scss";
 
+@import "nerd-fonts-generated-2.0.0.min";
+
 * {
     margin: 0;
     padding: 0;
@@ -25,19 +27,41 @@ body {
 
 @font-face {
     font-family: "Hack Regular Nerd Font Complete";
-    src: url("../fonts/hack-nerd-font/Hack-Regular-Nerd-Font-Complete.ttf");
+    src: url("../fonts/hack-nerd-font/Hack-Regular-Nerd-Font-Complete-Mono-2.0.0.ttf");
 }
 
 //========== ICONS =========================
 //declared in this file because I couldn't make them work in some other place
 .fa_my-automated-test {
+    @extend .fas;
     @extend .fa-bolt;
+    color: $success-color
+}
+.fa_my-automated-test_white {
+    @extend .fa_my-automated-test;
+    color: white
 }
 
 .fa_my-manual-test {
+    @extend .fas;
     @extend .fa-hand-paper;
+    color: $info-color;
+}
+.fa_my-manual-test_white {
+    @extend .fa_my-manual-test;
+    color: white;
 }
 
+.fa_my-expand {
+    @extend .nf;
+    @extend .nf-fa-expand;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fa_my-expand span {
+    line-height: 0.5;
+}
 //======= Only CRISTI know why this are here ===============
 .logs-split-area.horizontal-scroll {
     overflow: auto !important;

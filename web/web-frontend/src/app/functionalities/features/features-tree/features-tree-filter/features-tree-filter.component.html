@@ -8,7 +8,7 @@
                      (click)="onAutomatedButtonClickEvent()"
                      [class.active]="isAutomatedButtonActive"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa fa-bolt" aria-hidden="true"></i>
+                    <i class="fa_my-automated-test" aria-hidden="true"></i>
                 </div>
 
                 <div pTooltip="{{isManualButtonActive?'Hide ':'Show '}} Manual Tests"
@@ -16,7 +16,7 @@
                      (click)="onManualButtonClickEvent()"
                      [class.active]="isManualButtonActive"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
+                    <i class="fa_my-manual-test" aria-hidden="true"></i>
                 </div>
 
                 <div pTooltip="{{isSearchButtonActive?'Hide ':'Show '}} Search Text"
@@ -43,26 +43,26 @@
                      tooltipPosition="bottom"
                      (click)="onExpandSelectedNodeEvent()"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa fa-expand" aria-hidden="true"></i>
+                    <i class="fa_my-expand"></i>
                 </div>
 
                 <div pTooltip="Expand to level 1"
                      tooltipPosition="bottom"
                      (click)="onExpandToLevelEvent(1)"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa fa-expand" aria-hidden="true">1</i>
+                    <i class="fa_my-expand" aria-hidden="true"><span>1</span></i>
                 </div>
                 <div pTooltip="Expand to level 2"
                      tooltipPosition="bottom"
                      (click)="onExpandToLevelEvent(2)"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa fa-expand" aria-hidden="true">2</i>
+                    <i class="fa_my-expand" aria-hidden="true"><span>2</span></i>
                 </div>
                 <div pTooltip="Expand to level 3"
                      tooltipPosition="bottom"
                      (click)="onExpandToLevelEvent(3)"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa fa-expand" aria-hidden="true">3</i>
+                    <i class="fa_my-expand" aria-hidden="true"><span>3</span></i>
                 </div>
             </div>
         </div>
