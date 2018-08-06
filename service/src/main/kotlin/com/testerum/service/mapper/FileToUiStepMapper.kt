@@ -19,6 +19,7 @@ import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
 import com.testerum.model.util.StepHashUtil
 import com.testerum.model.warning.Warning
+import com.testerum.resource_manager.ResourceManager
 import com.testerum.service.mapper.file_arg_transformer.FileArgTransformer
 import com.testerum.service.mapper.util.ArgNameCodec
 import com.testerum.test_file_format.common.step_call.FileStepCall
@@ -32,7 +33,6 @@ import com.testerum.test_file_format.stepdef.FileStepDef
 import com.testerum.test_file_format.stepdef.signature.part.FileParamStepDefSignaturePart
 import com.testerum.test_file_format.stepdef.signature.part.FileStepDefSignaturePart
 import com.testerum.test_file_format.stepdef.signature.part.FileTextStepDefSignaturePart
-import net.testerum.resource_manager.ResourceManager
 import java.lang.Exception
 
 open class FileToUiStepMapper(private val resourceManager: ResourceManager) {

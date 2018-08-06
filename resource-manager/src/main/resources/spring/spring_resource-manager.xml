@@ -5,7 +5,7 @@
 
     <import resource="classpath:/spring/spring_file-repository.xml" />
 
-    <bean id="resourceManager" class="net.testerum.resource_manager.ResourceManager">
+    <bean id="resourceManager" class="com.testerum.resource_manager.ResourceManager">
         <constructor-arg name="fileRepositoryService" ref="fileRepositoryService"/>
     </bean>
 

@@ -1,4 +1,4 @@
-package net.testerum.resource_manager
+package com.testerum.resource_manager
 
 import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath
