@@ -24,12 +24,12 @@
 
     <!-- BODY TYPE -->
     <ng-container *ngIf="shouldDisplayBodyTypeChooser()">
-        <label class="my-label label-size">Body Type:</label>
+        <label class="my-label label-size" style="margin-left: 60px">Body Type:</label>
         <div class="my-value" *ngIf="!isEditMode()">
             {{getModel().httpBodyType?.toString()}}
         </div>
 
-        <div class="my-value" *ngIf="isEditMode()">
+        <div class="my-value" style="width: max-content" *ngIf="isEditMode()">
             <select class="form-control phase-input"
                     [(ngModel)]="getModel().httpBodyType" name="bodyType">
 
