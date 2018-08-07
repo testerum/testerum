@@ -59,17 +59,22 @@
                 <i class="fa fa-pencil" aria-hidden="true"></i>
             </div>
 
-            <div title="Move Step Up" *ngIf="!isFirstStep" class="btn btn-default btn-xs btn-group"
+            <div title="Move Step Up"
+                 *ngIf="!isFirstStep()"
+                 class="btn btn-default btn-xs btn-group"
                  (click)="moveStepUp(); $event.stopPropagation()">
                 <i class="fa fa-arrow-up" aria-hidden="true"></i>
             </div>
 
-            <div title="Move Step Down" *ngIf="!isLastStep" class="btn btn-default btn-xs btn-group"
+            <div title="Move Step Down"
+                 *ngIf="!isLastStep()"
+                 class="btn btn-default btn-xs btn-group"
                  (click)="moveStepDown(); $event.stopPropagation()">
                 <i class="fa fa-arrow-down" aria-hidden="true"></i>
             </div>
 
-            <div title="Remove Step" class="btn btn-default btn-xs btn-group"
+            <div title="Remove Step"
+                 class="btn btn-default btn-xs btn-group"
                  (click)="removeStep(); $event.stopPropagation()">
                 <i class="fa fa-trash" aria-hidden="true"></i>
             </div>

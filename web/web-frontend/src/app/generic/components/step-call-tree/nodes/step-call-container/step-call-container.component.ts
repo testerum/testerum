@@ -8,6 +8,8 @@ import {ArrayUtil} from "../../../../../utils/array.util";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
 import {StepCallTreeComponentService} from "../../step-call-tree.component-service";
+import {StepCall} from "../../../../../model/step-call.model";
+import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
 
 @Component({
     selector: 'step-call-container',
@@ -143,12 +145,34 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         return null;
     }
 
+    isFirstStep(): boolean {
+        return this.findStepIndex() == 0;
+    }
+
+    isLastStep(): boolean {
+        return this.findStepIndex() == this.model.parentContainer.getChildren().length - 1;
+    }
+
     public moveStepUp(): void {
         let stepIndex = this.findStepIndex();
         if(stepIndex > 0) {
+            let parentContainer = this.model.parentContainer;
+
             let previewsStep = this.findSiblingStepByIndex(stepIndex-1);
-            this.model.parentContainer.getChildren()[stepIndex-1] = this.model.parentContainer.getChildren()[stepIndex];
-            this.model.parentContainer.getChildren()[stepIndex] = previewsStep;
+            parentContainer.getChildren()[stepIndex-1] = parentContainer.getChildren()[stepIndex];
+            parentContainer.getChildren()[stepIndex] = previewsStep;
+
+            let siblingStepCalls: StepCall[];
+            if(parentContainer instanceof JsonTreeModel) {
+                siblingStepCalls = this.stepCallTreeComponentService.stepCalls;
+            } else {
+                let parentStepDef = (parentContainer as StepCallContainerModel).stepCall.stepDef as ComposedStepDef;
+                siblingStepCalls = parentStepDef.stepCalls;
+            }
+
+            let previewsStepServerModel = siblingStepCalls[stepIndex-1];
+            siblingStepCalls[stepIndex-1] = siblingStepCalls[stepIndex];
+            siblingStepCalls[stepIndex] = previewsStepServerModel;
 
             this.triggerStepOrderChangedEvent();
         }
@@ -157,9 +181,25 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     public moveStepDown(): void {
         let stepIndex = this.findStepIndex();
         if(0 <= stepIndex && stepIndex < this.getTotalCountOfSiblings()-1) {
+            let parentContainer = this.model.parentContainer;
+
             let nextStep = this.findSiblingStepByIndex(stepIndex+1);
-            this.model.parentContainer.getChildren()[stepIndex+1] = this.model.parentContainer.getChildren()[stepIndex];
-            this.model.parentContainer.getChildren()[stepIndex] = nextStep;
+            parentContainer.getChildren()[stepIndex+1] = parentContainer.getChildren()[stepIndex];
+            parentContainer.getChildren()[stepIndex] = nextStep;
+
+
+            let siblingStepCalls: StepCall[];
+            if(parentContainer instanceof JsonTreeModel) {
+                siblingStepCalls = this.stepCallTreeComponentService.stepCalls;
+            } else {
+                let parentStepDef = (parentContainer as StepCallContainerModel).stepCall.stepDef as ComposedStepDef;
+                siblingStepCalls = parentStepDef.stepCalls;
+            }
+
+            let nextStepServerModel = siblingStepCalls[stepIndex+1];
+            siblingStepCalls[stepIndex+1] = siblingStepCalls[stepIndex];
+            siblingStepCalls[stepIndex] = nextStepServerModel;
+
             this.triggerStepOrderChangedEvent();
         }
     }
