@@ -1,15 +1,16 @@
 <table class="table">
     <colgroup>
-        <col span="1" style="width: 39%;">
-        <col span="1" style="width: 18%;">
-        <col span="1" style="width: 39%;">
-        <col *ngIf="isEditMode()" span="1" style="width: 4%;">
+        <col span="1">
+        <col span="1" style="width: 13em;">
+        <col span="1">
+        <col *ngIf="isEditMode()" span="1" style="width: 2em;">
     </colgroup>
 
     <tr>
         <th>Expected Header Key</th>
         <th>Compare Mode</th>
         <th>Expected Header Value</th>
+        <th *ngIf="isEditMode()"></th>
     </tr>
 
     <!-- KEY -->
@@ -22,7 +23,7 @@
                             [suggestions]="suggestionHeaders"
                             (completeMethod)="filterSuggestionHeaders($event)"
                             inputStyleClass="autocomplete-input form-control"
-                            class="autocomplete"
+                            class="autocomplete-full-width"
                             [dropdown]="true"></p-autoComplete>
         </td>
 
@@ -30,7 +31,7 @@
         <td *ngIf="!header.isEmpty() || isEditMode()">
             <span *ngIf="!isEditMode()">{{header.compareMode}}</span>
             <select *ngIf="isEditMode()"
-                    class="form-control phase-input"
+                    class="form-control phase-input full-width"
                     #hadearCompareModeNgModel="ngModel"
                     (change)="onChangeCompareMode(header, hadearCompareModeNgModel.value)"
                     [ngModel]="header.compareMode" name="compareMode">
@@ -49,14 +50,14 @@
             <input *ngIf="isEditMode()"
                    (change)="onNewValueChange($event)"
                    [(ngModel)]="header.value"
-                   type="text" pInputText  class="form-control">
+                   type="text" pInputText  class="form-control full-width">
         </td>
 
         <!-- DELETE -->
         <td *ngIf="!header.isEmpty() && isEditMode()">
             <a href (click)="deleteHeader(header);false;"
                class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
-                <i  class="fa fa-trash-o" aria-hidden="true"></i>
+                <i  class="far fa-trash-alt" aria-hidden="true"></i>
             </a>
         </td>
     </tr>

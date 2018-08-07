@@ -1,8 +1,8 @@
 <table class="table">
     <colgroup>
-        <col span="1" style="width: 48%;">
-        <col span="1" style="width: 48%;">
-        <col *ngIf="isEditMode()" span="1" style="width: 4%;">
+        <col span="1">
+        <col span="1">
+        <col *ngIf="isEditMode()" span="1" style="width: 2em;">
     </colgroup>
 
     <tr>
@@ -33,7 +33,7 @@
         <td *ngIf="!header.isEmpty() && isEditMode()">
             <a href (click)="deleteHeader(header);false;"
                class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
-                <i  class="fa fa-trash-o" aria-hidden="true"></i>
+                <i  class="far fa-trash-alt" aria-hidden="true"></i>
             </a>
         </td>
     </tr>

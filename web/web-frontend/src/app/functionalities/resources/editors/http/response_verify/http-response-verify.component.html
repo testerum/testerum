@@ -30,7 +30,7 @@
 
     <!-- NAME -->
     <div class="my-line">
-        <label class="my-label label-size">HTTP Response Verify Name</label>
+        <label class="my-label label-size">Name</label>
         <div class="my-value" *ngIf="!editMode || isSharedResource">
             {{name}}
         </div>
@@ -47,19 +47,19 @@
     </div>
 
     <!-- STATUS CODE -->
-    <div class="my-line">
+    <div class="my-line status-code">
         <label class="my-label label-size">Expected Status Code</label>
         <div class="my-value" *ngIf="!editMode">
             {{model.expectedStatusCode}} {{getStatusCodeText()?" - " + getStatusCodeText():""}}
         </div>
-        <div class="my-value my-line" *ngIf="editMode">
+        <div class="my-value" *ngIf="editMode">
             <input #statusCodeNgModel="ngModel" [(ngModel)]="model.expectedStatusCode"
                    type="number" min="1" max="600" class="form-control input-3-letters" name="statusCode">
             <span *ngIf="getStatusCodeText()" class="status-code-text">{{" - " + getStatusCodeText()}}</span>
         </div>
     </div>
 
-    <http-response-verify-header [headers]="model.expectedHeaders"></http-response-verify-header>
+    <http-response-verify-header *ngIf="editMode || model.getHeadersWithValue().length > 0" [headers]="model.expectedHeaders"></http-response-verify-header>
 
     <http-response-verify-body [expectedBody]="model.expectedBody"></http-response-verify-body>
 </form>
