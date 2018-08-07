@@ -7,7 +7,7 @@ export class HttpMockStubResourceType implements ResourceType {
     readonly fileExtension: string = "http.stub.yaml";
 
     name:string = this.rootFilePath.getLastPathPart();
-    iconClass: string = "fa fa-refresh";
+    iconClass: string = "fas fa-retweet";
     resourceUrl: string = "/automated/resources/http/mock/stub/";
     createSubResourceUrl:any[] = ["/automated/resources/http/mock/stub/create", {"path": this.rootFilePath}];
 

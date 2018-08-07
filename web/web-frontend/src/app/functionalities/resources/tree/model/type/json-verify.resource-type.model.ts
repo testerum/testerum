@@ -8,7 +8,7 @@ export class JsonVerifyResourceType implements ResourceType {
     readonly fileExtension: string = "verify.json";
 
     name:string = this.rootFilePath.getLastPathPart();
-    iconClass: string = "fa fa-file-text-o";
+    iconClass: string = "nf nf-mdi-json";
     resourceUrl: string = "/automated/resources/json_verify/";
     createSubResourceUrl:any[] = ["/automated/resources/json_verify/create", {"path": this.rootFilePath}];
 

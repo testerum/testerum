@@ -8,7 +8,7 @@ export class RdbmsVerifyResourceType implements ResourceType {
     readonly fileExtension: string = "rdbms.verify.json";
 
     name:string = this.rootFilePath.getLastPathPart();
-    iconClass: string = "fa fa-check-square-o";
+    iconClass: string = "nf nf-fa-check_square_o";
     resourceUrl: string = "/automated/resources/rdbms/verify/";
     createSubResourceUrl:any[] = ["/automated/resources/rdbms/verify/create", {"path": this.rootFilePath}];
 

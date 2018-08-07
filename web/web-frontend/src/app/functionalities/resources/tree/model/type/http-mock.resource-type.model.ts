@@ -9,7 +9,7 @@ export class HttpMockResourceType implements ResourceType {
     readonly fileExtension: string;
 
     name:string = this.rootFilePath.getLastPathPart();
-    iconClass: string = "fa fa-refresh";
+    iconClass: string = "fas fa-retweet";
     resourceUrl: string;
     createSubResourceUrl:any[] = null;
 
