@@ -7,7 +7,7 @@
         {{getModel().httpBodyVerifyMatchingType?.toString()}}
     </div>
 
-    <div class="my-value" style="width: auto"
+    <div class="my-value" style="width: max-content"
          *ngIf="isEditMode()">
         <select class="form-control phase-input"
                 (change)="bodyVerifyMatchingTypeChange(bodyVerifyMatchingTypeNgModel.value)"
