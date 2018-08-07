@@ -156,4 +156,18 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
             resourceType.getResourceTypeInstanceForChildren()
         );
     }
+
+    getResourceName(): string {
+        let resourceType = ResourceMapEnum.getResourceMapEnumByFileExtension(this.resourceFileExtension);
+        return resourceType.uiName
+    }
+
+    getPathForTitle(): string {
+        let pathForTitle = "";
+        if (this.resource.oldPath) {
+            pathForTitle = "/" + new Path(this.resource.oldPath.directories, null, null).toString();
+        }
+        return pathForTitle;
+    }
+
 }

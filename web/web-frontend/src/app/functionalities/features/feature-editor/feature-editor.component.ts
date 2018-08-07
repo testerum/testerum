@@ -122,10 +122,10 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     }
 
     initPathForTitle() {
-        if (!this.model.path) {
-            this.pathForTitle = ""
+        this.pathForTitle = "";
+        if (this.model.path) {
+            this.pathForTitle = "/" + new Path(this.model.path.directories, null, null).toString();
         }
-        this.pathForTitle = new Path(this.model.path.directories, null, null).toString();
     }
 
     cancelAction(): void {
