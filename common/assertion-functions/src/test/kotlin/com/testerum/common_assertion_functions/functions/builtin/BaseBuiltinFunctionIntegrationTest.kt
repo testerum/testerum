@@ -3,21 +3,26 @@ package com.testerum.common_assertion_functions.functions.builtin
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.*
 import com.testerum.common_assertion_functions.evaluator.FunctionEvaluator
-import com.testerum.common_assertion_functions.executer.DelegatingFunctionExecuterFactory
+import com.testerum.common_assertion_functions.module_factory.CommonAssertionFunctionsModuleFactory
+import com.testerum.common_di.ModuleFactoryContext
+import org.junit.jupiter.api.AfterAll
 import java.math.BigDecimal
 import java.math.BigInteger
 
 abstract class BaseBuiltinFunctionIntegrationTest {
 
-    protected val functionEvaluator = FunctionEvaluator(
-            DelegatingFunctionExecuterFactory.createDelegatingFunctionExecuter(
-                    listOf(
-                            TextFunctions,
-                            RegexFunctions,
-                            TypeCastFunctions
-                    )
-            )
-    )
+    companion object {
+        private val CONTEXT = ModuleFactoryContext()
+        private val FUNCTION_EVALUATOR = CommonAssertionFunctionsModuleFactory(CONTEXT).functionEvaluator
+
+        @AfterAll
+        @JvmStatic
+        fun tearDown() {
+            CONTEXT.shutdown()
+        }
+    }
+
+    protected val functionEvaluator: FunctionEvaluator = FUNCTION_EVALUATOR
 
     protected fun booleanNode(boolean: Boolean) = BooleanNode.valueOf(boolean)
     protected fun textNode(text: String) = TextNode.valueOf(text)

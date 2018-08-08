@@ -8,13 +8,12 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
-import java.lang.RuntimeException
 import java.math.BigDecimal
 
 class ArgumentMarshallingTest {
 
     companion object {
-        private val evaluator = FunctionEvaluator(
+        private val FUNCTION_EVALUATOR = FunctionEvaluator(
                 DelegatingFunctionExecuterFactory.createDelegatingFunctionExecuter(
                         listOf(MyFunctions)
                 )
@@ -24,7 +23,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `arguments count - less than expected`() {
         val exception: IllegalArgumentException = assertThrows(IllegalArgumentException::class.java) {
-            evaluator.evaluate("@functionWithThreeArguments(1, 2)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithThreeArguments(1, 2)", IntNode(1))
         }
 
         assertThat(exception.message, equalTo("function [functionWithThreeArguments] expects 3 arguments, but got 2"))
@@ -33,7 +32,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `arguments count - more than expected`() {
         val exception: IllegalArgumentException = assertThrows(IllegalArgumentException::class.java) {
-            evaluator.evaluate("@functionWithOneArgument(1, 2, 3)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithOneArgument(1, 2, 3)", IntNode(1))
         }
 
         assertThat(exception.message, equalTo("function [functionWithOneArgument] expects 1 arguments, but got 3"))
@@ -42,7 +41,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `argument type - boolean primitive`() {
         val exception: ExpectedException = assertThrows(ExpectedException::class.java) {
-            evaluator.evaluate("@functionWithBooleanPrimitiveArgument(true)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithBooleanPrimitiveArgument(true)", IntNode(1))
         }
 
         assert(exception.value is Boolean)
@@ -52,7 +51,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `argument type - boolean object null`() {
         val exception: ExpectedException = assertThrows(ExpectedException::class.java) {
-            evaluator.evaluate("@functionWithBooleanObjectArgument(null)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithBooleanObjectArgument(null)", IntNode(1))
         }
 
         assertThat(exception.value, equalTo<Any>(null))
@@ -61,7 +60,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `argument type - boolean object non null`() {
         val exception: ExpectedException = assertThrows(ExpectedException::class.java) {
-            evaluator.evaluate("@functionWithBooleanObjectArgument(false)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithBooleanObjectArgument(false)", IntNode(1))
         }
 
         assert(exception.value is Boolean)
@@ -71,7 +70,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `argument type - integer primitive`() {
         val exception: ExpectedException = assertThrows(ExpectedException::class.java) {
-            evaluator.evaluate("@functionWithIntegerPrimitiveArgument(64)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithIntegerPrimitiveArgument(64)", IntNode(1))
         }
 
         assert(exception.value is Int)
@@ -81,7 +80,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `argument type - integer object null`() {
         val exception: ExpectedException = assertThrows(ExpectedException::class.java) {
-            evaluator.evaluate("@functionWithIntegerObjectArgument(null)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithIntegerObjectArgument(null)", IntNode(1))
         }
 
         assertThat(exception.value, equalTo<Any>(null))
@@ -90,7 +89,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `argument type - integer object non null`() {
         val exception: ExpectedException = assertThrows(ExpectedException::class.java) {
-            evaluator.evaluate("@functionWithIntegerObjectArgument(12)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithIntegerObjectArgument(12)", IntNode(1))
         }
 
         assert(exception.value is Int)
@@ -100,7 +99,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `argument type - decimal null`() {
         val exception: ExpectedException = assertThrows(ExpectedException::class.java) {
-            evaluator.evaluate("@functionWithBigDecimalArgument(null)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithBigDecimalArgument(null)", IntNode(1))
         }
 
         assertThat(exception.value, equalTo<Any>(null))
@@ -109,7 +108,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `argument type - decimal non null`() {
         val exception: ExpectedException = assertThrows(ExpectedException::class.java) {
-            evaluator.evaluate("@functionWithBigDecimalArgument(12.3)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithBigDecimalArgument(12.3)", IntNode(1))
         }
 
         assert(exception.value is BigDecimal)
@@ -119,7 +118,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `argument type - string null`() {
         val exception: ExpectedException = assertThrows(ExpectedException::class.java) {
-            evaluator.evaluate("@functionWithStringArgument(null)", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithStringArgument(null)", IntNode(1))
         }
 
         assertThat(exception.value, equalTo<Any>(null))
@@ -128,7 +127,7 @@ class ArgumentMarshallingTest {
     @Test
     fun `argument type - string non null`() {
         val exception: ExpectedException = assertThrows(ExpectedException::class.java) {
-            evaluator.evaluate("@functionWithStringArgument('some text')", IntNode(1))
+            FUNCTION_EVALUATOR.evaluate("@functionWithStringArgument('some text')", IntNode(1))
         }
 
         assert(exception.value is String)
@@ -137,7 +136,7 @@ class ArgumentMarshallingTest {
 
 }
 
-@Suppress("UNUSED_PARAMETER")
+@Suppress("unused", "UNUSED_PARAMETER")
 object MyFunctions {
 
     @AssertionFunction

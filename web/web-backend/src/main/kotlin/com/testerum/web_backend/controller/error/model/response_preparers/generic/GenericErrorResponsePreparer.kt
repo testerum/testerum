@@ -1,6 +1,6 @@
 package com.testerum.web_backend.controller.error.model.response_preparers.generic
 
-import com.testerum.common_jdk.throwable.toStringWithStacktrace
+import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.web_backend.controller.error.model.ErrorCode
 import com.testerum.web_backend.controller.error.model.ErrorResponse
 import com.testerum.web_backend.controller.error.model.FullLogErrorResponse

@@ -34,7 +34,7 @@ class TransformerFactory(private val glueObjectFactory: GlueObjectFactory,
             return null
         }
 
-        // todo: if not found in spring, instantiate using default constructor (todo: in this case, where to store the transformers? maybe we need a new getInstance() method that falls-back to instantiating using the default constructor)
+        // todo: if not found in GlueObjectFactory, instantiate using default constructor (todo: in this case, where to store the transformers? maybe we need a new getInstance() method that falls-back to instantiating using the default constructor)
         return glueObjectFactory.getInstance(transformerClass)
     }
 

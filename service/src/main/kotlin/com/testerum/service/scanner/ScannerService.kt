@@ -21,15 +21,19 @@ class ScannerService(private val settingsManager: SettingsManagerImpl,
         private val cacheFile: Path = SettingsManagerImpl.settingsDirectory.resolve("cache/basic-steps-cache.json")
     }
 
-    fun init() {
+    fun initInBackgroundThread() {
         // start loading in the background (by calling the getter) & also register settings
         Thread(Runnable {
-            for (library in scanResult.libraries) {
-                val settings: List<Setting> = library.settings
-
-                settingsManager.registerSettings(settings)
-            }
+            init()
         }).start()
+    }
+
+    fun init() {
+        for (library in scanResult.libraries) {
+            val settings: List<Setting> = library.settings
+
+            settingsManager.registerSettings(settings)
+        }
     }
 
     fun getBasicSteps(): List<BasicStepDef> = scanResult.libraries.flatMap { it.steps }

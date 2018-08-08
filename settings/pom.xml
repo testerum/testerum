@@ -14,16 +14,19 @@
 
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
+        <!-- common-di -->
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>common-spring</artifactId>
+            <artifactId>common-di</artifactId>
         </dependency>
 
+        <!-- common-jdk -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-jdk</artifactId>
         </dependency>
 
+        <!-- testerum-api -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>testerum-api</artifactId>
@@ -46,48 +49,14 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-expression</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- LogBack -->
         <!-- slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <!-- slf4j / commons logging bridge (to redirect common-logging logs to slf4j) -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-        </dependency>
-        <!-- slf4j / log4j bridge (to redirect log4j logs to slf4j) -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-            <scope>test</scope>
-        </dependency>
 
-        <!-- Apache Commons -->
+        <!-- commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -100,6 +69,7 @@
         </dependency>
 
     </dependencies>
+
 
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>

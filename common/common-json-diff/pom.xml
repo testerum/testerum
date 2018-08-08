@@ -18,6 +18,12 @@
     <dependencies>
         <!--==================== internal dependencies ====================-->
 
+        <!-- common-di -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-di</artifactId>
+        </dependency>
+
         <!-- common-json-diff-util -->
         <dependency>
             <groupId>com.testerum</groupId>
@@ -55,16 +61,6 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-        </dependency>
-
-        <!-- spring -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
         </dependency>
 
 

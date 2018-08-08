@@ -2,17 +2,16 @@ package selenium.assertions.element
 
 import com.testerum.api.annotations.steps.Then
 import org.openqa.selenium.WebElement
-import org.springframework.beans.factory.annotation.Autowired
 import selenium_steps_support.service.css_class.CssClassAttributeParser
 import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.text_match.TextMatcherService
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
-class WebDriverElementAssertions @Autowired constructor(private val webDriverManager: WebDriverManager) {
+class WebDriverElementAssertions {
 
     @Then("the element <<elementLocator>> should be present")
     fun assertElementPresent(elementLocator: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement? = ElementLocatorService.locateElement(driver, elementLocator)
             if (element == null) {
                 throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
@@ -22,7 +21,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the element <<elementLocator>> should be absent")
     fun assertElementAbsent(elementLocator: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement? = ElementLocatorService.locateElement(driver, elementLocator)
             if (element != null) {
                 throw AssertionError("the element [$elementLocator] should absent from the page, but is not")
@@ -32,7 +31,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the element <<elementLocator>> should be displayed")
     fun assertElementDisplayed(elementLocator: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
@@ -47,7 +46,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
      */
     @Then("the element <<elementLocator>> should be hidden")
     fun assertElementHidden(elementLocator: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
@@ -59,7 +58,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the element <<elementLocator>> should be enabled")
     fun assertElementEnabled(elementLocator: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
@@ -71,7 +70,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the element <<elementLocator>> should be disabled")
     fun assertElementDisabled(elementLocator: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
@@ -83,7 +82,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the element <<elementLocator>> should have the value <<expectedValue>>")
     fun assertThatTheElementHasValue(elementLocator: String, expectedValue: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val field: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the field [$elementLocator] should be present on the page, but is not")
 
@@ -98,7 +97,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the element <<elementLocator>> should have the attribute <<attributeName>> with a value of <<attributeValueTextMatchExpression>>")
     fun assertElementAttributeShouldBe(elementLocator: String, attributeName: String, attributeValueTextMatchExpression: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
@@ -113,7 +112,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the element <<elementLocator>> should have the attribute <<attributeName>> with a value different from <<attributeValueTextMatchExpression>>")
     fun assertElementAttributeShouldNotBe(elementLocator: String, attributeName: String, attributeValueTextMatchExpression: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
@@ -128,7 +127,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the element <<elementLocator>> should have the CSS class <<cssClass>>")
     fun assertElementCssClassPresent(elementLocator: String, cssClass: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
@@ -143,7 +142,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the element <<elementLocator>> should not have the CSS class <<cssClass>>")
     fun assertElementCssClassAbsent(elementLocator: String, cssClass: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
@@ -158,7 +157,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the text of element <<elementLocator>> should be <<textMatchExpression>>")
     fun assertElementTextShouldBe(elementLocator: String, textMatchExpression: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
@@ -172,7 +171,7 @@ class WebDriverElementAssertions @Autowired constructor(private val webDriverMan
 
     @Then("the text of element <<elementLocator>> should not be <<textMatchExpression>>")
     fun assertElementTextShouldNotBe(elementLocator: String, textMatchExpression: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 

@@ -16,12 +16,12 @@
         <!--==================== Internal Dependencies ====================-->
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>settings</artifactId>
+            <artifactId>common-di</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>common-spring</artifactId>
+            <artifactId>settings</artifactId>
         </dependency>
 
         <dependency>
@@ -46,27 +46,8 @@
         </dependency>
 
         <!-- Spring -->
+        <!--to have access to multipart file-->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-expression</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-        </dependency>
-        <dependency> <!--to have access to multipart file-->
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>

@@ -107,7 +107,7 @@ object CmdlineParamsParser {
                 names = ["-o", "--output-format"]
                 // todo: description
         )
-        var outputFormat: String? = null
+        var outputFormat: CmdlineParams.OutputFormat? = null
 
         fun getValidatedParams(): CmdlineParams {
             if (usageHelpRequested) {
@@ -124,7 +124,7 @@ object CmdlineParamsParser {
                     testFilesOrDirectories = getValidatedTestFilesOrDirectories(),
                     verbose = verbose,
                     outputFormat = outputFormat
-                            ?: CmdlineParams.DEFAULT_OUTPUT_FORMAT
+                            ?: CmdlineParams.OutputFormat.TREE
             )
         }
 

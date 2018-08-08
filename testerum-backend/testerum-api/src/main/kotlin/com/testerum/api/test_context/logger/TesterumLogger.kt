@@ -1,6 +1,8 @@
 package com.testerum.api.test_context.logger
 
-interface TesterumLogger {
+import com.testerum.api.services.TesterumService
+
+interface TesterumLogger : TesterumService {
 
     fun logWarning(message: String)
 

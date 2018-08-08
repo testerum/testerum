@@ -12,7 +12,6 @@ import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.runner_cmdline.transformer.TransformerFactory
-import org.springframework.util.ClassUtils
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.lang.reflect.Parameter
@@ -66,7 +65,7 @@ class RunnerBasicStep(stepCall: StepCall,
                 continue
             }
 
-            val paramClass: Class<*> = ClassUtils.forName(patternPart.type, stepsClassLoader)
+            val paramClass: Class<*> = stepsClassLoader.loadClass(patternPart.type)
 
             result += paramClass
         }

@@ -1,9 +1,10 @@
 package com.testerum.api.test_context.settings
 
+import com.testerum.api.services.TesterumService
 import com.testerum.api.test_context.settings.model.Setting
 import com.testerum.api.test_context.settings.model.SettingWithValue
 
-interface SettingsManager {
+interface SettingsManager : TesterumService {
 
     fun getSetting(key: String): SettingWithValue?
 

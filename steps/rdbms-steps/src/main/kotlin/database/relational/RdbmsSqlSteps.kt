@@ -5,16 +5,18 @@ import com.testerum.api.annotations.steps.When
 import database.relational.connection_manager.RdbmsConnectionManager
 import database.relational.connection_manager.model.RdbmsClient
 import database.relational.model.RdbmsSql
+import database.relational.module_bootstrapper.RdbmsStepsModuleServiceLocator
 import database.relational.transformer.RdbmsConnectionTransformer
 import database.relational.transformer.RdbmsSqlTransformer
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 
-class RdbmsSqlSteps(@Autowired val rdbmsConnectionManager: RdbmsConnectionManager) {
+class RdbmsSqlSteps {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(RdbmsSqlSteps::class.java)
     }
+
+    private val rdbmsConnectionManager: RdbmsConnectionManager = RdbmsStepsModuleServiceLocator.bootstrapper.rdbmsStepsModuleFactory.rdbmsConnectionManager
 
     @When(value = "writing <<SQL>> in <<relationalDatabaseClient>> database",
           description = "This steps is executing the provided SQL in the Relational Database")

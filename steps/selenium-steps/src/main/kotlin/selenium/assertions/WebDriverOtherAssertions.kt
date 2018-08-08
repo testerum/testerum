@@ -1,15 +1,14 @@
 package selenium.assertions
 
 import com.testerum.api.annotations.steps.Then
-import org.springframework.beans.factory.annotation.Autowired
 import selenium_steps_support.service.text_match.TextMatcherService
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
-class WebDriverOtherAssertions @Autowired constructor(private val webDriverManager: WebDriverManager) {
+class WebDriverOtherAssertions {
 
     @Then("the title of the current page should be <<textMatchExpression>>")
     fun assertCurrentPageTitleShouldBe(textMatchExpression: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val actualText: String = driver.title
 
             if (!TextMatcherService.matches(textMatchExpression, actualText)) {
@@ -20,7 +19,7 @@ class WebDriverOtherAssertions @Autowired constructor(private val webDriverManag
 
     @Then("the title of the current page should not be <<textMatchExpression>>")
     fun assertCurrentPageTitleShouldNotBe(textMatchExpression: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val actualText: String = driver.title
 
             if (TextMatcherService.matches(textMatchExpression, actualText)) {
@@ -31,7 +30,7 @@ class WebDriverOtherAssertions @Autowired constructor(private val webDriverManag
 
     @Then("the url of the current page should be <<textMatchExpression>>")
     fun assertCurrentUrlShouldBe(textMatchExpression: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val actualText: String = driver.currentUrl
 
             if (!TextMatcherService.matches(textMatchExpression, actualText)) {
@@ -42,7 +41,7 @@ class WebDriverOtherAssertions @Autowired constructor(private val webDriverManag
 
     @Then("the url of the current page should not be <<textMatchExpression>>")
     fun assertCurrentUrlShouldNotBe(textMatchExpression: String) {
-        webDriverManager.executeWebDriverStep { driver ->
+        WebDriverManager.executeWebDriverStep { driver ->
             val actualText: String = driver.currentUrl
 
             if (TextMatcherService.matches(textMatchExpression, actualText)) {

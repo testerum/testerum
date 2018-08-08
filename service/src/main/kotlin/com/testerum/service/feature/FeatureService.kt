@@ -1,7 +1,7 @@
 package com.testerum.service.feature
 
 import com.testerum.common.parsing.executer.ParserExecuter
-import com.testerum.common.string.containsSearchStringParts
+import com.testerum.common_jdk.containsSearchStringParts
 import com.testerum.file_repository.AttachmentFileRepositoryService
 import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath

@@ -23,8 +23,8 @@ import java.util.concurrent.Callable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 
-open class StepService(private val composedStepsService: ComposedStepsService,
-                       private val basicStepsService: BasicStepsService,
+open class StepService(private val basicStepsService: BasicStepsService,
+                       private val composedStepsService: ComposedStepsService,
                        private val warningService: WarningService) {
 
     @Volatile private var steps: MutableMap<String, StepDef> = hashMapOf()
@@ -33,7 +33,7 @@ open class StepService(private val composedStepsService: ComposedStepsService,
     private val stepsMapLoadersLatch = CountDownLatch(1)
 
 
-    fun init() {
+    fun initInBackgroundThread() {
         object : Thread() {
             override fun run() {
                 loadSteps()

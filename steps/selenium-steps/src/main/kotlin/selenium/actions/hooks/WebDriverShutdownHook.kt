@@ -2,17 +2,15 @@ package selenium.actions.hooks
 
 import com.testerum.api.annotations.hooks.AfterEachTest
 import com.testerum.api.annotations.hooks.BeforeAllTests
-import com.testerum.api.test_context.TestContext
+import com.testerum.api.services.TesterumServiceLocator
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
-import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
-import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
 import java.nio.file.Path
 
-class WebDriverShutdownHook @Autowired constructor(private val webDriverManager: WebDriverManager,
-                                                   private val testContext: TestContext) {
+class WebDriverShutdownHook {
 
     companion object {
         private val LOGGER: Logger = LoggerFactory.getLogger(WebDriverShutdownHook::class.java)
@@ -35,20 +33,20 @@ class WebDriverShutdownHook @Autowired constructor(private val webDriverManager:
     }
 
     private fun takeScreenshotIfFailed() {
-        if (testContext.testStatus.isFailedOrError()) {
-            val screenshotFile: Path = webDriverManager.takeScreenshotToFile()
+        if (TesterumServiceLocator.getTestContext().testStatus.isFailedOrError()) {
+            val screenshotFile: Path = WebDriverManager.takeScreenshotToFile()
             LOGGER.info("failed test: screenshot saved at [${screenshotFile.toAbsolutePath()}]")
         }
     }
 
     private fun closeBrowserIfNeeded() {
-        val leaveBrowserOpenAfterTest: String = testContext.settingsManager.getSettingValueOrDefault(SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST)
+        val leaveBrowserOpenAfterTest: String = TesterumServiceLocator.getSettingsManager().getSettingValueOrDefault(SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST)
                 ?: SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
 
         val leaveBrowserOpen: Boolean = when (leaveBrowserOpenAfterTest) {
             "true"      -> true
             "false"     -> false
-            "onFailure" -> testContext.testStatus.isFailedOrError()
+            "onFailure" -> TesterumServiceLocator.getTestContext().testStatus.isFailedOrError()
             else        -> {
                 LOGGER.error(
                         "error reading property [$SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST]" +
@@ -60,7 +58,7 @@ class WebDriverShutdownHook @Autowired constructor(private val webDriverManager:
         }
 
         if (!leaveBrowserOpen) {
-            webDriverManager.destroyCurrentWebDriverIfNeeded()
+            WebDriverManager.destroyCurrentWebDriverIfNeeded()
         }
     }
 }

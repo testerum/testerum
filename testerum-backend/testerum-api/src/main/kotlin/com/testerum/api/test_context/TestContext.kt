@@ -1,15 +1,10 @@
 package com.testerum.api.test_context
 
-import com.testerum.api.test_context.logger.TesterumLogger
-import com.testerum.api.test_context.settings.SettingsManager
-import com.testerum.api.test_context.test_vars.TestVariables
+import com.testerum.api.services.TesterumService
 
-interface TestContext {
+interface TestContext : TesterumService {
 
-    val testVariables: TestVariables
-    val settingsManager: SettingsManager
     val testStatus: ExecutionStatus
     val stepsClassLoader: ClassLoader
-    val logger: TesterumLogger
 
 }

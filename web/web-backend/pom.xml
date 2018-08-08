@@ -20,11 +20,6 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>common-spring</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.testerum</groupId>
             <artifactId>common-json</artifactId>
         </dependency>
 

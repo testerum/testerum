@@ -9,17 +9,19 @@ import database.relational.connection_manager.RdbmsConnectionManager
 import database.relational.connection_manager.model.RdbmsClient
 import database.relational.connection_manager.serializer.RdbmsToJsonSerializer
 import database.relational.model.RdbmsVerify
+import database.relational.module_bootstrapper.RdbmsStepsModuleServiceLocator
 import database.relational.transformer.RdbmsConnectionTransformer
 import database.relational.transformer.RdbmsVerifyTransformer
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 
-class RdbmsVerifySteps (@Autowired val jsonComparer: JsonComparer,
-                        @Autowired val rdbmsConnectionManager: RdbmsConnectionManager) {
+class RdbmsVerifySteps {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(RdbmsVerifySteps::class.java)
     }
+
+    private val jsonComparer: JsonComparer = RdbmsStepsModuleServiceLocator.bootstrapper.commonJsonDiffModuleFactory.jsonComparer
+    private val rdbmsConnectionManager: RdbmsConnectionManager = RdbmsStepsModuleServiceLocator.bootstrapper.rdbmsStepsModuleFactory.rdbmsConnectionManager
 
     @Then("verify database state is like in <<rdbmsVerify>> file")
     fun testDefaultDatabaseState(@Param(transformer= RdbmsVerifyTransformer::class) rdbmsVerify: RdbmsVerify) {

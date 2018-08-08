@@ -2,6 +2,7 @@ package http.response.verify
 
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then
+import com.testerum.api.services.TesterumServiceLocator
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
@@ -16,15 +17,18 @@ import http.response.verify.model.HttpResponseVerify
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode.CONTAINS
 import http.response.verify.transformer.HttpResponseVerifyTransformer
+import http_support.module_bootstrapper.HttpStepsModuleServiceLocator
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 
 @Suppress("unused")
-class HttpResponseVerifySteps(@Autowired val jsonComparer: JsonComparer,
-                              @Autowired val variables: TestVariables) {
+class HttpResponseVerifySteps {
+
     companion object {
         private val LOGGER = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
     }
+
+    private val jsonComparer: JsonComparer = HttpStepsModuleServiceLocator.bootstrapper.commonJsonDiffModuleFactory.jsonComparer
+    private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
 
     @Then("I expect <<httpResponseVerify>> HTTP Response")
     fun verifyHttpResponse(@Param(transformer = HttpResponseVerifyTransformer::class) httpResponseVerify: HttpResponseVerify) {

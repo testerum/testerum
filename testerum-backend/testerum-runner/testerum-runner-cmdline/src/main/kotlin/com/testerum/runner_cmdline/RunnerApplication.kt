@@ -1,8 +1,13 @@
 package com.testerum.runner_cmdline
 
+import com.testerum.api.services.TesterumServiceLocator
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.api.test_context.TestContext
 import com.testerum.api.test_context.logger.TesterumLogger
+import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.api.transformer.Transformer
+import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.step.BasicStepDef
@@ -32,6 +37,7 @@ import com.testerum.runner_cmdline.transformer.TransformerFactory
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import com.testerum.service.hooks.HooksService
+import com.testerum.service.scanner.ScannerService
 import com.testerum.service.step.StepService
 import com.testerum.service.tests.TestsService
 import com.testerum.service.variables.VariablesService
@@ -49,6 +55,7 @@ import java.util.stream.Collectors.toList
 
 class RunnerApplication(private val settingsManager: SettingsManagerImpl,
                         private val eventsService: EventsService,
+                        private val scannerService: ScannerService,
                         private val stepService: StepService,
                         private val testsService: TestsService,
                         private val hooksService: HooksService,
@@ -56,7 +63,8 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
                         private val testVariables: TestVariablesImpl,
                         private val executionListenerFinder: ExecutionListenerFinder,
                         private val globalTransformers: List<Transformer<*>>,
-                        private val testerumLogger: TesterumLogger) {
+                        private val testerumLogger: TesterumLogger,
+                        private val stopWatch: StopWatch) {
 
     // todo: when resolving settings (in the service module), throw exception if a cycle is found
 
@@ -81,6 +89,7 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
         executionListenerFinder.outputFormat = cmdlineParams.outputFormat
 
         setSettings(cmdlineParams)
+        scannerService.init()
         stepService.loadSteps()
 
         println("Settings:")
@@ -99,13 +108,16 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
             println("    ${testPath.toAbsolutePath().normalize()}")
         }
 
-        // create TestContext
-        val testContext = TestContextImpl(
-                testVariablesImpl = testVariables,
-                settingsManager = settingsManager,
-                stepsClassLoader = stepsClassLoader,
-                logger = testerumLogger
-        )
+        // setup runner services
+        val testContext = TestContextImpl(stepsClassLoader = stepsClassLoader)
+
+        @Suppress("DEPRECATION")
+        run {
+            TesterumServiceLocator.registerService(TestVariables::class.java, testVariables)
+            TesterumServiceLocator.registerService(SettingsManager::class.java, settingsManager)
+            TesterumServiceLocator.registerService(TesterumLogger::class.java, testerumLogger)
+            TesterumServiceLocator.registerService(TestContext::class.java, testContext)
+        }
 
         // get hooks
         val hooks: List<HookDef> = hooksService.getHooks()
@@ -135,7 +147,7 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
                 variablesService.getVariablesAsMap()
         )
 
-        println("STARTUP TIME: ${TesterumRunner.stopWatch.elapsedMillis()}ms")
+        println("STARTUP TIME: ${stopWatch.elapsedMillis()}ms")
         val executionStatus: ExecutionStatus = runWithThreadContextClassLoader(stepsClassLoader) {
             suite.run(runnerContext, globalVars)
         }

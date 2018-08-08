@@ -3,19 +3,18 @@ package database.relational.transformer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.treeToValue
-import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.api.transformer.ParameterInfo
 import com.testerum.api.transformer.Transformer
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
-import com.testerum.step_transformer_utils.JsonVariableReplacer
 import database.relational.connection_manager.RdbmsConnectionManager
 import database.relational.connection_manager.model.RdbmsClient
+import database.relational.module_bootstrapper.RdbmsStepsModuleServiceLocator
 
-class RdbmsConnectionTransformer(private val rdbmsConnectionManager: RdbmsConnectionManager,
-                                 private val objectMapper: ObjectMapper,
-                                 testVariables: TestVariables): Transformer<RdbmsClient> {
+class RdbmsConnectionTransformer: Transformer<RdbmsClient> {
 
-    private val jsonVariableReplacer = JsonVariableReplacer(testVariables)
+    private val rdbmsConnectionManager: RdbmsConnectionManager = RdbmsStepsModuleServiceLocator.bootstrapper.rdbmsStepsModuleFactory.rdbmsConnectionManager
+    private val objectMapper: ObjectMapper = RdbmsStepsModuleServiceLocator.bootstrapper.resourceManagerModuleFactory.resourceJsonObjectMapper
+    private val jsonVariableReplacer = RdbmsStepsModuleServiceLocator.bootstrapper.rdbmsStepsModuleFactory.jsonVariableReplacer
 
     override fun canTransform(paramInfo: ParameterInfo): Boolean
             = (paramInfo.type == RdbmsClient::class.java)

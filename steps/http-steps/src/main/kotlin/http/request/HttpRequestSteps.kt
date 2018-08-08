@@ -2,18 +2,21 @@ package http.request
 
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
+import com.testerum.api.services.TesterumServiceLocator
 import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.HttpResponse
 import com.testerum.service.resources.http.HttpClientService
 import http.request.transformer.HttpRequestTransformer
-import org.springframework.beans.factory.annotation.Autowired
+import http_support.module_bootstrapper.HttpStepsModuleServiceLocator
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class HttpRequestSteps @Autowired constructor(val httpClientService: HttpClientService,
-                                              val variables: TestVariables,
-                                              val logger: TesterumLogger) {
+class HttpRequestSteps {
+
+    private val httpClientService: HttpClientService = HttpStepsModuleServiceLocator.bootstrapper.httpStepsModuleFactory.httpClientService
+    private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
+    private val logger: TesterumLogger = TesterumServiceLocator.getTesterumLogger()
 
     @When("I execute <<httpRequest>> HTTP Request")
     fun testConnectionDetails(@Param(transformer = HttpRequestTransformer::class) httpRequest: HttpRequest) {

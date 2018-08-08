@@ -41,6 +41,12 @@
             <artifactId>common-json</artifactId>
         </dependency>
 
+        <!-- common-di -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-di</artifactId>
+        </dependency>
+
 
         <!--==================== External Dependencies ====================-->
 
@@ -48,12 +54,6 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
-        </dependency>
-
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
         </dependency>
 
         <!-- slf4j -->

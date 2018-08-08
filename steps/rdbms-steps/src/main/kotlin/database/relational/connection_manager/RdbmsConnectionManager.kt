@@ -3,7 +3,6 @@ package database.relational.connection_manager
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.treeToValue
-import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.file_repository.FileRepositoryService
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.resources.ResourceContext
@@ -15,9 +14,7 @@ import database.relational.connection_manager.model.RdbmsClient
 class RdbmsConnectionManager(private val fileRepositoryService: FileRepositoryService,
                              private val objectMapper: ObjectMapper,
                              private val rdbmsService: RdbmsService,
-                             testVariables: TestVariables) {
-
-    private val jsonVariableReplacer = JsonVariableReplacer(testVariables)
+                             private val jsonVariableReplacer: JsonVariableReplacer) {
 
     fun getDefaultRdbmsClient(): RdbmsClient? {
 

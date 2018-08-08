@@ -1,13 +1,13 @@
 package selenium_steps_support.service.elem_locators
 
-import selenium_steps_support.ByJs
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
+import selenium_steps_support.ByJs
 
 object ElementLocatorService {
 
-    // todo: make this map pluggable (maybe inject it from spring?)
+    // todo: make this map pluggable
     private val prefixToLocatorFactoryMap: Map<String, (driver: WebDriver, elementLocatorWithoutPrefix: String) -> By> = mapOf(
             "id"               to { _     , elementLocatorWithoutPrefix -> By.id(elementLocatorWithoutPrefix) },
             "name"             to { _     , elementLocatorWithoutPrefix -> By.name(elementLocatorWithoutPrefix) },

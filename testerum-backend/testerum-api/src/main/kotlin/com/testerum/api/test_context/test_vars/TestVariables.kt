@@ -1,6 +1,8 @@
 package com.testerum.api.test_context.test_vars
 
-interface TestVariables {
+import com.testerum.api.services.TesterumService
+
+interface TestVariables : TesterumService {
 
     fun contains(name: String): Boolean
 

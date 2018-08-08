@@ -16,6 +16,12 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
+        <!-- common-di -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-di</artifactId>
+        </dependency>
+
         <!-- config -->
         <dependency>
             <groupId>com.testerum</groupId>
@@ -53,12 +59,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
         </dependency>
 
         <!-- Json -->
@@ -106,7 +106,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <!--<scope>test</scope>-->
+            <scope>test</scope>
         </dependency>
 
         <!-- JUnit 5 -->

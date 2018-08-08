@@ -3,9 +3,9 @@ package com.testerum.settings.private_api
 import com.testerum.api.test_context.settings.SettingsManager
 import com.testerum.api.test_context.settings.model.Setting
 import com.testerum.api.test_context.settings.model.SettingWithValue
+import com.testerum.common_jdk.asMap
+import com.testerum.common_jdk.loadPropertiesFrom
 import com.testerum.settings.SystemSettings
-import org.springframework.core.io.FileSystemResource
-import org.springframework.core.io.support.PropertiesLoaderUtils
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -22,12 +22,11 @@ class SettingsManagerImpl : SettingsManager {
         fun factoryMethodForWebPart(): SettingsManagerImpl {
             val instance = SettingsManagerImpl()
 
-            val homeConfigFile = FileSystemResource(settingsFile.toFile())
-            if (homeConfigFile.exists()) {
-                val properties = PropertiesLoaderUtils.loadProperties(homeConfigFile)
+            if (Files.exists(settingsFile)) {
+                val properties: Properties = loadPropertiesFrom(settingsFile)
 
                 instance.registerPossibleUnresolvedValues(
-                        properties.map { it.key as String to it.value as String?}.toMap()
+                        properties.asMap()
                 )
             }
 
@@ -153,7 +152,7 @@ class SettingsManagerImpl : SettingsManager {
                 throw RuntimeException("Exception appeared while loading the system properties. No property with the key [$variableToResolve] was defined")
             }
 
-            val escapedVariableToResolveValue = Regex.Companion.escapeReplacement(variableToResolveValue)
+            val escapedVariableToResolveValue = Regex.escapeReplacement(variableToResolveValue)
             val resolvedValue = propertyToResolveValue.replace(propRefPattern.toRegex(), escapedVariableToResolveValue)
             resolvedKeyValueMap.put(propertyToResolveKey, resolvedValue)
         }

@@ -1,5 +1,6 @@
 package com.testerum.runner.spring
 
+import com.testerum.api.services.TesterumServiceLocator
 import com.testerum.api.test_context.TestContext
 import com.testerum.api.test_context.TestContextAware
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
@@ -65,12 +66,10 @@ class SpringGlueObjectFactory : GlueObjectFactory, TestContextAware {
         val beanFactory: ConfigurableListableBeanFactory = applicationContext.beanFactory
 
         // put API objects into the application context
-        beanFactory.registerSingleton("testerum.testContext", testContext)
-        beanFactory.registerSingleton("testerum.testVariables", testContext.testVariables)
-        beanFactory.registerSingleton("testerum.settingsManager", testContext.settingsManager)
-        beanFactory.registerSingleton("testerum.testStatus", testContext.testStatus)
-        beanFactory.registerSingleton("testerum.stepsClassLoader", testContext.stepsClassLoader)
-        beanFactory.registerSingleton("testerum.logger", testContext.logger)
+        beanFactory.registerSingleton("testerum.testContext", TesterumServiceLocator.getTestContext())
+        beanFactory.registerSingleton("testerum.testVariables", TesterumServiceLocator.getTestVariables())
+        beanFactory.registerSingleton("testerum.settingsManager", TesterumServiceLocator.getSettingsManager())
+        beanFactory.registerSingleton("testerum.logger", TesterumServiceLocator.getTesterumLogger())
 
 
         // load all testerum.xml files from the "steps" classloader

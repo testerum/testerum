@@ -2,7 +2,6 @@ package com.testerum.runner_cmdline.object_factory
 
 import com.testerum.api.test_context.TestContext
 import com.testerum.api.test_context.TestContextAware
-import kotlin.reflect.full.safeCast
 
 object TesterumInjecter {
 
@@ -12,7 +11,9 @@ object TesterumInjecter {
             return
         }
 
-        TestContextAware::class.safeCast(destination)?.setTestContext(testContext)
+        if (destination is TestContextAware) {
+            destination.setTestContext(testContext)
+        }
     }
 
 }

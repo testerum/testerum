@@ -18,10 +18,10 @@
     <dependencies>
         <!--==================== internal dependencies ====================-->
 
-        <!-- common-spring -->
+        <!-- common-di -->
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>common-spring</artifactId>
+            <artifactId>common-di</artifactId>
         </dependency>
 
         <!-- common-parsing -->
@@ -79,12 +79,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-        </dependency>
-
-        <!-- spring -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
         </dependency>
 
 

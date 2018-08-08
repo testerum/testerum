@@ -1,6 +1,6 @@
 package com.testerum.service.step.util
 
-import com.testerum.common.string.containsSearchStringParts
+import com.testerum.common_jdk.containsSearchStringParts
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepDef

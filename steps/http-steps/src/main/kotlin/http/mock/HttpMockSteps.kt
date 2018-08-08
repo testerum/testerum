@@ -8,10 +8,12 @@ import com.testerum.model.resources.http.mock.stub.HttpMock
 import http.mock.transformer.HttpMockServerTransformer
 import http.mock.transformer.HttpMockTransformer
 import http_support.HttpMockService
-import org.springframework.beans.factory.annotation.Autowired
+import http_support.module_bootstrapper.HttpStepsModuleServiceLocator
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class HttpMockSteps(@Autowired val httpMockService: HttpMockService) {
+class HttpMockSteps {
+
+    private val httpMockService: HttpMockService = HttpStepsModuleServiceLocator.bootstrapper.httpStepsModuleFactory.httpMockService
 
     @BeforeEachTest
     fun beforeTest() {

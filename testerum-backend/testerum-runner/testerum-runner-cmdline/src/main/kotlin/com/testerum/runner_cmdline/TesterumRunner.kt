@@ -7,25 +7,24 @@ import com.testerum.runner_cmdline.cmdline.params.CmdlineParamsParser
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
+import com.testerum.runner_cmdline.module_bootstrapper.RunnerModuleBootstrapper
+import com.testerum.runner_cmdline.module_bootstrapper.TesterumRunnerLoggingConfigurator
 import org.fusesource.jansi.Ansi
-import org.springframework.context.support.ClassPathXmlApplicationContext
 
 object TesterumRunner {
 
-    lateinit var stopWatch: StopWatch
-
     @JvmStatic
     fun main(args: Array<String>) {
-        stopWatch = StopWatch.start()
+        val stopWatch = StopWatch.start()
+        TesterumRunnerLoggingConfigurator.configureLogging()
 
         val cmdlineParams: CmdlineParams = getCmdlineParams(args)
 
-        SettingsManagerFactory.cmdlineParams = cmdlineParams
-        
-        val exitCode: ExitCode = ClassPathXmlApplicationContext("spring/spring_runner.xml").use { context ->
-            val runner = context.getBean(RunnerApplication::class.java)
+        val bootstrapper = RunnerModuleBootstrapper(cmdlineParams, stopWatch)
+        val exitCode: ExitCode = bootstrapper.context.use {
+            val runnerApplication = bootstrapper.runnerModuleFactory.runnerApplication
 
-            runner.execute(cmdlineParams)
+            runnerApplication.execute(cmdlineParams)
         }
 
         Exiter.exit(exitCode)
@@ -50,6 +49,7 @@ object TesterumRunner {
             Exiter.exit(ExitCode.INVALID_ARGS)
         }
     }
+
 
 }
 

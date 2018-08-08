@@ -1,12 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/mvc          http://www.springframework.org/schema/mvc/spring-mvc.xsd
+           http://www.springframework.org/schema/context      http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/websocket    http://www.springframework.org/schema/websocket/spring-websocket.xsd
+       ">
 
-    <import resource="spring_web_infrastructure.xml"/>
-    <import resource="spring_web_controllers.xml"/>
+    <bean class="com.testerum.web_backend.controller.module_bootstrapper.WebBackendModuleBootstrapperSpringIntegration" />
 
-    <import resource="spring_service.xml"/>
-    <import resource="spring_settings.xml"/>
-    <import resource="spring_resource-manager.xml"/>
+    <!-- required to be able to import a Java @Configuration into xml -->
+    <context:annotation-config/>
+
+    <!--====== FILE UPLOAD CONFIGURATION ======-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+    <bean id="exceptionHandlerControllerAdvice" class="com.testerum.web_backend.controller.error.ExceptionHandlerControllerAdvice" />
+
+    <bean id="versionPropertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:/web-version.properties"/>
+        <property name="placeholderPrefix" value="$version{" />
+        <property name="placeholderSuffix" value="}" />
+    </bean>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper" ref="jsonObjectMapper" />
+                <property name="prettyPrint" value="true"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <mvc:resources mapping="/index.html" location="/index.html" />
+
+
+    <!--====== WEB SOCKET STOMP CONFIGURATION ======-->
+    <websocket:message-broker application-destination-prefix="/tests">
+        <websocket:stomp-endpoint allowed-origins="*" path="/results">
+            <websocket:sockjs/>
+        </websocket:stomp-endpoint>
+        <websocket:simple-broker prefix="/topic"/>
+    </websocket:message-broker>
+    <!--====== END OF - WEB SOCKET STOMP CONFIGURATION ======-->
+
+    <!--====== WEB SOCKET CONFIGURATION ======-->
+    <websocket:handlers allowed-origins="*">
+        <websocket:mapping path="/tests-ws" handler="testsWebSocketController"/>
+
+    </websocket:handlers>
+
+    <bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
+        <property name="maxTextMessageBufferSize" value="100000000"/>
+        <property name="maxBinaryMessageBufferSize" value="100000000"/>
+    </bean>
+    <!--====== END OF - WEB SOCKET CONFIGURATION ======-->
+
+
 </beans>

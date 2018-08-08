@@ -129,6 +129,8 @@ class TestsExecutionService(private val settingsManager: SettingsManager,
         commandLine += "${getRunnerRepoPath()}/*"
 
         commandLine += "-Dtesterum.packageDirectory=${getPackageDir().toWindowsFriendly()}"
+        commandLine += "-XX:-OmitStackTraceInFastThrow"
+//        commandLine += "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000" // todo: make this an option to allow people to do remote debugging
 
         commandLine += "com.testerum.runner_cmdline.TesterumRunner"
         commandLine += "@${argsFile.toWindowsFriendly()}"
