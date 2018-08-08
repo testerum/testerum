@@ -1,5 +1,6 @@
+import {JsonTreeNodeOptions} from "./JsonTreeNodeOptions";
 
-export class JsonTreeContainerOptions {
+export class JsonTreeContainerOptions extends JsonTreeNodeOptions {
     displayLines = true;
     allowDndToOrderChildren = false;
 }

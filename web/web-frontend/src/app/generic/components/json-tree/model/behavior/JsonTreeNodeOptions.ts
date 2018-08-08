@@ -1,4 +1,4 @@
 
-export class JsonTreeContainerOptions {
+export class JsonTreeNodeOptions {
     displayLines = true;
 }

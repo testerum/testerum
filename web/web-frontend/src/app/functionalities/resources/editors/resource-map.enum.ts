@@ -157,10 +157,10 @@ export class ResourceMapEnum {
         "JsonVerify",
         "verify.json",
         JsonVerifyComponent,
-        () => {return new ArrayJsonVerify()},
+        () => {return new ArrayJsonVerify(null)},
         () => {return JsonVerifyResourceType.getInstanceForRoot()},
         () => {return JsonVerifyResourceType.getInstanceForChildren()},
-        (input:string) => {return new ArrayJsonVerify().deserialize(JSON.parse(input))}
+        (input:string) => {return new ArrayJsonVerify(null).deserialize(JSON.parse(input))}
     );
     public static ALL_PARAM_TYPES: Array<ResourceMapEnum> = [
         ResourceMapEnum.TEXT,

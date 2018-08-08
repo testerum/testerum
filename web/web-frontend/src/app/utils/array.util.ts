@@ -8,6 +8,15 @@ export class ArrayUtil {
         return JSON.parse(JsonUtil.serializeArray(array));
     }
 
+
+    static mapArray<T>(source: Array<any>):T[] {
+        let result: T[] = [];
+        for (const obj of source) {
+            result.push(obj)
+        }
+        return result;
+    }
+
     static copyArrayOfObjects(array: Array<any>) {
         let result: Array<any> = [];
         for (const obj of array) {

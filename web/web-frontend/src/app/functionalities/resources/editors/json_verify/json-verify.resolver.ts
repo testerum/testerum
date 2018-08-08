@@ -19,7 +19,7 @@ export class JsonVerifyResolver implements Resolve<any> {
         }
 
         if(route.params['create'] == "create") {
-           return ResourceContext.createInstance(Path.createInstance(path), new EmptyJsonVerify())
+           return ResourceContext.createInstance(Path.createInstance(path), new EmptyJsonVerify(null))
         }
         if(path) {
             return this.resourceService.getResource(Path.createInstance(path), new SerializationUtil());

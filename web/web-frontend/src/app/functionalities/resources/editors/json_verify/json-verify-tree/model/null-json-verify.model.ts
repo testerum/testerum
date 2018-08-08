@@ -3,14 +3,17 @@ import {SerializableUnknown} from "../../../../../../model/infrastructure/serial
 import {JsonIntegrity} from "./infrastructure/json-integrity.interface";
 import {JsonTreeNodeSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-node-serialzable.model";
 import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
+import {JsonTreeNodeOptions} from "../../../../../../generic/components/json-tree/model/behavior/JsonTreeNodeOptions";
 
 export class NullJsonVerify extends JsonTreeNodeSerializable implements SerializableUnknown<NullJsonVerify>, JsonIntegrity {
 
     value: any;
     isDirty: boolean = true;
+    options: JsonTreeNodeOptions = new JsonTreeNodeOptions();
 
     constructor(parent: JsonTreeContainer) {
         super(parent);
+        this.options.displayLines = false;
     }
 
     isEmptyAndShouldNotBeSaved(): boolean {
@@ -23,6 +26,10 @@ export class NullJsonVerify extends JsonTreeNodeSerializable implements Serializ
 
     canDeserialize(input: any): boolean {
         return input === null;
+    }
+
+    getOptions(): JsonTreeNodeOptions {
+        return this.options;
     }
 
     deserialize(input: Object): NullJsonVerify {

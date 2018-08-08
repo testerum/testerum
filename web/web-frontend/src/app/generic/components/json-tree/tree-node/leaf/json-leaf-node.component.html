@@ -1,9 +1,13 @@
 <ng-container>
-    <div class="tree-node tree-node-line"
+    <div class="tree-node"
+         [class.tree-node-line]="model.getOptions().displayLines"
          [class.hidden]="model.isHidden()"
          [class.tree-node-last]="isLastVisibleNode()"> <!--tree-node-close tree-node-leaf-->
 
-        <i class="tree-icon tree-line-icon tree-line-leaf"></i>
+        <i class="tree-icon tree-line-icon "
+           [class.tree-no-line-icon]="!model.getOptions().displayLines"
+           [class.tree-line-leaf]="model.getOptions().displayLines">
+        </i>
 
         <div (click)="setSelected(); $event.stopPropagation()"
              class="tree-leaf">

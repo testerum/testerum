@@ -42,7 +42,7 @@ export class JsonVerifyComponent extends ResourceComponent<ArrayJsonVerify> impl
 
     ngOnInit() {
         if (this.model == null) {
-            this.model = new ArrayJsonVerify();
+            this.model = new ArrayJsonVerify(null);
         }
 
         this.jsonVerifyTreeService.setJsonVerifyRootResource(this.model);

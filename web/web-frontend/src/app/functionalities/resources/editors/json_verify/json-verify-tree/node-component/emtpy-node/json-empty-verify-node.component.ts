@@ -22,10 +22,10 @@ export class JsonEmptyVerifyNodeComponent {
     }
 
     createArrayNode() {
-        this.jsonVerifyTreeService.setJsonVerifyRootResource(new ArrayJsonVerify(this.model));
+        this.jsonVerifyTreeService.setJsonVerifyRootResource(new ArrayJsonVerify(this.model.parentContainer));
     }
 
     createObjectNode() {
-        this.jsonVerifyTreeService.setJsonVerifyRootResource(new ObjectJsonVerify(this.model));
+        this.jsonVerifyTreeService.setJsonVerifyRootResource(new ObjectJsonVerify(this.model.parentContainer));
     }
 }

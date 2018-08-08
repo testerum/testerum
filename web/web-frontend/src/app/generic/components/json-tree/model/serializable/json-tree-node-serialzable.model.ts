@@ -1,11 +1,13 @@
 
 import {JsonTreeNode} from "../json-tree-node.model";
 import {JsonTreeContainer} from "../json-tree-container.model";
+import {JsonTreeNodeOptions} from "../behavior/JsonTreeNodeOptions";
 
 export abstract class JsonTreeNodeSerializable implements JsonTreeNode, Serializable<any> {
 
     parentContainer: JsonTreeContainer;
     hidden: boolean;
+    private _options: JsonTreeNodeOptions = new JsonTreeNodeOptions();
 
     constructor(parentContainer: JsonTreeContainer) {
         this.parentContainer = parentContainer;
@@ -25,6 +27,10 @@ export abstract class JsonTreeNodeSerializable implements JsonTreeNode, Serializ
 
     setHidden(isHidden: boolean) {
         this.hidden = isHidden;
+    }
+
+    getOptions(): JsonTreeNodeOptions {
+        return this._options;
     }
 
     abstract deserialize(input: Object): any;
