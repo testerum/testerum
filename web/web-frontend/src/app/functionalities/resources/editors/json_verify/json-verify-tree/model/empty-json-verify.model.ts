@@ -8,8 +8,8 @@ export class EmptyJsonVerify extends JsonTreeNodeSerializable implements Seriali
 
     isDirty: boolean = true;
 
-    constructor() {
-        super(null);
+    constructor(parent: JsonTreeContainer) {
+        super(parent);
     }
 
     isEmptyAndShouldNotBeSaved(): boolean {

@@ -50,7 +50,7 @@ export class HttpMockRequestBodyComponent implements OnInit{
 
     onModelSet(httpMock: HttpMock) {
         if(!httpMock || !httpMock.expectedRequest.body.content) {
-            this.jsonVerifyTreeService.setJsonSchema(new EmptyJsonVerify())
+            this.jsonVerifyTreeService.setJsonSchema(new EmptyJsonVerify(null))
         }
 
         if(httpMock.expectedRequest.body.matchingType == HttpMockRequestBodyMatchingType.JSON_VERIFY) {

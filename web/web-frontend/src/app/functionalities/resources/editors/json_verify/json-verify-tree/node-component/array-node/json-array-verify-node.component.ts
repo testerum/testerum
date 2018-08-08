@@ -30,15 +30,15 @@ export class JsonArrayVerifyNodeComponent extends JsonTreeChildrenRenderer {
     }
 
     createArrayNode() {
-        this.model.getChildren().push(new ArrayJsonVerify());
+        this.model.getChildren().push(new ArrayJsonVerify(this.model));
     }
 
     createObjectNode() {
-        this.model.getChildren().push(new ObjectJsonVerify());
+        this.model.getChildren().push(new ObjectJsonVerify(this.model));
     }
 
     createPrimitiveNode() {
-        this.model.getChildren().push(new StringJsonVerify())
+        this.model.getChildren().push(new StringJsonVerify(this.model))
     }
 
     deleteEntry() {

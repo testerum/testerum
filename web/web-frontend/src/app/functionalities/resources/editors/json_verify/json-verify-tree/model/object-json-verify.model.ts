@@ -1,10 +1,8 @@
 import {NodeState} from "../enum/node-state.enum";
 import {CompareMode} from "../../../../../../model/enums/compare-mode.enum";
 import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
-import {JsonTreeNode} from "../../../../../../generic/components/json-tree/model/json-tree-node.model";
 import {SerializableUnknown} from "../../../../../../model/infrastructure/serializable-unknown.model";
 import {FieldJsonVerify} from "./field-json-verify.model";
-import {JsonTreeContainerAbstract} from "../../../../../../generic/components/json-tree/model/json-tree-container.abstract";
 import {JsonIntegrity} from "./infrastructure/json-integrity.interface";
 import {JsonTreeContainerSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-container-serializable.model";
 import {JsonTreeNodeSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-node-serialzable.model";
@@ -17,8 +15,8 @@ export class ObjectJsonVerify extends JsonTreeContainerSerializable implements S
     children: Array<JsonTreeNodeSerializable> = [];
     compareMode: CompareMode = CompareMode.INHERIT;
 
-    constructor() {
-        super(null);
+    constructor(parent: JsonTreeContainer) {
+        super(parent);
     }
 
     getChildren(): Array<JsonTreeNodeSerializable> {
@@ -52,7 +50,7 @@ export class ObjectJsonVerify extends JsonTreeContainerSerializable implements S
                 continue;
             }
 
-            let fieldJsonVerify = new FieldJsonVerify().deserialize(fieldInput);
+            let fieldJsonVerify = new FieldJsonVerify(this).deserialize(fieldInput);
             this.children.push(fieldJsonVerify)
         }
         return this;

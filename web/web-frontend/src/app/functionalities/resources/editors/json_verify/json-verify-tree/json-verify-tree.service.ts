@@ -17,16 +17,17 @@ export class JsonVerifyTreeService {
     editMode: boolean = false;
 
     constructor() {
-        this.rootNode.children.push(new EmptyJsonVerify())
+        this.rootNode.children.push(new EmptyJsonVerify(this.rootNode))
     }
 
     setEmpty() {
         this.jsonSchema = null;
         this.rootNode = new JsonTreeModelSerializable();
-        this.rootNode.children.push(new EmptyJsonVerify());
+        this.rootNode.children.push(new EmptyJsonVerify(this.rootNode));
     }
 
     setJsonVerifyRootResource(rootNode: JsonTreeNodeSerializable) {
+        rootNode.parentContainer = this.rootNode;
         this.rootNode.children.length = 0;
         this.rootNode.children.push(rootNode);
     }
@@ -54,7 +55,7 @@ export class JsonVerifyTreeService {
         this.deleteNode(this.rootNode.children, node);
 
         if(this.rootNode.children.length == 0) {
-            this.rootNode.children.push(new EmptyJsonVerify());
+            this.rootNode.children.push(new EmptyJsonVerify(this.rootNode));
         }
     }
     private deleteNode(nodes: Array<JsonTreeNode>, nodeToDelete: JsonTreeNode):boolean {

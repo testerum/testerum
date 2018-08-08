@@ -5,7 +5,7 @@ import {JsonIntegrity} from "./infrastructure/json-integrity.interface";
 import {JsonTreeContainerSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-container-serializable.model";
 import {JsonTreeNodeSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-node-serialzable.model";
 import {Resource} from "../../../../../../model/resource/resource.model";
-import {HttpRequest} from "../../../../../../model/resource/http/http-request.model";
+import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
 
 export class ArrayJsonVerify extends JsonTreeContainerSerializable implements SerializableUnknown<ArrayJsonVerify>, JsonIntegrity, Resource<ArrayJsonVerify> {
 
@@ -13,8 +13,8 @@ export class ArrayJsonVerify extends JsonTreeContainerSerializable implements Se
     children: Array<JsonTreeNodeSerializable> = [];
     isDirty: boolean = true;
 
-    constructor() {
-        super(null);
+    constructor(parent: JsonTreeContainer) {
+        super(parent);
     }
 
     getChildren(): Array<JsonTreeNodeSerializable> {
@@ -42,7 +42,7 @@ export class ArrayJsonVerify extends JsonTreeContainerSerializable implements Se
                 continue;
             }
 
-            this.children.push(SerializationUtil.deserialize(inputItem) as JsonTreeNodeSerializable)
+            this.children.push(SerializationUtil.deserialize(inputItem, this) as JsonTreeNodeSerializable)
         }
         return this;
     }
@@ -79,10 +79,10 @@ export class ArrayJsonVerify extends JsonTreeContainerSerializable implements Se
 
     clone(): ArrayJsonVerify {
         let objectAsJson = JSON.parse(this.serialize());
-        return new ArrayJsonVerify().deserialize(objectAsJson);
+        return new ArrayJsonVerify(null).deserialize(objectAsJson);
     }
 
     createInstance(): ArrayJsonVerify {
-        return new ArrayJsonVerify();
+        return new ArrayJsonVerify(null);
     }
 }

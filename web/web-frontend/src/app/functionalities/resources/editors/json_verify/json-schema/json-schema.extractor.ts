@@ -35,19 +35,19 @@ export class JsonSchemaExtractor {
     private getSchemaForNode(node: JsonTreeNodeSerializable): JsonTreeNodeSerializable {
         let result;
         if (node instanceof ArrayJsonVerify) {
-            result = new ArrayJsonVerify();
+            result = new ArrayJsonVerify(null);
         }
 
         if (node instanceof BooleanJsonVerify) {
-            result = new BooleanJsonVerify()
+            result = new BooleanJsonVerify(null)
         }
 
         if (node instanceof EmptyJsonVerify) {
-            result = new EmptyJsonVerify()
+            result = new EmptyJsonVerify(null)
         }
 
         if (node instanceof FieldJsonVerify) {
-            result = new FieldJsonVerify();
+            result = new FieldJsonVerify(null);
             result.isDirty = false;
             result.name = node.name;
 
@@ -60,19 +60,19 @@ export class JsonSchemaExtractor {
         }
 
         if (node instanceof NullJsonVerify) {
-            result = new NullJsonVerify()
+            result = new NullJsonVerify(null)
         }
 
         if (node instanceof NumberJsonVerify) {
-            result = new NumberJsonVerify()
+            result = new NumberJsonVerify(null)
         }
 
         if (node instanceof ObjectJsonVerify) {
-            result = new ObjectJsonVerify()
+            result = new ObjectJsonVerify(null)
         }
 
         if (node instanceof StringJsonVerify) {
-            result = new StringJsonVerify()
+            result = new StringJsonVerify(null)
         }
 
         return result;

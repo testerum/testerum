@@ -86,7 +86,7 @@ export class JsonPrimitiveVerifyNodeComponent {
         }
 
         try {
-            let jsonTreeNode: JsonTreeNode = SerializationUtil.deserialize(value);
+            let jsonTreeNode: JsonTreeNode = SerializationUtil.deserialize(value, this.model.parentContainer);
             if (!jsonTreeNode || !SerializationUtil.isPrimitiveType(jsonTreeNode)) {
                 return null;
             }

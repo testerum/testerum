@@ -8,48 +8,49 @@ import {BooleanJsonVerify} from "../boolean-json-verify.model";
 import {NumberJsonVerify} from "../number-json-verify.model";
 import {NullJsonVerify} from "../null-json-verify.model";
 import {JsonTreeNodeSerializable} from "../../../../../../../generic/components/json-tree/model/serializable/json-tree-node-serialzable.model";
+import {JsonTreeContainer} from "../../../../../../../generic/components/json-tree/model/json-tree-container.model";
 
 export class SerializationUtil implements Serializable<JsonTreeNode>{
 
 
     deserialize(input: Object): JsonTreeNodeSerializable {
-        return SerializationUtil.deserialize(input);
+        return SerializationUtil.deserialize(input, null);
     }
 
     serialize(): string {
         throw Error("this method should not be called")
     }
 
-    public static deserialize(input: any): JsonTreeNodeSerializable {
+    public static deserialize(input: any, parent: JsonTreeContainer): JsonTreeNodeSerializable {
         let instance:SerializableUnknown<JsonTreeNodeSerializable>;
 
         //this needs to be before Object verify
-        instance = new NullJsonVerify();
+        instance = new NullJsonVerify(parent);
         if(instance.canDeserialize(input)) {
             return instance.deserialize(input);
         }
 
-        instance = new ArrayJsonVerify();
+        instance = new ArrayJsonVerify(parent);
         if(instance.canDeserialize(input)) {
             return instance.deserialize(input);
         }
 
-        instance = new ObjectJsonVerify();
+        instance = new ObjectJsonVerify(parent);
         if(instance.canDeserialize(input)) {
             return instance.deserialize(input);
         }
 
-        instance = new StringJsonVerify();
+        instance = new StringJsonVerify(parent);
         if(instance.canDeserialize(input)) {
             return instance.deserialize(input);
         }
 
-        instance = new BooleanJsonVerify();
+        instance = new BooleanJsonVerify(parent);
         if(instance.canDeserialize(input)) {
             return instance.deserialize(input);
         }
 
-        instance = new NumberJsonVerify();
+        instance = new NumberJsonVerify(parent);
         if(instance.canDeserialize(input)) {
             return instance.deserialize(input);
         }

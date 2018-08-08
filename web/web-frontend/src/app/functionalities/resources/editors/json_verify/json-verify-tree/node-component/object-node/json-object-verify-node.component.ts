@@ -29,19 +29,19 @@ export class JsonObjectVerifyNodeComponent extends JsonTreeChildrenRenderer {
     }
 
     createArrayNode() {
-        let fieldJsonVerify = new FieldJsonVerify();
-        fieldJsonVerify.value = new ArrayJsonVerify();
+        let fieldJsonVerify = new FieldJsonVerify(this.model);
+        fieldJsonVerify.value = new ArrayJsonVerify(fieldJsonVerify);
         this.model.getChildren().push(fieldJsonVerify);
     }
 
     createObjectNode() {
-        let fieldJsonVerify = new FieldJsonVerify();
-        fieldJsonVerify.value = new ObjectJsonVerify();
+        let fieldJsonVerify = new FieldJsonVerify(this.model);
+        fieldJsonVerify.value = new ObjectJsonVerify(fieldJsonVerify);
         this.model.getChildren().push(fieldJsonVerify);
     }
 
     createPrimitiveNode() {
-        let fieldJsonVerify = new FieldJsonVerify();
+        let fieldJsonVerify = new FieldJsonVerify(this.model);
         this.model.getChildren().push(fieldJsonVerify)
     }
 

@@ -24,8 +24,8 @@ export class FieldJsonVerify extends JsonTreeContainerSerializable implements Se
 
     compareMode: CompareMode = CompareMode.INHERIT;
 
-    constructor() {
-        super(null);
+    constructor(parent: JsonTreeContainer) {
+        super(parent);
     }
 
     getChildren(): Array<JsonTreeNodeSerializable> {
@@ -113,7 +113,7 @@ export class FieldJsonVerify extends JsonTreeContainerSerializable implements Se
         let inputAsArray = input as Array<any>;
 
         this.name = inputAsArray[0];
-        this.value = SerializationUtil.deserialize(inputAsArray[1]);
+        this.value = SerializationUtil.deserialize(inputAsArray[1], this);
         if (this.isValueAContainer()) {
             this.compareMode = this.value.compareMode;
         }
