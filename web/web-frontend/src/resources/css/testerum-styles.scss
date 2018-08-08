@@ -69,9 +69,18 @@ body {
     line-height: 0.5;
 }
 // tree icons
-.tree-node-closed-icon {
+.tree-node-open {
+    @extend .fas;
+    @extend .fa-caret-down;
+}
+.tree-node-close {
     @extend .fas;
     @extend .fa-caret-right;
+}
+.tree-node-empty {
+    @extend .fas;
+    @extend .fa-caret-right;
+    color: gray;
 }
 
 //======= Only CRISTI know why this are here ===============

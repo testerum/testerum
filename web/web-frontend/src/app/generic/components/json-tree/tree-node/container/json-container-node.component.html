@@ -1,16 +1,25 @@
 <ng-container>
     <div class="tree-node"
+         [class.show-dots]="model.getOptions().displayLines"
          [class.tree-node-line]="model.getOptions().displayLines"
-         [class.tree-node-open]="model.getNodeState().showChildren && hasChildren()"
-         [class.tree-node-close]="!model.getNodeState().showChildren && hasChildren()"
-         [class.tree-node-empty]="!hasChildren()"
-         [class.tree-node-last]="isLastNode"> <!--tree-node-close tree-node-leaf-->
+         [class.tree-node-last]="isLastNode">
+         <!--tree-node-close tree-node-leaf-->
 
-        <i *ngIf="model.getOptions().displayLines" class="tree-icon tree-line-icon" (click)="toggleShowHideChildren();$event.stopPropagation();"></i>
-        <i *ngIf="!model.getOptions().displayLines" class="tree-node-closed-icon" (click)="toggleShowHideChildren();$event.stopPropagation();"></i>
+
+        <div [class.last-horizontal-line]="isLastNode" class="horizontal-line-distance-from-top">
+            <i class="toggle-icon"
+               [class.tree-node-open]="model.getNodeState().showChildren && hasChildren()"
+               [class.tree-node-close]="!model.getNodeState().showChildren && hasChildren()"
+               [class.tree-node-empty]="!hasChildren()"
+               (click)="toggleShowHideChildren();$event.stopPropagation();"></i>
+            <div class="horizontal-line"></div>
+        </div>
 
         <div class="tree-node-header" (click)="toggleShowChildren();$event.stopPropagation();">
             <span #content></span>
         </div>
+
+
+
     </div>
 </ng-container>

@@ -1,75 +1,61 @@
-.tree-node-header {
-    cursor: pointer;
-    line-height: 24px;
-
-    display: inline-block;
-    white-space: nowrap;
-    padding: 0;
-    margin: 0;
-    vertical-align: top;
-}
-
-.tree-icon {
-    width: 18px;
-    height: 24px;
-    line-height: 24px;
-
-    background-image: url(../../../../../../media/32px-tree.png);
-    background-repeat: no-repeat;
-
-    display: inline-block;
-    text-decoration: none;
-    margin: 0;
-    padding: 0;
-    vertical-align: top;
-    text-align: center;
-}
-
 .tree-node {
+    display: flex;
+    flex-direction: row;
+
     margin: 0;
     padding: 0;
     list-style-type: none;
     list-style-image: none;
     white-space: nowrap;
 
-    min-height: 24px;
     line-height: 24px;
-    min-width: 24px;
-    display: block;
 }
-
+.horizontal-line {
+    width: 10px;
+    margin-left: 1px;
+    height: 100%;
+}
+.show-dots .horizontal-line {
+    border-bottom: 1px dotted black;
+}
+.horizontal-line-distance-from-top {
+    height: 12px;
+    display: flex;
+}
+.show-dots .last-horizontal-line {
+    border-left: 1px dotted black;
+}
 .tree-node-line {
-    background-position: -300px -4px;
-    background-repeat: repeat-y;
-    background-image: url(../../../../../../media/32px-tree.png);
+    border-left: 1px dotted black;
+    margin-top: 1px;
+    margin-left: 5px;
 }
 
 .tree-node-last {
-    background: 0 0;
+    border-left: 0;
 }
 
-.tree-node-open > .tree-line-icon {
-    background-position: -140px -4px;
+.tree-node-header {
+    cursor: pointer;
+    display: inline-block;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
 }
 
-.tree-node-close > .tree-line-icon {
-    background-position: -108px -4px;
+.toggle-icon {
+    width: 5px;
+    margin-top: 5px;
 }
-
-.tree-node-empty > .tree-line-icon {
-    background-position: -76px -4px;
+.tree-node-open {
+    margin-left: -5px;
 }
-
-.tree-node-open > .tree-no-line-icon {
-    background-position: -45px -3px;
+.tree-node-close {
+    margin-left: -2px;
 }
-
-.tree-node-close > .tree-no-line-icon {
-    background-position: -11px -4px;
-}
-
-.tree-node-empty > .tree-no-line-icon {
-    background-image: none;
+.tree-node-empty {
+    margin-left: -2px;
 }
 
 /* SHOW - HIDE CHILDREN*/
