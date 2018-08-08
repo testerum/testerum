@@ -135,6 +135,7 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
                 variablesService.getVariablesAsMap()
         )
 
+        println("STARTUP TIME: ${TesterumRunner.stopWatch.elapsedMillis()}ms")
         val executionStatus: ExecutionStatus = runWithThreadContextClassLoader(stepsClassLoader) {
             suite.run(runnerContext, globalVars)
         }

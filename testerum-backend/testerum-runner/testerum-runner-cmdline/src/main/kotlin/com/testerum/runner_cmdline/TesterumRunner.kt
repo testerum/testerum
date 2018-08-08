@@ -1,5 +1,6 @@
 package com.testerum.runner_cmdline
 
+import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.runner_cmdline.cmdline.exiter.Exiter
 import com.testerum.runner_cmdline.cmdline.exiter.model.ExitCode
 import com.testerum.runner_cmdline.cmdline.params.CmdlineParamsParser
@@ -11,8 +12,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext
 
 object TesterumRunner {
 
+    lateinit var stopWatch: StopWatch
+
     @JvmStatic
     fun main(args: Array<String>) {
+        stopWatch = StopWatch.start()
+
         val cmdlineParams: CmdlineParams = getCmdlineParams(args)
 
         SettingsManagerFactory.cmdlineParams = cmdlineParams
