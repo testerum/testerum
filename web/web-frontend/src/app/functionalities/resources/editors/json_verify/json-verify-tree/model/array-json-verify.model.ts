@@ -6,15 +6,18 @@ import {JsonTreeContainerSerializable} from "../../../../../../generic/component
 import {JsonTreeNodeSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-node-serialzable.model";
 import {Resource} from "../../../../../../model/resource/resource.model";
 import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
+import {JsonTreeContainerOptions} from "../../../../../../generic/components/json-tree/model/behavior/JsonTreeContainerOptions";
 
 export class ArrayJsonVerify extends JsonTreeContainerSerializable implements SerializableUnknown<ArrayJsonVerify>, JsonIntegrity, Resource<ArrayJsonVerify> {
 
     compareMode: CompareMode = CompareMode.INHERIT;
     children: Array<JsonTreeNodeSerializable> = [];
     isDirty: boolean = true;
+    options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
     constructor(parent: JsonTreeContainer) {
         super(parent);
+        this.options.displayLines = false;
     }
 
     getChildren(): Array<JsonTreeNodeSerializable> {

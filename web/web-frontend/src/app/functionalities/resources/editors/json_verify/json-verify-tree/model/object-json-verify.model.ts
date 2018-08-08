@@ -6,6 +6,7 @@ import {FieldJsonVerify} from "./field-json-verify.model";
 import {JsonIntegrity} from "./infrastructure/json-integrity.interface";
 import {JsonTreeContainerSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-container-serializable.model";
 import {JsonTreeNodeSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-node-serialzable.model";
+import {JsonTreeContainerOptions} from "../../../../../../generic/components/json-tree/model/behavior/JsonTreeContainerOptions";
 
 export class ObjectJsonVerify extends JsonTreeContainerSerializable implements SerializableUnknown<ObjectJsonVerify>, JsonIntegrity {
 
@@ -14,9 +15,11 @@ export class ObjectJsonVerify extends JsonTreeContainerSerializable implements S
     isDirty: boolean = true;
     children: Array<JsonTreeNodeSerializable> = [];
     compareMode: CompareMode = CompareMode.INHERIT;
+    options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
     constructor(parent: JsonTreeContainer) {
         super(parent);
+        this.options.displayLines = false;
     }
 
     getChildren(): Array<JsonTreeNodeSerializable> {

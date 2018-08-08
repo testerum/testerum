@@ -13,6 +13,7 @@ import {JsonIntegrity} from "./infrastructure/json-integrity.interface";
 import {CompareMode} from "../../../../../../model/enums/compare-mode.enum";
 import {JsonTreeContainerSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-container-serializable.model";
 import {JsonTreeNodeSerializable} from "../../../../../../generic/components/json-tree/model/serializable/json-tree-node-serialzable.model";
+import {JsonTreeContainerOptions} from "../../../../../../generic/components/json-tree/model/behavior/JsonTreeContainerOptions";
 
 export class FieldJsonVerify extends JsonTreeContainerSerializable implements SerializableUnknown<FieldJsonVerify>, JsonIntegrity {
     name: string;
@@ -21,11 +22,13 @@ export class FieldJsonVerify extends JsonTreeContainerSerializable implements Se
     nodeState: NodeState;
 
     isDirty: boolean = true;
+    options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
     compareMode: CompareMode = CompareMode.INHERIT;
 
     constructor(parent: JsonTreeContainer) {
         super(parent);
+        this.options.displayLines = false;
     }
 
     getChildren(): Array<JsonTreeNodeSerializable> {

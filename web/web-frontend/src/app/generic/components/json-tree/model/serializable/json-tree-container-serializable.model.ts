@@ -10,7 +10,7 @@ export abstract class JsonTreeContainerSerializable extends JsonTreeNodeSerializ
 
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
 
-    private options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
+    options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
     constructor(parentContainer: JsonTreeContainer) {
         super(parentContainer);
