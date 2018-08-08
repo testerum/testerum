@@ -135,10 +135,10 @@ export class JsonFieldVerifyNodeComponent extends JsonTreeChildrenRenderer imple
 
     createArrayNode() {
         if(this.model.isValueAnArray()) {
-            (this.model.value as ArrayJsonVerify).getChildren().push(new ArrayJsonVerify(this.model));
+            (this.model.value as ArrayJsonVerify).getChildren().push(new ArrayJsonVerify(this.model.value));
         }
         if(this.model.isValueAnObject()) {
-            let fieldJsonVerify = new FieldJsonVerify(this.model);
+            let fieldJsonVerify = new FieldJsonVerify(this.model.value);
             fieldJsonVerify.value = new ArrayJsonVerify(fieldJsonVerify);
             (this.model.value as ObjectJsonVerify).getChildren().push(fieldJsonVerify);
         }
@@ -146,10 +146,10 @@ export class JsonFieldVerifyNodeComponent extends JsonTreeChildrenRenderer imple
 
     createObjectNode() {
         if(this.model.isValueAnArray()) {
-            (this.model.value as ArrayJsonVerify).getChildren().push(new ObjectJsonVerify(this.model));
+            (this.model.value as ArrayJsonVerify).getChildren().push(new ObjectJsonVerify(this.model.value));
         }
         if(this.model.isValueAnObject()) {
-            let fieldJsonVerify = new FieldJsonVerify(this.model);
+            let fieldJsonVerify = new FieldJsonVerify(this.model.value);
             fieldJsonVerify.value = new ObjectJsonVerify(fieldJsonVerify);
             (this.model.value as ObjectJsonVerify).getChildren().push(fieldJsonVerify);
         }
@@ -157,10 +157,10 @@ export class JsonFieldVerifyNodeComponent extends JsonTreeChildrenRenderer imple
 
     createPrimitiveNode() {
         if(this.model.isValueAnArray()) {
-            (this.model.value as ArrayJsonVerify).getChildren().push(new StringJsonVerify(this.model))
+            (this.model.value as ArrayJsonVerify).getChildren().push(new StringJsonVerify(this.model.value))
         }
         if(this.model.isValueAnObject()) {
-            let fieldJsonVerify = new FieldJsonVerify(this.model);
+            let fieldJsonVerify = new FieldJsonVerify(this.model.value);
             fieldJsonVerify.value = new StringJsonVerify(fieldJsonVerify);
             (this.model.value as ObjectJsonVerify).getChildren().push(fieldJsonVerify)
         }

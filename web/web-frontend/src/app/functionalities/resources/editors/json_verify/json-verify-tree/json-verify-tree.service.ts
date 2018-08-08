@@ -33,22 +33,7 @@ export class JsonVerifyTreeService {
     }
 
     replaceNode(nodeToReplace: JsonTreeNode, newNode: JsonTreeNode) {
-        this.replaceInNodes(this.rootNode.children, nodeToReplace, newNode);
-    }
-
-    private replaceInNodes(nodes: Array<JsonTreeNode>, nodeToReplace: JsonTreeNode, newNode: JsonTreeNode):boolean {
-        for (let node of nodes) {
-            if(node === nodeToReplace) {
-                ArrayUtil.replaceElementInArray(nodes, nodeToReplace, newNode);
-                return true;
-            }
-
-            if(node instanceof JsonTreeContainerAbstract) {
-                this.replaceInNodes((node as JsonTreeContainerAbstract).getChildren(), nodeToReplace, newNode);
-            }
-        }
-
-        return false;
+        ArrayUtil.replaceElementInArray(nodeToReplace.getParent().getChildren(), nodeToReplace, newNode);
     }
 
     deleteEntry(node: JsonTreeNode) {
