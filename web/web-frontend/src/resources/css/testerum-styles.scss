@@ -68,6 +68,12 @@ body {
 .fa_my-expand span {
     line-height: 0.5;
 }
+// tree icons
+.tree-node-closed-icon {
+    @extend .fas;
+    @extend .fa-caret-right;
+}
+
 //======= Only CRISTI know why this are here ===============
 .logs-split-area.horizontal-scroll {
     overflow: auto !important;

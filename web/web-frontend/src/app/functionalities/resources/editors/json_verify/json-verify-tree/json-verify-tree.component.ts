@@ -6,8 +6,6 @@ import {JsonObjectVerifyNodeComponent} from "./node-component/object-node/json-o
 import {ObjectJsonVerify} from "./model/object-json-verify.model";
 import {JsonVerifyTreeService} from "./json-verify-tree.service";
 import {JsonTreeModel} from "../../../../../generic/components/json-tree/model/json-tree.model";
-import {SerializationUtil} from "./model/util/serialization.util";
-import {JsonTreeNode} from "../../../../../generic/components/json-tree/model/json-tree-node.model";
 import {FieldJsonVerify} from "./model/field-json-verify.model";
 import {JsonFieldVerifyNodeComponent} from "./node-component/field-node/json-field-verify-node.component";
 import {StringJsonVerify} from "./model/string-json-verify.model";
@@ -21,7 +19,8 @@ import {JsonEmptyVerifyNodeComponent} from "./node-component/emtpy-node/json-emp
 @Component({
     moduleId: module.id,
     selector: 'json-verify-tree',
-    templateUrl: 'json-verify-tree.component.html'
+    templateUrl: 'json-verify-tree.component.html',
+    styleUrls: ["json-verify-tree.component.scss"]
 })
 
 export class JsonVerifyTreeComponent implements OnInit {
