@@ -11,7 +11,7 @@
     line-height: 24px;
 }
 .horizontal-line {
-    width: 10px;
+    width: 7px;
     margin-left: 1px;
     height: 100%;
 }
@@ -48,14 +48,27 @@
     width: 5px;
     margin-top: 5px;
 }
+
 .tree-node-open {
     margin-left: -5px;
+
+    + .horizontal-line {
+        width: 10px;
+    }
 }
 .tree-node-close {
     margin-left: -2px;
+
+    + .horizontal-line {
+        width: 7px;
+    }
 }
 .tree-node-empty {
     margin-left: -2px;
+
+    + .horizontal-line {
+        width: 7px;
+    }
 }
 
 /* SHOW - HIDE CHILDREN*/

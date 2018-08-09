@@ -5,20 +5,6 @@
          (mouseleave)="hasMouseOver=false"
          (click)="collapseNode();$event.stopPropagation();">
 
-        <div *ngIf="model.isRootStepCall"
-            style="display: flex; flex-direction: column;">
-
-            <div *ngIf="model.children.length == 0" style="width: 15px"></div>
-            <i *ngIf="model.children.length > 0"
-               style="width: 10px;"
-               class="fa arrow-icon"
-               [class.fa-caret-right]="!model.jsonTreeNodeState.showChildren"
-               [class.fa-caret-down]="model.jsonTreeNodeState.showChildren"
-               aria-hidden="true"></i>
-            <div *ngIf="model.jsonTreeNodeState.showChildren && model.children.length != 0"
-                 class="tree-node-line" style="height: 100%"></div>
-        </div>
-
         <div>
             <step-text [class.error_squiggly]="hasWarnings()"
                 [stepDef]="model.stepCall.stepDef"

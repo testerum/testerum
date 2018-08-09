@@ -1,6 +1,7 @@
 .step-text-container {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 .step-text-container:hover .step-button-panel {
     display: inline-block;
