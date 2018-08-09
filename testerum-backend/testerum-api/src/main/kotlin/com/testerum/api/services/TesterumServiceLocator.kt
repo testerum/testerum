@@ -7,7 +7,6 @@ import com.testerum.api.test_context.test_vars.TestVariables
 
 object TesterumServiceLocator {
 
-    @Suppress("MemberVisibilityCanBePrivate")
     private val services = mutableMapOf<Class<*>, Any>()
 
     fun getTestContext(): TestContext = getService(TestContext::class.java)

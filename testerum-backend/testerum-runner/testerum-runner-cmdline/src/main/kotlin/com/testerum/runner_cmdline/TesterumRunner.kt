@@ -7,9 +7,10 @@ import com.testerum.runner_cmdline.cmdline.params.CmdlineParamsParser
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
-import com.testerum.runner_cmdline.module_bootstrapper.RunnerModuleBootstrapper
-import com.testerum.runner_cmdline.module_bootstrapper.TesterumRunnerLoggingConfigurator
+import com.testerum.runner_cmdline.module_di.RunnerModuleBootstrapper
+import com.testerum.runner_cmdline.module_di.TesterumRunnerLoggingConfigurator
 import org.fusesource.jansi.Ansi
+import org.fusesource.jansi.AnsiConsole
 
 object TesterumRunner {
 
@@ -17,8 +18,11 @@ object TesterumRunner {
     fun main(args: Array<String>) {
         val stopWatch = StopWatch.start()
         TesterumRunnerLoggingConfigurator.configureLogging()
+        AnsiConsole.systemInstall()
+        BannerPrinter.printBanner()
 
         val cmdlineParams: CmdlineParams = getCmdlineParams(args)
+        println("cmdlineParams = $cmdlineParams")
 
         val bootstrapper = RunnerModuleBootstrapper(cmdlineParams, stopWatch)
         val exitCode: ExitCode = bootstrapper.context.use {

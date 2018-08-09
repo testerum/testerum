@@ -30,6 +30,11 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
+            <artifactId>common-httpclient</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.testerum</groupId>
             <artifactId>model</artifactId>
         </dependency>
 
@@ -40,14 +45,8 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>resource-manager</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.testerum</groupId>
             <artifactId>settings</artifactId>
         </dependency>
-
         <!--==================== 3rd party dependencies ====================-->
 
         <!-- Model object mapper-->

@@ -5,12 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.testerum.api.transformer.ParameterInfo
 import com.testerum.api.transformer.Transformer
+import com.testerum.common_json.ObjectMapperFactory
 import com.testerum.model.resources.http.request.HttpRequest
-import http_support.module_bootstrapper.HttpStepsModuleServiceLocator
+import http_support.module_di.HttpStepsModuleServiceLocator
 
 class HttpRequestTransformer: Transformer<HttpRequest> {
 
-    private val objectMapper: ObjectMapper = HttpStepsModuleServiceLocator.bootstrapper.resourceManagerModuleFactory.resourceJsonObjectMapper
+    private val objectMapper: ObjectMapper = ObjectMapperFactory.RESOURCE_OBJECT_MAPPER
     private val jsonVariableReplacer = HttpStepsModuleServiceLocator.bootstrapper.httpStepsModuleFactory.jsonVariableReplacer
 
     override fun canTransform(paramInfo: ParameterInfo): Boolean

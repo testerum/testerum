@@ -2,6 +2,7 @@ package com.testerum.service.mapper
 
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common_kotlin.emptyToNull
+import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath
 import com.testerum.file_repository.model.RepositoryFile
 import com.testerum.model.arg.Arg
@@ -19,7 +20,6 @@ import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
 import com.testerum.model.util.StepHashUtil
 import com.testerum.model.warning.Warning
-import com.testerum.resource_manager.ResourceManager
 import com.testerum.service.mapper.file_arg_transformer.FileArgTransformer
 import com.testerum.service.mapper.util.ArgNameCodec
 import com.testerum.test_file_format.common.step_call.FileStepCall
@@ -33,9 +33,8 @@ import com.testerum.test_file_format.stepdef.FileStepDef
 import com.testerum.test_file_format.stepdef.signature.part.FileParamStepDefSignaturePart
 import com.testerum.test_file_format.stepdef.signature.part.FileStepDefSignaturePart
 import com.testerum.test_file_format.stepdef.signature.part.FileTextStepDefSignaturePart
-import java.lang.Exception
 
-open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
+open class FileToUiStepMapper(private val fileRepositoryService: FileRepositoryService) {
 
     companion object {
         private val ARG_PART_PARSER: ParserExecuter<List<FileArgPart>> = ParserExecuter(FileArgPartParserFactory.argParts())
@@ -164,7 +163,8 @@ open class FileToUiStepMapper(private val resourceManager: ResourceManager) {
 
                     path = knownPath.asPath()
 
-                    val resource: ResourceContext? = resourceManager.getResourceByPath(knownPath)
+//                    val resource: ResourceContext? = resourceManager.getResourceByPath(knownPath)
+                    val resource: ResourceContext? = fileRepositoryService.getResourceByPath(knownPath)
                     if (resource == null) {
                         warnings += Warning.externalResourceNotFound("${fileType.relativeRootDirectory}/$pathAsString")
 

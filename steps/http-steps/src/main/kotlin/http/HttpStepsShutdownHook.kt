@@ -1,7 +1,7 @@
 package http
 
 import com.testerum.api.annotations.hooks.AfterAllTests
-import http_support.module_bootstrapper.HttpStepsModuleServiceLocator
+import http_support.module_di.HttpStepsModuleServiceLocator
 
 class HttpStepsShutdownHook {
 

@@ -1,6 +1,5 @@
 package com.testerum.file_repository
 
-import com.testerum.api.test_context.settings.SettingsManager
 import com.testerum.file_repository.model.KnownPath
 import com.testerum.file_repository.model.RepositoryFile
 import com.testerum.file_repository.model.RepositoryFileChange
@@ -8,25 +7,28 @@ import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.toMyPath
 import com.testerum.model.repository.enums.FileType
-import com.testerum.settings.SystemSettings
+import com.testerum.model.resources.ResourceContext
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 import java.util.*
 import java.util.function.BiPredicate
 
 
-class FileRepositoryService(private val settingsManager: SettingsManager) {
+class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path) {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(FileRepositoryService::class.java)
 
         private val REGEX_TO_REPLACE_ILLEGAL_FILE_REGEX = Regex("[^a-zA-Z0-9-_\\s\\[\\]]")
         private const val REPLACEMENT_CHAR_OF_ILLEGAL_FILE_CHARS = "_"
+    }
+
+    fun getResourceByPath(knownPath: KnownPath): ResourceContext? {
+        return getByPath(knownPath)?.mapToResource()
     }
 
     fun create(repositoryFileChange: RepositoryFileChange): RepositoryFile {
@@ -183,7 +185,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
     fun getAllPathsOfResourcesByType(fileType: FileType): List<Path> {
         val result = mutableListOf<Path>()
 
-        val rootPath = Paths.get(settingsManager.getSettingValue(SystemSettings.REPOSITORY_DIRECTORY.key))
+        val rootPath = repositoryDirectory
         val fileTypeRootPath = rootPath.resolve(fileType.relativeRootDirectory.toJavaPath())
         try {
             Files.find(
@@ -274,7 +276,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
             val problemFile = File(problemFileLocation)
             val fileTypeAsString = if(problemFile.isDirectory) "Directory" else "File"
 
-            val rootPath = Paths.get(settingsManager.getSettingValue(SystemSettings.REPOSITORY_DIRECTORY.key))
+            val rootPath = repositoryDirectory
             val relativeFilePath = rootPath.relativize(problemFile.toPath())
             throw IllegalFileOperationException("$fileTypeAsString [$relativeFilePath] already exists", e)
         }
@@ -314,10 +316,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
     }
 
     private fun getAbsolutePath(escapedKnownPath: KnownPath): java.nio.file.Path {
-        val repositoryDirPathAsString = settingsManager.getSettingValue(SystemSettings.REPOSITORY_DIRECTORY.key)
-                ?: return escapedKnownPath.fileType.relativeRootDirectory.toJavaPath()
-
-        val rootPath = Paths.get(repositoryDirPathAsString)
+        val rootPath = repositoryDirectory
         val rootDirectory = rootPath.resolve(escapedKnownPath.fileType.relativeRootDirectory.toJavaPath())
 
         return rootDirectory.resolve(escapedKnownPath.toString()).toAbsolutePath().normalize()
@@ -325,7 +324,7 @@ class FileRepositoryService(private val settingsManager: SettingsManager) {
 
     fun getRelativePathFromAbsolutePath(absolutePath: java.nio.file.Path, fileType: FileType): java.nio.file.Path {
 
-        val rootPath = Paths.get(settingsManager.getSettingValue(SystemSettings.REPOSITORY_DIRECTORY.key))
+        val rootPath = repositoryDirectory
         val rootDirectory = rootPath.resolve(fileType.relativeRootDirectory.toJavaPath())
         val rootDirectoryAsString = rootDirectory.toString()
         val absolutePathAsString = absolutePath.toString()

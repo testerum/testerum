@@ -11,7 +11,7 @@
            http://www.springframework.org/schema/websocket    http://www.springframework.org/schema/websocket/spring-websocket.xsd
        ">
 
-    <bean class="com.testerum.web_backend.controller.module_bootstrapper.WebBackendModuleBootstrapperSpringIntegration" />
+    <bean class="com.testerum.web_backend.controller.module_di.WebBackendModuleBootstrapperSpringIntegration" />
 
     <!-- required to be able to import a Java @Configuration into xml -->
     <context:annotation-config/>

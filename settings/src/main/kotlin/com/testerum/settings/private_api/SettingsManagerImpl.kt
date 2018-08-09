@@ -8,40 +8,34 @@ import com.testerum.common_jdk.loadPropertiesFrom
 import com.testerum.settings.SystemSettings
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.*
 import java.util.regex.Pattern
 
-class SettingsManagerImpl : SettingsManager {
+// todo: separate settings management (map of settings) from settings file management
 
-    companion object {
-        val settingsDirectory: Path = Paths.get(System.getProperty("user.home") + "/.testerum")
-        private val settingsFile: Path = settingsDirectory.resolve("settings.properties")
+class SettingsManagerImpl(private val settingsFile: Path) : SettingsManager {
 
-        @JvmStatic
-        fun factoryMethodForWebPart(): SettingsManagerImpl {
-            val instance = SettingsManagerImpl()
-
-            if (Files.exists(settingsFile)) {
-                val properties: Properties = loadPropertiesFrom(settingsFile)
-
-                instance.registerPossibleUnresolvedValues(
-                        properties.asMap()
-                )
-            }
-
-            return instance
-        }
-    }
+    var settings:Map<String, SettingWithValue> = hashMapOf()
 
     private val propRefPattern = Pattern.compile("""\{\{(.*?)(?=}})}}""")
-    var settings:Map<String, SettingWithValue> = hashMapOf()
-    var possibleSettingUnresolvedValue: MutableMap<String, String?> = mutableMapOf()
+    private var possibleSettingUnresolvedValue: MutableMap<String, String?> = mutableMapOf()
 
     init {
         registerSettings(
                 SystemSettings.allSystemSettings
         )
+
+        applySettingsFromFile(settingsFile)
+    }
+
+    private fun applySettingsFromFile(settingsFile: Path) {
+        if (Files.exists(settingsFile)) {
+            val properties: Properties = loadPropertiesFrom(settingsFile)
+
+            registerPossibleUnresolvedValues(
+                    properties.asMap()
+            )
+        }
     }
 
     override fun getSetting(key: String): SettingWithValue? {
@@ -74,13 +68,10 @@ class SettingsManagerImpl : SettingsManager {
                 continue
             }
 
-            settingsCopy.put(
-                    settingToRegister.key,
-                    SettingWithValue(
-                            setting = settingToRegister,
-                            unresolvedValue = possibleSettingUnresolvedValue[settingToRegister.key],
-                            value = null
-                    )
+            settingsCopy[settingToRegister.key] = SettingWithValue(
+                    setting = settingToRegister,
+                    unresolvedValue = possibleSettingUnresolvedValue[settingToRegister.key],
+                    value = null
             )
         }
 
@@ -111,10 +102,8 @@ class SettingsManagerImpl : SettingsManager {
 
         val resolvedSettings: MutableMap<String, SettingWithValue> = mutableMapOf()
         for (resolvedKeyValueSetting in resolvedKeyValueSettings) {
-            resolvedSettings.put(
-                    resolvedKeyValueSetting.key,
-                    unresolvedNewSettingWithValues.first { it.setting.key == resolvedKeyValueSetting.key }.copy(value = resolvedKeyValueSetting.value)
-            )
+            resolvedSettings[resolvedKeyValueSetting.key] = unresolvedNewSettingWithValues.first { it.setting.key == resolvedKeyValueSetting.key }
+                                                                                          .copy(value = resolvedKeyValueSetting.value)
         }
         return resolvedSettings
     }
@@ -148,13 +137,11 @@ class SettingsManagerImpl : SettingsManager {
             val propertyToResolveValue = propertyToResolve.second
             val variableToResolve: String = propRefPattern.toRegex().find(propertyToResolveValue)!!.groupValues[1]
             val variableToResolveValue = resolvedKeyValueMap[variableToResolve]
-            if (variableToResolveValue == null) {
-                throw RuntimeException("Exception appeared while loading the system properties. No property with the key [$variableToResolve] was defined")
-            }
+                    ?: throw RuntimeException("Exception appeared while loading the system properties. No property with the key [$variableToResolve] was defined")
 
             val escapedVariableToResolveValue = Regex.escapeReplacement(variableToResolveValue)
             val resolvedValue = propertyToResolveValue.replace(propRefPattern.toRegex(), escapedVariableToResolveValue)
-            resolvedKeyValueMap.put(propertyToResolveKey, resolvedValue)
+            resolvedKeyValueMap[propertyToResolveKey] = resolvedValue
         }
         return resolvedKeyValueMap
     }
@@ -163,9 +150,10 @@ class SettingsManagerImpl : SettingsManager {
         for (keyValueEntry in keyValueMap) {
             val valueAsString = keyValueEntry.value
             if(valueAsString != null && propRefPattern.matcher(valueAsString).find()) {
-                return Pair<String, String>(keyValueEntry.key, valueAsString)
+                return Pair(keyValueEntry.key, valueAsString)
             }
         }
+
         return null
     }
 
@@ -186,7 +174,6 @@ class SettingsManagerImpl : SettingsManager {
     }
 
     private fun saveToPropertyFile(propertiesMap: MutableMap<String, String>) {
-
         val properties = Properties()
         properties.putAll(propertiesMap)
 
@@ -202,12 +189,12 @@ class SettingsManagerImpl : SettingsManager {
             var settingWithValueToSave: SettingWithValue = settingWithValue.copy(value = null)
 
             if(settingWithValue.setting.key == SystemSettings.REPOSITORY_DIRECTORY.key) {
-                if (settingWithValue.unresolvedValue == null) {
-                    settingWithValueToSave = settingWithValue.copy(
+                settingWithValueToSave = if (settingWithValue.unresolvedValue != null) {
+                    settingWithValue
+                } else {
+                    settingWithValue.copy(
                             unresolvedValue = this.getSetting(SystemSettings.REPOSITORY_DIRECTORY.key)!!.unresolvedValue
                     )
-                } else {
-                    settingWithValueToSave = settingWithValue
                 }
             }
 
@@ -222,7 +209,7 @@ class SettingsManagerImpl : SettingsManager {
         for (settingWithValue in settingsWithValueToSave) {
             val unresolvedValue = settingWithValue.unresolvedValue
             if (unresolvedValue != null) {
-                settingsAsPropMap.put(settingWithValue.setting.key, unresolvedValue)
+                settingsAsPropMap[settingWithValue.setting.key] = unresolvedValue
             }
         }
 
@@ -232,4 +219,5 @@ class SettingsManagerImpl : SettingsManager {
 
         return this.settings.values.toList()
     }
+
 }

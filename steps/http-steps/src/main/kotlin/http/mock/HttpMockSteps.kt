@@ -8,9 +8,8 @@ import com.testerum.model.resources.http.mock.stub.HttpMock
 import http.mock.transformer.HttpMockServerTransformer
 import http.mock.transformer.HttpMockTransformer
 import http_support.HttpMockService
-import http_support.module_bootstrapper.HttpStepsModuleServiceLocator
+import http_support.module_di.HttpStepsModuleServiceLocator
 
-@Suppress("MemberVisibilityCanBePrivate", "unused")
 class HttpMockSteps {
 
     private val httpMockService: HttpMockService = HttpStepsModuleServiceLocator.bootstrapper.httpStepsModuleFactory.httpMockService

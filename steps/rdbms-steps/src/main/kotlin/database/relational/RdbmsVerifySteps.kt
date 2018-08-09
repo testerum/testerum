@@ -9,7 +9,7 @@ import database.relational.connection_manager.RdbmsConnectionManager
 import database.relational.connection_manager.model.RdbmsClient
 import database.relational.connection_manager.serializer.RdbmsToJsonSerializer
 import database.relational.model.RdbmsVerify
-import database.relational.module_bootstrapper.RdbmsStepsModuleServiceLocator
+import database.relational.module_di.RdbmsStepsModuleServiceLocator
 import database.relational.transformer.RdbmsConnectionTransformer
 import database.relational.transformer.RdbmsVerifyTransformer
 import org.slf4j.LoggerFactory
@@ -20,7 +20,7 @@ class RdbmsVerifySteps {
         private val LOG = LoggerFactory.getLogger(RdbmsVerifySteps::class.java)
     }
 
-    private val jsonComparer: JsonComparer = RdbmsStepsModuleServiceLocator.bootstrapper.commonJsonDiffModuleFactory.jsonComparer
+    private val jsonComparer: JsonComparer = RdbmsStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
     private val rdbmsConnectionManager: RdbmsConnectionManager = RdbmsStepsModuleServiceLocator.bootstrapper.rdbmsStepsModuleFactory.rdbmsConnectionManager
 
     @Then("verify database state is like in <<rdbmsVerify>> file")

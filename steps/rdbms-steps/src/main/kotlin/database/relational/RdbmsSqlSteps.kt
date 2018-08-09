@@ -5,7 +5,7 @@ import com.testerum.api.annotations.steps.When
 import database.relational.connection_manager.RdbmsConnectionManager
 import database.relational.connection_manager.model.RdbmsClient
 import database.relational.model.RdbmsSql
-import database.relational.module_bootstrapper.RdbmsStepsModuleServiceLocator
+import database.relational.module_di.RdbmsStepsModuleServiceLocator
 import database.relational.transformer.RdbmsConnectionTransformer
 import database.relational.transformer.RdbmsSqlTransformer
 import org.slf4j.LoggerFactory

@@ -21,11 +21,6 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>settings</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.testerum</groupId>
             <artifactId>model</artifactId>
         </dependency>
 
