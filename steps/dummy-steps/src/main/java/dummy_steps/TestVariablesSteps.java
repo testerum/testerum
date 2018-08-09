@@ -2,11 +2,11 @@ package dummy_steps;
 
 import com.testerum.api.annotations.steps.Param;
 import com.testerum.api.annotations.steps.When;
+import com.testerum.api.services.TesterumServiceLocator;
+import com.testerum.api.test_context.test_vars.TestVariables;
 import com.testerum.api.transformer.ParameterInfo;
 import com.testerum.api.transformer.Transformer;
-import com.testerum.api.test_context.test_vars.TestVariables;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,12 +21,7 @@ public final class TestVariablesSteps {
 
     private static final String TEST_VAR = "dynamicallyCreatedVariable";
 
-    private final TestVariables testVariables;
-
-    @Autowired
-    public TestVariablesSteps(final TestVariables testVariables) {
-        this.testVariables = testVariables;
-    }
+    private final TestVariables testVariables = TesterumServiceLocator.getTestVariables();
 
     @When("I set <<name>> to <<value>>")
     public void set(final String name, final String value) {
