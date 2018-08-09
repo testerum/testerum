@@ -1,0 +1,19 @@
+package com.testerum.model.runner.tree
+
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.testerum.model.infrastructure.path.Path
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
+@JsonSubTypes(value = [
+    JsonSubTypes.Type(value = RunnerRootNode::class, name = "RUNNER_ROOT"),
+    JsonSubTypes.Type(value = RunnerFeatureNode::class, name = "RUNNER_FEATURE"),
+    JsonSubTypes.Type(value = RunnerTestNode::class, name = "RUNNER_TEST"),
+    JsonSubTypes.Type(value = RunnerComposedStepNode::class, name = "RUNNER_COMPOSED_STEP"),
+    JsonSubTypes.Type(value = RunnerBasicStepNode::class, name = "RUNNER_BASIC_STEP")
+])
+interface RunnerNode {
+    val id: String
+    val name: String
+    val path: Path
+}
