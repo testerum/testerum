@@ -1093,8 +1093,8 @@
                     <version>1.5</version>
 
                     <configuration>
-                        <nodeVersion>v9.8.0</nodeVersion>
-                        <npmVersion>5.6.0</npmVersion>
+                        <nodeVersion>v8.11.3</nodeVersion>
+                        <npmVersion>6.3.0</npmVersion>
                     </configuration>
                 </plugin>
 
