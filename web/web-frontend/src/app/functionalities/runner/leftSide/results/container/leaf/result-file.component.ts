@@ -16,7 +16,7 @@ import {Subscription} from "rxjs";
 export class ResultFileComponent implements OnInit, OnDestroy {
 
     @Input() model:ResultFile;
-    private isSelected:boolean = false;
+    isSelected:boolean = false;
 
     ExecutionStatusEnum = ExecutionStatusEnum;
 

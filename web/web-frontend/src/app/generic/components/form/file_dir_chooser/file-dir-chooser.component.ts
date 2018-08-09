@@ -41,7 +41,7 @@ export class FileDirChooserComponent implements ControlValueAccessor {
     public registerOnTouched() { }
 
     // change events from the textarea
-    private onChangeEvent(event) {
+    onChangeEvent(event) {
         this.value = event.target.value;
 
         this.propagateChange(this.value);

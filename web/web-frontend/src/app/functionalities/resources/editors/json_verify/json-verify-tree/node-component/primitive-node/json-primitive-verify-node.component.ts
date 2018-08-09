@@ -22,6 +22,8 @@ export class JsonPrimitiveVerifyNodeComponent {
     uiValue: string;
     errorValue: boolean = false;
 
+    hasMouseOver: boolean = false;
+
     jsonVerifyTreeService: JsonVerifyTreeService;
 
     constructor(jsonVerifyTreeService: JsonVerifyTreeService) {

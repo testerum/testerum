@@ -15,7 +15,7 @@ import {Subscription} from "rxjs";
 export class JsonStepNodeComponent implements OnInit, OnDestroy {
 
     @Input() model:StepTreeNodeModel;
-    private isSelected:boolean = false;
+    isSelected:boolean = false;
 
     selectedNodeSubscription: Subscription;
 

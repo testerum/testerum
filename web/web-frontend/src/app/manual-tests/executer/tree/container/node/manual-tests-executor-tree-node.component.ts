@@ -15,7 +15,7 @@ import {ManualTestsTreeExecutorNodeModel} from "../../model/manual-tests-tree-ex
 export class ManualTestsExecutorTreeNodeComponent implements OnInit {
 
     @Input() model:ManualTestsTreeExecutorNodeModel;
-    private isSelected:boolean = false;
+    isSelected:boolean = false;
 
     ManualTestStatus = ManualTestStatus;
 

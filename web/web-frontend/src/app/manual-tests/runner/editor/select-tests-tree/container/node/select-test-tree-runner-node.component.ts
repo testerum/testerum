@@ -14,7 +14,7 @@ import {SelectTestTreeRunnerContainerModel} from "../../model/select-test-tree-r
 export class SelectTestTreeRunnerNodeComponent implements OnInit {
 
     @Input() model:SelectTestTreeRunnerNodeModel;
-    private isSelected:boolean = false;
+    isSelected:boolean = false;
 
     constructor(private jsonTreeService:JsonTreeService,
                 private selectTestsTreeRunnerService: SelectTestsTreeRunnerService) {

@@ -16,7 +16,7 @@ import {FormUtil} from "../../../../utils/form.util";
 export class JsonTreeContainerEditor {
     @Input() title: string;
     @Input() name: string;
-    private actionType: JsonTreeContainerEditorEnum;
+    actionType: JsonTreeContainerEditorEnum;
     oldName: string;
     isFile: boolean;
 

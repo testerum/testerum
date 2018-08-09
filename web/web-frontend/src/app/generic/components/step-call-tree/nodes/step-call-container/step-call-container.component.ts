@@ -10,6 +10,7 @@ import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/
 import {StepCallTreeComponentService} from "../../step-call-tree.component-service";
 import {StepCall} from "../../../../../model/step-call.model";
 import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
+import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     selector: 'step-call-container',
@@ -24,6 +25,7 @@ import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
 export class StepCallContainerComponent implements OnInit, OnDestroy {
 
     @Input() model: StepCallContainerModel;
+    @Input() modelComponentMapping: ModelComponentMapping;
 
     @ViewChild(StepTextComponent) stepTextComponent: StepTextComponent<any>;
 

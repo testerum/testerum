@@ -8,20 +8,9 @@
         <i class="fa fa-angle-double-left tree-node-icon" style="width: 10px" aria-hidden="true"></i>
         <i class="fa fa-angle-double-right tree-node-icon" style="width: 10px" aria-hidden="true"></i>
         <span>Parameters Details</span>
-
-        <!-- BUTTONS -->
-        <div *ngIf="isEditMode()" class="step-button-panel btn-group">
-
-            <div *ngIf="!model.jsonTreeNodeState.showChildren"
-                 title="Add Sub-Step" class="btn btn-default btn-xs btn-group"
-                 (click)="addSubStep(); $event.stopPropagation()">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-            </div>
-
-        </div>
     </div>
 
-    <json-children [jsonTreeNodeState]="jsonTreeNodeState"
+    <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"
                    [modelComponentMapping]="modelComponentMapping"
                    [model]="model"
                    class="full-line">

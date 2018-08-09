@@ -15,7 +15,7 @@ import {Subscription} from "rxjs";
 export class TestNodeComponent implements OnInit, OnDestroy {
 
     @Input() model:TestTreeNodeModel;
-    private isSelected:boolean = false;
+    isSelected:boolean = false;
 
     selectedNodeSubscription: Subscription;
 

@@ -29,6 +29,7 @@ import {Warning} from "../../../../../model/warning/Warning";
 import {WarningType} from "../../../../../model/warning/WarningType";
 import {StepChooserService} from "../../../step-chooser/step-chooser.service";
 import {StepCallTreeComponentService} from "../../step-call-tree.component-service";
+import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     selector: 'step-call-editor-container',
@@ -44,6 +45,7 @@ import {StepCallTreeComponentService} from "../../step-call-tree.component-servi
 export class StepCallEditorContainerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     @Input() model: StepCallEditorContainerModel;
+    @Input() modelComponentMapping: ModelComponentMapping;
 
     existingStepsDefs: Array<StepDef> = [];
     existingStepsText: Array<string> = [];

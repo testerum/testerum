@@ -28,6 +28,7 @@ export class PathChooserContainerComponent implements OnInit {
     @Input() jsonTreeNodeState:JsonTreeNodeState = new JsonTreeNodeState;
 
     isSelected: boolean;
+    hasMouseOver: boolean = false;
 
     constructor(private jsonTreeService: JsonTreeService,
                 private pathChooserService: PathChooserService) {

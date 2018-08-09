@@ -13,6 +13,7 @@ import {CopyPath} from "../../../../model/infrastructure/path/copy-path.model";
 import {JsonTreePathUtil} from "../../../../generic/components/json-tree/util/json-tree-path.util";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {JsonTreePathContainer} from "../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
+import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     moduleId: module.id,
@@ -27,6 +28,8 @@ import {JsonTreePathContainer} from "../../../../generic/components/json-tree/mo
 export class ResourcesContainerComponent {
 
     @Input() model: ResourcesTreeContainer;
+    @Input() modelComponentMapping: ModelComponentMapping;
+
     hasMouseOver: boolean = false;
 
     constructor(private router: Router,

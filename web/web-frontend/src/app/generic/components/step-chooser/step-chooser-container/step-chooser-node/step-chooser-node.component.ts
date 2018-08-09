@@ -14,7 +14,7 @@ import {JsonTreeService} from "../../../json-tree/json-tree.service";
 export class StepChooserNodeComponent implements OnInit {
 
     @Input() model:StepTreeNodeModel;
-    private isSelected:boolean = false;
+    isSelected:boolean = false;
 
     constructor(private jsonTreeService: JsonTreeService) {
     }

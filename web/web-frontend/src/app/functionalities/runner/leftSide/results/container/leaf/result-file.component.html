@@ -14,8 +14,7 @@
 
            [class.fa-spinner]="model.executionResult == ExecutionStatusEnum.WAITING
                                || model.executionResult == ExecutionStatusEnum.EXECUTING"
-           [class.fa-pulse]="model.state == ExecutionStatusEnum.WAITING
-                               || model.executionResult == ExecutionStatusEnum.EXECUTING"
+           [class.fa-pulse]="model.executionResult == ExecutionStatusEnum.EXECUTING"
 
            [class.fa-check]="model.executionResult == ExecutionStatusEnum.PASSED"
            [class.fa-times]="model.executionResult == ExecutionStatusEnum.FAILED"

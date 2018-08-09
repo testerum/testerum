@@ -14,7 +14,7 @@ import {Subscription} from "rxjs";
 export class PathChooserNodeComponent implements OnInit, OnDestroy {
 
     @Input() model:PathChooserNodeModel;
-    private isSelected:boolean = false;
+    isSelected:boolean = false;
 
     selectedNodeEventSubscription: Subscription;
 

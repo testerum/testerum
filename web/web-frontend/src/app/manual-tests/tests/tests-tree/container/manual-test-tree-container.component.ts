@@ -12,6 +12,7 @@ import {ManualTestTreeNodeModel} from "../model/manual-test-tree-node.model";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {ManualTestsService} from "../../service/manual-tests.service";
 import {JsonTreePathContainer} from "../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
+import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     moduleId: module.id,
@@ -26,6 +27,8 @@ import {JsonTreePathContainer} from "../../../../generic/components/json-tree/mo
 export class ManualTestTreeContainerComponent {
 
     @Input() model: ManualTestTreeContainerModel;
+    @Input() modelComponentMapping: ModelComponentMapping;
+
     hasMouseOver: boolean = false;
 
     constructor(private router: Router,

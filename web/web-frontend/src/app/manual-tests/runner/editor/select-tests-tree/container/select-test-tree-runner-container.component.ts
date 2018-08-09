@@ -3,6 +3,7 @@ import {SelectTestTreeRunnerContainerModel} from "../model/select-test-tree-runn
 import {ObjectUtil} from "../../../../../utils/object.util";
 import {SelectionStateEnum} from "../model/enum/selection-state.enum";
 import {SelectTestsTreeRunnerService} from "../select-tests-tree-runner.service";
+import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     moduleId: module.id,
@@ -17,6 +18,8 @@ import {SelectTestsTreeRunnerService} from "../select-tests-tree-runner.service"
 export class SelectTestTreeRunnerContainerComponent {
 
     @Input() model: SelectTestTreeRunnerContainerModel;
+    @Input() modelComponentMapping: ModelComponentMapping;
+
     hasMouseOver: boolean = false;
 
     constructor(private selectTestsTreeRunnerService: SelectTestsTreeRunnerService) {

@@ -14,7 +14,7 @@ import {ManualTestTreeNodeModel} from "../../model/manual-test-tree-node.model";
 export class ManualTestTreeNodeComponent implements OnInit {
 
     @Input() model:ManualTestTreeNodeModel;
-    private isSelected:boolean = false;
+    isSelected:boolean = false;
 
     constructor(private router: Router,
                 private jsonTreeService:JsonTreeService) {

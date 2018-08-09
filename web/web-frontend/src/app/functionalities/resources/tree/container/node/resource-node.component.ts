@@ -14,7 +14,7 @@ import {Subscription} from "rxjs";
 export class ResourceNodeComponent implements OnInit, OnDestroy {
 
     @Input() model:ResourcesTreeNode;
-    private isSelected:boolean = false;
+    isSelected:boolean = false;
 
     selectedNodeSubscription: Subscription;
 

@@ -12,6 +12,7 @@ import {JsonTreeNodeEventModel} from "../../../../generic/components/json-tree/e
 import {Subscription} from "rxjs";
 import {TestModel} from "../../../../model/test/test.model";
 import {UrlService} from "../../../../service/url.service";
+import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     moduleId: module.id,
@@ -26,6 +27,8 @@ import {UrlService} from "../../../../service/url.service";
 export class FeatureContainerComponent implements OnInit, OnDestroy {
 
     @Input() model: FeatureTreeContainerModel;
+    @Input() modelComponentMapping: ModelComponentMapping;
+
     hasMouseOver: boolean = false;
     isSelected:boolean = false;
 

@@ -13,8 +13,8 @@ export class SchemaChooserModalComponent {
     @ViewChild("schemaChooserModalComponent") schemaChooserModalComponent:ModalDirective;
 
     private listener: SchemaChooserModalListener;
-    private schemas:Array<string> = [];
-    private selectedSchema:string;
+    schemas:Array<string> = [];
+    selectedSchema:string;
 
     public show(schemas:Array<string>, listener: SchemaChooserModalListener) {
         this.schemas = schemas;
