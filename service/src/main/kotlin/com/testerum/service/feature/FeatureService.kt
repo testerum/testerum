@@ -10,10 +10,10 @@ import com.testerum.file_repository.model.RepositoryFileChange
 import com.testerum.model.exception.ValidationException
 import com.testerum.model.feature.Feature
 import com.testerum.model.feature.filter.FeaturesTreeFilter
+import com.testerum.model.feature.tree.RootFeatureNode
+import com.testerum.model.feature.tree.builder.FeatureTreeBuilder
 import com.testerum.model.file.Attachment
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.main_tree.RootMainNode
-import com.testerum.model.main_tree.builder.MainTreeBuilder
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.test.TestModel
 import com.testerum.service.tests.TestsService
@@ -196,8 +196,8 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         )
     }
 
-    fun getFeaturesTree(featuresTreeFilter: FeaturesTreeFilter): RootMainNode {
-        val rootNodeBuilder = MainTreeBuilder()
+    fun getFeaturesTree(featuresTreeFilter: FeaturesTreeFilter): RootFeatureNode {
+        val rootNodeBuilder = FeatureTreeBuilder()
 
 
         val features: List<Feature> = getAllFeatures()

@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
-import {JsonTreeModel} from "../../../generic/components/json-tree/model/json-tree.model";
-import {JsonTreeNode} from "../../../generic/components/json-tree/model/json-tree-node.model";
-import {TestTreeNodeModel} from "./model/test-tree-node.model";
-import {FeatureTreeContainerModel} from "./model/feature-tree-container.model";
-import {Path} from "../../../model/infrastructure/path/path.model";
-import {JsonTreePathUtil} from "../../../generic/components/json-tree/util/json-tree-path.util";
+import { Injectable } from '@angular/core';
+import { JsonTreeModel } from "../../../generic/components/json-tree/model/json-tree.model";
+import { JsonTreeNode } from "../../../generic/components/json-tree/model/json-tree-node.model";
+import { TestTreeNodeModel } from "./model/test-tree-node.model";
+import { FeatureTreeContainerModel } from "./model/feature-tree-container.model";
+import { Path } from "../../../model/infrastructure/path/path.model";
+import { JsonTreePathUtil } from "../../../generic/components/json-tree/util/json-tree-path.util";
 import FeaturesTreeUtil from "./util/features-tree.util";
-import {FeatureService} from "../../../service/feature.service";
-import {ServerRootMainNode} from "../../../model/main_tree/server-root-main-node.model";
-import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-filter.model";
-import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
-import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
+import { FeatureService } from "../../../service/feature.service";
+import { RootFeatureNode } from "../../../model/feature/tree/root-feature-node.model";
+import { FeaturesTreeFilter } from "../../../model/feature/filter/features-tree-filter.model";
+import { JsonTreeExpandUtil } from "../../../generic/components/json-tree/util/json-tree-expand.util";
+import { JsonTreeService } from "../../../generic/components/json-tree/json-tree.service";
 
 @Injectable()
 export class FeaturesTreeService {
@@ -24,7 +24,7 @@ export class FeaturesTreeService {
 
     initializeTestsTreeFromServer(selectedPath: Path, expandToLevel: number = 2) {
         this.featureService.getFeatureTree(this.treeFilter).subscribe(
-            (rootNode: ServerRootMainNode) => {
+            (rootNode: RootFeatureNode) => {
                 let newJsonTree = FeaturesTreeUtil.mapServerTreeToFeaturesTreeModel(rootNode);
 
                 JsonTreeExpandUtil.expandTreeToLevel(newJsonTree, expandToLevel);

@@ -1,8 +1,8 @@
-import {RunnerNode} from "./runner-node.model";
-import {Path} from "../../infrastructure/path/path.model";
-import {RunnerContainerNode} from "./runner-container-node.model";
-import {ArrayUtil} from "../../../utils/array.util";
-import {RunnerDeserializationUtil} from "./util/runner-deserialization.util";
+import { RunnerNode } from "./runner-node.model";
+import { Path } from "../../infrastructure/path/path.model";
+import { RunnerContainerNode } from "./runner-container-node.model";
+import { ArrayUtil } from "../../../utils/array.util";
+import { RunnerTreeDeserializationUtil } from "./util/runner-tree-deserialization.util";
 
 export class RunnerTestNode implements Serializable<RunnerTestNode>, RunnerContainerNode {
     id: string;
@@ -17,7 +17,7 @@ export class RunnerTestNode implements Serializable<RunnerTestNode>, RunnerConta
 
         ArrayUtil.replaceElementsInArray(
             this.children,
-            RunnerDeserializationUtil.deserialize(input["children"])
+            RunnerTreeDeserializationUtil.deserialize(input["children"])
         );
 
         return this;

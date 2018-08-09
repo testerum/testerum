@@ -1,9 +1,7 @@
-import {RunnerNode} from "./runner-node.model";
-import {Path} from "../../infrastructure/path/path.model";
-import {RunnerContainerNode} from "./runner-container-node.model";
-import {RunnerTestNode} from "./runner-test-node.model";
-import {ArrayUtil} from "../../../utils/array.util";
-import {RunnerDeserializationUtil} from "./util/runner-deserialization.util";
+import { RunnerNode } from "./runner-node.model";
+import { Path } from "../../infrastructure/path/path.model";
+import { RunnerContainerNode } from "./runner-container-node.model";
+import { RunnerTreeDeserializationUtil } from "./util/runner-tree-deserialization.util";
 
 export class RunnerComposedStepNode implements Serializable<RunnerComposedStepNode>, RunnerContainerNode {
     id: string;
@@ -15,11 +13,7 @@ export class RunnerComposedStepNode implements Serializable<RunnerComposedStepNo
         this.id = input["id"];
         this.name = input["name"];
         this.path = Path.deserialize(input["path"]);
-
-        ArrayUtil.replaceElementsInArray(
-            this.children,
-            RunnerDeserializationUtil.deserialize(input["children"])
-        );
+        this.children = RunnerTreeDeserializationUtil.deserialize(input["children"] || []);
 
         return this;
     }
