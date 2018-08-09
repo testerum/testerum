@@ -1040,7 +1040,7 @@
                     </configuration>
                 </plugin>
 
-                <!-- Copy dependency to a specify location-->
+                <!-- copy dependencies to a specified location-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
