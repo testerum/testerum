@@ -3,7 +3,7 @@ package com.testerum.common_assertion_functions.functions.builtin
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.*
 import com.testerum.common_assertion_functions.evaluator.FunctionEvaluator
-import com.testerum.common_assertion_functions.module_factory.CommonAssertionFunctionsModuleFactory
+import com.testerum.common_assertion_functions.module_di.AssertionFunctionsModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import org.junit.jupiter.api.AfterAll
 import java.math.BigDecimal
@@ -13,7 +13,7 @@ abstract class BaseBuiltinFunctionIntegrationTest {
 
     companion object {
         private val CONTEXT = ModuleFactoryContext()
-        private val FUNCTION_EVALUATOR = CommonAssertionFunctionsModuleFactory(CONTEXT).functionEvaluator
+        private val FUNCTION_EVALUATOR = AssertionFunctionsModuleFactory(CONTEXT).functionEvaluator
 
         @AfterAll
         @JvmStatic

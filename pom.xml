@@ -13,7 +13,6 @@
         <module>model</module>
         <module>repository</module>
         <module>service</module>
-        <module>resource-manager</module>
         <module>testerum-backend</module>
         <module>step-util</module>
         <module>web</module>
@@ -69,6 +68,18 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>common-expression-evaluator</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>common-httpclient</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>common-rdbms</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -134,12 +145,6 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>service</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.testerum</groupId>
-                <artifactId>resource-manager</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

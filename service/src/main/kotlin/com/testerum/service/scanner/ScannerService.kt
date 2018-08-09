@@ -1,5 +1,6 @@
 package com.testerum.service.scanner
 
+import com.testerum.api.test_context.settings.SettingsManager
 import com.testerum.api.test_context.settings.model.Setting
 import com.testerum.model.step.BasicStepDef
 import com.testerum.scanner.step_lib_scanner.StepLibraryCacheManger
@@ -18,7 +19,7 @@ class ScannerService(private val settingsManager: SettingsManagerImpl,
                      private val stepLibraryCacheManger: StepLibraryCacheManger) {
 
     companion object {
-        private val cacheFile: Path = SettingsManagerImpl.settingsDirectory.resolve("cache/basic-steps-cache.json")
+        private val cacheFile: Path = SettingsManager.TESTERUM_DIRECTORY.resolve("cache/basic-steps-cache.json")
     }
 
     fun initInBackgroundThread() {

@@ -2,7 +2,7 @@ package selenium_steps_support.service.webdriver_manager
 
 import com.testerum.api.annotations.settings.annotation.DeclareSetting
 import com.testerum.api.annotations.settings.annotation.DeclareSettings
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum.api.test_context.settings.SettingsManager
 import com.testerum.api.test_context.settings.model.SettingType
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.TakesScreenshot
@@ -11,11 +11,11 @@ import org.openqa.selenium.support.ui.WebDriverWait
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import selenium_steps_support.service.webdriver_factory.chrome.ChromeWebDriverFactory
-import selenium_steps_support.service.webdriver_manager.WebDriverManager.SETTINGS_CATEGORY
-import selenium_steps_support.service.webdriver_manager.WebDriverManager.SETTING_KEY_AFTER_STEP_DELAY_MILLIS
-import selenium_steps_support.service.webdriver_manager.WebDriverManager.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
-import selenium_steps_support.service.webdriver_manager.WebDriverManager.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
-import selenium_steps_support.service.webdriver_manager.WebDriverManager.SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTINGS_CATEGORY
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_AFTER_STEP_DELAY_MILLIS
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.TimeUnit
@@ -46,18 +46,20 @@ import javax.annotation.concurrent.ThreadSafe
                 category = SETTINGS_CATEGORY
         ))
 ])
-object WebDriverManager {
+class WebDriverManager(private val settingsManager: SettingsManager) {
 
-    private val LOGGER: Logger = LoggerFactory.getLogger(WebDriverManager::class.java)
+    companion object {
+        private val LOGGER: Logger = LoggerFactory.getLogger(WebDriverManager::class.java)
 
-    internal const val SETTINGS_CATEGORY = "Selenium"
+        internal const val SETTINGS_CATEGORY = "Selenium"
 
-    internal const val SETTING_KEY_AFTER_STEP_DELAY_MILLIS = "testerum.selenium.afterStepDelayMillis"
+        internal const val SETTING_KEY_AFTER_STEP_DELAY_MILLIS = "testerum.selenium.afterStepDelayMillis"
 
-    internal const val SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST = "testerum.selenium.leaveBrowserOpenAfterTest"
-    internal const val SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT = "onFailure"
+        internal const val SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST = "testerum.selenium.leaveBrowserOpenAfterTest"
+        internal const val SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT = "onFailure"
 
-    internal const val SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP = "testerum.selenium.takeScreenshotAfterEachStep"
+        internal const val SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP = "testerum.selenium.takeScreenshotAfterEachStep"
+    }
 
     private val lock = Object()
 
@@ -92,14 +94,14 @@ object WebDriverManager {
         block(currentWebDriver)
 
         // take screenshot
-        if (TesterumServiceLocator.getSettingsManager().getSettingValueOrDefault(SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP)!!.toBoolean()) {
+        if (settingsManager.getSettingValueOrDefault(SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP)!!.toBoolean()) {
             val screenshotFile = takeScreenshotToFile()
             LOGGER.info("step finished: screenshot saved at [${screenshotFile.toAbsolutePath()}]")
         }
 
         // sleep between steps
         TimeUnit.MILLISECONDS.sleep(
-                TesterumServiceLocator.getSettingsManager().getSettingValueOrDefault(SETTING_KEY_AFTER_STEP_DELAY_MILLIS)!!.toLong()
+                settingsManager.getSettingValueOrDefault(SETTING_KEY_AFTER_STEP_DELAY_MILLIS)!!.toLong()
         )
     }
 

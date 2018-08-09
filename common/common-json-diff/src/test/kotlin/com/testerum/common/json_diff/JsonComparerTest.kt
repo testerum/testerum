@@ -6,8 +6,8 @@ import com.testerum.common.json_diff.impl.compare_mode.JsonCompareMode
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
 import com.testerum.common.json_diff.impl.node_comparer.EqualJsonCompareResult
 import com.testerum.common.json_diff.impl.node_comparer.JsonCompareResult
-import com.testerum.common.json_diff.module_factory.CommonJsonDiffModuleFactory
-import com.testerum.common_assertion_functions.module_factory.CommonAssertionFunctionsModuleFactory
+import com.testerum.common.json_diff.module_di.JsonDiffModuleFactory
+import com.testerum.common_assertion_functions.module_di.AssertionFunctionsModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.AfterAll
@@ -22,7 +22,7 @@ class JsonComparerTest {
 
     companion object {
         private val context = ModuleFactoryContext()
-        val comparer: JsonComparer = CommonJsonDiffModuleFactory(context, CommonAssertionFunctionsModuleFactory(context)).jsonComparer
+        val comparer: JsonComparer = JsonDiffModuleFactory(context, AssertionFunctionsModuleFactory(context)).jsonComparer
 
         @AfterAll
         @JvmStatic

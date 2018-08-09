@@ -17,17 +17,16 @@ import http.response.verify.model.HttpResponseVerify
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode.CONTAINS
 import http.response.verify.transformer.HttpResponseVerifyTransformer
-import http_support.module_bootstrapper.HttpStepsModuleServiceLocator
+import http_support.module_di.HttpStepsModuleServiceLocator
 import org.slf4j.LoggerFactory
 
-@Suppress("unused")
 class HttpResponseVerifySteps {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
     }
 
-    private val jsonComparer: JsonComparer = HttpStepsModuleServiceLocator.bootstrapper.commonJsonDiffModuleFactory.jsonComparer
+    private val jsonComparer: JsonComparer = HttpStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
 
     @Then("I expect <<httpResponseVerify>> HTTP Response")

@@ -21,11 +21,6 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>resource-manager</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.testerum</groupId>
             <artifactId>common-json-diff</artifactId>
         </dependency>
 
@@ -36,7 +31,7 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>service</artifactId>
+            <artifactId>model</artifactId>
         </dependency>
 
         <dependency>
@@ -47,11 +42,6 @@
 
         <!--==================== External Dependencies ====================-->
 
-        <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock-standalone</artifactId>
-        </dependency>
-
         <!-- Kotlin -->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -60,6 +50,18 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
+        </dependency>
+
+        <!-- common-httpclient -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-httpclient</artifactId>
+        </dependency>
+
+        <!-- wiremock-standalone -->
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-standalone</artifactId>
         </dependency>
 
     </dependencies>

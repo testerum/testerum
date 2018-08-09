@@ -16,7 +16,6 @@ import com.testerum.model.step.StepCall
 import com.testerum.model.step.UndefinedStepDef
 import com.testerum.model.test.TestModel
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
-import com.testerum.runner_cmdline.BannerPrinter.printBanner
 import com.testerum.runner_cmdline.cmdline.exiter.model.ExitCode
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.runner_cmdline.events.EventsService
@@ -43,7 +42,6 @@ import com.testerum.service.tests.TestsService
 import com.testerum.service.variables.VariablesService
 import com.testerum.settings.SystemSettings
 import com.testerum.settings.private_api.SettingsManagerImpl
-import org.fusesource.jansi.AnsiConsole
 import java.net.URL
 import java.net.URLClassLoader
 import java.nio.file.Files
@@ -80,24 +78,11 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
     }
 
     private fun tryToExecute(cmdlineParams: CmdlineParams): ExitCode {
-        AnsiConsole.systemInstall()
-        printBanner()
-
         // todo: print these (with good formatting) when in verbose mode
-         println("cmdlineParams = $cmdlineParams")
-
         executionListenerFinder.outputFormat = cmdlineParams.outputFormat
 
-        setSettings(cmdlineParams)
         scannerService.init()
         stepService.loadSteps()
-
-        println("Settings:")
-        println("---------")
-        for ((key, _) in settingsManager.settings) {
-            println("[$key] = [${settingsManager.getSettingValueOrDefault(key)}]")
-        }
-        println()
 
         val stepsClassLoader: ClassLoader = createStepsClassLoader()
 
@@ -159,17 +144,6 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
         }
     }
 
-
-    private fun setSettings(cmdlineParams: CmdlineParams) {
-        val settings = mutableMapOf<String, String>()
-
-        settings[SystemSettings.REPOSITORY_DIRECTORY.key] = cmdlineParams.repositoryDirectory.toAbsolutePath().normalize().toString()
-        settings[SystemSettings.BUILT_IN_BASIC_STEPS_DIRECTORY.key] = cmdlineParams.basicStepsDirectory.toAbsolutePath().normalize().toString()
-        // todo: user step directory
-        settings.putAll(cmdlineParams.settingOverrides)
-
-        settingsManager.registerPossibleUnresolvedValues(settings)
-    }
 
     // todo: how to reduce duplication between this class and StepLibraryCacheManger?
     private fun createStepsClassLoader(): ClassLoader {

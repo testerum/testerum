@@ -5,15 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.testerum.api.transformer.ParameterInfo
 import com.testerum.api.transformer.Transformer
+import com.testerum.common_json.ObjectMapperFactory
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 import database.relational.connection_manager.RdbmsConnectionManager
 import database.relational.connection_manager.model.RdbmsClient
-import database.relational.module_bootstrapper.RdbmsStepsModuleServiceLocator
+import database.relational.module_di.RdbmsStepsModuleServiceLocator
 
 class RdbmsConnectionTransformer: Transformer<RdbmsClient> {
 
     private val rdbmsConnectionManager: RdbmsConnectionManager = RdbmsStepsModuleServiceLocator.bootstrapper.rdbmsStepsModuleFactory.rdbmsConnectionManager
-    private val objectMapper: ObjectMapper = RdbmsStepsModuleServiceLocator.bootstrapper.resourceManagerModuleFactory.resourceJsonObjectMapper
+    private val objectMapper: ObjectMapper = ObjectMapperFactory.RESOURCE_OBJECT_MAPPER
     private val jsonVariableReplacer = RdbmsStepsModuleServiceLocator.bootstrapper.rdbmsStepsModuleFactory.jsonVariableReplacer
 
     override fun canTransform(paramInfo: ParameterInfo): Boolean

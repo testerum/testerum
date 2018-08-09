@@ -40,6 +40,16 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
+            <artifactId>common-httpclient</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-rdbms</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.testerum</groupId>
             <artifactId>file-repository</artifactId>
         </dependency>
 
@@ -61,11 +71,6 @@
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-expression-evaluator</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>resource-manager</artifactId>
         </dependency>
 
 

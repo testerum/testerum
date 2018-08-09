@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>resource-manager</artifactId>
+            <artifactId>common-json</artifactId>
         </dependency>
 
         <dependency>
@@ -33,12 +33,22 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>step-rdbms-util</artifactId>
+            <artifactId>settings</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>service</artifactId>
+            <artifactId>common-rdbms</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>file-repository</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>step-rdbms-util</artifactId>
         </dependency>
 
         <dependency>

@@ -5,9 +5,10 @@ import com.testerum.api.annotations.hooks.BeforeAllTests
 import com.testerum.api.services.TesterumServiceLocator
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
-import selenium_steps_support.service.webdriver_manager.WebDriverManager.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
-import selenium_steps_support.service.webdriver_manager.WebDriverManager.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
 import java.nio.file.Path
 
 class WebDriverShutdownHook {
@@ -15,6 +16,8 @@ class WebDriverShutdownHook {
     companion object {
         private val LOGGER: Logger = LoggerFactory.getLogger(WebDriverShutdownHook::class.java)
     }
+
+    private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
     @BeforeAllTests
     fun registerShutdownHook() {
@@ -34,7 +37,7 @@ class WebDriverShutdownHook {
 
     private fun takeScreenshotIfFailed() {
         if (TesterumServiceLocator.getTestContext().testStatus.isFailedOrError()) {
-            val screenshotFile: Path = WebDriverManager.takeScreenshotToFile()
+            val screenshotFile: Path = webDriverManager.takeScreenshotToFile()
             LOGGER.info("failed test: screenshot saved at [${screenshotFile.toAbsolutePath()}]")
         }
     }
@@ -58,7 +61,7 @@ class WebDriverShutdownHook {
         }
 
         if (!leaveBrowserOpen) {
-            WebDriverManager.destroyCurrentWebDriverIfNeeded()
+            webDriverManager.destroyCurrentWebDriverIfNeeded()
         }
     }
 }

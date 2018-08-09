@@ -17,6 +17,8 @@
     <modules>
         <module>assertion-functions</module>
         <module>common-expression-evaluator</module>
+        <module>common-httpclient</module>
+        <module>common-rdbms</module>
         <module>common-di</module>
         <module>common-json-diff</module>
         <module>common-json-diff-util</module>
