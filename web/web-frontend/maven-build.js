@@ -39,7 +39,7 @@ if (osType === "windows") {
   env.PATH = 'node:' + env.PATH;
 }
 
-let child = proc.spawn(ngBinary, ["build", "--environment", "prod"], { env: env });
+let child = proc.spawn(ngBinary, ["build", "--prod"], { env: env });
 
 child.stdout.on('data', function (data) {
   console.log('stdout: ' + data);
