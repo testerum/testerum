@@ -25,6 +25,15 @@ export class JsonArrayVerifyNodeComponent extends JsonTreeChildrenRenderer {
         super(jsonVerifyTreeService);
     }
 
+
+    isCollapsed(): boolean {
+        return super.isCollapsed();
+    }
+
+    isEmpty(): boolean {
+        return super.isEmpty()
+    }
+
     isEditMode(): boolean {
         return this.jsonVerifyTreeService.editMode;
     }

@@ -24,7 +24,7 @@ export abstract class JsonTreeChildrenRenderer {
     }
 
     isCollapsed(): boolean {
-        return this.model.hasChildren() && !this.jsonTreeNodeState.showChildren
+        return this.model.hasChildren() && !this.model.getNodeState().showChildren
     }
 
     isEmpty(): boolean {

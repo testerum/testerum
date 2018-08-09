@@ -52,7 +52,6 @@ export class JsonTreeNodeComponent implements OnInit, OnChanges {
         this.modelComponentRef.instance.modelComponentMapping = this.modelComponentMapping;
         this.modelComponentRef.instance.isLastNode = this.isLastNode;
         this.modelComponentRef.instance.isRootNode = this.isRootNode;
-        this.modelComponentRef.instance.jsonTreeNodeState = new JsonTreeNodeState();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
