@@ -81,17 +81,37 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
             </plugin>
-
-            <!-- Copy dependency to a specify location-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-
-                <configuration>
-                    <outputDirectory>${project.basedir}/../../package/basic_steps</outputDirectory>
-                    <includeScope>runtime</includeScope>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+
+
+    <profiles>
+        <!-- development -->
+        <profile>
+            <id>development</id>
+
+            <!-- activated by the absence of the "production" system property -->
+            <activation>
+                <property>
+                    <name>!production</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <!-- copy dependencies to "package/basic_steps" directory -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+
+                        <configuration>
+                            <outputDirectory>${project.basedir}/../../package/basic_steps</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>

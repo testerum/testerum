@@ -342,30 +342,6 @@
                 </executions>
             </plugin>
 
-            <!-- copy to package directory todo: move this to a "dev" profile -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-runner-to-package-dir</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/../../../package/runner</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>target/appassembler</directory>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- maven-assembly-plugin (create final zip containing files created by appassembler-maven-plugin) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -385,6 +361,47 @@
 
 
     <profiles>
+        <!-- development -->
+        <profile>
+            <id>development</id>
+
+            <!-- activated by the absence of the "production" system property -->
+            <activation>
+                <property>
+                    <name>!production</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <!-- copy to package directory  -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-runner-to-package-dir</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/../../../package/runner</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>target/appassembler</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- unix -->
         <profile>
             <id>unix</id>
             <activation>
@@ -405,7 +422,10 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <target>
-                                        <chmod dir="${project.basedir}/../../../package/runner/bin" includes="*.sh" perm="a+x"/>
+                                        <exec executable="/bin/sh" failifexecutionfails="true" failonerror="false">
+                                            <arg value="-c"/>
+                                            <arg value="chmod +x '${project.basedir}/../../../package/runner/bin'/*.sh"/>
+                                        </exec>
                                     </target>
                                 </configuration>
                                 <goals>
