@@ -3,8 +3,6 @@
          [class.show-dots]="model.getOptions().displayLines"
          [class.tree-node-line]="model.getOptions().displayLines"
          [class.tree-node-last]="isLastNode">
-         <!--tree-node-close tree-node-leaf-->
-
 
         <div [class.last-horizontal-line]="isLastNode" class="horizontal-line-distance-from-top">
             <i class="toggle-icon"
@@ -18,8 +16,5 @@
         <div class="tree-node-header" (click)="toggleShowChildren();$event.stopPropagation();">
             <span #content></span>
         </div>
-
-
-
     </div>
 </ng-container>

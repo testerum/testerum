@@ -2,7 +2,6 @@
      dnd-draggable [dragEnabled]="hasMouseOver" [dragData]="model" >
 
     <div class="full-line"
-
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false"
          (click)="setSelected()"

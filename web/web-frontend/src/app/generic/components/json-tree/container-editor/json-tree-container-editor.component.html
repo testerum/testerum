@@ -22,19 +22,21 @@
 
         {{actionType == JsonTreeContainerEditorEnum.DELETE?'Are you shore you want to delete "'+name+'" directory?':""}}
 
-        <div *ngIf="actionType == JsonTreeContainerEditorEnum.UPDATE || actionType == JsonTreeContainerEditorEnum.CREATE">
-            <label for="packageName">Directory Name: </label>
-            <input type="text"
-                   [(ngModel)]="name"
-                   #packageName="ngModel"
-                   class="form-control"
-                   required
-                   id="packageName" name="packageName">
-            <input-error [model]="packageName"
-                         [errorMessages]="{
+        <div *ngIf="actionType == JsonTreeContainerEditorEnum.UPDATE || actionType == JsonTreeContainerEditorEnum.CREATE" class="my-line">
+            <label for="packageName" class="my-label label-size">Directory Name: </label>
+            <div class="my-value">
+                <input type="text"
+                       [(ngModel)]="name"
+                       #packageName="ngModel"
+                       class="form-control"
+                       required
+                       id="packageName" name="packageName">
+                <input-error [model]="packageName"
+                             [errorMessages]="{
                                 required: 'A name is required',
                                 directory_already_exists: 'A sibling directory with the same name already exists!'
                          }"></input-error>
+            </div>
         </div>
     </div>
     <div class="modal-footer">
