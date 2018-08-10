@@ -34,9 +34,9 @@
     </issueManagement>
 
     <scm>
-        <connection>https://gitlab.com/testerum/testerum-package.git</connection>
-        <developerConnection>scm:git:git@gitlab.com:testerum/testerum-package.git</developerConnection>
-        <url>https://gitlab.com/testerum/testerum-package</url>
+        <connection>https://gitlab.com/testerum/testerum.git</connection>
+        <developerConnection>scm:git:git@gitlab.com:testerum/testerum.git</developerConnection>
+        <url>https://gitlab.com/testerum/testerum</url>
     </scm>
 
     <properties>
