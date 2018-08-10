@@ -3,7 +3,7 @@ import {TestsRunnerLogModel} from "./model/tests-runner-log.model";
 import {LogLineTypeEnum} from "./model/log-line-type.enum";
 import {RunnerTreeNodeModel} from "../tests-runner-tree/model/runner-tree-node.model";
 import {RunnerTreeNodeSelectedListener} from "../tests-runner-tree/event/runner-tree-node-selected.listener";
-import {RunnerTreeService} from "../tests-runner-tree/runner-tree.service";
+import {RunnerTreeComponentService} from "../tests-runner-tree/runner-tree.component-service";
 import {TestsRunnerLogsService} from "./tests-runner-logs.service";
 
 @Component({
@@ -29,7 +29,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
     logAddedEventEmitterSubscription:any;
     emptyLogsEventEmitterSubscription:any;
 
-    constructor(private runnerTreeService: RunnerTreeService,
+    constructor(private runnerTreeService: RunnerTreeComponentService,
                 private testsRunnerLogsService: TestsRunnerLogsService) {
     }
 

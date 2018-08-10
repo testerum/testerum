@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {TestsRunnerService} from "./tests-runner.service";
 import {TestsRunnerLogsService} from "./tests-runner-logs/tests-runner-logs.service";
-import {RunnerTreeService} from "./tests-runner-tree/runner-tree.service";
+import {RunnerTreeComponentService} from "./tests-runner-tree/runner-tree.component-service";
 
 @Component({
     moduleId: module.id,
@@ -12,7 +12,7 @@ import {RunnerTreeService} from "./tests-runner-tree/runner-tree.service";
 export class TestsRunnerComponent {
 
     constructor(private testsRunnerService: TestsRunnerService,
-                public runnerTreeService: RunnerTreeService,
+                public runnerTreeService: RunnerTreeComponentService,
                 public testsRunnerLogsService: TestsRunnerLogsService) { }
 
     isTestRunnerVisible(): boolean {

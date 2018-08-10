@@ -3,7 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {RunnerEvent} from "../../../../model/test/event/runner.event";
 import {TestsRunnerLogsService} from "../../../features/tests-runner/tests-runner-logs/tests-runner-logs.service";
 import {TestsRunnerLogModel} from "../../../features/tests-runner/tests-runner-logs/model/tests-runner-log.model";
-import {RunnerTreeService} from "../../../features/tests-runner/tests-runner-tree/runner-tree.service";
+import {RunnerTreeComponentService} from "../../../features/tests-runner/tests-runner-tree/runner-tree.component-service";
 import {ExecutionStatusEnum} from "../../../../model/test/event/enums/execution-status.enum";
 import {RunnerTreeNodeModel} from "../../../features/tests-runner/tests-runner-tree/model/runner-tree-node.model";
 import {RunnerTreeNodeTypeEnum} from "../../../features/tests-runner/tests-runner-tree/model/enums/runner-tree-node-type.enum";
@@ -31,7 +31,7 @@ export class ResultComponent implements OnInit {
     @ViewChild(TestsRunnerLogsComponent) testsRunnerLogsComponent: TestsRunnerLogsComponent;
 
     constructor(private route: ActivatedRoute,
-                private runnerTreeService: RunnerTreeService,
+                private runnerTreeService: RunnerTreeComponentService,
                 private executionPieService: ExecutionPieService) {
     }
 

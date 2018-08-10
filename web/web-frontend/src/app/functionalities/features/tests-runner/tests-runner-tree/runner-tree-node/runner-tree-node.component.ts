@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {RunnerTreeNodeModel} from "../model/runner-tree-node.model";
 import {ExecutionStatusEnum} from "../../../../../model/test/event/enums/execution-status.enum";
 import {RunnerTreeNodeSelectedListener} from "../event/runner-tree-node-selected.listener";
-import {RunnerTreeService} from "../runner-tree.service";
+import {RunnerTreeComponentService} from "../runner-tree.component-service";
 
 @Component({
     moduleId: module.id,
@@ -10,47 +10,24 @@ import {RunnerTreeService} from "../runner-tree.service";
     templateUrl: 'runner-tree-node.component.html',
     styleUrls:['runner-tree-node.component.scss']
 })
-export class RunnerTreeNodeComponent implements OnInit, RunnerTreeNodeSelectedListener {
+export class RunnerTreeNodeComponent implements OnInit {
 
     @Input() model:RunnerTreeNodeModel;
-
-    @Input() showChildren:boolean = false;
-    @Input() isLastNode:boolean = false;
-    @Input() isRootNode:boolean = false;
 
     isSelected:boolean = false;
 
     RunnerTreeNodeStateEnum = ExecutionStatusEnum;
 
-    constructor(private runnerTreeService:RunnerTreeService){}
+    constructor(private runnerTreeComponentService:RunnerTreeComponentService){}
 
     ngOnInit(): void {
-        this.runnerTreeService.addSelectedRunnerTreeNodeListeners(this)
-    }
-
-    hasChildren(): boolean {
-        if(!this.model) {
-            return false;
-        }
-        let nrOfChildContainers:number = this.model.children.length;
-        let nrOfChildNodes:number = this.model.children.length;
-        return nrOfChildContainers != 0 || nrOfChildNodes != 0;
-    }
-
-    toggleShowChildren() {
-        this.showChildren = !this.showChildren;
+        this.runnerTreeComponentService.selectedRunnerTreeNodeObserver.subscribe((selectedTreeNode: RunnerTreeNodeModel) => {
+            this.isSelected = this.model.equals(selectedTreeNode);
+        })
     }
 
     setNodeAsSelected() {
-        if (this.showChildren) {
-            this.toggleShowChildren();
-        }
-
-        this.runnerTreeService.setNodeAsSelected(this.model);
-    }
-
-    onRunnerTreeNodeSelected(runnerTreeNode: RunnerTreeNodeModel): void {
-        this.isSelected = this.model.equals(runnerTreeNode);
+        this.runnerTreeComponentService.selectedRunnerTreeNodeObserver.emit(this.model);
     }
 
     getStatusTooltip(): string {

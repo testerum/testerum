@@ -6,8 +6,8 @@ import {Path} from "../../infrastructure/path/path.model";
 
 export class RunnerFeatureNode implements Serializable<RunnerFeatureNode>, RunnerContainerNode {
     id: string;
-    name: string;
     path: Path;
+    name: string;
     children: Array<RunnerNode> = [];
 
     deserialize(input: Object): RunnerFeatureNode {

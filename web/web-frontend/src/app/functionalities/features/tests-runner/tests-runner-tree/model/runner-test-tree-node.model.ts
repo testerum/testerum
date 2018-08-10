@@ -6,29 +6,33 @@ import {EventKey} from "../../../../../model/test/event/fields/event-key.model";
 import {PositionInParent} from "../../../../../model/test/event/fields/position-in-parent.model";
 import {ArrayUtil} from "../../../../../utils/array.util";
 import {JsonTreeContainerAbstract} from "../../../../../generic/components/json-tree/model/json-tree-container.abstract";
-import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {JsonTreeNodeState} from "../../../../../generic/components/json-tree/model/json-tree-node-state.model";
 import {JsonTreeContainer} from "../../../../../generic/components/json-tree/model/json-tree-container.model";
-import {JsonTreeNodeAbstract} from "../../../../../generic/components/json-tree/model/json-tree-node.abstract";
-export abstract class RunnerTreeNodeModel extends JsonTreeNodeAbstract {
+import {StepCallContainerModel} from "../../../../../generic/components/step-call-tree/model/step-call-container.model";
+import {RunnerTreeContainerNodeModel} from "./runner-tree-container-node.model";
+import {RunnerTreeNodeModel} from "./runner-tree-node.model";
+import {Path} from "../../../../../model/infrastructure/path/path.model";
+export class RunnerTestTreeNodeModel extends RunnerTreeContainerNodeModel {
 
-    id: string;
+    id:string;
     path: Path;
     eventKey: EventKey;
     state:ExecutionStatusEnum = ExecutionStatusEnum.WAITING;
+    text:string;
 
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
     parentContainer: JsonTreeContainer;
+    children: Array<RunnerTreeNodeModel> = [];
 
-    constructor(parentContainer: JsonTreeContainer) {
-        super(parentContainer);
+    getChildren(): Array<RunnerTreeNodeModel> {
+        return this.children;
     }
 
     equals(other: RunnerTreeNodeModel): boolean {
-        return other.id == this.id;
+        return super.equals(other);
     }
 
     changeState(newState:ExecutionStatusEnum) {
-        this.state = newState;
+        super.changeState(newState);
     }
 }
