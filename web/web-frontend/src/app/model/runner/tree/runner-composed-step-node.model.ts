@@ -6,13 +6,11 @@ import { StepCall } from "../../step-call.model";
 export class RunnerComposedStepNode implements Serializable<RunnerComposedStepNode>, RunnerStepNode {
     id: string;
     path: Path;
-    name: string;
     stepCall: StepCall;
     children: Array<RunnerStepNode> = [];
 
     deserialize(input: Object): RunnerComposedStepNode {
         this.id = input["id"];
-        this.name = input["name"];
         this.path = Path.deserialize(input["path"]);
         this.stepCall = new StepCall().deserialize(input["stepCall"]);
         this.children = RunnerTreeDeserializationUtil.deserializeRunnerStepNodes(input["children"] || []);

@@ -5,6 +5,7 @@ import { $WebSocket, WebSocketConfig, WebSocketSendMode } from "angular2-websock
 import { HttpClient } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 import { TestExecutionResponse } from "../../../model/runner/tree/test-execution-response.model";
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class TestsRunnerService {
@@ -35,6 +36,7 @@ export class TestsRunnerService {
 
         const testModelPaths = testModels.map(testModel => testModel.path.toString());
         this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, testModelPaths)
+            .pipe(map(json => new TestExecutionResponse().deserialize(json)))
             .subscribe((testExecutionResponse: TestExecutionResponse) => {
                 this.startExecution(testExecutionResponse);
             });
@@ -42,8 +44,6 @@ export class TestsRunnerService {
 
     private startExecution(testExecutionResponse: TestExecutionResponse) {
         // todo: also use testExecutionResponse.runnerRootNode
-        console.log("testExecutionResponse.runnerRootNode=", testExecutionResponse.runnerRootNode);
-
         this.executionId = testExecutionResponse.executionId;
 
         let payload = `EXECUTE-TESTS:${this.executionId}`;

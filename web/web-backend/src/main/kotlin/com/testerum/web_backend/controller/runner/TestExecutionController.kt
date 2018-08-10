@@ -13,7 +13,7 @@ class TestExecutionController(private val testsExecutionService: TestsExecutionS
     @ResponseBody
     fun createExecution(@RequestBody pathsToRun: List<String>): TestExecutionResponse {
         return testsExecutionService.createExecution(
-                pathsToRun = pathsToRun.map { Path.createInstance(it) }
+                testOrDirectoryPaths = pathsToRun.map { Path.createInstance(it) }
         )
     }
 
