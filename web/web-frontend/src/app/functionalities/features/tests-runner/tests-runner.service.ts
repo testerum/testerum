@@ -44,8 +44,6 @@ export class TestsRunnerService {
 
     private startExecution(testExecutionResponse: TestExecutionResponse) {
         // todo: also use testExecutionResponse.runnerRootNode
-        console.log("testExecutionResponse.runnerRootNode=", testExecutionResponse.runnerRootNode);
-
         this.executionId = testExecutionResponse.executionId;
 
         let payload = `EXECUTE-TESTS:${this.executionId}`;
