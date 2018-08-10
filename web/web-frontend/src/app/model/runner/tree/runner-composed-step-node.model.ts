@@ -1,19 +1,21 @@
-import { RunnerNode } from "./runner-node.model";
 import { Path } from "../../infrastructure/path/path.model";
-import { RunnerContainerNode } from "./runner-container-node.model";
 import { RunnerTreeDeserializationUtil } from "./util/runner-tree-deserialization.util";
+import { RunnerStepNode } from "./runner-step-node.model";
+import { StepCall } from "../../step-call.model";
 
-export class RunnerComposedStepNode implements Serializable<RunnerComposedStepNode>, RunnerContainerNode {
+export class RunnerComposedStepNode implements Serializable<RunnerComposedStepNode>, RunnerStepNode {
     id: string;
-    name: string;
     path: Path;
-    children: Array<RunnerNode> = [];
+    name: string;
+    stepCall: StepCall;
+    children: Array<RunnerStepNode> = [];
 
     deserialize(input: Object): RunnerComposedStepNode {
         this.id = input["id"];
         this.name = input["name"];
         this.path = Path.deserialize(input["path"]);
-        this.children = RunnerTreeDeserializationUtil.deserialize(input["children"] || []);
+        this.stepCall = new StepCall().deserialize(input["stepCall"]);
+        this.children = RunnerTreeDeserializationUtil.deserializeRunnerStepNodes(input["children"] || []);
 
         return this;
     }

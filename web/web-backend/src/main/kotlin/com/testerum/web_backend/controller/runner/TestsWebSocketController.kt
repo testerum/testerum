@@ -1,7 +1,6 @@
 package com.testerum.web_backend.controller.runner
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath
 import com.testerum.model.infrastructure.path.Path
@@ -51,14 +50,10 @@ class TestsWebSocketController(private val testsExecutionService: TestsExecution
 
     private fun executeTestsHandler(session: WebSocketSession,
                                     payload: String) {
-        val indexOfSeparator = payload.indexOf(HANDLER_KEY_PAYLOAD_SEPARATOR)
+        val executionId: Long = payload.toLong()
 
-        val executionIdAsText: String = payload.substring(0, indexOfSeparator)
-        val testModelsAsText: String = payload.substring(indexOfSeparator + 1)
-
-        val executionId: Long = executionIdAsText.toLong()
-
-        val testModels: List<TestModel> = objectMapper.readValue(testModelsAsText)
+//        val testModels: List<TestModel> = objectMapper.readValue(testModelsAsText)
+        val testModels: List<TestModel> = emptyList()
         val testPaths: List<Path> = testModels.map { it.path }
 
         val resultFilePath = createResultsFile()

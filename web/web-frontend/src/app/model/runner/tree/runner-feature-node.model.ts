@@ -1,24 +1,19 @@
-import { RunnerNode } from "./runner-node.model";
-import { RunnerContainerNode } from "./runner-container-node.model";
-import { ArrayUtil } from "../../../utils/array.util";
 import { RunnerTreeDeserializationUtil } from "./util/runner-tree-deserialization.util";
 import { Path } from "../../infrastructure/path/path.model";
+import { RunnerTestOrFeatureNode } from "./runner-test-or-feature-node.model";
 
-export class RunnerFeatureNode implements Serializable<RunnerFeatureNode>, RunnerContainerNode {
+export class RunnerFeatureNode implements RunnerTestOrFeatureNode, Serializable<RunnerFeatureNode> {
     id: string;
-    name: string;
     path: Path;
-    children: Array<RunnerNode> = [];
+    name: string;
+    children: Array<RunnerTestOrFeatureNode> = [];
 
     deserialize(input: Object): RunnerFeatureNode {
         this.id = input["id"];
-        this.name = input["name"];
         this.path = Path.deserialize(input["path"]);
+        this.name = input["name"];
 
-        ArrayUtil.replaceElementsInArray(
-            this.children,
-            RunnerTreeDeserializationUtil.deserialize(input["children"])
-        );
+        this.children = RunnerTreeDeserializationUtil.deserializeRunnerTestOrFeatureNodes(input["children"] || []);
 
         return this;
     }
