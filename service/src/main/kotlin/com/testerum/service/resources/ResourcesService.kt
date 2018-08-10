@@ -44,7 +44,7 @@ class ResourcesService(val validators: List<ResourceValidator>,
 
 
         val savedResourceWithTransformedBody: RepositoryFile = savedResource.copy(
-                body = FileArgTransformer.fileFormatToJson(savedResource.body, fileType.resourceJavaType)
+                body = FileArgTransformer.fileFormatToJson(savedResource.body, fileType.resourceJavaType).orEmpty()
         )
 
         return savedResourceWithTransformedBody.mapToResource()
@@ -86,7 +86,7 @@ class ResourcesService(val validators: List<ResourceValidator>,
                 ?: return null
 
         val resourceFileWithTransformedBody = resourceFile.copy(
-                body = FileArgTransformer.fileFormatToJson(resourceFile.body, fileType.resourceJavaType)
+                body = FileArgTransformer.fileFormatToJson(resourceFile.body, fileType.resourceJavaType).orEmpty()
         )
 
         return resourceFileWithTransformedBody.mapToResource()

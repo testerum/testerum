@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.util.NestedServletException
 import org.springframework.web.util.WebUtils
 import javax.servlet.http.HttpServletRequest
@@ -22,10 +21,14 @@ class ErrorController(val errorResponsePreparerMap: Map<Class<out Throwable>, Er
         private val LOGGER = LoggerFactory.getLogger(ErrorController::class.java)
     }
 
-    @RequestMapping(method = [RequestMethod.GET], path = [""], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun errorPage(@NonNull request: HttpServletRequest): ResponseEntity<ErrorResponse> {
-        val exception = request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) as Throwable?
-        val nestedException = if (exception is NestedServletException) exception.cause else exception
+        val exception: Throwable? = request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) as Throwable?
+        val nestedException: Throwable? = if (exception is NestedServletException && (exception.cause != null)) {
+            exception.cause
+        } else {
+            exception
+        }
 
         logException(request, nestedException)
 

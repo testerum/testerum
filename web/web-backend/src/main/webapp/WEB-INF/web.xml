@@ -37,7 +37,7 @@
 
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
-        <location>/api/v1/error</location>
+        <location>/rest/error</location>
     </error-page>
 
     <error-page>
