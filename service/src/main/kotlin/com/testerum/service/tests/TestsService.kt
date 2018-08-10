@@ -170,6 +170,27 @@ class TestsService(private val testResolver: TestResolver,
         return warningService.testWithWarnings(resolvedUiTest, keepExistingWarnings = true)
     }
 
+    fun getTestsForPath(testOrDirectoryPaths: List<Path>): List<TestModel> {
+        val tests = mutableListOf<TestModel>()
+
+        val (testPaths, directoryPaths) = testOrDirectoryPaths.partition { it.fileExtension == FileType.TEST.fileExtension }
+
+        for (testPath in testPaths) {
+            val testAtPath: TestModel = getTestAtPath(testPath)
+                    ?: continue
+
+            tests += testAtPath
+        }
+
+        for (directoryPath in directoryPaths) {
+            val testsUnderPath: List<TestModel> = getTestsUnderPath(directoryPath)
+
+            tests += testsUnderPath
+        }
+
+        return tests
+    }
+
     fun deleteDirectory(path: Path) {
         return fileRepositoryService.delete(
                 KnownPath(path, FileType.TEST)

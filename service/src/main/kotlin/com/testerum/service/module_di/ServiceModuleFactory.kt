@@ -168,6 +168,7 @@ class ServiceModuleFactory(context: ModuleFactoryContext,
     )
 
     val testsExecutionService = TestsExecutionService(
+            testsService = testsService,
             settingsManager = settingsModuleFactory.settingsManager,
             jsonObjectMapper = testsRunnerJsonObjectMapper
     )

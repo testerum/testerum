@@ -7,6 +7,5 @@ import com.testerum.model.step.StepCall
 
 data class RunnerComposedStepNode @JsonCreator constructor(@JsonProperty("id") override val id: String,
                                                            @JsonProperty("path") override val path: Path,
-                                                           @JsonProperty("name") override val name: String,
                                                            @JsonProperty("stepCall") override val stepCall: StepCall,
                                                            @JsonProperty("children") val children: List<RunnerStepNode>): RunnerStepNode

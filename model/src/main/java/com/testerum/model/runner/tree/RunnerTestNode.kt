@@ -6,5 +6,5 @@ import com.testerum.model.infrastructure.path.Path
 
 data class RunnerTestNode @JsonCreator constructor(@JsonProperty("id") override val id: String,
                                                    @JsonProperty("path") override val path: Path,
-                                                   @JsonProperty("name") override val name: String,
+                                                   @JsonProperty("name") val name: String,
                                                    @JsonProperty("children") val children: List<RunnerStepNode>): RunnerTestOrFeatureNode

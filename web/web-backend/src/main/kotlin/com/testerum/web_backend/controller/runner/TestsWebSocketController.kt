@@ -5,7 +5,6 @@ import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType
-import com.testerum.model.test.TestModel
 import com.testerum.service.tests_runner.execution.TestsExecutionService
 import com.testerum.service.tests_runner.result.TestRunnerResultService
 import org.slf4j.LoggerFactory
@@ -52,13 +51,9 @@ class TestsWebSocketController(private val testsExecutionService: TestsExecution
                                     payload: String) {
         val executionId: Long = payload.toLong()
 
-//        val testModels: List<TestModel> = objectMapper.readValue(testModelsAsText)
-        val testModels: List<TestModel> = emptyList()
-        val testPaths: List<Path> = testModels.map { it.path }
-
         val resultFilePath = createResultsFile()
 
-        testsExecutionService.startExecution(executionId, testPaths) { event ->
+        testsExecutionService.startExecution(executionId) { event ->
             if (session.isOpen) {
                 // send to UI
                 val eventAsString = objectMapper.writeValueAsString(event)

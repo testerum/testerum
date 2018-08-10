@@ -5,13 +5,16 @@ import com.testerum.api.test_context.settings.SettingsManager
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.runner.tree.RunnerRootNode
+import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
+import com.testerum.service.tests.TestsService
+import com.testerum.service.tests_runner.execution.model.RunningTestExecution
+import com.testerum.service.tests_runner.execution.model.TestExecution
 import com.testerum.service.tests_runner.execution.model.TestExecutionResponse
 import com.testerum.service.tests_runner.execution.stopper.ProcessKillerTestExecutionStopper
-import com.testerum.service.tests_runner.execution.stopper.TestExecutionStopper
 import com.testerum.settings.SystemSettings
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -25,7 +28,8 @@ import java.time.LocalDateTime
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
-class TestsExecutionService(private val settingsManager: SettingsManager,
+class TestsExecutionService(private val testsService: TestsService,
+                            private val settingsManager: SettingsManager,
                             private val jsonObjectMapper: ObjectMapper) {
 
     companion object {
@@ -42,32 +46,59 @@ class TestsExecutionService(private val settingsManager: SettingsManager,
     }
 
     private val testExecutionIdGenerator = TestExecutionIdGenerator()
-    private val testExecutions: MutableMap<Long, TestExecutionStopper> = ConcurrentHashMap()
 
-    fun createExecution(pathsToRun: List<Path>): TestExecutionResponse {
+    private val testExecutionsById: MutableMap<Long, TestExecution> = ConcurrentHashMap()
+
+    fun createExecution(testOrDirectoryPaths: List<Path>): TestExecutionResponse {
+        val executionId = testExecutionIdGenerator.nextId()
+
+        testExecutionsById[executionId] = TestExecution(executionId, testOrDirectoryPaths)
+
         return TestExecutionResponse(
-                executionId = testExecutionIdGenerator.nextId(),
-                runnerRootNode = RunnerRootNode("not-yet-implemented", emptyList())
+                executionId = executionId,
+                runnerRootNode = getRunnerRootNode(testOrDirectoryPaths)
         )
     }
 
+    private fun getRunnerRootNode(testOrDirectoryPaths: List<Path>): RunnerRootNode {
+        val tests = testsService.getTestsForPath(testOrDirectoryPaths)
+
+        val builder = RunnerTreeBuilder()
+        tests.forEach { builder.addTest(it) }
+
+        return builder.build()
+    }
+
     fun stopExecution(executionId: Long) {
-        val execution = testExecutions[executionId]
+        val execution = testExecutionsById[executionId]
         if (execution == null) {
             LOGGER.warn("trying to stop an execution that no longer exists")
             return
         }
+        if (execution !is RunningTestExecution) {
+            LOGGER.warn("trying to stop an execution that didn't start")
+            return
+        }
 
-        execution.stopExecution()
-        testExecutions.remove(executionId)
+        execution.stopper.stopExecution()
+        testExecutionsById.remove(executionId)
     }
 
     fun startExecution(executionId: Long,
-                       testsPathsToRun: List<Path>,
                        eventProcessor: (event: RunnerEvent) -> Unit) {
+        val execution = testExecutionsById[executionId]
+        if (execution == null) {
+            LOGGER.warn("trying to start an execution that no longer exists")
+            return
+        }
+        if (execution is RunningTestExecution) {
+            LOGGER.warn("trying to start an execution that is already started")
+            return
+        }
+
         LOGGER.debug("==========================================[ start test execution {} ]=========================================", executionId)
 
-        val args = createArgs(testsPathsToRun)
+        val args = createArgs(execution.testOrDirectoryPathsToRun)
         val argsFile: java.nio.file.Path = createArgsFile(args)
 
         try {
@@ -80,11 +111,13 @@ class TestsExecutionService(private val settingsManager: SettingsManager,
                     .readOutput(true)
                     .addListener(object : ProcessListener() {
                         override fun afterStart(process: Process, executor: ProcessExecutor) {
-                            testExecutions[executionId] = ProcessKillerTestExecutionStopper(executionId, process)
+                            testExecutionsById[executionId] = execution.toRunning(
+                                    stopper = ProcessKillerTestExecutionStopper(executionId, process)
+                            )
                         }
 
                         override fun afterStop(process: Process?) {
-                            testExecutions.remove(executionId)
+                            testExecutionsById.remove(executionId)
                         }
                     })
                     .redirectOutput(

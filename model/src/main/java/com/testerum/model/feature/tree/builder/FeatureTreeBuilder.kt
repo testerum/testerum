@@ -32,7 +32,7 @@ class FeatureTreeBuilder {
         }
 
         override fun isContainer(payload: Any): Boolean = when (payload) {
-            is Feature -> true
+            is Feature   -> true
             is TestModel -> false
             else         -> throw unknownPayloadException(payload)
         }
@@ -40,7 +40,7 @@ class FeatureTreeBuilder {
         override fun getRootLabel(): String = "Features"
 
         override fun getLabel(payload: Any): String = when (payload) {
-            is Feature -> payload.path.directories.last()
+            is Feature   -> payload.path.directories.last()
             is TestModel -> payload.text
             else         -> throw unknownPayloadException(payload)
         }

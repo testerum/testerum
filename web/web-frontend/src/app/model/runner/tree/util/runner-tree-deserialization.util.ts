@@ -4,6 +4,7 @@ import { RunnerFeatureNode } from "../runner-feature-node.model";
 import { RunnerTestNode } from "../runner-test-node.model";
 import { RunnerTestOrFeatureNode } from "../runner-test-or-feature-node.model";
 import { RunnerStepNode } from "../runner-step-node.model";
+import { RunnerUndefinedStepNode } from "../runner-undefined-step-node.model";
 
 export class RunnerTreeDeserializationUtil {
 
@@ -27,6 +28,9 @@ export class RunnerTreeDeserializationUtil {
     }
 
     private static deserializeRunnerStepNode(inputNode: Object): RunnerStepNode {
+        if (inputNode["@type"] == "RUNNER_UNDEFINED_STEP") {
+            return new RunnerUndefinedStepNode().deserialize(inputNode)
+        }
         if (inputNode["@type"] == "RUNNER_BASIC_STEP") {
             return new RunnerBasicStepNode().deserialize(inputNode)
         }

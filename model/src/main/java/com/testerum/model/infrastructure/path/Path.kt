@@ -31,6 +31,34 @@ data class Path @JsonCreator constructor(
     }
 
     @JsonIgnore
+    val fullFilename: String? = if (fileName == null && fileExtension == null) {
+        null
+    } else {
+        buildString {
+            if (fileName != null) {
+                append(fileName)
+            }
+            if (fileExtension != null) {
+                append(".")
+                append(fileExtension)
+            }
+        }
+    }
+
+    @JsonIgnore
+    val parts: List<String> = run {
+        if (fullFilename == null) {
+            directories
+        } else {
+            val result = directories.toMutableList()
+
+            result.add(fullFilename)
+
+            result
+        }
+    }
+
+    @JsonIgnore
     fun toJavaPath(): java.nio.file.Path {
         return Paths.get(this.toString())
     }
