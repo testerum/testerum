@@ -62,9 +62,12 @@ object FileArgTransformer {
         return YAML_MAPPER.writeValueAsString(jsonTree)
     }
 
-    fun fileFormatToJson(text: String, argType: String?): String {
+    fun fileFormatToJson(text: String, argType: String?): String? {
         if (!shouldTransform(argType)) {
             return text
+        }
+        if (text == "") {
+            return null
         }
 
         val jsonTree: JsonNode
