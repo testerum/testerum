@@ -1067,6 +1067,13 @@
                     </configuration>
                 </plugin>
 
+                <!-- maven-javadoc-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.0.1</version>
+                </plugin>
+
                 <!-- maven-jar-plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
