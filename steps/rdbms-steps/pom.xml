@@ -8,7 +8,7 @@
     <parent>
         <artifactId>steps</artifactId>
         <groupId>com.testerum</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>develop-SNAPSHOT</version>
     </parent>
 
     <artifactId>rdbms-steps</artifactId>

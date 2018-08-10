@@ -6,7 +6,7 @@
 
     <groupId>com.testerum</groupId>
     <artifactId>testerum</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>develop-SNAPSHOT</version>
 
     <modules>
         <module>common</module>
@@ -22,6 +22,22 @@
 
     <packaging>pom</packaging>
 
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>https://jenkins.testerum.com/</url>
+    </ciManagement>
+
+    <issueManagement>
+        <system>YouTrack</system>
+        <url>https://issues.testerum.com/</url>
+    </issueManagement>
+
+    <scm>
+        <connection>https://gitlab.com/testerum/testerum.git</connection>
+        <developerConnection>scm:git:git@gitlab.com:testerum/testerum.git</developerConnection>
+        <url>https://gitlab.com/testerum/testerum</url>
+    </scm>
+
     <properties>
         <!-- maven settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,6 +45,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
         <maven.compiler.debug>true</maven.compiler.debug>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <maven.source.skip>true</maven.source.skip>
         <maven.build.timestamp.format>yyyy-MM-dd_HH-mm-ss</maven.build.timestamp.format>
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
@@ -969,6 +987,13 @@
                     </configuration>
                 </plugin>
 
+                <!-- maven-javadoc-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.0.1</version>
+                </plugin>
+
                 <!-- maven-jar-plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -1103,12 +1128,26 @@
                     </configuration>
                 </plugin>
 
+                <!--maven-release-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+
+                    <configuration>
+                        <tagNameFormat>release-tags/@{project.version}</tagNameFormat>
+                        <arguments>-Dproduction</arguments>
+                        <goals>install</goals>
+                    </configuration>
+                </plugin>
+
                 <!-- maven-shade-plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
                     <version>3.1.1</version>
                 </plugin>
+
             </plugins>
         </pluginManagement>
 
