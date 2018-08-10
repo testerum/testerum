@@ -2,9 +2,9 @@ package com.testerum.web_backend.controller.feature
 
 import com.testerum.model.feature.Feature
 import com.testerum.model.feature.filter.FeaturesTreeFilter
+import com.testerum.model.feature.tree.RootFeatureNode
 import com.testerum.model.file.Attachment
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.main_tree.RootMainNode
 import com.testerum.service.feature.FeatureService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -39,7 +39,7 @@ class FeatureController(private val featureService: FeatureService) {
 
     @RequestMapping(method = [RequestMethod.POST], path = ["tree"])
     @ResponseBody
-    fun getFeaturesTree(@RequestBody featuresTreeFilter: FeaturesTreeFilter): RootMainNode {
+    fun getFeaturesTree(@RequestBody featuresTreeFilter: FeaturesTreeFilter): RootFeatureNode {
         return featureService.getFeaturesTree(featuresTreeFilter)
     }
 

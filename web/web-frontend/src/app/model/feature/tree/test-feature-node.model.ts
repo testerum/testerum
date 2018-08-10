@@ -1,14 +1,14 @@
-import {Path} from "../infrastructure/path/path.model";
-import {ServerMainNode} from "./server-main-node.model";
-import {TestProperties} from "../test/test-properties.model";
+import { Path } from "../../infrastructure/path/path.model";
+import { FeatureNode } from "./feature-node.model";
+import { TestProperties } from "../../test/test-properties.model";
 
-export class ServerTestMainNode implements Serializable<ServerTestMainNode>, ServerMainNode {
+export class TestFeatureNode implements Serializable<TestFeatureNode>, FeatureNode {
     name: string;
     properties: TestProperties;
     path: Path;
     hasOwnOrDescendantWarnings: boolean = false;
 
-    deserialize(input: Object): ServerTestMainNode {
+    deserialize(input: Object): TestFeatureNode {
         this.name = input["name"];
         this.path = Path.deserialize(input["path"]);
         this.properties = new TestProperties().deserialize(input['properties']);

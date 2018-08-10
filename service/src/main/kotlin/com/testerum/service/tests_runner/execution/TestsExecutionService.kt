@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.api.test_context.settings.SettingsManager
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType
+import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
+import com.testerum.service.tests_runner.execution.model.TestExecutionResponse
 import com.testerum.service.tests_runner.execution.stopper.ProcessKillerTestExecutionStopper
 import com.testerum.service.tests_runner.execution.stopper.TestExecutionStopper
 import com.testerum.settings.SystemSettings
@@ -42,7 +44,12 @@ class TestsExecutionService(private val settingsManager: SettingsManager,
     private val testExecutionIdGenerator = TestExecutionIdGenerator()
     private val testExecutions: MutableMap<Long, TestExecutionStopper> = ConcurrentHashMap()
 
-    fun createExecution(): Long = testExecutionIdGenerator.nextId()
+    fun createExecution(pathsToRun: List<Path>): TestExecutionResponse {
+        return TestExecutionResponse(
+                executionId = testExecutionIdGenerator.nextId(),
+                runnerRootNode = RunnerRootNode("not-yet-implemented", emptyList())
+        )
+    }
 
     fun stopExecution(executionId: Long) {
         val execution = testExecutions[executionId]

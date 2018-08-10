@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
-import {TestModel} from "../../../model/test/test.model";
-import {RunnerEvent, RunnerEventMarshaller} from "../../../model/test/event/runner.event";
-import {$WebSocket, WebSocketConfig, WebSocketSendMode} from "angular2-websocket/angular2-websocket";
-import {HttpClient} from "@angular/common/http";
-import {Observable, Subject} from "rxjs";
+import { Injectable } from '@angular/core';
+import { TestModel } from "../../../model/test/test.model";
+import { RunnerEvent, RunnerEventMarshaller } from "../../../model/test/event/runner.event";
+import { $WebSocket, WebSocketConfig, WebSocketSendMode } from "angular2-websocket/angular2-websocket";
+import { HttpClient } from "@angular/common/http";
+import { Observable, Subject } from "rxjs";
+import { TestExecutionResponse } from "../../../model/runner/tree/test-execution-response.model";
 
 @Injectable()
 export class TestsRunnerService {
@@ -19,31 +20,33 @@ export class TestsRunnerService {
     private webSocket:$WebSocket = null;
     private executionId: number = null;
 
-    private startTestExecutionSubject: Subject<Array<TestModel>> = new Subject<Array<TestModel>>();
-    public readonly startTestExecutionObservable: Observable<Array<TestModel>> = this.startTestExecutionSubject;
+    private startTestExecutionSubject: Subject<TestModel[]> = new Subject<TestModel[]>();
+    public readonly startTestExecutionObservable: Observable<TestModel[]> = this.startTestExecutionSubject;
 
     private runnerEventSubject: Subject<RunnerEvent> = new Subject<RunnerEvent>();
     public readonly runnerEventObservable: Observable<RunnerEvent> = this.runnerEventSubject;
 
     constructor(private http: HttpClient) {}
 
-    runTests(testModels: Array<TestModel>) {
+    runTests(testModels: TestModel[]) {
         this.isTestRunnerVisible = true;
 
         this.startTestExecutionSubject.next(testModels);
 
-        this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, null)
-            .subscribe((executionId) => {
-                this.startExecution(executionId, testModels);
+        const testModelPaths = testModels.map(testModel => testModel.path.toString());
+        this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, testModelPaths)
+            .subscribe((testExecutionResponse: TestExecutionResponse) => {
+                this.startExecution(testExecutionResponse);
             });
     }
 
-    private startExecution(executionId, testModels: Array<TestModel>) {
-        this.executionId = executionId;
+    private startExecution(testExecutionResponse: TestExecutionResponse) {
+        // todo: also use testExecutionResponse.runnerRootNode
+        console.log("testExecutionResponse.runnerRootNode=", testExecutionResponse.runnerRootNode);
 
-        let tests: string = TestsRunnerService.serializeTestModels(testModels);
+        this.executionId = testExecutionResponse.executionId;
 
-        let payload = `EXECUTE-TESTS:${executionId}:${tests}`;
+        let payload = `EXECUTE-TESTS:${this.executionId}`;
 
         this.connectWebSocket();
         this.sendMessage(payload);
@@ -90,7 +93,7 @@ export class TestsRunnerService {
             .subscribe();
     }
 
-    private static serializeTestModels(testModels: Array<TestModel>): string {
+    private static serializeTestModels(testModels: TestModel[]): string {
         let result = "[";
         testModels.forEach((testModel, index) => {
             result += testModel.serialize();

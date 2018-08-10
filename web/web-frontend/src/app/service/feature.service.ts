@@ -1,13 +1,13 @@
-import {map} from 'rxjs/operators';
-import {Injectable} from "@angular/core";
-import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { Observable } from 'rxjs';
 
 
-import {Feature} from "../model/feature/feature.model";
-import {Path} from "../model/infrastructure/path/path.model";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {ServerRootMainNode} from "../model/main_tree/server-root-main-node.model";
-import {FeaturesTreeFilter} from "../model/feature/filter/features-tree-filter.model";
+import { Feature } from "../model/feature/feature.model";
+import { Path } from "../model/infrastructure/path/path.model";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { RootFeatureNode } from "../model/feature/tree/root-feature-node.model";
+import { FeaturesTreeFilter } from "../model/feature/filter/features-tree-filter.model";
 
 @Injectable()
 export class FeatureService {
@@ -16,7 +16,7 @@ export class FeatureService {
 
     constructor(private http: HttpClient) {}
 
-    getFeatureTree(featureTreeFilter: FeaturesTreeFilter): Observable<ServerRootMainNode> {
+    getFeatureTree(featureTreeFilter: FeaturesTreeFilter): Observable<RootFeatureNode> {
         let body = featureTreeFilter.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
@@ -25,7 +25,7 @@ export class FeatureService {
         };
 
         return this.http
-            .post<ServerRootMainNode>(this.FEATURE_URL+"/tree", body, httpOptions).pipe(
+            .post<RootFeatureNode>(this.FEATURE_URL+"/tree", body, httpOptions).pipe(
             map(FeatureService.extractFeaturesTree));
     }
 
@@ -69,9 +69,9 @@ export class FeatureService {
         return new Feature().deserialize(res);
     }
 
-    private static extractFeaturesTree(res: ServerRootMainNode): ServerRootMainNode {
+    private static extractFeaturesTree(res: RootFeatureNode): RootFeatureNode {
         if(res == null) return null;
-        return new ServerRootMainNode().deserialize(res);
+        return new RootFeatureNode().deserialize(res);
     }
 }
 
