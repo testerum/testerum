@@ -23,6 +23,22 @@
 
     <packaging>pom</packaging>
 
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>https://jenkins.testerum.com/</url>
+    </ciManagement>
+
+    <issueManagement>
+        <system>YouTrack</system>
+        <url>https://issues.testerum.com/</url>
+    </issueManagement>
+
+    <scm>
+        <connection>https://gitlab.com/testerum/testerum-package.git</connection>
+        <developerConnection>scm:git:git@gitlab.com:testerum/testerum-package.git</developerConnection>
+        <url>https://gitlab.com/testerum/testerum-package</url>
+    </scm>
+
     <properties>
         <!-- maven settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -1180,6 +1196,19 @@
                     <configuration>
                         <nodeVersion>v9.8.0</nodeVersion>
                         <npmVersion>5.6.0</npmVersion>
+                    </configuration>
+                </plugin>
+
+                <!--maven-release-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+
+                    <configuration>
+                        <tagNameFormat>release-tags/@{project.version}</tagNameFormat>
+                        <arguments>-Dproduction</arguments>
+                        <goals>install</goals>
                     </configuration>
                 </plugin>
 
