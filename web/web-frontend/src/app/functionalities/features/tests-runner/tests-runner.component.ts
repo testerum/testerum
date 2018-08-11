@@ -12,7 +12,6 @@ import {RunnerTreeComponentService} from "./tests-runner-tree/runner-tree.compon
 export class TestsRunnerComponent {
 
     constructor(private testsRunnerService: TestsRunnerService,
-                public runnerTreeService: RunnerTreeComponentService,
                 public testsRunnerLogsService: TestsRunnerLogsService) { }
 
     isTestRunnerVisible(): boolean {

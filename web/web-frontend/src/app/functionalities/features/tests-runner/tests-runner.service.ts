@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import { TestModel } from "../../../model/test/test.model";
+import {EventEmitter, Injectable} from '@angular/core';
 import { RunnerEvent, RunnerEventMarshaller } from "../../../model/test/event/runner.event";
 import { $WebSocket, WebSocketConfig, WebSocketSendMode } from "angular2-websocket/angular2-websocket";
 import { HttpClient } from "@angular/common/http";
-import { Observable, Subject } from "rxjs";
 import { TestExecutionResponse } from "../../../model/runner/tree/test-execution-response.model";
 import { map } from "rxjs/operators";
+import {RunnerRootNode} from "../../../model/runner/tree/runner-root-node.model";
+import {Path} from "../../../model/infrastructure/path/path.model";
+import {RunnerTreeNodeModel} from "./tests-runner-tree/model/runner-tree-node.model";
 
 @Injectable()
 export class TestsRunnerService {
@@ -21,21 +22,20 @@ export class TestsRunnerService {
     private webSocket:$WebSocket = null;
     private executionId: number = null;
 
-    private startTestExecutionSubject: Subject<TestModel[]> = new Subject<TestModel[]>();
-    public readonly startTestExecutionObservable: Observable<TestModel[]> = this.startTestExecutionSubject;
 
-    private runnerEventSubject: Subject<RunnerEvent> = new Subject<RunnerEvent>();
-    public readonly runnerEventObservable: Observable<RunnerEvent> = this.runnerEventSubject;
+    selectedRunnerTreeNode: RunnerTreeNodeModel;
+    selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
+
+    public readonly startTestExecutionObservable: EventEmitter<RunnerRootNode> = new EventEmitter<RunnerRootNode>();
+    public readonly runnerEventObservable: EventEmitter<RunnerEvent> = new EventEmitter<RunnerEvent>();
 
     constructor(private http: HttpClient) {}
 
-    runTests(testModels: TestModel[]) {
+    runTests(pathsToExecute: Path[]) {
         this.isTestRunnerVisible = true;
 
-        this.startTestExecutionSubject.next(testModels);
-
-        const testModelPaths = testModels.map(testModel => testModel.path.toString());
-        this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, testModelPaths)
+        let pathsAsString = pathsToExecute.map(it => {return it.toString()});
+        this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, pathsAsString)
             .pipe(map(json => new TestExecutionResponse().deserialize(json)))
             .subscribe((testExecutionResponse: TestExecutionResponse) => {
                 this.startExecution(testExecutionResponse);
@@ -43,8 +43,9 @@ export class TestsRunnerService {
     }
 
     private startExecution(testExecutionResponse: TestExecutionResponse) {
-        // todo: also use testExecutionResponse.runnerRootNode
         this.executionId = testExecutionResponse.executionId;
+
+        this.startTestExecutionObservable.emit(testExecutionResponse.runnerRootNode);
 
         let payload = `EXECUTE-TESTS:${this.executionId}`;
 
@@ -71,7 +72,7 @@ export class TestsRunnerService {
         let eventTypeAsString:string = runnerEventAsJson["@type"];
         let runnerEvent:RunnerEvent = RunnerEventMarshaller.deserializeRunnerEvent(runnerEventAsJson);
 
-        this.runnerEventSubject.next(runnerEvent);
+        this.runnerEventObservable.emit(runnerEvent);
     }
 
     private sendMessage(payload: string) {
@@ -93,16 +94,8 @@ export class TestsRunnerService {
             .subscribe();
     }
 
-    private static serializeTestModels(testModels: TestModel[]): string {
-        let result = "[";
-        testModels.forEach((testModel, index) => {
-            result += testModel.serialize();
-            if(index < testModels.length - 1) {
-                result += ","
-            }
-        });
-
-        return result + "]";
+    public setSelectedNode(selectedRunnerTreeNode: RunnerTreeNodeModel) {
+        this.selectedRunnerTreeNode = selectedRunnerTreeNode;
+        this.selectedRunnerTreeNodeObserver.emit(selectedRunnerTreeNode);
     }
-
 }

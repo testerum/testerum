@@ -7,7 +7,7 @@ import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {RunnerTreeNodeModel} from "./runner-tree-node.model";
 import {RunnerTreeContainerNodeModel} from "./runner-tree-container-node.model";
 
-export class RunnerTestTreeNodeModel extends RunnerTreeContainerNodeModel {
+export class RunnerComposedStepTreeNodeModel extends RunnerTreeContainerNodeModel {
 
     id:string;
     path: Path;

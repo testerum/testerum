@@ -207,6 +207,6 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     }
 
     runTest(): void {
-        this.testsRunnerService.runTests([this.testModel]);
+        this.testsRunnerService.runTests([this.testModel.path]);
     }
 }

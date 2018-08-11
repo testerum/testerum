@@ -31,7 +31,7 @@ export class ResultComponent implements OnInit {
     @ViewChild(TestsRunnerLogsComponent) testsRunnerLogsComponent: TestsRunnerLogsComponent;
 
     constructor(private route: ActivatedRoute,
-                private runnerTreeService: RunnerTreeComponentService,
+                // private runnerTreeService: RunnerTreeComponentService,
                 private executionPieService: ExecutionPieService) {
     }
 
@@ -57,80 +57,80 @@ export class ResultComponent implements OnInit {
     }
 
     private initializeResultTree(eventsFromServer: Array<RunnerEvent>) {
-        this.executionPieService.pieModel.reset();
-
-        let treeRootNode = this.runnerTreeService.createRootRunnerNode();
-
-        this.populateTreeRootNode(eventsFromServer, treeRootNode);
-        this.treeRootNode = treeRootNode;
+        // this.executionPieService.pieModel.reset();
+        //
+        // let treeRootNode = this.runnerTreeService.createRootRunnerNode();
+        //
+        // this.populateTreeRootNode(eventsFromServer, treeRootNode);
+        // this.treeRootNode = treeRootNode;
     }
 
     private populateTreeRootNode(eventsFromServer: Array<RunnerEvent>, rootNode: RunnerTreeNodeModel) {
 
-        rootNode.children.length = 0;
-        rootNode.state = ExecutionStatusEnum.FAILED;
-
-        let currentTestNode: RunnerTreeNodeModel;
-        let steps: Array<RunnerTreeNodeModel> = [];
-
-        for (const event of eventsFromServer) {
-
-            if (event.eventType == RunnerEventTypeEnum.TEST_SUITE_START_EVENT) {
-                let suiteStartEvent = event as SuiteStartEvent;
-                rootNode.id = suiteStartEvent.eventKey.getCurrentNodeId();
-                rootNode.eventKey = suiteStartEvent.eventKey;
-            }
-
-            if (event.eventType == RunnerEventTypeEnum.TEST_SUITE_END_EVENT) {
-                rootNode.state = (event as SuiteEndEvent).status;
-            }
-
-            if (event.eventType == RunnerEventTypeEnum.TEST_START_EVENT) {
-                this.executionPieService.pieModel.totalTests++;
-
-                let currentTest = event as TestStartEvent;
-
-                currentTestNode = new RunnerTreeNodeModel();
-                currentTestNode.id = currentTest.eventKey.getCurrentNodeId();
-                currentTestNode.eventKey = currentTest.eventKey;
-                currentTestNode.type = RunnerTreeNodeTypeEnum.TEST;
-                currentTestNode.text = currentTest.testName;
-
-                currentTestNode.parent = rootNode;
-                rootNode.children.push(currentTestNode);
-            }
-
-            if (event.eventType == RunnerEventTypeEnum.TEST_END_EVENT) {
-                let testEndEvent = event as TestEndEvent;
-                currentTestNode.state = testEndEvent.status;
-                this.executionPieService.pieModel.incrementBasedOnState(testEndEvent.status)
-            }
-
-            if (event.eventType == RunnerEventTypeEnum.STEP_START_EVENT) {
-                let stepStartEvent = event as StepStartEvent;
-
-                let runnerTreeNodeModel = new RunnerTreeNodeModel();
-                runnerTreeNodeModel.id = stepStartEvent.eventKey.getCurrentNodeId();
-                runnerTreeNodeModel.eventKey = stepStartEvent.eventKey;
-                runnerTreeNodeModel.type = RunnerTreeNodeTypeEnum.STEP;
-
-                let previewStepPhase = steps.length == 0 ? null : steps[steps.length-1].stepCall.stepDef.phase;
-                runnerTreeNodeModel.text = stepStartEvent.stepCall.getTextWithParamValues(previewStepPhase);
-
-                let parentTreeNode = steps.length == 0 ? currentTestNode : steps[steps.length - 1];
-                runnerTreeNodeModel.parent = parentTreeNode;
-                runnerTreeNodeModel.stepCall = stepStartEvent.stepCall;
-
-                parentTreeNode.children.push(runnerTreeNodeModel);
-                steps.push(runnerTreeNodeModel)
-            }
-
-            if (event.eventType == RunnerEventTypeEnum.STEP_END_EVENT) {
-                let currentStepNode = steps.pop();
-                if (currentStepNode) {
-                    currentStepNode.state = rootNode.state = (event as StepEndEvent).status;
-                }
-            }
-        }
+        // rootNode.children.length = 0;
+        // rootNode.state = ExecutionStatusEnum.FAILED;
+        //
+        // let currentTestNode: RunnerTreeNodeModel;
+        // let steps: Array<RunnerTreeNodeModel> = [];
+        //
+        // for (const event of eventsFromServer) {
+        //
+        //     if (event.eventType == RunnerEventTypeEnum.TEST_SUITE_START_EVENT) {
+        //         let suiteStartEvent = event as SuiteStartEvent;
+        //         rootNode.id = suiteStartEvent.eventKey.getCurrentNodeId();
+        //         rootNode.eventKey = suiteStartEvent.eventKey;
+        //     }
+        //
+        //     if (event.eventType == RunnerEventTypeEnum.TEST_SUITE_END_EVENT) {
+        //         rootNode.state = (event as SuiteEndEvent).status;
+        //     }
+        //
+        //     if (event.eventType == RunnerEventTypeEnum.TEST_START_EVENT) {
+        //         this.executionPieService.pieModel.totalTests++;
+        //
+        //         let currentTest = event as TestStartEvent;
+        //
+        //         currentTestNode = new RunnerTreeNodeModel();
+        //         currentTestNode.id = currentTest.eventKey.getCurrentNodeId();
+        //         currentTestNode.eventKey = currentTest.eventKey;
+        //         currentTestNode.type = RunnerTreeNodeTypeEnum.TEST;
+        //         currentTestNode.text = currentTest.testName;
+        //
+        //         currentTestNode.parent = rootNode;
+        //         rootNode.children.push(currentTestNode);
+        //     }
+        //
+        //     if (event.eventType == RunnerEventTypeEnum.TEST_END_EVENT) {
+        //         let testEndEvent = event as TestEndEvent;
+        //         currentTestNode.state = testEndEvent.status;
+        //         this.executionPieService.pieModel.incrementBasedOnState(testEndEvent.status)
+        //     }
+        //
+        //     if (event.eventType == RunnerEventTypeEnum.STEP_START_EVENT) {
+        //         let stepStartEvent = event as StepStartEvent;
+        //
+        //         let runnerTreeNodeModel = new RunnerTreeNodeModel();
+        //         runnerTreeNodeModel.id = stepStartEvent.eventKey.getCurrentNodeId();
+        //         runnerTreeNodeModel.eventKey = stepStartEvent.eventKey;
+        //         runnerTreeNodeModel.type = RunnerTreeNodeTypeEnum.STEP;
+        //
+        //         let previewStepPhase = steps.length == 0 ? null : steps[steps.length-1].stepCall.stepDef.phase;
+        //         runnerTreeNodeModel.text = stepStartEvent.stepCall.getTextWithParamValues(previewStepPhase);
+        //
+        //         let parentTreeNode = steps.length == 0 ? currentTestNode : steps[steps.length - 1];
+        //         runnerTreeNodeModel.parent = parentTreeNode;
+        //         runnerTreeNodeModel.stepCall = stepStartEvent.stepCall;
+        //
+        //         parentTreeNode.children.push(runnerTreeNodeModel);
+        //         steps.push(runnerTreeNodeModel)
+        //     }
+        //
+        //     if (event.eventType == RunnerEventTypeEnum.STEP_END_EVENT) {
+        //         let currentStepNode = steps.pop();
+        //         if (currentStepNode) {
+        //             currentStepNode.state = rootNode.state = (event as StepEndEvent).status;
+        //         }
+        //     }
+        // }
     }
 }

@@ -30,7 +30,7 @@ export abstract class RunnerTreeContainerNodeModel extends RunnerTreeNodeModel i
         super(parentContainer);
     }
 
-    abstract getChildren(): Array<JsonTreeNode>;
+    abstract getChildren(): Array<RunnerTreeNodeModel>;
 
     getParent(): JsonTreeContainer {
         return this.parentContainer;

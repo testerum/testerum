@@ -16,7 +16,7 @@ import {TestsRunnerComponent} from "./tests-runner/tests-runner.component";
 import {TestsRunnerService} from "./tests-runner/tests-runner.service";
 import {RunnerTreeComponentService} from "./tests-runner/tests-runner-tree/runner-tree.component-service";
 import {RunnerTreeComponent} from "./tests-runner/tests-runner-tree/runner-tree.component";
-import {RunnerTreeNodeComponent} from "./tests-runner/tests-runner-tree/runner-tree-node/runner-tree-node.component";
+import {RunnerTreeNodeComponent} from "./tests-runner/tests-runner-tree/nodes/runner-tree-node/runner-tree-node.component";
 import {TestsRunnerLogsComponent} from "./tests-runner/tests-runner-logs/tests-runner-logs.component";
 import {TestsRunnerLogsService} from "./tests-runner/tests-runner-logs/tests-runner-logs.service";
 import {FeaturesTreeService} from "./features-tree/features-tree.service";
@@ -84,7 +84,7 @@ import {TestsRunnerTreeToolbarComponent} from './tests-runner/tests-runner-tree/
         TestsRunnerTreeToolbarComponent,
     ],
     entryComponents: [
-
+        RunnerTreeNodeComponent,
     ],
     providers: [
         TestsService,

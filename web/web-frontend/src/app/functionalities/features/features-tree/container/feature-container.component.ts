@@ -66,11 +66,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     }
 
     runTests() {
-        this.getTestsUnderPathSubscription = this.testsService.getAllAutomatedTestsUnderContainer(this.model.path).subscribe(
-            (tests:Array<TestModel>) => {
-                this.testsRunnerService.runTests(tests);
-            }
-        );
+        this.testsRunnerService.runTests([this.model.path]);
     }
 
     setSelected() {

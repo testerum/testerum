@@ -1,9 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
-import {RunnerTreeNodeModel} from "./model/runner-tree-node.model";
 import {TestsRunnerService} from "../tests-runner.service";
 import {RunnerTreeComponentService} from "./runner-tree.component-service";
-import {RunnerRootNode} from "../../../../model/runner/tree/runner-root-node.model";
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {StepCallContainerModel} from "../../../../generic/components/step-call-tree/model/step-call-container.model";
@@ -16,8 +14,13 @@ import {ParamsContainerModel} from "../../../../generic/components/step-call-tre
 import {ArgsContainerComponent} from "../../../../generic/components/step-call-tree/nodes/args-container/args-container.component";
 import {ArgNodeModel} from "../../../../generic/components/step-call-tree/model/arg-node.model";
 import {ArgNodeComponent} from "../../../../generic/components/step-call-tree/nodes/arg-node/arg-node.component";
-import {StepCallTreeUtil} from "../../../../generic/components/step-call-tree/util/step-call-tree.util";
 import {RunnerTreeUtil} from "./util/runner-tree.util";
+import {RunnerRootTreeNodeModel} from "./model/runner-root-tree-node.model";
+import {RunnerTreeNodeComponent} from "./nodes/runner-tree-node/runner-tree-node.component";
+import {RunnerFeatureTreeNodeModel} from "./model/runner-feature-tree-node.model";
+import {RunnerTestTreeNodeModel} from "./model/runner-test-tree-node.model";
+import {RunnerComposedStepTreeNodeModel} from "./model/runner-composed-step-tree-node.model";
+import {RunnerBasicStepTreeNodeModel} from "./model/runner-basic-step-tree-node.model";
 
 @Component({
     moduleId: module.id,
@@ -27,17 +30,15 @@ import {RunnerTreeUtil} from "./util/runner-tree.util";
     providers: [RunnerTreeComponentService]
 
 })
-export class RunnerTreeComponent implements OnInit, OnChanges {
-
-    @Input() runnerRootNode:RunnerRootNode;
+export class RunnerTreeComponent implements OnInit {
 
     jsonTreeModel: JsonTreeModel = new JsonTreeModel();
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
-        .addPair(StepCallContainerModel, StepCallContainerComponent)
-        .addPair(StepCallEditorContainerModel, StepCallEditorContainerComponent)
-        .addPair(SubStepsContainerModel, SubStepsContainerComponent)
-        .addPair(ParamsContainerModel, ArgsContainerComponent)
-        .addPair(ArgNodeModel, ArgNodeComponent);
+        .addPair(RunnerRootTreeNodeModel, RunnerTreeNodeComponent)
+        .addPair(RunnerFeatureTreeNodeModel, RunnerTreeNodeComponent)
+        .addPair(RunnerTestTreeNodeModel, RunnerTreeNodeComponent)
+        .addPair(RunnerComposedStepTreeNodeModel, RunnerTreeNodeComponent)
+        .addPair(RunnerBasicStepTreeNodeModel, RunnerTreeNodeComponent);
 
 
     constructor(private testsRunnerService: TestsRunnerService,
@@ -46,19 +47,8 @@ export class RunnerTreeComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.runnerTreeComponentService.treeModel = this.jsonTreeModel;
-        this.initTree();
     }
 
-    initTree() {
-        RunnerTreeUtil.mapServerModelToTreeModel(this.runnerRootNode, this.jsonTreeModel);
-        this.runnerTreeComponentService.serverModel = this.runnerRootNode
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (this.runnerRootNode != this.runnerTreeComponentService.serverModel) {
-            this.initTree();
-        }
-    }
     stopTests() {
         this.testsRunnerService.stopExecution();
     }

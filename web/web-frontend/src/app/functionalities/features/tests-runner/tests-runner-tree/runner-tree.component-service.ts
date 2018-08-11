@@ -14,12 +14,27 @@ import {TestsRunnerService} from "../tests-runner.service";
 import {Subscription} from "rxjs";
 import {RunnerRootNode} from "../../../../model/runner/tree/runner-root-node.model";
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
+import {RunnerTreeUtil} from "./util/runner-tree.util";
+import {RunnerTestTreeNodeModel} from "./model/runner-test-tree-node.model";
+import {RunnerRootTreeNodeModel} from "./model/runner-root-tree-node.model";
+import {SuiteStartEvent} from "../../../../model/test/event/suite-start.event";
+import {SuiteEndEvent} from "../../../../model/test/event/suite-end.event";
+import {TestStartEvent} from "../../../../model/test/event/test-start.event";
+import {TestEndEvent} from "../../../../model/test/event/test-end.event";
+import {StepStartEvent} from "../../../../model/test/event/step-start.event";
+import {StepEndEvent} from "../../../../model/test/event/step-end.event";
+import {RunnerErrorEvent} from "../../../../model/test/event/runner-error.event";
+import {RunnerTreeContainerNodeModel} from "./model/runner-tree-container-node.model";
+import {EventKey} from "../../../../model/test/event/fields/event-key.model";
+import {ArrayUtil} from "../../../../utils/array.util";
+import {PositionInParent} from "../../../../model/test/event/fields/position-in-parent.model";
 
 @Injectable()
 export class RunnerTreeComponentService {
 
-    serverModel:RunnerRootNode;
     treeModel: JsonTreeModel;
+    treeRootNode: RunnerRootTreeNodeModel;
+    treeTestsNodes: RunnerTestTreeNodeModel[] = [];
 
     selectedRunnerTreeNode: RunnerTreeNodeModel;
     selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
@@ -28,67 +43,72 @@ export class RunnerTreeComponentService {
 
     constructor(private testsRunnerService: TestsRunnerService,
                 private executionPieService: ExecutionPieService) {
-        this.testsRunnerService.startTestExecutionObservable.subscribe(model => {
-            this.onStartTestExecution()
+        this.testsRunnerService.startTestExecutionObservable.subscribe((runnerRootNode: RunnerRootNode) => {
+            this.onStartTestExecution(runnerRootNode)
         });
 
         this.selectedRunnerTreeNodeObserver.subscribe((item: RunnerTreeNodeModel) => this.selectedRunnerTreeNode = item);
     }
 
     private onRunnerEvent(runnerEvent: RunnerEvent): void {
-        // if(runnerEvent instanceof SuiteStartEvent) {
-        //     let runnerTreeNode:RunnerTreeNodeModel = this.rootNode;
-        //     runnerTreeNode.eventKey = runnerEvent.eventKey;
-        //     runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING)
-        // }
-        // if(runnerEvent instanceof SuiteEndEvent) {
-        //     let runnerTreeNode:RunnerTreeNodeModel = this.rootNode;
-        //     runnerTreeNode.changeState(runnerEvent.status)
-        // }
-        // if(runnerEvent instanceof TestStartEvent) {
-        //     let runnerTreeNode:RunnerTreeNodeModel = this.rootNode.findNode(runnerEvent.eventKey);
-        //     runnerTreeNode.eventKey = runnerEvent.eventKey;
-        //     runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING)
-        // }
-        // if(runnerEvent instanceof TestEndEvent) {
-        //     let runnerTreeNode:RunnerTreeNodeModel = this.rootNode.findNode(runnerEvent.eventKey);
-        //     runnerTreeNode.changeState(runnerEvent.status);
-        //
-        //     switch (runnerEvent.status) {
-        //         case ExecutionStatusEnum.PASSED: this.executionPieService.pieModel.incrementPassed(); break;
-        //         case ExecutionStatusEnum.FAILED: this.executionPieService.pieModel.incrementFailed(); break;
-        //         case ExecutionStatusEnum.ERROR: this.executionPieService.pieModel.incrementError(); break;
-        //         case ExecutionStatusEnum.UNDEFINED: this.executionPieService.pieModel.incrementUndefined(); break;
-        //         case ExecutionStatusEnum.SKIPPED: this.executionPieService.pieModel.incrementSkipped(); break;
-        //     }
-        //
-        //     this.executionPieService.pieModel.waitingToExecute --;
-        // }
-        // if(runnerEvent instanceof StepStartEvent) {
-        //     let runnerTreeNode:RunnerTreeNodeModel = this.rootNode.findNode(runnerEvent.eventKey);
-        //     runnerTreeNode.eventKey = runnerEvent.eventKey;
-        //     runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING)
-        // }
-        // if(runnerEvent instanceof StepEndEvent) {
-        //     let runnerTreeNode:RunnerTreeNodeModel = this.rootNode.findNode(runnerEvent.eventKey);
-        //     runnerTreeNode.changeState(runnerEvent.status);
-        // }
-        //
-        // if(runnerEvent instanceof RunnerErrorEvent) {
-        //     this.setStateOnAllNodes(this.rootNode, ExecutionStatusEnum.ERROR);
-        // }
-    // }
-    //
-    // private setStateOnAllNodes(parentNode: RunnerTreeNodeModel, state: ExecutionStatusEnum) {
-    //     parentNode.state = state;
-    //     if (parentNode.children != null) {
-    //         for (let child of parentNode.children) {
-    //             this.setStateOnAllNodes(child, state)
-    //         }
-    //     }
+        if(runnerEvent instanceof SuiteStartEvent) {
+            let runnerTreeNode:RunnerTreeNodeModel = this.treeRootNode;
+            runnerTreeNode.eventKey = runnerEvent.eventKey;
+            runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING)
+        }
+        if(runnerEvent instanceof SuiteEndEvent) {
+            let runnerTreeNode:RunnerTreeNodeModel = this.treeRootNode;
+            runnerTreeNode.changeState(runnerEvent.status)
+        }
+        if(runnerEvent instanceof TestStartEvent) {
+            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            runnerTreeNode.eventKey = runnerEvent.eventKey;
+            runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING)
+        }
+        if(runnerEvent instanceof TestEndEvent) {
+            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            runnerTreeNode.changeState(runnerEvent.status);
+
+            switch (runnerEvent.status) {
+                case ExecutionStatusEnum.PASSED: this.executionPieService.pieModel.incrementPassed(); break;
+                case ExecutionStatusEnum.FAILED: this.executionPieService.pieModel.incrementFailed(); break;
+                case ExecutionStatusEnum.ERROR: this.executionPieService.pieModel.incrementError(); break;
+                case ExecutionStatusEnum.UNDEFINED: this.executionPieService.pieModel.incrementUndefined(); break;
+                case ExecutionStatusEnum.SKIPPED: this.executionPieService.pieModel.incrementSkipped(); break;
+            }
+
+            this.executionPieService.pieModel.waitingToExecute --;
+        }
+        if(runnerEvent instanceof StepStartEvent) {
+            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            runnerTreeNode.eventKey = runnerEvent.eventKey;
+            runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING)
+        }
+        if(runnerEvent instanceof StepEndEvent) {
+            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            runnerTreeNode.changeState(runnerEvent.status);
+        }
+
+        if(runnerEvent instanceof RunnerErrorEvent) {
+            this.setStateOnAllNodes(this.treeRootNode, ExecutionStatusEnum.ERROR);
+        }
     }
 
-    private onStartTestExecution(): void {
+    private setStateOnAllNodes(treeNode: RunnerTreeNodeModel, state: ExecutionStatusEnum) {
+        treeNode.state = state;
+        if (treeNode.isContainer()) {
+            let treeNodeAsContainer = treeNode as RunnerTreeContainerNodeModel;
+            for (let child of treeNodeAsContainer.getChildren()) {
+                this.setStateOnAllNodes(child, state)
+            }
+        }
+    }
+
+    private onStartTestExecution(runnerRootNode: RunnerRootNode): void {
+        RunnerTreeUtil.mapServerModelToTreeModel(runnerRootNode, this.treeModel);
+        this.treeRootNode = this.treeModel.children[0] as RunnerRootTreeNodeModel;
+        this.treeTestsNodes = RunnerTreeUtil.getTreeTestNodes(this.treeModel.children[0] as RunnerRootTreeNodeModel);
+
         if (this.runnerEventSubscription) {
             this.runnerEventSubscription.unsubscribe();
         }
@@ -96,68 +116,49 @@ export class RunnerTreeComponentService {
             this.onRunnerEvent(runnerEvent);
         });
 
-        this.addTestToTreeModel(this.executionPieService.pieModel);
+        this.restPieData(this.executionPieService.pieModel);
     }
 
-    private addTestToTreeModel(testModels: Array<TestModel>, rootNode: RunnerTreeNodeModel, pieModel: ExecutionPieModel) {
-        pieModel.reset();
-        pieModel.totalTests = testModels.length;
-        pieModel.waitingToExecute = testModels.length;
 
-        rootNode.children.length = 0;
-        rootNode.state = ExecutionStatusEnum.WAITING;
-
-        for (let testModel of testModels) {
-            let runnerTreeNodeModel = new RunnerTreeNodeModel();
-            runnerTreeNodeModel.id = testModel.id;
-            runnerTreeNodeModel.type = RunnerTreeNodeTypeEnum.TEST;
-            runnerTreeNodeModel.text = testModel.text;
-            runnerTreeNodeModel.parent = this.rootNode;
-
-            this.addStepsToTestRunnerNode(runnerTreeNodeModel, testModel.stepCalls);
-
-            rootNode.children.push(runnerTreeNodeModel);
+    findNode(eventKey:EventKey): RunnerTreeNodeModel {
+        let runnerTreeNodeModel = this.findNodeByPositionInParent(ArrayUtil.copyArray(eventKey.positionsFromRoot), this.treeTestsNodes);
+        if (runnerTreeNodeModel == null) {
+            console.warn("Couldn't find a coresponding tree node for event with key", eventKey, this.treeTestsNodes)
         }
+        return runnerTreeNodeModel;
     }
 
-    private addStepsToTestRunnerNode(parent: RunnerTreeNodeModel, stepCalls: Array<StepCall>) {
+    private findNodeByPositionInParent(remainingPositions: Array<PositionInParent>, nodes: RunnerTreeNodeModel[]): RunnerTreeNodeModel {
+        let currentPosition = remainingPositions[0];
+        remainingPositions.splice(0, 1);
 
-        let previewsPhase:StepPhaseEnum = null;
-        for (let stepCall of stepCalls) {
-            let runnerTreeNodeModel = new RunnerTreeNodeModel();
-            runnerTreeNodeModel.id = stepCall.id;
-            runnerTreeNodeModel.type = RunnerTreeNodeTypeEnum.STEP;
-            runnerTreeNodeModel.text = stepCall.getTextWithParamValues(previewsPhase);
+        if(nodes.length < currentPosition.indexInParent) {
+            return null
+        }
 
-            runnerTreeNodeModel.parent = parent;
-            runnerTreeNodeModel.stepCall = stepCall;
-
-            if(stepCall.stepDef instanceof ComposedStepDef) {
-                this.addStepsToTestRunnerNode(runnerTreeNodeModel, stepCall.stepDef.stepCalls);
+        let currentNode = nodes[currentPosition.indexInParent];
+        if(currentNode.id == currentPosition.id) {
+            if (remainingPositions.length == 0) {
+                return currentNode
             }
-
-            parent.children.push(runnerTreeNodeModel);
-
-            previewsPhase = stepCall.stepDef.phase;
+            if(currentNode instanceof RunnerTreeContainerNodeModel) {
+                return this.findNodeByPositionInParent(remainingPositions, currentNode.getChildren());
+            }
         }
+        return null;
     }
 
-    addSelectedRunnerTreeNodeListeners(listener:RunnerTreeNodeSelectedListener) {
-        this.selectedRunnerTreeNodeListeners.push(listener);
-    }
+    private restPieData(pieModel: ExecutionPieModel) {
 
-    removeSelectedRunnerTreeNodeListeners(listener:RunnerTreeNodeSelectedListener) {
-        let index: number = this.selectedRunnerTreeNodeListeners.indexOf(listener);
-        if (index !== -1) {
-            this.selectedRunnerTreeNodeListeners.splice(index, 1);
-        }
+        pieModel.reset();
+        pieModel.totalTests = this.treeTestsNodes.length;
+        pieModel.waitingToExecute = this.treeTestsNodes.length;
     }
 
     setNodeAsSelected(runnerTreeNodeModel: RunnerTreeNodeModel) {
         this.selectedRunnerTreeNode = runnerTreeNodeModel;
 
-        for (let listener of this.selectedRunnerTreeNodeListeners) {
-            listener.onRunnerTreeNodeSelected(this.selectedRunnerTreeNode);
-        }
+        this.selectedRunnerTreeNodeObserver.emit(runnerTreeNodeModel);
+        this.testsRunnerService.setSelectedNode(runnerTreeNodeModel);
     }
 }

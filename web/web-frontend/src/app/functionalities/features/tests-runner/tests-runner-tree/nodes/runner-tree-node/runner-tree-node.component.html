@@ -1,14 +1,14 @@
-<div [class.root-node]="!model.parent"
-     class="tree-node"
-     [class.tree-node-open]="!showChildren"
-     [class.tree-node-close]="showChildren && model.children.length != 0"
-     [class.tree-node-leaf]="model.children.length == 0"
-     [class.tree-node-last]="isLastNode"
-     title="{{getStatusTooltip()}}">
+<div class="node">
 
-    <i *ngIf="model.parent" class="tree-icon tree-line-icon" (click)="toggleShowChildren()"></i>
+    <div class="full-line"
+         (click)="setSelected()"
+         (dblclick)="collapseNode()"
+         title="{{getStatusTooltip()}}">
 
-    <div class="tree-node-header" (click)="setNodeAsSelected()" (dblclick)="toggleShowChildren()" [class.tree-node-selected]="isSelected">
+        <i *ngIf="isFeatureNode()"
+           class="fa tree-node-new-folder-icon" aria-hidden="true"
+           [class.fa-folder]="!isOpenedNode()"
+           [class.fa-folder-open]="isOpenedNode()"></i>
 
         <i class="fa tree-node-new-icon" aria-hidden="true"
            [class.node-waiting]="model.state == RunnerTreeNodeStateEnum.WAITING"
@@ -31,17 +31,25 @@
            [class.fa-question]="model.state == RunnerTreeNodeStateEnum.UNDEFINED"
            [class.fa-angle-double-right]="model.state == RunnerTreeNodeStateEnum.SKIPPED"></i>
 
-        <span class="tree-node-text">{{model.text}}</span>
+
+        <span *ngIf="!isNodeWithStepCall()"
+              class="node-text"
+              [class.tree-leaf-selected]="isSelected">{{model.text}}</span>
+
+        <span *ngIf="isNodeWithStepCall()"
+              [class.tree-leaf-selected]="isSelected">
+            <step-text [stepDef]="model.stepCall.stepDef"
+                       [stepCall]="model.stepCall"
+                       [showPhase]="true"
+                       [showAsListItem]="true">
+            </step-text>
+        </span>
     </div>
 
-    <div class="tree-children"
-         [hidden]=showChildren>
-        <ng-container *ngIf="model">
-            <!-- CHILD COMPONENTS RENDERING-->
-            <runner-tree-node *ngFor="let child of model.children; let last=last;"
-                              [model]="child"
-                              [isLastNode]="last">
-            </runner-tree-node>
-        </ng-container>
-    </div>
+    <json-children *ngIf="model.isContainer()"
+                   [jsonTreeNodeState]="model.jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
 </div>

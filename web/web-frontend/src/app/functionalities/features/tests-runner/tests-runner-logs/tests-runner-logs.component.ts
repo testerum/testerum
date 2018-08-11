@@ -5,6 +5,8 @@ import {RunnerTreeNodeModel} from "../tests-runner-tree/model/runner-tree-node.m
 import {RunnerTreeNodeSelectedListener} from "../tests-runner-tree/event/runner-tree-node-selected.listener";
 import {RunnerTreeComponentService} from "../tests-runner-tree/runner-tree.component-service";
 import {TestsRunnerLogsService} from "./tests-runner-logs.service";
+import {Subscription} from "rxjs";
+import {TestsRunnerService} from "../tests-runner.service";
 
 @Component({
     moduleId: module.id,
@@ -13,7 +15,7 @@ import {TestsRunnerLogsService} from "./tests-runner-logs.service";
     styleUrls: ["tests-runner-logs.component.scss"]
 })
 
-export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDestroy, RunnerTreeNodeSelectedListener {
+export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDestroy {
 
     @Input() logs:Array<TestsRunnerLogModel> = [];
     @Input() showLastLogWhenChanged = true;
@@ -28,8 +30,9 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
 
     logAddedEventEmitterSubscription:any;
     emptyLogsEventEmitterSubscription:any;
+    selectedRunnerTreeNodeSubscription: Subscription;
 
-    constructor(private runnerTreeService: RunnerTreeComponentService,
+    constructor(private testRunnerService: TestsRunnerService,
                 private testsRunnerLogsService: TestsRunnerLogsService) {
     }
 
@@ -41,7 +44,9 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
             this.logsToDisplay.push(log);
         }
 
-        this.runnerTreeService.addSelectedRunnerTreeNodeListeners(this);
+        this.selectedRunnerTreeNodeSubscription = this.testRunnerService.selectedRunnerTreeNodeObserver.subscribe((selectedNode: RunnerTreeNodeModel) => {
+            this.onRunnerTreeNodeSelected(selectedNode);
+        });
 
         this.logAddedEventEmitterSubscription = this.testsRunnerLogsService.logAddedEventEmitter.subscribe(
             (logModel:TestsRunnerLogModel) => {
@@ -58,9 +63,15 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
     }
 
     ngOnDestroy(): void {
-        this.runnerTreeService.removeSelectedRunnerTreeNodeListeners(this);
-        this.logAddedEventEmitterSubscription.unsubscribe();
-        this.emptyLogsEventEmitterSubscription.unsubscribe();
+        if (this.selectedRunnerTreeNodeSubscription) {
+            this.selectedRunnerTreeNodeSubscription.unsubscribe();
+        }
+        if (this.logAddedEventEmitterSubscription) {
+            this.logAddedEventEmitterSubscription.unsubscribe();
+        }
+        if (this.emptyLogsEventEmitterSubscription) {
+            this.emptyLogsEventEmitterSubscription.unsubscribe();
+        }
     }
 
     updateLogsToDisplayFromLogs() {
@@ -77,7 +88,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
         }
     }
 
-    onRunnerTreeNodeSelected(runnerTreeNode: RunnerTreeNodeModel): void {
+    private onRunnerTreeNodeSelected(runnerTreeNode: RunnerTreeNodeModel): void {
         this.selectedRunnerTreeNode = runnerTreeNode;
 
         this.logsToDisplay.length = 0;
