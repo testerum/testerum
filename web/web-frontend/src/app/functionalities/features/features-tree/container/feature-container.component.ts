@@ -20,7 +20,6 @@ import {ModelComponentMapping} from "../../../../model/infrastructure/model-comp
     templateUrl: 'feature-container.component.html',
     styleUrls: [
         'feature-container.component.scss',
-        '../../../../generic/components/json-tree/json-tree.generic.scss',
         '../../../../generic/css/tree.scss'
     ]
 })

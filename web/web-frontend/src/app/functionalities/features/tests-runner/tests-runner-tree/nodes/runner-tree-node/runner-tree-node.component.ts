@@ -15,7 +15,6 @@ import {Subscription} from "rxjs";
     templateUrl: 'runner-tree-node.component.html',
     styleUrls:[
         'runner-tree-node.component.scss',
-        '../../../../../../generic/components/json-tree/json-tree.generic.scss',
         '../../../../../../generic/css/tree.scss'
     ]
 })

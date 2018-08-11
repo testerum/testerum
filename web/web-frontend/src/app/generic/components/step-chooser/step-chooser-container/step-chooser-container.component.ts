@@ -8,7 +8,6 @@ import {ModelComponentMapping} from "../../../../model/infrastructure/model-comp
     templateUrl: 'step-chooser-container.component.html',
     styleUrls: [
         'step-chooser-container.component.scss',
-        '../../../../generic/components/json-tree/json-tree.generic.scss',
         '../../../../generic/css/tree.scss'
     ]
 })

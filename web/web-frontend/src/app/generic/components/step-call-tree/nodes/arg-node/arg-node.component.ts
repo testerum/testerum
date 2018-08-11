@@ -23,7 +23,6 @@ import {StepCallTreeComponentService} from "../../step-call-tree.component-servi
     styleUrls: [
         'arg-node.component.scss',
         '../step-call-tree.scss',
-        '../../../json-tree/json-tree.generic.scss',
         '../../../../../generic/css/tree.scss',
     ]
 })

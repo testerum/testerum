@@ -7,7 +7,11 @@ import {RdbmsVerifyTreeService} from "../rdbms-verify-tree.service";
     moduleId: module.id,
     selector: 'rdbms-verify-schema-node',
     templateUrl: 'rdbms-verify-schema-node.component.html',
-    styleUrls:['../rdbms-verify-tree.generic.scss', '../../../../../../../generic/css/tree.scss']
+    styleUrls:[
+        'rdbms-verify-schema-node.component.scss',
+        '../rdbms-verify-tree.generic.scss',
+        '../../../../../../../generic/css/tree.scss'
+    ]
 })
 
 export class RdbmsVerifySchemaNodeComponent {

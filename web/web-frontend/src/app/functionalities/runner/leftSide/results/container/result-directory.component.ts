@@ -8,7 +8,6 @@ import {ResultsDirectory} from "../model/results-directory.model";
     templateUrl: 'result-directory.component.html',
     styleUrls: [
         'result-directory.component.scss',
-        '../../../../../generic/components/json-tree/json-tree.generic.scss',
         '../../../../../generic/css/tree.scss'
     ]
 })

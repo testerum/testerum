@@ -15,7 +15,6 @@ import {ManualTestTreeNodeModel} from "../../../../../../manual-tests/tests/test
     templateUrl: 'step-path-container.component.html',
     styleUrls: [
         'step-path-container.component.scss',
-        '../../../../../../generic/components/json-tree/json-tree.generic.scss',
         '../../../../../../generic/css/tree.scss'
     ]
 })

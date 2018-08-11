@@ -18,7 +18,6 @@ import {ModelComponentMapping} from "../../../../../model/infrastructure/model-c
     styleUrls: [
         'step-call-container.component.scss',
         '../step-call-tree.scss',
-        '../../../json-tree/json-tree.generic.scss',
         '../../../../../generic/css/tree.scss',
     ]
 })

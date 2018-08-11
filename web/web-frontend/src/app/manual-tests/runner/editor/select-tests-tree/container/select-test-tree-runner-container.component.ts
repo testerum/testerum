@@ -11,7 +11,6 @@ import {ModelComponentMapping} from "../../../../../model/infrastructure/model-c
     templateUrl: 'select-test-tree-runner-container.component.html',
     styleUrls: [
         'select-test-tree-runner-container.component.scss',
-        '../../../../../generic/components/json-tree/json-tree.generic.scss',
         '../../../../../generic/css/tree.scss'
     ]
 })

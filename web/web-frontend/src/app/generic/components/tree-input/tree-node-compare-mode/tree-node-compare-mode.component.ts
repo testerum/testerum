@@ -5,7 +5,7 @@ import {CompareMode} from "../../../../model/enums/compare-mode.enum";
     moduleId: module.id,
     selector: 'tree-node-compare-mode',
     templateUrl: 'tree-node-compare-mode.component.html',
-    styleUrls:["../../../css/tree.scss"]
+    styleUrls:["/tree-node-compare-mode.component.scss", "../../../css/tree.scss"]
 })
 
 export class TreeNodeCompareModeComponent {

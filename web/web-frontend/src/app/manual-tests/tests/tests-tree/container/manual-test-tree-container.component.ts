@@ -20,7 +20,6 @@ import {ModelComponentMapping} from "../../../../model/infrastructure/model-comp
     templateUrl: 'manual-test-tree-container.component.html',
     styleUrls: [
         'manual-test-tree-container.component.scss',
-        '../../../../generic/components/json-tree/json-tree.generic.scss',
         '../../../../generic/css/tree.scss'
     ]
 })

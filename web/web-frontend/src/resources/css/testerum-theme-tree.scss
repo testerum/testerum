@@ -15,6 +15,21 @@
     background-color: whitesmoke;
 }
 
+.unused-node {
+    color: darkgray;
+}
+
 .node-text {
     display: inline-block;
 }
+
+.node {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.full-line {
+    width: 100%;
+}
+
+

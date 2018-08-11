@@ -17,7 +17,6 @@ import {JsonTreeNodeEventModel} from "../../json-tree/event/selected-json-tree-n
     templateUrl: 'path-chooser-container.component.html',
     styleUrls: [
         'path-chooser-container.component.scss',
-        '../../../../generic/components/json-tree/json-tree.generic.scss',
         '../../../../generic/css/tree.scss'
     ]
 })

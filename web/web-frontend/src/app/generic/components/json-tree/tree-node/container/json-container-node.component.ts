@@ -18,7 +18,6 @@ import {JsonTreeService} from "../../json-tree.service";
     templateUrl: 'json-container-node.component.html',
     styleUrls:[
         'json-container-node.component.scss',
-        '../../../json-tree/json-tree.generic.scss',
     ]
 })
 export class JsonContainerNodeComponent implements OnInit {

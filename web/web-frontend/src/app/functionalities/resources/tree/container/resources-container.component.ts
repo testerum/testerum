@@ -21,7 +21,6 @@ import {ModelComponentMapping} from "../../../../model/infrastructure/model-comp
     templateUrl: 'resources-container.component.html',
     styleUrls: [
         'resources-container.component.scss',
-        '../../../../generic/components/json-tree/json-tree.generic.scss',
         '../../../../generic/css/tree.scss'
     ]
 })
