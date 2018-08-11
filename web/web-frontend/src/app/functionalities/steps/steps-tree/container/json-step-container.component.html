@@ -8,9 +8,9 @@
 
          dnd-droppable [allowDrop]="allowDrop()" (onDropSuccess)="copyResource($event)">
 
-        <i class="fa tree-node-new-folder-icon" aria-hidden="true"
-           [class.fa-folder]="!isOpenedNode()"
-           [class.fa-folder-open]="isOpenedNode()"></i>
+        <i aria-hidden="true"
+           [class.tree-folder-close]="!isOpenedNode()"
+           [class.tree-folder-open]="isOpenedNode()"></i>
 
         <span class="node-text"
               [class.error_squiggly]="model.hasOwnOrDescendantWarnings">{{model.name}}</span>

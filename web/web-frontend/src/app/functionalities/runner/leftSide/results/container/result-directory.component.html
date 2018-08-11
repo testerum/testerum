@@ -3,9 +3,9 @@
     <div class="full-line"
          (dblclick)="collapseNode()">
 
-        <i class="fa tree-node-new-folder-icon" aria-hidden="true"
-           [class.fa-folder]="!isOpenedNode()"
-           [class.fa-folder-open]="isOpenedNode()"></i>
+        <i aria-hidden="true"
+           [class.tree-folder-close]="!isOpenedNode()"
+           [class.tree-folder-open]="isOpenedNode()"></i>
 
         {{model.name}}
 

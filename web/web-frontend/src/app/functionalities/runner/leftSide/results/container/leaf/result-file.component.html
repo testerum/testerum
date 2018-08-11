@@ -2,7 +2,7 @@
      title="{{getStatusTooltip()}}">
 
     <div class="tree-node" [class.tree-node-selected]="isSelected">
-        <i class="fa tree-node-new-icon" aria-hidden="true"
+        <i class="fa" aria-hidden="true"
            [class.node-waiting]="model.executionResult == ExecutionStatusEnum.WAITING"
            [class.node-executing]="model.executionResult == ExecutionStatusEnum.EXECUTING"
            [class.node-passed]="model.executionResult == ExecutionStatusEnum.PASSED"

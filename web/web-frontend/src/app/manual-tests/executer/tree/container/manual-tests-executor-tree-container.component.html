@@ -5,7 +5,7 @@
          (mouseleave)="hasMouseOver=false"
          (dblclick)="collapseNode()">
 
-        <i class="fa tree-node-new-icon" aria-hidden="true"
+        <i class="fa" aria-hidden="true"
 
            [class.node-not-executed]="ManualTestStatus.NOT_EXECUTED == model.testsState"
            [class.node-passed]="ManualTestStatus.PASSED == model.testsState"
@@ -19,9 +19,9 @@
            [class.fa-ban]="ManualTestStatus.BLOCKED == model.testsState"
            [class.fa-exclamation]="ManualTestStatus.NOT_APPLICABLE == model.testsState"></i>
 
-        <i class="fa tree-node-new-folder-icon" aria-hidden="true"
-           [class.fa-folder]="!isOpenedNode()"
-           [class.fa-folder-open]="isOpenedNode()"></i>
+        <i aria-hidden="true"
+           [class.tree-folder-close]="!isOpenedNode()"
+           [class.tree-folder-open]="isOpenedNode()"></i>
 
         {{model.name}}
     </div>
