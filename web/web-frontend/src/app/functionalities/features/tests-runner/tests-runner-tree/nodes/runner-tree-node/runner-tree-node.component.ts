@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {RunnerTreeNodeModel} from "../../model/runner-tree-node.model";
 import {ExecutionStatusEnum} from "../../../../../../model/test/event/enums/execution-status.enum";
 import {RunnerTreeNodeSelectedListener} from "../../event/runner-tree-node-selected.listener";
@@ -7,6 +7,7 @@ import {RunnerComposedStepTreeNodeModel} from "../../model/runner-composed-step-
 import {RunnerBasicStepTreeNodeModel} from "../../model/runner-basic-step-tree-node.model";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {RunnerFeatureTreeNodeModel} from "../../model/runner-feature-tree-node.model";
+import {Subscription} from "rxjs";
 
 @Component({
     moduleId: module.id,
@@ -18,7 +19,7 @@ import {RunnerFeatureTreeNodeModel} from "../../model/runner-feature-tree-node.m
         '../../../../../../generic/css/tree.scss'
     ]
 })
-export class RunnerTreeNodeComponent implements OnInit {
+export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
 
     @Input() model:RunnerTreeNodeModel;
     @Input() modelComponentMapping: ModelComponentMapping;
@@ -29,10 +30,17 @@ export class RunnerTreeNodeComponent implements OnInit {
 
     constructor(private runnerTreeComponentService:RunnerTreeComponentService){}
 
+    nodeSelectedSubscription: Subscription;
     ngOnInit(): void {
-        this.runnerTreeComponentService.selectedRunnerTreeNodeObserver.subscribe((selectedTreeNode: RunnerTreeNodeModel) => {
+        this.nodeSelectedSubscription = this.runnerTreeComponentService.selectedRunnerTreeNodeObserver.subscribe((selectedTreeNode: RunnerTreeNodeModel) => {
             this.isSelected = this.model.equals(selectedTreeNode);
         })
+    }
+
+    ngOnDestroy(): void {
+        if (this.nodeSelectedSubscription != null) {
+            this.nodeSelectedSubscription.unsubscribe();
+        }
     }
 
     isNodeWithStepCall(): boolean {

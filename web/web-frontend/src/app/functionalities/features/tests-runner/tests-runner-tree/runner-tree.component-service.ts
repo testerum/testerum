@@ -35,6 +35,7 @@ export class RunnerTreeComponentService {
     treeModel: JsonTreeModel;
     treeRootNode: RunnerRootTreeNodeModel;
     treeTestsNodes: RunnerTestTreeNodeModel[] = [];
+    treeTestsWithFoldersNodes: RunnerTestTreeNodeModel[] = [];
 
     selectedRunnerTreeNode: RunnerTreeNodeModel;
     selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
@@ -43,11 +44,6 @@ export class RunnerTreeComponentService {
 
     constructor(private testsRunnerService: TestsRunnerService,
                 private executionPieService: ExecutionPieService) {
-        this.testsRunnerService.startTestExecutionObservable.subscribe((runnerRootNode: RunnerRootNode) => {
-            this.onStartTestExecution(runnerRootNode)
-        });
-
-        this.selectedRunnerTreeNodeObserver.subscribe((item: RunnerTreeNodeModel) => this.selectedRunnerTreeNode = item);
     }
 
     private onRunnerEvent(runnerEvent: RunnerEvent): void {
@@ -104,9 +100,10 @@ export class RunnerTreeComponentService {
         }
     }
 
-    private onStartTestExecution(runnerRootNode: RunnerRootNode): void {
+    onStartTestExecution(runnerRootNode: RunnerRootNode): void {
         RunnerTreeUtil.mapServerModelToTreeModel(runnerRootNode, this.treeModel);
         this.treeRootNode = this.treeModel.children[0] as RunnerRootTreeNodeModel;
+        this.treeTestsWithFoldersNodes = this.treeRootNode.children;
         this.treeTestsNodes = RunnerTreeUtil.getTreeTestNodes(this.treeModel.children[0] as RunnerRootTreeNodeModel);
 
         if (this.runnerEventSubscription) {
@@ -160,5 +157,13 @@ export class RunnerTreeComponentService {
 
         this.selectedRunnerTreeNodeObserver.emit(runnerTreeNodeModel);
         this.testsRunnerService.setSelectedNode(runnerTreeNodeModel);
+    }
+
+    showTestFolders(showTestFolders: boolean) {
+        if (showTestFolders) {
+            ArrayUtil.replaceElementsInArray(this.treeRootNode.children, this.treeTestsWithFoldersNodes);
+        } else {
+            ArrayUtil.replaceElementsInArray(this.treeRootNode.children, this.treeTestsNodes);
+        }
     }
 }

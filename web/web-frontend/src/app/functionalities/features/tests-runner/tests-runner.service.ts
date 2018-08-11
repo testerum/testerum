@@ -24,10 +24,11 @@ export class TestsRunnerService {
 
 
     selectedRunnerTreeNode: RunnerTreeNodeModel;
-    selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
+    readonly selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
 
-    public readonly startTestExecutionObservable: EventEmitter<RunnerRootNode> = new EventEmitter<RunnerRootNode>();
-    public readonly runnerEventObservable: EventEmitter<RunnerEvent> = new EventEmitter<RunnerEvent>();
+    readonly startTestExecutionObservable: EventEmitter<RunnerRootNode> = new EventEmitter<RunnerRootNode>();
+    readonly runnerEventObservable: EventEmitter<RunnerEvent> = new EventEmitter<RunnerEvent>();
+    readonly showTestFoldersEventObservable: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     constructor(private http: HttpClient) {}
 
@@ -69,7 +70,6 @@ export class TestsRunnerService {
     private handleServerMessage(message: MessageEvent) {
         let runnerEventAsJson = JSON.parse(message.data);
 
-        let eventTypeAsString:string = runnerEventAsJson["@type"];
         let runnerEvent:RunnerEvent = RunnerEventMarshaller.deserializeRunnerEvent(runnerEventAsJson);
 
         this.runnerEventObservable.emit(runnerEvent);

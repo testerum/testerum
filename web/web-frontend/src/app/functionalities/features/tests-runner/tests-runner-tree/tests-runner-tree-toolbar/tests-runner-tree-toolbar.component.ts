@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {TestsRunnerService} from "../../tests-runner.service";
 
 @Component({
     selector: 'tests-runner-tree-toolbar',
@@ -9,7 +10,9 @@ export class TestsRunnerTreeToolbarComponent implements OnInit {
 
     @Output() stopTests: EventEmitter<string> = new EventEmitter<string>();
 
-    constructor() {}
+    areTestFoldersShown = true;
+
+    constructor(private testRunnerService: TestsRunnerService) {}
 
     ngOnInit() {}
 
@@ -17,4 +20,8 @@ export class TestsRunnerTreeToolbarComponent implements OnInit {
         this.stopTests.emit(null);
     }
 
+    onToggleFolders() {
+        this.areTestFoldersShown = !this.areTestFoldersShown;
+        this.testRunnerService.showTestFoldersEventObservable.emit(this.areTestFoldersShown);
+    }
 }

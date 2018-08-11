@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 
 import {TestsRunnerService} from "../tests-runner.service";
 import {RunnerTreeComponentService} from "./runner-tree.component-service";
@@ -21,6 +21,8 @@ import {RunnerFeatureTreeNodeModel} from "./model/runner-feature-tree-node.model
 import {RunnerTestTreeNodeModel} from "./model/runner-test-tree-node.model";
 import {RunnerComposedStepTreeNodeModel} from "./model/runner-composed-step-tree-node.model";
 import {RunnerBasicStepTreeNodeModel} from "./model/runner-basic-step-tree-node.model";
+import {RunnerRootNode} from "../../../../model/runner/tree/runner-root-node.model";
+import {Subscription} from "rxjs";
 
 @Component({
     moduleId: module.id,
@@ -30,7 +32,7 @@ import {RunnerBasicStepTreeNodeModel} from "./model/runner-basic-step-tree-node.
     providers: [RunnerTreeComponentService]
 
 })
-export class RunnerTreeComponent implements OnInit {
+export class RunnerTreeComponent implements OnInit, OnDestroy {
 
     jsonTreeModel: JsonTreeModel = new JsonTreeModel();
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
@@ -40,13 +42,26 @@ export class RunnerTreeComponent implements OnInit {
         .addPair(RunnerComposedStepTreeNodeModel, RunnerTreeNodeComponent)
         .addPair(RunnerBasicStepTreeNodeModel, RunnerTreeNodeComponent);
 
-
+    startTestExecutionSubscription: Subscription;
     constructor(private testsRunnerService: TestsRunnerService,
                 private runnerTreeComponentService: RunnerTreeComponentService) {}
 
 
     ngOnInit(): void {
         this.runnerTreeComponentService.treeModel = this.jsonTreeModel;
+
+        this.startTestExecutionSubscription = this.testsRunnerService.startTestExecutionObservable.subscribe((runnerRootNode: RunnerRootNode) => {
+            this.runnerTreeComponentService.onStartTestExecution(runnerRootNode)
+        });
+        this.testsRunnerService.showTestFoldersEventObservable.subscribe((showTestFolders: boolean) => {
+            this.runnerTreeComponentService.showTestFolders(showTestFolders);
+        })
+    }
+
+    ngOnDestroy(): void {
+        if (this.startTestExecutionSubscription != null) {
+            this.startTestExecutionSubscription.unsubscribe();
+        }
     }
 
     stopTests() {
