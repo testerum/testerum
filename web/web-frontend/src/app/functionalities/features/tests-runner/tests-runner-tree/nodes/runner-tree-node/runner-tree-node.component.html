@@ -31,11 +31,13 @@
            [class.tree-folder-close]="!isOpenedNode()"
            [class.tree-folder-open]="isOpenedNode()"></i>
 
-        <span *ngIf="!isNodeWithStepCall()"
+        <i *ngIf="isTestNode()" class="fa_my-automated-test" aria-hidden="true"></i>
+
+        <span *ngIf="!isStepNode()"
               class="node-text"
               [class.tree-leaf-selected]="isSelected">{{model.text}}</span>
 
-        <span *ngIf="isNodeWithStepCall()"
+        <span *ngIf="isStepNode()"
               [class.tree-leaf-selected]="isSelected">
             <step-text [stepDef]="model.stepCall.stepDef"
                        [stepCall]="model.stepCall"

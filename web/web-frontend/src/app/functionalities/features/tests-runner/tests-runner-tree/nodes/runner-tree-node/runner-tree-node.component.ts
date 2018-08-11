@@ -8,6 +8,7 @@ import {RunnerBasicStepTreeNodeModel} from "../../model/runner-basic-step-tree-n
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {RunnerFeatureTreeNodeModel} from "../../model/runner-feature-tree-node.model";
 import {Subscription} from "rxjs";
+import {RunnerTestTreeNodeModel} from "../../model/runner-test-tree-node.model";
 
 @Component({
     moduleId: module.id,
@@ -42,12 +43,14 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
         }
     }
 
-    isNodeWithStepCall(): boolean {
-        return this.model instanceof RunnerComposedStepTreeNodeModel || this.model instanceof RunnerBasicStepTreeNodeModel
-    }
-
     isFeatureNode(): boolean {
         return this.model instanceof RunnerFeatureTreeNodeModel;
+    }
+    isTestNode(): boolean {
+        return this.model instanceof RunnerTestTreeNodeModel;
+    }
+    isStepNode(): boolean {
+        return this.model instanceof RunnerComposedStepTreeNodeModel || this.model instanceof RunnerBasicStepTreeNodeModel
     }
 
     isOpenedNode(): boolean {
