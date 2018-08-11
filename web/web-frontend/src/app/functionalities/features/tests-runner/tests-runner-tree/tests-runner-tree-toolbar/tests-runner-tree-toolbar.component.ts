@@ -16,12 +16,20 @@ export class TestsRunnerTreeToolbarComponent implements OnInit {
 
     ngOnInit() {}
 
-    onStopTests() {
-        this.stopTests.emit(null);
+    onRunOrStopTests() {
+        if (this.areTestRunning()) {
+            this.stopTests.emit(null);
+        } else {
+            this.testRunnerService.reRunTests()
+        }
     }
 
     onToggleFolders() {
         this.areTestFoldersShown = !this.areTestFoldersShown;
         this.testRunnerService.showTestFoldersEventObservable.emit(this.areTestFoldersShown);
+    }
+
+    areTestRunning(): boolean {
+        return this.testRunnerService.areTestRunning;
     }
 }

@@ -1,13 +1,7 @@
 import {EventEmitter, Injectable} from "@angular/core";
-import {TestModel} from "../../../../model/test/test.model";
 import {RunnerTreeNodeModel} from "./model/runner-tree-node.model";
-import {RunnerTreeNodeTypeEnum} from "./model/enums/runner-tree-node-type.enum";
 import {RunnerEvent} from "../../../../model/test/event/runner.event";
 import {ExecutionStatusEnum} from "../../../../model/test/event/enums/execution-status.enum";
-import {RunnerTreeNodeSelectedListener} from "./event/runner-tree-node-selected.listener";
-import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
-import {ComposedStepDef} from "../../../../model/composed-step-def.model";
-import {StepCall} from "../../../../model/step-call.model";
 import {ExecutionPieService} from "../../../../generic/components/charts/execution-pie/execution-pie.service";
 import {ExecutionPieModel} from "../../../../generic/components/charts/execution-pie/model/execution-pie.model";
 import {TestsRunnerService} from "../tests-runner.service";
@@ -103,7 +97,7 @@ export class RunnerTreeComponentService {
     onStartTestExecution(runnerRootNode: RunnerRootNode): void {
         RunnerTreeUtil.mapServerModelToTreeModel(runnerRootNode, this.treeModel);
         this.treeRootNode = this.treeModel.children[0] as RunnerRootTreeNodeModel;
-        this.treeTestsWithFoldersNodes = this.treeRootNode.children;
+        this.treeTestsWithFoldersNodes = ArrayUtil.copyArrayOfObjects(this.treeRootNode.children);
         this.treeTestsNodes = RunnerTreeUtil.getTreeTestNodes(this.treeModel.children[0] as RunnerRootTreeNodeModel);
 
         if (this.runnerEventSubscription) {

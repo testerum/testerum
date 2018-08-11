@@ -4,7 +4,7 @@ import {HeadersList} from "../functionalities/resources/editors/http/request/hea
 
 export class ArrayUtil {
 
-    static copyArray(array: Array<any>) {
+    static copyArray(array: Array<any>): Array<any> {
         return JSON.parse(JsonUtil.serializeArray(array));
     }
 
@@ -17,7 +17,7 @@ export class ArrayUtil {
         return result;
     }
 
-    static copyArrayOfObjects(array: Array<any>) {
+    static copyArrayOfObjects(array: Array<any>): Array<any> {
         let result: Array<any> = [];
         for (const obj of array) {
             result.push(obj)

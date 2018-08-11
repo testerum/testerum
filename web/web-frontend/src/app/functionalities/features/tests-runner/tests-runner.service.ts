@@ -7,6 +7,8 @@ import { map } from "rxjs/operators";
 import {RunnerRootNode} from "../../../model/runner/tree/runner-root-node.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {RunnerTreeNodeModel} from "./tests-runner-tree/model/runner-tree-node.model";
+import {SuiteEndEvent} from "../../../model/test/event/suite-end.event";
+import {RunnerErrorEvent} from "../../../model/test/event/runner-error.event";
 
 @Injectable()
 export class TestsRunnerService {
@@ -18,10 +20,11 @@ export class TestsRunnerService {
     };
 
     public isTestRunnerVisible:boolean = false;
+    public areTestRunning: boolean = false;
+    public lastRunPaths: Path[];
 
     private webSocket:$WebSocket = null;
     private executionId: number = null;
-
 
     selectedRunnerTreeNode: RunnerTreeNodeModel;
     readonly selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
@@ -33,6 +36,7 @@ export class TestsRunnerService {
     constructor(private http: HttpClient) {}
 
     runTests(pathsToExecute: Path[]) {
+        this.lastRunPaths = pathsToExecute;
         this.isTestRunnerVisible = true;
 
         let pathsAsString = pathsToExecute.map(it => {return it.toString()});
@@ -43,7 +47,12 @@ export class TestsRunnerService {
             });
     }
 
+    reRunTests() {
+        this.runTests(this.lastRunPaths)
+    }
+
     private startExecution(testExecutionResponse: TestExecutionResponse) {
+        this.areTestRunning = true;
         this.executionId = testExecutionResponse.executionId;
 
         this.startTestExecutionObservable.emit(testExecutionResponse.runnerRootNode);
@@ -72,6 +81,11 @@ export class TestsRunnerService {
 
         let runnerEvent:RunnerEvent = RunnerEventMarshaller.deserializeRunnerEvent(runnerEventAsJson);
 
+        if (runnerEvent instanceof SuiteEndEvent ||
+            runnerEvent instanceof RunnerErrorEvent) {
+            this.areTestRunning = false;
+        }
+
         this.runnerEventObservable.emit(runnerEvent);
     }
 
@@ -85,6 +99,7 @@ export class TestsRunnerService {
     }
 
     public stopExecution() {
+        this.areTestRunning = false;
         if (this.executionId === null) {
             console.warn("trying to stop an execution without an execution id");
             return;

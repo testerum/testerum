@@ -68,6 +68,17 @@ body {
 .fa_my-expand span {
     line-height: 0.5;
 }
+//Run stop icons
+.run {
+    @extend .fas;
+    @extend .fa-play;
+    color: $success-color;
+}
+.stop {
+    @extend .fas;
+    @extend .fa-stop;
+    color: $error-color;
+}
 // tree icons
 .tree-node-open {
     @extend .fas;
@@ -81,6 +92,18 @@ body {
     @extend .fas;
     @extend .fa-caret-right;
     color: #d8d8d8;
+}
+.tree-folder-close {
+    @extend .fas;
+    @extend .fa-folder;
+    color: #c7c308;
+    font-size: 15px;
+}
+.tree-folder-open {
+    @extend .fas;
+    @extend .fa-folder-open;
+    color: #c7c308;
+    font-size: 15px;
 }
 
 //======= Only CRISTI know why this are here ===============
