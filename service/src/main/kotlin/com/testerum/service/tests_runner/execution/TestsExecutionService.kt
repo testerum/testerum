@@ -2,14 +2,13 @@ package com.testerum.service.tests_runner.execution
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
+import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
-import com.testerum.runner.events.model.TextLogEvent
-import com.testerum.runner.events.model.log_level.LogLevel
-import com.testerum.runner.events.model.position.EventKey
 import com.testerum.service.tests.TestsService
 import com.testerum.service.tests_runner.execution.model.RunningTestExecution
 import com.testerum.service.tests_runner.execution.model.TestExecution
@@ -100,9 +99,9 @@ class TestsExecutionService(private val testsService: TestsService,
 
         val args = createArgs(execution.testOrDirectoryPathsToRun)
         val argsFile: java.nio.file.Path = createArgsFile(args)
+        val commandLine: List<String> = createCommandLine(argsFile)
 
         try {
-            val commandLine: List<String> = createCommandLine(argsFile)
 
             val testRunnerEventProcessor = TestRunnerEventParser(jsonObjectMapper, eventProcessor)
 
@@ -133,23 +132,24 @@ class TestsExecutionService(private val testsService: TestsService,
             LOGGER.debug("execution took ${System.currentTimeMillis() - startTime} ms")
 
             if (processResult.exitValue != 0) {
-                val errorMessage =
-                        """|process exited with code ${processResult.exitValue}
-                           |args = $args
-                           |commandLine = $commandLine
-                           |output = [${processResult.outputUTF8()}]
-                        """.trimMargin()
-
-                LOGGER.error(errorMessage)
-                eventProcessor(
-                        TextLogEvent(
-                                time = LocalDateTime.now(),
-                                eventKey = EventKey.SUITE_EVENT_KEY,
-                                logLevel = LogLevel.WARNING,
-                                message = errorMessage
-                        )
+                handleError(
+                        eventProcessor,
+                        errorMessage = """|process exited with code ${processResult.exitValue}
+                                          |commandLine = $commandLine
+                                          |args = $args
+                                          |output = [${processResult.outputUTF8()}]
+                                       """.trimMargin()
                 )
             }
+        } catch (e: Exception) {
+            handleError(
+                    eventProcessor,
+                    errorMessage = """|failed to start the runner process
+                                      |commandLine = $commandLine
+                                      |args = $args
+                                      |exception = ${e.toStringWithStacktrace()}
+                                   """.trimMargin()
+            )
         } finally {
             try {
                 Files.delete(argsFile)
@@ -281,6 +281,16 @@ class TestsExecutionService(private val testsService: TestsService,
         LOGGER.debug("args = {}", args)
 
         return args
+    }
+
+    private fun handleError(eventProcessor: (event: RunnerEvent) -> Unit, errorMessage: String) {
+        LOGGER.error(errorMessage)
+        eventProcessor(
+                RunnerErrorEvent(
+                        time = LocalDateTime.now(),
+                        errorMessage = errorMessage
+                )
+        )
     }
 
     private fun Any?.escape(): String? = this?.toString()
