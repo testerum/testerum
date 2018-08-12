@@ -1,6 +1,7 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.test
 
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.common_kotlin.indent
 import com.testerum.model.test.TestModel
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
@@ -175,6 +176,21 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
         )
     }
 
-    override fun toString() = test.toString()
+    override fun toString(): String = buildString { addToString(this, 0) }
 
+    override fun addToString(destination: StringBuilder, indentLevel: Int) {
+        destination.indent(indentLevel).append("test '").append(test.text).append("', tags=").append(test.tags).append(", path=[").append(filePath).append("]\n")
+
+        for (beforeEachTestHook in beforeEachTestHooks) {
+            beforeEachTestHook.addToString(destination, indentLevel + 1)
+        }
+
+        for (step in steps) {
+            step.addToString(destination, indentLevel + 1)
+        }
+
+        for (afterEachTestHook in afterEachTestHooks) {
+            afterEachTestHook.addToString(destination, indentLevel + 1)
+        }
+    }
 }

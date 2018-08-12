@@ -1,6 +1,7 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.hook
 
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.common_kotlin.indent
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import org.slf4j.Logger
@@ -56,5 +57,11 @@ class RunnerHook(private val hookDef: HookDef) {
             } catch (e: ClassNotFoundException) {
                 throw RuntimeException("failed to load glue class [${hookDef.className}]", e)
             }
+
+    override fun toString(): String = buildString { addToString(this, 0) }
+
+    fun addToString(destination: StringBuilder, indentLevel: Int) {
+        destination.indent(indentLevel).append("hook (").append(hookDef.phase).append("): ").append(hookDef.className).append(".").append(hookDef.methodName).append("()\n")
+    }
 
 }

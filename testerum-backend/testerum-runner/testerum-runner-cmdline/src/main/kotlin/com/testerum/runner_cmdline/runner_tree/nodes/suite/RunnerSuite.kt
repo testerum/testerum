@@ -1,6 +1,7 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.suite
 
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.common_kotlin.indent
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.events.model.SuiteStartEvent
 import com.testerum.runner.events.model.position.EventKey
@@ -141,6 +142,22 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         )
     }
 
-    override fun toString() = tests.toString()
+    override fun toString(): String = buildString { addToString(this, 0) }
+
+    override fun addToString(destination: StringBuilder, indentLevel: Int) {
+        destination.indent(indentLevel).append("Suite\n")
+
+        for (beforeAllTestsHook in beforeAllTestsHooks) {
+            beforeAllTestsHook.addToString(destination, indentLevel + 1)
+        }
+
+        for (test in tests) {
+            test.addToString(destination, indentLevel + 1)
+        }
+
+        for (afterAllTestsHook in afterAllTestsHooks) {
+            afterAllTestsHook.addToString(destination, indentLevel + 1)
+        }
+    }
 
 }

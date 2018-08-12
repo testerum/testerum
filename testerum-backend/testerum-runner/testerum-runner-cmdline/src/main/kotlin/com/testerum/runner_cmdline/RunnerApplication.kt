@@ -88,11 +88,6 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
 
         val pathsToTestsToExecute: List<Path> = findPathsToTestsToExecute(cmdlineParams)
 
-        println("Will execute the following tests:")
-        for (testPath in pathsToTestsToExecute) {
-            println("    ${testPath.toAbsolutePath().normalize()}")
-        }
-
         // setup runner services
         val testContext = TestContextImpl(stepsClassLoader = stepsClassLoader)
 
@@ -109,6 +104,9 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
 
         // load tests
         val suite: RunnerSuite = loadTests(pathsToTestsToExecute, hooks, cmdlineParams)
+
+        logRunnerSuite(suite)
+
 
         val glueObjectFactory: GlueObjectFactory = GlueObjectFactoryFinder.findGlueObjectFactory(testContext)
 
@@ -144,7 +142,6 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
         }
     }
 
-
     // todo: how to reduce duplication between this class and StepLibraryCacheManger?
     private fun createStepsClassLoader(): ClassLoader {
         val jars: List<Path> = getStepJarFiles()
@@ -156,6 +153,7 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
 
         return URLClassLoader(jarUrls, RunnerApplication::class.java.classLoader)
     }
+
 
     // todo: how to reduce duplication between this class and BasicStepScanner?
     private fun getStepJarFiles(): List<Path> {
@@ -302,6 +300,12 @@ class RunnerApplication(private val settingsManager: SettingsManagerImpl,
         result.sortBy { it.toAbsolutePath().normalize().toString() }
 
         return result
+    }
+
+    private fun logRunnerSuite(suite: RunnerSuite) {
+        println("------------------------------[ execution tree ]------------------------------")
+        print(suite.toString())
+        println("------------------------------------------------------------------------------\n")
     }
 
 }

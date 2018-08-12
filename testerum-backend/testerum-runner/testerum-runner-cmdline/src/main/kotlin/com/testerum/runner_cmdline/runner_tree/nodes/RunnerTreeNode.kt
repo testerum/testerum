@@ -25,4 +25,6 @@ abstract class RunnerTreeNode {
             return EventKey(positions)
         }
 
+    abstract fun addToString(destination: StringBuilder, indentLevel: Int)
+
 }
