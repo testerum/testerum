@@ -163,7 +163,8 @@ class TreeBuilderTest {
         override fun createNode(payload: Any?,
                                 label: String,
                                 path: List<String>,
-                                childrenNodes: List<Any>): Any {
+                                childrenNodes: List<Any>,
+                                indexInParent: Int): Any {
             @Suppress("UNCHECKED_CAST")
             return when (payload) {
                 null, is MyFeature -> return MyFeatureNode(

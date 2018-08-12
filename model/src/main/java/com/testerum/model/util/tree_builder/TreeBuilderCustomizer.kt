@@ -12,7 +12,7 @@ interface TreeBuilderCustomizer {
     }
 
     fun createRootNode(childrenNodes: List<Any>): Any
-    fun createNode(payload: Any?, label: String, path: List<String>, childrenNodes: List<Any>): Any
+    fun createNode(payload: Any?, label: String, path: List<String>, childrenNodes: List<Any>, indexInParent: Int): Any
 
     fun unknownPayloadException(payload: Any): Throwable = IllegalArgumentException("unknown payload type [${payload.javaClass.name}]")
 

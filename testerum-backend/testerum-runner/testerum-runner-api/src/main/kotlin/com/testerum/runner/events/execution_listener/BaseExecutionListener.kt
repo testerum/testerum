@@ -9,18 +9,21 @@ open class BaseExecutionListener : ExecutionListener {
      */
     final override fun onEvent(event: RunnerEvent) {
         when (event) {
-            is SuiteStartEvent -> onSuiteStart(event)
-            is SuiteEndEvent   -> onSuiteEnd(event)
+            is SuiteStartEvent   -> onSuiteStart(event)
+            is SuiteEndEvent     -> onSuiteEnd(event)
 
-            is TestStartEvent  -> onTestStart(event)
-            is TestEndEvent    -> onTestEnd(event)
+            is FeatureStartEvent -> onFeatureStart(event)
+            is FeatureEndEvent   -> onFeatureEnd(event)
 
-            is StepStartEvent  -> onStepStart(event)
-            is StepEndEvent    -> onStepEnd(event)
+            is TestStartEvent    -> onTestStart(event)
+            is TestEndEvent      -> onTestEnd(event)
 
-            is TextLogEvent    -> onTextLog(event)
+            is StepStartEvent    -> onStepStart(event)
+            is StepEndEvent      -> onStepEnd(event)
 
-            else               -> onUnknownEvent(event)
+            is TextLogEvent      -> onTextLog(event)
+
+            else                 -> onUnknownEvent(event)
         }
 
     }
@@ -30,6 +33,9 @@ open class BaseExecutionListener : ExecutionListener {
 
     protected open fun onTestStart(event: TestStartEvent) {}
     protected open fun onTestEnd(event: TestEndEvent) {}
+
+    protected open fun onFeatureStart(event: FeatureStartEvent) {}
+    protected open fun onFeatureEnd(event: FeatureEndEvent) {}
 
     protected open fun onStepStart(event: StepStartEvent) {}
     protected open fun onStepEnd(event: StepEndEvent) {}
