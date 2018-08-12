@@ -81,7 +81,5 @@ abstract class RunnerStep(val stepCall: StepCall,
         )
     }
 
-    override fun toString() = stepCall.toString()
-
 }
 

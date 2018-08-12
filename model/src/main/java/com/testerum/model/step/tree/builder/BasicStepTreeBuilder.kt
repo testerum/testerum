@@ -50,7 +50,7 @@ class BasicStepTreeBuilder {
             )
         }
 
-        override fun createNode(payload: Any?, label: String, path: List<String>, childrenNodes: List<Any>): Any {
+        override fun createNode(payload: Any?, label: String, path: List<String>, childrenNodes: List<Any>, indexInParent: Int): Any {
             return when (payload) {
                 null -> {
                     @Suppress("UNCHECKED_CAST")

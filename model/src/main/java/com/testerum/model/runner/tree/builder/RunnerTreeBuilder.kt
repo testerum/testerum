@@ -47,7 +47,7 @@ class RunnerTreeBuilder {
             )
         }
 
-        override fun createNode(payload: Any?, label: String, path: List<String>, childrenNodes: List<Any>): Any {
+        override fun createNode(payload: Any?, label: String, path: List<String>, childrenNodes: List<Any>, indexInParent: Int): Any {
             @Suppress("UNCHECKED_CAST")
             return when (payload) {
                 null -> {

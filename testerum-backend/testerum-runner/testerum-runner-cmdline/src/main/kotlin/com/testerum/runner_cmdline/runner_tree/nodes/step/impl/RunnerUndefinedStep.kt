@@ -13,4 +13,11 @@ class RunnerUndefinedStep(stepCall: StepCall,
 
     override fun doRun(context: RunnerContext, vars: VariablesContext) = ExecutionStatus.UNDEFINED
 
+    override fun toString(): String = buildString { addToString(this, 0) }
+
+    override fun addToString(destination: StringBuilder, indentLevel: Int) {
+        stepCall.toString(destination, indentLevel)
+        destination.append("\n")
+    }
+
 }

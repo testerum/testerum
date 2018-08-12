@@ -23,6 +23,31 @@ class TreeToConsoleExecutionListener : BaseExecutionListener() {
         println("SUITE_END: status=${event.status}, statistics=${event.statistics}, durationMillis=${event.durationMillis}, eventKey=${event.eventKey}")
     }
 
+    override fun onFeatureStart(event: FeatureStartEvent) {
+        indent()
+        println("FEATURE_START: featureName='${event.featureName}', eventKey=${event.eventKey}")
+
+        indentLevel++
+    }
+
+    override fun onFeatureEnd(event: FeatureEndEvent) {
+        indentLevel--
+        indent()
+
+        println(
+                buildString {
+                    append("FEATURE_END: ")
+                    append("status=${event.status}")
+                    if (event.exceptionDetail != null) {
+                        append(", exceptionDetail='${event.exceptionDetail}'")
+                    }
+                    append(", featureName='${event.featureName}'")
+                    append(", durationMillis=${event.durationMillis}")
+                    append(", eventKey=${event.eventKey}")
+                }
+        )
+    }
+
     override fun onTestStart(event: TestStartEvent) {
         indent()
         println("TEST_START: testName='${event.testName}', testFilePath='${event.testFilePath}', eventKey=${event.eventKey}")

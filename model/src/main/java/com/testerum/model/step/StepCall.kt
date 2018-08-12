@@ -31,14 +31,14 @@ data class StepCall @JsonCreator constructor(
 
     override fun toString() = buildString { toString(this, 0) }
 
-    private fun toString(destination: StringBuilder,
+    fun toString(destination: StringBuilder,
                          indentLevel: Int) {
         destination.indent(indentLevel)
 
         val stepType: String = when (stepDef) {
             is UndefinedStepDef -> "UNDEFINED"
-            is BasicStepDef -> "BASIC"
-            is ComposedStepDef -> "COMPOSED"
+            is BasicStepDef     -> "BASIC"
+            is ComposedStepDef  -> "COMPOSED"
             else                -> stepDef.javaClass.simpleName
         }
         destination.append(stepType).append(": ").append(stepDef.phase).append(" ")

@@ -1,14 +1,15 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.suite
 
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.common_kotlin.indent
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.events.model.SuiteStartEvent
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner.events.model.statistics.ExecutionStatistics
+import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
-import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
@@ -16,7 +17,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
-                       private val tests: List<RunnerTest>,
+                       private val featuresOrTests: List<RunnerFeatureOrTest>,
                        private val afterAllTestsHooks: List<RunnerHook>) : RunnerTreeNode() {
 
     companion object {
@@ -24,7 +25,7 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
     }
 
     init {
-        for (test in tests) {
+        for (test in featuresOrTests) {
             test.parent = this
         }
     }
@@ -46,7 +47,7 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         for (hook in beforeAllTestsHooks) {
             glueClasses += hook.getGlueClass(context)
         }
-        for (test in tests) {
+        for (test in featuresOrTests) {
             glueClasses += test.getGlueClasses(context)
         }
         for (hook in afterAllTestsHooks) {
@@ -74,7 +75,7 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
             }
 
             try {
-                for (test in tests) {
+                for (test in featuresOrTests) {
                     val testExecutionStatus: ExecutionStatus = test.run(context, globalVars)
 
                     if (testExecutionStatus == ExecutionStatus.PASSED) {
@@ -129,7 +130,7 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         context.eventsService.logEvent(
                 SuiteEndEvent(
                         status = executionStatus,
-                        statistics = ExecutionStatistics(tests.size - successfulTestsCount, successfulTestsCount, tests.size), // todo: return count per execution status instead of this?
+                        statistics = ExecutionStatistics(featuresOrTests.size - successfulTestsCount, successfulTestsCount, featuresOrTests.size), // todo: return count per execution status instead of this?
                         durationMillis = durationMillis
                 )
         )
@@ -141,6 +142,22 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         )
     }
 
-    override fun toString() = tests.toString()
+    override fun toString(): String = buildString { addToString(this, 0) }
+
+    override fun addToString(destination: StringBuilder, indentLevel: Int) {
+        destination.indent(indentLevel).append("Suite\n")
+
+        for (beforeAllTestsHook in beforeAllTestsHooks) {
+            beforeAllTestsHook.addToString(destination, indentLevel + 1)
+        }
+
+        for (test in featuresOrTests) {
+            test.addToString(destination, indentLevel + 1)
+        }
+
+        for (afterAllTestsHook in afterAllTestsHooks) {
+            afterAllTestsHook.addToString(destination, indentLevel + 1)
+        }
+    }
 
 }

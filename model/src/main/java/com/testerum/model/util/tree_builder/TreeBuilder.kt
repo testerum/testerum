@@ -100,13 +100,20 @@ class TreeBuilder(private val customizer: TreeBuilderCustomizer) {
         return newNode
     }
 
-    fun build(): Any {
-        val childrenNodes: List<Any> = sortedChildren.map { it.build() }
+    fun build(): Any = build(indexInParent = -1)
 
+    private fun build(indexInParent: Int): Any {
+        // first, recursively build children
+        val childrenNodes = mutableListOf<Any>()
+        for ((index, child) in sortedChildren.withIndex()) {
+            childrenNodes += child.build(index)
+        }
+
+        // then, return the actual node
         return if (this.isRoot) {
             customizer.createRootNode(childrenNodes)
         } else {
-            customizer.createNode(payload, label, path, childrenNodes)
+            customizer.createNode(payload, label, path, childrenNodes, indexInParent)
         }
     }
 

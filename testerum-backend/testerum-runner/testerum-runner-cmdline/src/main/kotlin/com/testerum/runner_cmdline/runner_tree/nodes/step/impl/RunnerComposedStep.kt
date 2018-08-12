@@ -53,4 +53,15 @@ class RunnerComposedStep(stepCall: StepCall,
         }
     }
 
+    override fun toString(): String = buildString { addToString(this, 0) }
+
+    override fun addToString(destination: StringBuilder, indentLevel: Int) {
+        stepCall.toString(destination, indentLevel)
+        destination.append("\n")
+
+        for (step in steps) {
+            step.addToString(destination, indentLevel + 1)
+        }
+    }
+
 }

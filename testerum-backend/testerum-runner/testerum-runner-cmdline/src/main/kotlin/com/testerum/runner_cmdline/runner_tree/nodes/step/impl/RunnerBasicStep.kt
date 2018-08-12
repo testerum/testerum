@@ -157,4 +157,11 @@ class RunnerBasicStep(stepCall: StepCall,
         }
     }
 
+    override fun toString(): String = buildString { addToString(this, 0) }
+
+    override fun addToString(destination: StringBuilder, indentLevel: Int) {
+        stepCall.toString(destination, indentLevel)
+        destination.append("\n")
+    }
+
 }
