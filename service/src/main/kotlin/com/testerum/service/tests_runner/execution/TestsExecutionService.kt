@@ -163,17 +163,17 @@ class TestsExecutionService(private val testsService: TestsService,
     private fun createCommandLine(argsFile: java.nio.file.Path): List<String> {
         val commandLine = mutableListOf<String>()
 
-        commandLine += getJavaBinaryPath().toWindowsFriendly()
+        commandLine += getJavaBinaryPath().toString()
 
         commandLine += "-classpath"
         commandLine += "${getRunnerRepoPath()}/*"
 
-        commandLine += "-Dtesterum.packageDirectory=${getPackageDir().toWindowsFriendly()}"
+        commandLine += "-Dtesterum.packageDirectory=${getPackageDir()}"
         commandLine += "-XX:-OmitStackTraceInFastThrow"
 //        commandLine += "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000" // todo: make this an option to allow people to do remote debugging
 
         commandLine += "com.testerum.runner_cmdline.TesterumRunner"
-        commandLine += "@${argsFile.toWindowsFriendly()}"
+        commandLine += "@$argsFile"
 
         LOGGER.debug("commandLine = {}", commandLine)
 
@@ -240,11 +240,11 @@ class TestsExecutionService(private val testsService: TestsService,
 
         // repository directory
         val repositoryDir: java.nio.file.Path = getRepositoryDirectory()
-        args += "--repository-directory '${repositoryDir.toWindowsFriendly()}'"
+        args += "--repository-directory '${repositoryDir.escape()}'"
 
         // built-in basic steps
         val builtInBasicStepsDir: java.nio.file.Path = getBuiltInBasicStepsDirectory()
-        args += "--basic-steps-directory '${builtInBasicStepsDir.toWindowsFriendly()}'"
+        args += "--basic-steps-directory '${builtInBasicStepsDir.escape()}'"
 
         // output
         args += "--output-format JSON"
@@ -256,7 +256,7 @@ class TestsExecutionService(private val testsService: TestsService,
                                                         .toAbsolutePath()
                                                         .normalize()
 
-            args.add("--test-path '${path.toWindowsFriendly()}'")
+            args.add("--test-path '${path.escape()}'")
         }
 
         // settings
@@ -275,7 +275,7 @@ class TestsExecutionService(private val testsService: TestsService,
                 continue
             }
 
-            args.add("--setting '${setting.key}=${setting.value}'")
+            args.add("--setting '${setting.key.escape()}=${setting.value.escape()}'")
         }
 
         LOGGER.debug("args = {}", args)
@@ -283,6 +283,9 @@ class TestsExecutionService(private val testsService: TestsService,
         return args
     }
 
-    private fun java.nio.file.Path.toWindowsFriendly()= this.toString().replace('\\', '/')
+    private fun Any?.escape(): String? = this?.toString()
+                                             ?.replace("\\", "\\\\")
+                                             ?.replace("\"", "\\\"")
+                                             ?.replace("'", "\\'")
 
 }
