@@ -84,7 +84,7 @@ class RunnerTreeBuilder {
 
         private fun createStepCallBranch(stepCall: StepCall): RunnerStepNode {
             val stepDef = stepCall.stepDef
-            val id = stepDef.id
+            val id = stepCall.id
             val path = stepDef.path
 
             return when (stepDef) {

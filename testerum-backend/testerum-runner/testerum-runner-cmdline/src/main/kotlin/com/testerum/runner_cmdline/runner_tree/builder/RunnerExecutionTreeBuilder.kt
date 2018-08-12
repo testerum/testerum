@@ -102,6 +102,7 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
                     val children: List<RunnerFeatureOrTest> = childrenNodes as List<RunnerFeatureOrTest>
 
                     RunnerFeature(
+                            featurePathFromRoot = path,
                             featureName = label,
                             featuresOrTests = children,
                             indexInParent = indexInParent

@@ -2,6 +2,7 @@ package com.testerum.runner_cmdline.runner_tree.nodes.feature
 
 import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.common_kotlin.indent
+import com.testerum.model.feature.Feature
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
 import com.testerum.runner.events.model.error.ExceptionDetail
@@ -11,12 +12,16 @@ import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 
-class RunnerFeature(private val featureName: String,
+class RunnerFeature(featurePathFromRoot: List<String>,
+                    private val featureName: String,
                     private val featuresOrTests: List<RunnerFeatureOrTest>,
                     indexInParent: Int): RunnerFeatureOrTest() {
 
     override lateinit var parent: RunnerTreeNode
-    override val positionInParent = PositionInParent(featureName, indexInParent)
+    override val positionInParent = PositionInParent(
+            id= featurePathFromRoot.joinToString(separator = "/") + "/${Feature.FILE_NAME_WITH_EXTENSION}",
+            indexInParent = indexInParent
+    )
 
     init {
         for (featureOrTest in featuresOrTests) {

@@ -112,9 +112,9 @@ export class RunnerTreeComponentService {
 
 
     findNode(eventKey:EventKey): RunnerTreeNodeModel {
-        let runnerTreeNodeModel = this.findNodeByPositionInParent(ArrayUtil.copyArray(eventKey.positionsFromRoot), this.treeTestsNodes);
+        let runnerTreeNodeModel = this.findNodeByPositionInParent(ArrayUtil.copyArray(eventKey.positionsFromRoot), (this.treeModel.children as RunnerTreeNodeModel[]));
         if (runnerTreeNodeModel == null) {
-            console.warn("Couldn't find a coresponding tree node for event with key", eventKey, this.treeTestsNodes)
+            console.warn("Couldn't find a coresponding tree node for event with key", eventKey, this.treeRootNode)
         }
         return runnerTreeNodeModel;
     }

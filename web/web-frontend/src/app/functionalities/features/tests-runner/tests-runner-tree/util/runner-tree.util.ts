@@ -21,6 +21,7 @@ export class RunnerTreeUtil {
         treeModel.children.length = 0;
 
         let rootTreeNode = new RunnerRootTreeNodeModel(treeModel);
+        rootTreeNode.id = "TestSuite";
 
         RunnerTreeUtil.mapServerNodeChildrenToTreeModel(runnerRootNode, rootTreeNode);
 
