@@ -6,9 +6,9 @@
 
         <div [class.last-horizontal-line]="isLastNode" class="horizontal-line-distance-from-top">
             <i class="toggle-icon"
-               [class.tree-node-open]="model.getNodeState().showChildren && hasChildren()"
-               [class.tree-node-close]="!model.getNodeState().showChildren && hasChildren()"
-               [class.tree-node-empty]="!hasChildren()"
+               [class.fa_my-tree-node-open]="model.getNodeState().showChildren && hasChildren()"
+               [class.fa_my-tree-node-close]="!model.getNodeState().showChildren && hasChildren()"
+               [class.fa_my-tree-node-empty]="!hasChildren()"
                (click)="toggleShowHideChildren();$event.stopPropagation();"></i>
             <div class="horizontal-line"></div>
         </div>

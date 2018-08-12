@@ -52,6 +52,11 @@ body {
     color: white;
 }
 
+.fa_my-step {
+    @extend .fas;
+    @extend .fa-shoe-prints;
+}
+
 .fa_my-disabled-test {
     @extend .fas;
     @extend .fa-ban;
@@ -69,37 +74,37 @@ body {
     line-height: 0.5;
 }
 //Run stop icons
-.run {
+.fa_my-run {
     @extend .fas;
     @extend .fa-play;
     color: $success-color;
 }
-.stop {
+.fa_my-stop {
     @extend .fas;
     @extend .fa-stop;
     color: $error-color;
 }
 // tree icons
-.tree-node-open {
+.fa_my-tree-node-open {
     @extend .fas;
     @extend .fa-caret-down;
 }
-.tree-node-close {
+.fa_my-tree-node-close {
     @extend .fas;
     @extend .fa-caret-right;
 }
-.tree-node-empty {
+.fa_my-tree-node-empty {
     @extend .fas;
     @extend .fa-caret-right;
     color: #d8d8d8;
 }
-.tree-folder-close {
+.fa_my-tree-folder-closed {
     @extend .fas;
     @extend .fa-folder;
     color: #c7c308;
     font-size: 15px;
 }
-.tree-folder-open {
+.fa_my-tree-folder-opened {
     @extend .fas;
     @extend .fa-folder-open;
     color: #c7c308;

@@ -65,7 +65,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     }
 
     runTests() {
-        this.testsRunnerService.runTests([this.model.path]);
+        this.testsRunnerService.runTests([this.model.path.getParentPath()]);
     }
 
     setSelected() {

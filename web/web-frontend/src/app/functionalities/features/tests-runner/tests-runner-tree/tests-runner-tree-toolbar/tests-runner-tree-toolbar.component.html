@@ -1,21 +1,94 @@
 <p-toolbar>
-    <div class="btn-group" role="group">
-        <div title="{{areTestRunning()? 'Stop tests': 'Run Tests'}}"
-             class="btn btn-default btn-xs btn-group"
-             (click)="onRunOrStopTests()">
-            <i [class.stop]="areTestRunning()"
-               [class.run]="!areTestRunning()"
-               [class.error_color]="areTestRunning()"
-               aria-hidden="true"></i>
+    <div class="line-filters">
+        <div class="filters-group">
+            <div class="btn-group" role="group">
+                <div title="{{areTestRunning()? 'Stop tests': 'Run Tests'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onRunOrStopTests()">
+                    <i [class.fa_my-stop]="areTestRunning()"
+                       [class.fa_my-run]="!areTestRunning()"
+                       [class.error_color]="areTestRunning()"
+                       aria-hidden="true"></i>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="btn-group" role="group">
-        <div title="{{areTestFoldersShown? 'Hide Folders': 'Show Folders'}}"
-             class="btn btn-default btn-xs btn-group"
-             [class.active]="areTestFoldersShown"
-             (click)="onToggleFolders()">
-            <i class="tree-folder-open" aria-hidden="true"></i>
+        <div class="filters-group">
+            <span class="filters-label">Show:</span>
+            <div class="btn-group" role="group">
+                <div title="Show Waiting"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="Show Passed"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="Show Failed"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="Show Error"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="Show Undefined"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="Show Skipped"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="filters-group">
+            <div class="btn-group" role="group">
+                <div title="{{areTestFoldersShown? 'Hide Folders': 'Show Folders'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="areTestFoldersShown"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="Show Tests"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-expand" aria-hidden="true">
+                        <i class="fa_my-automated-test" aria-hidden="true" style="font-size: 8px"></i>
+                    </i>
+                </div>
+                <div title="Show Steps"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-expand" aria-hidden="true">
+                        <i class="fa_my-step" aria-hidden="true" style="font-size: 8px"></i>
+                    </i>
+                </div>
+                <div title="Expand All"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-expand" aria-hidden="true"></i>
+                </div>
+            </div>
         </div>
     </div>
 </p-toolbar>
