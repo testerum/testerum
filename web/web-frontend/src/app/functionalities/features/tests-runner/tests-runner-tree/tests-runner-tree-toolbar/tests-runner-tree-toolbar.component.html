@@ -1,5 +1,6 @@
 <p-toolbar>
     <div class="line-filters">
+
         <div class="filters-group">
             <div class="btn-group" role="group">
                 <div title="{{areTestRunning()? 'Stop tests': 'Run Tests'}}"
@@ -14,60 +15,61 @@
         </div>
 
         <div class="filters-group">
-            <span class="filters-label">Show:</span>
+            <span class="filters-label">Filters:</span>
+            <div class="btn-group" role="group">
+                <div title="{{areTestFoldersShown? 'Hide Folders': 'Show Folders'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="areTestFoldersShown"
+                     (click)="onToggleFolders()">
+                    <i class="fa_my-tree-folder-opened color-inherit" aria-hidden="true"></i>
+                </div>
+            </div>
             <div class="btn-group" role="group">
                 <div title="Show Waiting"
                      class="btn btn-default btn-xs btn-group"
                      (click)="onToggleFolders()">
-                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                    <i class="fa_my-runner-waiting" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
                 <div title="Show Passed"
                      class="btn btn-default btn-xs btn-group"
                      (click)="onToggleFolders()">
-                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                    <i class="fa_my-runner-passed" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
                 <div title="Show Failed"
                      class="btn btn-default btn-xs btn-group"
                      (click)="onToggleFolders()">
-                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                    <i class="fa_my-runner-failed" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
                 <div title="Show Error"
                      class="btn btn-default btn-xs btn-group"
                      (click)="onToggleFolders()">
-                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                    <i class="fa_my-runner-error" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
                 <div title="Show Undefined"
                      class="btn btn-default btn-xs btn-group"
                      (click)="onToggleFolders()">
-                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                    <i class="fa_my-runner-undefined" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
                 <div title="Show Skipped"
                      class="btn btn-default btn-xs btn-group"
                      (click)="onToggleFolders()">
-                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
+                    <i class="fa_my-runner-skipped" aria-hidden="true"></i>
                 </div>
             </div>
         </div>
 
+
         <div class="filters-group">
-            <div class="btn-group" role="group">
-                <div title="{{areTestFoldersShown? 'Hide Folders': 'Show Folders'}}"
-                     class="btn btn-default btn-xs btn-group"
-                     [class.active]="areTestFoldersShown"
-                     (click)="onToggleFolders()">
-                    <i class="fa_my-tree-folder-opened" aria-hidden="true"></i>
-                </div>
-            </div>
             <div class="btn-group" role="group">
                 <div title="Show Tests"
                      class="btn btn-default btn-xs btn-group"

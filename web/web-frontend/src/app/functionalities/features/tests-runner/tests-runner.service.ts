@@ -68,12 +68,18 @@ export class TestsRunnerService {
 
         this.webSocket.onError((error) => {
             console.log(`runner WebSocket dataStream: error: ${error.message}`, error);
+            this.webSocket.close(true);
             this.webSocket = null;
         });
 
         this.webSocket.onMessage((message) => {
             this.handleServerMessage(message);
         });
+
+        this.webSocket.onClose( (event) => {
+            // let RunnerErrorEvent
+            // handleServerMessage(message: MessageEvent)
+        })
     }
 
     private handleServerMessage(message: MessageEvent) {

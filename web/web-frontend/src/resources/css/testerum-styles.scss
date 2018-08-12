@@ -77,12 +77,61 @@ body {
 .fa_my-run {
     @extend .fas;
     @extend .fa-play;
-    color: $success-color;
 }
 .fa_my-stop {
     @extend .fas;
     @extend .fa-stop;
     color: $error-color;
+}
+// runner icons
+.fa_my-runner-waiting {
+    @extend .fas;
+    @extend .fa-spinner;
+}
+.fa_my-runner-waiting-colored {
+    @extend .fa_my-runner-waiting;
+    color: #c0bebc;
+}
+.fa_my-runner-passed {
+    @extend .fas;
+    @extend .fa-check;
+}
+.fa_my-runner-passed-colored {
+    @extend .fa_my-runner-passed;
+    color: $success-color;
+}
+.fa_my-runner-failed {
+    @extend .fas;
+    @extend .fa-times;
+}
+.fa_my-runner-failed-colored {
+    @extend .fas;
+    @extend .fa-times;
+    color: $error-color;
+}
+.fa_my-runner-error {
+    @extend .fas;
+    @extend .fa-exclamation-triangle;
+}
+.fa_my-runner-error-colored {
+    @extend .fa_my-runner-error;
+    color: $error-color;
+}
+.fa_my-runner-undefined {
+    @extend .fas;
+    @extend .fa-question;
+}
+.fa_my-runner-undefined-colored {
+    @extend .fa_my-runner-undefined;
+    color: $warning-color;
+}
+.fa_my-runner-skipped {
+    @extend .fas;
+    @extend .fa-angle-double-right;
+}
+.fa_my-runner-skipped-colored {
+    @extend .fa_my-runner-skipped;
+    color: #aae8ff;
 }
 // tree icons
 .fa_my-tree-node-open {
