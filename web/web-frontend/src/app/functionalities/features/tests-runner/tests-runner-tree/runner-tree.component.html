@@ -1,11 +1,15 @@
-<div class="tree">
-    <tests-runner-tree-toolbar (stopTests)="stopTests()"></tests-runner-tree-toolbar>
-
-    <div style="margin-left: 5px">
-        <execution-pie height="150" width="150" [showLegend]="false"></execution-pie>
+<div class="tree" style="position: relative; height: 100%">
+    <div style="position: absolute; top: 0; height: 30px; left: 0; right: 0">
+        <tests-runner-tree-toolbar (stopTests)="stopTests()"></tests-runner-tree-toolbar>
     </div>
 
-    <json-tree [treeModel]="jsonTreeModel"
-               [modelComponentMapping]="modelComponentMapping">
-    </json-tree>
+    <div style="position:absolute; top: 30px; bottom: 0; left: 0; right: 0; overflow: auto; overflow-x: hidden">
+        <div style="margin-left: 5px">
+            <execution-pie height="150" width="150" [showLegend]="false"></execution-pie>
+        </div>
+
+        <json-tree [treeModel]="jsonTreeModel"
+                   [modelComponentMapping]="modelComponentMapping">
+        </json-tree>
+    </div>
 </div>
