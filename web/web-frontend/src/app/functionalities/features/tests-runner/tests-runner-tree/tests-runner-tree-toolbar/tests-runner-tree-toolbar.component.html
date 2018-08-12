@@ -17,52 +17,58 @@
         <div class="filters-group">
             <span class="filters-label">Filters:</span>
             <div class="btn-group" role="group">
-                <div title="{{areTestFoldersShown? 'Hide Folders': 'Show Folders'}}"
+                <div title="{{model.areTestFoldersShown? 'Hide Folders': 'Show Folders'}}"
                      class="btn btn-default btn-xs btn-group"
-                     [class.active]="areTestFoldersShown"
+                     [class.active]="model.areTestFoldersShown"
                      (click)="onToggleFolders()">
                     <i class="fa_my-tree-folder-opened color-inherit" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
-                <div title="Show Waiting"
+                <div title="{{model.showWaiting? 'Hide Waiting':'Show Waiting'}}"
                      class="btn btn-default btn-xs btn-group"
-                     (click)="onToggleFolders()">
+                     [class.active]="model.showWaiting"
+                     (click)="onToggleWaiting()">
                     <i class="fa_my-runner-waiting" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
-                <div title="Show Passed"
+                <div title="{{model.showPassed ? 'Hide Passed': 'Show Passed'}}"
                      class="btn btn-default btn-xs btn-group"
-                     (click)="onToggleFolders()">
+                     [class.active]="model.showPassed"
+                     (click)="onTogglePassed()">
                     <i class="fa_my-runner-passed" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
-                <div title="Show Failed"
+                <div title="{{model.showFailed ? 'Hide Failed': 'Show Failed'}}"
                      class="btn btn-default btn-xs btn-group"
-                     (click)="onToggleFolders()">
+                     [class.active]="model.showFailed"
+                     (click)="onToggleActive()">
                     <i class="fa_my-runner-failed" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
-                <div title="Show Error"
+                <div title="{{model.showError ? 'Hide Error': 'Show Error'}}"
                      class="btn btn-default btn-xs btn-group"
-                     (click)="onToggleFolders()">
+                     [class.active]="model.showError"
+                     (click)="onToggleError()">
                     <i class="fa_my-runner-error" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
-                <div title="Show Undefined"
+                <div title="{{model.showUndefined ? 'Hide Undefined': 'Show Undefined'}}"
                      class="btn btn-default btn-xs btn-group"
-                     (click)="onToggleFolders()">
+                     [class.active]="model.showUndefined"
+                     (click)="onToggleUndefined()">
                     <i class="fa_my-runner-undefined" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">
-                <div title="Show Skipped"
+                <div title="{{model.showSkipped ? 'Hide Skipped': 'Show Skipped'}}"
                      class="btn btn-default btn-xs btn-group"
-                     (click)="onToggleFolders()">
+                     [class.active]="model.showSkipped"
+                     (click)="onToggleSkipped()">
                     <i class="fa_my-runner-skipped" aria-hidden="true"></i>
                 </div>
             </div>

@@ -9,6 +9,7 @@ import {Path} from "../../../model/infrastructure/path/path.model";
 import {RunnerTreeNodeModel} from "./tests-runner-tree/model/runner-tree-node.model";
 import {SuiteEndEvent} from "../../../model/test/event/suite-end.event";
 import {RunnerErrorEvent} from "../../../model/test/event/runner-error.event";
+import {RunnerTreeFilterModel} from "./tests-runner-tree/model/filter/runner-tree-filter.model";
 
 @Injectable()
 export class TestsRunnerService {
@@ -32,6 +33,7 @@ export class TestsRunnerService {
     readonly startTestExecutionObservable: EventEmitter<RunnerRootNode> = new EventEmitter<RunnerRootNode>();
     readonly runnerEventObservable: EventEmitter<RunnerEvent> = new EventEmitter<RunnerEvent>();
     readonly showTestFoldersEventObservable: EventEmitter<boolean> = new EventEmitter<boolean>();
+    readonly treeFilterObservable: EventEmitter<RunnerTreeFilterModel> = new EventEmitter<RunnerTreeFilterModel>();
 
     constructor(private http: HttpClient) {}
 

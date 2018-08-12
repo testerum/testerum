@@ -9,6 +9,8 @@ import {ModelComponentMapping} from "../../../../../../model/infrastructure/mode
 import {RunnerFeatureTreeNodeModel} from "../../model/runner-feature-tree-node.model";
 import {Subscription} from "rxjs";
 import {RunnerTestTreeNodeModel} from "../../model/runner-test-tree-node.model";
+import {TestsRunnerService} from "../../../tests-runner.service";
+import {RunnerTreeFilterModel} from "../../model/filter/runner-tree-filter.model";
 
 @Component({
     moduleId: module.id,
@@ -28,31 +30,39 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
 
     RunnerTreeNodeStateEnum = ExecutionStatusEnum;
 
-    constructor(private runnerTreeComponentService:RunnerTreeComponentService){}
+    constructor(private runnerTreeComponentService:RunnerTreeComponentService,
+                private testsRunnerService: TestsRunnerService){}
 
     nodeSelectedSubscription: Subscription;
+    runnerTreeFilterSubscription: Subscription;
     ngOnInit(): void {
         this.nodeSelectedSubscription = this.runnerTreeComponentService.selectedRunnerTreeNodeObserver.subscribe((selectedTreeNode: RunnerTreeNodeModel) => {
             this.isSelected = this.model.equals(selectedTreeNode);
-        })
+        });
+        this.runnerTreeFilterSubscription = this.testsRunnerService.treeFilterObservable.subscribe((filter: RunnerTreeFilterModel) => {
+            this.onFilterChange(filter)
+        });
     }
 
     ngOnDestroy(): void {
         if (this.nodeSelectedSubscription != null) {
             this.nodeSelectedSubscription.unsubscribe();
         }
+        if (this.runnerTreeFilterSubscription != null) {
+            this.runnerTreeFilterSubscription.unsubscribe();
+        }
     }
 
     isFeatureNode(): boolean {
         return this.model instanceof RunnerFeatureTreeNodeModel;
     }
+
     isTestNode(): boolean {
         return this.model instanceof RunnerTestTreeNodeModel;
     }
     isStepNode(): boolean {
         return this.model instanceof RunnerComposedStepTreeNodeModel || this.model instanceof RunnerBasicStepTreeNodeModel
     }
-
     isOpenedNode(): boolean {
         return this.model.jsonTreeNodeState.showChildren
     }
@@ -75,5 +85,28 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
 
     setSelected() {
         this.runnerTreeComponentService.setNodeAsSelected(this.model);
+    }
+
+    private onFilterChange(filter: RunnerTreeFilterModel) {
+        if (!(this.model instanceof RunnerTestTreeNodeModel)) {
+            return;
+        }
+
+        if (filter.showWaiting == filter.showPassed &&
+            filter.showPassed == filter.showFailed &&
+            filter.showFailed == filter.showError &&
+            filter.showError == filter.showUndefined &&
+            filter.showUndefined == filter.showSkipped) {
+
+            this.model.hidden = false;
+            return;
+        }
+
+        if(this.model.state == ExecutionStatusEnum.WAITING) {this.model.hidden = !filter.showWaiting;}
+        if(this.model.state == ExecutionStatusEnum.PASSED) {this.model.hidden = !filter.showPassed;}
+        if(this.model.state == ExecutionStatusEnum.FAILED) {this.model.hidden = !filter.showFailed;}
+        if(this.model.state == ExecutionStatusEnum.ERROR) {this.model.hidden = !filter.showError;}
+        if(this.model.state == ExecutionStatusEnum.UNDEFINED) {this.model.hidden = !filter.showUndefined;}
+        if(this.model.state == ExecutionStatusEnum.SKIPPED) {this.model.hidden = !filter.showSkipped;}
     }
 }
