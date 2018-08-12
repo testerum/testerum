@@ -22,6 +22,8 @@ import {RunnerTreeContainerNodeModel} from "./model/runner-tree-container-node.m
 import {EventKey} from "../../../../model/test/event/fields/event-key.model";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {PositionInParent} from "../../../../model/test/event/fields/position-in-parent.model";
+import {FeatureStartEvent} from "../../../../model/test/event/feature-start.event";
+import {FeatureEndEvent} from "../../../../model/test/event/feature-end.event";
 
 @Injectable()
 export class RunnerTreeComponentService {
@@ -50,6 +52,15 @@ export class RunnerTreeComponentService {
             let runnerTreeNode:RunnerTreeNodeModel = this.treeRootNode;
             runnerTreeNode.changeState(runnerEvent.status)
         }
+        if(runnerEvent instanceof FeatureStartEvent) {
+            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            runnerTreeNode.eventKey = runnerEvent.eventKey;
+            runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING)
+        }
+        if(runnerEvent instanceof FeatureEndEvent) {
+            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            runnerTreeNode.changeState(runnerEvent.status);
+        }
         if(runnerEvent instanceof TestStartEvent) {
             let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
             runnerTreeNode.eventKey = runnerEvent.eventKey;
@@ -66,8 +77,6 @@ export class RunnerTreeComponentService {
                 case ExecutionStatusEnum.UNDEFINED: this.executionPieService.pieModel.incrementUndefined(); break;
                 case ExecutionStatusEnum.SKIPPED: this.executionPieService.pieModel.incrementSkipped(); break;
             }
-
-            this.executionPieService.pieModel.waitingToExecute --;
         }
         if(runnerEvent instanceof StepStartEvent) {
             let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
@@ -80,18 +89,31 @@ export class RunnerTreeComponentService {
         }
 
         if(runnerEvent instanceof RunnerErrorEvent) {
-            this.setStateOnAllNodes(this.treeRootNode, ExecutionStatusEnum.ERROR);
+            this.setStateOnAllUnexecutedNodes(this.treeRootNode, ExecutionStatusEnum.ERROR);
         }
     }
 
-    private setStateOnAllNodes(treeNode: RunnerTreeNodeModel, state: ExecutionStatusEnum) {
-        treeNode.state = state;
+    private setStateOnAllUnexecutedNodes(treeNode: RunnerTreeNodeModel, state: ExecutionStatusEnum) {
+        if (ExecutionStatusEnum.WAITING == treeNode.state || ExecutionStatusEnum.EXECUTING == treeNode.state) {
+            treeNode.state = state;
+            this.setStateOnParents(treeNode, state);
+        }
         if (treeNode.isContainer()) {
             let treeNodeAsContainer = treeNode as RunnerTreeContainerNodeModel;
             for (let child of treeNodeAsContainer.getChildren()) {
-                this.setStateOnAllNodes(child, state)
+                this.setStateOnAllUnexecutedNodes(child, state)
             }
         }
+    }
+
+    private setStateOnParents(childNode: RunnerTreeNodeModel, state: ExecutionStatusEnum) {
+        let parentNode = childNode.getParent() as RunnerTreeContainerNodeModel;
+        if (parentNode == null || parentNode.state == state) {
+            return;
+        }
+
+        parentNode.state = state;
+        this.setStateOnParents(parentNode, state);
     }
 
     onStartTestExecution(runnerRootNode: RunnerRootNode): void {
@@ -109,7 +131,6 @@ export class RunnerTreeComponentService {
 
         this.restPieData(this.executionPieService.pieModel);
     }
-
 
     findNode(eventKey:EventKey): RunnerTreeNodeModel {
         let runnerTreeNodeModel = this.findNodeByPositionInParent(ArrayUtil.copyArray(eventKey.positionsFromRoot), (this.treeModel.children as RunnerTreeNodeModel[]));

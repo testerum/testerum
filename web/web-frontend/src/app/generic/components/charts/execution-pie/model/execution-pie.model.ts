@@ -29,22 +29,27 @@ export class ExecutionPieModel {
     }
     incrementPassed() {
         this._passed ++;
+        this._waitingToExecute --;
         this.changeEventEmitter.emit();
     }
     incrementFailed() {
         this._failed ++;
+        this._waitingToExecute --;
         this.changeEventEmitter.emit();
     }
     incrementError() {
         this._error ++;
+        this._waitingToExecute --;
         this.changeEventEmitter.emit();
     }
     incrementUndefined() {
         this._undefined ++;
+        this._waitingToExecute --;
         this.changeEventEmitter.emit();
     }
     incrementSkipped() {
         this._skipped ++;
+        this._waitingToExecute --;
         this.changeEventEmitter.emit();
     }
 
