@@ -1,5 +1,6 @@
 <ng-container>
     <div class="tree-node"
+         [class.hidden]="model.isHidden()"
          [class.show-dots]="model.getOptions().displayLines"
          [class.tree-node-line]="model.getOptions().displayLines"
          [class.tree-node-last]="isLastNode">
