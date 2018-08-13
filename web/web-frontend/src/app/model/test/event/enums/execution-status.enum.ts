@@ -6,6 +6,7 @@ export enum ExecutionStatusEnum {
     EXECUTING ,
     PASSED,
     FAILED,
+    DISABLED,
     ERROR,
     UNDEFINED,
     SKIPPED

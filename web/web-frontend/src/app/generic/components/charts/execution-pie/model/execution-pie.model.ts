@@ -6,6 +6,7 @@ export class ExecutionPieModel {
     private _waitingToExecute: number = 0;
     private _passed: number = 0;
     private _failed: number = 0;
+    private _disabled: number = 0;
     private _error: number = 0;
     private _undefined: number = 0;
     private _skipped: number = 0;
@@ -34,6 +35,11 @@ export class ExecutionPieModel {
     }
     incrementFailed() {
         this._failed ++;
+        this._waitingToExecute --;
+        this.changeEventEmitter.emit();
+    }
+    incrementDisabled() {
+        this._disabled ++;
         this._waitingToExecute --;
         this.changeEventEmitter.emit();
     }
@@ -104,6 +110,10 @@ export class ExecutionPieModel {
         return this._failed;
     }
 
+    get disabled(): number {
+        return this._disabled;
+    }
+
     get error(): number {
         return this._error;
     }
@@ -120,6 +130,7 @@ export class ExecutionPieModel {
             case ExecutionStatusEnum.WAITING: this._waitingToExecute++; break;
             case ExecutionStatusEnum.PASSED: this._passed++; break;
             case ExecutionStatusEnum.FAILED: this._failed++; break;
+            case ExecutionStatusEnum.DISABLED: this._disabled++; break;
             case ExecutionStatusEnum.ERROR: this._error++; break;
             case ExecutionStatusEnum.UNDEFINED: this._undefined++; break;
             case ExecutionStatusEnum.SKIPPED: this._skipped++; break;

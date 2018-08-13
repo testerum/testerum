@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {RunnerTreeNodeModel} from "../../model/runner-tree-node.model";
 import {ExecutionStatusEnum} from "../../../../../../model/test/event/enums/execution-status.enum";
-import {RunnerTreeNodeSelectedListener} from "../../event/runner-tree-node-selected.listener";
 import {RunnerTreeComponentService} from "../../runner-tree.component-service";
 import {RunnerComposedStepTreeNodeModel} from "../../model/runner-composed-step-tree-node.model";
 import {RunnerBasicStepTreeNodeModel} from "../../model/runner-basic-step-tree-node.model";
@@ -73,6 +72,7 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
             case ExecutionStatusEnum.EXECUTING : return "Executing";
             case ExecutionStatusEnum.PASSED: return "Passed";
             case ExecutionStatusEnum.FAILED: return "Failed";
+            case ExecutionStatusEnum.DISABLED: return "Disabled";
             case ExecutionStatusEnum.ERROR: return "Error";
             case ExecutionStatusEnum.UNDEFINED: return "Undefined steps";
             case ExecutionStatusEnum.SKIPPED: return "Skipped";
@@ -105,6 +105,7 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
         if(this.model.state == ExecutionStatusEnum.WAITING) {this.model.hidden = !filter.showWaiting;}
         if(this.model.state == ExecutionStatusEnum.PASSED) {this.model.hidden = !filter.showPassed;}
         if(this.model.state == ExecutionStatusEnum.FAILED) {this.model.hidden = !filter.showFailed;}
+        if(this.model.state == ExecutionStatusEnum.DISABLED) {this.model.hidden = !filter.showDisabled;}
         if(this.model.state == ExecutionStatusEnum.ERROR) {this.model.hidden = !filter.showError;}
         if(this.model.state == ExecutionStatusEnum.UNDEFINED) {this.model.hidden = !filter.showUndefined;}
         if(this.model.state == ExecutionStatusEnum.SKIPPED) {this.model.hidden = !filter.showSkipped;}
