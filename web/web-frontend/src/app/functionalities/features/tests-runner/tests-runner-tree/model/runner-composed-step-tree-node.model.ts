@@ -6,6 +6,7 @@ import {JsonTreeContainer} from "../../../../../generic/components/json-tree/mod
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {RunnerTreeNodeModel} from "./runner-tree-node.model";
 import {RunnerTreeContainerNodeModel} from "./runner-tree-container-node.model";
+import {RunnerTreeFilterModel} from "./filter/runner-tree-filter.model";
 
 export class RunnerComposedStepTreeNodeModel extends RunnerTreeContainerNodeModel {
 
@@ -30,5 +31,9 @@ export class RunnerComposedStepTreeNodeModel extends RunnerTreeContainerNodeMode
 
     changeState(newState:ExecutionStatusEnum) {
         super.changeState(newState);
+    }
+
+    calculateNodeVisibilityBasedOnFilter(filter: RunnerTreeFilterModel): void {
+        // only TestNode has an implementation
     }
 }

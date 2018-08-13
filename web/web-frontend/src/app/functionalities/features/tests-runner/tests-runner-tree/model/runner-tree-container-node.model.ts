@@ -67,4 +67,8 @@ export abstract class RunnerTreeContainerNodeModel extends RunnerTreeNodeModel i
     changeState(newState:ExecutionStatusEnum) {
         super.changeState(newState);
     }
+
+    areAllChildrenHidden(): boolean {
+        return this.getChildren().every(it => {return it.hidden})
+    }
 }

@@ -13,6 +13,7 @@ import {RunnerTestTreeNodeModel} from "./runner-test-tree-node.model";
 import {RunnerTreeContainerNodeModel} from "./runner-tree-container-node.model";
 import {RunnerTreeNodeModel} from "./runner-tree-node.model";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
+import {RunnerTreeFilterModel} from "./filter/runner-tree-filter.model";
 export class RunnerRootTreeNodeModel extends RunnerTreeContainerNodeModel {
 
     id:string;
@@ -35,5 +36,9 @@ export class RunnerRootTreeNodeModel extends RunnerTreeContainerNodeModel {
 
     changeState(newState:ExecutionStatusEnum) {
         super.changeState(newState);
+    }
+
+    calculateNodeVisibilityBasedOnFilter(filter: RunnerTreeFilterModel): void {
+        // only TestNode has an implementation
     }
 }

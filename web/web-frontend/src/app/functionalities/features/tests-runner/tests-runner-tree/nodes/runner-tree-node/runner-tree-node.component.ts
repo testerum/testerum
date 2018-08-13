@@ -39,7 +39,7 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
             this.isSelected = this.model.equals(selectedTreeNode);
         });
         this.runnerTreeFilterSubscription = this.testsRunnerService.treeFilterObservable.subscribe((filter: RunnerTreeFilterModel) => {
-            this.onFilterChange(filter)
+            this.model.calculateNodeVisibilityBasedOnFilter(filter)
         });
     }
 
@@ -87,28 +87,4 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
         this.runnerTreeComponentService.setNodeAsSelected(this.model);
     }
 
-    private onFilterChange(filter: RunnerTreeFilterModel) {
-        if (!(this.model instanceof RunnerTestTreeNodeModel)) {
-            return;
-        }
-
-        if (filter.showWaiting == filter.showPassed &&
-            filter.showPassed == filter.showFailed &&
-            filter.showFailed == filter.showError &&
-            filter.showError == filter.showDisabled &&
-            filter.showDisabled == filter.showUndefined &&
-            filter.showUndefined == filter.showSkipped) {
-
-            this.model.hidden = false;
-            return;
-        }
-
-        if(this.model.state == ExecutionStatusEnum.WAITING) {this.model.hidden = !filter.showWaiting;}
-        if(this.model.state == ExecutionStatusEnum.PASSED) {this.model.hidden = !filter.showPassed;}
-        if(this.model.state == ExecutionStatusEnum.FAILED) {this.model.hidden = !filter.showFailed;}
-        if(this.model.state == ExecutionStatusEnum.ERROR) {this.model.hidden = !filter.showError;}
-        if(this.model.state == ExecutionStatusEnum.DISABLED) {this.model.hidden = !filter.showDisabled;}
-        if(this.model.state == ExecutionStatusEnum.UNDEFINED) {this.model.hidden = !filter.showUndefined;}
-        if(this.model.state == ExecutionStatusEnum.SKIPPED) {this.model.hidden = !filter.showSkipped;}
-    }
 }

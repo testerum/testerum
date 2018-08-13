@@ -12,6 +12,8 @@ import {StepCallContainerModel} from "../../../../../generic/components/step-cal
 import {RunnerTreeContainerNodeModel} from "./runner-tree-container-node.model";
 import {RunnerTreeNodeModel} from "./runner-tree-node.model";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
+import {RunnerTreeFilterModel} from "./filter/runner-tree-filter.model";
+import {JsonTreeModel} from "../../../../../generic/components/json-tree/model/json-tree.model";
 export class RunnerTestTreeNodeModel extends RunnerTreeContainerNodeModel {
 
     id:string;
@@ -34,5 +36,44 @@ export class RunnerTestTreeNodeModel extends RunnerTreeContainerNodeModel {
 
     changeState(newState:ExecutionStatusEnum) {
         super.changeState(newState);
+    }
+
+    calculateNodeVisibilityBasedOnFilter(filter: RunnerTreeFilterModel) {
+        if (!(this instanceof RunnerTestTreeNodeModel)) {
+            return;
+        }
+
+        if (filter.showWaiting == filter.showPassed &&
+            filter.showPassed == filter.showFailed &&
+            filter.showFailed == filter.showError &&
+            filter.showError == filter.showDisabled &&
+            filter.showDisabled == filter.showUndefined &&
+            filter.showUndefined == filter.showSkipped) {
+
+            this.hidden = false;
+            return;
+        }
+
+        if(this.state == ExecutionStatusEnum.WAITING) {this.hidden = !filter.showWaiting;}
+        if(this.state == ExecutionStatusEnum.PASSED) {this.hidden = !filter.showPassed;}
+        if(this.state == ExecutionStatusEnum.FAILED) {this.hidden = !filter.showFailed;}
+        if(this.state == ExecutionStatusEnum.ERROR) {this.hidden = !filter.showError;}
+        if(this.state == ExecutionStatusEnum.DISABLED) {this.hidden = !filter.showDisabled;}
+        if(this.state == ExecutionStatusEnum.UNDEFINED) {this.hidden = !filter.showUndefined;}
+        if(this.state == ExecutionStatusEnum.SKIPPED) {this.hidden = !filter.showSkipped;}
+
+        this.updateParentVisibility(this);
+    }
+
+    updateParentVisibility(model: RunnerTreeNodeModel) {
+        if(model.getParent() instanceof JsonTreeModel) return;
+        let parent = model.getParent() as RunnerTreeContainerNodeModel;
+        if(parent == null) return;
+
+        let areAllChildrenHidden = parent.areAllChildrenHidden();
+        if(parent.hidden != areAllChildrenHidden) {
+            parent.hidden = areAllChildrenHidden;
+            this.updateParentVisibility(parent);
+        }
     }
 }
