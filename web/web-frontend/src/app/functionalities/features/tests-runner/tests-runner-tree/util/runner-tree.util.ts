@@ -65,6 +65,7 @@ export class RunnerTreeUtil {
         if (serverNode instanceof RunnerTestNode) {
             let testTreeNode = new RunnerTestTreeNodeModel(parentNode);
             testTreeNode.text = serverNode.name;
+            testTreeNode.getNodeState().showChildren = false;
 
             treeNode = testTreeNode;
         }
@@ -72,6 +73,7 @@ export class RunnerTreeUtil {
         if (serverNode instanceof RunnerComposedStepNode) {
             let composedStepTreeNode = new RunnerComposedStepTreeNodeModel(parentNode);
             composedStepTreeNode.stepCall = serverNode.stepCall;
+            composedStepTreeNode.getNodeState().showChildren = false;
 
             treeNode = composedStepTreeNode;
         }

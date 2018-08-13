@@ -101,7 +101,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
     }
 
     private isLogBelogingToRunnerTreeNode(log: TestsRunnerLogModel, runnerTreeNode: RunnerTreeNodeModel): boolean {
-        if(!runnerTreeNode.eventKey) {
+        if(!runnerTreeNode.eventKey || !log.eventKey) {
             return false;
         }
         return runnerTreeNode.eventKey.isParentOf(log.eventKey)
