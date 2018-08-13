@@ -74,16 +74,45 @@ class RunnerFeature(featurePathFromRoot: List<String>,
         return executionStatus
     }
 
-    override fun skip(context: RunnerContext) {
+    override fun skip(context: RunnerContext): ExecutionStatus {
         logFeatureStart(context)
-        logFeatureEnd(
-                context = context,
-                executionStatus = ExecutionStatus.SKIPPED,
-                exception = null,
-                durationMillis = 0
-        )
+
+        var executionStatus = ExecutionStatus.SKIPPED
+        var exception: Throwable? = null
+
+        val startTime = System.currentTimeMillis()
+        try {
+            for (featureOrTest in featuresOrTests) {
+                featureOrTest.skip(context)
+            }
+        } catch (e: Exception) {
+            executionStatus = ExecutionStatus.ERROR
+            exception = e
+        } finally {
+            logFeatureEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
+            return executionStatus
+        }
     }
 
+    override fun disable(context: RunnerContext): ExecutionStatus {
+        logFeatureStart(context)
+
+        var executionStatus = ExecutionStatus.DISABLED
+        var exception: Throwable? = null
+
+        val startTime = System.currentTimeMillis()
+        try {
+            for (featureOrTest in featuresOrTests) {
+                featureOrTest.disable(context)
+            }
+        } catch (e: Exception) {
+            executionStatus = ExecutionStatus.ERROR
+            exception = e
+        } finally {
+            logFeatureEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
+            return executionStatus
+        }
+    }
 
     private fun logFeatureStart(context: RunnerContext) {
         context.eventsService.logEvent(

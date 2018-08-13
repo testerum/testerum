@@ -29,6 +29,12 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
                                  private val hooksService: HooksService,
                                  private val testsService: TestsService) {
 
+    //
+    // VERY IMPORTANT!!!
+    //
+    // Changes to this class needs to be kept in sync with "com.testerum.model.runner.tree.builder.RunnerTreeBuilder"
+    //
+
     fun createTree(cmdlineParams: CmdlineParams): RunnerSuite {
         // get hooks
         val hooks: List<HookDef> = hooksService.getHooks()
@@ -36,51 +42,73 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
         val testsDirectoryRoot = cmdlineParams.repositoryDirectory
                 .resolve(FileType.TEST.relativeRootDirectory.toJavaPath())
                 .toAbsolutePath()
-        val builder = TreeBuilder(
-                customizer = RunnerExecutionTreeBuilderCustomizer(testsService, hooks, testsDirectoryRoot)
-        )
-
-        // get tests
         val pathsToTestsToExecute: List<java.nio.file.Path> = runnerTestsFinder.findPathsToTestsToExecute(cmdlineParams)
-        for (path in pathsToTestsToExecute) {
-            builder.add(path)
-        }
+        val tests = loadTests(pathsToTestsToExecute, testsDirectoryRoot)
+
+        val builder = TreeBuilder(
+                customizer = RunnerExecutionTreeBuilderCustomizer(hooks)
+        )
+        tests.forEach { builder.add(it) }
 
         return builder.build() as RunnerSuite
     }
 
-    private class RunnerExecutionTreeBuilderCustomizer(private val testsService: TestsService,
-                                                       hooks: List<HookDef>,
-                                                       private val testsDirectoryRoot: java.nio.file.Path) : TreeBuilderCustomizer {
+    private fun loadTests(testPaths: List<java.nio.file.Path>, testsDirectoryRoot: java.nio.file.Path): List<TestWithFilePath> {
+        val result = arrayListOf<TestWithFilePath>()
+
+        for (testPath in testPaths) {
+            val testWithFilePath: TestWithFilePath = loadTest(testPath, testsDirectoryRoot)
+
+            // ignore manual tests
+            if (testWithFilePath.test.properties.isManual) {
+                continue
+            }
+
+            result += testWithFilePath
+        }
+
+        return result
+    }
+
+    private fun loadTest(testPath: java.nio.file.Path,
+                         testsDirectoryRoot: java.nio.file.Path): TestWithFilePath {
+        try {
+            val relativeTestPath = testsDirectoryRoot.relativize(testPath)
+            val testerumPath = Path.createInstance(relativeTestPath.toString())
+
+            val test = testsService.getTestAtPath(testerumPath)
+                    ?: throw RuntimeException("could not find test at [${testPath.toAbsolutePath().normalize()}]")
+
+            return TestWithFilePath(test, testPath)
+        } catch (e: Exception) {
+            throw RuntimeException("failed to load test at [${testPath.toAbsolutePath().normalize()}]", e)
+        }
+    }
+
+    private data class TestWithFilePath(val test: TestModel, val filePath: java.nio.file.Path)
+
+    private class RunnerExecutionTreeBuilderCustomizer(hooks: List<HookDef>) : TreeBuilderCustomizer {
 
         private val beforeEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_EACH_TEST)
         private val afterEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_EACH_TEST)
         private val beforeAllTestsHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_ALL_TESTS)
         private val afterAllTestsHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_ALL_TESTS)
 
-        private val testsByPath = mutableMapOf<java.nio.file.Path, TestModel>()
-
-        private fun getTestByPath(path: java.nio.file.Path): TestModel {
-            return testsByPath.getOrPut(path) {
-                loadTest(path)
-            }
-        }
-
         override fun getPath(payload: Any): List<String> = when (payload) {
-            is java.nio.file.Path -> getTestByPath(payload).path.parts
-            else                  -> throw unknownPayloadException(payload)
+            is TestWithFilePath -> payload.test.path.parts
+            else                -> throw unknownPayloadException(payload)
         }
 
         override fun isContainer(payload: Any): Boolean = when (payload) {
-            is java.nio.file.Path -> false
-            else                  -> throw unknownPayloadException(payload)
+            is TestWithFilePath -> false
+            else                -> throw unknownPayloadException(payload)
         }
 
         override fun getRootLabel(): String = "Suite"
 
         override fun getLabel(payload: Any): String = when (payload) {
-            is java.nio.file.Path -> getTestByPath(payload).text
-            else                  -> throw unknownPayloadException(payload)
+            is TestWithFilePath -> payload.test.text
+            else                -> throw unknownPayloadException(payload)
         }
 
         override fun createRootNode(childrenNodes: List<Any>): Any {
@@ -108,37 +136,16 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
                             indexInParent = indexInParent
                     )
                 }
-                is java.nio.file.Path -> {
-                    val test = getTestByPath(payload)
-
+                is TestWithFilePath -> {
                     createRunnerTest(
-                            test,
-                            payload,
+                            test = payload.test,
+                            filePath = payload.filePath,
                             testIndexInParent = indexInParent,
                             beforeEachTestHooks = beforeEachTestHooks,
                             afterEachTestHooks = afterEachTestHooks
                     )
                 }
                 else -> throw unknownPayloadException(payload)
-            }
-        }
-
-        private fun List<HookDef>.sortedHooksForPhase(phase: HookPhase): List<RunnerHook>
-                = this.asSequence()
-                      .filter { it.phase == phase }
-                      .sortedBy { it.order }
-                      .map { RunnerHook(it) }
-                      .toList()
-
-        private fun loadTest(testPath: java.nio.file.Path): TestModel {
-            try {
-                val relativeTestPath = testsDirectoryRoot.relativize(testPath)
-                val testerumPath = Path.createInstance(relativeTestPath.toString())
-
-                return testsService.getTestAtPath(testerumPath)
-                        ?: throw RuntimeException("could not find test at [${testPath.toAbsolutePath().normalize()}]")
-            } catch (e: Exception) {
-                throw RuntimeException("failed to load test at [${testPath.toAbsolutePath().normalize()}]", e)
             }
         }
 
@@ -162,6 +169,7 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
                     afterEachTestHooks = afterEachTestHooks
             )
         }
+
 
         private fun createRunnerStep(stepCall: StepCall, indexInParent: Int): RunnerStep {
             val stepDef = stepCall.stepDef
@@ -187,6 +195,13 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
                 else -> throw RuntimeException("unknown StepDef type [${stepDef.javaClass.name}]")
             }
         }
+
+        private fun List<HookDef>.sortedHooksForPhase(phase: HookPhase): List<RunnerHook>
+                = this.asSequence()
+                .filter { it.phase == phase }
+                .sortedBy { it.order }
+                .map { RunnerHook(it) }
+                .toList()
 
     }
 

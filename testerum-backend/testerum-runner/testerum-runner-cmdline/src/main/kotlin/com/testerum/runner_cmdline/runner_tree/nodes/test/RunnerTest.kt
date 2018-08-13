@@ -66,6 +66,10 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
     }
 
     private fun tryToRun(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
+        if (test.properties.isDisabled) {
+            return disable(context)
+        }
+
         logTestStart(context)
 
         var executionStatus: ExecutionStatus = ExecutionStatus.PASSED
@@ -151,7 +155,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
         return executionStatus
     }
 
-    override fun skip(context: RunnerContext) {
+    override fun skip(context: RunnerContext): ExecutionStatus {
         logTestStart(context)
 
         var executionStatus = ExecutionStatus.SKIPPED
@@ -167,6 +171,27 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
             exception = e
         } finally {
             logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
+            return executionStatus
+        }
+    }
+
+    override fun disable(context: RunnerContext): ExecutionStatus {
+        logTestStart(context)
+
+        var executionStatus = ExecutionStatus.DISABLED
+        var exception: Throwable? = null
+
+        val startTime = System.currentTimeMillis()
+        try {
+            for (step in steps) {
+                step.disable(context)
+            }
+        } catch (e: Exception) {
+            executionStatus = ExecutionStatus.ERROR
+            exception = e
+        } finally {
+            logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
+            return executionStatus
         }
     }
 
@@ -199,8 +224,18 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
     override fun toString(): String = buildString { addToString(this, 0) }
 
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
-        destination.indent(indentLevel).append("test '").append(test.text).append("', tags=").append(test.tags).append(", path=[").append(filePath).append("]\n")
+        // show test info
+        destination.indent(indentLevel).append("test")
+        if (test.properties.isDisabled) {
+            destination.append(" DISABLED")
+        }
+        destination.append(" '").append(test.text).append("'")
+        if (test.tags.isNotEmpty()) {
+            destination.append(", tags=").append(test.tags)
+        }
+        destination.append(", path=[").append(filePath).append("]\n")
 
+        // show children
         for (beforeEachTestHook in beforeEachTestHooks) {
             beforeEachTestHook.addToString(destination, indentLevel + 1)
         }
