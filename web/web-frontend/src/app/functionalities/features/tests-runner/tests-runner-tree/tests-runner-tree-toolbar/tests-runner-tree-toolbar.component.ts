@@ -1,6 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TestsRunnerService} from "../../tests-runner.service";
 import {RunnerTreeFilterModel} from "../model/filter/runner-tree-filter.model";
+import {JsonTreeExpandUtil} from "../../../../../generic/components/json-tree/util/json-tree-expand.util";
+import {JsonTreeModel} from "../../../../../generic/components/json-tree/model/json-tree.model";
+import {RunnerComposedStepTreeNodeModel} from "../model/runner-composed-step-tree-node.model";
+import {RunnerTestTreeNodeModel} from "../model/runner-test-tree-node.model";
 
 @Component({
     selector: 'tests-runner-tree-toolbar',
@@ -9,6 +13,7 @@ import {RunnerTreeFilterModel} from "../model/filter/runner-tree-filter.model";
 })
 export class TestsRunnerTreeToolbarComponent implements OnInit {
 
+    @Input() treeModel:JsonTreeModel ;
     @Output() stopTests: EventEmitter<string> = new EventEmitter<string>();
 
     model = new RunnerTreeFilterModel();
@@ -71,5 +76,18 @@ export class TestsRunnerTreeToolbarComponent implements OnInit {
 
     private triggerFilterChangeEvent() {
         this.testRunnerService.treeFilterObservable.emit(this.model)
+    }
+
+    onExpandAllNodes(): void {
+        JsonTreeExpandUtil.expandTreeToLevel(this.treeModel,  100);
+    }
+
+    onExpandToTests() {
+        JsonTreeExpandUtil.expandTreeToNodeType(this.treeModel,  RunnerTestTreeNodeModel);
+
+    }
+
+    onExpandToSteps() {
+        JsonTreeExpandUtil.expandTreeToNodeType(this.treeModel,  RunnerComposedStepTreeNodeModel);
     }
 }

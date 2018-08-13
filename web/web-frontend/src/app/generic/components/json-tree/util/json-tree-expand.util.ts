@@ -3,6 +3,7 @@ import {JsonTreeModel} from "../model/json-tree.model";
 import {JsonTreeContainer} from "../model/json-tree-container.model";
 import {JsonTreePathNode} from "../model/path/json-tree-path-node.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
+import {RunnerComposedStepTreeNodeModel} from "../../../../functionalities/features/tests-runner/tests-runner-tree/model/runner-composed-step-tree-node.model";
 
 export class JsonTreeExpandUtil {
 
@@ -65,6 +66,21 @@ export class JsonTreeExpandUtil {
 
             for (const child of containerToExpand.getChildren()) {
                 JsonTreeExpandUtil.collapseNode(child);
+            }
+        }
+    }
+
+    static expandTreeToNodeType(treeContainer: JsonTreeContainer, classOfJsonTreeNode: any) {
+        if(treeContainer instanceof classOfJsonTreeNode) {
+            treeContainer.getNodeState().showChildren = false;
+            return;
+        }
+
+        for (const childNode of treeContainer.getChildren()) {
+            if (childNode.isContainer()) {
+                let childContainerNode = childNode as JsonTreeContainer;
+                childContainerNode.getNodeState().showChildren = true;
+                this.expandTreeToNodeType(childContainerNode, classOfJsonTreeNode);
             }
         }
     }
