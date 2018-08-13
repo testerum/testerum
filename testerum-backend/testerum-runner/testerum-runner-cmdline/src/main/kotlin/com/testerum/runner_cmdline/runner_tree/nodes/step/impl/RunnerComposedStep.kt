@@ -53,6 +53,12 @@ class RunnerComposedStep(stepCall: StepCall,
         }
     }
 
+    override fun doDisable(context: RunnerContext) {
+        for (step in steps) {
+            step.disable(context)
+        }
+    }
+
     override fun toString(): String = buildString { addToString(this, 0) }
 
     override fun addToString(destination: StringBuilder, indentLevel: Int) {

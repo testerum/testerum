@@ -4,6 +4,7 @@ enum class ExecutionStatus {
 
     PASSED,
     FAILED,
+    DISABLED,
     ERROR,
     UNDEFINED,
     SKIPPED,

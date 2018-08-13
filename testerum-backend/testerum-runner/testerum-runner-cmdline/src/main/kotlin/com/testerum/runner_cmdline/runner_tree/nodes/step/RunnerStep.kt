@@ -20,6 +20,7 @@ abstract class RunnerStep(val stepCall: StepCall,
 
     protected abstract fun doRun(context: RunnerContext, vars: VariablesContext): ExecutionStatus
     protected open fun doSkip(context: RunnerContext) { }
+    protected open fun doDisable(context: RunnerContext) { }
 
     fun run(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
         logStepStart(context)
@@ -52,6 +53,23 @@ abstract class RunnerStep(val stepCall: StepCall,
         val startTime = System.currentTimeMillis()
         try {
             doSkip(context)
+        } catch (e: Exception) {
+            executionStatus = ExecutionStatus.ERROR
+            exception = e
+        } finally {
+            logStepEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
+        }
+    }
+
+    fun disable(context: RunnerContext) {
+        logStepStart(context)
+
+        var executionStatus = ExecutionStatus.DISABLED
+        var exception: Throwable? = null
+
+        val startTime = System.currentTimeMillis()
+        try {
+            doDisable(context)
         } catch (e: Exception) {
             executionStatus = ExecutionStatus.ERROR
             exception = e

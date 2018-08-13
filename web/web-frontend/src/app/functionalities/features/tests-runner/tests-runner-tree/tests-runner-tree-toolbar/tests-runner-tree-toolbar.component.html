@@ -44,8 +44,16 @@
                 <div title="{{model.showFailed ? 'Hide Failed': 'Show Failed'}}"
                      class="btn btn-default btn-xs btn-group"
                      [class.active]="model.showFailed"
-                     (click)="onToggleActive()">
+                     (click)="onToggleFailed()">
                     <i class="fa_my-runner-failed" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="{{model.showDisabled ? 'Hide Disabled': 'Show Disabled'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="model.showDisabled"
+                     (click)="onToggleDisabled()">
+                    <i class="fa_my-runner-disabled" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="btn-group" role="group">

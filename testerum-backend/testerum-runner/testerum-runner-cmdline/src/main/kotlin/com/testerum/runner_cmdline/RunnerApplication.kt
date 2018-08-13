@@ -9,9 +9,9 @@ import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.api.transformer.Transformer
 import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
+import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
 import com.testerum.runner_cmdline.classloader.RunnerClassloaderFactory
-import com.testerum.runner_cmdline.cmdline.exiter.model.ExitCode
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.runner_cmdline.events.EventsService
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
@@ -50,7 +50,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
             System.err.println("execution failure")
             e.printStackTrace(System.err)
 
-            ExitCode.EXECUTION_FAILURE
+            ExitCode.RUNNER_FAILED
         }
     }
 
@@ -103,7 +103,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         return if (executionStatus == ExecutionStatus.PASSED) {
             ExitCode.OK
         } else {
-            ExitCode.EXECUTION_FAILURE
+            ExitCode.TEST_SUITE_FAILED
         }
     }
 

@@ -109,6 +109,15 @@ body {
     @extend .fa-times;
     color: $error-color;
 }
+.fa_my-runner-disabled {
+    @extend .fas;
+    @extend .fa-ban;
+}
+.fa_my-runner-disabled-colored {
+    @extend .fas;
+    @extend .fa-ban;
+    color: $error-color;
+}
 .fa_my-runner-error {
     @extend .fas;
     @extend .fa-exclamation-triangle;

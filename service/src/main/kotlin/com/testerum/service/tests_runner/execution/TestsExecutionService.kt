@@ -9,6 +9,7 @@ import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
+import com.testerum.runner.exit_code.ExitCode
 import com.testerum.service.tests.TestsService
 import com.testerum.service.tests_runner.execution.model.RunningTestExecution
 import com.testerum.service.tests_runner.execution.model.TestExecution
@@ -131,7 +132,7 @@ class TestsExecutionService(private val testsService: TestsService,
             val processResult: ProcessResult = processExecutor.execute()
             LOGGER.debug("execution took ${System.currentTimeMillis() - startTime} ms")
 
-            if (processResult.exitValue != 0) {
+            if (processResult.exitValue == ExitCode.RUNNER_FAILED.code) {
                 handleError(
                         eventProcessor,
                         errorMessage = """|process exited with code ${processResult.exitValue}

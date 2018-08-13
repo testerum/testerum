@@ -13,9 +13,21 @@ import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
 
 class RunnerTreeBuilder {
 
+    //
+    // VERY IMPORTANT!!!
+    //
+    // Changes to this class needs to be kept in sync with "com.testerum.runner_cmdline.runner_tree.builder.RunnerExecutionTreeBuilder"
+    //
+
     val builder = TreeBuilder(RunnerTreeBuilderCustomizer)
 
-    fun addTest(test: TestModel) = builder.add(test)
+    fun addTest(test: TestModel) {
+        if (test.properties.isManual) {
+            return
+        }
+
+        builder.add(test)
+    }
 
     fun build(): RunnerRootNode = builder.build() as RunnerRootNode
 

@@ -1,8 +1,8 @@
 package com.testerum.runner_cmdline
 
 import com.testerum.common_jdk.stopwatch.StopWatch
+import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner_cmdline.cmdline.exiter.Exiter
-import com.testerum.runner_cmdline.cmdline.exiter.model.ExitCode
 import com.testerum.runner_cmdline.cmdline.params.CmdlineParamsParser
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
@@ -50,7 +50,7 @@ object TesterumRunner {
             )
             System.err.println(e.usageHelp)
 
-            Exiter.exit(ExitCode.INVALID_ARGS)
+            Exiter.exit(ExitCode.RUNNER_FAILED)
         }
     }
 
