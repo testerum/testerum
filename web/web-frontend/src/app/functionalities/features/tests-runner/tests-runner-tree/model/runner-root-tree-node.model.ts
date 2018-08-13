@@ -20,7 +20,7 @@ export class RunnerRootTreeNodeModel extends RunnerTreeContainerNodeModel {
     path: Path;
     eventKey: EventKey;
     state:ExecutionStatusEnum = ExecutionStatusEnum.WAITING;
-    text:string = "Tests";
+    text:string = "Test Suite";
 
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
     parentContainer: JsonTreeContainer;

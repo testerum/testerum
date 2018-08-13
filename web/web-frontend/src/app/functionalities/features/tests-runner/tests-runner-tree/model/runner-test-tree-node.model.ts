@@ -14,6 +14,7 @@ import {RunnerTreeNodeModel} from "./runner-tree-node.model";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {RunnerTreeFilterModel} from "./filter/runner-tree-filter.model";
 import {JsonTreeModel} from "../../../../../generic/components/json-tree/model/json-tree.model";
+import {RunnerRootTreeNodeModel} from "./runner-root-tree-node.model";
 export class RunnerTestTreeNodeModel extends RunnerTreeContainerNodeModel {
 
     id:string;
@@ -68,6 +69,7 @@ export class RunnerTestTreeNodeModel extends RunnerTreeContainerNodeModel {
 
     updateParentVisibility(model: RunnerTreeNodeModel) {
         if(model.getParent() instanceof JsonTreeModel) return;
+        if(model.getParent() instanceof RunnerRootTreeNodeModel) return;
         let parent = model.getParent() as RunnerTreeContainerNodeModel;
         if(parent == null) return;
 
