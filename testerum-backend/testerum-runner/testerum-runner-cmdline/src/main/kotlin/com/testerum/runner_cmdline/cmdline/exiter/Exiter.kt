@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.cmdline.exiter
 
-import com.testerum.runner_cmdline.cmdline.exiter.model.ExitCode
+import com.testerum.runner.exit_code.ExitCode
 import kotlin.system.exitProcess
 
 object Exiter {
