@@ -109,6 +109,14 @@ body {
     @extend .fa-times;
     color: $error-color;
 }
+.fa_my-runner-error {
+    @extend .fas;
+    @extend .fa-exclamation-triangle;
+}
+.fa_my-runner-error-colored {
+    @extend .fa_my-runner-error;
+    color: $error-color;
+}
 .fa_my-runner-disabled {
     @extend .fas;
     @extend .fa-ban;
@@ -118,14 +126,7 @@ body {
     @extend .fa-ban;
     color: $error-color;
 }
-.fa_my-runner-error {
-    @extend .fas;
-    @extend .fa-exclamation-triangle;
-}
-.fa_my-runner-error-colored {
-    @extend .fa_my-runner-error;
-    color: $error-color;
-}
+
 .fa_my-runner-undefined {
     @extend .fas;
     @extend .fa-question;

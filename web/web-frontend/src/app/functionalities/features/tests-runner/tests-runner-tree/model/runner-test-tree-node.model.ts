@@ -48,6 +48,7 @@ export class RunnerTestTreeNodeModel extends RunnerTreeContainerNodeModel {
             filter.showUndefined == filter.showSkipped) {
 
             this.hidden = false;
+            this.updateParentVisibility(this);
             return;
         }
 

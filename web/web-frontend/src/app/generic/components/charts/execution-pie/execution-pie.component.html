@@ -15,43 +15,44 @@
             </tr>
             <tr>
                 <td><div class="legend waiting"></div></td>
-                <td><i class="fa fa-spinner icon-waiting" aria-hidden="true"></i></td>
+                <td><i class="fa_my-runner-waiting-colored" aria-hidden="true"></i></td>
                 <td class="legend_label">Waiting:</td>
                 <td>{{model().waitingToExecute}}</td>
             </tr>
             <tr>
                 <td><div class="legend passed"></div></td>
-                <td><i class="fa fa-check icon-passed" aria-hidden="true"></i></td>
+                <td><i class="fa_my-runner-passed-colored" aria-hidden="true"></i></td>
                 <td class="legend_label">Passed:</td>
                 <td>{{model().passed}}</td>
             </tr>
             <tr>
                 <td><div class="legend failed"></div></td>
-                <td><i class="fa fa-times icon-failed" aria-hidden="true"></i></td>
+                <td><i class="fa_my-runner-failed-colored" aria-hidden="true"></i></td>
                 <td class="legend_label">Failed:</td>
                 <td>{{model().failed}}</td>
             </tr>
-            <tr>
-                <td><div class="legend failed"></div></td>
-                <td><i class="fa fa-times icon-failed" aria-hidden="true"></i></td>
-                <td class="legend_label">Disabled:</td>
-                <td>{{model().disabled}}</td>
-            </tr>
+
             <tr>
                 <td><div class="legend error"></div></td>
-                <td><i class="fa fa-exclamation-triangle icon-error" aria-hidden="true"></i></td>
+                <td><i class="fa_my-runner-error-colored" aria-hidden="true"></i></td>
                 <td class="legend_label">Error:</td>
                 <td>{{model().error}}</td>
             </tr>
             <tr>
+                <td><div class="legend failed"></div></td>
+                <td><i class="fa_my-runner-disabled-colored" aria-hidden="true"></i></td>
+                <td class="legend_label">Disabled:</td>
+                <td>{{model().disabled}}</td>
+            </tr>
+            <tr>
                 <td><div class="legend undefined"></div></td>
-                <td><i class="fa fa-question icon-undefined" aria-hidden="true"></i></td>
+                <td><i class="fa_my-runner-undefined-colored" aria-hidden="true"></i></td>
                 <td class="legend_label">Undefined:</td>
                 <td>{{model().undefined}}</td>
             </tr>
             <tr>
                 <td><div class="legend skipped"></div></td>
-                <td><i class="fa fa-angle-double-right icon-skipped" aria-hidden="true"></i></td>
+                <td><i class="fa_my-runner-skipped-colored" aria-hidden="true"></i></td>
                 <td class="legend_label">Skipped:</td>
                 <td>{{model().skipped}}</td>
             </tr>
