@@ -31,7 +31,6 @@ class AttachmentFileRepositoryService(private val fileRepositoryService: FileRep
     }
 
     private fun uploadFile(entityPath: KnownPath, uploadFile: MultipartFile): Attachment {
-
         val fileNameToUploadAsPath = Path.createInstance(uploadFile.originalFilename)
         val fileToUploadKnownPath = KnownPath(
                 entityPath.directories + ATTACHMENTS_DIR,
