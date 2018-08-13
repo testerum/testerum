@@ -74,11 +74,11 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     }
 
     showCreateTest() {
-        this.urlService.navigateToCreateTest(this.model.path);
+        this.urlService.navigateToCreateTest(this.model.path.getParentPath());
     }
 
     showCreateDirectoryModal(): void {
-        this.urlService.navigateToCreateFeature(this.model.path);
+        this.urlService.navigateToCreateFeature(this.model.path.getParentPath());
     }
 
     deleteDirectory(): void {
@@ -86,7 +86,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
             (deleteEvent: JsonTreeContainerEditorEvent) => {
 
                 this.testsService.deleteDirectory(
-                    this.model.path
+                    this.model.path.getParentPath()
                 ).subscribe(
                     it => {
                         this.testsService.showTestsScreen();
@@ -104,7 +104,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     copyResource(event: any) {
         let stepToCopyTreeNode: TestTreeNodeModel = event.dragData;
         let pathToCopy = stepToCopyTreeNode.path;
-        let destinationPath = this.model.path;
+        let destinationPath = this.model.path.getParentPath();
         this.jsonTreeService.triggerCopyAction(pathToCopy, destinationPath).subscribe(
             (copyEvent: JsonTreeContainerEditorEvent) => {
 

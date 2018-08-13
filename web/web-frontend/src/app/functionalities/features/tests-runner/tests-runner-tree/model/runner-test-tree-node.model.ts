@@ -39,9 +39,6 @@ export class RunnerTestTreeNodeModel extends RunnerTreeContainerNodeModel {
     }
 
     calculateNodeVisibilityBasedOnFilter(filter: RunnerTreeFilterModel) {
-        if (!(this instanceof RunnerTestTreeNodeModel)) {
-            return;
-        }
 
         if (filter.showWaiting == filter.showPassed &&
             filter.showPassed == filter.showFailed &&
@@ -54,13 +51,16 @@ export class RunnerTestTreeNodeModel extends RunnerTreeContainerNodeModel {
             return;
         }
 
-        if(this.state == ExecutionStatusEnum.WAITING) {this.hidden = !filter.showWaiting;}
-        if(this.state == ExecutionStatusEnum.PASSED) {this.hidden = !filter.showPassed;}
-        if(this.state == ExecutionStatusEnum.FAILED) {this.hidden = !filter.showFailed;}
-        if(this.state == ExecutionStatusEnum.ERROR) {this.hidden = !filter.showError;}
-        if(this.state == ExecutionStatusEnum.DISABLED) {this.hidden = !filter.showDisabled;}
-        if(this.state == ExecutionStatusEnum.UNDEFINED) {this.hidden = !filter.showUndefined;}
-        if(this.state == ExecutionStatusEnum.SKIPPED) {this.hidden = !filter.showSkipped;}
+        switch (this.state) {
+            case ExecutionStatusEnum.WAITING: {this.hidden = !filter.showWaiting; break;}
+            case ExecutionStatusEnum.PASSED: {this.hidden = !filter.showPassed; break;}
+            case ExecutionStatusEnum.FAILED: {this.hidden = !filter.showFailed; break;}
+            case ExecutionStatusEnum.ERROR: {this.hidden = !filter.showError; break;}
+            case ExecutionStatusEnum.DISABLED: {this.hidden = !filter.showDisabled; break;}
+            case ExecutionStatusEnum.UNDEFINED: {this.hidden = !filter.showUndefined; break;}
+            case ExecutionStatusEnum.SKIPPED: {this.hidden = !filter.showSkipped; break;}
+            default: this.hidden = false;
+        }
 
         this.updateParentVisibility(this);
     }
