@@ -154,7 +154,6 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
         val rootPath = getAbsolutePath(parentPath)
 
         if (!Files.exists(rootPath)) {
-            Files.createDirectories(rootPath)
             return emptyList()
         }
 
