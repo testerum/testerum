@@ -72,8 +72,8 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
             case ExecutionStatusEnum.EXECUTING : return "Executing";
             case ExecutionStatusEnum.PASSED: return "Passed";
             case ExecutionStatusEnum.FAILED: return "Failed";
-            case ExecutionStatusEnum.DISABLED: return "Disabled";
             case ExecutionStatusEnum.ERROR: return "Error";
+            case ExecutionStatusEnum.DISABLED: return "Disabled";
             case ExecutionStatusEnum.UNDEFINED: return "Undefined steps";
             case ExecutionStatusEnum.SKIPPED: return "Skipped";
         }
@@ -95,7 +95,8 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
         if (filter.showWaiting == filter.showPassed &&
             filter.showPassed == filter.showFailed &&
             filter.showFailed == filter.showError &&
-            filter.showError == filter.showUndefined &&
+            filter.showError == filter.showDisabled &&
+            filter.showDisabled == filter.showUndefined &&
             filter.showUndefined == filter.showSkipped) {
 
             this.model.hidden = false;
@@ -105,8 +106,8 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
         if(this.model.state == ExecutionStatusEnum.WAITING) {this.model.hidden = !filter.showWaiting;}
         if(this.model.state == ExecutionStatusEnum.PASSED) {this.model.hidden = !filter.showPassed;}
         if(this.model.state == ExecutionStatusEnum.FAILED) {this.model.hidden = !filter.showFailed;}
-        if(this.model.state == ExecutionStatusEnum.DISABLED) {this.model.hidden = !filter.showDisabled;}
         if(this.model.state == ExecutionStatusEnum.ERROR) {this.model.hidden = !filter.showError;}
+        if(this.model.state == ExecutionStatusEnum.DISABLED) {this.model.hidden = !filter.showDisabled;}
         if(this.model.state == ExecutionStatusEnum.UNDEFINED) {this.model.hidden = !filter.showUndefined;}
         if(this.model.state == ExecutionStatusEnum.SKIPPED) {this.model.hidden = !filter.showSkipped;}
     }
