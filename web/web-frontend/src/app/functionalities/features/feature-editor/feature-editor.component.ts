@@ -118,7 +118,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     }
 
     getFeatureUploadUrl(): string {
-        return encodeURI("/rest/features/fileUpload?path="+this.model.path.toString());
+        return "/rest/features/fileUpload?path="+encodeURIComponent(this.model.path.toString());
     }
 
     initPathForTitle() {

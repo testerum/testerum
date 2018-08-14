@@ -49,11 +49,11 @@ export class AttachmentsComponent implements OnInit {
     }
 
     getAttachmentUrl(attachment: Attachment, thumbnailVersion: boolean = false): string {
-        let url = "/rest/attachments?path=" + attachment.path.toString();
+        let url = "/rest/attachments?path=" + encodeURIComponent(attachment.path.toString());
         if (thumbnailVersion) {
             url += "&thumbnail=true"
         }
-        return encodeURI(url);
+        return url;
     }
 
     delete(attachment: Attachment) {
