@@ -128,19 +128,6 @@ export class ExecutionPieModel {
         return this._undefined;
     }
     get skipped(): number {
-        return this._undefined;
-    }
-
-    incrementBasedOnState(status: ExecutionStatusEnum) {
-        switch (status) {
-            case ExecutionStatusEnum.WAITING: this._waitingToExecute++; break;
-            case ExecutionStatusEnum.PASSED: this._passed++; break;
-            case ExecutionStatusEnum.FAILED: this._failed++; break;
-            case ExecutionStatusEnum.DISABLED: this._disabled++; break;
-            case ExecutionStatusEnum.ERROR: this._error++; break;
-            case ExecutionStatusEnum.UNDEFINED: this._undefined++; break;
-            case ExecutionStatusEnum.SKIPPED: this._skipped++; break;
-        }
-        this.changeEventEmitter.emit();
+        return this._skipped;
     }
 }
