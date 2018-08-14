@@ -77,11 +77,6 @@ export class TestsRunnerService {
         this.webSocket.onMessage((message) => {
             this.handleServerMessage(message);
         });
-
-        this.webSocket.onClose( (event) => {
-            // let RunnerErrorEvent
-            // handleServerMessage(message: MessageEvent)
-        })
     }
 
     private handleServerMessage(message: MessageEvent) {
