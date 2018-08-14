@@ -10,5 +10,6 @@ export enum RunnerEventTypeEnum {
     STEP_START_EVENT,
     STEP_END_EVENT,
     LOG_EVENT,
-    ERROR_EVENT
+    ERROR_EVENT,
+    RUNNER_STOPPED_EVENT,
 }

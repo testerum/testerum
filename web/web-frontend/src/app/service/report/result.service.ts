@@ -3,8 +3,9 @@ import {Observable} from 'rxjs';
 import {RunnerResultDirInfo} from "../../model/report/runner-result-dir-info.model";
 import {Injectable} from "@angular/core";
 import {Path} from "../../model/infrastructure/path/path.model";
-import {RunnerEvent, RunnerEventMarshaller} from "../../model/test/event/runner.event";
+import {RunnerEvent} from "../../model/test/event/runner.event";
 import {HttpClient, HttpParams} from "@angular/common/http";
+import {RunnerEventMarshaller} from '../../model/test/event/marshaller/runner-event-marshaller';
 
 @Injectable()
 export class ResultService {

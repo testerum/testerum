@@ -25,6 +25,7 @@ import {PositionInParent} from "../../../../model/test/event/fields/position-in-
 import {FeatureStartEvent} from "../../../../model/test/event/feature-start.event";
 import {FeatureEndEvent} from "../../../../model/test/event/feature-end.event";
 import {RunnerTreeFilterModel} from "./model/filter/runner-tree-filter.model";
+import {RunnerStoppedEvent} from '../../../../model/test/event/runner-stopped.event';
 
 @Injectable()
 export class RunnerTreeComponentService {
@@ -48,36 +49,46 @@ export class RunnerTreeComponentService {
     }
 
     private onRunnerEvent(runnerEvent: RunnerEvent): void {
-        if(runnerEvent instanceof SuiteStartEvent) {
-            let runnerTreeNode:RunnerTreeNodeModel = this.treeRootNode;
+        if (runnerEvent instanceof SuiteStartEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.treeRootNode;
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
         }
-        if(runnerEvent instanceof SuiteEndEvent) {
-            let runnerTreeNode:RunnerTreeNodeModel = this.treeRootNode;
+
+        if (runnerEvent instanceof SuiteEndEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.treeRootNode;
             runnerTreeNode.changeState(runnerEvent.status);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
         }
-        if(runnerEvent instanceof FeatureStartEvent) {
-            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+
+        if (runnerEvent instanceof FeatureStartEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
         }
-        if(runnerEvent instanceof FeatureEndEvent) {
-            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+
+        if (runnerEvent instanceof FeatureEndEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
             runnerTreeNode.changeState(runnerEvent.status);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
         }
-        if(runnerEvent instanceof TestStartEvent) {
-            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+
+        if (runnerEvent instanceof TestStartEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
         }
-        if(runnerEvent instanceof TestEndEvent) {
-            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+
+        if (runnerEvent instanceof TestEndEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
             runnerTreeNode.changeState(runnerEvent.status);
 
             switch (runnerEvent.status) {
@@ -89,21 +100,32 @@ export class RunnerTreeComponentService {
                 case ExecutionStatusEnum.SKIPPED: this.executionPieService.pieModel.incrementSkipped(); break;
             }
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
         }
-        if(runnerEvent instanceof StepStartEvent) {
-            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+
+        if (runnerEvent instanceof StepStartEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
-        }
-        if(runnerEvent instanceof StepEndEvent) {
-            let runnerTreeNode:RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
-            runnerTreeNode.changeState(runnerEvent.status);
-            runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
         }
 
-        if(runnerEvent instanceof RunnerErrorEvent) {
+        if (runnerEvent instanceof StepEndEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            runnerTreeNode.changeState(runnerEvent.status);
+            runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
+        }
+
+        if (runnerEvent instanceof RunnerErrorEvent) {
             this.setStateOnAllUnexecutedNodes(this.treeRootNode, ExecutionStatusEnum.ERROR);
+            return;
+        }
+
+        if (runnerEvent instanceof RunnerStoppedEvent) {
+            this.setStateOnAllUnexecutedNodes(this.treeRootNode, ExecutionStatusEnum.SKIPPED);
+            return;
         }
     }
 

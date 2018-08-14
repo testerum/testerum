@@ -112,7 +112,7 @@ class TestsExecutionService(private val testsService: TestsService,
                     .addListener(object : ProcessListener() {
                         override fun afterStart(process: Process, executor: ProcessExecutor) {
                             testExecutionsById[executionId] = execution.toRunning(
-                                    stopper = ProcessKillerTestExecutionStopper(executionId, process)
+                                    stopper = ProcessKillerTestExecutionStopper(executionId, process, eventProcessor)
                             )
                         }
 

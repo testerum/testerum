@@ -9,9 +9,8 @@ import java.time.LocalDateTime
  * This event is never emitted by the runner.
  * It is only used to communicate between the backend and the frontend.
  */
-data class RunnerErrorEvent @JsonCreator constructor(
-        @JsonProperty("time")         override val time: LocalDateTime = LocalDateTime.now(),
-        @JsonProperty("errorMessage") val errorMessage: String
+data class RunnerStoppedEvent @JsonCreator constructor(
+        @JsonProperty("time") override val time: LocalDateTime = LocalDateTime.now()
 ): RunnerEvent {
 
     @get:JsonProperty("eventKey")

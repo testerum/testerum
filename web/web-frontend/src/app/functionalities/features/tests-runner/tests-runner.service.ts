@@ -1,15 +1,16 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import { RunnerEvent, RunnerEventMarshaller } from "../../../model/test/event/runner.event";
-import { $WebSocket, WebSocketConfig, WebSocketSendMode } from "angular2-websocket/angular2-websocket";
-import { HttpClient } from "@angular/common/http";
-import { TestExecutionResponse } from "../../../model/runner/tree/test-execution-response.model";
-import { map } from "rxjs/operators";
+import {RunnerEvent} from "../../../model/test/event/runner.event";
+import {$WebSocket, WebSocketConfig, WebSocketSendMode} from "angular2-websocket/angular2-websocket";
+import {HttpClient} from "@angular/common/http";
+import {TestExecutionResponse} from "../../../model/runner/tree/test-execution-response.model";
+import {map} from "rxjs/operators";
 import {RunnerRootNode} from "../../../model/runner/tree/runner-root-node.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {RunnerTreeNodeModel} from "./tests-runner-tree/model/runner-tree-node.model";
 import {SuiteEndEvent} from "../../../model/test/event/suite-end.event";
 import {RunnerErrorEvent} from "../../../model/test/event/runner-error.event";
 import {RunnerTreeFilterModel} from "./tests-runner-tree/model/filter/runner-tree-filter.model";
+import {RunnerEventMarshaller} from '../../../model/test/event/marshaller/runner-event-marshaller';
 
 @Injectable()
 export class TestsRunnerService {
