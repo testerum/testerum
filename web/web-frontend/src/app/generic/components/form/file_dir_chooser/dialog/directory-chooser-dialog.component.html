@@ -18,6 +18,10 @@
 
             <!-- BUTTONS -->
             <div class="modal-footer">
+                <div class="selected-path-container">
+                    <span class="selecte-path-label">Selected path:</span> {{selectedPath}}
+                </div>
+
                 <button (click)="createDirectory();" type="button" class="btn btn-default pull-left"
                         [disabled]="!selectedPath">
                     Create Directory

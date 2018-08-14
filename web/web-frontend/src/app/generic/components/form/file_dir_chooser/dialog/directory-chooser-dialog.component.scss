@@ -3,8 +3,22 @@
     overflow-y: auto;
 }
 
+.modal-footer {
+    padding-top: 5px;
+    height: 65px;
+}
+
 .file-chooser {
     max-height: 300px;
     overflow: auto;
 }
 
+.selected-path-container {
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.selecte-path-label{
+    font-weight: bold;
+    margin-right: 5px;
+}
