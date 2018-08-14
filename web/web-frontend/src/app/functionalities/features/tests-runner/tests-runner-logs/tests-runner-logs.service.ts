@@ -13,6 +13,7 @@ import {RunnerErrorEvent} from "../../../../model/test/event/runner-error.event"
 import {TextLogEvent} from "../../../../model/test/event/text-log.event";
 import {TestsRunnerService} from "../tests-runner.service";
 import {Subscription} from "rxjs";
+import {RunnerStoppedEvent} from "../../../../model/test/event/runner-stopped.event";
 
 @Injectable()
 export class TestsRunnerLogsService {
@@ -93,6 +94,9 @@ export class TestsRunnerLogsService {
         }
         if (runnerEvent instanceof RunnerErrorEvent) {
             log.addExceptionLine("Exception: " + runnerEvent.errorMessage)
+        }
+        if (runnerEvent instanceof RunnerStoppedEvent) {
+            log.addLogLine("Test Runner Stopped");
         }
         if (runnerEvent instanceof TextLogEvent) {
             log.addLogLine(runnerEvent.message)

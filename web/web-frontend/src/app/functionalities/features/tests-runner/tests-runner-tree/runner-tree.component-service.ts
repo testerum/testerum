@@ -144,6 +144,8 @@ export class RunnerTreeComponentService {
     }
 
     private setStateOnParents(childNode: RunnerTreeNodeModel, state: ExecutionStatusEnum) {
+        if(childNode.getParent() instanceof JsonTreeModel) return;
+
         let parentNode = childNode.getParent() as RunnerTreeContainerNodeModel;
         if (parentNode == null || parentNode.state == state) {
             return;

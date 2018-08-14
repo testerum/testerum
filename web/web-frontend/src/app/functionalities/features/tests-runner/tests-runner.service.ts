@@ -90,7 +90,7 @@ export class TestsRunnerService {
             this.areTestRunning = false;
         }
 
-        console.log(runnerEvent);
+        // console.log(runnerEvent);
         this.runnerEventObservable.emit(runnerEvent);
     }
 
