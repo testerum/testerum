@@ -32,13 +32,13 @@ export class ServerToUiTypeMapperUtil {
 
         ['database.relational.model.RdbmsVerify', 'database.relational.model.RdbmsVerify'],
 
-        ['net.qutester.model.resources.http.request.HttpRequest', 'net.qutester.model.resources.http.request.HttpRequest'],
+        ['com.testerum.model.resources.http.request.HttpRequest', 'com.testerum.model.resources.http.request.HttpRequest'],
 
         ['http.response.verify.model.HttpResponseVerify', 'http.response.verify.model.HttpResponseVerify'],
 
-        ['net.qutester.model.resources.http.mock.server.HttpMockServer', 'net.qutester.model.resources.http.mock.server.HttpMockServer'],
+        ['com.testerum.model.resources.http.mock.server.HttpMockServer', 'com.testerum.model.resources.http.mock.server.HttpMockServer'],
 
-        ['net.qutester.model.resources.http.mock.stub.HttpMock', 'net.qutester.model.resources.http.mock.stub.HttpMock'],
+        ['com.testerum.model.resources.http.mock.stub.HttpMock', 'com.testerum.model.resources.http.mock.stub.HttpMock'],
     ]);
 
     private constructor() {}

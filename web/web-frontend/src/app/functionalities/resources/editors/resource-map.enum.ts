@@ -108,8 +108,8 @@ export class ResourceMapEnum {
         (input:string) => {return new SchemaVerify().deserialize(JSON.parse(input))}
     );
     public static HTTP_REQUEST: ResourceMapEnum = new ResourceMapEnum(
-        "net.qutester.model.resources.http.request.HttpRequest",
-        "net.qutester.model.resources.http.request.HttpRequest",
+        "com.testerum.model.resources.http.request.HttpRequest",
+        "com.testerum.model.resources.http.request.HttpRequest",
         "HttpRequest",
         "http.request.yaml",
         HttpRequestComponent,
@@ -130,8 +130,8 @@ export class ResourceMapEnum {
         (input:string) => {return new HttpResponseVerify().deserialize(JSON.parse(input))}
     );
     public static HTTP_MOCK_SERVER_VERIFY: ResourceMapEnum = new ResourceMapEnum(
-        "net.qutester.model.resources.http.mock.server.HttpMockServer",
-        "net.qutester.model.resources.http.mock.server.HttpMockServer",
+        "com.testerum.model.resources.http.mock.server.HttpMockServer",
+        "com.testerum.model.resources.http.mock.server.HttpMockServer",
         "HttpMockServer",
         "http.mock.server.yaml",
         HttpMockServerComponent,
@@ -141,8 +141,8 @@ export class ResourceMapEnum {
         (input:string) => {return new HttpMockServer().deserialize(JSON.parse(input))}
     );
     public static HTTP_MOCK_STUB_VERIFY: ResourceMapEnum = new ResourceMapEnum(
-        "net.qutester.model.resources.http.mock.stub.HttpMock",
-        "net.qutester.model.resources.http.mock.stub.HttpMock",
+        "com.testerum.model.resources.http.mock.stub.HttpMock",
+        "com.testerum.model.resources.http.mock.stub.HttpMock",
         "HttpStub",
         "http.stub.yaml",
         HttpMockComponent,
