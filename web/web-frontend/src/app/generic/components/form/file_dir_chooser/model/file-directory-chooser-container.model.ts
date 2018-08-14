@@ -6,7 +6,7 @@ import {JsonTreeContainerOptions} from "../../../json-tree/model/behavior/JsonTr
 
 export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
 
-    parent: FileDirectoryChooserContainerModel;
+    parent: JsonTreeContainer;
     path: Path;
     name: string;
     private children: Array<FileDirectoryChooserContainerModel> = [];

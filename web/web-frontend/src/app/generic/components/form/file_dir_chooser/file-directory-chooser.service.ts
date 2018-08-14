@@ -41,6 +41,7 @@ export class FileDirectoryChooserService {
                 let fileDirectoryChooserJsonTreeModel: JsonTreeModel = new JsonTreeModel();
 
                 for (let child of fileDirNode.getChildren()) {
+                    child.parent = fileDirectoryChooserJsonTreeModel;
                     fileDirectoryChooserJsonTreeModel.children.push(
                         child
                     )
@@ -59,6 +60,7 @@ export class FileDirectoryChooserService {
             this.fileSystemService.getDirectoryTree(fileDirectoryNode.path).subscribe(
                 (fileDirNode: FileDirectoryChooserContainerModel) => {
                     for (let child of fileDirNode.getChildren()) {
+                        child.parent = fileDirectoryNode;
                         fileDirectoryNode.getChildren().push(
                             child
                         )
