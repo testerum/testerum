@@ -10,6 +10,8 @@ import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.runner_cmdline.module_di.RunnerModuleBootstrapper
 import com.testerum.runner_cmdline.module_di.TesterumRunnerLoggingConfigurator
 import org.fusesource.jansi.Ansi
+import org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD
+import org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD_OFF
 import org.fusesource.jansi.AnsiConsole
 
 object TesterumRunner {
@@ -43,17 +45,16 @@ object TesterumRunner {
             Exiter.exit(ExitCode.OK)
         } catch (e: CmdlineParamsParserParsingException) {
             System.err.println(
-                    "${Ansi.ansi().fgBrightRed()}${Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD)}" +
-                            "ERROR: ${e.errorMessage}" +
-                            "${Ansi.ansi().a(Ansi.Attribute.INTENSITY_BOLD_OFF)}${Ansi.ansi().fgDefault()}" +
-                            "\n"
+                    "${Ansi.ansi().fgBrightRed()}${Ansi.ansi().a(INTENSITY_BOLD)}" +
+                    "ERROR: ${e.errorMessage}" +
+                    "${Ansi.ansi().a(INTENSITY_BOLD_OFF)}${Ansi.ansi().fgDefault()}" +
+                    "\n"
             )
             System.err.println(e.usageHelp)
 
             Exiter.exit(ExitCode.RUNNER_FAILED)
         }
     }
-
 
 }
 

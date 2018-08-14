@@ -335,7 +335,7 @@
 
             <build>
                 <plugins>
-                    <!-- maven-assembly-plugin (create final zip containing files created by appassembler-maven-plugin) -->
+                    <!-- maven-assembly-plugin (create final dist file) -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
@@ -391,7 +391,7 @@
                                     <outputDirectory>${project.basedir}/../../../package/runner</outputDirectory>
                                     <resources>
                                         <resource>
-                                            <directory>package</directory>
+                                            <directory>${project.basedir}/src/main/assembly/package</directory>
                                             <filtering>false</filtering>
                                         </resource>
                                     </resources>

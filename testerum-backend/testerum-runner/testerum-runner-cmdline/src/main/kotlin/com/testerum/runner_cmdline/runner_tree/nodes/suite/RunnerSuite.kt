@@ -75,16 +75,16 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
             }
 
             try {
-                for (test in featuresOrTests) {
-                    val testExecutionStatus: ExecutionStatus = test.run(context, globalVars)
+                for (featureOrTest in featuresOrTests) {
+                    val featureOrTestExecutionStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
 
-                    if (testExecutionStatus == ExecutionStatus.PASSED) {
+                    if (featureOrTestExecutionStatus == ExecutionStatus.PASSED) {
                         successfulTestsCount++
                     }
 
                     if (suiteExecutionStatus == ExecutionStatus.PASSED
-                            && testExecutionStatus != ExecutionStatus.PASSED) {
-                        suiteExecutionStatus = testExecutionStatus
+                            && featureOrTestExecutionStatus != ExecutionStatus.PASSED) {
+                        suiteExecutionStatus = featureOrTestExecutionStatus
                     }
                 }
             } catch (e: Exception) {

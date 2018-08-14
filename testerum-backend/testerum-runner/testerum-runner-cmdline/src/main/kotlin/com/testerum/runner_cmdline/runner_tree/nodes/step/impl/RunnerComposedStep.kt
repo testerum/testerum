@@ -1,6 +1,7 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.step.impl
 
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.common_kotlin.indent
 import com.testerum.model.step.StepCall
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
@@ -62,7 +63,8 @@ class RunnerComposedStep(stepCall: StepCall,
     override fun toString(): String = buildString { addToString(this, 0) }
 
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
-        stepCall.toString(destination, indentLevel)
+        destination.indent(indentLevel).append("step ")
+        stepCall.toString(destination, 0)
         destination.append("\n")
 
         for (step in steps) {
