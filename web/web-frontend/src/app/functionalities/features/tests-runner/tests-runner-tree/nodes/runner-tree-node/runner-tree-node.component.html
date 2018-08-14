@@ -10,7 +10,6 @@
            [class.node-executing]="model.state == RunnerTreeNodeStateEnum.EXECUTING"
            [class.node-passed]="model.state == RunnerTreeNodeStateEnum.PASSED"
            [class.node-failed]="model.state == RunnerTreeNodeStateEnum.FAILED"
-           [class.node-error]="model.state == RunnerTreeNodeStateEnum.ERROR"
            [class.node-undefined]="model.state == RunnerTreeNodeStateEnum.UNDEFINED"
            [class.node-skipped]="model.state == RunnerTreeNodeStateEnum.SKIPPED"
 
@@ -22,7 +21,6 @@
 
            [class.fa-check]="model.state == RunnerTreeNodeStateEnum.PASSED"
            [class.fa-times]="model.state == RunnerTreeNodeStateEnum.FAILED"
-           [class.fa-exclamation-triangle]="model.state == RunnerTreeNodeStateEnum.ERROR"
            [class.fa-question]="model.state == RunnerTreeNodeStateEnum.UNDEFINED"
            [class.fa-angle-double-right]="model.state == RunnerTreeNodeStateEnum.SKIPPED"></i>
 

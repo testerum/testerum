@@ -35,7 +35,7 @@ abstract class RunnerStep(val stepCall: StepCall,
             executionStatus = ExecutionStatus.FAILED
             exception = e
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.ERROR
+            executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
             logStepEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
@@ -54,7 +54,7 @@ abstract class RunnerStep(val stepCall: StepCall,
         try {
             doSkip(context)
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.ERROR
+            executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
             logStepEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
@@ -71,7 +71,7 @@ abstract class RunnerStep(val stepCall: StepCall,
         try {
             doDisable(context)
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.ERROR
+            executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
             logStepEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)

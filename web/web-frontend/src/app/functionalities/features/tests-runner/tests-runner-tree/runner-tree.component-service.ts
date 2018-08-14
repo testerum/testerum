@@ -94,7 +94,6 @@ export class RunnerTreeComponentService {
             switch (runnerEvent.status) {
                 case ExecutionStatusEnum.PASSED: this.executionPieService.pieModel.incrementPassed(); break;
                 case ExecutionStatusEnum.FAILED: this.executionPieService.pieModel.incrementFailed(); break;
-                case ExecutionStatusEnum.ERROR: this.executionPieService.pieModel.incrementError(); break;
                 case ExecutionStatusEnum.DISABLED: this.executionPieService.pieModel.incrementDisabled(); break;
                 case ExecutionStatusEnum.UNDEFINED: this.executionPieService.pieModel.incrementUndefined(); break;
                 case ExecutionStatusEnum.SKIPPED: this.executionPieService.pieModel.incrementSkipped(); break;
@@ -119,7 +118,7 @@ export class RunnerTreeComponentService {
         }
 
         if (runnerEvent instanceof RunnerErrorEvent) {
-            this.setStateOnAllUnexecutedNodes(this.treeRootNode, ExecutionStatusEnum.ERROR);
+            this.setStateOnAllUnexecutedNodes(this.treeRootNode, ExecutionStatusEnum.FAILED);
             return;
         }
 

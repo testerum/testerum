@@ -72,10 +72,11 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
             case ExecutionStatusEnum.EXECUTING : return "Executing";
             case ExecutionStatusEnum.PASSED: return "Passed";
             case ExecutionStatusEnum.FAILED: return "Failed";
-            case ExecutionStatusEnum.ERROR: return "Error";
             case ExecutionStatusEnum.DISABLED: return "Disabled";
             case ExecutionStatusEnum.UNDEFINED: return "Undefined steps";
             case ExecutionStatusEnum.SKIPPED: return "Skipped";
+
+            default: return "";
         }
     }
 

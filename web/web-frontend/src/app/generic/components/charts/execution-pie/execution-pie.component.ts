@@ -42,7 +42,6 @@ export class ExecutionPieComponent implements OnInit {
                 'Waiting to execute',
                 'Passed',
                 'Failed',
-                'Errors',
                 'Undefined steps',
                 'Skipped'
                 ],
@@ -51,7 +50,6 @@ export class ExecutionPieComponent implements OnInit {
                     model.waitingToExecute,
                     model.passed,
                     model.failed,
-                    model.error,
                     model.undefined,
                     model.skipped
                 ],

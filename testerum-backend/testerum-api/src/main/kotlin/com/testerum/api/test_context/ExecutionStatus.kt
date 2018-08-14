@@ -5,12 +5,8 @@ enum class ExecutionStatus {
     PASSED,
     FAILED,
     DISABLED,
-    ERROR,
     UNDEFINED,
     SKIPPED,
     ;
-
-    fun isFailedOrError(): Boolean
-            = (this == FAILED) || (this == ERROR)
 
 }

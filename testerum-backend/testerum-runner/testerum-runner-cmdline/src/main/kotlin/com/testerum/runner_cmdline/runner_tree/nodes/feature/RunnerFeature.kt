@@ -61,7 +61,7 @@ class RunnerFeature(featurePathFromRoot: List<String>,
                 executionStatus = stepExecutionStatus
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.ERROR
+            executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
             logFeatureEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
@@ -82,7 +82,7 @@ class RunnerFeature(featurePathFromRoot: List<String>,
                 featureOrTest.skip(context)
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.ERROR
+            executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
             logFeatureEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
@@ -102,7 +102,7 @@ class RunnerFeature(featurePathFromRoot: List<String>,
                 featureOrTest.disable(context)
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.ERROR
+            executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
             logFeatureEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)

@@ -59,11 +59,6 @@ export class TestsRunnerTreeToolbarComponent implements OnInit {
         this.triggerFilterChangeEvent();
     }
 
-    onToggleError() {
-        this.model.showError = !this.model.showError;
-        this.triggerFilterChangeEvent();
-    }
-
     onToggleUndefined() {
         this.model.showUndefined = !this.model.showUndefined;
         this.triggerFilterChangeEvent();

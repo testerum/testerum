@@ -1,12 +1,10 @@
 import {EventEmitter} from "@angular/core";
-import {ExecutionStatusEnum} from "../../../../../model/test/event/enums/execution-status.enum";
 
 export class ExecutionPieModel {
     private _totalTests: number = 0;
     private _waitingToExecute: number = 0;
     private _passed: number = 0;
     private _failed: number = 0;
-    private _error: number = 0;
     private _disabled: number = 0;
     private _undefined: number = 0;
     private _skipped: number = 0;
@@ -17,7 +15,6 @@ export class ExecutionPieModel {
         this._totalTests = 0;
         this._waitingToExecute = 0;
         this._passed = 0;
-        this._error = 0;
         this._failed = 0;
         this._disabled = 0;
         this._undefined = 0;
@@ -36,11 +33,6 @@ export class ExecutionPieModel {
     }
     incrementFailed() {
         this._failed ++;
-        this._waitingToExecute --;
-        this.changeEventEmitter.emit();
-    }
-    incrementError() {
-        this._error ++;
         this._waitingToExecute --;
         this.changeEventEmitter.emit();
     }
@@ -80,11 +72,6 @@ export class ExecutionPieModel {
         this.changeEventEmitter.emit();
     }
 
-    set error(value: number) {
-        this._error = value;
-        this.changeEventEmitter.emit();
-    }
-
     set disabled(value: number) {
         this._disabled = value;
         this.changeEventEmitter.emit();
@@ -118,10 +105,6 @@ export class ExecutionPieModel {
 
     get disabled(): number {
         return this._disabled;
-    }
-
-    get error(): number {
-        return this._error;
     }
 
     get undefined(): number {

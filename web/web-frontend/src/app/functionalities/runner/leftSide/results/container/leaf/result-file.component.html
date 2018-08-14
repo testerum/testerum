@@ -7,7 +7,6 @@
            [class.node-executing]="model.executionResult == ExecutionStatusEnum.EXECUTING"
            [class.node-passed]="model.executionResult == ExecutionStatusEnum.PASSED"
            [class.node-failed]="model.executionResult == ExecutionStatusEnum.FAILED"
-           [class.node-error]="model.executionResult == ExecutionStatusEnum.ERROR"
            [class.node-undefined]="model.executionResult == ExecutionStatusEnum.UNDEFINED"
            [class.node-skipped]="model.executionResult == ExecutionStatusEnum.SKIPPED"
 
@@ -18,7 +17,6 @@
 
            [class.fa-check]="model.executionResult == ExecutionStatusEnum.PASSED"
            [class.fa-times]="model.executionResult == ExecutionStatusEnum.FAILED"
-           [class.fa-exclamation-triangle]="model.executionResult == ExecutionStatusEnum.ERROR"
            [class.fa-question]="model.executionResult == ExecutionStatusEnum.UNDEFINED"
            [class.fa-angle-double-right]="model.executionResult == ExecutionStatusEnum.SKIPPED"></i>
 

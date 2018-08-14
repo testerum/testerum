@@ -3,6 +3,7 @@ package selenium.actions.hooks
 import com.testerum.api.annotations.hooks.AfterEachTest
 import com.testerum.api.annotations.hooks.BeforeAllTests
 import com.testerum.api.services.TesterumServiceLocator
+import com.testerum.api.test_context.ExecutionStatus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
@@ -36,7 +37,7 @@ class WebDriverShutdownHook {
     }
 
     private fun takeScreenshotIfFailed() {
-        if (TesterumServiceLocator.getTestContext().testStatus.isFailedOrError()) {
+        if (TesterumServiceLocator.getTestContext().testStatus == ExecutionStatus.FAILED) {
             val screenshotFile: Path = webDriverManager.takeScreenshotToFile()
             LOGGER.info("failed test: screenshot saved at [${screenshotFile.toAbsolutePath()}]")
         }
@@ -49,7 +50,7 @@ class WebDriverShutdownHook {
         val leaveBrowserOpen: Boolean = when (leaveBrowserOpenAfterTest) {
             "true"      -> true
             "false"     -> false
-            "onFailure" -> TesterumServiceLocator.getTestContext().testStatus.isFailedOrError()
+            "onFailure" -> TesterumServiceLocator.getTestContext().testStatus == ExecutionStatus.FAILED
             else        -> {
                 LOGGER.error(
                         "error reading property [$SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST]" +

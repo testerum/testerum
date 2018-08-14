@@ -57,9 +57,10 @@ export class ResultFileComponent implements OnInit, OnDestroy {
             case ExecutionStatusEnum.PASSED: return "Passed";
             case ExecutionStatusEnum.FAILED: return "Failed";
             case ExecutionStatusEnum.DISABLED: return "Disabled";
-            case ExecutionStatusEnum.ERROR: return "Error";
             case ExecutionStatusEnum.UNDEFINED: return "Undefined steps";
             case ExecutionStatusEnum.SKIPPED: return "Skipped";
+
+            default: return "";
         }
     }
 }

@@ -5,7 +5,6 @@ export class RunnerTreeFilterModel {
     showPassed = true;
     showFailed = true;
     showDisabled = true;
-    showError = true;
     showUndefined = true;
     showSkipped = true;
 }

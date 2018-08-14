@@ -134,7 +134,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                 executionStatus = endHookStatus
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.ERROR
+            executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
             try {
@@ -167,7 +167,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                 step.skip(context)
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.ERROR
+            executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
             logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
@@ -187,7 +187,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                 step.disable(context)
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.ERROR
+            executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
             logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
