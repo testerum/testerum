@@ -63,25 +63,12 @@ data class Path @JsonCreator constructor(
         return Paths.get(this.toString())
     }
 
-    override fun toString(): String = buildString {
-        for ((index, directory) in directories.withIndex()) {
-            append(directory)
-            if (index < directories.size - 1) {
-                append("/")
-            }
-        }
-
-        if (fileName != null) {
-            if (isNotEmpty()) {
-                append("/")
-            }
-            append(fileName)
-        }
-        if (fileExtension != null) {
-            append(".").append(fileExtension)
-
-        }
+    @JsonIgnore
+    fun toJavaAbsolutePath(): java.nio.file.Path {
+        return Paths.get("/" + this.toString())
     }
+
+    override fun toString(): String = parts.joinToString(separator = "/")
 
     @JsonIgnore
     fun isFile(): Boolean {

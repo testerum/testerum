@@ -39,11 +39,6 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>common-kotlin</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.testerum</groupId>
             <artifactId>testerum-runner-api</artifactId>
         </dependency>
 
@@ -322,50 +317,41 @@
             </plugin>
 -->
 
-
-            <!-- appassembler-maven-plugin (create command-line shell script launcher, including all jar dependencies) -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>appassembler-maven-plugin</artifactId>
-                <configuration>
-                    <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-                    <repositoryLayout>flat</repositoryLayout>
-                    <useWildcardClassPath>true</useWildcardClassPath>
-                    <programs>
-                        <program>
-                            <mainClass>${mainClass}</mainClass>
-                        </program>
-                    </programs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>assemble</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- maven-assembly-plugin (create final zip containing files created by appassembler-maven-plugin) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 
 
     <profiles>
+        <!-- production -->
+        <profile>
+            <id>production</id>
+
+            <!-- activated by the presence of the "production" system property -->
+            <activation>
+                <property>
+                    <name>production</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <!-- maven-assembly-plugin (create final zip containing files created by appassembler-maven-plugin) -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- development -->
         <profile>
             <id>development</id>
@@ -379,6 +365,17 @@
 
             <build>
                 <plugins>
+                    <!-- copy dependencies to "package/basic_steps" directory -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+
+                        <configuration>
+                            <outputDirectory>${project.basedir}/../../../package/runner/repo</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </plugin>
+
                     <!-- copy to package directory  -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -394,7 +391,7 @@
                                     <outputDirectory>${project.basedir}/../../../package/runner</outputDirectory>
                                     <resources>
                                         <resource>
-                                            <directory>target/appassembler</directory>
+                                            <directory>package</directory>
                                             <filtering>false</filtering>
                                         </resource>
                                     </resources>

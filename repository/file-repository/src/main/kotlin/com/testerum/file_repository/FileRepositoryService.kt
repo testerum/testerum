@@ -18,7 +18,7 @@ import java.util.*
 import java.util.function.BiPredicate
 
 
-class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path) {
+class FileRepositoryService(private val getRepositoryDirectory: () -> java.nio.file.Path?) {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(FileRepositoryService::class.java)
@@ -32,6 +32,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun create(repositoryFileChange: RepositoryFileChange): RepositoryFile {
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         val escapedRelativeKnownPath = escapeIllegalCharactersInPath(repositoryFileChange.repositoryFile.knownPath)
         val absoluteResourcePath = getAbsoluteUniquePath(escapedRelativeKnownPath)
 
@@ -52,6 +56,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun update(repositoryFileChange: RepositoryFileChange): RepositoryFile {
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         val oldKnownPath = repositoryFileChange.oldKnownPath!!
         val newKnownPath = escapeIllegalCharactersInPath(repositoryFileChange.repositoryFile.knownPath)
 
@@ -82,6 +90,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun getAbsoluteUniquePath(escapedRelativeKnownPath: KnownPath): java.nio.file.Path {
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         val absoluteResourcePath = escapeAndGetAbsolutePath(escapedRelativeKnownPath)
         if(!Files.exists(absoluteResourcePath)) {
             return  absoluteResourcePath
@@ -105,6 +117,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun save(repositoryFileChange: RepositoryFileChange): RepositoryFile { //TODO: create separate methods for create and update
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         if (repositoryFileChange.oldKnownPath == null) {
             return create(repositoryFileChange)
         }
@@ -113,6 +129,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun getByPath (knownPath: KnownPath): RepositoryFile? {
+        if (getRepositoryDirectory() == null) {
+            return null
+        }
+
         val escapedRelativeKnownPath = escapeIllegalCharactersInPath(knownPath)
         val absoluteResourcePath: java.nio.file.Path = escapeAndGetAbsolutePath(escapedRelativeKnownPath)
 
@@ -128,6 +148,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun getExistingResourceAbsolutePath(knownPath: KnownPath): java.nio.file.Path? {
+        if (getRepositoryDirectory() == null) {
+            return null
+        }
+
         val escapedRelativeKnownPath = escapeIllegalCharactersInPath(knownPath)
         val absoluteResourcePath: java.nio.file.Path = escapeAndGetAbsolutePath(escapedRelativeKnownPath)
 
@@ -139,6 +163,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun getAllResourcesByType(fileType: FileType): List<RepositoryFile> {
+        if (getRepositoryDirectory() == null) {
+            return emptyList()
+        }
+
         return getAllResourcesByTypeUnderPath(
                 KnownPath(
                         Path.EMPTY,
@@ -149,6 +177,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
 
 
     fun getAllResourcesByTypeUnderPath(parentPath: KnownPath): List<RepositoryFile> {
+        if (getRepositoryDirectory() == null) {
+            return emptyList()
+        }
+
         val result = mutableListOf<RepositoryFile>()
 
         val rootPath = getAbsolutePath(parentPath)
@@ -184,7 +216,8 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     fun getAllPathsOfResourcesByType(fileType: FileType): List<Path> {
         val result = mutableListOf<Path>()
 
-        val rootPath = repositoryDirectory
+        val rootPath = getRepositoryDirectory()
+                ?:return emptyList()
         val fileTypeRootPath = rootPath.resolve(fileType.relativeRootDirectory.toJavaPath())
         try {
             Files.find(
@@ -223,9 +256,12 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun renameDirectory(knownPath: KnownPath, newName: String): Path {
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         val pathToRename: java.nio.file.Path = escapeAndGetAbsolutePath(knownPath)
         val newPath = pathToRename.resolveSibling(newName)
-
 
         if (pathToRename.toFile().exists()) {
             if (pathToRename.toString().equals(newPath.toString(), true) &&
@@ -249,6 +285,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
      * @return the destination file name, with escapes applied
      */
     fun moveDirectoryOrFile(copyPath: KnownPath, destinationKnownPath: KnownPath): Path {
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         val escapedCopyPath: KnownPath = escapeIllegalCharactersInPath(copyPath)
         val javaCopyPath: java.nio.file.Path = getAbsolutePath(escapedCopyPath)
 
@@ -275,13 +315,21 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
             val problemFile = File(problemFileLocation)
             val fileTypeAsString = if(problemFile.isDirectory) "Directory" else "File"
 
-            val rootPath = repositoryDirectory
-            val relativeFilePath = rootPath.relativize(problemFile.toPath())
+            val rootPath = getRepositoryDirectory()
+            val relativeFilePath = if (rootPath != null) {
+                rootPath.relativize(problemFile.toPath())
+            } else {
+                problemFile.toPath()
+            }
             throw IllegalFileOperationException("$fileTypeAsString [$relativeFilePath] already exists", e)
         }
     }
 
     fun createFile(resultFilePath: KnownPath) {
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         val absoluteResourcePath = escapeAndGetAbsolutePath(resultFilePath)
 
         createParentDirectoryIfNotExisting(absoluteResourcePath)
@@ -292,6 +340,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun appendToFile(relativeFilePath: KnownPath, fileLogLine: String) {
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         val absoluteResourcePath = escapeAndGetAbsolutePath(relativeFilePath)
 
         Files.write(
@@ -302,6 +354,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun createParentDirectoryIfNotExisting(absoluteResourcePath: java.nio.file.Path) {
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         val parentDir = absoluteResourcePath.parent
         if (!Files.exists(parentDir)) {
             Files.createDirectories(parentDir)
@@ -309,21 +365,30 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun escapeAndGetAbsolutePath(knownPath: KnownPath): java.nio.file.Path {
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         val escapedKnownPath = escapeIllegalCharactersInPath(knownPath)
 
         return getAbsolutePath(escapedKnownPath)
     }
 
     private fun getAbsolutePath(escapedKnownPath: KnownPath): java.nio.file.Path {
-        val rootPath = repositoryDirectory
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
+        val rootPath = getRepositoryDirectory()
+                ?: throw unknownRepositoryDirectoryException()
         val rootDirectory = rootPath.resolve(escapedKnownPath.fileType.relativeRootDirectory.toJavaPath())
 
         return rootDirectory.resolve(escapedKnownPath.toString()).toAbsolutePath().normalize()
     }
 
     fun getRelativePathFromAbsolutePath(absolutePath: java.nio.file.Path, fileType: FileType): java.nio.file.Path {
-
-        val rootPath = repositoryDirectory
+        val rootPath = getRepositoryDirectory()
+                ?: throw unknownRepositoryDirectoryException()
         val rootDirectory = rootPath.resolve(fileType.relativeRootDirectory.toJavaPath())
         val rootDirectoryAsString = rootDirectory.toString()
         val absolutePathAsString = absolutePath.toString()
@@ -336,6 +401,10 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
     }
 
     fun escapeIllegalCharactersInPath(knownPath: KnownPath): KnownPath {
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
         val escapedDirectories: MutableList<String> = mutableListOf()
         for (directory in knownPath.directories) {
             val escapedDir = directory.replace(
@@ -355,9 +424,11 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
 
     fun walkDirectoryTree(type: FileType,
                           process: (rootDir: java.nio.file.Path, path: java.nio.file.Path) -> Unit) {
-        val rootPath = getAbsolutePath(
-                KnownPath(Path.EMPTY, type)
-        )
+        if (getRepositoryDirectory() == null) {
+            throw unknownRepositoryDirectoryException()
+        }
+
+        val rootPath = getAbsolutePath(KnownPath(Path.EMPTY, type))
 
         Files.walk(rootPath).use { pathStream ->
             pathStream.forEach { path ->
@@ -365,4 +436,7 @@ class FileRepositoryService(private val repositoryDirectory: java.nio.file.Path)
             }
         }
     }
+
+    private fun unknownRepositoryDirectoryException() = IllegalStateException("unknown repository directory")
+
 }

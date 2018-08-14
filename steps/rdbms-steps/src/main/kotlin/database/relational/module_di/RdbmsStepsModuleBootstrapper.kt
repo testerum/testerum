@@ -25,7 +25,7 @@ class RdbmsStepsModuleBootstrapper {
             TesterumServiceLocator.getSettingsManager().getSettingValue(SystemSettings.JDBC_DRIVERS_DIRECTORY)
     )
 
-    private val fileRepositoryModuleFactory = FileRepositoryModuleFactory(context, repositoryDirectory)
+    private val fileRepositoryModuleFactory = FileRepositoryModuleFactory(context) { repositoryDirectory }
 
     val rdbmsStepsModuleFactory = RdbmsStepsModuleFactory(context, fileRepositoryModuleFactory, jdbcDriversDirectory)
 

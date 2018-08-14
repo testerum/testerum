@@ -37,7 +37,7 @@ class RunnerModuleBootstrapper(cmdlineParams: CmdlineParams,
             settingsModuleFactory.settingsManager.getSettingValue(SystemSettings.JDBC_DRIVERS_DIRECTORY)
     )
 
-    private val fileRepositoryModuleFactory = FileRepositoryModuleFactory(context, repositoryDirectory)
+    private val fileRepositoryModuleFactory = FileRepositoryModuleFactory(context) { repositoryDirectory }
 
     // hack: dependency overridden here to prevent initialization of steps in a background thread (initialization in the runner should be done after we set the settings, which we get from command line args)
     private val serviceModuleFactory = ServiceModuleFactory(
