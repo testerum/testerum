@@ -1,0 +1,24 @@
+<div class="logs-side-toolbar">
+    <div class="line-filters">
+        <div class="filters-group">
+            <div class="btn-group" role="group">
+                <div title="Close"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onCloseTestSuite()">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="filters-group">
+            <div class="btn-group" role="group">
+                <div title="Show Tests"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="shouldWrapLogs"
+                     (click)="onToggleWrap()">
+                    <i class="fas fa-level-down-alt fa-rotate-90" aria-hidden="true" style="font-size: 15px"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

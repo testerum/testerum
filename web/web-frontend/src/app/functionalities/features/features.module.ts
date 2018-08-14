@@ -37,6 +37,7 @@ import {FeatureEditorComponent} from "./feature-editor/feature-editor.component"
 import {FeaturesTreeComponent} from "./features-tree/features-tree.component";
 import {FeaturesTreeFilterComponent} from "./features-tree/features-tree-filter/features-tree-filter.component";
 import {TestsRunnerTreeToolbarComponent} from './tests-runner/tests-runner-tree/tests-runner-tree-toolbar/tests-runner-tree-toolbar.component';
+import {TestsRunnerLogsToolbarComponent} from "./tests-runner/tests-runner-logs/tests-runner-logs-toolbar/tests-runner-logs-toolbar.component";
 
 @NgModule({
     imports: [
@@ -82,6 +83,7 @@ import {TestsRunnerTreeToolbarComponent} from './tests-runner/tests-runner-tree/
         FeatureEditorComponent,
 
         TestsRunnerTreeToolbarComponent,
+        TestsRunnerLogsToolbarComponent,
     ],
     entryComponents: [
         RunnerTreeNodeComponent,

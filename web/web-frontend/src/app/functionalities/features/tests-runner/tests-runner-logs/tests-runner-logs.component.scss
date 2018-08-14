@@ -1,3 +1,9 @@
+.logs-container {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100%;
+}
+
 .date-column {
     width: 50px;
     background-color: lightgray;
@@ -25,7 +31,12 @@
     color: black;
 }
 
-table, table td {
+table {
+    padding: 0;
+    border: 0;
+}
+
+table td {
     padding: 0 5px;
     border: 0;
 }
@@ -41,18 +52,6 @@ table td {
 }
 
 table {
-    margin-left: 30px;
+    margin-left: 0;
     margin-bottom: 0;
-}
-
-.logs-side-toolbar {
-    width: 30px;
-    height: 100%;
-    background-color: #F2F2F2;
-    position: fixed;
-}
-
-.toggleWrapButton {
-    margin: 4px;
-    width: 22px;
 }

@@ -17,9 +17,4 @@ export class TestsRunnerComponent {
     isTestRunnerVisible(): boolean {
         return this.testsRunnerService.isTestRunnerVisible;
     }
-
-    close() {
-        this.testsRunnerService.isTestRunnerVisible = false;
-        this.testsRunnerService.stopExecution();
-    }
 }

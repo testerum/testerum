@@ -3,14 +3,6 @@
         <runner-tree></runner-tree>
     </split-area>
     <split-area [size]="60" class="logs-split-area horizontal-scroll">
-
-        <div class="btn-group" style="position:absolute; top:0; right:1.2em; overflow-y: visible">
-            <div title="Close" class="btn btn-default btn-xs btn-group"
-                 (click)="close(); $event.stopPropagation()">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </div>
-        </div>
-
         <tests-runner-logs [logs]="testsRunnerLogsService.logs"></tests-runner-logs>
     </split-area>
 </split>

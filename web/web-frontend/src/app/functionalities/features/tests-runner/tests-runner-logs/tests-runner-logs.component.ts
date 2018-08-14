@@ -107,15 +107,12 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
         return runnerTreeNode.eventKey.isParentOf(log.eventKey)
     }
 
-    toggleWrap() {
-        let existingClassNames = document.querySelector(".logs-split-area").className;
-        let linesWrapped = (existingClassNames.indexOf("horizontal-wrap") != -1);
-
+    wrapLogs(shouldWrapLogs: boolean) {
         let classNames: string;
-        if (linesWrapped) {
-            classNames = "logs-split-area horizontal-scroll";
-        } else {
+        if (shouldWrapLogs) {
             classNames = "logs-split-area horizontal-wrap";
+        } else {
+            classNames = "logs-split-area horizontal-scroll";
         }
 
         document.querySelector(".logs-split-area").className = classNames;
