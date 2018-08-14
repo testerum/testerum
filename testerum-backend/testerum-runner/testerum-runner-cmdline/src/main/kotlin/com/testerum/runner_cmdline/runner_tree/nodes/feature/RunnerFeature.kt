@@ -56,13 +56,9 @@ class RunnerFeature(featurePathFromRoot: List<String>,
         val startTime = System.currentTimeMillis()
         try {
             for (featuresOrTest in featuresOrTests) {
-                if (executionStatus == ExecutionStatus.PASSED) {
-                    val stepExecutionStatus: ExecutionStatus = featuresOrTest.run(context, globalVars)
+                val stepExecutionStatus: ExecutionStatus = featuresOrTest.run(context, globalVars)
 
-                    executionStatus = stepExecutionStatus
-                } else {
-                    featuresOrTest.skip(context)
-                }
+                executionStatus = stepExecutionStatus
             }
         } catch (e: Exception) {
             executionStatus = ExecutionStatus.ERROR
