@@ -63,6 +63,11 @@ data class Path @JsonCreator constructor(
         return Paths.get(this.toString())
     }
 
+    @JsonIgnore
+    fun toJavaAbsolutePath(): java.nio.file.Path {
+        return Paths.get("/" + this.toString())
+    }
+
     override fun toString(): String = buildString {
         for ((index, directory) in directories.withIndex()) {
             append(directory)
