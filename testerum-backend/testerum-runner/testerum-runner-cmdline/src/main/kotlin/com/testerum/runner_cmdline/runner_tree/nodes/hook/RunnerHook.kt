@@ -61,7 +61,7 @@ class RunnerHook(private val hookDef: HookDef) {
     override fun toString(): String = buildString { addToString(this, 0) }
 
     fun addToString(destination: StringBuilder, indentLevel: Int) {
-        destination.indent(indentLevel).append("hook (").append(hookDef.phase).append("): ").append(hookDef.className).append(".").append(hookDef.methodName).append("()\n")
+        destination.indent(indentLevel).append("hook ").append(hookDef.phase).append(": ").append(hookDef.className).append(".").append(hookDef.methodName).append("()\n")
     }
 
 }

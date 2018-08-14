@@ -4,6 +4,7 @@ import com.testerum.api.annotations.steps.Param
 import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.api.transformer.ParameterInfo
 import com.testerum.api.transformer.Transformer
+import com.testerum.common_kotlin.indent
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.text.parts.ParamStepPatternPart
@@ -160,7 +161,8 @@ class RunnerBasicStep(stepCall: StepCall,
     override fun toString(): String = buildString { addToString(this, 0) }
 
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
-        stepCall.toString(destination, indentLevel)
+        destination.indent(indentLevel).append("step ")
+        stepCall.toString(destination, 0)
         destination.append("\n")
     }
 
