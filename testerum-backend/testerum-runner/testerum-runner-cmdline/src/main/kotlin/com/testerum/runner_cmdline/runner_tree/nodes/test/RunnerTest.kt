@@ -233,7 +233,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
         if (test.tags.isNotEmpty()) {
             destination.append(", tags=").append(test.tags)
         }
-        destination.append(", path=[").append(filePath).append("]\n")
+        destination.append("\n")
 
         // show children
         for (beforeEachTestHook in beforeEachTestHooks) {
