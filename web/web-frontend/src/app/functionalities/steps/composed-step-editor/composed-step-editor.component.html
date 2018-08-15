@@ -1,5 +1,11 @@
 <split-panel-container>
     <div>
+        <h1>
+            <span *ngIf="isEditMode && isCreateAction">Create</span>
+            <span *ngIf="isEditMode && !isCreateAction">Update</span>
+            User Step at <span class="path">{{pathForTitle}}</span>
+        </h1>
+
         <div class="page-body">
 
             <composed-step-view #composedStepView

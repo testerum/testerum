@@ -32,6 +32,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     StepPhaseEnum = StepPhaseEnum;
     testModel: TestModel = new TestModel;
     oldTestModel: TestModel;
+    pathForTitle: string = "";
     isEditExistingTest: boolean; //TODO: is this used?
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
@@ -65,6 +66,8 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             this.isEditExistingTest =  IdUtils.isTemporaryId(this.testModel.id);
             this.setEditMode(IdUtils.isTemporaryId(this.testModel.id));
             this.isCreateAction = !this.testModel.path.fileName
+
+            this.initPathForTitle();
         });
         this.editModeStepCallTreeSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.editModeEventEmitter.subscribe( (editMode: boolean) => {
                 this.isEditMode = editMode;
@@ -83,6 +86,13 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
         if (this.oldTestModel != this.testModel) {
             this.refreshWarnings();
             this.oldTestModel = this.testModel;
+        }
+    }
+
+    initPathForTitle() {
+        this.pathForTitle = "";
+        if (this.testModel.path) {
+            this.pathForTitle = "/" + new Path(this.testModel.path.directories, null, null).toString();
         }
     }
 

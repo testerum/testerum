@@ -14,6 +14,7 @@ import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
 import {UrlService} from "../../../service/url.service";
 import {ComposedStepViewComponent} from "../../../generic/components/step/composed-step-view/composed-step-view.component";
 import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dialog/update-incompatibility-dialog.component";
+import {Path} from "../../../model/infrastructure/path/path.model";
 
 @Component({
     moduleId: module.id,
@@ -27,6 +28,7 @@ export class ComposedStepEditorComponent implements OnInit {
     model: ComposedStepDef;
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
+    pathForTitle: string = "";
 
     @ViewChild(ComposedStepViewComponent) composedStepViewComponent: ComposedStepViewComponent;
     @ViewChild(UpdateIncompatibilityDialogComponent) updateIncompatibilityDialogComponent: UpdateIncompatibilityDialogComponent;
@@ -44,8 +46,17 @@ export class ComposedStepEditorComponent implements OnInit {
             this.model = data['composedStepDef'];
             this.isEditMode = IdUtils.isTemporaryId(this.model.id);
             this.composedStepViewComponent.isEditMode = IdUtils.isTemporaryId(this.model.id);
-            this.isCreateAction = !this.model.path.fileName
+            this.isCreateAction = !this.model.path.fileName;
+
+            this.initPathForTitle();
         });
+    }
+
+    initPathForTitle() {
+        this.pathForTitle = "";
+        if (this.model.path) {
+            this.pathForTitle = "/" + new Path(this.model.path.directories, null, null).toString();
+        }
     }
 
     enableEditTestMode() {
