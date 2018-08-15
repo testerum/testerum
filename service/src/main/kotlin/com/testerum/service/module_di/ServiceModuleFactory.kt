@@ -152,6 +152,7 @@ class ServiceModuleFactory(context: ModuleFactoryContext,
 
     val testsService = TestsService(
             testResolver = testResolver,
+            stepService = stepService,
             fileRepositoryService = fileRepositoryModuleFactory.fileRepositoryService,
             resourcesService = resourcesService,
             uiToFileTestMapper = uiToFileTestMapper,

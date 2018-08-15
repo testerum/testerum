@@ -11,20 +11,22 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.manual.operation.UpdateTestModel
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.resources.ResourceContext
+import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.test.TestModel
 import com.testerum.service.mapper.FileToUiTestMapper
 import com.testerum.service.mapper.UiToFileTestMapper
 import com.testerum.service.resources.ResourcesService
+import com.testerum.service.step.StepService
 import com.testerum.service.tests.resolver.TestResolver
 import com.testerum.service.warning.WarningService
 import com.testerum.test_file_format.testdef.FileTestDef
 import com.testerum.test_file_format.testdef.FileTestDefParserFactory
 import com.testerum.test_file_format.testdef.FileTestDefSerializer
-import java.io.StringWriter
 
 
 class TestsService(private val testResolver: TestResolver,
+                   private val stepService: StepService,
                    private val fileRepositoryService: FileRepositoryService,
                    private val resourcesService: ResourcesService,
                    private val uiToFileTestMapper: UiToFileTestMapper,
@@ -41,9 +43,7 @@ class TestsService(private val testResolver: TestResolver,
         val testPath = Path(testModelWithCorrectlyNamedExternalResources.path.directories, testModelWithCorrectlyNamedExternalResources.text, FileType.TEST.fileExtension)
         val fileTest = uiToFileTestMapper.mapToFileModel(testModelWithCorrectlyNamedExternalResources)
 
-        val destination = StringWriter()
-        FileTestDefSerializer.serialize(fileTest, destination, 0)
-        val fileTestAsString = destination.toString()
+        val fileTestAsString = FileTestDefSerializer.serializeToString(fileTest)
 
         val createdRepositoryFile = fileRepositoryService.create(
                 RepositoryFileChange(
@@ -54,6 +54,8 @@ class TestsService(private val testResolver: TestResolver,
                         )
                 )
         )
+
+        saveChildren(testModel.stepCalls)
 
         val resolvedUiTestWithWarnings = getTestAtPath(
                 path = createdRepositoryFile.knownPath.asPath()
@@ -72,9 +74,7 @@ class TestsService(private val testResolver: TestResolver,
 
         val fileTest: FileTestDef = uiToFileTestMapper.mapToFileModel(testModelWithCorrectlyNamedExternalResources)
 
-        val destination = StringWriter()
-        FileTestDefSerializer.serialize(fileTest, destination, 0)
-        val fileTestAsString = destination.toString()
+        val fileTestAsString = FileTestDefSerializer.serializeToString(fileTest)
 
         fileRepositoryService.update(
                 RepositoryFileChange(
@@ -86,11 +86,24 @@ class TestsService(private val testResolver: TestResolver,
                 )
         )
 
+        saveChildren(testModel.stepCalls)
+
         val resolvedUiTestWithWarnings = getTestAtPath(
                 path = newPath
         )
 
         return resolvedUiTestWithWarnings!!
+    }
+
+    private fun saveChildren(stepCalls: List<StepCall>) {
+        for (stepCall in stepCalls) {
+            val stepDef = stepCall.stepDef as? ComposedStepDef
+                    ?: continue
+
+            stepService.update(stepDef)
+
+            saveChildren(stepDef.stepCalls)
+        }
     }
 
     private fun saveExternalResources(testModel: TestModel): TestModel {

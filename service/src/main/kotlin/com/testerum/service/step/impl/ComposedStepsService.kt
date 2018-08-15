@@ -69,8 +69,17 @@ open class ComposedStepsService(val uiToFileStepDefMapper: UiToFileStepDefMapper
     }
 
     fun update(composedStepDef: ComposedStepDef): ComposedStepDef {
-        val oldStepPath = composedStepDef.path
-        val newStepPath = Path(oldStepPath.directories, composedStepDef.getText(), FileType.COMPOSED_STEP.fileExtension)
+        val path = composedStepDef.path
+
+        val newStepPath = Path(path.directories, composedStepDef.getText(), FileType.COMPOSED_STEP.fileExtension)
+
+        val oldStepPath = if (path.isFile()) {
+            path
+        } else {
+            // assume that the frontend sent only the parent directory as path,
+            // and that this is a new step that needs to be saved
+            newStepPath
+        }
 
         val stepAsString = serializeComposedStepDefToFileFormat(composedStepDef)
 
