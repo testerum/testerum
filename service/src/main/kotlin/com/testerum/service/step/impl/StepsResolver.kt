@@ -1,11 +1,13 @@
 package com.testerum.service.step.impl
 
+import com.testerum.common_kotlin.emptyToNull
 import com.testerum.model.arg.Arg
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepDef
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.util.StepHashUtil
+import com.testerum.service.mapper.file_arg_transformer.FileArgTransformer
 
 class StepsResolver(private val unresolvedComposedStepsMap: Map<String, ComposedStepDef>,
                     basicStepsMap: Map<String, BasicStepDef>) {
@@ -75,8 +77,14 @@ class StepsResolver(private val unresolvedComposedStepsMap: Map<String, Composed
             val paramParts: List<ParamStepPatternPart> = resolvedStepDef.stepPattern.getParamStepPattern()
 
             for ((i, arg) in stepCall.args.withIndex()) {
+                val paramType = paramParts[i].type
+                val content = FileArgTransformer.fileFormatToJson(arg.content.orEmpty(), paramType).emptyToNull()
+
                 resolvedArgs.add(
-                        arg.copy(type = paramParts[i].type)
+                        arg.copy(
+                                type = paramType,
+                                content = content
+                        )
                 )
             }
 

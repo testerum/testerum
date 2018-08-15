@@ -175,7 +175,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
         }
     }
 
-    override fun disable(context: RunnerContext): ExecutionStatus {
+    private fun disable(context: RunnerContext): ExecutionStatus {
         logTestStart(context)
 
         var executionStatus = ExecutionStatus.DISABLED

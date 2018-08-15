@@ -146,7 +146,7 @@ class TestsService(private val testResolver: TestResolver,
         for (testFile in allTestFiles) {
             val fileTest = TEST_PARSER.parse(testFile.body)
             val unresolvedUiTest = fileToUiTestMapper.mapToUiModel(fileTest, testFile)
-            val resolvedUiTest = testResolver.resolveComposedSteps(
+            val resolvedUiTest = testResolver.resolveSteps(
                     unresolvedUiTest,
                     throwExceptionOnNotFound = false
             )
@@ -165,7 +165,7 @@ class TestsService(private val testResolver: TestResolver,
 
         val fileTest = TEST_PARSER.parse(testFile.body)
         val unresolvedUiTest = fileToUiTestMapper.mapToUiModel(fileTestDef = fileTest, testFile = testFile)
-        val resolvedUiTest = testResolver.resolveComposedSteps(unresolvedUiTest, throwExceptionOnNotFound = false)
+        val resolvedUiTest = testResolver.resolveSteps(unresolvedUiTest, throwExceptionOnNotFound = false)
 
         return warningService.testWithWarnings(resolvedUiTest, keepExistingWarnings = true)
     }

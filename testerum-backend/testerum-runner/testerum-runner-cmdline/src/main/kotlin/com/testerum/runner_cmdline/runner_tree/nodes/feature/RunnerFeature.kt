@@ -1,6 +1,8 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.feature
 
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.api.test_context.ExecutionStatus.PASSED
+import com.testerum.api.test_context.ExecutionStatus.SKIPPED
 import com.testerum.common_kotlin.indent
 import com.testerum.model.feature.Feature
 import com.testerum.runner.events.model.FeatureEndEvent
@@ -18,6 +20,7 @@ class RunnerFeature(featurePathFromRoot: List<String>,
                     indexInParent: Int): RunnerFeatureOrTest() {
 
     override lateinit var parent: RunnerTreeNode
+
     override val positionInParent = PositionInParent(
             id= featurePathFromRoot.joinToString(separator = "/") + "/${Feature.FILE_NAME_WITH_EXTENSION}",
             indexInParent = indexInParent
@@ -32,8 +35,8 @@ class RunnerFeature(featurePathFromRoot: List<String>,
     override fun getGlueClasses(context: RunnerContext): List<Class<*>> {
         val result = ArrayList<Class<*>>()
 
-        for (featuresOrTest in featuresOrTests) {
-            result += featuresOrTest.getGlueClasses(context)
+        for (featureOrTest in featuresOrTests) {
+            result += featureOrTest.getGlueClasses(context)
         }
 
         return result
@@ -50,63 +53,49 @@ class RunnerFeature(featurePathFromRoot: List<String>,
     private fun tryToRun(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         logFeatureStart(context)
 
-        var executionStatus: ExecutionStatus = ExecutionStatus.PASSED
+        var status: ExecutionStatus = PASSED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
         try {
-            for (featuresOrTest in featuresOrTests) {
-                val stepExecutionStatus: ExecutionStatus = featuresOrTest.run(context, globalVars)
+            for (featureOrTest in featuresOrTests) {
+                val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
 
-                executionStatus = stepExecutionStatus
+                if (status == PASSED && featureOrTestStatus != PASSED) {
+                    status = featureOrTestStatus
+                }
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.FAILED
+            status = ExecutionStatus.FAILED
             exception = e
         } finally {
-            logFeatureEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
+            logFeatureEnd(context, status, exception, durationMillis = System.currentTimeMillis() - startTime)
         }
 
-        return executionStatus
+        return status
     }
 
     override fun skip(context: RunnerContext): ExecutionStatus {
         logFeatureStart(context)
 
-        var executionStatus = ExecutionStatus.SKIPPED
+        var status = SKIPPED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
         try {
             for (featureOrTest in featuresOrTests) {
-                featureOrTest.skip(context)
+                val featureOrTestStatus: ExecutionStatus = featureOrTest.skip(context)
+
+                if (status == SKIPPED && featureOrTestStatus != SKIPPED && featureOrTestStatus != PASSED) {
+                    status = featureOrTestStatus
+                }
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.FAILED
+            status = ExecutionStatus.FAILED
             exception = e
         } finally {
-            logFeatureEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
-            return executionStatus
-        }
-    }
-
-    override fun disable(context: RunnerContext): ExecutionStatus {
-        logFeatureStart(context)
-
-        var executionStatus = ExecutionStatus.DISABLED
-        var exception: Throwable? = null
-
-        val startTime = System.currentTimeMillis()
-        try {
-            for (featureOrTest in featuresOrTests) {
-                featureOrTest.disable(context)
-            }
-        } catch (e: Exception) {
-            executionStatus = ExecutionStatus.FAILED
-            exception = e
-        } finally {
-            logFeatureEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
-            return executionStatus
+            logFeatureEnd(context, status, exception, durationMillis = System.currentTimeMillis() - startTime)
+            return status
         }
     }
 
@@ -134,7 +123,6 @@ class RunnerFeature(featurePathFromRoot: List<String>,
         )
     }
 
-
     override fun toString(): String = buildString { addToString(this, 0) }
 
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
@@ -143,7 +131,6 @@ class RunnerFeature(featurePathFromRoot: List<String>,
         for (featureOrTest in featuresOrTests) {
             featureOrTest.addToString(destination, indentLevel + 1)
         }
-
     }
 
 }
