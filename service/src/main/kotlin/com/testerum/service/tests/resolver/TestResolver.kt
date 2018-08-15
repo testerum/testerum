@@ -22,7 +22,7 @@ class TestResolver(private val stepService: StepService) {
             resolvedStepCalls += StepCall(
                     stepCall.id,
                     resolvedStepDef,
-                    stepCall.args
+                    stepService.resolveArguments(stepCall.args, resolvedStepDef)
             )
         }
 
