@@ -12,6 +12,5 @@ abstract class RunnerFeatureOrTest : RunnerTreeNode() {
 
     abstract fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus
     abstract fun skip(context: RunnerContext): ExecutionStatus
-    abstract fun disable(context: RunnerContext): ExecutionStatus
 
 }

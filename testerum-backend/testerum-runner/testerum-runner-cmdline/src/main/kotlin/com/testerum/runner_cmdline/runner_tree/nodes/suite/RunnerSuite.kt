@@ -1,6 +1,7 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.suite
 
 import com.testerum.api.test_context.ExecutionStatus
+import com.testerum.api.test_context.ExecutionStatus.PASSED
 import com.testerum.common_kotlin.indent
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.events.model.SuiteStartEvent
@@ -12,21 +13,14 @@ import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
-import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
                        private val featuresOrTests: List<RunnerFeatureOrTest>,
                        private val afterAllTestsHooks: List<RunnerHook>) : RunnerTreeNode() {
 
-    companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
-    }
-
     init {
-        for (test in featuresOrTests) {
-            test.parent = this
+        for (featureOrTest in featuresOrTests) {
+            featureOrTest.parent = this
         }
     }
 
@@ -47,8 +41,8 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         for (hook in beforeAllTestsHooks) {
             glueClasses += hook.getGlueClass(context)
         }
-        for (test in featuresOrTests) {
-            glueClasses += test.getGlueClasses(context)
+        for (featureOrTest in featuresOrTests) {
+            glueClasses += featureOrTest.getGlueClasses(context)
         }
         for (hook in afterAllTestsHooks) {
             glueClasses += hook.getGlueClass(context)
@@ -60,77 +54,78 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
     fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         logSuiteStart(context)
 
-        var suiteExecutionStatus: ExecutionStatus = ExecutionStatus.PASSED
+        var suiteStatus: ExecutionStatus = PASSED
         val startTime = System.currentTimeMillis()
-        var successfulTestsCount = 0
         try {
-            for (hook in beforeAllTestsHooks) {
-                if (suiteExecutionStatus == ExecutionStatus.PASSED) {
-                    val stepExecutionStatus: ExecutionStatus = hook.run(context)
+            // run before all hooks
+            suiteStatus = runHooks(context, beforeAllTestsHooks)
 
-                    suiteExecutionStatus = stepExecutionStatus
-                } else {
-                    hook.skip()
-                }
+            // run tests
+            if (suiteStatus == PASSED) {
+                suiteStatus = runTests(context, globalVars, suiteStatus)
+            } else {
+                skipFeaturesOrTests(context)
             }
 
-            try {
-                for (featureOrTest in featuresOrTests) {
-                    val featureOrTestExecutionStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
-
-                    if (featureOrTestExecutionStatus == ExecutionStatus.PASSED) {
-                        successfulTestsCount++
-                    }
-
-                    if (suiteExecutionStatus == ExecutionStatus.PASSED
-                            && featureOrTestExecutionStatus != ExecutionStatus.PASSED) {
-                        suiteExecutionStatus = featureOrTestExecutionStatus
-                    }
-                }
-            } catch (e: Exception) {
-                val errorMessage = "failed to execute ${HookPhase.BEFORE_ALL_TESTS} hooks"
-
-                LOGGER.error(errorMessage, e)
-
-                throw RuntimeException(errorMessage, e)
-            }
-
-            var endHookStatus: ExecutionStatus = ExecutionStatus.PASSED
-            try {
-                for (hook in afterAllTestsHooks) {
-                    if (endHookStatus == ExecutionStatus.PASSED) {
-                        val stepExecutionStatus: ExecutionStatus = hook.run(context)
-
-                        endHookStatus = stepExecutionStatus
-                    } else {
-                        hook.skip()
-                    }
-                }
-            } catch (e: Exception) {
-                val errorMessage = "failed to execute ${HookPhase.AFTER_ALL_TESTS} hooks"
-
-                LOGGER.error(errorMessage, e)
-
-                throw RuntimeException(errorMessage, e)
-            }
-
-            if (suiteExecutionStatus == ExecutionStatus.PASSED && endHookStatus != ExecutionStatus.PASSED) {
-                suiteExecutionStatus = endHookStatus
+            // run after all hooks
+            val afterAllHooksStatus = runHooks(context, afterAllTestsHooks)
+            if (suiteStatus == PASSED && afterAllHooksStatus != PASSED) {
+                suiteStatus = afterAllHooksStatus
             }
         } finally {
             val durationMillis = System.currentTimeMillis() - startTime
 
-            logSuiteEnd(context, suiteExecutionStatus, successfulTestsCount, durationMillis)
+            logSuiteEnd(context, suiteStatus, durationMillis)
         }
 
-        return suiteExecutionStatus
+        return suiteStatus
     }
 
-    private fun logSuiteEnd(context: RunnerContext, executionStatus: ExecutionStatus, successfulTestsCount: Int, durationMillis: Long) {
+    private fun runHooks(context: RunnerContext, hooks: List<RunnerHook>): ExecutionStatus {
+        var status = PASSED
+
+        for (hook in hooks) {
+            if (status == PASSED) {
+                val hookStatus: ExecutionStatus = hook.run(context)
+
+                if (status == PASSED && hookStatus != PASSED) {
+                    status = hookStatus
+                }
+            } else {
+                hook.skip()
+            }
+        }
+
+        return status
+    }
+
+    private fun runTests(context: RunnerContext,
+                         globalVars: GlobalVariablesContext,
+                         suiteExecutionStatus: ExecutionStatus): ExecutionStatus {
+        var status = suiteExecutionStatus
+
+        for (featureOrTest in featuresOrTests) {
+            val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
+
+            if (status == PASSED && featureOrTestStatus != PASSED) {
+                status = featureOrTestStatus
+            }
+        }
+
+        return status
+    }
+
+    private fun skipFeaturesOrTests(context: RunnerContext) {
+        for (featureOrTest in featuresOrTests) {
+            featureOrTest.skip(context)
+        }
+    }
+
+    private fun logSuiteEnd(context: RunnerContext, executionStatus: ExecutionStatus, durationMillis: Long) {
         context.eventsService.logEvent(
                 SuiteEndEvent(
                         status = executionStatus,
-                        statistics = ExecutionStatistics(featuresOrTests.size - successfulTestsCount, successfulTestsCount, featuresOrTests.size), // todo: return count per execution status instead of this?
+                        statistics = ExecutionStatistics(-1, -1, -1), // todo: remove this
                         durationMillis = durationMillis
                 )
         )
