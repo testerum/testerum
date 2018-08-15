@@ -163,7 +163,6 @@ open class FileToUiStepMapper(private val fileRepositoryService: FileRepositoryS
 
                     path = knownPath.asPath()
 
-//                    val resource: ResourceContext? = resourceManager.getResourceByPath(knownPath)
                     val resource: ResourceContext? = fileRepositoryService.getResourceByPath(knownPath)
                     if (resource == null) {
                         warnings += Warning.externalResourceNotFound("${fileType.relativeRootDirectory}/$pathAsString")

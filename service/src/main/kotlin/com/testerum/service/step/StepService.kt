@@ -1,5 +1,7 @@
 package com.testerum.service.step
 
+import com.testerum.common_kotlin.emptyToNull
+import com.testerum.model.arg.Arg
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.exception.ValidationException
 import com.testerum.model.exception.model.ValidationModel
@@ -12,7 +14,9 @@ import com.testerum.model.step.tree.ComposedContainerStepNode
 import com.testerum.model.step.tree.RootStepNode
 import com.testerum.model.step.tree.builder.StepTreeBuilder
 import com.testerum.model.text.StepPattern
+import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.util.StepHashUtil
+import com.testerum.service.mapper.file_arg_transformer.FileArgTransformer
 import com.testerum.service.step.impl.BasicStepsService
 import com.testerum.service.step.impl.ComposedStepsService
 import com.testerum.service.step.impl.StepsResolver
@@ -94,11 +98,13 @@ open class StepService(private val basicStepsService: BasicStepsService,
                 resolvedStepDef = UndefinedStepDef(unresolvedComposedStep.phase, unresolvedComposedStep.stepPattern)
             }
 
+            val resolvedArgs = resolveArguments(unresolvedStepCall.args, resolvedStepDef)
+
             resolvedStepCalls.add(
                     StepCall(
-                            unresolvedStepCall.id,
-                            resolvedStepDef,
-                            unresolvedStepCall.args
+                            id = unresolvedStepCall.id,
+                            stepDef = resolvedStepDef,
+                            args = resolvedArgs
                     )
             )
         }
@@ -304,5 +310,23 @@ open class StepService(private val basicStepsService: BasicStepsService,
 
     fun getWarnings(composedStepDef: ComposedStepDef, keepExistingWarnings: Boolean): ComposedStepDef
             = composedStepsService.getWarnings(composedStepDef, keepExistingWarnings)
+
+    fun resolveArguments(args: List<Arg>,
+                         resolvedStepDef: StepDef): List<Arg> {
+        val result = mutableListOf<Arg>()
+
+        val paramParts: List<ParamStepPatternPart> = resolvedStepDef.stepPattern.getParamStepPattern()
+
+        for ((i: Int, arg: Arg) in args.withIndex()) {
+            val paramPart: ParamStepPatternPart = paramParts[i]
+
+            result += arg.copy(
+                    type = paramPart.type,
+                    content = FileArgTransformer.fileFormatToJson(arg.content.orEmpty(), paramPart.type).emptyToNull()
+            )
+        }
+
+        return result
+    }
 
 }
