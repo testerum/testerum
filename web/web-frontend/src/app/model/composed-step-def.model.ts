@@ -6,6 +6,7 @@ import {IdUtils} from "../utils/id.util";
 import {StepPattern} from "./text/step-pattern.model";
 import {Path} from "./infrastructure/path/path.model";
 import {Warning} from "./warning/Warning";
+import {StringUtils} from "../utils/string-utils.util";
 
 export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
 
@@ -80,6 +81,6 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
     }
 
     toString():string {
-        return this.phase + " " + this.stepPattern.getPatternText()
+        return StringUtils.toTitleCase(StepPhaseEnum[this.phase]) + " " + this.stepPattern.getPatternText()
     }
 }

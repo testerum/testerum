@@ -54,8 +54,13 @@ export class ComposedStepEditorComponent implements OnInit {
 
     initPathForTitle() {
         this.pathForTitle = "";
+        let nodeName = null;
+        if (!this.isCreateAction) {
+            nodeName = this.model.toString();
+        }
+
         if (this.model.path) {
-            this.pathForTitle = "/" + new Path(this.model.path.directories, null, null).toString();
+            this.pathForTitle = "/" + new Path(this.model.path.directories, nodeName, null).toString();
         }
     }
 

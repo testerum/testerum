@@ -55,15 +55,16 @@
 h1 {
     border-bottom: 1px solid #ccc;
     margin: 0 35px;
-    padding: 0 50px;
 
     font-family: "Times New Roman", Times, serif;
     font-style: normal;
     font-weight: 700;
+    white-space: pre;
 }
 
 h1 .path {
     color: darkgrey;
+    font-size: 0.7em;
 }
 
 .main-container {
