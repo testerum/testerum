@@ -14,7 +14,7 @@ import {StepChooserNodeComponent} from "./step-chooser-container/step-chooser-no
     templateUrl: 'step-chooser.component.html',
     styleUrls: ['step-chooser.component.scss']
 })
-export class StepChooserComponent implements AfterViewInit, OnDestroy {
+export class StepChooserComponent implements AfterViewInit {
 
     @ViewChild("modal") modal:ModalDirective;
 
@@ -28,17 +28,17 @@ export class StepChooserComponent implements AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.modal.show();
-    }
-
-    ngOnDestroy(): void {
-        this.stepChooserService.onCancelAction()
+        this.modal.onHidden.subscribe(event => {
+            this.stepChooserService.clearModal()
+        })
     }
 
     onCancelAction() {
-        this.stepChooserService.onCancelAction()
+        this.modal.hide()
     }
 
     onStepChooseAction() {
         this.stepChooserService.onStepChooseAction();
+        this.modal.hide()
     }
 }

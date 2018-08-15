@@ -32,9 +32,9 @@
         <div [attr.title]="arg.content?'Edit':'Add'"
              class="btn btn-default btn-xs btn-group"
              (click)="editOrViewResourceInModal(); $event.stopPropagation()">
-            <span class="fa"
+            <span class="fas"
                   [class.fa-plus]="!arg.content"
-                  [class.fa-pencil]="arg.content">
+                  [class.fa-pencil-alt]="arg.content">
             </span>
         </div>
     </legend>

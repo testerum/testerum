@@ -55,17 +55,10 @@ export class StepChooserService {
         let chosenStepDef = this.treeModel.selectedNode? (this.treeModel.selectedNode as StepTreeNodeModel).stepDef: null;
         let cloneOfChosenStepDef = chosenStepDef ? chosenStepDef.clone() : null;
         this.modalSubject.next(cloneOfChosenStepDef);
-        this.clearModal();
     }
 
-    onCancelAction() {
-        this.clearModal();
-    }
-
-    private clearModal() {
+    clearModal() {
         this.modalSubject.complete();
-        this.modalComponent.modal.hide();
-
         this.modalComponentRef.destroy();
 
         this.modalComponentRef = null;

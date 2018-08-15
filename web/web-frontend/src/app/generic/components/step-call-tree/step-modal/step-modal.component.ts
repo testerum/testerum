@@ -10,7 +10,7 @@ import {Subject} from "rxjs";
     styleUrls: ['step-modal.component.scss']
 })
 
-export class StepModalComponent implements AfterViewInit, OnDestroy {
+export class StepModalComponent implements AfterViewInit {
 
     model: ComposedStepDef;
     isCreateAction: boolean = false;
@@ -26,29 +26,23 @@ export class StepModalComponent implements AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.modal.show();
-    }
+        this.modal.onHidden.subscribe(event => {
+            this.modalSubject.complete();
 
-    ngOnDestroy(): void {
-        this.clearStepModal();
+            this.modalComponentRef.destroy();
+
+            this.modalComponentRef = null;
+            this.modalSubject = null;
+        })
     }
 
     onOkAction() {
         this.composedStepViewComponent.onBeforeSave();
         this.modalSubject.next(this.model);
-        this.clearStepModal();
+        this.modal.hide();
     }
 
     onCancelAction() {
-        this.clearStepModal();
-    }
-
-    private clearStepModal() {
-        this.modalSubject.complete();
         this.modal.hide();
-
-        this.modalComponentRef.destroy();
-
-        this.modalComponentRef = null;
-        this.modalSubject = null;
     }
 }

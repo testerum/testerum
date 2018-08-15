@@ -18,7 +18,7 @@ import {StepPathModalComponentService} from "./step-path-modal.component-service
     providers:[StepPathModalComponentService]
 })
 
-export class StepPathModalComponent implements OnInit, AfterViewInit, OnDestroy {
+export class StepPathModalComponent implements OnInit, AfterViewInit {
 
     @ViewChild("modal") modal: ModalDirective;
 
@@ -41,19 +41,23 @@ export class StepPathModalComponent implements OnInit, AfterViewInit, OnDestroy 
 
     ngAfterViewInit(): void {
         this.modal.show();
-    }
+        this.modal.onHidden.subscribe(event => {
+            this.modalSubject.complete();
 
-    ngOnDestroy(): void {
-        this.clearStepModal();
+            this.modalComponentRef.destroy();
+
+            this.modalComponentRef = null;
+            this.modalSubject = null;
+        })
     }
 
     onOkAction() {
         this.modalSubject.next(this.stepPathModalComponentService.selectedStepPathContainer ? this.stepPathModalComponentService.selectedStepPathContainer.path : null);
-        this.clearStepModal();
+        this.modal.hide();
     }
 
     onCancelAction() {
-        this.clearStepModal();
+        this.modal.hide();
     }
 
     isStepSelected(): boolean {
@@ -62,15 +66,5 @@ export class StepPathModalComponent implements OnInit, AfterViewInit, OnDestroy 
 
     getSelectedPathAsString(): string {
         return this.stepPathModalComponentService.selectedStepPathContainer ? this.stepPathModalComponentService.selectedStepPathContainer.path.toString() : "";
-    }
-
-    private clearStepModal() {
-        this.modalSubject.complete();
-        this.modal.hide();
-
-        this.modalComponentRef.destroy();
-
-        this.modalComponentRef = null;
-        this.modalSubject = null;
     }
 }
