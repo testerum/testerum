@@ -11,6 +11,7 @@ import {StepCallTreeComponentService} from "../../step-call-tree.component-servi
 import {StepCall} from "../../../../../model/step-call.model";
 import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
+import {BasicStepDef} from "../../../../../model/basic-step-def.model";
 
 @Component({
     selector: 'step-call-container',
@@ -87,6 +88,10 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
 
     onStepOrderChangedEvent(): void {
         this.initPropertiesThatDependsOnStepOrder()
+    }
+
+    isBasicStep(): boolean {
+        return this.model.stepCall.stepDef instanceof BasicStepDef;
     }
 
     editStep() {

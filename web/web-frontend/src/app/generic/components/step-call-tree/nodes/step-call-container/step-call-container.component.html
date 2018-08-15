@@ -39,7 +39,8 @@
 
         <div *ngIf="isEditMode()" class="step-button-panel btn-group">
 
-            <div title="{{isUndefinedStep() ? 'Define Step': 'Edit Step'}}"
+            <div *ngIf="isUndefinedStep()"
+                 title="{{isUndefinedStep() ? 'Define Step': 'Edit Step'}}"
                  class="btn btn-default btn-xs btn-group"
                 (click)="editStep(); $event.stopPropagation()">
                 <i class="fas fa-pencil-alt" aria-hidden="true"></i>
