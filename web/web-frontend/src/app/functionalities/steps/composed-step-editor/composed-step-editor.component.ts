@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ComposedStepDef} from "../../../model/composed-step-def.model";
 import {StepsService} from "../../../service/steps.service";
@@ -15,6 +15,7 @@ import {UrlService} from "../../../service/url.service";
 import {ComposedStepViewComponent} from "../../../generic/components/step/composed-step-view/composed-step-view.component";
 import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dialog/update-incompatibility-dialog.component";
 import {Path} from "../../../model/infrastructure/path/path.model";
+import {Subscription} from "rxjs";
 
 @Component({
     moduleId: module.id,
@@ -23,7 +24,7 @@ import {Path} from "../../../model/infrastructure/path/path.model";
     styleUrls: ['./composed-step-editor.component.scss']
 })
 
-export class ComposedStepEditorComponent implements OnInit {
+export class ComposedStepEditorComponent implements OnInit, OnDestroy {
 
     model: ComposedStepDef;
     isEditMode: boolean = false;
@@ -32,6 +33,8 @@ export class ComposedStepEditorComponent implements OnInit {
 
     @ViewChild(ComposedStepViewComponent) composedStepViewComponent: ComposedStepViewComponent;
     @ViewChild(UpdateIncompatibilityDialogComponent) updateIncompatibilityDialogComponent: UpdateIncompatibilityDialogComponent;
+
+    private editModeSubscription: Subscription;
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
@@ -50,6 +53,14 @@ export class ComposedStepEditorComponent implements OnInit {
 
             this.initPathForTitle();
         });
+
+        this.editModeSubscription = this.composedStepViewComponent.editModeEventEmitter.subscribe((editMode: boolean) => {
+            this.isEditMode = editMode;
+        })
+    }
+
+    ngOnDestroy(): void {
+        if(this.editModeSubscription) this.editModeSubscription.unsubscribe();
     }
 
     initPathForTitle() {

@@ -1,4 +1,13 @@
-import {AfterContentChecked, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+    AfterContentChecked,
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
 import {NgForm} from "@angular/forms";
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
@@ -15,6 +24,7 @@ import {StepChooserService} from "../../step-chooser/step-chooser.service";
 import {StepCallTreeComponent} from "../../step-call-tree/step-call-tree.component";
 import {StepPathModalService} from "./step-path-chooser-modal/step-path-modal.service";
 import {Path} from "../../../../model/infrastructure/path/path.model";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'composed-step-view',
@@ -23,7 +33,7 @@ import {Path} from "../../../../model/infrastructure/path/path.model";
     encapsulation: ViewEncapsulation.None
 })
 
-export class ComposedStepViewComponent implements OnInit, AfterContentChecked {
+export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterContentChecked {
 
     @Input() model: ComposedStepDef;
     @Input() isEditMode: boolean;
@@ -43,6 +53,9 @@ export class ComposedStepViewComponent implements OnInit, AfterContentChecked {
     currentTagSearch:string;
 
     @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
+    editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+    private editModeStepCallTreeSubscription: Subscription;
 
     constructor(private stepChooserService: StepChooserService,
                 private stepPathModalService: StepPathModalService,
@@ -57,10 +70,25 @@ export class ComposedStepViewComponent implements OnInit, AfterContentChecked {
         if (this.isEditMode) {
             this.loadAllTags();
         }
+
+        this.editModeStepCallTreeSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.editModeEventEmitter.subscribe( (editMode: boolean) => {
+                this.setEditMode(editMode);
+            }
+        );
+    }
+
+    setEditMode(editMode: boolean) {
+        this.isEditMode = editMode;
+        this.editModeEventEmitter.emit(editMode);
     }
 
     ngAfterContentChecked(): void {
         this.pattern = this.model.stepPattern.getPatternText();
+    }
+
+
+    ngOnDestroy(): void {
+        if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
     }
 
     onBeforeSave() {
