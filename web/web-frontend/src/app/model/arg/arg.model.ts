@@ -5,6 +5,7 @@ import {ServerToUiTypeMapperUtil} from "../../utils/server-to-ui-type-mapper.uti
 import {ParamStepPatternPart} from "../text/parts/param-step-pattern-part.model";
 import {ResourceMapEnum} from "../../functionalities/resources/editors/resource-map.enum";
 import {Warning} from "../warning/Warning";
+import {BasicResourceComponent} from "../../functionalities/resources/editors/basic/basic-resource.component";
 
 export class Arg implements Serializable<Arg> {
 
@@ -41,6 +42,11 @@ export class Arg implements Serializable<Arg> {
 
         this.descendantsHaveWarnings = input['descendantsHaveWarnings'];
 
+        let resourceMapEnumByServerType = ResourceMapEnum.getResourceMapEnumByServerType(this.serverType);
+        if (resourceMapEnumByServerType && resourceMapEnumByServerType.resourceComponent == BasicResourceComponent) {
+            this.name = input["content"];
+        }
+
         return this;
     }
 
@@ -54,9 +60,16 @@ export class Arg implements Serializable<Arg> {
         if (content != null && !content.startsWith('"')) {
             content = JsonUtil.stringify(content);
         }
+
+        let name = this.name;
+        let resourceMapEnumByServerType = ResourceMapEnum.getResourceMapEnumByServerType(this.serverType);
+        if (resourceMapEnumByServerType && resourceMapEnumByServerType.resourceComponent == BasicResourceComponent) {
+            name = null;
+        }
+
         return ""+
             '{' +
-            '"name":' + JsonUtil.stringify(this.name) +
+            '"name":' + JsonUtil.stringify(name) +
             ',"type":' + JsonUtil.stringify(this.uiType) +
             ',"path":' + JsonUtil.stringify(this.path) +
             ',"content":' + content +
