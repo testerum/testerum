@@ -88,6 +88,7 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
                 result => {
                     Object.assign(this.model, result);
                     this.isEditMode = false;
+                    this.composedStepViewComponent.setEditMode(this.isEditMode)
                 }
             )
         }

@@ -49,6 +49,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
 
     private routeSubscription: Subscription;
     private editModeStepCallTreeSubscription: Subscription;
+    private warningRecalculationChangesSubscription: Subscription;
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
@@ -65,7 +66,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             this.testModel = data['testModel'];
             this.isEditExistingTest =  IdUtils.isTemporaryId(this.testModel.id);
             this.setEditMode(IdUtils.isTemporaryId(this.testModel.id));
-            this.isCreateAction = !this.testModel.path.fileName
+            this.isCreateAction = !this.testModel.path.fileName;
 
             this.initPathForTitle();
         });
@@ -74,7 +75,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             }
         );
 
-        this.stepCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
+        this.warningRecalculationChangesSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
             this.testsService.getWarnings(this.testModel).subscribe((newTestModel:TestModel) => {
                 ArrayUtil.replaceElementsInArray(this.testModel.stepCalls, newTestModel.stepCalls);
                 this.stepCallTreeComponent.initTree();
@@ -112,6 +113,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     ngOnDestroy(): void {
         if(this.routeSubscription) this.routeSubscription.unsubscribe();
         if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
+        if(this.warningRecalculationChangesSubscription) this.warningRecalculationChangesSubscription.unsubscribe();
     }
 
     addStep() {

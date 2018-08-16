@@ -1,6 +1,6 @@
 import {
     AfterContentChecked,
-    Component,
+    Component, DoCheck,
     EventEmitter,
     Input,
     OnDestroy,
@@ -11,7 +11,7 @@ import {
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
 import {NgForm} from "@angular/forms";
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
-import {AutoComplete} from "primeng/primeng";
+import {AutoComplete, Message} from "primeng/primeng";
 import {Arg} from "../../../../model/arg/arg.model";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {StepDef} from "../../../../model/step-def.model";
@@ -25,6 +25,8 @@ import {StepCallTreeComponent} from "../../step-call-tree/step-call-tree.compone
 import {StepPathModalService} from "./step-path-chooser-modal/step-path-modal.service";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
+import {TestModel} from "../../../../model/test/test.model";
+import {StepsService} from "../../../../service/steps.service";
 
 @Component({
     selector: 'composed-step-view',
@@ -33,7 +35,7 @@ import {Subscription} from "rxjs";
     encapsulation: ViewEncapsulation.None
 })
 
-export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterContentChecked, DoCheck {
 
     @Input() model: ComposedStepDef;
     @Input() isEditMode: boolean;
@@ -42,9 +44,11 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     @ViewChild(NgForm) form: NgForm;
     StepPhaseEnum = StepPhaseEnum;
 
+    oldModel: ComposedStepDef;
     pattern: string;
     hasPathDefined = true;
 
+    warnings: Message[] = [];
     areChildComponentsValid: boolean = true;
 
     @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
@@ -56,13 +60,16 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     private editModeStepCallTreeSubscription: Subscription;
+    private warningRecalculationChangesSubscription: Subscription;
 
-    constructor(private stepChooserService: StepChooserService,
-                private stepPathModalService: StepPathModalService,
-                private tagsService: TagsService) {
+    constructor(private stepPathModalService: StepPathModalService,
+                private tagsService: TagsService,
+                private stepsService: StepsService) {
     }
 
     ngOnInit(): void {
+        // this.oldModel = this.model;
+
         if (this.model.path == null) {
             this.hasPathDefined = false
         }
@@ -72,14 +79,23 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         }
 
         this.editModeStepCallTreeSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.editModeEventEmitter.subscribe( (editMode: boolean) => {
-                this.setEditMode(editMode);
+                this.isEditMode = editMode;
+                this.editModeEventEmitter.emit(this.isEditMode);
             }
         );
+
+        this.warningRecalculationChangesSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
+            this.stepsService.getWarnings(this.model).subscribe((newModel: ComposedStepDef) => {
+                ArrayUtil.replaceElementsInArray(this.model.stepCalls, newModel.stepCalls);
+                this.stepCallTreeComponent.initTree();
+            })
+        })
     }
 
     setEditMode(editMode: boolean) {
         this.isEditMode = editMode;
-        this.editModeEventEmitter.emit(editMode);
+        this.editModeEventEmitter.emit(this.isEditMode);
+        this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(this.isEditMode);
     }
 
     ngAfterContentChecked(): void {
@@ -89,8 +105,23 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
 
     ngOnDestroy(): void {
         if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
+        if(this.warningRecalculationChangesSubscription) this.warningRecalculationChangesSubscription.unsubscribe();
     }
 
+    ngDoCheck(): void {
+        if (this.oldModel != this.model) {
+            this.refreshWarnings();
+            this.oldModel = this.model;
+        }
+    }
+    private refreshWarnings() {
+        this.warnings = [];
+        for (const warning of this.model.warnings) {
+            this.warnings.push(
+                {severity: 'error', summary: warning.message}
+            )
+        }
+    }
     onBeforeSave() {
     }
 
@@ -98,10 +129,8 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         this.model.stepPattern.setPatternText(this.pattern)
     }
 
-    openStepChooser() {
-        this.stepChooserService.showStepChooserModal(this.model.path).subscribe( (stepDef: StepDef) => {
-            this.onStepChose(stepDef);
-        });
+    addStep() {
+        this.stepCallTreeComponent.stepCallTreeComponentService.addStepCallEditor(this.stepCallTreeComponent.jsonTreeModel);
     }
 
     onStepChose(choseStep: StepDef): void {
@@ -122,7 +151,7 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
 
     enableEditTestMode(): void {
         this.loadAllTags();
-        this.isEditMode = true;
+        this.setEditMode(true);
     }
 
     private loadAllTags() {
