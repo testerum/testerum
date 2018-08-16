@@ -134,7 +134,6 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
                 newArg.serverType = stepParam.serverType;
                 newArg.uiType = stepParam.uiType;
                 newArg.content = ResourceMapEnum.getResourceMapEnumByUiType(stepParam.uiType).getNewInstance();
-
             }
 
             this.model.stepCall.args.push(newArg);

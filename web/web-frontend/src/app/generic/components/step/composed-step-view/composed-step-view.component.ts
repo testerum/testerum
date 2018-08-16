@@ -68,8 +68,6 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     ngOnInit(): void {
-        // this.oldModel = this.model;
-
         if (this.model.path == null) {
             this.hasPathDefined = false
         }
@@ -88,6 +86,9 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
             this.stepsService.getWarnings(this.model).subscribe((newModel: ComposedStepDef) => {
                 ArrayUtil.replaceElementsInArray(this.model.stepCalls, newModel.stepCalls);
                 this.stepCallTreeComponent.initTree();
+
+                ArrayUtil.replaceElementsInArray(this.model.warnings, newModel.warnings);
+                this.refreshWarnings();
             })
         })
     }

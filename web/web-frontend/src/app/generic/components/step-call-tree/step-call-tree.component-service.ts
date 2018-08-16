@@ -52,7 +52,9 @@ export class StepCallTreeComponentService {
         this.stepCalls.push(stepCall);
         let stepCallContainer = StepCallTreeUtil.createStepCallContainerWithChildren(stepCall, this.jsonTreeModel);
         stepCallContainer.jsonTreeNodeState.showChildren = true;
-        this.jsonTreeModel.getChildren().push(stepCallContainer)
+        this.jsonTreeModel.getChildren().push(stepCallContainer);
+
+        this.triggerWarningRecalculationChangesEvent();
     }
 
     removeStepCall(stepCallContainer: StepCallContainerModel) {
@@ -60,7 +62,9 @@ export class StepCallTreeComponentService {
 
         this.removeStepCallFromParent(stepCallContainer.stepCall, stepCallContainer.parentContainer);
 
-        this.triggerStepCallOrderChangeEvent()
+        this.triggerStepCallOrderChangeEvent();
+
+        this.triggerWarningRecalculationChangesEvent();
     }
 
     private removeStepCallFromParent(stepCallToRemove: StepCall, rootNode: JsonTreeContainer) {
@@ -100,6 +104,7 @@ export class StepCallTreeComponentService {
                 stepCall
             )
         }
+        this.triggerWarningRecalculationChangesEvent();
     }
 
     private getFirstParentOfTypeStepCallContainerModel(parentContainer: JsonTreeContainer): StepCallContainerModel {

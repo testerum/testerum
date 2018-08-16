@@ -79,6 +79,9 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             this.testsService.getWarnings(this.testModel).subscribe((newTestModel:TestModel) => {
                 ArrayUtil.replaceElementsInArray(this.testModel.stepCalls, newTestModel.stepCalls);
                 this.stepCallTreeComponent.initTree();
+
+                ArrayUtil.replaceElementsInArray(this.testModel.warnings, newTestModel.warnings);
+                this.refreshWarnings();
             })
         })
     }
