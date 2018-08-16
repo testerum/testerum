@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
 
-                <table class="table">
+                <table class="table table-hover">
                     <colgroup>
                         <col span="1" style="width: 31%;">
                         <col span="1" style="width: 65%;">
@@ -19,6 +19,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Value</th>
+                        <th *ngIf="isEditMode()"></th>
                     </tr>
 
                     <tr *ngFor="let variable of variables; let last = last">
@@ -29,7 +30,7 @@
                             <input *ngIf="isEditMode()"
                                    (change)="onNewKeyChange($event)"
                                    [(ngModel)]="variable.key"
-                                   class="form-control">
+                                   type="text" pInputText  class="form-control full-width">
                         </td>
 
                         <!-- VALUE -->
@@ -38,7 +39,7 @@
                             <input *ngIf="isEditMode()"
                                    (change)="onNewValueChange($event)"
                                    [(ngModel)]="variable.value"
-                                   type="text" pInputText  class="form-control">
+                                   type="text" pInputText  class="form-control full-width">
                         </td>
 
                         <!-- DELETE -->
