@@ -22,25 +22,25 @@
             <div *ngIf="model.resourceType.createSubResourceUrl"
                  title="Create {{model.resourceType.name}}" class="btn btn-default btn-xs btn-group"
                  (click)="showCreateSubResource();$event.stopPropagation();">
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                <i class="fa_my-plus" aria-hidden="true"></i>
             </div>
 
             <div *ngIf="model.resourceType.canHaveChildrenContainers"
                  title="Create Folder" class="btn btn-default btn-xs btn-group"
                  (click)="showCreateDirectoryModal(); $event.stopPropagation()">
-                <i class="fa fa-folder-open" aria-hidden="true"></i>
+                <i class="fa_my-folder-opened" aria-hidden="true"></i>
             </div>
 
             <div *ngIf="model.resourceType.canBeEdited"
                  title="Edit Folder" class="btn btn-default btn-xs btn-group"
                  (click)="showEditDirectoryNameModal(); $event.stopPropagation()">
-                <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                <i class="fa_my-edit" aria-hidden="true"></i>
             </div>
 
             <div *ngIf="model.resourceType.canBeDeleted"
                  title="Delete Folder" class="btn btn-default btn-xs btn-group"
                  (click)="deleteDirectory(); $event.stopPropagation()">
-                <i class="fa fa-trash" aria-hidden="true"></i>
+                <i class="fa_my-delete" aria-hidden="true"></i>
             </div>
         </div>
     </div>

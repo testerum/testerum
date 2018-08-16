@@ -7,7 +7,7 @@ export class RdbmsConnectionResourceType implements ResourceType {
     readonly fileExtension: string = "rdbms.connection.yaml";
 
     readonly name: string = this.rootFilePath.getLastPathPart();
-    readonly iconClass: string = "fa fa-plug";
+    readonly iconClass: string = "fas fa-plug";
     readonly resourceUrl: string = "/automated/resources/rdbms/connection/";
     readonly createSubResourceUrl = ["/automated/resources/rdbms/connection/create", {"path": this.rootFilePath}];
 

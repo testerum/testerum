@@ -5,7 +5,7 @@
          (dblclick)="collapseNode()"
          title="{{getStatusTooltip()}}">
 
-        <i class="fa" aria-hidden="true"
+        <i class="fas" aria-hidden="true"
            [class.node-waiting]="model.state == RunnerTreeNodeStateEnum.WAITING"
            [class.node-executing]="model.state == RunnerTreeNodeStateEnum.EXECUTING"
            [class.node-passed]="model.state == RunnerTreeNodeStateEnum.PASSED"
@@ -26,8 +26,8 @@
 
         <i *ngIf="isFeatureNode()"
            aria-hidden="true"
-           [class.fa_my-tree-folder-closed]="!isOpenedNode()"
-           [class.fa_my-tree-folder-opened]="isOpenedNode()"></i>
+           [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
+           [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
 
         <i *ngIf="isTestNode()" class="fa_my-automated-test" aria-hidden="true"></i>
 

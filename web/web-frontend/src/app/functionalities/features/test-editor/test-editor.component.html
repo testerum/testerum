@@ -59,7 +59,7 @@
                             <div *ngIf="isEditMode">
 
                                 <p-toggleButton onLabel="Disabled" offLabel="Enabled"
-                                                onIcon="fa fa-times" offIcon="fa fa-check" [(ngModel)]="testModel.properties.isDisabled"
+                                                onIcon="fa_my-disabled" offIcon="fa_my-enabled" [(ngModel)]="testModel.properties.isDisabled"
                                                 styleClass="toggle-test-state"
                                                 name="testStateSwitch" id="testStateSwitch"></p-toggleButton>
                             </div>
@@ -114,13 +114,13 @@
                         <div *ngIf="!isEditMode"
                              title="Run Tests" class="btn btn-default btn-xs btn-group"
                              (click)="runTest(); $event.stopPropagation()">
-                            <i class="fa fa-play" aria-hidden="true"></i>
+                            <i class="fa_my-run" aria-hidden="true"></i>
                         </div>
 
                         <div title="Add Step" class="btn btn-default btn-xs btn-group"
                              *ngIf="isEditMode"
                              (click)="addStep(); $event.stopPropagation()">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            <i class="fa_my-plus" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>

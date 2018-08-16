@@ -4,7 +4,7 @@
             (click)="animate()">
 
         <i *ngIf="arg.content"
-           class="fa toggle-icon"
+           class="fas toggle-icon"
            [class.fa-caret-right]="animationState == 'close'"
            [class.fa-caret-down]="animationState == 'open'"
            aria-hidden="true"></i>
@@ -16,14 +16,14 @@
         </span>
 
         <!-- WARNING ICON -->
-        <i *ngIf="hasOwnWarnings()" class="fa fa-exclamation-triangle error_color" aria-hidden="true"
+        <i *ngIf="hasOwnWarnings()" class="fas fa-exclamation-triangle error_color" aria-hidden="true"
            [popover]="warningPopTemplate" containerClass="popover-warning" triggers="" container="body" #pop="bs-popover"
            (mouseenter)="pop.show()"
            (mouseleave)="pop.hide()">
         </i>
 
         <ng-template #warningPopTemplate>
-            <i class="fa fa-exclamation-triangle error_color" aria-hidden="true"></i>
+            <i class="fas fa-exclamation-triangle error_color" aria-hidden="true"></i>
             <div *ngFor="let warning of arg.warnings">
                 <div>{{warning.message}}</div>
             </div>

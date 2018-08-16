@@ -126,7 +126,6 @@ body {
     @extend .fa-ban;
     color: $error-color;
 }
-
 .fa_my-runner-undefined {
     @extend .fas;
     @extend .fa-question;
@@ -157,17 +156,58 @@ body {
     @extend .fa-caret-right;
     color: #d8d8d8;
 }
-.fa_my-tree-folder-closed {
+.fa_my-tree-folder-closed-colored {
     @extend .fas;
     @extend .fa-folder;
     color: #c7c308;
     font-size: 15px;
 }
-.fa_my-tree-folder-opened {
+.fa_my-tree-folder-opened-colored {
     @extend .fas;
     @extend .fa-folder-open;
     color: #c7c308;
     font-size: 15px;
+}
+// Other icons
+.fa_my-folder-opened {
+    @extend .fas;
+    @extend .fa-folder-open;
+}
+.fa_my-edit {
+    @extend .fas;
+    @extend .fa-pencil-alt;
+}
+.fa_my-plus {
+    @extend .fas;
+    @extend .fa-plus;
+}
+.fa_my-delete {
+    @extend .fas;
+    @extend .fa-trash-alt;
+}
+.fa_my-search {
+    @extend .fas;
+    @extend .fa-search;
+}
+.fa_my-tag {
+    @extend .fas;
+    @extend .fa-tag;
+}
+.fa_my-disabled {
+    @extend .fas;
+    @extend .fa-times;
+}
+.fa_my-enabled {
+    @extend .fas;
+    @extend .fa-check;
+}
+.fa_my-composed-step {
+    @extend .fas;
+    @extend .fa-random;
+}
+.fa_my-basic-step {
+    @extend .fas;
+    @extend .fa-arrow-right;
 }
 
 //======= Only CRISTI know why this are here ===============

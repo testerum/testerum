@@ -8,7 +8,7 @@
                      (click)="onComposedButtonClickEvent()"
                      [class.active]="isComposedButtonActive"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa fa-random" aria-hidden="true"></i>
+                    <i class="fa_my-composed-step" aria-hidden="true"></i>
                 </div>
 
                 <div pTooltip="{{isBasicButtonActive?'Hide ':'Show '}} Basic Steps"
@@ -16,7 +16,7 @@
                      (click)="onBasicButtonClickEvent()"
                      [class.active]="isBasicButtonActive"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    <i class="fa_my-basic-step" aria-hidden="true"></i>
                 </div>
 
                 <div pTooltip="{{isSearchButtonActive?'Hide ':'Show '}} Search Text"
@@ -24,7 +24,7 @@
                      (click)="onSearchButtonClickEvent()"
                      [class.active]="isSearchButtonActive"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <i class="fa_my-search" aria-hidden="true"></i>
                 </div>
 
                 <div pTooltip="{{isTagsButtonActive?'Hide ':'Show '}} Filter by Tags"
@@ -32,7 +32,7 @@
                      (click)="onTagsButtonClickEvent()"
                      [class.active]="isTagsButtonActive"
                      class="btn btn-default btn-xs btn-group">
-                    <i class="fa fa-tag" aria-hidden="true"></i>
+                    <i class="fa_my-tag" aria-hidden="true"></i>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
               pTooltip="Search"
               tooltipPosition="bottom"
               (click)="filter()">
-            <i class="fa fa-search"></i>
+            <i class="fa_my-search"></i>
         </span>
         <input id="float-input"
                [(ngModel)]="searchText"
@@ -93,7 +93,7 @@
               tooltipPosition="bottom"
               pTooltip="Tags"
               (click)="filter()">
-            <i class="fa fa-tag"></i>
+            <i class="fa_my-tag"></i>
         </span>
         <p-autoComplete #tagsElement
                         [(ngModel)]="selectedTags"

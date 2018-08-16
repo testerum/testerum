@@ -7,7 +7,7 @@ export class HttpMockServerResourceType implements ResourceType {
     readonly fileExtension: string = "http.mock.server.yaml";
 
     name:string = this.rootFilePath.getLastPathPart();
-    iconClass: string = "fa fa-server";
+    iconClass: string = "fas fa-server";
     resourceUrl: string = "/automated/resources/http/mock/server/";
     createSubResourceUrl:any[] = ["/automated/resources/http/mock/server/create"];
 

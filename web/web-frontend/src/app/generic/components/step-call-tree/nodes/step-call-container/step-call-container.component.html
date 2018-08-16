@@ -14,13 +14,13 @@
             </step-text>
 
             <!-- WARNING ICON -->
-            <i *ngIf="hasOwnWarnings()" class="fa fa-exclamation-triangle error_color" aria-hidden="true"
+            <i *ngIf="hasOwnWarnings()" class="fas fa-exclamation-triangle error_color" aria-hidden="true"
                [popover]="warningPopTemplate" containerClass="popover-warning" triggers="" #pop="bs-popover"
                (mouseenter)="model.stepCall.getAllWarnings().length > 0 ? pop.show():null"
                (mouseleave)="model.stepCall.getAllWarnings().length > 0 ? pop.hide():null">
             </i>
             <ng-template #warningPopTemplate>
-                <i class="fa fa-exclamation-triangle error_color" aria-hidden="true"></i>
+                <i class="fas fa-exclamation-triangle error_color" aria-hidden="true"></i>
                 <div *ngFor="let warning of model.stepCall.getAllWarnings()">
                     <div>{{warning.message}}</div>
                 </div>
@@ -43,27 +43,27 @@
                  title="{{isUndefinedStep() ? 'Define Step': 'Edit Step'}}"
                  class="btn btn-default btn-xs btn-group"
                 (click)="editStep(); $event.stopPropagation()">
-                <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                <i class="fa_my-edit" aria-hidden="true"></i>
             </div>
 
             <div title="Move Step Up"
                  *ngIf="!isFirstStep()"
                  class="btn btn-default btn-xs btn-group"
                  (click)="moveStepUp(); $event.stopPropagation()">
-                <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                <i class="fas fa-arrow-up" aria-hidden="true"></i>
             </div>
 
             <div title="Move Step Down"
                  *ngIf="!isLastStep()"
                  class="btn btn-default btn-xs btn-group"
                  (click)="moveStepDown(); $event.stopPropagation()">
-                <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                <i class="fas fa-arrow-down" aria-hidden="true"></i>
             </div>
 
             <div title="Remove Step"
                  class="btn btn-default btn-xs btn-group"
                  (click)="removeStep(); $event.stopPropagation()">
-                <i class="fa fa-trash" aria-hidden="true"></i>
+                <i class="fa_my-delete" aria-hidden="true"></i>
             </div>
         </div>
     </div>

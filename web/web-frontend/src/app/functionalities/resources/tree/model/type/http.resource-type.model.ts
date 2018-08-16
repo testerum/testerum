@@ -9,7 +9,7 @@ export class HttpResourceType implements ResourceType {
    readonly fileExtension: string = null;
 
     name:string = this.rootFilePath.getLastPathPart();
-    iconClass: string = "fa fa-globe";
+    iconClass: string = "fas fa-globe";
     resourceUrl: string;
     createSubResourceUrl:any[] = null;
 

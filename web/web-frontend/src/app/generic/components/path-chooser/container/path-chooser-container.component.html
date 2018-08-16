@@ -8,8 +8,8 @@
          (dblclick)="collapseNode()">
 
         <i aria-hidden="true"
-           [class.fa_my-tree-folder-closed]="!isOpenedNode()"
-           [class.fa_my-tree-folder-opened]="isOpenedNode()"></i>
+           [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
+           [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
 
         {{model.name}}
 
@@ -19,20 +19,20 @@
 
             <div title="Create Folder" class="btn btn-default btn-xs btn-group"
                  (click)="showCreateDirectoryModal(); $event.stopPropagation()">
-                <i class="fa fa-folder-open" aria-hidden="true"></i>
+                <i class="fa_my-folder-opened" aria-hidden="true"></i>
             </div>
 
             <div title="Edit Folder" class="btn btn-default btn-xs btn-group"
                  *ngIf="!model.isRootPackage"
                  (click)="showEditDirectoryNameModal(); $event.stopPropagation()">
-                <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                <i class="fa_my-edit" aria-hidden="true"></i>
             </div>
 
             <div title="Delete Folder" class="btn btn-default btn-xs btn-group"
                  *ngIf="!model.isRootPackage"
                  (click)="deleteDirectory(); $event.stopPropagation()">
                 <!--TODO Ionut: implement click function DELETE_DIRECTORY or remove-->
-                <i class="fa fa-trash" aria-hidden="true"></i>
+                <i class="fa_my-delete" aria-hidden="true"></i>
             </div>
         </div>
     </div>

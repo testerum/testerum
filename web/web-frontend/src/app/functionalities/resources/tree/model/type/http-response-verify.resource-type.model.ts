@@ -7,7 +7,7 @@ export class HttpResponseVerifyResourceType implements ResourceType {
     readonly fileExtension: string = "http.response.verify.yaml";
 
     name:string = this.rootFilePath.getLastPathPart();
-    iconClass: string = "fa fa-reply flip";
+    iconClass: string = "fas fa-reply flip";
     resourceUrl: string = "/automated/resources/http/response_verify/";
     createSubResourceUrl:any[] = ["/automated/resources/http/response/create", {"path": this.rootFilePath}];
 

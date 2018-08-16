@@ -9,7 +9,7 @@ export class RdbmsRootResourceType implements ResourceType {
    readonly fileExtension: string = null;
 
     name:string = this.rootFilePath.getLastPathPart();
-    iconClass: string = "fa fa-database";
+    iconClass: string = "fas fa-database";
     resourceUrl: string;
     createSubResourceUrl:any[] = null;
 

@@ -7,7 +7,7 @@ export class HttpRequestResourceType implements ResourceType {
     readonly fileExtension: string = "http.request.yaml";
 
     name:string = this.rootFilePath.getLastPathPart();
-    iconClass: string = "fa fa-share";
+    iconClass: string = "fas fa-share";
     resourceUrl: string = "/automated/resources/http/request/"; //TODO Ionut: after INLINE check if is still need it
     createSubResourceUrl:any[] = ["/automated/resources/http/request/create", {"path": this.rootFilePath}]; //TODO Ionut: after INLINE check if is still need it
 

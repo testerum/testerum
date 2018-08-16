@@ -9,7 +9,7 @@ export class RdbmsSqlResourceType implements ResourceType {
    readonly fileExtension: string = "sql";
 
    readonly name:string = this.rootFilePath.getLastPathPart();
-   readonly iconClass: string = "fa fa-table";
+   readonly iconClass: string = "fas fa-table";
    readonly resourceUrl: string = "/automated/resources/rdbms/sql/";
    readonly createSubResourceUrl:any[] = ["/automated/resources/rdbms/sql/create", {"path": this.rootFilePath}];
 

@@ -11,7 +11,7 @@
 
             <i *ngIf="model.children.length > 0"
                style="width: 10px;"
-               class="fa arrow-icon"
+               class="fas arrow-icon"
                [class.fa-caret-right]="!model.jsonTreeNodeState.showChildren"
                [class.fa-caret-down]="model.jsonTreeNodeState.showChildren"
                aria-hidden="true"></i>
@@ -42,11 +42,11 @@
 
             <div title="Select Step" class="btn btn-default btn-xs btn-group"
                  (click)="selectStepFromPopup(); $event.stopPropagation()">
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                <i class="fa_my-plus" aria-hidden="true"></i>
             </div>
             <div title="Remove Step" class="btn btn-default btn-xs btn-group"
                  (click)="removeStep(); $event.stopPropagation()">
-                <i class="fa fa-trash" aria-hidden="true"></i>
+                <i class="fa_my-delete" aria-hidden="true"></i>
             </div>
         </div>
     </div>
