@@ -49,13 +49,13 @@ class ScannerService(private val settingsManager: SettingsManagerImpl,
     }
 
     private fun getJarFiles(): List<Path> {
-        val basicStepsDirectory: Path = getBasicStepsDirectory()
+        val basicStepsDirectories: Path = getBasicStepsDirectory()
 
         val isJarFile = BiPredicate { file: Path, _: BasicFileAttributes ->
             Files.isRegularFile(file) && file.toString().endsWith(".jar")
         }
 
-        Files.find(basicStepsDirectory, 1, isJarFile).use { stream ->
+        Files.find(basicStepsDirectories, 1, isJarFile).use { stream ->
             return stream.collect(Collectors.toList())
         }
     }

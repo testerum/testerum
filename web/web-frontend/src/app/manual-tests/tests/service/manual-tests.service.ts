@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 import {Router} from "@angular/router";
 import {ManualTestModel} from "../../model/manual-test.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
-import {UpdateManualTestModel} from "../../model/operation/update-manual-test.model";
 import {RenamePath} from "../../../model/infrastructure/path/rename-path.model";
 import {CopyPath} from "../../../model/infrastructure/path/copy-path.model";
 import {ArrayUtil} from "../../../utils/array.util";
@@ -32,8 +31,8 @@ export class ManualTestsService {
             .delete<void>(this.TESTS_URL, httpOptions);
     }
 
-    createTest(testModel:ManualTestModel): Observable<ManualTestModel> {
-        let body = testModel.serialize();
+    save(manualTestModel: ManualTestModel): Observable<ManualTestModel> {
+        let body = manualTestModel.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type':  'application/json',
@@ -41,20 +40,7 @@ export class ManualTestsService {
         };
 
         return this.http
-            .post<ManualTestModel>(this.TESTS_URL + "/create", body, httpOptions).pipe(
-            map(res => new ManualTestModel().deserialize(res)));
-    }
-
-    updateTest(updateManualTestModel:UpdateManualTestModel): Observable<ManualTestModel> {
-        let body = updateManualTestModel.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
-
-        return this.http
-            .post<ManualTestModel>(this.TESTS_URL + "/update", body, httpOptions).pipe(
+            .post<ManualTestModel>(this.TESTS_URL + "/save", body, httpOptions).pipe(
             map(res => new ManualTestModel().deserialize(res)));
     }
 

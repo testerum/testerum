@@ -106,7 +106,7 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
     deleteAction(): void {
         this.areYouSureModalComponent.show(
             "Delete Resource",
-            "Are you shore you want to delete this resource?",
+            "Are you sure you want to delete this resource?",
             (action: AreYouSureModalEnum) => {
                 if (action == AreYouSureModalEnum.OK) {
                     this.resourceService.deleteResource(this.resource.path).subscribe(result => {

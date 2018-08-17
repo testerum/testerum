@@ -3,9 +3,9 @@ package com.testerum.service.tests.resolver
 import com.testerum.model.step.StepCall
 import com.testerum.model.step.UndefinedStepDef
 import com.testerum.model.test.TestModel
-import com.testerum.service.step.StepService
+import com.testerum.service.step.StepCache
 
-class TestResolver(private val stepService: StepService) {
+class TestResolver(private val stepCache: StepCache) {
 
     fun resolveSteps(testModel: TestModel, throwExceptionOnNotFound: Boolean = true): TestModel {
 
@@ -13,7 +13,7 @@ class TestResolver(private val stepService: StepService) {
         for (stepCall in testModel.stepCalls) {
 
             val stepDef = stepCall.stepDef
-            val resolvedStepDef = stepService.getStepDefByPhaseAndPattern(stepPhase = stepDef.phase, stepPattern = stepDef.stepPattern)
+            val resolvedStepDef = stepCache.getStepDefByPhaseAndPattern(stepPhase = stepDef.phase, stepPattern = stepDef.stepPattern)
 
             if (throwExceptionOnNotFound && resolvedStepDef is UndefinedStepDef) {
                 throw RuntimeException("The step [${stepDef.getText()}] has bean deleted")
@@ -22,14 +22,14 @@ class TestResolver(private val stepService: StepService) {
             resolvedStepCalls += StepCall(
                     stepCall.id,
                     resolvedStepDef,
-                    stepService.resolveArguments(stepCall.args, resolvedStepDef)
+                    stepCache.resolveArguments(stepCall.args, resolvedStepDef)
             )
         }
 
         return TestModel(
+                text = testModel.text,
                 path = testModel.path,
                 properties = testModel.properties,
-                text = testModel.text,
                 description = testModel.description,
                 tags = testModel.tags,
                 stepCalls = resolvedStepCalls

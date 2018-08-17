@@ -27,10 +27,10 @@ import com.testerum.service.resources.handler.RdbmsConnectionConfigHandler
 import com.testerum.service.resources.rdbms.NetworkService
 import com.testerum.service.resources.validators.PathConflictValidation
 import com.testerum.service.resources.validators.RdbmsConnectionConfigValidator
+import com.testerum.service.save.SaveService
 import com.testerum.service.scanner.ScannerService
-import com.testerum.service.step.StepService
+import com.testerum.service.step.StepCache
 import com.testerum.service.step.StepUpdateCompatibilityService
-import com.testerum.service.step.StepUpdateService
 import com.testerum.service.step.impl.BasicStepsService
 import com.testerum.service.step.impl.ComposedStepsService
 import com.testerum.service.tags.TagsService
@@ -48,7 +48,7 @@ import java.nio.file.Path
 
 typealias ScannerServiceFactory = (SettingsManagerImpl, StepLibraryCacheManger) -> ScannerService
 
-typealias StepServiceFactory = (BasicStepsService, ComposedStepsService, WarningService) -> StepService
+typealias StepServiceFactory = (BasicStepsService, ComposedStepsService, WarningService) -> StepCache
 
 class ServiceModuleFactory(context: ModuleFactoryContext,
                            scannerModuleFactory: TesterumScannerModuleFactory,
@@ -60,7 +60,7 @@ class ServiceModuleFactory(context: ModuleFactoryContext,
                                        .apply { initInBackgroundThread() }
                            },
                            stepServiceFactory: StepServiceFactory = { basicStepsService, composedStepsService, warningService ->
-                               StepService(basicStepsService, composedStepsService, warningService)
+                               StepCache(basicStepsService, composedStepsService, warningService)
                                        .apply { initInBackgroundThread() }
                            }
 ) : BaseModuleFactory(context) {
@@ -140,7 +140,6 @@ class ServiceModuleFactory(context: ModuleFactoryContext,
     )
 
     private val composedStepsService = ComposedStepsService(
-            uiToFileStepDefMapper = uiToFileStepDefMapper,
             fileToUiStepMapper = fileToUiStepMapper,
             fileRepositoryService = fileRepositoryModuleFactory.fileRepositoryService,
             warningService = warningService
@@ -152,10 +151,7 @@ class ServiceModuleFactory(context: ModuleFactoryContext,
 
     val testsService = TestsService(
             testResolver = testResolver,
-            stepService = stepService,
             fileRepositoryService = fileRepositoryModuleFactory.fileRepositoryService,
-            resourcesService = resourcesService,
-            uiToFileTestMapper = uiToFileTestMapper,
             fileToUiTestMapper = fileToUiTestMapper,
             warningService = warningService
     )
@@ -186,22 +182,25 @@ class ServiceModuleFactory(context: ModuleFactoryContext,
     )
 
     val stepUpdateCompatibilityService = StepUpdateCompatibilityService(
-            stepService = stepService,
+            stepCache = stepService,
             testsService = testsService
-    )
-
-    val stepUpdateService = StepUpdateService(
-            stepService = stepService,
-            composedStepsService = composedStepsService,
-            stepUpdateCompatibilityService = stepUpdateCompatibilityService,
-            testsService = testsService,
-            warningService = warningService
     )
 
     val tagsService = TagsService(
             featureService = featureService,
             testsService = testsService,
-            stepService = stepService
+            stepCache = stepService
+    )
+
+    val saveService = SaveService(
+            fileRepositoryService = fileRepositoryModuleFactory.fileRepositoryService,
+            testsService = testsService,
+            uiToFileTestMapper = uiToFileTestMapper,
+            stepUpdateCompatibilityService = stepUpdateCompatibilityService,
+            stepCache = stepService,
+            uiToFileStepDefMapper = uiToFileStepDefMapper,
+            resourcesService = resourcesService,
+            warningService = warningService
     )
 
 }

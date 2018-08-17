@@ -9,7 +9,6 @@ import {ErrorService} from "../../../service/error.service";
 import {FormUtil} from "../../../utils/form.util";
 import {ValidationErrorResponse} from "../../../model/exception/validation-error-response.model";
 import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/step/CheckComposedStepDefUpdateCompatibilityResponse";
-import {UpdateComposedStepDef} from "../../../model/step/UpdateComposedStepDef";
 import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
 import {UrlService} from "../../../service/url.service";
 import {ComposedStepViewComponent} from "../../../generic/components/step/composed-step-view/composed-step-view.component";
@@ -104,18 +103,9 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
     saveAction(): void {
         this.composedStepViewComponent.onBeforeSave();
         if (this.isCreateAction) {
-            this.stepsService.createComposedStepDef(this.model).subscribe(
-                composedStepDef => {
-                    this.actionsAfterSave(composedStepDef);
-                },
-                (validationErrorResponse: ValidationErrorResponse) => {
-                    FormUtil.setErrorsToForm(this.composedStepViewComponent.form, validationErrorResponse.validationModel);
-                    this.errorService.showGenericValidationError(validationErrorResponse);
-                }
-            );
+            this.doSave();
         } else {
-            let updateComposedStepDef = new UpdateComposedStepDef(this.model.path, this.model);
-            this.stepsService.checkComposedStepDefUpdate(updateComposedStepDef).subscribe (
+            this.stepsService.checkComposedStepDefUpdate(this.model).subscribe (
                 (compatibilityResponse: CheckComposedStepDefUpdateCompatibilityResponse) => {
                     if(!compatibilityResponse.isUniqueStepPattern) {
                         let formValidationModel = new FormValidationModel();
@@ -125,14 +115,14 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
                     }
 
                     if(compatibilityResponse.isCompatible) {
-                        this.callUpdateAfterCheck();
+                        this.doSave();
                     } else {
                         this.updateIncompatibilityDialogComponent.show(
                             compatibilityResponse.pathsForAffectedTests,
                             compatibilityResponse.pathsForDirectAffectedSteps,
                             compatibilityResponse.pathsForTransitiveAffectedSteps
                         ).subscribe(callback => {
-                            this.callUpdateAfterCheck()
+                            this.doSave()
                         })
                     }
                 }
@@ -140,8 +130,8 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
         }
     }
 
-    private callUpdateAfterCheck(): void {
-        this.stepsService.updateComposedStepDef(this.model).subscribe(
+    private doSave(): void {
+        this.stepsService.save(this.model).subscribe(
             composedStepDef => {
                 this.actionsAfterSave(composedStepDef);
             },

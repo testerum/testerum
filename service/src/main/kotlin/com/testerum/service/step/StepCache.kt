@@ -21,15 +21,15 @@ import com.testerum.service.step.impl.BasicStepsService
 import com.testerum.service.step.impl.ComposedStepsService
 import com.testerum.service.step.impl.StepsResolver
 import com.testerum.service.step.util.StepsFilterUtil
-import com.testerum.service.step.util.getStepWithTheSameStepDef
+import com.testerum.service.step.util.hasTheSameStepPattern
 import com.testerum.service.warning.WarningService
 import java.util.concurrent.Callable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 
-open class StepService(private val basicStepsService: BasicStepsService,
-                       private val composedStepsService: ComposedStepsService,
-                       private val warningService: WarningService) {
+open class StepCache(private val basicStepsService: BasicStepsService,
+                     private val composedStepsService: ComposedStepsService,
+                     private val warningService: WarningService /* todo: remove warning service from here*/) {
 
     @Volatile private var steps: MutableMap<String, StepDef> = hashMapOf()
     private val basicStepsMap: HashMap<String, BasicStepDef> = hashMapOf()
@@ -59,7 +59,7 @@ open class StepService(private val basicStepsService: BasicStepsService,
 
             basicStepsMap.clear()
             basicStepsMap.putAll(
-                    basicSteps.associateBy({ StepHashUtil.calculateStepHash(it)}, {it})
+                    basicSteps.associateBy({ StepHashUtil.calculateStepHash(it) }, {it})
             )
 
             val unresolvedComposedSteps = composedStepsLoaderFuture.get()
@@ -149,7 +149,7 @@ open class StepService(private val basicStepsService: BasicStepsService,
         return result
     }
 
-    fun getComposedStepByPath(searchedPath: Path): ComposedStepDef? {
+    fun getComposedStepAtPath(searchedPath: Path): ComposedStepDef? {
         stepsMapLoadersLatch.await()
 
         val composedSteps = getComposedSteps()
@@ -174,47 +174,52 @@ open class StepService(private val basicStepsService: BasicStepsService,
         return null
     }
 
-    fun create(composedStepDef: ComposedStepDef): ComposedStepDef {
+    fun save(composedStepDef: ComposedStepDef): ComposedStepDef {
+        println("StepCache.save($composedStepDef)")
         stepsMapLoadersLatch.await()
 
-        val stepDefWithCollision = getStepWithTheSameStepDef(composedStepDef, steps.values.toList())
-        if (stepDefWithCollision != null) {
-            val stepInCollisionType = if (stepDefWithCollision is BasicStepDef) "Basic Step" else "Composed FileStep"
-            val stepInCollisionPath = if (stepDefWithCollision is BasicStepDef) {
-                stepDefWithCollision.path.toString().replace("/", "") + "()"
-            } else {
-                "/"+stepDefWithCollision.path.toString()
+        val isCreate = (composedStepDef.oldPath == null)
+        println("StepCache.save: isCreate=$isCreate")
+        if (isCreate) {
+            val stepDefWithCollision = getCollidingStep(composedStepDef)
+            println("StepCache.save: stepDefWithCollision=$stepDefWithCollision")
+            if (stepDefWithCollision != null) {
+                val stepInCollisionType = if (stepDefWithCollision is BasicStepDef) "Basic Step" else "Composed FileStep"
+                val stepInCollisionPath = if (stepDefWithCollision is BasicStepDef) {
+                    stepDefWithCollision.path.toString().replace("/", "") + "()"
+                } else {
+                    "/"+stepDefWithCollision.path.toString()
+                }
+                val validationModel = ValidationModel(
+                        "Another step with the same definition exists. \n" +
+                                "The conflicting step has type [$stepInCollisionType] and is at path [$stepInCollisionPath]"
+                )
+                validationModel.fieldsWithValidationErrors["stepPattern"] = "step_pattern_already_exists"
+
+                throw ValidationException(validationModel)
             }
-            val validationModel = ValidationModel(
-                    "Another step with the same definition exists. \n" +
-                            "The conflicting step has type [$stepInCollisionType] and is at path [$stepInCollisionPath]"
-            )
-            validationModel.fieldsWithValidationErrors["stepPattern"] = "step_pattern_already_exists"
-            throw ValidationException(
-                    validationModel
-            )
         }
 
-        val savedComposedStep = composedStepsService.create(composedStepDef)
         reinitializeComposedSteps()
-        val resolvedSavedComposedStep = resolveComposedStep(savedComposedStep)
+        val resolvedSavedComposedStep = resolveComposedStep(composedStepDef)
 
         return warningService.composedStepWithWarnings(resolvedSavedComposedStep, keepExistingWarnings = true)
     }
 
-    fun update(composedStepDef: ComposedStepDef): ComposedStepDef {
-        stepsMapLoadersLatch.await()
+    private fun getCollidingStep(stepDef: StepDef): StepDef? {
+        return steps.values.firstOrNull {
+            val isNotUndefined = it !is UndefinedStepDef
+            val hasDifferentPath = it.path != stepDef.path
+            val hasSamePattern = stepDef.stepPattern.hasTheSameStepPattern(it.stepPattern)
 
-        val savedComposedStep = composedStepsService.update(composedStepDef)
-        reinitializeComposedSteps()
-
-        return resolveComposedStep(savedComposedStep)
+            isNotUndefined && hasDifferentPath && hasSamePattern
+        }
     }
 
-    fun remove(path: Path) {
+    fun removeComposedStep(path: Path) {
         stepsMapLoadersLatch.await()
 
-        val composedStepByPath = getComposedStepByPath(path)
+        val composedStepByPath = getComposedStepAtPath(path)
         if (composedStepByPath != null) {
             setUnresolvedStepsCallsOf(composedStepByPath)
             steps.remove(StepHashUtil.calculateStepHash(composedStepByPath.phase, composedStepByPath.stepPattern))
@@ -256,7 +261,7 @@ open class StepService(private val basicStepsService: BasicStepsService,
         }
     }
 
-    fun renameDirectory(renamePath: RenamePath): Path {
+    fun renameComposedStepDirectory(renamePath: RenamePath): Path {
         stepsMapLoadersLatch.await()
 
         val renamedPath = composedStepsService.renameDirectory(renamePath)
@@ -268,7 +273,7 @@ open class StepService(private val basicStepsService: BasicStepsService,
         return renamedPath
     }
 
-    fun deleteDirectory(pathToDelete: Path) {
+    fun deleteComposedStepDirectory(pathToDelete: Path) {
         stepsMapLoadersLatch.await()
 
         composedStepsService.deleteDirectory(pathToDelete)
@@ -278,7 +283,7 @@ open class StepService(private val basicStepsService: BasicStepsService,
         )
     }
 
-    fun moveDirectoryOrFile(copyPath: CopyPath) {
+    fun moveComposedStepDirectoryOrFile(copyPath: CopyPath) {
         stepsMapLoadersLatch.await()
 
         composedStepsService.moveDirectoryOrFile(copyPath)

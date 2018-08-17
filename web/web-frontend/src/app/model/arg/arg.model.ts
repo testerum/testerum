@@ -14,6 +14,7 @@ export class Arg implements Serializable<Arg> {
     serverType: string;
     uiType: string;
     path: Path;
+    oldPath: Path;
 
     warnings: Array<Warning> = [];
     descendantsHaveWarnings: boolean = false;
@@ -26,8 +27,11 @@ export class Arg implements Serializable<Arg> {
         this.name = input["name"];
         this.serverType = input["type"];
         this.uiType = ServerToUiTypeMapperUtil.mapServerToUi(this.serverType);
-        if(input["path"]) {
+        if (input["path"]) {
             this.path = Path.deserialize(input["path"]);
+        }
+        if (input["oldPath"]) {
+            this.oldPath = Path.deserialize(input["oldPath"]);
         }
 
         this.content = ResourceMapEnum.deserializeInputForUiType(input["content"], this.uiType);
@@ -59,6 +63,7 @@ export class Arg implements Serializable<Arg> {
             '"name":' + JsonUtil.stringify(this.name) +
             ',"type":' + JsonUtil.stringify(this.uiType) +
             ',"path":' + JsonUtil.stringify(this.path) +
+            ',"oldPath":' + JsonUtil.stringify(this.oldPath) +
             ',"content":' + content +
             ',"warnings": []' +
             '}';
@@ -75,6 +80,7 @@ export class Arg implements Serializable<Arg> {
         if (resourceMapEnumByUiType.resourceTypeInstanceForChildrenFunction) {
             arg.content = resourceMapEnumByUiType.getNewInstance()
         }
+
         return arg;
     }
 }

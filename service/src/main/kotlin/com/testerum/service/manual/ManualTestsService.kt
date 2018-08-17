@@ -11,46 +11,24 @@ import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath
 import com.testerum.model.manual.ManualTest
-import com.testerum.model.manual.operation.UpdateManualTestModel
 import com.testerum.model.repository.enums.FileType
 
 
 class ManualTestsService(private val fileRepositoryService: FileRepositoryService) {
 
-    val objectMapper: ObjectMapper = ObjectMapperFactory.createKotlinObjectMapper()
-
-    fun createTest(manualTest: ManualTest): ManualTest {
-
-        val testPath = Path(manualTest.path.directories, manualTest.text, FileType.MANUAL_TEST.fileExtension)
-
-        val fileTestAsString = objectMapper.writeValueAsString(manualTest)
-
-        val createdRepositoryFile = fileRepositoryService.create(
-                RepositoryFileChange(
-                        null,
-                        RepositoryFile(
-                                KnownPath(testPath, FileType.MANUAL_TEST),
-                                fileTestAsString
-                        )
-                )
-        )
-
-        return manualTest.copy(
-                path = createdRepositoryFile.knownPath.asPath()
-        )
+    companion object {
+        private val OBJECT_MAPPER: ObjectMapper = ObjectMapperFactory.createKotlinObjectMapper()
     }
 
-    fun updateTest(updateManualTestModel: UpdateManualTestModel): ManualTest {
-        val manualTest = updateManualTestModel.manualTest
-
-        val oldPath = updateManualTestModel.oldPath
+    fun save(manualTest: ManualTest): ManualTest {
         val newPath = Path(manualTest.path.directories, manualTest.text, FileType.MANUAL_TEST.fileExtension)
+        val oldKnownPath = manualTest.oldPath?.let { KnownPath(it, FileType.MANUAL_TEST) }
 
-        val fileTestAsString = objectMapper.writeValueAsString(manualTest)
+        val fileTestAsString = OBJECT_MAPPER.writeValueAsString(manualTest)
 
-        fileRepositoryService.update(
+        val repositoryFile = fileRepositoryService.save(
                 RepositoryFileChange(
-                        KnownPath(oldPath, FileType.MANUAL_TEST),
+                        oldKnownPath,
                         RepositoryFile(
                                 KnownPath(newPath, FileType.MANUAL_TEST),
                                 fileTestAsString
@@ -58,7 +36,9 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
                 )
         )
 
-        return manualTest.copy(path = newPath)
+        return manualTest.copy(
+                path = repositoryFile.knownPath.asPath()
+        )
     }
 
     fun remove(path: Path) {
@@ -71,7 +51,7 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
 
         val allTestFiles = fileRepositoryService.getAllResourcesByType(FileType.MANUAL_TEST)
         for (testFile in allTestFiles) {
-            val manualTest = objectMapper.readValue<ManualTest>(testFile.body)
+            val manualTest = OBJECT_MAPPER.readValue<ManualTest>(testFile.body)
 
             val resolvedManualTest = manualTest.copy(path = testFile.knownPath.asPath())
             manualTests.add(resolvedManualTest)
@@ -85,7 +65,7 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
                 KnownPath(path, FileType.MANUAL_TEST)
         ) ?: return null
 
-        val manualTest = objectMapper.readValue<ManualTest>(testFile.body)
+        val manualTest = OBJECT_MAPPER.readValue<ManualTest>(testFile.body)
 
         return manualTest.copy(
                 path = testFile.knownPath.asPath()

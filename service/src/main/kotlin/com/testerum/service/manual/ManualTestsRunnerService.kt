@@ -13,58 +13,29 @@ import com.testerum.model.manual.runner.ManualTestExe
 import com.testerum.model.manual.runner.ManualTestsRunner
 import com.testerum.model.manual.runner.enums.ManualTestsRunnerStatus
 import com.testerum.model.manual.runner.operation.UpdateManualTestExecutionModel
-import com.testerum.model.manual.runner.operation.UpdateManualTestsRunnerModel
 import com.testerum.model.repository.enums.FileType
 import java.time.LocalDateTime
 
 
 class ManualTestsRunnerService(private val fileRepositoryService: FileRepositoryService) {
 
-    val objectMapper: ObjectMapper = ObjectMapperFactory.createKotlinObjectMapper()
-
-    fun createTest(manualTestsRunner: ManualTestsRunner): ManualTestsRunner {
-        val manualTestsRunnerToSave = manualTestsRunner.copy(createdDate = LocalDateTime.now())
-
-        val fileName = getFileName(manualTestsRunnerToSave)
-
-        val testPath = Path(manualTestsRunnerToSave.path.directories, fileName, FileType.MANUAL_TESTS_RUNNER.fileExtension)
-
-        val fileTestAsString = objectMapper.writeValueAsString(manualTestsRunnerToSave)
-
-        val createdRepositoryFile = fileRepositoryService.create(
-                RepositoryFileChange(
-                        null,
-                        RepositoryFile(
-                                KnownPath(testPath, FileType.MANUAL_TESTS_RUNNER),
-                                fileTestAsString
-                        )
-                )
-        )
-
-          return manualTestsRunnerToSave.copy(
-                path = createdRepositoryFile.knownPath.asPath()
-        )
+    companion object {
+        private val OBJECT_MAPPER: ObjectMapper = ObjectMapperFactory.createKotlinObjectMapper()
     }
 
-    private fun getFileName(manualTestsRunner: ManualTestsRunner): String {
-        var fileName = if (manualTestsRunner.environment != null) manualTestsRunner.environment + "_" else ""
-        fileName += if (manualTestsRunner.applicationVersion != null) manualTestsRunner.applicationVersion else ""
-        return fileName
-    }
+    fun save(manualTestsRunner: ManualTestsRunner): ManualTestsRunner {
+        val resolvedManualTestsRunner = resolveRunnerWithCurrentStateFromFile(manualTestsRunner)
 
-    fun updateTest(updateManualTestsRunnerModel: UpdateManualTestsRunnerModel): ManualTestsRunner {
-        val resolvedManualTestsRunner = resolveRunnerWithCurrentStateFromFile(updateManualTestsRunnerModel)
-
-        val oldPath = updateManualTestsRunnerModel.oldPath
-
-        val fileName = getFileName(updateManualTestsRunnerModel.manualTestsRunner)
+        val fileName = getFileName(manualTestsRunner)
         val newPath = Path(resolvedManualTestsRunner.path.directories, fileName, FileType.MANUAL_TESTS_RUNNER.fileExtension)
 
-        val fileTestAsString = objectMapper.writeValueAsString(resolvedManualTestsRunner)
+        val fileTestAsString = OBJECT_MAPPER.writeValueAsString(resolvedManualTestsRunner)
 
-        val repositoryFile = fileRepositoryService.update(
+        val oldKnownPath = manualTestsRunner.oldPath?.let { KnownPath(it, FileType.MANUAL_TESTS_RUNNER) }
+
+        val repositoryFile = fileRepositoryService.save(
                 RepositoryFileChange(
-                        KnownPath(oldPath, FileType.MANUAL_TESTS_RUNNER),
+                        oldKnownPath,
                         RepositoryFile(
                                 KnownPath(newPath, FileType.MANUAL_TESTS_RUNNER),
                                 fileTestAsString
@@ -79,13 +50,18 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
         return resolveManualTestsRunner(resolvedTestModel, repositoryFile)
     }
 
-    private fun resolveRunnerWithCurrentStateFromFile(updateManualTestsRunnerModel: UpdateManualTestsRunnerModel): ManualTestsRunner {
-        val manualTestsRunner = updateManualTestsRunnerModel.manualTestsRunner
+    private fun getFileName(manualTestsRunner: ManualTestsRunner): String {
+        var fileName = if (manualTestsRunner.environment != null) manualTestsRunner.environment + "_" else ""
+        fileName += if (manualTestsRunner.applicationVersion != null) manualTestsRunner.applicationVersion else ""
+        return fileName
+    }
 
+    private fun resolveRunnerWithCurrentStateFromFile(manualTestsRunner: ManualTestsRunner): ManualTestsRunner {
         val resolvedTests: MutableList<ManualTestExe> = mutableListOf()
 
         val testsToExecute = manualTestsRunner.testsToExecute
-        val oldTestRunner = getTestsRunnerAtPath(updateManualTestsRunnerModel.oldPath)?: return manualTestsRunner
+        val oldTestRunner = manualTestsRunner.oldPath?.let { getTestsRunnerAtPath(it) }
+                ?: return manualTestsRunner
         val oldTestToExecute = oldTestRunner.testsToExecute
         for (test in testsToExecute) {
             val oldTest = oldTestToExecute.find { it.path == test.path }
@@ -110,9 +86,9 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
                 finalizedDate = LocalDateTime.now()
         )
 
-        val testRunnerAsString = objectMapper.writeValueAsString(updatedTestsRunner)
+        val testRunnerAsString = OBJECT_MAPPER.writeValueAsString(updatedTestsRunner)
 
-        val repositoryFile = fileRepositoryService.update(
+        val repositoryFile = fileRepositoryService.save(
                 RepositoryFileChange(
                         KnownPath(path, FileType.MANUAL_TESTS_RUNNER),
                         RepositoryFile(
@@ -133,9 +109,9 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
                 finalizedDate = null
         )
 
-        val testRunnerAsString = objectMapper.writeValueAsString(updatedTestsRunner)
+        val testRunnerAsString = OBJECT_MAPPER.writeValueAsString(updatedTestsRunner)
 
-        val repositoryFile = fileRepositoryService.update(
+        val repositoryFile = fileRepositoryService.save(
                 RepositoryFileChange(
                         KnownPath(path, FileType.MANUAL_TESTS_RUNNER),
                         RepositoryFile(
@@ -154,7 +130,7 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
 
         val allTestFiles = fileRepositoryService.getAllResourcesByType(FileType.MANUAL_TESTS_RUNNER)
         for (testFile in allTestFiles) {
-            val manualTest = objectMapper.readValue<ManualTestsRunner>(testFile.body)
+            val manualTest = OBJECT_MAPPER.readValue<ManualTestsRunner>(testFile.body)
 
             val resolvedManualTest = resolveManualTestsRunner(manualTest, testFile)
             val resolvedWithoutTests = resolvedManualTest.copy(testsToExecute = emptyList())
@@ -169,7 +145,7 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
                 KnownPath(path, FileType.MANUAL_TESTS_RUNNER)
         ) ?: return null
 
-        val manualTest = objectMapper.readValue<ManualTestsRunner>(testFile.body)
+        val manualTest = OBJECT_MAPPER.readValue<ManualTestsRunner>(testFile.body)
 
         return resolveManualTestsRunner(manualTest, testFile)
     }
@@ -217,9 +193,9 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
                 testsToExecute = newTestsToExecute
         )
 
-        val fileTestAsString = objectMapper.writeValueAsString(newTestsRunner)
+        val fileTestAsString = OBJECT_MAPPER.writeValueAsString(newTestsRunner)
         val testsRunnerKnownPath = KnownPath(updateManualTestExecutionModel.manualTestRunnerPath, FileType.MANUAL_TESTS_RUNNER)
-        fileRepositoryService.update(
+        fileRepositoryService.save(
                 RepositoryFileChange(
                         testsRunnerKnownPath,
                         RepositoryFile(

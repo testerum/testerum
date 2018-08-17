@@ -3,8 +3,6 @@ package com.testerum.service.step.impl
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.file_repository.FileRepositoryService
 import com.testerum.file_repository.model.KnownPath
-import com.testerum.file_repository.model.RepositoryFile
-import com.testerum.file_repository.model.RepositoryFileChange
 import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath
@@ -13,17 +11,13 @@ import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.tree.ComposedContainerStepNode
 import com.testerum.model.step.tree.builder.ComposedStepDirectoryTreeBuilder
 import com.testerum.service.mapper.FileToUiStepMapper
-import com.testerum.service.mapper.UiToFileStepDefMapper
 import com.testerum.service.warning.WarningService
 import com.testerum.test_file_format.stepdef.FileStepDefParserFactory
-import com.testerum.test_file_format.stepdef.FileStepDefSerializer
-import java.io.StringWriter
 import java.nio.file.Files
 
-open class ComposedStepsService(val uiToFileStepDefMapper: UiToFileStepDefMapper,
-                                val fileToUiStepMapper: FileToUiStepMapper,
-                                val fileRepositoryService: FileRepositoryService,
-                                val warningService: WarningService) {
+open class ComposedStepsService(private val fileToUiStepMapper: FileToUiStepMapper,
+                                private val fileRepositoryService: FileRepositoryService,
+                                private val warningService: WarningService) {
 
     companion object {
         private val COMPOSED_STEP_PARSER = ParserExecuter(FileStepDefParserFactory.stepDef())
@@ -46,62 +40,6 @@ open class ComposedStepsService(val uiToFileStepDefMapper: UiToFileStepDefMapper
         fileRepositoryService.delete(
                 knownPath = KnownPath(path, FileType.COMPOSED_STEP)
         )
-    }
-
-    fun create(composedStepDef: ComposedStepDef): ComposedStepDef {
-        val stepPath = Path(composedStepDef.path.directories, composedStepDef.getText(), FileType.COMPOSED_STEP.fileExtension)
-
-        val stepAsString = serializeComposedStepDefToFileFormat(composedStepDef)
-
-        val createdRepositoryFile= fileRepositoryService.create(
-                RepositoryFileChange(
-                        null,
-                        RepositoryFile(
-                                KnownPath(stepPath, FileType.COMPOSED_STEP),
-                                stepAsString
-                        )
-                )
-        )
-
-        return composedStepDef.copy(
-                path = createdRepositoryFile.knownPath.asPath()
-        )
-    }
-
-    fun update(composedStepDef: ComposedStepDef): ComposedStepDef {
-        val path = composedStepDef.path
-
-        val newStepPath = Path(path.directories, composedStepDef.getText(), FileType.COMPOSED_STEP.fileExtension)
-
-        val oldStepPath = if (path.isFile()) {
-            path
-        } else {
-            // assume that the frontend sent only the parent directory as path,
-            // and that this is a new step that needs to be saved
-            newStepPath
-        }
-
-        val stepAsString = serializeComposedStepDefToFileFormat(composedStepDef)
-
-        fileRepositoryService.update(
-                RepositoryFileChange(
-                        KnownPath(oldStepPath, FileType.COMPOSED_STEP),
-                        RepositoryFile(
-                                KnownPath(newStepPath, FileType.COMPOSED_STEP),
-                                stepAsString
-                        )
-                )
-        )
-
-        return composedStepDef.copy(path = newStepPath)
-    }
-
-    private fun serializeComposedStepDefToFileFormat(composedStepDef: ComposedStepDef): String {
-        val fileStepDef = uiToFileStepDefMapper.mapToFileModel(composedStepDef)
-        val destination = StringWriter()
-        FileStepDefSerializer.serialize(fileStepDef, destination, 0)
-
-        return destination.toString()
     }
 
     fun renameDirectory(renamePath: RenamePath): Path {

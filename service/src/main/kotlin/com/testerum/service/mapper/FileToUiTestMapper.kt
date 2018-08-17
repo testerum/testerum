@@ -9,11 +9,10 @@ import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
 open class FileToUiTestMapper(private val fileToUiStepMapper: FileToUiStepMapper) {
 
     fun mapToUiModel(fileTestDef: FileTestDef, testFile: RepositoryFile): TestModel {
-
         return TestModel(
+                text = fileTestDef.name,
                 path = testFile.knownPath.asPath(),
                 properties = mapTestProperties(fileTestDef.properties),
-                text = fileTestDef.name,
                 description = fileTestDef.description,
                 tags = fileTestDef.tags,
                 stepCalls = fileToUiStepMapper.mapStepsCalls(

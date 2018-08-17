@@ -10,7 +10,7 @@ import com.testerum.runner_cmdline.module_di.submodules.RunnerTransformersModule
 import com.testerum.scanner.step_lib_scanner.module_di.TesterumScannerModuleFactory
 import com.testerum.service.module_di.ServiceModuleFactory
 import com.testerum.service.scanner.ScannerService
-import com.testerum.service.step.StepService
+import com.testerum.service.step.StepCache
 import com.testerum.settings.SystemSettings
 import com.testerum.settings.module_di.SettingsModuleFactory
 import java.nio.file.Path
@@ -50,7 +50,7 @@ class RunnerModuleBootstrapper(cmdlineParams: CmdlineParams,
                 ScannerService(settingsManager, stepLibraryCacheManger)
             },
             stepServiceFactory = { basicStepsService, composedStepsService, warningService ->
-                StepService(
+                StepCache(
                         basicStepsService = basicStepsService,
                         composedStepsService = composedStepsService,
                         warningService = warningService

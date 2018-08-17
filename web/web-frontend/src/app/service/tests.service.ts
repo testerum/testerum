@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 import {TestModel} from "../model/test/test.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {CopyPath} from "../model/infrastructure/path/copy-path.model";
-import {UpdateTestModel} from "../model/test/operation/update-test.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
 
@@ -39,7 +38,7 @@ export class TestsService {
             .delete<void>(this.TESTS_URL, httpOptions);
     }
 
-    createTest(testModel:TestModel): Observable<TestModel> {
+    saveTest(testModel: TestModel): Observable<TestModel> {
         let body = testModel.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
@@ -48,20 +47,7 @@ export class TestsService {
         };
 
         return this.http
-            .post<TestModel>(this.TESTS_URL + "/create", body, httpOptions).pipe(
-            map(TestsService.extractTestModel));
-    }
-
-    updateTest(updateTestModel:UpdateTestModel): Observable<TestModel> {
-        let body = updateTestModel.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
-
-        return this.http
-            .post<TestModel>(this.TESTS_URL + "/update", body, httpOptions).pipe(
+            .post<TestModel>(this.TESTS_URL + "/save", body, httpOptions).pipe(
             map(TestsService.extractTestModel));
     }
 

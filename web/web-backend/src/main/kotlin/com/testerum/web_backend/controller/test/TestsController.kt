@@ -2,14 +2,15 @@ package com.testerum.web_backend.controller.test
 
 import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.manual.operation.UpdateTestModel
 import com.testerum.model.test.TestModel
+import com.testerum.service.save.SaveService
 import com.testerum.service.tests.TestsService
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/tests")
-class TestsController(private val testsService: TestsService) {
+class TestsController(private val testsService: TestsService,
+                      private val saveService: SaveService) {
 
     @RequestMapping(method = [RequestMethod.GET], path = [""], params = ["path"])
     @ResponseBody
@@ -22,16 +23,10 @@ class TestsController(private val testsService: TestsService) {
         testsService.remove(Path.createInstance(path))
     }
 
-    @RequestMapping(method = [RequestMethod.POST], path = ["/create"])
+    @RequestMapping(method = [RequestMethod.POST], path = ["/save"])
     @ResponseBody
-    fun create(@RequestBody testModel: TestModel): TestModel {
-        return testsService.createTest(testModel)
-    }
-
-    @RequestMapping(method = [RequestMethod.POST], path = ["/update"])
-    @ResponseBody
-    fun update(@RequestBody updateTestModel: UpdateTestModel): TestModel {
-        return testsService.updateTest(updateTestModel)
+    fun save(@RequestBody testModel: TestModel): TestModel {
+        return saveService.saveTest(testModel)
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/automated/under-path"], params = ["path"])

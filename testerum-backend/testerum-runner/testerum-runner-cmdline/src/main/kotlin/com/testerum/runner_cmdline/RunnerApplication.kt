@@ -24,7 +24,7 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.test_context.TestContextImpl
 import com.testerum.runner_cmdline.transformer.TransformerFactory
 import com.testerum.service.scanner.ScannerService
-import com.testerum.service.step.StepService
+import com.testerum.service.step.StepCache
 import com.testerum.service.variables.VariablesService
 import com.testerum.settings.private_api.SettingsManagerImpl
 
@@ -32,7 +32,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
                         private val settingsManager: SettingsManagerImpl,
                         private val eventsService: EventsService,
                         private val scannerService: ScannerService,
-                        private val stepService: StepService,
+                        private val stepCache: StepCache,
                         private val runnerExecutionTreeBuilder: RunnerExecutionTreeBuilder,
                         private val variablesService: VariablesService,
                         private val testVariables: TestVariablesImpl,
@@ -111,7 +111,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         executionListenerFinder.outputFormat = cmdlineParams.outputFormat
 
         scannerService.init()
-        stepService.loadSteps()
+        stepCache.loadSteps()
     }
 
 

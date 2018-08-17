@@ -6,6 +6,7 @@ import {ManualTestExeModel} from "./manual-test-exe.model";
 export class ManualTestsRunner implements Serializable<ManualTestsRunner>{
 
     path: Path;
+    oldPath: Path;
     environment: string;
     applicationVersion: string;
     status: ManualTestsRunnerStatus = ManualTestsRunnerStatus.IN_EXECUTION;
@@ -25,6 +26,7 @@ export class ManualTestsRunner implements Serializable<ManualTestsRunner>{
 
     deserialize(input: Object): ManualTestsRunner {
         this.path = Path.deserialize(input["path"]);
+        this.oldPath = Path.deserialize(input["oldPath"]);
         this.environment = input['environment'];
         this.applicationVersion = input['applicationVersion'];
         this.status = ManualTestsRunnerStatus.fromString(input['status']);
@@ -53,6 +55,7 @@ export class ManualTestsRunner implements Serializable<ManualTestsRunner>{
         let response = "" +
             '{' +
             '"path":' + JsonUtil.serializeSerializable(this.path) +
+            ',"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) +
             ',"environment":' + JsonUtil.stringify(this.environment) +
             ',"applicationVersion":' + JsonUtil.stringify(this.applicationVersion) +
             ',"status":' + JsonUtil.stringify(this.status.toString());
@@ -67,6 +70,7 @@ export class ManualTestsRunner implements Serializable<ManualTestsRunner>{
             response += ',"testsToExecute":' + JsonUtil.serializeArrayOfSerializable(this.testsToExecute);
         }
         response += '}';
+
         return response;
     }
 }

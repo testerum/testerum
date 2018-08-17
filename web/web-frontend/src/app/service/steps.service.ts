@@ -9,7 +9,6 @@ import {RenamePath} from "../model/infrastructure/path/rename-path.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {CopyPath} from "../model/infrastructure/path/copy-path.model";
 import {CheckComposedStepDefUpdateCompatibilityResponse} from "../model/step/CheckComposedStepDefUpdateCompatibilityResponse";
-import {UpdateComposedStepDef} from "../model/step/UpdateComposedStepDef";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
 import {StepsTreeFilter} from "../model/step/filter/steps-tree-filter.model";
@@ -61,8 +60,8 @@ export class StepsService {
             .delete<void>(this.COMPOSED_STEPS_URL, httpOptions);
     }
 
-    checkComposedStepDefUpdate(model: UpdateComposedStepDef): Observable<CheckComposedStepDefUpdateCompatibilityResponse> {
-        let body = model.serialize();
+    checkComposedStepDefUpdate(composedStepDef: ComposedStepDef): Observable<CheckComposedStepDefUpdateCompatibilityResponse> {
+        let body = composedStepDef.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type':  'application/json',
@@ -74,7 +73,7 @@ export class StepsService {
             map(StepsService.extractCheckComposedStepDefUpdateCompatibilityResponse));
     }
 
-    createComposedStepDef(model: ComposedStepDef): Observable<ComposedStepDef> {
+    save(model: ComposedStepDef): Observable<ComposedStepDef> {
         let body = model.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
@@ -83,20 +82,7 @@ export class StepsService {
         };
 
         return this.http
-            .post<ComposedStepDef>(this.COMPOSED_STEPS_URL + "/create", body, httpOptions).pipe(
-            map(StepsService.extractComposedStepDef));
-    }
-
-    updateComposedStepDef(model: ComposedStepDef): Observable<ComposedStepDef> {
-        let body = model.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
-
-        return this.http
-            .post<ComposedStepDef>(this.COMPOSED_STEPS_URL + "/update", body, httpOptions).pipe(
+            .post<ComposedStepDef>(this.COMPOSED_STEPS_URL + "/save", body, httpOptions).pipe(
             map(StepsService.extractComposedStepDef));
     }
 

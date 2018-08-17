@@ -6,7 +6,6 @@ import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
 import {TestsRunnerService} from "../tests-runner/tests-runner.service";
 import {FeaturesTreeService} from "../features-tree/features-tree.service";
 import {IdUtils} from "../../../utils/id.util";
-import {UpdateTestModel} from "../../../model/test/operation/update-test.model";
 import {Subscription} from "rxjs";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {UrlService} from "../../../service/url.service";
@@ -212,20 +211,9 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     saveAction(): void {
         this.setDescription();
 
-        if(this.isCreateAction) {
-            this.testsService
-                .createTest(this.testModel)
-                .subscribe(savedModel => this.afterSaveHandler(savedModel));
-        } else {
-            let updateTestModel = new UpdateTestModel(
-                this.testModel.path,
-                this.testModel
-            );
-
-            this.testsService
-                .updateTest(updateTestModel)
-                .subscribe(savedModel => this.afterSaveHandler(savedModel));
-        }
+        this.testsService
+            .saveTest(this.testModel)
+            .subscribe(savedModel => this.afterSaveHandler(savedModel));
     }
     private setDescription() {
         this.testModel.description = this.markdownEditor.value;

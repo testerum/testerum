@@ -10,6 +10,7 @@ data class Arg @JsonCreator constructor(@JsonProperty("name") val name: String?,
                                         @JsonProperty("content") val content: String?,
                                         @JsonProperty("type") val type: String,
                                         @JsonProperty("path") val path: Path?,
+                                        @JsonProperty("oldPath") val oldPath: Path? = path,
                                         @JsonProperty("warnings") val warnings: List<Warning> = emptyList()) {
 
     private val _descendantsHaveWarnings: Boolean = false

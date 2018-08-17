@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ManualTestStatus} from "../../model/enums/manual-test-status.enum";
-import {UpdateManualTestModel} from "../../model/operation/update-manual-test.model";
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ManualTestsExecutorTreeService} from "../tree/manual-tests-executor-tree.service";
@@ -128,14 +127,8 @@ export class ManualTestsExecutorEditorComponent implements OnInit {
     }
 
     saveAction(): void {
-        let updateManualTestModel = new UpdateManualTestModel(
-            this.manualTestExeModel.path,
-            this.manualTestExeModel
-        );
-
+        let updateManualTestRunner = new UpdateManualTestExecutionModel(this.manualTestRunnerPath, this.manualTestExeModel);
         this.manualTestsRunnerService
-            let updateManualTestRunner = new UpdateManualTestExecutionModel(this.manualTestRunnerPath, this.manualTestExeModel);
-            this.manualTestsRunnerService
             .updateExecutedTest(updateManualTestRunner)
             .subscribe(manualTestRunner => this.afterSaveHandler(manualTestRunner));
     }

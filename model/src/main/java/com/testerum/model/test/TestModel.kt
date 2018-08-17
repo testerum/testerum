@@ -9,9 +9,10 @@ import com.testerum.model.step.StepCall
 import com.testerum.model.warning.Warning
 
 
-data class TestModel @JsonCreator constructor(@JsonProperty("path") val path: Path,
+data class TestModel @JsonCreator constructor(@JsonProperty("text") val text: String, // todo: rename to "name"
+                                              @JsonProperty("path") val path: Path,
+                                              @JsonProperty("oldPath") val oldPath: Path? = path,
                                               @JsonProperty("properties") val properties: TestProperties,
-                                              @JsonProperty("text") val text: String, // todo: rename to "name"
                                               @JsonProperty("description") val description: String?,
                                               @JsonProperty("tags") val tags: List<String> = emptyList(),
                                               @JsonProperty("stepCalls") val stepCalls: List<StepCall> = emptyList(),
