@@ -10,30 +10,30 @@
 
 
         <!-- BUTTONS RENDERING -->
-        <div class="button-panel btn-group"
-             *ngIf="isEditMode()"
-             [class.hidden]="!hasMouseOver">
+        <div *ngIf="isEditMode()"
+             [class.hidden]="!hasMouseOver"
+             class="button-panel btn-group">
 
             <div
-                title="Add Array" class="btn btn-default btn-xs btn-group"
+                title="Add Array" class="btn btn-default btn-xxs btn-group"
                 (click)="createArrayNode();$event.stopPropagation();">
                 <i class="fa_my-plus" aria-hidden="true"></i><span> [ ]</span>
             </div>
 
             <div
-                title="Add Object" class="btn btn-default btn-xs btn-group"
+                title="Add Object" class="btn btn-default btn-xxs btn-group"
                 (click)="createObjectNode();$event.stopPropagation();">
                 <i class="fa_my-plus" aria-hidden="true"></i><span>{{" { }"}}</span>
             </div>
 
             <div
-                title="Add Null, Boolean, Number or String" class="btn btn-default btn-xs btn-group"
+                title="Add Null, Boolean, Number or String" class="btn btn-default btn-xxs btn-group"
                 (click)="createPrimitiveNode();$event.stopPropagation();">
                 <i class="fa_my-plus" aria-hidden="true"></i><span> S</span>
             </div>
 
             <div
-                title="Delete" class="btn btn-default btn-xs btn-group"
+                title="Delete" class="btn btn-default btn-xxs btn-group"
                 (click)="deleteEntry();$event.stopPropagation();">
                 <i class="fa_my-delete" aria-hidden="true"></i>
             </div>

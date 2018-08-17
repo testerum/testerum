@@ -1,14 +1,17 @@
 .node-attr-label {
-    font-size: smaller;
+    font-size: 1em;
     color: darkblue;
     font-weight: normal;
-    margin-left: 10px;
+    margin-left: 1em;
     margin-bottom: 0;
-    line-height: 20px;
 }
 
 .node-attr-value {
-    font-size: small;
+    font-size: 1em;
     color: darkviolet;
     font-weight: normal;
+}
+.node-attr-input-value {
+    font-size: 0.8em !important;
+    height: 1.4em;
 }
