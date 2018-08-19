@@ -1,4 +1,5 @@
 import { RunnerRootNode } from "./runner-root-node.model";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class TestExecutionResponse implements Serializable<TestExecutionResponse>{
     executionId: number;

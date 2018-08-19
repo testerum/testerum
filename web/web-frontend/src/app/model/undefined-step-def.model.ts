@@ -5,6 +5,7 @@ import {Path} from "./infrastructure/path/path.model";
 import {StepPattern} from "./text/step-pattern.model";
 import {JsonUtil} from "../utils/json.util";
 import {Warning} from "./warning/Warning";
+import {Serializable} from "./infrastructure/serializable.model";
 
 export class UndefinedStepDef implements StepDef, Serializable<UndefinedStepDef> {
 

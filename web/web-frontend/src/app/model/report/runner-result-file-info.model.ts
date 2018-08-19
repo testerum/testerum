@@ -1,5 +1,6 @@
 import {Path} from "../infrastructure/path/path.model";
 import {ExecutionStatusEnum} from "../test/event/enums/execution-status.enum";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class RunnerResultFileInfo implements Serializable<RunnerResultFileInfo> {
 

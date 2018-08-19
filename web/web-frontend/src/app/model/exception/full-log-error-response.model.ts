@@ -1,6 +1,7 @@
 
 import {ErrorResponse} from "./error-response.model";
 import {ErrorCode} from "./enums/error-code.enum";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class FullLogErrorResponse extends ErrorResponse implements Serializable<FullLogErrorResponse> {
 

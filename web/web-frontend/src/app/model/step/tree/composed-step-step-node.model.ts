@@ -4,6 +4,7 @@ import {ComposedStepNode} from "./composed-step-node.model";
 import {StepPhaseEnum} from "../../enums/step-phase.enum";
 import {BasicStepDef} from "../../basic-step-def.model";
 import {ComposedStepDef} from "../../composed-step-def.model";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class ComposedStepStepNode implements ComposedStepNode, Serializable<ComposedStepStepNode> {
 

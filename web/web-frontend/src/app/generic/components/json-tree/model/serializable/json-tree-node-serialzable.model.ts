@@ -1,7 +1,7 @@
-
 import {JsonTreeNode} from "../json-tree-node.model";
 import {JsonTreeContainer} from "../json-tree-container.model";
 import {JsonTreeNodeOptions} from "../behavior/JsonTreeNodeOptions";
+import {Serializable} from "../../../../../model/infrastructure/serializable.model";
 
 export abstract class JsonTreeNodeSerializable implements JsonTreeNode, Serializable<any> {
 

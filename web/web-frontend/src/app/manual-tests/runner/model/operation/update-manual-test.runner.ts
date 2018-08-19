@@ -1,6 +1,7 @@
 import {ManualTestsRunner} from "../manual-tests-runner.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {JsonUtil} from "../../../../utils/json.util";
+import {Serializable} from "../../../../model/infrastructure/serializable.model";
 
 export class UpdateManualTestRunner implements Serializable<UpdateManualTestRunner> {
 

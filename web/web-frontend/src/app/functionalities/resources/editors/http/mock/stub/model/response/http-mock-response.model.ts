@@ -4,6 +4,7 @@ import {HttpMockResponseHeader} from "./http-mock-response-header.model";
 import {JsonUtil} from "../../../../../../../../utils/json.util";
 import {HttpMockResponseBodyType} from "../enums/http-mock-response-body-type.enum";
 import {ArrayUtil} from "../../../../../../../../utils/array.util";
+import {Serializable} from "../../../../../../../../model/infrastructure/serializable.model";
 
 export class HttpMockResponse implements Serializable<HttpMockResponse> {
 

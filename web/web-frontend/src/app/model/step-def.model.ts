@@ -3,6 +3,7 @@ import {TreeNodeModel} from "./infrastructure/tree-node.model";
 import {StepPattern} from "./text/step-pattern.model";
 import {Path} from "./infrastructure/path/path.model";
 import {Warning} from "./warning/Warning";
+import {Serializable} from "./infrastructure/serializable.model";
 
 export interface StepDef extends Serializable<any>, TreeNodeModel {
     id: string

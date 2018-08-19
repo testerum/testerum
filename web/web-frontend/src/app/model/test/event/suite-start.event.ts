@@ -1,8 +1,8 @@
-
 import {RunnerEvent} from "./runner.event";
 import {Path} from "../../infrastructure/path/path.model";
 import {EventKey} from "./fields/event-key.model";
 import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class SuiteStartEvent implements RunnerEvent, Serializable<SuiteStartEvent> {
     time: Date;

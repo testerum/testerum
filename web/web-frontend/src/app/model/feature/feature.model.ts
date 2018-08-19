@@ -3,6 +3,7 @@ import {TreeNodeModel} from "../infrastructure/tree-node.model";
 import {Path} from "../infrastructure/path/path.model";
 import {JsonUtil} from "../../utils/json.util";
 import {Attachment} from "../file/attachment.model";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class Feature implements Serializable<Feature>, TreeNodeModel {
 

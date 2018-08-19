@@ -1,6 +1,7 @@
 import { Path } from "../../infrastructure/path/path.model";
 import { FeatureNode } from "./feature-node.model";
 import { TestProperties } from "../../test/test-properties.model";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class TestFeatureNode implements Serializable<TestFeatureNode>, FeatureNode {
     name: string;

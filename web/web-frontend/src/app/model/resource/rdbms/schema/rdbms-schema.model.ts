@@ -1,5 +1,6 @@
 import {RdbmsTable} from "./rdbms-table.model";
 import {Resource} from "../../resource.model";
+import {Serializable} from "../../../infrastructure/serializable.model";
 
 export class RdbmsSchema implements Serializable<RdbmsSchema> {
 

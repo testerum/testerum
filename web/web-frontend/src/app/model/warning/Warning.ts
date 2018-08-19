@@ -1,4 +1,5 @@
 import {WarningType} from "./WarningType";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class Warning implements Serializable<Warning> {
 

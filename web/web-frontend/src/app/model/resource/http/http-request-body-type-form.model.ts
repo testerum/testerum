@@ -1,4 +1,5 @@
 import {StringUtils} from "../../../utils/string-utils.util";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class HttpRequestBodyTypeForm implements Serializable<HttpRequestBodyTypeForm> {
     key: string;

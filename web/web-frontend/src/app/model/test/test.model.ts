@@ -5,6 +5,7 @@ import {StepCall} from "../step-call.model";
 import {Path} from "../infrastructure/path/path.model";
 import {TestProperties} from "./test-properties.model";
 import {Warning} from "../warning/Warning";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 

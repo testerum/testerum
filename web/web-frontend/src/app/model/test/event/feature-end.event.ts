@@ -3,6 +3,7 @@ import { EventKey } from "./fields/event-key.model";
 import { ExecutionStatusEnum } from "./enums/execution-status.enum";
 import { ExceptionDetail } from "./fields/exception-detail.model";
 import { RunnerEventTypeEnum } from "./enums/runner-event-type.enum";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class FeatureEndEvent implements RunnerEvent, Serializable<FeatureEndEvent> {
     time: Date;

@@ -4,6 +4,7 @@ import {TableRowVerify} from "./table-row-verify.model";
 import {NodeState} from "../enum/node-state.enum";
 import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
 import {JsonUtil} from "../../../../../../../utils/json.util";
+import {Serializable} from "../../../../../../../model/infrastructure/serializable.model";
 
 export class TableVerify implements TreeContainerModel<TableRowVerify, any>, Serializable<TableVerify> {
 

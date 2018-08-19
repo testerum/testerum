@@ -22,17 +22,7 @@ import {RdbmsVerifyTableNodeComponent} from "./editors/database/verify/rdbms-ver
 import {RdbmsVerifyTableRowNodeComponent} from "./editors/database/verify/rdbms-verify-tree/schema-node/table-node/table-row/rdbms-verify-table-row-node.component";
 import {RdbmsVerifyFieldNodeComponent} from "./editors/database/verify/rdbms-verify-tree/schema-node/table-node/table-row/field/rdbms-verify-field-node.component";
 import {RdbmsVerifyTreeService} from "./editors/database/verify/rdbms-verify-tree/rdbms-verify-tree.service";
-import {JsonVerifyRootComponent} from "./editors/json_verify/json-verify-root.component";
-import {JsonVerifyComponent} from "./editors/json_verify/json-verify.component";
-import {JsonVerifyTreeComponent} from "./editors/json_verify/json-verify-tree/json-verify-tree.component";
-import {JsonArrayVerifyNodeComponent} from "./editors/json_verify/json-verify-tree/node-component/array-node/json-array-verify-node.component";
-import {JsonObjectVerifyNodeComponent} from "./editors/json_verify/json-verify-tree/node-component/object-node/json-object-verify-node.component";
-import {JsonVerifyResolver} from "./editors/json_verify/json-verify.resolver";
-import {JsonVerifyTreeService} from "./editors/json_verify/json-verify-tree/json-verify-tree.service";
-import {JsonEditorComponent} from "./editors/json_verify/editor/json-editor.component";
-import {JsonFieldVerifyNodeComponent} from "./editors/json_verify/json-verify-tree/node-component/field-node/json-field-verify-node.component";
-import {JsonPrimitiveVerifyNodeComponent} from "./editors/json_verify/json-verify-tree/node-component/primitive-node/json-primitive-verify-node.component";
-import {JsonEmptyVerifyNodeComponent} from "./editors/json_verify/json-verify-tree/node-component/emtpy-node/json-empty-verify-node.component";
+import {JsonVerifyResourceComponent} from "./editors/json_verify/json-verify-resource.component";
 import {HttpRequestService} from "./editors/http/request/http-request.service";
 import {HttpRequestComponent} from "./editors/http/request/http-request.component";
 import {HttpHeaderComponent} from "./editors/http/request/header/http-header.component";
@@ -64,7 +54,6 @@ import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-pa
 import {ResourceResolver} from "./editors/resource.resolver";
 import {BasicResourceComponent} from "./editors/basic/basic-resource.component";
 import {ResourcesTreeComponent} from "./tree/resources-tree.component";
-import { JsonVerifyEditorComponent } from './editors/json_verify/json-verify-editor/json-verify-editor.component';
 
 @NgModule({
     imports: [
@@ -84,19 +73,12 @@ import { JsonVerifyEditorComponent } from './editors/json_verify/json-verify-edi
         ToolbarModule,
 
         GenericModule,
-
     ],
     entryComponents: [
         RdbmsVerifySchemaNodeComponent,
         RdbmsVerifyTableNodeComponent,
         RdbmsVerifyTableRowNodeComponent,
         RdbmsVerifyFieldNodeComponent,
-
-        JsonArrayVerifyNodeComponent,
-        JsonObjectVerifyNodeComponent,
-        JsonFieldVerifyNodeComponent,
-        JsonPrimitiveVerifyNodeComponent,
-        JsonEmptyVerifyNodeComponent,
 
         HttpMockServerComponent,
         HttpMockComponent,
@@ -105,7 +87,7 @@ import { JsonVerifyEditorComponent } from './editors/json_verify/json-verify-edi
         RdbmsSqlComponent,
         RdbmsVerifyComponent,
         BasicResourceComponent,
-        JsonVerifyComponent,
+        JsonVerifyResourceComponent,
 
     ],
     exports: [
@@ -114,7 +96,7 @@ import { JsonVerifyEditorComponent } from './editors/json_verify/json-verify-edi
         RdbmsVerifyComponent,
 
         BasicResourceComponent,
-        JsonVerifyComponent,
+        JsonVerifyResourceComponent,
         HttpRequestComponent,
         HttpResponseVerifyComponent,
         HttpMockComponent,
@@ -142,17 +124,7 @@ import { JsonVerifyEditorComponent } from './editors/json_verify/json-verify-edi
         RdbmsVerifyTableRowNodeComponent,
         RdbmsVerifyFieldNodeComponent,
 
-        JsonVerifyComponent,
-        JsonVerifyRootComponent,
-        JsonVerifyTreeComponent,
-        JsonEditorComponent,
-        JsonArrayVerifyNodeComponent,
-        JsonObjectVerifyNodeComponent,
-        JsonFieldVerifyNodeComponent,
-        JsonPrimitiveVerifyNodeComponent,
-        JsonEmptyVerifyNodeComponent,
-
-        JsonVerifyEditorComponent,
+        JsonVerifyResourceComponent,
 
         HttpRequestComponent,
         HttpHeaderComponent,
@@ -184,12 +156,10 @@ import { JsonVerifyEditorComponent } from './editors/json_verify/json-verify-edi
     providers: [
         ResourcesTreeService,
         RdbmsVerifyTreeService,
-        JsonVerifyTreeService,
         HttpRequestService,
         HttpResponseVerifyService,
         HttpMockService,
 
-        JsonVerifyResolver,//TODO Ionut: after INLINE check if is still need it
         HttpMockRequestScenarioService,
 
         ResourceResolver,

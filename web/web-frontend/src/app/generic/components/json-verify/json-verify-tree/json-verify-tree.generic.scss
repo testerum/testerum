@@ -1,0 +1,32 @@
+.node-error {
+    text-decoration: underline;
+    text-decoration-color: red;
+}
+
+.error-icon {
+    background-image: url(../../../../../media/error.png);
+    background-size: 15px 15px;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.node-line {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+.button-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+}
+.btn-xxs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+    padding: 0.2em 0.8em;
+}

@@ -6,6 +6,7 @@ import {JsonUtil} from "../../utils/json.util";
 import {VariableEvent, VariableEventType} from "../../generic/variable/variable-event.model";
 import {Variable} from "../../generic/variable/variable.model";
 import {VariableHolder} from "../../generic/variable/variable-holder.model";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class StepPattern implements Serializable<StepPattern> {
 

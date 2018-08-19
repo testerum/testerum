@@ -11,6 +11,7 @@ import {TextStepPatternPart} from "./text/parts/text-step-pattern-part.model";
 import {ParamStepPatternPart} from "./text/parts/param-step-pattern-part.model";
 import {UndefinedStepDef} from "./undefined-step-def.model";
 import {Warning} from "./warning/Warning";
+import {Serializable} from "./infrastructure/serializable.model";
 
 export class StepCall implements Serializable<StepCall> {
 

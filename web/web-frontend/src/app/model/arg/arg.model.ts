@@ -6,6 +6,7 @@ import {ParamStepPatternPart} from "../text/parts/param-step-pattern-part.model"
 import {ResourceMapEnum} from "../../functionalities/resources/editors/resource-map.enum";
 import {Warning} from "../warning/Warning";
 import {BasicResourceComponent} from "../../functionalities/resources/editors/basic/basic-resource.component";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class Arg implements Serializable<Arg> {
 

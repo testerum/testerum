@@ -67,7 +67,7 @@ import {
     AutoCompleteModule,
     FileUploadModule,
     InputTextModule, MessageService,
-    SelectButtonModule,
+    SelectButtonModule, ToggleButtonModule,
     ToolbarModule,
     TooltipModule
 } from "primeng/primeng";
@@ -83,6 +83,17 @@ import {ComposedStepParametersComponent} from "./components/step/composed-step-v
 import {StepPathModalService} from "./components/step/composed-step-view/step-path-chooser-modal/step-path-modal.service";
 import {StepPathModalComponent} from "./components/step/composed-step-view/step-path-chooser-modal/step-path-modal.component";
 import {StepPathContainerComponent} from "./components/step/composed-step-view/step-path-chooser-modal/nodes/step-path-container.component";
+import {JsonPrimitiveVerifyNodeComponent} from "./components/json-verify/json-verify-tree/node-component/primitive-node/json-primitive-verify-node.component";
+import {JsonEmptyVerifyNodeComponent} from "./components/json-verify/json-verify-tree/node-component/emtpy-node/json-empty-verify-node.component";
+import {JsonObjectVerifyNodeComponent} from "./components/json-verify/json-verify-tree/node-component/object-node/json-object-verify-node.component";
+import {JsonArrayVerifyNodeComponent} from "./components/json-verify/json-verify-tree/node-component/array-node/json-array-verify-node.component";
+import {JsonFieldVerifyNodeComponent} from "./components/json-verify/json-verify-tree/node-component/field-node/json-field-verify-node.component";
+import {JsonEditorComponent} from "./components/json-verify/editor/json-editor.component";
+import {JsonVerifyTreeComponent} from "./components/json-verify/json-verify-tree/json-verify-tree.component";
+import {JsonVerifyTreeService} from "./components/json-verify/json-verify-tree/json-verify-tree.service";
+import {JsonVerifyEditorComponent} from "./components/json-verify/json-verify-editor/json-verify-editor.component";
+import {JsonVerifyComponent} from "./components/json-verify/json-verify.component";
+import {AceEditorModule} from "ng2-ace-editor";
 
 @NgModule({
     imports: [
@@ -93,6 +104,8 @@ import {StepPathContainerComponent} from "./components/step/composed-step-view/s
         PopoverModule.forRoot(),
         FormsModule,
 
+        AceEditorModule,
+
         ChartModule,
         FileUploadModule,
         AutoCompleteModule,
@@ -100,6 +113,9 @@ import {StepPathContainerComponent} from "./components/step/composed-step-view/s
         ToolbarModule,
         SelectButtonModule,
         InputTextModule,
+        AutoCompleteModule,
+        ToggleButtonModule,
+        ToolbarModule,
     ],
     exports: [
         SafeHtmlPipe,
@@ -147,6 +163,8 @@ import {StepPathContainerComponent} from "./components/step/composed-step-view/s
         PathChooserComponent,
         MarkdownEditorComponent,
         AttachmentsComponent,
+
+        JsonVerifyComponent,
     ],
     declarations: [
         SafeHtmlPipe,
@@ -212,7 +230,17 @@ import {StepPathContainerComponent} from "./components/step/composed-step-view/s
         PathChooserNodeComponent,
 
         MarkdownEditorComponent,
-        AttachmentsComponent
+        AttachmentsComponent,
+
+        JsonVerifyEditorComponent,
+        JsonVerifyComponent,
+        JsonVerifyTreeComponent,
+        JsonEditorComponent,
+        JsonArrayVerifyNodeComponent,
+        JsonObjectVerifyNodeComponent,
+        JsonFieldVerifyNodeComponent,
+        JsonPrimitiveVerifyNodeComponent,
+        JsonEmptyVerifyNodeComponent,
     ],
     providers: [
         TreeService,
@@ -223,8 +251,8 @@ import {StepPathContainerComponent} from "./components/step/composed-step-view/s
         PathChooserService,
         StepModalService,
         StepPathModalService,
-
         MessageService,
+        JsonVerifyTreeService,
     ],
     entryComponents: [
         ManualTestsExecutorTreeContainerComponent,
@@ -258,6 +286,14 @@ import {StepPathContainerComponent} from "./components/step/composed-step-view/s
 
         // ARG renderer components
         HttpRequestComponent,
+
+        JsonVerifyEditorComponent,
+
+        JsonArrayVerifyNodeComponent,
+        JsonObjectVerifyNodeComponent,
+        JsonFieldVerifyNodeComponent,
+        JsonPrimitiveVerifyNodeComponent,
+        JsonEmptyVerifyNodeComponent,
     ]
 })
 export class GenericModule { }

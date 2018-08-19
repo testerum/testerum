@@ -7,6 +7,7 @@ import {StepPattern} from "./text/step-pattern.model";
 import {Path} from "./infrastructure/path/path.model";
 import {Warning} from "./warning/Warning";
 import {StringUtils} from "../utils/string-utils.util";
+import {Serializable} from "./infrastructure/serializable.model";
 
 export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
 

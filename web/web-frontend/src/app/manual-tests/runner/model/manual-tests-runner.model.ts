@@ -2,6 +2,7 @@ import {Path} from "../../../model/infrastructure/path/path.model";
 import {JsonUtil} from "../../../utils/json.util";
 import {ManualTestsRunnerStatus} from "./enums/manual-tests-runner-status.enum";
 import {ManualTestExeModel} from "./manual-test-exe.model";
+import {Serializable} from "../../../model/infrastructure/serializable.model";
 
 export class ManualTestsRunner implements Serializable<ManualTestsRunner>{
 

@@ -2,6 +2,7 @@ import {JsonUtil} from "../../utils/json.util";
 import {Path} from "../infrastructure/path/path.model";
 import {ObjectUtil} from "../../utils/object.util";
 import {BasicResource} from "./basic/basic-resource.model";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class ResourceContext<T> implements Serializable<ResourceContext<T>> {
 

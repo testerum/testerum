@@ -1,5 +1,6 @@
 import {JsonUtil} from "../../../utils/json.util";
 import {StringUtils} from "../../../utils/string-utils.util";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class StepsTreeFilter implements Serializable<StepsTreeFilter>{
     showComposedTests: boolean = true;

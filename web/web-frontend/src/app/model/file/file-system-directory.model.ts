@@ -1,4 +1,5 @@
 import {Path} from "../infrastructure/path/path.model";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class FileSystemDirectory implements Serializable<FileSystemDirectory> {
     path: Path;

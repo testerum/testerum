@@ -2,6 +2,7 @@
 import {JsonUtil} from "../../../../../../../../utils/json.util";
 import {HttpMockRequestBodyMatchingType} from "../enums/http-mock-request-body-matching-type.enum";
 import {HttpMockRequestBodyVerifyType} from "../enums/http-mock-request-body-verify-type.enum";
+import {Serializable} from "../../../../../../../../model/infrastructure/serializable.model";
 
 export class HttpMockRequestBody implements Serializable<HttpMockRequestBody> {
 

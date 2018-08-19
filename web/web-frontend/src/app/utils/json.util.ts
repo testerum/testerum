@@ -1,4 +1,4 @@
-import {TestModel} from "../model/test/test.model";
+import {Serializable} from "../model/infrastructure/serializable.model";
 export class JsonUtil {
 
     public static serializeSerializable(serializable:Serializable<any>):string {

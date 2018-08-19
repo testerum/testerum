@@ -1,9 +1,8 @@
-
-
 import {JsonUtil} from "../../../utils/json.util";
 import {ObjectUtil} from "../../../utils/object.util";
 import {StringUtils} from "../../../utils/string-utils.util";
 import {ArrayUtil} from "../../../utils/array.util";
+import {Serializable} from "../serializable.model";
 
 export class Path implements Serializable<Path> {
     readonly directories: Array<string> = [];

@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {JsonVerifyTreeService} from "../../../json_verify/json-verify-tree/json-verify-tree.service";
 import {HttpResponseVerifyService} from "../http-response-verify.service";
 import {HttpBodyVerifyMatchingType} from "../model/enums/http-body-verify-matching-type.enum";
-import {SerializationUtil} from "../../../json_verify/json-verify-tree/model/util/serialization.util";
-import {JsonSchemaExtractor} from "../../../json_verify/json-schema/json-schema.extractor";
 import {HttpBodyVerifyType} from "../model/enums/http-body-verify-type.enum";
 import {HttpResponseBodyVerify} from "../model/http-response-body-verify.model";
+import {JsonVerifyTreeService} from "../../../../../../generic/components/json-verify/json-verify-tree/json-verify-tree.service";
+import {SerializationUtil} from "../../../../../../generic/components/json-verify/json-verify-tree/model/util/serialization.util";
+import {JsonSchemaExtractor} from "../../../../../../generic/components/json-verify/json-schema/json-schema.extractor";
 
 @Component({
     moduleId: module.id,
@@ -30,15 +30,14 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
     };
     HttpBodyVerifyMatchingType = HttpBodyVerifyMatchingType;
 
-    constructor(private httpResponseVerifyService: HttpResponseVerifyService,
-                private jsonVerifyTreeService: JsonVerifyTreeService) {
+    constructor(private httpResponseVerifyService: HttpResponseVerifyService) {
     }
 
     ngOnInit() {
         if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
             let jsonVerifyAsJson = JSON.parse(this.expectedBody.bodyVerify);
             let jsonTreeNode = new SerializationUtil().deserialize(jsonVerifyAsJson);
-            this.jsonVerifyTreeService.setJsonVerifyRootResource(jsonTreeNode);
+            // this.jsonVerifyTreeService.setJsonVerifyRootResource(jsonTreeNode);
         }
     }
 
@@ -79,32 +78,32 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
             bodyVerifyType == HttpBodyVerifyMatchingType.EXACT_MATCH ||
             bodyVerifyType == HttpBodyVerifyMatchingType.REGEX_MATCH;
     }
-
-    onSampleJsonTextChange(json:string) {
-        this.sampleJsonText = json;
-        let jsonRootNode;
-        try {
-            jsonRootNode = JSON.parse(json);
-        } catch (e) {
-            //ignore exception, JSON is not valid
-            return;
-        }
-        let verifyJsonRoot = new SerializationUtil().deserialize(jsonRootNode);
-
-        let jsonSchema = new JsonSchemaExtractor().getJsonSchemaFromJson(
-            verifyJsonRoot
-        );
-
-        this.jsonVerifyTreeService.setJsonSchema(jsonSchema);
-    }
-
-    shouldDisplayJsonSample(): boolean {
-        return this.httpResponseVerifyService.editMode && ( this.jsonVerifyTreeService.isEmptyModel() || this.sampleJsonText != null);
-    }
+    //
+    // onSampleJsonTextChange(json:string) {
+    //     this.sampleJsonText = json;
+    //     let jsonRootNode;
+    //     try {
+    //         jsonRootNode = JSON.parse(json);
+    //     } catch (e) {
+    //         //ignore exception, JSON is not valid
+    //         return;
+    //     }
+    //     let verifyJsonRoot = new SerializationUtil().deserialize(jsonRootNode);
+    //
+    //     let jsonSchema = new JsonSchemaExtractor().getJsonSchemaFromJson(
+    //         verifyJsonRoot
+    //     );
+    //
+    //     this.jsonVerifyTreeService.setJsonSchema(jsonSchema);
+    // }
+    //
+    // shouldDisplayJsonSample(): boolean {
+    //     return this.httpResponseVerifyService.editMode && ( this.jsonVerifyTreeService.isEmptyModel() || this.sampleJsonText != null);
+    // }
 
     onBeforeSave(): void {
-        if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
-            this.expectedBody.bodyVerify = this.jsonVerifyTreeService.rootNode.children[0].serialize();
-        }
+        // if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
+        //     this.expectedBody.bodyVerify = this.jsonVerifyTreeService.rootNode.children[0].serialize();
+        // }
     }
 }

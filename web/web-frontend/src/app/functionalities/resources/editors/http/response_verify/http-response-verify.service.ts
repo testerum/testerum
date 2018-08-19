@@ -1,14 +1,8 @@
-
 import {EventEmitter, Injectable} from "@angular/core";
-import {HttpRequest} from "../../../../../model/resource/http/http-request.model";
-import {HttpContentType} from "../../../../../model/resource/http/enum/http-content-type.enum";
-import {HttpRequestHeader} from "../../../../../model/resource/http/http-request-header.model";
-import {HttpService} from "../../../../../service/resources/http/http.service";
-import {HttpResponse} from "../../../../../model/resource/http/http-response.model";
 import {HttpResponseVerify} from "./model/http-response-verify.model";
-import {JsonVerifyTreeService} from "../../json_verify/json-verify-tree/json-verify-tree.service";
 import {HttpBodyVerifyMatchingType} from "./model/enums/http-body-verify-matching-type.enum";
-import {SerializationUtil} from "../../json_verify/json-verify-tree/model/util/serialization.util";
+import {JsonVerifyTreeService} from "../../../../../generic/components/json-verify/json-verify-tree/json-verify-tree.service";
+import {SerializationUtil} from "../../../../../generic/components/json-verify/json-verify-tree/model/util/serialization.util";
 
 @Injectable()
 export class HttpResponseVerifyService {

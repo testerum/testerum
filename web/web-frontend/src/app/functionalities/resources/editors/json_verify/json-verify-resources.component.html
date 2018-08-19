@@ -1,0 +1,23 @@
+<form class="form-horizontal" style="height: 100%; position: relative" >
+
+    <!-- NAME -->
+    <div class="my-line">
+        <label class="my-label label-size">Name</label>
+        <div class="my-value" *ngIf="!editMode">
+            {{name}}
+        </div>
+        <div class="my-value" *ngIf="editMode">
+            <input required
+                   #nameNgModel="ngModel" [(ngModel)]="name"
+                   type="text" class="form-control" name="name">
+            <input-error [model]="nameNgModel"
+                         [errorMessages]="{
+                                        required: 'A name for this resource is required',
+                                        a_resource_with_the_same_name_already_exist: 'A resource with the same name already exists'
+                                     }"></input-error>
+        </div>
+    </div>
+
+    <json-verify [model]="model" [editMode]="editMode"></json-verify>
+
+</form>

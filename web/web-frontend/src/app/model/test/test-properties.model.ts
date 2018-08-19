@@ -1,3 +1,5 @@
+import {Serializable} from "../infrastructure/serializable.model";
+
 export class TestProperties implements Serializable<TestProperties> {
 
     isManual: boolean = false;

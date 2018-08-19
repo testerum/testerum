@@ -1,9 +1,9 @@
-
 import {HttpRequestBodyType} from "./enum/http-request-body-type.enum";
 import {HttpRequestBodyTypeForm} from "./http-request-body-type-form.model";
 import {JsonUtil} from "../../../utils/json.util";
 import {StringUtils} from "../../../utils/string-utils.util";
 import {HttpMethod} from "../../enums/http-method-enum";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class HttpRequestBody implements Serializable<HttpRequestBody> {
     bodyType: HttpRequestBodyType = HttpRequestBodyType.RAW;

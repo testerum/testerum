@@ -1,5 +1,5 @@
 import {RunnerResultFileInfo} from "./runner-result-file-info.model";
-
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class RunnerResultDirInfo implements Serializable<RunnerResultDirInfo> {
 

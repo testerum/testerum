@@ -1,6 +1,7 @@
 import {Path} from "../../infrastructure/path/path.model";
 import {BasicStepNode} from "./basic-step-node.model";
 import {BasicStepStepNode} from "./basic-step-step-node.model";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class BasicContainerStepNode implements BasicStepNode, Serializable<BasicContainerStepNode> {
 

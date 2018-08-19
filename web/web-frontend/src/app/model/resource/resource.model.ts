@@ -1,3 +1,4 @@
+import {Serializable} from "../infrastructure/serializable.model";
 
 export interface Resource<T> extends Serializable<T> {
     deserialize(input: Object):T;

@@ -11,7 +11,6 @@ import {ValidationErrorResponse} from "../../model/exception/validation-error-re
     templateUrl: 'error.component.html',
     styleUrls:['error.component.scss']
 })
-
 export class ErrorComponent implements OnInit {
 
     @ViewChild("infoModal") infoModal:ModalDirective;

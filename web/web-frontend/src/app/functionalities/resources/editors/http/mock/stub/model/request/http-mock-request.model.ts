@@ -8,6 +8,7 @@ import {HttpMockRequestScenario} from "./http-mock-request-scenario.model";
 import {StringUtils} from "../../../../../../../../utils/string-utils.util";
 import {HttpMockFaultResponse} from "../enums/http-mock-fault-response.enum";
 import {HttpMockResponseType} from "../enums/http-mock-response-type.enum";
+import {Serializable} from "../../../../../../../../model/infrastructure/serializable.model";
 
 export class HttpMockRequest implements Serializable<HttpMockRequest> {
 

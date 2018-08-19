@@ -1,6 +1,7 @@
 
 import {JsonUtil} from "../../../../../../../../utils/json.util";
 import {HttpMockRequestParamsCompareMode} from "../enums/http-mock-request-params-compare-mode.enum";
+import {Serializable} from "../../../../../../../../model/infrastructure/serializable.model";
 
 export class HttpMockRequestParam implements Serializable<HttpMockRequestParam> {
     key: string;

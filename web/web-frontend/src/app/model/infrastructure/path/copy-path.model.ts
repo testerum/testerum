@@ -1,6 +1,6 @@
-
 import {Path} from "./path.model";
 import {JsonUtil} from "../../../utils/json.util";
+import {Serializable} from "../serializable.model";
 
 export class CopyPath implements Serializable<CopyPath> {
     copyPath: Path;

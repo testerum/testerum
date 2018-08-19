@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpMockService} from "../../http-mock.service";
 import {HttpMockRequestBody} from "../../model/request/http-mock-request-body.model";
-import {SerializationUtil} from "../../../../../json_verify/json-verify-tree/model/util/serialization.util";
-import {JsonSchemaExtractor} from "../../../../../json_verify/json-schema/json-schema.extractor";
 import {HttpMockRequestBodyMatchingType} from "../../model/enums/http-mock-request-body-matching-type.enum";
 import {HttpMockRequestBodyVerifyType} from "../../model/enums/http-mock-request-body-verify-type.enum";
-import {JsonVerifyTreeService} from "../../../../../json_verify/json-verify-tree/json-verify-tree.service";
 import {HttpMock} from "../../model/http-mock.model";
-import {EmptyJsonVerify} from "../../../../../json_verify/json-verify-tree/model/empty-json-verify.model";
+import {JsonVerifyTreeService} from "../../../../../../../../generic/components/json-verify/json-verify-tree/json-verify-tree.service";
+import {EmptyJsonVerify} from "../../../../../../../../generic/components/json-verify/json-verify-tree/model/empty-json-verify.model";
+import {SerializationUtil} from "../../../../../../../../generic/components/json-verify/json-verify-tree/model/util/serialization.util";
+import {JsonSchemaExtractor} from "../../../../../../../../generic/components/json-verify/json-schema/json-schema.extractor";
 
 @Component({
     moduleId: module.id,
@@ -17,7 +17,6 @@ import {EmptyJsonVerify} from "../../../../../json_verify/json-verify-tree/model
         'http-mock-request-body.component.scss'
     ]
 })
-
 export class HttpMockRequestBodyComponent implements OnInit{
 
     sampleJsonText: string;
@@ -36,11 +35,11 @@ export class HttpMockRequestBodyComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        this.jsonVerifyTreeService.setEmpty();
-        this.jsonVerifyTreeService.editMode = this.httpMockService.editMode;
-        this.httpMockService.editModeEventEmitter.subscribe(
-            (editMode: boolean) => this.jsonVerifyTreeService.editMode = editMode
-        );
+        // this.jsonVerifyTreeService.setEmpty();
+        // this.jsonVerifyTreeService.editMode = this.httpMockService.editMode;
+        // this.httpMockService.editModeEventEmitter.subscribe(
+        //     (editMode: boolean) => this.jsonVerifyTreeService.editMode = editMode
+        // );
 
         this.onModelSet(this.httpMockService.httpMock);
         this.httpMockService.onModelSetEventEmitter.subscribe(
@@ -49,14 +48,14 @@ export class HttpMockRequestBodyComponent implements OnInit{
     }
 
     onModelSet(httpMock: HttpMock) {
-        if(!httpMock || !httpMock.expectedRequest.body.content) {
-            this.jsonVerifyTreeService.setJsonSchema(new EmptyJsonVerify(null))
-        }
+        // if(!httpMock || !httpMock.expectedRequest.body.content) {
+        //     this.jsonVerifyTreeService.setJsonSchema(new EmptyJsonVerify(null))
+        // }
 
         if(httpMock.expectedRequest.body.matchingType == HttpMockRequestBodyMatchingType.JSON_VERIFY) {
             let jsonVerifyAsJson = JSON.parse(httpMock.expectedRequest.body.content);
             let jsonTreeNode = new SerializationUtil().deserialize(jsonVerifyAsJson);
-            this.jsonVerifyTreeService.setJsonVerifyRootResource(jsonTreeNode);
+            // this.jsonVerifyTreeService.setJsonVerifyRootResource(jsonTreeNode);
         }
 
     }
@@ -92,33 +91,33 @@ export class HttpMockRequestBodyComponent implements OnInit{
             bodyVerifyType == HttpMockRequestBodyMatchingType.EXACT_MATCH;
         return shouldDisplay;
     }
-
-    shouldDisplayAceEditor(): boolean {
-        let bodyVerifyType = this.getModel().matchingType;
-        return bodyVerifyType == HttpMockRequestBodyMatchingType.CONTAINS ||
-            bodyVerifyType == HttpMockRequestBodyMatchingType.EXACT_MATCH ||
-            bodyVerifyType == HttpMockRequestBodyMatchingType.REGEX_MATCH;
-    }
-
-    onSampleJsonTextChange(json:string) {
-        this.sampleJsonText = json;
-        let jsonRootNode;
-        try {
-            jsonRootNode = JSON.parse(json);
-        } catch (e) {
-            //ignore exception, JSON is not valid
-            return;
-        }
-        let verifyJsonRoot = new SerializationUtil().deserialize(jsonRootNode);
-
-        let jsonSchema = new JsonSchemaExtractor().getJsonSchemaFromJson(
-            verifyJsonRoot
-        );
-
-        this.jsonVerifyTreeService.setJsonSchema(jsonSchema);
-    }
-
-    shouldDisplayJsonSample(): boolean {
-        return this.isEditMode() && ( this.jsonVerifyTreeService.isEmptyModel() || this.sampleJsonText != null);
-    }
+    //
+    // shouldDisplayAceEditor(): boolean {
+    //     let bodyVerifyType = this.getModel().matchingType;
+    //     return bodyVerifyType == HttpMockRequestBodyMatchingType.CONTAINS ||
+    //         bodyVerifyType == HttpMockRequestBodyMatchingType.EXACT_MATCH ||
+    //         bodyVerifyType == HttpMockRequestBodyMatchingType.REGEX_MATCH;
+    // }
+    //
+    // onSampleJsonTextChange(json:string) {
+    //     this.sampleJsonText = json;
+    //     let jsonRootNode;
+    //     try {
+    //         jsonRootNode = JSON.parse(json);
+    //     } catch (e) {
+    //         //ignore exception, JSON is not valid
+    //         return;
+    //     }
+    //     let verifyJsonRoot = new SerializationUtil().deserialize(jsonRootNode);
+    //
+    //     let jsonSchema = new JsonSchemaExtractor().getJsonSchemaFromJson(
+    //         verifyJsonRoot
+    //     );
+    //
+    //     this.jsonVerifyTreeService.setJsonSchema(jsonSchema);
+    // }
+    //
+    // shouldDisplayJsonSample(): boolean {
+    //     return this.isEditMode() && ( this.jsonVerifyTreeService.isEmptyModel() || this.sampleJsonText != null);
+    // }
 }

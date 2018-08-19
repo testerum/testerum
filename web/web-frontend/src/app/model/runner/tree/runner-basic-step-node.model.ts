@@ -1,6 +1,7 @@
 import { Path } from "../../infrastructure/path/path.model";
 import { StepCall } from "../../step-call.model";
 import { RunnerStepNode } from "./runner-step-node.model";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class RunnerBasicStepNode implements RunnerStepNode, Serializable<RunnerBasicStepNode> {
     id: string;

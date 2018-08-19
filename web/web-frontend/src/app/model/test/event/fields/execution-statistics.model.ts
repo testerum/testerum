@@ -1,3 +1,5 @@
+import {Serializable} from "../../../infrastructure/serializable.model";
+
 export class ExecutionStatistics implements Serializable<ExecutionStatistics> {
 
     failedTestsCount: number;

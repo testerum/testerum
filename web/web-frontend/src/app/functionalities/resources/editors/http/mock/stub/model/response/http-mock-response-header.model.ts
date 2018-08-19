@@ -1,5 +1,6 @@
 
 import {JsonUtil} from "../../../../../../../../utils/json.util";
+import {Serializable} from "../../../../../../../../model/infrastructure/serializable.model";
 
 export class HttpMockResponseHeader implements Serializable<HttpMockResponseHeader> {
     key: string;

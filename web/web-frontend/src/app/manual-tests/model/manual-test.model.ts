@@ -3,6 +3,7 @@ import {IdUtils} from "../../utils/id.util";
 import {TreeNodeModel} from "../../model/infrastructure/tree-node.model";
 import {Path} from "../../model/infrastructure/path/path.model";
 import {ManualTestStepModel} from "./manual-step.model";
+import {Serializable} from "../../model/infrastructure/serializable.model";
 
 export class ManualTestModel implements Serializable<ManualTestModel>, TreeNodeModel {
 

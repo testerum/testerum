@@ -1,6 +1,5 @@
-
-
 import {RdbmsField} from "./rdbms-field.model";
+import {Serializable} from "../../../infrastructure/serializable.model";
 
 export class RdbmsTable implements Serializable<RdbmsTable> {
 

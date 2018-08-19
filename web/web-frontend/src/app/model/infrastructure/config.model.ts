@@ -1,3 +1,4 @@
+import {Serializable} from "./serializable.model";
 
 export class Config implements Serializable<Config> {
     key: string;

@@ -3,6 +3,7 @@ import {ExecutionStatusEnum} from "./enums/execution-status.enum";
 import {EventKey} from "./fields/event-key.model";
 import {ExecutionStatistics} from "./fields/execution-statistics.model";
 import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class SuiteEndEvent implements RunnerEvent, Serializable<SuiteEndEvent> {
     time: Date;

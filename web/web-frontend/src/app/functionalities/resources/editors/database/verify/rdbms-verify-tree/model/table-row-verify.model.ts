@@ -3,6 +3,7 @@ import {TreeContainerModel} from "../../../../../../../model/infrastructure/tree
 import {RdbmsTable} from "../../../../../../../model/resource/rdbms/schema/rdbms-table.model";
 import {NodeState} from "../enum/node-state.enum";
 import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
+import {Serializable} from "../../../../../../../model/infrastructure/serializable.model";
 
 export class TableRowVerify implements TreeContainerModel<any, FieldVerify>, Serializable<TableRowVerify> {
 

@@ -2,6 +2,7 @@ import { Path } from "../../infrastructure/path/path.model";
 import { RunnerTreeDeserializationUtil } from "./util/runner-tree-deserialization.util";
 import { RunnerStepNode } from "./runner-step-node.model";
 import { StepCall } from "../../step-call.model";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class RunnerComposedStepNode implements Serializable<RunnerComposedStepNode>, RunnerStepNode {
     id: string;

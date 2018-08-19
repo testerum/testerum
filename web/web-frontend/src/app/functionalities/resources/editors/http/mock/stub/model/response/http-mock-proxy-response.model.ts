@@ -1,6 +1,7 @@
 
 import {Enum} from "../../../../../../../../model/enums/enum.interface";
 import {JsonUtil} from "../../../../../../../../utils/json.util";
+import {Serializable} from "../../../../../../../../model/infrastructure/serializable.model";
 
 export class HttpMockProxyResponse implements Serializable<HttpMockProxyResponse>{
 

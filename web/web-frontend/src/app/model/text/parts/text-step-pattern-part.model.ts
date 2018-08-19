@@ -1,6 +1,6 @@
-
 import {StepPatternPart} from "./step-pattern-part.model";
 import {JsonUtil} from "../../../utils/json.util";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class TextStepPatternPart implements StepPatternPart, Serializable<TextStepPatternPart>{
 

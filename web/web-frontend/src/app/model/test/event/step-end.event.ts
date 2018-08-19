@@ -1,10 +1,10 @@
-
 import {ExecutionStatusEnum} from "./enums/execution-status.enum";
 import {RunnerEvent} from "./runner.event";
 import {StepCall} from "../../step-call.model";
 import {EventKey} from "./fields/event-key.model";
 import {ExceptionDetail} from "./fields/exception-detail.model";
 import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class StepEndEvent implements RunnerEvent, Serializable<StepEndEvent> {
     time: Date;

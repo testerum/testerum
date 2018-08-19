@@ -2,6 +2,7 @@ import { Path } from "../../infrastructure/path/path.model";
 import { FeatureNode } from "./feature-node.model";
 import { ContainerFeatureNode } from "./container-feature-node.model";
 import { FeatureTreeDeserializationUtil } from "./util/feature-tree-deserialization.util";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class FeatureFeatureNode implements Serializable<FeatureFeatureNode>, ContainerFeatureNode {
     name: string;

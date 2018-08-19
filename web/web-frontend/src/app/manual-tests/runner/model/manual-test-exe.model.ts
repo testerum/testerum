@@ -5,6 +5,7 @@ import {Path} from "../../../model/infrastructure/path/path.model";
 import {ManualTestStatus} from "../../model/enums/manual-test-status.enum";
 import {ManualTestModel} from "../../model/manual-test.model";
 import {ManualTestStepExeModel} from "./manual-step-exe.model";
+import {Serializable} from "../../../model/infrastructure/serializable.model";
 
 export class ManualTestExeModel extends ManualTestModel implements Serializable<ManualTestExeModel>, TreeNodeModel {
 

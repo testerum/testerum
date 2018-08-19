@@ -1,8 +1,6 @@
 import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs';
-
-
 import {ResourceContext} from "../../model/resource/resource-context.model";
 import {RdbmsConnectionResourceType} from "../../functionalities/resources/tree/model/type/rdbms-connection.resource-type.model";
 import {Path} from "../../model/infrastructure/path/path.model";
@@ -10,6 +8,7 @@ import {RenamePath} from "../../model/infrastructure/path/rename-path.model";
 import {CopyPath} from "../../model/infrastructure/path/copy-path.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "../url.service";
+import {Serializable} from "../../model/infrastructure/serializable.model";
 
 @Injectable()
 export class ResourceService {

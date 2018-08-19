@@ -1,5 +1,6 @@
 import {Path} from "../infrastructure/path/path.model";
 import {JsonUtil} from "../../utils/json.util";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class Attachment implements Serializable<Attachment> {
     path:Path;

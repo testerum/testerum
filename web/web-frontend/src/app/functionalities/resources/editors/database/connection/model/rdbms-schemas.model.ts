@@ -1,3 +1,4 @@
+import {Serializable} from "../../../../../../model/infrastructure/serializable.model";
 
 export class RdbmsSchemas implements Serializable<RdbmsSchemas> {
 

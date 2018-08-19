@@ -1,5 +1,6 @@
 import {BasicContainerStepNode} from "./basic-container-step-node.model";
 import {ComposedContainerStepNode} from "./composed-container-step-node.model";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class RootStepNode implements Serializable<RootStepNode> {
 

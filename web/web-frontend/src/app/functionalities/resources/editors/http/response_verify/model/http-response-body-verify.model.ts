@@ -1,6 +1,7 @@
 import {HttpBodyVerifyMatchingType} from "./enums/http-body-verify-matching-type.enum";
 import {HttpBodyVerifyType} from "./enums/http-body-verify-type.enum";
 import {JsonUtil} from "../../../../../../utils/json.util";
+import {Serializable} from "../../../../../../model/infrastructure/serializable.model";
 
 export class HttpResponseBodyVerify implements Serializable<HttpResponseBodyVerify> {
 

@@ -1,6 +1,7 @@
 import {SettingTypeEnum} from "./setting-type.enum";
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {JsonUtil} from "../../../../utils/json.util";
+import {Serializable} from "../../../../model/infrastructure/serializable.model";
 
 export class Setting implements Serializable<Setting> {
 

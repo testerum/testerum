@@ -1,5 +1,6 @@
 
 import {JsonUtil} from "../../utils/json.util";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class CompareMode implements Serializable<CompareMode>{
     static PROPERTY_NAME_IN_JSON: string = "=compareMode";

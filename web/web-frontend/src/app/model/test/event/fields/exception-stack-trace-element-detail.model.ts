@@ -1,3 +1,4 @@
+import {Serializable} from "../../../infrastructure/serializable.model";
 
 export class ExceptionStackTraceElementDetail implements Serializable<ExceptionStackTraceElementDetail> {
 

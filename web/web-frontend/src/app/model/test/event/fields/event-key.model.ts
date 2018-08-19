@@ -1,4 +1,5 @@
 import {PositionInParent} from "./position-in-parent.model";
+import {Serializable} from "../../../infrastructure/serializable.model";
 
 export class EventKey implements Serializable<EventKey> {
     positionsFromRoot: Array<PositionInParent> = [];

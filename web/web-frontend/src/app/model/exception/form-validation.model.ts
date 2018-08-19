@@ -1,3 +1,4 @@
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class FormValidationModel implements Serializable<FormValidationModel> {
 

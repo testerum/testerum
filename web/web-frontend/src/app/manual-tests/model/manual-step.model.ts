@@ -1,5 +1,6 @@
 import {JsonUtil} from "../../utils/json.util";
 import {StepPhaseEnum} from "../../model/enums/step-phase.enum";
+import {Serializable} from "../../model/infrastructure/serializable.model";
 
 export class ManualTestStepModel implements Serializable<ManualTestStepModel> {
 

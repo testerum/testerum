@@ -1,7 +1,7 @@
-
 import {RunnerEvent} from "./runner.event";
 import {EventKey} from "./fields/event-key.model";
 import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class TextLogEvent implements RunnerEvent, Serializable<TextLogEvent> {
     time: Date;

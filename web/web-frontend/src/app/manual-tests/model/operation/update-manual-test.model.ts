@@ -1,6 +1,7 @@
 import {JsonUtil} from "../../../utils/json.util";
 import {ManualTestModel} from "../manual-test.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
+import {Serializable} from "../../../model/infrastructure/serializable.model";
 
 export class UpdateManualTestModel implements Serializable<UpdateManualTestModel> {
 

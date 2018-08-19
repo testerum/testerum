@@ -1,6 +1,7 @@
 
 import {JsonUtil} from "../../../../../../utils/json.util";
 import {HttpResponseVerifyHeadersCompareMode} from "./enums/http-response-verify-headers-compare-mode.enum";
+import {Serializable} from "../../../../../../model/infrastructure/serializable.model";
 
 export class HttpResponseHeaderVerify implements Serializable<HttpResponseHeaderVerify> {
     key: string;

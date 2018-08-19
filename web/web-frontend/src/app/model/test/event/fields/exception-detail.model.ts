@@ -1,4 +1,5 @@
 import {ExceptionStackTraceElementDetail} from "./exception-stack-trace-element-detail.model";
+import {Serializable} from "../../../infrastructure/serializable.model";
 
 export class ExceptionDetail implements Serializable<ExceptionDetail> {
 

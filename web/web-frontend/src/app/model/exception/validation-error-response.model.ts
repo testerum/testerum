@@ -1,6 +1,7 @@
 import {ErrorResponse} from "./error-response.model";
 import {ErrorCode} from "./enums/error-code.enum";
 import {FormValidationModel} from "./form-validation.model";
+import {Serializable} from "../infrastructure/serializable.model";
 
 export class ValidationErrorResponse implements ErrorResponse, Serializable<ValidationErrorResponse> {
 

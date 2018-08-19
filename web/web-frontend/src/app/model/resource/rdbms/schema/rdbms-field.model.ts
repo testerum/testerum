@@ -1,4 +1,4 @@
-
+import {Serializable} from "../../../infrastructure/serializable.model";
 
 export class RdbmsField implements Serializable<RdbmsField> {
     name: string;

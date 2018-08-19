@@ -2,6 +2,7 @@ import {BasicStepDef} from "./basic-step-def.model";
 import {TreeContainerModel} from "./infrastructure/tree-container.model";
 import {JsonUtil} from "../utils/json.util";
 import {StepDef} from "./step-def.model";
+import {Serializable} from "./infrastructure/serializable.model";
 
 export class StepsPackageModel implements Serializable<StepsPackageModel>, TreeContainerModel<StepsPackageModel, StepDef> {
 

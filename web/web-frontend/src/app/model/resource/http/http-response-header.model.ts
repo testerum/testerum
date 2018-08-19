@@ -1,5 +1,5 @@
-
 import {JsonUtil} from "../../../utils/json.util";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class HttpResponseHeader implements Serializable<HttpResponseHeader> {
     key: string;

@@ -24,11 +24,10 @@ import {RdbmsVerifyComponent} from "./database/verify/rdbms-verify.component";
 import {SchemaVerify} from "./database/verify/rdbms-verify-tree/model/schema-verify.model";
 import {RdbmsVerifyResourceType} from "../tree/model/type/rdbms-verify.resource-type.model";
 import {BasicResourceComponent} from "./basic/basic-resource.component";
-import {JsonVerifyComponent} from "./json_verify/json-verify.component";
-import {ArrayJsonVerify} from "./json_verify/json-verify-tree/model/array-json-verify.model";
 import {JsonVerifyResourceType} from "../tree/model/type/json-verify.resource-type.model";
 import {BasicResourceType} from "../tree/model/type/basic.resource-type.model";
-import {JsonVerify} from "./json_verify/model/json-verify.model";
+import {JsonVerifyResourceComponent} from "./json_verify/json-verify-resource.component";
+import {JsonVerify} from "../../../generic/components/json-verify/model/json-verify.model";
 
 export class ResourceMapEnum {
     public static TEXT: ResourceMapEnum = new ResourceMapEnum(
@@ -157,7 +156,7 @@ export class ResourceMapEnum {
         "net.qutester.model.resources.json.verify.JsonVerify",
         "JsonVerify",
         "verify.json",
-        JsonVerifyComponent,
+        JsonVerifyResourceComponent,
         () => {return new JsonVerify()},
         () => {return JsonVerifyResourceType.getInstanceForRoot()},
         () => {return JsonVerifyResourceType.getInstanceForChildren()},
