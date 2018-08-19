@@ -40,7 +40,7 @@ import {HttpBodyComponent} from "./editors/http/request/body/http-body.component
 import {BsDropdownModule} from "ngx-bootstrap";
 import {HttpBodyTypeFormComponent} from "./editors/http/request/body-type-form/http-body-type-form.component";
 import {HttpParamsComponent} from "./editors/http/request/params/http-params.component";
-import {AutoCompleteModule} from "primeng/primeng";
+import {AutoCompleteModule, ToggleButtonModule, ToolbarModule} from "primeng/primeng";
 import {HttpResponseComponent} from "./editors/http/request/response/http-request-response.component";
 import {HttpResponseVerifyComponent} from "./editors/http/response_verify/http-response-verify.component";
 import {HttpResponseVerifyService} from "./editors/http/response_verify/http-response-verify.service";
@@ -64,6 +64,7 @@ import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-pa
 import {ResourceResolver} from "./editors/resource.resolver";
 import {BasicResourceComponent} from "./editors/basic/basic-resource.component";
 import {ResourcesTreeComponent} from "./tree/resources-tree.component";
+import { JsonVerifyEditorComponent } from './editors/json_verify/json-verify-editor/json-verify-editor.component';
 
 @NgModule({
     imports: [
@@ -77,7 +78,10 @@ import {ResourcesTreeComponent} from "./tree/resources-tree.component";
         DndModule.forRoot(),
         AngularSplitModule,
         AceEditorModule,
+
         AutoCompleteModule,
+        ToggleButtonModule,
+        ToolbarModule,
 
         GenericModule,
 
@@ -147,6 +151,8 @@ import {ResourcesTreeComponent} from "./tree/resources-tree.component";
         JsonFieldVerifyNodeComponent,
         JsonPrimitiveVerifyNodeComponent,
         JsonEmptyVerifyNodeComponent,
+
+        JsonVerifyEditorComponent,
 
         HttpRequestComponent,
         HttpHeaderComponent,

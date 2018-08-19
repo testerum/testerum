@@ -1,3 +1,20 @@
+.my-line {
+    margin: 0;
+    padding: 8px 0;
+}
+
+.my-toolbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.my-toolbar-label {
+    font-size: .9em;
+    font-weight: normal;
+    padding: .3em .6em;
+}
+
 .center-text {
     text-align: center;
 }
@@ -9,4 +26,13 @@
 
 .center {
     align-self: center;
+}
+
+.view-toggle-button {
+    width: 110px;
+}
+
+.my-btn-toolbar {
+    height: 20px;
+    padding: 0.25em 0.2em;
 }

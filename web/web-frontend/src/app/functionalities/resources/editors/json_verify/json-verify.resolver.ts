@@ -3,8 +3,8 @@ import {ActivatedRouteSnapshot, Resolve} from "@angular/router";
 import {ResourceService} from "../../../../service/resources/resource.service";
 import {ResourceContext} from "../../../../model/resource/resource-context.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {EmptyJsonVerify} from "./json-verify-tree/model/empty-json-verify.model";
 import {SerializationUtil} from "./json-verify-tree/model/util/serialization.util";
+import {JsonVerify} from "./model/json-verify.model";
 
 @Injectable()
 export class JsonVerifyResolver implements Resolve<any> {
@@ -19,7 +19,7 @@ export class JsonVerifyResolver implements Resolve<any> {
         }
 
         if(route.params['create'] == "create") {
-           return ResourceContext.createInstance(Path.createInstance(path), new EmptyJsonVerify(null))
+           return ResourceContext.createInstance(Path.createInstance(path), new JsonVerify())
         }
         if(path) {
             return this.resourceService.getResource(Path.createInstance(path), new SerializationUtil());

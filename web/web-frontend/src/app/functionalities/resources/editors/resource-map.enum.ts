@@ -28,6 +28,7 @@ import {JsonVerifyComponent} from "./json_verify/json-verify.component";
 import {ArrayJsonVerify} from "./json_verify/json-verify-tree/model/array-json-verify.model";
 import {JsonVerifyResourceType} from "../tree/model/type/json-verify.resource-type.model";
 import {BasicResourceType} from "../tree/model/type/basic.resource-type.model";
+import {JsonVerify} from "./json_verify/model/json-verify.model";
 
 export class ResourceMapEnum {
     public static TEXT: ResourceMapEnum = new ResourceMapEnum(
@@ -157,10 +158,10 @@ export class ResourceMapEnum {
         "JsonVerify",
         "verify.json",
         JsonVerifyComponent,
-        () => {return new ArrayJsonVerify(null)},
+        () => {return new JsonVerify()},
         () => {return JsonVerifyResourceType.getInstanceForRoot()},
         () => {return JsonVerifyResourceType.getInstanceForChildren()},
-        (input:string) => {return new ArrayJsonVerify(null).deserialize(JSON.parse(input))}
+        (input:string) => {return new JsonVerify().deserialize(input)}
     );
     public static ALL_PARAM_TYPES: Array<ResourceMapEnum> = [
         ResourceMapEnum.TEXT,

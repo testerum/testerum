@@ -1,0 +1,13 @@
+
+<div class="ace-editor-container">
+    <ace-editor
+        #editor
+        [(text)]="jsonVerify.jsonAsString"
+        [mode]="'json'"
+        [theme]="'eclipse'"
+        [options]="options"
+        [autoUpdateContent]="false"
+        [durationBeforeCallback]="1000"
+        (textChanged)="onTextChange($event)"
+        class="ace-editor"></ace-editor>
+</div>

@@ -1,13 +1,9 @@
-import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {ResourceService} from "../../../../service/resources/resource.service";
-import {ResourcesTreeService} from "../../tree/resources-tree.service";
-import {JsonVerifyTreeService} from "./json-verify-tree/json-verify-tree.service";
-import {ArrayJsonVerify} from "./json-verify-tree/model/array-json-verify.model";
-import {UrlService} from "../../../../service/url.service";
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ResourceComponent} from "../resource-component.interface";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
 import {NgForm} from "@angular/forms";
+import {JsonVerify} from "./model/json-verify.model";
+import {JsonUtil} from '../../../../utils/json.util';
 
 @Component({
     moduleId: module.id,
@@ -15,12 +11,13 @@ import {NgForm} from "@angular/forms";
     templateUrl: 'json-verify.component.html',
     styleUrls: [
         'json-verify.component.scss'
-    ]
+    ],
+    encapsulation: ViewEncapsulation.None
 })
-export class JsonVerifyComponent extends ResourceComponent<ArrayJsonVerify> implements OnInit {
+export class JsonVerifyComponent extends ResourceComponent<JsonVerify> implements OnInit {
 
     @Input() name: string;
-    @Input() model:ArrayJsonVerify;
+    @Input() model: JsonVerify;
     @Input() stepParameter?: ParamStepPatternPart;
     @Input() editMode: boolean = true;
     @Input() condensedViewMode: boolean = false;
@@ -30,23 +27,22 @@ export class JsonVerifyComponent extends ResourceComponent<ArrayJsonVerify> impl
 
     sampleJsonText: string;
 
-    constructor(private cd: ChangeDetectorRef,
-                private router: Router,
-                private route: ActivatedRoute,
-                private urlService: UrlService,
-                private resourceService: ResourceService,
-                private resourcesTreeService: ResourcesTreeService,
-                private jsonVerifyTreeService: JsonVerifyTreeService) {
+    isTreeVisible: boolean = false;
+    isValidJson: boolean = true;
+
+    constructor(private cd: ChangeDetectorRef) {
         super()
     }
 
     ngOnInit() {
         if (this.model == null) {
-            this.model = new ArrayJsonVerify(null);
+            this.model = new JsonVerify();
         }
 
-        this.jsonVerifyTreeService.setJsonVerifyRootResource(this.model);
-        this.jsonVerifyTreeService.editMode = this.editMode;
+    }
+
+    onToggleEditorMode() {
+        this.isTreeVisible = !this.isTreeVisible;
     }
 
     refresh() {
@@ -54,7 +50,7 @@ export class JsonVerifyComponent extends ResourceComponent<ArrayJsonVerify> impl
     }
 
     isEmptyModel(): boolean {
-        return this.jsonVerifyTreeService.isEmptyModel();
+        return this.model.isEmpty();
     }
 
     shouldDisplayJsonSample(): boolean {
@@ -69,8 +65,7 @@ export class JsonVerifyComponent extends ResourceComponent<ArrayJsonVerify> impl
         return this.form;
     }
 
-    setEditMode(isEditMode: boolean): void {
-        this.editMode = isEditMode;
-        this.jsonVerifyTreeService.editMode = isEditMode;
+    onTextChange(jsonAsString: string) {
+        this.isValidJson = JsonUtil.isJson(jsonAsString);
     }
 }
