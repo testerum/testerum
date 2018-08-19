@@ -199,8 +199,6 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     onSuggestionSelected(event: StepCallSuggestion) {
-        console.log(this.messageService.getMessage(MessageKey.WARNING_COMPOSED_STEP_WITHOUT_STEP_CALLS));
-
         let newStepCall: StepCall = null;
         if (event.actionText == null) {
             newStepCall = this.createStepCallFromExistingStepDef(event);
