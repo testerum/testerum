@@ -65,4 +65,9 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
             '}'
     }
 
+    clone(): TestModel {
+        let objectAsJson = JSON.parse(this.serialize());
+        return new TestModel().deserialize(objectAsJson);
+    }
+
 }

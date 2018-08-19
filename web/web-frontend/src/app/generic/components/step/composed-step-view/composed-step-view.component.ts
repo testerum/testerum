@@ -1,6 +1,7 @@
 import {
     AfterContentChecked,
-    Component, DoCheck,
+    Component,
+    DoCheck,
     EventEmitter,
     Input,
     OnDestroy,
@@ -20,12 +21,10 @@ import {StepTreeNodeModel} from "../../../../functionalities/steps/steps-tree/mo
 import {StepTreeContainerModel} from "../../../../functionalities/steps/steps-tree/model/step-tree-container.model";
 import {TagsService} from "../../../../service/tags.service";
 import {ResourceMapEnum} from "../../../../functionalities/resources/editors/resource-map.enum";
-import {StepChooserService} from "../../step-chooser/step-chooser.service";
 import {StepCallTreeComponent} from "../../step-call-tree/step-call-tree.component";
 import {StepPathModalService} from "./step-path-chooser-modal/step-path-modal.service";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
-import {TestModel} from "../../../../model/test/test.model";
 import {StepsService} from "../../../../service/steps.service";
 
 @Component({
@@ -83,14 +82,27 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         );
 
         this.warningRecalculationChangesSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
-            this.stepsService.getWarnings(this.model).subscribe((newModel: ComposedStepDef) => {
+            let model = this.getModelForWarningRecalculation();
+
+            this.stepsService.getWarnings(model).subscribe((newModel: ComposedStepDef) => {
                 ArrayUtil.replaceElementsInArray(this.model.stepCalls, newModel.stepCalls);
                 this.stepCallTreeComponent.initTree();
 
                 ArrayUtil.replaceElementsInArray(this.model.warnings, newModel.warnings);
                 this.refreshWarnings();
-            })
+            });
         })
+    }
+
+    private getModelForWarningRecalculation() {
+        if (this.model.path) {
+            return this.model;
+        }
+
+        let model: ComposedStepDef = this.model.clone();
+        model.path = Path.createInstance("/");
+
+        return model;
     }
 
     setEditMode(editMode: boolean) {

@@ -76,7 +76,9 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
         );
 
         this.warningRecalculationChangesSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
-            this.testsService.getWarnings(this.testModel).subscribe((newTestModel:TestModel) => {
+            let testModel = this.getModelForWarningRecalculation();
+
+            this.testsService.getWarnings(testModel).subscribe((newTestModel:TestModel) => {
                 ArrayUtil.replaceElementsInArray(this.testModel.stepCalls, newTestModel.stepCalls);
                 this.stepCallTreeComponent.initTree();
 
@@ -84,6 +86,17 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
                 this.refreshWarnings();
             })
         })
+    }
+
+    private getModelForWarningRecalculation() {
+        if (this.testModel.text) {
+            return this.testModel
+        }
+
+        let testModel: TestModel = this.testModel.clone();
+        testModel.text = IdUtils.getTemporaryId();
+
+        return testModel;
     }
 
     ngDoCheck(): void {
