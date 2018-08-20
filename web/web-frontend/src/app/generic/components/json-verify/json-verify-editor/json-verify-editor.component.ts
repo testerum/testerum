@@ -6,10 +6,11 @@ import {JsonVerify} from "../model/json-verify.model";
     templateUrl: './json-verify-editor.component.html',
     styleUrls: ['./json-verify-editor.component.scss']
 })
-export class JsonVerifyEditorComponent implements OnInit {
+export class JsonVerifyEditorComponent {
 
-    @Input() jsonVerify: JsonVerify;
     @Input() isEditMode: boolean = true;
+    @Input() model: string;
+    @Output() modelChange = new EventEmitter<string>();
 
     @Output() change = new EventEmitter<string>();
 
@@ -19,13 +20,8 @@ export class JsonVerifyEditorComponent implements OnInit {
         useSoftTabs: true
     };
 
-    constructor() {
-    }
-
-    ngOnInit() {
-    }
-
     onTextChange(code: string) {
-        this.change.emit(code)
+        this.change.emit(code);
+        this.modelChange.emit(code);
     }
 }

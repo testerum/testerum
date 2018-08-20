@@ -44,18 +44,10 @@
     </div>
 
     <!-- BODY TYPE JSON VERIFY-->
-    <ng-container *ngIf="getModel().matchingType == HttpMockRequestBodyMatchingType.JSON_VERIFY">
-
-        <!--&lt;!&ndash; JSON SAMPLE &ndash;&gt;-->
-        <!--<div class="form-group column-content" *ngIf="shouldDisplayJsonSample()">-->
-            <!--<div class="my-value center-text">Setting a JSON sample will provide an autocomplete and validation</div>-->
-            <!--<div class="my-value center">-->
-                <!--<json-editor [jsonText]="sampleJsonText" (change)="onSampleJsonTextChange($event)"></json-editor>-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--<json-verify-tree></json-verify-tree>-->
-    </ng-container>
+    <div *ngIf="getModel().matchingType == HttpMockRequestBodyMatchingType.JSON_VERIFY"
+         class="my-json-verify-container">
+        <json-verify [(model)]="getModel().content" [editMode]="isEditMode()"></json-verify>
+    </div>
 
     <!-- BODY TYPE JSON VERIFY-->
     <div *ngIf="shouldDisplayAceEditor()"

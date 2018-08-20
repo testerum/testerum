@@ -97,10 +97,6 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
     //     this.jsonVerifyTreeService.setJsonSchema(jsonSchema);
     // }
     //
-    // shouldDisplayJsonSample(): boolean {
-    //     return this.httpResponseVerifyService.editMode && ( this.jsonVerifyTreeService.isEmptyModel() || this.sampleJsonText != null);
-    // }
-
     onBeforeSave(): void {
         // if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
         //     this.expectedBody.bodyVerify = this.jsonVerifyTreeService.rootNode.children[0].serialize();

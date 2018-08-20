@@ -18,6 +18,7 @@
         </div>
     </div>
 
-    <json-verify [model]="model" [editMode]="editMode"></json-verify>
-
+    <div class="my-json-verify-container">
+        <json-verify [(model)]="model.jsonAsString" [editMode]="editMode"></json-verify>
+    </div>
 </form>

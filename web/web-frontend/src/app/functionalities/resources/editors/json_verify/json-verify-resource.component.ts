@@ -38,7 +38,6 @@ export class JsonVerifyResourceComponent extends ResourceComponent<JsonVerify> i
         if (this.model == null) {
             this.model = new JsonVerify();
         }
-
     }
 
     onToggleEditorMode() {

@@ -91,13 +91,13 @@ export class HttpMockRequestBodyComponent implements OnInit{
             bodyVerifyType == HttpMockRequestBodyMatchingType.EXACT_MATCH;
         return shouldDisplay;
     }
-    //
-    // shouldDisplayAceEditor(): boolean {
-    //     let bodyVerifyType = this.getModel().matchingType;
-    //     return bodyVerifyType == HttpMockRequestBodyMatchingType.CONTAINS ||
-    //         bodyVerifyType == HttpMockRequestBodyMatchingType.EXACT_MATCH ||
-    //         bodyVerifyType == HttpMockRequestBodyMatchingType.REGEX_MATCH;
-    // }
+
+    shouldDisplayAceEditor(): boolean {
+        let bodyVerifyType = this.getModel().matchingType;
+        return bodyVerifyType == HttpMockRequestBodyMatchingType.CONTAINS ||
+            bodyVerifyType == HttpMockRequestBodyMatchingType.EXACT_MATCH ||
+            bodyVerifyType == HttpMockRequestBodyMatchingType.REGEX_MATCH;
+    }
     //
     // onSampleJsonTextChange(json:string) {
     //     this.sampleJsonText = json;
