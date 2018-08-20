@@ -8,6 +8,7 @@ import java.time.LocalDateTime
 
 data class ManualTestsRunner @JsonCreator constructor(
         @JsonProperty("path") val path: Path,
+        @JsonProperty("oldPath") val oldPath: Path? = path,
         @JsonProperty("environment") val environment: String?,
         @JsonProperty("applicationVersion") val applicationVersion: String?,
         @JsonProperty("createdDate") val createdDate: LocalDateTime?,

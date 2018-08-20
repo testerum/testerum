@@ -1,14 +1,14 @@
 package com.testerum.web_backend.controller.config
 
 import com.testerum.model.config.Setup
-import com.testerum.service.step.StepService
+import com.testerum.service.step.StepCache
 import com.testerum.settings.private_api.SettingsManagerImpl
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/setup")
 open class SetupController(val settingsManager: SettingsManagerImpl,
-                           val stepService: StepService) {
+                           val stepCache: StepCache) {
 
     @RequestMapping (method = [RequestMethod.PUT], path = [""])
     @ResponseBody
@@ -16,7 +16,7 @@ open class SetupController(val settingsManager: SettingsManagerImpl,
         settingsManager.createConfig (
                 setup.repositoryPath.toJavaAbsolutePath()
         )
-        stepService.reinitializeComposedSteps()
+        stepCache.reinitializeComposedSteps()
 
         return setup
     }

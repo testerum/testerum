@@ -4,7 +4,6 @@ import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath
 import com.testerum.model.manual.ManualTest
-import com.testerum.model.manual.operation.UpdateManualTestModel
 import com.testerum.service.manual.ManualTestsService
 import org.springframework.web.bind.annotation.*
 
@@ -29,16 +28,10 @@ class ManualTestsController(private val manualTestsService: ManualTestsService) 
         manualTestsService.remove(Path.createInstance(path))
     }
 
-    @RequestMapping(method = [RequestMethod.POST], path = ["/create"])
+    @RequestMapping(method = [RequestMethod.POST], path = ["/save"])
     @ResponseBody
-    fun create(@RequestBody manualTest: ManualTest): ManualTest {
-        return manualTestsService.createTest(manualTest)
-    }
-
-    @RequestMapping(method = [RequestMethod.POST], path = ["/update"])
-    @ResponseBody
-    fun update(@RequestBody updateManualTestModel: UpdateManualTestModel): ManualTest {
-        return manualTestsService.updateTest(updateManualTestModel)
+    fun save(@RequestBody manualTest: ManualTest): ManualTest {
+        return manualTestsService.save(manualTest)
     }
 
     @RequestMapping(method = [RequestMethod.PUT], path = ["/directory"])

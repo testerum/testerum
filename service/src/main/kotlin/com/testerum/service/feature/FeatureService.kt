@@ -73,7 +73,7 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         val featureFilePath = featureDirPath.copy(fileName = Feature.FILE_NAME_WITHOUT_EXTENSION, fileExtension = Feature.FILE_EXTENSION)
 
 
-        val createdRepositoryFile = fileRepositoryService.create(
+        val createdRepositoryFile = fileRepositoryService.save(
                 RepositoryFileChange(
                         null,
                         RepositoryFile(
@@ -105,14 +105,14 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
         val newRepositoryFile = RepositoryFile(newKnownPath, featureAsString)
 
         if (!fileRepositoryService.existResourceAtPath(newKnownPath)) {
-            fileRepositoryService.create(
+            fileRepositoryService.save(
                     RepositoryFileChange(
                             null,
                             newRepositoryFile
                     )
             )
         } else {
-            fileRepositoryService.update(
+            fileRepositoryService.save(
                     RepositoryFileChange(
                             KnownPath(feature.path, FileType.FEATURE),
                             newRepositoryFile
@@ -169,7 +169,10 @@ class FeatureService(private val fileRepositoryService: FileRepositoryService,
 
         val featureKnownPath = KnownPath(filePath, FileType.FEATURE)
         val featureFile = fileRepositoryService.getByPath(featureKnownPath)
-                ?: return Feature(filePath, getFeatureName(filePath))
+                ?: return Feature(
+                        path = filePath,
+                        name = getFeatureName(filePath)
+                )
 
         val fileFeature: FileFeature = FILE_PARSER.parse(featureFile.body)
 

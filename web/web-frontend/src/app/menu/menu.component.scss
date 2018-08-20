@@ -40,3 +40,15 @@
 .sub-item-show {
     opacity: 1;
 }
+
+.testerum-logo {
+    display: flex;
+    align-items: center;
+}
+
+.testerum-logo .testerum-logo-left-angle-bracket,
+.testerum-logo .testerum-logo-right-angle-bracket {
+    font-size: 2em;
+    margin-top: -0.2em;
+    color: orange;
+}

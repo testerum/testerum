@@ -3,7 +3,6 @@ package com.testerum.web_backend.controller.manual
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.manual.runner.ManualTestsRunner
 import com.testerum.model.manual.runner.operation.UpdateManualTestExecutionModel
-import com.testerum.model.manual.runner.operation.UpdateManualTestsRunnerModel
 import com.testerum.service.manual.ManualTestsRunnerService
 import org.springframework.web.bind.annotation.*
 
@@ -23,15 +22,15 @@ class ManualTestsRunnerController(private val manualTestsRunnerService: ManualTe
         return manualTestsRunnerService.getTestsRunnerAtPath(Path.createInstance(path))
     }
 
+    @RequestMapping (method = [RequestMethod.POST], path = ["/save"])
+    @ResponseBody
+    fun save(@RequestBody manualTestsRunner: ManualTestsRunner): ManualTestsRunner {
+        return manualTestsRunnerService.save(manualTestsRunner)
+    }
+
     @RequestMapping (method = [RequestMethod.DELETE], path = [""], params = ["path"])
     fun delete(@RequestParam(value = "path") path:String) {
         manualTestsRunnerService.remove(Path.createInstance(path))
-    }
-
-    @RequestMapping (method = [RequestMethod.POST], path = ["/create"])
-    @ResponseBody
-    fun create(@RequestBody manualTestsRunner: ManualTestsRunner): ManualTestsRunner {
-        return manualTestsRunnerService.createTest(manualTestsRunner)
     }
 
     @RequestMapping (method = [RequestMethod.POST], path = ["/finalize"], params = ["path"])
@@ -42,12 +41,6 @@ class ManualTestsRunnerController(private val manualTestsRunnerService: ManualTe
     @RequestMapping (method = [RequestMethod.POST], path = ["/bringBackInExecution"], params = ["path"])
     fun bringBackInExecution(@RequestParam(value = "path") path:String): ManualTestsRunner {
         return manualTestsRunnerService.bringBackInExecution(Path.createInstance(path))
-    }
-
-    @RequestMapping (method = [RequestMethod.POST], path = ["/update"])
-    @ResponseBody
-    fun update(@RequestBody updateManualTestsRunnerModel: UpdateManualTestsRunnerModel): ManualTestsRunner {
-        return manualTestsRunnerService.updateTest(updateManualTestsRunnerModel)
     }
 
     @RequestMapping (method = [RequestMethod.POST], path = ["/updateTestExecution"])

@@ -9,6 +9,7 @@ export class ManualTestModel implements Serializable<ManualTestModel>, TreeNodeM
 
     id:string = IdUtils.getTemporaryId();
     path:Path;
+    oldPath:Path;
     text:string;
     description:string;
     tags:Array<string> = [];
@@ -17,6 +18,7 @@ export class ManualTestModel implements Serializable<ManualTestModel>, TreeNodeM
     deserialize(input: Object): ManualTestModel {
         this.id = input['id'];
         this.path = Path.deserialize(input["path"]);
+        this.oldPath = Path.deserialize(input["oldPath"]);
         this.text = input['text'];
         this.description = input['description'];
 
@@ -35,6 +37,7 @@ export class ManualTestModel implements Serializable<ManualTestModel>, TreeNodeM
         let response = "" +
             '{' +
             '"path":' + JsonUtil.serializeSerializable(this.path) + ',' +
+            '"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) + ',' +
             '"text":' + JsonUtil.stringify(this.text) + ',' +
             '"description":' + JsonUtil.stringify(this.description) + ',' +
             '"tags":' + JsonUtil.serializeArray(this.tags) + ',' +

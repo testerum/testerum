@@ -31,36 +31,13 @@ class FileRepositoryService(private val getRepositoryDirectory: () -> java.nio.f
         return getByPath(knownPath)?.mapToResource()
     }
 
-    fun create(repositoryFileChange: RepositoryFileChange): RepositoryFile {
+    fun save(repositoryFileChange: RepositoryFileChange): RepositoryFile {
+        LOGGER.debug("saving file oldPath=[{}], newPath=[{}]", repositoryFileChange.oldKnownPath, repositoryFileChange.repositoryFile.knownPath)
         if (getRepositoryDirectory() == null) {
             throw unknownRepositoryDirectoryException()
         }
 
-        val escapedRelativeKnownPath = escapeIllegalCharactersInPath(repositoryFileChange.repositoryFile.knownPath)
-        val absoluteResourcePath = getAbsoluteUniquePath(escapedRelativeKnownPath)
-
-        createParentDirectoryIfNotExisting(absoluteResourcePath)
-
-        Files.write(
-                absoluteResourcePath,
-                repositoryFileChange.repositoryFile.body.toByteArray(Charsets.UTF_8),
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING,
-                StandardOpenOption.WRITE
-        )
-
-        return RepositoryFile(
-                escapedRelativeKnownPath,
-                repositoryFileChange.repositoryFile.body
-        )
-    }
-
-    fun update(repositoryFileChange: RepositoryFileChange): RepositoryFile {
-        if (getRepositoryDirectory() == null) {
-            throw unknownRepositoryDirectoryException()
-        }
-
-        val oldKnownPath = repositoryFileChange.oldKnownPath!!
+        val oldKnownPath = repositoryFileChange.oldKnownPath
         val newKnownPath = escapeIllegalCharactersInPath(repositoryFileChange.repositoryFile.knownPath)
 
         val absoluteResourcePath: java.nio.file.Path = if (oldKnownPath != newKnownPath) {
@@ -79,7 +56,7 @@ class FileRepositoryService(private val getRepositoryDirectory: () -> java.nio.f
                 StandardOpenOption.WRITE
         )
 
-        if(oldKnownPath != newKnownPath) {
+        if(oldKnownPath != null && oldKnownPath != newKnownPath) {
             Files.delete(escapeAndGetAbsolutePath(oldKnownPath))
         }
 
@@ -114,18 +91,6 @@ class FileRepositoryService(private val getRepositoryDirectory: () -> java.nio.f
         }
 
         return uniqueAttemptPath
-    }
-
-    fun save(repositoryFileChange: RepositoryFileChange): RepositoryFile { //TODO: create separate methods for create and update
-        if (getRepositoryDirectory() == null) {
-            throw unknownRepositoryDirectoryException()
-        }
-
-        if (repositoryFileChange.oldKnownPath == null) {
-            return create(repositoryFileChange)
-        }
-
-        return update(repositoryFileChange)
     }
 
     fun getByPath (knownPath: KnownPath): RepositoryFile? {

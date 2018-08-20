@@ -13,14 +13,14 @@
     <div class="modal-body">
 
         <ng-container *ngIf="actionType == JsonTreeContainerEditorEnum.COPY">
-            <div>Are you shore you want to move</div>
+            <div>Are you sure you want to move</div>
             <div class="tab bold">{{oldName}}</div>
             <div>{{isFile? "file" : "directory"}} to</div>
             <div class="tab bold">{{name}}</div>
             <div>directory</div>
         </ng-container>
 
-        {{actionType == JsonTreeContainerEditorEnum.DELETE?'Are you shore you want to delete "'+name+'" directory?':""}}
+        {{actionType == JsonTreeContainerEditorEnum.DELETE?'Are you sure you want to delete "'+name+'" directory?':""}}
 
         <div *ngIf="actionType == JsonTreeContainerEditorEnum.UPDATE || actionType == JsonTreeContainerEditorEnum.CREATE" class="my-line">
             <label for="packageName" class="my-label label-size">Directory Name: </label>

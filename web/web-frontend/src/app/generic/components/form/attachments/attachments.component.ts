@@ -59,7 +59,7 @@ export class AttachmentsComponent implements OnInit {
     delete(attachment: Attachment) {
         this.areYouSureModalComponent.show(
             "Delete Resource",
-            "Are you shore you want to delete this attachment?",
+            "Are you sure you want to delete this attachment?",
             (action: AreYouSureModalEnum): void => {
                 if (action == AreYouSureModalEnum.OK) {
                     this.attachmentsService.delete(attachment.path).subscribe(

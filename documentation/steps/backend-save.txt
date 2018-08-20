@@ -20,7 +20,7 @@
           * if(!response.isCompatible)
              * display alert
                 * title: Warning
-                * text: The new Step definition is not compatible with the previews version. The following tests and steps will be broken:
+                * text: The new Step definition is not compatible with the previous version. The following tests and steps will be broken:
                 * display: list of tests, list of directed AffectedSteps, list of transitive AffectedSteps
                 * buttons: Cancel & Continue
     * else call Update

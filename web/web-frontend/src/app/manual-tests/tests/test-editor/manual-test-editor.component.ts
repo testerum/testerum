@@ -6,7 +6,6 @@ import {IdUtils} from "../../../utils/id.util";
 import {ManualTestModel} from "../../model/manual-test.model";
 import {ManualTestStatus} from "../../model/enums/manual-test-status.enum";
 import {ManualTestsService} from "../service/manual-tests.service";
-import {UpdateManualTestModel} from "../../model/operation/update-manual-test.model";
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../utils/array.util";
 import {ManualTestStepModel} from "../../model/manual-step.model";
@@ -146,7 +145,7 @@ export class ManualTestEditorComponent implements OnInit {
     deleteAction(): void {
         this.areYouSureModalComponent.show(
             "Delete Test",
-            "Are you shore you want to delete this Manual Test?",
+            "Are you sure you want to delete this Manual Test?",
             (action: AreYouSureModalEnum): void => {
                 if (action == AreYouSureModalEnum.OK) {
                     this.manualTestsService.delete(this.manualTestModel).subscribe(restul => {
@@ -160,20 +159,9 @@ export class ManualTestEditorComponent implements OnInit {
 
     saveAction(): void {
         this.removeLastStepIfIsEmpty();
-        if(this.isCreateAction) {
-            this.manualTestsService
-                .createTest(this.manualTestModel)
-                .subscribe(savedModel => this.afterSaveHandler(savedModel));
-        } else {
-            let updateManualTestModel = new UpdateManualTestModel(
-                this.manualTestModel.path,
-                this.manualTestModel
-            );
-
-            this.manualTestsService
-                .updateTest(updateManualTestModel)
-                .subscribe(savedModel => this.afterSaveHandler(savedModel));
-        }
+        this.manualTestsService
+            .save(this.manualTestModel)
+            .subscribe(savedModel => this.afterSaveHandler(savedModel));
     }
 
     private afterSaveHandler(savedModel: ManualTestModel) {
@@ -197,4 +185,5 @@ export class ManualTestEditorComponent implements OnInit {
             )
         }
     }
+
 }

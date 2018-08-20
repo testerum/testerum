@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ManualTestsRunnerService} from "../service/manual-tests-runner.service";
 import {ManualTestsRunner} from "../model/manual-tests-runner.model";
-import {UpdateManualTestRunner} from "../model/operation/update-manual-test.runner";
 import {SelectTestsTreeRunnerService} from "./select-tests-tree/select-tests-tree-runner.service";
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";
 import {SelectTestTreeRunnerContainerModel} from "./select-tests-tree/model/select-test-tree-runner-container.model";
@@ -130,7 +129,7 @@ export class ManualTestsRunnerEditorComponent implements OnInit {
     deleteAction(): void {
         this.areYouSureModalComponent.show(
             "Delete Runner",
-            "Are you shore you want to delete this Manual Tests Runner?",
+            "Are you sure you want to delete this Manual Tests Runner?",
             (action: AreYouSureModalEnum): void => {
                     if (action == AreYouSureModalEnum.OK) {
                         this.manualTestsRunnerService.delete(this.manualTestRunner).subscribe(restul => {
@@ -145,7 +144,7 @@ export class ManualTestsRunnerEditorComponent implements OnInit {
     finalize(): void {
         this.areYouSureModalComponent.show(
             "Finalize Execution",
-            "Are you shore you want to finalize this Tests Execution?",
+            "Are you sure you want to finalize this Tests Execution?",
             (action: AreYouSureModalEnum): void => {
                 if (action == AreYouSureModalEnum.OK) {
                     this.manualTestsRunnerService
@@ -165,20 +164,9 @@ export class ManualTestsRunnerEditorComponent implements OnInit {
     saveAction(): void {
         this.manualTestRunner.testsToExecute = this.selectTestsTreeRunnerService.getSelectedTests();
 
-        if(this.isCreateAction) {
-            this.manualTestsRunnerService
-                .createTestRunner(this.manualTestRunner)
-                .subscribe(savedModel => this.afterSaveHandler(savedModel));
-        } else {
-            let updateManualTestModel = new UpdateManualTestRunner(
-                this.manualTestRunner.path,
-                this.manualTestRunner
-            );
-
-            this.manualTestsRunnerService
-                .updateTest(updateManualTestModel)
-                .subscribe(savedModel => this.afterSaveHandler(savedModel));
-        }
+        this.manualTestsRunnerService
+            .save(this.manualTestRunner)
+            .subscribe(savedModel => this.afterSaveHandler(savedModel));
     }
 
     private afterSaveHandler(savedManualTestRunner: ManualTestsRunner) {

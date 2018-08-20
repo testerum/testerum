@@ -3,7 +3,6 @@ package com.testerum.service.step
 import com.testerum.model.exception.ServerStateChangedException
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.ComposedStepDef
-import com.testerum.model.step.operation.UpdateComposedStepDef
 import com.testerum.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
 import com.testerum.model.test.TestModel
 import com.testerum.model.text.StepPattern
@@ -14,13 +13,16 @@ import com.testerum.service.step.util.isStepPatternChangeCompatible
 import com.testerum.service.tests.TestsService
 import com.testerum.service.tests.util.isTestUsingStepPattern
 
-class StepUpdateCompatibilityService (var stepService: StepService,
+class StepUpdateCompatibilityService (var stepCache: StepCache,
                                       var testsService: TestsService) {
 
-    fun checkUpdateCompatibility(updateComposedStepDef: UpdateComposedStepDef): CheckComposedStepDefUpdateCompatibilityResponse {
-        val oldStepPattern = stepService.getComposedStepByPath(updateComposedStepDef.oldPath)?.stepPattern
+    fun checkUpdateCompatibility(composedStepDef: ComposedStepDef): CheckComposedStepDefUpdateCompatibilityResponse {
+        val oldPath = composedStepDef.oldPath
+                ?: throw IllegalArgumentException("this service is only supported for existing steps (not for creating steps)")
+
+        val oldStepPattern = stepCache.getComposedStepAtPath(oldPath)?.stepPattern
                 ?: throw ServerStateChangedException()
-        val newStepPattern = updateComposedStepDef.composedStepDef.stepPattern
+        val newStepPattern = composedStepDef.stepPattern
 
         if (oldStepPattern.hasTheSameStepPattern(newStepPattern)) {
             return CheckComposedStepDefUpdateCompatibilityResponse(isCompatible = true)
@@ -38,7 +40,6 @@ class StepUpdateCompatibilityService (var stepService: StepService,
         val pathsForDirectAffectedSteps: List<Path> = findStepsThatUsesStepPatternAsDirectChild(oldStepPattern).map { it.path }
         val pathsForTransitiveAffectedSteps: List<Path> = findStepsThatUsesStepPatternAsTransitiveChild(oldStepPattern) - pathsForDirectAffectedSteps
 
-
         return CheckComposedStepDefUpdateCompatibilityResponse(
                 isCompatible = false,
                 isUniqueStepPattern = true,
@@ -50,7 +51,7 @@ class StepUpdateCompatibilityService (var stepService: StepService,
 
     private fun findStepsThatUsesStepPatternAsTransitiveChild(searchedStepPattern: StepPattern): List<Path> {
         val result: MutableList<Path> = mutableListOf()
-        val composedSteps = stepService.getComposedSteps()
+        val composedSteps = stepCache.getComposedSteps()
 
         for (composedStep in composedSteps) {
             if(composedStep.isCallingStepPattern(searchedStepPattern)) {
@@ -64,7 +65,7 @@ class StepUpdateCompatibilityService (var stepService: StepService,
     fun findStepsThatUsesStepPatternAsDirectChild(searchedStepPattern: StepPattern): List<ComposedStepDef> {
         val result: MutableSet<ComposedStepDef> = mutableSetOf()
 
-        val composedSteps = stepService.getComposedSteps()
+        val composedSteps = stepCache.getComposedSteps()
         for (composedStep in composedSteps) {
             for (stepCall in composedStep.stepCalls) {
                 if (stepCall.stepDef.stepPattern == searchedStepPattern) {
@@ -89,9 +90,10 @@ class StepUpdateCompatibilityService (var stepService: StepService,
     }
 
     fun isOtherStepWithTheSameStepPattern(oldStepPattern: StepPattern, newStepPattern: StepPattern): Boolean {
-        val allSteps = stepService.getAllSteps()
+        val allSteps = stepCache.getAllSteps()
         val allStepsPatterns = allSteps.map { it.stepPattern }
 
         return isOtherStepWithTheSameStepPattern(allStepsPatterns, oldStepPattern, newStepPattern)
     }
 }
+

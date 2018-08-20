@@ -1,19 +1,9 @@
 package com.testerum.service.step.util
 
 import com.testerum.model.step.ComposedStepDef
-import com.testerum.model.step.StepDef
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
-
-fun getStepWithTheSameStepDef(stepDef: StepDef, existingSteps: List<StepDef>): StepDef? {
-    for (existingStep in existingSteps) {
-        if (stepDef.stepPattern.hasTheSameStepPattern(existingStep.stepPattern)) {
-            return existingStep
-        }
-    }
-    return null
-}
 
 fun StepPattern.hasTheSameStepPattern(otherStepPattern: StepPattern): Boolean {
     val leftPatternParts = this.patternParts

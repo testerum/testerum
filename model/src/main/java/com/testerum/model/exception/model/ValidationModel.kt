@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 class ValidationModel {
 
+    companion object {
+        val EMPTY = ValidationModel()
+    }
+
     constructor()
 
     @JsonProperty("globalValidationMessage") var globalValidationMessage: String? = null
@@ -14,6 +18,12 @@ class ValidationModel {
         this.globalValidationMessage = globalValidationMessage
         this.globalValidationMessageDetails = globalValidationMessageDetails
     }
+
+    override fun toString(): String {
+        return "ValidationModel(globalValidationMessage=$globalValidationMessage, globalValidationMessageDetails=$globalValidationMessageDetails, fieldsWithValidationErrors=$fieldsWithValidationErrors)"
+    }
+
+
 }
 
 

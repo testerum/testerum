@@ -11,6 +11,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 
     id:string = IdUtils.getTemporaryId();
     path:Path;
+    oldPath:Path;
     properties: TestProperties  = new TestProperties();
     text:string;
     description:string;
@@ -28,6 +29,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
     deserialize(input: Object): TestModel {
         this.id = input['id'];
         this.path = Path.deserialize(input["path"]);
+        this.oldPath = Path.deserialize(input["oldPath"]);
         this.properties = new TestProperties().deserialize(input['properties']);
         this.text = input['text'];
         this.description = input['description'];
@@ -57,6 +59,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
             '{' +
             '"id":' + JsonUtil.stringify(this.id) + ',' +
             '"path":' + JsonUtil.serializeSerializable(this.path) + ',' +
+            '"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) + ',' +
             '"properties":' + JsonUtil.serializeSerializable(this.properties) + ',' +
             '"text":' + JsonUtil.stringify(this.text) + ',' +
             '"description":' + JsonUtil.stringify(this.description) + ',' +
@@ -64,6 +67,11 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
             '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) + ',' +
             '"warnings": []' +
             '}'
+    }
+
+    clone(): TestModel {
+        let objectAsJson = JSON.parse(this.serialize());
+        return new TestModel().deserialize(objectAsJson);
     }
 
 }

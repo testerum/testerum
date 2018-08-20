@@ -9,6 +9,7 @@ import com.testerum.model.util.StepHashUtil
 import com.testerum.model.warning.Warning
 
 data class ComposedStepDef @JsonCreator constructor(@JsonProperty("path") override val path: Path,
+                                                    @JsonProperty("oldPath") val oldPath: Path? = path,
                                                     @JsonProperty("phase") override val phase: StepPhaseEnum,
                                                     @JsonProperty("stepPattern") override val stepPattern: StepPattern,
                                                     @JsonProperty("description") override val description: String? = null,
@@ -30,4 +31,5 @@ data class ComposedStepDef @JsonCreator constructor(@JsonProperty("path") overri
         append(" ")
         append(stepPattern.toDebugString(varPrefix = "<<", varSuffix = ">>"))
     }
+
 }

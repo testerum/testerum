@@ -25,7 +25,7 @@ class VariablesService(val fileRepositoryService: FileRepositoryService,
                 VARIABLES_FILE_PATH,
                 FileType.VARIABLES
         ))
-        fileRepositoryService.create(
+        fileRepositoryService.save(
                 RepositoryFileChange(
                         null,
                         RepositoryFile(

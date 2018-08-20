@@ -49,12 +49,12 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val setupController = SetupController(
             settingsManager = settingsModuleFactory.settingsManager,
-            stepService = serviceModuleFactory.stepService
+            stepCache = serviceModuleFactory.stepService
     )
 
     private val settingsController = SettingsController(
             settingsService = serviceModuleFactory.settingsService,
-            stepService = serviceModuleFactory.stepService
+            stepCache = serviceModuleFactory.stepService
     )
 
     private val messageController = MessageController(
@@ -89,21 +89,22 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val basicStepsController = BasicStepsController(
-            stepService = serviceModuleFactory.stepService
+            stepCache = serviceModuleFactory.stepService
     )
 
     private val composedStepController = ComposedStepController(
-            stepService = serviceModuleFactory.stepService,
-            stepUpdateService = serviceModuleFactory.stepUpdateService,
-            stepUpdateCompatibilityService = serviceModuleFactory.stepUpdateCompatibilityService
+            stepCache = serviceModuleFactory.stepService,
+            stepUpdateCompatibilityService = serviceModuleFactory.stepUpdateCompatibilityService,
+            saveService = serviceModuleFactory.saveService
     )
 
     private val stepsTreeController = StepsTreeController(
-            stepService = serviceModuleFactory.stepService
+            stepCache = serviceModuleFactory.stepService
     )
 
     private val testsController = TestsController(
-            testsService = serviceModuleFactory.testsService
+            testsService = serviceModuleFactory.testsService,
+            saveService = serviceModuleFactory.saveService
     )
 
     private val testExecutionController = TestExecutionController(

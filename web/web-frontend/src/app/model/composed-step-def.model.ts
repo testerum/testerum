@@ -13,6 +13,7 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
 
     id: string = IdUtils.getTemporaryId();
     path: Path;
+    oldPath: Path;
     phase: StepPhaseEnum;
     stepPattern: StepPattern = new StepPattern;
     description: string;
@@ -37,6 +38,7 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
     deserialize(input: Object): ComposedStepDef {
         this.id = input["id"];
         this.path = Path.deserialize(input["path"]);
+        this.oldPath = Path.deserialize(input["oldPath"]);
         this.phase = StepPhaseEnum["" + input["phase"]];
         this.stepPattern = new StepPattern().deserialize(input["stepPattern"]);
         this.description = input["description"];
@@ -68,6 +70,7 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
             '"id":' + JsonUtil.stringify(this.id) + ',' +
             '"phase":' + JsonUtil.stringify(StepPhaseEnum[this.phase].toUpperCase()) + ',' +
             '"path":' + JsonUtil.serializeSerializable(this.path) + ',' +
+            '"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) + ',' +
             '"stepPattern":' + this.stepPattern.serialize() + ',' +
             '"description":' + JsonUtil.stringify(this.description) + ',' +
             '"tags":' + JsonUtil.stringify(this.tags) + ',' +

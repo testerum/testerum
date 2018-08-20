@@ -1,7 +1,7 @@
 package com.testerum.settings
 
-import com.testerum.api.test_context.settings.model.SettingType
 import com.testerum.api.test_context.settings.model.Setting
+import com.testerum.api.test_context.settings.model.SettingType
 
 object SystemSettings {
     val TESTERUM_INSTALL_DIRECTORY = Setting(

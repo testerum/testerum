@@ -2,7 +2,6 @@ import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {ManualTestsRunner} from "../model/manual-tests-runner.model";
-import {UpdateManualTestRunner} from "../model/operation/update-manual-test.runner";
 import {UpdateManualTestExecutionModel} from "../model/operation/update-manual-test-execution.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 
@@ -13,8 +12,8 @@ export class ManualTestsRunnerService {
 
     constructor(private http: HttpClient) {}
 
-    createTestRunner(manualTestRunner:ManualTestsRunner): Observable<ManualTestsRunner> {
-        let body = manualTestRunner.serialize();
+    save(manualTestsRunner: ManualTestsRunner): Observable<ManualTestsRunner> {
+        let body = manualTestsRunner.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type':  'application/json',
@@ -22,8 +21,8 @@ export class ManualTestsRunnerService {
         };
 
         return this.http
-            .post<ManualTestsRunner>(this.BASE_URL + "/create", body, httpOptions).pipe(
-            map(res => new ManualTestsRunner().deserialize(res)));
+            .post<ManualTestsRunner>(this.BASE_URL + "/save", body, httpOptions).pipe(
+                map(res => new ManualTestsRunner().deserialize(res)));
     }
 
     getTests(): Observable<Array<ManualTestsRunner>> {
@@ -72,19 +71,6 @@ export class ManualTestsRunnerService {
 
         return this.http
             .post<ManualTestsRunner>(this.BASE_URL + "/bringBackInExecution", null, httpOptions).pipe(
-            map(res => new ManualTestsRunner().deserialize(res)));
-    }
-
-    updateTest(updateManualTestRunner:UpdateManualTestRunner): Observable<ManualTestsRunner> {
-        let body = updateManualTestRunner.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
-
-        return this.http
-            .post<ManualTestsRunner>(this.BASE_URL + "/update", body, httpOptions).pipe(
             map(res => new ManualTestsRunner().deserialize(res)));
     }
 
