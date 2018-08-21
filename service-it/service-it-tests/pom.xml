@@ -17,6 +17,18 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
+        <!-- common-di -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-di</artifactId>
+        </dependency>
+
+        <!-- service -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>service</artifactId>
+        </dependency>
+
 
         <!--==================== External Dependencies ====================-->
 

@@ -12,14 +12,15 @@ export class SettingsService {
 
     constructor(private http: HttpClient) {}
 
-    getSettings(): Observable<Array<Setting>> {
+    getSettings(): Observable<Setting[]> {
         return this.http
-            .get<Array<Setting>>(this.BASE_URL).pipe(
-            map(this.extractSettings));
+            .get<Setting[]>(this.BASE_URL)
+            .pipe(map(SettingsService.extractSettings));
     }
 
-    private extractSettings(res:  Array<Setting>): Array<Setting> {
-        let response: Array<Setting> = [];
+    private static extractSettings(res:  Setting[]): Setting[] {
+        const response: Setting[] = [];
+
         for (let settingAsJson of res) {
             let setting = new Setting().deserialize(settingAsJson);
             response.push(setting)
@@ -28,8 +29,10 @@ export class SettingsService {
         return response;
     }
 
-    save(settings: Array<Setting>): Observable<Array<Setting>> {
-        let body = JsonUtil.serializeArrayOfSerializable(settings);
+    save(settings: Setting[]): Observable<Setting[]> {
+        const body = JsonUtil.stringify(
+            SettingsService.settingsToKeyValueMap(settings)
+        );
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type':  'application/json',
@@ -37,7 +40,19 @@ export class SettingsService {
         };
 
         return this.http
-            .post<Array<Setting>>(this.BASE_URL, body, httpOptions).pipe(
-            map(this.extractSettings));
+            .post<any>(this.BASE_URL, body, httpOptions).pipe(
+            map(SettingsService.extractSettings));
     }
+
+    private static settingsToKeyValueMap(settings: Setting[]): any {
+        const result = {};
+
+        for (let setting of settings) {
+            result[setting.definition.key] = setting.unresolvedValue;
+        }
+
+        return result;
+    }
+
+
 }

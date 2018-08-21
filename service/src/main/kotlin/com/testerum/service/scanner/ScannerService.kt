@@ -1,13 +1,13 @@
 package com.testerum.service.scanner
 
-import com.testerum.api.test_context.settings.SettingsManager
-import com.testerum.api.test_context.settings.model.Setting
+import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.model.step.BasicStepDef
 import com.testerum.scanner.step_lib_scanner.StepLibraryCacheManger
 import com.testerum.scanner.step_lib_scanner.model.ScannerBasicStepScanResult
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
-import com.testerum.settings.SystemSettings
-import com.testerum.settings.private_api.SettingsManagerImpl
+import com.testerum.settings.SettingsManager
+import com.testerum.settings.getRequiredSetting
+import com.testerum.settings.keys.SystemSettingKeys
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -15,25 +15,19 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.util.function.BiPredicate
 import java.util.stream.Collectors
 
-class ScannerService(private val settingsManager: SettingsManagerImpl,
+class ScannerService(private val settingsManager: SettingsManager,
                      private val stepLibraryCacheManger: StepLibraryCacheManger) {
 
     companion object {
-        private val cacheFile: Path = SettingsManager.TESTERUM_DIRECTORY.resolve("cache/basic-steps-cache.json")
-    }
-
-    fun initInBackgroundThread() {
-        // start loading in the background (by calling the getter) & also register settings
-        Thread(Runnable {
-            init()
-        }).start()
+        private val TESTERUM_DIRECTORY: Path = Paths.get(System.getProperty("user.home") + "/.testerum")
+        private val cacheFile: Path = TESTERUM_DIRECTORY.resolve("cache/basic-steps-cache.json")
     }
 
     fun init() {
-        for (library in scanResult.libraries) {
-            val settings: List<Setting> = library.settings
-
-            settingsManager.registerSettings(settings)
+        settingsManager.modify {
+            for (library in scanResult.libraries) {
+                registerDefinitions(library.settingDefinitions)
+            }
         }
     }
 
@@ -49,7 +43,8 @@ class ScannerService(private val settingsManager: SettingsManagerImpl,
     }
 
     private fun getJarFiles(): List<Path> {
-        val basicStepsDirectories: Path = getBasicStepsDirectory()
+        val basicStepsDirectories: Path = settingsManager.getRequiredSetting(SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR)
+                                                         .resolvedValueAsPath
 
         val isJarFile = BiPredicate { file: Path, _: BasicFileAttributes ->
             Files.isRegularFile(file) && file.toString().endsWith(".jar")
@@ -59,12 +54,5 @@ class ScannerService(private val settingsManager: SettingsManagerImpl,
             return stream.collect(Collectors.toList())
         }
     }
-
-    private fun getBasicStepsDirectory()
-            = Paths.get(
-                 settingsManager.getSettingValue(SystemSettings.BUILT_IN_BASIC_STEPS_DIRECTORY)
-                    ?: throw IllegalStateException("missing setting [${SystemSettings.BUILT_IN_BASIC_STEPS_DIRECTORY.key}]"
-            )
-    )
 
 }

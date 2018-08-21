@@ -1,13 +1,14 @@
 package com.testerum.runner_cmdline.classloader
 
-import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.runner_cmdline.RunnerApplication
-import com.testerum.settings.SystemSettings
+import com.testerum.settings.SettingsManager
+import com.testerum.settings.getRequiredSetting
+import com.testerum.settings.keys.SystemSettingKeys
 import java.net.URL
 import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
 import java.util.function.BiPredicate
 import java.util.stream.Collectors
@@ -29,9 +30,7 @@ class RunnerClassloaderFactory(private val settingsManager: SettingsManager) {
     // todo: how to reduce duplication between this class and BasicStepScanner?
     private fun getStepJarFiles(): List<Path> {
         // todo: user step directory
-        val basicStepsDirectory: Path = Paths.get(
-                settingsManager.getSettingValue(SystemSettings.BUILT_IN_BASIC_STEPS_DIRECTORY)
-        )
+        val basicStepsDirectory: Path = settingsManager.getRequiredSetting(SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR).resolvedValueAsPath
 
         val isJarFile = BiPredicate { file: Path, _: BasicFileAttributes ->
             Files.isRegularFile(file) && file.toString().endsWith(".jar")

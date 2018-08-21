@@ -1,7 +1,7 @@
 package com.testerum.service.tests_runner.execution
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType
@@ -15,7 +15,10 @@ import com.testerum.service.tests_runner.execution.model.RunningTestExecution
 import com.testerum.service.tests_runner.execution.model.TestExecution
 import com.testerum.service.tests_runner.execution.model.TestExecutionResponse
 import com.testerum.service.tests_runner.execution.stopper.ProcessKillerTestExecutionStopper
-import com.testerum.settings.SystemSettings
+import com.testerum.settings.SettingsManager
+import com.testerum.settings.getRequiredSetting
+import com.testerum.settings.getValue
+import com.testerum.settings.keys.SystemSettingKeys
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.zeroturnaround.exec.ProcessExecutor
@@ -201,10 +204,9 @@ class TestsExecutionService(private val testsService: TestsService,
                          .normalize()
     }
 
-    // todo: move these to SettingsManager
     private fun getPackageDir(): java.nio.file.Path {
-        val packageDirKey = SystemSettings.TESTERUM_INSTALL_DIRECTORY.key
-        val packageDirSettingValue = settingsManager.getSettingValue(packageDirKey)!!
+        val packageDirKey = SystemSettingKeys.TESTERUM_INSTALL_DIR
+        val packageDirSettingValue = settingsManager.getValue(packageDirKey)!!
 
         return Paths.get(packageDirSettingValue)
                     .toAbsolutePath()
@@ -212,19 +214,17 @@ class TestsExecutionService(private val testsService: TestsService,
     }
 
     private fun getBuiltInBasicStepsDirectory(): java.nio.file.Path {
-        val builtInBasicStepsDirSettingValue = settingsManager.getSettingValue(SystemSettings.BUILT_IN_BASIC_STEPS_DIRECTORY)
+        val builtInBasicStepsDir = settingsManager.getRequiredSetting(SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR)
+                .resolvedValueAsPath
 
-        return Paths.get(builtInBasicStepsDirSettingValue)
-                .toAbsolutePath()
-                .normalize()
+        return builtInBasicStepsDir.toAbsolutePath().normalize()
     }
 
     private fun getRepositoryDirectory(): java.nio.file.Path {
-        val repoDirSettingValue = settingsManager.getSettingValue(SystemSettings.REPOSITORY_DIRECTORY)
+        val repoDir = settingsManager.getRequiredSetting(SystemSettingKeys.REPOSITORY_DIR)
+                .resolvedValueAsPath
 
-        return Paths.get(repoDirSettingValue)
-                .toAbsolutePath()
-                .normalize()
+        return repoDir.toAbsolutePath().normalize()
     }
 
     private fun createArgsFile(args: List<String>): java.nio.file.Path {
@@ -262,12 +262,12 @@ class TestsExecutionService(private val testsService: TestsService,
 
         // settings
         val keysOfSettingsToExclude = setOf(
-                SystemSettings.TESTERUM_INSTALL_DIRECTORY.key,
-                SystemSettings.REPOSITORY_DIRECTORY.key,
-                SystemSettings.BUILT_IN_BASIC_STEPS_DIRECTORY.key
+                SystemSettingKeys.TESTERUM_INSTALL_DIR,
+                SystemSettingKeys.REPOSITORY_DIR,
+                SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR
         )
-        val settings: Map<String, String?> = settingsManager.getAllSettings()
-                .associateBy({ it.setting.key }, { it.value })
+        val settings: Map<String, String?> = settingsManager.getSettings()
+                .associateBy({ it.definition.key }, { it.resolvedValue })
         for (setting in settings) {
             if (setting.key in keysOfSettingsToExclude) {
                 continue

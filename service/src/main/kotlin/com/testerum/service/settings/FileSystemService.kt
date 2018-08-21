@@ -1,4 +1,4 @@
-package com.testerum.service.config
+package com.testerum.service.settings
 
 import com.testerum.model.config.dir_tree.FileSystemDirectory
 import com.testerum.model.infrastructure.path.Path

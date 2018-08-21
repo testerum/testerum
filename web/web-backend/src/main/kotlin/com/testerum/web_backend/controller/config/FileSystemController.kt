@@ -2,7 +2,7 @@ package com.testerum.web_backend.controller.config
 
 import com.testerum.model.config.dir_tree.FileSystemDirectory
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.service.config.FileSystemService
+import com.testerum.service.settings.FileSystemService
 import org.springframework.web.bind.annotation.*
 
 @RestController
