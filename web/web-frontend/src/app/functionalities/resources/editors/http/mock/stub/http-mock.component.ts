@@ -48,7 +48,9 @@ export class HttpMockComponent extends ResourceComponent<HttpMock> implements On
     }
 
     refresh() {
-        this.cd.detectChanges();
+        if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
+            this.cd.detectChanges();
+        }
     }
 
     get editMode(): boolean {

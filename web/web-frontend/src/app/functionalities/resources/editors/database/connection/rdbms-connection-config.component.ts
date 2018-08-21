@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import {RdbmsService} from "../../../../../service/resources/rdbms/rdbms.service";
 import {RdbmsConnectionConfig} from "../../../../../model/resource/rdbms/rdbms-connection-config.model";
 import {RdbmsDriver} from "./model/rdbms-driver.model";
@@ -64,7 +72,9 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
     }
 
     refresh() {
-        this.cd.detectChanges();
+        if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
+            this.cd.detectChanges();
+        }
     }
 
     private maskedPassword(): string {
