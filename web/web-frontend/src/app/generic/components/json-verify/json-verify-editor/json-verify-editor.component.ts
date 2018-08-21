@@ -59,15 +59,15 @@ export class JsonVerifyEditorComponent {
         }
     }
 
-    private currentTokenContainsCompareMode(tokenIterator: ace.TokenIterator): boolean {
+    private currentTokenContainsCompareMode(tokenIterator: any): boolean {
         let stepForward = tokenIterator.stepForward();
-        if(stepForward.value.startsWith('"=compareMode') {
+        if(stepForward.value.startsWith('"=compareMode')) {
             return true;
         }
         return false;
     }
 
-    private removeCompareMode(aceEditor: ace.Editor, tokenIterator: ace.TokenIterator) {
+    private removeCompareMode(aceEditor: ace.Editor, tokenIterator: any) {
         let currentToken = tokenIterator.getCurrentToken();
         while(currentToken != null &&
                 (currentToken.value != "," &&
