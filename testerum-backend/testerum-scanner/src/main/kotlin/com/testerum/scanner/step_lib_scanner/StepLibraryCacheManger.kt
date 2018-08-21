@@ -125,7 +125,7 @@ class StepLibraryCacheManger(private val threadPool: ExecutorService) {
                 OBJECT_MAPPER.readValue(inputStream, ScannerBasicStepScanResult::class.java)
             }
         } catch (e: Exception) {
-            LOGGER.warn("failed to parse existing cache at [${cacheFile.toAbsolutePath()}]; the existing cache file will be deleted and a full scan will be performed", e)
+            LOGGER.warn("failed to parse existing cache at [${cacheFile.toAbsolutePath()}]; the existing cache file will be deleted and a full scan will be performed")
 
             Files.delete(cacheFile)
 
