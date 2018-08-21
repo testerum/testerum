@@ -1,7 +1,7 @@
 package com.testerum.scanner_it_test
 
 import com.testerum.api.annotations.hooks.HooksConstants
-import com.testerum.api.test_context.settings.model.Setting
+import com.testerum.api.test_context.settings.model.SettingDefinition
 import com.testerum.api.test_context.settings.model.SettingType
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.step.BasicStepDef
@@ -543,14 +543,14 @@ class StepLibraryCacheMangerTest {
                     )
             )
 
-            val lib1_sortedSettings = lib1.settings.sortedBy { it.key }
+            val lib1_sortedSettings = lib1.settingDefinitions.sortedBy { it.key }
 
             assertThat(lib1_sortedSettings, hasSize(4))
 
             assertThat(
                     lib1_sortedSettings[0],
                     equalTo(
-                            Setting(
+                            SettingDefinition(
                                     key = "stepLib1.other",
                                     type = SettingType.TEXT,
                                     defaultValue = "yep",
@@ -562,7 +562,7 @@ class StepLibraryCacheMangerTest {
             assertThat(
                     lib1_sortedSettings[1],
                     equalTo(
-                            Setting(
+                            SettingDefinition(
                                     key = "stepLib1.param1",
                                     type = SettingType.NUMBER,
                                     defaultValue = "10",
@@ -574,7 +574,7 @@ class StepLibraryCacheMangerTest {
             assertThat(
                     lib1_sortedSettings[2],
                     equalTo(
-                            Setting(
+                            SettingDefinition(
                                     key = "stepLib1.param2",
                                     type = SettingType.TEXT,
                                     defaultValue = "some text",
@@ -586,7 +586,7 @@ class StepLibraryCacheMangerTest {
             assertThat(
                     lib1_sortedSettings[3],
                     equalTo(
-                            Setting(
+                            SettingDefinition(
                                     key = "stepLib1.param3",
                                     type = SettingType.FILESYSTEM_DIRECTORY,
                                     defaultValue = "/some/path",
@@ -683,14 +683,14 @@ class StepLibraryCacheMangerTest {
                     )
             )
 
-            val lib3_sortedSettings = lib3.settings.sortedBy { it.key }
+            val lib3_sortedSettings = lib3.settingDefinitions.sortedBy { it.key }
 
             assertThat(lib3_sortedSettings, hasSize(4))
 
             assertThat(
                     lib3_sortedSettings[0],
                     equalTo(
-                            Setting(
+                            SettingDefinition(
                                     key = "stepLib3Java.param1",
                                     type = SettingType.NUMBER,
                                     defaultValue = "10",
@@ -702,7 +702,7 @@ class StepLibraryCacheMangerTest {
             assertThat(
                     lib3_sortedSettings[1],
                     equalTo(
-                            Setting(
+                            SettingDefinition(
                                     key = "stepLib3Java.param2",
                                     type = SettingType.TEXT,
                                     defaultValue = "defVal",
@@ -714,7 +714,7 @@ class StepLibraryCacheMangerTest {
             assertThat(
                     lib3_sortedSettings[2],
                     equalTo(
-                            Setting(
+                            SettingDefinition(
                                     key = "stepLib3Java.param3",
                                     type = SettingType.NUMBER,
                                     defaultValue = "13",
@@ -726,7 +726,7 @@ class StepLibraryCacheMangerTest {
             assertThat(
                     lib3_sortedSettings[3],
                     equalTo(
-                            Setting(
+                            SettingDefinition(
                                     key = "stepLib3Java.param4",
                                     type = SettingType.TEXT,
                                     defaultValue = "aa",

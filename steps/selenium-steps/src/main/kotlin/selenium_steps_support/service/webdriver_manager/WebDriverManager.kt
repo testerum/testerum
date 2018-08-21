@@ -2,7 +2,7 @@ package selenium_steps_support.service.webdriver_manager
 
 import com.testerum.api.annotations.settings.annotation.DeclareSetting
 import com.testerum.api.annotations.settings.annotation.DeclareSettings
-import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.api.test_context.settings.RunnerSettingsManager
 import com.testerum.api.test_context.settings.model.SettingType
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.TakesScreenshot
@@ -46,7 +46,7 @@ import javax.annotation.concurrent.ThreadSafe
                 category = SETTINGS_CATEGORY
         ))
 ])
-class WebDriverManager(private val settingsManager: SettingsManager) {
+class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager) {
 
     companion object {
         private val LOGGER: Logger = LoggerFactory.getLogger(WebDriverManager::class.java)
@@ -69,7 +69,9 @@ class WebDriverManager(private val settingsManager: SettingsManager) {
     private val currentWebDriver: WebDriver
         get() = synchronized(lock) {
             if (_webDriver == null) {
-                _webDriver = ChromeWebDriverFactory.createWebDriver()
+                _webDriver = ChromeWebDriverFactory.createWebDriver().apply {
+                    manage().window().maximize() // todo: make this configurable
+                }
             }
 
             _webDriver!!
@@ -94,14 +96,14 @@ class WebDriverManager(private val settingsManager: SettingsManager) {
         block(currentWebDriver)
 
         // take screenshot
-        if (settingsManager.getSettingValueOrDefault(SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP)!!.toBoolean()) {
+        if (runnerSettingsManager.getRequiredSetting(SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP).resolvedValue.toBoolean()) {
             val screenshotFile = takeScreenshotToFile()
             LOGGER.info("step finished: screenshot saved at [${screenshotFile.toAbsolutePath()}]")
         }
 
         // sleep between steps
         TimeUnit.MILLISECONDS.sleep(
-                settingsManager.getSettingValueOrDefault(SETTING_KEY_AFTER_STEP_DELAY_MILLIS)!!.toLong()
+                runnerSettingsManager.getRequiredSetting(SETTING_KEY_AFTER_STEP_DELAY_MILLIS).resolvedValue.toLong()
         )
     }
 

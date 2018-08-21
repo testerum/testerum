@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SettingsService} from "../../../service/settings.service";
 import {Setting} from "./model/setting.model";
 import {ArrayUtil} from "../../../utils/array.util";
-import {SettingTypeEnum} from "./model/setting-type.enum";
+import {SettingType} from "./model/setting.type.enum";
 
 
 @Component({
@@ -21,7 +21,7 @@ export class SettingsComponent implements OnInit {
     settingsByCategory: Map<string, Array<Setting>> = new Map<string, Array<Setting>>();
     isEditMode = false;
 
-    SettingTypeEnum = SettingTypeEnum;
+    SettingTypeEnum = SettingType;
 
     constructor(private settingsService: SettingsService) {}
 
@@ -39,18 +39,19 @@ export class SettingsComponent implements OnInit {
         this.settingsByCategory.clear();
 
         for (let setting of settings) {
-            let settingCategory = setting.category ? setting.category : "Unknown";
+            let settingCategory = setting.definition.category ? setting.definition.category : "Unknown";
             let settingMapValue = this.settingsByCategory.get(settingCategory);
             if (!settingMapValue) {
                 settingMapValue = [];
             }
             settingMapValue.push(setting);
-            settingMapValue.sort((a,b) => {
-                if(a.key == this.PACKAGE_DIR_SETTING) return -1;
-                if(b.key == this.PACKAGE_DIR_SETTING) return 1;
-                if(a.key == this.BUILD_IN_BASIC_STEPS_DIRECTORY_SETTING) return -1;
-                if(b.key == this.BUILD_IN_BASIC_STEPS_DIRECTORY_SETTING) return 1;
-                return a.key > b.key ? 1 : -1
+            settingMapValue.sort((left, right) => {
+                if (left.definition.key == this.PACKAGE_DIR_SETTING) return -1;
+                if (right.definition.key == this.PACKAGE_DIR_SETTING) return 1;
+                if (left.definition.key == this.BUILD_IN_BASIC_STEPS_DIRECTORY_SETTING) return -1;
+                if (right.definition.key == this.BUILD_IN_BASIC_STEPS_DIRECTORY_SETTING) return 1;
+
+                return left.definition.key > right.definition.key ? 1 : -1
             });
 
             this.settingsByCategory.set(settingCategory, settingMapValue);
@@ -80,15 +81,15 @@ export class SettingsComponent implements OnInit {
         }
 
         for (let setting of settings) {
-            let currentSetting = this.findSettingByKey(setting.key);
+            let currentSetting = this.findSettingByKey(setting.definition.key);
             currentSetting.unresolvedValue = setting.unresolvedValue;
-            currentSetting.value = setting.value;
+            currentSetting.resolvedValue = setting.resolvedValue;
         }
     }
 
     private findSettingByKey(settingKey: string): Setting {
         for (let setting of this.settings) {
-            if(setting.key == settingKey) {
+            if(setting.definition.key == settingKey) {
                 return setting
             }
         }
@@ -128,8 +129,9 @@ export class SettingsComponent implements OnInit {
     resetToDefault(): void {
         this.settings.forEach((it: Setting) => {
             it.unresolvedValue = null;
-            it.value = null;
+            it.resolvedValue = null;
         });
+
         this.saveAction();
     }
 }

@@ -14,5 +14,6 @@ fun loadPropertiesFrom(path: Path): Properties {
     return result
 }
 
+// the corresponding extension function "Properties.toProperties()" is part of Kotlin stdlib
 @Suppress("UNCHECKED_CAST")
 fun Properties.asMap(): Map<String, String> = this as Map<String, String>

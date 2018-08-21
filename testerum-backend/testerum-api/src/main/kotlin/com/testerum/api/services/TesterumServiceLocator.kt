@@ -2,7 +2,7 @@ package com.testerum.api.services
 
 import com.testerum.api.test_context.TestContext
 import com.testerum.api.test_context.logger.TesterumLogger
-import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.api.test_context.settings.RunnerSettingsManager
 import com.testerum.api.test_context.test_vars.TestVariables
 
 object TesterumServiceLocator {
@@ -16,7 +16,7 @@ object TesterumServiceLocator {
     fun getTestVariables(): TestVariables = getService(TestVariables::class.java)
 
     @JvmStatic
-    fun getSettingsManager(): SettingsManager = getService(SettingsManager::class.java)
+    fun getSettingsManager(): RunnerSettingsManager = getService(RunnerSettingsManager::class.java)
 
     @JvmStatic
     fun getTesterumLogger(): TesterumLogger = getService(TesterumLogger::class.java)

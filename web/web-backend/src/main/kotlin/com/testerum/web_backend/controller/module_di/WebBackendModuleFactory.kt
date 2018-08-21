@@ -6,6 +6,9 @@ import com.testerum.file_repository.module_di.FileRepositoryModuleFactory
 import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.exception.ValidationException
 import com.testerum.service.module_di.ServiceModuleFactory
+import com.testerum.service.settings.SettingsFileService
+import com.testerum.service.settings.SettingsService
+import com.testerum.service.settings.SetupService
 import com.testerum.settings.module_di.SettingsModuleFactory
 import com.testerum.web_backend.controller.attachments.AttachmentsController
 import com.testerum.web_backend.controller.config.FileSystemController
@@ -31,11 +34,31 @@ import com.testerum.web_backend.controller.step.StepsTreeController
 import com.testerum.web_backend.controller.tag.TagsController
 import com.testerum.web_backend.controller.test.TestsController
 import com.testerum.web_backend.controller.vars.VariablesController
+import java.nio.file.Path
 
 class WebBackendModuleFactory(context: ModuleFactoryContext,
-                              serviceModuleFactory: ServiceModuleFactory,
                               settingsModuleFactory: SettingsModuleFactory,
-                              fileRepositoryModuleFactory: FileRepositoryModuleFactory) : BaseModuleFactory(context) {
+                              serviceModuleFactory: ServiceModuleFactory,
+                              fileRepositoryModuleFactory: FileRepositoryModuleFactory,
+                              settingsFile: Path) : BaseModuleFactory(context) {
+
+    //---------------------------------------- services ----------------------------------------//
+
+    private val settingsFileService = SettingsFileService(
+            settingsFile = settingsFile
+    )
+
+    private val settingsService = SettingsService(
+            settingsManager = settingsModuleFactory.settingsManager,
+            settingsFileService = settingsFileService
+    )
+
+    private val setupService = SetupService(
+            settingsFileService = settingsFileService,
+            settingsManager = settingsModuleFactory.settingsManager,
+            settingsService = settingsService
+    )
+
 
     //---------------------------------------- web controllers ----------------------------------------//
 
@@ -48,12 +71,12 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val setupController = SetupController(
-            settingsManager = settingsModuleFactory.settingsManager,
-            stepCache = serviceModuleFactory.stepService
+            stepCache = serviceModuleFactory.stepService,
+            setupService = setupService
     )
 
     private val settingsController = SettingsController(
-            settingsService = serviceModuleFactory.settingsService,
+            settingsService = settingsService,
             stepCache = serviceModuleFactory.stepService
     )
 

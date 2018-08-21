@@ -12,28 +12,28 @@
 
                 <div class="vertical-space"
                      *ngFor="let setting of settingsByCategory.get(settingCategory)">
-                    <p><span class="text-info">Setting key: </span>{{setting.key}}</p>
-                    <p><span class="text-info">Description: </span>{{setting.description}}</p>
+                    <p><span class="text-info">Setting key: </span>{{setting.definition.key}}</p>
+                    <p><span class="text-info">Description: </span>{{setting.definition.description}}</p>
 
-                    <div *ngIf="setting.type == SettingTypeEnum.TEXT && !isReadOnlyProperty(setting.key)">
+                    <div *ngIf="setting.definition.type == SettingTypeEnum.TEXT && !isReadOnlyProperty(setting.definition.key)">
                         <input [(ngModel)]="setting.unresolvedValue"
                                [disabled]="!isEditMode"
                                type="text" class="form-control full-width">
                     </div>
 
-                    <div *ngIf="setting.type == SettingTypeEnum.NUMBER && !isReadOnlyProperty(setting.key)">
+                    <div *ngIf="setting.definition.type == SettingTypeEnum.NUMBER && !isReadOnlyProperty(setting.definition.key)">
                         <input [(ngModel)]="setting.unresolvedValue"
                                [disabled]="!isEditMode"
                                type="number" class="form-control full-width">
                     </div>
 
-                    <div *ngIf="isReadOnlyProperty(setting.key)">
+                    <div *ngIf="isReadOnlyProperty(setting.definition.key)">
                         <input [(ngModel)]="setting.unresolvedValue"
                                disabled
                                type="text" class="form-control full-width">
                     </div>
 
-                    <div *ngIf="setting.type == SettingTypeEnum.FILESYSTEM_DIRECTORY && !isReadOnlyProperty(setting.key)">
+                    <div *ngIf="setting.definition.type == SettingTypeEnum.FILESYSTEM_DIRECTORY && !isReadOnlyProperty(setting.definition.key)">
                         <span class="full-width input-group">
                             <file-dir-chooser [(ngModel)]="setting.unresolvedValue"
                                               [disabled]="!isEditMode"

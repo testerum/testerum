@@ -9,10 +9,7 @@ import com.testerum.common_rdbms.RdbmsDriverConfigService
 import com.testerum.common_rdbms.RdbmsService
 import com.testerum.file_repository.module_di.FileRepositoryModuleFactory
 import com.testerum.model.repository.enums.FileType
-import com.testerum.scanner.step_lib_scanner.StepLibraryCacheManger
 import com.testerum.scanner.step_lib_scanner.module_di.TesterumScannerModuleFactory
-import com.testerum.service.config.FileSystemService
-import com.testerum.service.config.SettingsService
 import com.testerum.service.feature.FeatureService
 import com.testerum.service.hooks.HooksService
 import com.testerum.service.manual.ManualTestsRunnerService
@@ -29,6 +26,7 @@ import com.testerum.service.resources.validators.PathConflictValidation
 import com.testerum.service.resources.validators.RdbmsConnectionConfigValidator
 import com.testerum.service.save.SaveService
 import com.testerum.service.scanner.ScannerService
+import com.testerum.service.settings.FileSystemService
 import com.testerum.service.step.StepCache
 import com.testerum.service.step.StepUpdateCompatibilityService
 import com.testerum.service.step.impl.BasicStepsService
@@ -41,12 +39,9 @@ import com.testerum.service.tests_runner.result.TestRunnerResultService
 import com.testerum.service.variables.VariablesService
 import com.testerum.service.warning.WarningService
 import com.testerum.settings.module_di.SettingsModuleFactory
-import com.testerum.settings.private_api.SettingsManagerImpl
 import org.apache.http.client.HttpClient
 import org.apache.http.impl.client.HttpClients
 import java.nio.file.Path
-
-typealias ScannerServiceFactory = (SettingsManagerImpl, StepLibraryCacheManger) -> ScannerService
 
 typealias StepServiceFactory = (BasicStepsService, ComposedStepsService, WarningService) -> StepCache
 
@@ -55,10 +50,6 @@ class ServiceModuleFactory(context: ModuleFactoryContext,
                            fileRepositoryModuleFactory: FileRepositoryModuleFactory,
                            settingsModuleFactory: SettingsModuleFactory,
                            jdbcDriversDirectory: Path,
-                           scannerServiceFactory: ScannerServiceFactory = { settingsManager, stepLibraryCacheManger ->
-                               ScannerService(settingsManager, stepLibraryCacheManger)
-                                       .apply { initInBackgroundThread() }
-                           },
                            stepServiceFactory: StepServiceFactory = { basicStepsService, composedStepsService, warningService ->
                                StepCache(basicStepsService, composedStepsService, warningService)
                                        .apply { initInBackgroundThread() }
@@ -86,9 +77,7 @@ class ServiceModuleFactory(context: ModuleFactoryContext,
     val networkService = NetworkService()
     private val warningService = WarningService()
 
-    val settingsService = SettingsService(
-            settingsManager = settingsModuleFactory.settingsManager
-    )
+    // todo: remove "service" module and split per functionality instead (e.g. the settings file stuff is only relevant to the web)
 
     val variablesService = VariablesService(
             fileRepositoryService = fileRepositoryModuleFactory.fileRepositoryService,
@@ -130,7 +119,10 @@ class ServiceModuleFactory(context: ModuleFactoryContext,
             jdbcDriversDirectory = jdbcDriversDirectory
     )
 
-    val scannerService = scannerServiceFactory(settingsModuleFactory.settingsManager, scannerModuleFactory.stepLibraryCacheManger)
+    val scannerService = ScannerService(
+            settingsManager = settingsModuleFactory.settingsManager,
+            stepLibraryCacheManger = scannerModuleFactory.stepLibraryCacheManger
+    )
 
     val hooksService = HooksService(scannerService)
 

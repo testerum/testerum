@@ -11,6 +11,7 @@ import com.testerum.runner_cmdline.module_di.submodules.RunnerListenersModuleFac
 import com.testerum.runner_cmdline.module_di.submodules.RunnerTransformersModuleFactory
 import com.testerum.runner_cmdline.runner_tree.builder.RunnerExecutionTreeBuilder
 import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
+import com.testerum.runner_cmdline.settings.RunnerSettingsManagerImpl
 import com.testerum.runner_cmdline.tests_finder.RunnerTestsFinder
 import com.testerum.service.module_di.ServiceModuleFactory
 import com.testerum.settings.module_di.SettingsModuleFactory
@@ -42,9 +43,13 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
             testsService = serviceModuleFactory.testsService
     )
 
+    private val runnerSettingsManager = RunnerSettingsManagerImpl(
+            settingsManager = settingsModuleFactory.settingsManager
+    )
+
     val runnerApplication = RunnerApplication(
             runnerClassloaderFactory = runnerClassloaderFactory,
-            settingsManager = settingsModuleFactory.settingsManager,
+            runnerSettingsManager = runnerSettingsManager,
             eventsService = eventsService,
             scannerService = serviceModuleFactory.scannerService,
             stepCache = serviceModuleFactory.stepService,

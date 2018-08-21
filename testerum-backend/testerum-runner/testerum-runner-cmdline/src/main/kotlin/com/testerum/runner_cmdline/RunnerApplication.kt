@@ -4,7 +4,7 @@ import com.testerum.api.services.TesterumServiceLocator
 import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.api.test_context.TestContext
 import com.testerum.api.test_context.logger.TesterumLogger
-import com.testerum.api.test_context.settings.SettingsManager
+import com.testerum.api.test_context.settings.RunnerSettingsManager
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.api.transformer.Transformer
 import com.testerum.common_jdk.stopwatch.StopWatch
@@ -21,15 +21,15 @@ import com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
+import com.testerum.runner_cmdline.settings.RunnerSettingsManagerImpl
 import com.testerum.runner_cmdline.test_context.TestContextImpl
 import com.testerum.runner_cmdline.transformer.TransformerFactory
 import com.testerum.service.scanner.ScannerService
 import com.testerum.service.step.StepCache
 import com.testerum.service.variables.VariablesService
-import com.testerum.settings.private_api.SettingsManagerImpl
 
 class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderFactory,
-                        private val settingsManager: SettingsManagerImpl,
+                        private val runnerSettingsManager: RunnerSettingsManagerImpl,
                         private val eventsService: EventsService,
                         private val scannerService: ScannerService,
                         private val stepCache: StepCache,
@@ -68,7 +68,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         @Suppress("DEPRECATION")
         run {
             TesterumServiceLocator.registerService(TestVariables::class.java, testVariables)
-            TesterumServiceLocator.registerService(SettingsManager::class.java, settingsManager)
+            TesterumServiceLocator.registerService(RunnerSettingsManager::class.java, runnerSettingsManager)
             TesterumServiceLocator.registerService(TesterumLogger::class.java, testerumLogger)
             TesterumServiceLocator.registerService(TestContext::class.java, testContext)
         }

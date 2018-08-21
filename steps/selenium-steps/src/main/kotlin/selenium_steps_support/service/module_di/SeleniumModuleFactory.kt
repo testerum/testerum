@@ -8,7 +8,7 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager
 class SeleniumModuleFactory(context: ModuleFactoryContext) : BaseModuleFactory(context) {
 
     val webDriverManager = WebDriverManager(
-            settingsManager = TesterumServiceLocator.getSettingsManager()
+            runnerSettingsManager = TesterumServiceLocator.getSettingsManager()
     )
 
 }

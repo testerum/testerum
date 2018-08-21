@@ -15,7 +15,7 @@ import com.testerum.api.annotations.steps.Given
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then
 import com.testerum.api.annotations.steps.When
-import com.testerum.api.test_context.settings.model.Setting
+import com.testerum.api.test_context.settings.model.SettingDefinition
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.step.BasicStepDef
@@ -182,7 +182,7 @@ class StepLibraryCacheManger(private val threadPool: ExecutorService) {
                 jarFile = libraryFileFuture.get(),
                 steps = annotationScanResult.steps,
                 hooks = annotationScanResult.hooks,
-                settings = annotationScanResult.settings
+                settingDefinitions = annotationScanResult.settings
         )
 
         return StepLibraryResult(library, changed = true)
@@ -215,7 +215,7 @@ class StepLibraryCacheManger(private val threadPool: ExecutorService) {
 
         val steps: List<BasicStepDef> = getSteps(reflections)
         val hooks: List<HookDef> = getHooks(reflections)
-        val settings: List<Setting> = getSettings(reflections)
+        val settings: List<SettingDefinition> = getSettings(reflections)
 
         return AnnotationScanResult(steps, hooks, settings)
     }
@@ -399,7 +399,7 @@ class StepLibraryCacheManger(private val threadPool: ExecutorService) {
         )
     }
 
-    private fun getSettings(reflections: Reflections): List<Setting> {
+    private fun getSettings(reflections: Reflections): List<SettingDefinition> {
         // todo: extract method
 
         val annotatedClasses = mutableSetOf<Class<*>>()
@@ -407,7 +407,7 @@ class StepLibraryCacheManger(private val threadPool: ExecutorService) {
         annotatedClasses += reflections.getTypesAnnotatedWith(DeclareSettings::class.java)
         annotatedClasses += reflections.getTypesAnnotatedWith(DeclareSetting::class.java)
 
-        val result = mutableListOf<Setting>()
+        val result = mutableListOf<SettingDefinition>()
 
         for (annotatedClass in annotatedClasses) {
             // this method will also "see through" the "@DeclareSettings" container and properly return the nested @DeclareSetting annotations
@@ -421,7 +421,7 @@ class StepLibraryCacheManger(private val threadPool: ExecutorService) {
         return result
     }
 
-    private fun DeclareSetting.toSetting() = Setting(key, type, defaultValue, description, category)
+    private fun DeclareSetting.toSetting() = SettingDefinition(key, type, defaultValue, description, category)
 
     private class StepPhaseAnnotation(annotation: Annotation) {
         private val _phase: StepPhaseEnum = when (annotation) {
@@ -488,7 +488,7 @@ class StepLibraryCacheManger(private val threadPool: ExecutorService) {
 
     private data class AnnotationScanResult(val steps: List<BasicStepDef>,
                                             val hooks: List<HookDef>,
-                                            val settings: List<Setting>)
+                                            val settings: List<SettingDefinition>)
 
     private data class StepLibraryResult(val library: ScannerBasicStepLibrary,
                                          val changed: Boolean)
