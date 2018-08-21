@@ -31,6 +31,27 @@
     left: 0;
 }
 
+.my-compare-mode-container {
+    display: flex;
+    align-items: center;
+}
+
+.my-compare-mode-select {
+    height: 20px;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0 8px;
+    margin-left: 5px;
+}
+
+.btn-xxs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    padding: 0.1em 0.8em;
+}
+
 .column-content {
     display: flex;
     flex-direction: column;

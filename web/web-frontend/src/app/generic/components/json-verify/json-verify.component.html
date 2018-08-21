@@ -1,8 +1,25 @@
 <div class="my-json-verify-root" >
     <p-toolbar>
         <div class="my-toolbar-container">
-            <div title="Compare Mode">
+            <div title="Compare Mode" class="my-compare-mode-container">
                 Compare Mode:
+
+                <select class="form-control my-compare-mode-select" name="compareMode"
+                        #compareModeNgModel="ngModel" [ngModel]="selectedJsonCompareMode"
+                        [disabled]="!editMode"
+                        (change)="onCompareModeChange(compareModeNgModel.value)">
+                    <option *ngFor="let compareMode of getJsonCompareModes()" [ngValue]="compareMode">
+                        {{compareMode.toString()}}
+                    </option>
+                </select>
+
+                <div pTooltip="Set compare mode on current element"
+                     tooltipPosition="bottom"
+                     (click)="onSetCompareModeEvent()"
+                     [class.disabled]="!canAddCompareMode()"
+                     class="btn btn-default btn-xxs btn-group">
+                    Insert
+                </div>
             </div>
 
             <span class="label my-toolbar-label"

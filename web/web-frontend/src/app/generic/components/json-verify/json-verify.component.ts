@@ -1,7 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {JsonVerify} from "./model/json-verify.model";
 import {JsonUtil} from '../../../utils/json.util';
 import {StringUtils} from '../../../utils/string-utils.util';
+import {JsonCompareModeEnum} from "./model/json-compare-mode.enum";
+import {JsonVerifyEditorComponent} from "./json-verify-editor/json-verify-editor.component";
 
 @Component({
     moduleId: module.id,
@@ -19,9 +21,30 @@ export class JsonVerifyComponent {
     @Input() editMode: boolean = true;
 
     isValidJson: boolean = true;
+    selectedJsonCompareMode: JsonCompareModeEnum;
+
+    @ViewChild(JsonVerifyEditorComponent) jsonVerifyEditorComponent: JsonVerifyEditorComponent;
 
     onTextChange(jsonAsString: string) {
         this.isValidJson = JsonUtil.isJson(jsonAsString);
         this.modelChange.emit(jsonAsString)
+    }
+
+    getJsonCompareModes(): Array<JsonCompareModeEnum> {
+        return JsonCompareModeEnum.enums
+    }
+
+    onCompareModeChange(selectedJsonCompareMode: JsonCompareModeEnum) {
+        this.selectedJsonCompareMode = selectedJsonCompareMode;
+    }
+
+    onSetCompareModeEvent() {
+        if (this.selectedJsonCompareMode != null) {
+            this.jsonVerifyEditorComponent.setCompareModeEvent(this.selectedJsonCompareMode)
+        }
+    }
+
+    canAddCompareMode(): boolean {
+        return this.isValidJson && this.selectedJsonCompareMode != null && this.editMode;
     }
 }
