@@ -5,24 +5,19 @@
          (dblclick)="collapseNode()"
          title="{{getStatusTooltip()}}">
 
-        <i class="fas" aria-hidden="true"
-           [class.node-waiting]="model.state == RunnerTreeNodeStateEnum.WAITING"
-           [class.node-executing]="model.state == RunnerTreeNodeStateEnum.EXECUTING"
-           [class.node-passed]="model.state == RunnerTreeNodeStateEnum.PASSED"
-           [class.node-failed]="model.state == RunnerTreeNodeStateEnum.FAILED"
-           [class.node-undefined]="model.state == RunnerTreeNodeStateEnum.UNDEFINED"
-           [class.node-skipped]="model.state == RunnerTreeNodeStateEnum.SKIPPED"
+        <i aria-hidden="true"
+           [class.my-node-executing-color]="model.state == RunnerTreeNodeStateEnum.EXECUTING"
 
-
-           [class.fa-spinner]="model.state == RunnerTreeNodeStateEnum.WAITING
-                               || model.state == RunnerTreeNodeStateEnum.EXECUTING"
+           [class.fa_my-runner-waiting-colored]="model.state == RunnerTreeNodeStateEnum.WAITING
+                                              || model.state == RunnerTreeNodeStateEnum.EXECUTING"
            [class.fa-pulse]="model.state == RunnerTreeNodeStateEnum.WAITING
-                               || model.state == RunnerTreeNodeStateEnum.EXECUTING"
+                          || model.state == RunnerTreeNodeStateEnum.EXECUTING"
 
-           [class.fa-check]="model.state == RunnerTreeNodeStateEnum.PASSED"
-           [class.fa-times]="model.state == RunnerTreeNodeStateEnum.FAILED"
-           [class.fa-question]="model.state == RunnerTreeNodeStateEnum.UNDEFINED"
-           [class.fa-angle-double-right]="model.state == RunnerTreeNodeStateEnum.SKIPPED"></i>
+           [class.fa_my-runner-passed-colored]="model.state == RunnerTreeNodeStateEnum.PASSED"
+           [class.fa_my-runner-failed-colored]="model.state == RunnerTreeNodeStateEnum.FAILED"
+           [class.fa_my-runner-disabled-colored]="model.state == RunnerTreeNodeStateEnum.DISABLED"
+           [class.fa_my-runner-undefined-colored]="model.state == RunnerTreeNodeStateEnum.UNDEFINED"
+           [class.fa_my-runner-skipped-colored]="model.state == RunnerTreeNodeStateEnum.SKIPPED"></i>
 
         <i *ngIf="isFeatureNode()"
            aria-hidden="true"
