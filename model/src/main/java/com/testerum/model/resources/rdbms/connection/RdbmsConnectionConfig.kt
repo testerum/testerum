@@ -9,8 +9,6 @@ data class RdbmsConnectionConfig @JsonCreator constructor(
         @JsonProperty("driverClass") var driverClass: String,
         @JsonProperty("driverUrlPattern") var driverUrlPattern: String,
 
-        @JsonProperty("isDefaultConnection") var isDefaultConnection: Boolean = false,
-
         @JsonProperty("host") val host: String?,
         @JsonProperty("port") val port: Int?,
 
