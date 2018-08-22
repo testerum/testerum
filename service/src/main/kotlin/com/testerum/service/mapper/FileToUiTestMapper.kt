@@ -1,6 +1,6 @@
 package com.testerum.service.mapper
 
-import com.testerum.file_repository.model.RepositoryFile
+import com.testerum.service.file_repository.model.RepositoryFile
 import com.testerum.model.test.TestModel
 import com.testerum.model.test.TestProperties
 import com.testerum.test_file_format.testdef.FileTestDef

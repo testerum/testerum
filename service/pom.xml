@@ -50,11 +50,6 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>file-repository</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.testerum</groupId>
             <artifactId>test-file-format</artifactId>
         </dependency>
 

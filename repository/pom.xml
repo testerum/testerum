@@ -16,7 +16,6 @@
 
     <modules>
         <module>test-file-format</module>
-        <module>file-repository</module>
     </modules>
 
 </project>

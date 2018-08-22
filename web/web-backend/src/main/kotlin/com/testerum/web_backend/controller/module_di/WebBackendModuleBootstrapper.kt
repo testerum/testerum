@@ -4,7 +4,7 @@ package com.testerum.web_backend.controller.module_di
 
 import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.common_di.ModuleFactoryContext
-import com.testerum.file_repository.module_di.FileRepositoryModuleFactory
+import com.testerum.service.file_repository.module_di.FileRepositoryModuleFactory
 import com.testerum.scanner.step_lib_scanner.module_di.TesterumScannerModuleFactory
 import com.testerum.service.module_di.ServiceModuleFactory
 import com.testerum.settings.getRequiredSetting

@@ -2,7 +2,7 @@ package com.testerum.service.resources.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.testerum.file_repository.FileRepositoryService
+import com.testerum.service.file_repository.FileRepositoryService
 import com.testerum.model.resources.ResourceContext
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 

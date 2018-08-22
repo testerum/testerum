@@ -1,8 +1,8 @@
 package com.testerum.service.step.impl
 
 import com.testerum.common.parsing.executer.ParserExecuter
-import com.testerum.file_repository.FileRepositoryService
-import com.testerum.file_repository.model.KnownPath
+import com.testerum.service.file_repository.FileRepositoryService
+import com.testerum.service.file_repository.model.KnownPath
 import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath

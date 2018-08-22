@@ -3,10 +3,10 @@ package com.testerum.service.manual
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.common_json.ObjectMapperFactory
-import com.testerum.file_repository.FileRepositoryService
-import com.testerum.file_repository.model.KnownPath
-import com.testerum.file_repository.model.RepositoryFile
-import com.testerum.file_repository.model.RepositoryFileChange
+import com.testerum.service.file_repository.FileRepositoryService
+import com.testerum.service.file_repository.model.KnownPath
+import com.testerum.service.file_repository.model.RepositoryFile
+import com.testerum.service.file_repository.model.RepositoryFileChange
 import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath

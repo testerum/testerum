@@ -7,7 +7,7 @@ import com.testerum.common_httpclient.HttpClientService
 import com.testerum.common_json.ObjectMapperFactory
 import com.testerum.common_rdbms.RdbmsDriverConfigService
 import com.testerum.common_rdbms.RdbmsService
-import com.testerum.file_repository.module_di.FileRepositoryModuleFactory
+import com.testerum.service.file_repository.module_di.FileRepositoryModuleFactory
 import com.testerum.model.repository.enums.FileType
 import com.testerum.scanner.step_lib_scanner.module_di.TesterumScannerModuleFactory
 import com.testerum.service.feature.FeatureService

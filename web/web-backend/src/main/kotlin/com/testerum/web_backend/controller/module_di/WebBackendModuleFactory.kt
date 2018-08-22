@@ -2,7 +2,7 @@ package com.testerum.web_backend.controller.module_di
 
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
-import com.testerum.file_repository.module_di.FileRepositoryModuleFactory
+import com.testerum.service.file_repository.module_di.FileRepositoryModuleFactory
 import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.exception.ValidationException
 import com.testerum.service.module_di.ServiceModuleFactory

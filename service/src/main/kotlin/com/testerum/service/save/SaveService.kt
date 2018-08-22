@@ -1,9 +1,9 @@
 package com.testerum.service.save
 
-import com.testerum.file_repository.FileRepositoryService
-import com.testerum.file_repository.model.KnownPath
-import com.testerum.file_repository.model.RepositoryFile
-import com.testerum.file_repository.model.RepositoryFileChange
+import com.testerum.service.file_repository.FileRepositoryService
+import com.testerum.service.file_repository.model.KnownPath
+import com.testerum.service.file_repository.model.RepositoryFile
+import com.testerum.service.file_repository.model.RepositoryFileChange
 import com.testerum.model.arg.Arg
 import com.testerum.model.exception.ServerStateChangedException
 import com.testerum.model.infrastructure.path.Path

@@ -176,13 +176,6 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
-                <artifactId>file-repository</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>com.testerum</groupId>
                 <artifactId>test-file-format</artifactId>
                 <version>${project.version}</version>
             </dependency>

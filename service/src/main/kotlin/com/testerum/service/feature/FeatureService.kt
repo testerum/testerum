@@ -2,11 +2,11 @@ package com.testerum.service.feature
 
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common_jdk.containsSearchStringParts
-import com.testerum.file_repository.AttachmentFileRepositoryService
-import com.testerum.file_repository.FileRepositoryService
-import com.testerum.file_repository.model.KnownPath
-import com.testerum.file_repository.model.RepositoryFile
-import com.testerum.file_repository.model.RepositoryFileChange
+import com.testerum.service.file_repository.AttachmentFileRepositoryService
+import com.testerum.service.file_repository.FileRepositoryService
+import com.testerum.service.file_repository.model.KnownPath
+import com.testerum.service.file_repository.model.RepositoryFile
+import com.testerum.service.file_repository.model.RepositoryFileChange
 import com.testerum.model.exception.ValidationException
 import com.testerum.model.feature.Feature
 import com.testerum.model.feature.filter.FeaturesTreeFilter

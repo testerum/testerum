@@ -1,4 +1,4 @@
-package com.testerum.file_repository.model
+package com.testerum.service.file_repository.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
