@@ -5,7 +5,6 @@ import {Resource} from "../resource.model";
 import {StringUtils} from "../../../utils/string-utils.util";
 
 export class RdbmsConnectionConfig implements Resource<RdbmsConnectionConfig> {
-    isDefaultConnection: boolean = false;
 
     driverName: string;
     driverJar: string;
@@ -28,7 +27,6 @@ export class RdbmsConnectionConfig implements Resource<RdbmsConnectionConfig> {
     }
 
     reset(): void {
-        this.isDefaultConnection = undefined;
         this.driverName = undefined;
         this.driverJar = undefined;
         this.driverClass = undefined;
@@ -63,8 +61,6 @@ export class RdbmsConnectionConfig implements Resource<RdbmsConnectionConfig> {
         this.driverClass = input["driverClass"];
         this.driverUrlPattern = input["driverUrlPattern"];
 
-        this.isDefaultConnection = input["isDefaultConnection"];
-
         this.host = input["host"];
         this.port = input["port"];
 
@@ -86,8 +82,6 @@ export class RdbmsConnectionConfig implements Resource<RdbmsConnectionConfig> {
             '"driverJar":' + JsonUtil.stringify(this.driverJar) + ',' +
             '"driverClass":' + JsonUtil.stringify(this.driverClass) + ',' +
             '"driverUrlPattern":' + JsonUtil.stringify(this.driverUrlPattern) + ',' +
-
-            '"isDefaultConnection":' + JsonUtil.stringify(this.isDefaultConnection) + ',' +
 
             '"host":' + JsonUtil.stringify(this.host) + ',' +
             '"port":' + JsonUtil.stringify(this.port) + ',' +
