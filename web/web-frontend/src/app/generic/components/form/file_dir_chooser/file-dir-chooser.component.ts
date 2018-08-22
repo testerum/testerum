@@ -54,7 +54,7 @@ export class FileDirChooserComponent implements ControlValueAccessor {
     }
 
     onPathSelected($event:any) {
-        this.value = $event;
+        this.value = $event ? $event : "";
         this.propagateChange(this.value);
     }
 
