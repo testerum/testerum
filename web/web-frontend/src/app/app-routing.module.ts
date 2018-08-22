@@ -8,8 +8,6 @@ import {SetupGuard} from "./service/guards/setup.guard";
 const appRoutes: Routes = [
 
     { path: '',   redirectTo: '/features', pathMatch: 'full' },
-    { path: 'automated',   redirectTo: '/automated/tests', pathMatch: 'full' },
-    { path: 'manual',   redirectTo: '/manual/tests', pathMatch: 'full' },
     { path: "setup", component: SetupComponent},
     { path: "settings", component: SettingsComponent, canActivate: [SetupGuard]},
     { path: '**', component: PageNotFoundComponent }

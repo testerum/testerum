@@ -8,8 +8,8 @@ export class HttpMockServerResourceType implements ResourceType {
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "fas fa-server";
-    resourceUrl: string = "/automated/resources/http/mock/server/";
-    createSubResourceUrl:any[] = ["/automated/resources/http/mock/server/create"];
+    resourceUrl: string = "/resources/http/mock/server/";
+    createSubResourceUrl:any[] = ["/resources/http/mock/server/create"];
 
     canHaveChildrenContainers: boolean = true;
     canBeDeleted: boolean = true;

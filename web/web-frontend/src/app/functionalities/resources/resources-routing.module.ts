@@ -7,7 +7,7 @@ import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-pa
 
 const resourcesRoutes: Routes = [
     {
-        path: "automated/resources", component: ResourcesComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
+        path: "resources", component: ResourcesComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
         children: [
             {
                 path: 'create',

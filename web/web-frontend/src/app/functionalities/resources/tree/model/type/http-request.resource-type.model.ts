@@ -8,8 +8,8 @@ export class HttpRequestResourceType implements ResourceType {
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "fas fa-share";
-    resourceUrl: string = "/automated/resources/http/request/"; //TODO Ionut: after INLINE check if is still need it
-    createSubResourceUrl:any[] = ["/automated/resources/http/request/create", {"path": this.rootFilePath}]; //TODO Ionut: after INLINE check if is still need it
+    resourceUrl: string = "/resources/http/request/"; //TODO Ionut: after INLINE check if is still need it
+    createSubResourceUrl:any[] = ["/resources/http/request/create", {"path": this.rootFilePath}]; //TODO Ionut: after INLINE check if is still need it
 
     canHaveChildrenContainers: boolean = true;
     canBeDeleted: boolean = true;

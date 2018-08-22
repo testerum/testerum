@@ -10,8 +10,8 @@ export class RdbmsSqlResourceType implements ResourceType {
 
    readonly name:string = this.rootFilePath.getLastPathPart();
    readonly iconClass: string = "fas fa-table";
-   readonly resourceUrl: string = "/automated/resources/rdbms/sql/";
-   readonly createSubResourceUrl:any[] = ["/automated/resources/rdbms/sql/create", {"path": this.rootFilePath}];
+   readonly resourceUrl: string = "/resources/rdbms/sql/";
+   readonly createSubResourceUrl:any[] = ["/resources/rdbms/sql/create", {"path": this.rootFilePath}];
 
    readonly canHaveChildrenContainers: boolean = true;
    readonly canBeDeleted: boolean = true;

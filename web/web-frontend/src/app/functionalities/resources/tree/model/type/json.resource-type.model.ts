@@ -9,8 +9,8 @@ export class JsonResourceType implements ResourceType {
 
     name: string = this.rootFilePath.getLastPathPart();
     iconClass: string = null;
-    resourceUrl: string = "/automated/resources/json";
-    createSubResourceUrl: any[] = ["/automated/resources/json/create", {"path": this.rootFilePath}];
+    resourceUrl: string = "/resources/json";
+    createSubResourceUrl: any[] = ["/resources/json/create", {"path": this.rootFilePath}];
 
     canHaveChildrenContainers: boolean = true;
     canBeDeleted: boolean = true;

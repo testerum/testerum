@@ -24,26 +24,15 @@
 
 .sub-menu {
     height: 50px;
-    width: 1px;
-    opacity: 0;
-    transition: all .75s ease;
-    overflow: hidden;
-}
-.show-sub-menu {
-    opacity: 1;
-    width: 325px;
-}
-.sub-item {
-    opacity: 0;
-    transition: all .75s ease;
-}
-.sub-item-show {
-    opacity: 1;
 }
 
 .testerum-logo {
     display: flex;
     align-items: center;
+}
+
+.testerum-logo-text {
+    color: white;
 }
 
 .testerum-logo .testerum-logo-left-angle-bracket,

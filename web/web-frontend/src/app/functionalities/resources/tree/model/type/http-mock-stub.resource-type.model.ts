@@ -8,8 +8,8 @@ export class HttpMockStubResourceType implements ResourceType {
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "fas fa-retweet";
-    resourceUrl: string = "/automated/resources/http/mock/stub/";
-    createSubResourceUrl:any[] = ["/automated/resources/http/mock/stub/create", {"path": this.rootFilePath}];
+    resourceUrl: string = "/resources/http/mock/stub/";
+    createSubResourceUrl:any[] = ["/resources/http/mock/stub/create", {"path": this.rootFilePath}];
 
     canHaveChildrenContainers: boolean = true;
     canBeDeleted: boolean = true;

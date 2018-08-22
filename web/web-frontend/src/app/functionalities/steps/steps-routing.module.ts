@@ -11,7 +11,7 @@ import {BasicStepEditorResolver} from "./basic-step-editor/basic-step-editor.res
 
 const stepsRoutes: Routes = [
     {
-        path:"automated/steps", component:StepsComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
+        path:"steps", component:StepsComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
         children: [
             {
                 path: 'composed', component: ComposedStepEditorComponent, resolve: {composedStepDef: ComposedStepEditorResolver}

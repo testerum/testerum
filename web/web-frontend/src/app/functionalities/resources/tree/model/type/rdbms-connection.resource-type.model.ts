@@ -8,8 +8,8 @@ export class RdbmsConnectionResourceType implements ResourceType {
 
     readonly name: string = this.rootFilePath.getLastPathPart();
     readonly iconClass: string = "fas fa-plug";
-    readonly resourceUrl: string = "/automated/resources/rdbms/connection/";
-    readonly createSubResourceUrl = ["/automated/resources/rdbms/connection/create", {"path": this.rootFilePath}];
+    readonly resourceUrl: string = "/resources/rdbms/connection/";
+    readonly createSubResourceUrl = ["/resources/rdbms/connection/create", {"path": this.rootFilePath}];
 
     readonly canHaveChildrenContainers: boolean = false;
     readonly canBeDeleted: boolean = false;

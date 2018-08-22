@@ -47,7 +47,7 @@ export class ResourceNodeComponent implements OnInit, OnDestroy {
     private showViewer() {
         //TODO: Check why is this called twice???!!!
         this.router.navigate([
-           "/automated/resources/show",
+           "/resources/show",
            {"path":this.model.path}]);
     }
 }

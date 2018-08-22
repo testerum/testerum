@@ -9,8 +9,8 @@ export class RdbmsVerifyResourceType implements ResourceType {
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "nf nf-fa-check_square_o";
-    resourceUrl: string = "/automated/resources/rdbms/verify/";
-    createSubResourceUrl:any[] = ["/automated/resources/rdbms/verify/create", {"path": this.rootFilePath}];
+    resourceUrl: string = "/resources/rdbms/verify/";
+    createSubResourceUrl:any[] = ["/resources/rdbms/verify/create", {"path": this.rootFilePath}];
 
     canHaveChildrenContainers: boolean = true;
     canBeDeleted: boolean = true;

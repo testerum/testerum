@@ -8,8 +8,8 @@ export class HttpResponseVerifyResourceType implements ResourceType {
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "fas fa-reply flip";
-    resourceUrl: string = "/automated/resources/http/response_verify/";
-    createSubResourceUrl:any[] = ["/automated/resources/http/response/create", {"path": this.rootFilePath}];
+    resourceUrl: string = "/resources/http/response_verify/";
+    createSubResourceUrl:any[] = ["/resources/http/response/create", {"path": this.rootFilePath}];
 
     canHaveChildrenContainers: boolean = true;
     canBeDeleted: boolean = true;

@@ -46,7 +46,7 @@ export class ResultFileComponent implements OnInit, OnDestroy {
     }
 
     showResultFile() {
-        this.router.navigate(["/automated/runner/result", {path : this.model.path.toString()} ]);
+        this.router.navigate(["/automated/results/show", {path : this.model.path.toString()} ]);
         this.jsonTreeService.setSelectedNode(this.model);
     }
 

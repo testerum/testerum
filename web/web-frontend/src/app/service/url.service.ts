@@ -36,26 +36,26 @@ export class UrlService {
     }
 
     public navigateToResources() {
-        this.router.navigate(["automated/resources"]);
+        this.router.navigate(["/resources"]);
     }
 
     public navigateToSteps() {
-        this.router.navigate(["/automated/steps"]);
+        this.router.navigate(["/steps"]);
     }
 
     public navigateToComposedStep(path: Path) {
         if (!path) { throw new Error("A path should be provided")}
-        this.router.navigate(['/automated/steps/composed', {path: path.toString()}]);
+        this.router.navigate(['/steps/composed', {path: path.toString()}]);
     }
 
     public navigateToBasicStep(path: Path) {
         if (!path) { throw new Error("A path should be provided")}
-        this.router.navigate(['/automated/steps/basic', {path: path.toString()}]);
+        this.router.navigate(['/steps/basic', {path: path.toString()}]);
     }
 
     public navigateToCreateComposedStep(path: Path) {
         if (!path) { throw new Error("A path should be provided")}
-        this.router.navigate(["/automated/steps/composed/create", { path : path.toString()}]);
+        this.router.navigate(["/steps/composed/create", { path : path.toString()}]);
     }
 
     public navigateToSetup() {

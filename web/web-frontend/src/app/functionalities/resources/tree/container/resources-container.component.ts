@@ -49,7 +49,7 @@ export class ResourcesContainerComponent {
 
         this.router.navigate(
             [
-                "/automated/resources/create",
+                "/resources/create",
                 {
                     "path":this.model.path,
                     "resourceExt":this.model.resourceType.fileExtension,

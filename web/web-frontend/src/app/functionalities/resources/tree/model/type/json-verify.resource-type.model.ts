@@ -9,8 +9,8 @@ export class JsonVerifyResourceType implements ResourceType {
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "nf nf-mdi-json";
-    resourceUrl: string = "/automated/resources/json_verify/";
-    createSubResourceUrl:any[] = ["/automated/resources/json_verify/create", {"path": this.rootFilePath}];
+    resourceUrl: string = "/resources/json_verify/";
+    createSubResourceUrl:any[] = ["/resources/json_verify/create", {"path": this.rootFilePath}];
 
     canHaveChildrenContainers: boolean = true;
     canBeDeleted: boolean = true;

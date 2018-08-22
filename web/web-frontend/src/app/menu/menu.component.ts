@@ -29,11 +29,6 @@ export class MenuComponent {
 
     shouldDisplay = false;
 
-    shouldDisplayAutomatedItems: boolean = false;
-    shouldDisplayManualItems: boolean = false;
-
-    isManualRunnerItemActive: boolean = false;
-
     constructor(private router:Router) {
         router.events.subscribe(event => {
 
@@ -47,22 +42,7 @@ export class MenuComponent {
                         this.shouldDisplay = true;
                     }
                 }
-
-                this.shouldDisplayAutomatedItems = false;
-                this.shouldDisplayManualItems = false;
-                this.isManualRunnerItemActive = false;
-
-                if (this.isUrlStartingWith("/features", event) || this.isUrlStartingWith("/automated", event)) {
-                    this.shouldDisplayAutomatedItems = true;
-                }
-                if (this.isUrlStartingWith("/manual", event)) {
-                    this.shouldDisplayManualItems = true;
-                }
-                if (this.isUrlStartingWith("/manual/runner", event)
-                    || this.isUrlStartingWith("/manual/execute", event)) {
-                    this.isManualRunnerItemActive = true;
-                }
-            }
+           }
         });
     }
 
