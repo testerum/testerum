@@ -1,4 +1,4 @@
-package com.testerum.file_repository.model
+package com.testerum.service.file_repository.model
 
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType

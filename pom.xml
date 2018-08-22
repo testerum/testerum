@@ -11,9 +11,9 @@
     <modules>
         <module>common</module>
         <module>model</module>
-        <module>repository</module>
         <module>service</module>
         <module>service-it</module>
+        <module>test-file-format</module>
         <module>testerum-backend</module>
         <module>step-util</module>
         <module>web</module>
@@ -173,13 +173,6 @@
                 <artifactId>step-transformer-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>com.testerum</groupId>
-                <artifactId>file-repository</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>com.testerum</groupId>

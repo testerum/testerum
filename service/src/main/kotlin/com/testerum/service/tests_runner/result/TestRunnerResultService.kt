@@ -3,8 +3,8 @@ package com.testerum.service.tests_runner.result
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.api.test_context.ExecutionStatus
-import com.testerum.file_repository.FileRepositoryService
-import com.testerum.file_repository.model.KnownPath
+import com.testerum.service.file_repository.FileRepositoryService
+import com.testerum.service.file_repository.model.KnownPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.run_result.RunnerResultFileInfo

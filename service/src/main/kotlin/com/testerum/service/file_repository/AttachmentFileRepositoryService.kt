@@ -1,6 +1,6 @@
-package com.testerum.file_repository
+package com.testerum.service.file_repository
 
-import com.testerum.file_repository.model.KnownPath
+import com.testerum.service.file_repository.model.KnownPath
 import com.testerum.model.file.Attachment
 import com.testerum.model.infrastructure.path.Path
 import org.springframework.web.multipart.MultipartFile

@@ -1,7 +1,7 @@
 package com.testerum.service.resources.validators
 
-import com.testerum.file_repository.FileRepositoryService
-import com.testerum.file_repository.model.KnownPath
+import com.testerum.service.file_repository.FileRepositoryService
+import com.testerum.service.file_repository.model.KnownPath
 import com.testerum.model.exception.ValidationException
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.resources.ResourceContext

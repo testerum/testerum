@@ -1,7 +1,7 @@
 package com.testerum.web_backend.controller.attachments
 
-import com.testerum.file_repository.AttachmentFileRepositoryService
-import com.testerum.file_repository.model.KnownPath
+import com.testerum.service.file_repository.AttachmentFileRepositoryService
+import com.testerum.service.file_repository.model.KnownPath
 import com.testerum.model.file.Attachment
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType

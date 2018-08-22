@@ -3,7 +3,7 @@ package com.testerum.runner_cmdline.module_di
 import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.common_di.ModuleFactoryContext
 import com.testerum.common_jdk.stopwatch.StopWatch
-import com.testerum.file_repository.module_di.FileRepositoryModuleFactory
+import com.testerum.service.file_repository.module_di.FileRepositoryModuleFactory
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.runner_cmdline.module_di.initializers.RunnerSettingsInitializer
 import com.testerum.runner_cmdline.module_di.submodules.RunnerListenersModuleFactory
