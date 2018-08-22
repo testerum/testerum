@@ -20,11 +20,13 @@ data class Path @JsonCreator constructor(
             var fileName:String? = null
             var extension:String? = null
 
-            val lastPathPart = pathsPart.last().toString()
-            if (lastPathPart.contains('.')) {
-                pathsPart = pathsPart.dropLast(1)
-                fileName = lastPathPart.substringBefore(".")
-                extension = lastPathPart.substringAfter(".")
+            if (pathsPart.isNotEmpty()) {
+                val lastPathPart = pathsPart.last().toString()
+                if (lastPathPart.contains('.')) {
+                    pathsPart = pathsPart.dropLast(1)
+                    fileName = lastPathPart.substringBefore(".")
+                    extension = lastPathPart.substringAfter(".")
+                }
             }
 
             return Path(pathsPart, fileName, extension)
