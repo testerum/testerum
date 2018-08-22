@@ -11,9 +11,9 @@
     <modules>
         <module>common</module>
         <module>model</module>
-        <module>repository</module>
         <module>service</module>
         <module>service-it</module>
+        <module>test-file-format</module>
         <module>testerum-backend</module>
         <module>step-util</module>
         <module>web</module>
