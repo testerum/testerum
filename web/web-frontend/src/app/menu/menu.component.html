@@ -1,17 +1,15 @@
 <nav class="menu navbar navbar-inverse" *ngIf="shouldDisplay">
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-nav testerum-logo">
         <li>
-            <a [routerLink]="['/features']" routerLinkActive="active" class="main-item">
-                <div class="testerum-logo">
-                    <span class="testerum-logo-left-angle-bracket">&laquo;</span>
-                    <span class="testerum-logo-text">Testerum</span>
-                    <span class="testerum-logo-right-angle-bracket">&raquo;</span>
-                </div>
+            <a [routerLink]="['/features']" routerLinkActive="active">
+                <span class="testerum-logo-left-angle-bracket">&laquo;</span>
+                <span class="testerum-logo-text">Testerum</span>
+                <span class="testerum-logo-right-angle-bracket">&raquo;</span>
             </a>
         </li>
     </ul>
 
-    <ul class="nav navbar-nav sub-menu show-sub-menu">
+    <ul class="nav navbar-nav">
         <li>
             <a [routerLink]="['/features']" routerLinkActive="active">Features</a>
         </li>
@@ -37,7 +35,7 @@
             <a href="" (click)="showVariables(); false;">Variables</a>
         </li>
         <li>
-            <a [routerLink]="['/settings']" routerLinkActive="active" class="icon-menu-item">
+            <a [routerLink]="['/settings']" routerLinkActive="active" class="sttings-icon-menu-item">
                 <i  class="fas fa-cogs" aria-hidden="true"></i>
             </a>
         </li>

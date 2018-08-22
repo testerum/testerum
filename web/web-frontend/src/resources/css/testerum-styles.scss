@@ -30,6 +30,48 @@ body {
     src: url("../fonts/hack-nerd-font/Hack-Regular-Nerd-Font-Complete-Mono-2.0.0.ttf");
 }
 
+@font-face {
+    font-family: "Righteous";
+    src: url("../fonts/righteous/Righteous-Regular.ttf");
+}
+
+@font-face {
+    font-family: "FreeMono";
+    src: url("../fonts/freemono/FreeMono.ttf");
+}
+
+@font-face {
+    font-family: "FreeMono";
+    src: url("../fonts/freemono/FreeMonoBold.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "FreeMono";
+    src: url("../fonts/freemono/FreeMonoOblique.ttf");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "FreeMono";
+    src: url("../fonts/freemono/FreeMonoOblique.ttf");
+    font-style: oblique;
+}
+
+@font-face {
+    font-family: "FreeMono";
+    src: url("../fonts/freemono/FreeMonoBoldOblique.ttf");
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "FreeMono";
+    src: url("../fonts/freemono/FreeMonoBoldOblique.ttf");
+    font-weight: bold;
+    font-style: oblique;
+}
+
 //========== ICONS =========================
 //declared in this file because I couldn't make them work in some other place
 .fa_my-automated-test {

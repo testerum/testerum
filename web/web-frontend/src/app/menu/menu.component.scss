@@ -1,3 +1,12 @@
+.navbar-nav>li>a {
+    padding: 0.5em 0.75em;
+    margin: 0;
+
+    &:hover {
+        background-color: #525252;
+    }
+}
+
 .active {
     color: #fff !important;
     background-color: transparent;
@@ -5,39 +14,41 @@
 
 .menu {
     margin-bottom: 0;
+
+    &.navbar {
+        min-height: initial;
+    }
 }
 
 .navbar-right {
     margin-right: 0;
 }
 
-.icon-menu-item {
-    font-size: 30px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.main-item {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.sub-menu {
-    height: 50px;
+.settings-icon-menu-item {
+    font-size: 2rem;
 }
 
 .testerum-logo {
-    display: flex;
-    align-items: center;
+    .testerum-logo-text {
+        font-family: "Righteous", sans-serif;
+        font-size: 2rem;
+        font-weight: normal;
+        color: white;
+
+        position: relative;
+        top: -0.125em
+    }
+
+    .testerum-logo-left-angle-bracket,
+    .testerum-logo-right-angle-bracket {
+        font-family: "FreeMono", monospace;
+        font-size: 4rem;
+        font-weight: bold;
+        color: #ff9800;
+    }
+
+    li a {
+        padding: 0.25em 0.5em 0.25em 0.5em;
+    }
 }
 
-.testerum-logo-text {
-    color: white;
-}
-
-.testerum-logo .testerum-logo-left-angle-bracket,
-.testerum-logo .testerum-logo-right-angle-bracket {
-    font-size: 2em;
-    margin-top: -0.2em;
-    color: orange;
-}
