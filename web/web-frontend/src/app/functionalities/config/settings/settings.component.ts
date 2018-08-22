@@ -36,7 +36,7 @@ export class SettingsComponent implements OnInit {
 
     private setSettingsByCategory(settings: Array<Setting>) {
         this.settingsCategories.length = 0;
-        this.settingsByCategory.clear();
+        this.settingsByCategory.forEach((value, key) => {value.length = 0} );
 
         for (let setting of settings) {
             let settingCategory = setting.definition.category ? setting.definition.category : "Unknown";
@@ -74,16 +74,9 @@ export class SettingsComponent implements OnInit {
     }
 
     private updateCurrentSettings(settings: Array<Setting>) {
-        if(this.settings.length == 0) {
-            for (let setting of settings) {
-                this.settings.push(setting)
-            }
-        }
-
+        this.settings.length = 0;
         for (let setting of settings) {
-            let currentSetting = this.findSettingByKey(setting.definition.key);
-            currentSetting.unresolvedValue = setting.unresolvedValue;
-            currentSetting.resolvedValue = setting.resolvedValue;
+            this.settings.push(setting)
         }
     }
 

@@ -48,7 +48,9 @@ export class FileDirChooserComponent implements ControlValueAccessor {
     }
 
     public showDirectoryChooserModal() {
-        this.directoryChooserDialogComponent.show();
+        if (!this.disabled) {
+            this.directoryChooserDialogComponent.show();
+        }
     }
 
     onPathSelected($event:any) {
