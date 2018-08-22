@@ -1,27 +1,24 @@
-<div class="node-text"
+<div class="node"
      title="{{getStatusTooltip()}}">
 
-    <div class="tree-node" [class.tree-node-selected]="isSelected">
-        <i class="fas" aria-hidden="true"
-           [class.node-waiting]="model.executionResult == ExecutionStatusEnum.WAITING"
-           [class.node-executing]="model.executionResult == ExecutionStatusEnum.EXECUTING"
-           [class.node-passed]="model.executionResult == ExecutionStatusEnum.PASSED"
-           [class.node-failed]="model.executionResult == ExecutionStatusEnum.FAILED"
-           [class.node-undefined]="model.executionResult == ExecutionStatusEnum.UNDEFINED"
-           [class.node-skipped]="model.executionResult == ExecutionStatusEnum.SKIPPED"
+    <div class="full-line"
+         (click)="showResultFile()"
+         [class.tree-node-selected]="isSelected">
 
+        <i aria-hidden="true"
+           [class.my-node-executing-color]="model.executionResult == ExecutionStatusEnum.EXECUTING"
 
-           [class.fa-spinner]="model.executionResult == ExecutionStatusEnum.WAITING
-                               || model.executionResult == ExecutionStatusEnum.EXECUTING"
-           [class.fa-pulse]="model.executionResult == ExecutionStatusEnum.EXECUTING"
+           [class.fa_my-runner-waiting-colored]="model.executionResult == ExecutionStatusEnum.WAITING
+                                              || model.executionResult == ExecutionStatusEnum.EXECUTING"
 
-           [class.fa-check]="model.executionResult == ExecutionStatusEnum.PASSED"
-           [class.fa-times]="model.executionResult == ExecutionStatusEnum.FAILED"
-           [class.fa-question]="model.executionResult == ExecutionStatusEnum.UNDEFINED"
-           [class.fa-angle-double-right]="model.executionResult == ExecutionStatusEnum.SKIPPED"></i>
+           [class.fa_my-runner-passed-colored]="model.executionResult == ExecutionStatusEnum.PASSED"
+           [class.fa_my-runner-failed-colored]="model.executionResult == ExecutionStatusEnum.FAILED"
+           [class.fa_my-runner-disabled-colored]="model.executionResult == ExecutionStatusEnum.DISABLED"
+           [class.fa_my-runner-undefined-colored]="model.executionResult == ExecutionStatusEnum.UNDEFINED"
+           [class.fa_my-runner-skipped-colored]="model.executionResult == ExecutionStatusEnum.SKIPPED"></i>
 
-        <div (click)="showResultFile()"
-             [class.step-selected]="isSelected">
+        <div class="node-text"
+             [class.tree-leaf-selected]="isSelected">
             {{getNodeText()}}
         </div>
     </div>
