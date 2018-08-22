@@ -16,6 +16,7 @@ data class Path @JsonCreator constructor(
         fun createInstance(pathAsString: String): Path {
 
             var pathsPart = pathAsString.split("/", "\\")
+            pathsPart = pathsPart.filter { it.isNotBlank() }
             var fileName:String? = null
             var extension:String? = null
 

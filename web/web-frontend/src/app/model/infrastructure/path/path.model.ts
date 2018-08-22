@@ -132,7 +132,7 @@ export class Path implements Serializable<Path> {
     }
 
     toDirectoryString(): string {
-        let result = "";
+        let result = "/";
         for (let i = 0; i < this.directories.length; i++) {
             result += this.directories[i];
             if (i < this.directories.length - 1) {

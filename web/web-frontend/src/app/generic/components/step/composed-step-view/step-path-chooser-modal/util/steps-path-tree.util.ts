@@ -2,6 +2,7 @@ import {ComposedContainerStepNode} from "../../../../../../model/step/tree/compo
 import {JsonTreeModel} from "../../../../json-tree/model/json-tree.model";
 import {StepPathContainerModel} from "../model/step-path-container.model";
 import {ComposedStepNode} from "../../../../../../model/step/tree/composed-step-node.model";
+import {Path} from "../../../../../../model/infrastructure/path/path.model";
 
 export default class StepsPathTreeUtil {
 
