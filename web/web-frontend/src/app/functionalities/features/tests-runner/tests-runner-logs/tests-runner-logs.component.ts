@@ -19,6 +19,8 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
 
     @Input() logs:Array<TestsRunnerLogModel> = [];
     @Input() showLastLogWhenChanged = true;
+    @Input() reportMode: boolean = false;
+
     @ViewChild('logsFooter') scrollContainer: ElementRef;
 
     logsToDisplay: Array<TestsRunnerLogModel> = [];

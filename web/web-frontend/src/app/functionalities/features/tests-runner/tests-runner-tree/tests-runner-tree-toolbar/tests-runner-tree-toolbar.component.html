@@ -16,7 +16,9 @@
 
         <div class="filters-group">
             <span class="filters-label">Filters:</span>
-            <div class="btn-group" role="group">
+            <!-- TODO: This IF is should be removed and the button should work. Took this decision to not spend critical time now and implement later when we have more time -->
+            <div *ngIf="!reportMode"
+                class="btn-group" role="group">
                 <div title="{{model.areTestFoldersShown? 'Hide Folders': 'Show Folders'}}"
                      class="btn btn-default btn-xs btn-group"
                      [class.active]="model.areTestFoldersShown"

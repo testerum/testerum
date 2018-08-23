@@ -10,6 +10,7 @@ import {ManualTestStepStatus} from "../../../../../manual-tests/model/enums/manu
 })
 export class TestsRunnerLogsToolbarComponent {
 
+    @Input() reportMode: boolean = false;
     @Input() shouldWrapLogs: boolean = false;
     @Output() shouldWrapLogsChange = new EventEmitter<boolean>();
 

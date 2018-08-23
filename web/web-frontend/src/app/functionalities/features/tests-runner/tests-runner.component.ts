@@ -8,7 +8,6 @@ import {RunnerTreeComponentService} from "./tests-runner-tree/runner-tree.compon
     selector: 'tests-runner',
     templateUrl: 'tests-runner.component.html'
 })
-
 export class TestsRunnerComponent {
 
     constructor(private testsRunnerService: TestsRunnerService,
