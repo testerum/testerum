@@ -19,11 +19,11 @@ import {Subscription} from "rxjs";
     templateUrl: 'runner-tree.component.html',
     styleUrls:['runner-tree.component.scss'],
     providers: [RunnerTreeComponentService]
-
 })
 export class RunnerTreeComponent implements OnInit, OnDestroy {
 
     @Input() treeModel: JsonTreeModel = new JsonTreeModel();
+    @Input() reportMode: boolean = false;
 
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(RunnerRootTreeNodeModel, RunnerTreeNodeComponent)

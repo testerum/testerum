@@ -14,6 +14,8 @@ import {RunnerTestTreeNodeModel} from "../model/runner-test-tree-node.model";
 export class TestsRunnerTreeToolbarComponent implements OnInit {
 
     @Input() treeModel:JsonTreeModel ;
+    @Input() reportMode: boolean = false;
+
     @Output() stopTests: EventEmitter<string> = new EventEmitter<string>();
 
     model = new RunnerTreeFilterModel();

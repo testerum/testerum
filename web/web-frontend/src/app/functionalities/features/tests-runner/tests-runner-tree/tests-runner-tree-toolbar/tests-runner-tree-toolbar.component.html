@@ -1,7 +1,7 @@
 <p-toolbar>
     <div class="line-filters">
 
-        <div class="filters-group">
+        <div *ngIf="reportMode == false" class="filters-group">
             <div class="btn-group" role="group">
                 <div title="{{areTestRunning()? 'Stop tests': 'Run Tests'}}"
                      class="btn btn-default btn-xs btn-group"
