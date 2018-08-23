@@ -39,7 +39,7 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
     constructor(public stepCallTreeComponentService: StepCallTreeComponentService) { }
 
     ngOnInit(): void {
-        this.stepCallTreeComponentService.treeModel = this.jsonTreeModel;
+        this.stepCallTreeComponentService.jsonTreeModel = this.jsonTreeModel;
         this.stepCallTreeComponentService.argModal = this.argModal;
         this.stepCallTreeComponentService.isEditMode = this.isEditMode;
         this.initTree();

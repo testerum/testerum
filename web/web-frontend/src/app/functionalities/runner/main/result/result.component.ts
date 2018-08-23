@@ -11,7 +11,6 @@ import {SuiteStartEvent} from "../../../../model/test/event/suite-start.event";
 import {RunnerRootTreeNodeModel} from "../../../features/tests-runner/tests-runner-tree/model/runner-root-tree-node.model";
 import {SuiteEndEvent} from "../../../../model/test/event/suite-end.event";
 import {TestStartEvent} from "../../../../model/test/event/test-start.event";
-import {RunnerTreeNodeTypeEnum} from "../../../features/tests-runner/tests-runner-tree/model/enums/runner-tree-node-type.enum";
 import {TestEndEvent} from "../../../../model/test/event/test-end.event";
 import {StepStartEvent} from "../../../../model/test/event/step-start.event";
 import {StepEndEvent} from "../../../../model/test/event/step-end.event";
