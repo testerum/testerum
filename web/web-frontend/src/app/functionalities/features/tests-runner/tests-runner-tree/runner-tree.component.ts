@@ -23,7 +23,8 @@ import {Subscription} from "rxjs";
 })
 export class RunnerTreeComponent implements OnInit, OnDestroy {
 
-    jsonTreeModel: JsonTreeModel = new JsonTreeModel();
+    @Input() treeModel: JsonTreeModel = new JsonTreeModel();
+
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(RunnerRootTreeNodeModel, RunnerTreeNodeComponent)
         .addPair(RunnerFeatureTreeNodeModel, RunnerTreeNodeComponent)
@@ -37,7 +38,7 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
 
 
     ngOnInit(): void {
-        this.runnerTreeComponentService.treeModel = this.jsonTreeModel;
+        this.runnerTreeComponentService.treeModel = this.treeModel;
 
         this.startTestExecutionSubscription = this.testsRunnerService.startTestExecutionObservable.subscribe((runnerRootNode: RunnerRootNode) => {
             this.runnerTreeComponentService.onStartTestExecution(runnerRootNode)

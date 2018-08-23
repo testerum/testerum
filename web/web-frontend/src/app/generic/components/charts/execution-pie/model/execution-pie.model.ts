@@ -1,4 +1,5 @@
 import {EventEmitter} from "@angular/core";
+import {ExecutionStatusEnum} from "../../../../../model/test/event/enums/execution-status.enum";
 
 export class ExecutionPieModel {
     private _totalTests: number = 0;
@@ -112,5 +113,17 @@ export class ExecutionPieModel {
     }
     get skipped(): number {
         return this._skipped;
+    }
+
+    incrementBasedOnState(status: ExecutionStatusEnum) {
+        switch (status) {
+            case ExecutionStatusEnum.WAITING: this._waitingToExecute++; break;
+            case ExecutionStatusEnum.PASSED: this._passed++; break;
+            case ExecutionStatusEnum.FAILED: this._failed++; break;
+            case ExecutionStatusEnum.DISABLED: this._disabled++; break;
+            case ExecutionStatusEnum.UNDEFINED: this._undefined++; break;
+            case ExecutionStatusEnum.SKIPPED: this._skipped++; break;
+        }
+        this.changeEventEmitter.emit();
     }
 }
