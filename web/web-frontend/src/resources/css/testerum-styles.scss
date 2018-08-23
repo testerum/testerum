@@ -244,22 +244,6 @@ body {
     @extend .fa-arrow-right;
 }
 
-//======= Only CRISTI know why this are here ===============
-.logs-split-area.horizontal-scroll {
-    overflow: auto !important;
-}
-
-.logs-split-area.horizontal-scroll .log-line {
-    white-space: pre;
-}
-
-.logs-split-area.horizontal-wrap {
-    overflow: inherit;
-}
-
-.logs-split-area.horizontal-wrap .log-line {
-    white-space: pre-wrap;
-}
 
 .nav-tabs {
     border-bottom: none;

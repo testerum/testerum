@@ -23,6 +23,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
 
     logsToDisplay: Array<TestsRunnerLogModel> = [];
     selectedRunnerTreeNode: RunnerTreeNodeModel;
+    shouldWrapLogs: boolean;
 
     private lastLogsCount: number = 0;
 
@@ -105,16 +106,5 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
             return false;
         }
         return runnerTreeNode.eventKey.isParentOf(log.eventKey)
-    }
-
-    wrapLogs(shouldWrapLogs: boolean) {
-        let classNames: string;
-        if (shouldWrapLogs) {
-            classNames = "logs-split-area horizontal-wrap";
-        } else {
-            classNames = "logs-split-area horizontal-scroll";
-        }
-
-        document.querySelector(".logs-split-area").className = classNames;
     }
 }

@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {TestsRunnerLogsComponent} from "../tests-runner-logs.component";
 import {TestsRunnerService} from "../../tests-runner.service";
+import {ManualTestStepStatus} from "../../../../../manual-tests/model/enums/manual-test-step-status.enum";
 
 @Component({
     selector: 'tests-runner-logs-toolbar',
@@ -9,8 +10,8 @@ import {TestsRunnerService} from "../../tests-runner.service";
 })
 export class TestsRunnerLogsToolbarComponent {
 
-    @Input() logsComponent: TestsRunnerLogsComponent;
-    shouldWrapLogs: boolean = false;
+    @Input() shouldWrapLogs: boolean = false;
+    @Output() shouldWrapLogsChange = new EventEmitter<boolean>();
 
     constructor(private testsRunnerService: TestsRunnerService) {
     }
@@ -22,6 +23,6 @@ export class TestsRunnerLogsToolbarComponent {
 
     onToggleWrap() {
         this.shouldWrapLogs = !this.shouldWrapLogs;
-        this.logsComponent.wrapLogs(this.shouldWrapLogs)
+        this.shouldWrapLogsChange.emit(this.shouldWrapLogs);
     }
 }

@@ -1,7 +1,12 @@
-.logs-container {
+.logs-panel {
     display: flex;
     flex-wrap: nowrap;
     height: 100%;
+}
+
+.logs-container {
+    width: calc(100% - 30px);
+    overflow:  auto;
 }
 
 .date-column {
@@ -54,4 +59,23 @@ table td {
 table {
     margin-left: 0;
     margin-bottom: 0;
+}
+
+.horizontal-scroll {
+    overflow: auto;
+}
+
+.horizontal-scroll .log-line {
+    white-space: pre;
+}
+
+.horizontal-wrap {
+    overflow-x: inherit;
+    overflow-y: auto;
+}
+
+.horizontal-wrap .log-line {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
