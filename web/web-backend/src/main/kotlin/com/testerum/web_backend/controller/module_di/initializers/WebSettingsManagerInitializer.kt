@@ -40,7 +40,7 @@ class WebSettingsManagerInitializer(private val settingsFile: Path) {
                         key = SystemSettingKeys.TESTERUM_INSTALL_DIR,
                         type = SettingType.FILESYSTEM_DIRECTORY,
                         defaultValue = testerumInstallDir.toString(),
-                        description = "Directory where the Testerum application is installed",
+                        description = "Directory where Testerum is installed",
                         category = "Application"
                 )
         )
