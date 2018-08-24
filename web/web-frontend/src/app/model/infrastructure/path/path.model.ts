@@ -132,13 +132,17 @@ export class Path implements Serializable<Path> {
     }
 
     toDirectoryString(): string {
-        let result = "/";
-        for (let i = 0; i < this.directories.length; i++) {
-            result += this.directories[i];
-            if (i < this.directories.length - 1) {
-                result += "/"
+        let result: string = this.directories.join('/');
+
+        if (this.directories.length > 0) {
+            if (!result.startsWith('/')) {
+                result = '/' + result;
+            }
+            if (!result.endsWith('/')) {
+                result = result + '/';
             }
         }
+
         return result
     }
 
@@ -146,19 +150,16 @@ export class Path implements Serializable<Path> {
         let result = this.toDirectoryString();
 
         if (this.fileName) {
-            if (result && !result.endsWith("/")) {
-                result += "/";
-            }
             result += this.fileName
         }
         if (this.fileExtension != null) {
             result += "." + this.fileExtension
         }
+
         return result
     }
 
     equals(path: Path): boolean {
-
         if (this.fileName != path.fileName) return false;
         if (this.fileExtension != path.fileExtension) return false;
         if (this.directories.length != path.directories.length) return false;

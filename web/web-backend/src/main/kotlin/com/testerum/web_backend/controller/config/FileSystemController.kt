@@ -1,7 +1,6 @@
 package com.testerum.web_backend.controller.config
 
 import com.testerum.model.config.dir_tree.FileSystemDirectory
-import com.testerum.model.infrastructure.path.Path
 import com.testerum.service.settings.FileSystemService
 import org.springframework.web.bind.annotation.*
 
@@ -12,11 +11,7 @@ class FileSystemController(val fileSystemService: FileSystemService) {
     @RequestMapping(method = [RequestMethod.GET], path = ["/directory_tree"])
     @ResponseBody
     fun getDirectoryTree(@RequestParam(value = "path") pathAsString:String): FileSystemDirectory {
-        var path: Path = Path.EMPTY
-        if (pathAsString.isNotEmpty()) {
-            path = Path.createInstance(pathAsString)
-        }
-        return fileSystemService.getDirectoryTree(path)
+        return fileSystemService.getDirectoryTree(pathAsString)
     }
 
 }

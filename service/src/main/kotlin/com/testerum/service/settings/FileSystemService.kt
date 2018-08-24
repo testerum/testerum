@@ -3,11 +3,12 @@ package com.testerum.service.settings
 import com.testerum.model.config.dir_tree.FileSystemDirectory
 import com.testerum.model.infrastructure.path.Path
 import java.io.File
+import java.nio.file.Paths
 
 class FileSystemService {
 
-    fun getDirectoryTree(path: Path): FileSystemDirectory {
-        val childDirectories: List<FileSystemDirectory> = if (path.isEmpty()) {
+    fun getDirectoryTree(pathAsString: String): FileSystemDirectory {
+        val childDirectories: List<FileSystemDirectory> = if (pathAsString == "") {
             File.listRoots().map {
                 FileSystemDirectory(
                         Path(listOf(it.absolutePath), null, null),
@@ -15,7 +16,7 @@ class FileSystemService {
                 )
             }
         } else {
-            path.toJavaPath()
+            Paths.get(pathAsString)
                     .toFile()
                     .listFiles(File::isDirectory)
                     .sortedBy { it.toPath().toString() }
@@ -28,7 +29,7 @@ class FileSystemService {
         }
 
         return FileSystemDirectory(
-                path,
+                Path.createInstance(pathAsString),
                 childDirectories.isNotEmpty(),
                 childDirectories
         )
