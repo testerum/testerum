@@ -5,5 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class FileSystemDirectory @JsonCreator constructor(@JsonProperty("name") val name: String,
                                                         @JsonProperty("absoluteJavaPath") val absoluteJavaPath: String,
+                                                        @JsonProperty("canCreateChild") val canCreateChild: Boolean,
                                                         @JsonProperty("hasChildrenDirectories") val hasChildrenDirectories: Boolean,
                                                         @JsonProperty("childrenDirectories") val childrenDirectories: List<FileSystemDirectory> = emptyList())
