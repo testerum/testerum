@@ -9,3 +9,18 @@
 .tree-node-selected {
     background-color: whitesmoke;
 }
+
+.fa-stack {
+    display: inline-block;
+    height: 15px;
+    line-height: 15px;
+    position: relative;
+    vertical-align: middle;
+    width: 15px;
+}
+
+.fa-stack-1x {
+     line-height: inherit;
+     font-size: 9px;
+     color: #ff6161 !important;
+ }

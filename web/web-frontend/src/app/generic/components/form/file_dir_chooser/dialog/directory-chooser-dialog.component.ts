@@ -96,6 +96,7 @@ export class DirectoryChooserDialogComponent implements OnInit, OnDestroy {
                             this.selectedNode,
                             newFileSystemDirectory.name,
                             newFileSystemDirectory.absoluteJavaPath,
+                            newFileSystemDirectory.canCreateChild,
                             false
                         );
                         this.selectedNode.getChildren().push(newContainer);

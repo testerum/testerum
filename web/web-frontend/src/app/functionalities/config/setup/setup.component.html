@@ -5,7 +5,7 @@
     <div class="panel panel-info">
         <div class="panel-heading">Setup</div>
         <div class="page-body">
-            <form>
+            <form #form="ngForm">
                 <p class="input-description">Please set the path to a directory where you want your work to be saved</p>
 
                 <span class="full-width input-group input-container">
@@ -21,7 +21,7 @@
             <!-- BUTTONS -->
             <div class="modal-footer">
                 <ng-container>
-                    <button (click)="save()" class="btn btn-primary">Save</button>
+                    <button [disabled]="!form.form.valid" (click)="save()" class="btn btn-primary">Save</button>
                 </ng-container>
             </div>
         </div>

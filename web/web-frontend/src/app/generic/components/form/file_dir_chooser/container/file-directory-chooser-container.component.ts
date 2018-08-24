@@ -41,7 +41,7 @@ export class FileDirectoryChooserContainerComponent implements OnInit, OnDestroy
     }
 
     collapseNode() {
-        this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
+        this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren;
         if (this.model.jsonTreeNodeState.showChildren) {
             this.jsonTreeService.triggerExpendedNodeEvent(this.model)
         }

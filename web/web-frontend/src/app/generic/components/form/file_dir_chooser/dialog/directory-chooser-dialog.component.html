@@ -23,7 +23,7 @@
                 </div>
 
                 <button (click)="createDirectory();" type="button" class="btn btn-default pull-left"
-                        [disabled]="!selectedPath">
+                        [disabled]="!selectedPath || !selectedNode.canCreateChild">
                     Create Directory
                 </button>
                 <button (click)="cancel();" type="button" class="btn btn-default">Cancel</button>
