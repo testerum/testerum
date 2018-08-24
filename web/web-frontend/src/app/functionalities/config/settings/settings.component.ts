@@ -104,6 +104,7 @@ export class SettingsComponent implements OnInit {
         this.settingsService.getSettings().subscribe(
             (settings: Array<Setting>) => {
                 this.updateCurrentSettings(settings);
+                this.setSettingsByCategory(settings);
                 this.isEditMode = false;
             }
         )
