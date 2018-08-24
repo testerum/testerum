@@ -10,7 +10,7 @@
 
                 <span class="full-width input-group input-container">
                     <file-dir-chooser id="repositoryPath" name="repositoryPath" required
-                                      [(ngModel)]="repositoryPathAsString"
+                                      [(ngModel)]="repositoryAbsoluteJavaPath"
                                       #repositoryPath="ngModel" class="file-dir-chooser"></file-dir-chooser>
                     <input-error [model]="repositoryPath"
                                  [errorMessages]="{

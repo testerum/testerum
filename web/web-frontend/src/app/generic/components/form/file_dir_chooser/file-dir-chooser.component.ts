@@ -11,7 +11,6 @@ import {DirectoryChooserDialogComponent} from "./dialog/directory-chooser-dialog
         { provide: NG_VALIDATORS, useExisting: forwardRef(() => FileDirChooserComponent), multi: true }
     ]
 })
-
 export class FileDirChooserComponent implements ControlValueAccessor {
 
     // the method set in registerOnChange to emit changes back to the form

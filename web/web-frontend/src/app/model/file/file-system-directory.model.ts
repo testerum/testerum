@@ -2,12 +2,14 @@ import {Path} from "../infrastructure/path/path.model";
 import {Serializable} from "../infrastructure/serializable.model";
 
 export class FileSystemDirectory implements Serializable<FileSystemDirectory> {
-    path: Path;
+    name: string;
+    absoluteJavaPath: string;
     hasChildrenDirectories: boolean;
     childrenDirectories: Array<FileSystemDirectory> = [];
 
     deserialize(input: Object): FileSystemDirectory {
-        this.path = Path.deserialize(input["path"]);
+        this.name = input["name"];
+        this.absoluteJavaPath = input["absoluteJavaPath"];
         this.hasChildrenDirectories = input["hasChildrenDirectories"];
         for (let childDirToDeserialize of input["childrenDirectories"]) {
             this.childrenDirectories.push(
@@ -19,6 +21,6 @@ export class FileSystemDirectory implements Serializable<FileSystemDirectory> {
     }
 
     serialize(): string {
-        return null;
+        throw new Error("not implemented");
     }
 }

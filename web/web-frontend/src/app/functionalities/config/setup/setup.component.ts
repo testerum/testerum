@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Setup} from "./model/setup.model";
 import {SetupService} from "../../../service/setup.service";
-import {Path} from "../../../model/infrastructure/path/path.model";
 import {UrlService} from "../../../service/url.service";
 
 @Component({
@@ -9,10 +8,9 @@ import {UrlService} from "../../../service/url.service";
     templateUrl: 'setup.component.html',
     styleUrls: ['setup.component.scss']
 })
-
 export class SetupComponent implements OnInit {
 
-    repositoryPathAsString: string;
+    repositoryAbsoluteJavaPath: string;
 
     constructor(private urlService: UrlService,
                 private startConfigService: SetupService) {
@@ -30,7 +28,7 @@ export class SetupComponent implements OnInit {
 
     save(): void {
         let startConfig = new Setup();
-        startConfig.repositoryPath = Path.createInstance(this.repositoryPathAsString);
+        startConfig.repositoryAbsoluteJavaPath = this.repositoryAbsoluteJavaPath;
 
         this.startConfigService.save(startConfig).subscribe(
             result => {

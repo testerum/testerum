@@ -1,6 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {JsonTreeModel} from "../../json-tree/model/json-tree.model";
-import {Path} from "../../../../model/infrastructure/path/path.model";
 import {FileSystemService} from "../../../../service/file-system.service";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {FileDirectoryChooserContainerModel} from "./model/file-directory-chooser-container.model";
@@ -32,10 +31,10 @@ export class FileDirectoryChooserService {
         )
     }
 
-    public initializeDirctoryTreeFromServer(): Observable<JsonTreeModel> {
+    public initializeDirectoryTreeFromServer(): Observable<JsonTreeModel> {
         let responseSubject: Subject<JsonTreeModel> = new Subject<JsonTreeModel>();
 
-        this.fileSystemService.getDirectoryTree(Path.createInstanceOfEmptyPath()).subscribe(
+        this.fileSystemService.getDirectoryTree("").subscribe(
             (fileDirNode: FileDirectoryChooserContainerModel) => {
 
                 let fileDirectoryChooserJsonTreeModel: JsonTreeModel = new JsonTreeModel();
@@ -57,7 +56,7 @@ export class FileDirectoryChooserService {
     private onFileDirectoryChooserNodeExpanded(nodeEvent: JsonTreeNodeEventModel) {
         let fileDirectoryNode = nodeEvent.treeNode as FileDirectoryChooserContainerModel;
         if(fileDirectoryNode.hasChildren() && fileDirectoryNode.getChildren().length == 0) {
-            this.fileSystemService.getDirectoryTree(fileDirectoryNode.path).subscribe(
+            this.fileSystemService.getDirectoryTree(fileDirectoryNode.absoluteJavaPath).subscribe(
                 (fileDirNode: FileDirectoryChooserContainerModel) => {
                     for (let child of fileDirNode.getChildren()) {
                         child.parent = fileDirectoryNode;

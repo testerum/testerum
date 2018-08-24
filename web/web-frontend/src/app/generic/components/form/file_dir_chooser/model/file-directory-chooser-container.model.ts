@@ -1,14 +1,12 @@
-
 import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
 import {JsonTreeNodeState} from "../../../json-tree/model/json-tree-node-state.model";
-import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {JsonTreeContainerOptions} from "../../../json-tree/model/behavior/JsonTreeContainerOptions";
 
 export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
 
     parent: JsonTreeContainer;
-    path: Path;
     name: string;
+    absoluteJavaPath: string;
     private children: Array<FileDirectoryChooserContainerModel> = [];
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
     hidden: boolean = false;
@@ -16,11 +14,12 @@ export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
     private options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
     constructor(parent: FileDirectoryChooserContainerModel,
-                path: Path = null,
+                name: string = "",
+                absoluteJavaPath: string = "",
                 private containsChildren: boolean) {
         this.parent = parent;
-        this.path = path;
-        this.name = path.directories[path.directories.length -1];
+        this.name = name;
+        this.absoluteJavaPath = absoluteJavaPath;
         this.jsonTreeNodeState.showChildren = false;
     }
 
@@ -33,7 +32,7 @@ export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
     }
 
     hasChildren(): boolean {
-        return this.containsChildren
+        return this.children.length > 0 || this.containsChildren;
     }
 
     setChildren(children: Array<FileDirectoryChooserContainerModel>) {

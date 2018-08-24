@@ -4,10 +4,12 @@ import {FileDirectoryChooserService} from "../file-directory-chooser.service";
 import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tree-node-event.model";
 import {FileDirectoryChooserContainerModel} from "../model/file-directory-chooser-container.model";
 import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
-import {ArrayUtil} from "../../../../../utils/array.util";
 import {JsonTreeContainerEditorEvent} from "../../../json-tree/container-editor/model/json-tree-container-editor.event";
-import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
+import {FileSystemService} from "../../../../../service/file-system.service";
+import {FileSystemDirectory} from "../../../../../model/file/file-system-directory.model";
+import {ErrorService} from "../../../../../service/error.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
     moduleId: module.id,
@@ -15,7 +17,6 @@ import {JsonTreeService} from "../../../json-tree/json-tree.service";
     templateUrl: 'directory-chooser-dialog.component.html',
     styleUrls: ['directory-chooser-dialog.component.scss']
 })
-
 export class DirectoryChooserDialogComponent implements OnInit, OnDestroy {
 
     @ViewChild("infoModal") infoModal:ModalDirective;
@@ -28,12 +29,14 @@ export class DirectoryChooserDialogComponent implements OnInit, OnDestroy {
 
     fileDirectoryChooserService: FileDirectoryChooserService;
     constructor(fileDirectoryChooserService: FileDirectoryChooserService,
-                private jsonTreeService: JsonTreeService) {
+                private fileSystemService: FileSystemService,
+                private jsonTreeService: JsonTreeService,
+                private errorService: ErrorService) {
         this.fileDirectoryChooserService = fileDirectoryChooserService;
     }
 
     ngOnInit() {
-        this.fileDirectoryChooserService.initializeDirctoryTreeFromServer().subscribe(
+        this.fileDirectoryChooserService.initializeDirectoryTreeFromServer().subscribe(
             (dirTree: JsonTreeModel) => {
                 this.fileDirectoryChooserJsonTreeModel.children.length = 0;
 
@@ -48,9 +51,9 @@ export class DirectoryChooserDialogComponent implements OnInit, OnDestroy {
         this.selectedNodeSubscriber = this.fileDirectoryChooserService.selectedNodeEmitter.subscribe (
             (item: JsonTreeNodeEventModel) => {
                 let selectedNode = item.treeNode as FileDirectoryChooserContainerModel;
-                if ((selectedNode).path) {
+                if ((selectedNode).absoluteJavaPath) {
                     this.selectedNode = selectedNode;
-                    this.selectedPath = selectedNode.path.toString()
+                    this.selectedPath = selectedNode.absoluteJavaPath
                 }
             }
         );
@@ -86,16 +89,22 @@ export class DirectoryChooserDialogComponent implements OnInit, OnDestroy {
 
         this.jsonTreeService.triggerCreateContainerAction(childrenContainersName).subscribe(
             (createEvent: JsonTreeContainerEditorEvent) => {
-                let pathDirectories: Array<string> = ArrayUtil.copyArray(this.selectedNode.path.directories);
-                pathDirectories.push(createEvent.newName);
 
-                let newContainer = new FileDirectoryChooserContainerModel(
-                    this.selectedNode,
-                    new Path(pathDirectories, null, null),
-                    false
+                this.fileSystemService.createFileSystemDirectory (this.selectedNode.absoluteJavaPath, createEvent.newName).subscribe(
+                    (newFileSystemDirectory: FileSystemDirectory) => {
+                        let newContainer = new FileDirectoryChooserContainerModel(
+                            this.selectedNode,
+                            newFileSystemDirectory.name,
+                            newFileSystemDirectory.absoluteJavaPath,
+                            false
+                        );
+                        this.selectedNode.getChildren().push(newContainer);
+                        this.selectedNode.sort();
+                    },
+                    (error: HttpErrorResponse) => {
+                        this.errorService.handleHttpResponseException(error)
+                    }
                 );
-                this.selectedNode.getChildren().push(newContainer);
-                this.selectedNode.sort();
             }
         )
     }

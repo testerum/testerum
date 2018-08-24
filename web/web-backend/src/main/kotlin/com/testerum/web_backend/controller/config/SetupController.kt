@@ -4,6 +4,7 @@ import com.testerum.model.config.Setup
 import com.testerum.service.settings.SetupService
 import com.testerum.service.step.StepCache
 import org.springframework.web.bind.annotation.*
+import java.nio.file.Paths
 
 @RestController
 @RequestMapping("/setup")
@@ -14,7 +15,7 @@ open class SetupController(private val setupService: SetupService,
     @ResponseBody
     fun createConfig(@RequestBody setup: Setup): Setup {
         setupService.createConfig(
-                setup.repositoryPath.toJavaAbsolutePath()
+                Paths.get(setup.repositoryAbsoluteJavaPath)
         )
         stepCache.reinitializeComposedSteps()
 

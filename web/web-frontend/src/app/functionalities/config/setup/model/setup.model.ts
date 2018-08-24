@@ -3,10 +3,10 @@ import {JsonUtil} from "../../../../utils/json.util";
 import {Serializable} from "../../../../model/infrastructure/serializable.model";
 
 export class Setup implements Serializable<Setup> {
-    repositoryPath: Path;
+    repositoryAbsoluteJavaPath: string;
 
     deserialize(input: Object): Setup {
-        this.repositoryPath = Path.deserialize(input["repositoryPath"]);
+        this.repositoryAbsoluteJavaPath = input["repositoryAbsoluteJavaPath"];
 
         return this;
     }
@@ -14,7 +14,7 @@ export class Setup implements Serializable<Setup> {
     serialize() {
         return "" +
             '{' +
-            '"repositoryPath":' + JsonUtil.serializeSerializable(this.repositoryPath) +
+            '"repositoryAbsoluteJavaPath":' + JsonUtil.stringify(this.repositoryAbsoluteJavaPath) +
             '}'
     }
 }
