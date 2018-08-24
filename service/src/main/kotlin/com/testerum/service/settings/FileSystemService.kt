@@ -95,12 +95,14 @@ class FileSystemService {
 
         dir.list().use { pathStream ->
             pathStream.forEach { path ->
-                result += FileSystemDirectory(
-                        name = path.fileName.toString(),
-                        absoluteJavaPath = path.toAbsolutePath().normalize().toString(),
-                        canCreateChild = path.canCreateChild,
-                        hasChildrenDirectories = path.hasSubDirectories
-                )
+                if (path.isDirectory) {
+                    result += FileSystemDirectory(
+                            name = path.fileName.toString(),
+                            absoluteJavaPath = path.toAbsolutePath().normalize().toString(),
+                            canCreateChild = path.canCreateChild,
+                            hasChildrenDirectories = path.hasSubDirectories
+                    )
+                }
             }
         }
 
