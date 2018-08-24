@@ -70,7 +70,7 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
         }
 
         if (this.model.path) {
-            this.pathForTitle = "/" + new Path(this.model.path.directories, nodeName, null).toString();
+            this.pathForTitle = new Path(this.model.path.directories, nodeName, null).toString();
         }
     }
 

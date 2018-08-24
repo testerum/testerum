@@ -112,7 +112,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             nodeName = this.testModel.text;
         }
         if (this.testModel.path) {
-            this.pathForTitle = "/" + new Path(this.testModel.path.directories, nodeName, null).toString();
+            this.pathForTitle = new Path(this.testModel.path.directories, nodeName, null).toString();
         }
     }
 
