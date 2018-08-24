@@ -48,7 +48,7 @@ export class SelectSharedResourceModalComponent {
 
     getNewResourcePathAsString(): string {
         if(this.selectedResourcePath == null) return "";
-        return "/" + this.selectedResourcePath.toString()
+        return this.selectedResourcePath.toString()
     }
 
     setSelectedDirectory(path: any) {

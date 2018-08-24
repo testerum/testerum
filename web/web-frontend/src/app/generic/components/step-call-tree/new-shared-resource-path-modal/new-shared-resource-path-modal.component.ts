@@ -52,7 +52,7 @@ export class NewSharedResourcePathModalComponent implements OnInit {
         if(this.resourceMapping == null) return "";
         if(this.name == null) return "";
         let directories = this.selectedDirectoryPath != null ? this.selectedDirectoryPath.directories: [];
-        return "/" + new Path(directories, this.name, this.resourceMapping.fileExtension).toString()
+        return new Path(directories, this.name, this.resourceMapping.fileExtension).toString()
     }
 
     setSelectedDirectory(path: any) {

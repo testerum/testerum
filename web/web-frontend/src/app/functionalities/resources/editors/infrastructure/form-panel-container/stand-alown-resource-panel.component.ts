@@ -165,7 +165,7 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
     getPathForTitle(): string {
         let pathForTitle = "";
         if (this.resource.oldPath) {
-            pathForTitle = "/" + new Path(this.resource.oldPath.directories, null, null).toString();
+            pathForTitle = new Path(this.resource.oldPath.directories, null, null).toString();
         }
         return pathForTitle;
     }
