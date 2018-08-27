@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/manualTests")
-class ManualTestsController(private val manualTestsService: ManualTestsService) {
+class OldManualTestsController(private val manualTestsService: ManualTestsService) {
 
     @RequestMapping(method = [RequestMethod.GET], path = [""])
     @ResponseBody

@@ -40,6 +40,7 @@ import {AttachmentsService} from "./service/attachments.service";
 import {UrlService} from "./service/url.service";
 import {TagsService} from "./service/tags.service";
 import {MessageService} from "./service/message.service";
+import {ManualModule} from "./functionalities/manual/manual.module";
 
 @NgModule({
     imports: [
@@ -54,9 +55,10 @@ import {MessageService} from "./service/message.service";
         RunnerModule,
         StepsModule,
         ResourcesModule,
+        ManualModule,
         GenericModule,
 
-        ManualTestsModule,
+        ManualTestsModule, //TODO: to remove
 
         AppRoutingModule
     ],

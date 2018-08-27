@@ -61,4 +61,16 @@ export class UrlService {
     public navigateToSetup() {
         this.router.navigate(["/setup"]);
     }
+
+    public navigateToManualExecPlanCreate() {
+        this.router.navigate(["/manual/plans/create"])
+    }
+
+    public navigateToManualExecPlanEditor(path: Path) {
+        this.router.navigate(["/manual/plans/show", {path : path.toString()} ])
+    }
+
+    public navigateToManualExecPlanRunner(path: Path) {
+        this.router.navigate(["/manual/plans/runner", {path : path.toString()} ])
+    }
 }

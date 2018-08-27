@@ -1,0 +1,26 @@
+<div class="vertical-space"></div>
+
+<div class="button-container">
+    <button type="button" class="btn btn-primary"
+            (click)="onCreateNewTestPlan()">Create new Test Plan</button>
+</div>
+
+<div class="vertical-space"></div>
+
+<div class="panel panel-default execution-card">
+    <h4 class="execution-title">Active Executions</h4>
+    <div class="panel-body" *ngFor="let activeExecPlan of activeExecPlans">
+
+        <manual-exec-plan-overview [model]="activeExecPlan"></manual-exec-plan-overview>
+
+    </div>
+</div>
+
+<div class="panel panel-default execution-card">
+    <h4 class="execution-title">Finalized Executions</h4>
+    <div class="panel-body" *ngFor="let finalizedExecPlan of finalizedExecPlans">
+
+        <manual-exec-plan-overview [model]="finalizedExecPlan"></manual-exec-plan-overview>
+
+    </div>
+</div>

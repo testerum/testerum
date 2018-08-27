@@ -19,8 +19,9 @@ import com.testerum.web_backend.controller.error.model.response_preparers.generi
 import com.testerum.web_backend.controller.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer
 import com.testerum.web_backend.controller.error.model.response_preparers.validation.ValidationErrorResponsePreparer
 import com.testerum.web_backend.controller.feature.FeatureController
-import com.testerum.web_backend.controller.manual.ManualTestsController
-import com.testerum.web_backend.controller.manual.ManualTestsRunnerController
+import com.testerum.web_backend.controller.manual.ManualExecPlansController
+import com.testerum.web_backend.controller.manual.OldManualTestsController
+import com.testerum.web_backend.controller.manual.OldManualTestsRunnerController
 import com.testerum.web_backend.controller.message.MessageController
 import com.testerum.web_backend.controller.report.RunnerResultController
 import com.testerum.web_backend.controller.resources.ResourcesController
@@ -138,11 +139,11 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             testRunnerResultService = serviceModuleFactory.testRunnerResultService
     )
 
-    private val manualTestsController = ManualTestsController(
+    private val manualTestsController = OldManualTestsController(
             manualTestsService = serviceModuleFactory.manualTestsService
     )
 
-    private val manualTestsRunnerController = ManualTestsRunnerController(
+    private val manualTestsRunnerController = OldManualTestsRunnerController(
             manualTestsRunnerService = serviceModuleFactory.manualTestsRunnerService
     )
 
@@ -152,6 +153,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val tagsController = TagsController(
             tagsService = serviceModuleFactory.tagsService
+    )
+
+    private val manualExecPlansController = ManualExecPlansController(
     )
 
 
@@ -177,7 +181,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             manualTestsController,
             manualTestsRunnerController,
             featureController,
-            tagsController
+            tagsController,
+            manualExecPlansController
     )
 
 

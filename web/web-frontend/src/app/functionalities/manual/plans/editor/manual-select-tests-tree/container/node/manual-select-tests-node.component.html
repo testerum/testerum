@@ -1,0 +1,13 @@
+<div class="node-text" (click)="selectOrNot()">
+
+    <i class="far fa-check-square" aria-hidden="true"
+       [class.hidden]="!model.isSelected"></i>
+    <i class="far fa-square" aria-hidden="true"
+       [class.hidden]="model.isSelected"></i>
+
+    <div class="node-text"
+         [class.step-selected]="isSelected">
+        {{model.name}}
+    </div>
+
+</div>

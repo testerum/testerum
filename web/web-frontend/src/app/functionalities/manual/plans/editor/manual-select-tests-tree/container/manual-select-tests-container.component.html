@@ -1,0 +1,31 @@
+<div class="node">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
+         (click)="selectOrNot()"
+         (dblclick)="collapseNode()">
+
+        <i class="far fa-check-square" aria-hidden="true"
+           style="width: 13px"
+           [class.hidden]="!model.isSelectedNode()"></i>
+        <i class="far fa-square" aria-hidden="true"
+           style="width: 13px"
+           [class.hidden]="!model.isNotSelectedNode()"></i>
+        <i class="far fa-minus-square" aria-hidden="true"
+           style="width: 13px"
+           [class.hidden]="!model.isPartialSelectedNode()"></i>
+
+        <i aria-hidden="true"
+           [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
+           [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
+
+        {{model.name}}
+    </div>
+
+    <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

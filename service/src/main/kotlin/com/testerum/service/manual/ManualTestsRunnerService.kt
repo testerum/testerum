@@ -11,7 +11,7 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.manual.enums.ManualTestStatus
 import com.testerum.model.manual.runner.ManualTestExe
 import com.testerum.model.manual.runner.ManualTestsRunner
-import com.testerum.model.manual.runner.enums.ManualTestsRunnerStatus
+import com.testerum.model.manual.runner.enums.ManualExecPlanStatus
 import com.testerum.model.manual.runner.operation.UpdateManualTestExecutionModel
 import com.testerum.model.repository.enums.FileType
 import java.time.LocalDateTime
@@ -82,7 +82,7 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
         val testsRunner = getTestsRunnerAtPath(path)?: throw RuntimeException("The Test Runner [$path] couldn't be found")
 
         val updatedTestsRunner = testsRunner.copy(
-                status = ManualTestsRunnerStatus.FINISHED,
+                status = ManualExecPlanStatus.FINISHED,
                 finalizedDate = LocalDateTime.now()
         )
 
@@ -105,7 +105,7 @@ class ManualTestsRunnerService(private val fileRepositoryService: FileRepository
         val testsRunner = getTestsRunnerAtPath(path)?: throw RuntimeException("The Test Runner [$path] couldn't be found")
 
         val updatedTestsRunner = testsRunner.copy(
-                status = ManualTestsRunnerStatus.IN_EXECUTION,
+                status = ManualExecPlanStatus.IN_EXECUTION,
                 finalizedDate = null
         )
 
