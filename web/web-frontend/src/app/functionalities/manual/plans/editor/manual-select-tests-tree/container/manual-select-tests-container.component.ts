@@ -9,8 +9,7 @@ import {ModelComponentMapping} from "../../../../../../model/infrastructure/mode
     selector: 'manual-select-tests-container',
     templateUrl: 'manual-select-tests-container.component.html',
     styleUrls: [
-        'manual-select-tests-container.component.scss',
-        '../../../../../../generic/css/tree.scss'
+        'manual-select-tests-container.component.scss'
     ]
 })
 export class ManualSelectTestsContainerComponent {

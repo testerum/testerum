@@ -6,21 +6,18 @@
          (click)="selectOrNot()"
          (dblclick)="collapseNode()">
 
-        <i class="far fa-check-square" aria-hidden="true"
-           style="width: 13px"
+        <i class="far fa-check-square my-checkbox-icon" aria-hidden="true"
            [class.hidden]="!model.isSelectedNode()"></i>
-        <i class="far fa-square" aria-hidden="true"
-           style="width: 13px"
+        <i class="far fa-square my-checkbox-icon" aria-hidden="true"
            [class.hidden]="!model.isNotSelectedNode()"></i>
-        <i class="far fa-minus-square" aria-hidden="true"
-           style="width: 13px"
+        <i class="far fa-minus-square my-checkbox-icon" aria-hidden="true"
            [class.hidden]="!model.isPartialSelectedNode()"></i>
 
-        <i aria-hidden="true"
+        <i aria-hidden="true" class="my-folder-icon"
            [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
            [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
 
-        {{model.name}}
+        <span>{{model.name}}</span>
     </div>
 
     <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"
