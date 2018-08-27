@@ -5,6 +5,7 @@ import {Serializable} from "../../infrastructure/serializable.model";
 export class FeaturesTreeFilter implements Serializable<FeaturesTreeFilter>{
     showAutomatedTests: boolean = true;
     showManualTest: boolean = true;
+    showEmptyFeatures: boolean = true;
     search: string;
     tags: Array<string> = [];
 
@@ -31,6 +32,7 @@ export class FeaturesTreeFilter implements Serializable<FeaturesTreeFilter>{
     deserialize(input: Object): FeaturesTreeFilter {
         this.showAutomatedTests = input["showAutomatedTests"];
         this.showManualTest = input['showManualTest'];
+        this.showEmptyFeatures = input['showEmptyFeatures'];
         this.search = input['search'];
         for (let tag of (input['tags'] || [])) {
             this.tags.push(tag);
@@ -44,6 +46,7 @@ export class FeaturesTreeFilter implements Serializable<FeaturesTreeFilter>{
             '{' +
             '"showAutomatedTests":' + JsonUtil.stringify(this.showAutomatedTests) +
             ',"showManualTest":' + JsonUtil.stringify(this.showManualTest) +
+            ',"showEmptyFeatures":' + JsonUtil.stringify(this.showEmptyFeatures) +
             ',"search":' + JsonUtil.stringify(this.search) +
             ',"tags":'+JsonUtil.serializeArray(this.tags)+
             '}'
