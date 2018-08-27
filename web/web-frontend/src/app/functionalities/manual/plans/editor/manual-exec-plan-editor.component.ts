@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AreYouSureModalComponent} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.component";
 import {SelectTestsTreeRunnerService} from "../../../../manual-tests/runner/editor/select-tests-tree/select-tests-tree-runner.service";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
@@ -14,15 +14,15 @@ import {ManualTestsRunnerStatus} from "../../../../manual-tests/runner/model/enu
 import {ManualExecPlan} from "../model/manual-exec-plan.model";
 import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
 import {UrlService} from "../../../../service/url.service";
+import {MarkdownEditorComponent} from "../../../../generic/components/markdown-editor/markdown-editor.component";
 
 @Component({
     selector: 'manual-exec-plan-editor',
     templateUrl: './manual-exec-plan-editor.component.html',
-    styleUrls: ['./manual-exec-plan-editor.component.scss']
+    styleUrls: ['./manual-exec-plan-editor.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class ManualExecPlanEditorComponent implements OnInit {
-
-    @ViewChild(AreYouSureModalComponent) areYouSureModalComponent: AreYouSureModalComponent;
 
     model: ManualExecPlan = new ManualExecPlan();
     isEditExistingTest: boolean; //TODO: is this used?
@@ -38,6 +38,14 @@ export class ManualExecPlanEditorComponent implements OnInit {
     executorTestsComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(ManualTestsTreeExecutorContainerModel, ManualTestsExecutorTreeContainerComponent)
         .addPair(ManualTestsTreeExecutorNodeModel, ManualTestsExecutorTreeNodeComponent);
+
+    @ViewChild(MarkdownEditorComponent) markdownEditor: MarkdownEditorComponent;
+    @ViewChild(AreYouSureModalComponent) areYouSureModalComponent: AreYouSureModalComponent;
+
+    markdownEditorOptions = {
+        status: false,
+        spellChecker: false
+    };
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -97,6 +105,7 @@ export class ManualExecPlanEditorComponent implements OnInit {
     setEditMode(editMode: boolean) {
         this.isEditMode = editMode;
         this.selectTestsTreeRunnerService.isEditMode = editMode;
+        this.markdownEditor.setEditMode(editMode);
     }
 
     enableEditTestMode(): void {

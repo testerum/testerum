@@ -10,6 +10,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
     oldPath: Path;
     environment: string;
     applicationVersion: string;
+    description: string;
     status: ManualExecPlanStatus = ManualExecPlanStatus.IN_EXECUTION;
     createdDate: Date;
     finalizedDate: Date;
@@ -30,6 +31,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
         this.oldPath = Path.deserialize(input["oldPath"]);
         this.environment = input['environment'];
         this.applicationVersion = input['applicationVersion'];
+        this.description = input['description'];
         this.status = ManualExecPlanStatus.fromString(input['status']);
 
         if (input['createdDate']) {
@@ -59,6 +61,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
             ',"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) +
             ',"environment":' + JsonUtil.stringify(this.environment) +
             ',"applicationVersion":' + JsonUtil.stringify(this.applicationVersion) +
+            ',"description":' + JsonUtil.stringify(this.description) +
             ',"status":' + JsonUtil.stringify(this.status.toString());
 
         if (this.createdDate) {

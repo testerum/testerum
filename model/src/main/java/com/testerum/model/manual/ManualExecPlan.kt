@@ -12,6 +12,7 @@ data class ManualExecPlan @JsonCreator constructor(
         @JsonProperty("oldPath") val oldPath: Path? = path,
         @JsonProperty("environment") val environment: String?,
         @JsonProperty("applicationVersion") val applicationVersion: String?,
+        @JsonProperty("description") val description: String?,
         @JsonProperty("status") val status: ManualExecPlanStatus = ManualExecPlanStatus.IN_EXECUTION,
         @JsonProperty("createdDate") val createdDate: LocalDateTime?,
         @JsonProperty("finalizedDate") val finalizedDate: LocalDateTime?,

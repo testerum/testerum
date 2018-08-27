@@ -1,5 +1,15 @@
+.label-size {
+    width: 11em;
+}
 
 .display-row-container {
     display: flex;
     flex-direction: row;
+}
+
+.CodeMirror {
+    min-height: 70px;
+}
+.CodeMirror-scroll {
+    min-height: 70px;
 }

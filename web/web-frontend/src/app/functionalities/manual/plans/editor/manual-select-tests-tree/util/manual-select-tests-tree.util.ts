@@ -13,7 +13,7 @@ export default class ManualSelectTestsTreeUtil {
     static createRootPackage() {
         let treeModel: JsonTreeModel = new JsonTreeModel();
 
-        let rootPackage: SelectTestsTreeContainerModel = new SelectTestsTreeContainerModel(treeModel,"Test Execution", Path.createInstanceOfEmptyPath());
+        let rootPackage: SelectTestsTreeContainerModel = new SelectTestsTreeContainerModel(treeModel,"Manual Tests To Execute", Path.createInstanceOfEmptyPath());
         rootPackage.isRootPackage = true;
         rootPackage.editable = false;
 

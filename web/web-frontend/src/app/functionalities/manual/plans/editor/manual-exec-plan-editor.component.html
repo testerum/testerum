@@ -1,5 +1,8 @@
 <split-panel-container>
     <div>
+        <h1 *ngIf="isCreateAction">Create Manual Test Plan</h1>
+        <h1 *ngIf="!isCreateAction">Manual Test Plan <span class="path">{{model.environment}} {{model.applicationVersion}}</span></h1>
+
         <div class="page-body">
             <form #pageForm="ngForm" (ngSubmit)="saveAction()" class="form-horizontal">
 
@@ -42,6 +45,19 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- DESCRIPTION -->
+                <div class="my-line">
+                    <label class="my-label-top label-size" for="description">Description</label>
+
+                    <div class="my-value">
+                        <markdown-editor #markdownEditor
+                                         [value]="model.description"
+                                         [options]="markdownEditorOptions"
+                                         id="description"></markdown-editor>
+                    </div>
+                </div>
+
 
                 <div class="display-row-container" *ngIf="!isEditMode">
                     <p-chart type="pie" [responsive]="false" height="400px" width="400px" [data]="pieChartData" ></p-chart>
