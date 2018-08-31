@@ -7,6 +7,7 @@ import {ManualExecPlan} from "../plans/model/manual-exec-plan.model";
 import {FeatureService} from "../../../service/feature.service";
 import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-filter.model";
 import {RootFeatureNode} from "../../../model/feature/tree/root-feature-node.model";
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class ManualExecPlansService {
@@ -19,7 +20,8 @@ export class ManualExecPlansService {
 
     getExecPlans(): Observable<ManualExecPlans> {
         return this.http
-            .get<ManualExecPlans>(this.BASE_URL + "/plans");
+            .get<ManualExecPlans>(this.BASE_URL + "/plans")
+            .pipe(map(it => {return new ManualExecPlans().deserialize(it)}));
     }
 
     getManualExecPlan(path: Path): Observable<ManualExecPlan> {
@@ -29,7 +31,8 @@ export class ManualExecPlansService {
         };
 
         return this.http
-            .get<ManualExecPlan>(this.BASE_URL + "/plans", httpOptions);
+            .get<ManualExecPlan>(this.BASE_URL + "/plans", httpOptions)
+            .pipe(map(it => {return new ManualExecPlan().deserialize(it)}));
     }
 
     getAllManualTests(): Observable<RootFeatureNode> {

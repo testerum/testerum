@@ -68,7 +68,9 @@
                 </div>
 
                 <div class="display-row-container" *ngIf="isEditMode">
-                    <manual-select-tests-tree [model]="model" [isEditMode]="isEditMode"></manual-select-tests-tree>
+                    <manual-select-tests-tree [model]="model"
+                                              [isEditMode]="isEditMode">
+                    </manual-select-tests-tree>
                 </div>
 
                 <!-- ACTION BUTTONS -->

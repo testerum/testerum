@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {SelectTestsTreeContainerModel} from "../model/select-tests-tree-container.model";
+import {ManualSelectTestsTreeContainerModel} from "../model/manual-select-tests-tree-container.model";
 import {SelectionStateEnum} from "../model/enum/selection-state.enum";
 import {ManualSelectTestsTreeComponentService} from "../manual-select-tests-tree.component-service";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
@@ -14,7 +14,7 @@ import {ModelComponentMapping} from "../../../../../../model/infrastructure/mode
 })
 export class ManualSelectTestsContainerComponent {
 
-    @Input() model: SelectTestsTreeContainerModel;
+    @Input() model: ManualSelectTestsTreeContainerModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
     hasMouseOver: boolean = false;
@@ -39,17 +39,17 @@ export class ManualSelectTestsContainerComponent {
         this.selectOrNotChildren(this.model);
     }
 
-    private selectOrNotChildren(container: SelectTestsTreeContainerModel) {
+    private selectOrNotChildren(container: ManualSelectTestsTreeContainerModel) {
         container.selectedState = this.model.selectedState;
         for (let child of container.children) {
             if (child.isContainer()) {
-                this.selectOrNotChildren(child as SelectTestsTreeContainerModel)
+                this.selectOrNotChildren(child as ManualSelectTestsTreeContainerModel)
             } else {
                 child.isSelected = this.model.selectedState == SelectionStateEnum.SELECTED;
             }
         }
 
-        if (this.model.parentContainer instanceof SelectTestsTreeContainerModel) {
+        if (this.model.parentContainer instanceof ManualSelectTestsTreeContainerModel) {
             this.model.parentContainer.calculateCheckState()
         }
     }

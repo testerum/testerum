@@ -1,5 +1,5 @@
-import {SelectTestsTreeContainerModel} from "../model/select-tests-tree-container.model";
-import {SelectTestsTreeNodeModel} from "../model/select-tests-tree-node.model";
+import {ManualSelectTestsTreeContainerModel} from "../model/manual-select-tests-tree-container.model";
+import {ManualSelectTestsTreeNodeModel} from "../model/manual-select-tests-tree-node.model";
 import {Path} from "../../../../../../model/infrastructure/path/path.model";
 import {JsonTreeModel} from "../../../../../../generic/components/json-tree/model/json-tree.model";
 import {RootFeatureNode} from "../../../../../../model/feature/tree/root-feature-node.model";
@@ -13,7 +13,7 @@ export default class ManualSelectTestsTreeUtil {
     static createRootPackage() {
         let treeModel: JsonTreeModel = new JsonTreeModel();
 
-        let rootPackage: SelectTestsTreeContainerModel = new SelectTestsTreeContainerModel(treeModel,"Manual Tests To Execute", Path.createInstanceOfEmptyPath());
+        let rootPackage: ManualSelectTestsTreeContainerModel = new ManualSelectTestsTreeContainerModel(treeModel,"Manual Tests To Execute", Path.createInstanceOfEmptyPath());
         rootPackage.isRootPackage = true;
         rootPackage.editable = false;
 
@@ -23,19 +23,21 @@ export default class ManualSelectTestsTreeUtil {
     }
 
     static mapFeaturesWithTestsToTreeModel(treeModel: JsonTreeModel, rootFeatureNode: RootFeatureNode) {
-        let rootPackage = treeModel.children[0] as SelectTestsTreeContainerModel;
+        let rootPackage = treeModel.children[0] as ManualSelectTestsTreeContainerModel;
+        rootPackage.children.length = 0;
+
         ManualSelectTestsTreeUtil.mapFeatureContainerToTreeContainer(rootFeatureNode, rootPackage);
 
     }
 
-    private static mapFeatureContainerToTreeContainer(containerFeatureNode: ContainerFeatureNode, parentTreeContainer: SelectTestsTreeContainerModel) {
+    private static mapFeatureContainerToTreeContainer(containerFeatureNode: ContainerFeatureNode, parentTreeContainer: ManualSelectTestsTreeContainerModel) {
         for (const featureNode of containerFeatureNode.children) {
             if (featureNode instanceof TestFeatureNode) {
-                let testNode = new SelectTestsTreeNodeModel(parentTreeContainer, featureNode.name, featureNode.path, false);
+                let testNode = new ManualSelectTestsTreeNodeModel(parentTreeContainer, featureNode.name, featureNode.path, false);
                 parentTreeContainer.getChildren().push(testNode)
             }
             if (featureNode instanceof FeatureFeatureNode) {
-                let dirNode = new SelectTestsTreeContainerModel(parentTreeContainer, featureNode.name, featureNode.path, SelectionStateEnum.NOT_SELECTED);
+                let dirNode = new ManualSelectTestsTreeContainerModel(parentTreeContainer, featureNode.name, featureNode.path, SelectionStateEnum.NOT_SELECTED);
                 parentTreeContainer.getChildren().push(dirNode);
 
                 ManualSelectTestsTreeUtil.mapFeatureContainerToTreeContainer(featureNode, dirNode);

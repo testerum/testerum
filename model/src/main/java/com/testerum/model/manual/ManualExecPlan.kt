@@ -17,7 +17,7 @@ data class ManualExecPlan @JsonCreator constructor(
         @JsonProperty("createdDate") val createdDate: LocalDateTime?,
         @JsonProperty("finalizedDate") val finalizedDate: LocalDateTime?,
 
-        @JsonProperty("testsToExecute") val testsToExecute: List<TestModel> = emptyList(),
+        @JsonProperty("manualTreeTests") val manualTreeTests: List<ManualTreeTest> = emptyList(),
 
         @JsonProperty("totalTests") val totalTests: Int = 0,
 

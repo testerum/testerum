@@ -25,7 +25,7 @@ import {MarkdownEditorComponent} from "../../../../generic/components/markdown-e
 export class ManualExecPlanEditorComponent implements OnInit {
 
     model: ManualExecPlan = new ManualExecPlan();
-    isEditExistingTest: boolean; //TODO: is this used?
+
     isEditMode: boolean = false;
     isFinalized: boolean = false;
     isCreateAction: boolean = false;
@@ -86,14 +86,10 @@ export class ManualExecPlanEditorComponent implements OnInit {
     private initialize(manualTestsRunner: ManualExecPlan) {
         this.model = manualTestsRunner;
 
-        this.isEditExistingTest = !this.model.path.isEmpty();
         this.setEditMode(this.model.path.isEmpty());
         this.isFinalized = manualTestsRunner.status == ManualTestsRunnerStatus.FINISHED;
 
         this.isCreateAction = this.model.path.isEmpty();
-
-        // this.selectTestsTreeRunnerService.initializeTestsTree(this.model);
-        // this.executorTestsTreeService.initializeTestsTree(this.model);
 
         this.pieChartData.datasets[0].data[0] = this.model.passedTests;
         this.pieChartData.datasets[0].data[1] = this.model.failedTests;

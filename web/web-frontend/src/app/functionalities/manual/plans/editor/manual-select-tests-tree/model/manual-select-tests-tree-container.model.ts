@@ -1,4 +1,4 @@
-import {SelectTestsTreeNodeModel} from "./select-tests-tree-node.model";
+import {ManualSelectTestsTreeNodeModel} from "./manual-select-tests-tree-node.model";
 import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
 import {Comparable} from "../../../../../../model/infrastructure/comparable.model";
 import {JsonTreeNodeState} from "../../../../../../generic/components/json-tree/model/json-tree-node-state.model";
@@ -7,9 +7,9 @@ import {JsonTreeContainerOptions} from "../../../../../../generic/components/jso
 import {Path} from "../../../../../../model/infrastructure/path/path.model";
 import {JsonTreePathContainer} from "../../../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
 
-export class SelectTestsTreeContainerModel extends SelectTestsTreeNodeModel implements JsonTreeContainer, Comparable<SelectTestsTreeNodeModel> {
+export class ManualSelectTestsTreeContainerModel extends ManualSelectTestsTreeNodeModel implements JsonTreeContainer, Comparable<ManualSelectTestsTreeNodeModel> {
 
-    children: Array<SelectTestsTreeNodeModel> = [];
+    children: Array<ManualSelectTestsTreeNodeModel> = [];
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
 
     isRootPackage:boolean = false;
@@ -26,7 +26,7 @@ export class SelectTestsTreeContainerModel extends SelectTestsTreeNodeModel impl
         this.jsonTreeNodeState.showChildren = true;
     }
 
-    getChildren(): Array<SelectTestsTreeNodeModel> {
+    getChildren(): Array<ManualSelectTestsTreeNodeModel> {
         return this.children;
     }
 
@@ -35,7 +35,7 @@ export class SelectTestsTreeContainerModel extends SelectTestsTreeNodeModel impl
     }
 
     sort() {
-        this.children.sort((left: SelectTestsTreeNodeModel, right: SelectTestsTreeNodeModel) => {
+        this.children.sort((left: ManualSelectTestsTreeNodeModel, right: ManualSelectTestsTreeNodeModel) => {
             if(!left.isContainer() && right.isContainer()) {
                 return 1;
             }
@@ -44,7 +44,7 @@ export class SelectTestsTreeContainerModel extends SelectTestsTreeNodeModel impl
         });
     }
 
-    compareTo(other: SelectTestsTreeNodeModel): number {
+    compareTo(other: ManualSelectTestsTreeNodeModel): number {
         if(!other.isContainer()) {
             return -1;
         }
@@ -81,7 +81,7 @@ export class SelectTestsTreeContainerModel extends SelectTestsTreeNodeModel impl
         let newState = SelectionStateEnum.NOT_SELECTED;
         for (const child of this.children) {
             if (child.isContainer()) {
-                let childAsContainer = child as SelectTestsTreeContainerModel;
+                let childAsContainer = child as ManualSelectTestsTreeContainerModel;
                 if(!childAsContainer.isSelectedNode()) {
                     allChildrenAreChecked = false
                 }
@@ -89,7 +89,7 @@ export class SelectTestsTreeContainerModel extends SelectTestsTreeNodeModel impl
                     newState = SelectionStateEnum.PARTIAL_SELECTED
                 }
             } else {
-                let childAsNode = child as SelectTestsTreeNodeModel;
+                let childAsNode = child as ManualSelectTestsTreeNodeModel;
                 if (!childAsNode.isSelected) {
                     allChildrenAreChecked = false;
                 } else {
@@ -103,7 +103,7 @@ export class SelectTestsTreeContainerModel extends SelectTestsTreeNodeModel impl
         }
         this.selectedState = newState;
 
-        if (this.parentContainer instanceof SelectTestsTreeContainerModel) {
+        if (this.parentContainer instanceof ManualSelectTestsTreeContainerModel) {
             this.parentContainer.calculateCheckState();
         }
     }
@@ -115,6 +115,15 @@ export class SelectTestsTreeContainerModel extends SelectTestsTreeNodeModel impl
             }
         }
         return false;
+    }
+
+    getChildNodeWithPath(path: Path): ManualSelectTestsTreeNodeModel {
+        for (const child of this.children) {
+            if (child.path.equals(path)) {
+                return child;
+            }
+        }
+        return null;
     }
 
     getOptions(): JsonTreeContainerOptions {

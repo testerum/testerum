@@ -4,6 +4,7 @@ import com.testerum.model.feature.Feature
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.manual.ManualExecPlan
 import com.testerum.model.manual.ManualExecPlans
+import com.testerum.model.manual.ManualTreeTest
 import com.testerum.model.manual.runner.enums.ManualExecPlanStatus
 import com.testerum.service.manual.ManualTestsService
 import org.springframework.web.bind.annotation.*
@@ -21,6 +22,7 @@ class ManualExecPlansController() {
                 null,
                 "Acceptance",
                 "1.1.2",
+                "Super Execution Plan",
                 ManualExecPlanStatus.IN_EXECUTION,
                 LocalDateTime.of(2018, 3, 21, 10, 0, 0),
                 null,
@@ -43,10 +45,20 @@ class ManualExecPlansController() {
                 null,
                 "Acceptance",
                 "1.1.2",
+               "Super Execution Plan",
                 ManualExecPlanStatus.IN_EXECUTION,
                 LocalDateTime.of(2018, 3, 21, 10, 0, 0),
                 null,
-                emptyList(),
+               listOf(
+                       ManualTreeTest(
+                               Path.createInstance("/home/ui/Home Page.test"),
+                               "Home Page"
+                       ),
+                       ManualTreeTest(
+                               Path.createInstance("/not existing/path/Unknown Test.test"),
+                               "Unknown Test"
+                       )
+               ),
                 5,
                 2,
                 1,

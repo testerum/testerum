@@ -3,7 +3,7 @@ import {Comparable} from "../../../../../../model/infrastructure/comparable.mode
 import {Path} from "../../../../../../model/infrastructure/path/path.model";
 import {JsonTreePathContainer} from "../../../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
 
-export class SelectTestsTreeNodeModel extends JsonTreePathNode implements Comparable<SelectTestsTreeNodeModel> {
+export class ManualSelectTestsTreeNodeModel extends JsonTreePathNode implements Comparable<ManualSelectTestsTreeNodeModel> {
 
     name: string;
     path: Path;
@@ -15,7 +15,7 @@ export class SelectTestsTreeNodeModel extends JsonTreePathNode implements Compar
         this.isSelected = isSelected;
     }
 
-    compareTo(other: SelectTestsTreeNodeModel): number {
+    compareTo(other: ManualSelectTestsTreeNodeModel): number {
 
         let thisName = this.name;
         let otherName = other.name;

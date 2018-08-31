@@ -3,6 +3,7 @@ import {Serializable} from "../../../../model/infrastructure/serializable.model"
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {TestModel} from "../../../../model/test/test.model";
 import {JsonUtil} from "../../../../utils/json.util";
+import {ManualTreeTest} from "./manual-tree-test.model";
 
 export class ManualExecPlan implements Serializable<ManualExecPlan>{
 
@@ -15,7 +16,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
     createdDate: Date;
     finalizedDate: Date;
 
-    testsToExecute: Array<TestModel> = [];
+    manualTreeTests: ManualTreeTest[] = [];
 
     totalTests: number = 0;
 
@@ -40,8 +41,8 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
         if (input['finalizedDate']) {
             this.finalizedDate = new Date(input['finalizedDate']);
         }
-        for (let test of (input['testsToExecute']) || []) {
-            this.testsToExecute.push(new TestModel().deserialize(test));
+        for (let manualTreeTest of (input['manualTreeTests']) || []) {
+            this.manualTreeTests.push(new ManualTreeTest().deserialize(manualTreeTest));
         }
 
         this.totalTests = input['totalTests'];
@@ -70,8 +71,8 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
         if (this.finalizedDate) {
             response += ',"finalizedDate":' + JsonUtil.stringify(this.finalizedDate.toJSON());
         }
-        if (this.testsToExecute) {
-            response += ',"testsToExecute":' + JsonUtil.serializeArrayOfSerializable(this.testsToExecute);
+        if (this.manualTreeTests) {
+            response += ',"manualTreeTests":' + JsonUtil.serializeArrayOfSerializable(this.manualTreeTests);
         }
         response += '}';
 

@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {JsonTreeNodeEventModel} from "../../../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../../../generic/components/json-tree/json-tree.service";
-import {SelectTestsTreeNodeModel} from "../../model/select-tests-tree-node.model";
+import {ManualSelectTestsTreeNodeModel} from "../../model/manual-select-tests-tree-node.model";
 import {ManualSelectTestsTreeComponentService} from "../../manual-select-tests-tree.component-service";
-import {SelectTestsTreeContainerModel} from "../../model/select-tests-tree-container.model";
+import {ManualSelectTestsTreeContainerModel} from "../../model/manual-select-tests-tree-container.model";
 
 @Component({
     moduleId: module.id,
@@ -13,7 +13,7 @@ import {SelectTestsTreeContainerModel} from "../../model/select-tests-tree-conta
 })
 export class ManualSelectTestsNodeComponent implements OnInit {
 
-    @Input() model:SelectTestsTreeNodeModel;
+    @Input() model:ManualSelectTestsTreeNodeModel;
     isSelected:boolean = false;
 
     constructor(private jsonTreeService:JsonTreeService,
@@ -24,7 +24,7 @@ export class ManualSelectTestsNodeComponent implements OnInit {
 
         this.jsonTreeService.selectedNodeEmitter.subscribe(
             (selectedNodeEvent:JsonTreeNodeEventModel) => {
-                this.isSelected = (selectedNodeEvent.treeNode as SelectTestsTreeNodeModel) == this.model;
+                this.isSelected = (selectedNodeEvent.treeNode as ManualSelectTestsTreeNodeModel) == this.model;
             }
         )
     }
@@ -40,7 +40,7 @@ export class ManualSelectTestsNodeComponent implements OnInit {
 
         this.model.isSelected = !this.model.isSelected;
 
-        if(this.model.parentContainer instanceof SelectTestsTreeContainerModel) {
+        if(this.model.parentContainer instanceof ManualSelectTestsTreeContainerModel) {
             this.model.parentContainer.calculateCheckState();
         }
     }
