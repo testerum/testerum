@@ -9,7 +9,6 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import {AreYouSureModalComponent} from "../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.component";
 import {AreYouSureModalEnum} from "../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {ResourceMapEnum} from "../../resource-map.enum";
 import {ActivatedRoute} from "@angular/router";
@@ -21,6 +20,8 @@ import {FormUtil} from "../../../../../utils/form.util";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
 import {UrlService} from "../../../../../service/url.service";
+import {ManualTestsExecutorTreeService} from "../../../../../manual-tests/executer/tree/manual-tests-executor-tree.service";
+import {AreYouSureModalService} from "../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 
 @Component({
     moduleId: module.id,
@@ -32,7 +33,6 @@ import {UrlService} from "../../../../../service/url.service";
 export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
 
     @ViewChild('panelBody', {read: ViewContainerRef}) bodyElement:ViewContainerRef;
-    @ViewChild(AreYouSureModalComponent) areYouSureModalComponent:AreYouSureModalComponent;
 
     resource: ResourceContext<any>;
     resourceFileExtension:string;
@@ -46,7 +46,8 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
                 private urlService: UrlService,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private resourceService: ResourceService,
-                private resourcesTreeService: ResourcesTreeService,) {
+                private resourcesTreeService: ResourcesTreeService,
+                private areYouSureModalService: AreYouSureModalService,) {
     }
 
     ngOnInit(): void {
@@ -104,18 +105,17 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
     }
 
     deleteAction(): void {
-        this.areYouSureModalComponent.show(
+        this.areYouSureModalService.showAreYouSureModal(
             "Delete Resource",
-            "Are you sure you want to delete this resource?",
-            (action: AreYouSureModalEnum) => {
+            "Are you sure you want to delete this resource?")
+            .subscribe((action: AreYouSureModalEnum) => {
                 if (action == AreYouSureModalEnum.OK) {
                     this.resourceService.deleteResource(this.resource.path).subscribe(result => {
                         this.refreshResourceTree();
                         this.urlService.navigateToResources();
                     });
                 }
-            }
-        )
+            });
     }
     isEditedResourceValid(): boolean {
         return this.resourceComponentRef.instance.isFormValid()

@@ -2,7 +2,7 @@ import {JsonUtil} from "../../../utils/json.util";
 import {IdUtils} from "../../../utils/id.util";
 import {TreeNodeModel} from "../../../model/infrastructure/tree-node.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
-import {ManualTestStatus} from "../../model/enums/manual-test-status.enum";
+import {OldManualTestStatus} from "../../model/enums/manual-test-status.enum";
 import {ManualTestModel} from "../../model/manual-test.model";
 import {ManualTestStepExeModel} from "./manual-step-exe.model";
 import {Serializable} from "../../../model/infrastructure/serializable.model";
@@ -16,7 +16,7 @@ export class ManualTestExeModel extends ManualTestModel implements Serializable<
     tags:Array<string> = [];
     steps:Array<ManualTestStepExeModel> = [];
 
-    testStatus: ManualTestStatus = ManualTestStatus.NOT_EXECUTED;
+    testStatus: OldManualTestStatus = OldManualTestStatus.NOT_EXECUTED;
     comments: string;
 
     static createInstanceFrom(manualTestModel: ManualTestModel): ManualTestExeModel {
@@ -50,7 +50,7 @@ export class ManualTestExeModel extends ManualTestModel implements Serializable<
         }
 
         if (input["testStatus"]) {
-            this.testStatus = ManualTestStatus.fromString(input["testStatus"]);
+            this.testStatus = OldManualTestStatus.fromString(input["testStatus"]);
         }
 
         this.comments = input['comments'];

@@ -1,6 +1,6 @@
 import {JsonUtil} from "../../../utils/json.util";
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
-import {ManualTestStepStatus} from "../../model/enums/manual-test-step-status.enum";
+import {OldManualTestStepStatus} from "../../model/enums/manual-test-step-status.enum";
 import {ManualTestStepModel} from "../../model/manual-step.model";
 import {Serializable} from "../../../model/infrastructure/serializable.model";
 
@@ -8,7 +8,7 @@ export class ManualTestStepExeModel extends ManualTestStepModel implements Seria
 
     phase: StepPhaseEnum = StepPhaseEnum.GIVEN;
     description:string;
-    stepStatus: ManualTestStepStatus = ManualTestStepStatus.NOT_EXECUTED;
+    stepStatus: OldManualTestStepStatus = OldManualTestStepStatus.NOT_EXECUTED;
 
     static createInstanceFrom(manualTestStepModel: ManualTestStepModel) {
         let instance = new ManualTestStepExeModel();
@@ -24,7 +24,7 @@ export class ManualTestStepExeModel extends ManualTestStepModel implements Seria
         this.description = input['description'];
 
         if (input["stepStatus"]) {
-            this.stepStatus = ManualTestStepStatus.fromString(input["stepStatus"]);
+            this.stepStatus = OldManualTestStepStatus.fromString(input["stepStatus"]);
         }
 
         return this;

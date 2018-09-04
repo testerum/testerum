@@ -4,7 +4,7 @@ import {Path} from "../../../../model/infrastructure/path/path.model";
 import {JsonTreePathUtil} from "../../../../generic/components/json-tree/util/json-tree-path.util";
 import {ManualTestsTreeExecutorNodeModel} from "../model/manual-tests-tree-executor-node.model";
 import {ManualTestsTreeExecutorContainerModel} from "../model/manual-tests-tree-executor-container.model";
-import {ManualTestStatus} from "../../../model/enums/manual-test-status.enum";
+import {OldManualTestStatus} from "../../../model/enums/manual-test-status.enum";
 
 
 export default class ManualTestsTreeExecutorUtil {
@@ -13,7 +13,7 @@ export default class ManualTestsTreeExecutorUtil {
         let rootPackage: ManualTestsTreeExecutorContainerModel = new ManualTestsTreeExecutorContainerModel(
             "Test Execution",
             new Path([], null, null),
-            ManualTestStatus.NOT_EXECUTED,
+            OldManualTestStatus.NOT_EXECUTED,
             null
         );
         rootPackage.isRootPackage = true;
@@ -60,7 +60,7 @@ export default class ManualTestsTreeExecutorUtil {
             let childContainerPath = Path.createInstanceFromPath(parentContainer.path);
             childContainerPath.directories.push(childContainerName);
 
-            childContainer = new ManualTestsTreeExecutorContainerModel(childContainerName, childContainerPath, ManualTestStatus.NOT_EXECUTED, parentContainer);
+            childContainer = new ManualTestsTreeExecutorContainerModel(childContainerName, childContainerPath, OldManualTestStatus.NOT_EXECUTED, parentContainer);
             childContainer.editable = true;
             parentContainer.children.push(childContainer);
         }

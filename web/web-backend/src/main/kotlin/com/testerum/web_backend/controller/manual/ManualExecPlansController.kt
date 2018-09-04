@@ -7,12 +7,17 @@ import com.testerum.model.manual.ManualExecPlans
 import com.testerum.model.manual.ManualTreeTest
 import com.testerum.model.manual.runner.enums.ManualExecPlanStatus
 import com.testerum.service.manual.ManualTestsService
+import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/manual")
-class ManualExecPlansController() {
+class ManualExecPlansController {
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(ManualExecPlansController::class.java)
+    }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["plans"])
     @ResponseBody
@@ -66,5 +71,10 @@ class ManualExecPlansController() {
                 0,
                 1
         )
+    }
+
+    @RequestMapping(method = [RequestMethod.DELETE], path = ["plans"], params = ["path"])
+    fun deleteManualExecPlan(@RequestParam(value = "path") path: String) {
+        LOG.warn("DELETE MANUAL EXEC", path)
     }
 }

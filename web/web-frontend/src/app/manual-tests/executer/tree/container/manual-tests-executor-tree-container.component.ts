@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {ManualTestsExecutorTreeService} from "../manual-tests-executor-tree.service";
-import {ManualTestStatus} from "../../../model/enums/manual-test-status.enum";
+import {OldManualTestStatus} from "../../../model/enums/manual-test-status.enum";
 import {ManualTestsTreeExecutorContainerModel} from "../model/manual-tests-tree-executor-container.model";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 
@@ -19,7 +19,7 @@ export class ManualTestsExecutorTreeContainerComponent {
     @Input() modelComponentMapping: ModelComponentMapping;
 
     hasMouseOver: boolean = false;
-    ManualTestStatus = ManualTestStatus;
+    ManualTestStatus = OldManualTestStatus;
 
     constructor(private selectTestsTreeRunnerService: ManualTestsExecutorTreeService) {
     }

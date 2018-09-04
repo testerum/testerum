@@ -19,6 +19,9 @@ import {ManualExecPlanEditorResolver} from "./plans/editor/manual-exec-plan-edit
 import {ManualSelectTestsTreeComponent} from "./plans/editor/manual-select-tests-tree/manual-select-tests-tree.component";
 import {ManualSelectTestsContainerComponent} from "./plans/editor/manual-select-tests-tree/container/manual-select-tests-container.component";
 import {ManualSelectTestsNodeComponent} from "./plans/editor/manual-select-tests-tree/container/node/manual-select-tests-node.component";
+import {ManualTestsStatusTreeComponent} from "./plans/editor/manual-tests-status-tree/manual-tests-status-tree.component";
+import {ManualTestsStatusTreeNodeComponent} from "./plans/editor/manual-tests-status-tree/nodes/runner-tree-node/manual-tests-status-tree-node.component";
+import {ManualTestsStatusTreeService} from "./plans/editor/manual-tests-status-tree/manual-tests-status-tree.service";
 
 @NgModule({
     imports: [
@@ -52,6 +55,9 @@ import {ManualSelectTestsNodeComponent} from "./plans/editor/manual-select-tests
 
         ManualSelectTestsContainerComponent,
         ManualSelectTestsNodeComponent,
+
+        ManualTestsStatusTreeComponent,
+        ManualTestsStatusTreeNodeComponent,
     ],
     entryComponents: [
         ManualSelectTestsContainerComponent,
@@ -59,6 +65,7 @@ import {ManualSelectTestsNodeComponent} from "./plans/editor/manual-select-tests
     ],
     providers: [
         ManualExecPlansService,
+        ManualTestsStatusTreeService,
 
         ManualExecPlanEditorResolver,
     ],

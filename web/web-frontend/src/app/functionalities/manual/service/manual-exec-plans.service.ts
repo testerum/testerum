@@ -41,4 +41,14 @@ export class ManualExecPlansService {
         featuresTreeFilter.showEmptyFeatures = false;
         return this.featureService.getFeatureTree(featuresTreeFilter)
     }
+
+    deleteManualExecPlan(path: Path): Observable<void> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', path.toString())
+        };
+
+        return this.http
+            .delete<void>(this.BASE_URL + "/plans", httpOptions);
+    }
 }

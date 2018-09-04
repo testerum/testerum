@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ManualTestStatus} from "../../model/enums/manual-test-status.enum";
+import {OldManualTestStatus} from "../../model/enums/manual-test-status.enum";
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ManualTestsExecutorTreeService} from "../tree/manual-tests-executor-tree.service";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {ManualTestsRunner} from "../../runner/model/manual-tests-runner.model";
-import {ManualTestStepStatus} from "../../model/enums/manual-test-step-status.enum";
+import {OldManualTestStepStatus} from "../../model/enums/manual-test-step-status.enum";
 import {ManualTestsExecutorEditorResolver} from "./manual-tests-executor-editor.resolver";
 import {ManualTestsRunnerService} from "../../runner/service/manual-tests-runner.service";
 import {UpdateManualTestExecutionModel} from "../../runner/model/operation/update-manual-test-execution.model";
@@ -21,7 +21,7 @@ import {ManualTestsRunnerStatus} from "../../runner/model/enums/manual-tests-run
 
 export class ManualTestsExecutorEditorComponent implements OnInit {
 
-    ManualTestStatus = ManualTestStatus;
+    ManualTestStatus = OldManualTestStatus;
     StepPhaseEnum = StepPhaseEnum;
 
     manualTestExeModel: ManualTestExeModel = new ManualTestExeModel;
@@ -31,11 +31,11 @@ export class ManualTestsExecutorEditorComponent implements OnInit {
     hasStateChanged = false;
 
     testStatusDropdownOptions = [
-        {label:'Not Executed', value: ManualTestStatus.NOT_EXECUTED},
-        {label:'Passed', value: ManualTestStatus.PASSED},
-        {label:'Failed', value: ManualTestStatus.FAILED},
-        {label:'Blocked', value: ManualTestStatus.BLOCKED},
-        {label:'Not Applicable', value: ManualTestStatus.NOT_APPLICABLE},
+        {label:'Not Executed', value: OldManualTestStatus.NOT_EXECUTED},
+        {label:'Passed', value: OldManualTestStatus.PASSED},
+        {label:'Failed', value: OldManualTestStatus.FAILED},
+        {label:'Blocked', value: OldManualTestStatus.BLOCKED},
+        {label:'Not Applicable', value: OldManualTestStatus.NOT_APPLICABLE},
     ];
 
     constructor(private router: Router,
@@ -71,24 +71,24 @@ export class ManualTestsExecutorEditorComponent implements OnInit {
 
         for (let i = 0; i < stepIndex; i++) {
             let testStep = this.manualTestExeModel.steps[i];
-            if (testStep.stepStatus == ManualTestStepStatus.NOT_EXECUTED ) {
-                testStep.stepStatus = ManualTestStepStatus.PASSED;
+            if (testStep.stepStatus == OldManualTestStepStatus.NOT_EXECUTED ) {
+                testStep.stepStatus = OldManualTestStepStatus.PASSED;
             }
         }
 
-        if (stepStatusEnum == ManualTestStepStatus.FAILED) {
-            this.manualTestExeModel.testStatus = ManualTestStatus.FAILED;
+        if (stepStatusEnum == OldManualTestStepStatus.FAILED) {
+            this.manualTestExeModel.testStatus = OldManualTestStatus.FAILED;
         }
 
         let allTestsArePassed = true;
         for (const testStep of this.manualTestExeModel.steps) {
-            if(testStep.stepStatus != ManualTestStepStatus.PASSED) {
+            if(testStep.stepStatus != OldManualTestStepStatus.PASSED) {
                 allTestsArePassed = false;
                 break;
             }
         }
         if (allTestsArePassed) {
-            this.manualTestExeModel.testStatus = ManualTestStatus.PASSED;
+            this.manualTestExeModel.testStatus = OldManualTestStatus.PASSED;
         }
     }
 

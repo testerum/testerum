@@ -1,21 +1,21 @@
 import {Enum} from "../../../model/enums/enum.interface";
 
-export class ManualTestStatus extends Enum {
+export class OldManualTestStatus extends Enum {
 
-    public static NOT_EXECUTED = new ManualTestStatus("NOT_EXECUTED");
-    public static IN_PROGRESS = new ManualTestStatus("IN_PROGRESS");
-    public static PASSED = new ManualTestStatus("PASSED");
-    public static FAILED = new ManualTestStatus("FAILED");
-    public static BLOCKED = new ManualTestStatus("BLOCKED");
-    public static NOT_APPLICABLE = new ManualTestStatus("NOT_APPLICABLE");
+    public static NOT_EXECUTED = new OldManualTestStatus("NOT_EXECUTED");
+    public static IN_PROGRESS = new OldManualTestStatus("IN_PROGRESS");
+    public static PASSED = new OldManualTestStatus("PASSED");
+    public static FAILED = new OldManualTestStatus("FAILED");
+    public static BLOCKED = new OldManualTestStatus("BLOCKED");
+    public static NOT_APPLICABLE = new OldManualTestStatus("NOT_APPLICABLE");
 
-    static readonly enums: Array<ManualTestStatus> = [
-        ManualTestStatus.NOT_EXECUTED,
-        ManualTestStatus.IN_PROGRESS,
-        ManualTestStatus.PASSED,
-        ManualTestStatus.FAILED,
-        ManualTestStatus.BLOCKED,
-        ManualTestStatus.NOT_APPLICABLE,
+    static readonly enums: Array<OldManualTestStatus> = [
+        OldManualTestStatus.NOT_EXECUTED,
+        OldManualTestStatus.IN_PROGRESS,
+        OldManualTestStatus.PASSED,
+        OldManualTestStatus.FAILED,
+        OldManualTestStatus.BLOCKED,
+        OldManualTestStatus.NOT_APPLICABLE,
     ];
 
     private constructor(httpMethodAsString:string) {
@@ -23,7 +23,7 @@ export class ManualTestStatus extends Enum {
     }
 
     public static fromString(methodAsString: string) {
-        for (let enumValue of ManualTestStatus.enums) {
+        for (let enumValue of OldManualTestStatus.enums) {
             if(enumValue.enumAsString == methodAsString) {
                 return enumValue;
             }

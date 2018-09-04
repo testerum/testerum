@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {AreYouSureModalComponent} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.component";
 import {SelectTestsTreeRunnerService} from "../../../../manual-tests/runner/editor/select-tests-tree/select-tests-tree-runner.service";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {ManualTestsExecutorTreeService} from "../../../../manual-tests/executer/tree/manual-tests-executor-tree.service";
@@ -15,6 +14,8 @@ import {ManualExecPlan} from "../model/manual-exec-plan.model";
 import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
 import {UrlService} from "../../../../service/url.service";
 import {MarkdownEditorComponent} from "../../../../generic/components/markdown-editor/markdown-editor.component";
+import {AreYouSureModalService} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
+import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 
 @Component({
     selector: 'manual-exec-plan-editor',
@@ -32,15 +33,7 @@ export class ManualExecPlanEditorComponent implements OnInit {
 
     pieChartData: any;
 
-    selectTestsTreeRunnerService: SelectTestsTreeRunnerService;
-
-    executorTestsTreeService: ManualTestsExecutorTreeService;
-    executorTestsComponentMapping: ModelComponentMapping = new ModelComponentMapping()
-        .addPair(ManualTestsTreeExecutorContainerModel, ManualTestsExecutorTreeContainerComponent)
-        .addPair(ManualTestsTreeExecutorNodeModel, ManualTestsExecutorTreeNodeComponent);
-
     @ViewChild(MarkdownEditorComponent) markdownEditor: MarkdownEditorComponent;
-    @ViewChild(AreYouSureModalComponent) areYouSureModalComponent: AreYouSureModalComponent;
 
     markdownEditorOptions = {
         status: false,
@@ -53,10 +46,8 @@ export class ManualExecPlanEditorComponent implements OnInit {
                 private manualExecPlansService: ManualExecPlansService,
                 private manualTestsRunnerService: ManualTestsRunnerService,
                 private manualTestsOverviewService: ManualTestsOverviewService,
-                selectTestsTreeRunnerService: SelectTestsTreeRunnerService,
-                manualTestsExecutorTreeService: ManualTestsExecutorTreeService) {
-        this.selectTestsTreeRunnerService = selectTestsTreeRunnerService;
-        this.executorTestsTreeService = manualTestsExecutorTreeService;
+                private areYouSureModalService: AreYouSureModalService,
+                public selectTestsTreeRunnerService: SelectTestsTreeRunnerService) {
     }
 
     ngOnInit(): void {
@@ -109,12 +100,12 @@ export class ManualExecPlanEditorComponent implements OnInit {
     }
 
     navigateToExecutorMode() {
-        this.router.navigate(["manual/execute", {runnerPath: this.model.path.toString()}]);
+        this.urlService.navigateToManualExecPlanRunner(this.model.path);
     }
 
     cancelAction(): void {
         if (this.isCreateAction) {
-            this.router.navigate(["manual/tests"]);
+            this.urlService.navigateToManualExecPlanCreate();
         } else {
             this.manualExecPlansService.getManualExecPlan(this.model.path).subscribe(
                 (result: ManualExecPlan) => {
@@ -126,18 +117,17 @@ export class ManualExecPlanEditorComponent implements OnInit {
     }
 
     deleteAction(): void {
-        // this.areYouSureModalComponent.show(
-        //     "Delete Runner",
-        //     "Are you sure you want to delete this Manual Tests Runner?",
-        //     (action: AreYouSureModalEnum): void => {
-        //         if (action == AreYouSureModalEnum.OK) {
-        //             this.manualTestsRunnerService.delete(this.model).subscribe(restul => {
-        //                 this.manualTestsOverviewService.initializeRunnersOverview();
-        //                 this.router.navigate(["/manual/runner"]);
-        //             });
-        //         }
-        //     }
-        // );
+        this.areYouSureModalService.showAreYouSureModal(
+            "Delete Runner",
+            "Are you sure you want to delete this Manual Tests Runner?")
+            .subscribe((event: AreYouSureModalEnum) => {
+                if (event == AreYouSureModalEnum.OK) {
+                    this.manualExecPlansService.deleteManualExecPlan(this.model.path).subscribe(result => {
+                        this.manualTestsOverviewService.initializeRunnersOverview();
+                        this.router.navigate(["/manual/runner"]);
+                    });
+                }
+            });
     }
 
     finalize(): void {

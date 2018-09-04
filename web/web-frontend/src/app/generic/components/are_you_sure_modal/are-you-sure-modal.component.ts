@@ -1,37 +1,42 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ComponentRef, OnInit, ViewChild} from '@angular/core';
 import {AreYouSureModalEnum} from "./are-you-sure-modal.enum";
-import {AreYouSureModalListener} from "./are-you-sure-modal.listener";
 import {ModalDirective} from "ngx-bootstrap";
+import {Subject} from "rxjs";
 
 @Component({
     moduleId: module.id,
     selector: 'are-you-sure-modal',
     templateUrl: 'are-you-sure-modal.component.html'
 })
-export class AreYouSureModalComponent {
+export class AreYouSureModalComponent implements AfterViewInit {
 
-    @ViewChild("areYouSureModal") areYouSureModal:ModalDirective;
-
-    listener: AreYouSureModalListener;
+    @ViewChild("areYouSureModal") modal:ModalDirective;
 
     title:string;
     text:string;
 
-    show(title:string, text:string, listener: AreYouSureModalListener) {
-        this.title = title;
-        this.text = text;
-        this.listener = listener;
+    modalComponentRef: ComponentRef<AreYouSureModalComponent>;
+    modalSubject:Subject<AreYouSureModalEnum>;
 
-        this.areYouSureModal.show();
+    ngAfterViewInit(): void {
+        this.modal.show();
+        this.modal.onHidden.subscribe(event => {
+            this.modalSubject.complete();
+
+            this.modalComponentRef.destroy();
+
+            this.modalComponentRef = null;
+            this.modalSubject = null;
+        })
     }
 
     ok() {
-        this.listener(AreYouSureModalEnum.OK);
-        this.areYouSureModal.hide();
+        this.modalSubject.next(AreYouSureModalEnum.OK);
+        this.modal.hide();
     }
 
     cancel() {
-        this.listener(AreYouSureModalEnum.CANCEL);
-        this.areYouSureModal.hide();
+        this.modalSubject.next(AreYouSureModalEnum.CANCEL);
+        this.modal.hide();
     }
 }

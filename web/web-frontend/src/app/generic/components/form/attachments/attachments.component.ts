@@ -3,8 +3,8 @@ import {Attachment} from "../../../../model/file/attachment.model";
 import {DateUtil} from "../../../../utils/date.util";
 import {AttachmentsService} from "../../../../service/attachments.service";
 import {ArrayUtil} from "../../../../utils/array.util";
-import {AreYouSureModalComponent} from "../../are_you_sure_modal/are-you-sure-modal.component";
 import {AreYouSureModalEnum} from "../../are_you_sure_modal/are-you-sure-modal.enum";
+import {AreYouSureModalService} from "../../are_you_sure_modal/are-you-sure-modal.service";
 
 @Component({
     selector: 'attachments-component',
@@ -17,9 +17,8 @@ export class AttachmentsComponent implements OnInit {
     @Input() editMode: boolean;
     @Input() attachments: Array<Attachment> = [];
 
-    @ViewChild(AreYouSureModalComponent) areYouSureModalComponent:AreYouSureModalComponent;
-
-    constructor(private attachmentsService: AttachmentsService){}
+    constructor(private attachmentsService: AttachmentsService,
+                private areYouSureModalService: AreYouSureModalService,){}
 
     ngOnInit() {
     }
@@ -57,10 +56,10 @@ export class AttachmentsComponent implements OnInit {
     }
 
     delete(attachment: Attachment) {
-        this.areYouSureModalComponent.show(
+        this.areYouSureModalService.showAreYouSureModal(
             "Delete Resource",
-            "Are you sure you want to delete this attachment?",
-            (action: AreYouSureModalEnum): void => {
+            "Are you sure you want to delete this attachment?")
+            .subscribe((action: AreYouSureModalEnum) => {
                 if (action == AreYouSureModalEnum.OK) {
                     this.attachmentsService.delete(attachment.path).subscribe(
                         result => {
@@ -68,8 +67,7 @@ export class AttachmentsComponent implements OnInit {
                         }
                     )
                 }
-            }
-        );
+            });
     }
 
     getImageIconClassBasedOnMimeType(attachment: Attachment) {

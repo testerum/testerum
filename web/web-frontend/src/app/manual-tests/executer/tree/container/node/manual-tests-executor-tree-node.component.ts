@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {ManualTestsExecutorTreeService} from "../../manual-tests-executor-tree.service";
-import {ManualTestStatus} from "../../../../model/enums/manual-test-status.enum";
+import {OldManualTestStatus} from "../../../../model/enums/manual-test-status.enum";
 import {ManualTestsTreeExecutorNodeModel} from "../../model/manual-tests-tree-executor-node.model";
 
 @Component({
@@ -17,7 +17,7 @@ export class ManualTestsExecutorTreeNodeComponent implements OnInit {
     @Input() model:ManualTestsTreeExecutorNodeModel;
     isSelected:boolean = false;
 
-    ManualTestStatus = ManualTestStatus;
+    ManualTestStatus = OldManualTestStatus;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,

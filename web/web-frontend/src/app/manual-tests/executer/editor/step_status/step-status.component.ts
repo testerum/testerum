@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ManualTestStepStatus} from "../../../model/enums/manual-test-step-status.enum";
+import {OldManualTestStepStatus} from "../../../model/enums/manual-test-step-status.enum";
 
 @Component({
     selector: 'step-status',
@@ -9,11 +9,11 @@ import {ManualTestStepStatus} from "../../../model/enums/manual-test-step-status
 
 export class StepStatusComponent implements OnInit {
 
-    ManualTestStepStatus = ManualTestStepStatus;
+    ManualTestStepStatus = OldManualTestStepStatus;
 
-    @Input() stepStatus: ManualTestStepStatus;
+    @Input() stepStatus: OldManualTestStepStatus;
     @Input() readonly: boolean;
-    @Output() stepStatusChange = new EventEmitter<ManualTestStepStatus>();
+    @Output() stepStatusChange = new EventEmitter<OldManualTestStepStatus>();
 
     ngOnInit(): void {
     }
@@ -23,13 +23,13 @@ export class StepStatusComponent implements OnInit {
             return
         }
 
-        if(this.stepStatus == ManualTestStepStatus.PASSED) {
-            this.setStepStatus(ManualTestStepStatus.FAILED);
+        if(this.stepStatus == OldManualTestStepStatus.PASSED) {
+            this.setStepStatus(OldManualTestStepStatus.FAILED);
         } else {
-            this.setStepStatus(ManualTestStepStatus.PASSED);
+            this.setStepStatus(OldManualTestStepStatus.PASSED);
         }
     }
-    setStepStatus(stepStatus: ManualTestStepStatus) {
+    setStepStatus(stepStatus: OldManualTestStepStatus) {
         this.stepStatus = stepStatus;
         this.stepStatusChange.emit(this.stepStatus)
     }

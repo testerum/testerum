@@ -4,15 +4,15 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ManualTestsTreeService} from "../tests-tree/manual-tests-tree.service";
 import {IdUtils} from "../../../utils/id.util";
 import {ManualTestModel} from "../../model/manual-test.model";
-import {ManualTestStatus} from "../../model/enums/manual-test-status.enum";
+import {OldManualTestStatus} from "../../model/enums/manual-test-status.enum";
 import {ManualTestsService} from "../service/manual-tests.service";
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../utils/array.util";
 import {ManualTestStepModel} from "../../model/manual-step.model";
 import {StringUtils} from "../../../utils/string-utils.util";
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
-import {AreYouSureModalComponent} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.component";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
+import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 
 @Component({
     moduleId: module.id,
@@ -22,9 +22,7 @@ import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_moda
 })
 export class ManualTestEditorComponent implements OnInit {
 
-    @ViewChild(AreYouSureModalComponent) areYouSureModalComponent:AreYouSureModalComponent;
-
-    ManualTestStatus = ManualTestStatus;
+    ManualTestStatus = OldManualTestStatus;
     StepPhaseEnum = StepPhaseEnum;
 
     manualTestModel: ManualTestModel = new ManualTestModel;
@@ -39,7 +37,8 @@ export class ManualTestEditorComponent implements OnInit {
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private testsTreeService: ManualTestsTreeService,
-                private manualTestsService: ManualTestsService) {
+                private manualTestsService: ManualTestsService,
+                private areYouSureModalService: AreYouSureModalService,) {
     }
 
     ngOnInit(): void {
@@ -143,18 +142,17 @@ export class ManualTestEditorComponent implements OnInit {
     }
 
     deleteAction(): void {
-        this.areYouSureModalComponent.show(
+        this.areYouSureModalService.showAreYouSureModal(
             "Delete Test",
-            "Are you sure you want to delete this Manual Test?",
-            (action: AreYouSureModalEnum): void => {
+            "Are you sure you want to delete this Manual Test?")
+            .subscribe((action: AreYouSureModalEnum) => {
                 if (action == AreYouSureModalEnum.OK) {
                     this.manualTestsService.delete(this.manualTestModel).subscribe(restul => {
                         this.testsTreeService.initializeTestsTreeFromServer();
                         this.router.navigate(["manual/tests"]);
                     });
                 }
-            }
-        );
+            });
     }
 
     saveAction(): void {

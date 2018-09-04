@@ -1,0 +1,47 @@
+<div class="node">
+
+    <div class="full-line"
+         (click)="setSelected()"
+         (dblclick)="collapseNode()"
+         title="{{getStatusTooltip()}}">
+
+        <i aria-hidden="true"
+           [class.my-node-executing-color]="model.state == ManualTestStatus.IN_PROGRESS"
+
+           [class.fa_my-runner-waiting-colored]="model.state == ManualTestStatus.IN_PROGRESS
+                                              || model.state == ManualTestStatus.IN_PROGRESS"
+
+           [class.fa_my-runner-passed-colored]="model.state == ManualTestStatus.PASSED"
+           [class.fa_my-runner-failed-colored]="model.state == ManualTestStatus.FAILED"
+           [class.fa_my-runner-disabled-colored]="model.state == ManualTestStatus.NOT_APPLICABLE"
+           [class.fa_my-runner-undefined-colored]="model.state == ManualTestStatus.UNDEFINED"
+           [class.fa_my-runner-skipped-colored]="model.state == ManualTestStatus.SKIPPED"></i>
+
+        <i *ngIf="isFeatureNode()"
+           aria-hidden="true"
+           [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
+           [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
+
+        <i *ngIf="isTestNode()" class="fa_my-automated-test" aria-hidden="true"></i>
+
+        <span *ngIf="!isStepNode()"
+              class="node-text"
+              [class.tree-leaf-selected]="isSelected">{{model.text}}</span>
+
+        <span *ngIf="isStepNode()"
+              [class.tree-leaf-selected]="isSelected">
+            <step-text [stepDef]="model.stepCall.stepDef"
+                       [stepCall]="model.stepCall"
+                       [showPhase]="true"
+                       [showAsListItem]="true">
+            </step-text>
+        </span>
+    </div>
+
+    <json-children *ngIf="model.isContainer()"
+                   [jsonTreeNodeState]="model.jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

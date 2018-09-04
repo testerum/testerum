@@ -94,6 +94,7 @@ import {JsonVerifyTreeService} from "./components/json-verify/json-verify-tree/j
 import {JsonVerifyEditorComponent} from "./components/json-verify/json-verify-editor/json-verify-editor.component";
 import {JsonVerifyComponent} from "./components/json-verify/json-verify.component";
 import {AceEditorModule} from "ng2-ace-editor";
+import {AreYouSureModalService} from "./components/are_you_sure_modal/are-you-sure-modal.service";
 
 @NgModule({
     imports: [
@@ -253,6 +254,8 @@ import {AceEditorModule} from "ng2-ace-editor";
         StepPathModalService,
         MessageService,
         JsonVerifyTreeService,
+
+        AreYouSureModalService,
     ],
     entryComponents: [
         ManualTestsExecutorTreeContainerComponent,

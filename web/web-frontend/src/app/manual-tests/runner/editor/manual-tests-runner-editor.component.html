@@ -46,7 +46,7 @@
                 <div class="display-row-container" *ngIf="!isEditMode">
                     <p-chart type="pie" [responsive]="false" height="400px" width="400px" [data]="pieChartData" ></p-chart>
 
-                    <json-tree [treeModel]="executorTestsTreeService.testsJsonTreeModel"
+                    <json-tree [treeModel]="manualTestsExecutorTreeService.testsJsonTreeModel"
                                [modelComponentMapping]="executorTestsComponentMapping">
                     </json-tree>
                 </div>
@@ -79,5 +79,4 @@
             </form>
         </div>
     </div>
-    <are-you-sure-modal #areYouSureModalComponent></are-you-sure-modal>
 </split-panel-container>

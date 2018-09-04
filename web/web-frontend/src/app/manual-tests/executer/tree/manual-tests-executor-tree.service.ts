@@ -6,7 +6,7 @@ import {ManualTestsRunner} from "../../runner/model/manual-tests-runner.model";
 import {ManualTestsRunnerService} from "../../runner/service/manual-tests-runner.service";
 import {ManualTestsTreeExecutorNodeModel} from "./model/manual-tests-tree-executor-node.model";
 import {ManualTestsTreeExecutorContainerModel} from "./model/manual-tests-tree-executor-container.model";
-import {ManualTestStatus} from "../../model/enums/manual-test-status.enum";
+import {OldManualTestStatus} from "../../model/enums/manual-test-status.enum";
 import {ManualTestExeModel} from "../../runner/model/manual-test-exe.model";
 import ManualTestsTreeExecutorUtil from "./util/manual-tests-tree-executor.util";
 
@@ -87,7 +87,7 @@ export class ManualTestsExecutorTreeService {
 
     private calculateTreeNodesState(rootNode: ManualTestsTreeExecutorContainerModel) {
 
-        rootNode.testsState = ManualTestStatus.NOT_APPLICABLE;
+        rootNode.testsState = OldManualTestStatus.NOT_APPLICABLE;
         for (const childNode of rootNode.children) {
             if(childNode.isContainer()) {
                 let containerChildNode = childNode as ManualTestsTreeExecutorContainerModel;
@@ -105,11 +105,11 @@ export class ManualTestsExecutorTreeService {
                 rootNode.totalTests ++;
 
                 switch(childNode.payload.testStatus) {
-                    case ManualTestStatus.NOT_EXECUTED : {rootNode.notExecutedTests++; break;}
-                    case ManualTestStatus.PASSED : {rootNode.passedTests++; break;}
-                    case ManualTestStatus.FAILED : {rootNode.failedTests++; break;}
-                    case ManualTestStatus.BLOCKED : {rootNode.blockedTests++; break;}
-                    case ManualTestStatus.NOT_APPLICABLE : {rootNode.notApplicableTests++; break;}
+                    case OldManualTestStatus.NOT_EXECUTED : {rootNode.notExecutedTests++; break;}
+                    case OldManualTestStatus.PASSED : {rootNode.passedTests++; break;}
+                    case OldManualTestStatus.FAILED : {rootNode.failedTests++; break;}
+                    case OldManualTestStatus.BLOCKED : {rootNode.blockedTests++; break;}
+                    case OldManualTestStatus.NOT_APPLICABLE : {rootNode.notApplicableTests++; break;}
                 }
 
                 rootNode.testsState = this.calculateRootNodeStateBasedOnNode(rootNode.testsState, childNode.payload.testStatus)
@@ -117,13 +117,13 @@ export class ManualTestsExecutorTreeService {
         }
     }
 
-    private calculateRootNodeStateBasedOnNode(rootNodeState: ManualTestStatus, childNodeState: ManualTestStatus): ManualTestStatus {
-        if(rootNodeState == ManualTestStatus.NOT_EXECUTED || childNodeState == ManualTestStatus.NOT_EXECUTED) return ManualTestStatus.NOT_EXECUTED;
-        if(rootNodeState == ManualTestStatus.FAILED || childNodeState == ManualTestStatus.FAILED) return ManualTestStatus.FAILED;
-        if(rootNodeState == ManualTestStatus.PASSED || childNodeState == ManualTestStatus.PASSED) return ManualTestStatus.PASSED;
-        if(rootNodeState == ManualTestStatus.BLOCKED || childNodeState == ManualTestStatus.BLOCKED) return ManualTestStatus.BLOCKED;
+    private calculateRootNodeStateBasedOnNode(rootNodeState: OldManualTestStatus, childNodeState: OldManualTestStatus): OldManualTestStatus {
+        if(rootNodeState == OldManualTestStatus.NOT_EXECUTED || childNodeState == OldManualTestStatus.NOT_EXECUTED) return OldManualTestStatus.NOT_EXECUTED;
+        if(rootNodeState == OldManualTestStatus.FAILED || childNodeState == OldManualTestStatus.FAILED) return OldManualTestStatus.FAILED;
+        if(rootNodeState == OldManualTestStatus.PASSED || childNodeState == OldManualTestStatus.PASSED) return OldManualTestStatus.PASSED;
+        if(rootNodeState == OldManualTestStatus.BLOCKED || childNodeState == OldManualTestStatus.BLOCKED) return OldManualTestStatus.BLOCKED;
 
-        return ManualTestStatus.NOT_APPLICABLE
+        return OldManualTestStatus.NOT_APPLICABLE
     }
 
     getNextUnExecutedTest(currentManualTestPath: Path): ManualTestExeModel {
@@ -132,13 +132,13 @@ export class ManualTestsExecutorTreeService {
         });
 
         for (let i = currentTestIndex + 1 ; i < this.testModels.length; i++) {
-            if (this.testModels[i].testStatus == ManualTestStatus.NOT_EXECUTED) {
+            if (this.testModels[i].testStatus == OldManualTestStatus.NOT_EXECUTED) {
                 return this.testModels[i];
             }
         }
 
         for (const testModel of this.testModels) {
-            if (testModel.testStatus == ManualTestStatus.NOT_EXECUTED) {
+            if (testModel.testStatus == OldManualTestStatus.NOT_EXECUTED) {
                 return testModel;
             }
         }

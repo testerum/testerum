@@ -1,15 +1,15 @@
 import {Enum} from "../../../model/enums/enum.interface";
 
-export class ManualTestStepStatus extends Enum {
+export class OldManualTestStepStatus extends Enum {
 
-    public static NOT_EXECUTED = new ManualTestStepStatus("NOT_EXECUTED");
-    public static PASSED = new ManualTestStepStatus("PASSED");
-    public static FAILED = new ManualTestStepStatus("FAILED");
+    public static NOT_EXECUTED = new OldManualTestStepStatus("NOT_EXECUTED");
+    public static PASSED = new OldManualTestStepStatus("PASSED");
+    public static FAILED = new OldManualTestStepStatus("FAILED");
 
-    static readonly enums: Array<ManualTestStepStatus> = [
-        ManualTestStepStatus.NOT_EXECUTED,
-        ManualTestStepStatus.PASSED,
-        ManualTestStepStatus.FAILED,
+    static readonly enums: Array<OldManualTestStepStatus> = [
+        OldManualTestStepStatus.NOT_EXECUTED,
+        OldManualTestStepStatus.PASSED,
+        OldManualTestStepStatus.FAILED,
     ];
 
     private constructor(httpMethodAsString: string) {
@@ -17,7 +17,7 @@ export class ManualTestStepStatus extends Enum {
     }
 
     public static fromString(methodAsString: string) {
-        for (let enumValue of ManualTestStepStatus.enums) {
+        for (let enumValue of OldManualTestStepStatus.enums) {
             if(enumValue.enumAsString == methodAsString) {
                 return enumValue;
             }

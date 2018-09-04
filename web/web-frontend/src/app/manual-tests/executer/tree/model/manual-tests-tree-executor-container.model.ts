@@ -3,7 +3,7 @@ import {JsonTreeNodeState} from "../../../../generic/components/json-tree/model/
 import {JsonTreeContainer} from "../../../../generic/components/json-tree/model/json-tree-container.model";
 import {Comparable} from "../../../../model/infrastructure/comparable.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {ManualTestStatus} from "../../../model/enums/manual-test-status.enum";
+import {OldManualTestStatus} from "../../../model/enums/manual-test-status.enum";
 import {ManualTestsTreeExecutorNodeModel} from "./manual-tests-tree-executor-node.model";
 import {JsonTreeContainerOptions} from "../../../../generic/components/json-tree/model/behavior/JsonTreeContainerOptions";
 
@@ -15,7 +15,7 @@ export class ManualTestsTreeExecutorContainerModel extends ManualTestsTreeExecut
     isRootPackage:boolean = false;
     editable:boolean = false;
 
-    testsState: ManualTestStatus = ManualTestStatus.NOT_EXECUTED;
+    testsState: OldManualTestStatus = OldManualTestStatus.NOT_EXECUTED;
 
     totalTests: number = 0;
     notExecutedTests: number = 0;
@@ -26,7 +26,7 @@ export class ManualTestsTreeExecutorContainerModel extends ManualTestsTreeExecut
 
     private options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
-    constructor(name: string, path: Path = null, testsState: ManualTestStatus = ManualTestStatus.NOT_EXECUTED, parentContainer: ManualTestsTreeExecutorContainerModel) {
+    constructor(name: string, path: Path = null, testsState: OldManualTestStatus = OldManualTestStatus.NOT_EXECUTED, parentContainer: ManualTestsTreeExecutorContainerModel) {
         super(null, name, path, null, false, parentContainer);
 
         this.testsState = testsState;
