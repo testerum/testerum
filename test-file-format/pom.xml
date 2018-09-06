@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>repository</artifactId>
+        <artifactId>testerum</artifactId>
         <groupId>com.testerum</groupId>
         <version>develop-SNAPSHOT</version>
     </parent>
