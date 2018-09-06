@@ -4,8 +4,6 @@ import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/
 import {ManualUiTreeBaseStatusModel} from "./manual-ui-tree-base-status.model";
 import {JsonTreeNodeState} from "../../../../../../generic/components/json-tree/model/json-tree-node-state.model";
 import {JsonTreeContainerOptions} from "../../../../../../generic/components/json-tree/model/behavior/JsonTreeContainerOptions";
-import {RunnerTreeFilterModel} from "../../../../../features/tests-runner/tests-runner-tree/model/filter/runner-tree-filter.model";
-import {JsonTreeModel} from "../../../../../../generic/components/json-tree/model/json-tree.model";
 
 export class ManualUiTreeContainerStatusModel extends ManualUiTreeBaseStatusModel implements JsonTreeContainer {
 

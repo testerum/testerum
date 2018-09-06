@@ -4,7 +4,6 @@ import {ManualTestStatus} from "../../../model/enums/manual-test-status.enum";
 import {JsonTreeNodeState} from "../../../../../../generic/components/json-tree/model/json-tree-node-state.model";
 import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
 import {ManualTreeStatusFilterModel} from "./filter/manual-tree-status-filter.model";
-import {RunnerTreeFilterModel} from "../../../../../features/tests-runner/tests-runner-tree/model/filter/runner-tree-filter.model";
 import {JsonTreeModel} from "../../../../../../generic/components/json-tree/model/json-tree.model";
 import {ManualUiTreeContainerStatusModel} from "./manual-ui-tree-container-status.model";
 
@@ -25,25 +24,15 @@ export abstract class ManualUiTreeBaseStatusModel extends JsonTreeNodeAbstract {
         this.status = status;
     }
 
-    calculateNodeVisibilityBasedOnFilter(filter: RunnerTreeFilterModel) {
-        if (filter.showWaiting == filter.showPassed &&
-            filter.showPassed == filter.showFailed &&
-            filter.showFailed == filter.showDisabled &&
-            filter.showDisabled == filter.showUndefined &&
-            filter.showUndefined == filter.showSkipped) {
-
-            this.hidden = false;
-            this.updateParentVisibility(this);
-            return;
-        }
+    calculateNodeVisibilityBasedOnFilter(filter: ManualTreeStatusFilterModel) {
 
         switch (this.status) {
-            case ManualTestStatus.NOT_EXECUTED: {this.hidden = !filter.showWaiting; break;}
-            case ManualTestStatus.IN_PROGRESS: {this.hidden = !filter.showPassed; break;}
-            case ManualTestStatus.PASSED: {this.hidden = !filter.showFailed; break;}
-            case ManualTestStatus.FAILED: {this.hidden = !filter.showDisabled; break;}
-            case ManualTestStatus.BLOCKED: {this.hidden = !filter.showUndefined; break;}
-            case ManualTestStatus.NOT_APPLICABLE: {this.hidden = !filter.showSkipped; break;}
+            case ManualTestStatus.NOT_EXECUTED: {this.hidden = !filter.showNotExecuted; break;}
+            case ManualTestStatus.IN_PROGRESS: {this.hidden = !filter.showInProgress; break;}
+            case ManualTestStatus.PASSED: {this.hidden = !filter.showPassed; break;}
+            case ManualTestStatus.FAILED: {this.hidden = !filter.showFailed; break;}
+            case ManualTestStatus.BLOCKED: {this.hidden = !filter.showBlocked; break;}
+            case ManualTestStatus.NOT_APPLICABLE: {this.hidden = !filter.showNotApplicable; break;}
             default: this.hidden = false;
         }
 

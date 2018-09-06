@@ -3,7 +3,14 @@ import {ManualRoutingModule} from "./manual-routing.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {AngularSplitModule} from "angular-split-ng6";
-import {AutoCompleteModule, DropdownModule, EditorModule, InputTextModule, TooltipModule} from "primeng/primeng";
+import {
+    AutoCompleteModule,
+    DropdownModule,
+    EditorModule,
+    InputTextModule,
+    ToolbarModule,
+    TooltipModule
+} from "primeng/primeng";
 import {TableModule} from "primeng/table";
 import {CollapseModule, ModalModule} from "ngx-bootstrap";
 import {CardModule} from "primeng/card";
@@ -22,6 +29,7 @@ import {ManualSelectTestsNodeComponent} from "./plans/editor/manual-select-tests
 import {ManualTestsStatusTreeComponent} from "./plans/editor/manual-tests-status-tree/manual-tests-status-tree.component";
 import {ManualTestsStatusTreeNodeComponent} from "./plans/editor/manual-tests-status-tree/nodes/runner-tree-node/manual-tests-status-tree-node.component";
 import {ManualTestsStatusTreeService} from "./plans/editor/manual-tests-status-tree/manual-tests-status-tree.service";
+import {ManualTestsStatusTreeToolbarComponent} from "./plans/editor/manual-tests-status-tree/toolbar/manual-tests-status-tree-toolbar.component";
 
 @NgModule({
     imports: [
@@ -40,6 +48,7 @@ import {ManualTestsStatusTreeService} from "./plans/editor/manual-tests-status-t
         InputTextModule,
         PanelModule,
         TooltipModule,
+        ToolbarModule,
         TableModule,
 
         GenericModule,
@@ -58,6 +67,7 @@ import {ManualTestsStatusTreeService} from "./plans/editor/manual-tests-status-t
 
         ManualTestsStatusTreeComponent,
         ManualTestsStatusTreeNodeComponent,
+        ManualTestsStatusTreeToolbarComponent,
     ],
     entryComponents: [
         ManualSelectTestsContainerComponent,

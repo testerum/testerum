@@ -10,5 +10,4 @@ export abstract class ManualTestsStatusTreeBase {
     path: Path;
     name: string;
     status: ManualTestStatus;
-
 }

@@ -8,6 +8,7 @@ import {FeatureService} from "../../../service/feature.service";
 import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-filter.model";
 import {RootFeatureNode} from "../../../model/feature/tree/root-feature-node.model";
 import {map} from "rxjs/operators";
+import {ManualTestsStatusTreeRoot} from "../plans/model/status-tree/manual-tests-status-tree-root.model";
 
 @Injectable()
 export class ManualExecPlansService {
@@ -50,5 +51,16 @@ export class ManualExecPlansService {
 
         return this.http
             .delete<void>(this.BASE_URL + "/plans", httpOptions);
+    }
+
+    getManualTestsStatusTree(path: Path): Observable<ManualTestsStatusTreeRoot> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('status_tree', path.toString())
+        };
+
+        return this.http
+            .get<ManualExecPlan>(this.BASE_URL + "/status_tree", httpOptions)
+            .pipe(map(it => {return new ManualTestsStatusTreeRoot().deserialize(it)}));
     }
 }

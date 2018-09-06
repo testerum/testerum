@@ -1,0 +1,65 @@
+<p-toolbar>
+    <div class="line-filters">
+
+        <div class="filters-group">
+            <span class="filters-label">Filters:</span>
+            <div class="btn-group" role="group">
+                <div title="{{model.showNotExecuted? 'Hide Waiting':'Show Waiting'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="model.showNotExecuted"
+                     (click)="onToggleWaiting()">
+                    <i class="fa_my-runner-waiting" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="{{model.showPassed ? 'Hide Passed': 'Show Passed'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="model.showPassed"
+                     (click)="onTogglePassed()">
+                    <i class="fa_my-runner-passed" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="{{model.showFailed ? 'Hide Failed': 'Show Failed'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="model.showFailed"
+                     (click)="onToggleFailed()">
+                    <i class="fa_my-runner-failed" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="{{model.showBlocked ? 'Hide Blocked': 'Show Blocked'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="model.showBlocked"
+                     (click)="onToggleBlocked()">
+                    <i class="fa_my-runner-disabled" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="btn-group" role="group">
+                <div title="{{model.showNotApplicable ? 'Hide Not Applicable': 'Show Not Applicable'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="model.showNotApplicable"
+                     (click)="onToggleNotApplicable()">
+                    <i class="fa_my-runner-undefined" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="filters-group">
+            <div class="btn-group" role="group">
+                <div title="Show Tests"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onExpandToTests()">
+                    <i class="fa_my-expand" aria-hidden="true">
+                        <i class="fa_my-automated-test" aria-hidden="true" style="font-size: 8px"></i>
+                    </i>
+                </div>
+                <div title="Expand All"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onExpandAllNodes()">
+                    <i class="fa_my-expand" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-toolbar>

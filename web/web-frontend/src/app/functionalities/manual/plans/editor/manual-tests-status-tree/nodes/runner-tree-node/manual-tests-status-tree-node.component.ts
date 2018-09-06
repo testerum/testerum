@@ -15,7 +15,7 @@ import {ManualTestStatus} from "../../../../model/enums/manual-test-status.enum"
     templateUrl: 'manual-tests-status-tree-node.component.html',
     styleUrls:[
         'manual-tests-status-tree-node.component.scss',
-        '../../../../../../generic/css/tree.scss'
+        '../../../../../../../generic/css/tree.scss'
     ]
 })
 export class ManualTestsStatusTreeNodeComponent implements OnInit, OnDestroy {
