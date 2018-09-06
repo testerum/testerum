@@ -88,7 +88,8 @@ class TestsExecutionService(private val testsService: TestsService,
     }
 
     fun startExecution(executionId: Long,
-                       eventProcessor: (event: RunnerEvent) -> Unit) {
+                       eventProcessor: (event: RunnerEvent) -> Unit,
+                       doneProcessor: () -> Unit) {
         val execution = testExecutionsById[executionId]
         if (execution == null) {
             LOGGER.warn("trying to start an execution that no longer exists")
@@ -161,6 +162,7 @@ class TestsExecutionService(private val testsService: TestsService,
                 println("failed to delete argsFile [$argsFile]")
             }
             LOGGER.debug("==========================================[ DONE ]=========================================")
+            doneProcessor()
         }
     }
 
