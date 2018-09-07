@@ -47,12 +47,17 @@
 
         <div class="filters-group">
             <div class="btn-group" role="group">
-                <div title="Show Tests"
-                     class="btn btn-default btn-xs btn-group"
-                     (click)="onExpandToTests()">
-                    <i class="fa_my-expand" aria-hidden="true">
-                        <i class="fa_my-automated-test" aria-hidden="true" style="font-size: 8px"></i>
-                    </i>
+                <div pTooltip="Expand to level 1"
+                     tooltipPosition="bottom"
+                     (click)="onExpandToLevelEvent(1)"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa_my-expand" aria-hidden="true"><span>1</span></i>
+                </div>
+                <div pTooltip="Expand to level 2"
+                     tooltipPosition="bottom"
+                     (click)="onExpandToLevelEvent(2)"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fa_my-expand" aria-hidden="true"><span>2</span></i>
                 </div>
                 <div title="Expand All"
                      class="btn btn-default btn-xs btn-group"

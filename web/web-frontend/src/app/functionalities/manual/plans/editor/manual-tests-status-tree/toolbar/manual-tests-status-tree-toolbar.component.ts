@@ -53,8 +53,7 @@ export class ManualTestsStatusTreeToolbarComponent implements OnInit {
         JsonTreeExpandUtil.expandTreeToLevel(this.treeModel,  100);
     }
 
-    onExpandToTests() {
-        JsonTreeExpandUtil.expandTreeToNodeType(this.treeModel,  ManualUiTreeNodeStatusModel);
-
+    onExpandToLevelEvent(level: number) {
+        JsonTreeExpandUtil.expandTreeToLevel(this.treeModel, level+1);
     }
 }
