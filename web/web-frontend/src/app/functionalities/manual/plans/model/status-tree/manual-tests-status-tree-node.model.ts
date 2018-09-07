@@ -15,7 +15,7 @@ export class ManualTestsStatusTreeNode extends ManualTestsStatusTreeBase impleme
     deserialize(input: Object): ManualTestsStatusTreeNode {
         this.path = Path.deserialize(input["path"]);
         this.name = input['name'];
-        this.status = ManualExecPlanStatus.fromString(input['status']);
+        this.status = ManualTestStatus.fromString(input['status']);
 
         return this;
     }

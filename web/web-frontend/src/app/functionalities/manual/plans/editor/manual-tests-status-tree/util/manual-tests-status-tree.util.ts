@@ -25,7 +25,9 @@ export class ManualTestsStatusTreeUtil {
     private static mapServerNodeChildrenToTreeModel(parentServerNode: ManualTestsStatusTreeBase, parentTreeNode: ManualUiTreeBaseStatusModel) {
 
         let serverNodeChildren: ManualTestsStatusTreeBase[] = null;
-        if (parentServerNode instanceof ManualTestsStatusTreeContainer) {
+        if (parentServerNode instanceof ManualTestsStatusTreeContainer ||
+            parentServerNode instanceof ManualTestsStatusTreeRoot) {
+
             serverNodeChildren = parentServerNode.children;
         }
 

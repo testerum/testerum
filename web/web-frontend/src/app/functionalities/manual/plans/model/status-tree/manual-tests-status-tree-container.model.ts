@@ -16,7 +16,7 @@ export class ManualTestsStatusTreeContainer extends ManualTestsStatusTreeBase im
     deserialize(input: Object): ManualTestsStatusTreeContainer {
         this.path = Path.deserialize(input["path"]);
         this.name = input['name'];
-        this.status = ManualExecPlanStatus.fromString(input['status']);
+        this.status = ManualTestStatus.fromString(input['status']);
 
         for (const child of input['children']) {
             if (child["@type"] == "CONTAINER") {

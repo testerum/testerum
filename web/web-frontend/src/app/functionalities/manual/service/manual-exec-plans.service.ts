@@ -56,7 +56,7 @@ export class ManualExecPlansService {
     getManualTestsStatusTree(path: Path): Observable<ManualTestsStatusTreeRoot> {
         const httpOptions = {
             params: new HttpParams()
-                .append('status_tree', path.toString())
+                .append('path', path.toString())
         };
 
         return this.http

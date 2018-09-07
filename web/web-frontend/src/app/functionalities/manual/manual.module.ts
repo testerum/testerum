@@ -72,6 +72,8 @@ import {ManualTestsStatusTreeToolbarComponent} from "./plans/editor/manual-tests
     entryComponents: [
         ManualSelectTestsContainerComponent,
         ManualSelectTestsNodeComponent,
+
+        ManualTestsStatusTreeNodeComponent,
     ],
     providers: [
         ManualExecPlansService,

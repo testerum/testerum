@@ -62,9 +62,9 @@
                 <div class="display-row-container" *ngIf="!isEditMode">
                     <p-chart type="pie" [responsive]="false" height="400px" width="400px" [data]="pieChartData" ></p-chart>
 
-                    <manual-select-tests-tree [model]="model"
-                                              [isEditMode]="isEditMode">
-                    </manual-select-tests-tree>
+                    <div style="position: absolute; left: 400px; right: 0; top: 0; bottom: 0;">
+                        <manual-tests-status-tree [path]="model.path"></manual-tests-status-tree>
+                    </div>
                 </div>
 
                 <div class="display-row-container" *ngIf="isEditMode">

@@ -17,7 +17,7 @@ export class ManualTestsStatusTreeRoot extends ManualTestsStatusTreeBase impleme
     deserialize(input: Object): ManualTestsStatusTreeRoot {
         this.path = Path.deserialize(input["path"]);
         this.name = input['name'];
-        this.status = ManualExecPlanStatus.fromString(input['status']);
+        this.status = ManualTestStatus.fromString(input['status']);
 
         for (const child of input['children']) {
             if (child["@type"] == "CONTAINER") {

@@ -1,11 +1,5 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {SelectTestsTreeRunnerService} from "../../../../manual-tests/runner/editor/select-tests-tree/select-tests-tree-runner.service";
-import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
-import {ManualTestsExecutorTreeService} from "../../../../manual-tests/executer/tree/manual-tests-executor-tree.service";
-import {ManualTestsTreeExecutorContainerModel} from "../../../../manual-tests/executer/tree/model/manual-tests-tree-executor-container.model";
-import {ManualTestsExecutorTreeContainerComponent} from "../../../../manual-tests/executer/tree/container/manual-tests-executor-tree-container.component";
-import {ManualTestsTreeExecutorNodeModel} from "../../../../manual-tests/executer/tree/model/manual-tests-tree-executor-node.model";
-import {ManualTestsExecutorTreeNodeComponent} from "../../../../manual-tests/executer/tree/container/node/manual-tests-executor-tree-node.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ManualTestsRunnerService} from "../../../../manual-tests/runner/service/manual-tests-runner.service";
 import {ManualTestsOverviewService} from "../../../../manual-tests/runner/overview/manual-tests-overview.service";
