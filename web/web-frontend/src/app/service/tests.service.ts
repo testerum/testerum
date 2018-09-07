@@ -16,18 +16,6 @@ export class TestsService {
     constructor(private http: HttpClient,
                 private urlService: UrlService) {}
 
-    runTest(testModel:TestModel): Observable<void> {
-        let body = testModel.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
-
-        return this.http
-            .post<void>(this.TESTS_URL+"/run/unsaved", body, httpOptions);
-    }
-
     delete(testModel:TestModel): Observable<void> {
         const httpOptions = {
             params: new HttpParams()
