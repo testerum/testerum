@@ -35,11 +35,6 @@ class TestsController(private val testsService: TestsService,
         return testsService.getTestsUnderPath(Path.createInstance(path))
     }
 
-    @RequestMapping(method = [RequestMethod.DELETE], path = ["/directory"])
-    fun deleteDirectory(@RequestParam("path") pathAsString: String) {
-        testsService.deleteDirectory(Path.createInstance(pathAsString))
-    }
-
     @RequestMapping(method = [RequestMethod.POST], path = ["/directory/move"])
     fun moveDirectoryOrFile(@RequestBody copyPath: CopyPath) {
         testsService.moveDirectoryOrFile(copyPath)

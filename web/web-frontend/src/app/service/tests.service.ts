@@ -77,16 +77,6 @@ export class TestsService {
         return new TestModel().deserialize(res);
     }
 
-    deleteDirectory(path: Path): Observable<void> {
-        const httpOptions = {
-            params: new HttpParams()
-                .append('path', path.toString())
-        };
-
-        return this.http
-            .delete<void>(this.TESTS_URL + "/directory", httpOptions);
-    }
-
     showTestsScreen() {
         this.urlService.navigateToFeatures();
     }
