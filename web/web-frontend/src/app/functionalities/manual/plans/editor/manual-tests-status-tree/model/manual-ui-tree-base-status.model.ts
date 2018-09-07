@@ -26,6 +26,16 @@ export abstract class ManualUiTreeBaseStatusModel extends JsonTreeNodeAbstract {
 
     calculateNodeVisibilityBasedOnFilter(filter: ManualTreeStatusFilterModel) {
 
+        if (filter.showNotExecuted == filter.showPassed &&
+            filter.showPassed == filter.showFailed &&
+            filter.showFailed == filter.showBlocked &&
+            filter.showBlocked == filter.showNotApplicable) {
+
+            this.hidden = false;
+            this.updateParentVisibility(this);
+            return;
+        }
+
         switch (this.status) {
             case ManualTestStatus.NOT_EXECUTED: {this.hidden = !filter.showNotExecuted; break;}
             case ManualTestStatus.IN_PROGRESS: {this.hidden = !filter.showInProgress; break;}

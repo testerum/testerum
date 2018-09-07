@@ -9,7 +9,7 @@ export class ManualUiTreeRootStatusModel extends ManualUiTreeContainerStatusMode
 
     path: Path;
     name: string;
-    status: ManualTestStatus = ManualTestStatus.NOT_EXECUTED;
+    status: ManualTestStatus;
 
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
     parentContainer: JsonTreeContainer;
