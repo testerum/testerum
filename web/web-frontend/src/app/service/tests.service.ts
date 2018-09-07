@@ -81,18 +81,6 @@ export class TestsService {
             .post<void>(this.TESTS_URL + "/directory/move", body, httpOptions);
     }
 
-    getAllAutomatedTestsUnderContainer(path: Path): Observable<Array<TestModel>>  {
-
-        const httpOptions = {
-            params: new HttpParams()
-                .append('path', path.toString())
-        };
-
-        return this.http
-            .get<Array<TestModel>>(this.TESTS_URL + "/automated/under-path", httpOptions).pipe(
-            map(TestsService.extractTestsModel));
-    }
-
     getWarnings(testModel:TestModel): Observable<TestModel> {
         let body = testModel.serialize();
         const httpOptions = {
