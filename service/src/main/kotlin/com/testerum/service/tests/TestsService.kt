@@ -30,7 +30,7 @@ class TestsService(private val testResolver: TestResolver,
         return getTestsUnderPath(Path.EMPTY)
     }
 
-    fun getTestsUnderPath(path: Path): List<TestModel> {
+    private fun getTestsUnderPath(path: Path): List<TestModel> {
         val uiTests = mutableListOf<TestModel>()
 
         val allTestFiles = fileRepositoryService.getAllResourcesByTypeUnderPath(KnownPath(path, FileType.TEST))
@@ -61,7 +61,7 @@ class TestsService(private val testResolver: TestResolver,
         return warningService.testWithWarnings(resolvedUiTest, keepExistingWarnings = true)
     }
 
-    fun getTestsForPath(testOrDirectoryPaths: List<Path>): List<TestModel> {
+    fun getTestsForPaths(testOrDirectoryPaths: List<Path>): List<TestModel> {
         val tests = mutableListOf<TestModel>()
 
         val (testPaths, directoryPaths) = testOrDirectoryPaths.partition { it.fileExtension == FileType.TEST.fileExtension }

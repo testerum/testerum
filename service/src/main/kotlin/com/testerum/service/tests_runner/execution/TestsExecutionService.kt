@@ -64,7 +64,7 @@ class TestsExecutionService(private val testsService: TestsService,
     }
 
     private fun getRunnerRootNode(testOrDirectoryPaths: List<Path>): RunnerRootNode {
-        val tests = testsService.getTestsForPath(testOrDirectoryPaths)
+        val tests = testsService.getTestsForPaths(testOrDirectoryPaths)
 
         val builder = RunnerTreeBuilder()
         tests.forEach { builder.addTest(it) }
