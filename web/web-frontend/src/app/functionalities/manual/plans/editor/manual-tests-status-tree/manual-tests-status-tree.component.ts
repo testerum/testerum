@@ -2,7 +2,6 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {ManualTestsStatusTreeComponentService} from "./manual-tests-status-tree.component-service";
 import {ManualTestsStatusTreeNodeComponent} from "./nodes/runner-tree-node/manual-tests-status-tree-node.component";
-import {ManualUiTreeBaseStatusModel} from "./model/manual-ui-tree-base-status.model";
 import {Subscription} from "rxjs";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {ManualExecPlansService} from "../../../service/manual-exec-plans.service";
@@ -18,7 +17,7 @@ import {ManualUiTreeNodeStatusModel} from "./model/manual-ui-tree-node-status.mo
     moduleId: module.id,
     selector: 'manual-tests-status-tree',
     templateUrl: 'manual-tests-status-tree.component.html',
-    styleUrls:['manual-tests-status-tree.component.scss'],
+    styleUrls: ['manual-tests-status-tree.component.scss'],
     providers: [ManualTestsStatusTreeComponentService]
 })
 export class ManualTestsStatusTreeComponent implements OnInit, OnDestroy {
@@ -32,7 +31,9 @@ export class ManualTestsStatusTreeComponent implements OnInit, OnDestroy {
         .addPair(ManualUiTreeNodeStatusModel, ManualTestsStatusTreeNodeComponent);
 
     getManualTestsStatusTreeSubscription: Subscription;
-    constructor(private manualExecPlanService: ManualExecPlansService) {}
+
+    constructor(private manualExecPlanService: ManualExecPlansService) {
+    }
 
     ngOnInit(): void {
         this.getManualTestsStatusTreeSubscription = this.manualExecPlanService.getManualTestsStatusTree(this.path).subscribe((manualTestsStatusTreeRoot: ManualTestsStatusTreeRoot) => {
@@ -41,6 +42,6 @@ export class ManualTestsStatusTreeComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if(this.getManualTestsStatusTreeSubscription != null) this.getManualTestsStatusTreeSubscription.unsubscribe()
+        if (this.getManualTestsStatusTreeSubscription != null) this.getManualTestsStatusTreeSubscription.unsubscribe()
     }
 }
