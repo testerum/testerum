@@ -10,7 +10,7 @@ import com.testerum.service.file_repository.model.RepositoryFileChange
 import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath
-import com.testerum.model.manual.ManualTest
+import com.testerum.model.manual.OldManualTest
 import com.testerum.model.repository.enums.FileType
 
 
@@ -20,11 +20,11 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
         private val OBJECT_MAPPER: ObjectMapper = ObjectMapperFactory.createKotlinObjectMapper()
     }
 
-    fun save(manualTest: ManualTest): ManualTest {
-        val newPath = Path(manualTest.path.directories, manualTest.text, FileType.MANUAL_TEST.fileExtension)
-        val oldKnownPath = manualTest.oldPath?.let { KnownPath(it, FileType.MANUAL_TEST) }
+    fun save(oldManualTest: OldManualTest): OldManualTest {
+        val newPath = Path(oldManualTest.path.directories, oldManualTest.text, FileType.MANUAL_TEST.fileExtension)
+        val oldKnownPath = oldManualTest.oldPath?.let { KnownPath(it, FileType.MANUAL_TEST) }
 
-        val fileTestAsString = OBJECT_MAPPER.writeValueAsString(manualTest)
+        val fileTestAsString = OBJECT_MAPPER.writeValueAsString(oldManualTest)
 
         val repositoryFile = fileRepositoryService.save(
                 RepositoryFileChange(
@@ -36,7 +36,7 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
                 )
         )
 
-        return manualTest.copy(
+        return oldManualTest.copy(
                 path = repositoryFile.knownPath.asPath()
         )
     }
@@ -45,13 +45,13 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
         fileRepositoryService.delete(knownPath = KnownPath(path, FileType.MANUAL_TEST))
     }
 
-    fun getAllTests(): List<ManualTest> {
+    fun getAllTests(): List<OldManualTest> {
 
-        val manualTests = mutableListOf<ManualTest>()
+        val manualTests = mutableListOf<OldManualTest>()
 
         val allTestFiles = fileRepositoryService.getAllResourcesByType(FileType.MANUAL_TEST)
         for (testFile in allTestFiles) {
-            val manualTest = OBJECT_MAPPER.readValue<ManualTest>(testFile.body)
+            val manualTest = OBJECT_MAPPER.readValue<OldManualTest>(testFile.body)
 
             val resolvedManualTest = manualTest.copy(path = testFile.knownPath.asPath())
             manualTests.add(resolvedManualTest)
@@ -60,12 +60,12 @@ class ManualTestsService(private val fileRepositoryService: FileRepositoryServic
         return manualTests
     }
 
-    fun getTestAtPath(path: Path): ManualTest? {
+    fun getTestAtPath(path: Path): OldManualTest? {
         val testFile = fileRepositoryService.getByPath(
                 KnownPath(path, FileType.MANUAL_TEST)
         ) ?: return null
 
-        val manualTest = OBJECT_MAPPER.readValue<ManualTest>(testFile.body)
+        val manualTest = OBJECT_MAPPER.readValue<OldManualTest>(testFile.body)
 
         return manualTest.copy(
                 path = testFile.knownPath.asPath()

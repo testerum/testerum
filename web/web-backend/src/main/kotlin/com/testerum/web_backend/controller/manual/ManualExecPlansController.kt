@@ -1,15 +1,24 @@
 package com.testerum.web_backend.controller.manual
 
+import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.manual.ManualExecPlan
 import com.testerum.model.manual.ManualExecPlans
+import com.testerum.model.manual.ManualTest
 import com.testerum.model.manual.ManualTreeTest
 import com.testerum.model.manual.enums.ManualTestStatus
+import com.testerum.model.manual.enums.ManualTestStepStatus
 import com.testerum.model.manual.runner.enums.ManualExecPlanStatus
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeBase
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeContainer
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeNode
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeRoot
+import com.testerum.model.step.BasicStepDef
+import com.testerum.model.step.ComposedStepDef
+import com.testerum.model.step.StepCall
+import com.testerum.model.step.StepDef
+import com.testerum.model.text.StepPattern
+import com.testerum.model.text.parts.TextStepPatternPart
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
@@ -101,5 +110,98 @@ class ManualExecPlansController {
         rootChildren += ManualTestsStatusTreeNode(Path.createInstance("/dir1_node1"), "dir1_node1", ManualTestStatus.NOT_EXECUTED);
 
         return ManualTestsStatusTreeRoot(Path.EMPTY, "", ManualTestStatus.FAILED, rootChildren)
+    }
+
+
+    @RequestMapping(method = [RequestMethod.GET], path = ["runner"], params = ["path"])
+    @ResponseBody
+    fun getManualRunnerTest(@RequestParam(value = "path") path: String): ManualTest {
+        return ManualTest(
+                Path.createInstance(path),
+                Path.createInstance(path),
+                "Create Owner Test",
+                "This is a cool test",
+                listOf("acasa", "love", "super"),
+                listOf(ManualTestStepStatus.PASSED, ManualTestStepStatus.FAILED, ManualTestStepStatus.NOT_EXECUTED),
+                listOf(
+                        StepCall(
+                                "1",
+                                ComposedStepDef(
+                                        Path.createInstance("acasa"),
+                                        Path.createInstance("acasa"),
+                                        StepPhaseEnum.GIVEN,
+                                        StepPattern(
+                                                listOf(
+                                                        TextStepPatternPart("is the first step")
+                                                )
+                                        ),
+                                        "fist step description",
+                                        listOf("tag1", "tag2"),
+                                        listOf(
+                                                StepCall(
+                                                        "bla",
+                                                        BasicStepDef(
+                                                                StepPhaseEnum.GIVEN,
+                                                                StepPattern(
+                                                                        listOf(
+                                                                                TextStepPatternPart("is the first sub-step of first step")
+                                                                        )
+                                                                ),
+                                                                className = "com.testerum.ClasaDePoveste",
+                                                                methodName = "zmeulCelRau"
+                                                        ),
+                                                        listOf()
+                                                ),
+                                                StepCall(
+                                                        "bla",
+                                                        BasicStepDef(
+                                                                StepPhaseEnum.GIVEN,
+                                                                StepPattern(
+                                                                        listOf(
+                                                                                TextStepPatternPart("is the second sub-step of first step")
+                                                                        )
+                                                                ),
+                                                                className = "com.testerum.ClasaDePoveste",
+                                                                methodName = "zmeulCelRau"
+                                                        ),
+                                                        listOf()
+                                                )
+                                        )
+
+                                ),
+                                emptyList()
+                        ),
+                        StepCall(
+                                "bla",
+                                BasicStepDef(
+                                        StepPhaseEnum.GIVEN,
+                                        StepPattern(
+                                                listOf(
+                                                        TextStepPatternPart("is the second step")
+                                                )
+                                        ),
+                                        className = "com.testerum.ClasaDePoveste",
+                                        methodName = "zmeulCelRau"
+                                ),
+                                listOf()
+                        ),
+                        StepCall(
+                                "bla",
+                                BasicStepDef(
+                                        StepPhaseEnum.GIVEN,
+                                        StepPattern(
+                                                listOf(
+                                                        TextStepPatternPart("is the third step")
+                                                )
+                                        ),
+                                        className = "com.testerum.ClasaDePoveste",
+                                        methodName = "zmeulCelRau"
+                                ),
+                                listOf()
+                        )
+                ),
+                ManualTestStatus.FAILED,
+                "This is a comment, my comment!"
+        )
     }
 }

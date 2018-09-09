@@ -1,5 +1,6 @@
+import {Serializable} from "../infrastructure/serializable.model";
 
-export abstract class Enum {
+export abstract class Enum implements Serializable<Enum> {
 
     readonly enumAsString: string;
     constructor(enumAsString: string) {
@@ -8,5 +9,13 @@ export abstract class Enum {
 
     toString(): string {
         return this.enumAsString
+    }
+
+    deserialize(input: Object): Enum {
+        throw new Error("Not implemented");
+    }
+
+    serialize(): string {
+        return this.enumAsString;
     }
 }

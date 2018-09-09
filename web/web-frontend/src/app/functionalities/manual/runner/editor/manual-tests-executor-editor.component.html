@@ -1,0 +1,164 @@
+<split-panel-container>
+    <div>
+        <div class="page-body">
+            <form #stepForm="ngForm" (ngSubmit)="saveAction()" class="form-horizontal">
+
+                <div class="my-line">
+                    <label class="my-label label-size">Path</label>
+                    <div class="my-value">
+                        {{getTestPathDirectoryAsString() || ""}}
+                    </div>
+                </div>
+
+                <div class="my-line">
+                    <label class="my-label label-size col-form-label">Test Name</label>
+
+                    <div class="my-value">
+                        {{manualTestExeModel.text || ""}}
+                    </div>
+                </div>
+
+                <!-- TAGS -->
+                <div class="my-line">
+                    <label class="my-label label-size">Tags</label>
+                    <div class="my-value">
+                        <ng-container *ngFor="let tag of manualTestExeModel.tags">
+                            <span class="label label-primary">{{tag}}</span>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="my-line">
+                    <label class="my-label label-size">Description</label>
+                    <div class="my-value"
+                         [innerHTML]="(manualTestExeModel.description || '') | safeHtml">
+                    </div>
+                </div>
+
+                <!-- STEPS -->
+                <p-table [value]="manualTestExeModel.steps" selectionMode="single">
+                    <ng-template pTemplate="caption">
+                        Steps
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="steps-column-index"></th>
+                            <th>Description</th>
+                            <th class="steps-column-action">Status</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-step let-index="rowIndex" let-rowData>
+                        <tr [pSelectableRow]="rowData" class="step-row">
+                            <!-- INDEX -->
+                            <td>{{index + 1}}</td>
+
+                            <!-- DESCRIPTION -->
+                            <td>
+                                <span class="step-text-phase">
+                                    {{getPhaseText(step.phase, index) | titlecase}}
+                                </span>
+
+                                {{step.description}}
+                            </td>
+
+                            <!-- STATUS -->
+                            <td>
+                                <step-status [(stepStatus)]="step.stepStatus"
+                                             [readonly]="isTestSuiteFinalized()"
+                                             (stepStatusChange)="stepStatusChanged($event, index)" ></step-status>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+                <!-- TEST STATUS -->
+                <div class="my-line">
+                    <label class="my-label label-size" for="testStatus">Test Result</label>
+                    <div class="my-value">
+
+                        <p-dropdown name="testStatus" id="testStatus"
+                                    [readonly]="isTestSuiteFinalized()"
+                                    [options]="testStatusDropdownOptions"
+                                    [(ngModel)]="manualTestExeModel.testStatus"
+                                    [style]="{'width':'150px'}"
+                                    (onChange)="onTestChange()">
+
+                            <ng-template let-item pTemplate="selectedItem">
+                                <div class="ui-helper-clearfix dropdown-item-container"
+                                     [class.dr-not-executed]="ManualTestStatus.NOT_EXECUTED == item.value ||
+                                                              ManualTestStatus.BLOCKED == item.value ||
+                                                              ManualTestStatus.NOT_APPLICABLE == item.value"
+                                     [class.dr-passed]="ManualTestStatus.PASSED == item.value"
+                                     [class.dr-failed]="ManualTestStatus.FAILED == item.value">
+
+                                    <i class="fas"
+                                       [class.fa-square-o]="ManualTestStatus.NOT_EXECUTED == item.value"
+                                       [class.fa-check-square-o]="ManualTestStatus.PASSED == item.value"
+                                       [class.fa-times]="ManualTestStatus.FAILED == item.value"
+                                       [class.fa-ban]="ManualTestStatus.BLOCKED == item.value"
+                                       [class.fa-exclamation]="ManualTestStatus.NOT_APPLICABLE == item.value"
+                                       aria-hidden="true"></i>
+                                    <div class="dropdown-item-text">{{item.label}}</div>
+                                </div>
+                            </ng-template>
+
+                            <ng-template let-manualEnum pTemplate="item">
+                                <div class="ui-helper-clearfix dropdown-item-container"
+                                     [class.dr-not-executed]="ManualTestStatus.NOT_EXECUTED == manualEnum.value"
+                                     [class.dr-passed]="ManualTestStatus.PASSED == manualEnum.value"
+                                     [class.dr-failed]="ManualTestStatus.FAILED == manualEnum.value"
+                                     [class.dr-blocked]="ManualTestStatus.BLOCKED == manualEnum.value"
+                                     [class.dr-not-applicable]="ManualTestStatus.NOT_APPLICABLE == manualEnum.value">
+
+                                    <i class="fas"
+                                       [class.fa-square-o]="ManualTestStatus.NOT_EXECUTED == manualEnum.value"
+                                       [class.fa-check-square-o]="ManualTestStatus.PASSED == manualEnum.value"
+                                       [class.fa-times]="ManualTestStatus.FAILED == manualEnum.value"
+                                       [class.fa-ban]="ManualTestStatus.BLOCKED == manualEnum.value"
+                                       [class.fa-exclamation]="ManualTestStatus.NOT_APPLICABLE == manualEnum.value"
+                                       aria-hidden="true"></i>
+                                    <div class="dropdown-item-text">{{manualEnum.label}}</div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+
+                    </div>
+                </div>
+
+                <!-- COMMENT -->
+                <div class="my-line"
+                     *ngIf="manualTestExeModel.testStatus == ManualTestStatus.FAILED
+                            || manualTestExeModel.testStatus == ManualTestStatus.BLOCKED
+                            || manualTestExeModel.testStatus == ManualTestStatus.NOT_APPLICABLE">
+                    <label class="my-label label-size" for="comments">Comment</label>
+
+                    <div class="my-value" *ngIf="isTestSuiteFinalized()"
+                         [innerHTML]="(manualTestExeModel.comments || '') | safeHtml">
+                    </div>
+                    <div class="my-value" *ngIf="!isTestSuiteFinalized()">
+                        <p-editor [(ngModel)]="manualTestExeModel.comments"
+                                  (onTextChange)="onTestChange()"
+                                  [style]="{'height':'150px'}"
+                                  id="comments" name="comments"></p-editor>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="panel-footer-button" *ngIf="!isTestSuiteFinalized()">
+                    <ng-container *ngIf="!hasStateChanged">
+                        <button (click)="showNextUnexecutedTest();" class="btn btn-primary">Next</button>
+
+                    </ng-container>
+
+                    <ng-container *ngIf="hasStateChanged">
+                        <button (click)="resetChanges()" type="button" class="btn btn-default">Reset</button>
+                        <button class="btn btn-primary">Save</button>
+                    </ng-container>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</split-panel-container>

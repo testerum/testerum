@@ -5,6 +5,7 @@ import {SetupGuard} from "../../service/guards/setup.guard";
 import {ManualExecPlansComponent} from "./plans/manual-exec-plans.component";
 import {ManualExecPlanEditorComponent} from "./plans/editor/manual-exec-plan-editor.component";
 import {ManualExecPlanEditorResolver} from "./plans/editor/manual-exec-plan-editor.resolver";
+import {ManualRunnerComponent} from "./runner/manual-runner.component";
 
 const manualRoutes: Routes = [
     {
@@ -20,7 +21,12 @@ const manualRoutes: Routes = [
             }
         ]
     },
-
+    {
+        path: "manual/runner",
+        component: ManualRunnerComponent,
+        canActivate: [SetupGuard],
+        canActivateChild: [SetupGuard],
+    },
 ];
 
 @NgModule({

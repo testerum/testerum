@@ -3,7 +3,7 @@ package com.testerum.web_backend.controller.manual
 import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath
-import com.testerum.model.manual.ManualTest
+import com.testerum.model.manual.OldManualTest
 import com.testerum.service.manual.ManualTestsService
 import org.springframework.web.bind.annotation.*
 
@@ -13,13 +13,13 @@ class OldManualTestsController(private val manualTestsService: ManualTestsServic
 
     @RequestMapping(method = [RequestMethod.GET], path = [""])
     @ResponseBody
-    fun getTests(): List<ManualTest> {
+    fun getTests(): List<OldManualTest> {
         return manualTestsService.getAllTests()
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = [""], params = ["path"])
     @ResponseBody
-    fun getTestAtPath(@RequestParam(value = "path") path: String): ManualTest? {
+    fun getTestAtPath(@RequestParam(value = "path") path: String): OldManualTest? {
         return manualTestsService.getTestAtPath(Path.createInstance(path))
     }
 
@@ -30,8 +30,8 @@ class OldManualTestsController(private val manualTestsService: ManualTestsServic
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/save"])
     @ResponseBody
-    fun save(@RequestBody manualTest: ManualTest): ManualTest {
-        return manualTestsService.save(manualTest)
+    fun save(@RequestBody oldManualTest: OldManualTest): OldManualTest {
+        return manualTestsService.save(oldManualTest)
     }
 
     @RequestMapping(method = [RequestMethod.PUT], path = ["/directory"])

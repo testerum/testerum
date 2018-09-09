@@ -71,6 +71,6 @@ export class UrlService {
     }
 
     public navigateToManualExecPlanRunner(path: Path) {
-        this.router.navigate(["/manual/plans/runner", {path : path.toString()} ])
+        this.router.navigate(["/manual/runner", {path : path.toString()} ])
     }
 }

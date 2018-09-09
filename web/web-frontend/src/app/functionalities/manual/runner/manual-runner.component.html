@@ -1,0 +1,22 @@
+<div class="main-container">
+    <split direction="horizontal">
+        <split-area [size]="30">
+            <div style="margin: 5px 0 5px 0;">
+                <manual-exec-plan-overview
+                    [model]="manualExecPlan"
+                    [executionMode]="true">
+                </manual-exec-plan-overview>
+            </div>
+
+            <!--<json-tree [treeModel]="manualTestsExecutorTreeService.testsJsonTreeModel"-->
+                       <!--[modelComponentMapping]="modelComponentMapping">-->
+            <!--</json-tree>-->
+
+        </split-area>
+        <split-area [size]="70">
+
+            <router-outlet></router-outlet>
+
+        </split-area>
+    </split>
+</div>
