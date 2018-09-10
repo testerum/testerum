@@ -75,4 +75,12 @@ export class ManualExecPlansService {
             .get<ManualExecPlan>(this.BASE_URL + "/runner", httpOptions)
             .pipe(map(it => {return new ManualTest().deserialize(it)}));
     }
+
+    updateTestRun(model: ManualTest): Observable<ManualTest> {
+        throw new Error("Not Implemented")
+    }
+
+    getPathOfUnExecutedTest(path: Path): Observable<Path> {
+        throw new Error("Not Implemented")
+    }
 }

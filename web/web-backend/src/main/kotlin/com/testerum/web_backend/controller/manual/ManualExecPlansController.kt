@@ -201,7 +201,8 @@ class ManualExecPlansController {
                         )
                 ),
                 ManualTestStatus.FAILED,
-                "This is a comment, my comment!"
+                "This is a comment, my comment!",
+                false
         )
     }
 }

@@ -14,7 +14,7 @@
                     <label class="my-label label-size col-form-label">Test Name</label>
 
                     <div class="my-value">
-                        {{manualTestExeModel.text || ""}}
+                        {{model.name || ""}}
                     </div>
                 </div>
 
@@ -22,7 +22,7 @@
                 <div class="my-line">
                     <label class="my-label label-size">Tags</label>
                     <div class="my-value">
-                        <ng-container *ngFor="let tag of manualTestExeModel.tags">
+                        <ng-container *ngFor="let tag of model.tags">
                             <span class="label label-primary">{{tag}}</span>
                         </ng-container>
                     </div>
@@ -32,45 +32,45 @@
                 <div class="my-line">
                     <label class="my-label label-size">Description</label>
                     <div class="my-value"
-                         [innerHTML]="(manualTestExeModel.description || '') | safeHtml">
+                         [innerHTML]="(model.description || '') | safeHtml">
                     </div>
                 </div>
 
                 <!-- STEPS -->
-                <p-table [value]="manualTestExeModel.steps" selectionMode="single">
-                    <ng-template pTemplate="caption">
-                        Steps
-                    </ng-template>
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th class="steps-column-index"></th>
-                            <th>Description</th>
-                            <th class="steps-column-action">Status</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-step let-index="rowIndex" let-rowData>
-                        <tr [pSelectableRow]="rowData" class="step-row">
-                            <!-- INDEX -->
-                            <td>{{index + 1}}</td>
+                <!--<p-table [value]="manualTestExeModel.steps" selectionMode="single">-->
+                    <!--<ng-template pTemplate="caption">-->
+                        <!--Steps-->
+                    <!--</ng-template>-->
+                    <!--<ng-template pTemplate="header">-->
+                        <!--<tr>-->
+                            <!--<th class="steps-column-index"></th>-->
+                            <!--<th>Description</th>-->
+                            <!--<th class="steps-column-action">Status</th>-->
+                        <!--</tr>-->
+                    <!--</ng-template>-->
+                    <!--<ng-template pTemplate="body" let-step let-index="rowIndex" let-rowData>-->
+                        <!--<tr [pSelectableRow]="rowData" class="step-row">-->
+                            <!--&lt;!&ndash; INDEX &ndash;&gt;-->
+                            <!--<td>{{index + 1}}</td>-->
 
-                            <!-- DESCRIPTION -->
-                            <td>
-                                <span class="step-text-phase">
-                                    {{getPhaseText(step.phase, index) | titlecase}}
-                                </span>
+                            <!--&lt;!&ndash; DESCRIPTION &ndash;&gt;-->
+                            <!--<td>-->
+                                <!--<span class="step-text-phase">-->
+                                    <!--{{getPhaseText(step.phase, index) | titlecase}}-->
+                                <!--</span>-->
 
-                                {{step.description}}
-                            </td>
+                                <!--{{step.description}}-->
+                            <!--</td>-->
 
-                            <!-- STATUS -->
-                            <td>
-                                <step-status [(stepStatus)]="step.stepStatus"
-                                             [readonly]="isTestSuiteFinalized()"
-                                             (stepStatusChange)="stepStatusChanged($event, index)" ></step-status>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
+                            <!--&lt;!&ndash; STATUS &ndash;&gt;-->
+                            <!--<td>-->
+                                <!--<step-status [(stepStatus)]="step.stepStatus"-->
+                                             <!--[readonly]="isTestSuiteFinalized()"-->
+                                             <!--(stepStatusChange)="stepStatusChanged($event, index)" ></step-status>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    <!--</ng-template>-->
+                <!--</p-table>-->
 
                 <!-- TEST STATUS -->
                 <div class="my-line">
@@ -80,7 +80,7 @@
                         <p-dropdown name="testStatus" id="testStatus"
                                     [readonly]="isTestSuiteFinalized()"
                                     [options]="testStatusDropdownOptions"
-                                    [(ngModel)]="manualTestExeModel.testStatus"
+                                    [(ngModel)]="model.status"
                                     [style]="{'width':'150px'}"
                                     (onChange)="onTestChange()">
 
@@ -128,16 +128,16 @@
 
                 <!-- COMMENT -->
                 <div class="my-line"
-                     *ngIf="manualTestExeModel.testStatus == ManualTestStatus.FAILED
-                            || manualTestExeModel.testStatus == ManualTestStatus.BLOCKED
-                            || manualTestExeModel.testStatus == ManualTestStatus.NOT_APPLICABLE">
+                     *ngIf="model.status == ManualTestStatus.FAILED
+                            || model.status == ManualTestStatus.BLOCKED
+                            || model.status == ManualTestStatus.NOT_APPLICABLE">
                     <label class="my-label label-size" for="comments">Comment</label>
 
                     <div class="my-value" *ngIf="isTestSuiteFinalized()"
-                         [innerHTML]="(manualTestExeModel.comments || '') | safeHtml">
+                         [innerHTML]="(model.comments || '') | safeHtml">
                     </div>
                     <div class="my-value" *ngIf="!isTestSuiteFinalized()">
-                        <p-editor [(ngModel)]="manualTestExeModel.comments"
+                        <p-editor [(ngModel)]="model.comments"
                                   (onTextChange)="onTestChange()"
                                   [style]="{'height':'150px'}"
                                   id="comments" name="comments"></p-editor>
