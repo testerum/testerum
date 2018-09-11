@@ -8,6 +8,7 @@ import {ManualUiTreeNodeStatusModel} from "../../model/manual-ui-tree-node-statu
 import {ManualTreeStatusFilterModel} from "../../model/filter/manual-tree-status-filter.model";
 import {ManualUiTreeContainerStatusModel} from "../../model/manual-ui-tree-container-status.model";
 import {ManualTestStatus} from "../../../../plans/model/enums/manual-test-status.enum";
+import {UrlService} from "../../../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -28,7 +29,8 @@ export class ManualTestsStatusTreeNodeComponent implements OnInit, OnDestroy {
     ManualTestStatus = ManualTestStatus;
 
     constructor(private treeComponentService: ManualTestsStatusTreeComponentService,
-                private manualTestsStatusTreeService: ManualTestsStatusTreeService){}
+                private manualTestsStatusTreeService: ManualTestsStatusTreeService,
+                private urlService: UrlService){}
 
     nodeSelectedSubscription: Subscription;
     treeFilterSubscription: Subscription;
@@ -80,6 +82,10 @@ export class ManualTestsStatusTreeNodeComponent implements OnInit, OnDestroy {
     }
 
     setSelected() {
-        this.treeComponentService.setNodeAsSelected(this.model);
+        if (this.isTestNode()) {
+            this.treeComponentService.setNodeAsSelected(this.model);
+
+            this.urlService.navigateToManualExecPlanRunner(this.model.path);
+        }
     }
 }

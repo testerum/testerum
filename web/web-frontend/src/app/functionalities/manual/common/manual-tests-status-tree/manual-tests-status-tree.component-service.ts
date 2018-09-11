@@ -9,10 +9,7 @@ import {ManualUiTreeRootStatusModel} from "./model/manual-ui-tree-root-status.mo
 @Injectable()
 export class ManualTestsStatusTreeComponentService {
 
-    treeModel: JsonTreeModel;
-    treeRootNode: ManualUiTreeRootStatusModel;
-    treeTestsNodes: ManualUiTreeNodeStatusModel[] = [];
-    treeTestsWithFoldersNodes: ManualUiTreeBaseStatusModel[] = [];
+    isNavigationTree: boolean = false;
 
     selectedRunnerTreeNode: ManualUiTreeNodeStatusModel;
     selectedRunnerTreeNodeObserver: EventEmitter<ManualUiTreeNodeStatusModel> = new EventEmitter<ManualUiTreeNodeStatusModel>();
@@ -21,13 +18,5 @@ export class ManualTestsStatusTreeComponentService {
         this.selectedRunnerTreeNode = runnerTreeNodeModel;
 
         this.selectedRunnerTreeNodeObserver.emit(runnerTreeNodeModel);
-    }
-
-    showTestFolders(showTestFolders: boolean) {
-        if (showTestFolders) {
-            ArrayUtil.replaceElementsInArray(this.treeRootNode.children, this.treeTestsWithFoldersNodes);
-        } else {
-            ArrayUtil.replaceElementsInArray(this.treeRootNode.children, this.treeTestsNodes);
-        }
     }
 }

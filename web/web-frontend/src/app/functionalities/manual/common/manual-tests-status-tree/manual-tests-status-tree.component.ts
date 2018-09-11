@@ -23,6 +23,7 @@ import {ManualTestsStatusTreeRoot} from "../../plans/model/status-tree/manual-te
 export class ManualTestsStatusTreeComponent implements OnInit, OnDestroy {
 
     @Input() path: Path;
+    @Input() isNavigationTree: boolean = false;
     treeModel: JsonTreeModel = new JsonTreeModel();
 
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
@@ -32,10 +33,13 @@ export class ManualTestsStatusTreeComponent implements OnInit, OnDestroy {
 
     getManualTestsStatusTreeSubscription: Subscription;
 
-    constructor(private manualExecPlanService: ManualExecPlansService) {
+    constructor(private manualExecPlanService: ManualExecPlansService,
+                private manualTestsStatusTreeComponentService: ManualTestsStatusTreeComponentService) {
     }
 
     ngOnInit(): void {
+        this.manualTestsStatusTreeComponentService.isNavigationTree = this.isNavigationTree;
+
         this.getManualTestsStatusTreeSubscription = this.manualExecPlanService.getManualTestsStatusTree(this.path).subscribe((manualTestsStatusTreeRoot: ManualTestsStatusTreeRoot) => {
             ManualTestsStatusTreeUtil.mapServerModelToTreeModel(manualTestsStatusTreeRoot, this.treeModel)
         });
