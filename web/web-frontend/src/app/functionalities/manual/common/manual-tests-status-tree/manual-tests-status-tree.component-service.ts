@@ -5,11 +5,13 @@ import {ManualTreeStatusFilterModel} from "./model/filter/manual-tree-status-fil
 import {ArrayUtil} from "../../../../utils/array.util";
 import {ManualUiTreeBaseStatusModel} from "./model/manual-ui-tree-base-status.model";
 import {ManualUiTreeRootStatusModel} from "./model/manual-ui-tree-root-status.model";
+import {Path} from "../../../../model/infrastructure/path/path.model";
 
 @Injectable()
 export class ManualTestsStatusTreeComponentService {
 
     isNavigationTree: boolean = false;
+    planPath: Path;
 
     selectedRunnerTreeNode: ManualUiTreeNodeStatusModel;
     selectedRunnerTreeNodeObserver: EventEmitter<ManualUiTreeNodeStatusModel> = new EventEmitter<ManualUiTreeNodeStatusModel>();

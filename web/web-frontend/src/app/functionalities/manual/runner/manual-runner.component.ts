@@ -11,7 +11,7 @@ import {ManualExecPlan} from "../plans/model/manual-exec-plan.model";
 })
 export class ManualRunnerComponent implements OnInit {
 
-    path: Path;
+    planPath: Path;
     manualExecPlan: ManualExecPlan;
 
     constructor(private route: ActivatedRoute,
@@ -19,10 +19,10 @@ export class ManualRunnerComponent implements OnInit {
     }
 
     ngOnInit() {
-        let runnerPathAsString = this.route.snapshot.params["path"];
-        this.path = Path.createInstance(runnerPathAsString);
+        let runnerPlanPathAsString = this.route.snapshot.params["planPath"];
+        this.planPath = Path.createInstance(runnerPlanPathAsString);
 
-        this.manualExecPlansService.getManualExecPlan(Path.createInstance(runnerPathAsString)).subscribe( (manualExecPlan: ManualExecPlan) => {
+        this.manualExecPlansService.getManualExecPlan(Path.createInstance(runnerPlanPathAsString)).subscribe( (manualExecPlan: ManualExecPlan) => {
             this.manualExecPlan = manualExecPlan;
         });
     }

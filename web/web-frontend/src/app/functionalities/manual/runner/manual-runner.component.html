@@ -8,12 +8,13 @@
                 </manual-exec-plan-overview>
             </div>
 
-            <manual-tests-status-tree [path]="path"></manual-tests-status-tree>
+            <manual-tests-status-tree [planPath]="planPath"
+                                      [isNavigationTree]="true" #tree></manual-tests-status-tree>
 
         </split-area>
         <split-area [size]="70">
 
-            <manual-runner-editor></manual-runner-editor>
+            <manual-runner-editor [tree]="tree"></manual-runner-editor>
 
         </split-area>
     </split>

@@ -9,6 +9,7 @@ import {ManualTreeStatusFilterModel} from "../../model/filter/manual-tree-status
 import {ManualUiTreeContainerStatusModel} from "../../model/manual-ui-tree-container-status.model";
 import {ManualTestStatus} from "../../../../plans/model/enums/manual-test-status.enum";
 import {UrlService} from "../../../../../../service/url.service";
+import {Path} from "../../../../../../model/infrastructure/path/path.model";
 
 @Component({
     moduleId: module.id,
@@ -21,7 +22,7 @@ import {UrlService} from "../../../../../../service/url.service";
 })
 export class ManualTestsStatusTreeNodeComponent implements OnInit, OnDestroy {
 
-    @Input() model:ManualUiTreeBaseStatusModel;
+    @Input() model: ManualUiTreeBaseStatusModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
     isSelected:boolean = false;
@@ -85,7 +86,9 @@ export class ManualTestsStatusTreeNodeComponent implements OnInit, OnDestroy {
         if (this.isTestNode()) {
             this.treeComponentService.setNodeAsSelected(this.model);
 
-            this.urlService.navigateToManualExecPlanRunner(this.model.path);
+            if (this.treeComponentService.isNavigationTree) {
+                this.urlService.navigateToManualExecPlanTestRunner(this.treeComponentService.planPath, this.model.path);
+            }
         }
     }
 }

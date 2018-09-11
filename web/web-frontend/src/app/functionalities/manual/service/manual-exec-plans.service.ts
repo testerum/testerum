@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {ManualExecPlans} from "../plans/model/manual-exec-plans.model";
 import {Observable} from "rxjs";
 import {Path} from "../../../model/infrastructure/path/path.model";
@@ -10,6 +10,7 @@ import {RootFeatureNode} from "../../../model/feature/tree/root-feature-node.mod
 import {map} from "rxjs/operators";
 import {ManualTestsStatusTreeRoot} from "../plans/model/status-tree/manual-tests-status-tree-root.model";
 import {ManualTest} from "../plans/model/manual-test.model";
+import {Feature} from "../../../model/feature/feature.model";
 
 @Injectable()
 export class ManualExecPlansService {
@@ -26,10 +27,10 @@ export class ManualExecPlansService {
             .pipe(map(it => {return new ManualExecPlans().deserialize(it)}));
     }
 
-    getManualExecPlan(path: Path): Observable<ManualExecPlan> {
+    getManualExecPlan(planPath: Path): Observable<ManualExecPlan> {
         const httpOptions = {
             params: new HttpParams()
-                .append('path', path.toString())
+                .append('planPath', planPath.toString())
         };
 
         return this.http
@@ -44,20 +45,20 @@ export class ManualExecPlansService {
         return this.featureService.getFeatureTree(featuresTreeFilter)
     }
 
-    deleteManualExecPlan(path: Path): Observable<void> {
+    deleteManualExecPlan(planPath: Path): Observable<void> {
         const httpOptions = {
             params: new HttpParams()
-                .append('path', path.toString())
+                .append('planPath', planPath.toString())
         };
 
         return this.http
             .delete<void>(this.BASE_URL + "/plans", httpOptions);
     }
 
-    getManualTestsStatusTree(path: Path): Observable<ManualTestsStatusTreeRoot> {
+    getManualTestsStatusTree(planPath: Path): Observable<ManualTestsStatusTreeRoot> {
         const httpOptions = {
             params: new HttpParams()
-                .append('path', path.toString())
+                .append('planPath', planPath.toString())
         };
 
         return this.http
@@ -65,22 +66,43 @@ export class ManualExecPlansService {
             .pipe(map(it => {return new ManualTestsStatusTreeRoot().deserialize(it)}));
     }
 
-    getManualTest(path: Path): Observable<ManualTest> {
+    getManualTest(planPath: Path, testPath: Path): Observable<ManualTest> {
         const httpOptions = {
             params: new HttpParams()
-                .append('path', path.toString())
+                .append('planPath', planPath.toString())
+                .append('testPath', testPath.toString())
         };
 
         return this.http
-            .get<ManualExecPlan>(this.BASE_URL + "/runner", httpOptions)
+            .get<ManualExecPlan>(this.BASE_URL + "/plans/runner", httpOptions)
             .pipe(map(it => {return new ManualTest().deserialize(it)}));
     }
 
-    updateTestRun(model: ManualTest): Observable<ManualTest> {
-        throw new Error("Not Implemented")
+    updateTestRun(planPath: Path, model: ManualTest): Observable<ManualTest> {
+        let body = model.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            }),
+            params: new HttpParams()
+                .append('planPath', planPath.toString())
+        };
+
+        return this.http
+            .put<ManualTest>(this.BASE_URL + + "/plans/runner", body, httpOptions).pipe(
+                map(res => new ManualTest().deserialize(res)));
     }
 
-    getPathOfUnExecutedTest(path: Path): Observable<Path> {
-        throw new Error("Not Implemented")
+    getPathOfUnExecutedTest(planPath: Path, currentTestPath: Path): Observable<Path> {
+
+        const httpOptions = {
+            params: new HttpParams()
+                .append('planPath', planPath.toString())
+                .append('currentTestPath', currentTestPath.toString())
+        };
+
+        return this.http
+            .get<Path>(this.BASE_URL + "/plans/runner/next", httpOptions)
+            .pipe(map(it => {return Path.deserialize(it)}));
     }
 }

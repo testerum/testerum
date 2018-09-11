@@ -2,6 +2,7 @@ package com.testerum.web_backend.controller.manual
 
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.infrastructure.path.RenamePath
 import com.testerum.model.manual.ManualExecPlan
 import com.testerum.model.manual.ManualExecPlans
 import com.testerum.model.manual.ManualTest
@@ -54,9 +55,9 @@ class ManualExecPlansController {
         return ManualExecPlans(arrayListOf(manualExecPlan), emptyList())
     }
 
-    @RequestMapping(method = [RequestMethod.GET], path = ["plans"], params = ["path"])
+    @RequestMapping(method = [RequestMethod.GET], path = ["plans"], params = ["planPath"])
     @ResponseBody
-    fun getManualExecPlan(@RequestParam(value = "path") path: String): ManualExecPlan {
+    fun getManualExecPlan(@RequestParam(value = "planPath") planPath: String): ManualExecPlan {
        return ManualExecPlan(
                 Path.createInstance("/test/super"),
                 null,
@@ -85,14 +86,14 @@ class ManualExecPlansController {
         )
     }
 
-    @RequestMapping(method = [RequestMethod.DELETE], path = ["plans"], params = ["path"])
-    fun deleteManualExecPlan(@RequestParam(value = "path") path: String) {
-        LOG.warn("DELETE MANUAL EXEC", path)
+    @RequestMapping(method = [RequestMethod.DELETE], path = ["plans"], params = ["planPath"])
+    fun deleteManualExecPlan(@RequestParam(value = "planPath") planPath: String) {
+        LOG.warn("DELETE MANUAL EXEC", planPath)
     }
 
-    @RequestMapping(method = [RequestMethod.GET], path = ["status_tree"], params = ["path"])
+    @RequestMapping(method = [RequestMethod.GET], path = ["status_tree"], params = ["planPath"])
     @ResponseBody
-    fun getManualTestsStatusTree(@RequestParam(value = "path") path: String): ManualTestsStatusTreeRoot {
+    fun getManualTestsStatusTree(@RequestParam(value = "planPath") planPath: String): ManualTestsStatusTreeRoot {
         
         val dir11 = mutableListOf<ManualTestsStatusTreeBase>()
         dir11 += ManualTestsStatusTreeNode(Path.createInstance("/dir11_node1"), "dir11_node1", ManualTestStatus.PASSED);
@@ -113,12 +114,13 @@ class ManualExecPlansController {
     }
 
 
-    @RequestMapping(method = [RequestMethod.GET], path = ["runner"], params = ["path"])
+    @RequestMapping(method = [RequestMethod.GET], path = ["/plans/runner"], params = ["planPath", "testPath"])
     @ResponseBody
-    fun getManualRunnerTest(@RequestParam(value = "path") path: String): ManualTest {
+    fun getManualRunnerTest(@RequestParam(value = "planPath") planPath: String,
+                            @RequestParam(value = "testPath") testPath: String): ManualTest {
         return ManualTest(
-                Path.createInstance(path),
-                Path.createInstance(path),
+                Path.createInstance(testPath),
+                Path.createInstance(testPath),
                 "Create Owner Test",
                 "This is a cool test",
                 listOf("acasa", "love", "super"),
@@ -204,5 +206,20 @@ class ManualExecPlansController {
                 "This is a comment, my comment!",
                 false
         )
+    }
+
+
+    @RequestMapping(method = [RequestMethod.PUT], path = ["/plans/runner"], params = ["planPath"])
+    @ResponseBody
+    fun updateManualTest(@RequestParam(value = "planPath") planPath: String,
+                         @RequestBody manualTest: ManualTest): ManualTest {
+        return getManualRunnerTest(planPath, manualTest.path.toString());
+    }
+
+    @RequestMapping(method = [RequestMethod.GET], path = ["/plans/runner/next"], params = ["planPath", "testPath"])
+    @ResponseBody
+    fun getNextUnExecutedTest(@RequestParam(value = "planPath") planPath: String,
+                              @RequestParam(value = "testPath") testPath: String): ManualTest {
+        return getManualRunnerTest(planPath, testPath);
     }
 }

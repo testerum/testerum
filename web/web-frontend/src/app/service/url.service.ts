@@ -70,7 +70,11 @@ export class UrlService {
         this.router.navigate(["/manual/plans/show", {path : path.toString()} ])
     }
 
-    public navigateToManualExecPlanRunner(path: Path) {
-        this.router.navigate(["/manual/runner", {path : path.toString()} ])
+    public navigateToManualExecPlanRunner(planPath: Path) {
+        this.router.navigate(["/manual/plans/runner", {planPath : planPath.toString()} ])
+    }
+
+    public navigateToManualExecPlanTestRunner(planPath: Path, testPath: Path) {
+        this.router.navigate(["/manual/plans/runner", {planPath : planPath.toString(), testPath: testPath.toString()} ])
     }
 }

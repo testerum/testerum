@@ -1,14 +1,16 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {ManualTestStatus} from "../../plans/model/enums/manual-test-status.enum";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
 import {ManualTest} from "../../plans/model/manual-test.model";
 import {ManualTestStepStatus} from "../../plans/model/enums/manual-test-step-status.enum";
 import {UrlService} from "../../../../service/url.service";
 import {MarkdownEditorComponent} from "../../../../generic/components/markdown-editor/markdown-editor.component";
 import {StepCall} from "../../../../model/step-call.model";
+import {ManualTestsStatusTreeComponent} from "../../common/manual-tests-status-tree/manual-tests-status-tree.component";
+import {filter, map} from "rxjs/operators";
 
 @Component({
     selector: 'manual-runner-editor',
@@ -16,6 +18,8 @@ import {StepCall} from "../../../../model/step-call.model";
     styleUrls: ['manual-runner-editor.component.scss']
 })
 export class ManualRunnerEditorComponent implements OnInit {
+
+    @Input() tree: ManualTestsStatusTreeComponent;
 
     ManualTestStatus = ManualTestStatus;
     StepPhaseEnum = StepPhaseEnum;
@@ -26,7 +30,8 @@ export class ManualRunnerEditorComponent implements OnInit {
     };
 
     model: ManualTest;
-    path: Path;
+    planPath: Path;
+    testPath: Path;
     hasStateChanged = false;
 
     testStatusDropdownOptions = [
@@ -47,14 +52,31 @@ export class ManualRunnerEditorComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.router.events.pipe(
+            filter(event => event instanceof NavigationEnd),
+            map(route => {
+                let leafRoute: any = this.router.routerState.snapshot.root;
+                while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
+
+                return leafRoute.params
+            }),)
+            .subscribe((params: Params) => {
+                this.init(params);
+            });
+    }
+
+    init(queryParams: Params) {
         this.hasStateChanged = false;
         this.steps = [];
-        
-        let pathAsString = this.route.snapshot.params["path"];
-        this.path = pathAsString ? Path.createInstance(pathAsString) : null;
 
-        if (this.path) {
-            this.manualExecPlansService.getManualTest(this.path).subscribe((manualTest: ManualTest) => {
+        let planPathAsString = queryParams["planPath"];
+        this.planPath = planPathAsString ? Path.createInstance(planPathAsString) : null;
+
+        let testPathAsString = queryParams["testPath"];
+        this.testPath = testPathAsString ? Path.createInstance(testPathAsString) : null;
+
+        if (this.testPath) {
+            this.manualExecPlansService.getManualTest(this.planPath, this.testPath).subscribe((manualTest: ManualTest) => {
                 this.model = manualTest;
 
                 for (const stepCall of manualTest.stepCalls) {
@@ -97,26 +119,26 @@ export class ManualRunnerEditorComponent implements OnInit {
         return this.model.isTestPlanFinalized;
     }
     getTestPathDirectoryAsString(): string {
-        return this.path ? this.path.toDirectoryString() : ""
+        return this.testPath ? this.testPath.toDirectoryString() : ""
     }
 
     resetChanges(): void {
-        this.ngOnInit();
+        this.init(this.route.snapshot.params);
     }
 
     saveAction(): void {
         this.manualExecPlansService
-            .updateTestRun(this.model)
+            .updateTestRun(this.planPath, this.model)
             .subscribe((manualTest: ManualTest) => {
                 this.model = manualTest;
-                this.ngOnInit()
-                //TODO: refresh tree
+                this.ngOnInit();
+                this.tree.ngOnInit();
             });
     }
 
-    private showNextUnexecutedTest(): void {
+    private showNextUnExecutedTest(): void {
         this.manualExecPlansService
-            .getPathOfUnExecutedTest(this.path)
+            .getPathOfUnExecutedTest(this.planPath, this.testPath)
             .subscribe((nextPath: Path) => {
                 this.urlService.navigateToManualExecPlanRunner(nextPath)
             });
