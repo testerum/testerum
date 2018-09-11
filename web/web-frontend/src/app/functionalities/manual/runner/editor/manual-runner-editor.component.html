@@ -1,5 +1,5 @@
 <split-panel-container>
-    <div>
+    <div *ngIf="model">
         <div class="page-body">
             <form #stepForm="ngForm" (ngSubmit)="saveAction()" class="form-horizontal">
 
@@ -29,48 +29,48 @@
                 </div>
 
                 <!-- DESCRIPTION -->
-                <div class="my-line">
-                    <label class="my-label label-size">Description</label>
-                    <div class="my-value"
-                         [innerHTML]="(model.description || '') | safeHtml">
+                <div class="my-line" *ngIf="model.description">
+                    <label class="my-label label-size" for="description">Description</label>
+                    <div class="my-value">
+                        <markdown-editor [value]="model.description"
+                                         [options]="markdownEditorOptions"
+                                         [editMode]="false"
+                                         class="markdown-editor-dynamic-size"
+                                         id="description"></markdown-editor>
                     </div>
                 </div>
 
                 <!-- STEPS -->
-                <!--<p-table [value]="manualTestExeModel.steps" selectionMode="single">-->
-                    <!--<ng-template pTemplate="caption">-->
-                        <!--Steps-->
-                    <!--</ng-template>-->
-                    <!--<ng-template pTemplate="header">-->
-                        <!--<tr>-->
-                            <!--<th class="steps-column-index"></th>-->
-                            <!--<th>Description</th>-->
-                            <!--<th class="steps-column-action">Status</th>-->
-                        <!--</tr>-->
-                    <!--</ng-template>-->
-                    <!--<ng-template pTemplate="body" let-step let-index="rowIndex" let-rowData>-->
-                        <!--<tr [pSelectableRow]="rowData" class="step-row">-->
-                            <!--&lt;!&ndash; INDEX &ndash;&gt;-->
-                            <!--<td>{{index + 1}}</td>-->
+                <p-table [value]="steps" selectionMode="single">
+                    <ng-template pTemplate="caption">
+                        Steps
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="steps-column-index"></th>
+                            <th>Description</th>
+                            <th class="steps-column-action">Status</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-step let-index="rowIndex" let-rowData>
+                        <tr [pSelectableRow]="rowData" class="step-row">
+                            <!-- INDEX -->
+                            <td>{{index + 1}}</td>
 
-                            <!--&lt;!&ndash; DESCRIPTION &ndash;&gt;-->
-                            <!--<td>-->
-                                <!--<span class="step-text-phase">-->
-                                    <!--{{getPhaseText(step.phase, index) | titlecase}}-->
-                                <!--</span>-->
+                            <!-- DESCRIPTION -->
+                            <td>
+                                <step-call-tree [stepCalls]="steps[index]" [isEditMode]="false"></step-call-tree>
+                            </td>
 
-                                <!--{{step.description}}-->
-                            <!--</td>-->
-
-                            <!--&lt;!&ndash; STATUS &ndash;&gt;-->
-                            <!--<td>-->
-                                <!--<step-status [(stepStatus)]="step.stepStatus"-->
-                                             <!--[readonly]="isTestSuiteFinalized()"-->
-                                             <!--(stepStatusChange)="stepStatusChanged($event, index)" ></step-status>-->
-                            <!--</td>-->
-                        <!--</tr>-->
-                    <!--</ng-template>-->
-                <!--</p-table>-->
+                            <!-- STATUS -->
+                            <td>
+                                <manual-runner-step-status [(stepStatus)]="model.stepsStatus[index]"
+                                                           [readonly]="isTestSuiteFinalized()"
+                                                           (stepStatusChange)="stepStatusChanged($event, index)"></manual-runner-step-status>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
 
                 <!-- TEST STATUS -->
                 <div class="my-line">
@@ -85,40 +85,39 @@
                                     (onChange)="onTestChange()">
 
                             <ng-template let-item pTemplate="selectedItem">
-                                <div class="ui-helper-clearfix dropdown-item-container"
-                                     [class.dr-not-executed]="ManualTestStatus.NOT_EXECUTED == item.value ||
-                                                              ManualTestStatus.BLOCKED == item.value ||
-                                                              ManualTestStatus.NOT_APPLICABLE == item.value"
-                                     [class.dr-passed]="ManualTestStatus.PASSED == item.value"
-                                     [class.dr-failed]="ManualTestStatus.FAILED == item.value">
+                                <div class="ui-helper-clearfix dropdown-item-container">
 
-                                    <i class="fas"
-                                       [class.fa-square-o]="ManualTestStatus.NOT_EXECUTED == item.value"
-                                       [class.fa-check-square-o]="ManualTestStatus.PASSED == item.value"
-                                       [class.fa-times]="ManualTestStatus.FAILED == item.value"
-                                       [class.fa-ban]="ManualTestStatus.BLOCKED == item.value"
-                                       [class.fa-exclamation]="ManualTestStatus.NOT_APPLICABLE == item.value"
+                                    <i [class.fa_my-runner-executing-colored]="ManualTestStatus.NOT_EXECUTED == item.value"
+                                       [class.fa_my-runner-passed-colored]="ManualTestStatus.PASSED == item.value"
+                                       [class.fa_my-runner-failed-colored]="ManualTestStatus.FAILED == item.value"
+                                       [class.fa_my-runner-disabled-colored]="ManualTestStatus.BLOCKED == item.value"
+                                       [class.fa_my-runner-attention-colored]="ManualTestStatus.NOT_APPLICABLE == item.value"
                                        aria-hidden="true"></i>
-                                    <div class="dropdown-item-text">{{item.label}}</div>
+                                    <div class="dropdown-item-text"
+                                         [class.gray-color]="ManualTestStatus.NOT_EXECUTED == item.value"
+                                         [class.success-color]="ManualTestStatus.PASSED == item.value"
+                                         [class.error_color]="ManualTestStatus.FAILED == item.value ||
+                                                              ManualTestStatus.BLOCKED == item.value"
+                                         [class.warning-color]="ManualTestStatus.NOT_APPLICABLE == item.value">{{item.label}}</div>
                                 </div>
                             </ng-template>
 
                             <ng-template let-manualEnum pTemplate="item">
-                                <div class="ui-helper-clearfix dropdown-item-container"
-                                     [class.dr-not-executed]="ManualTestStatus.NOT_EXECUTED == manualEnum.value"
-                                     [class.dr-passed]="ManualTestStatus.PASSED == manualEnum.value"
-                                     [class.dr-failed]="ManualTestStatus.FAILED == manualEnum.value"
-                                     [class.dr-blocked]="ManualTestStatus.BLOCKED == manualEnum.value"
-                                     [class.dr-not-applicable]="ManualTestStatus.NOT_APPLICABLE == manualEnum.value">
+                                <div class="ui-helper-clearfix dropdown-item-container">
 
                                     <i class="fas"
-                                       [class.fa-square-o]="ManualTestStatus.NOT_EXECUTED == manualEnum.value"
-                                       [class.fa-check-square-o]="ManualTestStatus.PASSED == manualEnum.value"
-                                       [class.fa-times]="ManualTestStatus.FAILED == manualEnum.value"
-                                       [class.fa-ban]="ManualTestStatus.BLOCKED == manualEnum.value"
-                                       [class.fa-exclamation]="ManualTestStatus.NOT_APPLICABLE == manualEnum.value"
+                                       [class.fa_my-runner-executing-colored]="ManualTestStatus.NOT_EXECUTED == manualEnum.value"
+                                       [class.fa_my-runner-passed-colored]="ManualTestStatus.PASSED == manualEnum.value"
+                                       [class.fa_my-runner-failed-colored]="ManualTestStatus.FAILED == manualEnum.value"
+                                       [class.fa_my-runner-disabled-colored]="ManualTestStatus.BLOCKED == manualEnum.value"
+                                       [class.fa_my-runner-attention-colored]="ManualTestStatus.NOT_APPLICABLE == manualEnum.value"
                                        aria-hidden="true"></i>
-                                    <div class="dropdown-item-text">{{manualEnum.label}}</div>
+                                    <div class="dropdown-item-text"
+                                         [class.gray-color]="ManualTestStatus.NOT_EXECUTED == manualEnum.value"
+                                         [class.success-color]="ManualTestStatus.PASSED == manualEnum.value"
+                                         [class.error_color]="ManualTestStatus.FAILED == manualEnum.value ||
+                                                              ManualTestStatus.BLOCKED == manualEnum.value"
+                                         [class.warning-color]="ManualTestStatus.NOT_APPLICABLE == manualEnum.value">{{manualEnum.label}}</div>
                                 </div>
                             </ng-template>
                         </p-dropdown>
@@ -131,16 +130,13 @@
                      *ngIf="model.status == ManualTestStatus.FAILED
                             || model.status == ManualTestStatus.BLOCKED
                             || model.status == ManualTestStatus.NOT_APPLICABLE">
-                    <label class="my-label label-size" for="comments">Comment</label>
+                    <label class="my-label label-size">Comment</label>
 
-                    <div class="my-value" *ngIf="isTestSuiteFinalized()"
-                         [innerHTML]="(model.comments || '') | safeHtml">
-                    </div>
-                    <div class="my-value" *ngIf="!isTestSuiteFinalized()">
-                        <p-editor [(ngModel)]="model.comments"
-                                  (onTextChange)="onTestChange()"
-                                  [style]="{'height':'150px'}"
-                                  id="comments" name="comments"></p-editor>
+                    <div class="my-value">
+                        <markdown-editor [value]="model.comments"
+                                         [options]="markdownEditorOptions"
+                                         [editMode]="!isTestSuiteFinalized()"
+                                         class="markdown-editor-dynamic-size"></markdown-editor>
                     </div>
                 </div>
 

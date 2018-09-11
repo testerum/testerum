@@ -31,12 +31,13 @@ export class MarkdownEditorComponent implements AfterViewInit {
     }
 
     @Input() options: any;
+    @Input() editMode: boolean = true;
+    oldEditMode: boolean = true;
 
     @ViewChild('descriptionArea') textarea: ElementRef;
     simpleMDE: SimpleMDE;
 
-    editMode: boolean = true;
-    oldEditMode: boolean = true;
+
 
     ngAfterViewInit(): void {
         this.initMarkdownEditor()

@@ -186,7 +186,7 @@ body {
 }
 .fa_my-runner-attention-colored {
     @extend .fa_my-runner-attention;
-    color: $error-color;
+    color: $warning-color;
 }
 // tree icons
 .fa_my-tree-node-open {

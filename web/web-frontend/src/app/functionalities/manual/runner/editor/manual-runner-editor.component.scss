@@ -2,26 +2,15 @@
     width: 10em;
 }
 
-// OLD CSS
-.inline {
-    display: inline-block;
-}
-.step-action-panel {
-    margin-left: 10px;
-}
-
-:host >>> .ui-autocomplete {
+.dropdown-item-container {
     display: flex;
-    flex-flow: row;
+    flex-direction: row;
+    align-items: center;
 }
 
-:host >>> .ui-autocomplete-dropdown {
-    height: auto;
-}
-
-.ui-state-highlight {
-    background-color: #c7e9ff !important;
-    color: black !important;
+.dropdown-item-text {
+    margin-left: 5px;
+    font-weight: bold;
 }
 
 .steps-column-index {
@@ -36,67 +25,3 @@
     width: 100%;
     align-self: center;
 }
-
-.step-text-phase {
-    color: mediumblue;
-    font-weight: bolder;
-    display: inline-block;
-    vertical-align: top;
-}
-.step-phase-chooser {
-    line-height: 20;
-    padding: 0.25em;
-    height: auto;
-    vertical-align: middle;
-    align-self: center;
-}
-
-.step-row:hover .step-button-panel {
-    display: inline-block;
-}
-
-.step-button-panel {
-    display: none;
-}
-
-.hide-step-button {
-    opacity: 0;
-}
-.hide {
-    display: none;
-}
-
-.dropdown-item-container {
-    height:25px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.dropdown-item-container > .fa {
-    font-size: 25px;
-    margin-right: 5px;
-}
-
-.dropdown-item-text {
-    font-size:14px;
-    line-height: 25px
-}
-
-.dr-not-executed {
-    color: darkgrey;;
-}
-.dr-passed {
-    color: green;
-}
-.dr-failed{
-    color: red;
-}
-.dr-blocked{
-    color: #dca7a7;
-}
-.dr-not-applicable{
-    color: #c8e5bc;
-}
-
-

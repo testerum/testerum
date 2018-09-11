@@ -32,6 +32,7 @@ import {ManualTestsStatusTreeService} from "./plans/editor/manual-tests-status-t
 import {ManualTestsStatusTreeToolbarComponent} from "./plans/editor/manual-tests-status-tree/toolbar/manual-tests-status-tree-toolbar.component";
 import {ManualRunnerComponent} from "./runner/manual-runner.component";
 import {ManualRunnerEditorComponent} from "./runner/editor/manual-runner-editor.component";
+import {ManualRunnerStepStatusComponent} from "./runner/editor/step_status/manual-runner-step-status.component";
 
 @NgModule({
     imports: [
@@ -73,6 +74,7 @@ import {ManualRunnerEditorComponent} from "./runner/editor/manual-runner-editor.
 
         ManualRunnerComponent,
         ManualRunnerEditorComponent,
+        ManualRunnerStepStatusComponent,
     ],
     entryComponents: [
         ManualSelectTestsContainerComponent,

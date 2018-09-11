@@ -3,6 +3,7 @@ $success-color: #5cb85c;
 $info-color: #31b0d5;
 $warning-color: #f0ad4e;
 $primary-color: #337ab7;
+$gray-color: #c0bebc;
 
 $alert-text-color: #a94442;
 $alert-background-color: #dca7a7;
@@ -15,6 +16,7 @@ $automated-test-color: #333333;
 .info-color {color: $info-color;}
 .warning-color {color: $warning-color;}
 .primary-color {color: $primary-color;}
+.gray-color {color: $gray-color;}
 .manual-test-background-color {background-color: $manual-test-color;}
 .automated-test-background-color {background-color: $automated-test-color;}
 
