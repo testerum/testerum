@@ -1,12 +1,12 @@
 package com.testerum.service.tests
 
 import com.testerum.common.parsing.executer.ParserExecuter
-import com.testerum.service.file_repository.FileRepositoryService
-import com.testerum.service.file_repository.model.KnownPath
 import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType
 import com.testerum.model.test.TestModel
+import com.testerum.service.file_repository.FileRepositoryService
+import com.testerum.service.file_repository.model.KnownPath
 import com.testerum.service.mapper.FileToUiTestMapper
 import com.testerum.service.tests.resolver.TestResolver
 import com.testerum.service.warning.WarningService
@@ -30,7 +30,7 @@ class TestsService(private val testResolver: TestResolver,
         return getTestsUnderPath(Path.EMPTY)
     }
 
-    fun getTestsUnderPath(path: Path): List<TestModel> {
+    private fun getTestsUnderPath(path: Path): List<TestModel> {
         val uiTests = mutableListOf<TestModel>()
 
         val allTestFiles = fileRepositoryService.getAllResourcesByTypeUnderPath(KnownPath(path, FileType.TEST))
@@ -61,7 +61,7 @@ class TestsService(private val testResolver: TestResolver,
         return warningService.testWithWarnings(resolvedUiTest, keepExistingWarnings = true)
     }
 
-    fun getTestsForPath(testOrDirectoryPaths: List<Path>): List<TestModel> {
+    fun getTestsForPaths(testOrDirectoryPaths: List<Path>): List<TestModel> {
         val tests = mutableListOf<TestModel>()
 
         val (testPaths, directoryPaths) = testOrDirectoryPaths.partition { it.fileExtension == FileType.TEST.fileExtension }
@@ -80,12 +80,6 @@ class TestsService(private val testResolver: TestResolver,
         }
 
         return tests
-    }
-
-    fun deleteDirectory(path: Path) {
-        return fileRepositoryService.delete(
-                KnownPath(path, FileType.TEST)
-        )
     }
 
     fun moveDirectoryOrFile(copyPath: CopyPath) {

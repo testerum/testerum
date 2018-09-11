@@ -10,9 +10,9 @@ import {TestsService} from "../../../../service/tests.service";
 import {TestsRunnerService} from "../../tests-runner/tests-runner.service";
 import {JsonTreeNodeEventModel} from "../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {Subscription} from "rxjs";
-import {TestModel} from "../../../../model/test/test.model";
 import {UrlService} from "../../../../service/url.service";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
+import {FeatureService} from '../../../../service/feature.service';
 
 @Component({
     moduleId: module.id,
@@ -38,7 +38,8 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
                 private jsonTreeService: JsonTreeService,
                 private featuresTreeService: FeaturesTreeService,
                 private testsService: TestsService,
-                private testsRunnerService: TestsRunnerService) {
+                private testsRunnerService: TestsRunnerService,
+                private featureService: FeatureService) {
         this.selectedNodeSubscription = jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onFeatureSelected(item));
     }
 
@@ -85,7 +86,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
         this.jsonTreeService.triggerDeleteContainerAction(this.model.name).subscribe(
             (deleteEvent: JsonTreeContainerEditorEvent) => {
 
-                this.testsService.deleteDirectory(
+                this.featureService.delete(
                     this.model.path.getParentPath()
                 ).subscribe(
                     it => {

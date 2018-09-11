@@ -51,12 +51,11 @@
     <!--====== WEB SOCKET CONFIGURATION ======-->
     <websocket:handlers allowed-origins="*">
         <websocket:mapping path="/tests-ws" handler="testsWebSocketController"/>
-
     </websocket:handlers>
 
     <bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
-        <property name="maxTextMessageBufferSize" value="100000000"/>
-        <property name="maxBinaryMessageBufferSize" value="100000000"/>
+        <property name="maxTextMessageBufferSize" value="1048576"/>
+        <property name="maxBinaryMessageBufferSize" value="1048576"/>
     </bean>
     <!--====== END OF - WEB SOCKET CONFIGURATION ======-->
 

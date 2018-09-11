@@ -29,17 +29,6 @@ class TestsController(private val testsService: TestsService,
         return saveService.saveTest(testModel)
     }
 
-    @RequestMapping(method = [RequestMethod.GET], path = ["/automated/under-path"], params = ["path"])
-    @ResponseBody
-    fun getAutomatedTestsUnderPath(@RequestParam(value = "path") path: String): List<TestModel> {
-        return testsService.getTestsUnderPath(Path.createInstance(path))
-    }
-
-    @RequestMapping(method = [RequestMethod.DELETE], path = ["/directory"])
-    fun deleteDirectory(@RequestParam("path") pathAsString: String) {
-        testsService.deleteDirectory(Path.createInstance(pathAsString))
-    }
-
     @RequestMapping(method = [RequestMethod.POST], path = ["/directory/move"])
     fun moveDirectoryOrFile(@RequestBody copyPath: CopyPath) {
         testsService.moveDirectoryOrFile(copyPath)

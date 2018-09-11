@@ -16,18 +16,6 @@ export class TestsService {
     constructor(private http: HttpClient,
                 private urlService: UrlService) {}
 
-    runTest(testModel:TestModel): Observable<void> {
-        let body = testModel.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
-
-        return this.http
-            .post<void>(this.TESTS_URL+"/run/unsaved", body, httpOptions);
-    }
-
     delete(testModel:TestModel): Observable<void> {
         const httpOptions = {
             params: new HttpParams()
@@ -77,16 +65,6 @@ export class TestsService {
         return new TestModel().deserialize(res);
     }
 
-    deleteDirectory(path: Path): Observable<void> {
-        const httpOptions = {
-            params: new HttpParams()
-                .append('path', path.toString())
-        };
-
-        return this.http
-            .delete<void>(this.TESTS_URL + "/directory", httpOptions);
-    }
-
     showTestsScreen() {
         this.urlService.navigateToFeatures();
     }
@@ -101,18 +79,6 @@ export class TestsService {
 
         return this.http
             .post<void>(this.TESTS_URL + "/directory/move", body, httpOptions);
-    }
-
-    getAllAutomatedTestsUnderContainer(path: Path): Observable<Array<TestModel>>  {
-
-        const httpOptions = {
-            params: new HttpParams()
-                .append('path', path.toString())
-        };
-
-        return this.http
-            .get<Array<TestModel>>(this.TESTS_URL + "/automated/under-path", httpOptions).pipe(
-            map(TestsService.extractTestsModel));
     }
 
     getWarnings(testModel:TestModel): Observable<TestModel> {

@@ -1,10 +1,10 @@
 package com.testerum.web_backend.controller.runner
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.testerum.service.file_repository.FileRepositoryService
-import com.testerum.service.file_repository.model.KnownPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.repository.enums.FileType
+import com.testerum.service.file_repository.FileRepositoryService
+import com.testerum.service.file_repository.model.KnownPath
 import com.testerum.service.tests_runner.execution.TestsExecutionService
 import com.testerum.service.tests_runner.result.TestRunnerResultService
 import org.slf4j.LoggerFactory
@@ -53,19 +53,25 @@ class TestsWebSocketController(private val testsExecutionService: TestsExecution
 
         val resultFilePath = createResultsFile()
 
-        testsExecutionService.startExecution(executionId) { event ->
-            if (session.isOpen) {
-                // send to UI
-                val eventAsString = objectMapper.writeValueAsString(event)
-                session.sendMessage(TextMessage(eventAsString))
+        testsExecutionService.startExecution(
+                executionId = executionId,
+                eventProcessor = { event ->
+                    if (session.isOpen) {
+                        // send to UI
+                        val eventAsString = objectMapper.writeValueAsString(event)
+                        session.sendMessage(TextMessage(eventAsString))
 
-                // save to file
-                testRunnerResultService.saveEvent(event, resultFilePath)
-            } else {
-                LOGGER.warn("webSocket communication is closed; will stop test execution")
-                testsExecutionService.stopExecution(executionId)
-            }
-        }
+                        // save to file
+                        testRunnerResultService.saveEvent(event, resultFilePath)
+                    } else {
+                        LOGGER.warn("webSocket communication is closed; will stop test execution")
+                        testsExecutionService.stopExecution(executionId)
+                    }
+                },
+                doneProcessor = {
+                    session.close()
+                }
+        )
     }
 
     private fun createResultsFile(): Path {
