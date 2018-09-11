@@ -89,7 +89,7 @@ export class ManualExecPlansService {
         };
 
         return this.http
-            .put<ManualTest>(this.BASE_URL + + "/plans/runner", body, httpOptions).pipe(
+            .put<ManualTest>(this.BASE_URL + "/plans/runner", body, httpOptions).pipe(
                 map(res => new ManualTest().deserialize(res)));
     }
 
@@ -102,7 +102,7 @@ export class ManualExecPlansService {
         };
 
         return this.http
-            .get<Path>(this.BASE_URL + "/plans/runner/next", httpOptions)
+            .get<string>(this.BASE_URL + "/plans/runner/next", httpOptions)
             .pipe(map(it => {return Path.deserialize(it)}));
     }
 }

@@ -130,8 +130,7 @@ export class ManualRunnerEditorComponent implements OnInit {
         this.manualExecPlansService
             .updateTestRun(this.planPath, this.model)
             .subscribe((manualTest: ManualTest) => {
-                this.model = manualTest;
-                this.ngOnInit();
+                this.init(this.route.snapshot.params);
                 this.tree.ngOnInit();
             });
     }
@@ -140,7 +139,7 @@ export class ManualRunnerEditorComponent implements OnInit {
         this.manualExecPlansService
             .getPathOfUnExecutedTest(this.planPath, this.testPath)
             .subscribe((nextPath: Path) => {
-                this.urlService.navigateToManualExecPlanRunner(nextPath)
+                this.urlService.navigateToManualExecPlanTestRunner(this.planPath, nextPath)
             });
     }
 }

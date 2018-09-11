@@ -216,10 +216,10 @@ class ManualExecPlansController {
         return getManualRunnerTest(planPath, manualTest.path.toString());
     }
 
-    @RequestMapping(method = [RequestMethod.GET], path = ["/plans/runner/next"], params = ["planPath", "testPath"])
+    @RequestMapping(method = [RequestMethod.GET], path = ["/plans/runner/next"], params = ["planPath", "currentTestPath"])
     @ResponseBody
     fun getNextUnExecutedTest(@RequestParam(value = "planPath") planPath: String,
-                              @RequestParam(value = "testPath") testPath: String): ManualTest {
-        return getManualRunnerTest(planPath, testPath);
+                              @RequestParam(value = "currentTestPath") currentTestPath: String): Path {
+        return Path.createInstance(currentTestPath);
     }
 }

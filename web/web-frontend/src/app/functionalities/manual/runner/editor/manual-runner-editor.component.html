@@ -1,7 +1,7 @@
 <split-panel-container>
     <div *ngIf="model">
         <div class="page-body">
-            <form #stepForm="ngForm" (ngSubmit)="saveAction()" class="form-horizontal">
+            <form #stepForm="ngForm" class="form-horizontal">
 
                 <div class="my-line">
                     <label class="my-label label-size">Path</label>
@@ -149,7 +149,7 @@
 
                     <ng-container *ngIf="hasStateChanged">
                         <button (click)="resetChanges()" type="button" class="btn btn-default">Reset</button>
-                        <button class="btn btn-primary">Save</button>
+                        <button (click)="saveAction()" class="btn btn-primary">Save</button>
                     </ng-container>
                 </div>
 

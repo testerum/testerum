@@ -1,4 +1,5 @@
 import {Serializable} from "../infrastructure/serializable.model";
+import {JsonUtil} from "../../utils/json.util";
 
 export abstract class Enum implements Serializable<Enum> {
 
@@ -16,6 +17,6 @@ export abstract class Enum implements Serializable<Enum> {
     }
 
     serialize(): string {
-        return this.enumAsString;
+        return JsonUtil.stringify(this.enumAsString);
     }
 }
