@@ -101,16 +101,18 @@ export class ManualRunnerEditorComponent implements OnInit {
             this.model.stepsStatus[stepIndex] = ManualTestStepStatus.FAILED;
         }
 
-        let testStatus = ManualTestStatus.PASSED;
-        for (const stepStatus of this.model.stepsStatus) {
-            switch (stepStatus) {
-                case ManualTestStepStatus.NOT_EXECUTED: testStatus = ManualTestStatus.NOT_EXECUTED; break;
-                case ManualTestStepStatus.FAILED: testStatus = ManualTestStatus.FAILED; break;
-            }
-        }
-        this.model.status = testStatus;
+        this.model.status = this.calculateTestStatus();
     }
 
+    private calculateTestStatus() {
+        for (const stepStatus of this.model.stepsStatus) {
+            switch (stepStatus) {
+                case ManualTestStepStatus.NOT_EXECUTED: return ManualTestStatus.NOT_EXECUTED;
+                case ManualTestStepStatus.FAILED: return ManualTestStatus.FAILED;
+            }
+        }
+        return ManualTestStatus.PASSED;
+    }
     onTestChange() {
         this.hasStateChanged = true;
     }
