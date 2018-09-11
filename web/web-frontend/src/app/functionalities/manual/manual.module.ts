@@ -26,10 +26,10 @@ import {ManualExecPlanEditorResolver} from "./plans/editor/manual-exec-plan-edit
 import {ManualSelectTestsTreeComponent} from "./plans/editor/manual-select-tests-tree/manual-select-tests-tree.component";
 import {ManualSelectTestsContainerComponent} from "./plans/editor/manual-select-tests-tree/container/manual-select-tests-container.component";
 import {ManualSelectTestsNodeComponent} from "./plans/editor/manual-select-tests-tree/container/node/manual-select-tests-node.component";
-import {ManualTestsStatusTreeComponent} from "./plans/editor/manual-tests-status-tree/manual-tests-status-tree.component";
-import {ManualTestsStatusTreeNodeComponent} from "./plans/editor/manual-tests-status-tree/nodes/runner-tree-node/manual-tests-status-tree-node.component";
-import {ManualTestsStatusTreeService} from "./plans/editor/manual-tests-status-tree/manual-tests-status-tree.service";
-import {ManualTestsStatusTreeToolbarComponent} from "./plans/editor/manual-tests-status-tree/toolbar/manual-tests-status-tree-toolbar.component";
+import {ManualTestsStatusTreeComponent} from "./common/manual-tests-status-tree/manual-tests-status-tree.component";
+import {ManualTestsStatusTreeNodeComponent} from "./common/manual-tests-status-tree/nodes/runner-tree-node/manual-tests-status-tree-node.component";
+import {ManualTestsStatusTreeService} from "./common/manual-tests-status-tree/manual-tests-status-tree.service";
+import {ManualTestsStatusTreeToolbarComponent} from "./common/manual-tests-status-tree/toolbar/manual-tests-status-tree-toolbar.component";
 import {ManualRunnerComponent} from "./runner/manual-runner.component";
 import {ManualRunnerEditorComponent} from "./runner/editor/manual-runner-editor.component";
 import {ManualRunnerStepStatusComponent} from "./runner/editor/step_status/manual-runner-step-status.component";

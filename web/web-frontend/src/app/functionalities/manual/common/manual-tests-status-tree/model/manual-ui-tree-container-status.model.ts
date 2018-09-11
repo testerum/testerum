@@ -1,9 +1,9 @@
-import {ManualTestStatus} from "../../../model/enums/manual-test-status.enum";
-import {Path} from "../../../../../../model/infrastructure/path/path.model";
-import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
+import {ManualTestStatus} from "../../../plans/model/enums/manual-test-status.enum";
+import {Path} from "../../../../../model/infrastructure/path/path.model";
+import {JsonTreeContainer} from "../../../../../generic/components/json-tree/model/json-tree-container.model";
 import {ManualUiTreeBaseStatusModel} from "./manual-ui-tree-base-status.model";
-import {JsonTreeNodeState} from "../../../../../../generic/components/json-tree/model/json-tree-node-state.model";
-import {JsonTreeContainerOptions} from "../../../../../../generic/components/json-tree/model/behavior/JsonTreeContainerOptions";
+import {JsonTreeNodeState} from "../../../../../generic/components/json-tree/model/json-tree-node-state.model";
+import {JsonTreeContainerOptions} from "../../../../../generic/components/json-tree/model/behavior/JsonTreeContainerOptions";
 
 export class ManualUiTreeContainerStatusModel extends ManualUiTreeBaseStatusModel implements JsonTreeContainer {
 

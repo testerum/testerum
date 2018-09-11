@@ -1,13 +1,13 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ManualUiTreeBaseStatusModel} from "../../model/manual-ui-tree-base-status.model";
-import {ModelComponentMapping} from "../../../../../../../model/infrastructure/model-component-mapping.model";
+import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {ManualTestsStatusTreeComponentService} from "../../manual-tests-status-tree.component-service";
 import {ManualTestsStatusTreeService} from "../../manual-tests-status-tree.service";
 import {Subscription} from "rxjs";
 import {ManualUiTreeNodeStatusModel} from "../../model/manual-ui-tree-node-status.model";
 import {ManualTreeStatusFilterModel} from "../../model/filter/manual-tree-status-filter.model";
 import {ManualUiTreeContainerStatusModel} from "../../model/manual-ui-tree-container-status.model";
-import {ManualTestStatus} from "../../../../model/enums/manual-test-status.enum";
+import {ManualTestStatus} from "../../../../plans/model/enums/manual-test-status.enum";
 
 @Component({
     moduleId: module.id,
@@ -15,7 +15,7 @@ import {ManualTestStatus} from "../../../../model/enums/manual-test-status.enum"
     templateUrl: 'manual-tests-status-tree-node.component.html',
     styleUrls:[
         'manual-tests-status-tree-node.component.scss',
-        '../../../../../../../generic/css/tree.scss'
+        '../../../../../../generic/css/tree.scss'
     ]
 })
 export class ManualTestsStatusTreeNodeComponent implements OnInit, OnDestroy {

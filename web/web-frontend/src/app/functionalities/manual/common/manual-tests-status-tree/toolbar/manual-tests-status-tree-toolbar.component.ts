@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ManualUiTreeNodeStatusModel} from "../model/manual-ui-tree-node-status.model";
-import {JsonTreeModel} from "../../../../../../generic/components/json-tree/model/json-tree.model";
+import {JsonTreeModel} from "../../../../../generic/components/json-tree/model/json-tree.model";
 import {ManualTreeStatusFilterModel} from "../model/filter/manual-tree-status-filter.model";
-import {JsonTreeExpandUtil} from "../../../../../../generic/components/json-tree/util/json-tree-expand.util";
+import {JsonTreeExpandUtil} from "../../../../../generic/components/json-tree/util/json-tree-expand.util";
 import {ManualTestsStatusTreeService} from "../manual-tests-status-tree.service";
 
 @Component({

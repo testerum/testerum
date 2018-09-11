@@ -1,12 +1,12 @@
 import {ManualUiTreeRootStatusModel} from "../model/manual-ui-tree-root-status.model";
-import {ManualTestsStatusTreeRoot} from "../../../model/status-tree/manual-tests-status-tree-root.model";
-import {JsonTreeModel} from "../../../../../../generic/components/json-tree/model/json-tree.model";
+import {JsonTreeModel} from "../../../../../generic/components/json-tree/model/json-tree.model";
 import {ManualUiTreeBaseStatusModel} from "../model/manual-ui-tree-base-status.model";
-import {ManualTestsStatusTreeBase} from "../../../model/status-tree/manual-tests-status-tree-base.model";
+import {ManualTestsStatusTreeBase} from "../../../plans/model/status-tree/manual-tests-status-tree-base.model";
 import {ManualUiTreeContainerStatusModel} from "../model/manual-ui-tree-container-status.model";
-import {ManualTestsStatusTreeContainer} from "../../../model/status-tree/manual-tests-status-tree-container.model";
-import {ManualTestsStatusTreeNode} from "../../../model/status-tree/manual-tests-status-tree-node.model";
+import {ManualTestsStatusTreeContainer} from "../../../plans/model/status-tree/manual-tests-status-tree-container.model";
+import {ManualTestsStatusTreeNode} from "../../../plans/model/status-tree/manual-tests-status-tree-node.model";
 import {ManualUiTreeNodeStatusModel} from "../model/manual-ui-tree-node-status.model";
+import {ManualTestsStatusTreeRoot} from "../../../plans/model/status-tree/manual-tests-status-tree-root.model";
 
 export class ManualTestsStatusTreeUtil {
 
