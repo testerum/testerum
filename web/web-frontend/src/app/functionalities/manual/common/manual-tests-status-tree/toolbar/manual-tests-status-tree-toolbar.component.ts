@@ -3,6 +3,7 @@ import {JsonTreeModel} from "../../../../../generic/components/json-tree/model/j
 import {ManualTreeStatusFilterModel} from "../model/filter/manual-tree-status-filter.model";
 import {JsonTreeExpandUtil} from "../../../../../generic/components/json-tree/util/json-tree-expand.util";
 import {ManualTestsStatusTreeService} from "../manual-tests-status-tree.service";
+import {Path} from "../../../../../model/infrastructure/path/path.model";
 
 @Component({
     selector: 'manual-tests-status-tree-toolbar',
@@ -11,7 +12,8 @@ import {ManualTestsStatusTreeService} from "../manual-tests-status-tree.service"
 })
 export class ManualTestsStatusTreeToolbarComponent implements OnInit {
 
-    @Input() treeModel:JsonTreeModel ;
+    @Input() planPath: Path;
+    @Input() treeModel:JsonTreeModel;
 
     model = new ManualTreeStatusFilterModel();
 
@@ -45,7 +47,7 @@ export class ManualTestsStatusTreeToolbarComponent implements OnInit {
     }
 
     private triggerFilterChangeEvent() {
-        this.manualTestsStatusTreeService.treeFilterObservable.emit(this.model)
+        this.manualTestsStatusTreeService.initializeTreeFromServer(this.planPath, this.model);
     }
 
     onExpandAllNodes(): void {

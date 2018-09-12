@@ -14,6 +14,7 @@ import com.testerum.model.manual.status_tree.ManualTestsStatusTreeBase
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeContainer
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeNode
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeRoot
+import com.testerum.model.manual.status_tree.filter.ManualTreeStatusFilter
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
@@ -91,9 +92,10 @@ class ManualExecPlansController {
         LOG.warn("DELETE MANUAL EXEC", planPath)
     }
 
-    @RequestMapping(method = [RequestMethod.GET], path = ["status_tree"], params = ["planPath"])
+    @RequestMapping(method = [RequestMethod.POST], path = ["status_tree"], params = ["planPath"])
     @ResponseBody
-    fun getManualTestsStatusTree(@RequestParam(value = "planPath") planPath: String): ManualTestsStatusTreeRoot {
+    fun getManualTestsStatusTree(@RequestParam(value = "planPath") planPath: String,
+                                 @RequestBody statusTreeFilter: ManualTreeStatusFilter): ManualTestsStatusTreeRoot {
         
         val dir11 = mutableListOf<ManualTestsStatusTreeBase>()
         dir11 += ManualTestsStatusTreeNode(Path.createInstance("/dir11_node1"), "dir11_node1", ManualTestStatus.PASSED);

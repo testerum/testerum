@@ -39,9 +39,6 @@ export class ManualTestsStatusTreeNodeComponent implements OnInit, OnDestroy {
         this.nodeSelectedSubscription = this.treeComponentService.selectedRunnerTreeNodeObserver.subscribe((selectedTreeNode: ManualUiTreeNodeStatusModel) => {
             this.isSelected = this.model.path.equals(selectedTreeNode.path);
         });
-        this.treeFilterSubscription = this.manualTestsStatusTreeService.treeFilterObservable.subscribe((filter: ManualTreeStatusFilterModel) => {
-            this.model.calculateNodeVisibilityBasedOnFilter(filter)
-        });
     }
 
     ngOnDestroy(): void {

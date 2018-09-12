@@ -1,12 +1,13 @@
 <div class="tree" style="position: relative; height: 100%; width: 100%;">
     <div style="position: absolute; top: 0; height: 30px; left: 0; right: 0">
         <manual-tests-status-tree-toolbar
-            [treeModel]="treeModel">
+            [treeModel]="manualTestsStatusTreeService.treeModel"
+            [planPath]="planPath">
         </manual-tests-status-tree-toolbar>
     </div>
 
     <div style="position:absolute; top: 30px; bottom: 0; left: 0; right: 0; overflow: auto; overflow-x: hidden">
-        <json-tree [treeModel]="treeModel"
+        <json-tree [treeModel]="manualTestsStatusTreeService.treeModel"
                    [modelComponentMapping]="modelComponentMapping">
         </json-tree>
     </div>

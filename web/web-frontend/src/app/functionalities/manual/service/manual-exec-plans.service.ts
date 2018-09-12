@@ -11,6 +11,7 @@ import {map} from "rxjs/operators";
 import {ManualTestsStatusTreeRoot} from "../plans/model/status-tree/manual-tests-status-tree-root.model";
 import {ManualTest} from "../plans/model/manual-test.model";
 import {Feature} from "../../../model/feature/feature.model";
+import {ManualTreeStatusFilterModel} from "../common/manual-tests-status-tree/model/filter/manual-tree-status-filter.model";
 
 @Injectable()
 export class ManualExecPlansService {
@@ -55,14 +56,19 @@ export class ManualExecPlansService {
             .delete<void>(this.BASE_URL + "/plans", httpOptions);
     }
 
-    getManualTestsStatusTree(planPath: Path): Observable<ManualTestsStatusTreeRoot> {
+    getManualTestsStatusTree(planPath: Path, filter: ManualTreeStatusFilterModel): Observable<ManualTestsStatusTreeRoot> {
+        let body = filter.serialize();
+
         const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            }),
             params: new HttpParams()
                 .append('planPath', planPath.toString())
         };
 
         return this.http
-            .get<ManualExecPlan>(this.BASE_URL + "/status_tree", httpOptions)
+            .post<ManualExecPlan>(this.BASE_URL + "/status_tree", body, httpOptions)
             .pipe(map(it => {return new ManualTestsStatusTreeRoot().deserialize(it)}));
     }
 

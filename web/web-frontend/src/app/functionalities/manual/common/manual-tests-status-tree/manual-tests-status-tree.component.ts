@@ -12,6 +12,8 @@ import {ManualUiTreeContainerStatusModel} from "./model/manual-ui-tree-container
 import {ManualUiTreeRootStatusModel} from "./model/manual-ui-tree-root-status.model";
 import {ManualUiTreeNodeStatusModel} from "./model/manual-ui-tree-node-status.model";
 import {ManualTestsStatusTreeRoot} from "../../plans/model/status-tree/manual-tests-status-tree-root.model";
+import {ManualTestsStatusTreeService} from "./manual-tests-status-tree.service";
+import {ManualTreeStatusFilterModel} from "./model/filter/manual-tree-status-filter.model";
 
 @Component({
     moduleId: module.id,
@@ -24,7 +26,6 @@ export class ManualTestsStatusTreeComponent implements OnInit, OnDestroy {
 
     @Input() planPath: Path;
     @Input() isNavigationTree: boolean = false;
-    treeModel: JsonTreeModel = new JsonTreeModel();
 
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(ManualUiTreeRootStatusModel, ManualTestsStatusTreeNodeComponent)
@@ -33,7 +34,7 @@ export class ManualTestsStatusTreeComponent implements OnInit, OnDestroy {
 
     getManualTestsStatusTreeSubscription: Subscription;
 
-    constructor(private manualExecPlanService: ManualExecPlansService,
+    constructor(public manualTestsStatusTreeService: ManualTestsStatusTreeService,
                 private manualTestsStatusTreeComponentService: ManualTestsStatusTreeComponentService) {
     }
 
@@ -41,9 +42,7 @@ export class ManualTestsStatusTreeComponent implements OnInit, OnDestroy {
         this.manualTestsStatusTreeComponentService.isNavigationTree = this.isNavigationTree;
         this.manualTestsStatusTreeComponentService.planPath = this.planPath;
 
-        this.getManualTestsStatusTreeSubscription = this.manualExecPlanService.getManualTestsStatusTree(this.planPath).subscribe((manualTestsStatusTreeRoot: ManualTestsStatusTreeRoot) => {
-            ManualTestsStatusTreeUtil.mapServerModelToTreeModel(manualTestsStatusTreeRoot, this.treeModel)
-        });
+        this.manualTestsStatusTreeService.initializeTreeFromServer(this.planPath, ManualTreeStatusFilterModel.createEmptyFilter());
     }
 
     ngOnDestroy(): void {

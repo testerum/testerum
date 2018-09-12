@@ -23,42 +23,4 @@ export abstract class ManualUiTreeBaseStatusModel extends JsonTreeNodeAbstract {
         this.name = name;
         this.status = status;
     }
-
-    calculateNodeVisibilityBasedOnFilter(filter: ManualTreeStatusFilterModel) {
-
-        if (filter.showNotExecuted == filter.showPassed &&
-            filter.showPassed == filter.showFailed &&
-            filter.showFailed == filter.showBlocked &&
-            filter.showBlocked == filter.showNotApplicable) {
-
-            this.hidden = false;
-            this.updateParentVisibility(this);
-            return;
-        }
-
-        switch (this.status) {
-            case ManualTestStatus.NOT_EXECUTED: {this.hidden = !filter.showNotExecuted; break;}
-            case ManualTestStatus.IN_PROGRESS: {this.hidden = !filter.showInProgress; break;}
-            case ManualTestStatus.PASSED: {this.hidden = !filter.showPassed; break;}
-            case ManualTestStatus.FAILED: {this.hidden = !filter.showFailed; break;}
-            case ManualTestStatus.BLOCKED: {this.hidden = !filter.showBlocked; break;}
-            case ManualTestStatus.NOT_APPLICABLE: {this.hidden = !filter.showNotApplicable; break;}
-            default: this.hidden = false;
-        }
-
-        this.updateParentVisibility(this);
-    }
-
-    updateParentVisibility(model: ManualUiTreeBaseStatusModel) {
-        if(model.getParent() instanceof JsonTreeModel) return;
-
-        let parent = model.getParent() as ManualUiTreeContainerStatusModel;
-        if(parent == null) return;
-
-        let areAllChildrenHidden = parent.areAllChildrenHidden();
-        if(parent.hidden != areAllChildrenHidden) {
-            parent.hidden = areAllChildrenHidden;
-            this.updateParentVisibility(parent);
-        }
-    }
 }
