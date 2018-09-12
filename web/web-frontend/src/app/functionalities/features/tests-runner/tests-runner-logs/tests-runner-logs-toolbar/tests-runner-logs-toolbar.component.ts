@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {TestsRunnerLogsComponent} from "../tests-runner-logs.component";
 import {TestsRunnerService} from "../../tests-runner.service";
-import {OldManualTestStepStatus} from "../../../../../manual-tests/model/enums/manual-test-step-status.enum";
 
 @Component({
     selector: 'tests-runner-logs-toolbar',

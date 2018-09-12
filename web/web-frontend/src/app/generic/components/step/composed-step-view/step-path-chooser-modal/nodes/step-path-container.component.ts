@@ -7,7 +7,6 @@ import {JsonTreeContainerEditorEvent} from "../../../../json-tree/container-edit
 import {ArrayUtil} from "../../../../../../utils/array.util";
 import {Path} from "../../../../../../model/infrastructure/path/path.model";
 import {StepPathModalComponentService} from "../step-path-modal.component-service";
-import {ManualTestTreeNodeModel} from "../../../../../../manual-tests/tests/tests-tree/model/manual-test-tree-node.model";
 
 @Component({
     moduleId: module.id,

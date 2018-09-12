@@ -32,7 +32,6 @@ import {FileDirectoryChooserContainerComponent} from "./generic/components/form/
 import {RunnerModule} from "./functionalities/runner/runner.module";
 import {ResultService} from "./service/report/result.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {ManualTestsModule} from "./manual-tests/manual-tests.module";
 import {ArgValueValidatorDirective} from "./generic/components/step-call-tree/arg-modal/validator/arg-value-validator.directive";
 import {FeatureService} from "./service/feature.service";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
@@ -57,8 +56,6 @@ import {ManualModule} from "./functionalities/manual/manual.module";
         ResourcesModule,
         ManualModule,
         GenericModule,
-
-        ManualTestsModule, //TODO: to remove
 
         AppRoutingModule
     ],

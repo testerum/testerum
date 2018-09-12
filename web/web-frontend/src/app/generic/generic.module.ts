@@ -39,13 +39,7 @@ import {FileDirectoryChooserService} from "./components/form/file_dir_chooser/fi
 import {FileDirectoryChooserContainerComponent} from "./components/form/file_dir_chooser/container/file-directory-chooser-container.component";
 import {FileDirChooserComponent} from "./components/form/file_dir_chooser/file-dir-chooser.component";
 import {DirectoryChooserDialogComponent} from "./components/form/file_dir_chooser/dialog/directory-chooser-dialog.component";
-import {ManualTestTreeContainerComponent} from "../manual-tests/tests/tests-tree/container/manual-test-tree-container.component";
-import {ManualTestTreeNodeComponent} from "../manual-tests/tests/tests-tree/container/node/manual-test-tree-node.component";
 import {SafeHtmlPipe} from "./pipes/safe-html.pipe";
-import {SelectTestTreeRunnerContainerComponent} from "../manual-tests/runner/editor/select-tests-tree/container/select-test-tree-runner-container.component";
-import {SelectTestTreeRunnerNodeComponent} from "../manual-tests/runner/editor/select-tests-tree/container/node/select-test-tree-runner-node.component";
-import {ManualTestsExecutorTreeContainerComponent} from "../manual-tests/executer/tree/container/manual-tests-executor-tree-container.component";
-import {ManualTestsExecutorTreeNodeComponent} from "../manual-tests/executer/tree/container/node/manual-tests-executor-tree-node.component";
 import {ChartModule} from "primeng/chart";
 import {ExecutionPieComponent} from "./components/charts/execution-pie/execution-pie.component";
 import {ExecutionPieService} from "./components/charts/execution-pie/execution-pie.service";
@@ -258,12 +252,6 @@ import {AreYouSureModalService} from "./components/are_you_sure_modal/are-you-su
         AreYouSureModalService,
     ],
     entryComponents: [
-        ManualTestsExecutorTreeContainerComponent,
-        ManualTestsExecutorTreeNodeComponent,
-        SelectTestTreeRunnerContainerComponent,
-        SelectTestTreeRunnerNodeComponent,
-        ManualTestTreeContainerComponent,
-        ManualTestTreeNodeComponent,
         FeatureContainerComponent,
         TestNodeComponent,
         StepChooserContainerComponent,

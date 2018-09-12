@@ -20,7 +20,6 @@ import {FormUtil} from "../../../../../utils/form.util";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
 import {UrlService} from "../../../../../service/url.service";
-import {ManualTestsExecutorTreeService} from "../../../../../manual-tests/executer/tree/manual-tests-executor-tree.service";
 import {AreYouSureModalService} from "../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 
 @Component({

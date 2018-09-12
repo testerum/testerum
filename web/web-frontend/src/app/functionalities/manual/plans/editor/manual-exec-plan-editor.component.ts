@@ -1,15 +1,12 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {SelectTestsTreeRunnerService} from "../../../../manual-tests/runner/editor/select-tests-tree/select-tests-tree-runner.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ManualTestsRunnerService} from "../../../../manual-tests/runner/service/manual-tests-runner.service";
-import {ManualTestsOverviewService} from "../../../../manual-tests/runner/overview/manual-tests-overview.service";
-import {ManualTestsRunnerStatus} from "../../../../manual-tests/runner/model/enums/manual-tests-runner-status.enum";
 import {ManualExecPlan} from "../model/manual-exec-plan.model";
 import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
 import {UrlService} from "../../../../service/url.service";
 import {MarkdownEditorComponent} from "../../../../generic/components/markdown-editor/markdown-editor.component";
 import {AreYouSureModalService} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
+import {ManualExecPlanStatus} from "../model/enums/manual-exec-plan-status.enum";
 
 @Component({
     selector: 'manual-exec-plan-editor',
@@ -38,10 +35,7 @@ export class ManualExecPlanEditorComponent implements OnInit {
                 private route: ActivatedRoute,
                 private urlService: UrlService,
                 private manualExecPlansService: ManualExecPlansService,
-                private manualTestsRunnerService: ManualTestsRunnerService,
-                private manualTestsOverviewService: ManualTestsOverviewService,
-                private areYouSureModalService: AreYouSureModalService,
-                public selectTestsTreeRunnerService: SelectTestsTreeRunnerService) {
+                private areYouSureModalService: AreYouSureModalService,) {
     }
 
     ngOnInit(): void {
@@ -72,7 +66,7 @@ export class ManualExecPlanEditorComponent implements OnInit {
         this.model = manualTestsRunner;
 
         this.setEditMode(this.model.path.isEmpty());
-        this.isFinalized = manualTestsRunner.status == ManualTestsRunnerStatus.FINISHED;
+        this.isFinalized = manualTestsRunner.status == ManualExecPlanStatus.FINISHED;
 
         this.isCreateAction = this.model.path.isEmpty();
 
@@ -85,7 +79,6 @@ export class ManualExecPlanEditorComponent implements OnInit {
 
     setEditMode(editMode: boolean) {
         this.isEditMode = editMode;
-        this.selectTestsTreeRunnerService.isEditMode = editMode;
         this.markdownEditor.setEditMode(editMode);
     }
 
@@ -117,7 +110,6 @@ export class ManualExecPlanEditorComponent implements OnInit {
             .subscribe((event: AreYouSureModalEnum) => {
                 if (event == AreYouSureModalEnum.OK) {
                     this.manualExecPlansService.deleteManualExecPlan(this.model.path).subscribe(result => {
-                        this.manualTestsOverviewService.initializeRunnersOverview();
                         this.router.navigate(["/manual/runner"]);
                     });
                 }
@@ -154,7 +146,6 @@ export class ManualExecPlanEditorComponent implements OnInit {
 
     private afterSaveHandler(savedManualTestRunner: ManualExecPlan) {
         this.initialize(savedManualTestRunner);
-        this.manualTestsOverviewService.initializeRunnersOverview();
         this.setEditMode(false);
         this.router.navigate(["/manual/runner/show", {path: savedManualTestRunner.path.toString()}]);
     }

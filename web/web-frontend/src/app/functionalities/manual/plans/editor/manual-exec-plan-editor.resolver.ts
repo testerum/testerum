@@ -1,9 +1,6 @@
-import {Component, Injectable, OnInit} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, Params, Resolve} from "@angular/router";
-import {ManualTestsRunnerService} from "../../../../manual-tests/runner/service/manual-tests-runner.service";
-import {switchMap} from "rxjs/operators";
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve} from "@angular/router";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {ManualTestsRunner} from "../../../../manual-tests/runner/model/manual-tests-runner.model";
 import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
 import {ManualExecPlan} from "../model/manual-exec-plan.model";
 
