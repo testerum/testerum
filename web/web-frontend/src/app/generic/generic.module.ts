@@ -285,6 +285,8 @@ import {AreYouSureModalService} from "./components/are_you_sure_modal/are-you-su
         JsonFieldVerifyNodeComponent,
         JsonPrimitiveVerifyNodeComponent,
         JsonEmptyVerifyNodeComponent,
+
+        AreYouSureModalComponent,
     ]
 })
 export class GenericModule { }

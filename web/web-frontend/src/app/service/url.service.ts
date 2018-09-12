@@ -62,6 +62,10 @@ export class UrlService {
         this.router.navigate(["/setup"]);
     }
 
+    public navigateToManualExecPlans() {
+        this.router.navigate(["/manual/plans"])
+    }
+
     public navigateToManualExecPlanCreate() {
         this.router.navigate(["/manual/plans/create"])
     }

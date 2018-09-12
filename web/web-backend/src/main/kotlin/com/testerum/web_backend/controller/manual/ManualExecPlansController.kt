@@ -88,6 +88,24 @@ class ManualExecPlansController {
         )
     }
 
+    @RequestMapping(method = [RequestMethod.PUT], path = ["/plans"])
+    @ResponseBody
+    fun updateManualTest(@RequestBody manualExecPlan: ManualExecPlan): ManualExecPlan {
+        return this.getManualExecPlan(manualExecPlan.path.toString())
+    }
+
+    @RequestMapping(method = [RequestMethod.GET], path = ["plans/finalize"], params = ["planPath"])
+    @ResponseBody
+    fun finalizeManualExecPlan(@RequestParam(value = "planPath") planPath: String): ManualExecPlan {
+        return this.getManualExecPlan(planPath)
+    }
+
+    @RequestMapping(method = [RequestMethod.GET], path = ["plans/bringBackInExecution"], params = ["planPath"])
+    @ResponseBody
+    fun bringBackInExecutionManualExecPlan(@RequestParam(value = "planPath") planPath: String): ManualExecPlan {
+        return this.getManualExecPlan(planPath)
+    }
+
     @RequestMapping(method = [RequestMethod.DELETE], path = ["plans"], params = ["planPath"])
     fun deleteManualExecPlan(@RequestParam(value = "planPath") planPath: String) {
         LOG.warn("DELETE MANUAL EXEC", planPath)

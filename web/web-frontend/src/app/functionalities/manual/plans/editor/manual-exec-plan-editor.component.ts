@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ManualExecPlan} from "../model/manual-exec-plan.model";
 import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
 import {UrlService} from "../../../../service/url.service";
@@ -31,8 +31,7 @@ export class ManualExecPlanEditorComponent implements OnInit {
         spellChecker: false
     };
 
-    constructor(private router: Router,
-                private route: ActivatedRoute,
+    constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
                 private manualExecPlansService: ManualExecPlansService,
                 private areYouSureModalService: AreYouSureModalService,) {
@@ -110,44 +109,41 @@ export class ManualExecPlanEditorComponent implements OnInit {
             .subscribe((event: AreYouSureModalEnum) => {
                 if (event == AreYouSureModalEnum.OK) {
                     this.manualExecPlansService.deleteManualExecPlan(this.model.path).subscribe(result => {
-                        this.router.navigate(["/manual/runner"]);
+                        this.urlService.navigateToManualExecPlans();
                     });
                 }
             });
     }
 
     finalize(): void {
-        // this.areYouSureModalComponent.show(
-        //     "Finalize Execution",
-        //     "Are you sure you want to finalize this Tests Execution?",
-        //     (action: AreYouSureModalEnum): void => {
-        //         if (action == AreYouSureModalEnum.OK) {
-        //             this.manualTestsRunnerService
-        //                 .finalize(this.model)
-        //                 .subscribe(savedModel => this.afterSaveHandler(savedModel));
-        //         }
-        //     }
-        // );
+        this.areYouSureModalService.showAreYouSureModal(
+            "Finalize Execution",
+            "Are you sure you want to finalize this Tests Execution?")
+            .subscribe((event: AreYouSureModalEnum) => {
+                if (event == AreYouSureModalEnum.OK) {
+                    this.manualExecPlansService
+                        .finalizeManualExecPlan(this.model.path)
+                        .subscribe((savedModel: ManualExecPlan) => this.afterSaveHandler(savedModel));
+                }
+            }
+        );
     }
 
     bringBackInExecution(): void {
-        // this.manualTestsRunnerService
-        //     .bringBackInExecution(this.model)
-        //     .subscribe(savedModel => this.afterSaveHandler(savedModel));
+        this.manualExecPlansService
+            .bringBackInExecution(this.model.path)
+            .subscribe((savedModel: ManualExecPlan) => this.afterSaveHandler(savedModel));
     }
 
     saveAction(): void {
-        // this.model.testsToExecute = this.selectTestsTreeRunnerService.getSelectedTests();
-        //
-        // this.manualTestsRunnerService
-        //     .save(this.model)
-        //     .subscribe(savedModel => this.afterSaveHandler(savedModel));
+        this.manualExecPlansService
+            .save(this.model)
+            .subscribe((savedModel: ManualExecPlan) => this.afterSaveHandler(savedModel));
     }
 
     private afterSaveHandler(savedManualTestRunner: ManualExecPlan) {
         this.initialize(savedManualTestRunner);
         this.setEditMode(false);
-        this.router.navigate(["/manual/runner/show", {path: savedManualTestRunner.path.toString()}]);
+        this.urlService.navigateToManualExecPlanEditor(savedManualTestRunner.path);
     }
-
 }
