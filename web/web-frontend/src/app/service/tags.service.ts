@@ -13,4 +13,9 @@ export class TagsService {
         return this.http
             .get<Array<string>>(this.TAGS_URL);
     }
+
+    getManualTestTags(): Observable<Array<string>> {
+        return this.http
+            .get<Array<string>>(this.TAGS_URL + "/manual");
+    }
 }

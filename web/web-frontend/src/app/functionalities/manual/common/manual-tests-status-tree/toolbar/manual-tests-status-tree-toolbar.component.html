@@ -43,6 +43,20 @@
                     <i class="fa_my-runner-undefined" aria-hidden="true"></i>
                 </div>
             </div>
+
+            <div title="{{isSearchButtonActive?'Hide ':'Show '}} Search Text"
+                 (click)="onSearchButtonClickEvent()"
+                 [class.active]="isSearchButtonActive"
+                 class="btn btn-default btn-xs btn-group">
+                <i class="fa_my-search" aria-hidden="true"></i>
+            </div>
+
+            <div title="{{isTagsButtonActive?'Hide ':'Show '}} Filter by Tags"
+                 (click)="onTagsButtonClickEvent()"
+                 [class.active]="isTagsButtonActive"
+                 class="btn btn-default btn-xs btn-group">
+                <i class="fa_my-tag" aria-hidden="true"></i>
+            </div>
         </div>
 
         <div class="filters-group">
@@ -67,4 +81,51 @@
             </div>
         </div>
     </div>
+
+
+    <div class="ui-inputgroup line-search full-width"
+         *ngIf="isSearchButtonActive">
+        <span class="ui-inputgroup-addon"
+              pTooltip="Search"
+              tooltipPosition="bottom"
+              (click)="filter()">
+            <i class="fa_my-search"></i>
+        </span>
+        <input focus="true"
+               [(ngModel)]="model.search"
+               (blur)="onSearchInputDeFocus($event)"
+               (keydown)="onSearchInputKey($event)"
+               placeholder="Search"
+               type="text"
+               pInputText
+               pTooltip="Search"
+               tooltipPosition="bottom"
+               class="full-width">
+    </div>
+
+    <div class="ui-inputgroup line-tags full-width"
+         *ngIf="isTagsButtonActive">
+        <span class="ui-inputgroup-addon"
+              tooltipPosition="bottom"
+              pTooltip="Tags"
+              (click)="filter()">
+            <i class="fa_my-tag"></i>
+        </span>
+        <p-autoComplete #tagsElement
+                        focus="true"
+                        [(ngModel)]="model.tags"
+                        [suggestions]="tagsToShow"
+                        (completeMethod)="searchTags($event)"
+                        (onSelect)="onTagSelect($event)"
+                        (onUnselect)="onTagUnSelect($event)"
+                        [delay]="0"
+                        [multiple]="true"
+                        [dropdown]="true"
+                        placeholder="Tags"
+                        tooltipPosition="bottom"
+                        pTooltip="Tags"
+                        id="tags" name="tags"></p-autoComplete>
+
+    </div>
+
 </p-toolbar>

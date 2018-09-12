@@ -1,52 +1,114 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {JsonTreeModel} from "../../../../../generic/components/json-tree/model/json-tree.model";
 import {ManualTreeStatusFilterModel} from "../model/filter/manual-tree-status-filter.model";
 import {JsonTreeExpandUtil} from "../../../../../generic/components/json-tree/util/json-tree-expand.util";
 import {ManualTestsStatusTreeService} from "../manual-tests-status-tree.service";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
+import {ArrayUtil} from "../../../../../utils/array.util";
+import {TagsService} from "../../../../../service/tags.service";
+import {AutoComplete} from "primeng/primeng";
 
 @Component({
     selector: 'manual-tests-status-tree-toolbar',
     templateUrl: './manual-tests-status-tree-toolbar.component.html',
-    styleUrls: ['./manual-tests-status-tree-toolbar.component.scss']
+    styleUrls: ['./manual-tests-status-tree-toolbar.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
 })
 export class ManualTestsStatusTreeToolbarComponent implements OnInit {
 
     @Input() planPath: Path;
     @Input() treeModel:JsonTreeModel;
 
-    model = new ManualTreeStatusFilterModel();
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    allKnownTags: Array<string> = [];
+    tagsToShow:string[] = [];
+    currentTagSearch:string;
 
-    constructor(private manualTestsStatusTreeService: ManualTestsStatusTreeService) {}
+    model = new ManualTreeStatusFilterModel();
+    isSearchButtonActive = false;
+    isTagsButtonActive = false;
+
+    constructor(private manualTestsStatusTreeService: ManualTestsStatusTreeService,
+                private tagsService: TagsService) {}
 
     ngOnInit() {}
 
+    onTagSelect(event) {
+        this.currentTagSearch = null;
+        this.filter();
+    }
+
+    onTagUnSelect(event) {
+        this.filter();
+    }
+
+    searchTags(event) {
+        this.currentTagSearch = event.query;
+
+        let newTagsToShow = ArrayUtil.filterArray(
+            this.allKnownTags,
+            event.query
+        );
+        for (let currentTag of this.model.tags) {
+            ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
+        }
+        this.tagsToShow = newTagsToShow;
+
+        this.filter();
+    }
+
+    onSearchInputDeFocus(event: any) {
+        this.filter();
+    }
+
+    onSearchInputKey(event: KeyboardEvent) {
+        if (event.code == "Enter") {
+            this.filter();
+        }
+    }
+
     onToggleWaiting() {
         this.model.showNotExecuted = !this.model.showNotExecuted;
-        this.triggerFilterChangeEvent();
+        this.filter();
     }
 
     onTogglePassed() {
         this.model.showPassed = !this.model.showPassed;
-        this.triggerFilterChangeEvent();
+        this.filter();
     }
 
     onToggleFailed() {
         this.model.showFailed = !this.model.showFailed;
-        this.triggerFilterChangeEvent();
+        this.filter();
     }
 
     onToggleBlocked() {
         this.model.showBlocked = !this.model.showBlocked;
-        this.triggerFilterChangeEvent();
+        this.filter();
     }
 
     onToggleNotApplicable() {
         this.model.showNotApplicable = !this.model.showNotApplicable;
-        this.triggerFilterChangeEvent();
+        this.filter();
     }
 
-    private triggerFilterChangeEvent() {
+    onSearchButtonClickEvent() {
+        this.isSearchButtonActive = !this.isSearchButtonActive;
+        if(!this.isSearchButtonActive) this.filter()
+    }
+    onTagsButtonClickEvent() {
+        this.isTagsButtonActive = !this.isTagsButtonActive;
+        if (this.isTagsButtonActive) {
+            this.tagsService.getTags().subscribe(tags => {
+                ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
+            });
+        } else {
+            this.filter();
+        }
+    }
+
+    private filter() {
         this.manualTestsStatusTreeService.initializeTreeFromServer(this.planPath, this.model);
     }
 

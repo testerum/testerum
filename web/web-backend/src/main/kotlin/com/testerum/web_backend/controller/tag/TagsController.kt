@@ -14,4 +14,10 @@ class TagsController(private val tagsService: TagsService) {
         return tagsService.getAllTags()
     }
 
+    @RequestMapping(method = [RequestMethod.GET], path = ["/manual"])
+    fun getManualTags(): List<String> {
+        //TODO Cristi: IMPLEMENT THIS
+        return tagsService.getAllTags()
+    }
+
 }

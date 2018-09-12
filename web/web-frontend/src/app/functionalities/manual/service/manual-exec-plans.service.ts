@@ -10,7 +10,6 @@ import {RootFeatureNode} from "../../../model/feature/tree/root-feature-node.mod
 import {map} from "rxjs/operators";
 import {ManualTestsStatusTreeRoot} from "../plans/model/status-tree/manual-tests-status-tree-root.model";
 import {ManualTest} from "../plans/model/manual-test.model";
-import {Feature} from "../../../model/feature/feature.model";
 import {ManualTreeStatusFilterModel} from "../common/manual-tests-status-tree/model/filter/manual-tree-status-filter.model";
 
 @Injectable()
