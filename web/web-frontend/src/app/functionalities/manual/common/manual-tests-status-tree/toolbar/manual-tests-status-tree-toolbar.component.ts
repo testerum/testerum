@@ -109,7 +109,20 @@ export class ManualTestsStatusTreeToolbarComponent implements OnInit {
     }
 
     private filter() {
-        this.manualTestsStatusTreeService.initializeTreeFromServer(this.planPath, this.model);
+        let filter = this.model.clone();
+
+        if(filter.showNotExecuted  == false &&
+           filter.showPassed == false &&
+           filter.showFailed == false &&
+           filter.showBlocked == false) {
+
+            filter.showNotExecuted = true;
+            filter.showPassed = true;
+            filter.showFailed = true;
+            filter.showBlocked = true;
+        }
+
+        this.manualTestsStatusTreeService.initializeTreeFromServer(this.planPath, filter);
     }
 
     onExpandAllNodes(): void {

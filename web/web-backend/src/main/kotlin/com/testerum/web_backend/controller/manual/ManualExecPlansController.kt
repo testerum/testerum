@@ -97,7 +97,8 @@ class ManualExecPlansController {
     @ResponseBody
     fun getManualTestsStatusTree(@RequestParam(value = "planPath") planPath: String,
                                  @RequestBody statusTreeFilter: ManualTreeStatusFilter): ManualTestsStatusTreeRoot {
-        
+        LOG.debug("treeFilter: "+ statusTreeFilter.toString())
+
         val dir11 = mutableListOf<ManualTestsStatusTreeBase>()
         dir11 += ManualTestsStatusTreeNode(Path.createInstance("/dir11_node1"), "dir11_node1", ManualTestStatus.PASSED);
         dir11 += ManualTestsStatusTreeNode(Path.createInstance("/dir11_node2"), "dir11_node2", ManualTestStatus.PASSED);
