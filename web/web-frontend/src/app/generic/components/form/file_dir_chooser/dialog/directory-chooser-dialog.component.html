@@ -21,13 +21,15 @@
                 <div class="selected-path-container">
                     <span class="selecte-path-label">Selected path:</span> {{selectedPath}}
                 </div>
-
-                <button (click)="createDirectory();" type="button" class="btn btn-default pull-left"
-                        [disabled]="!selectedPath || !selectedNode.canCreateChild">
-                    Create Directory
-                </button>
-                <button (click)="cancel();" type="button" class="btn btn-default">Cancel</button>
-                <button (click)="selectDirectory()" class="btn btn-primary">Select</button>
+                <div class="button-container">
+                    <button (click)="createDirectory();" type="button" class="btn btn-default pull-left"
+                            [disabled]="!selectedPath || !selectedNode.canCreateChild">
+                        Create Directory
+                    </button>
+                    <button (click)="cancel();" type="button" class="btn btn-default">Cancel</button>
+                    <button (click)="selectDirectory()" class="btn btn-primary"
+                            [disabled]="!selectedPath || !selectedNode.canCreateChild">Select</button>
+                </div>
             </div>
         </div>
     </div>
