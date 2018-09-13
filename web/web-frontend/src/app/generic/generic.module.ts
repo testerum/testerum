@@ -89,6 +89,7 @@ import {JsonVerifyEditorComponent} from "./components/json-verify/json-verify-ed
 import {JsonVerifyComponent} from "./components/json-verify/json-verify.component";
 import {AceEditorModule} from "ng2-ace-editor";
 import {AreYouSureModalService} from "./components/are_you_sure_modal/are-you-sure-modal.service";
+import { LogoComponent } from './components/logo/logo.component';
 
 @NgModule({
     imports: [
@@ -160,6 +161,7 @@ import {AreYouSureModalService} from "./components/are_you_sure_modal/are-you-su
         AttachmentsComponent,
 
         JsonVerifyComponent,
+        LogoComponent,
     ],
     declarations: [
         SafeHtmlPipe,
@@ -236,6 +238,7 @@ import {AreYouSureModalService} from "./components/are_you_sure_modal/are-you-su
         JsonFieldVerifyNodeComponent,
         JsonPrimitiveVerifyNodeComponent,
         JsonEmptyVerifyNodeComponent,
+        LogoComponent,
     ],
     providers: [
         TreeService,
