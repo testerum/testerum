@@ -135,7 +135,9 @@ class FileSystemService {
 
                 return try {
                     Files.list(this).use { pathStream ->
-                        return pathStream.findFirst().isPresent
+                        return pathStream.anyMatch { path ->
+                            path.isDirectory
+                        }
                     }
                 } catch (e: AccessDeniedException) {
                     false
