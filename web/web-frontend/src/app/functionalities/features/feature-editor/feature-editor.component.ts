@@ -55,6 +55,8 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.routeSubscription = this.route.data.subscribe(data => {
             this.model = data['featureModel'];
+            this.markdownEditor.setValue(this.model.description);
+
             let actionParam = this.route.snapshot.params["action"];
 
             if (actionParam == "create") {
@@ -135,6 +137,8 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
             this.featureService.getFeature(this.model.path).subscribe(
                 result => {
                     Object.assign(this.model, result);
+                    this.markdownEditor.setValue(this.model.description);
+
                     this.setEditMode(false);
                 }
             )
@@ -164,7 +168,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     }
 
     private setDescription() {
-        this.model.description = this.markdownEditor.value;
+        this.model.description = this.markdownEditor.getValue();
     }
 
     private afterSaveHandler(savedModel: Feature) {

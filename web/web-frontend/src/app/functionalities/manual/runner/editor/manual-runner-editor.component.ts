@@ -41,6 +41,7 @@ export class ManualRunnerEditorComponent implements OnInit {
         {label:'Blocked', value: ManualTestStatus.BLOCKED},
         {label:'Not Applicable', value: ManualTestStatus.NOT_APPLICABLE},
     ];
+    @ViewChild("descriptionMarkdownEditor") descriptionMarkdownEditor: MarkdownEditorComponent;
     @ViewChild("commentMarkdownEditor") commentMarkdownEditor: MarkdownEditorComponent;
 
     steps: Array<StepCall[]> = [];
@@ -78,6 +79,8 @@ export class ManualRunnerEditorComponent implements OnInit {
         if (this.testPath) {
             this.manualExecPlansService.getManualTest(this.planPath, this.testPath).subscribe((manualTest: ManualTest) => {
                 this.model = manualTest;
+                this.descriptionMarkdownEditor.setValue(this.model.description);
+                this.commentMarkdownEditor.setValue(this.model.comments);
 
                 for (const stepCall of manualTest.stepCalls) {
                     this.steps.push([stepCall])

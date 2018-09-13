@@ -32,7 +32,7 @@
                 <div class="my-line" *ngIf="model.description">
                     <label class="my-label label-size" for="description">Description</label>
                     <div class="my-value">
-                        <markdown-editor [value]="model.description"
+                        <markdown-editor #descriptionMarkdownEditor
                                          [options]="markdownEditorOptions"
                                          [editMode]="false"
                                          class="markdown-editor-dynamic-size"
@@ -133,7 +133,7 @@
                     <label class="my-label label-size">Comment</label>
 
                     <div class="my-value">
-                        <markdown-editor [value]="model.comments"
+                        <markdown-editor #commentMarkdownEditor
                                          [options]="markdownEditorOptions"
                                          [editMode]="!isTestSuiteFinalized()"
                                          class="markdown-editor-dynamic-size"></markdown-editor>

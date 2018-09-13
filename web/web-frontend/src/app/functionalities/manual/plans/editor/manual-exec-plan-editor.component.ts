@@ -24,7 +24,7 @@ export class ManualExecPlanEditorComponent implements OnInit {
 
     pieChartData: any;
 
-    @ViewChild(MarkdownEditorComponent) markdownEditor: MarkdownEditorComponent;
+    @ViewChild(MarkdownEditorComponent) descriptionMarkdownEditor: MarkdownEditorComponent;
 
     markdownEditorOptions = {
         status: false,
@@ -41,6 +41,7 @@ export class ManualExecPlanEditorComponent implements OnInit {
 
         this.route.data.subscribe(data => {
             let manualTestsRunner = data['manualExecPlan'];
+            this.descriptionMarkdownEditor.setValue(manualTestsRunner.description);
 
             this.pieChartData = {
                 labels: ['Passed Tests', 'Failed Tests', 'Blocked Tests', "Not Applicable Tests", "Not Executed"],
@@ -63,6 +64,7 @@ export class ManualExecPlanEditorComponent implements OnInit {
 
     private initialize(manualTestsRunner: ManualExecPlan) {
         this.model = manualTestsRunner;
+        this.descriptionMarkdownEditor.setValue(this.model.description);
 
         this.setEditMode(this.model.path.isEmpty());
         this.isFinalized = manualTestsRunner.status == ManualExecPlanStatus.FINISHED;
@@ -78,7 +80,7 @@ export class ManualExecPlanEditorComponent implements OnInit {
 
     setEditMode(editMode: boolean) {
         this.isEditMode = editMode;
-        this.markdownEditor.setEditMode(editMode);
+        this.descriptionMarkdownEditor.setEditMode(editMode);
     }
 
     enableEditTestMode(): void {

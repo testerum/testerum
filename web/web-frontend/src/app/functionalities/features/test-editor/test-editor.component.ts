@@ -63,6 +63,8 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
 
         this.routeSubscription = this.route.data.subscribe(data => {
             this.testModel = data['testModel'];
+            this.markdownEditor.setValue(this.testModel.description);
+
             this.isEditExistingTest =  IdUtils.isTemporaryId(this.testModel.id);
             this.setEditMode(IdUtils.isTemporaryId(this.testModel.id));
             this.isCreateAction = !this.testModel.path.fileName;
@@ -195,6 +197,8 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             this.testsService.getTest(this.testModel.path.toString()).subscribe(
                 result => {
                     Object.assign(this.testModel, result);
+                    this.markdownEditor.setValue(this.testModel.description);
+
                     this.setEditMode(false)
                 }
             )
@@ -216,7 +220,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             .subscribe(savedModel => this.afterSaveHandler(savedModel));
     }
     private setDescription() {
-        this.testModel.description = this.markdownEditor.value;
+        this.testModel.description = this.markdownEditor.getValue();
     }
 
     private afterSaveHandler(savedModel: TestModel) {
