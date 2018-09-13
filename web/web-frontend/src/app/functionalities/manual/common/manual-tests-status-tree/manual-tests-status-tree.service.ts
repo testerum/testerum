@@ -9,7 +9,6 @@ import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json
 @Injectable()
 export class ManualTestsStatusTreeService {
 
-    filter: ManualTreeStatusFilterModel;
     treeModel: JsonTreeModel = new JsonTreeModel();
 
     constructor(private manualExecPlanService: ManualExecPlansService) {

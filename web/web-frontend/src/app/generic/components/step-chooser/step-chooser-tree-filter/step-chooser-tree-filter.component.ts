@@ -1,4 +1,4 @@
-import {Component, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {JsonTreeExpandUtil} from "../../json-tree/util/json-tree-expand.util";
@@ -12,7 +12,7 @@ import {StepChooserService} from "../step-chooser.service";
     styleUrls: ['step-chooser-tree-filter.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class StepChooserTreeFilterComponent {
+export class StepChooserTreeFilterComponent implements OnInit {
 
     @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
@@ -29,6 +29,10 @@ export class StepChooserTreeFilterComponent {
 
     constructor(private stepChooserService: StepChooserService,
                 private tagsService: TagsService) {
+    }
+
+    ngOnInit(): void {
+        this.stepChooserService.treeFilter = StepsTreeFilter.createEmptyFilter();
     }
 
     onTagSelect(event) {

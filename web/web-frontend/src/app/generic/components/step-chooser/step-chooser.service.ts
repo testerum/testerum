@@ -38,6 +38,7 @@ export class StepChooserService {
     showStepChooserModal(stepPathToRemove:Path = null): Observable<StepDef> {
         this.stepPathToRemove = stepPathToRemove;
 
+        this.treeFilter = StepsTreeFilter.createEmptyFilter();
         this.initializeStepsTreeFromServer();
 
         const factory = AppComponent.componentFactoryResolver.resolveComponentFactory(StepChooserComponent);

@@ -7,6 +7,7 @@ import {StepTreeNodeModel} from "./steps-tree/model/step-tree-node.model";
 import {JsonStepNodeComponent} from "./steps-tree/container/node/json-step-node.component";
 import {JsonStepContainerComponent} from "./steps-tree/container/json-step-container.component";
 import {Path} from "../../model/infrastructure/path/path.model";
+import {StepsTreeFilter} from "../../model/step/filter/steps-tree-filter.model";
 
 @Component({
     moduleId: module.id,
@@ -33,6 +34,7 @@ export class StepsComponent implements OnInit {
         let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path'] : null;
         let path: Path = pathAsString != null ? Path.createInstance(pathAsString) : null;
 
+        this.stepsTreeService.treeFilter = StepsTreeFilter.createEmptyFilter();
         this.stepsTreeService.initializeStepsTreeFromServer(path);
     }
 }

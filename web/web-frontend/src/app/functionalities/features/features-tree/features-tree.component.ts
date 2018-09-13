@@ -10,6 +10,7 @@ import {FeaturesTreeService} from "./features-tree.service";
 import {FeatureTreeContainerModel} from "./model/feature-tree-container.model";
 import {TestNodeComponent} from "./container/node/test-node.component";
 import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
+import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-filter.model";
 
 @Component({
     selector: 'features-tree',
@@ -39,6 +40,7 @@ export class FeaturesTreeComponent implements OnInit {
         let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path'] : null;
         let path: Path = pathAsString != null ? Path.createInstance(pathAsString) : null;
 
+        this.featuresTreeService.treeFilter = FeaturesTreeFilter.createEmptyFilter();
         this.featuresTreeService.initializeTestsTreeFromServer(path);
     }
 }
