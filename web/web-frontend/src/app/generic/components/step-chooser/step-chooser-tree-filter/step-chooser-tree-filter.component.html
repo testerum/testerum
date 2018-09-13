@@ -73,7 +73,7 @@
               pTooltip="Search"
               tooltipPosition="bottom"
               (click)="filter()">
-            <i class="fa_my-search"></i>
+            <i class="fa_my-search tags-search-icon"></i>
         </span>
         <input id="float-input"
                [(ngModel)]="searchText"
@@ -93,7 +93,7 @@
               tooltipPosition="bottom"
               pTooltip="Tags"
               (click)="filter()">
-            <i class="fa_my-tag"></i>
+            <i class="fa_my-tag tags-search-icon"></i>
         </span>
         <p-autoComplete #tagsElement
                         [(ngModel)]="selectedTags"

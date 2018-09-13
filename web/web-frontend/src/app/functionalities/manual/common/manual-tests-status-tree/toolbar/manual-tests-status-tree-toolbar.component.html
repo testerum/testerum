@@ -82,14 +82,13 @@
         </div>
     </div>
 
-
     <div class="ui-inputgroup line-search full-width"
          *ngIf="isSearchButtonActive">
         <span class="ui-inputgroup-addon"
               pTooltip="Search"
               tooltipPosition="bottom"
               (click)="filter()">
-            <i class="fa_my-search"></i>
+            <i class="fa_my-search tags-search-icon"></i>
         </span>
         <input focus="true"
                [(ngModel)]="model.search"
@@ -109,7 +108,7 @@
               tooltipPosition="bottom"
               pTooltip="Tags"
               (click)="filter()">
-            <i class="fa_my-tag"></i>
+            <i class="fa_my-tag tags-search-icon"></i>
         </span>
         <p-autoComplete #tagsElement
                         focus="true"

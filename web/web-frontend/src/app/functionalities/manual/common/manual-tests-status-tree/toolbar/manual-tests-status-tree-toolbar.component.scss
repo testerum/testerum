@@ -12,10 +12,6 @@
     color: inherit;
 }
 
-.btn-xs {
-    width: 24px;
-}
-
 .full-width {
     width: 100%;
 }
@@ -23,17 +19,44 @@
 .ui-autocomplete {
     display: flex;
     align-items: center;
+    height: auto !important;
+}
+
+.ui-autocomplete-input-token {
+    padding: 0 .25em 0 0;
+}
+
+.ui-autocomplete-dropdown {
+    height: auto !important;
 }
 
 .ui-inputgroup {
     margin-top: 1px;
 }
 
+.ui-autocomplete-multiple-container {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin: -1px;
+}
+
 .ui-inputgroup-addon {
-    width: 30px;
     cursor: pointer;
 
     display: flex !important;
     align-items: center;
     justify-content: center;
+    padding: 0 !important;
+}
+
+.ui-inputtext {
+    padding: 0;
+}
+
+.ui-button-text {
+    padding: 0 !important;
+}
+
+.tags-search-icon {
+   font-size: 1rem;
 }

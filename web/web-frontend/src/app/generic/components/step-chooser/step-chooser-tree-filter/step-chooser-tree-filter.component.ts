@@ -9,7 +9,7 @@ import {StepChooserService} from "../step-chooser.service";
 @Component({
     selector: 'step-chooser-tree-filter',
     templateUrl: 'step-chooser-tree-filter.component.html',
-    styleUrls: ['step-chooser-tree-filter.component.css'],
+    styleUrls: ['step-chooser-tree-filter.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class StepChooserTreeFilterComponent {
