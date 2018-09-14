@@ -79,8 +79,12 @@ export class ManualRunnerEditorComponent implements OnInit {
         if (this.testPath) {
             this.manualExecPlansService.getManualTest(this.planPath, this.testPath).subscribe((manualTest: ManualTest) => {
                 this.model = manualTest;
-                this.descriptionMarkdownEditor.setValue(this.model.description);
-                this.commentMarkdownEditor.setValue(this.model.comments);
+                if (this.descriptionMarkdownEditor) {
+                    this.descriptionMarkdownEditor.setValue(this.model.description);
+                }
+                if (this.commentMarkdownEditor) {
+                    this.commentMarkdownEditor.setValue(this.model.comments);
+                }
 
                 for (const stepCall of manualTest.stepCalls) {
                     this.steps.push([stepCall])

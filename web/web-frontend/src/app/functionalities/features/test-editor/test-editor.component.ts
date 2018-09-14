@@ -42,7 +42,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     currentTagSearch:string;
 
     @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
-    @ViewChild(MarkdownEditorComponent) markdownEditor: MarkdownEditorComponent;
+    @ViewChild("descriptionMarkdownEditor") descriptionMarkdownEditor: MarkdownEditorComponent;
 
     warnings: Message[] = [];
 
@@ -63,7 +63,9 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
 
         this.routeSubscription = this.route.data.subscribe(data => {
             this.testModel = data['testModel'];
-            this.markdownEditor.setValue(this.testModel.description);
+            if (this.descriptionMarkdownEditor) {
+                this.descriptionMarkdownEditor.setValue(this.testModel.description);
+            }
 
             this.isEditExistingTest =  IdUtils.isTemporaryId(this.testModel.id);
             this.setEditMode(IdUtils.isTemporaryId(this.testModel.id));
@@ -146,8 +148,9 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
 
         this.isEditMode = isEditMode;
         this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
-        if(this.markdownEditor) {
-            this.markdownEditor.setEditMode(isEditMode);
+        if(this.descriptionMarkdownEditor) {
+            this.descriptionMarkdownEditor.setEditMode(isEditMode);
+            this.descriptionMarkdownEditor.setValue(this.testModel.description);
         }
     }
 
@@ -197,7 +200,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             this.testsService.getTest(this.testModel.path.toString()).subscribe(
                 result => {
                     Object.assign(this.testModel, result);
-                    this.markdownEditor.setValue(this.testModel.description);
+                    this.descriptionMarkdownEditor.setValue(this.testModel.description);
 
                     this.setEditMode(false)
                 }
@@ -220,7 +223,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
             .subscribe(savedModel => this.afterSaveHandler(savedModel));
     }
     private setDescription() {
-        this.testModel.description = this.markdownEditor.getValue();
+        this.testModel.description = this.descriptionMarkdownEditor.getValue();
     }
 
     private afterSaveHandler(savedModel: TestModel) {

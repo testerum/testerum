@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Attachment} from "../../../../model/file/attachment.model";
 import {DateUtil} from "../../../../utils/date.util";
 import {AttachmentsService} from "../../../../service/attachments.service";
@@ -9,7 +9,8 @@ import {AreYouSureModalService} from "../../are_you_sure_modal/are-you-sure-moda
 @Component({
     selector: 'attachments-component',
     templateUrl: 'attachments.component.html',
-    styleUrls: ['attachments.component.scss']
+    styleUrls: ['attachments.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class AttachmentsComponent implements OnInit {
 

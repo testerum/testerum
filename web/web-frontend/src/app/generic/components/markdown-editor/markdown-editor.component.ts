@@ -1,13 +1,4 @@
-import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    Input,
-    OnChanges,
-    SimpleChanges,
-    ViewChild,
-    ViewEncapsulation
-} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as SimpleMDE from 'simplemde'
 
 @Component({

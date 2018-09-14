@@ -95,7 +95,7 @@
                 <div class="my-line" *ngIf="testModel.description || isEditMode">
                     <label class="my-label label-size" for="description">Description</label>
                     <div class="my-value">
-                        <markdown-editor #markdownEditor
+                        <markdown-editor #descriptionMarkdownEditor
                                          [options]="markdownEditorOptions"
                                          class="markdown-editor-dynamic-size"
                                          id="description"></markdown-editor>

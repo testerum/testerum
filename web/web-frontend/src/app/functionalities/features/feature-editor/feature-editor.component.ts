@@ -40,7 +40,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     fileUploadSubscription: Subscription;
 
     @ViewChild(NgForm) form: NgForm;
-    @ViewChild(MarkdownEditorComponent) markdownEditor: MarkdownEditorComponent;
+    @ViewChild(MarkdownEditorComponent) descriptionMarkdownEditor: MarkdownEditorComponent;
 
     pathForTitle: string = "";
 
@@ -55,7 +55,9 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.routeSubscription = this.route.data.subscribe(data => {
             this.model = data['featureModel'];
-            this.markdownEditor.setValue(this.model.description);
+            if (this.descriptionMarkdownEditor) {
+                this.descriptionMarkdownEditor.setValue(this.model.description);
+            }
 
             let actionParam = this.route.snapshot.params["action"];
 
@@ -84,7 +86,10 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
         }
 
         this.isEditMode = value;
-        this.markdownEditor.setEditMode(value);
+        if (this.descriptionMarkdownEditor) {
+            this.descriptionMarkdownEditor.setEditMode(value);
+            this.descriptionMarkdownEditor.setValue(this.model.description);
+        }
     }
 
     enableEditTestMode(): void {
@@ -137,7 +142,9 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
             this.featureService.getFeature(this.model.path).subscribe(
                 result => {
                     Object.assign(this.model, result);
-                    this.markdownEditor.setValue(this.model.description);
+                    if (this.descriptionMarkdownEditor) {
+                        this.descriptionMarkdownEditor.setValue(this.model.description);
+                    }
 
                     this.setEditMode(false);
                 }
@@ -168,7 +175,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     }
 
     private setDescription() {
-        this.model.description = this.markdownEditor.getValue();
+        this.model.description = this.descriptionMarkdownEditor.getValue();
     }
 
     private afterSaveHandler(savedModel: Feature) {
