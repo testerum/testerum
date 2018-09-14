@@ -79,7 +79,7 @@
 
     <!-- TAGS -->
     <div class="my-line" *ngIf="!isEditMode && model.tags.length > 0 ">
-        <label class="my-label label-size" for="tags">Tags</label>
+        <label class="my-label label-size">Tags</label>
         <div class="my-value" *ngIf="!isEditMode">
             <ng-container *ngFor="let tag of model.tags">
                 <span class="label label-primary">{{tag}}</span>
