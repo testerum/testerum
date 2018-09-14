@@ -53,8 +53,8 @@ export class ExecutionPieComponent implements OnInit {
                     model.undefined,
                     model.skipped
                 ],
-                backgroundColor: ["#c0bebc", "#5cb85c", "#FF6384", "#ff0000", "#FFCE56", "#aae8ff"],
-                hoverBackgroundColor: ["#c0bebc", "#5cb85c", "#FF6384", "#ff0000", "#FFCE56", "#aae8ff"]
+                backgroundColor: ["#c0bebc", "#5cb85c", "#FF6384", "#FFCE56", "#aae8ff"],
+                hoverBackgroundColor: ["#c0bebc", "#5cb85c", "#FF6384", "#FFCE56", "#aae8ff"]
             }]
         };
     }
