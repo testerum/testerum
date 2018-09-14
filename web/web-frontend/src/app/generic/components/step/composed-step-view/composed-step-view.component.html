@@ -30,7 +30,7 @@
             </div>
 
             <span *ngIf="isEditMode">
-                <input id="stepPattern" required
+                <input required
                        #stepPattern="ngModel" [(ngModel)]="pattern"
                        (ngModelChange)="onPatternChanged()"
                        type="text" class="form-control full-width" name="stepPattern"
@@ -49,7 +49,7 @@
 
     <!-- PATH -->
     <div class="my-line">
-        <label class="my-label label-size" for="pathInput">Path</label>
+        <label class="my-label label-size">Path</label>
         <span class="my-value" *ngIf="hasPathDefined">
             {{model.path?.toString() || ""}}
         </span>
@@ -60,7 +60,7 @@
                    readonly required
                    type="text"
                    class="path-input form-control"
-                   id="pathInput" name="pathInput">
+                   name="pathInput">
             <span class="input-group-btn">
                 <button (click)="onSelectStepPath()"
                         class="btn btn-default btn-input"
@@ -87,7 +87,7 @@
         </div>
     </div>
     <div class="my-line" *ngIf="isEditMode">
-        <label class="my-label label-size" for="tags">Tags</label>
+        <label class="my-label label-size">Tags</label>
         <div class="my-value">
             <p-autoComplete #tagsElement
                             [(ngModel)]="model.tags"
@@ -99,18 +99,18 @@
                             [multiple]="true"
                             [dropdown]="true"
                             styleClass="tags-input"
-                            id="tags" name="tags"></p-autoComplete>
+                            name="tags"></p-autoComplete>
         </div>
     </div>
 
     <!-- DESCRIPTION -->
     <div class="my-line">
-        <label class="my-label label-size" for="description">Description</label>
+        <label class="my-label label-size">Description</label>
         <div class="my-value" *ngIf="!isEditMode">
             {{model.description || ""}}
         </div>
         <div class="my-value" *ngIf="isEditMode">
-            <textarea [(ngModel)]="model.description" class="form-control" id="description"
+            <textarea [(ngModel)]="model.description" class="form-control"
                       name="description"></textarea>
         </div>
     </div>

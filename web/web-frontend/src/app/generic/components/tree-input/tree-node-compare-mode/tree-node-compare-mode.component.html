@@ -1,6 +1,6 @@
-<label for="compareMode" class="node-attr-label">compare mode: </label>
+<label class="node-attr-label">compare mode: </label>
 <select *ngIf="editMode"
-        name="compareMode" id="compareMode"
+        name="compareMode"
         class="node-attr-input-value"
         (click)="$event.stopPropagation();"
         #selectItem (change)="setCompareMode(selectItem.value)">

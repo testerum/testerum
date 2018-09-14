@@ -51,7 +51,7 @@
                 {{getModel().delay || ""}}
             </div>
             <div class="my-value" *ngIf="isEditMode()">
-                <input id="port" isNumberValidator
+                <input isNumberValidator
                        #delay="ngModel" [(ngModel)]="getModel().delay"
                        type="text" class="form-control input-delay" name="delay">
                 <div *ngIf="delay.errors && (delay.dirty || delay.touched)"

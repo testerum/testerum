@@ -10,7 +10,7 @@
                 <p class="input-description">Please set the path to a directory where you want your work to be saved</p>
 
                 <span class="full-width input-group input-container">
-                    <file-dir-chooser id="repositoryPath" name="repositoryPath" required
+                    <file-dir-chooser name="repositoryPath" required
                                       [(ngModel)]="repositoryAbsoluteJavaPath"
                                       #repositoryPath="ngModel" class="file-dir-chooser"></file-dir-chooser>
                     <input-error [model]="repositoryPath"

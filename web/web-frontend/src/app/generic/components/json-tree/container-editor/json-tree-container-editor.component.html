@@ -3,7 +3,7 @@
     <div class="modal-header">
         <button (click)="hide()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">
+        <h4 class="modal-title">
             {{actionType == JsonTreeContainerEditorEnum.COPY?'Move?':""}}
             {{actionType == JsonTreeContainerEditorEnum.DELETE?'Delete "'+name+'" directory?':""}}
             {{actionType == JsonTreeContainerEditorEnum.UPDATE?'Rename "'+oldName+'" directory':""}}
@@ -23,14 +23,14 @@
         {{actionType == JsonTreeContainerEditorEnum.DELETE?'Are you sure you want to delete "'+name+'" directory?':""}}
 
         <div *ngIf="actionType == JsonTreeContainerEditorEnum.UPDATE || actionType == JsonTreeContainerEditorEnum.CREATE" class="my-line">
-            <label for="packageName" class="my-label label-size">Directory Name: </label>
+            <label class="my-label label-size">Directory Name: </label>
             <div class="my-value">
                 <input type="text"
                        [(ngModel)]="name"
                        #packageName="ngModel"
                        class="form-control"
                        required
-                       id="packageName" name="packageName">
+                       name="packageName">
                 <input-error [model]="packageName"
                              [errorMessages]="{
                                 required: 'A name is required',

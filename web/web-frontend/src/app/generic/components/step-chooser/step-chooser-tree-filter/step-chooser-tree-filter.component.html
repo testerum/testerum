@@ -75,8 +75,7 @@
               (click)="filter()">
             <i class="fa_my-search tags-search-icon"></i>
         </span>
-        <input id="float-input"
-               [(ngModel)]="searchText"
+        <input [(ngModel)]="searchText"
                (blur)="onSearchInputDeFocus($event)"
                (keydown)="onSearchInputKey($event)"
                placeholder="Search"
@@ -107,6 +106,6 @@
                         placeholder="Tags"
                         tooltipPosition="bottom"
                         pTooltip="Tags"
-                        id="tags" name="tags"></p-autoComplete>
+                        name="tags"></p-autoComplete>
     </div>
 </p-toolbar>

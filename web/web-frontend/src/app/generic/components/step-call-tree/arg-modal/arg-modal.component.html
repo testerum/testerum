@@ -1,5 +1,5 @@
 
-<div bsModal #resourceModal="bs-modal" id="resourceModal" class="modal fade" tabindex="-1" role="dialog">
+<div bsModal #resourceModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
@@ -21,7 +21,7 @@
 
                 </div>
 
-                <h4 class="modal-title" id="myModalLabel">
+                <h4 class="modal-title">
                     {{modalTitle}}
                 </h4>
             </div>
@@ -35,12 +35,12 @@
             <div class="modal-footer">
                 <span *ngIf="canBeSharedResource()"
                       class="footer-left">
-                    <input id="isSharedResource" #isSharedResourceInput
+                    <input #isSharedResourceInput
                            class="shared-input"
                            [ngModel]="isSharedResource"
                            (change)="toggleSharedResource(isSharedResourceInput)"
                            type="checkbox" name="isSharedResource">
-                    <label for="isSharedResource" class="shared-label">Shared</label>
+                    <label class="shared-label">Shared</label>
 
                     <span *ngIf="isSharedResource" class="shared-path">
                         <span class="shared-path-label">Path:</span>

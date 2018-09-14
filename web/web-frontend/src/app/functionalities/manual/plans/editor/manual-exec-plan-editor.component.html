@@ -8,13 +8,13 @@
 
                 <!-- ENVIRONMENT -->
                 <div class="my-line">
-                    <label class="my-label label-size col-form-label" for="environment">Environment to test</label>
+                    <label class="my-label label-size col-form-label">Environment to test</label>
 
                     <div class="my-value" *ngIf="!isEditMode">
                         {{model.environment || ""}}
                     </div>
                     <div class="my-value" *ngIf="isEditMode">
-                        <input id="environment" required
+                        <input required
                                #environment="ngModel" [(ngModel)]="model.environment"
                                type="text" class="form-control" name="environment">
                         <div *ngIf="environment.errors && (environment.dirty || environment.touched)"
@@ -28,13 +28,13 @@
 
                 <!-- APPLICATION VERSION -->
                 <div class="my-line">
-                    <label class="my-label label-size col-form-label" for="applicationVersion">Application version</label>
+                    <label class="my-label label-size col-form-label">Application version</label>
 
                     <div class="my-value" *ngIf="!isEditMode">
                         {{model.applicationVersion || ""}}
                     </div>
                     <div class="my-value" *ngIf="isEditMode">
-                        <input id="applicationVersion" required
+                        <input required
                                #applicationVersion="ngModel" [(ngModel)]="model.applicationVersion"
                                type="text" class="form-control" name="applicationVersion">
                         <div *ngIf="applicationVersion.errors && (applicationVersion.dirty || applicationVersion.touched)"
@@ -48,12 +48,11 @@
 
                 <!-- DESCRIPTION -->
                 <div class="my-line">
-                    <label class="my-label-top label-size" for="description">Description</label>
+                    <label class="my-label-top label-size">Description</label>
 
                     <div class="my-value">
                         <markdown-editor #descriptionMarkdownEditor
-                                         [options]="markdownEditorOptions"
-                                         id="description"></markdown-editor>
+                                         [options]="markdownEditorOptions"></markdown-editor>
                     </div>
                 </div>
 

@@ -30,13 +30,12 @@
 
                 <!-- DESCRIPTION -->
                 <div class="my-line" *ngIf="model.description">
-                    <label class="my-label label-size" for="description">Description</label>
+                    <label class="my-label label-size">Description</label>
                     <div class="my-value">
                         <markdown-editor #descriptionMarkdownEditor
                                          [options]="markdownEditorOptions"
                                          [editMode]="false"
-                                         class="markdown-editor-dynamic-size"
-                                         id="description"></markdown-editor>
+                                         class="markdown-editor-dynamic-size"></markdown-editor>
                     </div>
                 </div>
 
@@ -74,10 +73,10 @@
 
                 <!-- TEST STATUS -->
                 <div class="my-line">
-                    <label class="my-label label-size" for="testStatus">Test Result</label>
+                    <label class="my-label label-size">Test Result</label>
                     <div class="my-value">
 
-                        <p-dropdown name="testStatus" id="testStatus"
+                        <p-dropdown name="testStatus"
                                     [readonly]="isTestSuiteFinalized()"
                                     [options]="testStatusDropdownOptions"
                                     [(ngModel)]="model.status"

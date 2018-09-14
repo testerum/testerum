@@ -7,13 +7,13 @@
         <form #form="ngForm" class="form-horizontal">
 
             <div class="my-line">
-                <label class="my-label label-size" for="name">Name</label>
+                <label class="my-label label-size">Name</label>
 
                 <div class="my-value" *ngIf="!isEditMode">
                     {{model.name || ""}}
                 </div>
                 <div class="my-value" *ngIf="isEditMode">
-                    <input id="name" name="name"
+                    <input name="name"
                            required
                            #nameNgModel="ngModel" [(ngModel)]="model.name"
                            type="text" class="form-control" >
@@ -28,7 +28,7 @@
 
             <!-- TAGS -->
             <div class="my-line" *ngIf="!isEditMode && model.tags.length > 0 ">
-                <label class="my-label label-size" for="tags">Tags</label>
+                <label class="my-label label-size">Tags</label>
                 <div class="my-value" *ngIf="!isEditMode">
                     <ng-container *ngFor="let tag of model.tags">
                         <span class="label label-primary">{{tag}}</span>
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="my-line" *ngIf="isEditMode">
-                <label class="my-label label-size" for="tags">Tags</label>
+                <label class="my-label label-size">Tags</label>
                 <div class="my-value">
                     <p-autoComplete #tagsElement
                                     [(ngModel)]="model.tags"
@@ -47,24 +47,23 @@
                                     [delay]="0"
                                     [multiple]="true"
                                     [dropdown]="true"
-                                    id="tags" name="tags"></p-autoComplete>
+                                    name="tags"></p-autoComplete>
                 </div>
             </div>
 
             <!-- DESCRIPTION -->
             <div class="my-line">
-                <label class="my-label-top label-size" for="description">Description</label>
+                <label class="my-label-top label-size">Description</label>
 
                 <div class="my-value">
                     <markdown-editor #markdownEditor
-                                     [options]="markdownEditorOptions"
-                                     id="description"></markdown-editor>
+                                     [options]="markdownEditorOptions"></markdown-editor>
                 </div>
             </div>
 
             <!-- ATTACHMENTS-->
             <div class="my-line" *ngIf="isEditMode || model.attachments.length > 0">
-                <label class="my-label-top label-size" for="description">Attachments</label>
+                <label class="my-label-top label-size">Attachments</label>
 
                 <div class="my-value">
                     <attachments-component [url]="getFeatureUploadUrl()"

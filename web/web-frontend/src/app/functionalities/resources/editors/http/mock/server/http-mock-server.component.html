@@ -27,13 +27,13 @@
 
     <!-- PORT -->
     <div class="my-line">
-        <label class="my-label label-size" for="port">Port</label>
+        <label class="my-label label-size">Port</label>
         <div class="my-value" *ngIf="!editMode">
             {{model.port || ""}}
         </div>
         <div class="my-value" *ngIf="editMode">
             <input required
-                   id="port" portValidator
+                   portValidator
                    #portNgModel="ngModel" [(ngModel)]="model.port"
                    type="text" class="form-control" name="port">
 

@@ -18,13 +18,13 @@
 
 
                 <div class="my-line">
-                    <label class="my-label label-size" for="testName">Name</label>
+                    <label class="my-label label-size">Name</label>
 
                     <div class="my-value" *ngIf="!isEditMode">
                         {{testModel.text || ""}}
                     </div>
                     <div class="my-value" *ngIf="isEditMode">
-                        <input id="testName" required
+                        <input required
                                #testName="ngModel" [(ngModel)]="testModel.text"
                                type="text" class="form-control" name="testName">
                         <div *ngIf="testName.errors && (testName.dirty || testName.touched)"
@@ -38,7 +38,7 @@
 
                 <!-- TEST TYPE & DISABLED -->
                 <div class="my-line">
-                    <label class="my-label label-size" for="testTypeSwitch">Type</label>
+                    <label class="my-label label-size">Type</label>
                     <div class="type-value-container my-value">
                         <div *ngIf="!isEditMode" class="type-container">
                             <span *ngIf="!testModel.properties.isManual" class="label label-success">Automated</span>
@@ -49,7 +49,7 @@
                                             onIcon="fa_my-manual-test_white" offIcon="fa_my-automated-test_white"
                                             [(ngModel)]="testModel.properties.isManual"
                                             styleClass="toggle-test-type"
-                                            name="testTypeSwitch" id="testTypeSwitch"></p-toggleButton>
+                                            name="testTypeSwitch"></p-toggleButton>
                         </div>
 
                         <div class="disabled-container">
@@ -61,7 +61,7 @@
                                 <p-toggleButton onLabel="Disabled" offLabel="Enabled"
                                                 onIcon="fa_my-disabled" offIcon="fa_my-enabled" [(ngModel)]="testModel.properties.isDisabled"
                                                 styleClass="toggle-test-state"
-                                                name="testStateSwitch" id="testStateSwitch"></p-toggleButton>
+                                                name="testStateSwitch"></p-toggleButton>
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
 
                 <!-- TAGS -->
                 <div class="my-line" *ngIf="!isEditMode && testModel.tags.length > 0 ">
-                    <label class="my-label label-size" for="tags">Tags</label>
+                    <label class="my-label label-size">Tags</label>
                     <div class="my-value" *ngIf="!isEditMode">
                         <ng-container *ngFor="let tag of testModel.tags">
                             <span class="label label-primary">{{tag}}</span>
@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 <div class="my-line" *ngIf="isEditMode">
-                    <label class="my-label label-size" for="tags">Tags</label>
+                    <label class="my-label label-size">Tags</label>
                     <div class="my-value">
                         <p-autoComplete #tagsElement
                                         [(ngModel)]="testModel.tags"
@@ -88,17 +88,16 @@
                                         [delay]="0"
                                         [multiple]="true"
                                         [dropdown]="true"
-                                        id="tags" name="tags"></p-autoComplete>
+                                        name="tags"></p-autoComplete>
                     </div>
                 </div>
 
                 <div class="my-line" *ngIf="testModel.description || isEditMode">
-                    <label class="my-label label-size" for="description">Description</label>
+                    <label class="my-label label-size">Description</label>
                     <div class="my-value">
                         <markdown-editor #descriptionMarkdownEditor
                                          [options]="markdownEditorOptions"
-                                         class="markdown-editor-dynamic-size"
-                                         id="description"></markdown-editor>
+                                         class="markdown-editor-dynamic-size"></markdown-editor>
                     </div>
                 </div>
 

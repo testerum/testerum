@@ -64,7 +64,7 @@
             {{name}}
         </div>
         <div class="my-value" *ngIf="editMode && !isSharedResource">
-            <input id="name" required
+            <input required
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
             <input-error [model]="nameNgModel"
@@ -107,25 +107,24 @@
 
             <!-- HOST NAME -->
             <div class="my-line">
-                <label class="my-label label-size" for="host">Host Name or IP</label>
+                <label class="my-label label-size">Host Name or IP</label>
                 <div class="my-value" *ngIf="!editMode">
                     {{model.host || ""}}
                 </div>
                 <div class="my-value" *ngIf="editMode">
-                    <input id="host"
-                           [(ngModel)]="model.host"
+                    <input [(ngModel)]="model.host"
                            type="text" class="form-control" name="host">
                 </div>
             </div>
 
             <!-- PORT -->
             <div class="my-line">
-                <label class="my-label label-size" for="port">Port</label>
+                <label class="my-label label-size">Port</label>
                 <div class="my-value" *ngIf="!editMode">
                     {{model.port || ""}}
                 </div>
                 <div class="my-value" *ngIf="editMode">
-                    <input id="port" portValidator
+                    <input portValidator
                            #port="ngModel" [(ngModel)]="model.port"
                            type="text" class="form-control" name="port">
                     <div *ngIf="port.errors && (port.dirty || port.touched)"
@@ -139,7 +138,7 @@
 
             <!-- PING button -->
             <div class="my-line">
-                <label class="my-label label-size" for="host"></label>
+                <label class="my-label label-size"></label>
                 <div class="my-value">
                     <button (click)="ping();" [class.disabled]="!canCallPing()" type="button"
                             class="btn btn-default">
@@ -156,13 +155,12 @@
 
             <!-- CUSTOM URL -->
             <div class="my-line">
-                <label class="my-label label-size" for="host">URL</label>
+                <label class="my-label label-size">URL</label>
                 <div class="my-value" *ngIf="!editMode">
                     {{model.customUrl || ""}}
                 </div>
                 <div class="my-value" *ngIf="editMode">
-                    <input id="customUrl"
-                           [(ngModel)]="model.customUrl"
+                    <input [(ngModel)]="model.customUrl"
                            type="text" class="form-control" name="customUrl">
                 </div>
             </div>
@@ -171,40 +169,37 @@
 
     <!-- USER -->
     <div class="my-line">
-        <label class="my-label label-size" for="host">User</label>
+        <label class="my-label label-size">User</label>
         <div class="my-value" *ngIf="!editMode">
             {{model.user || ""}}
         </div>
         <div class="my-value" *ngIf="editMode">
-            <input id="user"
-                   [(ngModel)]="model.user"
+            <input [(ngModel)]="model.user"
                    type="text" class="form-control" name="user">
         </div>
     </div>
 
     <!-- PASSWORD -->
     <div class="my-line">
-        <label class="my-label label-size" for="host">Password</label>
+        <label class="my-label label-size">Password</label>
         <div class="my-value" *ngIf="!editMode">
             {{maskedPassword() || ""}}
         </div>
         <div class="my-value" *ngIf="editMode">
-            <input id="password"
-                   [(ngModel)]="model.password"
+            <input [(ngModel)]="model.password"
                    type="password" class="form-control" name="password">
         </div>
     </div>
 
     <!-- DATABASE -->
     <div class="my-line">
-        <label class="my-label label-size" for="host">Database</label>
+        <label class="my-label label-size">Database</label>
         <div class="my-value" *ngIf="!editMode">
             {{model.database || ""}}
         </div>
         <div class="my-value db-container" *ngIf="editMode">
 
-            <input id="database"
-                   [(ngModel)]="model.database"
+            <input [(ngModel)]="model.database"
                    type="text" class="form-control db-input" name="database">
 
             <button (click)="showSchemasChooser();" type="button" class="btn btn-default db-choose-button">

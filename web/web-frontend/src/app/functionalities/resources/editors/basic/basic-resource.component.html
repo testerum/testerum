@@ -6,13 +6,12 @@
 <form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
 
     <div class="my-line">
-        <label class="my-label label-size" for="value">{{name}}</label>
+        <label class="my-label label-size">{{name}}</label>
         <div class="my-value" *ngIf="!editMode">
             {{model.content || ""}}
         </div>
         <div class="my-value" *ngIf="editMode">
-            <input id="value"
-                   argValueValidator arg="arg" stepParameter="stepParameter"
+            <input argValueValidator arg="arg" stepParameter="stepParameter"
                    #valueNgModel="ngModel" [(ngModel)]="model.content"
                    type="text" class="form-control" name="value">
 
