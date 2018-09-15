@@ -34,7 +34,6 @@ import {isValid} from "ngx-bootstrap/chronos/create/valid";
     styleUrls: ['composed-step-view.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-
 export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterContentChecked, DoCheck {
 
     @Input() model: ComposedStepDef;
@@ -234,7 +233,9 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
 
     isValid(): boolean {
         let control = this.form.control;
-        control.get("pathInput").setErrors(null);
+        if (control.get("pathInput")) {
+            control.get("pathInput").setErrors(null);
+        }
 
         if (this.model.stepCalls.length > 0) {
             if(!this.model.path) {
