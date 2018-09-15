@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {StepCall} from "../../../model/step-call.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
 import {JsonTreeModel} from "../json-tree/model/json-tree.model";
@@ -26,6 +26,8 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
     @Input() stepCalls: Array<StepCall> = [];
     @Input() isEditMode: boolean;
 
+    @Output() change = new EventEmitter<void>();
+
     @ViewChild(ArgModalComponent) argModal: ArgModalComponent;
 
     jsonTreeModel: JsonTreeModel = new JsonTreeModel();
@@ -42,6 +44,7 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
         this.stepCallTreeComponentService.jsonTreeModel = this.jsonTreeModel;
         this.stepCallTreeComponentService.argModal = this.argModal;
         this.stepCallTreeComponentService.isEditMode = this.isEditMode;
+        this.stepCallTreeComponentService.changeEventEmitter = this.change;
         this.initTree();
     }
 

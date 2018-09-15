@@ -10,7 +10,7 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
-import {NgForm} from "@angular/forms";
+import {AbstractControl, NgForm} from "@angular/forms";
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {AutoComplete, Message} from "primeng/primeng";
 import {Arg} from "../../../../model/arg/arg.model";
@@ -26,6 +26,7 @@ import {StepPathModalService} from "./step-path-chooser-modal/step-path-modal.se
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
 import {StepsService} from "../../../../service/steps.service";
+import {isValid} from "ngx-bootstrap/chronos/create/valid";
 
 @Component({
     selector: 'composed-step-view',
@@ -125,6 +126,7 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         if (this.oldModel != this.model) {
             this.refreshWarnings();
             this.oldModel = this.model;
+            this.validate();
         }
     }
     private refreshWarnings() {
@@ -134,8 +136,6 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
                 {severity: 'error', summary: warning.message}
             )
         }
-    }
-    onBeforeSave() {
     }
 
     onPatternChanged() {
@@ -222,5 +222,34 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         this.stepPathModalService.showModal().subscribe((selectedPath: Path)=> {
             this.model.path = selectedPath;
         })
+    }
+
+    onStepCallTreeChange() {
+        this.validate();
+    }
+
+    validate() {
+        this.isValid();
+    }
+
+    isValid(): boolean {
+        let control = this.form.control;
+        control.get("pathInput").setErrors(null);
+
+        if (this.model.stepCalls.length > 0) {
+            if(!this.model.path) {
+
+                let validationError = {};
+                validationError["required"] = true;
+                control.markAsTouched();
+                control.markAsDirty();
+
+                control.get("pathInput").setErrors(validationError);
+
+                return false;
+            }
+        }
+
+        return true;
     }
 }

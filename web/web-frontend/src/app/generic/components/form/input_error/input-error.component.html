@@ -1,5 +1,5 @@
 <div
-    *ngIf="model.errors && (model.dirty || model.touched)"
+    *ngIf="model.errors"
     class="alert alert-danger">
     <ng-container *ngFor="let errorKey of errorKeys()">
         <div>

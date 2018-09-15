@@ -19,6 +19,7 @@ export class StepCallTreeComponentService {
     editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
     stepCallOrderChangeEventEmitter: EventEmitter<void> = new EventEmitter<void>();
     warningRecalculationChangesEventEmitter: EventEmitter<void> = new EventEmitter<void>();
+    changeEventEmitter: EventEmitter<void>;
 
     argModal: ArgModalComponent; //TODO Ionut: remove this, this Modal should be a stand alone compoent as StepChooserModal
 
@@ -48,6 +49,10 @@ export class StepCallTreeComponentService {
         this.stepCallOrderChangeEventEmitter.emit();
     }
 
+    triggerChangeEvent(): void {
+        this.changeEventEmitter.emit();
+    }
+
     addStepCall(stepCall: StepCall) {
         this.stepCalls.push(stepCall);
         let stepCallContainer = StepCallTreeUtil.createStepCallContainerWithChildren(stepCall, this.jsonTreeModel);
@@ -55,6 +60,7 @@ export class StepCallTreeComponentService {
         this.jsonTreeModel.getChildren().push(stepCallContainer);
 
         this.triggerWarningRecalculationChangesEvent();
+        this.triggerChangeEvent();
     }
 
     removeStepCall(stepCallContainer: StepCallContainerModel) {
@@ -65,6 +71,7 @@ export class StepCallTreeComponentService {
         this.triggerStepCallOrderChangeEvent();
 
         this.triggerWarningRecalculationChangesEvent();
+        this.triggerChangeEvent();
     }
 
     private removeStepCallFromParent(stepCallToRemove: StepCall, rootNode: JsonTreeContainer) {
@@ -142,5 +149,7 @@ export class StepCallTreeComponentService {
         );
 
         this.currentStepCallEditorModel = stepCallEditorContainerModel;
+
+        this.triggerChangeEvent();
     }
 }

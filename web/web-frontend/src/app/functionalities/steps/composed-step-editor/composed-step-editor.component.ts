@@ -101,7 +101,10 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
     }
 
     saveAction(): void {
-        this.composedStepViewComponent.onBeforeSave();
+        if (this.composedStepViewComponent.isValid()) {
+            return;
+        }
+
         if (this.isCreateAction) {
             this.doSave();
         } else {

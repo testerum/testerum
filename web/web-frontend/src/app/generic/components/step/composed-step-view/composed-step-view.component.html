@@ -57,7 +57,7 @@
             <div>
             <input [ngModel]="model.path?.toString()"
                    #pathInput="ngModel"
-                   readonly required
+                   readonly
                    type="text"
                    class="path-input form-control"
                    name="pathInput">
@@ -133,5 +133,5 @@
         </div>
     </div>
 
-    <step-call-tree [stepCalls]="model.stepCalls" [isEditMode]="isEditMode"></step-call-tree>
+    <step-call-tree [stepCalls]="model.stepCalls" [isEditMode]="isEditMode" (change)="onStepCallTreeChange()"></step-call-tree>
 </form>

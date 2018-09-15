@@ -37,9 +37,10 @@ export class StepModalComponent implements AfterViewInit {
     }
 
     onOkAction() {
-        this.composedStepViewComponent.onBeforeSave();
-        this.modalSubject.next(this.model);
-        this.modal.hide();
+        if (this.composedStepViewComponent.isValid()) {
+            this.modalSubject.next(this.model);
+            this.modal.hide();
+        }
     }
 
     onCancelAction() {
