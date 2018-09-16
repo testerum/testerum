@@ -43,7 +43,7 @@ class FeatureController(private val featureService: FeatureService) {
         return featureService.getFeaturesTree(featuresTreeFilter)
     }
 
-    @RequestMapping(method = [RequestMethod.POST], path = ["/fileUpload"], params = ["path", "files"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @RequestMapping(method = [RequestMethod.POST], path = ["/fileUpload"], params = ["path"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @ResponseBody
     fun uploadImages(@RequestParam(value = "path") featurePathAsString: String,
                      @RequestParam("files") uploadingFiles: Array<MultipartFile>): List<Attachment> {
