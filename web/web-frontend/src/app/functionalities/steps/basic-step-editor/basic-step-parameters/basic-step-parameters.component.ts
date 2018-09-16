@@ -32,4 +32,12 @@ export class BasicStepParametersComponent {
     isEnumType(type: any):boolean {
         return type == ResourceMapEnum.ENUM;
     }
+
+    getParamUiName(serverType: string): string {
+        return ResourceMapEnum.getUiNameByUiType(serverType)
+    }
+
+    asParam(patternPart: StepPatternPart): ParamStepPatternPart {
+        return patternPart as ParamStepPatternPart;
+    }
 }

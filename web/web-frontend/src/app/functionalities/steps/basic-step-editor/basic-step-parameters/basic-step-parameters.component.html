@@ -6,26 +6,26 @@
             <ng-container *ngFor="let patternPart of patternParts; let i = index">
                 <tr *ngIf="isParamPattern(patternPart)">
                     <td>
-                        <strong>{{patternPart.name}}</strong>
+                        <strong>{{asParam(patternPart).name}}</strong>
                     </td>
                     <td>
                         <ng-container>
-                            {{patternPart.type}}
+                            {{getParamUiName(asParam(patternPart).uiType)}}
                         </ng-container>
                     </td>
                     <td>
-                        <div *ngIf="isEnumType(patternPart.type)">
-                            [
-                            <div class="inline">
-                                {{patternPart.enumValues || ""}}
+                        <div *ngIf="isEnumType(asParam(patternPart).serverType)" style="display: flex">
+                            [&nbsp;
+                            <div *ngIf="!isEditMode" class="inline">
+                                {{asParam(patternPart).enumValues || ""}}
                             </div>
-                            ]
+                            &nbsp;]
                         </div>
                     </td>
-                    <td class="param-icon-column" *ngIf="patternPart.description">
+                    <td class="param-icon-column" *ngIf="asParam(patternPart).description">
                         <div class="param-info-icon"
-                             #errorMessage="bs-popover" [popover]="patternPart.description" placement="right" triggers="" containerClass="popover-error"
-                             (mouseenter)="patternPart.description ? errorMessage.show(): null"
+                             #errorMessage="bs-popover" [popover]="asParam(patternPart).description" placement="right" triggers="" containerClass="popover-error"
+                             (mouseenter)="asParam(patternPart).description ? errorMessage.show(): null"
                              (mouseleave)="errorMessage.hide()"
                         ></div>
                     </td>
