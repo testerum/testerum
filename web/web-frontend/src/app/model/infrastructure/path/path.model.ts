@@ -1,5 +1,4 @@
 import {JsonUtil} from "../../../utils/json.util";
-import {ObjectUtil} from "../../../utils/object.util";
 import {StringUtils} from "../../../utils/string-utils.util";
 import {ArrayUtil} from "../../../utils/array.util";
 import {Serializable} from "../serializable.model";
@@ -183,7 +182,7 @@ export class Path implements Serializable<Path> {
         if(this.isFile()) {
             return new Path(this.directories, null, null);
         }
-        if(this.directories.length = 0) {
+        if(this.directories.length == 0) {
             return Path.createInstanceOfEmptyPath();
         }
 
