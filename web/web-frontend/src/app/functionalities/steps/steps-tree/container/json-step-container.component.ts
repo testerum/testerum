@@ -96,6 +96,7 @@ export class JsonStepContainerComponent {
                 ).subscribe(
                     (responsePath: Path) => {
                         this.model.name = updateEvent.newName;
+                        this.model.path = responsePath;
                         this.stepsTreeService.sortChildren(this.model.parentContainer.getChildren())
                     }
                 )
