@@ -1,6 +1,7 @@
 package com.testerum.model.resources.http.response
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -35,10 +36,12 @@ class HttpResponse @JsonCreator constructor(
         }
     }
 
+    @get:JsonIgnore
     val bodyAsUtf8String: String by lazy(mode = LazyThreadSafetyMode.NONE) {
         String(body, Charsets.UTF_8)
     }
 
+    @get:JsonIgnore
     val jsonBody: Any by lazy(mode = LazyThreadSafetyMode.NONE) {
         OBJECT_MAPPER.readValue(bodyAsUtf8String, Object::class.java)
     }

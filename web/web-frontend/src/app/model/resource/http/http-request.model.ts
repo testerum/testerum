@@ -61,10 +61,7 @@ export class HttpRequest implements Resource<HttpRequest> {
             '"method":' + JsonUtil.stringify(this.method.toString()) + ',' +
             '"url":' + JsonUtil.stringify(this.url) ;
 
-        let headersWithValue = this.getHeadersWithValue();
-        if(headersWithValue.length != 0 ) {
-            result += ',"headers":' + JsonUtil.serializeArrayOfSerializable(headersWithValue);
-        }
+        result += ',"headers":' + JsonUtil.serializeArrayOfSerializable(this.getHeadersWithValue());
 
         if (this.method != HttpMethod.GET && !this.body.isEmpty()) {
             result += ',"body":' + JsonUtil.serializeSerializable(this.body);
