@@ -73,11 +73,7 @@ class FeatureTreeBuilder {
 
                     FeatureFeatureNode(
                             name = label,
-                            path = Path(
-                                    directories = path,
-                                    fileName = Feature.FILE_NAME_WITHOUT_EXTENSION,
-                                    fileExtension = Feature.FILE_EXTENSION
-                            ),
+                            path = Path(directories = path),
                             children = children,
                             hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings
                     )

@@ -8,7 +8,7 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.StepCall
 import com.testerum.model.warning.Warning
 
-
+// todo: rename class to "Test"
 data class TestModel @JsonCreator constructor(@JsonProperty("text") val text: String, // todo: rename to "name"
                                               @JsonProperty("path") val path: Path,
                                               @JsonProperty("oldPath") val oldPath: Path? = path,
@@ -17,6 +17,10 @@ data class TestModel @JsonCreator constructor(@JsonProperty("text") val text: St
                                               @JsonProperty("tags") val tags: List<String> = emptyList(),
                                               @JsonProperty("stepCalls") val stepCalls: List<StepCall> = emptyList(),
                                               @JsonProperty("warnings") val warnings: List<Warning> = emptyList()) {
+
+    companion object {
+        val TEST_FILE_EXTENSION = "test"
+    }
 
     private val _id = path.toString()
 
@@ -34,6 +38,14 @@ data class TestModel @JsonCreator constructor(@JsonProperty("text") val text: St
     @get:JsonIgnore
     val hasOwnOrDescendantWarnings: Boolean
         get() = warnings.isNotEmpty() || descendantsHaveWarnings
+
+    @JsonIgnore
+    fun getNewPath(): Path {
+        return path.copy(
+                fileName = text,
+                fileExtension = TEST_FILE_EXTENSION
+        )
+    }
 
     override fun toString() = "TestModel(name=$text, path=$path)"
 

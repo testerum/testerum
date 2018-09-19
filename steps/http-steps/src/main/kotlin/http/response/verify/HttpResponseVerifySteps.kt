@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory
 class HttpResponseVerifySteps {
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
+        private val LOG = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
     }
 
     private val jsonComparer: JsonComparer = HttpStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
@@ -34,13 +34,13 @@ class HttpResponseVerifySteps {
         val httpRequest: HttpRequest = variables["httpRequest"] as HttpRequest
         val httpResponse: HttpResponse = variables["httpResponse"] as HttpResponse
 
-        LOGGER.debug("Verifying HTTP Response [\n$httpResponse\n]")
+        LOG.debug("Verifying HTTP Response [\n$httpResponse\n]")
 
         verifyExpectedCode(httpResponseVerify, httpResponse, httpRequest)
         verifyExpectedHeaders(httpResponseVerify, httpResponse, httpRequest)
         verifyExpectedBody(httpResponseVerify, httpRequest, httpResponse)
 
-        LOGGER.debug("Http Request executed successfully")
+        LOG.debug("Http Request executed successfully")
     }
 
     private fun verifyExpectedBody(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: HttpResponse) {
@@ -67,7 +67,7 @@ class HttpResponseVerifySteps {
 
         val compareResult: JsonCompareResult = jsonComparer.compare(expectedBody!!, actualBody)
         if (compareResult is DifferentJsonCompareResult) {
-            LOGGER.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
+            LOG.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
 
             throw AssertionError(
                     "Expected Response Body to match [$expectedBody] but [$actualBody] found. \n" +
@@ -114,7 +114,7 @@ class HttpResponseVerifySteps {
             )
         }
 
-        LOGGER.debug(
+        LOG.debug(
                 "Response Body Match \n" +
                         getContextInfoForLogging(httpRequest, httpResponse)
         )
@@ -141,7 +141,7 @@ class HttpResponseVerifySteps {
                             getContextInfoForLogging(httpRequest, httpResponse)
             )
         } else {
-            LOGGER.debug(
+            LOG.debug(
                     "Response Body is valid: [$IS_EMPTY] as expected"
             )
         }
@@ -265,7 +265,7 @@ class HttpResponseVerifySteps {
                                actualValue: String,
                                compareMode: HttpResponseVerifyHeadersCompareMode) {
 
-        LOGGER.debug("Header Found: \n" +
+        LOG.debug("Header Found: \n" +
                 "\t key=[${expectedHeader.key}], \n" +
                 "\t expectedValue=[${expectedHeader.value}], \n" +
                 "\t comparisonMode=[$compareMode], \n" +

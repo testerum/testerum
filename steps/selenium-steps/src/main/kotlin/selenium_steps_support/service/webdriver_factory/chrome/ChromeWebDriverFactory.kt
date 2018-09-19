@@ -1,15 +1,15 @@
 package selenium_steps_support.service.webdriver_factory.chrome
 
-import selenium_steps_support.service.webdriver_factory.util.ClassPathExtractor
-import selenium_steps_support.service.webdriver_factory.util.OsUtils
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.slf4j.LoggerFactory
-import java.nio.file.Path
+import selenium_steps_support.service.webdriver_factory.util.ClassPathExtractor
+import selenium_steps_support.service.webdriver_factory.util.OsUtils
+import java.nio.file.Path as JavaPath
 
 object ChromeWebDriverFactory {
 
-    private val LOGGER = LoggerFactory.getLogger(ChromeWebDriverFactory::class.java)
+    private val LOG = LoggerFactory.getLogger(ChromeWebDriverFactory::class.java)
 
     fun createWebDriver(): WebDriver {
         // todo: replace extracting from classpath with driver management in the UI
@@ -22,16 +22,16 @@ object ChromeWebDriverFactory {
         return ChromeDriver()
     }
 
-    private fun getChromeDriverBinaryTempPath(): Path {
+    private fun getChromeDriverBinaryTempPath(): JavaPath {
         val classpathLocation = ChromeDriverBinaryClasspathLocationFinder.getClasspathLocationForCurrentOperatingSystem()
 
         val classPathExtractor = ClassPathExtractor()
 
-        LOGGER.debug("Based on the current OS, Chrome driver binary is the classpath at [{}]; extracting to temp dir", classpathLocation)
+        LOG.debug("Based on the current OS, Chrome driver binary is the classpath at [{}]; extracting to temp dir", classpathLocation)
         val fileToExecute = classPathExtractor.extractToTemp(classpathLocation, "chromedriver-")
 
         if (OsUtils.isLinux || OsUtils.isMac) {
-            LOGGER.debug("Chrome driver binary extracted to [{}]; marking it as executable", fileToExecute.toAbsolutePath())
+            LOG.debug("Chrome driver binary extracted to [{}]; marking it as executable", fileToExecute.toAbsolutePath())
 
             val success = fileToExecute.toFile().setExecutable(true)
             if (!success) {

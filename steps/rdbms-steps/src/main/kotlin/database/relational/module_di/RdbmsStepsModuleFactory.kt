@@ -3,30 +3,25 @@ package database.relational.module_di
 import com.testerum.api.services.TesterumServiceLocator
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
-import com.testerum.common_rdbms.RdbmsDriverConfigService
-import com.testerum.common_rdbms.RdbmsService
+import com.testerum.common_rdbms.JdbcDriversCache
+import com.testerum.common_rdbms.RdbmsConnectionCache
 import com.testerum.step_transformer_utils.JsonVariableReplacer
 import database.relational.connection_manager.RdbmsConnectionManager
-import java.nio.file.Path
 
-class RdbmsStepsModuleFactory(context: ModuleFactoryContext,
-                              jdbcDriversDirectory: Path) : BaseModuleFactory(context) {
+class RdbmsStepsModuleFactory(context: ModuleFactoryContext) : BaseModuleFactory(context) {
 
     val jsonVariableReplacer = JsonVariableReplacer(
             TesterumServiceLocator.getTestVariables()
     )
 
-    private val rdbmsDriverConfigService = RdbmsDriverConfigService(
-            jdbcDriversDirectory = jdbcDriversDirectory
-    )
+    val rdbmsDriverConfigCache = JdbcDriversCache()
 
-    private val rdbmsService = RdbmsService(
-            jdbcDriversDirectory = jdbcDriversDirectory,
-            rdbmsDriverConfigService = rdbmsDriverConfigService
+    private val rdbmsConnectionCache = RdbmsConnectionCache(
+            jdbcDriversCache = rdbmsDriverConfigCache
     )
 
     val rdbmsConnectionManager = RdbmsConnectionManager(
-            rdbmsService = rdbmsService
+            rdbmsConnectionCache = rdbmsConnectionCache
     )
 
 }

@@ -5,7 +5,7 @@ import {BasicStepDef} from "../../../model/basic-step-def.model";
 
 @Component({
     moduleId: module.id,
-    selector: 'composed-step-editor',
+    selector: 'basic-step-editor',
     templateUrl: 'basic-step-editor.component.html',
     styleUrls: ['./basic-step-editor.component.scss']
 })

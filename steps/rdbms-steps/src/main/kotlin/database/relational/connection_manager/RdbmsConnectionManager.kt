@@ -1,15 +1,15 @@
 package database.relational.connection_manager
 
-import com.testerum.common_rdbms.RdbmsService
+import com.testerum.common_rdbms.RdbmsConnectionCache
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 import database.relational.connection_manager.model.RdbmsClient
 
-class RdbmsConnectionManager(private val rdbmsService: RdbmsService) {
+class RdbmsConnectionManager(private val rdbmsConnectionCache: RdbmsConnectionCache) {
 
     fun getRdbmsClient(connectionConfig: RdbmsConnectionConfig): RdbmsClient {
         return RdbmsClient(
                 connectionConfig,
-                rdbmsService.getDriverInstance(connectionConfig)
+                rdbmsConnectionCache.getDriverInstance(connectionConfig)
         )
     }
 

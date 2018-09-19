@@ -1,12 +1,12 @@
 package com.testerum.runner_cmdline.cmdline.params.model
 
-import java.nio.file.Path
+import java.nio.file.Path as JavaPath
 
-data class CmdlineParams(val repositoryDirectory: Path,
-                         val basicStepsDirectory: Path,
-                         val settingsFile: Path?,
+data class CmdlineParams(val repositoryDirectory: JavaPath,
+                         val basicStepsDirectory: JavaPath,
+                         val settingsFile: JavaPath?,
                          val settingOverrides: Map<String, String>,
-                         val testFilesOrDirectories: List<Path>,
+                         val testFilesOrDirectories: List<JavaPath>,
                          val verbose: Boolean,
                          val outputFormat: OutputFormat) {
 

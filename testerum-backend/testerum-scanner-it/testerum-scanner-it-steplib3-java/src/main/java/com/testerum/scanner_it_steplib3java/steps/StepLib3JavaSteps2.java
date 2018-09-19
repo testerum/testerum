@@ -1,6 +1,6 @@
 package com.testerum.scanner_it_steplib3java.steps;
 
-import com.testerum.api.annotations.settings.annotation.DeclareSetting;
+import com.testerum.api.annotations.settings.DeclareSetting;
 import com.testerum.api.test_context.settings.model.SettingType;
 
 @DeclareSetting(key = "stepLib3Java.param3", type = SettingType.NUMBER, defaultValue = "13", description = "param3 description", category = "param3 category")

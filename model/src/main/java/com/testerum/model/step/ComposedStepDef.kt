@@ -1,6 +1,7 @@
 package com.testerum.model.step
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.infrastructure.path.Path
@@ -17,6 +18,10 @@ data class ComposedStepDef @JsonCreator constructor(@JsonProperty("path") overri
                                                     @JsonProperty("stepCalls") val stepCalls: List<StepCall>,
                                                     @JsonProperty("warnings") override val warnings: List<Warning> = emptyList()): StepDef {
 
+    companion object {
+        val COMPOSED_STEP_FILE_EXTENSION = "step"
+    }
+
     override val id: String
         get() = StepHashUtil.calculateStepHash(phase, stepPattern)
 
@@ -25,6 +30,14 @@ data class ComposedStepDef @JsonCreator constructor(@JsonProperty("path") overri
     @get:JsonProperty("descendantsHaveWarnings")
     override val descendantsHaveWarnings: Boolean
         get() = _descendantsHaveWarnings
+
+    @JsonIgnore
+    fun getNewPath(): Path {
+        return path.copy(
+                fileName = getText(),
+                fileExtension = COMPOSED_STEP_FILE_EXTENSION
+        )
+    }
 
     override fun toString() = buildString {
         append(phase)

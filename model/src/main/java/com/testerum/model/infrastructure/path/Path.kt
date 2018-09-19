@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.nio.file.Paths
+import java.util.*
+import java.nio.file.Path as JavaPath
 
 data class Path @JsonCreator constructor(
         @JsonProperty("directories") val directories: List<String>,
-        @JsonProperty("fileName") val fileName: String?,
-        @JsonProperty("fileExtension") val fileExtension: String?) {
+        @JsonProperty("fileName") val fileName: String? = null,
+        @JsonProperty("fileExtension") val fileExtension: String? = null) {
 
     companion object {
         val EMPTY = Path(emptyList(), null, null)
@@ -62,12 +64,12 @@ data class Path @JsonCreator constructor(
     }
 
     @JsonIgnore
-    fun toJavaPath(): java.nio.file.Path {
+    fun toJavaPath(): JavaPath {
         return Paths.get(this.toString())
     }
 
     @JsonIgnore
-    fun toJavaAbsolutePath(): java.nio.file.Path {
+    fun toJavaAbsolutePath(): JavaPath {
         return Paths.get("/" + this.toString())
     }
 
@@ -85,20 +87,46 @@ data class Path @JsonCreator constructor(
     }
 
     @JsonIgnore
-    fun resolve(path: Path): Path {
-        if (this.isFile()) {
-            throw RuntimeException("Can't resolve relative path to a file")
-        }
-
-        return Path(this.directories + path.directories, path.fileName, path.fileExtension)
-    }
-
-    @JsonIgnore
     fun isEmpty(): Boolean {
         return directories.isEmpty() && fileName == null && fileExtension == null
     }
-}
 
-fun java.nio.file.Path.toMyPath(): Path {
-    return Path.createInstance(this.toString())
+    fun isChildOrSelf(parentPath: Path): Boolean {
+        val indexOfSubList = Collections.indexOfSubList(parentPath.directories, this.directories)
+
+        // this is equivalent to "parentPath.directories.endsWith(this.directories)";
+        // in other words, the last directories of the parent are the same as the child's
+        return indexOfSubList == (parentPath.directories.size - this.directories.size)
+    }
+
+    fun isChildOrSelfOfAny(parentPaths: List<Path>): Boolean {
+        for (parentPath in parentPaths) {
+            if (isChildOrSelf(parentPath)) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+
+    fun replaceDirs(oldPath: Path, newPath: Path): Path {
+        val indexOfSubList = Collections.indexOfSubList(directories, oldPath.directories)
+        if (indexOfSubList == -1) {
+            return this
+        }
+
+        val resultDirs = mutableListOf<String>()
+
+        resultDirs.addAll(directories.subList(0, indexOfSubList))
+        resultDirs.addAll(newPath.directories)
+        resultDirs.addAll(directories.subList(indexOfSubList + oldPath.directories.size, directories.size))
+
+        return this.copy(
+                directories = resultDirs
+        )
+    }
+
+    fun withoutFile(): Path = this.copy(fileName = null, fileExtension = null)
+
 }

@@ -14,7 +14,7 @@ import {SettingType} from "./model/setting.type.enum";
 export class SettingsComponent implements OnInit {
 
     PACKAGE_DIR_SETTING = "testerum.packageDirectory";
-    BUILD_IN_BASIC_STEPS_DIRECTORY_SETTING = "testerum.builtInBasicStepsDirectory";
+    BUILT_IN_BASIC_STEPS_DIRECTORY_SETTING = "testerum.builtInBasicStepsDirectory";
 
     settings: Array<Setting> = [];
     settingsCategories: Array<string> = [];
@@ -48,8 +48,8 @@ export class SettingsComponent implements OnInit {
             settingMapValue.sort((left, right) => {
                 if (left.definition.key == this.PACKAGE_DIR_SETTING) return -1;
                 if (right.definition.key == this.PACKAGE_DIR_SETTING) return 1;
-                if (left.definition.key == this.BUILD_IN_BASIC_STEPS_DIRECTORY_SETTING) return -1;
-                if (right.definition.key == this.BUILD_IN_BASIC_STEPS_DIRECTORY_SETTING) return 1;
+                if (left.definition.key == this.BUILT_IN_BASIC_STEPS_DIRECTORY_SETTING) return -1;
+                if (right.definition.key == this.BUILT_IN_BASIC_STEPS_DIRECTORY_SETTING) return 1;
 
                 return left.definition.key > right.definition.key ? 1 : -1
             });
@@ -91,7 +91,7 @@ export class SettingsComponent implements OnInit {
 
     isReadOnlyProperty(settingKey: string): boolean {
         if(settingKey == this.PACKAGE_DIR_SETTING) return true;
-        if(settingKey == this.BUILD_IN_BASIC_STEPS_DIRECTORY_SETTING) return true;
+        if(settingKey == this.BUILT_IN_BASIC_STEPS_DIRECTORY_SETTING) return true;
 
         return false;
     }

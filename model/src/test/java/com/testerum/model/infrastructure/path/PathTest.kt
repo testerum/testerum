@@ -6,48 +6,127 @@ import org.junit.jupiter.api.Test
 
 class PathTest {
 
-    private val fieldPath = Path(listOf("rootDir", "firstDir", "secondDir"), "fileName", "ext")
-
     @Test
-    fun testToString1() {
-        assertThat(fieldPath.toString(), equalTo("rootDir/firstDir/secondDir/fileName.ext"))
+    fun `toString - full path`() {
+        assertThat(
+                Path(listOf("rootDir", "firstDir", "secondDir"), "fileName", "ext").toString(),
+                equalTo("rootDir/firstDir/secondDir/fileName.ext")
+        )
     }
 
     @Test
-    fun testToString2() {
+    fun `toString - only file name`() {
         val path = Path(listOf(), "fileName", "ext")
 
         assertThat(path.toString(), equalTo("fileName.ext"))
     }
 
     @Test
-    fun createInstance_1() {
-        val path = Path.createInstance("rootDir/firstDir/secondDir/fileName.ext")
-
-        assertThat(path, equalTo(fieldPath))
+    fun `createInstance - empty path`() {
+        assertThat(
+                Path.createInstance(""),
+                equalTo(Path(directories = emptyList(), fileName = null, fileExtension = null))
+        )
     }
 
     @Test
-    fun createInstance_2() {
-        val path = Path.createInstance("fileName.ext.bat")
-
+    fun `createInstance - full path`() {
         assertThat(
-                path,
+                Path.createInstance("rootDir/firstDir/secondDir/fileName.ext"),
+                equalTo(Path(listOf("rootDir", "firstDir", "secondDir"), "fileName", "ext"))
+        )
+    }
+
+    @Test
+    fun `createInstance - full path, leading slash is ignored`() {
+        assertThat(
+                Path.createInstance("/rootDir/firstDir/secondDir/fileName.ext"),
+                equalTo(Path(listOf("rootDir", "firstDir", "secondDir"), "fileName", "ext"))
+        )
+    }
+
+    @Test
+    fun `createInstance - only file name`() {
+        assertThat(
+                Path.createInstance("fileName.ext.bat"),
                 equalTo(
-                        Path(listOf(), "fileName", "ext.bat")
+                        Path(emptyList(), "fileName", "ext.bat")
                 )
         )
     }
 
     @Test
-    fun createInstance_3() {
-        val path = Path.createInstance("rootDir/firstDir/secondDir/fileName.ext.bat")
-
+    fun `createInstance - composed extension`() {
         assertThat(
-                path,
+                Path.createInstance("fileName.ext.bat"),
                 equalTo(
-                        Path(listOf("rootDir", "firstDir", "secondDir"), "fileName", "ext.bat")
+                        Path(emptyList(), "fileName", "ext.bat")
                 )
         )
     }
+
+    @Test
+    fun `replaceDirs - all empty`() {
+        assertThat(
+                Path.createInstance("").replaceDirs(
+                        oldPath = Path.createInstance(""),
+                        newPath = Path.createInstance("")
+                ),
+                equalTo(
+                        Path.createInstance("")
+                )
+        )
+    }
+    @Test
+    fun `replaceDirs - not found`() {
+        assertThat(
+                Path(directories = listOf("a", "b", "c"), fileName = "filename", fileExtension = "extension").replaceDirs(
+                        oldPath = Path.createInstance("/1/2/3"),
+                        newPath = Path.createInstance("/x/y/z")
+                ),
+                equalTo(
+                        Path(directories = listOf("a", "b", "c"), fileName = "filename", fileExtension = "extension")
+                )
+        )
+    }
+
+    @Test
+    fun `replaceDirs - found at the beginning`() {
+        assertThat(
+                Path(directories = listOf("a", "b", "c", "d", "e", "f"), fileName = "filename", fileExtension = "extension").replaceDirs(
+                        oldPath = Path.createInstance("/a/b/c"),
+                        newPath = Path.createInstance("/1/2/3/4/5")
+                ),
+                equalTo(
+                        Path(directories = listOf("1", "2", "3", "4", "5", "d", "e", "f"), fileName = "filename", fileExtension = "extension")
+                )
+        )
+    }
+
+    @Test
+    fun `replaceDirs - found in the middle`() {
+        assertThat(
+                Path(directories = listOf("a", "b", "c", "d", "e", "f"), fileName = "filename", fileExtension = "extension").replaceDirs(
+                        oldPath = Path.createInstance("/c/d"),
+                        newPath = Path.createInstance("/1/2/3/4/5")
+                ),
+                equalTo(
+                        Path(directories = listOf("a", "b", "1", "2", "3", "4", "5", "e", "f"), fileName = "filename", fileExtension = "extension")
+                )
+        )
+    }
+
+    @Test
+    fun `replaceDirs - found at the end`() {
+        assertThat(
+                Path(directories = listOf("a", "b", "c", "d", "e", "f"), fileName = "filename", fileExtension = "extension").replaceDirs(
+                        oldPath = Path.createInstance("/d/e/f"),
+                        newPath = Path.createInstance("/1/2/3/4/5")
+                ),
+                equalTo(
+                        Path(directories = listOf("a", "b", "c", "1", "2", "3", "4", "5"), fileName = "filename", fileExtension = "extension")
+                )
+        )
+    }
+
 }

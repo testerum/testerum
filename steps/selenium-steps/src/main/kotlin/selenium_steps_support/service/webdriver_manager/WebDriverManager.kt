@@ -1,7 +1,7 @@
 package selenium_steps_support.service.webdriver_manager
 
-import com.testerum.api.annotations.settings.annotation.DeclareSetting
-import com.testerum.api.annotations.settings.annotation.DeclareSettings
+import com.testerum.api.annotations.settings.DeclareSetting
+import com.testerum.api.annotations.settings.DeclareSettings
 import com.testerum.api.test_context.settings.RunnerSettingsManager
 import com.testerum.api.test_context.settings.model.SettingType
 import org.openqa.selenium.OutputType
@@ -17,39 +17,39 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager.Compani
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP
 import java.nio.file.Files
-import java.nio.file.Path
 import java.util.concurrent.TimeUnit
 import javax.annotation.concurrent.GuardedBy
 import javax.annotation.concurrent.ThreadSafe
+import java.nio.file.Path as JavaPath
 
 @ThreadSafe
 @DeclareSettings([
     (DeclareSetting(
-                key = SETTING_KEY_AFTER_STEP_DELAY_MILLIS,
-                type = SettingType.NUMBER,
-                defaultValue = "0",
-                description = "Delay in milliseconds after a Selenium Step",
-                category = SETTINGS_CATEGORY
-        )),
+            key = SETTING_KEY_AFTER_STEP_DELAY_MILLIS,
+            type = SettingType.NUMBER,
+            defaultValue = "0",
+            description = "Delay in milliseconds after a Selenium Step",
+            category = SETTINGS_CATEGORY
+    )),
     (DeclareSetting(
-                key = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST,
-                type = SettingType.TEXT,
-                defaultValue = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT,
-                description = """Leave browser open after a Selenium test. Possible values: "true", "false", "onFailure"""",
-                category = SETTINGS_CATEGORY
-        )),
+            key = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST,
+            type = SettingType.TEXT,
+            defaultValue = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT,
+            description = """Leave browser open after a Selenium test. Possible values: "true", "false", "onFailure"""",
+            category = SETTINGS_CATEGORY
+    )),
     (DeclareSetting(
-                key = SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP,
-                type = SettingType.TEXT,
-                defaultValue = "false",
-                description = """Should take a screenshot after each Selenium Test. Possible values: "true", "false"""",
-                category = SETTINGS_CATEGORY
-        ))
+            key = SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP,
+            type = SettingType.TEXT,
+            defaultValue = "false",
+            description = """Should take a screenshot after each Selenium Test. Possible values: "true", "false"""",
+            category = SETTINGS_CATEGORY
+    ))
 ])
 class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager) {
 
     companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(WebDriverManager::class.java)
+        private val LOG: Logger = LoggerFactory.getLogger(WebDriverManager::class.java)
 
         internal const val SETTINGS_CATEGORY = "Selenium"
 
@@ -77,7 +77,7 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager)
             _webDriver!!
         }
 
-    fun takeScreenshotToFile(): Path {
+    fun takeScreenshotToFile(): JavaPath {
         val driver = currentWebDriver
 
         if (driver is TakesScreenshot) {
@@ -98,7 +98,7 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager)
         // take screenshot
         if (runnerSettingsManager.getRequiredSetting(SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP).resolvedValue.toBoolean()) {
             val screenshotFile = takeScreenshotToFile()
-            LOGGER.info("step finished: screenshot saved at [${screenshotFile.toAbsolutePath()}]")
+            LOG.info("step finished: screenshot saved at [${screenshotFile.toAbsolutePath()}]")
         }
 
         // sleep between steps

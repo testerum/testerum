@@ -4,10 +4,11 @@ import com.testerum.api.test_context.TestContext
 import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.settings.RunnerSettingsManager
 import com.testerum.api.test_context.test_vars.TestVariables
+import java.util.concurrent.ConcurrentHashMap
 
 object TesterumServiceLocator {
 
-    private val services = mutableMapOf<Class<*>, Any>()
+    private val services = ConcurrentHashMap<Class<*>, Any>()
 
     @JvmStatic
     fun getTestContext(): TestContext = getService(TestContext::class.java)

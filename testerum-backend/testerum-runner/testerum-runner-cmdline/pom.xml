@@ -39,6 +39,11 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
+            <artifactId>common-rdbms</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.testerum</groupId>
             <artifactId>testerum-runner-api</artifactId>
         </dependency>
 
@@ -54,12 +59,12 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>service</artifactId>
+            <artifactId>testerum-scanner</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>testerum-scanner</artifactId>
+            <artifactId>file-service</artifactId>
         </dependency>
 
         <dependency>

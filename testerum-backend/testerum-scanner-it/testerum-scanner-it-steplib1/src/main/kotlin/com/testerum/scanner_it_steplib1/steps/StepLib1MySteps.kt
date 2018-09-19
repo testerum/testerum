@@ -6,8 +6,8 @@ import com.testerum.api.annotations.hooks.AfterAllTests
 import com.testerum.api.annotations.hooks.AfterEachTest
 import com.testerum.api.annotations.hooks.BeforeAllTests
 import com.testerum.api.annotations.hooks.BeforeEachTest
-import com.testerum.api.annotations.settings.annotation.DeclareSetting
-import com.testerum.api.annotations.settings.annotation.DeclareSettings
+import com.testerum.api.annotations.settings.DeclareSetting
+import com.testerum.api.annotations.settings.DeclareSettings
 import com.testerum.api.annotations.steps.Given
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then

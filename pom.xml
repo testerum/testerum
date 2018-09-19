@@ -11,8 +11,7 @@
     <modules>
         <module>common</module>
         <module>model</module>
-        <module>service</module>
-        <module>service-it</module>
+        <module>file-service</module>
         <module>test-file-format</module>
         <module>testerum-backend</module>
         <module>step-util</module>
@@ -164,12 +163,6 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
-                <artifactId>service</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.testerum</groupId>
                 <artifactId>step-transformer-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -232,6 +225,12 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>testerum-scanner-it-steplib3-java</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>file-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -473,23 +472,6 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
                 <version>4.4.4</version>
-            </dependency>
-
-            <!-- Model object mapper-->
-            <dependency>
-                <groupId>net.sf.dozer</groupId>
-                <artifactId>dozer</artifactId>
-                <version>5.4.0</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>jcl-over-slf4j</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-log4j12</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <!-- Kotlin -->

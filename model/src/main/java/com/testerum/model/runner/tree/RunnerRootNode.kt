@@ -8,4 +8,5 @@ data class RunnerRootNode @JsonCreator constructor(@JsonProperty("name") val nam
                                                    @JsonProperty("children") val children: List<RunnerTestOrFeatureNode>): RunnerNode {
     override val id: String = "rootNode"
     override val path: Path = Path.EMPTY
+
 }

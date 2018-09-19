@@ -23,6 +23,16 @@
             <artifactId>model</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-jdk</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-kotlin</artifactId>
+        </dependency>
+
 
         <!--==================== 3rd party dependencies ====================-->
 

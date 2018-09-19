@@ -66,7 +66,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     }
 
     runTests() {
-        this.testsRunnerService.runTests([this.model.path.getParentPath()]);
+        this.testsRunnerService.runTests([this.model.path]);
     }
 
     setSelected() {
@@ -75,25 +75,25 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     }
 
     showCreateTest() {
-        this.urlService.navigateToCreateTest(this.model.path.getParentPath());
+        this.urlService.navigateToCreateTest(this.model.path);
     }
 
     showCreateDirectoryModal(): void {
-        this.urlService.navigateToCreateFeature(this.model.path.getParentPath());
+        this.urlService.navigateToCreateFeature(this.model.path);
     }
 
     deleteDirectory(): void {
         this.jsonTreeService.triggerDeleteContainerAction(this.model.name).subscribe(
             (deleteEvent: JsonTreeContainerEditorEvent) => {
 
-                this.featureService.delete(
-                    this.model.path.getParentPath()
-                ).subscribe(
-                    it => {
-                        this.testsService.showTestsScreen();
-                        this.featuresTreeService.initializeTestsTreeFromServer(null);
-                    }
-                )
+                this.featureService
+                    .delete(this.model.path)
+                    .subscribe(
+                        it => {
+                            this.testsService.showTestsScreen();
+                            this.featuresTreeService.initializeTestsTreeFromServer(null);
+                        }
+                    )
             }
         )
     }
@@ -105,7 +105,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     copyResource(event: any) {
         let stepToCopyTreeNode: TestTreeNodeModel = event.dragData;
         let pathToCopy = stepToCopyTreeNode.path;
-        let destinationPath = this.model.path.getParentPath();
+        let destinationPath = this.model.path;
         this.jsonTreeService.triggerCopyAction(pathToCopy, destinationPath).subscribe(
             (copyEvent: JsonTreeContainerEditorEvent) => {
 

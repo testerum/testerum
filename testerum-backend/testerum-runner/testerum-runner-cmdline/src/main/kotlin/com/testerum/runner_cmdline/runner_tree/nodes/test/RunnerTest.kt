@@ -18,16 +18,17 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.nio.file.Path as JavaPath
 
 data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                       private val test: TestModel,
-                      private val filePath: java.nio.file.Path,
+                      private val filePath: JavaPath,
                       private val indexInParent: Int,
                       private val steps: List<RunnerStep>,
                       private val afterEachTestHooks: List<RunnerHook>) : RunnerFeatureOrTest() {
 
     companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
+        private val LOG: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
     }
 
     init {
@@ -96,7 +97,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
             } catch (e: Exception) {
                 val errorMessage = "failed to execute ${HookPhase.BEFORE_EACH_TEST} hooks"
 
-                LOGGER.error(errorMessage, e)
+                LOG.error(errorMessage, e)
 
                 throw RuntimeException(errorMessage, e)
             }
@@ -125,7 +126,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
             } catch (e: Exception) {
                 val errorMessage = "failed to execute ${HookPhase.AFTER_EACH_TEST} hooks"
 
-                LOGGER.error(errorMessage, e)
+                LOG.error(errorMessage, e)
 
                 throw RuntimeException(errorMessage, e)
             }

@@ -1,4 +1,3 @@
-import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs';
 
@@ -13,17 +12,6 @@ export class AttachmentsService {
     private ATTACHMENTS_URL = "/rest/attachments";
 
     constructor(private http: HttpClient) {
-    }
-
-    getAttachments(path: Path): Observable<Array<Attachment>> {
-        const httpOptions = {
-            params: new HttpParams()
-                .append('path', path.toString())
-        };
-
-        return this.http
-            .get<Array<Attachment>>(this.ATTACHMENTS_URL, httpOptions).pipe(
-            map(AttachmentsService.extractAttachments));
     }
 
     delete(path: Path): Observable<void> {

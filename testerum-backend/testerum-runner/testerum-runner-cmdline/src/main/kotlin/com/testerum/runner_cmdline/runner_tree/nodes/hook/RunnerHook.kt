@@ -12,15 +12,15 @@ import java.lang.reflect.Method
 class RunnerHook(private val hookDef: HookDef) {
 
     companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
+        private val LOG: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
     }
 
     fun run(context: RunnerContext): ExecutionStatus {
-        LOGGER.info("start executing hook $hookDef")
+        LOG.info("start executing hook $hookDef")
         try {
             return doRun(context)
         } finally {
-            LOGGER.info("done executing hook $hookDef")
+            LOG.info("done executing hook $hookDef")
         }
     }
 
@@ -48,7 +48,7 @@ class RunnerHook(private val hookDef: HookDef) {
     }
 
     fun skip() {
-        LOGGER.info("skipping hook $hookDef")
+        LOG.info("skipping hook $hookDef")
     }
 
     fun getGlueClass(context: RunnerContext): Class<*>

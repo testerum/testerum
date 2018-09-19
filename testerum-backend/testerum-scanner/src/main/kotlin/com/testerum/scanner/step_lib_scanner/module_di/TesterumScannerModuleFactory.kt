@@ -2,7 +2,7 @@ package com.testerum.scanner.step_lib_scanner.module_di
 
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
-import com.testerum.scanner.step_lib_scanner.StepLibraryCacheManger
+import com.testerum.scanner.step_lib_scanner.StepLibraryPersistentCacheManger
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -20,6 +20,6 @@ class TesterumScannerModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
         executor
     }
 
-    val stepLibraryCacheManger = StepLibraryCacheManger(stepLibraryCacheMangerThreadPool)
+    val stepLibraryPersistentCacheManger = StepLibraryPersistentCacheManger(stepLibraryCacheMangerThreadPool)
 
 }

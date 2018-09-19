@@ -6,7 +6,6 @@ import com.testerum.common.json_diff.module_di.JsonDiffModuleFactory
 import com.testerum.common_assertion_functions.module_di.AssertionFunctionsModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import com.testerum.settings.keys.SystemSettingKeys
-import java.nio.file.Path
 
 class RdbmsStepsModuleBootstrapper {
 
@@ -16,10 +15,15 @@ class RdbmsStepsModuleBootstrapper {
 
     val jsonDiffModuleFactory = JsonDiffModuleFactory(context, assertionFunctionsModuleFactory)
 
-    private val repositoryDirectory: Path = TesterumServiceLocator.getSettingsManager().getRequiredSetting(SystemSettingKeys.REPOSITORY_DIR).resolvedValueAsPath
+    val rdbmsStepsModuleFactory = RdbmsStepsModuleFactory(context)
 
-    private val jdbcDriversDirectory: Path = TesterumServiceLocator.getSettingsManager().getRequiredSetting(SystemSettingKeys.JDBC_DRIVERS_DIR).resolvedValueAsPath
+    //======================================== initialization ========================================//
+    init {
+        val jdbcDriversDir = TesterumServiceLocator.getSettingsManager()
+                .getRequiredSetting(SystemSettingKeys.JDBC_DRIVERS_DIR)
+                .resolvedValueAsPath
 
-    val rdbmsStepsModuleFactory = RdbmsStepsModuleFactory(context, jdbcDriversDirectory)
+        rdbmsStepsModuleFactory.rdbmsDriverConfigCache.initialize(jdbcDriversDir)
+    }
 
 }

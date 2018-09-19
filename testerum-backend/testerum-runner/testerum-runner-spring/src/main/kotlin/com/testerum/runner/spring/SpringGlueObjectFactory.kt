@@ -16,7 +16,7 @@ import org.springframework.core.io.UrlResource
 class SpringGlueObjectFactory : GlueObjectFactory, TestContextAware {
 
     companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(SpringGlueObjectFactory::class.java)
+        private val LOG: Logger = LoggerFactory.getLogger(SpringGlueObjectFactory::class.java)
     }
 
     private lateinit var applicationContext: GenericApplicationContext
@@ -78,7 +78,7 @@ class SpringGlueObjectFactory : GlueObjectFactory, TestContextAware {
             validationMode = XmlBeanDefinitionReader.VALIDATION_XSD
         }
         for (testerumXmlUrl in testContext.stepsClassLoader.getResources("testerum.xml")) {
-            LOGGER.info("loading bean definitions from [$testerumXmlUrl]")
+            LOG.info("loading bean definitions from [$testerumXmlUrl]")
 
             xmlReader.loadBeanDefinitions(
                     UrlResource(testerumXmlUrl)

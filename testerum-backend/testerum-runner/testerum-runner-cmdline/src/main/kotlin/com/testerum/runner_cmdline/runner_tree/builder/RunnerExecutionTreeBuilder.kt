@@ -1,7 +1,8 @@
 package com.testerum.runner_cmdline.runner_tree.builder
 
+import com.testerum.file_service.caches.resolved.StepsCache
+import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.repository.enums.FileType
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
@@ -22,12 +23,11 @@ import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest
 import com.testerum.runner_cmdline.tests_finder.RunnerTestsFinder
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
-import com.testerum.service.hooks.HooksService
-import com.testerum.service.tests.TestsService
+import java.nio.file.Path as JavaPath
 
 class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinder,
-                                 private val hooksService: HooksService,
-                                 private val testsService: TestsService) {
+                                 private val stepsCache: StepsCache,
+                                 private val testsCache: TestsCache) {
 
     //
     // VERY IMPORTANT!!!
@@ -35,14 +35,13 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
     // Changes to this class needs to be kept in sync with "com.testerum.model.runner.tree.builder.RunnerTreeBuilder"
     //
 
-    fun createTree(cmdlineParams: CmdlineParams): RunnerSuite {
+    fun createTree(cmdlineParams: CmdlineParams,
+                   testsDir: JavaPath): RunnerSuite {
         // get hooks
-        val hooks: List<HookDef> = hooksService.getHooks()
+        val hooks: Collection<HookDef> = stepsCache.getHooks()
 
-        val testsDirectoryRoot = cmdlineParams.repositoryDirectory
-                .resolve(FileType.TEST.relativeRootDirectory.toJavaPath())
-                .toAbsolutePath()
-        val pathsToTestsToExecute: List<java.nio.file.Path> = runnerTestsFinder.findPathsToTestsToExecute(cmdlineParams)
+        val testsDirectoryRoot = testsDir.toAbsolutePath()
+        val pathsToTestsToExecute: List<JavaPath> = runnerTestsFinder.findPathsToTestsToExecute(cmdlineParams, testsDir)
         val tests = loadTests(pathsToTestsToExecute, testsDirectoryRoot)
 
         val builder = TreeBuilder(
@@ -53,7 +52,7 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
         return builder.build() as RunnerSuite
     }
 
-    private fun loadTests(testPaths: List<java.nio.file.Path>, testsDirectoryRoot: java.nio.file.Path): List<TestWithFilePath> {
+    private fun loadTests(testPaths: List<JavaPath>, testsDirectoryRoot: JavaPath): List<TestWithFilePath> {
         val result = arrayListOf<TestWithFilePath>()
 
         for (testPath in testPaths) {
@@ -70,13 +69,13 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
         return result
     }
 
-    private fun loadTest(testPath: java.nio.file.Path,
-                         testsDirectoryRoot: java.nio.file.Path): TestWithFilePath {
+    private fun loadTest(testPath: JavaPath,
+                         testsDirectoryRoot: JavaPath): TestWithFilePath {
         try {
             val relativeTestPath = testsDirectoryRoot.relativize(testPath)
             val testerumPath = Path.createInstance(relativeTestPath.toString())
 
-            val test = testsService.getTestAtPath(testerumPath)
+            val test = testsCache.getTestAtPath(testerumPath)
                     ?: throw RuntimeException("could not find test at [${testPath.toAbsolutePath().normalize()}]")
 
             return TestWithFilePath(test, testPath)
@@ -85,9 +84,9 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
         }
     }
 
-    private data class TestWithFilePath(val test: TestModel, val filePath: java.nio.file.Path)
+    private data class TestWithFilePath(val test: TestModel, val filePath: JavaPath)
 
-    private class RunnerExecutionTreeBuilderCustomizer(hooks: List<HookDef>) : TreeBuilderCustomizer {
+    private class RunnerExecutionTreeBuilderCustomizer(hooks: Collection<HookDef>) : TreeBuilderCustomizer {
 
         private val beforeEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_EACH_TEST)
         private val afterEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_EACH_TEST)
@@ -150,7 +149,7 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
         }
 
         private fun createRunnerTest(test: TestModel,
-                                     filePath: java.nio.file.Path,
+                                     filePath: JavaPath,
                                      testIndexInParent: Int,
                                      beforeEachTestHooks: List<RunnerHook>,
                                      afterEachTestHooks: List<RunnerHook>): RunnerTest {
@@ -196,12 +195,13 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
             }
         }
 
-        private fun List<HookDef>.sortedHooksForPhase(phase: HookPhase): List<RunnerHook>
-                = this.asSequence()
-                .filter { it.phase == phase }
-                .sortedBy { it.order }
-                .map { RunnerHook(it) }
-                .toList()
+        private fun Collection<HookDef>.sortedHooksForPhase(phase: HookPhase): List<RunnerHook> {
+            return this.asSequence()
+                    .filter { it.phase == phase }
+                    .sortedBy { it.order }
+                    .map { RunnerHook(it) }
+                    .toList()
+        }
 
     }
 

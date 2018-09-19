@@ -179,10 +179,10 @@ export class Path implements Serializable<Path> {
     }
 
     getParentPath():Path {
-        if(this.isFile()) {
+        if (this.isFile()) {
             return new Path(this.directories, null, null);
         }
-        if(this.directories.length == 0) {
+        if (this.directories.length == 0) {
             return Path.createInstanceOfEmptyPath();
         }
 

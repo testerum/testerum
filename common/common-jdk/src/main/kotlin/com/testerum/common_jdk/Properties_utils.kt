@@ -1,10 +1,10 @@
 package com.testerum.common_jdk
 
 import java.nio.file.Files
-import java.nio.file.Path
 import java.util.*
+import java.nio.file.Path as JavaPath
 
-fun loadPropertiesFrom(path: Path): Properties {
+fun loadPropertiesFrom(path: JavaPath): Properties {
     val result = Properties()
 
     Files.newInputStream(path).use { inputStream ->

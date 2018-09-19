@@ -9,6 +9,7 @@ export class Feature implements Serializable<Feature>, TreeNodeModel {
 
     id: string = IdUtils.getTemporaryId();
     path: Path;
+    oldPath: Path;
     name: string;
     description: string;
     tags: Array<string> = [];
@@ -17,6 +18,7 @@ export class Feature implements Serializable<Feature>, TreeNodeModel {
     deserialize(input: Object): Feature {
         this.id = input['id'];
         this.path = Path.deserialize(input["path"]);
+        this.oldPath = Path.deserialize(input["oldPath"]);
         this.name = input['name'];
         this.description = input['description'];
         this.tags = input['tags'] || [];
@@ -34,6 +36,7 @@ export class Feature implements Serializable<Feature>, TreeNodeModel {
             '{' +
             '"id":' + JsonUtil.stringify(this.id) +
             ',"path":' + JsonUtil.serializeSerializable(this.path) +
+            ',"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) +
             ',"name":' + JsonUtil.stringify(this.name) +
             ',"description":' + JsonUtil.stringify(this.description) +
             ',"tags":' + JsonUtil.stringify(this.tags) +

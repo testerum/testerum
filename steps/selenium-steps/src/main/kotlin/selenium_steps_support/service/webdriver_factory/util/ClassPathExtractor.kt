@@ -3,12 +3,12 @@ package selenium_steps_support.service.webdriver_factory.util
 import org.apache.commons.io.IOUtils
 import java.io.FileOutputStream
 import java.nio.file.Files
-import java.nio.file.Path
+import java.nio.file.Path as JavaPath
 
 class ClassPathExtractor constructor(private val classLoader: ClassLoader = ClassPathExtractor::class.java.classLoader /*Thread.currentThread().contextClassLoader*/) {
 
     fun extractToTemp( classpathLocation: String,
-                       prefix: String): Path {
+                       prefix: String): JavaPath {
         if (!classpathResourceExists(classpathLocation, classLoader)) {
             throw IllegalArgumentException(
                     "cannot find [" + classpathLocation + "]" +
@@ -31,7 +31,7 @@ class ClassPathExtractor constructor(private val classLoader: ClassLoader = Clas
     }
 
     private fun tryToExtractToTemp(classpathLocation: String,
-                                   prefix: String): Path {
+                                   prefix: String): JavaPath {
         val tempFile = Files.createTempFile(prefix, "")
         tempFile.toFile().deleteOnExit()
 

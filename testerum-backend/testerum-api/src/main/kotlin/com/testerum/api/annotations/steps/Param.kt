@@ -1,5 +1,6 @@
 package com.testerum.api.annotations.steps
 
+import com.testerum.api.annotations.util.AnnotationConstants.ANNOTATION_NULL
 import com.testerum.api.transformer.Transformer
 import com.testerum.api.transformer.impl.NoTransformer
 import kotlin.reflect.KClass
@@ -8,7 +9,7 @@ import kotlin.reflect.KClass
 @Retention
 @MustBeDocumented
 annotation class Param (
-        val description: String = "",
+        val description: String = ANNOTATION_NULL,
 
         val transformer: KClass<out Transformer<Any?>> = NoTransformer::class,
 

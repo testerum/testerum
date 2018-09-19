@@ -18,42 +18,50 @@
     <dependencies>
         <!--==================== internal dependencies ====================-->
 
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>common-json</artifactId>
-        </dependency>
-
+        <!-- common-jdk -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-jdk</artifactId>
         </dependency>
 
+        <!-- common-json -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-json</artifactId>
+        </dependency>
+
+        <!-- common-httpclient -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-httpclient</artifactId>
         </dependency>
 
+        <!-- common-rdbms -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-rdbms</artifactId>
+        </dependency>
+
+        <!-- model -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>model</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>service</artifactId>
-        </dependency>
-
+        <!-- settings -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>settings</artifactId>
         </dependency>
-        <!--==================== 3rd party dependencies ====================-->
 
-        <!-- Model object mapper-->
+        <!-- file-service -->
         <dependency>
-            <groupId>net.sf.dozer</groupId>
-            <artifactId>dozer</artifactId>
+            <groupId>com.testerum</groupId>
+            <artifactId>file-service</artifactId>
         </dependency>
+
+
+        <!--==================== 3rd party dependencies ====================-->
 
         <!-- Kotlin -->
         <dependency>
@@ -187,6 +195,18 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- zt-exec -->
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-exec</artifactId>
+        </dependency>
+
+        <!-- zt-process-killer -->
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-process-killer</artifactId>
         </dependency>
 
 

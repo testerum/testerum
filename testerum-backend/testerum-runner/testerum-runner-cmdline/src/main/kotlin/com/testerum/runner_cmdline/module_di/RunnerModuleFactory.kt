@@ -3,6 +3,7 @@ package com.testerum.runner_cmdline.module_di
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import com.testerum.common_jdk.stopwatch.StopWatch
+import com.testerum.file_service.module_di.FileServiceModuleFactory
 import com.testerum.runner_cmdline.RunnerApplication
 import com.testerum.runner_cmdline.classloader.RunnerClassloaderFactory
 import com.testerum.runner_cmdline.events.EventsService
@@ -13,14 +14,14 @@ import com.testerum.runner_cmdline.runner_tree.builder.RunnerExecutionTreeBuilde
 import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.settings.RunnerSettingsManagerImpl
 import com.testerum.runner_cmdline.tests_finder.RunnerTestsFinder
-import com.testerum.service.module_di.ServiceModuleFactory
 import com.testerum.settings.module_di.SettingsModuleFactory
 
 class RunnerModuleFactory(context: ModuleFactoryContext,
                           runnerTransformersModuleFactory: RunnerTransformersModuleFactory,
                           runnerListenersModuleFactory: RunnerListenersModuleFactory,
                           settingsModuleFactory: SettingsModuleFactory,
-                          serviceModuleFactory: ServiceModuleFactory,
+                          fileServiceModuleFactory: FileServiceModuleFactory,
+
                           stopWatch: StopWatch) : BaseModuleFactory(context) {
 
     private val eventsService = EventsService(
@@ -39,8 +40,8 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
 
     private val runnerExecutionTreeBuilder = RunnerExecutionTreeBuilder(
             runnerTestsFinder = runnerTestsFinder,
-            hooksService = serviceModuleFactory.hooksService,
-            testsService = serviceModuleFactory.testsService
+            stepsCache = fileServiceModuleFactory.stepsCache,
+            testsCache = fileServiceModuleFactory.testsCache
     )
 
     private val runnerSettingsManager = RunnerSettingsManagerImpl(
@@ -50,11 +51,13 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
     val runnerApplication = RunnerApplication(
             runnerClassloaderFactory = runnerClassloaderFactory,
             runnerSettingsManager = runnerSettingsManager,
+            settingsManager = settingsModuleFactory.settingsManager,
             eventsService = eventsService,
-            scannerService = serviceModuleFactory.scannerService,
-            stepCache = serviceModuleFactory.stepService,
+            stepsCache = fileServiceModuleFactory.stepsCache,
+            testsCache = fileServiceModuleFactory.testsCache,
+            featuresCache = fileServiceModuleFactory.featuresCache,
             runnerExecutionTreeBuilder = runnerExecutionTreeBuilder,
-            variablesService = serviceModuleFactory.variablesService,
+            variablesFileService = fileServiceModuleFactory.variablesFileService,
             testVariables = TestVariablesImpl,
             executionListenerFinder = runnerListenersModuleFactory.executionListenerFinder,
             globalTransformers = runnerTransformersModuleFactory.globalTransformers,

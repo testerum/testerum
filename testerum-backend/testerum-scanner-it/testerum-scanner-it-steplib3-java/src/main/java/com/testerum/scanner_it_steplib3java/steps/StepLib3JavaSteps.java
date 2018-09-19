@@ -1,8 +1,8 @@
 package com.testerum.scanner_it_steplib3java.steps;
 
 import com.testerum.api.annotations.hooks.BeforeEachTest;
-import com.testerum.api.annotations.settings.annotation.DeclareSetting;
-import com.testerum.api.annotations.settings.annotation.DeclareSettings;
+import com.testerum.api.annotations.settings.DeclareSetting;
+import com.testerum.api.annotations.settings.DeclareSettings;
 import com.testerum.api.test_context.settings.model.SettingType;
 import com.testerum.api.annotations.steps.Given;
 

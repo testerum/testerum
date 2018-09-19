@@ -6,7 +6,7 @@ import java.util.*
 class ModuleFactoryContext : AutoCloseable {
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(ModuleFactoryContext::class.java)
+        private val LOG = LoggerFactory.getLogger(ModuleFactoryContext::class.java)
     }
 
     private val shutdownHooks: MutableList<() -> Unit> = ArrayList()
@@ -20,7 +20,7 @@ class ModuleFactoryContext : AutoCloseable {
             try {
                 shutdownHook()
             } catch (e: Exception) {
-                LOGGER.error("shutdown hook failed; we will attempt to run the rest of the hooks also", e)
+                LOG.error("shutdown hook failed; we will attempt to run the rest of the hooks also", e)
             }
         }
     }

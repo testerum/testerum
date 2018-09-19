@@ -11,7 +11,7 @@
            http://www.springframework.org/schema/websocket    http://www.springframework.org/schema/websocket/spring-websocket.xsd
        ">
 
-    <bean class="com.testerum.web_backend.controller.module_di.WebBackendModuleBootstrapperSpringIntegration" />
+    <bean class="com.testerum.web_backend.module_di.WebBackendModuleBootstrapperSpringIntegration" />
 
     <!-- required to be able to import a Java @Configuration into xml -->
     <context:annotation-config/>
@@ -19,7 +19,7 @@
     <!--====== FILE UPLOAD CONFIGURATION ======-->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 
-    <bean id="exceptionHandlerControllerAdvice" class="com.testerum.web_backend.controller.error.ExceptionHandlerControllerAdvice" />
+    <bean id="exceptionHandlerControllerAdvice" class="com.testerum.web_backend.controllers.error.ExceptionHandlerControllerAdvice" />
 
     <bean id="versionPropertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:/web-version.properties"/>

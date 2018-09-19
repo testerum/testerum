@@ -1,19 +1,19 @@
 package com.testerum.runner_cmdline.tests_finder
 
-import com.testerum.model.repository.enums.FileType
+import com.testerum.common_kotlin.hasExtension
+import com.testerum.common_kotlin.isRegularFile
+import com.testerum.common_kotlin.walk
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import java.nio.file.Files
-import java.nio.file.Path
+import java.nio.file.Path as JavaPath
 
 class RunnerTestsFinder {
 
-    fun findPathsToTestsToExecute(cmdlineParams: CmdlineParams): List<Path> {
+    fun findPathsToTestsToExecute(cmdlineParams: CmdlineParams, testsDir: JavaPath): List<JavaPath> {
         if (cmdlineParams.testFilesOrDirectories.isEmpty()) {
-            return findTestsUnderDirectory(
-                    cmdlineParams.repositoryDirectory.resolve(FileType.TEST.relativeRootDirectory.toJavaPath())
-            )
+            return findTestsUnderDirectory(testsDir)
         } else {
-            val result = mutableListOf<Path>()
+            val result = mutableListOf<JavaPath>()
 
             for (testFilesOrDirectory in cmdlineParams.testFilesOrDirectories) {
                 if (Files.isDirectory(testFilesOrDirectory)) {
@@ -31,14 +31,12 @@ class RunnerTestsFinder {
         }
     }
 
-    private fun findTestsUnderDirectory(path: Path): List<Path> {
-        val result = mutableListOf<Path>()
+    private fun findTestsUnderDirectory(path: JavaPath): List<JavaPath> {
+        val result = mutableListOf<JavaPath>()
 
-        Files.walk(path).use { pathStream ->
-            pathStream.forEach { path ->
-                if (Files.isRegularFile(path) && path.fileName.toString().endsWith(".test")) {
-                    result.add(path.toAbsolutePath().normalize())
-                }
+        path.walk {
+            if (it.isRegularFile && it.hasExtension(".test")) {
+                result.add(it.toAbsolutePath().normalize())
             }
         }
 

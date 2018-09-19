@@ -7,7 +7,7 @@ import picocli.CommandLine
 import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
-import java.nio.file.Path
+import java.nio.file.Path as JavaPath
 
 object CmdlineParamsParser {
 
@@ -58,7 +58,7 @@ object CmdlineParamsParser {
                 required = true,
                 description = ["path to the root of the repository"]
         )
-        var repositoryDirectory: Path? = null
+        var repositoryDirectory: JavaPath? = null
 
         // todo: step directory separation: we should have 2 directories: "built-in" vs "user" basic steps (last one is optional)
         @CommandLine.Option(
@@ -66,7 +66,7 @@ object CmdlineParamsParser {
                 required = true,
                 description = ["path to the directory containing the basic steps jars"]
         )
-        var basicStepsDirectory: Path? = null
+        var basicStepsDirectory: JavaPath? = null
 
         @CommandLine.Option(
                 names = ["-s", "--setting"],
@@ -85,7 +85,7 @@ object CmdlineParamsParser {
                     "settings in this file override default settings"
                 ]
         )
-        var settingsFile: Path? = null
+        var settingsFile: JavaPath? = null
 
         @CommandLine.Option(
                 names = ["-t", "--test-path"],
@@ -95,7 +95,7 @@ object CmdlineParamsParser {
                     "if no test path is specified, all tests will be run"
                 ]
         )
-        var testFilesOrDirectories: List<Path> = arrayListOf()
+        var testFilesOrDirectories: List<JavaPath> = arrayListOf()
 
         @CommandLine.Option(
                 names = ["-v", "--verbose"],
@@ -128,22 +128,22 @@ object CmdlineParamsParser {
             )
         }
 
-        private fun getValidatedRepositoryDirectory(): Path
+        private fun getValidatedRepositoryDirectory(): JavaPath
                 = getValidatedRequiredDirectory(repositoryDirectory, "repositoryDirectory")
 
-        private fun getValidatedBasicStepsDirectory(): Path
+        private fun getValidatedBasicStepsDirectory(): JavaPath
                 = getValidatedRequiredDirectory(basicStepsDirectory, "basicStepsDirectory")
 
-        private fun getValidatedSettingsFile(): Path?
+        private fun getValidatedSettingsFile(): JavaPath?
                 = getValidatedOptionalFile(settingsFile, "settingsFile")
 
-        private fun getValidatedTestFilesOrDirectories(): List<Path>
+        private fun getValidatedTestFilesOrDirectories(): List<JavaPath>
                 = testFilesOrDirectories.map { getValidatedRequiredFileOrDirectory(it, "testPath") }
 
-        private fun getValidatedRequiredDirectory(directory: Path?, directoryLabel: String): Path {
+        private fun getValidatedRequiredDirectory(directory: JavaPath?, directoryLabel: String): JavaPath {
             val usageHelp = usageToString(this)
 
-            val nonNullDirectory: Path = directory
+            val nonNullDirectory: JavaPath = directory
                     ?: throw CmdlineParamsParserParsingException(
                             errorMessage = "missing $directoryLabel",
                             usageHelp = usageHelp
@@ -166,10 +166,10 @@ object CmdlineParamsParser {
             return normalizedDirectory
         }
 
-        private fun getValidatedOptionalFile(file: Path?, fileLabel: String): Path? {
+        private fun getValidatedOptionalFile(file: JavaPath?, fileLabel: String): JavaPath? {
             val usageHelp = usageToString(this)
 
-            val nonNullFile: Path = file
+            val nonNullFile: JavaPath = file
                     ?: return null
 
             val normalizedFile = nonNullFile.toAbsolutePath().normalize()
@@ -195,7 +195,7 @@ object CmdlineParamsParser {
             return normalizedFile
         }
 
-        private fun getValidatedRequiredFileOrDirectory(path: Path, pathLabel: String): Path {
+        private fun getValidatedRequiredFileOrDirectory(path: JavaPath, pathLabel: String): JavaPath {
             val usageHelp = usageToString(this)
 
             val normalizedPath = path.toAbsolutePath().normalize()
