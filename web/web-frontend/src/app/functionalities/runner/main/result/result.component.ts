@@ -79,7 +79,7 @@ export class ResultComponent implements OnInit {
 
                 currentNode.id = "TestSuite";
                 currentNode.eventKey = suiteStartEvent.eventKey;
-                currentNode.state = ExecutionStatusEnum.FAILED;
+                currentNode.state = ExecutionStatusEnum.SKIPPED;
                 currentNode.getNodeState().showChildren = true;
 
                 this.pushNodeToStack(parentNodesStack, currentNode);
@@ -100,7 +100,7 @@ export class ResultComponent implements OnInit {
                 currentNode.id = featureStartEvent.eventKey.getCurrentNodeId();
                 currentNode.eventKey = featureStartEvent.eventKey;
                 currentNode.text = featureStartEvent.featureName;
-                currentNode.state = ExecutionStatusEnum.FAILED;
+                currentNode.state = ExecutionStatusEnum.SKIPPED;
                 currentNode.getNodeState().showChildren = true;
 
                 this.pushNodeToStack(parentNodesStack, currentNode);
@@ -125,7 +125,7 @@ export class ResultComponent implements OnInit {
                 currentNode.path = testStartEvent.testFilePath;
                 currentNode.eventKey = testStartEvent.eventKey;
                 currentNode.text = testStartEvent.testName;
-                currentNode.state = ExecutionStatusEnum.FAILED;
+                currentNode.state = ExecutionStatusEnum.SKIPPED;
                 currentNode.getNodeState().showChildren = false;
 
                 this.pushNodeToStack(parentNodesStack, currentNode);
@@ -158,7 +158,7 @@ export class ResultComponent implements OnInit {
                     currentNode.eventKey = stepStartEvent.eventKey;
                     currentNode.stepCall = stepStartEvent.stepCall;
                 }
-                currentNode.state = ExecutionStatusEnum.FAILED;
+                currentNode.state = ExecutionStatusEnum.SKIPPED;
 
                 parentNode.getChildren().push(currentNode);
 

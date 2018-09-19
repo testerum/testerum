@@ -136,7 +136,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     }
 
     isRootFeature(): boolean {
-        return this.model.path.isEmpty();
+        return this.model.path.isEmpty() && !this.isCreateAction;
     }
 
     cancelAction(): void {

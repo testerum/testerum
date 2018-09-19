@@ -76,7 +76,7 @@ class RunnerResultFileService {
                                            resultsDir: JavaPath): RunnerResultFileInfo {
         val runnerEvents: List<RunnerEvent> = parseResultFile(resultFile)
 
-        var status: ExecutionStatus? = null
+        var status: ExecutionStatus? = ExecutionStatus.SKIPPED
         var durationMillis: Long? = null
 
         val suiteEndEvent = runnerEvents.find { it is SuiteEndEvent }

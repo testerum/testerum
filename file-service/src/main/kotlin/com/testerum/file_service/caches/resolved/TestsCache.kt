@@ -107,7 +107,7 @@ class TestsCache(private val testFileService: TestFileService,
             testsByPath.remove(test.path)
             testsByPath[resolvedTestWithWarnings.path] = resolvedTestWithWarnings
 
-            return savedTest
+            return getTestAtPath(resolvedTest.path)!!
         }
     }
 

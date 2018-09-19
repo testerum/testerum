@@ -36,7 +36,7 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
         val absoluteComposedStepsDir = composedStepsDir.toAbsolutePath().normalize()
         absoluteComposedStepsDir.walk { path ->
             if (path.isComposedStepDef) {
-                val fileStepDef = parseComposedStepDefFile(path)
+                val fileStepDef = parseComposedStepDefFileSafely(path)
 
                 if (fileStepDef != null) {
                     val relativePath = absoluteComposedStepsDir.relativize(path)
@@ -50,19 +50,41 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
         return composedSteps
     }
 
+    fun getComposedStepAtPath(path: Path,
+                              composedStepsDir: JavaPath): ComposedStepDef {
+        val escapedPath = path.escape()
+
+        val composedStepFile = composedStepsDir.resolve(
+                escapedPath.toString()
+        )
+
+        val fileStepDef = parseComposedStepDefFile(composedStepFile)
+
+        val absoluteComposedStepsDir = composedStepsDir.toAbsolutePath().normalize()
+        val relativePath = absoluteComposedStepsDir.relativize(composedStepFile)
+        val composedStepDef = fileToBusinessStepMapper.mapStepDef(fileStepDef, relativePath)
+
+        return composedStepDef
+
+    }
+
     private val JavaPath.isComposedStepDef: Boolean
         get() = isRegularFile && hasExtension(".$COMPOSED_STEP_FILE_EXTENSION")
 
-    private fun parseComposedStepDefFile(file: JavaPath): FileStepDef? {
+    private fun parseComposedStepDefFileSafely(file: JavaPath): FileStepDef? {
         return try {
-            COMPOSED_STEP_PARSER.parse(
-                    file.getContent()
-            )
+            parseComposedStepDefFile(file)
         } catch (e: Exception) {
             LOG.warn("failed to load composed step at [${file.toAbsolutePath().normalize()}]", e)
 
             null
         }
+    }
+
+    private fun parseComposedStepDefFile(file: java.nio.file.Path): FileStepDef {
+        return COMPOSED_STEP_PARSER.parse(
+                file.getContent()
+        )
     }
 
     fun deleteComposedStep(path: Path, composedStepsDir: JavaPath) {
@@ -110,10 +132,7 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
                 StandardOpenOption.TRUNCATE_EXISTING
         )
 
-        return composedStep.copy(
-                path = newEscapedPath,
-                oldPath = newEscapedPath
-        )
+        return getComposedStepAtPath(newEscapedPath, composedStepsDir)
     }
 
     fun renameDirectory(renamePath: RenamePath, composedStepsDir: JavaPath): Path {
