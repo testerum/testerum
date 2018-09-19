@@ -51,6 +51,7 @@ export class ResourcesTreeService {
             this.getJsonVerifyResourcesRoot(),
             this.getRdbmsResourcesRoot()
         );
+        this.fixTreeAfterNodesLoad();
     }
 
     getTreeRoot(): JsonTreeModel {

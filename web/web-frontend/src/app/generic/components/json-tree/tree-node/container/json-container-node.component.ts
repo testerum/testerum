@@ -61,6 +61,8 @@ export class JsonContainerNodeComponent implements OnInit {
 
         this.model.getNodeState().showChildren = true;
         this.jsonTreeService.triggerExpendedNodeEvent(this.model)
+
+        return false;
     }
 
     hasChildren(): boolean {
