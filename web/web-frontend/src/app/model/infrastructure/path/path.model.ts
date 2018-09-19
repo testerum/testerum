@@ -133,13 +133,11 @@ export class Path implements Serializable<Path> {
     toDirectoryString(): string {
         let result: string = this.directories.join('/');
 
-        if (this.directories.length > 0) {
-            if (!result.startsWith('/')) {
-                result = '/' + result;
-            }
-            if (!result.endsWith('/')) {
-                result = result + '/';
-            }
+        if (!result.startsWith('/')) {
+            result = '/' + result;
+        }
+        if (!result.endsWith('/')) {
+            result = result + '/';
         }
 
         return result
