@@ -23,11 +23,10 @@
                         </div>
                     </td>
                     <td class="param-icon-column" *ngIf="asParam(patternPart).description">
-                        <div class="param-info-icon"
-                             #errorMessage="bs-popover" [popover]="asParam(patternPart).description" placement="right" triggers="" containerClass="popover-error"
-                             (mouseenter)="asParam(patternPart).description ? errorMessage.show(): null"
-                             (mouseleave)="errorMessage.hide()"
-                        ></div>
+                        <i class="fa_my-info-colored" aria-hidden="true"
+                           #errorMessage="bs-popover" [popover]="asParam(patternPart).description" placement="right" triggers="" containerClass="popover-error"
+                           (mouseenter)="asParam(patternPart).description ? errorMessage.show(): null"
+                           (mouseleave)="errorMessage.hide()"></i>
                     </td>
                 </tr>
             </ng-container>

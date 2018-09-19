@@ -188,6 +188,15 @@ body {
     @extend .fa_my-runner-attention;
     color: $warning-color;
 }
+.fa_my-info {
+    @extend .fas;
+    @extend .fa-info-circle;
+}
+.fa_my-info-colored {
+    @extend .fa_my-info;
+    color: $info-color;
+}
+
 // tree icons
 .fa_my-tree-node-open {
     @extend .fas;
