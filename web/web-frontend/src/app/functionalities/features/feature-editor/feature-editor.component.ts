@@ -26,7 +26,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
         spellChecker: false
     };
 
-    model: Feature = new Feature;
+    model: Feature = new Feature();
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
 
@@ -133,6 +133,10 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
         if (this.model.path) {
             this.pathForTitle = new Path(this.model.path.directories, null, null).toString();
         }
+    }
+
+    isRootFeature(): boolean {
+        return this.model.path.isEmpty();
     }
 
     cancelAction(): void {

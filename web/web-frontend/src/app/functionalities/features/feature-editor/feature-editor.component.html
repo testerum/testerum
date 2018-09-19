@@ -1,12 +1,13 @@
 
 <div>
-    <h1 *ngIf="isCreateAction">Create SubFeature in <span class="path">{{pathForTitle}}</span></h1>
-    <h1 *ngIf="!isCreateAction">Feature <span class="path">{{pathForTitle}}</span></h1>
+    <h1 *ngIf="isRootFeature()">Features</h1>
+    <h1 *ngIf="!isRootFeature() && isCreateAction">Create SubFeature in <span class="path">{{pathForTitle}}</span></h1>
+    <h1 *ngIf="!isRootFeature() && !isCreateAction">Feature <span class="path">{{pathForTitle}}</span></h1>
 
     <div class="page-body">
         <form #form="ngForm" class="form-horizontal">
 
-            <div class="my-line">
+            <div class="my-line" *ngIf="!isRootFeature()">
                 <label class="my-label label-size">Name</label>
 
                 <div class="my-value" *ngIf="!isEditMode">
@@ -27,7 +28,7 @@
             </div>
 
             <!-- TAGS -->
-            <div class="my-line" *ngIf="!isEditMode && model.tags.length > 0 ">
+            <div class="my-line" *ngIf="!isRootFeature() && !isEditMode && model.tags.length > 0 ">
                 <label class="my-label label-size">Tags</label>
                 <div class="my-value" *ngIf="!isEditMode">
                     <ng-container *ngFor="let tag of model.tags">
@@ -35,7 +36,7 @@
                     </ng-container>
                 </div>
             </div>
-            <div class="my-line" *ngIf="isEditMode">
+            <div class="my-line" *ngIf="!isRootFeature() && isEditMode">
                 <label class="my-label label-size">Tags</label>
                 <div class="my-value">
                     <p-autoComplete #tagsElement
@@ -78,7 +79,7 @@
                 </ng-container>
                 <ng-container *ngIf="isEditMode">
                     <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
-                    <button *ngIf="!isCreateAction" (click)="deleteAction();$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
+                    <button *ngIf="!isRootFeature() && !isCreateAction" (click)="deleteAction();$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
                     <button [disabled]="!form.form.valid" (click)="saveAction();$event.stopPropagation();" class="btn btn-primary">Save</button>
                 </ng-container>
             </div>
