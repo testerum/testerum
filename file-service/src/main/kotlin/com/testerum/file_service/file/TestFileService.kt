@@ -35,7 +35,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         val absoluteTestsDir = testsDir.toAbsolutePath().normalize()
         absoluteTestsDir.walk { path ->
             if (path.isTest) {
-                val fileTest = parseTestFile(path)
+                val fileTest = parseTestFileSafely(path)
 
                 if (fileTest != null) {
                     val relativePath = absoluteTestsDir.relativize(path)
@@ -49,19 +49,44 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         return tests
     }
 
+    fun getTestAtPath(path: Path,
+                      testsDir: JavaPath): TestModel {
+        val escapedPath = path.escape()
+
+        val testFile = testsDir.resolve(
+                escapedPath.toString()
+        )
+
+        val fileTest = parseTestFile(testFile)
+
+        val absoluteTestsDir = testsDir.toAbsolutePath().normalize()
+        val relativePath = absoluteTestsDir.relativize(testFile)
+        val test = fileToBusinessTestMapper.mapTest(fileTest, relativePath)
+
+        return test
+    }
+
     private val JavaPath.isTest: Boolean
         get() = isRegularFile && hasExtension(".$TEST_FILE_EXTENSION")
 
 
-    private fun parseTestFile(file: JavaPath): FileTestDef? {
+    private fun parseTestFileSafely(file: JavaPath): FileTestDef? {
         return try {
-            TEST_PARSER.parse(
-                    file.getContent()
-            )
+            parseTestFile(file)
         } catch (e: Exception) {
             LOG.warn("failed to load test at [${file.toAbsolutePath().normalize()}]", e)
 
             null
+        }
+    }
+
+    fun parseTestFile(file: JavaPath): FileTestDef {
+        try {
+            return TEST_PARSER.parse(
+                    file.getContent()
+            )
+        } catch (e: Exception) {
+            throw RuntimeException("failed to parse test at [${file.toAbsolutePath().normalize()}]", e)
         }
     }
 
@@ -106,10 +131,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
                 testsDir.relativize(newTestFile).toString()
         ).escape()
 
-        return test.copy(
-                path = newPath,
-                oldPath = newPath
-        )
+        return getTestAtPath(newPath, testsDir)
     }
 
     fun deleteTest(path: Path, testsDir: JavaPath) {
