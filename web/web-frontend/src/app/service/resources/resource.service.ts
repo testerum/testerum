@@ -48,7 +48,7 @@ export class ResourceService {
      * Needs to be provided only if the resource body is an instance of Serializable (custom object)*/
     saveResource(resource: ResourceContext<any>, resourceBodyInstanceForDeserialization?: Serializable<any>): Observable<any> {
 
-        if (resource.body.hasOwnProperty('name')) {
+        if (resource.body && resource.body.hasOwnProperty('name')) {
             this.setNameToPath(resource)
         }
 

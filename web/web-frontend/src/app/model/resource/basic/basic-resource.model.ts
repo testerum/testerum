@@ -24,7 +24,7 @@ export class BasicResource implements Resource<BasicResource> {
     }
 
     serialize(): string {
-        return this.content;
+        return this.content ? this.content : "";
     }
 
     clone(): BasicResource {
