@@ -59,7 +59,7 @@ export class ErrorComponent implements OnInit {
     close(): void {
         this.infoModal.hide();
         if (this.shouldRefreshPage) {
-            window.location.reload();
+            window.location.href = window.location.protocol + "//" + window.location.host + "/";
         }
     }
 }
