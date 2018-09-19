@@ -1,4 +1,4 @@
-import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
+import {JsonTreeModel} from "../../json-tree/model/json-tree.model";
 import {StepCall} from "../../../../model/step-call.model";
 import {StepCallContainerModel} from "../model/step-call-container.model";
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
@@ -7,7 +7,6 @@ import {SubStepsContainerModel} from "../model/sub-steps-container.model";
 import {ParamsContainerModel} from "../model/params-container.model";
 import {ArgNodeModel} from "../model/arg-node.model";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
-import {UndefinedStepDef} from "../../../../model/undefined-step-def.model";
 
 export class StepCallTreeUtil {
 
