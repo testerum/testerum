@@ -39,6 +39,12 @@ export class UrlService {
         this.router.navigate(["/resources"]);
     }
 
+    public navigateToResource(path: Path) {
+        this.router.navigate([
+            "/resources/show",
+            {"path":path}]);
+    }
+
     public navigateToSteps() {
         this.router.navigate(["/steps"]);
     }

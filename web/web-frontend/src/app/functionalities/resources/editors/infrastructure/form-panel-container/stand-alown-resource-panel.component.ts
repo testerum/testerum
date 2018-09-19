@@ -134,6 +134,8 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
         this.resourceService.saveResource(this.resource, newInstanceResource).subscribe(
             result => {
                 this.resource = result;
+
+                this.urlService.navigateToResource(this.resource.path);
                 this.initialize();
                 this.refreshResourceTree();
             },

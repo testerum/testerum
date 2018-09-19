@@ -4,6 +4,7 @@ import {ResourcesTreeNode} from "../../model/resources-tree-node.model";
 import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {Subscription} from "rxjs";
+import {UrlService} from "../../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -20,7 +21,8 @@ export class ResourceNodeComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private jsonTreeService:JsonTreeService) {
+                private jsonTreeService:JsonTreeService,
+                private urlService: UrlService) {
         this.selectedNodeSubscription = jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onNodeSelected(item));
     }
 
@@ -46,8 +48,6 @@ export class ResourceNodeComponent implements OnInit, OnDestroy {
 
     private showViewer() {
         //TODO: Check why is this called twice???!!!
-        this.router.navigate([
-           "/resources/show",
-           {"path":this.model.path}]);
+        this.urlService.navigateToResource(this.model.path);
     }
 }
