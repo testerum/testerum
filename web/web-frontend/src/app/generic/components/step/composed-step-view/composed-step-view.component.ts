@@ -258,8 +258,6 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     isValid(): boolean {
-        this.setDescription();
-
         let control = this.form.control;
         if (control.get("pathInput")) {
             control.get("pathInput").setErrors(null);
