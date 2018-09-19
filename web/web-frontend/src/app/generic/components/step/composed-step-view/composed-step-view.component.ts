@@ -1,5 +1,5 @@
 import {
-    AfterContentChecked,
+    AfterContentChecked, AfterViewInit,
     Component,
     DoCheck,
     EventEmitter,
@@ -27,6 +27,7 @@ import {Path} from "../../../../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
 import {StepsService} from "../../../../service/steps.service";
 import {isValid} from "ngx-bootstrap/chronos/create/valid";
+import {MarkdownEditorComponent} from "../../markdown-editor/markdown-editor.component";
 
 @Component({
     selector: 'composed-step-view',
@@ -58,6 +59,12 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
     editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    markdownEditorOptions = {
+        status: false,
+        spellChecker: false
+    };
+    @ViewChild("descriptionMarkdownEditor") descriptionMarkdownEditor: MarkdownEditorComponent;
+
     private editModeStepCallTreeSubscription: Subscription;
     private warningRecalculationChangesSubscription: Subscription;
 
@@ -74,9 +81,15 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         if (this.isEditMode) {
             this.loadAllTags();
         }
+        this.descriptionMarkdownEditor.changeEventEmitter.subscribe((description: string) => {
+            this.validate();
+            this.model.description = description;
+        });
+        this.refreshDescription();
 
         this.editModeStepCallTreeSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.editModeEventEmitter.subscribe( (editMode: boolean) => {
                 this.isEditMode = editMode;
+                this.refreshDescription();
                 this.editModeEventEmitter.emit(this.isEditMode);
             }
         );
@@ -109,12 +122,13 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         this.isEditMode = editMode;
         this.editModeEventEmitter.emit(this.isEditMode);
         this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(this.isEditMode);
+
+        this.refreshDescription();
     }
 
     ngAfterContentChecked(): void {
         this.pattern = this.model.stepPattern.getPatternText();
     }
-
 
     ngOnDestroy(): void {
         if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
@@ -126,8 +140,18 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
             this.refreshWarnings();
             this.oldModel = this.model;
             this.validate();
+
+            this.refreshDescription();
         }
     }
+
+    refreshDescription() {
+        if (this.descriptionMarkdownEditor) {
+            this.descriptionMarkdownEditor.setEditMode(this.isEditMode);
+            this.descriptionMarkdownEditor.setValue(this.model.description);
+        }
+    }
+
     private refreshWarnings() {
         this.warnings = [];
         for (const warning of this.model.warnings) {
@@ -192,6 +216,8 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
                 this.currentTagSearch = null;
                 this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
                 event.preventDefault();
+
+                this.validate();
             }
         }
     }
@@ -232,6 +258,8 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     isValid(): boolean {
+        this.setDescription();
+
         let control = this.form.control;
         if (control.get("pathInput")) {
             control.get("pathInput").setErrors(null);
@@ -239,18 +267,38 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
 
         if (this.model.stepCalls.length > 0) {
             if(!this.model.path) {
-
-                let validationError = {};
-                validationError["required"] = true;
-                control.markAsTouched();
-                control.markAsDirty();
-
-                control.get("pathInput").setErrors(validationError);
-
+                this.addPathRequiredValidationError(control);
                 return false;
             }
         }
 
+        if (this.model.description && !this.model.path) {
+            this.addPathRequiredValidationError(control);
+            return false;
+        }
+
+        if (this.model.tags.length > 0 && !this.model.path) {
+            this.addPathRequiredValidationError(control);
+            return false;
+        }
+
         return true;
+    }
+
+    private addPathRequiredValidationError(control) {
+        let validationError = {};
+        validationError["required"] = true;
+        control.markAsTouched();
+        control.markAsDirty();
+
+        control.get("pathInput").setErrors(validationError);
+    }
+
+    onBeforeSave() {
+        this.setDescription();
+    }
+
+    private setDescription() {
+        this.model.description = this.descriptionMarkdownEditor.getValue()
     }
 }

@@ -101,6 +101,8 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
     }
 
     saveAction(): void {
+        this.composedStepViewComponent.onBeforeSave();
+
         if (this.isCreateAction) {
             this.doSave();
         } else {
@@ -142,6 +144,8 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
     }
 
     private actionsAfterSave(composedStepDef: ComposedStepDef): void {
+        this.composedStepViewComponent.setEditMode(false);
+
         this.applicationEventBus.triggerAfterPageSaveEvent();
         this.isEditMode = false;
         this.stepsTreeService.initializeStepsTreeFromServer(composedStepDef.path);

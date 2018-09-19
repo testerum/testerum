@@ -9,7 +9,6 @@ import {Subject} from "rxjs";
     templateUrl: 'step-modal.component.html',
     styleUrls: ['step-modal.component.scss']
 })
-
 export class StepModalComponent implements AfterViewInit {
 
     model: ComposedStepDef;
@@ -20,9 +19,6 @@ export class StepModalComponent implements AfterViewInit {
 
     modalComponentRef: ComponentRef<StepModalComponent>;
     modalSubject: Subject<ComposedStepDef>;
-
-    constructor() {
-    }
 
     ngAfterViewInit(): void {
         this.modal.show();

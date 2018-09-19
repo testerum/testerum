@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as SimpleMDE from 'simplemde'
 
 @Component({
@@ -8,6 +8,8 @@ import * as SimpleMDE from 'simplemde'
     encapsulation: ViewEncapsulation.None
 })
 export class MarkdownEditorComponent implements AfterViewInit {
+
+    changeEventEmitter: EventEmitter<string> = new EventEmitter<string>();
 
     private value: string; //did this with setter and getters because binding this value on update is not working
 
@@ -32,6 +34,9 @@ export class MarkdownEditorComponent implements AfterViewInit {
     }
 
     getValue(): string {
+        if (!this.simpleMDE) {
+            return null;
+        }
         return this.simpleMDE.value();
     }
 
@@ -46,7 +51,15 @@ export class MarkdownEditorComponent implements AfterViewInit {
         };
         this.simpleMDE = new SimpleMDE(config);
 
-        this.simpleMDE.value(this.value);
+        if (this.value) {
+            this.simpleMDE.value(this.value);
+        }
+        let that = this;
+        this.simpleMDE.codemirror.on("change", function(){
+            that.changeEventEmitter.emit(
+                that.getValue()
+            )
+        });
 
         this.handleEditModeChanged();
     }
