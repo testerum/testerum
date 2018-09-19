@@ -233,7 +233,7 @@ class StepsCache(private val persistentCacheManger: StepLibraryPersistentCacheMa
             // re-resolve steps
             resolveSteps()
 
-            return savedComposedStepDef
+            return getStepAtPath(savedComposedStepDef.path)!! as ComposedStepDef
         }
     }
 
