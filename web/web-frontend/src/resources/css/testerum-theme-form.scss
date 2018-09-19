@@ -39,7 +39,7 @@ input[type=checkbox]:focus {
     display: flex;
     min-height: 25px;
     flex-direction: row;
-    align-items: center;
+    align-items: baseline;
     margin: 8px 0;
 }
 
@@ -48,6 +48,8 @@ input[type=checkbox]:focus {
     margin-bottom: 0;
     text-align: right;
     padding-right: 0;
+    align-self: baseline;
+    line-height: 25px;
 }
 
 .my-label-top {
