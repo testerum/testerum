@@ -11,6 +11,8 @@ $alert-background-color: #dca7a7;
 $manual-test-color: #333333;
 $automated-test-color: #333333;
 
+$http-method-color: #2b1bfb;
+
 .error_color {color: $error-color;}
 .success-color {color: $success-color;}
 .info-color {color: $info-color;}
@@ -19,4 +21,5 @@ $automated-test-color: #333333;
 .gray-color {color: $gray-color;}
 .manual-test-background-color {background-color: $manual-test-color;}
 .automated-test-background-color {background-color: $automated-test-color;}
+.http-method-color {color: $http-method-color;}
 

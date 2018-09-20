@@ -1,6 +1,6 @@
 <div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
     <div>
-        <span style="color: #2b1bfb">{{model.method}}</span>
+        <span class="http-method-color">{{model.method}}</span>
         <span style="padding-left: 5px">{{model.url}}</span>
     </div>
 
@@ -49,7 +49,7 @@
                    type="button" value="Params">
 
             <a href (click)="executeRequest();false;"
-               class="btn btn-success" aria-label="Execute Request">
+               class="exe-http-req-btn btn btn-success" aria-label="Execute Request">
                 <i class="fa_my-run" aria-hidden="true"></i>
             </a>
         </span>
@@ -76,11 +76,11 @@
         </div>
         <input (click)="showHideParams()"
                [class.active]="httpParams.shouldShow"
-               class="btn btn-default"
+               class="params-btn btn btn-default"
                type="button" value="Params">
 
         <a href (click)="executeRequest();false;"
-           class="btn btn-success" aria-label="Execute Request">
+           class="exe-http-req-btn-edit btn btn-success" aria-label="Execute Request">
             <i class="fa_my-run" aria-hidden="true"></i>
         </a>
     </div>

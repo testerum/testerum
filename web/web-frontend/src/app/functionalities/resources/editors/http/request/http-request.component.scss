@@ -1,3 +1,5 @@
+@import "../../../../../../resources/css/testerum-variables.scss";
+
 .label-size {
     width: 5em;
 }
@@ -15,13 +17,23 @@
 .http-method-view {
     font-weight: bold;
     margin-left: 15px;
+    color: $http-method-color;
 }
 
 .http-url-view {
-    margin-left: 40px;
+    margin-left: 1em;
 }
 
 .http-parm-button-view {
-    margin-left: 50px;
+    margin-left: 20px;
 }
 
+.exe-http-req-btn {
+    padding: 2px 12px;
+}
+.exe-http-req-btn-edit {
+    padding: 4px 12px;
+}
+.params-btn {
+    padding: 4px 12px;
+}
