@@ -104,17 +104,12 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
         val newStepFile: JavaPath = composedStepsDir.resolve(newEscapedPath.toString())
 
         // handle rename
-        if (oldEscapedPath != null && newEscapedPath != oldEscapedPath) {
-            if (newStepFile.exists) {
-                throw ValidationException(
-                        ValidationModel(
-                                globalValidationMessage = "the step at path [$newEscapedPath] already exists"
-                        )
-                )
-            }
-
-            Files.move(oldStepFile, newStepFile)
-        }
+        oldStepFile?.smartMoveTo(
+                newStepFile,
+                createDestinationExistsException = {
+                    ValidationException("the step at path [$newEscapedPath] already exists")
+                }
+        )
 
         // write the new step file
         newStepFile.parent?.createDirectories()
@@ -200,17 +195,12 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
                 escapedDestinationFile.toString()
         )
 
-        if (destinationJavaFile.exists) {
-            throw ValidationException(
-                    ValidationModel(
-                            globalValidationMessage = "the file at path [$escapedDestinationFile] already exists"
-                    )
-            )
-        }
-
-        destinationJavaFile.parent?.createDirectories()
-
-        Files.move(sourceJavaFile, destinationJavaFile)
+        sourceJavaFile.smartMoveTo(
+                destinationJavaFile,
+                createDestinationExistsException = {
+                    ValidationException("the file at path [$escapedDestinationFile] already exists")
+                }
+        )
 
         return escapedDestinationFile
     }

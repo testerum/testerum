@@ -7,7 +7,6 @@ import com.testerum.file_service.file.util.escape
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileFeatureMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessFeatureMapper
 import com.testerum.model.exception.ValidationException
-import com.testerum.model.exception.model.ValidationModel
 import com.testerum.model.feature.Feature
 import com.testerum.model.file.Attachment
 import com.testerum.model.file.FileToUpload
@@ -100,19 +99,14 @@ class FeatureFileService(private val featureMapper: FileToBusinessFeatureMapper,
         ).toAbsolutePath().normalize()
 
         // handle rename
-        if (oldFeatureDir != null && newFeatureDir != oldFeatureDir) {
-            if (newFeatureDir.exists) {
-                val featureDirPath = newEscapedPath.copy(fileName = null, fileExtension = null)
+        oldFeatureDir?.smartMoveTo(
+                newFeatureDir,
+                createDestinationExistsException = {
+                    val featureDirPath = newEscapedPath.copy(fileName = null, fileExtension = null)
 
-                throw ValidationException(
-                        ValidationModel(
-                                globalValidationMessage = "the feature at path [$featureDirPath] already exists"
-                        )
-                )
-            }
-
-            Files.move(oldFeatureDir, newFeatureDir)
-        }
+                    ValidationException("the feature at path [$featureDirPath] already exists")
+                }
+        )
 
         // write the new feature file
         newFeatureDir.createDirectories()

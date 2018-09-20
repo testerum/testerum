@@ -16,7 +16,6 @@ import com.testerum.file_service.file.util.escapeFileOrDirectoryName
 import com.testerum.file_service.file.util.isCreateResource
 import com.testerum.file_service.file.util.isRelocateResource
 import com.testerum.model.exception.ValidationException
-import com.testerum.model.exception.model.ValidationModel
 import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath
@@ -26,7 +25,6 @@ import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
-import java.util.*
 import java.nio.file.Path as JavaPath
 
 class ResourceFileService {
@@ -101,17 +99,12 @@ class ResourceFileService {
         val newResourceFile = getJavaPath(newEscapedPath, resourceType, resourcesDir)
 
         // handle rename
-        if (oldResourceFile != null && newResourceFile != oldResourceFile) {
-            if (newResourceFile.exists) {
-                throw ValidationException(
-                        ValidationModel(
-                                globalValidationMessage = "the resource at path [$newEscapedPath] already exists"
-                        )
-                )
-            }
-
-            Files.move(oldResourceFile, newResourceFile)
-        }
+        oldResourceFile?.smartMoveTo(
+                newResourceFile,
+                createDestinationExistsException = {
+                    ValidationException("the test at path [$newEscapedPath] already exists")
+                }
+        )
 
         // write the new resource file
         newResourceFile.parent?.createDirectories()
@@ -215,13 +208,12 @@ class ResourceFileService {
 
         val javaNewPath = javaPathToRename.resolveSibling(escapedNewName)
 
-        if (javaPathToRename.differsOnlyInCasingFrom(javaNewPath)) {
-            val tempPath = javaPathToRename.resolveSibling(UUID.randomUUID().toString())
-            Files.move(javaPathToRename, tempPath)
-            Files.move(tempPath, javaNewPath)
-        } else {
-            Files.move(javaPathToRename, javaNewPath)
-        }
+        javaPathToRename.smartMoveTo(
+                javaNewPath,
+                createDestinationExistsException = {
+                    ValidationException("the directory at path [${javaNewPath.toAbsolutePath().normalize()}] already exists")
+                }
+        )
 
         val javaNewRelativePath = resourcesDir.toAbsolutePath().normalize()
                 .relativize(javaNewPath.toAbsolutePath().normalize())
@@ -265,17 +257,12 @@ class ResourceFileService {
                 escapedDestinationFile.toString()
         )
 
-        if (destinationJavaFile.exists) {
-            throw ValidationException(
-                    ValidationModel(
-                            globalValidationMessage = "the file at path [$escapedDestinationFile] already exists"
-                    )
-            )
-        }
-
-        destinationJavaFile.parent?.createDirectories()
-
-        Files.move(sourceJavaFile, destinationJavaFile)
+        sourceJavaFile.smartMoveTo(
+                destinationJavaFile,
+                createDestinationExistsException = {
+                    ValidationException("the file at path [$escapedDestinationFile] already exists")
+                }
+        )
 
         return escapedDestinationFile
 

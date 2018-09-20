@@ -6,7 +6,6 @@ import com.testerum.file_service.file.util.escape
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileTestMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessTestMapper
 import com.testerum.model.exception.ValidationException
-import com.testerum.model.exception.model.ValidationModel
 import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.test.TestModel
@@ -100,17 +99,12 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         val newTestFile: JavaPath = testsDir.resolve(newEscapedPath.toString())
 
         // handle rename
-        if (oldEscapedPath != null && newEscapedPath != oldEscapedPath) {
-            if (newTestFile.exists) {
-                throw ValidationException(
-                        ValidationModel(
-                                globalValidationMessage = "the test at path [$newEscapedPath] already exists"
-                        )
-                )
-            }
-
-            Files.move(oldTestFile, newTestFile)
-        }
+        oldTestFile?.smartMoveTo(
+                newTestFile,
+                createDestinationExistsException = {
+                    ValidationException("the test at path [$newEscapedPath] already exists")
+                }
+        )
 
         // write the new test file
         newTestFile.parent?.createDirectories()
@@ -168,15 +162,12 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
                 escapedDestinationFile.toString()
         )
 
-        if (destinationJavaFile.exists) {
-            throw ValidationException(
-                    ValidationModel(
-                            globalValidationMessage = "the file at path [$escapedDestinationFile] already exists"
-                    )
-            )
-        }
-
-        Files.move(sourceJavaFile, destinationJavaFile)
+        sourceJavaFile.smartMoveTo(
+                destinationJavaFile,
+                createDestinationExistsException = {
+                    ValidationException("the file at path [$destinationJavaFile] already exists")
+                }
+        )
 
         return escapedDestinationFile
     }
