@@ -113,7 +113,7 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
     }
 
     ping(): void {
-        if (canCallPing()) {
+        if (this.canCallPing()) {
             this.dbConnectionService
                 .ping(this.model.host, this.model.port)
                 .subscribe(
