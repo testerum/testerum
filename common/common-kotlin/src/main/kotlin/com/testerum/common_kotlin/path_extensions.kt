@@ -9,6 +9,7 @@ import java.nio.file.attribute.BasicFileAttributeView
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileAttribute
 import java.nio.file.attribute.FileAttributeView
+import java.util.*
 import java.nio.file.Path as JavaPath
 
 val JavaPath.exists: Boolean
@@ -78,6 +79,45 @@ val JavaPath.hasSubDirectories: Boolean
 val JavaPath.hasNoChildren: Boolean
     get() = !hasChildren
 
+fun JavaPath.isSameFileAs(other: JavaPath): Boolean {
+    return Files.isSameFile(this, other)
+}
+
+fun JavaPath.isNotSameFileAs(other: JavaPath): Boolean = !this.isSameFileAs(other)
+
+/**
+ * Moves this file to the path represented by ``other``.
+ *
+ * If ``other`` is the same file as ``this`` (but for example, with a different case, on case-insensitive file systems),
+ * the file will be renamed.
+ *
+ * Throws an exception if ``other`` exists and it's a different file from ``this``.
+ */
+fun JavaPath.smartMoveTo(other: JavaPath,
+                         createDestinationExistsException: () -> Exception) {
+    if (other.doesNotExist) {
+        other.parent?.createDirectories()
+        Files.move(this, other)
+    } else {
+        val isSameFile = this.isSameFileAs(other)
+
+        if (isSameFile) {
+            if (this.toAbsolutePath().toString() != other.toAbsolutePath().toString()) {
+                // this can happen for example when changing letter casing, on a case-insensitive file system
+
+                other.parent?.createDirectories()
+
+                val tempFile = other.resolveSibling(UUID.randomUUID().toString())
+
+                Files.move(this, tempFile)
+                Files.move(tempFile, other)
+            }
+        } else {
+            throw createDestinationExistsException()
+        }
+    }
+}
+
 fun JavaPath.readAllLines(charset: Charset = Charsets.UTF_8) = Files.readAllLines(this, charset)
 
 fun JavaPath.deleteIfExists(): Boolean = Files.deleteIfExists(this)
@@ -107,14 +147,6 @@ fun JavaPath.deleteRecursivelyIfExists() {
             return FileVisitResult.CONTINUE
         }
     })
-}
-
-fun JavaPath.differsOnlyInCasingFrom(other: JavaPath): Boolean {
-    val thisAsString = this.toAbsolutePath().normalize().toString()
-    val otherAsString = other.toAbsolutePath().normalize().toString()
-
-    return thisAsString.equals(otherAsString, ignoreCase = true)
-            && !thisAsString.equals(otherAsString, ignoreCase = false)
 }
 
 fun JavaPath.createDirectories(vararg attrs: FileAttribute<*>): JavaPath = Files.createDirectories(this, *attrs)
