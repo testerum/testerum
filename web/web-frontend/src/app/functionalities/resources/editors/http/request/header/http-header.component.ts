@@ -58,7 +58,7 @@ export class HttpHeaderComponent implements OnInit {
         this.suggestionHeaders = [];
         for(let i = 0; i < HeadersList.headers.length; i++) {
             let header = HeadersList.headers[i];
-            if(header.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+            if(header.toLowerCase().indexOf(event.query.toLowerCase()) >= 0) {
                 this.suggestionHeaders.push(header);
             }
         }
