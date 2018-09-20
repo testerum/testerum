@@ -24,6 +24,7 @@ import com.testerum.web_backend.controllers.error.model.response_preparers.valid
 import com.testerum.web_backend.controllers.features.FeatureAttachmentsController
 import com.testerum.web_backend.controllers.features.FeatureController
 import com.testerum.web_backend.controllers.filesystem.FileSystemController
+import com.testerum.web_backend.controllers.manual.ManualExecPlansController
 import com.testerum.web_backend.controllers.message.MessageController
 import com.testerum.web_backend.controllers.resources.ResourcesController
 import com.testerum.web_backend.controllers.resources.http.HttpController
@@ -336,6 +337,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             fileSystemFrontendService = fileSystemFrontendService
     )
 
+    private val manualExecPlansController = ManualExecPlansController()
+
 
     //---------------------------------------- list of web controllers ----------------------------------------//
 
@@ -348,8 +351,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             variablesController,
             testExecutionController,
             testRunnerReportController,
-
-            // new controllers
             featureController,
             tagsController,
             testsController,
@@ -359,7 +360,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             resourcesController,
             httpController,
             rdbmsController,
-            fileSystemController
+            fileSystemController,
+            manualExecPlansController
     )
 
 
