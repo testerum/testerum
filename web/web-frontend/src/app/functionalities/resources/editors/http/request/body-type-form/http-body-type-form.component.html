@@ -1,4 +1,5 @@
-<table class="table">
+<table class="forms table table-striped"
+       [class.forms-edit]="editMode">
     <colgroup>
         <col span="1">
         <col span="1">
@@ -22,7 +23,7 @@
         </td>
         <td *ngIf="!bodyForm.isEmpty() && editMode">
             <a href (click)="deleteFormEntry(bodyForm);false;"
-               class="btn btn-danger" *ngIf="editMode" aria-label="Delete">
+               class="delete-form-btn btn btn-danger" *ngIf="editMode" aria-label="Delete">
                 <i  class="far fa-trash-alt" aria-hidden="true"></i>
             </a>
         </td>

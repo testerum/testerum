@@ -1,4 +1,5 @@
-<table class="table">
+<table class="scenarios table table-striped"
+       [class.scenarios-edit]="isEditMode()">
     <colgroup>
         <col span="1">
         <col span="1" style="width: 13em;">
@@ -53,7 +54,7 @@
         <!-- DELETE -->
         <td *ngIf="isEditMode() && isNotEmpty()">
             <a href (click)="deleteScenario();false;"
-               class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
+               class="delete-scenario-btn btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
                 <i  class="far fa-trash-alt" aria-hidden="true"></i>
             </a>
         </td>

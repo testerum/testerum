@@ -1,4 +1,5 @@
-<table class="table table-striped">
+<table class="headers table table-striped"
+       [class.headers-edit]="isEditMode()">
     <colgroup>
         <col span="1">
         <col span="1" style="width: 13em;">
@@ -56,7 +57,7 @@
         <!-- DELETE -->
         <td *ngIf="!header.isEmpty() && isEditMode()">
             <a href (click)="deleteHeader(header);false;"
-               class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
+               class="delete-header-btn btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
                 <i  class="far fa-trash-alt" aria-hidden="true"></i>
             </a>
         </td>

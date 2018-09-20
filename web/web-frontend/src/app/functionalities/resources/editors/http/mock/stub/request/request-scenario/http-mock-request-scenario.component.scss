@@ -1,3 +1,11 @@
-.btn {
-    padding: 4px 9px;
+.delete-scenario-btn {
+    padding: 4px 6px;
+}
+
+.scenarios-edit>tbody>tr>td {
+    border-top: 0;
+}
+
+.scenarios>tbody>tr>td>span {
+    margin-left: 0.4em;
 }
