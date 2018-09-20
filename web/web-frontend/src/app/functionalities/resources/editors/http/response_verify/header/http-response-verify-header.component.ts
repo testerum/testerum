@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {HttpResponseVerifyHeadersList} from "./model/http-response-verify-headers-list.model";
 import {HttpResponseVerifyService} from "../http-response-verify.service";
@@ -10,7 +10,8 @@ import {ArrayUtil} from "../../../../../../utils/array.util";
     moduleId: module.id,
     selector: 'http-response-verify-header',
     templateUrl: 'http-response-verify-header.component.html',
-    styleUrls: ["http-response-verify-header.component.scss"]
+    styleUrls: ["http-response-verify-header.component.scss"],
+    encapsulation: ViewEncapsulation.None
 })
 export class HttpResponseVerifyHeaderComponent {
 

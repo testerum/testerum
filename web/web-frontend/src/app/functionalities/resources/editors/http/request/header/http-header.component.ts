@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {HttpRequestHeader} from "../../../../../../model/resource/http/http-request-header.model";
 import {HeadersList} from "./model/headers-list.model";
@@ -9,7 +9,8 @@ import {ArrayUtil} from "../../../../../../utils/array.util";
     moduleId: module.id,
     selector: 'http-header',
     templateUrl: 'http-header.component.html',
-    styleUrls: ["http-header.component.scss"]
+    styleUrls: ["http-header.component.scss"],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class HttpHeaderComponent implements OnInit {

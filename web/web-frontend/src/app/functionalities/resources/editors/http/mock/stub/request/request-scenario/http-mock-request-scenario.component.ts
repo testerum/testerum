@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {HttpMockService} from "../../http-mock.service";
 import {HttpMockRequestScenario} from "../../model/request/http-mock-request-scenario.model";
 import {HttpMockRequestScenarioService} from "./http-mock-request-scenario.service";
@@ -7,7 +7,8 @@ import {HttpMockRequestScenarioService} from "./http-mock-request-scenario.servi
     moduleId: module.id,
     selector: 'http-mock-request-scenario',
     templateUrl: 'http-mock-request-scenario.component.html',
-    styleUrls: ["http-mock-request-scenario.component.scss"]
+    styleUrls: ["http-mock-request-scenario.component.scss"],
+    encapsulation: ViewEncapsulation.None
 })
 export class HttpMockRequestScenarioComponent implements OnInit {
 

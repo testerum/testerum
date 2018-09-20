@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {StringUtils} from "../../../../../../../../utils/string-utils.util";
 import {HttpMockService} from "../../http-mock.service";
 import {HttpMockRequestParam} from "../../model/request/http-mock-request-param.model";
@@ -9,7 +9,8 @@ import {ArrayUtil} from "../../../../../../../../utils/array.util";
     moduleId: module.id,
     selector: 'http-mock-request-params',
     templateUrl: 'http-mock-request-params.component.html',
-    styleUrls: ["http-mock-request-params.component.scss"]
+    styleUrls: ["http-mock-request-params.component.scss"],
+    encapsulation: ViewEncapsulation.None
 })
 export class HttpMockRequestParamsComponent {
 
