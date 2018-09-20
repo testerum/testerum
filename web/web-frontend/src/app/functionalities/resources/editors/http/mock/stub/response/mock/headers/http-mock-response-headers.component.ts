@@ -48,7 +48,7 @@ export class HttpMockResponseHeadersComponent {
         this.suggestionHeaders = [];
         for (let i = 0; i < HttpResponseVerifyHeadersList.headers.length; i++) {
             let header = HttpResponseVerifyHeadersList.headers[i];
-            if (header.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+            if (header.toLowerCase().indexOf(event.query.toLowerCase()) >= 0) {
                 this.suggestionHeaders.push(header);
             }
         }

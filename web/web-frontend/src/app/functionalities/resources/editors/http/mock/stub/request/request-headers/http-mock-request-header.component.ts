@@ -62,7 +62,7 @@ export class HttpMockRequestHeaderComponent {
         this.suggestionHeaders = [];
         for (let i = 0; i < HttpMockRequestHeadersList.headers.length; i++) {
             let header = HttpMockRequestHeadersList.headers[i];
-            if (header.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+            if (header.toLowerCase().indexOf(event.query.toLowerCase()) >= 0) {
                 this.suggestionHeaders.push(header);
             }
         }
