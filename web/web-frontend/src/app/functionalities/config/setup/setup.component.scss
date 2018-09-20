@@ -46,6 +46,17 @@
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-.modal-footer {
+.setup-footer {
     padding-right: 0;
+    border: 0;
+}
+
+.setup .file-dir-chooser .form-control {
+    padding: 0 5px;
+    position: static;
+    border-radius: 0 !important;
+    border-left: 0;
+    height: 25px;
+    line-height: 1;
+    width: inherit;
 }

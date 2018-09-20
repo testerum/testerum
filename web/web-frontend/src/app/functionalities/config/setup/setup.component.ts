@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Setup} from "./model/setup.model";
 import {SetupService} from "../../../service/setup.service";
 import {UrlService} from "../../../service/url.service";
@@ -6,7 +6,8 @@ import {UrlService} from "../../../service/url.service";
 @Component({
     selector: 'setup',
     templateUrl: 'setup.component.html',
-    styleUrls: ['setup.component.scss']
+    styleUrls: ['setup.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class SetupComponent implements OnInit {
 
