@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {HttpRequestHeader} from "../../../../../../model/resource/http/http-request-header.model";
 import {HeadersList} from "./model/headers-list.model";
@@ -16,6 +16,8 @@ export class HttpHeaderComponent implements OnInit {
 
     @Input() headers: Array<HttpRequestHeader> = [];
     suggestionHeaders: any[];
+
+    @Output() change = new EventEmitter<void>();
 
     constructor(private httpCallService:HttpRequestService) {
     }
@@ -48,6 +50,7 @@ export class HttpHeaderComponent implements OnInit {
             this.headers.push(
                 new HttpRequestHeader()
             );
+            this.change.emit();
         }
     }
 
@@ -63,5 +66,6 @@ export class HttpHeaderComponent implements OnInit {
 
     deleteHeader(header: HttpRequestHeader) {
         ArrayUtil.removeElementFromArray(this.headers, header);
+        this.change.emit();
     }
 }

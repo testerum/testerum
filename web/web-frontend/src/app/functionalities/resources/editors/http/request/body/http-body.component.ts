@@ -17,7 +17,6 @@ import 'brace/theme/eclipse';
         'http-body.component.scss'
     ]
 })
-
 export class HttpBodyComponent implements OnInit {
 
     body: HttpRequestBody;
@@ -57,5 +56,10 @@ export class HttpBodyComponent implements OnInit {
 
     setHeaderBasedOnBodyType(event: any) {
         this.httpCallService.setContentTypeAsString(this.body.bodyType.contentTypeHeaderValue);
+    }
+
+    onHeaderChange() {
+        let contentType = this.getContentType();
+        this.aceEditorMode = contentType.editorMode;
     }
 }

@@ -121,13 +121,13 @@
 
     <div *ngIf="partToDisplay == HttpPart.HEADERS" class="panel panel-default">
         <div class="panel-body">
-            <http-header [headers]="getModel().headers"></http-header>
+            <http-header [headers]="getModel().headers" (change)="httpBody.onHeaderChange()"></http-header>
         </div>
     </div>
 
-    <div *ngIf="partToDisplay == HttpPart.BODY" class="panel panel-default full-size-flex-element flex-panel">
+    <div [class.hidden]="partToDisplay != HttpPart.BODY" class="panel panel-default full-size-flex-element flex-panel">
         <div class="panel-body full-size-flex-element flex-panel">
-            <http-body class="full-size-flex-element flex-panel"></http-body>
+            <http-body #httpBody class="full-size-flex-element flex-panel"></http-body>
         </div>
     </div>
 

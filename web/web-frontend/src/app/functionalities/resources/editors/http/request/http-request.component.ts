@@ -10,6 +10,7 @@ import {HttpParamsComponent} from "./params/http-params.component";
 import {NgForm} from "@angular/forms";
 import {ResourceComponent} from "../../resource-component.interface";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+import {HttpBodyComponent} from "./body/http-body.component";
 
 @Component({
     moduleId: module.id,
@@ -36,6 +37,7 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
     HttpMethod = HttpMethod;
 
     @ViewChild("httpParams") httpParams: HttpParamsComponent;
+    // @ViewChild("httpBody") httpBodyComponent: HttpBodyComponent;
 
     constructor(private cd: ChangeDetectorRef,
                 private route: ActivatedRoute,
@@ -149,5 +151,11 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
 
     getForm(): NgForm {
         return this.form;
+    }
+
+    onHttpHeaderChanged() {
+        // if (this.httpBodyComponent) {
+        //     this.httpBodyComponent.onHeaderChange();
+        // }
     }
 }
