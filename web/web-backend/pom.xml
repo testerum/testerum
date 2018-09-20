@@ -60,6 +60,12 @@
             <artifactId>file-service</artifactId>
         </dependency>
 
+        <!-- common-expression-evaluator -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-expression-evaluator</artifactId>
+        </dependency>
+
 
         <!--==================== 3rd party dependencies ====================-->
 

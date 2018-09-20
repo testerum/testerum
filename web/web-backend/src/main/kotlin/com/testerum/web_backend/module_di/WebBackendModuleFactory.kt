@@ -68,6 +68,7 @@ import com.testerum.web_backend.services.steps.StepsTreeFrontendService
 import com.testerum.web_backend.services.tags.TagsFrontendService
 import com.testerum.web_backend.services.tests.TestsFrontendService
 import com.testerum.web_backend.services.variables.VariablesFrontendService
+import com.testerum.web_backend.services.variables.VariablesResolverService
 import org.apache.http.client.HttpClient
 import org.apache.http.impl.client.HttpClients
 
@@ -132,6 +133,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
 
     //---------------------------------------- services ----------------------------------------//
+
+    private val variablesResolverService = VariablesResolverService()
 
     private val testsRunnerJsonObjectMapper: ObjectMapper = jacksonObjectMapper().apply {
         registerModule(AfterburnerModule())
@@ -248,7 +251,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val httpClientService = HttpClientService(httpClient)
 
     private val httpFrontendService = HttpFrontendService(
-            httpClientService = httpClientService
+            httpClientService = httpClientService,
+            frontendDirs = frontendDirs,
+            variablesFileService = fileServiceModuleFactory.variablesFileService,
+            variablesResolverService = variablesResolverService
     )
 
     private val rdbmsFrontendService = RdbmsFrontendService(
