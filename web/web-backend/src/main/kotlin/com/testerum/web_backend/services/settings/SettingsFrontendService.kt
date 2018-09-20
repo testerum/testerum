@@ -1,16 +1,16 @@
 package com.testerum.web_backend.services.settings
 
 import com.testerum.api.test_context.settings.model.Setting
-import com.testerum.file_service.caches.resolved.StepsCache
 import com.testerum.file_service.file.SettingsFileService
 import com.testerum.settings.SettingsManager
 import com.testerum.settings.getNonDefaultSettings
 import com.testerum.web_backend.services.dirs.FrontendDirs
+import com.testerum.web_backend.services.initializers.caches.CachesInitializer
 
 class SettingsFrontendService(private val frontendDirs: FrontendDirs,
                               private val settingsManager: SettingsManager,
                               private val settingsFileService: SettingsFileService,
-                              private val stepsCache: StepsCache) {
+                              private val cachesInitializer: CachesInitializer) {
 
     fun getSettings(): List<Setting> = settingsManager.getSettings()
 
@@ -20,7 +20,7 @@ class SettingsFrontendService(private val frontendDirs: FrontendDirs,
         }
 
         saveSettingsToFile()
-        stepsCache.reinitializeComposedSteps()
+        cachesInitializer.initialize()
 
         return settingsManager.getSettings()
     }

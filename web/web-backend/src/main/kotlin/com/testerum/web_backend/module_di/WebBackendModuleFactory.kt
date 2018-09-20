@@ -220,7 +220,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             frontendDirs = frontendDirs,
             settingsManager = settingsModuleFactory.settingsManager,
             settingsFileService = fileServiceModuleFactory.settingsFileService,
-            stepsCache = fileServiceModuleFactory.stepsCache
+            cachesInitializer = cachesInitializer
     )
 
     private val testsExecutionFrontendService = TestsExecutionFrontendService(
