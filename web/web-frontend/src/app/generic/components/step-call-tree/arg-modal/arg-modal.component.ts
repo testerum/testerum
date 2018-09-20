@@ -164,6 +164,7 @@ export class ArgModalComponent {
     update() {
         this.arg.name = this.resourceComponentRef.instance.name;
         this.arg.path = this.argPath;
+        this.arg.oldPath = this.argPath;
 
         let resource = this.resourceComponentRef.instance.model;
         if(ObjectUtil.hasAMethodCalled(resource, "clone")) {
