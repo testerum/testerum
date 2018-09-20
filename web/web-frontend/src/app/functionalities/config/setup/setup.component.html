@@ -11,6 +11,7 @@
 
                 <span class="full-width input-group input-container">
                     <file-dir-chooser name="repositoryPath" required
+                                      style="width: 100%;"
                                       [(ngModel)]="repositoryAbsoluteJavaPath"
                                       #repositoryPath="ngModel" class="file-dir-chooser"></file-dir-chooser>
                     <input-error [model]="repositoryPath"

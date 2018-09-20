@@ -1,4 +1,6 @@
-:host(.form-control) {
+.form-control {
     padding: 0;
     position: static;
+    border-radius: 0 !important;
+    border-left: 0;
 }
