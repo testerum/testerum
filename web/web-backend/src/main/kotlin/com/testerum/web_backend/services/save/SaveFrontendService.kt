@@ -210,13 +210,15 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         val path: com.testerum.model.infrastructure.path.Path = arg.path
                 ?: return arg // if we don't have a path, then this is an internal resource
 
+        val resourcesDir = frontendDirs.getResourcesDir(repositoryDir)
+
         val resourceContext: ResourceContext = resourceFileService.save(
-                ResourceContext(
+                resourceContext = ResourceContext(
                         oldPath = arg.oldPath,
                         path = path,
                         body = arg.content.orEmpty()
                 ),
-                repositoryDir
+                resourcesDir = resourcesDir
         )
 
         val actualPath: com.testerum.model.infrastructure.path.Path = resourceContext.path
