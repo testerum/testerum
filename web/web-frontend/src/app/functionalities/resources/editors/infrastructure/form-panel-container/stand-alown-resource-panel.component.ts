@@ -116,12 +116,17 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
                 }
             });
     }
+
     isEditedResourceValid(): boolean {
         return this.resourceComponentRef.instance.isFormValid()
     }
 
     cancelAction() {
-        this.initialize();
+        if (this.resource.isCreateNewResource()) {
+            this.urlService.navigateToResources();
+        } else {
+            this.initialize();
+        }
     }
 
     saveAction() {

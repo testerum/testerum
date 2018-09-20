@@ -12,7 +12,6 @@ import {ArrayUtil} from "../../../../../../utils/array.util";
     styleUrls: ["http-header.component.scss"],
     encapsulation: ViewEncapsulation.None
 })
-
 export class HttpHeaderComponent implements OnInit {
 
     @Input() headers: Array<HttpRequestHeader> = [];
