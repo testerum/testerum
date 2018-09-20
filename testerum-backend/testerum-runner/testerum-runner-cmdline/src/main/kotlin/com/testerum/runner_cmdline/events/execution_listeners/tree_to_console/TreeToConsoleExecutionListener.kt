@@ -20,7 +20,7 @@ class TreeToConsoleExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        println("SUITE_END: status=${event.status}, statistics=${event.statistics}, durationMillis=${event.durationMillis}, eventKey=${event.eventKey}")
+        println("SUITE_END: status=${event.status}, durationMillis=${event.durationMillis}, eventKey=${event.eventKey}")
     }
 
     override fun onFeatureStart(event: FeatureStartEvent) {

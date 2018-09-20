@@ -7,7 +7,6 @@ import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.events.model.SuiteStartEvent
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.events.model.position.PositionInParent
-import com.testerum.runner.events.model.statistics.ExecutionStatistics
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
@@ -125,7 +124,6 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         context.eventsService.logEvent(
                 SuiteEndEvent(
                         status = executionStatus,
-                        statistics = ExecutionStatistics(-1, -1, -1), // todo: remove this
                         durationMillis = durationMillis
                 )
         )
