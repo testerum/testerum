@@ -113,20 +113,22 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
     }
 
     ping(): void {
-        if (this.canCallPing()) {
-            this.dbConnectionService
-                .ping(this.model.host, this.model.port)
-                .subscribe(
-                    pingSuccessful => {
-                        this.infoModalComponent.show(
-                            "Ping Results",
-                            pingSuccessful ? "Ping Successful" : "No Ping Response",
-                            null,
-                            null
-                        )
-                    }
-                )
+        if (!this.canCallPing()) {
+            return;
         }
+
+        this.dbConnectionService
+            .ping(this.model.host, this.model.port)
+            .subscribe(
+                pingSuccessful => {
+                    this.infoModalComponent.show(
+                        "Ping Results",
+                        pingSuccessful ? "Ping Successful" : "No Ping Response",
+                        null,
+                        null
+                    )
+                }
+            )
     }
 
     showSchemasChooser(): void {
