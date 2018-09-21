@@ -1,22 +1,14 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    Input,
-    OnDestroy,
-    OnInit,
-    ViewChild
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {RdbmsService} from "../../../../../service/resources/rdbms/rdbms.service";
 import {RdbmsConnectionConfig} from "../../../../../model/resource/rdbms/rdbms-connection-config.model";
 import {RdbmsDriver} from "./model/rdbms-driver.model";
 import {ActivatedRoute} from "@angular/router";
-import {InfoModalComponent} from "../../../../../generic/components/info_modal/info-modal.component";
 import {SchemaChooserModalComponent} from "./schema_chooser_modal/schema-chooser-modal.component";
 import {SchemaChooserModalListener} from "./schema_chooser_modal/schema-chooser-modal.listener";
 import {ResourceComponent} from "../../resource-component.interface";
 import {NgForm} from "@angular/forms";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+import {InfoModalService} from "../../../../../generic/components/info_modal/info-modal.service";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -28,7 +20,6 @@ import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-p
         '../../resource-editor.scss'
     ]
 })
-
 export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConnectionConfig> implements OnInit, SchemaChooserModalListener {
 
     @Input() name: string;
@@ -40,7 +31,6 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
 
     @ViewChild(NgForm) form: NgForm;
 
-    @ViewChild(InfoModalComponent) infoModalComponent: InfoModalComponent;
     @ViewChild(SchemaChooserModalComponent) schemaChooserModalComponent: SchemaChooserModalComponent;
 
     drivers: Array<RdbmsDriver> = [];
@@ -48,7 +38,8 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
 
     constructor(private cd: ChangeDetectorRef,
                 private route: ActivatedRoute,
-                private dbConnectionService: RdbmsService) { super()
+                private dbConnectionService: RdbmsService,
+                private infoModalService: InfoModalService) { super()
     }
 
     ngOnInit() {
@@ -121,11 +112,9 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
             .ping(this.model.host, this.model.port)
             .subscribe(
                 pingSuccessful => {
-                    this.infoModalComponent.show(
+                    this.infoModalService.showInfoModal (
                         "Ping Results",
-                        pingSuccessful ? "Ping Successful" : "No Ping Response",
-                        null,
-                        null
+                        pingSuccessful ? "Ping Successful" : "No Ping Response"
                     )
                 }
             )
@@ -139,11 +128,9 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
             .subscribe(
                 dbSchema => {
                     if (dbSchema.errorMessage) {
-                        this.infoModalComponent.show(
+                        this.infoModalService.showInfoModal (
                             "Database Results",
-                            dbSchema.errorMessage,
-                            null,
-                            null
+                            dbSchema.errorMessage
                         )
                     } else {
                         this.schemaChooserModalComponent.show(

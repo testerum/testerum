@@ -1,36 +1,38 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ComponentRef, OnInit, ViewChild} from '@angular/core';
 import {InfoModalListener} from "./info-modal.listener";
 import {ModalDirective} from "ngx-bootstrap";
+import {AreYouSureModalEnum} from "../are_you_sure_modal/are-you-sure-modal.enum";
+import {Subject} from "rxjs";
 
 @Component({
     moduleId: module.id,
     selector: 'info-modal',
     templateUrl: 'info-modal.component.html'
 })
-export class InfoModalComponent {
+export class InfoModalComponent implements AfterViewInit {
 
-    @ViewChild("infoModal") infoModal:ModalDirective;
-
-    listener: InfoModalListener;
-    payload: any;
+    @ViewChild("infoModal") modal:ModalDirective;
 
     title:string;
     text:string;
 
+    modalComponentRef: ComponentRef<InfoModalComponent>;
+    modalSubject:Subject<void>;
 
-    public show(title:string, text:string, listener: InfoModalListener, payload: any) {
-        this.title = title;
-        this.text = text;
-        this.listener = listener;
-        this.payload = payload;
+    ngAfterViewInit(): void {
+        this.modal.show();
+        this.modal.onHidden.subscribe(event => {
+            this.modalSubject.complete();
 
-        this.infoModal.show();
+            this.modalComponentRef.destroy();
+
+            this.modalComponentRef = null;
+            this.modalSubject = null;
+        })
     }
 
     close() {
-        if (this.listener) {
-            this.listener.infoModalListener(this.payload);
-        }
-        this.infoModal.hide();
+        this.modalSubject.next();
+        this.modal.hide();
     }
 }

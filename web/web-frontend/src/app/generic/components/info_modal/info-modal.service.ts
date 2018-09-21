@@ -1,21 +1,20 @@
 import {ComponentFactoryResolver, Injectable} from "@angular/core";
 import {Observable, Subject} from "rxjs";
 import {AppComponent} from "../../../app.component";
-import {AreYouSureModalEnum} from "./are-you-sure-modal.enum";
-import {AreYouSureModalComponent} from "./are-you-sure-modal.component";
+import {InfoModalComponent} from "./info-modal.component";
 
 @Injectable()
-export class AreYouSureModalService {
+export class InfoModalService {
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
-    showAreYouSureModal(title:string, text:string,): Observable<AreYouSureModalEnum> {
-        let modalSubject = new Subject<AreYouSureModalEnum>();
+    showInfoModal(title:string, text:string,): Observable<void> {
+        let modalSubject = new Subject<void>();
 
-        const factory = this.componentFactoryResolver.resolveComponentFactory(AreYouSureModalComponent);
+        const factory = this.componentFactoryResolver.resolveComponentFactory(InfoModalComponent);
         let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
-        let modalInstance: AreYouSureModalComponent = modalComponentRef.instance;
+        let modalInstance: InfoModalComponent = modalComponentRef.instance;
 
         modalInstance.title = title;
         modalInstance.text = text;

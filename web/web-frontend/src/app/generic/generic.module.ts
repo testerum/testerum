@@ -90,6 +90,7 @@ import {JsonVerifyComponent} from "./components/json-verify/json-verify.componen
 import {AceEditorModule} from "ng2-ace-editor";
 import {AreYouSureModalService} from "./components/are_you_sure_modal/are-you-sure-modal.service";
 import { LogoComponent } from './components/logo/logo.component';
+import {InfoModalService} from "./components/info_modal/info-modal.service";
 
 @NgModule({
     imports: [
@@ -253,6 +254,7 @@ import { LogoComponent } from './components/logo/logo.component';
         JsonVerifyTreeService,
 
         AreYouSureModalService,
+        InfoModalService,
     ],
     entryComponents: [
         FeatureContainerComponent,
@@ -290,6 +292,7 @@ import { LogoComponent } from './components/logo/logo.component';
         JsonEmptyVerifyNodeComponent,
 
         AreYouSureModalComponent,
+        InfoModalComponent,
     ]
 })
 export class GenericModule { }
