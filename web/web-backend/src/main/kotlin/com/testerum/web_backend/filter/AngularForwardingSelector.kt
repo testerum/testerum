@@ -24,7 +24,10 @@ object AngularForwardingSelector {
             matchesFileExtension(".woff2"),
 
             // REST web services
-            Regex("^/rest/.*")
+            Regex("^/rest/.*"),
+
+            // version page
+            Regex("^/version\\.html.*")
     )
 
     fun shouldForward(requestUri: String): Boolean = !shouldIgnore(requestUri)

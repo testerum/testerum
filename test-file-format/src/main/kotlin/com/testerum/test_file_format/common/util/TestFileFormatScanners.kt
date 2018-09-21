@@ -1,5 +1,6 @@
 package com.testerum.test_file_format.common.util
 
+import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common.parsing.util.CommonScanners.escapeSequence
 import com.testerum.common.parsing.util.CommonScanners.optionalWhitespace
 import org.jparsec.Parser
@@ -10,6 +11,10 @@ import org.jparsec.Scanners.string
 import org.jparsec.pattern.Patterns
 
 object TestFileFormatScanners {
+
+    private val variableNameParser: ParserExecuter<String> = ParserExecuter(variableName())
+
+    fun isValidVariableName(text: String): Boolean = variableNameParser.isValid(text)
 
     fun variableName(): Parser<String> = Patterns.WORD.toScanner("variableName").source()
 

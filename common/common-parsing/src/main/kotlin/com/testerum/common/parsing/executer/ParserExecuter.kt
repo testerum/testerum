@@ -13,6 +13,15 @@ class ParserExecuter<T>(private val parser: Parser<T>) {
         private val NEWLINE_REGEX = Regex("\r\n|\n")
     }
 
+    fun isValid(text: String): Boolean {
+        return try {
+            parse(text)
+            true
+        } catch (e: ParserExecuterException) {
+            false
+        }
+    }
+
     fun parse(inputStream: InputStream, charset: Charset = Charsets.UTF_8)
             = parse(
                     IOUtils.toString(inputStream, charset)
