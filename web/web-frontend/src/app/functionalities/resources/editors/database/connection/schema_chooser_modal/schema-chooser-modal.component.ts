@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ComponentRef, ViewChild} from '@angular/core';
 import {SchemaChooserModalListener} from "./schema-chooser-modal.listener";
 import {ModalDirective} from "ngx-bootstrap";
 
@@ -8,19 +8,23 @@ import {ModalDirective} from "ngx-bootstrap";
     templateUrl: 'schema-chooser-modal.component.html',
     styleUrls: ["schema-chooser-modal.component.scss"]
 })
-export class SchemaChooserModalComponent {
+export class SchemaChooserModalComponent implements AfterViewInit {
 
-    @ViewChild("schemaChooserModalComponent") schemaChooserModalComponent:ModalDirective;
+    @ViewChild("schemaChooserModalComponent") modal: ModalDirective;
 
-    private listener: SchemaChooserModalListener;
+    listener: SchemaChooserModalListener;
     schemas:Array<string> = [];
     selectedSchema:string;
 
-    public show(schemas:Array<string>, listener: SchemaChooserModalListener) {
-        this.schemas = schemas;
-        this.listener = listener;
+    modalComponentRef: ComponentRef<SchemaChooserModalComponent>;
 
-        this.schemaChooserModalComponent.show();
+    ngAfterViewInit(): void {
+        this.modal.show();
+        this.modal.onHidden.subscribe(event => {
+            this.modalComponentRef.destroy();
+
+            this.modalComponentRef = null;
+        })
     }
 
     selectSchema(schema:string) {
@@ -29,10 +33,10 @@ export class SchemaChooserModalComponent {
 
     ok() {
         this.listener.schemaChooserEventListener(this.selectedSchema);
-        this.schemaChooserModalComponent.hide();
+        this.modal.hide();
     }
 
     cancel() {
-        this.schemaChooserModalComponent.hide();
+        this.modal.hide();
     }
 }

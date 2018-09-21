@@ -9,6 +9,7 @@ import {ResourceComponent} from "../../resource-component.interface";
 import {NgForm} from "@angular/forms";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {InfoModalService} from "../../../../../generic/components/info_modal/info-modal.service";
+import {SchemaChooserModalService} from "./schema_chooser_modal/schema-chooser-modal.service";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -31,15 +32,14 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
 
     @ViewChild(NgForm) form: NgForm;
 
-    @ViewChild(SchemaChooserModalComponent) schemaChooserModalComponent: SchemaChooserModalComponent;
-
     drivers: Array<RdbmsDriver> = [];
     selectedDriver: RdbmsDriver;
 
     constructor(private cd: ChangeDetectorRef,
                 private route: ActivatedRoute,
                 private dbConnectionService: RdbmsService,
-                private infoModalService: InfoModalService) { super()
+                private infoModalService: InfoModalService,
+                private schemaChooserModalService: SchemaChooserModalService) { super()
     }
 
     ngOnInit() {
@@ -133,7 +133,7 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
                             dbSchema.errorMessage
                         )
                     } else {
-                        this.schemaChooserModalComponent.show(
+                        this.schemaChooserModalService.showSchemaChooserModal(
                             dbSchema.schemas,
                             this
                         )

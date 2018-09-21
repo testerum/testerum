@@ -10,7 +10,7 @@ export class AreYouSureModalService {
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
-    showAreYouSureModal(title:string, text:string,): Observable<AreYouSureModalEnum> {
+    showAreYouSureModal(title:string, text:string): Observable<AreYouSureModalEnum> {
         let modalSubject = new Subject<AreYouSureModalEnum>();
 
         const factory = this.componentFactoryResolver.resolveComponentFactory(AreYouSureModalComponent);

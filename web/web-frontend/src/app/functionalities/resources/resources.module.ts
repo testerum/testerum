@@ -54,6 +54,7 @@ import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-pa
 import {ResourceResolver} from "./editors/resource.resolver";
 import {BasicResourceComponent} from "./editors/basic/basic-resource.component";
 import {ResourcesTreeComponent} from "./tree/resources-tree.component";
+import {SchemaChooserModalService} from "./editors/database/connection/schema_chooser_modal/schema-chooser-modal.service";
 
 @NgModule({
     imports: [
@@ -89,6 +90,7 @@ import {ResourcesTreeComponent} from "./tree/resources-tree.component";
         BasicResourceComponent,
         JsonVerifyResourceComponent,
 
+        SchemaChooserModalComponent,
     ],
     exports: [
         RdbmsConnectionConfigComponent,
@@ -156,6 +158,7 @@ import {ResourcesTreeComponent} from "./tree/resources-tree.component";
     providers: [
         ResourcesTreeService,
         RdbmsVerifyTreeService,
+        SchemaChooserModalService,
         HttpRequestService,
         HttpResponseVerifyService,
         HttpMockService,
