@@ -14,6 +14,7 @@ import com.testerum.model.step.StepDef
 import com.testerum.model.test.TestModel
 import com.testerum.model.text.StepPattern
 import com.testerum.settings.keys.SystemSettingKeys
+import com.testerum.test_file_format.stepdef.signature.FileStepDefSignatureParserFactory
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.util.isOtherStepWithTheSameStepPatternAsTheNew
 import com.testerum.web_backend.util.isTestUsingStepPattern
@@ -147,6 +148,30 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
     }
 
     private fun validateComposedStepSave(composedStep: ComposedStepDef) {
+        validateParameters(composedStep)
+        validateComposedStepSaveUniquePattern(composedStep)
+    }
+
+    private fun validateParameters(composedStep: ComposedStepDef) {
+        val parameters = composedStep.stepPattern.getParamStepPattern()
+
+        for ((i, part) in parameters.withIndex()) {
+            validateComposedStepParamName(part.name, i, composedStep)
+        }
+    }
+
+    private fun validateComposedStepParamName(paramName: String,
+                                              paramIndex: Int,
+                                              composedStep: ComposedStepDef) {
+        if (!FileStepDefSignatureParserFactory.isValidParameterName(paramName)) {
+            throw ValidationException(
+                    "invalid step parameter name [$paramName]" +
+                    ": error found at parameter number ${paramIndex + 1} of composed step $composedStep"
+            )
+        }
+    }
+
+    private fun validateComposedStepSaveUniquePattern(composedStep: ComposedStepDef) {
         val oldPath = composedStep.oldPath
                 ?: return // create
 

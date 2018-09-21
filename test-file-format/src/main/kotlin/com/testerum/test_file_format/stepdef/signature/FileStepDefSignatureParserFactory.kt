@@ -4,6 +4,7 @@ import com.testerum.common.parsing.ParserFactory
 import com.testerum.common.parsing.util.CommonPatterns.NEWLINE
 import com.testerum.common.parsing.util.CommonScanners.optionalWhitespace
 import com.testerum.test_file_format.common.step_call.phase.FileStepPhaseParserFactory.stepPhase
+import com.testerum.test_file_format.common.util.TestFileFormatScanners
 import com.testerum.test_file_format.common.util.TestFileFormatScanners.variableName
 import com.testerum.test_file_format.common.util.TestFileFormatScanners.variableType
 import com.testerum.test_file_format.stepdef.signature.part.FileParamStepDefSignaturePart
@@ -16,6 +17,8 @@ import org.jparsec.Scanners.string
 import org.jparsec.pattern.Patterns
 
 object FileStepDefSignatureParserFactory : ParserFactory<FileStepDefSignature> {
+
+    fun isValidParameterName(text: String): Boolean = TestFileFormatScanners.isValidVariableName(text)
 
     override fun createParser() = stepDefSignature()
 
