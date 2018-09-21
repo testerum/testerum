@@ -45,6 +45,12 @@ class AngularForwardingSelectorTest {
         test(requestUri = "/rest/tests/save", expectedShouldForward = false)
     }
 
+    @Test
+    fun `should NOT forward version page`() {
+        test(requestUri = "/version.html"            , expectedShouldForward = false)
+        test(requestUri = "/version.html?param=value", expectedShouldForward = false)
+    }
+
     private fun test(requestUri: String, expectedShouldForward: Boolean) {
         assertThat(
                 "requestUri=[$requestUri]",
