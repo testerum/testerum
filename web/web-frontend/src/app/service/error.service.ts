@@ -34,6 +34,8 @@ export class ErrorService implements HttpInterceptor {
 
                                 if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
                                     let validationException = new ValidationErrorResponse().deserialize(errorResponse);
+                                    this.errorEventEmitter.emit(validationException);
+
                                     console.warn(validationException);
 
                                     return EMPTY;
