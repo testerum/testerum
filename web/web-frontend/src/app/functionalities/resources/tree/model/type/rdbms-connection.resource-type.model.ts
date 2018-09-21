@@ -6,24 +6,30 @@ export class RdbmsConnectionResourceType implements ResourceType {
     readonly rootFilePath: Path = Path.createInstance("resources/RDBMS/Connections");
     readonly fileExtension: string = "rdbms.connection.yaml";
 
-    readonly name: string = this.rootFilePath.getLastPathPart();
-    readonly iconClass: string = "fas fa-plug";
-    readonly resourceUrl: string = "/resources/rdbms/connection/";
-    readonly createSubResourceUrl = ["/resources/rdbms/connection/create", {"path": this.rootFilePath}];
+     name: string = this.rootFilePath.getLastPathPart();
+     iconClass: string = "fas fa-plug";
+     resourceUrl: string = "/resources/rdbms/connection/";
+     createSubResourceUrl = ["/resources/rdbms/connection/create", {"path": this.rootFilePath}];
 
-    readonly canHaveChildrenContainers: boolean = false;
-    readonly canBeDeleted: boolean = false;
-    readonly canBeEdited: boolean = false;
+     canHaveChildrenContainers: boolean = true;
+     canBeDeleted: boolean = true;
+     canBeEdited: boolean = true;
 
 
-    private static instance = new RdbmsConnectionResourceType();
+    private static instanceForRoot: ResourceType;
 
     static getInstanceForRoot(): ResourceType {
-        return this.instance;
+        if (!RdbmsConnectionResourceType.instanceForRoot) {
+            this.instanceForRoot = new RdbmsConnectionResourceType();
+            this.instanceForRoot.canBeEdited = false;
+            this.instanceForRoot.canBeDeleted = false;
+        }
+
+        return this.instanceForRoot;
     }
 
     static getInstanceForChildren(): ResourceType {
-        return this.instance;
+        return new RdbmsConnectionResourceType();
     }
 
     getCreateSubResourceUrl(path: Path): any[] {
