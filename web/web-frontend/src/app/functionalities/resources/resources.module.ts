@@ -30,7 +30,7 @@ import {HttpBodyComponent} from "./editors/http/request/body/http-body.component
 import {BsDropdownModule} from "ngx-bootstrap";
 import {HttpBodyTypeFormComponent} from "./editors/http/request/body-type-form/http-body-type-form.component";
 import {HttpParamsComponent} from "./editors/http/request/params/http-params.component";
-import {AutoCompleteModule, ToggleButtonModule, ToolbarModule} from "primeng/primeng";
+import {AutoCompleteModule, DropdownModule, ToggleButtonModule, ToolbarModule} from "primeng/primeng";
 import {HttpResponseComponent} from "./editors/http/request/response/http-request-response.component";
 import {HttpResponseVerifyComponent} from "./editors/http/response_verify/http-response-verify.component";
 import {HttpResponseVerifyService} from "./editors/http/response_verify/http-response-verify.service";
@@ -72,6 +72,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
         AutoCompleteModule,
         ToggleButtonModule,
         ToolbarModule,
+        DropdownModule,
 
         GenericModule,
     ],

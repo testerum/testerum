@@ -1,3 +1,9 @@
 .label-size {
     width: 7em;
 }
+
+.connection-dropdown {
+    .ui-dropdown {
+        min-width: 200px;
+    }
+}

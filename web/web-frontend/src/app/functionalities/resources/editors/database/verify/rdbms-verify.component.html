@@ -27,13 +27,12 @@
     <div class="my-line" *ngIf="editMode">
         <label class="my-label label-size">RDBMS Connection</label>
         <div class="my-value">
-            <select name="rdbmsConnection"
-                    class="form-control inline"
-                    [ngModel]="selectedRdbmsConnection"
-                    #selectItem (change)="onSelectedRdbmsConnectionChanged(selectItem.value)">
-                <option [value]="''"></option>
-                <option *ngFor="let connection of availableRdbmsConnections" [value]="connection.toString()">{{connection.fileName}}</option>
-            </select>
+            <p-dropdown #connectionDropdown
+                        [options]="availableRdbmsConnectionsNew"
+                        [(ngModel)]="selectedRdbmsConnectionNew"
+                        (onChange)="onSelectedRdbmsConnectionChanged(connectionDropdown.value)"
+                        class="connection-dropdown"
+                        name="connections"></p-dropdown>
         </div>
     </div>
 

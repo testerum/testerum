@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ResourceService} from "../../../../../service/resources/resource.service";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
@@ -10,6 +18,7 @@ import {SchemaVerify} from "./rdbms-verify-tree/model/schema-verify.model";
 import {ResourceComponent} from "../../resource-component.interface";
 import {NgForm} from "@angular/forms";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+import {SelectItem} from "primeng/api";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -19,7 +28,8 @@ import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-p
     styleUrls: [
         'rdbms-verify.component.scss',
         '../../resource-editor.scss'
-    ]
+    ],
+    encapsulation: ViewEncapsulation.None
 })
 export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implements OnInit {
 
@@ -34,6 +44,9 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
 
     selectedRdbmsConnection: Path;
     availableRdbmsConnections: Array<Path> = [];
+
+    selectedRdbmsConnectionNew: Path;
+    availableRdbmsConnectionsNew: SelectItem[] = [];
 
     constructor(private cd: ChangeDetectorRef,
                 private route: ActivatedRoute,
@@ -81,15 +94,18 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
         this.resourceService.getResourcePaths(RdbmsConnectionResourceType.getInstanceForRoot().fileExtension).subscribe(
             connectionsPath => {
                 this.availableRdbmsConnections.length = 0;
-                connectionsPath.forEach(connectionPath => {
-                    this.availableRdbmsConnections.push(connectionPath)
+                connectionsPath.forEach((connectionPath: Path) => {
+                    this.availableRdbmsConnections.push(connectionPath);
+                    this.availableRdbmsConnectionsNew.push(
+                        {label: connectionPath.fileName, value: connectionPath}
+                    )
                 });
             }
         );
     }
 
-    onSelectedRdbmsConnectionChanged(value: string) {
-        this.selectedRdbmsConnection = value ? Path.createInstance(value): null;
+    onSelectedRdbmsConnectionChanged(value: Path) {
+        this.selectedRdbmsConnection = value;
         this.initialiseVerifyTreeFromSelectedRdbmsConnection();
     }
 
@@ -100,7 +116,6 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
                 schema => {
                     this.rdbmsVerifyTreeService.setRdbmsSchema(schema)
                 },
-
             )
         }
     }
