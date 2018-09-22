@@ -4,6 +4,7 @@ import {RdbmsVerifyTreeService} from "../../rdbms-verify-tree.service";
 import {TableRowVerify} from "../../model/table-row-verify.model";
 import {RdbmsTable} from "../../../../../../../../model/resource/rdbms/schema/rdbms-table.model";
 import {CompareMode} from "../../../../../../../../model/enums/compare-mode.enum";
+import {ModelComponentMapping} from "../../../../../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     moduleId: module.id,
@@ -14,6 +15,7 @@ import {CompareMode} from "../../../../../../../../model/enums/compare-mode.enum
 export class RdbmsVerifyTableNodeComponent implements OnInit {
 
     @Input() model:TableVerify;
+    @Input() modelComponentMapping: ModelComponentMapping;
 
     showCompareMode:boolean = false;
 
@@ -30,9 +32,9 @@ export class RdbmsVerifyTableNodeComponent implements OnInit {
     createVerifyRow() {
         let rdbmsTable: RdbmsTable = this.rdbmsVerifyTreeService.rdbmsSchema.getTableByName(this.model.name);
 
-        let tableRowVerify = new TableRowVerify();
+        let tableRowVerify = new TableRowVerify(this.model);
         if(rdbmsTable){
-            tableRowVerify = TableRowVerify.createInstanceFromRdbmsTable(rdbmsTable)
+            tableRowVerify = TableRowVerify.createInstanceFromRdbmsTable(this.model, rdbmsTable)
         }
 
         this.model.rows.push(
@@ -62,5 +64,9 @@ export class RdbmsVerifyTableNodeComponent implements OnInit {
 
     shouldShowCompareModeButton(): boolean {
         return this.model.rows.length != 0 && this.model.compareMode.getText() == CompareMode.INHERIT.getText();
+    }
+
+    collapseNode() {
+        this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
     }
 }

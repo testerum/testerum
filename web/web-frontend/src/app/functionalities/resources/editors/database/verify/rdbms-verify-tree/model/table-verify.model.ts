@@ -5,26 +5,29 @@ import {NodeState} from "../enum/node-state.enum";
 import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
 import {JsonUtil} from "../../../../../../../utils/json.util";
 import {Serializable} from "../../../../../../../model/infrastructure/serializable.model";
+import {JsonTreeContainerAbstract} from "../../../../../../../generic/components/json-tree/model/json-tree-container.abstract";
+import {JsonTreeContainer} from "../../../../../../../generic/components/json-tree/model/json-tree-container.model";
 
-export class TableVerify implements TreeContainerModel<TableRowVerify, any>, Serializable<TableVerify> {
+export class TableVerify extends JsonTreeContainerAbstract implements Serializable<TableVerify> {
 
     name: string;
     rows: Array<TableRowVerify> = [];
     nodeState: NodeState;
     compareMode: CompareMode = CompareMode.INHERIT;
 
-    constructor(tableName: string) {
+    constructor(parentContainer: JsonTreeContainer, tableName: string) {
+        super(parentContainer);
         this.name = tableName;
     }
 
-    static createInstance(name: string, nodeState: NodeState): TableVerify {
-        let instance = new TableVerify(name);
+    static createInstance(parentContainer: JsonTreeContainer, name: string, nodeState: NodeState): TableVerify {
+        let instance = new TableVerify(parentContainer, name);
         instance.nodeState = nodeState;
         return instance;
     }
 
     static createInstanceFromTableVerifyModel(resTable: TableVerify, nodeState: NodeState) {
-        let instance = new TableVerify(resTable.name);
+        let instance = new TableVerify(resTable.parentContainer, resTable.name);
         instance.nodeState = nodeState;
         instance.compareMode = resTable.compareMode ? resTable.compareMode : instance.compareMode;
 
@@ -37,12 +40,11 @@ export class TableVerify implements TreeContainerModel<TableRowVerify, any>, Ser
         return instance;
     }
 
-    getChildContainers(): Array<TableRowVerify> {
+    getChildren(): Array<TableRowVerify> {
         return this.rows;
     }
 
     private readonly fields: Array<any> = [];
-
     getChildNodes(): Array<any> {
         return this.fields;
     }
@@ -79,7 +81,7 @@ export class TableVerify implements TreeContainerModel<TableRowVerify, any>, Ser
                 continue;
             }
 
-            this.rows.push(new TableRowVerify().deserialize(input[rowIndex]));
+            this.rows.push(new TableRowVerify(this).deserialize(input[rowIndex]));
         }
         return this;
     }

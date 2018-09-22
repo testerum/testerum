@@ -1,4 +1,4 @@
 
-<tree *ngIf="treeModel.childContainers[0].tables.length != 0"
-      [treeModel]="treeModel"
-      [modelComponentMapping]="modelComponentMapping"></tree>
+<json-tree *ngIf="treeModel.getChildren()[0].name"
+           [treeModel]="treeModel"
+           [modelComponentMapping]="modelComponentMapping"></json-tree>

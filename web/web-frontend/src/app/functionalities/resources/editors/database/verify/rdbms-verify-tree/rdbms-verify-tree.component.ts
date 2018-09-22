@@ -12,6 +12,7 @@ import {RdbmsVerifyTableRowNodeComponent} from "./schema-node/table-node/table-r
 import {FieldVerify} from "./model/field-verify.model";
 import {RdbmsVerifyFieldNodeComponent} from "./schema-node/table-node/table-row/field/rdbms-verify-field-node.component";
 import {RdbmsVerifyTreeService} from "./rdbms-verify-tree.service";
+import {JsonTreeModel} from "../../../../../../generic/components/json-tree/model/json-tree.model";
 
 @Component({
     moduleId: module.id,
@@ -21,7 +22,7 @@ import {RdbmsVerifyTreeService} from "./rdbms-verify-tree.service";
 
 export class RdbmsVerifyTreeComponent implements OnInit {
 
-    treeModel: TreeModel<SchemaVerify,any>;
+    treeModel: JsonTreeModel;
 
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(SchemaVerify, RdbmsVerifySchemaNodeComponent)
@@ -33,7 +34,10 @@ export class RdbmsVerifyTreeComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.treeModel = new TreeModel<SchemaVerify,any>();
-        this.treeModel.childContainers.push(this.verifyTreeService.aggregatedSchema)
+        this.treeModel = new JsonTreeModel();
+        let aggregatedSchema = this.verifyTreeService.aggregatedSchema;
+        aggregatedSchema.parentContainer = this.treeModel;
+
+        this.treeModel.getChildren().push(aggregatedSchema)
     }
 }

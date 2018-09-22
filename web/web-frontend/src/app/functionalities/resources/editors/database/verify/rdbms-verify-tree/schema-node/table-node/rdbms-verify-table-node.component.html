@@ -1,44 +1,54 @@
-<i class="tree-node-icon tree-node-table-icon"></i>
+<div class="node">
 
-<span [class.unused-node]="!model.isUsed()"
-      [class.node-error]="model.hasError()"
-      class="node-text">
-    {{model.name}}
-</span>
+    <div class="full-line"
+         (dblclick)="collapseNode()">
 
-<i *ngIf="model.hasError()" class="error-icon"
-   title="This table doesn't exist in the current Database definition"></i>
+        <i class="tree-node-icon nf nf-fa-table"></i>
 
-<ng-container>
+        <span [class.unused-node]="!model.isUsed()"
+              [class.node-error]="model.hasError()"
+              class="node-text">
+            {{model.name}}
+        </span>
 
-    <!-- BUTTONS RENDERING -->
-    <div class="button-panel btn-group" *ngIf="rdbmsVerifyTreeService.editMode">
 
-        <div *ngIf="model.hasError()"
-             title="Delete table rules" class="btn btn-default btn-xs btn-group"
-             (click)="deleteTable();$event.stopPropagation();">
-            <i class="fa_my-delete" aria-hidden="true"></i>
+        <i *ngIf="model.hasError()" class="error-icon"
+           title="This table doesn't exist in the current Database definition"></i>
+
+        <!-- BUTTONS RENDERING -->
+        <div class="button-panel btn-group"
+             *ngIf="rdbmsVerifyTreeService.editMode">
+
+            <div *ngIf="model.hasError()"
+                 title="Delete table rules" class="btn btn-default btn-xs btn-group"
+                 (click)="deleteTable();$event.stopPropagation();">
+                <i class="fa_my-delete" aria-hidden="true"></i>
+            </div>
+
+            <div
+                title="Create verify rule" class="btn btn-default btn-xs btn-group"
+                (click)="createVerifyRow();$event.stopPropagation();">
+                <i class="fa_my-plus" aria-hidden="true"></i>
+            </div>
+
+            <div *ngIf="shouldShowCompareModeButton()"
+                 title="Show compare mode attribute" class="btn btn-default btn-xs btn-group"
+                 [class.active]="shouldShowCompareMode()"
+                 (click)="toggleShowCompareMode();$event.stopPropagation();">
+                <i class="fas fa-crosshairs" aria-hidden="true"></i>
+            </div>
         </div>
 
-        <div
-            title="Create verify rule" class="btn btn-default btn-xs btn-group"
-            (click)="createVerifyRow();$event.stopPropagation();">
-            <i class="fa_my-plus" aria-hidden="true"></i>
-        </div>
-
-        <div *ngIf="shouldShowCompareModeButton()"
-             title="Show compare mode attribute" class="btn btn-default btn-xs btn-group"
-             [class.active]="shouldShowCompareMode()"
-             (click)="toggleShowCompareMode();$event.stopPropagation();">
-            <i class="fas fa-crosshairs" aria-hidden="true"></i>
-        </div>
-
+        <tree-node-compare-mode *ngIf="shouldShowCompareMode()"
+                                [editMode]="rdbmsVerifyTreeService.editMode"
+                                [selectedCompareMode]="model.compareMode"
+                                (change)="onCompareModeChange($event)">
+        </tree-node-compare-mode>
     </div>
 
-    <tree-node-compare-mode *ngIf="shouldShowCompareMode()"
-                            [editMode]="rdbmsVerifyTreeService.editMode"
-                            [selectedCompareMode]="model.compareMode"
-                            (change)="onCompareModeChange($event)">
-    </tree-node-compare-mode>
-
-</ng-container>
+    <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

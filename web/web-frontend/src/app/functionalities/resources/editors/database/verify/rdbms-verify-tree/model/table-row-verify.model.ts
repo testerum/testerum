@@ -4,15 +4,23 @@ import {RdbmsTable} from "../../../../../../../model/resource/rdbms/schema/rdbms
 import {NodeState} from "../enum/node-state.enum";
 import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
 import {Serializable} from "../../../../../../../model/infrastructure/serializable.model";
+import {JsonTreeNode} from "../../../../../../../generic/components/json-tree/model/json-tree-node.model";
+import {JsonTreeNodeAbstract} from "../../../../../../../generic/components/json-tree/model/json-tree-node.abstract";
+import {JsonTreeContainer} from "../../../../../../../generic/components/json-tree/model/json-tree-container.model";
+import {JsonTreeContainerAbstract} from "../../../../../../../generic/components/json-tree/model/json-tree-container.abstract";
 
-export class TableRowVerify implements TreeContainerModel<any, FieldVerify>, Serializable<TableRowVerify> {
+export class TableRowVerify extends JsonTreeContainerAbstract implements Serializable<TableRowVerify> {
 
     name: string;
     fields: Array<FieldVerify> = [];
     compareMode: CompareMode = CompareMode.INHERIT;
 
+    constructor(parentContainer: JsonTreeContainer) {
+        super(parentContainer);
+    }
+
     static createInstanceFromTableVerifyModel(resourceTableEntryVerify: TableRowVerify): TableRowVerify {
-        let instance = new TableRowVerify();
+        let instance = new TableRowVerify(resourceTableEntryVerify.getParent());
         instance.name = resourceTableEntryVerify.name;
         instance.compareMode = resourceTableEntryVerify.compareMode ? resourceTableEntryVerify.compareMode : instance.compareMode;
 
@@ -25,28 +33,21 @@ export class TableRowVerify implements TreeContainerModel<any, FieldVerify>, Ser
         return instance;
     }
 
-    static createInstanceFromRdbmsTable(rdbmsTable: RdbmsTable): TableRowVerify {
-        let instance = new TableRowVerify();
+    static createInstanceFromRdbmsTable(parentContainer: JsonTreeContainer, rdbmsTable: RdbmsTable): TableRowVerify {
+        let instance = new TableRowVerify(parentContainer);
         instance.name = rdbmsTable.name;
 
         for (let field of rdbmsTable.fields) {
             instance.fields.push(
-                FieldVerify.createInstanceFromRdbmsField(field, NodeState.UNUSED)
+                FieldVerify.createInstanceFromRdbmsField(instance, field, NodeState.UNUSED)
             );
         }
         return instance
     }
 
-    private readonly childContainers: Array<any> = [];
-
-    getChildContainers(): Array<any> {
-        return this.childContainers;
-    }
-
-    getChildNodes(): Array<FieldVerify> {
+    getChildren(): Array<FieldVerify> {
         return this.fields;
     }
-
 
     containsField(fieldName: string): boolean {
         return this.getFieldByName(fieldName) != null;
@@ -78,7 +79,7 @@ export class TableRowVerify implements TreeContainerModel<any, FieldVerify>, Ser
                 continue;
             }
 
-            this.fields.push(new FieldVerify(fieldName).deserialize(input[fieldName]));
+            this.fields.push(new FieldVerify(this, fieldName).deserialize(input[fieldName]));
         }
         return this;
     }

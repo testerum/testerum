@@ -59,7 +59,7 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
 
     ngOnInit() {
         if (this.model == null) {
-            this.model = new SchemaVerify();
+            this.model = new SchemaVerify(null);
         }
         this.rdbmsVerifyTreeService.editMode = this._editMode;
         this.rdbmsVerifyTreeService.setSchemaVerifyResource(this.model);

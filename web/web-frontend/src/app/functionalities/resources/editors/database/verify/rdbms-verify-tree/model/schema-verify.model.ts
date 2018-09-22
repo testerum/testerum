@@ -4,14 +4,17 @@ import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
 import {JsonUtil} from "../../../../../../../utils/json.util";
 import {Resource} from "../../../../../../../model/resource/resource.model";
 import {StringUtils} from "../../../../../../../utils/string-utils.util";
+import {JsonTreeContainerAbstract} from "../../../../../../../generic/components/json-tree/model/json-tree-container.abstract";
+import {JsonTreeContainer} from "../../../../../../../generic/components/json-tree/model/json-tree-container.model";
 
-export class SchemaVerify implements TreeContainerModel<TableVerify, any>, Resource<SchemaVerify> {
+export class SchemaVerify extends JsonTreeContainerAbstract implements Resource<SchemaVerify> {
 
     name: string;
     compareMode: CompareMode = CompareMode.CONTAINS;
     tables: Array<TableVerify> = [];
 
-    constructor() {
+    constructor(parentContainer: JsonTreeContainer) {
+        super(parentContainer);
         this.reset();
     }
 
@@ -30,13 +33,8 @@ export class SchemaVerify implements TreeContainerModel<TableVerify, any>, Resou
         return isEmpty;
     }
 
-    getChildContainers(): Array<TableVerify> {
+    getChildren(): Array<TableVerify> {
         return this.tables;
-    }
-
-    private readonly childNodes: Array<any> = [];
-    getChildNodes(): Array<any> {
-        return this.childNodes;
     }
 
     containsTable(tableName: string): boolean {
@@ -61,7 +59,7 @@ export class SchemaVerify implements TreeContainerModel<TableVerify, any>, Resou
                 continue;
             }
 
-            this.tables.push(new TableVerify(tableName).deserialize(input[tableName]));
+            this.tables.push(new TableVerify(this, tableName).deserialize(input[tableName]));
         }
 
         return this;
@@ -84,11 +82,11 @@ export class SchemaVerify implements TreeContainerModel<TableVerify, any>, Resou
 
     clone(): SchemaVerify {
         let objectAsJson = JSON.parse(this.serialize());
-        return new SchemaVerify().deserialize(objectAsJson);
+        return new SchemaVerify(this.parentContainer).deserialize(objectAsJson);
     }
 
     createInstance(): SchemaVerify {
-        return new SchemaVerify();
+        return new SchemaVerify(null);
     }
 
     toFormattedJSON(): string {

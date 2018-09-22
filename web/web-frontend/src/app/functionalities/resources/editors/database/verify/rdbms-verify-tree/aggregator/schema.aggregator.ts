@@ -13,9 +13,9 @@ export class SchemaAggregator {
     private resourceSchema: SchemaVerify;
 
     constructor(aggregatedSchema: SchemaVerify, rdbmsSchema: RdbmsSchema, resourceSchema: SchemaVerify) {
-        this.aggregatedSchema = aggregatedSchema ? aggregatedSchema : new SchemaVerify();
+        this.aggregatedSchema = aggregatedSchema ? aggregatedSchema : new SchemaVerify(null);
         this.rdbmsSchema = rdbmsSchema ? rdbmsSchema : new RdbmsSchema;
-        this.resourceSchema = resourceSchema ? resourceSchema : new SchemaVerify();
+        this.resourceSchema = resourceSchema ? resourceSchema : new SchemaVerify(null);
     }
 
     public aggregate(): void {
@@ -79,6 +79,7 @@ export class SchemaAggregator {
 
                 this.aggregatedSchema.tables.push(
                     TableVerify.createInstance(
+                        this.aggregatedSchema,
                         rdbmsTable.name,
                         nodeState
                     )
@@ -173,7 +174,7 @@ export class SchemaAggregator {
                 let aggField = aggRow.getFieldByName(rdbmsField.name);
                 if (aggField == null) {
                     aggRow.fields.push(
-                        FieldVerify.createInstanceFromRdbmsField(rdbmsField, NodeState.UNUSED)
+                        FieldVerify.createInstanceFromRdbmsField(aggRow, rdbmsField, NodeState.UNUSED)
                     );
                 } else {
                     aggField.updateFromRdbmsField(rdbmsField)

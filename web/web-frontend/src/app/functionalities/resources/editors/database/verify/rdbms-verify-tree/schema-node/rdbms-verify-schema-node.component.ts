@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {SchemaVerify} from "../model/schema-verify.model";
 import {CompareMode} from "../../../../../../../model/enums/compare-mode.enum";
 import {RdbmsVerifyTreeService} from "../rdbms-verify-tree.service";
+import {ModelComponentMapping} from "../../../../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     moduleId: module.id,
@@ -13,10 +14,10 @@ import {RdbmsVerifyTreeService} from "../rdbms-verify-tree.service";
         '../../../../../../../generic/css/tree.scss'
     ]
 })
-
 export class RdbmsVerifySchemaNodeComponent {
 
     @Input() model:SchemaVerify;
+    @Input() modelComponentMapping: ModelComponentMapping;
 
     rdbmsVerifyTreeService:RdbmsVerifyTreeService;
 
@@ -28,5 +29,9 @@ export class RdbmsVerifySchemaNodeComponent {
         if(compareMode instanceof CompareMode) {
             this.model.compareMode = compareMode;
         }
+    }
+
+    collapseNode() {
+        this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
     }
 }

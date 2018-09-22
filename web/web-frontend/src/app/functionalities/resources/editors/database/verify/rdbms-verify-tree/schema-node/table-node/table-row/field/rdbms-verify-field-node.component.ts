@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {FieldVerify} from "../../../../model/field-verify.model";
 import {RdbmsVerifyTreeService} from "../../../../rdbms-verify-tree.service";
+import {ModelComponentMapping} from "../../../../../../../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     moduleId: module.id,
@@ -11,6 +12,7 @@ import {RdbmsVerifyTreeService} from "../../../../rdbms-verify-tree.service";
 export class RdbmsVerifyFieldNodeComponent {
 
     @Input() model:FieldVerify;
+    @Input() modelComponentMapping: ModelComponentMapping;
 
     rdbmsVerifyTreeService:RdbmsVerifyTreeService;
 

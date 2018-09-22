@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {TableRowVerify} from "../../../model/table-row-verify.model";
 import {CompareMode} from "../../../../../../../../../model/enums/compare-mode.enum";
 import {RdbmsVerifyTreeService} from "../../../rdbms-verify-tree.service";
+import {ModelComponentMapping} from "../../../../../../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     moduleId: module.id,
@@ -12,6 +13,7 @@ import {RdbmsVerifyTreeService} from "../../../rdbms-verify-tree.service";
 export class RdbmsVerifyTableRowNodeComponent implements OnInit {
 
     @Input() model:TableRowVerify;
+    @Input() modelComponentMapping: ModelComponentMapping;
 
     showCompareMode:boolean = false;
 
@@ -46,5 +48,9 @@ export class RdbmsVerifyTableRowNodeComponent implements OnInit {
 
     deleteRow() {
         this.rdbmsVerifyTreeService.deleteTableRow(this.model)
+    }
+
+    collapseNode() {
+        this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
     }
 }

@@ -10,9 +10,9 @@ import {FieldVerify} from "./model/field-verify.model";
 @Injectable()
 export class RdbmsVerifyTreeService {
 
-    aggregatedSchema: SchemaVerify = new SchemaVerify();
+    aggregatedSchema: SchemaVerify = new SchemaVerify(null);
 
-    resourceSchema: SchemaVerify = new SchemaVerify();
+    resourceSchema: SchemaVerify = new SchemaVerify(null);
     rdbmsSchema: RdbmsSchema = new RdbmsSchema();
 
     editMode: boolean = false;

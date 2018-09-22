@@ -1,10 +1,22 @@
-<i class="tree-node-icon tree-node-database-icon"></i>
+<div class="node">
 
-<span class="node-text">
-    {{model.name}}
-</span>
+    <div class="full-line">
 
-<tree-node-compare-mode [editMode]="rdbmsVerifyTreeService.editMode"
-                        [selectedCompareMode]="model.compareMode"
-                        (change)="onCompareModeChange($event)">
-</tree-node-compare-mode>
+        <i class="tree-node-icon fas fa-server"></i>
+
+        <span class="node-text">
+            {{model.name}}
+        </span>
+
+        <tree-node-compare-mode [editMode]="rdbmsVerifyTreeService.editMode"
+                                [selectedCompareMode]="model.compareMode"
+                                (change)="onCompareModeChange($event)">
+        </tree-node-compare-mode>
+    </div>
+
+    <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>
