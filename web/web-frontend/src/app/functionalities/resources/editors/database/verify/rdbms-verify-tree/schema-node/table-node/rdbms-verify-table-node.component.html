@@ -3,11 +3,12 @@
     <div class="full-line"
          (dblclick)="collapseNode()">
 
-        <i class="tree-node-icon nf nf-fa-table"></i>
+        <i class="tree-node-icon nf nf-fa-table" style="width: auto"></i>
 
         <span [class.unused-node]="!model.isUsed()"
               [class.node-error]="model.hasError()"
-              class="node-text">
+              class="node-text"
+              style="margin-right: 5px">
             {{model.name}}
         </span>
 
