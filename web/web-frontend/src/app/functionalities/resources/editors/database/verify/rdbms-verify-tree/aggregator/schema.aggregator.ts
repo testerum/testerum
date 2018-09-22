@@ -118,7 +118,7 @@ export class SchemaAggregator {
     private removeUnexistingRowsFromAggregator(aggTable: TableVerify) {
         let resTable = this.resourceSchema.getTableByName(aggTable.name);
 
-        if (aggTable.rows.length > resTable.rows.length) {
+        if (resTable && aggTable.rows.length > resTable.rows.length) {
             aggTable.rows.length = resTable.rows.length;
         }
     }
