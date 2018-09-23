@@ -102,10 +102,10 @@ export class ResourceMapEnum {
         "RdbmsVerify",
         "rdbms.verify.json",
         RdbmsVerifyComponent,
-        () => {return new SchemaVerify()},
+        () => {return new SchemaVerify(null)},
         () => {return RdbmsVerifyResourceType.getInstanceForRoot()},
         () => {return RdbmsVerifyResourceType.getInstanceForChildren()},
-        (input:string) => {return new SchemaVerify().deserialize(JSON.parse(input))}
+        (input:string) => {return new SchemaVerify(null).deserialize(JSON.parse(input))}
     );
     public static HTTP_REQUEST: ResourceMapEnum = new ResourceMapEnum(
         "com.testerum.model.resources.http.request.HttpRequest",
