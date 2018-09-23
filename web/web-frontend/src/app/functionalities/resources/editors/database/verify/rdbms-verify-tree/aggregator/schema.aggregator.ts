@@ -169,11 +169,11 @@ export class SchemaAggregator {
             return;
         }
 
-        for (let aggRow of aggTable.getChildren()) {
+        for (let aggRow of aggTable.rows) {
             for (let rdbmsField of rdbmsTable.fields) {
                 let aggField = aggRow.getFieldByName(rdbmsField.name);
                 if (aggField == null) {
-                    aggRow.getChildren().push(
+                    aggRow.fields.push(
                         FieldVerify.createInstanceFromRdbmsField(aggRow, rdbmsField, NodeState.UNUSED)
                     );
                 } else {
