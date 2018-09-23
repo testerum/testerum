@@ -114,7 +114,8 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
         if (this.selectedRdbmsConnection) {
             this.rdbmsService.getSchema(this.selectedRdbmsConnection).subscribe(
                 schema => {
-                    this.rdbmsVerifyTreeService.setRdbmsSchema(schema)
+                    this.rdbmsVerifyTreeService.setRdbmsSchema(schema);
+                    this.refresh();
                 },
             )
         }

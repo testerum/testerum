@@ -10,7 +10,7 @@ import {FieldVerify} from "./model/field-verify.model";
 @Injectable()
 export class RdbmsVerifyTreeService {
 
-    aggregatedSchema: SchemaVerify = new SchemaVerify(null);
+     aggregatedSchema: SchemaVerify = new SchemaVerify(null);
 
     resourceSchema: SchemaVerify = new SchemaVerify(null);
     rdbmsSchema: RdbmsSchema = new RdbmsSchema();
