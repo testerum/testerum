@@ -20,8 +20,8 @@ export class FieldVerify extends JsonTreeNodeAbstract implements Serializable<Fi
         this.name = name;
     }
 
-    static createInstanceFromFieldVerifyModel(field: FieldVerify) {
-        let instance = new FieldVerify(field.parentContainer, field.name);
+    static createInstanceFromFieldVerifyModel(parentContainer: JsonTreeContainer, field: FieldVerify) {
+        let instance = new FieldVerify(parentContainer, field.name);
         instance.value = field.value;
 
         instance.nodeState = NodeState.USED;

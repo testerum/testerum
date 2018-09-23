@@ -19,14 +19,14 @@ export class TableRowVerify extends JsonTreeContainerAbstract implements Seriali
         super(parentContainer);
     }
 
-    static createInstanceFromTableVerifyModel(resourceTableEntryVerify: TableRowVerify): TableRowVerify {
-        let instance = new TableRowVerify(resourceTableEntryVerify.getParent());
+    static createInstanceFromTableVerifyModel(parentContainer: JsonTreeContainer, resourceTableEntryVerify: TableRowVerify): TableRowVerify {
+        let instance = new TableRowVerify(parentContainer);
         instance.name = resourceTableEntryVerify.name;
         instance.compareMode = resourceTableEntryVerify.compareMode ? resourceTableEntryVerify.compareMode : instance.compareMode;
 
         for (let field of resourceTableEntryVerify.fields) {
             instance.fields.push(
-                FieldVerify.createInstanceFromFieldVerifyModel(field)
+                FieldVerify.createInstanceFromFieldVerifyModel(instance, field)
             );
         }
 

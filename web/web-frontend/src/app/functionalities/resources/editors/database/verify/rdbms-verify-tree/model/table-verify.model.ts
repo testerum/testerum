@@ -26,14 +26,14 @@ export class TableVerify extends JsonTreeContainerAbstract implements Serializab
         return instance;
     }
 
-    static createInstanceFromTableVerifyModel(resTable: TableVerify, nodeState: NodeState) {
-        let instance = new TableVerify(resTable.parentContainer, resTable.name);
+    static createInstanceFromTableVerifyModel(parentContainer: JsonTreeContainer, resTable: TableVerify, nodeState: NodeState) {
+        let instance = new TableVerify(parentContainer, resTable.name);
         instance.nodeState = nodeState;
         instance.compareMode = resTable.compareMode ? resTable.compareMode : instance.compareMode;
 
         for (let field of resTable.fields) {
             instance.fields.push(
-                FieldVerify.createInstanceFromFieldVerifyModel(field)
+                FieldVerify.createInstanceFromFieldVerifyModel(instance, field)
             );
         }
 

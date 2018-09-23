@@ -99,7 +99,7 @@ export class SchemaAggregator {
                 let nodeState = rdbmsTable ? NodeState.UNUSED : NodeState.USED;
 
                 this.aggregatedSchema.tables.push(
-                    TableVerify.createInstanceFromTableVerifyModel(resTable, nodeState)
+                    TableVerify.createInstanceFromTableVerifyModel(this.aggregatedSchema, resTable, nodeState)
                 )
             } else {
                 // aggTable.nodeState = NodeState.USED;
@@ -157,7 +157,7 @@ export class SchemaAggregator {
 
         for (let i = aggTable.rows.length; i < resTable.rows.length; i++) {
             let resRow = resTable.rows[i];
-            let aggRow = TableRowVerify.createInstanceFromTableVerifyModel(resRow);
+            let aggRow = TableRowVerify.createInstanceFromTableVerifyModel(aggTable, resRow);
             aggTable.rows.push(aggRow);
         }
     }
@@ -169,11 +169,11 @@ export class SchemaAggregator {
             return;
         }
 
-        for (let aggRow of aggTable.rows) {
+        for (let aggRow of aggTable.getChildren()) {
             for (let rdbmsField of rdbmsTable.fields) {
                 let aggField = aggRow.getFieldByName(rdbmsField.name);
                 if (aggField == null) {
-                    aggRow.fields.push(
+                    aggRow.getChildren().push(
                         FieldVerify.createInstanceFromRdbmsField(aggRow, rdbmsField, NodeState.UNUSED)
                     );
                 } else {
