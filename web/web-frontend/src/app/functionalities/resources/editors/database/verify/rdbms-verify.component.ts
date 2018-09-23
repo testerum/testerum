@@ -43,10 +43,7 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
     @ViewChild(NgForm) form: NgForm;
 
     selectedRdbmsConnection: Path;
-    availableRdbmsConnections: Array<Path> = [];
-
-    selectedRdbmsConnectionNew: Path;
-    availableRdbmsConnectionsNew: SelectItem[] = [];
+    availableRdbmsConnections: SelectItem[] = [];
 
     constructor(private cd: ChangeDetectorRef,
                 private route: ActivatedRoute,
@@ -94,9 +91,12 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
         this.resourceService.getResourcePaths(RdbmsConnectionResourceType.getInstanceForRoot().fileExtension).subscribe(
             connectionsPath => {
                 this.availableRdbmsConnections.length = 0;
+                this.availableRdbmsConnections.push(
+                    {label: "", value: null}
+                );
+
                 connectionsPath.forEach((connectionPath: Path) => {
-                    this.availableRdbmsConnections.push(connectionPath);
-                    this.availableRdbmsConnectionsNew.push(
+                    this.availableRdbmsConnections.push(
                         {label: connectionPath.fileName, value: connectionPath}
                     )
                 });
@@ -110,14 +110,20 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
     }
 
     private initialiseVerifyTreeFromSelectedRdbmsConnection() {
-        this.rdbmsVerifyTreeService.empty();
         if (this.selectedRdbmsConnection) {
             this.rdbmsService.getSchema(this.selectedRdbmsConnection).subscribe(
                 schema => {
                     this.rdbmsVerifyTreeService.setRdbmsSchema(schema);
                     this.refresh();
                 },
+                error => {
+                    this.rdbmsVerifyTreeService.setRdbmsSchema(null);
+                    this.refresh();
+                }
             )
+        } else {
+            this.rdbmsVerifyTreeService.setRdbmsSchema(null);
+            this.refresh();
         }
     }
 }

@@ -28,8 +28,8 @@
         <label class="my-label label-size">DB Connection</label>
         <div class="my-value">
             <p-dropdown #connectionDropdown
-                        [options]="availableRdbmsConnectionsNew"
-                        [(ngModel)]="selectedRdbmsConnectionNew"
+                        [options]="availableRdbmsConnections"
+                        [(ngModel)]="selectedRdbmsConnection"
                         (onChange)="onSelectedRdbmsConnectionChanged(connectionDropdown.value)"
                         class="connection-dropdown"
                         name="connections"></p-dropdown>
