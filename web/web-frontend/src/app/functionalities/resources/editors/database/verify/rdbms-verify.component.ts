@@ -61,6 +61,7 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
         this.rdbmsVerifyTreeService.editMode = this._editMode;
         this.rdbmsVerifyTreeService.setSchemaVerifyResource(this.model);
         this.initAvailableRdbmsConnections();
+        this.onSelectedRdbmsConnectionChanged(null);
     }
 
     refresh() {
@@ -113,16 +114,16 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
         if (this.selectedRdbmsConnection) {
             this.rdbmsService.getSchema(this.selectedRdbmsConnection).subscribe(
                 schema => {
-                    this.rdbmsVerifyTreeService.setRdbmsSchema(schema);
+                    this.rdbmsVerifyTreeService.setRdbmsSchema(schema, true);
                     this.refresh();
                 },
                 error => {
-                    this.rdbmsVerifyTreeService.setRdbmsSchema(null);
+                    this.rdbmsVerifyTreeService.setRdbmsSchema(null, true);
                     this.refresh();
                 }
             )
         } else {
-            this.rdbmsVerifyTreeService.setRdbmsSchema(null);
+            this.rdbmsVerifyTreeService.setRdbmsSchema(null, false);
             this.refresh();
         }
     }

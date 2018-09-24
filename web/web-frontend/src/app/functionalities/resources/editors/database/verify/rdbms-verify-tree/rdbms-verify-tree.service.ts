@@ -10,10 +10,11 @@ import {FieldVerify} from "./model/field-verify.model";
 @Injectable()
 export class RdbmsVerifyTreeService {
 
-     aggregatedSchema: SchemaVerify = new SchemaVerify(null);
+    aggregatedSchema: SchemaVerify = new SchemaVerify(null);
 
     resourceSchema: SchemaVerify = new SchemaVerify(null);
     rdbmsSchema: RdbmsSchema = new RdbmsSchema();
+    isRdbmsConnectionSelected: boolean = false;
 
     editMode: boolean = false;
 
@@ -28,16 +29,16 @@ export class RdbmsVerifyTreeService {
         this.refreshTree();
     }
 
-    setRdbmsSchema(schema: RdbmsSchema) {
+    setRdbmsSchema(schema: RdbmsSchema, isRdbmsConnectionSelected: boolean) {
         this.rdbmsSchema = schema;
+        this.isRdbmsConnectionSelected = isRdbmsConnectionSelected;
 
         this.refreshTree()
     }
 
     refreshTree() {
-        new SchemaAggregator(this.aggregatedSchema, this.rdbmsSchema, this.resourceSchema).aggregate();
+        new SchemaAggregator(this.aggregatedSchema, this.rdbmsSchema, this.resourceSchema, this.isRdbmsConnectionSelected).aggregate();
     }
-
 
     deleteTable(tableToDelete: TableVerify): boolean {
 

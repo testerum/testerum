@@ -11,8 +11,10 @@ export class SchemaAggregator {
     private aggregatedSchema: SchemaVerify;
     private rdbmsSchema: RdbmsSchema;
     private resourceSchema: SchemaVerify;
+    private isRdbmsConnectionSelected: boolean;
 
-    constructor(aggregatedSchema: SchemaVerify, rdbmsSchema: RdbmsSchema, resourceSchema: SchemaVerify) {
+    constructor(aggregatedSchema: SchemaVerify, rdbmsSchema: RdbmsSchema, resourceSchema: SchemaVerify, isRdbmsConnectionSelected: boolean) {
+        this.isRdbmsConnectionSelected = isRdbmsConnectionSelected;
         this.aggregatedSchema = aggregatedSchema ? aggregatedSchema : new SchemaVerify(null);
         this.rdbmsSchema = rdbmsSchema ? rdbmsSchema : new RdbmsSchema;
         this.resourceSchema = resourceSchema ? resourceSchema : new SchemaVerify(null);
@@ -55,11 +57,7 @@ export class SchemaAggregator {
                 && !this.resourceSchema.containsTable(aggTable.name)) {
                 tablesToRemove.push(aggTable)
             } else {
-                if(this.rdbmsSchema.isEmpty()) {
-                    aggTable.nodeState = NodeState.USED;
-                } else {
-                    aggTable.nodeState = NodeState.MISSING_FROM_SCHEMA;
-                }
+                aggTable.nodeState = NodeState.MISSING_FROM_SCHEMA;
             }
         }
 
@@ -96,13 +94,21 @@ export class SchemaAggregator {
             let rdbmsTable = this.rdbmsSchema.containsTable(resTable.name);
 
             if (aggTable == null) {
-                let nodeState = rdbmsTable ? NodeState.UNUSED : NodeState.USED;
+                let nodeState = rdbmsTable ? NodeState.UNUSED : NodeState.MISSING_FROM_SCHEMA;
 
                 this.aggregatedSchema.tables.push(
                     TableVerify.createInstanceFromTableVerifyModel(this.aggregatedSchema, resTable, nodeState)
                 )
             } else {
-                // aggTable.nodeState = NodeState.USED;
+                if (!this.isRdbmsConnectionSelected) {
+                    aggTable.nodeState = NodeState.USED;
+                } else {
+                    if (rdbmsTable) {
+                        aggTable.nodeState = NodeState.USED;
+                    } else {
+                        aggTable.nodeState = NodeState.MISSING_FROM_SCHEMA;
+                    }
+                }
             }
         }
     }
@@ -138,8 +144,10 @@ export class SchemaAggregator {
                     && (!resTable || !resTable.containsField(rowIndex, aggField.name))) {
                     fieldsToBeRemoved.push(aggField)
                 } else {
-                    if (this.rdbmsSchema.tables.length != 0) {
+                    if (this.isRdbmsConnectionSelected) {
                         aggField.nodeState = NodeState.MISSING_FROM_SCHEMA;
+                    } else {
+                        aggField.nodeState = NodeState.USED;
                     }
                 }
             }
