@@ -29,7 +29,11 @@ export class RdbmsVerifyTableNodeComponent implements OnInit {
         this.showCompareMode = this.model.compareMode != CompareMode.INHERIT
     }
 
-    createVerifyRow() {
+    canCreateTable(): boolean {
+        return this.rdbmsVerifyTreeService.isRdbmsConnectionSelected && !this.model.hasError();
+    }
+
+    createTable() {
         let rdbmsTable: RdbmsTable = this.rdbmsVerifyTreeService.rdbmsSchema.getTableByName(this.model.name);
 
         let tableRowVerify = new TableRowVerify(this.model);
