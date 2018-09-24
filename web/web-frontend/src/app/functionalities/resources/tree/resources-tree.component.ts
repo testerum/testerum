@@ -16,7 +16,6 @@ import {ResourcesTreeService} from "./resources-tree.service";
         </json-tree>
     `
 })
-
 export class ResourcesTreeComponent implements OnInit {
 
     @Input() treeModel:JsonTreeModel ;

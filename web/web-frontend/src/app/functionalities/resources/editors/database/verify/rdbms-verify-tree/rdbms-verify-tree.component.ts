@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {RdbmsSchema} from "../../../../../../model/resource/rdbms/schema/rdbms-schema.model";
 import {SchemaVerify} from "./model/schema-verify.model";
-import {SchemaAggregator} from "./aggregator/schema.aggregator";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {RdbmsVerifySchemaNodeComponent} from "./schema-node/rdbms-verify-schema-node.component";
-import {TreeModel} from "../../../../../../generic/components/tree/model/tree.model";
 import {RdbmsVerifyTableNodeComponent} from "./schema-node/table-node/rdbms-verify-table-node.component";
 import {TableVerify} from "./model/table-verify.model";
 import {TableRowVerify} from "./model/table-row-verify.model";
@@ -20,7 +17,6 @@ import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/
     selector: 'rdbms-verify-tree',
     templateUrl: 'rdbms-verify-tree.component.html'
 })
-
 export class RdbmsVerifyTreeComponent implements OnInit {
 
     treeModel: JsonTreeModel;
