@@ -1,4 +1,4 @@
 
-<json-tree *ngIf="treeModel.getChildren()[0].getChildren().length > 0"
+<json-tree *ngIf="hasTreeAnyNodes()"
            [treeModel]="treeModel"
            [modelComponentMapping]="modelComponentMapping"></json-tree>

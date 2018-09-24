@@ -13,6 +13,7 @@ import {FieldVerify} from "./model/field-verify.model";
 import {RdbmsVerifyFieldNodeComponent} from "./schema-node/table-node/table-row/field/rdbms-verify-field-node.component";
 import {RdbmsVerifyTreeService} from "./rdbms-verify-tree.service";
 import {JsonTreeModel} from "../../../../../../generic/components/json-tree/model/json-tree.model";
+import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
 
 @Component({
     moduleId: module.id,
@@ -39,5 +40,14 @@ export class RdbmsVerifyTreeComponent implements OnInit {
         aggregatedSchema.parentContainer = this.treeModel;
 
         this.treeModel.getChildren().push(aggregatedSchema)
+    }
+
+    hasTreeAnyNodes(): boolean {
+        let rootNode = this.treeModel.getChildren()[0];
+        if (!rootNode) {
+            return true;
+        }
+
+        return (rootNode as JsonTreeContainer).getChildren().length > 0;
     }
 }
