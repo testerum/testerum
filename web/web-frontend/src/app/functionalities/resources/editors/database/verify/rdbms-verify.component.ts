@@ -127,4 +127,11 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
             this.refresh();
         }
     }
+
+    onBeforeSave(): void {
+        let aggregatedSchema = this.rdbmsVerifyTreeService.aggregatedSchema;
+        this.model.name = aggregatedSchema.name;
+        this.model.compareMode = aggregatedSchema.compareMode;
+        this.model.tables = aggregatedSchema.tables;
+    }
 }
