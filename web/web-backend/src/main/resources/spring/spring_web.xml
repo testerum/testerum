@@ -22,7 +22,7 @@
     <bean id="exceptionHandlerControllerAdvice" class="com.testerum.web_backend.controllers.error.ExceptionHandlerControllerAdvice" />
 
     <bean id="versionPropertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:/web-version.properties"/>
+        <property name="location" value="classpath:/version.properties"/>
         <property name="placeholderPrefix" value="$version{" />
         <property name="placeholderSuffix" value="}" />
     </bean>

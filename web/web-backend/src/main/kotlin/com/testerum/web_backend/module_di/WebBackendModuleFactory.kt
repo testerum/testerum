@@ -40,6 +40,7 @@ import com.testerum.web_backend.controllers.steps.StepsTreeController
 import com.testerum.web_backend.controllers.tags.TagsController
 import com.testerum.web_backend.controllers.tests.TestsController
 import com.testerum.web_backend.controllers.variables.VariablesController
+import com.testerum.web_backend.controllers.version_info.VersionInfoController
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.features.FeaturesFrontendService
 import com.testerum.web_backend.services.filesystem.FileSystemFrontendService
@@ -69,6 +70,7 @@ import com.testerum.web_backend.services.tags.TagsFrontendService
 import com.testerum.web_backend.services.tests.TestsFrontendService
 import com.testerum.web_backend.services.variables.VariablesFrontendService
 import com.testerum.web_backend.services.variables.VariablesResolverService
+import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.apache.http.client.HttpClient
 import org.apache.http.impl.client.HttpClients
 
@@ -133,6 +135,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
 
     //---------------------------------------- services ----------------------------------------//
+
+    private val versionInfoFrontendService = VersionInfoFrontendService()
 
     private val variablesResolverService = VariablesResolverService()
 
@@ -275,6 +279,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             genericErrorResponsePreparer = GenericErrorResponsePreparer()
     )
 
+    private val versionInfoController = VersionInfoController(
+            versionInfoFrontendService = versionInfoFrontendService
+    )
+
     private val setupController = SetupController(
             setupFrontendService = setupFrontendService
     )
@@ -350,6 +358,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     val webControllers: List<Any> = listOf(
             errorController,
+            versionInfoController,
             setupController,
             settingsController,
             messageController,
