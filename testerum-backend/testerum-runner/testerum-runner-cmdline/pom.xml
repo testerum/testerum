@@ -347,9 +347,18 @@
                         <executions>
                             <execution>
                                 <phase>package</phase>
+
                                 <goals>
                                     <goal>single</goal>
                                 </goals>
+
+                                <configuration>
+                                    <appendAssemblyId>true</appendAssemblyId>
+                                    <descriptors>
+                                        <descriptor>${basedir}/src/main/assembly/assembly-descriptor.xml</descriptor>
+                                    </descriptors>
+                                    <attach>true</attach>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

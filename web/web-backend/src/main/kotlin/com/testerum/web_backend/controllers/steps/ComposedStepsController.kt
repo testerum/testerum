@@ -9,7 +9,12 @@ import com.testerum.model.step.operation.response.CheckComposedStepDefUpdateComp
 import com.testerum.model.step.tree.ComposedContainerStepNode
 import com.testerum.web_backend.services.steps.ComposedStepsFrontendService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/steps/composed")
@@ -29,7 +34,7 @@ class ComposedStepsController(private val composedStepsFrontendService: Composed
         )
 
         return if (step == null) {
-            ResponseEntity.notFound().build()
+            ResponseEntity.notFound().build<ResponseEntity<*>>()
         } else {
             ResponseEntity.ok(step)
         }

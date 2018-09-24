@@ -51,7 +51,7 @@
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
         <!--Kotlin settings-->
-        <kotlin.version>1.2.51</kotlin.version>
+        <kotlin.version>1.2.70</kotlin.version>
         <kotlin.apiVersion>1.2</kotlin.apiVersion>
         <kotlin.languageVersion>1.2</kotlin.languageVersion>
         <kotlin.jvmTarget>${maven.compiler.target}</kotlin.jvmTarget>
@@ -60,11 +60,12 @@
         <!--========== dependencies versions ==========-->
         <slf4j.version>1.7.12</slf4j.version>
         <logback.version>1.1.3</logback.version>
-        <spring.version>4.3.4.RELEASE</spring.version>
+        <spring.version>5.1.0.RELEASE</spring.version>
         <jackson.version>2.9.6</jackson.version>
         <flyway.version>4.1.2</flyway.version>
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
         <junit.platform.version>1.2.0</junit.platform.version>
+        <jetty.version>9.4.12.v20180830</jetty.version>
     </properties>
 
     <dependencyManagement>
@@ -194,8 +195,8 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>web-frontend</artifactId>
-                <type>war</type>
                 <version>${project.version}</version>
+                <classifier>dist</classifier>
             </dependency>
             
             <dependency>
@@ -279,8 +280,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -290,8 +291,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -301,8 +302,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -312,8 +313,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -323,8 +324,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -334,8 +335,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -345,8 +346,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -356,8 +357,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -367,8 +368,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -378,8 +379,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -389,8 +390,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -400,8 +401,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -411,8 +412,8 @@
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -459,12 +460,11 @@
                 <version>${jackson.version}</version>
             </dependency>
 
-            <!-- Servlet API -->
+            <!-- javax.servlet-api -->
             <dependency>
                 <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>3.0-alpha-1</version>
-                <scope>provided</scope>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
             </dependency>
 
             <!-- http client -->
@@ -548,6 +548,34 @@
                 <groupId>info.picocli</groupId>
                 <artifactId>picocli</artifactId>
                 <version>2.3.0</version>
+            </dependency>
+
+            <!-- jetty-server -->
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-server</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+
+            <!-- jetty-servlet -->
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-servlet</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+
+            <!-- javax-websocket-server-impl -->
+            <dependency>
+                <groupId>org.eclipse.jetty.websocket</groupId>
+                <artifactId>javax-websocket-server-impl</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+
+            <!-- javax.websocket-api -->
+            <dependency>
+                <groupId>javax.websocket</groupId>
+                <artifactId>javax.websocket-api</artifactId>
+                <version>1.0</version>
             </dependency>
 
 
@@ -764,37 +792,6 @@
                     <version>2.8.2</version>
                 </plugin>
 
-                <!-- maven-war-plugin -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>3.0.0</version>
-                    <configuration>
-
-                        <archive>
-                            <manifestEntries>
-                                <Application-Maven-GroupId>${project.groupId}</Application-Maven-GroupId>
-                                <Application-Maven-ArtifactId>${project.artifactId}</Application-Maven-ArtifactId>
-                                <Application-Maven-Version>${project.version}</Application-Maven-Version>
-                                <Application-Maven-BuildTimestamp>${buildTimestamp}</Application-Maven-BuildTimestamp>
-                                <Application-Git-Revision>${git.revision}</Application-Git-Revision>
-                                <Application-Git-Branch>${git.branch}</Application-Git-Branch>
-                                <Application-Git-Tag>${git.tag}</Application-Git-Tag>
-                            </manifestEntries>
-                        </archive>
-                        <webResources>
-                            <resource>
-                                <directory>${project.basedir}/src/main/webapp-filtered</directory>
-                                <filtering>true</filtering>
-                                <targetPath>/</targetPath>
-                                <includes>
-                                    <include>**/*</include>
-                                </includes>
-                            </resource>
-                        </webResources>
-                    </configuration>
-                </plugin>
-
                 <!-- Surefire -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -895,6 +892,9 @@
                                             <!-- wiremock conflicts -->
                                             <ignoreClass>org.slf4j.*</ignoreClass>
                                             <ignoreClass>com.google.thirdparty.publicsuffix.*</ignoreClass>
+
+                                            <!-- jetty conflicts -->
+                                            <ignoreClass>javax.websocket.*</ignoreClass>
                                         </ignoreClasses>
                                     </banDuplicateClasses>
 
@@ -1019,14 +1019,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>3.0.0</version>
-
-                    <configuration>
-                        <appendAssemblyId>true</appendAssemblyId>
-                        <descriptors>
-                            <descriptor>${basedir}/src/main/assembly/assembly-descriptor.xml</descriptor>
-                        </descriptors>
-                        <attach>true</attach>
-                    </configuration>
                 </plugin>
 
                 <!-- copy dependencies to a specified location-->

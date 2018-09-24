@@ -34,7 +34,7 @@ pom.xml.tag
 /ui/src/main/ngapp/src/app/**/*.js.map
 
 **/node_modules/
-package/
+/package/
 
 # LibreOffice lock files
 .~lock.*

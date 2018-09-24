@@ -36,9 +36,6 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <mvc:resources mapping="/index.html" location="/index.html" />
-
-
     <!--====== WEB SOCKET STOMP CONFIGURATION ======-->
     <websocket:message-broker application-destination-prefix="/tests">
         <websocket:stomp-endpoint allowed-origins="*" path="/results">
