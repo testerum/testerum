@@ -40,8 +40,8 @@ export class ManualExecPlansService {
 
     getAllManualTests(): Observable<RootFeatureNode> {
         let featuresTreeFilter = new FeaturesTreeFilter();
-        featuresTreeFilter.showAutomatedTests = false;
-        featuresTreeFilter.showEmptyFeatures = false;
+        featuresTreeFilter.includeAutomatedTests = false;
+        featuresTreeFilter.includeEmptyFeatures = false;
         return this.featureService.getFeatureTree(featuresTreeFilter)
     }
 

@@ -62,8 +62,8 @@ object FeaturesTreeFilterer {
     }
 
     private fun testMatchesType(test: TestModel, filter: FeaturesTreeFilter): Boolean {
-        return test.properties.isManual == filter.showManualTest ||
-                !test.properties.isManual == filter.showAutomatedTests
+        return test.properties.isManual == filter.includeManualTests ||
+                !test.properties.isManual == filter.includeAutomatedTests
     }
 
     private fun testMatchesTextSearch(test: TestModel, filter: FeaturesTreeFilter): Boolean {
