@@ -174,9 +174,20 @@ class PathTest {
     }
 
     @Test
-    fun `isChildOrSelf - self`() {
+    fun `isChildOrSelf - self dir`() {
         val parent = Path.createInstance("/a/b/c")
         val child = Path.createInstance("/a/b/c")
+
+        assertThat(
+                child.isChildOrSelf(parent),
+                equalTo(true)
+        )
+    }
+
+    @Test
+    fun `isChildOrSelf - self file`() {
+        val parent = Path.createInstance("/a/b/c/file.ext")
+        val child = Path.createInstance("/a/b/c/file.ext")
 
         assertThat(
                 child.isChildOrSelf(parent),
