@@ -72,12 +72,10 @@ export class JsonVerifyEditorComponent {
         while(currentToken != null &&
                 (currentToken.value != "," &&
                  currentToken.type != 'paren.rparen')) {
-            console.log("iterator", currentToken);
 
             tokenIterator.stepForward();
             currentToken = tokenIterator.getCurrentToken();
         }
-        console.log("last", currentToken);
         aceEditor.selection.selectTo(tokenIterator.getCurrentTokenRow(), tokenIterator.getCurrentTokenColumn() + 1);
     }
 }

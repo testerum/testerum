@@ -151,8 +151,4 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
     getForm(): NgForm {
         return this.form;
     }
-
-    onBeforeSave(): void {
-        console.log("modal", this.model)
-    }
 }

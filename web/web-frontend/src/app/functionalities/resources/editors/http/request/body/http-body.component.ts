@@ -62,9 +62,4 @@ export class HttpBodyComponent implements OnInit {
         this.aceEditorMode = contentType.editorMode;
     }
 
-    onBodyContentChanged($event: any) {
-        console.log("onBodyContentChanged", $event);
-        console.log("body", this.body);
-        console.log("this.httpCallService.httpRequest.body", this.httpCallService.httpRequest.body);
-    }
 }

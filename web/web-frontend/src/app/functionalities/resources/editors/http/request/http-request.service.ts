@@ -24,7 +24,6 @@ export class HttpRequestService {
     }
 
     setHttpRequestResource(httpRequest: HttpRequest) {
-        console.log("setRequest");
         this.httpRequest = httpRequest;
     }
 
