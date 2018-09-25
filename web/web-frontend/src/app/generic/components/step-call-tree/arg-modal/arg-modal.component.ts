@@ -1,4 +1,5 @@
 import {
+    ChangeDetectionStrategy,
     Component,
     ComponentFactory,
     ComponentFactoryResolver,
@@ -22,6 +23,8 @@ import {SelectSharedResourceModalComponent} from "../select-shared-resource-moda
 import {ResourceContext} from "../../../../model/resource/resource-context.model";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
 import {BasicResource} from "../../../../model/resource/basic/basic-resource.model";
+import {Subject} from "rxjs";
+import {ArgModalEnum} from "./enum/arg-modal.enum";
 
 @Component({
     moduleId: module.id,
@@ -30,12 +33,17 @@ import {BasicResource} from "../../../../model/resource/basic/basic-resource.mod
     styleUrls: [
         'arg-modal.component.scss'
     ],
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
 })
 export class ArgModalComponent {
 
-    modalTitle;
     arg:Arg;
     stepParameter: ParamStepPatternPart;
+
+    modalComponentRef: ComponentRef<ArgModalComponent>;
+    modalSubject:Subject<ArgModalEnum>;
+
+    modalTitle;
 
     argPath: Path;
     isEditMode:boolean = true;
@@ -50,13 +58,11 @@ export class ArgModalComponent {
     @ViewChild(NewSharedResourcePathModalComponent) newSharedResourcePathModal: NewSharedResourcePathModalComponent;
     @ViewChild(SelectSharedResourceModalComponent) selectSharedResourceModal: SelectSharedResourceModalComponent;
 
-    afterUpdateEventEmitter: EventEmitter<void> = new EventEmitter<void>();
-
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
                 private resourceService: ResourceService) {
     }
 
-    show() {
+    ngAfterViewInit(): void {
         this.resourceMapping = ResourceMapEnum.getResourceMapEnumByUiType(this.arg.uiType);
         this.argPath = this.arg.path;
         this.modalTitle = this.resourceMapping.uiName;
@@ -68,6 +74,14 @@ export class ArgModalComponent {
         this.setResourceComponentInBody(this.arg.content, argName);
 
         this.resourceModal.show();
+        this.resourceModal.onHidden.subscribe(event => {
+            this.modalSubject.complete();
+
+            this.modalComponentRef.destroy();
+
+            this.modalComponentRef = null;
+            this.modalSubject = null;
+        })
     }
 
     getArgName() {
@@ -175,12 +189,12 @@ export class ArgModalComponent {
         } else {
             this.arg.content = resource
         }
+        this.modalSubject.next(ArgModalEnum.OK);
         this.resourceModal.hide();
-
-        this.afterUpdateEventEmitter.emit();
     }
 
     cancel() {
+        this.modalSubject.next(ArgModalEnum.CANCEL);
         this.resourceModal.hide();
     }
 

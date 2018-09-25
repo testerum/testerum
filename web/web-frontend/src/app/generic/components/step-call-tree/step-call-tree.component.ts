@@ -28,8 +28,6 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
 
     @Output() change = new EventEmitter<void>();
 
-    @ViewChild(ArgModalComponent) argModal: ArgModalComponent;
-
     jsonTreeModel: JsonTreeModel = new JsonTreeModel();
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(StepCallContainerModel, StepCallContainerComponent)
@@ -42,7 +40,6 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.stepCallTreeComponentService.jsonTreeModel = this.jsonTreeModel;
-        this.stepCallTreeComponentService.argModal = this.argModal;
         this.stepCallTreeComponentService.isEditMode = this.isEditMode;
         this.stepCallTreeComponentService.changeEventEmitter = this.change;
         this.initTree();

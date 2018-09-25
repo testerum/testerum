@@ -21,8 +21,6 @@ export class StepCallTreeComponentService {
     warningRecalculationChangesEventEmitter: EventEmitter<void> = new EventEmitter<void>();
     changeEventEmitter: EventEmitter<void>;
 
-    argModal: ArgModalComponent; //TODO Ionut: remove this, this Modal should be a stand alone compoent as StepChooserModal
-
     currentStepCallEditorModel: StepCallEditorContainerModel;
 
     id: string = this.guid();

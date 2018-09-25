@@ -92,6 +92,7 @@ import {AreYouSureModalService} from "./components/are_you_sure_modal/are-you-su
 import {LogoComponent} from './components/logo/logo.component';
 import {InfoModalService} from "./components/info_modal/info-modal.service";
 import {InfoIconComponent} from './components/info-icon/info-icon.component';
+import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
 
 @NgModule({
     imports: [
@@ -258,6 +259,7 @@ import {InfoIconComponent} from './components/info-icon/info-icon.component';
 
         AreYouSureModalService,
         InfoModalService,
+        ArgModalService,
     ],
     entryComponents: [
         FeatureContainerComponent,
@@ -296,6 +298,7 @@ import {InfoIconComponent} from './components/info-icon/info-icon.component';
 
         AreYouSureModalComponent,
         InfoModalComponent,
+        ArgModalComponent,
     ]
 })
 export class GenericModule { }

@@ -16,6 +16,8 @@ import {ArgNodePanelComponent} from "./arg-node-panel/arg-node-panel.component";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {Subscription} from "rxjs";
 import {StepCallTreeComponentService} from "../../step-call-tree.component-service";
+import {ArgModalService} from "../../arg-modal/arg-modal.service";
+import {ArgModalEnum} from "../../arg-modal/enum/arg-modal.enum";
 
 @Component({
     selector: 'arg-node',
@@ -38,7 +40,8 @@ export class ArgNodeComponent implements OnInit {
     private afterUpdateSubscription: Subscription;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
-                private stepCallTreeComponentService: StepCallTreeComponentService) {
+                private stepCallTreeComponentService: StepCallTreeComponentService,
+                private argModalService: ArgModalService) {
     }
 
     ngOnInit() {
@@ -53,15 +56,9 @@ export class ArgNodeComponent implements OnInit {
         resourceComponentRef.instance.editMode = false;
 
         this.argNodePanelComponent.editButtonClickedEventEmitter.subscribe(event => {
-            let argModal = this.stepCallTreeComponentService.argModal;
-            argModal.arg = this.model.arg;
-            argModal.stepParameter = this.model.stepPatternParam;
-            argModal.show();
-        });
-
-        let argModal = this.stepCallTreeComponentService.argModal;
-        this.afterUpdateSubscription = argModal.afterUpdateEventEmitter.subscribe(event =>{
-            resourceComponentRef.instance.refresh();
+            this.afterUpdateSubscription = this.argModalService.showAreYouSureModal(this.model.arg, this.model.stepPatternParam).subscribe( (event:ArgModalEnum) => {
+                resourceComponentRef.instance.refresh();
+            });
         });
     }
     ngOnDestroy(): void {
