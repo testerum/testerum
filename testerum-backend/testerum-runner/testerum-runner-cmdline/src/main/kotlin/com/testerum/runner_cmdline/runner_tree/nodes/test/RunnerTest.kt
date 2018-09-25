@@ -102,13 +102,17 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                 throw RuntimeException(errorMessage, e)
             }
 
-            for (step in steps) {
-                if (executionStatus == ExecutionStatus.PASSED) {
-                    val stepExecutionStatus: ExecutionStatus = step.run(context, vars)
+            if (steps.isEmpty()) {
+                executionStatus = ExecutionStatus.SKIPPED
+            } else {
+                for (step in steps) {
+                    if (executionStatus == ExecutionStatus.PASSED) {
+                        val stepExecutionStatus: ExecutionStatus = step.run(context, vars)
 
-                    executionStatus = stepExecutionStatus
-                } else {
-                    step.skip(context)
+                        executionStatus = stepExecutionStatus
+                    } else {
+                        step.skip(context)
+                    }
                 }
             }
 
