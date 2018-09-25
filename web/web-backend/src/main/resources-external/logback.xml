@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="false" scanPeriod="100 milliseconds">
 
-    <!-- commenting-out requestInfo; todo: add requestInfo MDC HTTP filter -->
-    <!--<property name="log_pattern" value="%date{HH:mm:ss.SSS, UTC} [%-5level] thread=[%-17thread] %-40.40logger{40} - %msg  ||||| requestInfo=[%mdc{requestInfo}]%n" />-->
     <property name="log_pattern" value="%date{HH:mm:ss.SSS, UTC} [%-5level] thread=[%-17thread] %-40.40logger{40} - %msg%n" />
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -10,10 +8,6 @@
             <Pattern>${log_pattern}</Pattern>
         </encoder>
     </appender>
-
-    <logger name="com.testerum" level="DEBUG" />
-
-    <logger name="com.qutester.db.mapper" level="INFO" />
 
     <!--========== Spring ==========-->
     <logger name="org.springframework" level="WARN" />

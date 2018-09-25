@@ -13,8 +13,6 @@
 
     <artifactId>web-backend</artifactId>
 
-    <packaging>war</packaging>
-
     <dependencies>
         <!--==================== internal dependencies ====================-->
 
@@ -196,11 +194,10 @@
             <artifactId>logback-ext-spring</artifactId>
         </dependency>
 
-        <!-- Servlet API-->
+        <!-- javax.servlet-api -->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <scope>provided</scope>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
         <!-- zt-exec -->
@@ -213,6 +210,24 @@
         <dependency>
             <groupId>org.zeroturnaround</groupId>
             <artifactId>zt-process-killer</artifactId>
+        </dependency>
+
+        <!-- jetty-server -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+        </dependency>
+
+        <!-- jetty-servlet -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+        </dependency>
+
+        <!-- javax-websocket-server-impl -->
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>javax-websocket-server-impl</artifactId>
         </dependency>
 
 
@@ -267,12 +282,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
 
-            <!-- Maven War plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-            </plugin>
-
             <!-- Surefire -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -304,28 +313,33 @@
                 <dependency>
                     <groupId>com.testerum</groupId>
                     <artifactId>web-frontend</artifactId>
-                    <type>war</type>
+                    <classifier>dist</classifier>
                 </dependency>
             </dependencies>
 
             <build>
                 <plugins>
+                    <!-- maven-assembly-plugin (create final dist file) -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <overlays>
-                                <overlay>
-                                    <groupId>com.testerum</groupId>
-                                    <artifactId>web-frontend</artifactId>
-                                    <type>war</type>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
 
-                                    <excludes>
-                                        <exclude>WEB-INF/**/*</exclude>
-                                    </excludes>
-                                </overlay>
-                            </overlays>
-                        </configuration>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+
+                                <configuration>
+                                    <appendAssemblyId>true</appendAssemblyId>
+                                    <descriptors>
+                                        <descriptor>${basedir}/src/main/assembly/assembly-descriptor.xml</descriptor>
+                                    </descriptors>
+                                    <attach>true</attach>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

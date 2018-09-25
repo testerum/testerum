@@ -129,4 +129,81 @@ class PathTest {
         )
     }
 
+    @Test
+    fun `isChildOrSelf - empty parent`() {
+        val parent = Path.createInstance("")
+        val child = Path.createInstance("/a/b/c")
+
+        assertThat(
+                child.isChildOrSelf(parent),
+                equalTo(true)
+        )
+    }
+
+    @Test
+    fun `isChildOrSelf - empty child`() {
+        val parent = Path.createInstance("/a/b/c")
+        val child = Path.createInstance("")
+
+        assertThat(
+                child.isChildOrSelf(parent),
+                equalTo(false)
+        )
+    }
+
+    @Test
+    fun `isChildOrSelf - completely different`() {
+        val parent = Path.createInstance("/a/b/c/d")
+        val child = Path.createInstance("/e/f/g")
+
+        assertThat(
+                child.isChildOrSelf(parent),
+                equalTo(false)
+        )
+    }
+
+    @Test
+    fun `isChildOrSelf - starts the same, ends differently`() {
+        val parent = Path.createInstance("/a/b/c")
+        val child = Path.createInstance("/a/b/z")
+
+        assertThat(
+                child.isChildOrSelf(parent),
+                equalTo(false)
+        )
+    }
+
+    @Test
+    fun `isChildOrSelf - self dir`() {
+        val parent = Path.createInstance("/a/b/c")
+        val child = Path.createInstance("/a/b/c")
+
+        assertThat(
+                child.isChildOrSelf(parent),
+                equalTo(true)
+        )
+    }
+
+    @Test
+    fun `isChildOrSelf - self file`() {
+        val parent = Path.createInstance("/a/b/c/file.ext")
+        val child = Path.createInstance("/a/b/c/file.ext")
+
+        assertThat(
+                child.isChildOrSelf(parent),
+                equalTo(true)
+        )
+    }
+
+    @Test
+    fun `isChildOrSelf - child`() {
+        val parent = Path.createInstance("/a/b/c")
+        val child = Path.createInstance("/a/b/c/d/e")
+
+        assertThat(
+                child.isChildOrSelf(parent),
+                equalTo(true)
+        )
+    }
+
 }

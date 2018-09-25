@@ -13,11 +13,7 @@
 
     <artifactId>web-frontend</artifactId>
 
-    <packaging>war</packaging>
-
-
     <build>
-
         <plugins>
             <!-- Kotlin -->
             <plugin>
@@ -29,24 +25,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-
-            <!-- maven-war-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <directory>${project.basedir}/maven/webapp-filtered</directory>
-                            <filtering>true</filtering>
-                            <targetPath>/</targetPath>
-                            <includes>
-                                <include>**/*</include>
-                            </includes>
-                        </resource>
-                    </webResources>
-                </configuration>
             </plugin>
 
             <!-- Surefire -->
@@ -116,30 +94,27 @@
                         </executions>
                     </plugin>
 
-                    <!-- maven-war-plugin -->
+                    <!-- maven-assembly-plugin (create final zip containing files created by appassembler-maven-plugin) -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <webResources>
-                                <resource>
-                                    <directory>${project.basedir}/dist</directory>
-                                    <filtering>false</filtering>
-                                    <targetPath>/</targetPath>
-                                    <includes>
-                                        <include>**/*</include>
-                                    </includes>
-                                </resource>
-                                <resource>
-                                    <directory>${project.basedir}/maven/webapp-filtered</directory>
-                                    <filtering>true</filtering>
-                                    <targetPath>/</targetPath>
-                                    <includes>
-                                        <include>**/*</include>
-                                    </includes>
-                                </resource>
-                            </webResources>
-                        </configuration>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+
+                                <configuration>
+                                    <appendAssemblyId>true</appendAssemblyId>
+                                    <descriptors>
+                                        <descriptor>${project.basedir}/maven/assembly-descriptor.xml</descriptor>
+                                    </descriptors>
+                                    <attach>true</attach>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

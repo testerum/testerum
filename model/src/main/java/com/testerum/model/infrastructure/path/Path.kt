@@ -92,11 +92,13 @@ data class Path @JsonCreator constructor(
     }
 
     fun isChildOrSelf(parentPath: Path): Boolean {
-        val indexOfSubList = Collections.indexOfSubList(parentPath.directories, this.directories)
+        if (parentPath.isFile()) {
+            return this == parentPath
+        }
 
-        // this is equivalent to "parentPath.directories.endsWith(this.directories)";
-        // in other words, the last directories of the parent are the same as the child's
-        return indexOfSubList == (parentPath.directories.size - this.directories.size)
+        val indexOfSubList = Collections.indexOfSubList(this.directories, parentPath.directories)
+
+        return indexOfSubList == 0
     }
 
     fun isChildOrSelfOfAny(parentPaths: List<Path>): Boolean {

@@ -22,7 +22,7 @@
     <bean id="exceptionHandlerControllerAdvice" class="com.testerum.web_backend.controllers.error.ExceptionHandlerControllerAdvice" />
 
     <bean id="versionPropertiesConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:/web-version.properties"/>
+        <property name="location" value="classpath:/version.properties"/>
         <property name="placeholderPrefix" value="$version{" />
         <property name="placeholderSuffix" value="}" />
     </bean>
@@ -35,9 +35,6 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-
-    <mvc:resources mapping="/index.html" location="/index.html" />
-
 
     <!--====== WEB SOCKET STOMP CONFIGURATION ======-->
     <websocket:message-broker application-destination-prefix="/tests">

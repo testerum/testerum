@@ -56,12 +56,13 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
     fun createExecution(testOrDirectoryPaths: List<Path>): TestExecutionResponse {
         val executionId = testExecutionIdGenerator.nextId()
-
         testExecutionsById[executionId] = TestExecution(executionId, testOrDirectoryPaths)
+
+        val runnerRootNode = getRunnerRootNode(testOrDirectoryPaths)
 
         return TestExecutionResponse(
                 executionId = executionId,
-                runnerRootNode = getRunnerRootNode(testOrDirectoryPaths)
+                runnerRootNode = runnerRootNode
         )
     }
 
