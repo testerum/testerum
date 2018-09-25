@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HttpRequestService} from "../http-request.service";
 import {HttpRequestBody} from "../../../../../../model/resource/http/http-request-body.model";
 import {HttpRequestBodyType} from "../../../../../../model/resource/http/enum/http-request-body-type.enum";
@@ -19,7 +19,7 @@ import 'brace/theme/eclipse';
 })
 export class HttpBodyComponent implements OnInit {
 
-    body: HttpRequestBody;
+    @Input() body: HttpRequestBody;
     httpCallService: HttpRequestService;
 
     HttpBodyType = HttpRequestBodyType;
@@ -37,7 +37,6 @@ export class HttpBodyComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.body = this.httpCallService.httpRequest.body;
     }
 
     setContentType(contentType:HttpContentType) {
@@ -61,5 +60,11 @@ export class HttpBodyComponent implements OnInit {
     onHeaderChange() {
         let contentType = this.getContentType();
         this.aceEditorMode = contentType.editorMode;
+    }
+
+    onBodyContentChanged($event: any) {
+        console.log("onBodyContentChanged", $event);
+        console.log("body", this.body);
+        console.log("this.httpCallService.httpRequest.body", this.httpCallService.httpRequest.body);
     }
 }

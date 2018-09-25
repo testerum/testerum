@@ -127,7 +127,7 @@
 
     <div [class.hidden]="partToDisplay != HttpPart.BODY" class="panel panel-default full-size-flex-element flex-panel">
         <div class="panel-body full-size-flex-element flex-panel">
-            <http-body #httpBody class="full-size-flex-element flex-panel"></http-body>
+            <http-body #httpBody [body]="getModel().body" class="full-size-flex-element flex-panel"></http-body>
         </div>
     </div>
 

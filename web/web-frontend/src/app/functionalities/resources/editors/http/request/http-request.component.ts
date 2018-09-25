@@ -37,7 +37,6 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
     HttpMethod = HttpMethod;
 
     @ViewChild("httpParams") httpParams: HttpParamsComponent;
-    // @ViewChild("httpBody") httpBodyComponent: HttpBodyComponent;
 
     constructor(private cd: ChangeDetectorRef,
                 private route: ActivatedRoute,
@@ -153,9 +152,7 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
         return this.form;
     }
 
-    onHttpHeaderChanged() {
-        // if (this.httpBodyComponent) {
-        //     this.httpBodyComponent.onHeaderChange();
-        // }
+    onBeforeSave(): void {
+        console.log("modal", this.model)
     }
 }

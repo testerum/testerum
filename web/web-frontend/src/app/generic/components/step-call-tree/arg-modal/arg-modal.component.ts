@@ -176,6 +176,8 @@ export class ArgModalComponent {
     }
 
     update() {
+        this.resourceComponentRef.instance.onBeforeSave();
+
         this.arg.name = this.resourceComponentRef.instance.name;
         this.arg.path = this.argPath;
         this.arg.oldPath = this.argPath;

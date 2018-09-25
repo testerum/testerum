@@ -7,11 +7,11 @@
     <tr *ngFor="let param of params; let last = last; let index = index;">
         <td>
             <span *ngIf="!editMode()">{{param.key}}</span>
-            <input *ngIf="editMode()" (ngModelChange)="onNewKeyChange($event, index)" [(ngModel)]="param.key" type="text" class="form-control">
+            <input *ngIf="editMode()" (ngModelChange)="onNewKeyChange($event, index)" [(ngModel)]="param.key" type="text" class="form-control http-param-key">
         </td>
         <td>
             <span *ngIf="!editMode()">{{param.value}}</span>
-            <input *ngIf="editMode()" (ngModelChange)="onNewValueChange($event, index)" [(ngModel)]="param.value" type="text" class="form-control">
+            <input *ngIf="editMode()" (ngModelChange)="onNewValueChange($event, index)" [(ngModel)]="param.value" type="text" class="form-control http-param-value">
         </td>
     </tr>
 
