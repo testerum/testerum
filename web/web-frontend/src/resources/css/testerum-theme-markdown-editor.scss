@@ -1,15 +1,22 @@
 $min-height: 100px;
 $max-height: 250px;
 
-.markdown-editor-dynamic-size {}
+.markdown-editor-dynamic-size {
+    .CodeMirror {
+        min-height: $min-height;
+    }
+    .CodeMirror-scroll {
+        min-height: $min-height;
+        max-height: $max-height;
+    }
+    .CodeMirror-fullscreen {
+        .CodeMirror-scroll {
+            min-height: inherit;
+            max-height: inherit;
+        }
+    }
+}
 
-.markdown-editor-dynamic-size .CodeMirror {
-    min-height: $min-height;
-}
-.markdown-editor-dynamic-size .CodeMirror-scroll {
-    min-height: $min-height;
-    max-height: $max-height;
-}
 markdown-editor .editor-toolbar:before {
     margin:0
 }

@@ -59,8 +59,8 @@ input[type=checkbox]:focus {
 
 .my-value {
     display: block;
-    margin-left: 20px;
-    width: 100%;
+    margin-left: 1em;
+    width: calc(100% - 10em);
 }
 
 .vertical-space {
