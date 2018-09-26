@@ -9,6 +9,8 @@ object ElementLocatorService {
 
     private data class ElementLocator(val type: String, val expression: String)
 
+    private val DEFAULT_LOCATOR_TYPE = "css"
+
     // todo: make this map pluggable
     private val prefixToLocatorFactoryMap: Map<String, (driver: WebDriver, elementLocatorWithoutPrefix: String) -> By> = mapOf(
             "id"               to { _     , elementLocatorWithoutPrefix -> By.id(elementLocatorWithoutPrefix) },
@@ -18,9 +20,7 @@ object ElementLocatorService {
             "linkTextContains" to { _     , elementLocatorWithoutPrefix -> By.partialLinkText(elementLocatorWithoutPrefix) },
             "xpath"            to { _     , elementLocatorWithoutPrefix -> By.xpath(elementLocatorWithoutPrefix) },
             "js"               to { driver, elementLocatorWithoutPrefix -> ByJs(driver, elementLocatorWithoutPrefix) }
-            )
-
-    private val DEFAULT_LOCATOR_TYPE = "css"
+    )
 
     private val validLocatorTypes: Collection<String> = prefixToLocatorFactoryMap.keys
 

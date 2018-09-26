@@ -109,6 +109,7 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager)
 
     fun waitUntil(block: (WebDriver) -> Boolean) {
         executeWebDriverStep { driver ->
+            // todo: make the timeout a configurable setting
             WebDriverWait(driver, 20)
                     .until(block)
         }

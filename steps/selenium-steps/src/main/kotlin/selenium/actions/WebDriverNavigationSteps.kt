@@ -9,28 +9,40 @@ class WebDriverNavigationSteps {
 
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
-    @Given("the page at url <<url>> is opened")
+    @Given(
+            value = "the page at url <<url>> is opened",
+            description = "Navigates to the given URL."
+    )
     fun givenThePageAtUrlIsOpen(url: String) {
         webDriverManager.executeWebDriverStep { driver ->
             driver.navigate().to(url)
         }
     }
 
-    @When("I navigate to url <<url>>")
+    @When(
+            value = "I navigate to url <<url>>",
+            description = "Navigates to the given URL."
+    )
     fun whenINavigateToUrl(url: String) {
         webDriverManager.executeWebDriverStep { driver ->
             driver.navigate().to(url)
         }
     }
 
-    @When("I navigate to the previous page")
+    @When(
+            value = "I navigate to the previous page",
+            description = "Goes backward in the browser's history."
+    )
     fun navigateToThePreviousPage() {
         webDriverManager.executeWebDriverStep { driver ->
             driver.navigate().back()
         }
     }
 
-    @When("I navigate to the next page")
+    @When(
+            value = "I navigate to the next page",
+            description = "Goes forward in the browser's history."
+    )
     fun navigateToTheNextPage() {
         webDriverManager.executeWebDriverStep { driver ->
             driver.navigate().forward()

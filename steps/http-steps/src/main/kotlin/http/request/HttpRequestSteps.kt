@@ -17,8 +17,18 @@ class HttpRequestSteps {
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
     private val logger: TesterumLogger = TesterumServiceLocator.getTesterumLogger()
 
-    @When("I execute <<httpRequest>> HTTP Request")
-    fun testConnectionDetails(@Param(transformer = HttpRequestTransformer::class) httpRequest: HttpRequest) {
+    @When(
+            value = "I execute <<httpRequest>> HTTP Request",
+            description = "Makes an HTTP request, saving the response as a test variable with the name ``httpResponse``.\n" +
+                          "The request is also available in the variable ``httpRequest``"
+    )
+    fun testConnectionDetails(
+            @Param(
+                    transformer = HttpRequestTransformer::class,
+                    description = "Details of the HTTP request to execute."
+            )
+            httpRequest: HttpRequest
+    ) {
         logger.logInfo("HTTP Request [\n$httpRequest\n]")
         val httpResponse: HttpResponse = httpClientService.executeHttpRequest(httpRequest)
         logger.logInfo("HTTP Response [\n$httpResponse\n]")

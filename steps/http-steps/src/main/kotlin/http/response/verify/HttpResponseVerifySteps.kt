@@ -11,7 +11,9 @@ import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.HttpResponse
 import com.testerum.model.resources.http.response.HttpResponseHeader
 import http.response.verify.model.HttpBodyVerifyMatchingType
-import http.response.verify.model.HttpBodyVerifyMatchingType.*
+import http.response.verify.model.HttpBodyVerifyMatchingType.EXACT_MATCH
+import http.response.verify.model.HttpBodyVerifyMatchingType.IS_EMPTY
+import http.response.verify.model.HttpBodyVerifyMatchingType.JSON_VERIFY
 import http.response.verify.model.HttpResponseHeaderVerify
 import http.response.verify.model.HttpResponseVerify
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode
@@ -29,8 +31,17 @@ class HttpResponseVerifySteps {
     private val jsonComparer: JsonComparer = HttpStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
 
-    @Then("I expect <<httpResponseVerify>> HTTP Response")
-    fun verifyHttpResponse(@Param(transformer = HttpResponseVerifyTransformer::class) httpResponseVerify: HttpResponseVerify) {
+    @Then(
+            value = "I expect <<httpResponseVerify>> HTTP Response",
+            description = "Checks if the response from the previous HTTP request is according to the given criteria."
+    )
+    fun verifyHttpResponse(
+            @Param(
+                    transformer = HttpResponseVerifyTransformer::class,
+                    description = "The criteria describing the expected HTTP response."
+            )
+            httpResponseVerify: HttpResponseVerify
+    ) {
         val httpRequest: HttpRequest = variables["httpRequest"] as HttpRequest
         val httpResponse: HttpResponse = variables["httpResponse"] as HttpResponse
 

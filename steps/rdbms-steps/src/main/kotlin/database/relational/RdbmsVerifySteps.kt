@@ -21,15 +21,29 @@ class RdbmsVerifySteps {
 
     private val jsonComparer: JsonComparer = RdbmsStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
 
-    @Then("verify database <<rdbmsClient>> state is like in <<rdbmsVerify>> file")
-    fun testConnectionDetails(@Param(transformer= RdbmsConnectionTransformer::class) rdbmsClient: RdbmsClient,
-                              @Param(transformer= RdbmsVerifyTransformer::class) rdbmsVerify: RdbmsVerify) {
+    @Then(
+            value = "verify database <<rdbmsClient>> state is like in <<rdbmsVerify>> file",
+            description = "Checks if the relational database matches an expected state."
+    )
+    fun testConnectionDetails(
+            @Param(
+                    transformer= RdbmsConnectionTransformer::class,
+                    description = RdbmsSharedDescriptions.CONNECTION
+            )
+            rdbmsClient: RdbmsClient,
+
+            @Param(
+                    transformer= RdbmsVerifyTransformer::class,
+                    description = "The expected state of the relational database."
+            )
+            rdbmsVerify: RdbmsVerify
+    ) {
 
         val serializedSchemaAsJsonString = RdbmsToJsonSerializer.serializeSchemaAsJsonString(rdbmsClient)
 
         val compareResult: JsonCompareResult = jsonComparer.compare(rdbmsVerify.verifyJsonAsString, serializedSchemaAsJsonString)
         if (compareResult is DifferentJsonCompareResult) {
-            LOG.debug("serialized Schema As Json [${serializedSchemaAsJsonString}]")
+            LOG.debug("serialized Schema As Json [$serializedSchemaAsJsonString]")
             LOG.debug("Rdbms Verify Script executed successfully")
 
             LOG.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")

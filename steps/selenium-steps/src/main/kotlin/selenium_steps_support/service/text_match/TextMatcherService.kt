@@ -1,19 +1,26 @@
 package selenium_steps_support.service.text_match
 
-import selenium_steps_support.service.text_match.matchers.*
+import selenium_steps_support.service.text_match.matchers.CaseInsensitiveTextMatcher
+import selenium_steps_support.service.text_match.matchers.ContainsCaseInsensitiveTextMatcher
+import selenium_steps_support.service.text_match.matchers.ContainsCaseSensitiveTextMatcher
+import selenium_steps_support.service.text_match.matchers.ExactTextMatcher
+import selenium_steps_support.service.text_match.matchers.RegexTextMatcher
+import selenium_steps_support.service.text_match.matchers.TextMatcher
 
 object TextMatcherService {
 
     // todo: make these strategies pluggable
     private val prefixToTextMatcherMap: Map<String, TextMatcher> = mapOf(
             "exact"                   to ExactTextMatcher,
+            "caseInsensitive"         to CaseInsensitiveTextMatcher,
             "contains"                to ContainsCaseSensitiveTextMatcher,
-            "containsCaseSensitive"   to ContainsCaseSensitiveTextMatcher,
             "containsCaseInsensitive" to ContainsCaseInsensitiveTextMatcher,
-            "regex"                   to RegexTextMatcher // todo: global Regex cache (with limited number of entries to not run out of memory)
+            "regex"                   to RegexTextMatcher
     )
 
     private val validPrefixes: List<String> = prefixToTextMatcherMap.keys.map { it + "=" }
+
+    fun doesNotMatch(expectedTextMatchExpression: String, actualText: String): Boolean = !matches(expectedTextMatchExpression, actualText)
 
     fun matches(expectedTextMatchExpression: String, actualText: String): Boolean {
         val indexOfEquals: Int = expectedTextMatchExpression.indexOf("=")

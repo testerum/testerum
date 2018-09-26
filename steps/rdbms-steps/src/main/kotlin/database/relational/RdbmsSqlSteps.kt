@@ -14,13 +14,23 @@ class RdbmsSqlSteps {
         private val LOG = LoggerFactory.getLogger(RdbmsSqlSteps::class.java)
     }
 
-    @When(value = "writing <<SQL>> in <<relationalDatabaseClient>> database",
-          description = "This steps is executing the provided SQL in the Relational Database")
+    @When(
+            value = "writing <<SQL>> in <<relationalDatabaseClient>> database",
+            description = "Executes the given SQL using the given relational database connection."
+    )
     fun writingSqlInSpecifiedDb(
-            @Param(transformer= RdbmsSqlTransformer::class,
-                   description = "The SQL to be executed in the database") rdbmsSql: RdbmsSql,
-            @Param(transformer= RdbmsConnectionTransformer::class,
-                    description = "Relational Database Client contains the information about how to connect") rdbmsClient: RdbmsClient) {
+            @Param(
+                    transformer = RdbmsSqlTransformer::class,
+                    description = "The SQL to be executed."
+            )
+            rdbmsSql: RdbmsSql,
+
+            @Param(
+                    transformer = RdbmsConnectionTransformer::class,
+                    description = RdbmsSharedDescriptions.CONNECTION
+            )
+            rdbmsClient: RdbmsClient
+    ) {
 
         rdbmsClient.executeSqlScript(rdbmsSql.sql)
         LOG.debug("SQL Script executed successfully")

@@ -19,10 +19,23 @@ class HttpMockSteps {
         httpMockService.clearAllStubs()
     }
 
-    @Given("The HTTP Mock Server <<httpMockServer>> with the Mock Request <<httpMock>>")
-    fun testConnectionDetails(@Param(transformer= HttpMockServerTransformer::class) httpMockServer: HttpMockServer,
-                              @Param(transformer= HttpMockTransformer::class) httpMock: HttpMock) {
+    @Given(
+            value = "the HTTP Mock Server <<httpMockServer>> with the Mock Request <<httpMock>>",
+            description = "Sets up a mock HTTP server with the given parameters."
+    )
+    fun setupMockServer(
+            @Param(
+                    transformer = HttpMockServerTransformer::class,
+                    description = "The configuration of the mock server, like the port on which to listen."
+            )
+            httpMockServer: HttpMockServer,
 
+            @Param(
+                    transformer = HttpMockTransformer::class,
+                    description = "The expected request and the response to return for that request."
+            )
+            httpMock: HttpMock
+    ) {
         httpMockService.addHttpStub(httpMockServer, httpMock)
     }
 }
