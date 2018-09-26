@@ -5,6 +5,7 @@ import com.testerum.web_backend.services.runner.execution.TestsExecutionFrontend
 import com.testerum.web_backend.services.runner.result.RunnerResultFrontendService
 import org.slf4j.LoggerFactory
 import org.springframework.web.socket.TextMessage
+import org.springframework.web.socket.WebSocketMessage
 import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.handler.TextWebSocketHandler
 
@@ -51,7 +52,7 @@ class TestsWebSocketController(private val testsExecutionFrontendService: TestsE
                     if (session.isOpen) {
                         // send to UI
                         val eventAsString = objectMapper.writeValueAsString(event)
-                        session.sendMessage(TextMessage(eventAsString))
+                        session.sendMessageIgnoringErrors(TextMessage(eventAsString))
 
                         // save to file
                         runnerResultFrontendService.saveEvent(event, resultFilePath)
@@ -61,9 +62,25 @@ class TestsWebSocketController(private val testsExecutionFrontendService: TestsE
                     }
                 },
                 doneProcessor = {
-                    session.close()
+                    session.closeIgnoringErrors()
                 }
         )
+    }
+
+    private fun WebSocketSession.sendMessageIgnoringErrors(message: WebSocketMessage<*>) {
+        try {
+            sendMessage(message)
+        } catch (e: Exception) {
+            // ignore
+        }
+    }
+
+    private fun WebSocketSession.closeIgnoringErrors() {
+        try {
+            close()
+        } catch (e: Exception) {
+            // ignore
+        }
     }
 
 }

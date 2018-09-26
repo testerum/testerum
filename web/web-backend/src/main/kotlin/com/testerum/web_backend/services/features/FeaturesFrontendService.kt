@@ -57,7 +57,10 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
             rootNodeBuilder.addTest(it)
         }
 
-        return rootNodeBuilder.build()
+        val rootFeatureNode = rootNodeBuilder.build()
+        val filteredRootFeatureNode = FeaturesTreeFilterer.filterOutEmptyFeaturesIfNeeded(rootFeatureNode, filter)
+
+        return filteredRootFeatureNode
     }
 
     /**

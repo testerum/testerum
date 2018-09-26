@@ -7,6 +7,8 @@ import selenium_steps_support.ByJs
 
 object ElementLocatorService {
 
+    private data class ElementLocator(val type: String, val expression: String)
+
     // todo: make this map pluggable
     private val prefixToLocatorFactoryMap: Map<String, (driver: WebDriver, elementLocatorWithoutPrefix: String) -> By> = mapOf(
             "id"               to { _     , elementLocatorWithoutPrefix -> By.id(elementLocatorWithoutPrefix) },
@@ -18,7 +20,9 @@ object ElementLocatorService {
             "js"               to { driver, elementLocatorWithoutPrefix -> ByJs(driver, elementLocatorWithoutPrefix) }
             )
 
-    private val validPrefixes: List<String> = prefixToLocatorFactoryMap.keys.map { it + "=" }
+    private val DEFAULT_LOCATOR_TYPE = "css"
+
+    private val validLocatorTypes: Collection<String> = prefixToLocatorFactoryMap.keys
 
     /**
      * @return the first matching element on the current page
@@ -50,23 +54,28 @@ object ElementLocatorService {
     }
 
     private fun getSelector(elementLocator: String, driver: WebDriver): By {
+        val locator = parseLocator(elementLocator)
+
+        val locatorFactory: ((driver: WebDriver, elementLocator: String) -> By) = prefixToLocatorFactoryMap[locator.type]
+                ?: throw IllegalArgumentException("invalid element locator type; it should be one of $validLocatorTypes, but got [${locator.type}]")
+
+        return locatorFactory.invoke(driver, locator.expression)
+    }
+
+    private fun parseLocator(elementLocator: String): ElementLocator {
         val indexOfEquals: Int = elementLocator.indexOf("=")
 
-        if (indexOfEquals == -1) {
-            throw IllegalArgumentException("invalid element locator; it must start with one of ${validPrefixes}")
-        }
-
-        val locatorType = elementLocator.substring(0, indexOfEquals)
-        val locatorFactory: ((driver: WebDriver, elementLocator: String) -> By) = prefixToLocatorFactoryMap[locatorType]
-                ?: throw IllegalArgumentException("invalid element locator; it must start with one of ${validPrefixes}, but got $locatorType")
-
-        val elementLocatorWithoutPrefix = if (indexOfEquals == elementLocator.length - 1) {
-            ""
+        return if (indexOfEquals == -1) {
+            ElementLocator(
+                    type = DEFAULT_LOCATOR_TYPE,
+                    expression = elementLocator
+            )
         } else {
-            elementLocator.substring(indexOfEquals + 1)
+            ElementLocator(
+                    type = elementLocator.substring(0, indexOfEquals),
+                    expression = elementLocator.substring(indexOfEquals + 1)
+            )
         }
-
-        return locatorFactory.invoke(driver, elementLocatorWithoutPrefix)
     }
 
 }

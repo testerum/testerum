@@ -99,8 +99,8 @@ export class FeaturesTreeFilterComponent implements OnInit {
 
     filter(): void {
         let featuresTreeFilter = new FeaturesTreeFilter();
-        featuresTreeFilter.showAutomatedTests = this.isAutomatedButtonActive || this.isManualButtonActive == this.isAutomatedButtonActive;
-        featuresTreeFilter.showManualTest = this.isManualButtonActive || this.isManualButtonActive == this.isAutomatedButtonActive;
+        featuresTreeFilter.includeAutomatedTests = this.isAutomatedButtonActive || this.isManualButtonActive == this.isAutomatedButtonActive;
+        featuresTreeFilter.includeManualTests = this.isManualButtonActive || this.isManualButtonActive == this.isAutomatedButtonActive;
 
         if (this.isSearchButtonActive) {
             featuresTreeFilter.search = this.searchText;
