@@ -1,4 +1,4 @@
-<div class="node">
+<div class="step-call-editor-container node">
 
     <div class="full-line step-text-container"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
@@ -40,11 +40,11 @@
         <!-- BUTTONS -->
         <div class="step-editor-button-panel btn-group">
 
-            <div title="Select Step" class="btn btn-default btn-xs btn-group"
+            <div title="Select Step" class="btn btn-default btn-group"
                  (click)="selectStepFromPopup(); $event.stopPropagation()">
                 <i class="fa_my-plus" aria-hidden="true"></i>
             </div>
-            <div title="Remove Step" class="btn btn-default btn-xs btn-group"
+            <div title="Remove Step" class="btn btn-default btn-group"
                  (click)="removeStep(); $event.stopPropagation()">
                 <i class="fa_my-delete" aria-hidden="true"></i>
             </div>

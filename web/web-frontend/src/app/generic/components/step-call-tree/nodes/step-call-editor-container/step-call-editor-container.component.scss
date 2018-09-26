@@ -1,4 +1,14 @@
-
+.step-call-editor-container {
+    .step-editor-button-panel {
+        .btn {
+            width: 25px;
+            height: 25px;
+            padding-right: 0.2em;
+            padding-left: 0.2em;
+            padding-top: 0.3em;
+        }
+    }
+}
 .step-suggestion {
     width: 600px;
 }
