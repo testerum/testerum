@@ -20,6 +20,7 @@
             <span *ngIf="!isEditMode()">{{header.key}}</span>
             <p-autoComplete *ngIf="isEditMode()"
                             (change)="onNewKeyChange($event)"
+                            (onSelect)="onNewKeyChange($event)"
                             [(ngModel)]="header.key"
                             [suggestions]="suggestionHeaders"
                             (completeMethod)="filterSuggestionHeaders($event)"
