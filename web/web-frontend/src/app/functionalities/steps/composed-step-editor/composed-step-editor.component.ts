@@ -138,7 +138,6 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
             },
             (validationErrorResponse: ValidationErrorResponse) => {
                 FormUtil.setErrorsToForm(this.composedStepViewComponent.form, validationErrorResponse.validationModel);
-                this.errorService.showGenericValidationError(validationErrorResponse);
             }
         );
     }
