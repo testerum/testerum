@@ -55,15 +55,4 @@ export class StringUtils {
         return mainString.substring(0, index);
     }
 
-    static string2ByteArray(str: string): number[] {
-        let result = [];
-        for (let i = 0; i < str.length; i++) {
-            result.push(str.charCodeAt(i));
-        }
-        return result;
-    }
-
-    static byteArray2String(byteArray: number[]): string {
-        return String.fromCharCode.apply(String, byteArray);
-    }
 }
