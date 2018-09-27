@@ -4,6 +4,7 @@ import {Arg} from "../../../../../../model/arg/arg.model";
 import {ResourceMapEnum} from "../../../../../../functionalities/resources/editors/resource-map.enum";
 import {StepCallTreeComponentService} from "../../../step-call-tree.component-service";
 import {Subscription} from "rxjs";
+import {ParamStepPatternPart} from "../../../../../../model/text/parts/param-step-pattern-part.model";
 
 @Component({
     moduleId: module.id,
@@ -27,6 +28,7 @@ import {Subscription} from "rxjs";
 export class ArgNodePanelComponent implements OnInit, OnDestroy {
 
     @Input() arg: Arg;
+    @Input() paramStepPart:ParamStepPatternPart;
 
     collapsed: boolean = false;
     animationState: string = 'open';
@@ -65,11 +67,19 @@ export class ArgNodePanelComponent implements OnInit, OnDestroy {
     }
 
     getArgName(): string {
-        let argName = this.arg.name;
-        if (!this.arg.name && this.arg.path) {
-            argName = this.arg.path.fileName;
+        if (this.arg.name) {
+            return this.arg.name
         }
-        return argName;
+
+        if (this.paramStepPart.name) {
+            return this.paramStepPart.name
+        }
+
+        if (this.arg.path && this.arg.path.fileName) {
+            return this.arg.path.fileName;
+        }
+
+        return "param";
     }
 
     getArgUiType(): string {

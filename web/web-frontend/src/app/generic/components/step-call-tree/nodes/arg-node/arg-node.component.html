@@ -1,6 +1,7 @@
 <div>
     <arg-node-panel #argNodePanel
-                    [arg]="model.arg">
+                    [arg]="model.arg"
+                    [paramStepPart]="model.stepPatternParam">
         <div #resourceContainer></div>
 
         <div *ngIf="!argHasContent()"

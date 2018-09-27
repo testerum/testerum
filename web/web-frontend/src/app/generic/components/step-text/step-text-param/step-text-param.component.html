@@ -9,7 +9,8 @@
 <ng-template #hasArguments>
     <span class="param-parts">
         <<
-            <span>{{getArgumentValue()}}</span>
+            <span *ngIf="hasValue()" class="arg-value">{{getArgumentValue()}}</span>
+            <span *ngIf="!hasValue()" class="arg-name">{{getArgumentName()}}</span>
         >>
     </span>
 
