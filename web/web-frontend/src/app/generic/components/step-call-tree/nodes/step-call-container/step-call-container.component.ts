@@ -112,10 +112,19 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         this.stepModalService.showStepModal(
             stepToEdit
         ).subscribe((newStepDef: ComposedStepDef) => {
-            this.model.stepCall.stepDef = newStepDef;
+            if (newStepDef.path) {
+                this.model.stepCall.stepDef = newStepDef;
+            } else {
+                let newUndefinedStep = new UndefinedStepDef();
+                newUndefinedStep.phase = newStepDef.phase;
+                newUndefinedStep.stepPattern = newStepDef.stepPattern;
+                this.model.stepCall.stepDef = newUndefinedStep;
+            }
+
             this.refreshStepCallArgsBasedOnStepDef();
 
             this.stepCallTreeComponentService.triggerWarningRecalculationChangesEvent();
+
         });
     }
 
