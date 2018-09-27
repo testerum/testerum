@@ -17,7 +17,7 @@ class HttpResponse @JsonCreator constructor(
         @JsonProperty("protocol") val protocol: String,
         @JsonProperty("statusCode") val statusCode: Int,
         @JsonProperty("headers") val headers: List<HttpResponseHeader> = emptyList(),
-        @JsonProperty("body") val body: ByteArray = ByteArray(0) // todo: serialize for client to base64 (reduce size)
+        @JsonProperty("body") val body: ByteArray = ByteArray(0)
 ) {
 
     companion object {

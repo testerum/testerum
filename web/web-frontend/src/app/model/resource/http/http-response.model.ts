@@ -7,7 +7,7 @@ export class HttpResponse implements Resource<HttpResponse> {
     protocol: string;
     statusCode: number;
     headers: Array<HttpResponseHeader> = [];
-    body: number[];
+    body: string;
 
     constructor() {
         this.reset();
@@ -37,7 +37,7 @@ export class HttpResponse implements Resource<HttpResponse> {
             return "";
         }
 
-        return StringUtils.byteArray2String(this.body)
+        return atob(this.body)
     }
 
     deserialize(input: Object): HttpResponse {
