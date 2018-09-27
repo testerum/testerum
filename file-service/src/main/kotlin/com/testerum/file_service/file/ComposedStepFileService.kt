@@ -1,7 +1,15 @@
 package com.testerum.file_service.file
 
 import com.testerum.common.parsing.executer.ParserExecuter
-import com.testerum.common_kotlin.*
+import com.testerum.common_kotlin.createDirectories
+import com.testerum.common_kotlin.deleteIfExists
+import com.testerum.common_kotlin.deleteRecursivelyIfExists
+import com.testerum.common_kotlin.exists
+import com.testerum.common_kotlin.getContent
+import com.testerum.common_kotlin.hasExtension
+import com.testerum.common_kotlin.isRegularFile
+import com.testerum.common_kotlin.smartMoveTo
+import com.testerum.common_kotlin.walk
 import com.testerum.file_service.file.util.escape
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileStepMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessStepMapper
@@ -116,6 +124,11 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
 
         val fileComposedStep = businessToFileStepMapper.mapComposedStep(composedStep)
         val serializedFileComposedStep = COMPOSED_STEP_SERIALIZER.serializeToString(fileComposedStep)
+
+        val validationException = COMPOSED_STEP_PARSER.validate(serializedFileComposedStep)
+        if (validationException != null) {
+            throw ValidationException("Invalid step definition: ${validationException.message}")
+        }
 
         newStepFile.parent?.createDirectories()
 
