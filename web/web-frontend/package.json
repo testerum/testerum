@@ -29,6 +29,7 @@
         "ng2-ace-editor": "0.3.8",
         "ng2-dnd": "5.0.2",
         "ngx-bootstrap": "3.0.1",
+        "ngx-markdown": "6.2.0",
         "primeicons": "1.0.0-beta.10",
         "primeng": "6.1.4",
         "rxjs": "6.2.2",

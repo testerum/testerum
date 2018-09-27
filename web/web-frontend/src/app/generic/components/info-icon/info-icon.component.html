@@ -8,6 +8,9 @@
        [placement]="position"></i>
 
     <ng-template #popTemplate >
-        <div [innerHtml]="message"></div>
+        <div [style.max-width]="maxWidth"
+             [style.max-height]="maxHeight"
+             style="overflow: auto"
+             [innerHtml]="message | markdown"></div>
     </ng-template>
 </div>

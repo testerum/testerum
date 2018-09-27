@@ -28,6 +28,7 @@ import {
 } from "primeng/primeng";
 import {StepsTreeFilterComponent} from "./steps-tree/steps-tree-filter/steps-tree-filter.component";
 import {ComposedStepViewComponent} from "../../generic/components/step/composed-step-view/composed-step-view.component";
+import {MarkdownModule} from 'ngx-markdown'
 
 @NgModule({
     imports: [
@@ -39,6 +40,7 @@ import {ComposedStepViewComponent} from "../../generic/components/step/composed-
         DndModule.forRoot(),
         PopoverModule.forRoot(),
         AngularSplitModule,
+        MarkdownModule.forRoot(),
 
         TooltipModule,
         ToolbarModule,

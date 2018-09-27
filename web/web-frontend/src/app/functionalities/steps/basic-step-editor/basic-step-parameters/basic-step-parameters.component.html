@@ -23,7 +23,9 @@
                         </div>
                     </td>
                     <td class="param-icon-column" *ngIf="asParam(patternPart).description">
-                        <info-icon [message]="asParam(patternPart).description" position="bottom"></info-icon>
+                        <info-icon [message]="asParam(patternPart).description"
+                                   position="bottom"
+                                   maxWidth="500px"></info-icon>
                     </td>
                 </tr>
             </ng-container>

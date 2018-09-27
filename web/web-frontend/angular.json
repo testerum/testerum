@@ -57,7 +57,8 @@
             ],
             "scripts": [
               "node_modules/simplemde/dist/simplemde.min.js",
-              "node_modules/chart.js/dist/Chart.js"
+              "node_modules/chart.js/dist/Chart.js",
+              "node_modules/marked/lib/marked.js"
             ]
           },
           "configurations": {

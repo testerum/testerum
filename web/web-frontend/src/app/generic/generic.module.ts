@@ -93,6 +93,7 @@ import {LogoComponent} from './components/logo/logo.component';
 import {InfoModalService} from "./components/info_modal/info-modal.service";
 import {InfoIconComponent} from './components/info-icon/info-icon.component';
 import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
+import {MarkdownModule} from 'ngx-markdown'
 
 @NgModule({
     imports: [
@@ -101,6 +102,7 @@ import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.s
         ModalModule.forRoot(),
         DndModule.forRoot(),
         PopoverModule.forRoot(),
+        MarkdownModule.forRoot(),
         FormsModule,
 
         AceEditorModule,
