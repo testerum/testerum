@@ -13,6 +13,15 @@ class ParserExecuter<T>(private val parser: Parser<T>) {
         private val NEWLINE_REGEX = Regex("\r\n|\n")
     }
 
+    fun validate(text: String): ParserExecuterException? {
+        return try {
+            parse(text)
+            null
+        } catch (e: ParserExecuterException) {
+            e
+        }
+    }
+
     fun isValid(text: String): Boolean {
         return try {
             parse(text)
