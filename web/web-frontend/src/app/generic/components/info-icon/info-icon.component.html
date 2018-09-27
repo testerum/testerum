@@ -1,4 +1,13 @@
-<i class="fa_my-info-colored spacing" aria-hidden="true"
-   [escape]="false"
-   pTooltip="{{message}}"
-   [attr.tooltipEvent]="position"></i>
+<div class="info-icon"
+     (mouseenter)="pop.show()"
+     (mouseleave)="pop.hide()">
+
+    <i class="fa_my-info-colored spacing" aria-hidden="true"
+       #pop="bs-popover"
+       [popover]="popTemplate"
+       [placement]="position"></i>
+
+    <ng-template #popTemplate >
+        <div [innerHtml]="message"></div>
+    </ng-template>
+</div>
