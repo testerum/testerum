@@ -1,8 +1,19 @@
 import {HttpResponseHeader} from "./http-response-header.model";
 import {StringUtils} from "../../../utils/string-utils.util";
 import {Resource} from "../resource.model";
+import {HttpContentType} from "./enum/http-content-type.enum";
+import {HttpRequestHeader} from "./http-request-header.model";
 
 export class HttpResponse implements Resource<HttpResponse> {
+
+    private TEXT_MIME_TYPES: string[] = [
+        "application/xml",
+        "application/x-json",
+        "application/json",
+        "application/x-javascript",
+        "application/javascript",
+        "application/ecmascript"
+    ];
 
     protocol: string;
     statusCode: number;
@@ -32,12 +43,66 @@ export class HttpResponse implements Resource<HttpResponse> {
         return isEmpty;
     }
 
+
     bodyAsString(): string {
         if(!this.body || this.body.length == 0) {
             return "";
         }
 
-        return atob(this.body)
+        return this.body
+    }
+
+    private bodyResponseHandler(bodyAsBase64: string): string {
+        if(!bodyAsBase64 || bodyAsBase64.length == 0) {
+            return "";
+        }
+
+        let mimeType = this.getResponseMimeType();
+        if(this.isBodyOrTypeText(mimeType)) {
+            return atob(bodyAsBase64)
+        }
+        return bodyAsBase64;
+    }
+
+    private isBodyOrTypeText(mimeType: string): boolean {
+        let lowerCaseMimeType = mimeType.toLowerCase();
+
+        if (lowerCaseMimeType.startsWith("text/")) {
+            return true;
+        }
+        if (lowerCaseMimeType.endsWith("+xml")) {
+            return true;
+        }
+
+        return this.TEXT_MIME_TYPES.includes(lowerCaseMimeType);
+    }
+
+    private getResponseMimeType(): string {
+        let contentTypeValue = this.getContentTypeValue();
+        if (contentTypeValue == null) {
+            return "";
+        }
+
+        return contentTypeValue.split(";")[0].trim();
+    }
+
+    private getContentTypeValue(): string {
+        let contentTypeHeader = this.getContentTypeHeader();
+        if(!contentTypeHeader) {
+            return null;
+        }
+        return contentTypeHeader.values[0];
+    }
+
+    private getContentTypeHeader(): HttpResponseHeader {
+        let contentTypeKey = HttpContentType.CONTENT_TYPE_HEADER_KEY.toLowerCase();
+        for (let header of this.headers) {
+            if(header.key && header.key.toLowerCase() === contentTypeKey) {
+                return header;
+            }
+        }
+
+        return null;
     }
 
     deserialize(input: Object): HttpResponse {
@@ -52,7 +117,8 @@ export class HttpResponse implements Resource<HttpResponse> {
         }
 
         if (input['body']) {
-            this.body = input["body"];
+            let bodyAsBase64 = input["body"];
+            this.body = this.bodyResponseHandler(bodyAsBase64);
         }
         return this;
     }
