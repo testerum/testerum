@@ -68,7 +68,7 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
             '{' +
             '"@type": "COMPOSED_STEP",' +
             '"id":' + JsonUtil.stringify(this.id) + ',' +
-            '"phase":' + JsonUtil.stringify(StepPhaseEnum[this.phase].toUpperCase()) + ',' +
+            '"phase":' + JsonUtil.stringify(StepPhaseEnum[this.phase] ? StepPhaseEnum[this.phase].toUpperCase(): null) + ',' +
             '"path":' + JsonUtil.serializeSerializable(this.path) + ',' +
             '"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) + ',' +
             '"stepPattern":' + this.stepPattern.serialize() + ',' +

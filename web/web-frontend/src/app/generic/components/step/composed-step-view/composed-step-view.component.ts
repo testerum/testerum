@@ -1,5 +1,5 @@
 import {
-    AfterContentChecked, AfterViewInit,
+    AfterContentChecked,
     Component,
     DoCheck,
     EventEmitter,
@@ -10,7 +10,7 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 import {ComposedStepDef} from "../../../../model/composed-step-def.model";
-import {AbstractControl, NgForm} from "@angular/forms";
+import {NgForm} from "@angular/forms";
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {AutoComplete, Message} from "primeng/primeng";
 import {Arg} from "../../../../model/arg/arg.model";
@@ -26,7 +26,6 @@ import {StepPathModalService} from "./step-path-chooser-modal/step-path-modal.se
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
 import {StepsService} from "../../../../service/steps.service";
-import {isValid} from "ngx-bootstrap/chronos/create/valid";
 import {MarkdownEditorComponent} from "../../markdown-editor/markdown-editor.component";
 
 @Component({
@@ -108,12 +107,18 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     private getModelForWarningRecalculation() {
-        if (this.model.path) {
+        if (this.model.path && this.model.phase) {
             return this.model;
         }
 
         let model: ComposedStepDef = this.model.clone();
-        model.path = Path.createInstance("/");
+        if (!this.model.path) {
+            model.path = Path.createInstance("/");
+        }
+
+        if (!this.model.phase) {
+            model.phase = StepPhaseEnum.GIVEN;
+        }
 
         return model;
     }
