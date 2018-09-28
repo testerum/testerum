@@ -21,6 +21,12 @@ class TagsFrontendService(private val featuresCache: FeaturesCache,
                 .sortedBy(String::toLowerCase)
     }
 
+    fun getManualTestsTags(): List<String> {
+        return testsCache.getAllTests()
+                .filter { it.properties.isManual }
+                .flatMap { it.tags }
+    }
+
     private fun getFeatureTags(): List<String> = featuresCache.getAllFeatures().flatMap { it.tags }
     private fun getTestTags(): List<String> = testsCache.getAllTests().flatMap { it.tags }
     private fun getStepTags(): List<String> = stepsCache.getAllSteps().flatMap { it.tags }
