@@ -14,7 +14,7 @@
                 [variableHolder]="stepCall?.variableHolder"></step-text-param>
     </div>
     <div *ngIf="!isParamPatternPart(patternPart)"
-         [class.undefined-step-text-color]="isUndefinedStepDef()"
+         [class.undefined-step-text-color]="isUndefinedStepDef() && !isManulStep"
          class="step-text-pattern">
         {{patternPart.text}}
     </div>

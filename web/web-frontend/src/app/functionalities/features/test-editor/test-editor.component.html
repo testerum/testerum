@@ -123,7 +123,9 @@
                     </div>
                 </div>
 
-                <step-call-tree [stepCalls]="testModel.stepCalls" [isEditMode]="isEditMode"></step-call-tree>
+                <step-call-tree [stepCalls]="testModel.stepCalls"
+                                [isEditMode]="isEditMode"
+                                [areManualSteps]="testModel.properties.isManual"></step-call-tree>
 
                 <div class="panel-footer-button">
                     <ng-container *ngIf="!isEditMode">

@@ -6,15 +6,16 @@
          (click)="collapseNode();$event.stopPropagation();">
 
         <div>
-            <step-text [class.error_squiggly]="hasWarnings()"
-                [stepDef]="model.stepCall.stepDef"
+            <step-text [class.error_squiggly]="hasWarnings() && !isManualStep()"
+                       [stepDef]="model.stepCall.stepDef"
                        [stepCall]="model.stepCall"
                        [showPhase]="true"
-                       [showAsListItem]="true">
+                       [showAsListItem]="true"
+                       [isManulStep]="isManualStep()">
             </step-text>
 
             <!-- WARNING ICON -->
-            <i *ngIf="hasOwnWarnings()" class="fas fa-exclamation-triangle error_color" aria-hidden="true"
+            <i *ngIf="hasOwnWarnings() && !isManualStep()" class="fas fa-exclamation-triangle error_color" aria-hidden="true"
                [popover]="warningPopTemplate" containerClass="popover-warning" triggers="" #pop="bs-popover"
                (mouseenter)="model.stepCall.getAllWarnings().length > 0 ? pop.show():null"
                (mouseleave)="model.stepCall.getAllWarnings().length > 0 ? pop.hide():null">

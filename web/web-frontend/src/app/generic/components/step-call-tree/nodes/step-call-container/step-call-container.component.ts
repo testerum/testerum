@@ -95,6 +95,10 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         return this.model.stepCall.stepDef instanceof BasicStepDef;
     }
 
+    isManualStep(): boolean {
+        return this.stepCallTreeComponentService.areManualSteps;
+    }
+
     editStep() {
         let stepToEdit;
         if (this.model.stepCall.stepDef instanceof ComposedStepDef) {

@@ -25,6 +25,7 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
 
     @Input() stepCalls: Array<StepCall> = [];
     @Input() isEditMode: boolean;
+    @Input() areManualSteps: boolean;
 
     @Output() change = new EventEmitter<void>();
 
@@ -41,6 +42,7 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
     ngOnInit(): void {
         this.stepCallTreeComponentService.jsonTreeModel = this.jsonTreeModel;
         this.stepCallTreeComponentService.isEditMode = this.isEditMode;
+        this.stepCallTreeComponentService.areManualSteps = this.areManualSteps;
         this.stepCallTreeComponentService.changeEventEmitter = this.change;
         this.initTree();
     }
@@ -53,6 +55,9 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (this.stepCalls != this.stepCallTreeComponentService.stepCalls) {
             this.initTree();
+        }
+        if (changes['areManualSteps'].currentValue != changes['areManualSteps'].previousValue) {
+            this.stepCallTreeComponentService.areManualSteps = this.areManualSteps;
         }
     }
 }

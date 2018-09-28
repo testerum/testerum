@@ -16,6 +16,7 @@ export class StepCallTreeComponentService {
     stepCalls: Array<StepCall> = [];
 
     isEditMode: boolean;
+    areManualSteps: boolean;
     editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
     stepCallOrderChangeEventEmitter: EventEmitter<void> = new EventEmitter<void>();
     warningRecalculationChangesEventEmitter: EventEmitter<void> = new EventEmitter<void>();
