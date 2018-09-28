@@ -56,7 +56,7 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
         if (this.stepCalls != this.stepCallTreeComponentService.stepCalls) {
             this.initTree();
         }
-        if (changes['areManualSteps'].currentValue != changes['areManualSteps'].previousValue) {
+        if (changes['areManualSteps']) {
             this.stepCallTreeComponentService.areManualSteps = this.areManualSteps;
         }
     }

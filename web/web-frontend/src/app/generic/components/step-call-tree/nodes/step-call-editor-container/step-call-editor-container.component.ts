@@ -150,7 +150,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         let queryStepPhase = StepTextUtil.getStepPhaseFromStepText(query);
         let queryStepTextWithoutPhase = StepTextUtil.getStepTextWithoutStepPhase(query);
 
-        if (queryStepPhase != null) {
+        if ((queryStepPhase != null && StepPhaseEnum.AND != queryStepPhase) || (StepPhaseEnum.AND == queryStepPhase && this.findStepIndex() > 0)) {
             newSuggestions.unshift(
                 new StepCallSuggestion(queryStepPhase, queryStepTextWithoutPhase, 0,"Create Step -> ")
             )
@@ -163,6 +163,10 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         }
 
         this.suggestions = newSuggestions;
+    }
+
+    private findStepIndex(): number {
+        return this.model.parentContainer.getChildren().indexOf(this.model);
     }
 
     private findSuggestionsFromExistingSteps(query: string) {
@@ -205,7 +209,14 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         } else {
             newStepCall = new StepCall();
             newStepCall.stepDef = new UndefinedStepDef();
-            newStepCall.stepDef.phase = event.phase;
+
+            if (event.phase == StepPhaseEnum.AND) {
+                let previewsStepCallSuggestion = this.model.parentContainer.getChildren()[this.findStepIndex() - 1] as StepCallEditorContainerModel;
+                newStepCall.stepDef.phase = previewsStepCallSuggestion.stepCall.stepDef.phase;
+            } else {
+                newStepCall.stepDef.phase = event.phase;
+            }
+
             newStepCall.stepDef.stepPattern = new StepPattern();
             newStepCall.stepDef.stepPattern.setPatternText(event.stepCallText);
 
