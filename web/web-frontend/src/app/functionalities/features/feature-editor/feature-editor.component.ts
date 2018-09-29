@@ -13,6 +13,8 @@ import {UrlService} from "../../../service/url.service";
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../utils/array.util";
 import {TagsService} from "../../../service/tags.service";
+import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
+import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 
 @Component({
     moduleId: module.id,
@@ -49,6 +51,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
                 private featureService: FeatureService,
                 private featuresTreeService: FeaturesTreeService,
                 private tagsService: TagsService,
+                private areYouSureModalService: AreYouSureModalService,
                 ) {
     }
 
@@ -140,6 +143,17 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     }
 
     cancelAction(): void {
+        this.areYouSureModalService.showAreYouSureModal(
+            "Cancel",
+            "Are you sure you want to cancel all your changes?"
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                this.cancelActionAfterConfirmation();
+            }
+        });
+    }
+
+    private cancelActionAfterConfirmation(): void {
         if (this.isCreateAction) {
             this.urlService.navigateToFeatures()
         } else {
@@ -157,6 +171,17 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     }
 
     deleteAction(): void {
+        this.areYouSureModalService.showAreYouSureModal(
+            "Delete",
+            "Are you sure you want to delete this feature?"
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                this.deleteActionAfterConfirmation();
+            }
+        });
+    }
+
+    deleteActionAfterConfirmation(): void {
         this.featureService.delete(this.model.path).subscribe(result => {
             this.featuresTreeService.initializeTestsTreeFromServer(null);
             this.urlService.navigateToFeatures();
