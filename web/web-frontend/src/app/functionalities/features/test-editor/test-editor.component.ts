@@ -14,6 +14,8 @@ import {TagsService} from "../../../service/tags.service";
 import {ArrayUtil} from "../../../utils/array.util";
 import {StepCallTreeComponent} from "../../../generic/components/step-call-tree/step-call-tree.component";
 import {MarkdownEditorComponent} from "../../../generic/components/markdown-editor/markdown-editor.component";
+import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
+import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 
 @Component({
     moduleId: module.id,
@@ -55,7 +57,8 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
                 private testsTreeService: FeaturesTreeService,
                 private testsService: TestsService,
                 private testsRunnerService: TestsRunnerService,
-                private tagsService: TagsService) {
+                private tagsService: TagsService,
+                private areYouSureModalService: AreYouSureModalService) {
     }
 
     ngOnInit(): void {
@@ -193,7 +196,19 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
         return new Path(this.testModel.path.directories, null, null).toString();
     }
 
+
     cancelAction(): void {
+        this.areYouSureModalService.showAreYouSureModal(
+            "Cancel",
+            "Are you sure you want to cancel all your changes?"
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                this.cancelActionAfterConfirmation();
+            }
+        });
+    }
+
+    private cancelActionAfterConfirmation(): void {
         if (this.isCreateAction) {
             this.urlService.navigateToFeatures()
         } else {
@@ -209,6 +224,17 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
     }
 
     deleteAction(): void {
+        this.areYouSureModalService.showAreYouSureModal(
+            "Delete",
+            "Are you sure you want to delete this test?"
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                this.deleteActionAfterConfirmation();
+            }
+        });
+    }
+
+    private deleteActionAfterConfirmation(): void {
         this.testsService.delete(this.testModel).subscribe(restul => {
             this.testsTreeService.initializeTestsTreeFromServer(null);
             this.urlService.navigateToFeatures();

@@ -181,7 +181,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
         });
     }
 
-    deleteActionAfterConfirmation(): void {
+    private deleteActionAfterConfirmation(): void {
         this.featureService.delete(this.model.path).subscribe(result => {
             this.featuresTreeService.initializeTestsTreeFromServer(null);
             this.urlService.navigateToFeatures();
