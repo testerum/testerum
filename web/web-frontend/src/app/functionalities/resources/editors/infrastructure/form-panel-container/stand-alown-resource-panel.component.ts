@@ -105,23 +105,38 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
 
     deleteAction(): void {
         this.areYouSureModalService.showAreYouSureModal(
-            "Delete Resource",
-            "Are you sure you want to delete this resource?")
-            .subscribe((action: AreYouSureModalEnum) => {
-                if (action == AreYouSureModalEnum.OK) {
-                    this.resourceService.deleteResource(this.resource.path).subscribe(result => {
-                        this.refreshResourceTree();
-                        this.urlService.navigateToResources();
-                    });
-                }
-            });
+            "Delete",
+            "Are you sure you want to delete this step?"
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                this.deleteActionAfterConfirmation();
+            }
+        });
+    }
+
+    private deleteActionAfterConfirmation(): void {
+        this.resourceService.deleteResource(this.resource.path).subscribe(result => {
+            this.refreshResourceTree();
+            this.urlService.navigateToResources();
+        });
     }
 
     isEditedResourceValid(): boolean {
         return this.resourceComponentRef.instance.isFormValid()
     }
 
-    cancelAction() {
+    cancelAction(): void {
+        this.areYouSureModalService.showAreYouSureModal(
+            "Cancel",
+            "Are you sure you want to cancel all your changes?"
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                this.cancelActionAfterConfirmation();
+            }
+        });
+    }
+
+    private cancelActionAfterConfirmation(): void {
         if (this.resource.isCreateNewResource()) {
             this.urlService.navigateToResources();
         } else {
