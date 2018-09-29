@@ -1,11 +1,10 @@
 import {
-    ChangeDetectionStrategy,
+    ChangeDetectionStrategy, ChangeDetectorRef,
     Component,
     ComponentFactory,
     ComponentFactoryResolver,
     ComponentRef,
     ElementRef,
-    EventEmitter,
     Type,
     ViewChild,
     ViewContainerRef
@@ -59,7 +58,8 @@ export class ArgModalComponent {
     @ViewChild(SelectSharedResourceModalComponent) selectSharedResourceModal: SelectSharedResourceModalComponent;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
-                private resourceService: ResourceService) {
+                private resourceService: ResourceService,
+                private cd: ChangeDetectorRef) {
     }
 
     ngAfterViewInit(): void {
@@ -81,7 +81,14 @@ export class ArgModalComponent {
 
             this.modalComponentRef = null;
             this.modalSubject = null;
-        })
+        });
+        this.refresh();
+    }
+
+    refresh() {
+        if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
+            this.cd.detectChanges();
+        }
     }
 
     getArgName() {

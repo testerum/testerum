@@ -10,7 +10,6 @@ import {HttpParamsComponent} from "./params/http-params.component";
 import {NgForm} from "@angular/forms";
 import {ResourceComponent} from "../../resource-component.interface";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
-import {HttpBodyComponent} from "./body/http-body.component";
 
 @Component({
     moduleId: module.id,
