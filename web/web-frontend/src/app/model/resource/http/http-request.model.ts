@@ -35,6 +35,10 @@ export class HttpRequest implements Resource<HttpRequest> {
     }
 
     deserialize(input: Object): HttpRequest {
+        if (!input) {
+            return this;
+        }
+
         if (input["method"]) {
             this.method = HttpMethod.fromString(input["method"]);
         }
@@ -56,6 +60,10 @@ export class HttpRequest implements Resource<HttpRequest> {
     }
 
     serialize(): string {
+        if (this.isEmpty()) {
+            return null;
+        }
+
         let result = '' +
             '{' +
             '"method":' + JsonUtil.stringify(this.method.toString()) + ',' +

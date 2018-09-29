@@ -28,6 +28,7 @@ import {JsonVerifyResourceType} from "../tree/model/type/json-verify.resource-ty
 import {BasicResourceType} from "../tree/model/type/basic.resource-type.model";
 import {JsonVerifyResourceComponent} from "./json_verify/json-verify-resource.component";
 import {JsonVerify} from "../../../generic/components/json-verify/model/json-verify.model";
+import {JsonUtil} from "../../../utils/json.util";
 
 export class ResourceMapEnum {
     public static TEXT: ResourceMapEnum = new ResourceMapEnum(
@@ -83,7 +84,7 @@ export class ResourceMapEnum {
         () => {return new RdbmsConnectionConfig()},
         () => {return RdbmsConnectionResourceType.getInstanceForRoot()},
         () => {return RdbmsConnectionResourceType.getInstanceForChildren()},
-        (input:string) => {return new RdbmsConnectionConfig().deserialize(JSON.parse(input))}
+        (input:string) => {return new RdbmsConnectionConfig().deserialize(JsonUtil.parseJson(input))}
     );
     public static RDBMS_SQL: ResourceMapEnum = new ResourceMapEnum(
         "database.relational.model.RdbmsSql",
@@ -105,7 +106,7 @@ export class ResourceMapEnum {
         () => {return new SchemaVerify(null)},
         () => {return RdbmsVerifyResourceType.getInstanceForRoot()},
         () => {return RdbmsVerifyResourceType.getInstanceForChildren()},
-        (input:string) => {return new SchemaVerify(null).deserialize(JSON.parse(input))}
+        (input:string) => {return new SchemaVerify(null).deserialize(JsonUtil.parseJson(input))}
     );
     public static HTTP_REQUEST: ResourceMapEnum = new ResourceMapEnum(
         "com.testerum.model.resources.http.request.HttpRequest",
@@ -116,7 +117,7 @@ export class ResourceMapEnum {
         () => {return new HttpRequest()},
         () => {return HttpRequestResourceType.getInstanceForRoot()},
         () => {return HttpRequestResourceType.getInstanceForChildren()},
-        (input:string) => {return new HttpRequest().deserialize(JSON.parse(input))}
+        (input:string) => {return new HttpRequest().deserialize(JsonUtil.parseJson(input))}
     );
     public static HTTP_RESPONSE_VERIFY: ResourceMapEnum = new ResourceMapEnum(
         "http.response.verify.model.HttpResponseVerify",
@@ -127,7 +128,7 @@ export class ResourceMapEnum {
         () => {return new HttpResponseVerify()},
         () => {return HttpResponseVerifyResourceType.getInstanceForRoot()},
         () => {return HttpResponseVerifyResourceType.getInstanceForChildren()},
-        (input:string) => {return new HttpResponseVerify().deserialize(JSON.parse(input))}
+        (input:string) => {return new HttpResponseVerify().deserialize(JsonUtil.parseJson(input))}
     );
     public static HTTP_MOCK_SERVER_VERIFY: ResourceMapEnum = new ResourceMapEnum(
         "com.testerum.model.resources.http.mock.server.HttpMockServer",
@@ -138,7 +139,7 @@ export class ResourceMapEnum {
         () => {return new HttpMockServer()},
         () => {return HttpMockServerResourceType.getInstanceForRoot()},
         () => {return HttpMockServerResourceType.getInstanceForChildren()},
-        (input:string) => {return new HttpMockServer().deserialize(JSON.parse(input))}
+        (input:string) => {return new HttpMockServer().deserialize(JsonUtil.parseJson(input))}
     );
     public static HTTP_MOCK_STUB_VERIFY: ResourceMapEnum = new ResourceMapEnum(
         "com.testerum.model.resources.http.mock.stub.HttpMock",
@@ -149,7 +150,7 @@ export class ResourceMapEnum {
         () => {return new HttpMock()},
         () => {return HttpMockStubResourceType.getInstanceForRoot()},
         () => {return HttpMockStubResourceType.getInstanceForChildren()},
-        (input:string) => {return new HttpMock().deserialize(JSON.parse(input))}
+        (input:string) => {return new HttpMock().deserialize(JsonUtil.parseJson(input))}
     );
     public static JSON_VERIFY: ResourceMapEnum = new ResourceMapEnum(
         "net.qutester.model.resources.json.verify.JsonVerify",
