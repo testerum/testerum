@@ -15,6 +15,8 @@ import {ComposedStepViewComponent} from "../../../generic/components/step/compos
 import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dialog/update-incompatibility-dialog.component";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
+import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
+import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 
 @Component({
     moduleId: module.id,
@@ -40,7 +42,8 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
                 private stepsService: StepsService,
                 private stepsTreeService: StepsTreeService,
                 private errorService: ErrorService,
-                private applicationEventBus: ApplicationEventBus) {
+                private applicationEventBus: ApplicationEventBus,
+                private areYouSureModalService: AreYouSureModalService) {
     }
 
     ngOnInit() {
@@ -80,6 +83,17 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
     }
 
     cancelAction(): void {
+        this.areYouSureModalService.showAreYouSureModal(
+            "Cancel",
+            "Are you sure you want to cancel all your changes?"
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                this.cancelActionAfterConfirmation();
+            }
+        });
+    }
+
+    private cancelActionAfterConfirmation(): void {
         if (this.isCreateAction) {
             this.urlService.navigateToSteps();
         } else {
@@ -94,6 +108,17 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
     }
 
     deleteAction(): void {
+        this.areYouSureModalService.showAreYouSureModal(
+            "Delete",
+            "Are you sure you want to delete this step?"
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                this.deleteActionAfterConfirmation();
+            }
+        });
+    }
+
+    private deleteActionAfterConfirmation(): void {
         this.stepsService.deleteComposedStepsDef(this.model).subscribe(restul => {
             this.stepsTreeService.initializeStepsTreeFromServer();
             this.urlService.navigateToSteps();
