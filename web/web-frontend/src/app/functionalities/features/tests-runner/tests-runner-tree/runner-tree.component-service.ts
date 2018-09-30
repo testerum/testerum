@@ -19,9 +19,7 @@ import {StepStartEvent} from "../../../../model/test/event/step-start.event";
 import {StepEndEvent} from "../../../../model/test/event/step-end.event";
 import {RunnerErrorEvent} from "../../../../model/test/event/runner-error.event";
 import {RunnerTreeContainerNodeModel} from "./model/runner-tree-container-node.model";
-import {EventKey} from "../../../../model/test/event/fields/event-key.model";
 import {ArrayUtil} from "../../../../utils/array.util";
-import {PositionInParent} from "../../../../model/test/event/fields/position-in-parent.model";
 import {FeatureStartEvent} from "../../../../model/test/event/feature-start.event";
 import {FeatureEndEvent} from "../../../../model/test/event/feature-end.event";
 import {RunnerTreeFilterModel} from "./model/filter/runner-tree-filter.model";
@@ -31,9 +29,10 @@ import {RunnerStoppedEvent} from '../../../../model/test/event/runner-stopped.ev
 export class RunnerTreeComponentService {
 
     treeModel: JsonTreeModel;
-    treeRootNode: RunnerRootTreeNodeModel;
-    treeTestsNodes: RunnerTestTreeNodeModel[] = [];
-    treeTestsWithFoldersNodes: RunnerTestTreeNodeModel[] = [];
+    private treeRootNode: RunnerRootTreeNodeModel;
+    private treeTestsNodes: RunnerTestTreeNodeModel[] = [];
+    private treeTestsWithFoldersNodes: RunnerTestTreeNodeModel[] = [];
+    private allNodesMapByEventKey: Map<string, RunnerTreeNodeModel> = new Map<string, RunnerTreeNodeModel>();
 
     selectedRunnerTreeNode: RunnerTreeNodeModel;
     selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
@@ -49,6 +48,8 @@ export class RunnerTreeComponentService {
     }
 
     private onRunnerEvent(runnerEvent: RunnerEvent): void {
+        let eventKey: string = RunnerTreeUtil.getEventKey(runnerEvent);
+
         if (runnerEvent instanceof SuiteStartEvent) {
             let runnerTreeNode: RunnerTreeNodeModel = this.treeRootNode;
             runnerTreeNode.eventKey = runnerEvent.eventKey;
@@ -65,7 +66,7 @@ export class RunnerTreeComponentService {
         }
 
         if (runnerEvent instanceof FeatureStartEvent) {
-            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
@@ -73,14 +74,14 @@ export class RunnerTreeComponentService {
         }
 
         if (runnerEvent instanceof FeatureEndEvent) {
-            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
             runnerTreeNode.changeState(runnerEvent.status);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
             return;
         }
 
         if (runnerEvent instanceof TestStartEvent) {
-            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
@@ -88,7 +89,7 @@ export class RunnerTreeComponentService {
         }
 
         if (runnerEvent instanceof TestEndEvent) {
-            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
             runnerTreeNode.changeState(runnerEvent.status);
 
             switch (runnerEvent.status) {
@@ -103,7 +104,7 @@ export class RunnerTreeComponentService {
         }
 
         if (runnerEvent instanceof StepStartEvent) {
-            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
@@ -111,7 +112,7 @@ export class RunnerTreeComponentService {
         }
 
         if (runnerEvent instanceof StepEndEvent) {
-            let runnerTreeNode: RunnerTreeNodeModel = this.findNode(runnerEvent.eventKey);
+            let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
             runnerTreeNode.changeState(runnerEvent.status);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
             return;
@@ -161,7 +162,8 @@ export class RunnerTreeComponentService {
         RunnerTreeUtil.mapServerModelToTreeModel(runnerRootNode, this.treeModel);
         this.treeRootNode = this.treeModel.children[0] as RunnerRootTreeNodeModel;
         this.treeTestsWithFoldersNodes = ArrayUtil.copyArrayOfObjects(this.treeRootNode.children);
-        this.treeTestsNodes = RunnerTreeUtil.getTreeTestNodes(this.treeModel.children[0] as RunnerRootTreeNodeModel);
+        this.treeTestsNodes = RunnerTreeUtil.getTreeTestNodes(this.treeRootNode);
+        this.allNodesMapByEventKey = RunnerTreeUtil.getAllNodesMapByEventKey(this.treeRootNode);
 
         if (this.runnerEventSubscription) {
             this.runnerEventSubscription.unsubscribe();
@@ -171,34 +173,6 @@ export class RunnerTreeComponentService {
         });
 
         this.restPieData(this.executionPieService.pieModel);
-    }
-
-    findNode(eventKey:EventKey): RunnerTreeNodeModel {
-        let runnerTreeNodeModel = this.findNodeByPositionInParent(ArrayUtil.copyArray(eventKey.positionsFromRoot), (this.treeModel.children as RunnerTreeNodeModel[]));
-        if (runnerTreeNodeModel == null) {
-            console.warn("Couldn't find a coresponding tree node for event with key", eventKey, this.treeRootNode)
-        }
-        return runnerTreeNodeModel;
-    }
-
-    private findNodeByPositionInParent(remainingPositions: Array<PositionInParent>, nodes: RunnerTreeNodeModel[]): RunnerTreeNodeModel {
-        let currentPosition = remainingPositions[0];
-        remainingPositions.splice(0, 1);
-
-        if(nodes.length < currentPosition.indexInParent) {
-            return null
-        }
-
-        let currentNode = nodes[currentPosition.indexInParent];
-        if(currentNode.id == currentPosition.id) {
-            if (remainingPositions.length == 0) {
-                return currentNode
-            }
-            if(currentNode instanceof RunnerTreeContainerNodeModel) {
-                return this.findNodeByPositionInParent(remainingPositions, currentNode.getChildren());
-            }
-        }
-        return null;
     }
 
     private restPieData(pieModel: ExecutionPieModel) {

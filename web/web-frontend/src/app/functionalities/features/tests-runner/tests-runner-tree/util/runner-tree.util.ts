@@ -13,6 +13,7 @@ import {RunnerComposedStepTreeNodeModel} from "../model/runner-composed-step-tre
 import {RunnerBasicStepTreeNodeModel} from "../model/runner-basic-step-tree-node.model";
 import {RunnerBasicStepNode} from "../../../../../model/runner/tree/runner-basic-step-node.model";
 import {RunnerUndefinedStepNode} from "../../../../../model/runner/tree/runner-undefined-step-node.model";
+import {RunnerEvent} from "../../../../../model/test/event/runner.event";
 
 export class RunnerTreeUtil {
 
@@ -111,5 +112,39 @@ export class RunnerTreeUtil {
                 result.push(childNode)
             }
         }
+    }
+
+    static getAllNodesMapByEventKey(treeRootNode: RunnerRootTreeNodeModel): Map<string, RunnerTreeNodeModel> {
+        let result = new Map<string, RunnerTreeNodeModel>();
+        this.getAllNodesMapByEventKeyOfContainer(treeRootNode, result);
+        return result;
+    }
+
+    private static getAllNodesMapByEventKeyOfContainer(parentNode: RunnerTreeContainerNodeModel, result: Map<string, RunnerTreeNodeModel>) {
+        for (const childNode of parentNode.getChildren()) {
+            if (childNode instanceof RunnerTreeContainerNodeModel) {
+                this.getAllNodesMapByEventKeyOfContainer(childNode, result);
+            }
+
+            let eventKey = "";
+            let eventKeyParent: RunnerTreeNodeModel = childNode;
+            while(!(eventKeyParent instanceof JsonTreeModel)) {
+                eventKey = this.appendParentNodeToEventKey(eventKey, eventKeyParent);
+                eventKeyParent = eventKeyParent.getParent() as RunnerTreeContainerNodeModel;
+            }
+            result.set(eventKey, childNode);
+        }
+    }
+
+    private static appendParentNodeToEventKey(eventKey: string, node: RunnerTreeNodeModel): string {
+        return node.id + "_" + node.parentContainer.getChildren().indexOf(node, 0) + "#" + eventKey
+    }
+
+    static getEventKey(runnerEvent: RunnerEvent) {
+        let result: string = "";
+        for (const positionInParent of runnerEvent.eventKey.positionsFromRoot) {
+            result = result + positionInParent.id + "_" + positionInParent.indexInParent + "#";
+        }
+        return result;
     }
 }
