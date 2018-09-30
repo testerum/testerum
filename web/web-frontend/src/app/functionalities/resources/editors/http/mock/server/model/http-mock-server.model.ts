@@ -24,12 +24,20 @@ export class HttpMockServer implements Resource<HttpMockServer> {
     }
 
     deserialize(input: Object): HttpMockServer {
+        if (!input) {
+            return this;
+        }
+
         this.port = input["port"];
 
         return this;
     }
 
     serialize(): string {
+        if (this.isEmpty()) {
+            return null;
+        }
+
         let hasSavedFields = false;
         let result = '{';
         if (this.port) {

@@ -56,6 +56,10 @@ export class RdbmsConnectionConfig implements Resource<RdbmsConnectionConfig> {
     }
 
     deserialize(input: Object): RdbmsConnectionConfig {
+        if (!input) {
+            return this;
+        }
+
         this.driverName = input["driverName"];
         this.driverJar = input["driverJar"];
         this.driverClass = input["driverClass"];
@@ -75,6 +79,9 @@ export class RdbmsConnectionConfig implements Resource<RdbmsConnectionConfig> {
     }
 
     serialize(): string {
+        if (this.isEmpty()) {
+            return null;
+        }
 
         return  "" +
             '{' +

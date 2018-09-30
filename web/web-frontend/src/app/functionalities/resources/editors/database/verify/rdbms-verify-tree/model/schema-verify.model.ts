@@ -52,6 +52,9 @@ export class SchemaVerify extends JsonTreeContainerAbstract implements Resource<
     }
 
     deserialize(input: Object): SchemaVerify {
+        if (!input) {
+            return this;
+        }
 
         for (let tableName in input) {
             if (CompareMode.PROPERTY_NAME_IN_JSON == tableName) {
@@ -66,6 +69,10 @@ export class SchemaVerify extends JsonTreeContainerAbstract implements Resource<
     }
 
     serialize(): string {
+        if (this.isEmpty()) {
+            return null;
+        }
+
         let result = "" +
             '{' +
             '"' + CompareMode.PROPERTY_NAME_IN_JSON + '":' + JsonUtil.stringify(this.compareMode.getText());

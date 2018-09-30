@@ -34,6 +34,10 @@ export class HttpResponseVerify implements Resource<HttpResponseVerify> {
     }
 
     deserialize(input: Object): HttpResponseVerify {
+        if (!input) {
+            return this;
+        }
+
         this.expectedStatusCode = input["expectedStatusCode"];
 
         if(input['expectedHeaders']){
@@ -53,6 +57,10 @@ export class HttpResponseVerify implements Resource<HttpResponseVerify> {
     }
 
     serialize(): string {
+        if (this.isEmpty()) {
+            return null;
+        }
+
         let hasSavedFields = false;
         let result = '{';
         if (this.expectedStatusCode) {

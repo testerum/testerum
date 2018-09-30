@@ -33,6 +33,9 @@ export class HttpMock implements Resource<HttpMock> {
     }
 
     deserialize(input: Object): HttpMock {
+        if (!input) {
+            return this;
+        }
 
         if(input['expectedRequest']) {
             this.expectedRequest = this.expectedRequest.deserialize(input['expectedRequest'])
@@ -57,6 +60,9 @@ export class HttpMock implements Resource<HttpMock> {
     }
 
     serialize(): string {
+        if (this.isEmpty()) {
+            return null;
+        }
 
         let result = '{';
 
