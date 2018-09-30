@@ -2,7 +2,7 @@
 
     <div (click)="setNodeAsSelected()"
          [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
-         [class.step-selected]="isSelected">
+         [class.tree-leaf-selected]="isSelected">
         <step-text [stepDef]="model.stepDef"></step-text>
     </div>
 </div>
