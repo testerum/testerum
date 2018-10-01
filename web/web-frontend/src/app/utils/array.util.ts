@@ -35,7 +35,7 @@ export class ArrayUtil {
     }
 
     static replaceElementInArray(array: Array<any>, oldElement: any, newElement: any) {
-        let index = ``
+        let index = array.indexOf(oldElement, 0);
         if (index > -1) {
             array[index] = newElement;
             return true;
