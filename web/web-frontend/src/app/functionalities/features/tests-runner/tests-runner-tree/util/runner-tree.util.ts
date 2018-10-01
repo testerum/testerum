@@ -140,7 +140,11 @@ export class RunnerTreeUtil {
         return node.id + "_" + node.parentContainer.getChildren().indexOf(node, 0) + "#" + eventKey
     }
 
-    static getEventKey(runnerEvent: RunnerEvent) {
+    static getEventKey(runnerEvent: RunnerEvent): string {
+        if (!runnerEvent.eventKey) {
+            return null;
+        }
+
         let result: string = "";
         for (const positionInParent of runnerEvent.eventKey.positionsFromRoot) {
             result = result + positionInParent.id + "_" + positionInParent.indexInParent + "#";
