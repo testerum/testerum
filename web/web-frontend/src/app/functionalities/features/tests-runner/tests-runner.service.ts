@@ -67,6 +67,10 @@ export class TestsRunnerService {
     }
 
     private connectWebSocket() {
+        if (this.webSocket) {
+            this.webSocket.close(true);
+            this.webSocket = null;
+        }
         let webSocketUrl = this.getWebSocketUrl();
         this.webSocket = new $WebSocket(webSocketUrl, null, { reconnectIfNotNormalClose: true } as WebSocketConfig);
 
