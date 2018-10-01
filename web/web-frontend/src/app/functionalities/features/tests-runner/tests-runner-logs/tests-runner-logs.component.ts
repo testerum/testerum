@@ -2,8 +2,6 @@ import {AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, ViewC
 import {TestsRunnerLogModel} from "./model/tests-runner-log.model";
 import {LogLineTypeEnum} from "./model/log-line-type.enum";
 import {RunnerTreeNodeModel} from "../tests-runner-tree/model/runner-tree-node.model";
-import {RunnerTreeNodeSelectedListener} from "../tests-runner-tree/event/runner-tree-node-selected.listener";
-import {RunnerTreeComponentService} from "../tests-runner-tree/runner-tree.component-service";
 import {TestsRunnerLogsService} from "./tests-runner-logs.service";
 import {Subscription} from "rxjs";
 import {TestsRunnerService} from "../tests-runner.service";
@@ -14,7 +12,6 @@ import {TestsRunnerService} from "../tests-runner.service";
     templateUrl: 'tests-runner-logs.component.html',
     styleUrls: ["tests-runner-logs.component.scss"]
 })
-
 export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDestroy {
 
     @Input() logs:Array<TestsRunnerLogModel> = [];
