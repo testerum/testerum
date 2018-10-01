@@ -18,7 +18,7 @@ export class TestsRunnerService {
     private static URLS = {
         REST_CREATE_TEST_EXECUTION: "/rest/tests/executions",
         REST_STOP_TEST_EXECUTION  : "/rest/tests/executions",
-        WEB_SOCKET                : "ws://localhost:8080/rest/tests-ws",
+        WEB_SOCKET_PATH           : "/rest/tests-ws",
     };
 
     public isTestRunnerVisible:boolean = false;
@@ -67,7 +67,8 @@ export class TestsRunnerService {
     }
 
     private connectWebSocket() {
-        this.webSocket = new $WebSocket(TestsRunnerService.URLS.WEB_SOCKET, null, { reconnectIfNotNormalClose: true } as WebSocketConfig);
+        let webSocketUrl = this.getWebSocketUrl();
+        this.webSocket = new $WebSocket(webSocketUrl, null, { reconnectIfNotNormalClose: true } as WebSocketConfig);
 
         this.webSocket.onError((error) => {
             console.log(`runner WebSocket dataStream: error: ${error.message}`, error);
@@ -78,6 +79,19 @@ export class TestsRunnerService {
         this.webSocket.onMessage((message) => {
             this.handleServerMessage(message);
         });
+    }
+
+    private getWebSocketUrl(): string {
+        let loc = window.location;
+        let wsHost: string = "";
+        if (loc.protocol === "https:") {
+            wsHost = "wss:";
+        } else {
+            wsHost = "ws:";
+        }
+        wsHost += "//" + loc.host;
+        wsHost += TestsRunnerService.URLS.WEB_SOCKET_PATH;
+        return wsHost;
     }
 
     private handleServerMessage(message: MessageEvent) {
