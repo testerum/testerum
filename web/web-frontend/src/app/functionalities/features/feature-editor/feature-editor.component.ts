@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild,} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-
 import {FeaturesTreeService} from "../features-tree/features-tree.service";
 import {Subscription} from "rxjs";
 import {Feature} from "../../../model/feature/feature.model";
@@ -29,6 +28,9 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
     };
 
     model: Feature = new Feature();
+    fileAttachmentsAdded: File[] = [];
+    attachmentsPathsToDelete: Path[] = [];
+
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
 
@@ -127,10 +129,6 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
         this.currentTagSearch = null;
     }
 
-    getFeatureUploadUrl(): string {
-        return "/rest/features/fileUpload?path="+encodeURIComponent(this.model.path.toString());
-    }
-
     initPathForTitle() {
         this.pathForTitle = "";
         if (this.model.path) {
@@ -196,7 +194,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
         }
 
         this.featureService
-            .save(this.model)
+            .save(this.model, this.fileAttachmentsAdded, this.attachmentsPathsToDelete)
             .subscribe(
                 savedModel => this.afterSaveHandler(savedModel),
                 error => FormUtil.setErrorsToForm(this.form, error)

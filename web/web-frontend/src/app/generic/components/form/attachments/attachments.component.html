@@ -1,10 +1,11 @@
 <p-fileUpload name="files"
-              url="{{url}}"
-              (onUpload)="onUpload($event)"
               [class.edit]="editMode"
               [class.not-edit]="!editMode"
-              auto="true"
-              multiple="multiple">
+              [customUpload]="true"
+              [auto]="true"
+              multiple="multiple"
+              (uploadHandler)="onUploadHandler($event)"
+              (onUpload)="onUpload($event)">
 
     <ng-template pTemplate="content">
         <ol class="list">

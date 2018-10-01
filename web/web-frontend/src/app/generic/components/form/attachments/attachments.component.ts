@@ -5,6 +5,7 @@ import {AttachmentsService} from "../../../../service/attachments.service";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {AreYouSureModalEnum} from "../../are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalService} from "../../are_you_sure_modal/are-you-sure-modal.service";
+import {Path} from "../../../../model/infrastructure/path/path.model";
 
 @Component({
     selector: 'attachments-component',
@@ -14,14 +15,27 @@ import {AreYouSureModalService} from "../../are_you_sure_modal/are-you-sure-moda
 })
 export class AttachmentsComponent implements OnInit {
 
-    @Input() url: string;
     @Input() editMode: boolean;
     @Input() attachments: Array<Attachment> = [];
+
+    @Input() fileAttachmentsAdded: File[] = [];
+    @Input() attachmentsPathsToDelete: Path[] = [];
 
     constructor(private attachmentsService: AttachmentsService,
                 private areYouSureModalService: AreYouSureModalService,){}
 
     ngOnInit() {
+    }
+
+    onUploadHandler(event: any) {
+        console.log("onUploadHandler", event);
+        for (const file of event.files) {
+            this.fileAttachmentsAdded.push(file)
+        }
+    }
+
+    onSelect(event: any) {
+        console.log("onSelect", event)
     }
 
     onUpload(event:any) {
@@ -61,13 +75,8 @@ export class AttachmentsComponent implements OnInit {
             "Delete Resource",
             "Are you sure you want to delete this attachment?")
             .subscribe((action: AreYouSureModalEnum) => {
-                if (action == AreYouSureModalEnum.OK) {
-                    this.attachmentsService.delete(attachment.path).subscribe(
-                        result => {
-                            ArrayUtil.removeElementFromArray(this.attachments, attachment)
-                        }
-                    )
-                }
+                this.attachmentsPathsToDelete.push(attachment.path);
+                ArrayUtil.removeElementFromArray(this.attachments, attachment);
             });
     }
 

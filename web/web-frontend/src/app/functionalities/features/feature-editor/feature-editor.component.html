@@ -67,9 +67,10 @@
                 <label class="my-label-top label-size">Attachments</label>
 
                 <div class="my-value">
-                    <attachments-component [url]="getFeatureUploadUrl()"
-                                           [attachments]="model.attachments"
-                                           [editMode]="isEditMode"></attachments-component>
+                    <attachments-component [attachments]="model.attachments"
+                                           [editMode]="isEditMode"
+                                           [fileAttachmentsAdded]="fileAttachmentsAdded"
+                                           [attachmentsPathsToDelete]="attachmentsPathsToDelete"></attachments-component>
                 </div>
             </div>
 

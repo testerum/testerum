@@ -8,6 +8,8 @@ import { Path } from "../model/infrastructure/path/path.model";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { RootFeatureNode } from "../model/feature/tree/root-feature-node.model";
 import { FeaturesTreeFilter } from "../model/feature/filter/features-tree-filter.model";
+import {SerializationUtil} from "../generic/components/json-verify/json-verify-tree/model/util/serialization.util";
+import {JsonUtil} from "../utils/json.util";
 
 @Injectable()
 export class FeatureService {
@@ -41,16 +43,18 @@ export class FeatureService {
             map(FeatureService.extractFeature));
     }
 
-    save(model: Feature): Observable<Feature> {
-        let body = model.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
+    save(model: Feature, fileAttachmentsAdded: File[], attachmentsPathsToDelete: Path[]): Observable<Feature> {
+        const formdata: FormData = new FormData();
+
+        formdata.append('feature', model.serialize());
+        formdata.append("attachmentsPathsToDelete", JsonUtil.serializeArrayOfSerializable(attachmentsPathsToDelete));
+
+        for (let i = 0; i < fileAttachmentsAdded.length; i++) {
+            formdata.append("file"+i, fileAttachmentsAdded[i])
+        }
 
         return this.http
-            .post<Feature>(this.FEATURE_URL, body, httpOptions).pipe(
+            .post<Feature>(this.FEATURE_URL, formdata).pipe(
             map(res => new Feature().deserialize(res)));
     }
 
