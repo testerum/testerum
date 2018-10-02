@@ -10,6 +10,10 @@ import com.testerum.model.warning.Warning
 class WarningService {
 
     fun testWithWarnings(test: TestModel): TestModel {
+        if (test.properties.isManual) {
+            return test
+        }
+
         // fill-in own warnings
         val warnings: MutableList<Warning> = mutableListOf()
 
