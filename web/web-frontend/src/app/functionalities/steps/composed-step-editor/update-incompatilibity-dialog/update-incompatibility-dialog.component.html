@@ -1,17 +1,20 @@
-<div bsModal #infoModal="bs-modal" class="modal fade error-dialog" tabindex="-1" role="dialog">
+<div bsModal #infoModal="bs-modal" class="warning-dialog modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button (click)="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">
+                    <i class="title-icon fas fa-exclamation-triangle"></i>
                     Warning
                 </h4>
             </div>
             <div class="modal-body">
-                <div class="error-message">
-
-                    <div>The new Step definition is not compatible with the previous version.</div>
-                    <div>The following tests and steps will be broken:</div>
+                <div class="warning-box">
+                    <i class="warning-icon fas fa-exclamation-triangle"></i>
+                    <div class="warning-message">
+                        <div>The new Step definition is not compatible with the previous version.</div>
+                        <div>The following tests and steps will be broken:</div>
+                    </div>
                 </div>
 
                 <div *ngIf="pathsForAffectedTests.length != 0" class="affected-message">
