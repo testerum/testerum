@@ -1,14 +1,13 @@
-import { map } from 'rxjs/operators';
-import { Injectable } from "@angular/core";
-import { Observable } from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Injectable} from "@angular/core";
+import {Observable} from 'rxjs';
 
 
-import { Feature } from "../model/feature/feature.model";
-import { Path } from "../model/infrastructure/path/path.model";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { RootFeatureNode } from "../model/feature/tree/root-feature-node.model";
-import { FeaturesTreeFilter } from "../model/feature/filter/features-tree-filter.model";
-import {SerializationUtil} from "../generic/components/json-verify/json-verify-tree/model/util/serialization.util";
+import {Feature} from "../model/feature/feature.model";
+import {Path} from "../model/infrastructure/path/path.model";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {RootFeatureNode} from "../model/feature/tree/root-feature-node.model";
+import {FeaturesTreeFilter} from "../model/feature/filter/features-tree-filter.model";
 import {JsonUtil} from "../utils/json.util";
 
 @Injectable()
@@ -50,7 +49,7 @@ export class FeatureService {
         formdata.append("attachmentsPathsToDelete", JsonUtil.serializeArrayOfSerializable(attachmentsPathsToDelete));
 
         for (let i = 0; i < fileAttachmentsAdded.length; i++) {
-            formdata.append("file"+i, fileAttachmentsAdded[i])
+            formdata.append("attachmentFiles", fileAttachmentsAdded[i])
         }
 
         return this.http

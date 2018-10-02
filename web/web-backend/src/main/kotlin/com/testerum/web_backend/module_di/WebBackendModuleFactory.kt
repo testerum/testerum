@@ -21,7 +21,6 @@ import com.testerum.web_backend.controllers.error.ErrorController
 import com.testerum.web_backend.controllers.error.model.response_preparers.generic.GenericErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.validation.ValidationErrorResponsePreparer
-import com.testerum.web_backend.controllers.features.FeatureAttachmentsController
 import com.testerum.web_backend.controllers.features.FeatureController
 import com.testerum.web_backend.controllers.filesystem.FileSystemController
 import com.testerum.web_backend.controllers.manual.ManualExecPlansController
@@ -85,6 +84,20 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val rdbmsDriverConfigCache = JdbcDriversCache()
+
+    val restApiObjectMapper = ObjectMapper().apply {
+        registerModule(AfterburnerModule())
+        registerModule(JavaTimeModule())
+        registerModule(GuavaModule())
+
+        disable(SerializationFeature.INDENT_OUTPUT)
+        setSerializationInclusion(JsonInclude.Include.NON_NULL)
+        disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        enable(SerializationFeature.WRITE_DATES_WITH_ZONE_ID)
+
+        disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+        disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    }
 
 
     //---------------------------------------- initializers ----------------------------------------//
@@ -295,10 +308,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             messageFrontendService = messageFrontendService
     )
 
-    private val attachmentsController = FeatureAttachmentsController(
-            featuresFrontendService = featuresFrontendService
-    )
-
     private val variablesController = VariablesController(
             variablesFrontendService = variablesFrontendService
     )
@@ -312,7 +321,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val featureController = FeatureController(
-            featuresFrontendService = featuresFrontendService
+            featuresFrontendService = featuresFrontendService,
+            restApiObjectMapper = restApiObjectMapper
     )
 
     private val tagsController = TagsController(
@@ -362,7 +372,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             setupController,
             settingsController,
             messageController,
-            attachmentsController,
             variablesController,
             testExecutionController,
             testRunnerReportController,

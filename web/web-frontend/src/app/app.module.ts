@@ -35,7 +35,6 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ArgValueValidatorDirective} from "./generic/components/step-call-tree/arg-modal/validator/arg-value-validator.directive";
 import {FeatureService} from "./service/feature.service";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {AttachmentsService} from "./service/attachments.service";
 import {UrlService} from "./service/url.service";
 import {TagsService} from "./service/tags.service";
 import {MessageService} from "./service/message.service";
@@ -84,7 +83,6 @@ import {ManualModule} from "./functionalities/manual/manual.module";
         FileSystemService,
         ResultService,
         FeatureService,
-        AttachmentsService,
         TagsService,
 
         ResourceService,

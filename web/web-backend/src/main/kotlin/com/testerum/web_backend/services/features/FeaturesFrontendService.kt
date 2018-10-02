@@ -78,7 +78,7 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
     }
 
     /**
-     * Creates, renames, and/or updates a feature.
+     * Creates, renames, and/or updates a feature & its attachments.
      *
      * Decisions of whether this is a create, rename, etc. are taken comparing ``path`` with ``oldPath``.
      *
@@ -88,7 +88,20 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
      * Note that the given feature's ``attachments`` field is ignored.
      * To update/delete the attachments, other methods needs to be used.
      */
-    fun save(feature: Feature): Feature {
+    fun save(feature: Feature,
+             attachmentsPathsToDelete: List<Path>,
+             attachmentFiles: List<FileToUpload>): Feature {
+        val savedFeature = saveFeature(feature)
+
+        deleteFeatureAttachments(attachmentsPathsToDelete)
+
+        uploadFeatureAttachments(savedFeature.path, attachmentFiles)
+
+        // get feature again (rather than just returning "savedFeature"), to include the correct list of attachments
+        return getFeatureAtPath(savedFeature.path)!!
+    }
+
+    private fun saveFeature(feature: Feature): Feature {
         val featuresDir = frontendDirs.getRequiredFeaturesDir()
 
         val savedFeature = featuresCache.save(feature, featuresDir)
@@ -101,6 +114,22 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
         }
 
         return savedFeature
+    }
+
+    private fun deleteFeatureAttachments(attachmentsPathsToDelete: List<Path>) {
+        val featuresDir = frontendDirs.getRequiredFeaturesDir()
+
+        for (path in attachmentsPathsToDelete) {
+            featureFileService.deleteAttachment(path, featuresDir)
+        }
+    }
+
+    private fun uploadFeatureAttachments(featurePath: Path, filesToUpload: List<FileToUpload>) {
+        val featuresDir = frontendDirs.getRequiredFeaturesDir()
+
+        for (fileToUpload in filesToUpload) {
+            featureFileService.uploadAttachment(featurePath, fileToUpload, featuresDir)
+        }
     }
 
     /**
@@ -118,17 +147,6 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
         testsCache.featureWasDeleted()
     }
 
-    fun uploadAttachments(featurePath: Path, filesToUpload: List<FileToUpload>): List<Attachment> {
-        val featuresDir = frontendDirs.getRequiredFeaturesDir()
-
-        val result = mutableListOf<Attachment>()
-
-        for (fileToUpload in filesToUpload) {
-            result += featureFileService.uploadAttachment(featurePath, fileToUpload, featuresDir)
-        }
-
-        return result
-    }
 
     fun writeAttachmentFileContentToResponse(attachmentFilePath: Path,
                                              thumbnail: Boolean,
@@ -187,12 +205,6 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
             // body
             IOUtils.copy(attachmentInputStream, response.outputStream)
         }
-    }
-
-    fun deleteAttachment(attachmentFilePath: Path) {
-        val featuresDir = frontendDirs.getRequiredFeaturesDir()
-
-        featureFileService.deleteAttachment(attachmentFilePath, featuresDir)
     }
 
 }

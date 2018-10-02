@@ -1,19 +1,27 @@
 package com.testerum.web_backend.controllers.features
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.model.feature.Feature
 import com.testerum.model.feature.filter.FeaturesTreeFilter
 import com.testerum.model.feature.tree.RootFeatureNode
-import com.testerum.model.file.Attachment
 import com.testerum.model.file.FileToUpload
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.web_backend.services.features.FeaturesFrontendService
 import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/features")
-class FeatureController(private val featuresFrontendService: FeaturesFrontendService) {
+class FeatureController(private val featuresFrontendService: FeaturesFrontendService,
+                        private val restApiObjectMapper: ObjectMapper) {
 
     @RequestMapping(method = [RequestMethod.GET], path = [""])
     @ResponseBody
@@ -35,10 +43,19 @@ class FeatureController(private val featuresFrontendService: FeaturesFrontendSer
         )
     }
 
-    @RequestMapping(method = [RequestMethod.POST], path = [""])
+    @RequestMapping(method = [RequestMethod.POST], path = [""], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @ResponseBody
-    fun save(@RequestBody feature: Feature): Feature {
-        return featuresFrontendService.save(feature)
+    fun save(@RequestParam("feature") featurePart: String,
+             @RequestParam("attachmentsPathsToDelete") attachmentsPathsToDeletePart: String,
+             @RequestParam("attachmentFiles") attachmentFiles: List<MultipartFile>): Feature {
+        val feature = restApiObjectMapper.readValue<Feature>(featurePart)
+        val attachmentsPathsToDelete = restApiObjectMapper.readValue<List<Path>>(attachmentsPathsToDeletePart)
+
+        return featuresFrontendService.save(
+                feature,
+                attachmentsPathsToDelete,
+                attachmentFiles.toFilesToUpload()
+        )
     }
 
     @RequestMapping(method = [RequestMethod.DELETE], path = [""], params = ["path"])
@@ -46,13 +63,15 @@ class FeatureController(private val featuresFrontendService: FeaturesFrontendSer
         featuresFrontendService.delete(Path.createInstance(path))
     }
 
-    @RequestMapping(method = [RequestMethod.POST], path = ["/fileUpload"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @RequestMapping(method = [RequestMethod.GET], path = ["attachments"], params = ["path"])
     @ResponseBody
-    fun uploadAttachments(@RequestParam(value = "path") featurePathAsString: String,
-                          @RequestParam("files") multipartFiles: List<MultipartFile>): List<Attachment> {
-        return featuresFrontendService.uploadAttachments(
-                Path.createInstance(featurePathAsString),
-                multipartFiles.toFilesToUpload()
+    fun getAttachmentFileContent(@RequestParam(value = "path") pathAsString: String,
+                                 @RequestParam(value = "thumbnail", required = false) thumbnail: Boolean,
+                                 response: HttpServletResponse) {
+        featuresFrontendService.writeAttachmentFileContentToResponse(
+                Path.createInstance(pathAsString),
+                thumbnail,
+                response
         )
     }
 

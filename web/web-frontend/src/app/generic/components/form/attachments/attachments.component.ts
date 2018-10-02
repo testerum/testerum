@@ -1,7 +1,6 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Attachment} from "../../../../model/file/attachment.model";
 import {DateUtil} from "../../../../utils/date.util";
-import {AttachmentsService} from "../../../../service/attachments.service";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {AreYouSureModalEnum} from "../../are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalService} from "../../are_you_sure_modal/are-you-sure-modal.service";
@@ -21,8 +20,7 @@ export class AttachmentsComponent implements OnInit {
     @Input() fileAttachmentsAdded: File[] = [];
     @Input() attachmentsPathsToDelete: Path[] = [];
 
-    constructor(private attachmentsService: AttachmentsService,
-                private areYouSureModalService: AreYouSureModalService,){}
+    constructor(private areYouSureModalService: AreYouSureModalService,){}
 
     ngOnInit() {
     }
@@ -63,7 +61,7 @@ export class AttachmentsComponent implements OnInit {
     }
 
     getAttachmentUrl(attachment: Attachment, thumbnailVersion: boolean = false): string {
-        let url = "/rest/attachments?path=" + encodeURIComponent(attachment.path.toString());
+        let url = "/rest/features/attachments?path=" + encodeURIComponent(attachment.path.toString());
         if (thumbnailVersion) {
             url += "&thumbnail=true"
         }
