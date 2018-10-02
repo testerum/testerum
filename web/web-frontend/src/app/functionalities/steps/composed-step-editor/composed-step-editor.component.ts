@@ -24,7 +24,6 @@ import {AreYouSureModalService} from "../../../generic/components/are_you_sure_m
     templateUrl: 'composed-step-editor.component.html',
     styleUrls: ['./composed-step-editor.component.scss']
 })
-
 export class ComposedStepEditorComponent implements OnInit, OnDestroy {
 
     model: ComposedStepDef;

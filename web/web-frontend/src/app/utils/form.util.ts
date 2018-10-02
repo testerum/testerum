@@ -9,25 +9,29 @@ export class FormUtil {
 
     static setErrorsToForm(form: NgForm, error: any): void {
 
-        let validationException: ValidationErrorResponse;
+        let formValidationModel: FormValidationModel;
         if(error instanceof ValidationErrorResponse) {
-            validationException = error;
+            formValidationModel = error.validationModel;
+        }
+
+        if (error instanceof FormValidationModel) {
+            formValidationModel = error;
         }
 
         if(error instanceof HttpErrorResponse) {
             let errorResponse: ErrorResponse = error.error;
 
             if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
-                validationException = new ValidationErrorResponse().deserialize(errorResponse);
+                let validationException: ValidationErrorResponse = new ValidationErrorResponse().deserialize(errorResponse);
+                formValidationModel = validationException.validationModel;
             }
         }
 
-        if (validationException == null) {
+        if (formValidationModel == null) {
             return
         }
 
         let control = form.control;
-        let formValidationModel: FormValidationModel = validationException.validationModel;
 
         formValidationModel.fieldsWithValidationErrors.forEach((validationError:string, filedKey:string) => {
             let obj = {};
