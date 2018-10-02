@@ -54,7 +54,7 @@ class ComposedStepsFrontendService(private val stepsCache: StepsCache,
     fun getDirectoriesTree(): ComposedContainerStepNode = stepsCache.getComposedStepsDirectoriesTree()
 
     fun getWarnings(composedStep: ComposedStepDef): ComposedStepDef {
-        return warningService.composedStepWithWarnings(composedStep, keepExistingWarnings = false)
+        return warningService.composedStepWithWarnings(composedStep)
     }
 
 }

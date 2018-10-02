@@ -4,7 +4,12 @@ import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.test.TestModel
 import com.testerum.web_backend.services.tests.TestsFrontendService
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/tests")
@@ -21,7 +26,7 @@ class TestsController(private val testsFrontendService: TestsFrontendService) {
     @RequestMapping(method = [RequestMethod.POST], path = ["/warnings"])
     @ResponseBody
     fun getWarnings(@RequestBody test: TestModel): TestModel {
-        return testsFrontendService.getWarnings(test, keepExistingWarnings = false)
+        return testsFrontendService.getWarnings(test)
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/save"])

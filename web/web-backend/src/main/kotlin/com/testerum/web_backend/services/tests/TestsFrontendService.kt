@@ -13,8 +13,8 @@ class TestsFrontendService(private val saveFrontendService: SaveFrontendService,
 
     fun getTestAtPath(testPath: Path): TestModel? = testsCache.getTestAtPath(testPath)
 
-    fun getWarnings(testModel: TestModel, keepExistingWarnings: Boolean): TestModel {
-        return warningService.testWithWarnings(testModel, keepExistingWarnings)
+    fun getWarnings(testModel: TestModel): TestModel {
+        return warningService.testWithWarnings(testModel)
     }
 
     fun saveTest(test: TestModel): TestModel {
