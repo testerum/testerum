@@ -42,4 +42,13 @@ export class UpdateIncompatibilityDialogComponent {
     close(): void {
         this.infoModal.hide();
     }
+
+    getNameFromPath(path: Path): string {
+        let result = path.toDirectoryString();
+
+        if (path.fileName) {
+            result += path.fileName
+        }
+        return result;
+    }
 }

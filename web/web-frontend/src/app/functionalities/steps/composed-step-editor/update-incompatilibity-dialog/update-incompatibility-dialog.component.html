@@ -12,29 +12,30 @@
                 <div class="warning-box">
                     <i class="warning-icon fas fa-exclamation-triangle"></i>
                     <div class="warning-message">
-                        <div>The new Step definition is not compatible with the previous version.</div>
-                        <div>The following tests and steps will be broken:</div>
+                        <div>The new step definition is not compatible with the previous version.</div>
                     </div>
                 </div>
+
+                <div class="warning-sub-message">The following tests and steps will be broken:</div>
 
                 <div *ngIf="pathsForAffectedTests.length != 0" class="affected-message">
                     Tests:
                     <div *ngFor="let testPath of pathsForAffectedTests" class="affected-path">
-                        {{testPath.toString()}}
+                        {{getNameFromPath(testPath)}}
                     </div>
                 </div>
 
                 <div *ngIf="pathsForDirectAffectedSteps.length != 0" class="affected-message">
-                    Direct Affected Steps:
+                    Directly affected steps:
                     <div *ngFor="let stepPath of pathsForDirectAffectedSteps" class="affected-path">
-                        {{stepPath.toString()}}
+                        {{getNameFromPath(stepPath)}}
                     </div>
                 </div>
 
                 <div *ngIf="pathsForTransitiveAffectedSteps.length != 0" class="affected-message">
                     Transitive Affected Steps:
                     <div *ngFor="let stepPath of pathsForTransitiveAffectedSteps" class="affected-path">
-                        {{stepPath.toString()}}
+                        {{getNameFromPath(stepPath)}}
                     </div>
                 </div>
             </div>
