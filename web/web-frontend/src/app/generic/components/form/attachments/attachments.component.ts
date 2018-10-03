@@ -2,9 +2,9 @@ import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/c
 import {Attachment} from "../../../../model/file/attachment.model";
 import {DateUtil} from "../../../../utils/date.util";
 import {ArrayUtil} from "../../../../utils/array.util";
-import {AreYouSureModalService} from "../../are_you_sure_modal/are-you-sure-modal.service";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {FileUpload} from "primeng/primeng";
+import {InfoModalService} from "../../info_modal/info-modal.service";
 
 @Component({
     selector: 'attachments-component',
@@ -22,7 +22,7 @@ export class AttachmentsComponent implements OnInit {
 
     @ViewChild("fileUpload") fileUpload: FileUpload;
 
-    constructor(private areYouSureModalService: AreYouSureModalService,){}
+    constructor(private infoModalService: InfoModalService){}
 
     ngOnInit() {
     }
@@ -30,8 +30,29 @@ export class AttachmentsComponent implements OnInit {
     onUploadHandler(event: any) {
         this.fileUpload.clear();
         for (const file of event.files) {
-            this.fileAttachmentsAdded.push(file)
+            if (!this.fileWithTheSameNameAlreadyExists(file)) {
+                this.fileAttachmentsAdded.push(file);
+            } else {
+                this.infoModalService.showInfoModal(
+                    "Info",
+                    "A file with the same name already exists. File Name: "+file.name
+                );
+            }
         }
+    }
+
+    fileWithTheSameNameAlreadyExists(file: File): boolean {
+        for (const addedFile of this.fileAttachmentsAdded) {
+            if (addedFile.name == file.name) {
+                return true;
+            }
+        }
+        for (const attachment of this.attachments) {
+            if (attachment.path.fileName == file.name) {
+                return true;
+            }
+        }
+        return false;
     }
 
     getAttachmentDateAsString(attachment: Attachment): string {
