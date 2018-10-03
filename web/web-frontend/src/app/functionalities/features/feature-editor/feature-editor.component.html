@@ -1,5 +1,4 @@
-
-<div>
+<div class="feature-editor">
     <h1 *ngIf="isRootFeature()">Features</h1>
     <h1 *ngIf="!isRootFeature() && isCreateAction">Create SubFeature in <span class="path">{{pathForTitle}}</span></h1>
     <h1 *ngIf="!isRootFeature() && !isCreateAction">Feature <span class="path">{{pathForTitle}}</span></h1>

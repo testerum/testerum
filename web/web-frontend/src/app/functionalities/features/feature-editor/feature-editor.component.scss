@@ -1,3 +1,11 @@
-.label-size {
-    width: 7em;
+.feature-editor {
+    .label-size {
+        width: 7em;
+    }
+
+    .my-line {
+        .my-label-top {
+            align-self: start;
+        }
+    }
 }
