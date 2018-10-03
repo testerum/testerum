@@ -139,7 +139,12 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
                         return;
                     }
 
-                    if(compatibilityResponse.isCompatible) {
+                    if(compatibilityResponse.isCompatible ||
+                        (!compatibilityResponse.isCompatible &&
+                            compatibilityResponse.pathsForAffectedTests.length == 0 &&
+                            compatibilityResponse.pathsForDirectAffectedSteps.length == 0 &&
+                            compatibilityResponse.pathsForTransitiveAffectedSteps.length == 0)) {
+
                         this.doSave();
                     } else {
                         this.updateIncompatibilityDialogComponent.show(
