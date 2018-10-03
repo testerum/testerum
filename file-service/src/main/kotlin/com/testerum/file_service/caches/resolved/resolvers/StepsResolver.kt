@@ -3,6 +3,7 @@ package com.testerum.file_service.caches.resolved.resolvers
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepDef
+import com.testerum.model.step.UndefinedStepDef
 import com.testerum.model.util.StepHashUtil
 import java.nio.file.Path as JavaPath
 
@@ -17,6 +18,14 @@ class StepsResolver(private val argsResolver: ArgsResolver) {
 
         for ((hashOfStepToResolve, stepToResolve) in unresolvedComposedStepsMap) {
             resolve(stepToResolve, hashOfStepToResolve, stepsToResolve, stepsInResolving, resolvedSteps, resourcesDir)
+        }
+
+        if (resolvedSteps.values.any { it is UndefinedStepDef }) {
+            throw IllegalStateException(
+                    "detected ${UndefinedStepDef::class.java.simpleName} after step resolving" +
+                    "; this indicates a problem in step resolving" +
+                    "; throwing exception to prevent cache pollution"
+            )
         }
 
         return resolvedSteps
@@ -47,7 +56,6 @@ class StepsResolver(private val argsResolver: ArgsResolver) {
         val notYetResolvedStepDef = stepsToResolve[hashOfStepToResolve]
         if (notYetResolvedStepDef == null) {
             // cannot resolve (e.g. UndefinedStep)
-            resolvedSteps[hashOfStepToResolve] = stepToResolve
             stepsToResolve.remove(hashOfStepToResolve)
             stepsInResolving.remove(hashOfStepToResolve)
 

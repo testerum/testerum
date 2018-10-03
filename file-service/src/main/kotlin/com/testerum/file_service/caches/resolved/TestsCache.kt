@@ -40,7 +40,7 @@ class TestsCache(private val testFileService: TestFileService,
             val tests = testFileService.getAllTests(testsDir)
             for (test in tests) {
                 val resolvedTest = testResolver.resolveStepsDefs(test, resourcesDir)
-                val resolvedTestWithWarnings = warningService.testWithWarnings(resolvedTest, keepExistingWarnings = false)
+                val resolvedTestWithWarnings = warningService.testWithWarnings(resolvedTest)
 
                 newTestsByPath[resolvedTestWithWarnings.path] = resolvedTestWithWarnings
             }
@@ -101,7 +101,7 @@ class TestsCache(private val testFileService: TestFileService,
 
             // resolve test
             val resolvedTest = testResolver.resolveStepsDefs(savedTest, resourcesDir)
-            val resolvedTestWithWarnings = warningService.testWithWarnings(resolvedTest, keepExistingWarnings = false)
+            val resolvedTestWithWarnings = warningService.testWithWarnings(resolvedTest)
 
             // update cache
             testsByPath.remove(test.path)

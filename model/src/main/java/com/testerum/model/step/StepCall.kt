@@ -29,6 +29,45 @@ data class StepCall @JsonCreator constructor(
         get() = warnings.isNotEmpty() || descendantsHaveWarnings
 
 
+    @JsonIgnore
+    fun isCallOf(otherDef: StepDef): Boolean {
+        // phase
+        if (stepDef.phase != otherDef.phase) {
+            return false
+        }
+
+        // pattern
+        val thisPatternParts = stepDef.stepPattern.patternParts
+        val otherPatternParts = otherDef.stepPattern.patternParts
+
+        if (thisPatternParts.size != otherPatternParts.size) {
+            return false
+        }
+
+        for ((i, thisPart) in thisPatternParts.withIndex()) {
+            val otherPart = otherPatternParts[i]
+
+            when (thisPart) {
+                is TextStepPatternPart -> {
+                    if (otherPart !is TextStepPatternPart) {
+                        return false
+                    }
+
+                    if (thisPart.text != otherPart.text) {
+                        return false
+                    }
+                }
+                is ParamStepPatternPart -> {
+                    if (otherPart !is ParamStepPatternPart) {
+                        return false
+                    }
+                }
+            }
+        }
+
+        return true
+    }
+
     override fun toString() = buildString { toString(this, 0) }
 
     fun toString(destination: StringBuilder,

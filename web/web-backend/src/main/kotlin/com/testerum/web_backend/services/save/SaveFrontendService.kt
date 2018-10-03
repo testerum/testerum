@@ -10,7 +10,6 @@ import com.testerum.model.exception.ValidationException
 import com.testerum.model.resources.ResourceContext
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
-import com.testerum.model.step.StepDef
 import com.testerum.model.test.TestModel
 import com.testerum.model.text.StepPattern
 import com.testerum.settings.keys.SystemSettingKeys
@@ -111,12 +110,12 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
     }
 
     private fun updateStepsThatUsesOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef, repositoryDir: Path) {
-        val stepsThatUseOldStep = findStepsThatCall(oldStep.stepPattern)
+        val stepsThatUseOldStep = findStepsThatCall(oldStep)
         for (stepDefToUpdate in stepsThatUseOldStep) {
             var updatedStepDef = stepDefToUpdate
             for ((index, stepCall) in stepDefToUpdate.stepCalls.withIndex()) {
-                if (stepCall.stepDef.stepPattern == oldStep.stepPattern) {
-                    updatedStepDef = updateStepPatternAtStepCall(updatedStepDef, index, newStep.stepPattern)
+                if (stepCall.isCallOf(oldStep)) {
+                    updatedStepDef = updateStepDefOfStepCall(updatedStepDef, index, newStep)
                 }
             }
 
@@ -124,13 +123,13 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         }
     }
 
-    private fun findStepsThatCall(searchedStepPattern: StepPattern): List<ComposedStepDef> {
+    private fun findStepsThatCall(step: ComposedStepDef): List<ComposedStepDef> {
         val result: MutableSet<ComposedStepDef> = mutableSetOf()
 
         val composedSteps = stepsCache.getComposedSteps()
         for (composedStep in composedSteps) {
             for (stepCall in composedStep.stepCalls) {
-                if (stepCall.stepDef.stepPattern == searchedStepPattern) {
+                if (stepCall.isCallOf(step)) {
                     result.add(composedStep)
                 }
             }
@@ -139,10 +138,12 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         return result.toList()
     }
 
-    private fun updateStepPatternAtStepCall(stepDefToUpdate: ComposedStepDef, stepCallIndexToUpdate: Int, stepPattern: StepPattern): ComposedStepDef {
+    private fun updateStepDefOfStepCall(stepDefToUpdate: ComposedStepDef,
+                                        stepCallIndexToUpdate: Int,
+                                        newStep: ComposedStepDef): ComposedStepDef {
         val updateStepCalls: MutableList<StepCall> = stepDefToUpdate.stepCalls.toMutableList()
-        val updateStepCallStepDef: StepDef = (updateStepCalls[stepCallIndexToUpdate].stepDef as ComposedStepDef).copy(stepPattern = stepPattern)
-        updateStepCalls[stepCallIndexToUpdate] = updateStepCalls[stepCallIndexToUpdate].copy(stepDef = updateStepCallStepDef)
+
+        updateStepCalls[stepCallIndexToUpdate] = updateStepCalls[stepCallIndexToUpdate].copy(stepDef = newStep)
 
         return stepDefToUpdate.copy(stepCalls = updateStepCalls)
     }

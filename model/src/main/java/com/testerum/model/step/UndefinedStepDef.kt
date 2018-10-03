@@ -8,7 +8,7 @@ import com.testerum.model.text.StepPattern
 import com.testerum.model.util.StepHashUtil
 import com.testerum.model.warning.Warning
 
-class UndefinedStepDef @JsonCreator constructor(@JsonProperty("phase") override val phase: StepPhaseEnum,
+data class UndefinedStepDef @JsonCreator constructor(@JsonProperty("phase") override val phase: StepPhaseEnum,
                                                 @JsonProperty("stepPattern") override val stepPattern: StepPattern): StepDef {
     override val id: String
         get() = StepHashUtil.calculateStepHash(phase, stepPattern)

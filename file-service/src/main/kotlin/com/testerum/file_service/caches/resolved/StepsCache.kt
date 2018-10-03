@@ -150,7 +150,7 @@ class StepsCache(private val persistentCacheManger: StepLibraryPersistentCacheMa
 
         for ((hash, step) in resolvedSteps) {
             if (step is ComposedStepDef) {
-                val stepWithWarnings = warningService.composedStepWithWarnings(step, keepExistingWarnings = false)
+                val stepWithWarnings = warningService.composedStepWithWarnings(step)
 
                 result[stepWithWarnings.hash] = stepWithWarnings
             } else {
