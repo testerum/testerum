@@ -1,86 +1,98 @@
+.attachments {
 
-.list {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
+
+    .list {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+
+        .list-item {
+            width: 210px;
+            overflow: hidden;
+            margin-right: 10px;
+            position: relative;
+            list-style: none;
+
+            img {
+                max-width: 200px;
+                max-height: 150px;
+            }
+
+            .generic_thumbnail {
+                font-size: 150px;
+                color: black;
+            }
+
+            .img-thumbnail {
+                width: 210px;
+                height: 160px;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .info {
+                margin-top: 3px;
+
+                .name-container {
+                    position: relative;
+                    text-align: left;
+
+                    display: flex;
+                    justify-content: center;
+
+                    .blender {
+                        position: absolute;
+                        top: 0;
+                        left: auto;
+                        right: 0;
+                        width: 1.162em;
+                        height: 100%;
+                        background: transparent url('../../../../../media/blend.png') 100% 0 repeat-y;
+                    }
+
+                    .attachment-name {
+                        white-space: nowrap;
+                        word-wrap: normal;
+                        color: #3b73af;
+
+                        width: 210px;
+                        display: inline-block;
+                        text-align: center;
+                    }
+                }
+
+                .last-modified-container {
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+
+            .delete-button {
+                display: none;
+                margin: 7px;
+                padding: 3px 5px;
+                position: absolute;
+                z-index: 99;
+                top: 0;
+                right: 0;
+            }
+        }
+    }
+
+
+    .list-item:hover .delete-button {
+        display: block;
+    }
+
+    .not-edit .ui-fileupload-buttonbar {
+        display: none;
+    }
+
+    .ui-fileupload-choose {
+        width: 7em;
+    }
 }
 
-.list-item {
-    width: 210px;
-    overflow: hidden;
-    margin-right: 10px;
-    position: relative;
-}
 
-.generic_thumbnail {
-    font-size: 150px;
-    color: black;
-}
-
-.img-thumbnail {
-    width: 210px;
-    height: 160px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.name-container {
-    position: relative;
-    text-align: left;
-
-    display: flex;
-    justify-content: center;
-}
-
-.last-modified-container {
-    display: flex;
-    justify-content: center;
-}
-
-.attachment-name {
-    white-space: nowrap;
-    word-wrap: normal;
-    color: #3b73af;
-
-    width: 210px;
-    display: inline-block;
-    text-align: center;
-}
-
-.blender {
-    position: absolute;
-    top: 0;
-    left: auto;
-    right: 0;
-    width: 1.162em;
-    height: 100%;
-    background: transparent url('../../../../../media/blend.png') 100% 0 repeat-y;
-}
-
-:host .not-edit ::ng-deep .ui-fileupload-buttonbar {
-    display: none;
-}
-
-.ui-fileupload-choose {
-    width: 7em;
-}
-
-.list-item:hover .delete-button {
-    display: block;
-}
-
-.delete-button {
-    display: none;
-    margin: 7px;
-    padding: 1px 5px;
-    position: absolute;
-    z-index: 99;
-    top: 0;
-    right: 0;
-}
-
-.delete-button .fa {
-    font-size: 25px;
-}

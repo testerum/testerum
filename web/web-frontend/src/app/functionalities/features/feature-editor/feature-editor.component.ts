@@ -207,6 +207,9 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
 
     private afterSaveHandler(savedModel: Feature) {
         this.model = savedModel;
+        this.fileAttachmentsAdded.length = 0;
+        this.attachmentsPathsToDelete.length = 0;
+
         this.setEditMode(false);
         this.featuresTreeService.initializeTestsTreeFromServer(this.model.path);
         this.urlService.navigateToFeature(this.model.path);

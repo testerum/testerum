@@ -1,10 +1,10 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Attachment} from "../../../../model/file/attachment.model";
 import {DateUtil} from "../../../../utils/date.util";
 import {ArrayUtil} from "../../../../utils/array.util";
-import {AreYouSureModalEnum} from "../../are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalService} from "../../are_you_sure_modal/are-you-sure-modal.service";
 import {Path} from "../../../../model/infrastructure/path/path.model";
+import {FileUpload} from "primeng/primeng";
 
 @Component({
     selector: 'attachments-component',
@@ -20,34 +20,26 @@ export class AttachmentsComponent implements OnInit {
     @Input() fileAttachmentsAdded: File[] = [];
     @Input() attachmentsPathsToDelete: Path[] = [];
 
+    @ViewChild("fileUpload") fileUpload: FileUpload;
+
     constructor(private areYouSureModalService: AreYouSureModalService,){}
 
     ngOnInit() {
     }
 
     onUploadHandler(event: any) {
-        console.log("onUploadHandler", event);
+        this.fileUpload.clear();
         for (const file of event.files) {
             this.fileAttachmentsAdded.push(file)
         }
     }
 
-    onSelect(event: any) {
-        console.log("onSelect", event)
-    }
-
-    onUpload(event:any) {
-        let request: XMLHttpRequest = event.xhr;
-        let responseAttachments: string = request.response;
-        for (const responseAttachment of JSON.parse(responseAttachments)) {
-            this.attachments.push(
-                new Attachment().deserialize(responseAttachment)
-            )
-        }
-    }
-
-    getDateAsString(attachment: Attachment): string {
+    getAttachmentDateAsString(attachment: Attachment): string {
         return DateUtil.dateTimeToShortString(attachment.lastModifiedDate)
+    }
+
+    getDateAsString(date: Date): string {
+        return DateUtil.dateTimeToShortString(date)
     }
 
     getFileName(attachment: Attachment): string {
@@ -60,6 +52,12 @@ export class AttachmentsComponent implements OnInit {
         return attachment.mimeType.startsWith("image/")
     }
 
+    isNewAttachmentImage(file: File): boolean {
+        if(!file.type) return false;
+
+        return file.type.startsWith("image/")
+    }
+
     getAttachmentUrl(attachment: Attachment, thumbnailVersion: boolean = false): string {
         let url = "/rest/features/attachments?path=" + encodeURIComponent(attachment.path.toString());
         if (thumbnailVersion) {
@@ -69,23 +67,26 @@ export class AttachmentsComponent implements OnInit {
     }
 
     delete(attachment: Attachment) {
-        this.areYouSureModalService.showAreYouSureModal(
-            "Delete Resource",
-            "Are you sure you want to delete this attachment?")
-            .subscribe((action: AreYouSureModalEnum) => {
-                this.attachmentsPathsToDelete.push(attachment.path);
-                ArrayUtil.removeElementFromArray(this.attachments, attachment);
-            });
+        this.attachmentsPathsToDelete.push(attachment.path);
+        ArrayUtil.removeElementFromArray(this.attachments, attachment);
     }
 
-    getImageIconClassBasedOnMimeType(attachment: Attachment) {
+    deleteNewFile(file: File) {
+        ArrayUtil.removeElementFromArray(this.fileAttachmentsAdded, file)
+    }
 
-        if(!attachment.mimeType) return "fa-file";
+    getImageIconClassBasedOnAttachmentMimeType(attachment: Attachment) {
+        return this.getImageIconClassBasedOnMimeType(attachment.mimeType);
+    }
 
-        if(attachment.mimeType.startsWith("audio/")) return "fa-file-audio";
-        if(attachment.mimeType.startsWith("video/")) return "fa-file-movie";
+    getImageIconClassBasedOnMimeType(mimeType: string) {
 
-        switch (attachment.mimeType) {
+        if(!mimeType) return "fa-file";
+
+        if(mimeType.startsWith("audio/")) return "fa-file-audio";
+        if(mimeType.startsWith("video/")) return "fa-file-video";
+
+        switch (mimeType) {
             case 'text/plain': return 'fa-file-alt';
             case 'application/rtf': return 'fa-file-alt';
             case 'application/epub+zip': return 'fa-file-alt';

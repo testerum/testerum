@@ -1,11 +1,12 @@
-<p-fileUpload name="files"
+<div class="attachments">
+<p-fileUpload #fileUpload
+              name="files"
               [class.edit]="editMode"
               [class.not-edit]="!editMode"
               [customUpload]="true"
               [auto]="true"
               multiple="multiple"
-              (uploadHandler)="onUploadHandler($event)"
-              (onUpload)="onUpload($event)">
+              (uploadHandler)="onUploadHandler($event)">
 
     <ng-template pTemplate="content">
         <ol class="list">
@@ -26,7 +27,7 @@
                        class="img-thumbnail"
                        title="{{getFileName(attachment)}}"
                        download>
-                        <i class="far {{getImageIconClassBasedOnMimeType(attachment)}} generic_thumbnail"
+                        <i class="far {{getImageIconClassBasedOnAttachmentMimeType(attachment)}} generic_thumbnail"
                            aria-hidden="true"></i>
                     </a>
                 </ng-template>
@@ -41,7 +42,7 @@
                         >{{getFileName(attachment)}}</a>
                     </div>
 
-                    <div class="last-modified-container">{{getDateAsString(attachment)}}</div>
+                    <div class="last-modified-container">{{getAttachmentDateAsString(attachment)}}</div>
                 </div>
 
                 <div *ngIf="editMode"
@@ -51,8 +52,53 @@
                     <i class="far fa-trash-alt" aria-hidden="true"></i>
                 </div>
             </li>
+
+            <li *ngFor="let file of fileAttachmentsAdded" class="list-item new-file">
+                <div *ngIf="isNewAttachmentImage(file); else isNotImage">
+                    <a [href]="file.objectURL"
+                       class="img-thumbnail"
+                       [title]="file.name"
+                       target="_blank">
+                        <img [src]="file.objectURL" class="">
+                    </a>
+                </div>
+
+                <ng-template #isNotImage>
+                    <a [href]="file.objectURL"
+                       class="img-thumbnail"
+                       [title]="file.name"
+                       download>
+                        <i class="far {{getImageIconClassBasedOnMimeType(file.type)}} generic_thumbnail"
+                           aria-hidden="true"></i>
+                    </a>
+                </ng-template>
+
+                <div class="info">
+                    <div class="name-container">
+                        <span class="blender"></span>
+                        <a [href]="file.objectURL"
+                           class="attachment-name"
+                           [title]="file.name"
+                           download
+                        >{{file.name}}</a>
+                    </div>
+
+                    <div class="last-modified-container">{{getDateAsString(file.lastModifiedDate)}}</div>
+                </div>
+
+                <div *ngIf="editMode"
+                     class="delete-button btn btn-danger"
+                     title="Delete attachment"
+                     (click)="deleteNewFile(file)">
+                    <i class="far fa-trash-alt" aria-hidden="true"></i>
+                </div>
+            </li>
         </ol>
     </ng-template>
 
+    <ng-template let-file pTemplate="file">
+
+    </ng-template>
 </p-fileUpload>
 
+</div>
