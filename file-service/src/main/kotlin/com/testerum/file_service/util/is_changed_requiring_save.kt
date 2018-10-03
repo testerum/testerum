@@ -117,6 +117,10 @@ private fun StepCall.isChangedRequiringSave(existingStepCall: StepCall): Boolean
         return true
     }
 
+    if (stepDef.stepPattern.isChangedRequiringSave(existingStepDef.stepPattern)) {
+        return true
+    }
+
     if (args.isChangedRequiringSave(existingStepCall.args)) {
         return true
     }
