@@ -1,6 +1,7 @@
 package com.testerum.web_backend
 
 import com.testerum.web_backend.filter.AngularForwarderFilter
+import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.eclipse.jetty.security.SecurityHandler
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.HandlerContainer
@@ -10,12 +11,7 @@ import org.eclipse.jetty.server.handler.ErrorHandler
 import org.eclipse.jetty.server.handler.HandlerList
 import org.eclipse.jetty.server.handler.StatisticsHandler
 import org.eclipse.jetty.server.session.SessionHandler
-import org.eclipse.jetty.servlet.DefaultServlet
-import org.eclipse.jetty.servlet.ErrorPageErrorHandler
-import org.eclipse.jetty.servlet.FilterHolder
-import org.eclipse.jetty.servlet.ServletContextHandler
-import org.eclipse.jetty.servlet.ServletHandler
-import org.eclipse.jetty.servlet.ServletHolder
+import org.eclipse.jetty.servlet.*
 import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer
 import org.slf4j.LoggerFactory
@@ -36,8 +32,11 @@ object TesterumWebMain {
 
         server.start()
 
+        val versionInfoFrontendService = VersionInfoFrontendService()
+        val testerumVersion = versionInfoFrontendService.getVersionProperties()["projectVersion"] ?: ""
+
         val actualPort = (server.connectors[0] as ServerConnector).localPort
-        LOG.info("Application is available at http://localhost:$actualPort/")
+        LOG.info("Testerum (version $testerumVersion) is available at http://localhost:$actualPort/")
         LOG.info("Press Ctrl+C to stop.")
 
         server.join()
