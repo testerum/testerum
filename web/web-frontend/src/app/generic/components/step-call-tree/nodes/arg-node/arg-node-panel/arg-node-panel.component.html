@@ -1,5 +1,4 @@
-<fieldset class="shell"
->
+<fieldset class="shell">
     <legend class="header"
             (click)="animate()">
 
@@ -28,6 +27,11 @@
                 <div>{{warning.message}}</div>
             </div>
         </ng-template>
+
+        <info-icon *ngIf="paramStepPart.description"
+                   [message]="paramStepPart.description"
+                   [position]="'top'"
+                   class="param-info-icon"></info-icon>
 
         <div [attr.title]="arg.content?'Edit':'Add'"
              class="btn btn-default btn-xs btn-group"

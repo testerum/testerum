@@ -189,12 +189,13 @@ body {
     color: $warning-color;
 }
 .fa_my-info {
-    @extend .fas;
-    @extend .fa-info-circle;
+    @extend .nf;
+    @extend .nf-oct-info;
 }
 .fa_my-info-colored {
     @extend .fa_my-info;
-    color: $info-color;
+    color: black;
+    font-size: 1.3em;
 }
 
 // tree icons

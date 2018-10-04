@@ -26,7 +26,7 @@
     <!-- RDBMS CONNECTION -->
     <div class="my-line" *ngIf="editMode">
         <label class="my-label label-size">DB Connection</label>
-        <div class="my-value">
+        <div class="my-value connection-value-container">
             <p-dropdown #connectionDropdown
                         [options]="availableRdbmsConnections"
                         [(ngModel)]="selectedRdbmsConnection"
@@ -34,6 +34,7 @@
                         class="connection-dropdown"
                         name="connections"></p-dropdown>
             <info-icon
+                class="info-icon"
                 message="A database connection is required for validation and editing.</br>
                          A new database connection can be defined at Resources - RDBMS - Connections"></info-icon>
         </div>
