@@ -1,7 +1,6 @@
-
-import {Enum} from "../../../../../../../../model/enums/enum.interface";
 import {JsonUtil} from "../../../../../../../../utils/json.util";
 import {Serializable} from "../../../../../../../../model/infrastructure/serializable.model";
+import {StringUtils} from "../../../../../../../../utils/string-utils.util";
 
 export class HttpMockProxyResponse implements Serializable<HttpMockProxyResponse>{
 
@@ -13,6 +12,15 @@ export class HttpMockProxyResponse implements Serializable<HttpMockProxyResponse
 
     reset(): void {
         this.proxyBaseUrl = undefined;
+    }
+
+
+    isEmpty(): boolean {
+        let isEmpty = true;
+
+        if(!StringUtils.isEmpty(this.proxyBaseUrl)) {isEmpty = false;}
+
+        return isEmpty;
     }
 
     deserialize(input: Object): HttpMockProxyResponse {

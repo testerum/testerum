@@ -29,7 +29,10 @@ export class HttpMock implements Resource<HttpMock> {
     }
 
     isEmpty(): boolean {
-        return this.expectedRequest.isEmpty();
+        return this.expectedRequest.isEmpty() &&
+            this.mockResponse.isEmpty() &&
+            this.faultResponse == HttpMockFaultResponse.NO_FAULT &&
+            this.proxyResponse.isEmpty();
     }
 
     deserialize(input: Object): HttpMock {

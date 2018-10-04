@@ -1,11 +1,9 @@
-
 import {HttpMockResponseBody} from "./http-mock-response-body.model";
 import {HttpMockResponseHeader} from "./http-mock-response-header.model";
 import {JsonUtil} from "../../../../../../../../utils/json.util";
 import {HttpMockResponseBodyType} from "../enums/http-mock-response-body-type.enum";
 import {ArrayUtil} from "../../../../../../../../utils/array.util";
 import {Serializable} from "../../../../../../../../model/infrastructure/serializable.model";
-import {HttpRequestHeader} from "../../../../../../../../model/resource/http/http-request-header.model";
 
 export class HttpMockResponse implements Serializable<HttpMockResponse> {
 
@@ -26,6 +24,19 @@ export class HttpMockResponse implements Serializable<HttpMockResponse> {
 
         this.body.reset();
         this.delay = undefined;
+    }
+
+
+    isEmpty(): boolean {
+        let isEmpty = true;
+
+        if(this.statusCode) {isEmpty = false;}
+        this.headers.forEach(header => {if(!header.isEmpty()) isEmpty = false;});
+
+        if(!this.body.isEmpty()) {isEmpty = false;}
+        if(this.delay) {isEmpty = false;}
+
+        return isEmpty;
     }
 
     deserialize(input: Object): HttpMockResponse {
@@ -68,16 +79,21 @@ export class HttpMockResponse implements Serializable<HttpMockResponse> {
             result += '"statusCode":' + JsonUtil.stringify(this.statusCode);
         }
 
-        result += ',"headers":{';
         let headers = this.getResponseHeadersWithValue();
-        for (let i = 0; i < headers.length; i++) {
-            let header = headers[i];
-            if(i > 0) {
-                result += ','
+        if (headers.length != 0) {
+            if(shouldAddComa) result += ",";
+            shouldAddComa = true;
+
+            result += '"headers":{';
+            for (let i = 0; i < headers.length; i++) {
+                let header = headers[i];
+                if (i > 0) {
+                    result += ','
+                }
+                result += header.serialize()
             }
-            result += header.serialize()
+            result += '}';
         }
-        result += '}';
 
         if (!this.body.isEmpty()) {
             if(shouldAddComa) result += ",";
