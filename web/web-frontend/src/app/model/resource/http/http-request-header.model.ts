@@ -6,9 +6,7 @@ export class HttpRequestHeader implements Serializable<HttpRequestHeader> {
     value: string;
 
     deserialize(input: Object): HttpRequestHeader {
-        this.key = input["key"];
-        this.value = input["value"];
-        return this;
+        throw new Error("this should not be used")
     }
 
     serialize(): string {
@@ -17,10 +15,7 @@ export class HttpRequestHeader implements Serializable<HttpRequestHeader> {
         }
 
         return ''+
-            '{' +
-            '"key":' + JsonUtil.stringify(this.key) + ',' +
-            '"value":' + JsonUtil.stringify(this.value) +
-            '}';
+            JsonUtil.stringify(this.key) + ':' + JsonUtil.stringify(this.value);
     }
 
     isEmpty(): boolean {

@@ -5,6 +5,7 @@ import {JsonUtil} from "../../../../../../../../utils/json.util";
 import {HttpMockResponseBodyType} from "../enums/http-mock-response-body-type.enum";
 import {ArrayUtil} from "../../../../../../../../utils/array.util";
 import {Serializable} from "../../../../../../../../model/infrastructure/serializable.model";
+import {HttpRequestHeader} from "../../../../../../../../model/resource/http/http-request-header.model";
 
 export class HttpMockResponse implements Serializable<HttpMockResponse> {
 
@@ -30,13 +31,21 @@ export class HttpMockResponse implements Serializable<HttpMockResponse> {
     deserialize(input: Object): HttpMockResponse {
         this.statusCode = input["statusCode"];
 
-        if (input['headers']) {
-            this.headers.length = 0;
-            for (let headerAsJson of input["headers"]) {
-                let header = new HttpMockResponseHeader().deserialize(headerAsJson);
-                this.headers.push(header)
+        if(input['headers']) {
+            let headersObj = input['headers'];
+            for (let headerProp in headersObj) {
+                if (input["headers"].hasOwnProperty(headerProp)) {
+                    let headerValue = headersObj[headerProp];
+
+                    let httpRequestHeader = new HttpMockResponseHeader();
+                    httpRequestHeader.key = headerProp;
+                    httpRequestHeader.value = headerValue;
+
+                    this.headers.push(
+                        httpRequestHeader
+                    )
+                }
             }
-            this.headers.push(new HttpMockResponseHeader())
         }
 
         if (input['body']) {
@@ -59,13 +68,16 @@ export class HttpMockResponse implements Serializable<HttpMockResponse> {
             result += '"statusCode":' + JsonUtil.stringify(this.statusCode);
         }
 
-        let responseHeadersWithValue = this.getResponseHeadersWithValue();
-        if (responseHeadersWithValue.length != 0) {
-            if(shouldAddComa) result += ",";
-            shouldAddComa = true;
-
-            result += '"headers":' + JsonUtil.serializeArrayOfSerializable(responseHeadersWithValue);
+        result += ',"headers":{';
+        let headers = this.getResponseHeadersWithValue();
+        for (let i = 0; i < headers.length; i++) {
+            let header = headers[i];
+            if(i > 0) {
+                result += ','
+            }
+            result += header.serialize()
         }
+        result += '}';
 
         if (!this.body.isEmpty()) {
             if(shouldAddComa) result += ",";

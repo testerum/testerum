@@ -8,14 +8,14 @@ import com.testerum.model.resources.http.request.enums.HttpRequestMethod
 data class HttpRequest @JsonCreator constructor(
         @JsonProperty("method") val method: HttpRequestMethod,
         @JsonProperty("url") val url: String,
-        @JsonProperty("headers") val headers: List<HttpRequestHeader> = emptyList(),
+        @JsonProperty("headers") val headers: Map<String, String> = emptyMap(),
         @JsonProperty("body") val body: HttpRequestBody?
 ) {
 
     fun getFirstHeaderValue(headerName: String): String? {
         val lowerCaseHeaderName = headerName.toLowerCase()
 
-        return headers.firstOrNull { it.key.toLowerCase() == lowerCaseHeaderName }
+        return headers.entries.find {it.key.toLowerCase() == lowerCaseHeaderName}
                 ?.value
     }
 

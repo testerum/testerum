@@ -4,7 +4,6 @@ import com.testerum.common_httpclient.HttpClientService
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.request.HttpRequestBody
-import com.testerum.model.resources.http.request.HttpRequestHeader
 import com.testerum.model.resources.http.response.HttpResponse
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.variables.VariablesResolverService
@@ -30,9 +29,7 @@ class HttpFrontendService(private val httpClientService: HttpClientService,
     private fun resolveVariablesInRequest(request: HttpRequest,
                                           variablesMap: Map<String, String>): HttpRequest {
         val resolvedUrl = variablesResolverService.resolve(request.url, variablesMap)
-        val resolvedHeaders = request.headers.map {
-            resolveVariablesInHeader(it, variablesMap)
-        }
+        val resolvedHeaders = getResolvedVariablesInHeader(request.headers, variablesMap);
         val resolvedBody = request.body?.let {
             resolveVariablesInBody(it, variablesMap)
         }
@@ -44,12 +41,17 @@ class HttpFrontendService(private val httpClientService: HttpClientService,
         )
     }
 
-    private fun resolveVariablesInHeader(header: HttpRequestHeader,
-                                         variablesMap: Map<String, String>): HttpRequestHeader {
-        return header.copy(
-                key = variablesResolverService.resolve(header.key, variablesMap),
-                value = variablesResolverService.resolve(header.value, variablesMap)
-        )
+    private fun getResolvedVariablesInHeader(headers: Map<String, String>,
+                                         variablesMap: Map<String, String>): Map<String, String> {
+        val resultMap = mutableMapOf<String, String>()
+        for (header in headers) {
+            resultMap.put(
+                    key = variablesResolverService.resolve(header.key, variablesMap),
+                    value = variablesResolverService.resolve(header.value, variablesMap)
+            )
+        }
+
+        return resultMap;
     }
 
     private fun resolveVariablesInBody(body: HttpRequestBody,
@@ -58,5 +60,4 @@ class HttpFrontendService(private val httpClientService: HttpClientService,
                 content = variablesResolverService.resolve(body.content, variablesMap)
         )
     }
-
 }

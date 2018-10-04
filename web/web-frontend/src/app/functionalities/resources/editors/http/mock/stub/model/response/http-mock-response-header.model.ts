@@ -7,21 +7,16 @@ export class HttpMockResponseHeader implements Serializable<HttpMockResponseHead
     value: string;
 
     deserialize(input: Object): HttpMockResponseHeader {
-        this.key = input["key"];
-        this.value = input["value"];
-        return this;
+        throw new Error("this should not be used")
     }
 
     serialize(): string {
-        if(this.isEmpty()) {
+        if(!this.key && !this.value) {
             return "";
         }
 
         return ''+
-            '{' +
-            '"key":' + JsonUtil.stringify(this.key) + ',' +
-            '"value":' + JsonUtil.stringify(this.value) +
-            '}';
+            JsonUtil.stringify(this.key) + ':' + JsonUtil.stringify(this.value);
     }
 
     isEmpty(): boolean {

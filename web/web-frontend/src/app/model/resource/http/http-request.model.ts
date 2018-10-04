@@ -46,9 +46,19 @@ export class HttpRequest implements Resource<HttpRequest> {
         this.url = input["url"];
 
         if(input['headers']){
-            for (let headerAsJson of input["headers"]) {
-                let header = new HttpRequestHeader().deserialize(headerAsJson);
-                this.headers.push(header)
+            let headersObj = input['headers'];
+            for (let headerProp in headersObj) {
+                if (input["headers"].hasOwnProperty(headerProp)) {
+                    let headerValue = headersObj[headerProp];
+
+                    let httpRequestHeader = new HttpRequestHeader();
+                    httpRequestHeader.key = headerProp;
+                    httpRequestHeader.value = headerValue;
+
+                    this.headers.push(
+                        httpRequestHeader
+                    )
+                }
             }
         }
         this.headers.push(new HttpRequestHeader());
@@ -69,7 +79,16 @@ export class HttpRequest implements Resource<HttpRequest> {
             '"method":' + JsonUtil.stringify(this.method.toString()) + ',' +
             '"url":' + JsonUtil.stringify(this.url) ;
 
-        result += ',"headers":' + JsonUtil.serializeArrayOfSerializable(this.getHeadersWithValue());
+        result += ',"headers":{';
+        let headers = this.getHeadersWithValue();
+        for (let i = 0; i < headers.length; i++) {
+            let header = headers[i];
+            if(i > 0) {
+                result += ','
+            }
+            result += header.serialize()
+        }
+        result += '}';
 
         if (this.method != HttpMethod.GET && !this.body.isEmpty()) {
             result += ',"body":' + JsonUtil.serializeSerializable(this.body);
