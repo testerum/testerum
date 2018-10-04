@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/version-info")
-class VersionInfoController(private val versionInfoFrontendService: VersionInfoFrontendService) {
+@RequestMapping("/version")
+class VersionController(private val versionInfoFrontendService: VersionInfoFrontendService) {
 
     @RequestMapping (method = [RequestMethod.GET], path = [""])
     @ResponseBody

@@ -39,7 +39,7 @@ import com.testerum.web_backend.controllers.steps.StepsTreeController
 import com.testerum.web_backend.controllers.tags.TagsController
 import com.testerum.web_backend.controllers.tests.TestsController
 import com.testerum.web_backend.controllers.variables.VariablesController
-import com.testerum.web_backend.controllers.version_info.VersionInfoController
+import com.testerum.web_backend.controllers.version_info.VersionController
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.features.FeaturesFrontendService
 import com.testerum.web_backend.services.filesystem.FileSystemFrontendService
@@ -292,7 +292,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             genericErrorResponsePreparer = GenericErrorResponsePreparer()
     )
 
-    private val versionInfoController = VersionInfoController(
+    private val versionController = VersionController(
             versionInfoFrontendService = versionInfoFrontendService
     )
 
@@ -368,7 +368,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     val webControllers: List<Any> = listOf(
             errorController,
-            versionInfoController,
+            versionController,
             setupController,
             settingsController,
             messageController,
