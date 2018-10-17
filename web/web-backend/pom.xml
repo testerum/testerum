@@ -62,6 +62,12 @@
             <artifactId>common-expression-evaluator</artifactId>
         </dependency>
 
+        <!-- licensing -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>cloud-client</artifactId>
+        </dependency>
+
 
         <!--==================== 3rd party dependencies ====================-->
 

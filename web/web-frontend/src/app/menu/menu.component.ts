@@ -34,6 +34,10 @@ export class MenuComponent {
 
             if (event instanceof NavigationEnd) {
                 switch(event.url) {
+                    case "/license": {
+                        this.shouldDisplay = false;
+                        break;
+                    }
                     case "/setup": {
                         this.shouldDisplay = false;
                         break;

@@ -7,22 +7,34 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.guava.GuavaModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.testerum.common_crypto.pem.PemMarshaller
+import com.testerum.common_crypto.string_obfuscator.StringObfuscator
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import com.testerum.common_httpclient.HttpClientService
 import com.testerum.common_rdbms.JdbcDriversCache
 import com.testerum.common_rdbms.RdbmsConnectionCache
 import com.testerum.file_service.module_di.FileServiceModuleFactory
+import com.testerum.licenses.cache.LicensesCache
+import com.testerum.licenses.cloud_client.CloudClient
+import com.testerum.licenses.cloud_client.CloudClientErrorResponseException
+import com.testerum.licenses.file.LicenseFileService
+import com.testerum.licenses.parser.SignedUserParser
 import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.exception.ValidationException
 import com.testerum.settings.module_di.SettingsModuleFactory
 import com.testerum.web_backend.controllers.error.ErrorController
+import com.testerum.web_backend.controllers.error.model.ErrorResponse
+import com.testerum.web_backend.controllers.error.model.response_preparers.ErrorResponsePreparer
+import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_exception.CloudErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.generic.GenericErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.validation.ValidationErrorResponsePreparer
 import com.testerum.web_backend.controllers.features.FeatureController
 import com.testerum.web_backend.controllers.filesystem.FileSystemController
+import com.testerum.web_backend.controllers.license.LicenseController
 import com.testerum.web_backend.controllers.manual.ManualExecPlansController
 import com.testerum.web_backend.controllers.message.MessageController
 import com.testerum.web_backend.controllers.resources.ResourcesController
@@ -45,12 +57,10 @@ import com.testerum.web_backend.services.features.FeaturesFrontendService
 import com.testerum.web_backend.services.filesystem.FileSystemFrontendService
 import com.testerum.web_backend.services.initializers.WebBackendInitializer
 import com.testerum.web_backend.services.initializers.caches.CachesInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.FeaturesCacheInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.JdbcDriversCacheInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.StepsCacheInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.TestsCacheInitializer
+import com.testerum.web_backend.services.initializers.caches.impl.*
 import com.testerum.web_backend.services.initializers.info_logging.InfoLoggerInitializer
 import com.testerum.web_backend.services.initializers.settings.SettingsManagerInitializer
+import com.testerum.web_backend.services.license.LicenseFrontendService
 import com.testerum.web_backend.services.message.MessageFrontendService
 import com.testerum.web_backend.services.resources.NetworkService
 import com.testerum.web_backend.services.resources.ResourcesFrontendService
@@ -72,6 +82,7 @@ import com.testerum.web_backend.services.variables.VariablesResolverService
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.apache.http.client.HttpClient
 import org.apache.http.impl.client.HttpClients
+import java.security.PublicKey
 
 class WebBackendModuleFactory(context: ModuleFactoryContext,
                               settingsModuleFactory: SettingsModuleFactory,
@@ -87,6 +98,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     val restApiObjectMapper = ObjectMapper().apply {
         registerModule(AfterburnerModule())
+        registerModule(KotlinModule())
         registerModule(JavaTimeModule())
         registerModule(GuavaModule())
 
@@ -128,11 +140,49 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             jdbcDriversCache = rdbmsDriverConfigCache
     )
 
+    private val licensePublicKeyForVerification: PublicKey = PemMarshaller.parsePublicKey(
+            StringObfuscator.deobfuscate(
+                    "rSVJ6P64sg4d6DvbvqjX0Q==.Zn2o9B/zBEF4To/YtBuWTAhwzpxrnGwrHC2lxagQmUwhEcubVdowblp" +
+                            "p6LGWaZhEGhXDmHP+AkdWOO7FqBCZRiwbxphV9AB2ADb83LZqiHJgY+S2WOdxf3xI54KHILY2Ojv9kEf" +
+                            "bAlcGc8LEihSAXxlo8+l51ztfAkzW/Y0BjFcBCa7pXvQmM2dnlv6uDI1BG2W0rkX+IEdhbtXk62qJTzo" +
+                            "Zt5Bx1ixiezDio64ok3YxafaceYgEVFhBmsuba598O2f1qmfeN0pyder6kRaxcQNp3OFK6xBCYFnF5Jd" +
+                            "Tojd7AN+sfts5Sksw5MqmIIpQegTDqVaaEXxbN87ApBPsSywfxuBa83E3VnXh65khvn0hBPGRBOIoaXB" +
+                            "398a4dtBdAzv3owH5bkx8Ue3ismygaCJlx7FiwyV8VWLYx5gjs0sbPLfoQOYAUEFPyOOsDJRrBhXN4FH" +
+                            "QE2VcS+C7mW2JD3tgtopf1jhffSvCzqVoikIMGs28VYcAbQdY2viFb+03B2i3vl7BB3IaTuD8qWCRZwM" +
+                            "57LJz1SllW2Lrxq08vzBBKMSvfsMyamEv3cqoION1Iiry4UTaM3ZoSO6xtz+eTyAIzLxE3DcteEzryYt" +
+                            "yl1V4BvC7d/12M1Jnw+SlNfVpJVrTqHrkDXNCQcbkiDSsYjJhvZNb03Nfc2no3dUNsH8IHuyfWMcucn5" +
+                            "Z4fvSPbZPOyjSvGH8D01XYvvtjx6gamQ9j69f3yxNdzPp2YMN71cHKsegYeAUSAA0lvCXHJEzOibW9mP" +
+                            "9GylYWPajzm7vR3obtu5w2gkzcDbe7rA4jlUxBf/TYdMbUQgx4fywLJ98I2HnrFr0cylzdIDKyhiKZgR" +
+                            "g87pag3lXdjLO57s0l0olJ/+RWN05a0tRnu+QFLt3DRzn4TjjBlJCevfdjQGgfDo2qrtL2WpBYFD5sIh" +
+                            "glHcBH+72QdQ4f0Bp58uYaJ9RHwTKrkv6FENCRPnlhDKPUCQV3/YEu3hudUrgo5IMn084Nr2MQNUTZFx" +
+                            "D4qfRGptyDhHEiA+MSyscLYKlpBeeJRsFx5V78mFNdFmCpcx09w=="
+            )
+    )
+
+    private val signedUserParser = SignedUserParser(
+            objectMapper = restApiObjectMapper,
+            publicKeyForSignatureVerification = licensePublicKeyForVerification
+    )
+
+    private val licenseFileService = LicenseFileService(
+            signedUserParser = signedUserParser
+    )
+
+    private val licensesCache = LicensesCache(
+            licenseFileService = licenseFileService
+    )
+
+    private val licenseCacheInitializer = LicenseCacheInitializer(
+            frontendDirs = frontendDirs,
+            licensesCache = licensesCache
+    )
+
     private val cachesInitializer = CachesInitializer(
             stepsCacheInitializer = stepCachesInitializer,
             testsCacheInitializer = testsCacheInitializer,
             featuresCacheInitializer = featuresCacheInitializer,
-            jdbcDriversCacheInitializer = jdbcDriversCacheInitializer
+            jdbcDriversCacheInitializer = jdbcDriversCacheInitializer,
+            licenseCacheInitializer = licenseCacheInitializer
     )
 
     private val infoLoggerInitializer = InfoLoggerInitializer(
@@ -152,6 +202,23 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val versionInfoFrontendService = VersionInfoFrontendService()
 
     private val variablesResolverService = VariablesResolverService()
+
+    private val httpClient: HttpClient = HttpClients.createDefault().also {
+        context.registerShutdownHook {
+            it.close()
+        }
+    }
+
+    private val licensesCloudClient = CloudClient(
+            httpClient = httpClient,
+            baseUrl = "http://localhost:8010/testerum-dev/europe-west1", // todo: make this configurable
+            objectMapper = restApiObjectMapper
+    )
+
+    private val licenseFrontendService = LicenseFrontendService(
+            cloudClient = licensesCloudClient,
+            licensesCache = licensesCache
+    )
 
     private val testsRunnerJsonObjectMapper: ObjectMapper = jacksonObjectMapper().apply {
         registerModule(AfterburnerModule())
@@ -259,12 +326,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val fileSystemFrontendService = FileSystemFrontendService()
 
-    private val httpClient: HttpClient = HttpClients.createDefault().also {
-        context.registerShutdownHook {
-            it.close()
-        }
-    }
-
     private val httpClientService = HttpClientService(httpClient)
 
     private val httpFrontendService = HttpFrontendService(
@@ -287,7 +348,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val errorController = ErrorController(
             errorResponsePreparerMap = mapOf(
                     IllegalFileOperationException::class.java to IllegalFileOperationPreparer(),
-                    ValidationException::class.java to ValidationErrorResponsePreparer()
+                    ValidationException::class.java to ValidationErrorResponsePreparer(),
+                    CloudClientErrorResponseException::class.java to CloudErrorResponsePreparer()
             ),
             genericErrorResponsePreparer = GenericErrorResponsePreparer()
     )
@@ -298,6 +360,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val setupController = SetupController(
             setupFrontendService = setupFrontendService
+    )
+
+    private val licenseController = LicenseController(
+            licenseFrontendService = licenseFrontendService
     )
 
     private val settingsController = SettingsController(
@@ -370,6 +436,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             errorController,
             versionController,
             setupController,
+            licenseController,
             settingsController,
             messageController,
             variablesController,

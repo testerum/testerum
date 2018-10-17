@@ -24,7 +24,7 @@ export class FormValidationModel implements Serializable<FormValidationModel> {
         return null;
     }
 
-    static createaInstanceFromJson( json: any): FormValidationModel {
+    static createInstanceFromJson( json: any): FormValidationModel {
         let validationException = new FormValidationModel();
 
         validationException.globalValidationMessage = json["globalValidationMessage"];
