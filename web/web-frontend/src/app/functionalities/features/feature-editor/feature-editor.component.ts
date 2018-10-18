@@ -14,6 +14,7 @@ import {ArrayUtil} from "../../../utils/array.util";
 import {TagsService} from "../../../service/tags.service";
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
+import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 
 @Component({
     moduleId: module.id,
@@ -21,7 +22,7 @@ import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_moda
     templateUrl: 'feature-editor.component.html',
     styleUrls: ['feature-editor.component.scss']
 })
-export class FeatureEditorComponent implements OnInit, OnDestroy {
+export class FeatureEditorComponent extends AbstractComponentCanDeactivate implements OnInit, OnDestroy {
     markdownEditorOptions = {
         status: false,
         spellChecker: false
@@ -54,8 +55,7 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
                 private featuresTreeService: FeaturesTreeService,
                 private tagsService: TagsService,
                 private areYouSureModalService: AreYouSureModalService,
-                ) {
-    }
+                ) { super(); }
 
     ngOnInit(): void {
         this.routeSubscription = this.route.data.subscribe(data => {
@@ -81,6 +81,10 @@ export class FeatureEditorComponent implements OnInit, OnDestroy {
         if(this.routeSubscription) this.routeSubscription.unsubscribe();
         if(this.pathSubscription) this.pathSubscription.unsubscribe();
         if(this.fileUploadSubscription) this.fileUploadSubscription.unsubscribe();
+    }
+
+    canDeactivate(): boolean {
+        return !this.isEditMode;
     }
 
     setEditMode(value: boolean) {

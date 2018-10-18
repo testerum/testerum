@@ -39,6 +39,7 @@ import {UrlService} from "./service/url.service";
 import {TagsService} from "./service/tags.service";
 import {MessageService} from "./service/message.service";
 import {ManualModule} from "./functionalities/manual/manual.module";
+import {CanDeactivateGuard} from "./service/guards/CanDeactivateGuard";
 
 @NgModule({
     imports: [
@@ -72,6 +73,7 @@ import {ManualModule} from "./functionalities/manual/manual.module";
     ],
     providers: [
         SetupGuard,
+        CanDeactivateGuard,
 
         ApplicationEventBus,
 
