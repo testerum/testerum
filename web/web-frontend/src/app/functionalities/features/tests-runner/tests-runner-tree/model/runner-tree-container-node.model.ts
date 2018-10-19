@@ -23,6 +23,7 @@ export abstract class RunnerTreeContainerNodeModel extends RunnerTreeNodeModel i
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
     parentContainer: JsonTreeContainer;
     hidden: boolean = false;
+    selected: boolean = false;
 
     private _containerOptions: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
@@ -58,6 +59,14 @@ export abstract class RunnerTreeContainerNodeModel extends RunnerTreeNodeModel i
 
     setHidden(isHidden: boolean) {
         this.hidden = isHidden;
+    }
+
+    isSelected(): boolean {
+        return this.selected;
+    }
+
+    setSelected(isSelected: boolean) {
+        this.selected = isSelected;
     }
 
     equals(other: RunnerTreeNodeModel): boolean {

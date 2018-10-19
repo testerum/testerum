@@ -28,10 +28,10 @@
 
         <span *ngIf="!isStepNode()"
               class="node-text"
-              [class.tree-leaf-selected]="isSelected">{{model.text}}</span>
+              [class.tree-leaf-selected]="model.isSelected()">{{model.text}}</span>
 
         <span *ngIf="isStepNode()"
-              [class.tree-leaf-selected]="isSelected">
+              [class.tree-leaf-selected]="model.isSelected()">
             <step-text [stepDef]="model.stepCall.stepDef"
                        [stepCall]="model.stepCall"
                        [showPhase]="true"

@@ -38,7 +38,7 @@ export class ManualSelectTestsNodeComponent implements OnInit {
             return;
         }
 
-        this.model.isSelected = !this.model.isSelected;
+        this.model.setSelected(!this.model.isSelected());
 
         if(this.model.parentContainer instanceof ManualSelectTestsTreeContainerModel) {
             this.model.parentContainer.calculateCheckState();

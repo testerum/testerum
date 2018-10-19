@@ -1,10 +1,7 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
-import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
-import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {TestTreeNodeModel} from "../../model/test-tree-node.model";
 import {UrlService} from "../../../../../service/url.service";
-import {Subscription} from "rxjs";
 
 @Component({
     moduleId: module.id,
@@ -12,35 +9,15 @@ import {Subscription} from "rxjs";
     templateUrl: 'test-node.component.html',
     styleUrls:['test-node.component.scss']
 })
-export class TestNodeComponent implements OnInit, OnDestroy {
+export class TestNodeComponent {
 
     @Input() model:TestTreeNodeModel;
-    isSelected:boolean = false;
-
-    selectedNodeSubscription: Subscription;
 
     constructor(private router: Router,
-                private urlService: UrlService,
-                private jsonTreeService:JsonTreeService) {
-        this.selectedNodeSubscription = jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onTestSelected(item));
+                private urlService: UrlService) {
     }
 
-    ngOnInit(): void {
-        this.isSelected = this.jsonTreeService.isSelectedNodeEqualsWithTreeNode(this.model);
-    }
-
-    ngOnDestroy(): void {
-        if(this.selectedNodeSubscription) this.selectedNodeSubscription.unsubscribe();
-    }
-
-    onTestSelected(item:JsonTreeNodeEventModel) {
-        this.isSelected = item.treeNode == this.model;
-        if(item.treeNode == this.model) {
-            this.showTest();
-        }
-    }
-
-    showTest() {
+    setSelected() {
         this.urlService.navigateToTest(this.model.path);
     }
 }

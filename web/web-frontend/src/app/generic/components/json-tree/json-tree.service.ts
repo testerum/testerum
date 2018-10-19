@@ -23,6 +23,10 @@ export class JsonTreeService {
         if(selectedNode == null) return;
 
         let tree = this.getTreeRootFromOfNode(selectedNode);
+        if (tree.selectedNode) {
+            tree.selectedNode.setSelected(false);
+        }
+        selectedNode.setSelected(true);
         tree.selectedNode = selectedNode;
 
         this.selectedNodeEmitter.emit(

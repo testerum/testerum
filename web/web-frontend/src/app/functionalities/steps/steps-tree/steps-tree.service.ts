@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BasicStepDef} from "../../../model/basic-step-def.model";
 import {StepsService} from "../../../service/steps.service";
-import {ComposedStepDef} from "../../../model/composed-step-def.model";
 import StepsTreeUtil from "./util/steps-tree.util";
 import {JsonTreeModel} from "../../../generic/components/json-tree/model/json-tree.model";
 import {JsonTreeNode} from "../../../generic/components/json-tree/model/json-tree-node.model";

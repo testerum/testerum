@@ -28,7 +28,6 @@ export class TestsRunnerService {
     private webSocket:$WebSocket = null;
     private executionId: number = null;
 
-    selectedRunnerTreeNode: RunnerTreeNodeModel;
     readonly selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
 
     readonly startTestExecutionObservable: EventEmitter<RunnerRootNode> = new EventEmitter<RunnerRootNode>();
@@ -133,7 +132,6 @@ export class TestsRunnerService {
     }
 
     public setSelectedNode(selectedRunnerTreeNode: RunnerTreeNodeModel) {
-        this.selectedRunnerTreeNode = selectedRunnerTreeNode;
         this.selectedRunnerTreeNodeObserver.emit(selectedRunnerTreeNode);
     }
 }

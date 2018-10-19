@@ -7,12 +7,11 @@ export class ManualSelectTestsTreeNodeModel extends JsonTreePathNode implements 
 
     name: string;
     path: Path;
-    isSelected: boolean;
 
     constructor(parentContainer: JsonTreePathContainer, name: string,  path: Path, isSelected: boolean = false) {
         super(parentContainer, path);
         this.name = name;
-        this.isSelected = isSelected;
+        this.setSelected(isSelected);
     }
 
     compareTo(other: ManualSelectTestsTreeNodeModel): number {

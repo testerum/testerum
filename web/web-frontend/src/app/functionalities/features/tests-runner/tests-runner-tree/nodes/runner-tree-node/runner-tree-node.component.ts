@@ -25,28 +25,19 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
     @Input() model:RunnerTreeNodeModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
-    isSelected:boolean = false;
-
     RunnerTreeNodeStateEnum = ExecutionStatusEnum;
 
     constructor(private runnerTreeComponentService:RunnerTreeComponentService,
                 private testsRunnerService: TestsRunnerService){}
 
-    nodeSelectedSubscription: Subscription;
     runnerTreeFilterSubscription: Subscription;
     ngOnInit(): void {
-        this.nodeSelectedSubscription = this.runnerTreeComponentService.selectedRunnerTreeNodeObserver.subscribe((selectedTreeNode: RunnerTreeNodeModel) => {
-            this.isSelected = this.model.equals(selectedTreeNode);
-        });
         this.runnerTreeFilterSubscription = this.testsRunnerService.treeFilterObservable.subscribe((filter: RunnerTreeFilterModel) => {
             this.model.calculateNodeVisibilityBasedOnFilter(filter)
         });
     }
 
     ngOnDestroy(): void {
-        if (this.nodeSelectedSubscription != null) {
-            this.nodeSelectedSubscription.unsubscribe();
-        }
         if (this.runnerTreeFilterSubscription != null) {
             this.runnerTreeFilterSubscription.unsubscribe();
         }
@@ -87,5 +78,4 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
     setSelected() {
         this.runnerTreeComponentService.setNodeAsSelected(this.model);
     }
-
 }

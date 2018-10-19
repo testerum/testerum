@@ -25,6 +25,7 @@ import {FeatureEndEvent} from "../../../../model/test/event/feature-end.event";
 import {RunnerTreeFilterModel} from "./model/filter/runner-tree-filter.model";
 import {RunnerStoppedEvent} from '../../../../model/test/event/runner-stopped.event';
 import {RunnerTreeComponent} from "./runner-tree.component";
+import {JsonTreeService} from "../../../../generic/components/json-tree/json-tree.service";
 
 @Injectable()
 export class RunnerTreeComponentService {
@@ -35,13 +36,11 @@ export class RunnerTreeComponentService {
     private treeTestsWithFoldersNodes: RunnerTestTreeNodeModel[] = [];
     private allNodesMapByEventKey: Map<string, RunnerTreeNodeModel> = new Map<string, RunnerTreeNodeModel>();
 
-    selectedRunnerTreeNode: RunnerTreeNodeModel;
-    selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
-
     private currentTreeFilter: RunnerTreeFilterModel = new RunnerTreeFilterModel();
     private runnerEventSubscription: Subscription = null;
 
     constructor(private cd: ChangeDetectorRef,
+                private jsonTreeService: JsonTreeService,
                 private testsRunnerService: TestsRunnerService,
                 private executionPieService: ExecutionPieService) {
         testsRunnerService.treeFilterObservable.subscribe((filter: RunnerTreeFilterModel) => {
@@ -195,17 +194,15 @@ export class RunnerTreeComponentService {
     }
 
     private restPieData(pieModel: ExecutionPieModel) {
-
         pieModel.reset();
         pieModel.totalTests = this.treeTestsNodes.length;
         pieModel.waitingToExecute = this.treeTestsNodes.length;
     }
 
     setNodeAsSelected(runnerTreeNodeModel: RunnerTreeNodeModel) {
-        this.selectedRunnerTreeNode = runnerTreeNodeModel;
-
-        this.selectedRunnerTreeNodeObserver.emit(runnerTreeNodeModel);
         this.testsRunnerService.setSelectedNode(runnerTreeNodeModel);
+
+        this.jsonTreeService.setSelectedNode(runnerTreeNodeModel);
         this.refresh();
     }
 

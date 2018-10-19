@@ -65,7 +65,7 @@ export class ManualSelectTestsTreeComponent implements OnInit, OnChanges {
                 this.getStepTreeNode(testContainer, manualTreeTest)
             );
         } else {
-            nodeToSelect.isSelected = true;
+            nodeToSelect.setSelected(true);
         }
     }
 

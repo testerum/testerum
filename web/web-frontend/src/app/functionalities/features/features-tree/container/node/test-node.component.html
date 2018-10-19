@@ -1,10 +1,10 @@
 <div class="node-text"
+     (click)="setSelected();$event.stopPropagation();"
      dnd-draggable [dragEnabled]="true" [dragData]="model">
 
 
-    <div (click)="showTest()"
-         [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
-         [class.tree-leaf-selected]="isSelected">
+    <div [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
+         [class.tree-leaf-selected]="model.isSelected()">
 
         <i *ngIf="model.testProperties.isManual && !model.testProperties.isDisabled" class="fa_my-manual-test" aria-hidden="true"></i>
         <i *ngIf="!model.testProperties.isManual && !model.testProperties.isDisabled" class="fa_my-automated-test" aria-hidden="true"></i>

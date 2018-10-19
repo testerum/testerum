@@ -1,7 +1,6 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";
-import {JsonTreeModel} from "../../../generic/components/json-tree/model/json-tree.model";
-import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {TestTreeNodeModel} from "./model/test-tree-node.model";
@@ -9,8 +8,8 @@ import {FeatureContainerComponent} from "./container/feature-container.component
 import {FeaturesTreeService} from "./features-tree.service";
 import {FeatureTreeContainerModel} from "./model/feature-tree-container.model";
 import {TestNodeComponent} from "./container/node/test-node.component";
-import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
 import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-filter.model";
+import {UrlUtil} from "../../../utils/url.util";
 
 @Component({
     selector: 'features-tree',
@@ -20,7 +19,6 @@ import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-fi
         </json-tree>
     `
 })
-
 export class FeaturesTreeComponent implements OnInit {
 
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
@@ -34,11 +32,16 @@ export class FeaturesTreeComponent implements OnInit {
                 private treeService:JsonTreeService,
                 featuresTreeService: FeaturesTreeService) {
         this.featuresTreeService = featuresTreeService;
+
+        router.events.forEach((event) => {
+            if(event instanceof NavigationEnd) {
+                featuresTreeService.selectNodeAtPath(UrlUtil.getPathParamFromUrl(this.activatedRoute))
+            }
+        });
     }
 
     ngOnInit(): void {
-        let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path'] : null;
-        let path: Path = pathAsString != null ? Path.createInstance(pathAsString) : null;
+        let path = UrlUtil.getPathParamFromUrl(this.activatedRoute);
 
         this.featuresTreeService.treeFilter = FeaturesTreeFilter.createEmptyFilter();
         this.featuresTreeService.initializeTestsTreeFromServer(path);

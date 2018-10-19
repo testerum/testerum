@@ -7,6 +7,7 @@ export abstract class JsonTreeNodeSerializable implements JsonTreeNode, Serializ
 
     parentContainer: JsonTreeContainer;
     hidden: boolean;
+    selected: boolean;
     private _options: JsonTreeNodeOptions = new JsonTreeNodeOptions();
 
     constructor(parentContainer: JsonTreeContainer) {
@@ -27,6 +28,14 @@ export abstract class JsonTreeNodeSerializable implements JsonTreeNode, Serializ
 
     setHidden(isHidden: boolean) {
         this.hidden = isHidden;
+    }
+
+    isSelected(): boolean {
+        return this.selected;
+    }
+
+    setSelected(isSelected: boolean) {
+        this.selected = isSelected;
     }
 
     getOptions(): JsonTreeNodeOptions {

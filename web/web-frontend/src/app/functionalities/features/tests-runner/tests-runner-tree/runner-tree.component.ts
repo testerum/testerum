@@ -36,7 +36,8 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
     startTestExecutionSubscription: Subscription;
     constructor(private cd: ChangeDetectorRef,
                 private testsRunnerService: TestsRunnerService,
-                private runnerTreeComponentService: RunnerTreeComponentService) {}
+                private runnerTreeComponentService: RunnerTreeComponentService) {
+    }
 
 
     ngOnInit(): void {

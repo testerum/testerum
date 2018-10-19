@@ -4,7 +4,7 @@
     <div class="full-line"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false"
-         (click)="setSelected()"
+         (click)="setSelected();$event.stopPropagation();"
          (dblclick)="collapseNode()"
 
          dnd-droppable [allowDrop]="allowDrop()" (onDropSuccess)="copyResource($event)">
@@ -15,7 +15,7 @@
 
         <span class="node-text"
               [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
-              [class.tree-leaf-selected]="isSelected">{{model.name}}</span>
+              [class.tree-leaf-selected]="model.isSelected()">{{model.name}}</span>
 
         <!-- BUTTONS RENDERING -->
         <div class="button-panel btn-group my-button-panel"

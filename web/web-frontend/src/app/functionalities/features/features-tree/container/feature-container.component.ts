@@ -8,7 +8,6 @@ import {FeaturesTreeService} from "../features-tree.service";
 import {TestTreeNodeModel} from "../model/test-tree-node.model";
 import {TestsService} from "../../../../service/tests.service";
 import {TestsRunnerService} from "../../tests-runner/tests-runner.service";
-import {JsonTreeNodeEventModel} from "../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
 import {Subscription} from "rxjs";
 import {UrlService} from "../../../../service/url.service";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
@@ -29,7 +28,6 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     @Input() modelComponentMapping: ModelComponentMapping;
 
     hasMouseOver: boolean = false;
-    isSelected:boolean = false;
 
     selectedNodeSubscription: Subscription;
     getTestsUnderPathSubscription: Subscription;
@@ -40,20 +38,14 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
                 private testsService: TestsService,
                 private testsRunnerService: TestsRunnerService,
                 private featureService: FeatureService) {
-        this.selectedNodeSubscription = jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onFeatureSelected(item));
     }
 
     ngOnInit(): void {
-        this.isSelected = this.jsonTreeService.isSelectedNodeEqualsWithTreeNode(this.model);
     }
 
     ngOnDestroy(): void {
         if(this.selectedNodeSubscription) this.selectedNodeSubscription.unsubscribe();
         if(this.getTestsUnderPathSubscription) this.getTestsUnderPathSubscription.unsubscribe();
-    }
-
-    onFeatureSelected(selectedJsonTreeNodeEventModel:JsonTreeNodeEventModel) : void {
-        this.isSelected = selectedJsonTreeNodeEventModel.treeNode == this.model;
     }
 
     allowDrop():any {
@@ -70,7 +62,6 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     }
 
     setSelected() {
-        this.jsonTreeService.setSelectedNode(this.model);
         this.urlService.navigateToFeature(this.model.path);
     }
 

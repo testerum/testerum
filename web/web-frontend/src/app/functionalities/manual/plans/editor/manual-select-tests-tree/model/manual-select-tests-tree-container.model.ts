@@ -90,7 +90,7 @@ export class ManualSelectTestsTreeContainerModel extends ManualSelectTestsTreeNo
                 }
             } else {
                 let childAsNode = child as ManualSelectTestsTreeNodeModel;
-                if (!childAsNode.isSelected) {
+                if (!childAsNode.isSelected()) {
                     allChildrenAreChecked = false;
                 } else {
                     newState = SelectionStateEnum.PARTIAL_SELECTED

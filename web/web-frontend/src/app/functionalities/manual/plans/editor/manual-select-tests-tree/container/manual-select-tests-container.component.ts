@@ -45,7 +45,7 @@ export class ManualSelectTestsContainerComponent {
             if (child.isContainer()) {
                 this.selectOrNotChildren(child as ManualSelectTestsTreeContainerModel)
             } else {
-                child.isSelected = this.model.selectedState == SelectionStateEnum.SELECTED;
+                child.setSelected(this.model.selectedState == SelectionStateEnum.SELECTED);
             }
         }
 

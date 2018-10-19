@@ -38,6 +38,13 @@ export class FeaturesTreeService {
         )
     }
 
+    selectNodeAtPath(path: Path) {
+        if (this.treeModel) {
+            let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(this.treeModel, path);
+            this.jsonTreeService.setSelectedNode(selectedNode);
+        }
+    }
+
     copy(pathToCopy: Path, destinationPath: Path) {
         JsonTreePathUtil.copy(this.treeModel, pathToCopy, destinationPath);
 

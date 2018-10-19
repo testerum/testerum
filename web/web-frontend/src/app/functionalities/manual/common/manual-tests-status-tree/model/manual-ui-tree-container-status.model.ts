@@ -14,6 +14,7 @@ export class ManualUiTreeContainerStatusModel extends ManualUiTreeBaseStatusMode
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
     parentContainer: JsonTreeContainer;
     hidden: boolean = false;
+    selected: boolean = false;
     children: Array<ManualUiTreeBaseStatusModel> = [];
 
     private _containerOptions: JsonTreeContainerOptions = new JsonTreeContainerOptions();
@@ -58,4 +59,11 @@ export class ManualUiTreeContainerStatusModel extends ManualUiTreeBaseStatusMode
         return this.getChildren().every(it => {return it.hidden})
     }
 
+    isSelected(): boolean {
+        return this.selected;
+    }
+
+    setSelected(isSelected: boolean) {
+        this.selected = isSelected;
+    }
 }
