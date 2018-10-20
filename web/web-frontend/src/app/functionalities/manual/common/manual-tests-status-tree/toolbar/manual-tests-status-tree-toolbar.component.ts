@@ -7,6 +7,8 @@ import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {ArrayUtil} from "../../../../../utils/array.util";
 import {TagsService} from "../../../../../service/tags.service";
 import {AutoComplete} from "primeng/primeng";
+import {ManualTestsStatusTreeNodeComponent} from "../nodes/runner-tree-node/manual-tests-status-tree-node.component";
+import {ManualUiTreeBaseStatusModel} from "../model/manual-ui-tree-base-status.model";
 
 @Component({
     selector: 'manual-tests-status-tree-toolbar',
@@ -122,7 +124,12 @@ export class ManualTestsStatusTreeToolbarComponent implements OnInit {
             filter.showBlocked = true;
         }
 
-        this.manualTestsStatusTreeService.initializeTreeFromServer(this.planPath, filter);
+        let testPath = Path.createInstanceOfEmptyPath();
+        let selectedNode = this.treeModel.selectedNode as ManualUiTreeBaseStatusModel;
+        if (selectedNode) {
+            testPath = selectedNode.path;
+        }
+        this.manualTestsStatusTreeService.initializeTreeFromServer(this.planPath, testPath, filter);
     }
 
     onExpandAllNodes(): void {
