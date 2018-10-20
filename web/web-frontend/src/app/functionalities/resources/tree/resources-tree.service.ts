@@ -229,4 +229,11 @@ export class ResourcesTreeService {
             }
         }
     }
+
+    selectNodeAtPath(path: Path) {
+        if (this.root) {
+            let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(this.root, path);
+            this.jsonTreeService.setSelectedNode(selectedNode);
+        }
+    }
 }

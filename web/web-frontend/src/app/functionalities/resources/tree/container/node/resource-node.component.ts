@@ -12,42 +12,21 @@ import {UrlService} from "../../../../../service/url.service";
     templateUrl: 'resource-node.component.html',
     styleUrls:['resource-node.component.scss']
 })
-export class ResourceNodeComponent implements OnInit, OnDestroy {
+export class ResourceNodeComponent {
 
     @Input() model:ResourcesTreeNode;
-    isSelected:boolean = false;
-
-    selectedNodeSubscription: Subscription;
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private jsonTreeService:JsonTreeService,
                 private urlService: UrlService) {
-        this.selectedNodeSubscription = jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onNodeSelected(item));
-    }
-
-    ngOnInit(): void {
-        this.isSelected = this.jsonTreeService.isSelectedNodeEqualsWithTreeNode(this.model);
-    }
-
-    ngOnDestroy(): void {
-        if(this.selectedNodeSubscription) this.selectedNodeSubscription.unsubscribe();
     }
 
     getName() {
        return this.model.name.split(".")[0]
     }
 
-    onNodeSelected(selectedJsonTreeNodeEventModel:JsonTreeNodeEventModel) {
-        this.isSelected = selectedJsonTreeNodeEventModel.treeNode == this.model;
-
-        if(this.isSelected) {
-            this.showViewer();
-        }
-    }
-
-    private showViewer() {
-        //TODO: Check why is this called twice???!!!
+    setSelected() {
         this.urlService.navigateToResource(this.model.path);
     }
 }

@@ -1,5 +1,6 @@
 <div class="node-text"
+     (click)="setSelected();$event.stopPropagation();"
      dnd-draggable [dragEnabled]="true" [dragData]="model" [dropZones]="[model.resourceType.fileExtension]"
-     [class.tree-leaf-selected]="isSelected">
+     [class.tree-leaf-selected]="model.isSelected()">
     {{getName()}}
 </div>

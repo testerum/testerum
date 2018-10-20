@@ -7,6 +7,7 @@ import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.s
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
 import {ResourcesTreeService} from "./resources-tree.service";
+import {UrlUtil} from "../../../utils/url.util";
 
 @Component({
     selector: 'resources-tree',
@@ -23,8 +24,7 @@ export class ResourcesTreeComponent implements OnInit {
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private resourcesTreeService: ResourcesTreeService,
-                private jsonTreeService: JsonTreeService) {
+                private resourcesTreeService: ResourcesTreeService) {
     }
 
     ngOnInit(): void {
@@ -33,30 +33,10 @@ export class ResourcesTreeComponent implements OnInit {
 
         this.resourcesTreeService.initializeResourceTreeFromServer(path);
 
-        this.router.events.pipe(
-            filter(
-                event => event instanceof NavigationEnd
-            ),
-            map(route => {
-                let leafRoute: any = this.router.routerState.snapshot.root;
-                while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
-
-                return leafRoute.params
-            }),)
-            .subscribe((params: Params) => {
-                this.handleSelectedRouteParams(params);
-            });
-    }
-
-    private handleSelectedRouteParams(params: Params) {
-        let selectedPathAsString = params['path'];
-
-        if (!selectedPathAsString) { return; }
-        let selectedPath = Path.createInstance(selectedPathAsString);
-
-        if(!this.treeModel) { return; }
-
-        let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(this.treeModel, selectedPath);
-        this.jsonTreeService.setSelectedNode(selectedNode);
+        this.router.events.forEach((event) => {
+            if(event instanceof NavigationEnd) {
+                this.resourcesTreeService.selectNodeAtPath(UrlUtil.getPathParamFromUrl(this.activatedRoute))
+            }
+        });
     }
 }

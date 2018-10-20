@@ -14,6 +14,7 @@ import {JsonTreePathUtil} from "../../../../generic/components/json-tree/util/js
 import {ArrayUtil} from "../../../../utils/array.util";
 import {JsonTreePathContainer} from "../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
+import {UrlService} from "../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -32,9 +33,14 @@ export class ResourcesContainerComponent {
     hasMouseOver: boolean = false;
 
     constructor(private router: Router,
+                private urlService: UrlService,
                 private jsonTreeService: JsonTreeService,
                 private resourcesTreeService: ResourcesTreeService,
                 private resourceService: ResourceService) {
+    }
+
+    setSelected() {
+        this.urlService.navigateToFeature(this.model.path);
     }
 
     allowDrop():any {

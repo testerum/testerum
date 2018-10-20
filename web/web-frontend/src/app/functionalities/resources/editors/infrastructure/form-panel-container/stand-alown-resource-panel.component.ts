@@ -21,6 +21,7 @@ import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
 import {UrlService} from "../../../../../service/url.service";
 import {AreYouSureModalService} from "../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
+import {AbstractComponentCanDeactivate} from "../../../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 
 @Component({
     moduleId: module.id,
@@ -29,7 +30,7 @@ import {AreYouSureModalService} from "../../../../../generic/components/are_you_
     styleUrls: ['stand-alown-resource-panel.component.scss']
 })
 
-export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
+export class StandAlownResourcePanelComponent extends AbstractComponentCanDeactivate implements OnInit, OnDestroy {
 
     @ViewChild('panelBody', {read: ViewContainerRef}) bodyElement:ViewContainerRef;
 
@@ -46,7 +47,8 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private resourceService: ResourceService,
                 private resourcesTreeService: ResourcesTreeService,
-                private areYouSureModalService: AreYouSureModalService,) {
+                private areYouSureModalService: AreYouSureModalService) {
+        super();
     }
 
     ngOnInit(): void {
@@ -70,6 +72,10 @@ export class StandAlownResourcePanelComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if(this.routeSubscription) this.routeSubscription.unsubscribe();
         if(this.routeParamSubscription) this.routeParamSubscription.unsubscribe();
+    }
+
+    canDeactivate(): boolean {
+        return !this.isEditMode;
     }
 
     private initialize() {

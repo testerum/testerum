@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
-import {Path} from "../../../model/infrastructure/path/path.model";
 import {TestTreeNodeModel} from "./model/test-tree-node.model";
 import {FeatureContainerComponent} from "./container/feature-container.component";
 import {FeaturesTreeService} from "./features-tree.service";
