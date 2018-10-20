@@ -1,71 +1,31 @@
-import {filter, map} from 'rxjs/operators';
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeModel} from "../../../generic/components/json-tree/model/json-tree.model";
-import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
-import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
-import {Path} from "../../../model/infrastructure/path/path.model";
-import {StepTreeNodeModel} from "./model/step-tree-node.model";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {UrlUtil} from "../../../utils/url.util";
+import {StepsTreeService} from "./steps-tree.service";
 
 @Component({
     selector: 'steps-tree',
-    template: `        
+    template: `
         <json-tree [treeModel]="treeModel"
                    [modelComponentMapping]="modelComponentMapping">
         </json-tree>
     `
 })
+export class StepsTreeComponent {
 
-export class StepsTreeComponent implements OnChanges {
-
-    @Input() treeModel:JsonTreeModel ;
+    @Input() treeModel: JsonTreeModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private treeService:JsonTreeService) {
-    }
+                private stepTreeService: StepsTreeService) {
 
-    ngOnChanges(changes: SimpleChanges): void {
-        this.activatedRoute.children.forEach(
-            (childActivateRoute: ActivatedRoute) => {
-                childActivateRoute.params.subscribe( (params: Params) => {
-                        this.handleSelectedRouteParams(params)
-                    }
-                )
+        router.events.forEach((event) => {
+            if (event instanceof NavigationEnd) {
+                stepTreeService.selectNodeAtPath(UrlUtil.getPathParamFromUrl(this.activatedRoute))
             }
-        );
-
-        this.router.events.pipe(
-            filter(
-                event => event instanceof NavigationEnd
-            ),
-            map(route => {
-                let leafRoute: any = this.router.routerState.snapshot.root;
-                while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
-
-                return leafRoute.params
-            }),)
-            .subscribe((params: Params) => {
-                this.handleSelectedRouteParams(params);
-            });
-    }
-
-    private handleSelectedRouteParams(params: Params) {
-        let selectedPathAsString = params['path'];
-
-        if (!selectedPathAsString) { return; }
-        let selectedPath = Path.createInstance(selectedPathAsString);
-
-        if(!this.treeModel) { return; }
-
-        let allTreeNodes: Array<StepTreeNodeModel> = this.treeModel.getAllTreeNodes<StepTreeNodeModel>();
-
-        for (const treeNode of allTreeNodes) {
-            if (treeNode.path && treeNode.path.equals(selectedPath)) {
-                this.treeService.setSelectedNode(treeNode);
-                break;
-            }
-        }
+        });
     }
 }

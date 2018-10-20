@@ -1,9 +1,9 @@
 <div class="node-text"
      dnd-draggable [dragEnabled]="true" [dragData]="model">
 
-    <div (click)="showViewer()"
+    <div (click)="setSelected();$event.stopPropagation();"
          [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
-         [class.tree-leaf-selected]="isSelected">
+         [class.tree-leaf-selected]="model.isSelected()">
         <step-text [stepDef]="model.stepDef"></step-text>
     </div>
 </div>

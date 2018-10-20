@@ -73,4 +73,11 @@ export class StepsTreeService {
         ) as StepTreeContainerModel;
         newParent.sort();
     }
+
+    selectNodeAtPath(path: Path) {
+        if (this.treeModel) {
+            let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(this.treeModel, path);
+            this.jsonTreeService.setSelectedNode(selectedNode);
+        }
+    }
 }

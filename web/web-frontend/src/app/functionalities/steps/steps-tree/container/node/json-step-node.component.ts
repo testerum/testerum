@@ -12,36 +12,15 @@ import {Subscription} from "rxjs";
     templateUrl: 'json-step-node.component.html',
     styleUrls:['json-step-node.component.scss']
 })
-export class JsonStepNodeComponent implements OnInit, OnDestroy {
+export class JsonStepNodeComponent {
 
     @Input() model:StepTreeNodeModel;
-    isSelected:boolean = false;
-
-    selectedNodeSubscription: Subscription;
 
     constructor(private router: Router,
-                private urlService: UrlService,
-                private jsonTreeService:JsonTreeService) {
-        this.selectedNodeSubscription = jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onNodeSelected(item));
+                private urlService: UrlService) {
     }
 
-    ngOnInit(): void {
-        this.isSelected = this.jsonTreeService.isSelectedNodeEqualsWithTreeNode(this.model);
-    }
-
-    ngOnDestroy(): void {
-        if(this.selectedNodeSubscription) this.selectedNodeSubscription.unsubscribe();
-    }
-
-    onNodeSelected(selectedJsonTreeNodeEventModel:JsonTreeNodeEventModel) {
-        this.isSelected = selectedJsonTreeNodeEventModel.treeNode == this.model;
-
-        if(this.isSelected) {
-            this.showViewer();
-        }
-    }
-
-    showViewer() {
+    setSelected() {
         if (this.model.isComposedStep) {
             this.urlService.navigateToComposedStep(this.model.path)
         } else {

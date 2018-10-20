@@ -8,13 +8,14 @@ import {ComposedStepEditorResolver} from "./composed-step-editor/composed-step-e
 import {SetupGuard} from "../../service/guards/setup.guard";
 import {BasicStepEditorComponent} from "./basic-step-editor/basic-step-editor.component";
 import {BasicStepEditorResolver} from "./basic-step-editor/basic-step-editor.resolver";
+import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
 
 const stepsRoutes: Routes = [
     {
         path:"steps", component:StepsComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
         children: [
             {
-                path: 'composed', component: ComposedStepEditorComponent, resolve: {composedStepDef: ComposedStepEditorResolver}
+                path: 'composed', component: ComposedStepEditorComponent, resolve: {composedStepDef: ComposedStepEditorResolver}, canDeactivate: [CanDeactivateGuard]
             },
             {
                 path: 'composed/:action', component: ComposedStepEditorComponent, resolve: {composedStepDef: ComposedStepEditorResolver}

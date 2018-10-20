@@ -17,9 +17,8 @@ const testsRoutes: Routes = [
                 path: ':action', component: FeatureEditorComponent, resolve: {featureModel: FeatureResolver}, canDeactivate: [CanDeactivateGuard]
             },
             {
-                path: 'tests/:action', component: TestEditorComponent, resolve: {testModel: TestResolver}
+                path: 'tests/:action', component: TestEditorComponent, resolve: {testModel: TestResolver}, canDeactivate: [CanDeactivateGuard]
             }
-
         ]
     },
 ];

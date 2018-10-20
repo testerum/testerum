@@ -17,6 +17,7 @@ import {Path} from "../../../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
+import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 
 @Component({
     moduleId: module.id,
@@ -24,7 +25,7 @@ import {AreYouSureModalService} from "../../../generic/components/are_you_sure_m
     templateUrl: 'composed-step-editor.component.html',
     styleUrls: ['./composed-step-editor.component.scss']
 })
-export class ComposedStepEditorComponent implements OnInit, OnDestroy {
+export class ComposedStepEditorComponent extends AbstractComponentCanDeactivate implements OnInit, OnDestroy {
 
     model: ComposedStepDef;
     isEditMode: boolean = false;
@@ -43,6 +44,7 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
                 private errorService: ErrorService,
                 private applicationEventBus: ApplicationEventBus,
                 private areYouSureModalService: AreYouSureModalService) {
+        super();
     }
 
     ngOnInit() {
@@ -62,6 +64,10 @@ export class ComposedStepEditorComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if(this.editModeSubscription) this.editModeSubscription.unsubscribe();
+    }
+
+    canDeactivate(): boolean {
+        return !this.isEditMode;
     }
 
     initPathForTitle() {

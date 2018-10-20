@@ -16,6 +16,7 @@ import {StepCallTreeComponent} from "../../../generic/components/step-call-tree/
 import {MarkdownEditorComponent} from "../../../generic/components/markdown-editor/markdown-editor.component";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
+import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 
 @Component({
     moduleId: module.id,
@@ -24,7 +25,7 @@ import {AreYouSureModalService} from "../../../generic/components/are_you_sure_m
     styleUrls: ['test-editor.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
+export class TestEditorComponent extends AbstractComponentCanDeactivate implements OnInit, OnDestroy, DoCheck{
     markdownEditorOptions = {
         status: false,
         spellChecker: false
@@ -59,6 +60,7 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
                 private testsRunnerService: TestsRunnerService,
                 private tagsService: TagsService,
                 private areYouSureModalService: AreYouSureModalService) {
+        super();
     }
 
     ngOnInit(): void {
@@ -136,6 +138,10 @@ export class TestEditorComponent implements OnInit, OnDestroy, DoCheck{
         if(this.routeSubscription) this.routeSubscription.unsubscribe();
         if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
         if(this.warningRecalculationChangesSubscription) this.warningRecalculationChangesSubscription.unsubscribe();
+    }
+
+    canDeactivate(): boolean {
+        return !this.isEditMode;
     }
 
     addStep() {
