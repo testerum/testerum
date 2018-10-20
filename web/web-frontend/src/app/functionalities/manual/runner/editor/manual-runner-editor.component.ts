@@ -11,6 +11,9 @@ import {MarkdownEditorComponent} from "../../../../generic/components/markdown-e
 import {StepCall} from "../../../../model/step-call.model";
 import {ManualTestsStatusTreeComponent} from "../../common/manual-tests-status-tree/manual-tests-status-tree.component";
 import {filter, map} from "rxjs/operators";
+import {AbstractComponentCanDeactivate} from "../../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
+import {UrlUtil} from "../../../../utils/url.util";
+import {ManualTreeStatusFilterModel} from "../../common/manual-tests-status-tree/model/filter/manual-tree-status-filter.model";
 
 @Component({
     selector: 'manual-runner-editor',
@@ -47,23 +50,15 @@ export class ManualRunnerEditorComponent implements OnInit {
     steps: Array<StepCall[]> = [];
 
     constructor(private router: Router,
-                private route: ActivatedRoute,
+                private activatedRoute: ActivatedRoute,
                 private manualExecPlansService: ManualExecPlansService,
                 private urlService: UrlService) {
     }
 
     ngOnInit(): void {
-        this.router.events.pipe(
-            filter(event => event instanceof NavigationEnd),
-            map(route => {
-                let leafRoute: any = this.router.routerState.snapshot.root;
-                while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
-
-                return leafRoute.params
-            }),)
-            .subscribe((params: Params) => {
-                this.init(params);
-            });
+        this.activatedRoute.params.subscribe(params => {
+            this.init(params);
+        });
     }
 
     init(queryParams: Params) {
@@ -132,14 +127,14 @@ export class ManualRunnerEditorComponent implements OnInit {
     }
 
     resetChanges(): void {
-        this.init(this.route.snapshot.params);
+        this.init(this.activatedRoute.snapshot.params);
     }
 
     saveAction(): void {
         this.manualExecPlansService
             .updateTestRun(this.planPath, this.model)
             .subscribe((manualTest: ManualTest) => {
-                this.init(this.route.snapshot.params);
+                this.init(this.activatedRoute.snapshot.params);
                 this.tree.ngOnInit();
             });
     }

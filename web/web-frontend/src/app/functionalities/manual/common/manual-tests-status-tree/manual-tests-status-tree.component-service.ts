@@ -14,11 +14,8 @@ export class ManualTestsStatusTreeComponentService {
     planPath: Path;
 
     selectedRunnerTreeNode: ManualUiTreeNodeStatusModel;
-    selectedRunnerTreeNodeObserver: EventEmitter<ManualUiTreeNodeStatusModel> = new EventEmitter<ManualUiTreeNodeStatusModel>();
 
     setNodeAsSelected(runnerTreeNodeModel: ManualUiTreeNodeStatusModel) {
         this.selectedRunnerTreeNode = runnerTreeNodeModel;
-
-        this.selectedRunnerTreeNodeObserver.emit(runnerTreeNodeModel);
     }
 }

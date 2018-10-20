@@ -1,15 +1,13 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 import {ManualUiTreeBaseStatusModel} from "../../model/manual-ui-tree-base-status.model";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {ManualTestsStatusTreeComponentService} from "../../manual-tests-status-tree.component-service";
 import {ManualTestsStatusTreeService} from "../../manual-tests-status-tree.service";
 import {Subscription} from "rxjs";
 import {ManualUiTreeNodeStatusModel} from "../../model/manual-ui-tree-node-status.model";
-import {ManualTreeStatusFilterModel} from "../../model/filter/manual-tree-status-filter.model";
 import {ManualUiTreeContainerStatusModel} from "../../model/manual-ui-tree-container-status.model";
 import {ManualTestStatus} from "../../../../plans/model/enums/manual-test-status.enum";
 import {UrlService} from "../../../../../../service/url.service";
-import {Path} from "../../../../../../model/infrastructure/path/path.model";
 
 @Component({
     moduleId: module.id,
@@ -20,12 +18,10 @@ import {Path} from "../../../../../../model/infrastructure/path/path.model";
         '../../../../../../generic/css/tree.scss'
     ]
 })
-export class ManualTestsStatusTreeNodeComponent implements OnInit, OnDestroy {
+export class ManualTestsStatusTreeNodeComponent implements OnDestroy {
 
     @Input() model: ManualUiTreeBaseStatusModel;
     @Input() modelComponentMapping: ModelComponentMapping;
-
-    isSelected:boolean = false;
 
     ManualTestStatus = ManualTestStatus;
 
@@ -33,18 +29,9 @@ export class ManualTestsStatusTreeNodeComponent implements OnInit, OnDestroy {
                 private manualTestsStatusTreeService: ManualTestsStatusTreeService,
                 private urlService: UrlService){}
 
-    nodeSelectedSubscription: Subscription;
     treeFilterSubscription: Subscription;
-    ngOnInit(): void {
-        this.nodeSelectedSubscription = this.treeComponentService.selectedRunnerTreeNodeObserver.subscribe((selectedTreeNode: ManualUiTreeNodeStatusModel) => {
-            this.isSelected = this.model.path.equals(selectedTreeNode.path);
-        });
-    }
 
     ngOnDestroy(): void {
-        if (this.nodeSelectedSubscription != null) {
-            this.nodeSelectedSubscription.unsubscribe();
-        }
         if (this.treeFilterSubscription != null) {
             this.treeFilterSubscription.unsubscribe();
         }
@@ -81,10 +68,11 @@ export class ManualTestsStatusTreeNodeComponent implements OnInit, OnDestroy {
 
     setSelected() {
         if (this.isTestNode()) {
-            this.treeComponentService.setNodeAsSelected(this.model);
 
             if (this.treeComponentService.isNavigationTree) {
                 this.urlService.navigateToManualExecPlanTestRunner(this.treeComponentService.planPath, this.model.path);
+            } else {
+                this.manualTestsStatusTreeService.selectNodeAtPath(this.model.path);
             }
         }
     }

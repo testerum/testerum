@@ -7,6 +7,7 @@ import {MarkdownEditorComponent} from "../../../../generic/components/markdown-e
 import {AreYouSureModalService} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {ManualExecPlanStatus} from "../model/enums/manual-exec-plan-status.enum";
+import {AbstractComponentCanDeactivate} from "../../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 
 @Component({
     selector: 'manual-exec-plan-editor',
@@ -14,7 +15,7 @@ import {ManualExecPlanStatus} from "../model/enums/manual-exec-plan-status.enum"
     styleUrls: ['./manual-exec-plan-editor.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ManualExecPlanEditorComponent implements OnInit {
+export class ManualExecPlanEditorComponent extends AbstractComponentCanDeactivate implements OnInit {
 
     model: ManualExecPlan = new ManualExecPlan();
 
@@ -34,7 +35,8 @@ export class ManualExecPlanEditorComponent implements OnInit {
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
                 private manualExecPlansService: ManualExecPlansService,
-                private areYouSureModalService: AreYouSureModalService,) {
+                private areYouSureModalService: AreYouSureModalService) {
+        super();
     }
 
     ngOnInit(): void {
@@ -77,6 +79,10 @@ export class ManualExecPlanEditorComponent implements OnInit {
         this.pieChartData.datasets[0].data[2] = this.model.blockedTests;
         this.pieChartData.datasets[0].data[3] = this.model.notApplicableTests;
         this.pieChartData.datasets[0].data[4] = this.model.notExecutedTests
+    }
+
+    canDeactivate(): boolean {
+        return !this.isEditMode;
     }
 
     setEditMode(editMode: boolean) {

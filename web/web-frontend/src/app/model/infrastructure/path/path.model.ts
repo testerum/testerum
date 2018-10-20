@@ -20,6 +20,10 @@ export class Path implements Serializable<Path> {
 
     static createInstance(pathAsString: string): Path {
 
+        if (!pathAsString) {
+            return Path.createInstanceOfEmptyPath();
+        }
+
         let pathsPart = pathAsString.split("/").filter(value => !StringUtils.isEmpty(value));
 
         let fileName:string = null;

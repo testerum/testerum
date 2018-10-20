@@ -3,7 +3,7 @@
     <div class="full-line"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false"
-         (click)="selectOrNot()"
+         (click)="selectOrNot();$event.stopPropagation();"
          (dblclick)="collapseNode()">
 
         <i class="far fa-check-square my-checkbox-icon" aria-hidden="true"

@@ -1,7 +1,7 @@
 <div class="node">
 
     <div class="full-line"
-         (click)="setSelected()"
+         (click)="setSelected();$event.stopPropagation();"
          (dblclick)="collapseNode()"
          title="{{getStatusTooltip()}}">
 
@@ -21,7 +21,7 @@
         <i *ngIf="isTestNode()" class="fa_my-manual-test" aria-hidden="true"></i>
 
         <span class="node-text"
-              [class.tree-leaf-selected]="isSelected">{{model.name}}</span>
+              [class.tree-leaf-selected]="model.isSelected()">{{model.name}}</span>
     </div>
 
     <json-children *ngIf="model.isContainer()"

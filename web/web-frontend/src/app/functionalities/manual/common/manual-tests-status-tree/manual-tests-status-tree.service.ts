@@ -5,18 +5,29 @@ import {ManualTestsStatusTreeRoot} from "../../plans/model/status-tree/manual-te
 import {ManualTestsStatusTreeUtil} from "./util/manual-tests-status-tree.util";
 import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
+import {JsonTreeExpandUtil} from "../../../../generic/components/json-tree/util/json-tree-expand.util";
+import {JsonTreeService} from "../../../../generic/components/json-tree/json-tree.service";
 
 @Injectable()
 export class ManualTestsStatusTreeService {
 
     treeModel: JsonTreeModel = new JsonTreeModel();
 
-    constructor(private manualExecPlanService: ManualExecPlansService) {
+    constructor(private jsonTreeService: JsonTreeService,
+                private manualExecPlanService: ManualExecPlansService) {
     }
 
-    initializeTreeFromServer(planPath: Path, filter: ManualTreeStatusFilterModel) {
+    initializeTreeFromServer(planPath: Path, testPath: Path, filter: ManualTreeStatusFilterModel) {
         this.manualExecPlanService.getManualTestsStatusTree(planPath, filter).subscribe((manualTestsStatusTreeRoot: ManualTestsStatusTreeRoot) => {
-            ManualTestsStatusTreeUtil.mapServerModelToTreeModel(manualTestsStatusTreeRoot, this.treeModel)
+            ManualTestsStatusTreeUtil.mapServerModelToTreeModel(manualTestsStatusTreeRoot, this.treeModel);
+            this.selectNodeAtPath(testPath);
         });
+    }
+
+    selectNodeAtPath(path: Path) {
+        if (this.treeModel) {
+            let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(this.treeModel, path);
+            this.jsonTreeService.setSelectedNode(selectedNode);
+        }
     }
 }

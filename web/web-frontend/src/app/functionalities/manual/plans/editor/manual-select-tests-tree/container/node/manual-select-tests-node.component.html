@@ -1,4 +1,4 @@
-<div class="node-text" (click)="selectOrNot()">
+<div class="node-text" (click)="selectOrNot();$event.stopPropagation();">
 
     <i class="far fa-check-square" aria-hidden="true"
        [class.hidden]="!model.isSelected()"></i>

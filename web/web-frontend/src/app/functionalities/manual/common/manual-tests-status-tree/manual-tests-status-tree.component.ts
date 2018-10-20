@@ -14,6 +14,8 @@ import {ManualUiTreeNodeStatusModel} from "./model/manual-ui-tree-node-status.mo
 import {ManualTestsStatusTreeRoot} from "../../plans/model/status-tree/manual-tests-status-tree-root.model";
 import {ManualTestsStatusTreeService} from "./manual-tests-status-tree.service";
 import {ManualTreeStatusFilterModel} from "./model/filter/manual-tree-status-filter.model";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {UrlUtil} from "../../../../utils/url.util";
 
 @Component({
     moduleId: module.id,
@@ -34,15 +36,28 @@ export class ManualTestsStatusTreeComponent implements OnInit, OnDestroy {
 
     getManualTestsStatusTreeSubscription: Subscription;
 
-    constructor(public manualTestsStatusTreeService: ManualTestsStatusTreeService,
+    constructor(private router: Router,
+                private activatedRoute: ActivatedRoute,
+                public manualTestsStatusTreeService: ManualTestsStatusTreeService,
                 private manualTestsStatusTreeComponentService: ManualTestsStatusTreeComponentService) {
+
+        router.events.forEach((event) => {
+            if(event instanceof NavigationEnd) {
+                manualTestsStatusTreeService.selectNodeAtPath(UrlUtil.getPathParamFromUrl(this.activatedRoute, "testPath"))
+            }
+        });
     }
 
     ngOnInit(): void {
         this.manualTestsStatusTreeComponentService.isNavigationTree = this.isNavigationTree;
         this.manualTestsStatusTreeComponentService.planPath = this.planPath;
 
-        this.manualTestsStatusTreeService.initializeTreeFromServer(this.planPath, ManualTreeStatusFilterModel.createEmptyFilter());
+        this.activatedRoute.params.subscribe(params => {
+            let testPathAsString = params['testPath'];
+            this.manualTestsStatusTreeService.initializeTreeFromServer(this.planPath, Path.createInstance(testPathAsString), ManualTreeStatusFilterModel.createEmptyFilter());
+
+        });
+
     }
 
     ngOnDestroy(): void {
