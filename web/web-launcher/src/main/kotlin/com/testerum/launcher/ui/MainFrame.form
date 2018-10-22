@@ -11,7 +11,7 @@
     <colspec value="fill:d:noGrow"/>
     <colspec value="fill:d:grow"/>
     <constraints>
-      <xy x="9" y="20" width="511" height="337"/>
+      <xy x="9" y="20" width="624" height="337"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -47,9 +47,9 @@
         <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:d:noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
-        <colspec value="fill:m:grow"/>
+        <colspec value="fill:202px:grow"/>
         <colspec value="left:4dlu:noGrow"/>
-        <colspec value="fill:150px:noGrow"/>
+        <colspec value="fill:90dlu:noGrow"/>
         <colspec value="right:10dlu:noGrow"/>
         <colspec value="fill:max(d;4px):noGrow"/>
         <constraints>
@@ -59,14 +59,15 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="1b880" class="javax.swing.JButton" binding="copyURLToClibordButton" default-binding="true">
+          <component id="1b880" class="javax.swing.JButton" binding="copyURLToClipbordButton">
             <constraints>
               <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties>
+              <enabled value="true"/>
               <horizontalTextPosition value="0"/>
-              <text value="Copy URL to clibord"/>
+              <text value="Copy URL to clipbord"/>
             </properties>
           </component>
           <component id="eac8f" class="javax.swing.JButton" binding="openInBrowserButton" default-binding="true">
@@ -148,6 +149,7 @@
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties>
+              <enabled value="true"/>
               <text value="Save and Restart Application"/>
             </properties>
             <clientProperties>

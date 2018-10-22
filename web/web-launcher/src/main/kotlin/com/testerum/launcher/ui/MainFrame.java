@@ -23,7 +23,7 @@ public class MainFrame extends JFrame {
     private JPanel rootPanel;
     private JTextField urlTextFiled;
     private JButton openInBrowserButton;
-    private JButton copyURLToClibordButton;
+    private JButton copyURLToClipbordButton;
     private JTextField portInputField;
     private JButton saveAndRestartApplicationButton;
 
@@ -35,6 +35,8 @@ public class MainFrame extends JFrame {
                 new ImageIcon(MainFrame.class.getResource("/favicon.png")).getImage()
         );
         setResizable(false);
+        saveAndRestartApplicationButton.setEnabled(false);
+
         setSize(800, 400);
 
         config = configManager.getConfig();
@@ -51,7 +53,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        copyURLToClibordButton.addActionListener(new ActionListener() {
+        copyURLToClipbordButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 StringSelection stringSelection = new StringSelection(urlTextFiled.getText());
@@ -144,12 +146,13 @@ public class MainFrame extends JFrame {
         label1.setText("");
         panel1.add(label1, cc.xy(1, 1));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:m:grow,left:4dlu:noGrow,fill:150px:noGrow,right:10dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow"));
+        panel2.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:202px:grow,left:4dlu:noGrow,fill:90dlu:noGrow,right:10dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow"));
         rootPanel.add(panel2, cc.xyw(1, 3, 2, CellConstraints.DEFAULT, CellConstraints.CENTER));
-        copyURLToClibordButton = new JButton();
-        copyURLToClibordButton.setHorizontalTextPosition(0);
-        copyURLToClibordButton.setText("Copy URL to clibord");
-        panel2.add(copyURLToClibordButton, cc.xy(7, 1));
+        copyURLToClipbordButton = new JButton();
+        copyURLToClipbordButton.setEnabled(true);
+        copyURLToClipbordButton.setHorizontalTextPosition(0);
+        copyURLToClipbordButton.setText("Copy URL to clipbord");
+        panel2.add(copyURLToClipbordButton, cc.xy(7, 1));
         openInBrowserButton = new JButton();
         openInBrowserButton.setText("Open in browser");
         panel2.add(openInBrowserButton, cc.xy(5, 3, CellConstraints.CENTER, CellConstraints.DEFAULT));
@@ -173,6 +176,7 @@ public class MainFrame extends JFrame {
         portInputField.setColumns(6);
         panel3.add(portInputField, cc.xy(5, 1, CellConstraints.LEFT, CellConstraints.DEFAULT));
         saveAndRestartApplicationButton = new JButton();
+        saveAndRestartApplicationButton.setEnabled(true);
         saveAndRestartApplicationButton.setText("Save and Restart Application");
         saveAndRestartApplicationButton.putClientProperty("html.disable", Boolean.TRUE);
         panel3.add(saveAndRestartApplicationButton, cc.xy(7, 1, CellConstraints.LEFT, CellConstraints.DEFAULT));
