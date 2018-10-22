@@ -81,6 +81,12 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
+                <artifactId>common-cmdline</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
                 <artifactId>common-crypto</artifactId>
                 <version>${project.version}</version>
             </dependency>

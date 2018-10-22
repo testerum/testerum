@@ -20,6 +20,12 @@
             <artifactId>common-jdk</artifactId>
         </dependency>
 
+        <!-- common-cmdline -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-cmdline</artifactId>
+        </dependency>
+
         <!-- common-json -->
         <dependency>
             <groupId>com.testerum</groupId>
@@ -232,6 +238,12 @@
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>javax-websocket-server-impl</artifactId>
+        </dependency>
+
+        <!-- jansi -->
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
         </dependency>
 
 

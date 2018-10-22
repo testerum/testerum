@@ -32,6 +32,11 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
+            <artifactId>common-cmdline</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.testerum</groupId>
             <artifactId>common-expression-evaluator</artifactId>
         </dependency>
 
