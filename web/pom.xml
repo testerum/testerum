@@ -16,6 +16,7 @@
     <modules>
         <module>web-frontend</module>
         <module>web-backend</module>
+        <module>web-launcher</module>
     </modules>
 
 </project>

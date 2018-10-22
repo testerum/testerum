@@ -676,6 +676,7 @@
                 <version>0.1.16</version>
             </dependency>
 
+            <!--==================== ZERO TURN AROUND ====================-->
             <!-- zt-exec -->
             <dependency>
                 <groupId>org.zeroturnaround</groupId>
@@ -690,6 +691,21 @@
                 <version>1.8</version>
             </dependency>
 
+            <!--==================== SWING ====================-->
+
+            <!-- jgoodies-forms -->
+            <dependency>
+                <groupId>com.jgoodies</groupId>
+                <artifactId>jgoodies-forms</artifactId>
+                <version>1.9.0</version>
+            </dependency>
+
+            <!-- jgoodies looks -->
+            <dependency>
+                <groupId>com.jgoodies</groupId>
+                <artifactId>looks</artifactId>
+                <version>2.2.2</version>
+            </dependency>
 
             <!--==================== TESTS ====================-->
 
