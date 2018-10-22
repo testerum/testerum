@@ -5,16 +5,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.model.feature.Feature
 import com.testerum.model.feature.filter.FeaturesTreeFilter
 import com.testerum.model.feature.tree.RootFeatureNode
-import com.testerum.model.file.FileToUpload
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.web_backend.services.features.FeaturesFrontendService
+import com.testerum.web_backend.util.toFilesToUpload
 import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import javax.servlet.http.HttpServletResponse
 
@@ -75,8 +70,5 @@ class FeatureController(private val featuresFrontendService: FeaturesFrontendSer
         )
     }
 
-    private fun List<MultipartFile>.toFilesToUpload(): List<FileToUpload> = map { it.toFileToUpload() }
-
-    private fun MultipartFile.toFileToUpload() = FileToUpload(originalFilename, inputStream)
 
 }

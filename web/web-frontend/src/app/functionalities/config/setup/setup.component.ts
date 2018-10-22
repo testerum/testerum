@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Setup} from "./model/setup.model";
 import {SetupService} from "../../../service/setup.service";
 import {UrlService} from "../../../service/url.service";
+import {LicenseService} from "../license/license.service";
 
 @Component({
     selector: 'setup',
@@ -14,11 +15,16 @@ export class SetupComponent implements OnInit {
     repositoryAbsoluteJavaPath: string;
 
     constructor(private urlService: UrlService,
-                private startConfigService: SetupService) {
+                private setupService: SetupService,
+                private licenseService: LicenseService) {
     }
 
     ngOnInit() {
-        this.startConfigService.isConfigSet().subscribe(
+        if (!this.licenseService.isLoggedIn()) {
+            this.urlService.navigateToLicense();
+        }
+
+        this.setupService.isConfigSet().subscribe(
             (isConfigSet: boolean) => {
                 if(isConfigSet) {
                     this.urlService.navigateToRoot()
@@ -31,7 +37,7 @@ export class SetupComponent implements OnInit {
         let startConfig = new Setup();
         startConfig.repositoryAbsoluteJavaPath = this.repositoryAbsoluteJavaPath;
 
-        this.startConfigService.save(startConfig).subscribe(
+        this.setupService.save(startConfig).subscribe(
             result => {
                 this.urlService.navigateToRoot()
             }

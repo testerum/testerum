@@ -1,5 +1,6 @@
 package com.testerum.runner_cmdline
 
+import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner_cmdline.cmdline.exiter.Exiter
@@ -21,7 +22,7 @@ object TesterumRunner {
         val stopWatch = StopWatch.start()
         TesterumRunnerLoggingConfigurator.configureLogging()
         AnsiConsole.systemInstall()
-        BannerPrinter.printBanner()
+        println(TesterumBanner.BANNER)
 
         val cmdlineParams: CmdlineParams = getCmdlineParams(args)
         println("cmdlineParams = $cmdlineParams")

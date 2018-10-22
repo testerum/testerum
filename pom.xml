@@ -10,6 +10,7 @@
         <module>common</module>
         <module>model</module>
         <module>file-service</module>
+        <module>cloud-client</module>
         <module>test-file-format</module>
         <module>testerum-backend</module>
         <module>step-util</module>
@@ -75,6 +76,18 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>assertion-functions</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>common-cmdline</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>common-crypto</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -234,6 +247,12 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>cloud-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
 
             <!--==================== 3rd party dependencies ====================-->
 
@@ -241,7 +260,7 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>4.5.5</version>
+                <version>4.5.6</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-logging</groupId>
@@ -575,6 +594,13 @@
                 <groupId>javax.websocket</groupId>
                 <artifactId>javax.websocket-api</artifactId>
                 <version>1.0</version>
+            </dependency>
+
+            <!-- Bouncy Castle -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>1.60</version>
             </dependency>
 
 

@@ -40,6 +40,9 @@ import {TagsService} from "./service/tags.service";
 import {MessageService} from "./service/message.service";
 import {ManualModule} from "./functionalities/manual/manual.module";
 import {CanDeactivateGuard} from "./service/guards/CanDeactivateGuard";
+import {LicenseService} from "./functionalities/config/license/license.service";
+import {LicenseComponent} from "./functionalities/config/license/license.component";
+import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
 
 @NgModule({
     imports: [
@@ -49,6 +52,9 @@ import {CanDeactivateGuard} from "./service/guards/CanDeactivateGuard";
         HttpClientModule,
         FormsModule,
         ModalModule.forRoot(),
+
+        RadioButtonModule,
+        FileUploadModule,
 
         FeaturesModule,
         RunnerModule,
@@ -65,6 +71,7 @@ import {CanDeactivateGuard} from "./service/guards/CanDeactivateGuard";
         PageNotFoundComponent,
         VariablesComponent,
         SetupComponent,
+        LicenseComponent,
         SettingsComponent,
         ArgValueValidatorDirective,
     ],
@@ -97,6 +104,8 @@ import {CanDeactivateGuard} from "./service/guards/CanDeactivateGuard";
 
         MessageService,
         { provide: APP_INITIALIZER, useFactory: initMessages, deps: [MessageService], multi: true },
+
+        LicenseService,
     ],
     entryComponents: [
         FileDirChooserComponent,

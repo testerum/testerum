@@ -68,6 +68,15 @@ export class UrlService {
         this.router.navigate(["/setup"]);
     }
 
+    public navigateToLicense() {
+        this.router.navigate(["/license"]);
+    }
+
+    public navigateToLicenseBuy() {
+        let win = window.open("https://www.testerum.com/buy", '_blank');
+        win.focus();
+    }
+
     public navigateToManualExecPlans() {
         this.router.navigate(["/manual/plans"])
     }

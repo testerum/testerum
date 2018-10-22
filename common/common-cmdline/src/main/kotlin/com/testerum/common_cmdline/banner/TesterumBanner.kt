@@ -1,11 +1,8 @@
-package com.testerum.runner_cmdline
+package com.testerum.common_cmdline.banner
 
-import org.intellij.lang.annotations.Language
+object TesterumBanner {
 
-object BannerPrinter {
-
-    @Language("TEXT")
-    private val BANNER = """
+    val BANNER = """
         |     __  __                                             __  __
         |    / / / / _____         _                             \ \ \ \
         |   / / / / |_   _|__  ___| |_ ___ _ __ _   _ _ __ ___    \ \ \ \
@@ -13,9 +10,5 @@ object BannerPrinter {
         |   \ \ \ \   | |  __/\__ \ ||  __/ |  | |_| | | | | | |  / / / /
         |    \_\ \_\  |_|\___||___/\__\___|_|   \__,_|_| |_| |_| /_/ /_/
         |""".trimMargin()
-
-    fun printBanner() {
-        println(BANNER)
-    }
 
 }

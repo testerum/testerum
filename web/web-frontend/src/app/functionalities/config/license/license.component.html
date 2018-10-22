@@ -1,0 +1,148 @@
+<div class="license-screen">
+    <logo class="logo"></logo>
+
+    <div class="license-panel">
+        <div class="panel panel-info">
+
+            <div class="panel-heading">License</div>
+
+            <div class="page-body">
+                <form #form="ngForm">
+                    <div class="license-type-panel">
+                        <div>
+                            <p-radioButton name="licenceType"
+                                           [value]="LICENSE_TYPE_ACTIVATION"
+                                           [(ngModel)]="licenseType"
+                                           label="Activate"></p-radioButton>
+                            <p-radioButton name="licenceType"
+                                           [value]="LICENSE_TYPE_EVALUATION"
+                                           [(ngModel)]="licenseType"
+                                           label="Evaluate for free"></p-radioButton>
+                        </div>
+
+                        <button type="button" class="btn btn-default" (click)="onBuy()">Buy Testerum</button>
+                    </div>
+
+                    <!-- ACTIVATION -->
+                    <div class="license-body-panel">
+                        <div *ngIf="licenseType == LICENSE_TYPE_ACTIVATION"
+                             class="activation-panel">
+
+                            <div class="sub-license-activation-type">
+                                <div class="sub-license-activation-message">Activate License With:</div>
+                                <p-radioButton name="activationType"
+                                               [value]="ACTIVATION_BY_AUTHENTICATION"
+                                               [(ngModel)]="activationType"
+                                               label="Testerum Account"></p-radioButton>
+                                <p-radioButton name="activationType"
+                                               [value]="ACTIVATION_BY_LICENCE_FILE"
+                                               [(ngModel)]="activationType"
+                                               label="License File"></p-radioButton>
+                            </div>
+
+                            <div class="license-error-panel"
+                                 [class.activate-auth-spaceing]="activationType == ACTIVATION_BY_AUTHENTICATION">
+                                <div *ngIf="errorMessage">{{errorMessage}}</div>
+                            </div>
+
+                            <div class="evaluation-panel-body">
+                                <div *ngIf="activationType == ACTIVATION_BY_AUTHENTICATION">
+                                    <div class="form-group">
+                                        <label for="activationByAuthenticationEmail">Email address</label>
+                                        <input type="email" class="form-control" id="activationByAuthenticationEmail" placeholder="Email"
+                                               [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="activationByAuthenticationPassword">Password</label>
+                                        <input type="password" class="form-control" id="activationByAuthenticationPassword" placeholder="Password"
+                                               [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                </div>
+
+                                <div *ngIf="activationType == ACTIVATION_BY_LICENCE_FILE"
+                                    style="display: flex; justify-content: center; padding-top: 3em">
+
+                                    <p-fileUpload #licenseFileUpload
+                                                  mode="basic"
+                                                  [multiple]="false"
+                                                  name="licenseFileUpload"
+                                                  [maxFileSize]="1000000"
+                                                  [customUpload]="true"
+                                                  [auto]="true"
+                                                  [chooseLabel] = "licenseFile? licenseFile.name: 'Choose'"
+                                                  (uploadHandler)="onLicenseKeyUpload($event)">
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- EVALUATION -->
+                        <div *ngIf="licenseType == LICENSE_TYPE_EVALUATION"
+                             class="evaluation-panel">
+
+                            <div class="sub-license-activation-type">
+                                <p-radioButton name="evaluationType"
+                                               [value]="EVALUATION_BY_ACCOUNT_CREATION"
+                                               [(ngModel)]="evaluationType"
+                                               label="Create Testerum Account"></p-radioButton>
+                                <p-radioButton name="evaluationType"
+                                               [value]="EVALUATION_BY_AUTHENTICATE"
+                                               [(ngModel)]="evaluationType"
+                                               label="Testerum Authenticate"></p-radioButton>
+                            </div>
+
+                            <div class="license-error-panel"
+                                 [class.evaluate-auth-spaceing]="evaluationType == EVALUATION_BY_AUTHENTICATE">
+                                <div *ngIf="errorMessage">{{errorMessage}}</div>
+                            </div>
+
+                            <div class="evaluation-panel-body">
+                                <div *ngIf="evaluationType == EVALUATION_BY_ACCOUNT_CREATION">
+                                    <div class="form-group">
+                                        <label for="evaluationCreateAccountEmail">Email address</label>
+                                        <input type="email" class="form-control" id="evaluationCreateAccountEmail" placeholder="Email"
+                                               [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="evaluationCreateAccountPassword">Password</label>
+                                        <input type="password" class="form-control" id="evaluationCreateAccountPassword" placeholder="Password"
+                                               [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="evaluationCreateAccountRepeatPassword">Repeat Password</label>
+                                        <input type="password" class="form-control" id="evaluationCreateAccountRepeatPassword" placeholder="Password"
+                                               [(ngModel)]="repeatPassword" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                </div>
+
+                                <div *ngIf="evaluationType == EVALUATION_BY_AUTHENTICATE">
+                                    <div class="form-group">
+                                        <label for="evaluationAuthEmail">Email address</label>
+                                        <input type="email" class="form-control" id="evaluationAuthEmail" placeholder="Email"
+                                               [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="evaluationAuthPassword">Password</label>
+                                        <input type="password" class="form-control" id="evaluationAuthPassword" placeholder="Password"
+                                               [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- BUTTONS -->
+                <div class="modal-footer">
+                    <ng-container>
+                        <button (click)="activate()"
+                                class="btn btn-primary">
+                            Activate
+                        </button>
+                    </ng-container>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

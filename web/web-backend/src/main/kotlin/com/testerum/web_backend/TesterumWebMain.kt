@@ -1,5 +1,6 @@
 package com.testerum.web_backend
 
+import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.web_backend.filter.AngularForwarderFilter
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.eclipse.jetty.security.SecurityHandler
@@ -14,6 +15,9 @@ import org.eclipse.jetty.server.session.SessionHandler
 import org.eclipse.jetty.servlet.*
 import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer
+import org.fusesource.jansi.Ansi
+import org.fusesource.jansi.Ansi.ansi
+import org.fusesource.jansi.AnsiConsole
 import org.slf4j.LoggerFactory
 import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.web.servlet.DispatcherServlet
@@ -27,6 +31,8 @@ object TesterumWebMain {
 
     @JvmStatic
     fun main(args: Array<String>) {
+        AnsiConsole.systemInstall()
+
         val port = getPort()
         val server = createServer(port)
 
@@ -36,7 +42,10 @@ object TesterumWebMain {
         val testerumVersion = versionInfoFrontendService.getVersionProperties()["projectVersion"] ?: ""
 
         val actualPort = (server.connectors[0] as ServerConnector).localPort
-        LOG.info("Testerum (version $testerumVersion) is available at http://localhost:$actualPort/")
+
+        TesterumBanner.BANNER.lines().forEach(LOG::info)
+
+        LOG.info("Testerum (version $testerumVersion) is available at ${ansi().fgBlue().a(Ansi.Attribute.UNDERLINE)}http://localhost:$actualPort/${ansi().fgDefault().a(Ansi.Attribute.RESET)}")
         LOG.info("Press Ctrl+C to stop.")
 
         server.join()

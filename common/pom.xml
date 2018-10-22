@@ -14,6 +14,8 @@
 
     <modules>
         <module>assertion-functions</module>
+        <module>common-cmdline</module>
+        <module>common-crypto</module>
         <module>common-expression-evaluator</module>
         <module>common-httpclient</module>
         <module>common-rdbms</module>
