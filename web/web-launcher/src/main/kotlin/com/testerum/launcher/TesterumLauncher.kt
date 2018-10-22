@@ -19,7 +19,8 @@ fun main(args: Array<String>) {
             val confirmDialogResult = JOptionPane.showConfirmDialog(frame,
                     "Are you sure you want to close this window?", "Close Window?",
                     JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE)
+                    JOptionPane.QUESTION_MESSAGE
+            )
             if (confirmDialogResult == JOptionPane.YES_OPTION) {
                 testerumRunner.stopTesterum()
                 System.exit(0)
