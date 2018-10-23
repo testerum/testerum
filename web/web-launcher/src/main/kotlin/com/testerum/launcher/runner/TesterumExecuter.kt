@@ -24,10 +24,6 @@ class TesterumExecuter {
                     override fun afterStart(newProcess: Process, executor: ProcessExecutor) {
                         process = newProcess
                     }
-
-                    override fun afterStop(process: Process?) {
-                        System.exit(1)
-                    }
                 })
                 .redirectOutput(
                         object : LogOutputStream() {
@@ -37,6 +33,13 @@ class TesterumExecuter {
                         }
                 )
                 .start()
+
+        // make sure to stop the sub-process when closing the launcher
+        Runtime.getRuntime().addShutdownHook(object : Thread() {
+            override fun run() {
+                stopProcess(process)
+            }
+        })
     }
 
     private fun getCommand(): List<String> {
@@ -67,14 +70,18 @@ class TesterumExecuter {
 
     fun stopTesterum() {
         if (process != null) {
-            val systemProcess: SystemProcess = Processes.newStandardProcess(process)
-
-            ProcessUtil.destroyGracefullyOrForcefullyAndWait(
-                    systemProcess,
-                    2, TimeUnit.SECONDS,
-                    10, TimeUnit.SECONDS
-            )
+            stopProcess(process)
         }
+    }
+
+    private fun stopProcess(process: Process?) {
+        val systemProcess: SystemProcess = Processes.newStandardProcess(process)
+
+        ProcessUtil.destroyGracefullyOrForcefullyAndWait(
+                systemProcess,
+                2, TimeUnit.SECONDS,
+                10, TimeUnit.SECONDS
+        )
     }
 
 }

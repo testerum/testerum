@@ -59,7 +59,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="1b880" class="javax.swing.JButton" binding="copyURLToClipbordButton">
+          <component id="1b880" class="javax.swing.JButton" binding="copyUrlToClipboardButton">
             <constraints>
               <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <forms/>
@@ -67,7 +67,7 @@
             <properties>
               <enabled value="true"/>
               <horizontalTextPosition value="0"/>
-              <text value="Copy URL to clipbord"/>
+              <text value="Copy URL to clipboard"/>
             </properties>
           </component>
           <component id="eac8f" class="javax.swing.JButton" binding="openInBrowserButton" default-binding="true">

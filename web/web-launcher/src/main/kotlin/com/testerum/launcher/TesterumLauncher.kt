@@ -1,6 +1,7 @@
 package com.testerum.launcher
 
 import com.jgoodies.looks.plastic.Plastic3DLookAndFeel
+import com.testerum.launcher.config.ConfigManager
 import com.testerum.launcher.runner.TesterumExecuter
 import com.testerum.launcher.ui.MainFrame
 import javax.swing.JOptionPane
@@ -15,7 +16,8 @@ fun main(args: Array<String>) {
     val testerumRunner = TesterumExecuter()
     testerumRunner.startTesterum()
 
-    val frame = MainFrame()
+    val frame = MainFrame(ConfigManager, testerumRunner)
+
     frame.defaultCloseOperation = WindowConstants.DO_NOTHING_ON_CLOSE
     frame.centerOnScreen()
     frame.addWindowListener(object : java.awt.event.WindowAdapter() {
