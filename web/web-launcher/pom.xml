@@ -14,6 +14,15 @@
 
     <dependencies>
 
+        <!--==================== internal dependencies ====================-->
+
+        <!-- common-jdk -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-jdk</artifactId>
+        </dependency>
+
+
         <!--==================== 3rd party dependencies ====================-->
 
         <!-- Kotlin -->

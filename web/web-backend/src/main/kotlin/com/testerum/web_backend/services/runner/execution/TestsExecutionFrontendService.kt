@@ -2,6 +2,7 @@ package com.testerum.web_backend.services.runner.execution
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.api.test_context.settings.model.resolvedValueAsPath
+import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.model.infrastructure.path.Path
@@ -39,9 +40,6 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(TestsExecutionFrontendService::class.java)
-
-        private val OS_NAME: String = System.getProperty("os.name").toLowerCase()
-        private val IS_WINDOWS: Boolean = OS_NAME.startsWith("win")
     }
 
     private class TestExecutionIdGenerator {
@@ -194,7 +192,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
                 System.getProperty("java.home")
         ).toAbsolutePath().normalize()
 
-        return if (IS_WINDOWS) {
+        return if (OsUtils.IS_WINDOWS) {
             javaHome.resolve("bin/java.exe")
         } else {
             javaHome.resolve("bin/java")

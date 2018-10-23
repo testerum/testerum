@@ -1,12 +1,12 @@
 package com.testerum.launcher
 
-import com.testerum.launcher.runner.TesterumRunner
+import com.testerum.launcher.runner.TesterumExecuter
 import com.testerum.launcher.ui.MainFrame
 import javax.swing.JOptionPane
 import javax.swing.WindowConstants
 
 fun main(args: Array<String>) {
-    val testerumRunner = TesterumRunner()
+    val testerumRunner = TesterumExecuter()
     testerumRunner.startTesterum()
 
     val frame = MainFrame()

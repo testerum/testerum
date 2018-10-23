@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 import java.net.URI;
 
 public class MainFrame extends JFrame {
-    private ConfigManager configManager = new ConfigManager();
+    private final ConfigManager configManager = new ConfigManager();
     private Config config;
 
     private JPanel rootPanel;
@@ -111,7 +111,7 @@ public class MainFrame extends JFrame {
 
     private void setValuesInFields(Config config) {
         portInputField.setText("" + config.getPort());
-        urlTextFiled.setText("http://localhost:" + config.getPort() + "/testerum");
+        urlTextFiled.setText("http://localhost:" + config.getPort() + "/");
     }
 
 
