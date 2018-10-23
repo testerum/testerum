@@ -1,19 +1,23 @@
 package com.testerum.launcher
 
+import com.jgoodies.looks.plastic.Plastic3DLookAndFeel
 import com.testerum.launcher.runner.TesterumExecuter
 import com.testerum.launcher.ui.MainFrame
 import javax.swing.JOptionPane
+import javax.swing.UIManager
 import javax.swing.WindowConstants
 
 fun main(args: Array<String>) {
+    UIManager.setLookAndFeel(
+            Plastic3DLookAndFeel()
+    )
+
     val testerumRunner = TesterumExecuter()
     testerumRunner.startTesterum()
 
     val frame = MainFrame()
-    frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE)
+    frame.defaultCloseOperation = WindowConstants.DO_NOTHING_ON_CLOSE
     frame.centerOnScreen()
-    frame.isVisible = true
-
     frame.addWindowListener(object : java.awt.event.WindowAdapter() {
         override fun windowClosing(windowEvent: java.awt.event.WindowEvent) {
             val confirmDialogResult = JOptionPane.showConfirmDialog(frame,
@@ -27,6 +31,6 @@ fun main(args: Array<String>) {
             }
         }
     })
-}
 
-//TODO: set a better look&feel
+    frame.isVisible = true
+}
