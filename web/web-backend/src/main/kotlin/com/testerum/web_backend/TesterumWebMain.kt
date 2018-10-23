@@ -15,6 +15,7 @@ import org.eclipse.jetty.server.session.SessionHandler
 import org.eclipse.jetty.servlet.*
 import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer
+import org.fusesource.jansi.Ansi
 import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
 import org.slf4j.LoggerFactory
@@ -44,7 +45,7 @@ object TesterumWebMain {
 
         TesterumBanner.BANNER.lines().forEach(LOG::info)
 
-        LOG.info("Testerum (version $testerumVersion) is available at ${ansi().fgBlue()}http://localhost:$actualPort/${ansi().fgDefault()}")
+        LOG.info("Testerum (version $testerumVersion) is available at ${ansi().bg(Ansi.Color.BLACK).fgBrightGreen()}http://localhost:$actualPort/${ansi().bgDefault().fgDefault()}")
         LOG.info("Press Ctrl+C to stop.")
 
         server.join()
