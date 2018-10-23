@@ -253,6 +253,12 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>web-launcher</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
 
             <!--==================== 3rd party dependencies ====================-->
 

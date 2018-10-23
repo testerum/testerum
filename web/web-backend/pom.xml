@@ -74,6 +74,14 @@
             <artifactId>cloud-client</artifactId>
         </dependency>
 
+        <!-- web-launcher -->
+        <!-- depend on web-launcher to include it in the dist .tar.gz file -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>web-launcher</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
 
         <!--==================== 3rd party dependencies ====================-->
 
