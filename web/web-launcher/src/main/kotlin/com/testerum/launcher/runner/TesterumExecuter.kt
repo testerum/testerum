@@ -1,21 +1,18 @@
 package com.testerum.launcher.runner
 
 import com.testerum.common_jdk.OsUtils
+import com.testerum.launcher.config.ConfigManager
+import com.testerum.launcher.config.PathsManager
 import org.zeroturnaround.exec.ProcessExecutor
 import org.zeroturnaround.exec.listener.ProcessListener
 import org.zeroturnaround.exec.stream.LogOutputStream
 import org.zeroturnaround.process.ProcessUtil
 import org.zeroturnaround.process.Processes
 import org.zeroturnaround.process.SystemProcess
-import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 import java.nio.file.Path as JavaPath
 
 class TesterumExecuter {
-
-    companion object {
-        private val TESTERUM_ROOT_DIR_SYSTEM_PROP = "testerumRootDir"
-    }
 
     private var process: Process? = null
 
@@ -45,20 +42,25 @@ class TesterumExecuter {
     private fun getCommand(): List<String> {
         val result = mutableListOf<String>()
 
-        // interpreter
-        if (OsUtils.IS_WINDOWS) {
-            result += "cmd.exe"
-            result += "/C"
-        }
+        // java
+        result += OsUtils.getJavaBinaryPath().toString()
 
-        // shell script
-        val testerumRootDir: JavaPath = getTesterumRootDir()
-        val testerumStartShellScript: JavaPath = if (OsUtils.IS_WINDOWS) {
-            testerumRootDir.resolve("start.bat")
-        } else {
-            testerumRootDir.resolve("start.sh")
-        }
-        result += testerumStartShellScript.toAbsolutePath().normalize().toString()
+        // options
+        val config = ConfigManager.getConfig()
+
+        result += "-Dfile.encoding=UTF8"
+        result += "-Duser.timezone=GMT"
+        result += "-Xmx1024m"
+        result += "-Dlogback.configurationFile=${PathsManager.logConfigFilePath}"
+        result += "-Dtesterum.packageDirectory=${PathsManager.testerumRootDir}"
+        result += "-Dtesterum.web.httpPort=${config.port}"
+
+        // classpath
+        result += "-classpath"
+        result += "${PathsManager.classpathRepoDir}/*"
+
+        // main class
+        result += "com.testerum.web_backend.TesterumWebMain"
 
         return result
     }
@@ -75,10 +77,4 @@ class TesterumExecuter {
         }
     }
 
-    private fun getTesterumRootDir(): JavaPath {
-        val sysPropValue = System.getProperty(TESTERUM_ROOT_DIR_SYSTEM_PROP)
-                ?: throw Exception("The system property [$TESTERUM_ROOT_DIR_SYSTEM_PROP] was not specified")
-
-        return Paths.get(sysPropValue).toAbsolutePath().normalize()
-    }
 }

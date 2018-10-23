@@ -170,7 +170,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     private fun createCommandLine(argsFile: JavaPath): List<String> {
         val commandLine = mutableListOf<String>()
 
-        commandLine += getJavaBinaryPath().toString()
+        commandLine += OsUtils.getJavaBinaryPath().toString()
 
         commandLine += "-classpath"
         commandLine += "${getRunnerRepoPath()}/*"
@@ -185,18 +185,6 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         LOG.debug("commandLine = {}", commandLine)
 
         return commandLine
-    }
-
-    private fun getJavaBinaryPath(): JavaPath {
-        val javaHome = Paths.get(
-                System.getProperty("java.home")
-        ).toAbsolutePath().normalize()
-
-        return if (OsUtils.IS_WINDOWS) {
-            javaHome.resolve("bin/java.exe")
-        } else {
-            javaHome.resolve("bin/java")
-        }
     }
 
     private fun getRunnerRepoPath(): JavaPath {

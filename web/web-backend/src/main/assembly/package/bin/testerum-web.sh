@@ -119,10 +119,5 @@ fi
 
 exec "$JAVACMD" $JAVA_OPTS  \
   -classpath "$CLASSPATH" \
-  -Dapp.name="testerum-runner" \
-  -Dapp.pid="$$" \
-  -Dapp.repo="$REPO" \
-  -Dapp.home="$BASEDIR" \
-  -Dbasedir="$BASEDIR" \
   com.testerum.web_backend.TesterumWebMain \
   "$@"

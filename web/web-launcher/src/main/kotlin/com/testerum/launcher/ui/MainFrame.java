@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 import java.net.URI;
 
 public class MainFrame extends JFrame {
-    private final ConfigManager configManager = new ConfigManager();
+    private final ConfigManager configManager = ConfigManager.INSTANCE;
     private Config config;
 
     private JPanel rootPanel;
