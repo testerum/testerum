@@ -26,8 +26,6 @@ import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.exception.ValidationException
 import com.testerum.settings.module_di.SettingsModuleFactory
 import com.testerum.web_backend.controllers.error.ErrorController
-import com.testerum.web_backend.controllers.error.model.ErrorResponse
-import com.testerum.web_backend.controllers.error.model.response_preparers.ErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_exception.CloudErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.generic.GenericErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer
@@ -211,7 +209,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val licensesCloudClient = CloudClient(
             httpClient = httpClient,
-            baseUrl = "http://localhost:8010/testerum-dev/europe-west1", // todo: make this configurable
+            baseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net", // todo: make this configurable
             objectMapper = restApiObjectMapper
     )
 
