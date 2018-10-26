@@ -73,7 +73,7 @@ export class UrlService {
     }
 
     public navigateToLicenseBuy() {
-        let win = window.open("https://www.testerum.com/buy", '_blank');
+        let win = window.open("https://www.testerum.com/pricing/", '_blank');
         win.focus();
     }
 
