@@ -11,7 +11,7 @@ import java.nio.file.Path as JavaPath
 class SettingsFileService {
 
     companion object {
-        private const val SETTINGS_FILENAME = "settings.properties"
+        private const val SETTINGS_FILENAME = "testerum.properties"
     }
 
     fun fileExists(settingsDir: JavaPath): Boolean {

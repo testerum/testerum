@@ -13,7 +13,7 @@ class FrontendDirs(private val settingsManager: SettingsManager) {
 
     fun getBasicStepsDir(): JavaPath? = settingsManager.getSetting(SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR)?.resolvedValueAsPath
 
-    fun getSettingsDir(): JavaPath = getTesterumDir()
+    fun getSettingsDir(): JavaPath = getTesterumDir().resolve("conf")
 
     fun getCacheDir(): JavaPath = getTesterumDir().resolve("cache")
     fun getLicensesDir(): JavaPath = getTesterumDir().resolve("licenses")
