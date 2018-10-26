@@ -47,11 +47,6 @@ export class Arg implements Serializable<Arg> {
 
         this.descendantsHaveWarnings = input['descendantsHaveWarnings'];
 
-        let resourceMapEnumByServerType = ResourceMapEnum.getResourceMapEnumByServerType(this.serverType);
-        if (!this.name && resourceMapEnumByServerType && resourceMapEnumByServerType.resourceComponent == BasicResourceComponent) {
-            this.name = input["content"];
-        }
-
         return this;
     }
 

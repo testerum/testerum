@@ -163,7 +163,7 @@ public class MainFrame extends JFrame {
         copyUrlToClipboardButton = new JButton();
         copyUrlToClipboardButton.setEnabled(true);
         copyUrlToClipboardButton.setHorizontalTextPosition(0);
-        copyUrlToClipboardButton.setText("Copy URL to clipbord");
+        copyUrlToClipboardButton.setText("Copy URL to clipboard");
         panel2.add(copyUrlToClipboardButton, cc.xy(7, 1));
         openInBrowserButton = new JButton();
         openInBrowserButton.setText("Open in browser");

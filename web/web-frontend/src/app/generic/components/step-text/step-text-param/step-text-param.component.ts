@@ -11,7 +11,6 @@ import {StringUtils} from "../../../../utils/string-utils.util";
     templateUrl: 'step-text-param.component.html',
     styleUrls: ['step-text-param.component.scss']
 })
-
 export class StepTextParamComponent {
 
     @Input() isStepCall: boolean;
@@ -47,6 +46,19 @@ export class StepTextParamComponent {
     }
 
     getArgumentValue(): string {
+
+        if (this.arg.content instanceof BasicResource) {
+            if(typeof this.arg.content.content === "string" || typeof this.arg.content.content === "number" ) {
+                if (!this.arg.content.isSmallText()) {
+                    let fullValue = this.arg.content.content as string;
+                    let result = fullValue.split('\n')[0];
+                    result = result.substring(0, BasicResource.SMALL_TEXT_LENGTH);
+                    return result + "...";
+                }
+                return this.arg.content.content;
+            }
+        }
+
         if (this.arg.name) {
             return this.arg.name
         }
@@ -55,11 +67,6 @@ export class StepTextParamComponent {
             return this.arg.path.fileName;
         }
 
-        if (this.arg.content instanceof BasicResource) {
-            if(typeof this.arg.content.content === "string" || typeof this.arg.content.content === "number" ) {
-                return this.arg.content.content;
-            }
-        }
         return "";
     }
 }

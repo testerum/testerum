@@ -4,6 +4,7 @@ import {StringUtils} from "../../../utils/string-utils.util";
 
 export class BasicResource implements Resource<BasicResource> {
 
+    static SMALL_TEXT_LENGTH: number = 60;
     content: string;
 
     constructor() {
@@ -34,5 +35,16 @@ export class BasicResource implements Resource<BasicResource> {
 
     createInstance(): BasicResource {
         return new BasicResource();
+    }
+
+    isSmallText(): boolean {
+        if (!this.content) {
+            return true;
+        }
+
+        if (this.content.length > BasicResource.SMALL_TEXT_LENGTH || StringUtils.isMultilineString(this.content)) {
+            return false;
+        }
+        return true;
     }
 }

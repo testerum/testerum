@@ -32,6 +32,10 @@ export class StringUtils {
         return !StringUtils.isEmpty(str);
     }
 
+    static isMultilineString(str: string): boolean {
+        return str.indexOf("\n") >= 0;
+    }
+
     static substringAfter(mainString: string, searchedPart: string): string {
         let index = mainString.lastIndexOf(searchedPart);
         if(index < 0) {
