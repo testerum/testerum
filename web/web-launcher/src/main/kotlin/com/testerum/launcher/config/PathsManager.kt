@@ -14,7 +14,11 @@ object PathsManager {
         Paths.get(sysPropValue).toAbsolutePath().normalize()
     }
 
-    val configFilePath: JavaPath = testerumRootDir.resolve("conf/testerum.properties").toAbsolutePath().normalize()
+    private val testerumUserDir: JavaPath = Paths.get(System.getProperty("user.home")).resolve(".testerum")
+
+    private val settingsDir: JavaPath = testerumUserDir.resolve("conf")
+
+    val configFilePath: JavaPath = settingsDir.resolve("testerum-launcher.properties").toAbsolutePath().normalize()
 
     val logConfigFilePath: JavaPath = testerumRootDir.resolve("conf/logback.xml").toAbsolutePath().normalize()
 

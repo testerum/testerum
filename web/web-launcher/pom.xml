@@ -22,6 +22,12 @@
             <artifactId>common-jdk</artifactId>
         </dependency>
 
+        <!-- common-kotlin -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-kotlin</artifactId>
+        </dependency>
+
 
         <!--==================== 3rd party dependencies ====================-->
 
