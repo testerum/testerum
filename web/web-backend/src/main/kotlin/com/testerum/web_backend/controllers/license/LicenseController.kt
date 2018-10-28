@@ -20,7 +20,7 @@ open class LicenseController(private val licenseFrontendService: LicenseFrontend
 
     @RequestMapping (method = [RequestMethod.POST], path = ["/login/credentials"])
     @ResponseBody
-    fun loginWithCredentials(@RequestBody authRequest: AuthRequest): AuthResponse? {
+    fun loginWithCredentials(@RequestBody authRequest: AuthRequest): AuthResponse {
         return licenseFrontendService.loginWithCredentials(authRequest)
     }
 

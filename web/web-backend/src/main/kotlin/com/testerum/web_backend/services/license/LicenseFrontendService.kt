@@ -3,6 +3,9 @@ package com.testerum.web_backend.services.license
 import com.testerum.common_crypto.password_hasher.PasswordHasher
 import com.testerum.licenses.cache.LicensesCache
 import com.testerum.licenses.cloud_client.CloudClient
+import com.testerum.licenses.cloud_client.CloudClientErrorResponseException
+import com.testerum.licenses.cloud_client.CloudError
+import com.testerum.licenses.cloud_client.ErrorCloudResponse
 import com.testerum.licenses.cloud_client.create_trial_account.CreateTrialAccountCloudRequest
 import com.testerum.licenses.cloud_client.login.FoundLoginCloudResponse
 import com.testerum.licenses.cloud_client.login.LoginCloudRequest
@@ -12,6 +15,7 @@ import com.testerum.model.file.FileToUpload
 import com.testerum.model.license.AuthRequest
 import com.testerum.model.license.AuthResponse
 import org.apache.commons.io.IOUtils
+import org.apache.http.HttpStatus
 
 class LicenseFrontendService(private val cloudClient: CloudClient,
                              private val licensesCache: LicensesCache) {
@@ -29,7 +33,7 @@ class LicenseFrontendService(private val cloudClient: CloudClient,
         return generateAuthResponse(user)
     }
 
-    fun loginWithCredentials(authRequest: AuthRequest): AuthResponse? {
+    fun loginWithCredentials(authRequest: AuthRequest): AuthResponse {
         // first attempt local login
         val userFromFile = licensesCache.getUserByEmail(authRequest.email)
         if (userFromFile != null) {
@@ -47,7 +51,11 @@ class LicenseFrontendService(private val cloudClient: CloudClient,
         )
 
         return when (response) {
-            is NotFoundLoginCloudResponse -> null
+            is NotFoundLoginCloudResponse -> throw CloudClientErrorResponseException(
+                    ErrorCloudResponse(
+                            CloudError(HttpStatus.SC_BAD_REQUEST, "User [${authRequest.email}] was not found or the password was incorrect.")
+                    )
+            )
             is FoundLoginCloudResponse -> {
                 val savedUser = licensesCache.save(response.signedUser)
 
