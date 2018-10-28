@@ -1,5 +1,6 @@
 package com.testerum.launcher.config
 
+import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.launcher.config.model.Config
 import java.nio.file.Files
@@ -28,6 +29,9 @@ object ConfigManager {
     fun saveConfig(config: Config) {
         val properties = Properties()
         properties.setProperty(HTTP_PORT_PROP, config.port.toString())
+
+        PathsManager.configFilePath.parent?.createDirectories()
+
         properties.store(
                 Files.newBufferedWriter(PathsManager.configFilePath),
                 null
