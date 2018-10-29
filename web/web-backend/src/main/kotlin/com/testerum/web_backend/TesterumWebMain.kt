@@ -52,7 +52,7 @@ object TesterumWebMain {
     }
 
     private fun getPort(): Int {
-        val syspropValue: String = System.getProperty(PORT_SYSTEM_PROPERTY) ?: "8080"
+        val syspropValue: String = System.getProperty(PORT_SYSTEM_PROPERTY) ?: "9999"
 
         return syspropValue.toIntOrNull()
                 ?:throw IllegalArgumentException("port [$syspropValue] is not a valid number (given as system property [$PORT_SYSTEM_PROPERTY])")
