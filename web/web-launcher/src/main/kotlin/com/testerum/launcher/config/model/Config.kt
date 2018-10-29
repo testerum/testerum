@@ -4,7 +4,7 @@ data class Config(val port: Int) {
 
     companion object {
         val DEFAULT = Config(
-                port = 8080
+                port = 9999
         )
     }
 
