@@ -42,7 +42,7 @@
 
                             <div class="license-error-panel"
                                  [class.activate-auth-spaceing]="activationType == ACTIVATION_BY_AUTHENTICATION">
-                                <div *ngIf="errorMessage">{{errorMessage}}</div>
+                                <div *ngIf="errorMessage" class="license-error">{{errorMessage}}</div>
                             </div>
 
                             <div class="evaluation-panel-body">
@@ -93,7 +93,7 @@
 
                             <div class="license-error-panel"
                                  [class.evaluate-auth-spaceing]="evaluationType == EVALUATION_BY_AUTHENTICATE">
-                                <div *ngIf="errorMessage">{{errorMessage}}</div>
+                                <div *ngIf="errorMessage" class="license-error">{{errorMessage}}</div>
                             </div>
 
                             <div class="evaluation-panel-body">

@@ -32,6 +32,10 @@ export class ErrorService implements HttpInterceptor {
 
                                 let errorResponse: ErrorResponse = httpErrorResponse.error;
 
+                                if (errorResponse.errorCode.toString() == ErrorCode.CLOUD_ERROR.enumAsString) {
+                                    return EMPTY;
+                                }
+
                                 if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
                                     let validationException = new ValidationErrorResponse().deserialize(errorResponse);
                                     this.errorEventEmitter.emit(validationException);
@@ -40,6 +44,7 @@ export class ErrorService implements HttpInterceptor {
 
                                     return EMPTY;
                                 }
+
                                 if (errorResponse.errorCode.toString() == ErrorCode.GENERIC_ERROR.enumAsString) {
                                     let fullLogErrorResponse = new FullLogErrorResponse().deserialize(errorResponse);
                                     this.errorEventEmitter.emit(fullLogErrorResponse);

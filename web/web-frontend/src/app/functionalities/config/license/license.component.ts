@@ -7,6 +7,9 @@ import {FormUtil} from "../../../utils/form.util";
 import {NgForm} from "@angular/forms";
 import {HttpErrorResponse} from "@angular/common/http";
 import {FileUpload} from "primeng/primeng";
+import {ErrorResponse} from "../../../model/exception/error-response.model";
+import {ErrorCode} from "../../../model/exception/enums/error-code.enum";
+import {ValidationErrorResponse} from "../../../model/exception/validation-error-response.model";
 
 @Component({
     selector: 'license',
@@ -112,9 +115,24 @@ export class LicenseComponent implements OnInit {
             if (!this.validateEmail()) {return;}
             if (!this.validatePassword()) {return;}
 
-            this.licenseService.loginWithCredentials(authRequest).subscribe( (license: AuthResponse) => {
-                this.licenseService.setLicense(license.authToken);
-            });
+            this.licenseService.loginWithCredentials(authRequest).subscribe(
+                (license: AuthResponse) => {
+                    this.licenseService.setLicense(license.authToken);
+                },
+                (httpError: HttpErrorResponse) => {
+
+                        let errorResponse: ErrorResponse = httpError.error;
+
+                        if (errorResponse.errorCode.toString() == ErrorCode.CLOUD_ERROR.enumAsString) {
+                            let validationException: ValidationErrorResponse = new ValidationErrorResponse().deserialize(errorResponse);
+                            this.errorMessage = validationException.validationModel.globalValidationMessage;
+                            return;
+                        }
+
+                    FormUtil.setErrorsToForm(this.form, httpError);
+                    return;
+                }
+            );
         }
     }
 
