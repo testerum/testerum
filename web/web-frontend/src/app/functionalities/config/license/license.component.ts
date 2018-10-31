@@ -158,7 +158,7 @@ export class LicenseComponent implements OnInit {
     }
 
     private validateEmail(): boolean {
-        let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+        let EMAIL_REGEXP = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
         if (!this.email || (this.email.length <= 5 || !EMAIL_REGEXP.test(this.email))) {
             this.errorMessage = "Please provide a valid email address";
