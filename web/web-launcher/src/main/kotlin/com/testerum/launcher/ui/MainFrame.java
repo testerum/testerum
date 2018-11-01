@@ -5,6 +5,8 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.testerum.launcher.config.ConfigManager;
 import com.testerum.launcher.config.model.Config;
 import com.testerum.launcher.runner.TesterumExecuter;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,11 +32,18 @@ public class MainFrame extends JFrame {
     private JButton copyUrlToClipboardButton;
     private JTextField portInputField;
     private JButton saveAndRestartApplicationButton;
+    private JLabel statusLabel;
+    private JLabel arrowImage;
 
     public MainFrame(@NotNull final ConfigManager configManager,
                      @NotNull final TesterumExecuter testerumExecuter) throws HeadlessException {
         this.configManager = configManager;
         this.testerumExecuter = testerumExecuter;
+
+        this.testerumExecuter.setServerStartedHandler(() -> {
+            setServerAsStarted();
+            return Unit.INSTANCE;
+        });
 
         setTitle("Testerum Launcher");
         setContentPane(rootPanel);
@@ -44,6 +53,7 @@ public class MainFrame extends JFrame {
         );
         setResizable(false);
         saveAndRestartApplicationButton.setEnabled(false);
+        arrowImage.setVisible(false);
 
         setSize(800, 400);
 
@@ -68,6 +78,13 @@ public class MainFrame extends JFrame {
         });
 
         saveAndRestartApplicationButton.addActionListener(this::onSaveAndRestartApplicationClicked);
+    }
+
+    public void setServerAsStarted() {
+        arrowImage.setVisible(true);
+        statusLabel.setIcon(null);
+        statusLabel.setText("Testerum Server Started");
+        openInBrowserButton.setEnabled(true);
     }
 
     @SuppressWarnings("unused")
@@ -147,7 +164,7 @@ public class MainFrame extends JFrame {
      */
     private void $$$setupUI$$$() {
         rootPanel = new JPanel();
-        rootPanel.setLayout(new FormLayout("fill:d:noGrow,fill:d:grow", "center:60dlu:noGrow,top:4dlu:grow(1.1),center:d:noGrow,fill:d:grow(3.9),bottom:d:noGrow,top:10dlu:noGrow,center:max(d;4px):noGrow"));
+        rootPanel.setLayout(new FormLayout("fill:d:noGrow,fill:d:grow", "center:60dlu:noGrow,top:4dlu:grow(1.1),center:d:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,fill:d:grow(3.9),bottom:d:noGrow,top:10dlu:noGrow,center:max(d;4px):noGrow"));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new FormLayout("fill:d:grow", "center:d:grow"));
         CellConstraints cc = new CellConstraints();
@@ -158,7 +175,7 @@ public class MainFrame extends JFrame {
         label1.setText("");
         panel1.add(label1, cc.xy(1, 1));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:202px:grow,left:4dlu:noGrow,fill:90dlu:noGrow,right:10dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow"));
+        panel2.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:202px:grow,left:4dlu:noGrow,fill:90dlu:noGrow,right:10dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow"));
         rootPanel.add(panel2, cc.xyw(1, 3, 2, CellConstraints.DEFAULT, CellConstraints.CENTER));
         copyUrlToClipboardButton = new JButton();
         copyUrlToClipboardButton.setEnabled(true);
@@ -166,6 +183,7 @@ public class MainFrame extends JFrame {
         copyUrlToClipboardButton.setText("Copy URL to clipboard");
         panel2.add(copyUrlToClipboardButton, cc.xy(7, 1));
         openInBrowserButton = new JButton();
+        openInBrowserButton.setEnabled(false);
         openInBrowserButton.setText("Open in browser");
         panel2.add(openInBrowserButton, cc.xy(5, 3, CellConstraints.CENTER, CellConstraints.DEFAULT));
         final JLabel label2 = new JLabel();
@@ -178,9 +196,14 @@ public class MainFrame extends JFrame {
         urlTextFiled.setEditable(false);
         urlTextFiled.setEnabled(true);
         panel2.add(urlTextFiled, cc.xy(5, 1, CellConstraints.FILL, CellConstraints.CENTER));
+        arrowImage = new JLabel();
+        arrowImage.setIcon(new ImageIcon(getClass().getResource("/arrowUpSmall.png")));
+        arrowImage.setText("");
+        arrowImage.putClientProperty("html.disable", Boolean.FALSE);
+        panel2.add(arrowImage, cc.xy(5, 5, CellConstraints.CENTER, CellConstraints.DEFAULT));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:d:grow,left:4dlu:noGrow,right:d:noGrow,left:10dlu:noGrow,fill:max(d;4px):noGrow", "center:30px:grow"));
-        rootPanel.add(panel3, cc.xy(2, 5, CellConstraints.DEFAULT, CellConstraints.BOTTOM));
+        rootPanel.add(panel3, cc.xy(2, 7, CellConstraints.DEFAULT, CellConstraints.BOTTOM));
         final JLabel label3 = new JLabel();
         label3.setText("Application Port:");
         panel3.add(label3, cc.xy(3, 1));
@@ -192,6 +215,31 @@ public class MainFrame extends JFrame {
         saveAndRestartApplicationButton.setText("Save and Restart Application");
         saveAndRestartApplicationButton.putClientProperty("html.disable", Boolean.TRUE);
         panel3.add(saveAndRestartApplicationButton, cc.xy(7, 1, CellConstraints.LEFT, CellConstraints.DEFAULT));
+        statusLabel = new JLabel();
+        Font statusLabelFont = this.$$$getFont$$$("SansSerif", Font.BOLD, 28, statusLabel.getFont());
+        if (statusLabelFont != null) statusLabel.setFont(statusLabelFont);
+        statusLabel.setIcon(new ImageIcon(getClass().getResource("/loading.gif")));
+        statusLabel.setText(" Starting Testerum Server");
+        rootPanel.add(statusLabel, cc.xy(2, 6, CellConstraints.CENTER, CellConstraints.CENTER));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
     }
 
     /**

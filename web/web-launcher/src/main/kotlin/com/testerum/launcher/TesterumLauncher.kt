@@ -9,14 +9,14 @@ import javax.swing.UIManager
 import javax.swing.WindowConstants
 
 fun main(args: Array<String>) {
-    UIManager.setLookAndFeel(
-            Plastic3DLookAndFeel()
-    )
+//    UIManager.setLookAndFeel(
+//            Plastic3DLookAndFeel()
+//    )
 
     val testerumRunner = TesterumExecuter()
-    testerumRunner.startTesterum()
 
     val frame = MainFrame(ConfigManager, testerumRunner)
+    testerumRunner.startTesterum()
 
     frame.defaultCloseOperation = WindowConstants.DO_NOTHING_ON_CLOSE
     frame.centerOnScreen()

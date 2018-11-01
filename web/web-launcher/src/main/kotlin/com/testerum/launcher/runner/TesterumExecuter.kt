@@ -16,6 +16,8 @@ class TesterumExecuter {
 
     private var process: Process? = null
 
+    lateinit var serverStartedHandler: () -> Unit
+
     fun startTesterum() {
         ProcessExecutor()
                 .command(getCommand())
@@ -29,6 +31,9 @@ class TesterumExecuter {
                         object : LogOutputStream() {
                             override fun processLine(line: String) {
                                 println(line)
+                                if (line.equals("Testerum server started.")) {
+                                    serverStartedHandler()
+                                }
                             }
                         }
                 )

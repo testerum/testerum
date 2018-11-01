@@ -45,6 +45,7 @@ object TesterumWebMain {
 
         TesterumBanner.BANNER.lines().forEach(LOG::info)
 
+        LOG.info("Testerum server started.")
         LOG.info("Testerum (version $testerumVersion) is available at ${ansi().bg(Ansi.Color.BLACK).fgBrightGreen()}http://localhost:$actualPort/${ansi().bgDefault().fgDefault()}")
         LOG.info("Press Ctrl+C to stop.")
 
