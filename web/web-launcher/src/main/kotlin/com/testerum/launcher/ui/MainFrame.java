@@ -176,6 +176,7 @@ public class MainFrame extends JFrame {
         panel1.add(label1, cc.xy(1, 1));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:202px:grow,left:4dlu:noGrow,fill:90dlu:noGrow,right:10dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow"));
+        panel2.setMaximumSize(new Dimension(509, 104));
         rootPanel.add(panel2, cc.xyw(1, 3, 2, CellConstraints.DEFAULT, CellConstraints.CENTER));
         copyUrlToClipboardButton = new JButton();
         copyUrlToClipboardButton.setEnabled(true);
