@@ -30,8 +30,10 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         return saveTest(test, repositoryDir)
     }
 
-    private fun saveTest(test: TestModel, repositoryDir: Path): TestModel {
-        saveStepCallsRecursively(test.stepCalls, repositoryDir)
+    private fun saveTest(test: TestModel, repositoryDir: Path, recursiveSave: Boolean = true): TestModel {
+        if (recursiveSave) {
+            saveStepCallsRecursively(test.stepCalls, repositoryDir)
+        }
 
         val testWithSavedExternalResources = saveExternalResources(test, repositoryDir)
 
@@ -45,10 +47,12 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         return saveComposedStep(composedStep, repositoryDir)
     }
 
-    private fun saveComposedStep(composedStep: ComposedStepDef, repositoryDir: Path): ComposedStepDef {
+    private fun saveComposedStep(composedStep: ComposedStepDef, repositoryDir: Path, recursiveSave: Boolean = true): ComposedStepDef {
         validateComposedStepSave(composedStep)
 
-        saveStepCallsRecursively(composedStep.stepCalls, repositoryDir)
+        if (recursiveSave) {
+            saveStepCallsRecursively(composedStep.stepCalls, repositoryDir)
+        }
 
         val stepWithSavedExternalResources: ComposedStepDef = saveExternalResources(composedStep, repositoryDir)
 
@@ -79,11 +83,11 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
             var updatedTest = testToUpdate
             for ((index, stepCall) in testToUpdate.stepCalls.withIndex()) {
                 if (stepCall.stepDef.stepPattern == oldStep.stepPattern) {
-                    updatedTest = updateStepPatternAtStepCallForTest(updatedTest, index, newStep.stepPattern)
+                    updatedTest = updateStepPatternAtStepCallForTest(updatedTest, index, newStep)
                 }
             }
 
-            saveTest(updatedTest, repositoryDir)
+            saveTest(updatedTest, repositoryDir, recursiveSave = false)
         }
     }
 
@@ -101,10 +105,9 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         return result
     }
 
-    private fun updateStepPatternAtStepCallForTest(testToUpdate: TestModel, stepCallIndexToUpdate: Int, stepPattern: StepPattern): TestModel {
+    private fun updateStepPatternAtStepCallForTest(testToUpdate: TestModel, stepCallIndexToUpdate: Int, newStep: ComposedStepDef): TestModel {
         val updatedCalls = testToUpdate.stepCalls.toMutableList()
-        val updatedDef = (updatedCalls[stepCallIndexToUpdate].stepDef as ComposedStepDef).copy(stepPattern = stepPattern)
-        updatedCalls[stepCallIndexToUpdate] = updatedCalls[stepCallIndexToUpdate].copy(stepDef = updatedDef)
+        updatedCalls[stepCallIndexToUpdate] = updatedCalls[stepCallIndexToUpdate].copy(stepDef = newStep)
 
         return testToUpdate.copy(stepCalls = updatedCalls)
     }
@@ -119,7 +122,7 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
                 }
             }
 
-            saveComposedStep(updatedStepDef, repositoryDir)
+            saveComposedStep(updatedStepDef, repositoryDir, recursiveSave = false)
         }
     }
 
@@ -138,9 +141,7 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         return result.toList()
     }
 
-    private fun updateStepDefOfStepCall(stepDefToUpdate: ComposedStepDef,
-                                        stepCallIndexToUpdate: Int,
-                                        newStep: ComposedStepDef): ComposedStepDef {
+    private fun updateStepDefOfStepCall(stepDefToUpdate: ComposedStepDef, stepCallIndexToUpdate: Int, newStep: ComposedStepDef): ComposedStepDef {
         val updateStepCalls: MutableList<StepCall> = stepDefToUpdate.stepCalls.toMutableList()
 
         updateStepCalls[stepCallIndexToUpdate] = updateStepCalls[stepCallIndexToUpdate].copy(stepDef = newStep)
@@ -161,9 +162,7 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         }
     }
 
-    private fun validateComposedStepParamName(paramName: String,
-                                              paramIndex: Int,
-                                              composedStep: ComposedStepDef) {
+    private fun validateComposedStepParamName(paramName: String, paramIndex: Int, composedStep: ComposedStepDef) {
         if (!FileStepDefSignatureParserFactory.isValidParameterName(paramName)) {
             throw ValidationException(
                     "invalid step parameter name [$paramName]" +
