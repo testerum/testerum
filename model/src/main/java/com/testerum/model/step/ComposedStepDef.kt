@@ -43,6 +43,7 @@ data class ComposedStepDef @JsonCreator constructor(@JsonProperty("path") overri
         append(phase)
         append(" ")
         append(stepPattern.toDebugString(varPrefix = "<<", varSuffix = ">>"))
+        append(" (").append(stepCalls.size).append(" calls)")
     }
 
 }
