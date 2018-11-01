@@ -1,7 +1,13 @@
 package com.testerum.file_service.file
 
 import com.testerum.common.parsing.executer.ParserExecuter
-import com.testerum.common_kotlin.*
+import com.testerum.common_kotlin.createDirectories
+import com.testerum.common_kotlin.deleteIfExists
+import com.testerum.common_kotlin.getContent
+import com.testerum.common_kotlin.hasExtension
+import com.testerum.common_kotlin.isRegularFile
+import com.testerum.common_kotlin.smartMoveTo
+import com.testerum.common_kotlin.walk
 import com.testerum.file_service.file.util.escape
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileTestMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessTestMapper
@@ -48,8 +54,8 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         return tests
     }
 
-    fun getTestAtPath(path: Path,
-                      testsDir: JavaPath): TestModel {
+    private fun getTestAtPath(path: Path,
+                              testsDir: JavaPath): TestModel {
         val escapedPath = path.escape()
 
         val testFile = testsDir.resolve(
@@ -79,7 +85,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         }
     }
 
-    fun parseTestFile(file: JavaPath): FileTestDef {
+    private fun parseTestFile(file: JavaPath): FileTestDef {
         try {
             return TEST_PARSER.parse(
                     file.getContent()

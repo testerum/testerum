@@ -58,8 +58,8 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
         return composedSteps
     }
 
-    fun getComposedStepAtPath(path: Path,
-                              composedStepsDir: JavaPath): ComposedStepDef {
+    private fun getComposedStepAtPath(path: Path,
+                                      composedStepsDir: JavaPath): ComposedStepDef {
         val escapedPath = path.escape()
 
         val composedStepFile = composedStepsDir.resolve(
