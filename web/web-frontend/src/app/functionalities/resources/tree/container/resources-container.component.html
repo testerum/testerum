@@ -5,7 +5,7 @@
     <div class="full-line"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false"
-         (click)="setSelected();$event.stopPropagation();"
+         (click)="collapseNode();$event.stopPropagation();"
          (dblclick)="collapseNode()"
 
          [dropZones]="[model.resourceType.fileExtension]"
