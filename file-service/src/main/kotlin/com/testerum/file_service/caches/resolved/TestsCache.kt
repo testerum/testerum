@@ -39,10 +39,9 @@ class TestsCache(private val testFileService: TestFileService,
 
             val tests = testFileService.getAllTests(testsDir)
             for (test in tests) {
-                val resolvedTest = testResolver.resolveStepsDefs(test, resourcesDir)
-                val resolvedTestWithWarnings = warningService.testWithWarnings(resolvedTest)
+                val resolvedTest = resolveTest(test, resourcesDir)
 
-                newTestsByPath[resolvedTestWithWarnings.path] = resolvedTestWithWarnings
+                newTestsByPath[resolvedTest.path] = resolvedTest
             }
 
             testsByPath = newTestsByPath
@@ -51,6 +50,15 @@ class TestsCache(private val testFileService: TestFileService,
 
             LOG.info("loading ${newTestsByPath.size} tests took ${endTimeMillis - startTimeMillis} ms")
         }
+    }
+
+    private fun resolveTest(test: TestModel, resourcesDir: java.nio.file.Path): TestModel {
+        var result = test
+
+        result = testResolver.resolveStepsDefs(result, resourcesDir)
+        result = warningService.testWithWarnings(result)
+
+        return result
     }
 
     fun getAllTests(): Collection<TestModel> = lock.read { testsByPath.values }
