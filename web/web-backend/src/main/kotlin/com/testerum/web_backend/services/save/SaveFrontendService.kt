@@ -35,9 +35,13 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
             saveStepCallsRecursively(test.stepCalls, repositoryDir)
         }
 
-        val testWithSavedExternalResources = saveExternalResources(test, repositoryDir)
+        val testToSave = if (recursiveSave) {
+            saveExternalResources(test, repositoryDir)
+        } else {
+            test
+        }
 
-        return testsCache.save(testWithSavedExternalResources)
+        return testsCache.save(testToSave)
     }
 
     fun saveComposedStep(composedStep: ComposedStepDef): ComposedStepDef {
@@ -54,11 +58,15 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
             saveStepCallsRecursively(composedStep.stepCalls, repositoryDir)
         }
 
-        val stepWithSavedExternalResources: ComposedStepDef = saveExternalResources(composedStep, repositoryDir)
+        val stepToSave: ComposedStepDef = if (recursiveSave) {
+            saveExternalResources(composedStep, repositoryDir)
+        } else {
+            composedStep
+        }
 
-        val existingStep = stepWithSavedExternalResources.oldPath?.let { stepsCache.getComposedStepAtPath(it) }
+        val existingStep = stepToSave.oldPath?.let { stepsCache.getComposedStepAtPath(it) }
 
-        val savedComposedStep = stepsCache.saveComposedStep(stepWithSavedExternalResources)
+        val savedComposedStep = stepsCache.saveComposedStep(stepToSave)
 
         // update affected tests & steps
         if (existingStep != null) {
