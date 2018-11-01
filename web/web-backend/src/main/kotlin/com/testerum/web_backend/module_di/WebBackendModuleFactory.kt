@@ -55,7 +55,11 @@ import com.testerum.web_backend.services.features.FeaturesFrontendService
 import com.testerum.web_backend.services.filesystem.FileSystemFrontendService
 import com.testerum.web_backend.services.initializers.WebBackendInitializer
 import com.testerum.web_backend.services.initializers.caches.CachesInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.*
+import com.testerum.web_backend.services.initializers.caches.impl.FeaturesCacheInitializer
+import com.testerum.web_backend.services.initializers.caches.impl.JdbcDriversCacheInitializer
+import com.testerum.web_backend.services.initializers.caches.impl.LicenseCacheInitializer
+import com.testerum.web_backend.services.initializers.caches.impl.StepsCacheInitializer
+import com.testerum.web_backend.services.initializers.caches.impl.TestsCacheInitializer
 import com.testerum.web_backend.services.initializers.info_logging.InfoLoggerInitializer
 import com.testerum.web_backend.services.initializers.settings.SettingsManagerInitializer
 import com.testerum.web_backend.services.license.LicenseFrontendService
@@ -252,6 +256,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val saveFrontendService = SaveFrontendService(
             frontendDirs = frontendDirs,
             testsCache = fileServiceModuleFactory.testsCache,
+            testsCacheInitializer = testsCacheInitializer,
             stepsCache = fileServiceModuleFactory.stepsCache,
             resourceFileService = fileServiceModuleFactory.resourceFileService
     )

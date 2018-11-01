@@ -15,19 +15,28 @@ import com.testerum.model.text.StepPattern
 import com.testerum.settings.keys.SystemSettingKeys
 import com.testerum.test_file_format.stepdef.signature.FileStepDefSignatureParserFactory
 import com.testerum.web_backend.services.dirs.FrontendDirs
+import com.testerum.web_backend.services.initializers.caches.impl.TestsCacheInitializer
 import com.testerum.web_backend.util.isOtherStepWithTheSameStepPatternAsTheNew
 import com.testerum.web_backend.util.isTestUsingStepPattern
 import java.nio.file.Path
 
 class SaveFrontendService(private val frontendDirs: FrontendDirs,
                           private val testsCache: TestsCache,
+                          private val testsCacheInitializer: TestsCacheInitializer,
                           private val stepsCache: StepsCache,
                           private val resourceFileService: ResourceFileService) {
 
     fun saveTest(test: TestModel): TestModel {
         val repositoryDir = frontendDirs.getRequiredRepositoryDir()
 
-        return saveTest(test, repositoryDir)
+        val savedTest = saveTest(test, repositoryDir)
+
+        // re-loading steps & tests to make sure tests are resolved properly
+        // to optimize, we could re-load only the affected tests and/or steps
+        stepsCache.reinitializeComposedSteps()
+        testsCacheInitializer.initialize()
+
+        return savedTest
     }
 
     private fun saveTest(test: TestModel, repositoryDir: Path, recursiveSave: Boolean = true): TestModel {
@@ -48,7 +57,14 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         val repositoryDir = frontendDirs.getRepositoryDir()
                 ?: throw java.lang.IllegalStateException("cannot save composed step, because the setting [${SystemSettingKeys.REPOSITORY_DIR}] is not set")
 
-        return saveComposedStep(composedStep, repositoryDir)
+        val savedStep = saveComposedStep(composedStep, repositoryDir)
+
+        // re-loading steps & tests to make sure tests are resolved properly
+        // to optimize, we could re-load only the affected tests and/or steps
+        stepsCache.reinitializeComposedSteps()
+        testsCacheInitializer.initialize()
+
+        return savedStep
     }
 
     private fun saveComposedStep(composedStep: ComposedStepDef, repositoryDir: Path, recursiveSave: Boolean = true): ComposedStepDef {
