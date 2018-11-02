@@ -27,6 +27,7 @@ import {Path} from "../../../../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
 import {StepsService} from "../../../../service/steps.service";
 import {MarkdownEditorComponent} from "../../markdown-editor/markdown-editor.component";
+import {StepCallWarningUtil} from "../../step-call-tree/util/step-call-warning.util";
 
 @Component({
     selector: 'composed-step-view',
@@ -97,8 +98,7 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
             let model = this.getModelForWarningRecalculation();
 
             this.stepsService.getWarnings(model).subscribe((newModel: ComposedStepDef) => {
-                ArrayUtil.replaceElementsInArray(this.model.stepCalls, newModel.stepCalls);
-                this.stepCallTreeComponent.initTree();
+                StepCallWarningUtil.copyWarningState(this.model.stepCalls, newModel.stepCalls);
 
                 ArrayUtil.replaceElementsInArray(this.model.warnings, newModel.warnings);
                 this.refreshWarnings();

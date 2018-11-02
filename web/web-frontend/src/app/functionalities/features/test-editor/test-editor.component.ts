@@ -17,6 +17,7 @@ import {MarkdownEditorComponent} from "../../../generic/components/markdown-edit
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
+import {StepCallWarningUtil} from "../../../generic/components/step-call-tree/util/step-call-warning.util";
 
 @Component({
     moduleId: module.id,
@@ -87,8 +88,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
             let testModel = this.getModelForWarningRecalculation();
 
             this.testsService.getWarnings(testModel).subscribe((newTestModel:TestModel) => {
-                ArrayUtil.replaceElementsInArray(this.testModel.stepCalls, newTestModel.stepCalls);
-                this.stepCallTreeComponent.initTree();
+                StepCallWarningUtil.copyWarningState(this.testModel.stepCalls, newTestModel.stepCalls);
 
                 ArrayUtil.replaceElementsInArray(this.testModel.warnings, newTestModel.warnings);
                 this.refreshWarnings();
