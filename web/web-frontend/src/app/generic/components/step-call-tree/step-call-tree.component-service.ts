@@ -75,20 +75,14 @@ export class StepCallTreeComponentService {
 
     private removeStepCallFromParent(stepCallToRemove: StepCall, rootNode: JsonTreeContainer) {
 
-        if (rootNode instanceof JsonTreeModel) {
+        if (rootNode instanceof JsonTreeModel ) {
             ArrayUtil.removeElementFromArray(this.stepCalls, stepCallToRemove);
             return;
         }
 
-        for (const rootChild of rootNode.getChildren()) {
-            if(rootChild instanceof SubStepsContainerModel) {
-                this.removeStepCallFromParent(stepCallToRemove, rootChild);
-                return;
-            }
-
-            if (rootChild instanceof StepCallContainerModel) {
-                ArrayUtil.removeElementFromArray((rootChild.stepCall.stepDef as ComposedStepDef).stepCalls, stepCallToRemove);
-            }
+        if (rootNode instanceof SubStepsContainerModel) {
+            let parentStepCallContainer: StepCallContainerModel = rootNode.parentContainer as StepCallContainerModel;
+            ArrayUtil.removeElementFromArray((parentStepCallContainer.stepCall.stepDef as ComposedStepDef).stepCalls, stepCallToRemove);
         }
     }
 
