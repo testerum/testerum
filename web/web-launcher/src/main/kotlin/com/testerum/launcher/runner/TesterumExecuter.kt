@@ -31,7 +31,7 @@ class TesterumExecuter {
                         object : LogOutputStream() {
                             override fun processLine(line: String) {
                                 println(line)
-                                if (line.equals("Testerum server started.")) {
+                                if (line == "Testerum server started.") {
                                     serverStartedHandler()
                                 }
                             }
