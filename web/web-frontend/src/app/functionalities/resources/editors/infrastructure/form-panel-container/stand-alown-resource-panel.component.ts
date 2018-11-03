@@ -122,6 +122,7 @@ export class StandAlownResourcePanelComponent extends AbstractComponentCanDeacti
 
     private deleteActionAfterConfirmation(): void {
         this.resourceService.deleteResource(this.resource.path).subscribe(result => {
+            this.isEditMode = false; // to not show CanDeactivateGuard
             this.refreshResourceTree();
             this.urlService.navigateToResources();
         });
