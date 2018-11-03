@@ -10,6 +10,10 @@ select {
     width: auto;
 }
 
+.form-control {
+    align-self: baseline;
+}
+
 .form-value {
     margin-bottom: 0;
 }
@@ -39,7 +43,7 @@ input[type=checkbox]:focus {
     display: flex;
     min-height: 25px;
     flex-direction: row;
-    align-items: baseline;
+    align-items: center;
     margin: 8px 0;
 }
 
