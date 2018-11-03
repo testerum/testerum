@@ -49,6 +49,10 @@ export class StepTextParamComponent {
 
         if (this.arg.content instanceof BasicResource) {
             if(typeof this.arg.content.content === "string" || typeof this.arg.content.content === "number" ) {
+                if (this.arg.path && this.arg.path.fileName) {
+                    return this.arg.path.fileName;
+                }
+
                 if (!this.arg.content.isSmallText()) {
                     let fullValue = this.arg.content.content as string;
                     let result = fullValue.split('\n')[0];
