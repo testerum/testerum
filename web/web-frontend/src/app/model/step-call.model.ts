@@ -13,6 +13,7 @@ import {UndefinedStepDef} from "./undefined-step-def.model";
 import {Warning} from "./warning/Warning";
 import {Serializable} from "./infrastructure/serializable.model";
 import {ArrayUtil} from "../utils/array.util";
+import {StepTextParamUtil} from "../generic/components/step-text/step-text-param/util/step-text-param.util";
 
 export class StepCall implements Serializable<StepCall> {
 
@@ -123,8 +124,12 @@ export class StepCall implements Serializable<StepCall> {
                 stepText += patternPart.text;
             }
             if (patternPart instanceof ParamStepPatternPart) {
-                let argName = this.args[paramIndex].name;
-                stepText += argName;
+                let currentArg = this.args[paramIndex];
+                if (StepTextParamUtil.hasValue(currentArg)) {
+                    stepText += "<<" + StepTextParamUtil.getArgumentValue(currentArg) + ">>"
+                } else {
+                    stepText += "<<" + StepTextParamUtil.getArgumentName(currentArg, patternPart) + ">>"
+                }
                 paramIndex++;
             }
         }
