@@ -4,7 +4,11 @@ package com.testerum.common_kotlin
 
 import java.io.IOException
 import java.nio.charset.Charset
-import java.nio.file.*
+import java.nio.file.AccessDeniedException
+import java.nio.file.FileVisitResult
+import java.nio.file.FileVisitor
+import java.nio.file.Files
+import java.nio.file.SimpleFileVisitor
 import java.nio.file.attribute.BasicFileAttributeView
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileAttribute
@@ -154,6 +158,19 @@ fun JavaPath.createDirectory(vararg attrs: FileAttribute<*>): JavaPath = Files.c
 
 fun JavaPath.hasExtension(extension: String) = toString().endsWith(extension)
 fun JavaPath.getContent(charset: Charset = Charsets.UTF_8): String = String(Files.readAllBytes(this), charset)
+fun JavaPath.getContentOrNull(charset: Charset = Charsets.UTF_8): String? {
+    if (!this.exists) {
+        // avoid exception if the file doesn't exist
+        return null
+    }
+
+    return try {
+        String(Files.readAllBytes(this), charset)
+    } catch (e: NoSuchFileException) {
+        // catch exception in the unlikely event that the file is deleted between the check above and 
+        null
+    }
+}
 
 fun <V : FileAttributeView> JavaPath.getFileAttributeView(type: Class<V>): V = Files.getFileAttributeView(this, type)
 

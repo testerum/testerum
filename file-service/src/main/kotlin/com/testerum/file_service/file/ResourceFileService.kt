@@ -9,7 +9,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.testerum.common_kotlin.*
+import com.testerum.common_kotlin.createDirectories
+import com.testerum.common_kotlin.deleteIfExists
+import com.testerum.common_kotlin.doesNotExist
+import com.testerum.common_kotlin.exists
+import com.testerum.common_kotlin.getContentOrNull
+import com.testerum.common_kotlin.hasExtension
+import com.testerum.common_kotlin.isRegularFile
+import com.testerum.common_kotlin.smartMoveTo
+import com.testerum.common_kotlin.walkAndCollect
 import com.testerum.file_service.caches.resolved.resolvers.file_arg_transformer.FileArgTransformer
 import com.testerum.file_service.file.util.escape
 import com.testerum.file_service.file.util.escapeFileOrDirectoryName
@@ -53,7 +61,8 @@ class ResourceFileService {
         val resourceJavaPath = getJavaPath(path, resourceType, resourcesDir)
 
         val escapedPath = path.escape()
-        val fileContent = resourceJavaPath.getContent()
+        val fileContent = resourceJavaPath.getContentOrNull()
+            ?: return null
 
         return ResourceContext(
                 path = escapedPath,
@@ -70,7 +79,8 @@ class ResourceFileService {
         val resourceJavaPath = getJavaPath(path, resourceType, resourcesDir)
 
         val escapedPath = path.escape()
-        val fileContent = resourceJavaPath.getContent()
+        val fileContent = resourceJavaPath.getContentOrNull()
+                ?: return null
 
         return ResourceContext(
                 path = escapedPath,
