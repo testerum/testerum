@@ -9,10 +9,14 @@ import com.testerum.model.resources.ResourceContext
 import com.testerum.model.resources.ResourceType
 import com.testerum.settings.keys.SystemSettingKeys
 import com.testerum.web_backend.services.dirs.FrontendDirs
+import com.testerum.web_backend.services.initializers.caches.impl.StepsCacheInitializer
+import com.testerum.web_backend.services.initializers.caches.impl.TestsCacheInitializer
 import java.nio.file.Path as JavaPath
 
 class ResourcesFrontendService(private val frontendDirs: FrontendDirs,
-                               private val resourceFileService: ResourceFileService) {
+                               private val resourceFileService: ResourceFileService,
+                               private val stepsCacheInitializer: StepsCacheInitializer,
+                               private val testsCacheInitializer: TestsCacheInitializer) {
 
     fun getResourceAtPath(path: Path): ResourceContext? {
         val resourcesDir = getResourcesDir()
@@ -32,13 +36,19 @@ class ResourcesFrontendService(private val frontendDirs: FrontendDirs,
     fun save(resourceContext: ResourceContext): ResourceContext {
         val resourcesDir = getResourcesDir()
 
-        return resourceFileService.save(resourceContext, resourcesDir)
+        val result = resourceFileService.save(resourceContext, resourcesDir)
+
+        reinitializeCaches()
+
+        return result
     }
 
     fun delete(path: Path) {
         val resourcesDir = getResourcesDir()
 
         resourceFileService.delete(path, resourcesDir)
+
+        reinitializeCaches()
     }
 
     fun getPathsOfSharedResources(resourceType: ResourceType): List<Path> {
@@ -50,13 +60,19 @@ class ResourcesFrontendService(private val frontendDirs: FrontendDirs,
     fun renameDirectory(renamePath: RenamePath): Path {
         val resourcesDir = getResourcesDir()
 
-        return resourceFileService.renameDirectory(renamePath, resourcesDir)
+        val result = resourceFileService.renameDirectory(renamePath, resourcesDir)
+
+        reinitializeCaches()
+
+        return result
     }
 
     fun deleteDirectory(path: Path) {
         val resourcesDir = getResourcesDir()
 
-        return resourceFileService.deleteDirectory(path, resourcesDir)
+        resourceFileService.deleteDirectory(path, resourcesDir)
+
+        reinitializeCaches()
     }
 
     fun moveDirectoryOrFile(copyPath: CopyPath): Path {
@@ -65,7 +81,11 @@ class ResourcesFrontendService(private val frontendDirs: FrontendDirs,
                 ?: throw RuntimeException("unknown ResourceType based on the path extension [${copyPath.copyPath}]")
 
 
-        return resourceFileService.moveDirectoryOrFile(copyPath, resourceType, resourcesDir)
+        val result = resourceFileService.moveDirectoryOrFile(copyPath, resourceType, resourcesDir)
+
+        reinitializeCaches()
+
+        return result
     }
 
     private fun getResourcesDir(): JavaPath {
@@ -73,6 +93,13 @@ class ResourcesFrontendService(private val frontendDirs: FrontendDirs,
                 ?: throw IllegalStateException("the setting [${SystemSettingKeys.REPOSITORY_DIR}] is not set")
 
         return frontendDirs.getResourcesDir(repositoryDir)
+    }
+
+    private fun reinitializeCaches() {
+        // re-loading steps & tests to make sure tests are resolved properly
+        // to optimize, we could re-load only the affected tests and/or steps
+        stepsCacheInitializer.reinitializeComposedSteps()
+        testsCacheInitializer.initialize()
     }
 
 }

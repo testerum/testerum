@@ -41,4 +41,8 @@ class StepsCacheInitializer(private val frontendDirs: FrontendDirs,
         }
     }
 
+    fun reinitializeComposedSteps() {
+        stepsCache.reinitializeComposedSteps()
+    }
+
 }

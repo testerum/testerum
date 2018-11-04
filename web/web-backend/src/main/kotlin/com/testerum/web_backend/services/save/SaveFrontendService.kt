@@ -15,15 +15,17 @@ import com.testerum.model.text.StepPattern
 import com.testerum.settings.keys.SystemSettingKeys
 import com.testerum.test_file_format.stepdef.signature.FileStepDefSignatureParserFactory
 import com.testerum.web_backend.services.dirs.FrontendDirs
+import com.testerum.web_backend.services.initializers.caches.impl.StepsCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.TestsCacheInitializer
 import com.testerum.web_backend.util.isOtherStepWithTheSameStepPatternAsTheNew
 import com.testerum.web_backend.util.isTestUsingStepPattern
 import java.nio.file.Path
 
 class SaveFrontendService(private val frontendDirs: FrontendDirs,
+                          private val stepsCache: StepsCache,
+                          private val stepsCacheInitializer: StepsCacheInitializer,
                           private val testsCache: TestsCache,
                           private val testsCacheInitializer: TestsCacheInitializer,
-                          private val stepsCache: StepsCache,
                           private val resourceFileService: ResourceFileService) {
 
     fun saveTest(test: TestModel): TestModel {
@@ -31,10 +33,7 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
 
         val savedTest = saveTest(test, repositoryDir)
 
-        // re-loading steps & tests to make sure tests are resolved properly
-        // to optimize, we could re-load only the affected tests and/or steps
-        stepsCache.reinitializeComposedSteps()
-        testsCacheInitializer.initialize()
+        reinitializeCaches()
 
         return savedTest
     }
@@ -59,10 +58,7 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
 
         val savedStep = saveComposedStep(composedStep, repositoryDir)
 
-        // re-loading steps & tests to make sure tests are resolved properly
-        // to optimize, we could re-load only the affected tests and/or steps
-        stepsCache.reinitializeComposedSteps()
-        testsCacheInitializer.initialize()
+        reinitializeCaches()
 
         return savedStep
     }
@@ -274,4 +270,12 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
 
         return arg.copy(path = actualPath)
     }
+
+    private fun reinitializeCaches() {
+        // re-loading steps & tests to make sure tests are resolved properly
+        // to optimize, we could re-load only the affected tests and/or steps
+        stepsCacheInitializer.reinitializeComposedSteps()
+        testsCacheInitializer.initialize()
+    }
+
 }

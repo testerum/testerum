@@ -255,9 +255,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val saveFrontendService = SaveFrontendService(
             frontendDirs = frontendDirs,
+            stepsCache = fileServiceModuleFactory.stepsCache,
+            stepsCacheInitializer = stepCachesInitializer,
             testsCache = fileServiceModuleFactory.testsCache,
             testsCacheInitializer = testsCacheInitializer,
-            stepsCache = fileServiceModuleFactory.stepsCache,
             resourceFileService = fileServiceModuleFactory.resourceFileService
     )
 
@@ -284,12 +285,16 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             stepsCache = fileServiceModuleFactory.stepsCache,
             composedStepUpdateCompatibilityFrontendService = composedStepUpdateCompatibilityFrontendService,
             warningService = fileServiceModuleFactory.warningService,
-            saveFrontendService = saveFrontendService
+            saveFrontendService = saveFrontendService,
+            stepsCacheInitializer = stepCachesInitializer,
+            testsCacheInitializer = testsCacheInitializer
     )
 
     private val resourcesFrontendService = ResourcesFrontendService(
             frontendDirs = frontendDirs,
-            resourceFileService = fileServiceModuleFactory.resourceFileService
+            resourceFileService = fileServiceModuleFactory.resourceFileService,
+            stepsCacheInitializer = stepCachesInitializer,
+            testsCacheInitializer = testsCacheInitializer
     )
 
     private val variablesFrontendService = VariablesFrontendService(
