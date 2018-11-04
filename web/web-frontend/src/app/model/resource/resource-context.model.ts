@@ -48,7 +48,7 @@ export class ResourceContext<T> implements Serializable<ResourceContext<T>> {
             if (this.bodyInstanceForDeserialization instanceof BasicResource) {
                 this.body = this.bodyInstanceForDeserialization.deserialize(bodyAsString);
             } else {
-                let bodyAsJson = JSON.parse(bodyAsString);
+                let bodyAsJson = JsonUtil.parseJson(bodyAsString);
                 this.body = this.bodyInstanceForDeserialization.deserialize(bodyAsJson);
             }
         } else {

@@ -5,6 +5,7 @@ import {RunnerTreeNodeModel} from "../tests-runner-tree/model/runner-tree-node.m
 import {TestsRunnerLogsService} from "./tests-runner-logs.service";
 import {Subscription} from "rxjs";
 import {TestsRunnerService} from "../tests-runner.service";
+import {RunnerRootTreeNodeModel} from "../tests-runner-tree/model/runner-root-tree-node.model";
 
 @Component({
     moduleId: module.id,
@@ -58,6 +59,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
         this.emptyLogsEventEmitterSubscription = this.testsRunnerLogsService.emptyLogsEventEmitter.subscribe(
             event => {
                 this.logsToDisplay.length = 0;
+                this.selectedRunnerTreeNode = null;
             }
         );
     }
@@ -101,6 +103,10 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
     }
 
     private isLogBelogingToRunnerTreeNode(log: TestsRunnerLogModel, runnerTreeNode: RunnerTreeNodeModel): boolean {
+        if (runnerTreeNode instanceof RunnerRootTreeNodeModel) {
+            return true;
+        }
+
         if(!runnerTreeNode.eventKey || !log.eventKey) {
             return false;
         }
