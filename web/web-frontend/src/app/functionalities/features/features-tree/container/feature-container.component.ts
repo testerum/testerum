@@ -89,8 +89,12 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
         )
     }
 
-    collapseNode() {
+    toggleNode() {
         this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
+    }
+
+    expandNode() {
+        this.model.jsonTreeNodeState.showChildren = true;
     }
 
     copyResource(event: any) {

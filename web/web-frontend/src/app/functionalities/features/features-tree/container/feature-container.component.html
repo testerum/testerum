@@ -4,8 +4,8 @@
     <div class="full-line"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false"
-         (click)="setSelected();$event.stopPropagation();"
-         (dblclick)="collapseNode()"
+         (click)="setSelected(); expandNode(); $event.stopPropagation();"
+         (dblclick)="toggleNode()"
 
          dnd-droppable [allowDrop]="allowDrop()" (onDropSuccess)="copyResource($event)">
 
