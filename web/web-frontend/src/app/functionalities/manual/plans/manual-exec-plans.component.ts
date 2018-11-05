@@ -1,25 +1,27 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NavigationEnd, Params, Router} from "@angular/router";
 import {filter, map} from "rxjs/operators";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'manual-exec-plans',
     templateUrl: 'manual-exec-plans.component.html'
 })
-export class ManualExecPlansComponent implements OnInit {
+export class ManualExecPlansComponent implements OnInit, OnDestroy {
 
     isTestSelected: boolean = true;
+
+    routerEventsSubscription: Subscription;
 
     constructor(private router: Router) {
     }
 
     ngOnInit() {
-        this.router.events.pipe(
+        this.routerEventsSubscription = this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(route => {
                 let leafRoute: any = this.router.routerState.snapshot.root;
                 while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
-
                 return leafRoute.params
             }),)
             .subscribe((params: Params) => {
@@ -31,6 +33,10 @@ export class ManualExecPlansComponent implements OnInit {
                     }
                 }
             );
+    }
+
+    ngOnDestroy(): void {
+        if (this.routerEventsSubscription) this.routerEventsSubscription.unsubscribe();
     }
 }
 
