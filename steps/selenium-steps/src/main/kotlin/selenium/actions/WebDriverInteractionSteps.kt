@@ -22,6 +22,7 @@ class WebDriverInteractionSteps {
             )
             elementLocator: String
     ) {
+        webDriverManager.waitForElementPresent(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")

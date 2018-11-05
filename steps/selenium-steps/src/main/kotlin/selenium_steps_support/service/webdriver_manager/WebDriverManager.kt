@@ -10,13 +10,16 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.WebDriverWait
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.webdriver_factory.chrome.ChromeWebDriverFactory
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTINGS_CATEGORY
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_AFTER_STEP_DELAY_MILLIS
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_WAIT_TIMEOUT_MILLIS
 import java.nio.file.Files
+import java.time.Duration
 import java.util.concurrent.TimeUnit
 import javax.annotation.concurrent.GuardedBy
 import javax.annotation.concurrent.ThreadSafe
@@ -24,6 +27,13 @@ import java.nio.file.Path as JavaPath
 
 @ThreadSafe
 @DeclareSettings([
+    (DeclareSetting(
+            key = SETTING_KEY_WAIT_TIMEOUT_MILLIS,
+            type = SettingType.NUMBER,
+            defaultValue = "5000",
+            description = "Maximum time duration in milliseconds for wait steps (e.g. wait until an element is present on the page).",
+            category = SETTINGS_CATEGORY
+    )),
     (DeclareSetting(
             key = SETTING_KEY_AFTER_STEP_DELAY_MILLIS,
             type = SettingType.NUMBER,
@@ -52,6 +62,8 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager)
         private val LOG: Logger = LoggerFactory.getLogger(WebDriverManager::class.java)
 
         internal const val SETTINGS_CATEGORY = "Selenium"
+
+        internal const val SETTING_KEY_WAIT_TIMEOUT_MILLIS = "testerum.selenium.waitTimeoutMillis"
 
         internal const val SETTING_KEY_AFTER_STEP_DELAY_MILLIS = "testerum.selenium.afterStepDelayMillis"
 
@@ -108,12 +120,19 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager)
     }
 
     fun waitUntil(block: (WebDriver) -> Boolean) {
+        val waitTimeoutMillis = runnerSettingsManager.getRequiredSetting(SETTING_KEY_WAIT_TIMEOUT_MILLIS).resolvedValue.toLong()
+
         executeWebDriverStep { driver ->
-            // todo: make the timeout a configurable setting
-            WebDriverWait(driver, 20)
+            WebDriverWait(driver, 0)
+                    .withTimeout(Duration.ofMillis(waitTimeoutMillis))
                     .until(block)
         }
+    }
 
+    fun waitForElementPresent(elementLocator: String) {
+        waitUntil { driver ->
+            ElementLocatorService.locateElement(driver, elementLocator) != null
+        }
     }
 
     fun destroyCurrentWebDriverIfNeeded() {

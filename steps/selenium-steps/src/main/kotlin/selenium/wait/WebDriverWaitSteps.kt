@@ -52,9 +52,7 @@ class WebDriverWaitSteps {
             )
             elementLocator: String
     ) {
-        webDriverManager.waitUntil { driver ->
-            ElementLocatorService.locateElement(driver, elementLocator) != null
-        }
+        webDriverManager.waitForElementPresent(elementLocator)
     }
 
     @When(
