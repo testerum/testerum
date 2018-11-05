@@ -99,6 +99,10 @@ fun JavaPath.isNotSameFileAs(other: JavaPath): Boolean = !this.isSameFileAs(othe
  */
 fun JavaPath.smartMoveTo(other: JavaPath,
                          createDestinationExistsException: () -> Exception) {
+    if (this.doesNotExist) {
+        return
+    }
+
     if (other.doesNotExist) {
         other.parent?.createDirectories()
         Files.move(this, other)
