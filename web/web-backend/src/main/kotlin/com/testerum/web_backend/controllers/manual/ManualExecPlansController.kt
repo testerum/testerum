@@ -36,11 +36,11 @@ class ManualExecPlansController {
     @ResponseBody
     fun getManualExecPlans(): ManualExecPlans {
         val manualExecPlan = ManualExecPlan(
-                Path.createInstance("/test/super"),
+                Path.createInstance("/signup"),
                 null,
                 "Acceptance",
                 "1.1.2",
-                "Super Execution Plan",
+                "",
                 ManualExecPlanStatus.IN_EXECUTION,
                 LocalDateTime.of(2018, 3, 21, 10, 0, 0),
                 null,
@@ -59,22 +59,22 @@ class ManualExecPlansController {
     @ResponseBody
     fun getManualExecPlan(@RequestParam(value = "planPath") planPath: String): ManualExecPlan {
        return ManualExecPlan(
-                Path.createInstance("/test/super"),
+                Path.createInstance("/signup"),
                 null,
                 "Acceptance",
                 "1.1.2",
-               "Super Execution Plan",
+               "",
                 ManualExecPlanStatus.IN_EXECUTION,
                 LocalDateTime.of(2018, 3, 21, 10, 0, 0),
                 null,
                listOf(
                        ManualTreeTest(
-                               Path.createInstance("/home/ui/Home Page.test"),
-                               "Home Page"
+                               Path.createInstance("/signup/Signup.test"),
+                               "Sign-up"
                        ),
                        ManualTreeTest(
-                               Path.createInstance("/not existing/path/Unknown Test.test"),
-                               "Unknown Test"
+                               Path.createInstance("/signup/SignupWithoutPassword.test"),
+                               "Sign-up without password"
                        )
                ),
                 5,
@@ -116,19 +116,20 @@ class ManualExecPlansController {
         LOG.debug("treeFilter: "+ statusTreeFilter.toString())
 
         val dir11 = mutableListOf<ManualTestsStatusTreeBase>()
-        dir11 += ManualTestsStatusTreeNode(Path.createInstance("/dir11_node1"), "dir11_node1", ManualTestStatus.PASSED);
-        dir11 += ManualTestsStatusTreeNode(Path.createInstance("/dir11_node2"), "dir11_node2", ManualTestStatus.PASSED);
-        dir11 += ManualTestsStatusTreeNode(Path.createInstance("/dir11_node3"), "dir11_node3", ManualTestStatus.PASSED);
+        dir11 += ManualTestsStatusTreeNode(Path.createInstance("/signup/Signup.test"), "Sign-up", ManualTestStatus.IN_PROGRESS);
+        dir11 += ManualTestsStatusTreeNode(Path.createInstance("/signup/SignupWithoutPassword.test"), "Sign-up without password", ManualTestStatus.PASSED);
+        dir11 += ManualTestsStatusTreeNode(Path.createInstance("/signup/SignupWithoutEmail.test"), "Sign-up without email", ManualTestStatus.NOT_EXECUTED);
 
         val dir12 = mutableListOf<ManualTestsStatusTreeBase>()
-        dir12 += ManualTestsStatusTreeNode(Path.createInstance("/dir12_node1"), "dir12_node1", ManualTestStatus.PASSED);
-        dir12 += ManualTestsStatusTreeNode(Path.createInstance("/dir12_node2"), "dir12_node2", ManualTestStatus.FAILED);
-        dir12 += ManualTestsStatusTreeNode(Path.createInstance("/dir12_node3"), "dir12_node3", ManualTestStatus.BLOCKED);
+        dir12 += ManualTestsStatusTreeNode(Path.createInstance("/dir12_node1"), "Create User", ManualTestStatus.PASSED);
+        dir12 += ManualTestsStatusTreeNode(Path.createInstance("/dir12_node1"), "Get User", ManualTestStatus.PASSED);
+        dir12 += ManualTestsStatusTreeNode(Path.createInstance("/dir12_node2"), "Update User", ManualTestStatus.FAILED);
+        dir12 += ManualTestsStatusTreeNode(Path.createInstance("/dir12_node3"), "Delete User", ManualTestStatus.BLOCKED);
 
         val rootChildren = mutableListOf<ManualTestsStatusTreeBase>()
-        rootChildren += ManualTestsStatusTreeContainer(Path.createInstance("/dir11"), "dir11", ManualTestStatus.PASSED, dir11)
-        rootChildren += ManualTestsStatusTreeContainer(Path.createInstance("/dir12"), "dir12", ManualTestStatus.FAILED, dir12)
-        rootChildren += ManualTestsStatusTreeNode(Path.createInstance("/dir1_node1"), "dir1_node1", ManualTestStatus.NOT_EXECUTED);
+        rootChildren += ManualTestsStatusTreeContainer(Path.createInstance("/signup"), "sign-up", ManualTestStatus.PASSED, dir11)
+        rootChildren += ManualTestsStatusTreeContainer(Path.createInstance("/users"), "users", ManualTestStatus.FAILED, dir12)
+        rootChildren += ManualTestsStatusTreeContainer(Path.createInstance("/authorization"), "Authorization", ManualTestStatus.NOT_EXECUTED, mutableListOf<ManualTestsStatusTreeBase>());
 
         return ManualTestsStatusTreeRoot(Path.EMPTY, "", ManualTestStatus.FAILED, rootChildren)
     }
@@ -141,65 +142,40 @@ class ManualExecPlansController {
         return ManualTest(
                 Path.createInstance(testPath),
                 Path.createInstance(testPath),
-                "Create Owner Test",
-                "This is a cool test",
-                listOf("acasa", "love", "super"),
-                listOf(ManualTestStepStatus.PASSED, ManualTestStepStatus.FAILED, ManualTestStepStatus.NOT_EXECUTED),
+                "Sign-up",
+                "This is a positive test for the sign-up functionality.",
+                listOf("sign-up", "user"),
+                listOf(
+                        ManualTestStepStatus.NOT_EXECUTED,
+                        ManualTestStepStatus.NOT_EXECUTED,
+                        ManualTestStepStatus.NOT_EXECUTED,
+                        ManualTestStepStatus.NOT_EXECUTED,
+                        ManualTestStepStatus.NOT_EXECUTED),
                 listOf(
                         StepCall(
                                 "1",
                                 ComposedStepDef(
-                                        Path.createInstance("acasa"),
-                                        Path.createInstance("acasa"),
+                                        Path.createInstance("/signup"),
+                                        Path.createInstance("/signup"),
                                         StepPhaseEnum.GIVEN,
                                         StepPattern(
                                                 listOf(
-                                                        TextStepPatternPart("is the first step")
+                                                        TextStepPatternPart("I'm on the sign-up page")
                                                 )
                                         ),
-                                        "fist step description",
+                                        "",
                                         listOf("tag1", "tag2"),
-                                        listOf(
-                                                StepCall(
-                                                        "bla",
-                                                        BasicStepDef(
-                                                                StepPhaseEnum.GIVEN,
-                                                                StepPattern(
-                                                                        listOf(
-                                                                                TextStepPatternPart("is the first sub-step of first step")
-                                                                        )
-                                                                ),
-                                                                className = "com.testerum.ClasaDePoveste",
-                                                                methodName = "zmeulCelRau"
-                                                        ),
-                                                        listOf()
-                                                ),
-                                                StepCall(
-                                                        "bla",
-                                                        BasicStepDef(
-                                                                StepPhaseEnum.GIVEN,
-                                                                StepPattern(
-                                                                        listOf(
-                                                                                TextStepPatternPart("is the second sub-step of first step")
-                                                                        )
-                                                                ),
-                                                                className = "com.testerum.ClasaDePoveste",
-                                                                methodName = "zmeulCelRau"
-                                                        ),
-                                                        listOf()
-                                                )
-                                        )
-
+                                        listOf()
                                 ),
                                 emptyList()
                         ),
                         StepCall(
-                                "bla",
+                                "2",
                                 BasicStepDef(
-                                        StepPhaseEnum.GIVEN,
+                                        StepPhaseEnum.WHEN,
                                         StepPattern(
                                                 listOf(
-                                                        TextStepPatternPart("is the second step")
+                                                        TextStepPatternPart("I write the email address 'test@testerum.com'")
                                                 )
                                         ),
                                         className = "com.testerum.ClasaDePoveste",
@@ -208,12 +184,40 @@ class ManualExecPlansController {
                                 listOf()
                         ),
                         StepCall(
-                                "bla",
+                                "3",
                                 BasicStepDef(
-                                        StepPhaseEnum.GIVEN,
+                                        StepPhaseEnum.WHEN,
                                         StepPattern(
                                                 listOf(
-                                                        TextStepPatternPart("is the third step")
+                                                        TextStepPatternPart("I write the password 'myPassword123'")
+                                                )
+                                        ),
+                                        className = "com.testerum.ClasaDePoveste",
+                                        methodName = "zmeulCelRau"
+                                ),
+                                listOf()
+                        ),
+                        StepCall(
+                                "4",
+                                BasicStepDef(
+                                        StepPhaseEnum.WHEN,
+                                        StepPattern(
+                                                listOf(
+                                                        TextStepPatternPart("I press the SignUp button")
+                                                )
+                                        ),
+                                        className = "com.testerum.ClasaDePoveste",
+                                        methodName = "zmeulCelRau"
+                                ),
+                                listOf()
+                        ),
+                        StepCall(
+                                "5",
+                                BasicStepDef(
+                                        StepPhaseEnum.THEN,
+                                        StepPattern(
+                                                listOf(
+                                                        TextStepPatternPart("A user is created in the database")
                                                 )
                                         ),
                                         className = "com.testerum.ClasaDePoveste",
@@ -222,8 +226,8 @@ class ManualExecPlansController {
                                 listOf()
                         )
                 ),
-                ManualTestStatus.FAILED,
-                "This is a comment, my comment!",
+                ManualTestStatus.NOT_EXECUTED,
+                "",
                 false
         )
     }
