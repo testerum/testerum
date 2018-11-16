@@ -1,46 +1,26 @@
 <split-panel-container>
     <div>
         <h1 *ngIf="isCreateAction">Create Manual Test Plan</h1>
-        <h1 *ngIf="!isCreateAction">Manual Test Plan <span class="path">{{model.environment}} {{model.applicationVersion}}</span></h1>
+        <h1 *ngIf="!isCreateAction">Manual Test Plan <span class="path">{{model.name}}</span></h1>
 
         <div class="page-body">
             <form #pageForm="ngForm" (ngSubmit)="saveAction()" class="form-horizontal">
 
-                <!-- ENVIRONMENT -->
+                <!-- NAME -->
                 <div class="my-line">
-                    <label class="my-label label-size col-form-label">Environment to test</label>
+                    <label class="my-label label-size col-form-label">Name</label>
 
                     <div class="my-value" *ngIf="!isEditMode">
-                        {{model.environment || ""}}
+                        {{model.name || ""}}
                     </div>
                     <div class="my-value" *ngIf="isEditMode">
                         <input required
-                               #environment="ngModel" [(ngModel)]="model.environment"
+                               #name="ngModel" [(ngModel)]="model.name"
                                type="text" class="form-control" name="environment">
-                        <div *ngIf="environment.errors && (environment.dirty || environment.touched)"
+                        <div *ngIf="name.errors && (name.dirty || name.touched)"
                              class="alert alert-danger">
-                            <div [hidden]="!environment.errors.required">
-                                Environment to test name is required
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- APPLICATION VERSION -->
-                <div class="my-line">
-                    <label class="my-label label-size col-form-label">Application version</label>
-
-                    <div class="my-value" *ngIf="!isEditMode">
-                        {{model.applicationVersion || ""}}
-                    </div>
-                    <div class="my-value" *ngIf="isEditMode">
-                        <input required
-                               #applicationVersion="ngModel" [(ngModel)]="model.applicationVersion"
-                               type="text" class="form-control" name="applicationVersion">
-                        <div *ngIf="applicationVersion.errors && (applicationVersion.dirty || applicationVersion.touched)"
-                             class="alert alert-danger">
-                            <div [hidden]="!applicationVersion.errors.required">
-                                Application Version to test is required
+                            <div [hidden]="!name.errors.required">
+                                Name is required
                             </div>
                         </div>
                     </div>

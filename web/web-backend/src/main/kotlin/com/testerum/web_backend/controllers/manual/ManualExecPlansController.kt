@@ -20,7 +20,12 @@ import com.testerum.model.step.StepCall
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.TextStepPatternPart
 import org.slf4j.LoggerFactory
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
 @RestController
@@ -38,14 +43,12 @@ class ManualExecPlansController {
         val manualExecPlan = ManualExecPlan(
                 Path.createInstance("/signup"),
                 null,
-                "Acceptance",
-                "1.1.2",
+                "Full regression (acceptance 1.1.2)",
                 "",
                 ManualExecPlanStatus.IN_EXECUTION,
                 LocalDateTime.of(2018, 3, 21, 10, 0, 0),
                 null,
                 emptyList(),
-                5,
                 2,
                 1,
                 1,
@@ -61,8 +64,7 @@ class ManualExecPlansController {
        return ManualExecPlan(
                 Path.createInstance("/signup"),
                 null,
-                "Acceptance",
-                "1.1.2",
+               "Full regression (acceptance 1.1.2)",
                "",
                 ManualExecPlanStatus.IN_EXECUTION,
                 LocalDateTime.of(2018, 3, 21, 10, 0, 0),
@@ -77,7 +79,6 @@ class ManualExecPlansController {
                                "Sign-up without password"
                        )
                ),
-                5,
                 2,
                 1,
                 1,

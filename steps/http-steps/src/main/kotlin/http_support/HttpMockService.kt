@@ -3,7 +3,14 @@ package http_support
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
-import com.github.tomakehurst.wiremock.client.WireMock.*
+import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.absent
+import com.github.tomakehurst.wiremock.client.WireMock.containing
+import com.github.tomakehurst.wiremock.client.WireMock.equalTo
+import com.github.tomakehurst.wiremock.client.WireMock.matching
+import com.github.tomakehurst.wiremock.client.WireMock.notMatching
+import com.github.tomakehurst.wiremock.client.WireMock.request
+import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import com.github.tomakehurst.wiremock.http.Fault
 import com.github.tomakehurst.wiremock.matching.MatchResult
@@ -18,6 +25,7 @@ import com.testerum.model.resources.http.mock.stub.enums.HttpMockRequestHeadersC
 import com.testerum.model.resources.http.mock.stub.enums.HttpMockRequestParamsCompareMode
 import com.testerum.model.resources.http.mock.stub.request.HttpMockRequest
 import javax.annotation.PreDestroy
+import kotlin.collections.set
 
 class HttpMockService(val jsonComparer: JsonComparer) {
 
@@ -90,7 +98,7 @@ class HttpMockService(val jsonComparer: JsonComparer) {
         if (mockResponse != null) {
             responseBuilder.withStatus(mockResponse.statusCode)
 
-            mockResponse.headers?.forEach {
+            mockResponse.headers.forEach {
                 responseBuilder.withHeader(it.key, it.value)
             }
 
