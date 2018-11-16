@@ -13,6 +13,7 @@ import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {BasicStepDef} from "../../../../../model/basic-step-def.model";
 import {SubStepsContainerModel} from "../../model/sub-steps-container.model";
+import {StepCallTreeUtil} from "../../util/step-call-tree.util";
 
 @Component({
     selector: 'step-call-container',
@@ -123,6 +124,14 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
                 newUndefinedStep.phase = newStepDef.phase;
                 newUndefinedStep.stepPattern = newStepDef.stepPattern;
                 this.model.stepCall.stepDef = newUndefinedStep;
+            }
+
+            let subStepContainer = StepCallTreeUtil.createSubStepsContainerWithChildren(newStepDef);
+            if(subStepContainer != null) {
+                subStepContainer.parentContainer = this.model;
+                this.model.children.push(
+                    subStepContainer
+                );
             }
 
             this.refreshStepCallArgsBasedOnStepDef();

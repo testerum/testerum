@@ -52,6 +52,7 @@ export class StepCall implements Serializable<StepCall> {
     }
 
     setWarnings(warnings: Warning[]) {
+        this.allWarnings = null;
         ArrayUtil.replaceElementsInArray(this.warnings, warnings);
     }
 
