@@ -1,7 +1,6 @@
 import {ManualExecPlanStatus} from "./enums/manual-exec-plan-status.enum";
 import {Serializable} from "../../../../model/infrastructure/serializable.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {TestModel} from "../../../../model/test/test.model";
 import {JsonUtil} from "../../../../utils/json.util";
 import {ManualTreeTest} from "./manual-tree-test.model";
 
@@ -9,8 +8,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
 
     path: Path;
     oldPath: Path;
-    environment: string;
-    applicationVersion: string;
+    name: string;
     description: string;
     status: ManualExecPlanStatus = ManualExecPlanStatus.IN_EXECUTION;
     createdDate: Date;
@@ -30,8 +28,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
     deserialize(input: Object): ManualExecPlan {
         this.path = Path.deserialize(input["path"]);
         this.oldPath = Path.deserialize(input["oldPath"]);
-        this.environment = input['environment'];
-        this.applicationVersion = input['applicationVersion'];
+        this.name = input['name'];
         this.description = input['description'];
         this.status = ManualExecPlanStatus.fromString(input['status']);
 
@@ -60,8 +57,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
             '{' +
             '"path":' + JsonUtil.serializeSerializable(this.path) +
             ',"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) +
-            ',"environment":' + JsonUtil.stringify(this.environment) +
-            ',"applicationVersion":' + JsonUtil.stringify(this.applicationVersion) +
+            ',"name":' + JsonUtil.stringify(this.name) +
             ',"description":' + JsonUtil.stringify(this.description) +
             ',"status":' + JsonUtil.stringify(this.status.toString());
 
