@@ -3,7 +3,7 @@
     <div class="full-line step-text-container"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false"
-         (click)="collapseNode();$event.stopPropagation();">
+         (click)="toggleNode();$event.stopPropagation();">
 
         <div>
             <step-text [class.error_squiggly]="hasWarnings() && !isManualStep()"

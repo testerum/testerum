@@ -14,6 +14,7 @@ import {ModelComponentMapping} from "../../../../../model/infrastructure/model-c
 import {BasicStepDef} from "../../../../../model/basic-step-def.model";
 import {SubStepsContainerModel} from "../../model/sub-steps-container.model";
 import {StepCallTreeUtil} from "../../util/step-call-tree.util";
+import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
 
 @Component({
     selector: 'step-call-container',
@@ -76,8 +77,13 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         this.stepTextComponent.showPhaseAsAnd = previewsStep.stepCall.stepDef.phase == this.model.stepCall.stepDef.phase;
     }
 
-    collapseNode() {
-        this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
+    toggleNode() {
+        this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren;
+        if(this.model.jsonTreeNodeState.showChildren) {
+            this.model.children.forEach( (child: JsonTreeContainer) => {
+                child.getNodeState().showChildren = true;
+            })
+        }
     }
 
     isEditMode(): boolean {
