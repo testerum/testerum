@@ -47,15 +47,7 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
             this.model = new RdbmsConnectionConfig();
         }
 
-        this.dbConnectionService.getDrivers().subscribe(
-            items => {
-                this.drivers = items;
-                if (this.model) {
-                    this.setSelectedDriver(this.model.driverName)
-                }
-                this.refresh();
-            }
-        );
+        this.loadDrivers();
 
         if (this.model && this.drivers) {
             this.setSelectedDriver(this.model.driverName);
@@ -64,7 +56,22 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
 
     refresh() {
         if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
+            this.loadDrivers();
             this.cd.detectChanges();
+        }
+    }
+
+    loadDrivers() {
+        if (this.drivers.length == 0) {
+            this.dbConnectionService.getDrivers().subscribe(
+                items => {
+                    this.drivers = items;
+                    if (this.model) {
+                        this.setSelectedDriver(this.model.driverName)
+                    }
+                    this.refresh();
+                }
+            );
         }
     }
 
@@ -152,10 +159,17 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
     }
 
     private setSelectedDriverInModel() {
-        this.model.driverName = this.selectedDriver.name;
-        this.model.driverJar = this.selectedDriver.driverJar;
-        this.model.driverClass = this.selectedDriver.driverClass;
-        this.model.driverUrlPattern = this.selectedDriver.urlPattern;
+        if(this.selectedDriver) {
+            this.model.driverName = this.selectedDriver.name;
+            this.model.driverJar = this.selectedDriver.driverJar;
+            this.model.driverClass = this.selectedDriver.driverClass;
+            this.model.driverUrlPattern = this.selectedDriver.urlPattern;
+        } else {
+            this.model.driverName = null;
+            this.model.driverJar = null;
+            this.model.driverClass = null;
+            this.model.driverUrlPattern = null;
+        }
     }
 
     isFormValid(): boolean {

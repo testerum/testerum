@@ -86,6 +86,7 @@
                     #rdbmsNgModel="ngModel" [(ngModel)]="selectedDriver" name="rdbms"
                     (change)="setSelectedDriverInModel()"
                     required>
+                <option [value]=""></option>
                 <option *ngFor="let driver of drivers" [ngValue]="driver">
                     {{driver.name}}
                 </option>
