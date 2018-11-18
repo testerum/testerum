@@ -7,6 +7,8 @@ import {FileDirectoryChooserContainerComponent} from "./container/file-directory
 import {JsonTreeService} from "../../json-tree/json-tree.service";
 import {JsonTreeNodeEventModel} from "../../json-tree/event/selected-json-tree-node-event.model";
 import {Observable, Subject} from "rxjs";
+import {JsonTreePathContainer} from "../../json-tree/model/path/json-tree-path-container.model";
+import {JsonTreeNode} from "../../json-tree/model/json-tree-node.model";
 
 @Injectable()
 export class FileDirectoryChooserService {
@@ -41,10 +43,16 @@ export class FileDirectoryChooserService {
 
                 for (let child of fileDirNode.getChildren()) {
                     child.parent = fileDirectoryChooserJsonTreeModel;
+
                     fileDirectoryChooserJsonTreeModel.children.push(
                         child
                     )
                 }
+
+                fileDirectoryChooserJsonTreeModel.getChildren().forEach(child => {
+                    child.getNodeState().showChildren = true;
+                });
+
                 responseSubject.next(
                     fileDirectoryChooserJsonTreeModel
                 )
