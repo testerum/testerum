@@ -13,7 +13,9 @@ import org.junit.jupiter.api.Test
 
 class FileTestDefParserTest {
 
-    private val parser: ParserExecuter<FileTestDef> = ParserExecuter(FileTestDefParserFactory.testDef())
+    private val parser: ParserExecuter<FileTestDef> = ParserExecuter(
+            FileTestDefParserFactory.testDef()
+    )
 
     @Test
     fun test() {

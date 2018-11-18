@@ -52,7 +52,7 @@ export class ManualExecPlanEditorComponent extends AbstractComponentCanDeactivat
                         manualTestsRunner.failedTests,
                         manualTestsRunner.blockedTests,
                         manualTestsRunner.notApplicableTests,
-                        manualTestsRunner.notExecutedTests
+                        manualTestsRunner.notExecutedOrInProgressTests
                     ],
                     backgroundColor: ["#5cb85c", "#FF6384", "#FFCE56", "#36A2EB", "#c0bebc"],
                     hoverBackgroundColor: ["#5cb85c", "#FF6384", "#FFCE56", "#36A2EB", "#c0bebc"]
@@ -78,7 +78,7 @@ export class ManualExecPlanEditorComponent extends AbstractComponentCanDeactivat
         this.pieChartData.datasets[0].data[1] = this.model.failedTests;
         this.pieChartData.datasets[0].data[2] = this.model.blockedTests;
         this.pieChartData.datasets[0].data[3] = this.model.notApplicableTests;
-        this.pieChartData.datasets[0].data[4] = this.model.notExecutedTests
+        this.pieChartData.datasets[0].data[4] = this.model.notExecutedOrInProgressTests
     }
 
     canDeactivate(): boolean {

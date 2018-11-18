@@ -16,5 +16,4 @@ data class ManualTest @JsonCreator constructor(@JsonProperty("path") val path: P
                                                @JsonProperty("stepCalls") val stepCalls: List<StepCall> = emptyList(),
                                                @JsonProperty("status") val status: ManualTestStatus,
                                                @JsonProperty("comments") val comments: String?,
-                                               @JsonProperty("isTestPlanFinalized") val isTestPlanFinalized: Boolean?
-                                               )
+                                               @JsonProperty("isFinalized") val isFinalized: Boolean?)

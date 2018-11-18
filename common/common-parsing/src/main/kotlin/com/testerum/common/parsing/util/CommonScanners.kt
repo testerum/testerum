@@ -16,6 +16,8 @@ object CommonScanners {
     fun atLeastOneNewLine(): Parser<MutableList<Void>> = newLine().many1()
     private fun newLine(): Parser<Void> = NEWLINE.toScanner("newline")
 
+    fun notNewLine(): Parser<String> = Patterns.many(CharPredicates.notAmong("\r\n")).toScanner("notNewLine").source()
+
     fun escapeSequence(): Parser<String> {
         return or(
                 escapeFor("<<"),

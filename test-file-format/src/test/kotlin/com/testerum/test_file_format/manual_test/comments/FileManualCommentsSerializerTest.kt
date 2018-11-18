@@ -1,13 +1,13 @@
-package com.testerum.test_file_format.common.description
+package com.testerum.test_file_format.manual_test.comments
 
 import com.testerum.test_file_format.test_util.SerializerTestRunner
 import org.junit.jupiter.api.Test
 
-class FileDescriptionSerializerTest {
+class FileManualCommentsSerializerTest {
 
     private val testRunner = SerializerTestRunner(
-            FileDescriptionSerializer,
-            FileDescriptionParserFactory.description()
+            FileManualCommentsSerializer,
+            FileManualCommentsParserFactory.manualTestComments()
     )
 
     @Test
@@ -15,7 +15,7 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = "",
                 indentLevel = 0,
-                expected = """|description = <<>>
+                expected = """|comments = <<>>
                               |""".trimMargin()
         )
     }
@@ -25,7 +25,7 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = "a simple description",
                 indentLevel = 0,
-                expected = """|description = <<a simple description>>
+                expected = """|comments = <<a simple description>>
                               |""".trimMargin()
         )
     }
@@ -37,7 +37,7 @@ class FileDescriptionSerializerTest {
                                |Second line
                                |Another line""".trimMargin(),
                 indentLevel = 0,
-                expected = """ |description = <<
+                expected = """ |comments = <<
                                |    First line
                                |    Second line
                                |    Another line
@@ -59,7 +59,7 @@ class FileDescriptionSerializerTest {
                                |        2.1.2
                                |Another line""".trimMargin(),
                 indentLevel = 0,
-                expected = """ |description = <<
+                expected = """ |comments = <<
                                |    First line
                                |        1.1
                                |        1.2
@@ -79,7 +79,7 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = """2 \ 1""",
                 indentLevel = 0,
-                expected = """|description = <<2 \ 1>>
+                expected = """|comments = <<2 \ 1>>
                               |""".trimMargin()
         )
     }
@@ -89,7 +89,7 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = """2 > 1""",
                 indentLevel = 0,
-                expected = """|description = <<2 > 1>>
+                expected = """|comments = <<2 > 1>>
                               |""".trimMargin()
         )
     }
@@ -99,7 +99,7 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = """2 >> 1""",
                 indentLevel = 0,
-                expected = """|description = <<2 \>> 1>>
+                expected = """|comments = <<2 \>> 1>>
                               |""".trimMargin()
         )
     }
@@ -109,7 +109,7 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = """2 \>> 1""",
                 indentLevel = 0,
-                expected = """|description = <<2 \\>> 1>>
+                expected = """|comments = <<2 \\>> 1>>
                               |""".trimMargin()
         )
     }
@@ -119,7 +119,7 @@ class FileDescriptionSerializerTest {
         testRunner.execute(
                 original = """5000 >> 200 >> 1""",
                 indentLevel = 0,
-                expected = """|description = <<5000 \>> 200 \>> 1>>
+                expected = """|comments = <<5000 \>> 200 \>> 1>>
                               |""".trimMargin()
         )
     }
@@ -131,7 +131,7 @@ class FileDescriptionSerializerTest {
                                |2 \ 1
                                |Another line""".trimMargin(),
                 indentLevel = 0,
-                expected = """ |description = <<
+                expected = """ |comments = <<
                                |    First line
                                |    2 \ 1
                                |    Another line
@@ -148,7 +148,7 @@ class FileDescriptionSerializerTest {
                                |2 > 1
                                |Another line""".trimMargin(),
                 indentLevel = 0,
-                expected = """ |description = <<
+                expected = """ |comments = <<
                                |    First line
                                |    2 > 1
                                |    Another line
@@ -165,7 +165,7 @@ class FileDescriptionSerializerTest {
                                |2 >> 1
                                |Another line""".trimMargin(),
                 indentLevel = 0,
-                expected = """ |description = <<
+                expected = """ |comments = <<
                                |    First line
                                |    2 \>> 1
                                |    Another line
@@ -182,7 +182,7 @@ class FileDescriptionSerializerTest {
                                |2 \>> 1
                                |Another line""".trimMargin(),
                 indentLevel = 0,
-                expected = """ |description = <<
+                expected = """ |comments = <<
                                |    First line
                                |    2 \\>> 1
                                |    Another line
@@ -200,7 +200,7 @@ class FileDescriptionSerializerTest {
                                |200 >> 1
                                |Another line""".trimMargin(),
                 indentLevel = 0,
-                expected = """ |description = <<
+                expected = """ |comments = <<
                                |    First line
                                |    5000 \>> 200
                                |    200 \>> 1

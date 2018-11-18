@@ -22,7 +22,7 @@ data class ManualExecPlan @JsonCreator constructor(
         @JsonProperty("failedTests") val failedTests: Int = 0,
         @JsonProperty("blockedTests") val blockedTests: Int = 0,
         @JsonProperty("notApplicableTests") val notApplicableTests: Int = 0,
-        @JsonProperty("notExecutedOrInProgressTests") val notExecutedOrInProgressTests: Int = 0 // todo: rename in fronted also
+        @JsonProperty("notExecutedOrInProgressTests") val notExecutedOrInProgressTests: Int = 0
 ) {
 
     @get:JsonProperty("totalTests")

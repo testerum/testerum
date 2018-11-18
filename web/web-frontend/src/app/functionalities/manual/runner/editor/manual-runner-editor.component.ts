@@ -2,7 +2,7 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {ManualTestStatus} from "../../plans/model/enums/manual-test-status.enum";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
 import {ManualTest} from "../../plans/model/manual-test.model";
 import {ManualTestStepStatus} from "../../plans/model/enums/manual-test-step-status.enum";
@@ -10,10 +10,6 @@ import {UrlService} from "../../../../service/url.service";
 import {MarkdownEditorComponent} from "../../../../generic/components/markdown-editor/markdown-editor.component";
 import {StepCall} from "../../../../model/step-call.model";
 import {ManualTestsStatusTreeComponent} from "../../common/manual-tests-status-tree/manual-tests-status-tree.component";
-import {filter, map} from "rxjs/operators";
-import {AbstractComponentCanDeactivate} from "../../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
-import {UrlUtil} from "../../../../utils/url.util";
-import {ManualTreeStatusFilterModel} from "../../common/manual-tests-status-tree/model/filter/manual-tree-status-filter.model";
 
 @Component({
     selector: 'manual-runner-editor',
@@ -115,13 +111,15 @@ export class ManualRunnerEditorComponent implements OnInit {
         }
         return ManualTestStatus.PASSED;
     }
+
     onTestChange() {
         this.hasStateChanged = true;
     }
 
-    isTestSuiteFinalized(): boolean {
-        return this.model.isTestPlanFinalized;
+    isFinalized(): boolean {
+        return this.model.isFinalized;
     }
+
     getTestPathDirectoryAsString(): string {
         return this.testPath ? this.testPath.toDirectoryString() : ""
     }

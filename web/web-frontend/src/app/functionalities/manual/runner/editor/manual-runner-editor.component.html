@@ -64,7 +64,7 @@
                             <!-- STATUS -->
                             <td>
                                 <manual-runner-step-status [(stepStatus)]="model.stepsStatus[index]"
-                                                           [readonly]="isTestSuiteFinalized()"
+                                                           [readonly]="isFinalized()"
                                                            (stepStatusChange)="stepStatusChanged($event, index)"></manual-runner-step-status>
                             </td>
                         </tr>
@@ -77,7 +77,7 @@
                     <div class="my-value">
 
                         <p-dropdown name="testStatus"
-                                    [readonly]="isTestSuiteFinalized()"
+                                    [readonly]="isFinalized()"
                                     [options]="testStatusDropdownOptions"
                                     [(ngModel)]="model.status"
                                     [style]="{'width':'150px'}"
@@ -134,13 +134,13 @@
                     <div class="my-value">
                         <markdown-editor #commentMarkdownEditor
                                          [options]="markdownEditorOptions"
-                                         [editMode]="!isTestSuiteFinalized()"
+                                         [editMode]="!isFinalized()"
                                          class="markdown-editor-dynamic-size"></markdown-editor>
                     </div>
                 </div>
 
                 <!-- ACTION BUTTONS -->
-                <div class="panel-footer-button" *ngIf="!isTestSuiteFinalized()">
+                <div class="panel-footer-button" *ngIf="!isFinalized()">
                     <ng-container *ngIf="!hasStateChanged">
                         <button (click)="showNextUnExecutedTest();" class="btn btn-primary">Next</button>
 

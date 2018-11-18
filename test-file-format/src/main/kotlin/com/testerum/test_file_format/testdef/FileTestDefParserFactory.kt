@@ -5,8 +5,14 @@ import com.testerum.common.parsing.util.CommonPatterns.NOT_NEWLINE
 import com.testerum.common.parsing.util.CommonScanners.optionalWhitespaceOrNewLines
 import com.testerum.test_file_format.common.description.FileDescriptionParserFactory.description
 import com.testerum.test_file_format.common.step_call.FileStepCall
+import com.testerum.test_file_format.common.step_call.FileStepCallParserFactory.manualStepCall
 import com.testerum.test_file_format.common.step_call.FileStepCallParserFactory.stepCall
 import com.testerum.test_file_format.common.tags.FileTagsParserFactory.tags
+import com.testerum.test_file_format.manual_step_call.FileManualStepCall
+import com.testerum.test_file_format.manual_test.FileManualTestDef
+import com.testerum.test_file_format.manual_test.comments.FileManualCommentsParserFactory
+import com.testerum.test_file_format.manual_test.status.FileManualTestStatus
+import com.testerum.test_file_format.manual_test.status.FileManualTestStatusParserFactory
 import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
 import com.testerum.test_file_format.testdef.properties.FileTestDefPropertiesParserFactory.testProperties
 import org.jparsec.Parser
@@ -27,6 +33,27 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
                 testTags(),
                 testStepCalls()
         ) { _, testName, properties, description, tags, steps -> FileTestDef(testName, properties, description, tags, steps) }
+    }
+
+    fun manualTestDef(): Parser<FileManualTestDef> {
+        return sequence(
+                testDefKeyword(),
+                testName(),
+                testDescription(),
+                testTags(),
+                manualTestStepCalls(),
+                manualTestStatus(),
+                manualTestComments()
+        ) { _, testName, description, tags, steps, testStatus, comments ->
+            FileManualTestDef(
+                    name = testName,
+                    description = description,
+                    tags = tags,
+                    steps = steps,
+                    status = testStatus,
+                    comments = comments
+            )
+        }
     }
 
     private fun testDefKeyword(): Parser<Void> {
@@ -73,6 +100,30 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
                 stepCall(),
                 optionalWhitespaceOrNewLines()
         ) { _, step, _ -> step }.many()
+    }
+
+    private fun manualTestStepCalls(): Parser<List<FileManualStepCall>> {
+        return sequence(
+                optionalWhitespaceOrNewLines(),
+                manualStepCall(),
+                optionalWhitespaceOrNewLines()
+        ) { _, step, _ -> step }.many()
+    }
+
+    private fun manualTestStatus(): Parser<FileManualTestStatus> {
+        return sequence(
+                optionalWhitespaceOrNewLines(),
+                FileManualTestStatusParserFactory.manualTestStatus(),
+                optionalWhitespaceOrNewLines()
+        ) {_, testStatus, _ -> testStatus }
+    }
+
+    private fun manualTestComments(): Parser<String?> {
+        return sequence(
+                optionalWhitespaceOrNewLines(),
+                FileManualCommentsParserFactory.manualTestComments().asOptional(),
+                optionalWhitespaceOrNewLines()
+        ) {_, comments, _ -> comments.orElse(null) }
     }
 
 }

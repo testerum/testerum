@@ -22,7 +22,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
     failedTests: number = 0;
     blockedTests: number = 0;
     notApplicableTests: number = 0;
-    notExecutedTests: number = 0;
+    notExecutedOrInProgressTests: number = 0;
 
 
     deserialize(input: Object): ManualExecPlan {
@@ -47,7 +47,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
         this.failedTests = input['failedTests'];
         this.blockedTests = input['blockedTests'];
         this.notApplicableTests = input['notApplicableTests'];
-        this.notExecutedTests = input['notExecutedTests'];
+        this.notExecutedOrInProgressTests = input['notExecutedOrInProgressTests'];
 
         return this;
     }

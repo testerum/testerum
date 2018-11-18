@@ -31,7 +31,7 @@ export class ManualExecPlanOverviewComponent implements OnInit {
         ${this.model.failedTests} Failed
         ${this.model.blockedTests} Blocked
         ${this.model.notApplicableTests} Not Applicable
-        ${this.model.notExecutedTests} Not Executed`
+        ${this.model.notExecutedOrInProgressTests} Not Executed`
     }
 
     intNumber(amount: number): number {
