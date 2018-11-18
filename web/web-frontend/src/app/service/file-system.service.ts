@@ -41,19 +41,28 @@ export class FileSystemService {
             fileSystemDirectory.hasChildrenDirectories
         );
 
-        for (let childDirectory of fileSystemDirectory.childrenDirectories) {
-            result.getChildren().push(
-                new FileDirectoryChooserContainerModel(
-                    result,
-                    childDirectory.name,
-                    childDirectory.absoluteJavaPath,
-                    childDirectory.canCreateChild,
-                    childDirectory.hasChildrenDirectories
-                )
-            )
-        }
+        this.mapChildrenFileDirectoryToChooserModel(fileSystemDirectory.childrenDirectories, result);
 
         return result;
+    }
+
+    private static mapChildrenFileDirectoryToChooserModel(childrenDirectoryToMap: Array<FileSystemDirectory>, parent: FileDirectoryChooserContainerModel) {
+
+        for (let childDirectory of childrenDirectoryToMap) {
+            let fileDirectoryChooserContainerModel = new FileDirectoryChooserContainerModel(
+                parent,
+                childDirectory.name,
+                childDirectory.absoluteJavaPath,
+                childDirectory.canCreateChild,
+                childDirectory.hasChildrenDirectories
+            );
+
+            parent.getChildren().push(
+                fileDirectoryChooserContainerModel
+            );
+
+            this.mapChildrenFileDirectoryToChooserModel(childDirectory.childrenDirectories, fileDirectoryChooserContainerModel);
+        }
     }
 
     createFileSystemDirectory(absoluteJavaPathOfParentDir: string, newDirName: string): Observable<FileSystemDirectory> {
