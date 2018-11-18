@@ -73,14 +73,7 @@ class FileSystemFrontendService {
     }
 
     private fun getRootDirectories(): List<FileSystemDirectory> {
-        return FileSystems.getDefault().rootDirectories.map { rootDir ->
-            FileSystemDirectory(
-                    name = rootDir.toString(),
-                    absoluteJavaPath = rootDir.toAbsolutePath().normalize().toString(),
-                    canCreateChild = rootDir.canCreateChild,
-                    hasChildrenDirectories = rootDir.hasSubDirectories
-            )
-        }
+        return FileSystems.getDefault().rootDirectories.map { getSub(it) }
     }
 
     private fun getSub(dir: JavaPath): FileSystemDirectory {
