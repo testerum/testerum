@@ -74,7 +74,7 @@ val JavaPath.hasSubDirectories: Boolean
                     path.isDirectory
                 }
             }
-        } catch (e: FileSystemException) {
+        } catch (e: Exception) {
             return false
         }
     }
