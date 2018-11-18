@@ -4,7 +4,6 @@ package com.testerum.common_kotlin
 
 import java.io.IOException
 import java.nio.charset.Charset
-import java.nio.file.AccessDeniedException
 import java.nio.file.FileVisitResult
 import java.nio.file.FileVisitor
 import java.nio.file.Files
@@ -75,7 +74,7 @@ val JavaPath.hasSubDirectories: Boolean
                     path.isDirectory
                 }
             }
-        } catch (e: AccessDeniedException) {
+        } catch (e: Exception) {
             return false
         }
     }
