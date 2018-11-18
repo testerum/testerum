@@ -3,7 +3,7 @@ import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {ManualTestStatus} from "../../plans/model/enums/manual-test-status.enum";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
+import {ManualTestPlansService} from "../../service/manual-test-plans.service";
 import {ManualTest} from "../../plans/model/manual-test.model";
 import {ManualTestStepStatus} from "../../plans/model/enums/manual-test-step-status.enum";
 import {UrlService} from "../../../../service/url.service";
@@ -47,7 +47,7 @@ export class ManualRunnerEditorComponent implements OnInit {
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private manualExecPlansService: ManualExecPlansService,
+                private manualExecPlansService: ManualTestPlansService,
                 private urlService: UrlService) {
     }
 

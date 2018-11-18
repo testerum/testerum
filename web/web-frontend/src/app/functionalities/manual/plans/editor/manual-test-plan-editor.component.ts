@@ -1,23 +1,23 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {ManualExecPlan} from "../model/manual-exec-plan.model";
-import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
+import {ManualTestPlan} from "../model/manual-test-plan.model";
+import {ManualTestPlansService} from "../../service/manual-test-plans.service";
 import {UrlService} from "../../../../service/url.service";
 import {MarkdownEditorComponent} from "../../../../generic/components/markdown-editor/markdown-editor.component";
 import {AreYouSureModalService} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
-import {ManualExecPlanStatus} from "../model/enums/manual-exec-plan-status.enum";
+import {ManualTestPlanStatus} from "../model/enums/manual-test-plan-status.enum";
 import {AbstractComponentCanDeactivate} from "../../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 
 @Component({
-    selector: 'manual-exec-plan-editor',
-    templateUrl: './manual-exec-plan-editor.component.html',
-    styleUrls: ['./manual-exec-plan-editor.component.scss'],
+    selector: 'manual-test-plan-editor',
+    templateUrl: './manual-test-plan-editor.component.html',
+    styleUrls: ['./manual-test-plan-editor.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ManualExecPlanEditorComponent extends AbstractComponentCanDeactivate implements OnInit {
+export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivate implements OnInit {
 
-    model: ManualExecPlan = new ManualExecPlan();
+    model: ManualTestPlan = new ManualTestPlan();
 
     isEditMode: boolean = false;
     isFinalized: boolean = false;
@@ -34,7 +34,7 @@ export class ManualExecPlanEditorComponent extends AbstractComponentCanDeactivat
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
-                private manualExecPlansService: ManualExecPlansService,
+                private manualExecPlansService: ManualTestPlansService,
                 private areYouSureModalService: AreYouSureModalService) {
         super();
     }
@@ -63,14 +63,14 @@ export class ManualExecPlanEditorComponent extends AbstractComponentCanDeactivat
         });
     }
 
-    private initialize(manualTestsRunner: ManualExecPlan) {
+    private initialize(manualTestsRunner: ManualTestPlan) {
         this.model = manualTestsRunner;
         if (this.descriptionMarkdownEditor) {
             this.descriptionMarkdownEditor.setValue(manualTestsRunner.description);
         }
 
         this.setEditMode(this.model.path.isEmpty());
-        this.isFinalized = manualTestsRunner.status == ManualExecPlanStatus.FINISHED;
+        this.isFinalized = manualTestsRunner.status == ManualTestPlanStatus.FINISHED;
 
         this.isCreateAction = this.model.path.isEmpty();
 
@@ -106,7 +106,7 @@ export class ManualExecPlanEditorComponent extends AbstractComponentCanDeactivat
             this.urlService.navigateToManualExecPlanCreate();
         } else {
             this.manualExecPlansService.getManualExecPlan(this.model.path).subscribe(
-                (result: ManualExecPlan) => {
+                (result: ManualTestPlan) => {
                     this.initialize(result);
                     this.setEditMode(false);
                 }
@@ -136,7 +136,7 @@ export class ManualExecPlanEditorComponent extends AbstractComponentCanDeactivat
                 if (event == AreYouSureModalEnum.OK) {
                     this.manualExecPlansService
                         .finalizeManualExecPlan(this.model.path)
-                        .subscribe((savedModel: ManualExecPlan) => this.afterSaveHandler(savedModel));
+                        .subscribe((savedModel: ManualTestPlan) => this.afterSaveHandler(savedModel));
                 }
             }
         );
@@ -145,16 +145,16 @@ export class ManualExecPlanEditorComponent extends AbstractComponentCanDeactivat
     bringBackInExecution(): void {
         this.manualExecPlansService
             .bringBackInExecution(this.model.path)
-            .subscribe((savedModel: ManualExecPlan) => this.afterSaveHandler(savedModel));
+            .subscribe((savedModel: ManualTestPlan) => this.afterSaveHandler(savedModel));
     }
 
     saveAction(): void {
         this.manualExecPlansService
             .save(this.model)
-            .subscribe((savedModel: ManualExecPlan) => this.afterSaveHandler(savedModel));
+            .subscribe((savedModel: ManualTestPlan) => this.afterSaveHandler(savedModel));
     }
 
-    private afterSaveHandler(savedManualTestRunner: ManualExecPlan) {
+    private afterSaveHandler(savedManualTestRunner: ManualTestPlan) {
         this.initialize(savedManualTestRunner);
         this.setEditMode(false);
         this.urlService.navigateToManualExecPlanEditor(savedManualTestRunner.path);

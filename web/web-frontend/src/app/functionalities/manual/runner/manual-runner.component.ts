@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot} from "@angular/router";
-import {ManualExecPlansService} from "../service/manual-exec-plans.service";
+import {ActivatedRoute} from "@angular/router";
+import {ManualTestPlansService} from "../service/manual-test-plans.service";
 import {Path} from "../../../model/infrastructure/path/path.model";
-import {ManualExecPlan} from "../plans/model/manual-exec-plan.model";
+import {ManualTestPlan} from "../plans/model/manual-test-plan.model";
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 import {ManualRunnerEditorComponent} from "./editor/manual-runner-editor.component";
 
@@ -16,10 +16,10 @@ export class ManualRunnerComponent extends AbstractComponentCanDeactivate implem
     @ViewChild(ManualRunnerEditorComponent) manualRunnerEditorComponent: ManualRunnerEditorComponent;
 
     planPath: Path;
-    manualExecPlan: ManualExecPlan;
+    manualExecPlan: ManualTestPlan;
 
     constructor(private route: ActivatedRoute,
-                private manualExecPlansService: ManualExecPlansService) {
+                private manualExecPlansService: ManualTestPlansService) {
         super();
     }
 
@@ -27,7 +27,7 @@ export class ManualRunnerComponent extends AbstractComponentCanDeactivate implem
         let runnerPlanPathAsString = this.route.snapshot.params["planPath"];
         this.planPath = Path.createInstance(runnerPlanPathAsString);
 
-        this.manualExecPlansService.getManualExecPlan(Path.createInstance(runnerPlanPathAsString)).subscribe( (manualExecPlan: ManualExecPlan) => {
+        this.manualExecPlansService.getManualExecPlan(Path.createInstance(runnerPlanPathAsString)).subscribe( (manualExecPlan: ManualTestPlan) => {
             this.manualExecPlan = manualExecPlan;
         });
     }

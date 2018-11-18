@@ -3,16 +3,16 @@ package com.testerum.model.manual
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.manual.runner.enums.ManualExecPlanStatus
+import com.testerum.model.manual.runner.enums.ManualTestPlanStatus
 import java.time.LocalDateTime
 
-data class ManualExecPlan @JsonCreator constructor(
+data class ManualTestPlan @JsonCreator constructor(
         @JsonProperty("path") val path: Path,
         @JsonProperty("oldPath") val oldPath: Path? = path,
         @JsonProperty("name") val name: String?,
 
         @JsonProperty("description") val description: String?,
-        @JsonProperty("status") val status: ManualExecPlanStatus = ManualExecPlanStatus.IN_EXECUTION,
+        @JsonProperty("status") val status: ManualTestPlanStatus = ManualTestPlanStatus.IN_EXECUTION,
         @JsonProperty("createdDate") val createdDate: LocalDateTime?,
         @JsonProperty("finalizedDate") val finalizedDate: LocalDateTime?,
 

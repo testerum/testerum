@@ -1,16 +1,16 @@
-import {ManualExecPlanStatus} from "./enums/manual-exec-plan-status.enum";
+import {ManualTestPlanStatus} from "./enums/manual-test-plan-status.enum";
 import {Serializable} from "../../../../model/infrastructure/serializable.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {JsonUtil} from "../../../../utils/json.util";
 import {ManualTreeTest} from "./manual-tree-test.model";
 
-export class ManualExecPlan implements Serializable<ManualExecPlan>{
+export class ManualTestPlan implements Serializable<ManualTestPlan>{
 
     path: Path;
     oldPath: Path;
     name: string;
     description: string;
-    status: ManualExecPlanStatus = ManualExecPlanStatus.IN_EXECUTION;
+    status: ManualTestPlanStatus = ManualTestPlanStatus.IN_EXECUTION;
     createdDate: Date;
     finalizedDate: Date;
 
@@ -25,12 +25,12 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
     notExecutedOrInProgressTests: number = 0;
 
 
-    deserialize(input: Object): ManualExecPlan {
+    deserialize(input: Object): ManualTestPlan {
         this.path = Path.deserialize(input["path"]);
         this.oldPath = Path.deserialize(input["oldPath"]);
         this.name = input['name'];
         this.description = input['description'];
-        this.status = ManualExecPlanStatus.fromString(input['status']);
+        this.status = ManualTestPlanStatus.fromString(input['status']);
 
         if (input['createdDate']) {
             this.createdDate = new Date(input['createdDate']);

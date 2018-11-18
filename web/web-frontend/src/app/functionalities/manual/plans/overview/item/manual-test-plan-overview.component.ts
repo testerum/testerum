@@ -1,19 +1,19 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ManualExecPlan} from "../../model/manual-exec-plan.model";
+import {ManualTestPlan} from "../../model/manual-test-plan.model";
 import {UrlService} from "../../../../../service/url.service";
-import {ManualExecPlanStatus} from "../../model/enums/manual-exec-plan-status.enum";
+import {ManualTestPlanStatus} from "../../model/enums/manual-test-plan-status.enum";
 
 @Component({
-    selector: 'manual-exec-plan-overview',
-    templateUrl: './manual-exec-plan-overview.component.html',
-    styleUrls: ['./manual-exec-plan-overview.component.scss']
+    selector: 'manual-test-plan-overview',
+    templateUrl: './manual-test-plan-overview.component.html',
+    styleUrls: ['./manual-test-plan-overview.component.scss']
 })
-export class ManualExecPlanOverviewComponent implements OnInit {
+export class ManualTestPlanOverviewComponent implements OnInit {
 
-    @Input() model: ManualExecPlan;
+    @Input() model: ManualTestPlan;
     @Input() executionMode: boolean = false;
 
-    ManualExecPlanStatus = ManualExecPlanStatus;
+    ManualExecPlanStatus = ManualTestPlanStatus;
 
     constructor(private urlService: UrlService) {
     }

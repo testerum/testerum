@@ -17,12 +17,12 @@ import {CardModule} from "primeng/card";
 import {PanelModule} from "primeng/panel";
 import {ChartModule} from "primeng/chart";
 import {GenericModule} from "../../generic/generic.module";
-import {ManualExecPlansComponent} from "./plans/manual-exec-plans.component";
-import {ManualExecPlansOverviewComponent} from "./plans/overview/manual-exec-plans-overview.component";
-import {ManualExecPlansService} from "./service/manual-exec-plans.service";
-import {ManualExecPlanOverviewComponent} from './plans/overview/item/manual-exec-plan-overview.component';
-import {ManualExecPlanEditorComponent} from './plans/editor/manual-exec-plan-editor.component';
-import {ManualExecPlanEditorResolver} from "./plans/editor/manual-exec-plan-editor.resolver";
+import {ManualTestPlansComponent} from "./plans/manual-test-plans.component";
+import {ManualTestPlansOverviewComponent} from "./plans/overview/manual-test-plans-overview.component";
+import {ManualTestPlansService} from "./service/manual-test-plans.service";
+import {ManualTestPlanOverviewComponent} from './plans/overview/item/manual-test-plan-overview.component';
+import {ManualTestPlanEditorComponent} from './plans/editor/manual-test-plan-editor.component';
+import {ManualTestPlanEditorResolver} from "./plans/editor/manual-test-plan-editor-resolver.service";
 import {ManualSelectTestsTreeComponent} from "./plans/editor/manual-select-tests-tree/manual-select-tests-tree.component";
 import {ManualSelectTestsContainerComponent} from "./plans/editor/manual-select-tests-tree/container/manual-select-tests-container.component";
 import {ManualSelectTestsNodeComponent} from "./plans/editor/manual-select-tests-tree/container/node/manual-select-tests-node.component";
@@ -59,10 +59,10 @@ import {ManualRunnerStepStatusComponent} from "./runner/editor/step_status/manua
     exports: [
     ],
     declarations: [
-        ManualExecPlansComponent,
-        ManualExecPlansOverviewComponent,
-        ManualExecPlanOverviewComponent,
-        ManualExecPlanEditorComponent,
+        ManualTestPlansComponent,
+        ManualTestPlansOverviewComponent,
+        ManualTestPlanOverviewComponent,
+        ManualTestPlanEditorComponent,
         ManualSelectTestsTreeComponent,
 
         ManualSelectTestsContainerComponent,
@@ -83,10 +83,10 @@ import {ManualRunnerStepStatusComponent} from "./runner/editor/step_status/manua
         ManualTestsStatusTreeNodeComponent,
     ],
     providers: [
-        ManualExecPlansService,
+        ManualTestPlansService,
         ManualTestsStatusTreeService,
 
-        ManualExecPlanEditorResolver,
+        ManualTestPlanEditorResolver,
     ],
 })
 export class ManualModule { }
