@@ -49,7 +49,7 @@ export class FileDirectoryChooserService {
                     )
                 }
 
-                fileDirectoryChooserJsonTreeModel.getChildren().forEach(child => {
+                fileDirectoryChooserJsonTreeModel.getChildren().forEach((child: FileDirectoryChooserContainerModel) => {
                     child.getNodeState().showChildren = true;
                 });
 
