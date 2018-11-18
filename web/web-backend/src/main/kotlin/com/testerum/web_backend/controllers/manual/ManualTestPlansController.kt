@@ -8,7 +8,6 @@ import com.testerum.model.manual.ManualTestPlans
 import com.testerum.model.manual.ManualTreeTest
 import com.testerum.model.manual.enums.ManualTestStatus
 import com.testerum.model.manual.enums.ManualTestStepStatus
-import com.testerum.model.manual.runner.enums.ManualTestPlanStatus
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeBase
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeContainer
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeNode
@@ -44,7 +43,7 @@ class ManualTestPlansController {
                 null,
                 "Full regression (acceptance 1.1.2)",
                 "",
-                ManualTestPlanStatus.IN_EXECUTION,
+                false,
                 LocalDateTime.of(2018, 3, 21, 10, 0, 0),
                 null,
                 emptyList(),
@@ -65,7 +64,7 @@ class ManualTestPlansController {
                 null,
                "Full regression (acceptance 1.1.2)",
                "",
-                ManualTestPlanStatus.IN_EXECUTION,
+               false,
                 LocalDateTime.of(2018, 3, 21, 10, 0, 0),
                 null,
                listOf(

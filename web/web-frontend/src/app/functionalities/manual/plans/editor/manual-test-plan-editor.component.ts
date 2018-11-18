@@ -6,7 +6,6 @@ import {UrlService} from "../../../../service/url.service";
 import {MarkdownEditorComponent} from "../../../../generic/components/markdown-editor/markdown-editor.component";
 import {AreYouSureModalService} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
-import {ManualTestPlanStatus} from "../model/enums/manual-test-plan-status.enum";
 import {AbstractComponentCanDeactivate} from "../../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 
 @Component({
@@ -70,7 +69,7 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
         }
 
         this.setEditMode(this.model.path.isEmpty());
-        this.isFinalized = manualTestsRunner.status == ManualTestPlanStatus.FINISHED;
+        this.isFinalized = manualTestsRunner.isFinalized;
 
         this.isCreateAction = this.model.path.isEmpty();
 

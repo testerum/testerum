@@ -1,4 +1,3 @@
-import {ManualTestPlanStatus} from "./enums/manual-test-plan-status.enum";
 import {Serializable} from "../../../../model/infrastructure/serializable.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {JsonUtil} from "../../../../utils/json.util";
@@ -10,7 +9,7 @@ export class ManualTestPlan implements Serializable<ManualTestPlan>{
     oldPath: Path;
     name: string;
     description: string;
-    status: ManualTestPlanStatus = ManualTestPlanStatus.IN_EXECUTION;
+    isFinalized: boolean;
     createdDate: Date;
     finalizedDate: Date;
 
@@ -30,7 +29,7 @@ export class ManualTestPlan implements Serializable<ManualTestPlan>{
         this.oldPath = Path.deserialize(input["oldPath"]);
         this.name = input['name'];
         this.description = input['description'];
-        this.status = ManualTestPlanStatus.fromString(input['status']);
+        this.isFinalized = input['isFinalized'];
 
         if (input['createdDate']) {
             this.createdDate = new Date(input['createdDate']);
@@ -59,7 +58,7 @@ export class ManualTestPlan implements Serializable<ManualTestPlan>{
             ',"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) +
             ',"name":' + JsonUtil.stringify(this.name) +
             ',"description":' + JsonUtil.stringify(this.description) +
-            ',"status":' + JsonUtil.stringify(this.status.toString());
+            ',"isFinalized":' + JsonUtil.stringify(this.isFinalized);
 
         if (this.createdDate) {
             response += ',"createdDate":' + JsonUtil.stringify(this.createdDate.toJSON());

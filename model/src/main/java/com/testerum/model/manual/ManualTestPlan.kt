@@ -3,7 +3,6 @@ package com.testerum.model.manual
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.manual.runner.enums.ManualTestPlanStatus
 import java.time.LocalDateTime
 
 data class ManualTestPlan @JsonCreator constructor(
@@ -12,7 +11,7 @@ data class ManualTestPlan @JsonCreator constructor(
         @JsonProperty("name") val name: String?,
 
         @JsonProperty("description") val description: String?,
-        @JsonProperty("status") val status: ManualTestPlanStatus = ManualTestPlanStatus.IN_EXECUTION,
+        @JsonProperty("isFinalized") val isFinalized: Boolean = false,
         @JsonProperty("createdDate") val createdDate: LocalDateTime?,
         @JsonProperty("finalizedDate") val finalizedDate: LocalDateTime?,
 

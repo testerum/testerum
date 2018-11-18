@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ManualTestPlan} from "../../model/manual-test-plan.model";
 import {UrlService} from "../../../../../service/url.service";
-import {ManualTestPlanStatus} from "../../model/enums/manual-test-plan-status.enum";
 
 @Component({
     selector: 'manual-test-plan-overview',
@@ -12,8 +11,6 @@ export class ManualTestPlanOverviewComponent implements OnInit {
 
     @Input() model: ManualTestPlan;
     @Input() executionMode: boolean = false;
-
-    ManualExecPlanStatus = ManualTestPlanStatus;
 
     constructor(private urlService: UrlService) {
     }
