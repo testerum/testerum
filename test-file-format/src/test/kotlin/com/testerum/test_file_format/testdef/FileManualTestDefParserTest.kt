@@ -9,6 +9,7 @@ import com.testerum.test_file_format.common.step_call.phase.FileStepPhase
 import com.testerum.test_file_format.manual_step_call.FileManualStepCall
 import com.testerum.test_file_format.manual_step_call.status.FileManualStepCallStatus
 import com.testerum.test_file_format.manual_test.FileManualTestDef
+import com.testerum.test_file_format.manual_test.status.FileManualTestStatus
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
@@ -32,20 +33,28 @@ class FileManualTestDefParserTest {
                             |
                             |    tags = <<one, two, three>>
                             |
-                            |    step: Given I go to page <<https://{{host}}:{{port}}/login>>
-                            |    step: When I type <<{{username}}>> into the <<.username>> input
-                            |    step: When I type <<{{password}}>> into the <<.password>> input
+                            |    step [PASSED]: Given I go to page <<https://{{host}}:{{port}}/login>>
+                            |    step [PASSED]: When I type <<{{username}}>> into the <<.username>> input
+                            |    step [PASSED]: When I type <<{{password}}>> into the <<.password>> input
                             |
-                            |    step: When I type <<{{text}}>> into the <<.{{cssClassName}}>> input
+                            |    step [FAILED]: When I type <<{{text}}>> into the <<.{{cssClassName}}>> input
                             |       var text = <<
                             |           I hereby pledge not to do any evil.
                             |           Cross my heart!
                             |       >>
                             |       var cssClassName = <<acknowledgementTextArea>>
                             |
-                            |    step: When I set the <<.rememberMe>> checkbox to <<checked>>
-                            |    step: When I click the <<.login>> button
-                        """.trimMargin()
+                            |    step [NOT_EXECUTED]: When I set the <<.rememberMe>> checkbox to <<checked>>
+                            |    step [NOT_EXECUTED]: When I click the <<.login>> button
+                            |
+                            |    status = IN_PROGRESS
+                            |
+                            |    comments = <<
+                            |        First comment line.
+                            |        Second comment line.
+                            |        Another comment line.
+                            |    >>
+                            |""".trimMargin()
                 ),
                 equalTo(
                         FileManualTestDef(
@@ -63,7 +72,7 @@ class FileManualTestDefParserTest {
                                                         ),
                                                         vars = emptyList()
                                                 ),
-                                                status = FileManualStepCallStatus.NOT_EXECUTED
+                                                status = FileManualStepCallStatus.PASSED
                                         ),
                                         FileManualStepCall(
                                                 step = FileStepCall(
@@ -77,7 +86,7 @@ class FileManualTestDefParserTest {
                                                         ),
                                                         vars = emptyList()
                                                 ),
-                                                status = FileManualStepCallStatus.NOT_EXECUTED
+                                                status = FileManualStepCallStatus.PASSED
                                         ),
                                         FileManualStepCall(
                                                 step = FileStepCall(
@@ -91,7 +100,7 @@ class FileManualTestDefParserTest {
                                                         ),
                                                         vars = emptyList()
                                                 ),
-                                                status = FileManualStepCallStatus.NOT_EXECUTED
+                                                status = FileManualStepCallStatus.PASSED
                                         ),
                                         FileManualStepCall(
                                                 step = FileStepCall(
@@ -112,7 +121,7 @@ class FileManualTestDefParserTest {
                                                                 FileStepVar(name = "cssClassName", value = "acknowledgementTextArea")
                                                         )
                                                 ),
-                                                status = FileManualStepCallStatus.NOT_EXECUTED
+                                                status = FileManualStepCallStatus.FAILED
                                         ),
                                         FileManualStepCall(
                                                 step = FileStepCall(
@@ -139,27 +148,34 @@ class FileManualTestDefParserTest {
                                                 ),
                                                 status = FileManualStepCallStatus.NOT_EXECUTED
                                         )
-                                )
+                                ),
+                                status = FileManualTestStatus.IN_PROGRESS,
+                                comments = """ |First comment line.
+                                               |Second comment line.
+                                               |Another comment line.""".trimMargin()
                         )
                 )
         )
     }
 
     @Test
-    fun `should allow test with only description, but without steps`() {
+    fun `should allow test with status, but without steps`() {
         assertThat(
                 parser.parse(
                         """ |test-def: Empty test
                             |
-                            |    description = <<some description>>
+                            |    status = NOT_EXECUTED
                             |
                         """.trimMargin()
                 ),
                 equalTo(
                         FileManualTestDef(
                                 name = "Empty test",
-                                description = "some description",
-                                steps = emptyList()
+                                description = null,
+                                tags = emptyList(),
+                                steps = emptyList(),
+                                status = FileManualTestStatus.NOT_EXECUTED,
+                                comments = null
                         )
                 )
         )
