@@ -78,7 +78,7 @@ object FeaturesTreeFilterer {
             return true
         }
 
-        if (test.text.containsSearchStringParts(filter.search)) {
+        if (test.name.containsSearchStringParts(filter.search)) {
             return true
         }
 

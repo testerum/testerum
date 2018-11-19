@@ -97,12 +97,12 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     }
 
     private getModelForWarningRecalculation() {
-        if (this.testModel.text) {
+        if (this.testModel.name) {
             return this.testModel
         }
 
         let testModel: TestModel = this.testModel.clone();
-        testModel.text = IdUtils.getTemporaryId();
+        testModel.name = IdUtils.getTemporaryId();
 
         return testModel;
     }
@@ -118,7 +118,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
         this.pathForTitle = "";
         let nodeName = null;
         if (!this.isCreateAction) {
-            nodeName = this.testModel.text;
+            nodeName = this.testModel.name;
         }
         if (this.testModel.path) {
             this.pathForTitle = new Path(this.testModel.path.directories, nodeName, null).toString();

@@ -106,7 +106,7 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
         override fun getRootLabel(): String = "Suite"
 
         override fun getLabel(payload: Any): String = when (payload) {
-            is TestWithFilePath -> payload.test.text
+            is TestWithFilePath -> payload.test.name
             else                -> throw unknownPayloadException(payload)
         }
 

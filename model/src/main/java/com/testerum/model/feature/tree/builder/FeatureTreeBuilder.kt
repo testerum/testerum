@@ -41,7 +41,7 @@ class FeatureTreeBuilder {
 
         override fun getLabel(payload: Any): String = when (payload) {
             is Feature   -> payload.path.directories.last()
-            is TestModel -> payload.text
+            is TestModel -> payload.name
             else         -> throw unknownPayloadException(payload)
         }
 

@@ -19,7 +19,7 @@ class FileToBusinessTestMapper(private val stepCallMapper: FileToBusinessStepCal
         )
 
         return TestModel(
-                text = fileTest.name,
+                name = fileTest.name,
                 path = path,
                 properties = mapTestProperties(fileTest.properties),
                 description = fileTest.description,

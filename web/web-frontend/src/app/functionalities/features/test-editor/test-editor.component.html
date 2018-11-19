@@ -21,11 +21,11 @@
                     <label class="my-label label-size">Name</label>
 
                     <div class="my-value" *ngIf="!isEditMode">
-                        {{testModel.text || ""}}
+                        {{testModel.name || ""}}
                     </div>
                     <div class="my-value" *ngIf="isEditMode">
                         <input required
-                               #testName="ngModel" [(ngModel)]="testModel.text"
+                               #testName="ngModel" [(ngModel)]="testModel.name"
                                type="text" class="form-control" name="testName">
                         <div *ngIf="testName.errors && (testName.dirty || testName.touched)"
                              class="alert alert-danger">
