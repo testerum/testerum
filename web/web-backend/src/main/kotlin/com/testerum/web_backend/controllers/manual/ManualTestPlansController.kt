@@ -2,6 +2,7 @@ package com.testerum.web_backend.controllers.manual
 
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.manual.ManualStepCall
 import com.testerum.model.manual.ManualTest
 import com.testerum.model.manual.ManualTestPlan
 import com.testerum.model.manual.ManualTestPlans
@@ -145,84 +146,93 @@ class ManualTestPlansController {
                 "This is a positive test for the sign-up functionality.",
                 listOf("sign-up", "user"),
                 listOf(
-                        ManualTestStepStatus.NOT_EXECUTED,
-                        ManualTestStepStatus.NOT_EXECUTED,
-                        ManualTestStepStatus.NOT_EXECUTED,
-                        ManualTestStepStatus.NOT_EXECUTED,
-                        ManualTestStepStatus.NOT_EXECUTED),
-                listOf(
-                        StepCall(
-                                "1",
-                                ComposedStepDef(
-                                        Path.createInstance("/signup"),
-                                        Path.createInstance("/signup"),
-                                        StepPhaseEnum.GIVEN,
-                                        StepPattern(
-                                                listOf(
-                                                        TextStepPatternPart("I'm on the sign-up page")
-                                                )
+                        ManualStepCall(
+                                stepCall = StepCall(
+                                        "1",
+                                        ComposedStepDef(
+                                                Path.createInstance("/signup"),
+                                                Path.createInstance("/signup"),
+                                                StepPhaseEnum.GIVEN,
+                                                StepPattern(
+                                                        listOf(
+                                                                TextStepPatternPart("I'm on the sign-up page")
+                                                        )
+                                                ),
+                                                "",
+                                                listOf("tag1", "tag2"),
+                                                listOf()
                                         ),
-                                        "",
-                                        listOf("tag1", "tag2"),
+                                        emptyList()
+                                ),
+                                status = ManualTestStepStatus.NOT_EXECUTED
+                        ),
+                        ManualStepCall(
+                                stepCall = StepCall(
+                                        "2",
+                                        BasicStepDef(
+                                                StepPhaseEnum.WHEN,
+                                                StepPattern(
+                                                        listOf(
+                                                                TextStepPatternPart("I write the email address 'test@testerum.com'")
+                                                        )
+                                                ),
+                                                className = "com.testerum.ClasaDePoveste",
+                                                methodName = "zmeulCelRau"
+                                        ),
                                         listOf()
                                 ),
-                                emptyList()
+                                status = ManualTestStepStatus.NOT_EXECUTED
                         ),
-                        StepCall(
-                                "2",
-                                BasicStepDef(
-                                        StepPhaseEnum.WHEN,
-                                        StepPattern(
-                                                listOf(
-                                                        TextStepPatternPart("I write the email address 'test@testerum.com'")
-                                                )
+                        ManualStepCall(
+                                stepCall = StepCall(
+                                        "3",
+                                        BasicStepDef(
+                                                StepPhaseEnum.WHEN,
+                                                StepPattern(
+                                                        listOf(
+                                                                TextStepPatternPart("I write the password 'myPassword123'")
+                                                        )
+                                                ),
+                                                className = "com.testerum.ClasaDePoveste",
+                                                methodName = "zmeulCelRau"
                                         ),
-                                        className = "com.testerum.ClasaDePoveste",
-                                        methodName = "zmeulCelRau"
+                                        listOf()
                                 ),
-                                listOf()
+                                status = ManualTestStepStatus.NOT_EXECUTED
                         ),
-                        StepCall(
-                                "3",
-                                BasicStepDef(
-                                        StepPhaseEnum.WHEN,
-                                        StepPattern(
-                                                listOf(
-                                                        TextStepPatternPart("I write the password 'myPassword123'")
-                                                )
+                        ManualStepCall(
+                                stepCall = StepCall(
+                                        "4",
+                                        BasicStepDef(
+                                                StepPhaseEnum.WHEN,
+                                                StepPattern(
+                                                        listOf(
+                                                                TextStepPatternPart("I press the SignUp button")
+                                                        )
+                                                ),
+                                                className = "com.testerum.ClasaDePoveste",
+                                                methodName = "zmeulCelRau"
                                         ),
-                                        className = "com.testerum.ClasaDePoveste",
-                                        methodName = "zmeulCelRau"
+                                        listOf()
                                 ),
-                                listOf()
+                                status = ManualTestStepStatus.NOT_EXECUTED
                         ),
-                        StepCall(
-                                "4",
-                                BasicStepDef(
-                                        StepPhaseEnum.WHEN,
-                                        StepPattern(
-                                                listOf(
-                                                        TextStepPatternPart("I press the SignUp button")
-                                                )
+                        ManualStepCall(
+                                stepCall = StepCall(
+                                        "5",
+                                        BasicStepDef(
+                                                StepPhaseEnum.THEN,
+                                                StepPattern(
+                                                        listOf(
+                                                                TextStepPatternPart("A user is created in the database")
+                                                        )
+                                                ),
+                                                className = "com.testerum.ClasaDePoveste",
+                                                methodName = "zmeulCelRau"
                                         ),
-                                        className = "com.testerum.ClasaDePoveste",
-                                        methodName = "zmeulCelRau"
+                                        listOf()
                                 ),
-                                listOf()
-                        ),
-                        StepCall(
-                                "5",
-                                BasicStepDef(
-                                        StepPhaseEnum.THEN,
-                                        StepPattern(
-                                                listOf(
-                                                        TextStepPatternPart("A user is created in the database")
-                                                )
-                                        ),
-                                        className = "com.testerum.ClasaDePoveste",
-                                        methodName = "zmeulCelRau"
-                                ),
-                                listOf()
+                                status = ManualTestStepStatus.NOT_EXECUTED
                         )
                 ),
                 ManualTestStatus.NOT_EXECUTED,

@@ -2,8 +2,7 @@ import {Serializable} from "../../../../model/infrastructure/serializable.model"
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {JsonUtil} from "../../../../utils/json.util";
 import {ManualTestStatus} from "./enums/manual-test-status.enum";
-import {ManualTestStepStatus} from "./enums/manual-test-step-status.enum";
-import {StepCall} from "../../../../model/step-call.model";
+import {ManualStepCall} from "./manual-step-call.model";
 
 export class ManualTest implements Serializable<ManualTest>{
 
@@ -13,8 +12,7 @@ export class ManualTest implements Serializable<ManualTest>{
     description: string;
     tags:Array<string> = [];
 
-    stepsStatus: ManualTestStepStatus[] = [];
-    stepCalls:Array<StepCall> = [];
+    stepCalls:Array<ManualStepCall> = [];
 
     status: ManualTestStatus = ManualTestStatus.NOT_EXECUTED;
     comments: string;
@@ -31,20 +29,15 @@ export class ManualTest implements Serializable<ManualTest>{
             this.tags.push(tag);
         }
 
-        for (const stepStatus of (input['stepsStatus']) || []) {
-            this.stepsStatus.push(ManualTestStepStatus.fromString(stepStatus));
-        }
-
         for (let stepCall of (input['stepCalls'] || [])) {
             this.stepCalls.push(
-                new StepCall().deserialize(stepCall)
+                new ManualStepCall().deserialize(stepCall)
             );
         }
 
-        this.status = ManualTestStepStatus.fromString(input['status']);
-
         this.comments = input['comments'];
         this.isFinalized = input['isFinalized'];
+
         return this;
     }
 
@@ -56,7 +49,6 @@ export class ManualTest implements Serializable<ManualTest>{
             ',"name":' + JsonUtil.stringify(this.name) +
             ',"description":' + JsonUtil.stringify(this.description) +
             ',"tags":' + JsonUtil.serializeArray(this.tags) +
-            ',"stepsStatus":' + JsonUtil.serializeArrayOfSerializable(this.stepsStatus) +
             ',"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) +
             ',"status":' + JsonUtil.stringify(this.status.toString()) +
             ',"comments":' + JsonUtil.stringify(this.comments) +

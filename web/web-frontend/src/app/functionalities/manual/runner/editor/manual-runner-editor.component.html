@@ -63,7 +63,7 @@
 
                             <!-- STATUS -->
                             <td>
-                                <manual-runner-step-status [(stepStatus)]="model.stepsStatus[index]"
+                                <manual-runner-step-status [(stepStatus)]="model.stepCalls[index].status"
                                                            [readonly]="isFinalized()"
                                                            (stepStatusChange)="stepStatusChanged($event, index)"></manual-runner-step-status>
                             </td>

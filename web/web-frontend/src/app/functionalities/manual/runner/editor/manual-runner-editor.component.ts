@@ -78,7 +78,7 @@ export class ManualRunnerEditorComponent implements OnInit {
                 }
 
                 for (const stepCall of manualTest.stepCalls) {
-                    this.steps.push([stepCall])
+                    this.steps.push([stepCall.stepCall])
                 }
             });
         } else {
@@ -90,25 +90,26 @@ export class ManualRunnerEditorComponent implements OnInit {
         this.hasStateChanged = true;
 
         for (let i = 0; i < stepIndex; i++) {
-            if (this.model.stepsStatus[i] == ManualTestStepStatus.NOT_EXECUTED ) {
-                this.model.stepsStatus[i] = ManualTestStepStatus.PASSED;
+            if (this.model.stepCalls[i].status == ManualTestStepStatus.NOT_EXECUTED ) {
+                this.model.stepCalls[i].status = ManualTestStepStatus.PASSED;
             }
         }
 
         if (stepStatusEnum == ManualTestStepStatus.FAILED) {
-            this.model.stepsStatus[stepIndex] = ManualTestStepStatus.FAILED;
+            this.model.stepCalls[stepIndex].status = ManualTestStepStatus.FAILED;
         }
 
         this.model.status = this.calculateTestStatus();
     }
 
     private calculateTestStatus() {
-        for (const stepStatus of this.model.stepsStatus) {
-            switch (stepStatus) {
+        for (const stepCall of this.model.stepCalls) {
+            switch (stepCall.status) {
                 case ManualTestStepStatus.NOT_EXECUTED: return ManualTestStatus.NOT_EXECUTED;
                 case ManualTestStepStatus.FAILED: return ManualTestStatus.FAILED;
             }
         }
+
         return ManualTestStatus.PASSED;
     }
 
