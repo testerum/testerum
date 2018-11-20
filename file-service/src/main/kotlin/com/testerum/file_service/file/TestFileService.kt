@@ -158,12 +158,8 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
             }
         }
 
-        val sourceJavaFile = testsDir.resolve(
-                escapedSourceFile.toString()
-        )
-        val destinationJavaFile = testsDir.resolve(
-                escapedDestinationFile.toString()
-        )
+        val sourceJavaFile = testsDir.resolve(escapedSourceFile.toString())
+        val destinationJavaFile = testsDir.resolve(escapedDestinationFile.toString())
 
         sourceJavaFile.smartMoveTo(
                 destinationJavaFile,
