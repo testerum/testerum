@@ -72,7 +72,7 @@ val JavaPath.hasSubDirectories: Boolean
                     path.isDirectory
                 }
             }
-        } catch (e: AccessDeniedException) {
+        } catch (e: Exception) {
             return false
         }
     }

@@ -9,7 +9,7 @@ import com.testerum.model.step.StepCall
 import com.testerum.model.warning.Warning
 
 // todo: rename class to "Test"
-data class TestModel @JsonCreator constructor(@JsonProperty("text") val text: String, // todo: rename to "name"
+data class TestModel @JsonCreator constructor(@JsonProperty("name") val name: String,
                                               @JsonProperty("path") val path: Path,
                                               @JsonProperty("oldPath") val oldPath: Path? = path,
                                               @JsonProperty("properties") val properties: TestProperties,
@@ -42,12 +42,12 @@ data class TestModel @JsonCreator constructor(@JsonProperty("text") val text: St
     @JsonIgnore
     fun getNewPath(): Path {
         return path.copy(
-                fileName = text,
+                fileName = name,
                 fileExtension = TEST_FILE_EXTENSION
         )
     }
 
-    override fun toString() = "TestModel(name=$text, path=$path)"
+    override fun toString() = "TestModel(name=$name, path=$path)"
 
     @Suppress("unused")
     fun toDebugTree() = buildString { toDebugTree(this, 0) }
@@ -57,7 +57,7 @@ data class TestModel @JsonCreator constructor(@JsonProperty("text") val text: St
                     indentLevel: Int) {
         destination.indent(indentLevel)
 
-        destination.append("TEST: ").append(text).append("\n")
+        destination.append("TEST: ").append(name).append("\n")
 
         if (!properties.isEmpty()) {
             destination.append("test-properties: <<")

@@ -2,13 +2,13 @@ package com.testerum.web_backend.controllers.manual
 
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.manual.ManualExecPlan
-import com.testerum.model.manual.ManualExecPlans
+import com.testerum.model.manual.ManualStepCall
 import com.testerum.model.manual.ManualTest
+import com.testerum.model.manual.ManualTestPlan
+import com.testerum.model.manual.ManualTestPlans
 import com.testerum.model.manual.ManualTreeTest
 import com.testerum.model.manual.enums.ManualTestStatus
 import com.testerum.model.manual.enums.ManualTestStepStatus
-import com.testerum.model.manual.runner.enums.ManualExecPlanStatus
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeBase
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeContainer
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeNode
@@ -30,22 +30,21 @@ import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/manual")
-class ManualExecPlansController {
-    //TODO Cristi: IMPLEMENT THIS
+class ManualTestPlansController {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(ManualExecPlansController::class.java)
+        private val LOG = LoggerFactory.getLogger(ManualTestPlansController::class.java)
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["plans"])
     @ResponseBody
-    fun getManualExecPlans(): ManualExecPlans {
-        val manualExecPlan = ManualExecPlan(
+    fun getManualExecPlans(): ManualTestPlans {
+        val manualExecPlan = ManualTestPlan(
                 Path.createInstance("/signup"),
                 null,
                 "Full regression (acceptance 1.1.2)",
                 "",
-                ManualExecPlanStatus.IN_EXECUTION,
+                false,
                 LocalDateTime.of(2018, 3, 21, 10, 0, 0),
                 null,
                 emptyList(),
@@ -55,18 +54,18 @@ class ManualExecPlansController {
                 0,
                 1
         )
-        return ManualExecPlans(arrayListOf(manualExecPlan), emptyList())
+        return ManualTestPlans(arrayListOf(manualExecPlan), emptyList())
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["plans"], params = ["planPath"])
     @ResponseBody
-    fun getManualExecPlan(@RequestParam(value = "planPath") planPath: String): ManualExecPlan {
-       return ManualExecPlan(
+    fun getManualExecPlan(@RequestParam(value = "planPath") planPath: String): ManualTestPlan {
+       return ManualTestPlan(
                 Path.createInstance("/signup"),
                 null,
                "Full regression (acceptance 1.1.2)",
                "",
-                ManualExecPlanStatus.IN_EXECUTION,
+               false,
                 LocalDateTime.of(2018, 3, 21, 10, 0, 0),
                 null,
                listOf(
@@ -89,19 +88,19 @@ class ManualExecPlansController {
 
     @RequestMapping(method = [RequestMethod.PUT], path = ["/plans"])
     @ResponseBody
-    fun updateManualTest(@RequestBody manualExecPlan: ManualExecPlan): ManualExecPlan {
-        return this.getManualExecPlan(manualExecPlan.path.toString())
+    fun updateManualTest(@RequestBody manualTestPlan: ManualTestPlan): ManualTestPlan {
+        return this.getManualExecPlan(manualTestPlan.path.toString())
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["plans/finalize"], params = ["planPath"])
     @ResponseBody
-    fun finalizeManualExecPlan(@RequestParam(value = "planPath") planPath: String): ManualExecPlan {
+    fun finalizeManualExecPlan(@RequestParam(value = "planPath") planPath: String): ManualTestPlan {
         return this.getManualExecPlan(planPath)
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["plans/bringBackInExecution"], params = ["planPath"])
     @ResponseBody
-    fun bringBackInExecutionManualExecPlan(@RequestParam(value = "planPath") planPath: String): ManualExecPlan {
+    fun bringBackInExecutionManualExecPlan(@RequestParam(value = "planPath") planPath: String): ManualTestPlan {
         return this.getManualExecPlan(planPath)
     }
 
@@ -147,84 +146,93 @@ class ManualExecPlansController {
                 "This is a positive test for the sign-up functionality.",
                 listOf("sign-up", "user"),
                 listOf(
-                        ManualTestStepStatus.NOT_EXECUTED,
-                        ManualTestStepStatus.NOT_EXECUTED,
-                        ManualTestStepStatus.NOT_EXECUTED,
-                        ManualTestStepStatus.NOT_EXECUTED,
-                        ManualTestStepStatus.NOT_EXECUTED),
-                listOf(
-                        StepCall(
-                                "1",
-                                ComposedStepDef(
-                                        Path.createInstance("/signup"),
-                                        Path.createInstance("/signup"),
-                                        StepPhaseEnum.GIVEN,
-                                        StepPattern(
-                                                listOf(
-                                                        TextStepPatternPart("I'm on the sign-up page")
-                                                )
+                        ManualStepCall(
+                                stepCall = StepCall(
+                                        "1",
+                                        ComposedStepDef(
+                                                Path.createInstance("/signup"),
+                                                Path.createInstance("/signup"),
+                                                StepPhaseEnum.GIVEN,
+                                                StepPattern(
+                                                        listOf(
+                                                                TextStepPatternPart("I'm on the sign-up page")
+                                                        )
+                                                ),
+                                                "",
+                                                listOf("tag1", "tag2"),
+                                                listOf()
                                         ),
-                                        "",
-                                        listOf("tag1", "tag2"),
+                                        emptyList()
+                                ),
+                                status = ManualTestStepStatus.NOT_EXECUTED
+                        ),
+                        ManualStepCall(
+                                stepCall = StepCall(
+                                        "2",
+                                        BasicStepDef(
+                                                StepPhaseEnum.WHEN,
+                                                StepPattern(
+                                                        listOf(
+                                                                TextStepPatternPart("I write the email address 'test@testerum.com'")
+                                                        )
+                                                ),
+                                                className = "com.testerum.ClasaDePoveste",
+                                                methodName = "zmeulCelRau"
+                                        ),
                                         listOf()
                                 ),
-                                emptyList()
+                                status = ManualTestStepStatus.NOT_EXECUTED
                         ),
-                        StepCall(
-                                "2",
-                                BasicStepDef(
-                                        StepPhaseEnum.WHEN,
-                                        StepPattern(
-                                                listOf(
-                                                        TextStepPatternPart("I write the email address 'test@testerum.com'")
-                                                )
+                        ManualStepCall(
+                                stepCall = StepCall(
+                                        "3",
+                                        BasicStepDef(
+                                                StepPhaseEnum.WHEN,
+                                                StepPattern(
+                                                        listOf(
+                                                                TextStepPatternPart("I write the password 'myPassword123'")
+                                                        )
+                                                ),
+                                                className = "com.testerum.ClasaDePoveste",
+                                                methodName = "zmeulCelRau"
                                         ),
-                                        className = "com.testerum.ClasaDePoveste",
-                                        methodName = "zmeulCelRau"
+                                        listOf()
                                 ),
-                                listOf()
+                                status = ManualTestStepStatus.NOT_EXECUTED
                         ),
-                        StepCall(
-                                "3",
-                                BasicStepDef(
-                                        StepPhaseEnum.WHEN,
-                                        StepPattern(
-                                                listOf(
-                                                        TextStepPatternPart("I write the password 'myPassword123'")
-                                                )
+                        ManualStepCall(
+                                stepCall = StepCall(
+                                        "4",
+                                        BasicStepDef(
+                                                StepPhaseEnum.WHEN,
+                                                StepPattern(
+                                                        listOf(
+                                                                TextStepPatternPart("I press the SignUp button")
+                                                        )
+                                                ),
+                                                className = "com.testerum.ClasaDePoveste",
+                                                methodName = "zmeulCelRau"
                                         ),
-                                        className = "com.testerum.ClasaDePoveste",
-                                        methodName = "zmeulCelRau"
+                                        listOf()
                                 ),
-                                listOf()
+                                status = ManualTestStepStatus.NOT_EXECUTED
                         ),
-                        StepCall(
-                                "4",
-                                BasicStepDef(
-                                        StepPhaseEnum.WHEN,
-                                        StepPattern(
-                                                listOf(
-                                                        TextStepPatternPart("I press the SignUp button")
-                                                )
+                        ManualStepCall(
+                                stepCall = StepCall(
+                                        "5",
+                                        BasicStepDef(
+                                                StepPhaseEnum.THEN,
+                                                StepPattern(
+                                                        listOf(
+                                                                TextStepPatternPart("A user is created in the database")
+                                                        )
+                                                ),
+                                                className = "com.testerum.ClasaDePoveste",
+                                                methodName = "zmeulCelRau"
                                         ),
-                                        className = "com.testerum.ClasaDePoveste",
-                                        methodName = "zmeulCelRau"
+                                        listOf()
                                 ),
-                                listOf()
-                        ),
-                        StepCall(
-                                "5",
-                                BasicStepDef(
-                                        StepPhaseEnum.THEN,
-                                        StepPattern(
-                                                listOf(
-                                                        TextStepPatternPart("A user is created in the database")
-                                                )
-                                        ),
-                                        className = "com.testerum.ClasaDePoveste",
-                                        methodName = "zmeulCelRau"
-                                ),
-                                listOf()
+                                status = ManualTestStepStatus.NOT_EXECUTED
                         )
                 ),
                 ManualTestStatus.NOT_EXECUTED,

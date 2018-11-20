@@ -204,7 +204,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
         context.eventsService.logEvent(
                 TestStartEvent(
                         eventKey = eventKey,
-                        testName = test.text,
+                        testName = test.name,
                         testFilePath = test.path
                 )
         )
@@ -218,7 +218,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                 TestEndEvent(
                         eventKey = eventKey,
                         testFilePath = test.path,
-                        testName = test.text,
+                        testName = test.name,
                         status = executionStatus,
                         exceptionDetail = exception?.let { ExceptionDetail.fromThrowable(it) },
                         durationMillis = durationMillis
@@ -234,7 +234,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
         if (test.properties.isDisabled) {
             destination.append(" DISABLED")
         }
-        destination.append(" '").append(test.text).append("'")
+        destination.append(" '").append(test.name).append("'")
         if (test.tags.isNotEmpty()) {
             destination.append(", tags=").append(test.tags)
         }

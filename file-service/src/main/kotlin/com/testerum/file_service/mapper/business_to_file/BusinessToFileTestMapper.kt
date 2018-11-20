@@ -10,7 +10,7 @@ class BusinessToFileTestMapper(private val businessToFileStepCallMapper: Busines
 
     fun map(test: TestModel): FileTestDef {
         return FileTestDef(
-                name = test.text,
+                name = test.name,
                 properties = mapTestProperties(test.properties),
                 description = test.description,
                 tags = test.tags,

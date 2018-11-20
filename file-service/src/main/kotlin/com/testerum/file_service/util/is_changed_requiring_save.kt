@@ -18,7 +18,7 @@ fun TestModel.isChangedRequiringSave(existingTest: TestModel?): Boolean {
         return true
     }
 
-    if (text != existingTest.text) {
+    if (name != existingTest.name) {
         return true
     }
 

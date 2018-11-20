@@ -1,16 +1,15 @@
-import {ManualExecPlanStatus} from "./enums/manual-exec-plan-status.enum";
 import {Serializable} from "../../../../model/infrastructure/serializable.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {JsonUtil} from "../../../../utils/json.util";
 import {ManualTreeTest} from "./manual-tree-test.model";
 
-export class ManualExecPlan implements Serializable<ManualExecPlan>{
+export class ManualTestPlan implements Serializable<ManualTestPlan>{
 
     path: Path;
     oldPath: Path;
     name: string;
     description: string;
-    status: ManualExecPlanStatus = ManualExecPlanStatus.IN_EXECUTION;
+    isFinalized: boolean;
     createdDate: Date;
     finalizedDate: Date;
 
@@ -22,15 +21,15 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
     failedTests: number = 0;
     blockedTests: number = 0;
     notApplicableTests: number = 0;
-    notExecutedTests: number = 0;
+    notExecutedOrInProgressTests: number = 0;
 
 
-    deserialize(input: Object): ManualExecPlan {
+    deserialize(input: Object): ManualTestPlan {
         this.path = Path.deserialize(input["path"]);
         this.oldPath = Path.deserialize(input["oldPath"]);
         this.name = input['name'];
         this.description = input['description'];
-        this.status = ManualExecPlanStatus.fromString(input['status']);
+        this.isFinalized = input['isFinalized'];
 
         if (input['createdDate']) {
             this.createdDate = new Date(input['createdDate']);
@@ -47,7 +46,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
         this.failedTests = input['failedTests'];
         this.blockedTests = input['blockedTests'];
         this.notApplicableTests = input['notApplicableTests'];
-        this.notExecutedTests = input['notExecutedTests'];
+        this.notExecutedOrInProgressTests = input['notExecutedOrInProgressTests'];
 
         return this;
     }
@@ -59,7 +58,7 @@ export class ManualExecPlan implements Serializable<ManualExecPlan>{
             ',"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) +
             ',"name":' + JsonUtil.stringify(this.name) +
             ',"description":' + JsonUtil.stringify(this.description) +
-            ',"status":' + JsonUtil.stringify(this.status.toString());
+            ',"isFinalized":' + JsonUtil.stringify(this.isFinalized);
 
         if (this.createdDate) {
             response += ',"createdDate":' + JsonUtil.stringify(this.createdDate.toJSON());

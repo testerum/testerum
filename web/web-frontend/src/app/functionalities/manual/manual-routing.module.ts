@@ -2,9 +2,9 @@ import {NgModule} from '@angular/core';
 
 import {RouterModule, Routes} from "@angular/router";
 import {SetupGuard} from "../../service/guards/setup.guard";
-import {ManualExecPlansComponent} from "./plans/manual-exec-plans.component";
-import {ManualExecPlanEditorComponent} from "./plans/editor/manual-exec-plan-editor.component";
-import {ManualExecPlanEditorResolver} from "./plans/editor/manual-exec-plan-editor.resolver";
+import {ManualTestPlansComponent} from "./plans/manual-test-plans.component";
+import {ManualTestPlanEditorComponent} from "./plans/editor/manual-test-plan-editor.component";
+import {ManualTestPlanEditorResolver} from "./plans/editor/manual-test-plan-editor-resolver.service";
 import {ManualRunnerComponent} from "./runner/manual-runner.component";
 import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
 
@@ -18,14 +18,14 @@ const manualRoutes: Routes = [
     },
     {
         path: "manual/plans",
-        component: ManualExecPlansComponent,
+        component: ManualTestPlansComponent,
         canActivate: [SetupGuard],
         canActivateChild: [SetupGuard],
         children: [
             {
                 path: ':action',
-                component: ManualExecPlanEditorComponent,
-                resolve: {manualExecPlan: ManualExecPlanEditorResolver},
+                component: ManualTestPlanEditorComponent,
+                resolve: {manualExecPlan: ManualTestPlanEditorResolver},
                 canDeactivate: [CanDeactivateGuard]
             }
         ]

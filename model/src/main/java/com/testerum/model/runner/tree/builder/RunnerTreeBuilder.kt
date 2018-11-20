@@ -2,7 +2,14 @@ package com.testerum.model.runner.tree.builder
 
 import com.testerum.model.feature.Feature
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.runner.tree.*
+import com.testerum.model.runner.tree.RunnerBasicStepNode
+import com.testerum.model.runner.tree.RunnerComposedStepNode
+import com.testerum.model.runner.tree.RunnerFeatureNode
+import com.testerum.model.runner.tree.RunnerRootNode
+import com.testerum.model.runner.tree.RunnerStepNode
+import com.testerum.model.runner.tree.RunnerTestNode
+import com.testerum.model.runner.tree.RunnerTestOrFeatureNode
+import com.testerum.model.runner.tree.RunnerUndefinedStepNode
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
@@ -45,7 +52,7 @@ class RunnerTreeBuilder {
         override fun getRootLabel(): String = "Runner"
 
         override fun getLabel(payload: Any): String = when (payload) {
-            is TestModel -> payload.text
+            is TestModel -> payload.name
             else         -> throw unknownPayloadException(payload)
         }
 

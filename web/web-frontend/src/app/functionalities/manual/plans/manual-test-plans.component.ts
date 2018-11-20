@@ -4,10 +4,10 @@ import {filter, map} from "rxjs/operators";
 import {Subscription} from "rxjs";
 
 @Component({
-    selector: 'manual-exec-plans',
-    templateUrl: 'manual-exec-plans.component.html'
+    selector: 'manual-test-plans',
+    templateUrl: 'manual-test-plans.component.html'
 })
-export class ManualExecPlansComponent implements OnInit, OnDestroy {
+export class ManualTestPlansComponent implements OnInit, OnDestroy {
 
     isTestSelected: boolean = true;
 

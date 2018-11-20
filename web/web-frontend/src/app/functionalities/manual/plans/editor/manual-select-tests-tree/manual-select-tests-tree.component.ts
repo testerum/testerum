@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
-import {ManualExecPlan} from "../../model/manual-exec-plan.model";
+import {ManualTestPlan} from "../../model/manual-test-plan.model";
 import {JsonTreeModel} from "../../../../../generic/components/json-tree/model/json-tree.model";
-import {ManualExecPlansService} from "../../../service/manual-exec-plans.service";
+import {ManualTestPlansService} from "../../../service/manual-test-plans.service";
 import {RootFeatureNode} from "../../../../../model/feature/tree/root-feature-node.model";
 import ManualSelectTestsTreeUtil from "./util/manual-select-tests-tree.util";
 import {ManualSelectTestsTreeContainerModel} from "./model/manual-select-tests-tree-container.model";
@@ -20,7 +20,7 @@ import {ManualTreeTest} from "../../model/manual-tree-test.model";
     providers: [ManualSelectTestsTreeComponentService]
 })
 export class ManualSelectTestsTreeComponent implements OnInit, OnChanges {
-    @Input() model: ManualExecPlan;
+    @Input() model: ManualTestPlan;
     @Input() isEditMode: boolean;
 
     treeModel: JsonTreeModel = ManualSelectTestsTreeUtil.createRootPackage();
@@ -28,7 +28,7 @@ export class ManualSelectTestsTreeComponent implements OnInit, OnChanges {
         .addPair(ManualSelectTestsTreeContainerModel, ManualSelectTestsContainerComponent)
         .addPair(ManualSelectTestsTreeNodeModel, ManualSelectTestsNodeComponent);
 
-    constructor(private manualExecPlansService: ManualExecPlansService,
+    constructor(private manualExecPlansService: ManualTestPlansService,
                 private manualSelectTestsTreeComponentService: ManualSelectTestsTreeComponentService) {
     }
 

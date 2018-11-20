@@ -4,18 +4,13 @@ import {ManualTestsStatusTreeComponentService} from "./manual-tests-status-tree.
 import {ManualTestsStatusTreeNodeComponent} from "./nodes/runner-tree-node/manual-tests-status-tree-node.component";
 import {Subscription} from "rxjs";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
-import {ManualTestsStatusTreeUtil} from "./util/manual-tests-status-tree.util";
-import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {ManualUiTreeContainerStatusModel} from "./model/manual-ui-tree-container-status.model";
 import {ManualUiTreeRootStatusModel} from "./model/manual-ui-tree-root-status.model";
 import {ManualUiTreeNodeStatusModel} from "./model/manual-ui-tree-node-status.model";
-import {ManualTestsStatusTreeRoot} from "../../plans/model/status-tree/manual-tests-status-tree-root.model";
 import {ManualTestsStatusTreeService} from "./manual-tests-status-tree.service";
 import {ManualTreeStatusFilterModel} from "./model/filter/manual-tree-status-filter.model";
 import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
-import {UrlUtil} from "../../../../utils/url.util";
 import {filter, map} from "rxjs/operators";
 
 @Component({

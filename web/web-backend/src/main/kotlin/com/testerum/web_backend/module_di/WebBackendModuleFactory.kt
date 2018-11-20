@@ -33,7 +33,7 @@ import com.testerum.web_backend.controllers.error.model.response_preparers.valid
 import com.testerum.web_backend.controllers.features.FeatureController
 import com.testerum.web_backend.controllers.filesystem.FileSystemController
 import com.testerum.web_backend.controllers.license.LicenseController
-import com.testerum.web_backend.controllers.manual.ManualExecPlansController
+import com.testerum.web_backend.controllers.manual.ManualTestPlansController
 import com.testerum.web_backend.controllers.message.MessageController
 import com.testerum.web_backend.controllers.resources.ResourcesController
 import com.testerum.web_backend.controllers.resources.http.HttpController
@@ -436,7 +436,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             fileSystemFrontendService = fileSystemFrontendService
     )
 
-    private val manualExecPlansController = ManualExecPlansController()
+    private val manualExecPlansController = ManualTestPlansController()
 
 
     //---------------------------------------- list of web controllers ----------------------------------------//

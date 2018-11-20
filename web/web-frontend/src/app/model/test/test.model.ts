@@ -13,7 +13,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
     path:Path;
     oldPath:Path;
     properties: TestProperties  = new TestProperties();
-    text:string;
+    name:string;
     description:string;
     tags: Array<string> = [];
 
@@ -31,7 +31,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
         this.path = Path.deserialize(input["path"]);
         this.oldPath = Path.deserialize(input["oldPath"]);
         this.properties = new TestProperties().deserialize(input['properties']);
-        this.text = input['text'];
+        this.name = input['name'];
         this.description = input['description'];
         this.tags = input['tags'] || [];
 
@@ -61,7 +61,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
             '"path":' + JsonUtil.serializeSerializable(this.path) + ',' +
             '"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) + ',' +
             '"properties":' + JsonUtil.serializeSerializable(this.properties) + ',' +
-            '"text":' + JsonUtil.stringify(this.text) + ',' +
+            '"name":' + JsonUtil.stringify(this.name) + ',' +
             '"description":' + JsonUtil.stringify(this.description) + ',' +
             '"tags":' + JsonUtil.stringify(this.tags) + ',' +
             '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) + ',' +

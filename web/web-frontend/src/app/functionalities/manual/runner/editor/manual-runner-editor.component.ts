@@ -2,18 +2,14 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {ManualTestStatus} from "../../plans/model/enums/manual-test-status.enum";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
-import {ManualExecPlansService} from "../../service/manual-exec-plans.service";
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {ManualTestPlansService} from "../../service/manual-test-plans.service";
 import {ManualTest} from "../../plans/model/manual-test.model";
 import {ManualTestStepStatus} from "../../plans/model/enums/manual-test-step-status.enum";
 import {UrlService} from "../../../../service/url.service";
 import {MarkdownEditorComponent} from "../../../../generic/components/markdown-editor/markdown-editor.component";
 import {StepCall} from "../../../../model/step-call.model";
 import {ManualTestsStatusTreeComponent} from "../../common/manual-tests-status-tree/manual-tests-status-tree.component";
-import {filter, map} from "rxjs/operators";
-import {AbstractComponentCanDeactivate} from "../../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
-import {UrlUtil} from "../../../../utils/url.util";
-import {ManualTreeStatusFilterModel} from "../../common/manual-tests-status-tree/model/filter/manual-tree-status-filter.model";
 
 @Component({
     selector: 'manual-runner-editor',
@@ -51,7 +47,7 @@ export class ManualRunnerEditorComponent implements OnInit {
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private manualExecPlansService: ManualExecPlansService,
+                private manualExecPlansService: ManualTestPlansService,
                 private urlService: UrlService) {
     }
 
@@ -82,7 +78,7 @@ export class ManualRunnerEditorComponent implements OnInit {
                 }
 
                 for (const stepCall of manualTest.stepCalls) {
-                    this.steps.push([stepCall])
+                    this.steps.push([stepCall.stepCall])
                 }
             });
         } else {
@@ -94,34 +90,37 @@ export class ManualRunnerEditorComponent implements OnInit {
         this.hasStateChanged = true;
 
         for (let i = 0; i < stepIndex; i++) {
-            if (this.model.stepsStatus[i] == ManualTestStepStatus.NOT_EXECUTED ) {
-                this.model.stepsStatus[i] = ManualTestStepStatus.PASSED;
+            if (this.model.stepCalls[i].status == ManualTestStepStatus.NOT_EXECUTED ) {
+                this.model.stepCalls[i].status = ManualTestStepStatus.PASSED;
             }
         }
 
         if (stepStatusEnum == ManualTestStepStatus.FAILED) {
-            this.model.stepsStatus[stepIndex] = ManualTestStepStatus.FAILED;
+            this.model.stepCalls[stepIndex].status = ManualTestStepStatus.FAILED;
         }
 
         this.model.status = this.calculateTestStatus();
     }
 
     private calculateTestStatus() {
-        for (const stepStatus of this.model.stepsStatus) {
-            switch (stepStatus) {
+        for (const stepCall of this.model.stepCalls) {
+            switch (stepCall.status) {
                 case ManualTestStepStatus.NOT_EXECUTED: return ManualTestStatus.NOT_EXECUTED;
                 case ManualTestStepStatus.FAILED: return ManualTestStatus.FAILED;
             }
         }
+
         return ManualTestStatus.PASSED;
     }
+
     onTestChange() {
         this.hasStateChanged = true;
     }
 
-    isTestSuiteFinalized(): boolean {
-        return this.model.isTestPlanFinalized;
+    isFinalized(): boolean {
+        return this.model.isFinalized;
     }
+
     getTestPathDirectoryAsString(): string {
         return this.testPath ? this.testPath.toDirectoryString() : ""
     }

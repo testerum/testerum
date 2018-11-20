@@ -11,7 +11,7 @@ class FileDescriptionSerializerTest {
     )
 
     @Test
-    fun `empty`() {
+    fun empty() {
         testRunner.execute(
                 original = "",
                 indentLevel = 0,
