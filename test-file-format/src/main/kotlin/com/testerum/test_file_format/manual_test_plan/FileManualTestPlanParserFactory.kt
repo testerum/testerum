@@ -17,11 +17,13 @@ object FileManualTestPlanParserFactory : ParserFactory<FileManualTestPlan> {
         return sequence(
                 description(),
                 localDateTime("created-date-utc"),
+                boolean("is-finalized"),
                 localDateTime("finalized-date-utc")
-        ) { description: Optional<String>, createdDateUtc: Optional<LocalDateTime>, finalizedDateUtc: Optional<LocalDateTime> ->
+        ) { description: Optional<String>, createdDateUtc: Optional<LocalDateTime>, isFinalized: Optional<Boolean>, finalizedDateUtc: Optional<LocalDateTime> ->
             FileManualTestPlan(
                     description = description.orElse(null),
                     createdDateUtc = createdDateUtc.orElse(null),
+                    isFinalized = isFinalized.orElse(FileManualTestPlan.IS_FINALIZED_DEFAULT),
                     finalizedDateUtc = finalizedDateUtc.orElse(null)
             )
         }
@@ -41,6 +43,14 @@ object FileManualTestPlanParserFactory : ParserFactory<FileManualTestPlan> {
                 CommonParsers.localDateTime(label).asOptional(),
                 optionalWhitespaceOrNewLines()
         ) {_: Void?, createdDateUtc: Optional<LocalDateTime>, _: Void? -> createdDateUtc }
+    }
+
+    private fun boolean(label: String): Parser<Optional<Boolean>> {
+        return sequence(
+                optionalWhitespaceOrNewLines(),
+                CommonParsers.boolean(label).asOptional(),
+                optionalWhitespaceOrNewLines()
+        ) {_: Void?, flag: Optional<Boolean>, _: Void? -> flag }
     }
 
 }

@@ -51,7 +51,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
                               testsDir: JavaPath): TestModel {
         val escapedPath = path.escape()
 
-        val testFile = testsDir.resolve(
+        val testFile: JavaPath = testsDir.resolve(
                 escapedPath.toString()
         )
 

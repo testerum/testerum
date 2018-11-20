@@ -13,7 +13,7 @@ class FileToBusinessTestMapper(private val stepCallMapper: FileToBusinessStepCal
     fun mapTest(fileTest: FileTestDef, relativeFilePath: JavaPath): TestModel {
         val path = Path.createInstance(relativeFilePath.toString())
 
-        val stepCalls = stepCallMapper.mapStepsCalls(
+        val stepCalls = stepCallMapper.mapStepCalls(
                 fileStepCalls = fileTest.steps,
                 stepCallIdPrefix = path.toString()
         )

@@ -17,7 +17,11 @@ import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
-import com.testerum.test_file_format.common.step_call.part.arg_part.*
+import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
+import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
+import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartSerializer
+import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
+import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
 
 class FileToBusinessStepCallMapper(private val phaseMapper: FileToBusinessPhaseMapper) {
 
@@ -31,7 +35,7 @@ class FileToBusinessStepCallMapper(private val phaseMapper: FileToBusinessPhaseM
      * - argument types will always be ``TEXT`` (we can know the type only after we know the definition)
      * - external resources are NOT loaded here - this will also be done when resolving
      */
-    fun mapStepsCalls(fileStepCalls: List<FileStepCall>, stepCallIdPrefix: String): List<StepCall> {
+    fun mapStepCalls(fileStepCalls: List<FileStepCall>, stepCallIdPrefix: String): List<StepCall> {
         val uiSteps = mutableListOf<StepCall>()
 
         for ((index, fileStepCall) in fileStepCalls.withIndex()) {

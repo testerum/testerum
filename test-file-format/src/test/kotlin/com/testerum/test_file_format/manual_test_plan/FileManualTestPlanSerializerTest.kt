@@ -19,8 +19,9 @@ class FileManualTestPlanSerializerTest {
                 original = FileManualTestPlan(
                         description = """ |This test plan will do wonderful things.
                                           |It will surpass your wildest expectations.""".trimMargin(),
-                        createdDateUtc = LocalDateTime.of(1900, 1, 2, 3, 4, 5, 6),
-                        finalizedDateUtc = LocalDateTime.of(2000, 10, 20, 3, 40, 50, 60)
+                        createdDateUtc = LocalDateTime.of(1900, 1, 2, 3, 4, 5, 0),
+                        finalizedDateUtc = LocalDateTime.of(2000, 10, 20, 3, 40, 50, 0),
+                        isFinalized = true
                 ),
                 indentLevel = 0,
                 expected = """|description = <<
@@ -28,9 +29,11 @@ class FileManualTestPlanSerializerTest {
                               |    It will surpass your wildest expectations.
                               |>>
                               |
-                              |created-date-utc = 1900-01-02T03:04:05.000000006
+                              |created-date-utc = 1900-01-02 03:04:05
                               |
-                              |finalized-date-utc = 2000-10-20T03:40:50.000000060
+                              |is-finalized = true
+                              |
+                              |finalized-date-utc = 2000-10-20 03:40:50
                               |""".trimMargin()
         )
     }
@@ -41,7 +44,8 @@ class FileManualTestPlanSerializerTest {
                 original = FileManualTestPlan(
                         description = "a description",
                         createdDateUtc = null,
-                        finalizedDateUtc = null
+                        finalizedDateUtc = null,
+                        isFinalized = FileManualTestPlan.IS_FINALIZED_DEFAULT
                 ),
                 indentLevel = 0,
                 expected = """|description = <<a description>>
@@ -70,16 +74,19 @@ class FileManualTestPlanSerializerTest {
                    |            It will surpass your wildest expectations.
                    |        >>
                    |
-                   |        created-date-utc = 1900-01-02T03:04:05.000000006
+                   |        created-date-utc = 1900-01-02 03:04:05
                    |
-                   |        finalized-date-utc = 2000-10-20T03:40:50.000000060
+                   |        is-finalized = true
+                   |
+                   |        finalized-date-utc = 2000-10-20 03:40:50
                    |""".trimMargin(),
                 FileManualTestPlanSerializer.serializeToString(
                         FileManualTestPlan(
                                 description = """ |This test plan will do wonderful things.
                                                   |It will surpass your wildest expectations.""".trimMargin(),
-                                createdDateUtc = LocalDateTime.of(1900, 1, 2, 3, 4, 5, 6),
-                                finalizedDateUtc = LocalDateTime.of(2000, 10, 20, 3, 40, 50, 60)
+                                createdDateUtc = LocalDateTime.of(1900, 1, 2, 3, 4, 5, 0),
+                                finalizedDateUtc = LocalDateTime.of(2000, 10, 20, 3, 40, 50, 0),
+                                isFinalized = true
                         ),
                         2
                 )

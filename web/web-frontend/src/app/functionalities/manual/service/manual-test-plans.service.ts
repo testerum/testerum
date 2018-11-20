@@ -107,14 +107,14 @@ export class ManualTestPlansService {
             .pipe(map(it => {return new ManualTestPlan().deserialize(it)}));
     }
 
-    bringBackInExecution(planPath: Path) {
+    activatePlan(planPath: Path) {
         const httpOptions = {
             params: new HttpParams()
                 .append('planPath', planPath.toString())
         };
 
         return this.http
-            .get<ManualTestPlan>(this.BASE_URL + "/plans/bringBackInExecution", httpOptions)
+            .get<ManualTestPlan>(this.BASE_URL + "/plans/activate", httpOptions)
             .pipe(map(it => {return new ManualTestPlan().deserialize(it)}));
     }
 

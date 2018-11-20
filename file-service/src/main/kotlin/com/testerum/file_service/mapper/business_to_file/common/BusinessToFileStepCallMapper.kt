@@ -23,7 +23,7 @@ class BusinessToFileStepCallMapper(private val businessToFilePhaseMapper: Busine
 
     fun mapStepCalls(stepCalls: List<StepCall>): List<FileStepCall> = stepCalls.map { mapStepCall(it) }
 
-    private fun mapStepCall(stepCall: StepCall): FileStepCall {
+    fun mapStepCall(stepCall: StepCall): FileStepCall {
         val varsContainer = UniqueNamesFileStepVarContainer()
 
         return FileStepCall(

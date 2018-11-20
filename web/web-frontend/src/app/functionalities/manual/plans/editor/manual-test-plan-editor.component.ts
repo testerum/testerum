@@ -141,9 +141,9 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
         );
     }
 
-    bringBackInExecution(): void {
+    activate(): void {
         this.manualExecPlansService
-            .bringBackInExecution(this.model.path)
+            .activatePlan(this.model.path)
             .subscribe((savedModel: ManualTestPlan) => this.afterSaveHandler(savedModel));
     }
 

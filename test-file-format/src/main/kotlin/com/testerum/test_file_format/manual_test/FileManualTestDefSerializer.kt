@@ -16,7 +16,7 @@ object FileManualTestDefSerializer : BaseSerializer<FileManualTestDef>() {
         serializeTestName(source.name, destination, indentLevel)
         serializeDescription(source.description, destination, indentLevel + 1)
         serializeTags(source.tags, destination, indentLevel + 1)
-        serializeSteps(source.steps, destination, indentLevel + 1)
+        serializeSteps(source.stepCalls, destination, indentLevel + 1)
         serializeStatus(source.status, destination, indentLevel + 1)
         serializeComments(source.comments, destination, indentLevel + 1)
     }

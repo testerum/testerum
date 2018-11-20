@@ -27,7 +27,7 @@ class FileManualTestDefSerializerTest {
                                           |It tests many cools things.
                                           |Just read it and you'll see what I mean.""".trimMargin(),
                         tags = listOf("one", "two", "three", "four"),
-                        steps = listOf(
+                        stepCalls = listOf(
                                 FileManualStepCall(
                                         step = FileStepCall(
                                                 phase = FileStepPhase.GIVEN,
@@ -123,7 +123,7 @@ class FileManualTestDefSerializerTest {
                                           |It tests many cools things.
                                           |Just read it and you'll see what I mean.""".trimMargin(),
                                 tags = listOf("one", "two", "three", "four"),
-                                steps = listOf(
+                                stepCalls = listOf(
                                         FileManualStepCall(
                                                 step = FileStepCall(
                                                         phase = FileStepPhase.GIVEN,
@@ -176,7 +176,7 @@ class FileManualTestDefSerializerTest {
                                 name = "The name of the test",
                                 description = null,
                                 tags = emptyList(),
-                                steps = emptyList(),
+                                stepCalls = emptyList(),
                                 status = FileManualTestStatus.NOT_APPLICABLE,
                                 comments = null
                         )
@@ -196,7 +196,7 @@ class FileManualTestDefSerializerTest {
                                 name = "The name of the test",
                                 description = "",
                                 tags = emptyList(),
-                                steps = emptyList(),
+                                stepCalls = emptyList(),
                                 status = FileManualTestStatus.NOT_APPLICABLE,
                                 comments = ""
                         )

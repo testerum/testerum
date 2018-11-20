@@ -24,7 +24,7 @@ class FileToBusinessStepMapper(private val phaseMapper: FileToBusinessPhaseMappe
         val stepPattern = mapSignatureParts(fileStepDef.signature.parts)
 
         val stepCallIdPrefix = StepHashUtil.calculateStepHash(phase, stepPattern)
-        val stepCalls = callsMapper.mapStepsCalls(fileStepDef.steps, stepCallIdPrefix)
+        val stepCalls = callsMapper.mapStepCalls(fileStepDef.steps, stepCallIdPrefix)
 
         return ComposedStepDef(
                 path = path,

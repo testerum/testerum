@@ -19,4 +19,5 @@ data class ManualTreeStatusFilter @JsonCreator constructor(@JsonProperty("showNo
                 "search=$search, " +
                 "tags=$tags)"
     }
+
 }

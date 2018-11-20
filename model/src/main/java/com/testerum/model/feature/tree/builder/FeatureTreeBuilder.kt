@@ -63,7 +63,6 @@ class FeatureTreeBuilder {
                                 path: List<String>,
                                 childrenNodes: List<Any>,
                                 indexInParent: Int): Any {
-            @Suppress("UNCHECKED_CAST")
             return when (payload) {
                 null, is Feature -> {
                     @Suppress("UNCHECKED_CAST")

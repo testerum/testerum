@@ -49,7 +49,7 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
                     name = testName,
                     description = description,
                     tags = tags,
-                    steps = steps,
+                    stepCalls = steps,
                     status = testStatus,
                     comments = comments
             )

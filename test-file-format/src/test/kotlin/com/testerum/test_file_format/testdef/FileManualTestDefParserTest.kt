@@ -62,7 +62,7 @@ class FileManualTestDefParserTest {
                                 description = """ |A composed step that allows us to bypass the login screen.
                                                    |Will be useful from many tests.""".trimMargin(),
                                 tags = listOf("one", "two", "three"),
-                                steps = listOf(
+                                stepCalls = listOf(
                                         FileManualStepCall(
                                                 step = FileStepCall(
                                                         phase = FileStepPhase.GIVEN,
@@ -173,7 +173,7 @@ class FileManualTestDefParserTest {
                                 name = "Empty test",
                                 description = null,
                                 tags = emptyList(),
-                                steps = emptyList(),
+                                stepCalls = emptyList(),
                                 status = FileManualTestStatus.NOT_EXECUTED,
                                 comments = null
                         )

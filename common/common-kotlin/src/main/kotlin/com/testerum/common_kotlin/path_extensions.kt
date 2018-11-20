@@ -11,6 +11,7 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileAttribute
 import java.nio.file.attribute.FileAttributeView
 import java.util.*
+import java.util.stream.Collectors
 import java.nio.file.Path as JavaPath
 
 val JavaPath.exists: Boolean
@@ -85,6 +86,14 @@ fun JavaPath.isSameFileAs(other: JavaPath): Boolean {
 }
 
 fun JavaPath.isNotSameFileAs(other: JavaPath): Boolean = !this.isSameFileAs(other)
+
+fun JavaPath.list(): List<JavaPath> {
+    Files.list(this).use { pathStream ->
+        return pathStream.collect(
+                Collectors.toList()
+        )
+    }
+}
 
 /**
  * Moves this file to the path represented by ``destination``.

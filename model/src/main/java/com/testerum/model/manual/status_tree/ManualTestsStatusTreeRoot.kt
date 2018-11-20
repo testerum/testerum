@@ -9,4 +9,15 @@ data class ManualTestsStatusTreeRoot @JsonCreator constructor(@JsonProperty("pat
                                                               @JsonProperty("name") override val name: String,
                                                               @JsonProperty("status") override val status: ManualTestStatus,
                                                               @JsonProperty("children") val children: List<ManualTestsStatusTreeBase>
-): ManualTestsStatusTreeBase
+): ManualTestsStatusTreeBase {
+
+    companion object {
+        val EMPTY = ManualTestsStatusTreeRoot(
+                path = Path.EMPTY,
+                name = "",
+                status = ManualTestStatus.NOT_APPLICABLE,
+                children = emptyList()
+        )
+    }
+
+}

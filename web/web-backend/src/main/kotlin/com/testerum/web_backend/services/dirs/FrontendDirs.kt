@@ -34,6 +34,10 @@ class FrontendDirs(private val settingsManager: SettingsManager) {
     fun getOptionalTestsDir(): JavaPath? = getOptionalFeaturesDir()
     fun getTestsDir(repositoryDir: JavaPath): JavaPath = getFeaturesDir(repositoryDir)
 
+    fun getRequiredManualTestsDir(): JavaPath = getManualTestsDir(getRequiredRepositoryDir())
+    fun getOptionalManualTestsDir(): JavaPath? = getRepositoryDir()?.resolve("manual_tests")
+    fun getManualTestsDir(repositoryDir: JavaPath): JavaPath = repositoryDir.resolve("manual_tests")
+
     fun getRequiredVariablesDir(): JavaPath = getVariablesDir(getRequiredRepositoryDir())
     fun getOptionalVariablesDir(): JavaPath? = getRepositoryDir()?.resolve("variables")
     fun getVariablesDir(repositoryDir: JavaPath): JavaPath = repositoryDir.resolve("variables")

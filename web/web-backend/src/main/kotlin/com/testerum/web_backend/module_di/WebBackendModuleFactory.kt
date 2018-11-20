@@ -63,6 +63,8 @@ import com.testerum.web_backend.services.initializers.caches.impl.TestsCacheInit
 import com.testerum.web_backend.services.initializers.info_logging.InfoLoggerInitializer
 import com.testerum.web_backend.services.initializers.settings.SettingsManagerInitializer
 import com.testerum.web_backend.services.license.LicenseFrontendService
+import com.testerum.web_backend.services.manual.AutomatedToManualTestMapper
+import com.testerum.web_backend.services.manual.ManualTestPlansFrontendService
 import com.testerum.web_backend.services.message.MessageFrontendService
 import com.testerum.web_backend.services.resources.NetworkService
 import com.testerum.web_backend.services.resources.ResourcesFrontendService
@@ -351,6 +353,16 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             jdbcDriversCache = rdbmsDriverConfigCache
     )
 
+    private val automatedToManualTestMapper = AutomatedToManualTestMapper()
+
+    private val manualTestPlansFrontendService = ManualTestPlansFrontendService(
+            testsCache = fileServiceModuleFactory.testsCache,
+            automatedToManualTestMapper = automatedToManualTestMapper,
+            frontendDirs = frontendDirs,
+            manualTestPlanFileService = fileServiceModuleFactory.manualTestPlanFileService,
+            manualTestFileService = fileServiceModuleFactory.manualTestFileService
+    )
+
 
     //---------------------------------------- web controllers ----------------------------------------//
 
@@ -436,7 +448,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             fileSystemFrontendService = fileSystemFrontendService
     )
 
-    private val manualExecPlansController = ManualTestPlansController()
+    private val manualExecPlansController = ManualTestPlansController(
+            manualTestPlansFrontendService = manualTestPlansFrontendService
+    )
 
 
     //---------------------------------------- list of web controllers ----------------------------------------//
