@@ -236,7 +236,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
                     destinationJavaFileWithSuffix,
                     testsDir
             )
-            val testWithNewName = test.copy(text = test.text + destinationFileSuffixIfIsNotUnique);
+            val testWithNewName = test.copy(name = test.name + destinationFileSuffixIfIsNotUnique);
             return save(testWithNewName, testsDir)
         }
         return null;

@@ -86,7 +86,7 @@ export class FeatureService {
 
         return this.http
             .post<Path>(this.FEATURE_URL+"/copy", null, httpOptions).pipe(
-                map(res => new Path().deserialize(res)));
+                map(res => Path.deserialize(res)));
     }
 
     move(sourcePath: Path, destinationPath: Path): Observable<Path> {
@@ -98,7 +98,7 @@ export class FeatureService {
 
         return this.http
             .post<Path>(this.FEATURE_URL+"/move", null, httpOptions).pipe(
-                map(res => new Path().deserialize(res)));
+                map(res => Path.deserialize(res)));
     }
 }
 
