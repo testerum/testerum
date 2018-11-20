@@ -76,6 +76,30 @@ export class FeatureService {
         if(res == null) return null;
         return new RootFeatureNode().deserialize(res);
     }
+
+    copy(sourcePath: Path, destinationPath: Path):  Observable<Path> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('sourcePath', sourcePath.toString())
+                .append('destinationPath', destinationPath.toString())
+        };
+
+        return this.http
+            .post<Path>(this.FEATURE_URL+"/copy", null, httpOptions).pipe(
+                map(res => new Path().deserialize(res)));
+    }
+
+    move(sourcePath: Path, destinationPath: Path): Observable<Path> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('sourcePath', sourcePath.toString())
+                .append('destinationPath', destinationPath.toString())
+        };
+
+        return this.http
+            .post<Path>(this.FEATURE_URL+"/move", null, httpOptions).pipe(
+                map(res => new Path().deserialize(res)));
+    }
 }
 
 

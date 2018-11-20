@@ -1,10 +1,13 @@
-<div class="node-text"
+<div class="feature-tree_test-node node-text"
      (click)="setSelected();$event.stopPropagation();"
+     (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+     (mouseleave)="hasMouseOver=false"
      dnd-draggable [dragEnabled]="true" [dragData]="model">
 
-
-    <div [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
-         [class.tree-leaf-selected]="model.isSelected()">
+    <div class="test-node-text"
+         [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
+         [class.tree-leaf-selected]="model.isSelected()"
+         >
 
         <i *ngIf="model.testProperties.isManual && !model.testProperties.isDisabled" class="fa_my-manual-test" aria-hidden="true"></i>
         <i *ngIf="!model.testProperties.isManual && !model.testProperties.isDisabled" class="fa_my-automated-test" aria-hidden="true"></i>
@@ -13,4 +16,18 @@
         {{model.name}}
     </div>
 
+    <!-- BUTTONS RENDERING -->
+    <div class="button-panel btn-group my-button-panel"
+         [class.hidden]="!hasMouseOver">
+
+        <div title="Cut Test" class="btn btn-default btn-xs btn-group"
+             (click)="onCutFeature(); $event.stopPropagation()">
+            <i class="fa_my-cut" aria-hidden="true"></i>
+        </div>
+
+        <div title="Copy Test" class="btn btn-default btn-xs btn-group"
+             (click)="onCopyFeature(); $event.stopPropagation()">
+            <i class="fa_my-copy" aria-hidden="true"></i>
+        </div>
+    </div>
 </div>

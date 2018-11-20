@@ -1,18 +1,11 @@
 package com.testerum.file_service.file
 
 import com.testerum.common.parsing.executer.ParserExecuter
-import com.testerum.common_kotlin.createDirectories
-import com.testerum.common_kotlin.deleteIfExists
-import com.testerum.common_kotlin.getContent
-import com.testerum.common_kotlin.hasExtension
-import com.testerum.common_kotlin.isRegularFile
-import com.testerum.common_kotlin.smartMoveTo
-import com.testerum.common_kotlin.walk
+import com.testerum.common_kotlin.*
 import com.testerum.file_service.file.util.escape
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileTestMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessTestMapper
 import com.testerum.model.exception.ValidationException
-import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.test.TestModel
 import com.testerum.model.test.TestModel.Companion.TEST_FILE_EXTENSION
@@ -141,24 +134,28 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         testFile.deleteIfExists()
     }
 
-    /**
-     * * ``copyPath.copyPath`` MUST BE a file
-     * * if ``copyPath.destinationKnownPath`` is a file, this method renames ``copyPath`` to this new name
-     * * if ``copyPath.destinationKnownPath`` is a directory, this method moves ``copyPath`` inside this directory
-     *
-     * @return the destination file name, with escapes applied
-     */
-    fun moveTestDirectoryOrFile(copyPath: CopyPath, testsDir: JavaPath): Path {
-        val escapedSourceFile = copyPath.copyPath.escape()
-        val escapedDestinationPath = copyPath.destinationPath.escape()
+    fun moveFeatureOrTest(sourcePath: Path, destinationPath: Path, testsDir: JavaPath): Path {
+        if (sourcePath.isEmpty()) {
+            throw ValidationException("You are not allowed to move the root")
+        }
+
+        val escapedSourceFile = sourcePath.escape()
+        val escapedDestinationPath = destinationPath.escape()
 
         val escapedDestinationFile = if (escapedDestinationPath.isFile()) {
             escapedDestinationPath
         } else {
-            escapedDestinationPath.copy(
-                    fileName = escapedSourceFile.fileName,
-                    fileExtension = escapedSourceFile.fileExtension
-            )
+            if (escapedSourceFile.isFile()) {
+                escapedDestinationPath.copy(
+                        directories = escapedDestinationPath.directories,
+                        fileName = escapedSourceFile.fileName,
+                        fileExtension = escapedSourceFile.fileExtension
+                )
+            } else {
+                escapedDestinationPath.copy(
+                        directories = escapedDestinationPath.directories + escapedSourceFile.directories.last()
+                )
+            }
         }
 
         val sourceJavaFile = testsDir.resolve(
@@ -175,7 +172,136 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
                 }
         )
 
-        return escapedDestinationFile
+        return Path.createInstance(
+                testsDir.relativize(destinationJavaFile).toString()
+        )
     }
 
+    fun copyFeatureOrTest(sourcePath: Path, destinationPath: Path, testsDir: JavaPath): Path {
+        if (sourcePath.isEmpty()) {
+            throw ValidationException("You are not allowed to copy the root")
+        }
+
+        val escapedSourceFile = sourcePath.escape()
+        val escapedDestinationPath = destinationPath.escape()
+
+        val escapedDestinationFile = if (escapedSourceFile.isFile()) {
+            escapedDestinationPath.copy(
+                    fileName = escapedSourceFile.fileName,
+                    fileExtension = escapedSourceFile.fileExtension
+            )
+        } else {
+            escapedDestinationPath.copy(
+                    directories = destinationPath.directories + sourcePath.directories.last()
+            )
+        }
+
+        val sourceJavaFile: JavaPath = testsDir.resolve(escapedSourceFile.toString())
+
+        if (escapedSourceFile != escapedDestinationFile) {
+            val destinationJavaFile: JavaPath = testsDir.resolve(escapedDestinationFile.toString())
+
+            sourceJavaFile.smartCopyTo(
+                    destinationJavaFile,
+                    createDestinationExistsException = {
+                        ValidationException("A test with the same file name already exists.")
+                    }
+            )
+            return escapedDestinationFile;
+
+        } else {
+
+            val destinationFileSuffixIfIsNotUnique: String = getDestinationFileSuffixToBeUnique(escapedDestinationFile, testsDir)
+            val escapedDestinationPathWithSuffix: Path = appendSuffixToPath(escapedDestinationFile, destinationFileSuffixIfIsNotUnique)
+
+            val fullDestinationJavaPath = testsDir.resolve(escapedDestinationPathWithSuffix.toString())
+            sourceJavaFile.smartCopyTo(
+                    fullDestinationJavaPath,
+                    createDestinationExistsException = {
+                        ValidationException("the file at path [$fullDestinationJavaPath] already exists")
+                    }
+            )
+
+            val savedTest = changeTestNameWithNewSuffix(escapedDestinationPathWithSuffix, destinationFileSuffixIfIsNotUnique, testsDir)
+            if (savedTest != null) {
+                return savedTest.path;
+            }
+
+            return escapedDestinationPathWithSuffix
+        }
+    }
+
+    private fun changeTestNameWithNewSuffix(destinationJavaFileWithSuffix: Path,
+                                            destinationFileSuffixIfIsNotUnique: String,
+                                            testsDir: JavaPath): TestModel? {
+
+        if (!destinationJavaFileWithSuffix.isDirectory() && destinationFileSuffixIfIsNotUnique.isNotEmpty()) {
+            val test = getTestAtPath(
+                    destinationJavaFileWithSuffix,
+                    testsDir
+            )
+            val testWithNewName = test.copy(text = test.text + destinationFileSuffixIfIsNotUnique);
+            return save(testWithNewName, testsDir)
+        }
+        return null;
+    }
+
+    private fun getDestinationFileSuffixToBeUnique(escapedDestinationPath: Path, testsDir: JavaPath): String {
+        val destinationFullJavaPath = testsDir.resolve(escapedDestinationPath.toString())
+        if (!destinationFullJavaPath.exists) {
+            return ""
+        }
+
+        val destinationFileSuffix = " - Copy"
+        var destinationFileSuffixCount = 0;
+
+        var destinationUniqueSuffix: String = "";
+
+        do {
+            destinationUniqueSuffix = destinationFileSuffix + (if (destinationFileSuffixCount != 0) "_$destinationFileSuffixCount" else "")
+            destinationFileSuffixCount++;
+
+            var destinationPath = escapedDestinationPath
+            if (destinationPath.isFile()) {
+                destinationPath = Path(
+                        destinationPath.directories,
+                        destinationPath.fileName + destinationUniqueSuffix,
+                        destinationPath.fileExtension
+                )
+            } else {
+                val uniqueDirPath = destinationPath.directories.toMutableList()
+                uniqueDirPath[uniqueDirPath.size-1] = uniqueDirPath[uniqueDirPath.size-1] + destinationUniqueSuffix;
+                destinationPath = Path(
+                        uniqueDirPath
+                )
+            }
+
+            val destinationUniqueJavaPath = testsDir.resolve(destinationPath.escape().toString());
+        } while(destinationUniqueJavaPath.exists)
+
+        return destinationUniqueSuffix;
+    }
+
+    private fun appendSuffixToPath(escapedDestinationPath: Path, destinationFileSuffix: String): Path {
+        if (destinationFileSuffix.isEmpty()) {
+            return escapedDestinationPath;
+        }
+
+        var escapedResultPath = escapedDestinationPath
+        if (escapedResultPath.isFile()) {
+            escapedResultPath = Path(
+                    escapedResultPath.directories,
+                    escapedResultPath.fileName + destinationFileSuffix,
+                    escapedResultPath.fileExtension
+            ).escape()
+        } else {
+            val uniqueDirPath = escapedResultPath.directories.toMutableList()
+            uniqueDirPath[uniqueDirPath.size-1] = uniqueDirPath[uniqueDirPath.size-1] + destinationFileSuffix;
+            escapedResultPath = Path(
+                    uniqueDirPath
+            ).escape()
+        }
+
+        return escapedResultPath;
+    }
 }

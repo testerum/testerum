@@ -265,7 +265,18 @@ body {
     @extend .fas;
     @extend .fa-arrow-right;
 }
-
+.fa_my-cut {
+    @extend .fas;
+    @extend .fa-cut;
+}
+.fa_my-copy {
+    @extend .fas;
+    @extend .fa-copy;
+}
+.fa_my-paste {
+    @extend .fas;
+    @extend .fa-paste;
+}
 
 .nav-tabs {
     border-bottom: none;

@@ -2,13 +2,10 @@
 
 package com.testerum.common_kotlin
 
+import org.apache.commons.io.FileUtils
 import java.io.IOException
 import java.nio.charset.Charset
-import java.nio.file.AccessDeniedException
-import java.nio.file.FileVisitResult
-import java.nio.file.FileVisitor
-import java.nio.file.Files
-import java.nio.file.SimpleFileVisitor
+import java.nio.file.*
 import java.nio.file.attribute.BasicFileAttributeView
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileAttribute
@@ -90,39 +87,65 @@ fun JavaPath.isSameFileAs(other: JavaPath): Boolean {
 fun JavaPath.isNotSameFileAs(other: JavaPath): Boolean = !this.isSameFileAs(other)
 
 /**
- * Moves this file to the path represented by ``other``.
+ * Moves this file to the path represented by ``destination``.
  *
- * If ``other`` is the same file as ``this`` (but for example, with a different case, on case-insensitive file systems),
+ * If ``destination`` is the same file as ``this`` (but for example, with a different case, on case-insensitive file systems),
  * the file will be renamed.
  *
- * Throws an exception if ``other`` exists and it's a different file from ``this``.
+ * Throws an exception if ``destination`` exists and it's a different file from ``this``.
  */
-fun JavaPath.smartMoveTo(other: JavaPath,
+fun JavaPath.smartMoveTo(destination: JavaPath,
                          createDestinationExistsException: () -> Exception) {
     if (this.doesNotExist) {
         return
     }
 
-    if (other.doesNotExist) {
-        other.parent?.createDirectories()
-        Files.move(this, other)
+    if (destination.doesNotExist) {
+        destination.parent?.createDirectories()
+        Files.move(this, destination)
     } else {
-        val isSameFile = this.isSameFileAs(other)
+        val isSameFile = this.isSameFileAs(destination)
 
         if (isSameFile) {
-            if (this.toAbsolutePath().toString() != other.toAbsolutePath().toString()) {
+            if (this.toAbsolutePath().toString() != destination.toAbsolutePath().toString()) {
                 // this can happen for example when changing letter casing, on a case-insensitive file system
 
-                other.parent?.createDirectories()
+                destination.parent?.createDirectories()
 
-                val tempFile = other.resolveSibling(UUID.randomUUID().toString())
+                val tempFile = destination.resolveSibling(UUID.randomUUID().toString())
 
                 Files.move(this, tempFile)
-                Files.move(tempFile, other)
+                Files.move(tempFile, destination)
             }
         } else {
             throw createDestinationExistsException()
         }
+    }
+}
+
+/**
+ * Copy this file or directory to the path represented by ``destination``.
+ *
+ * If ``destination`` is the same file as ``this`` (but for example, with a different case, on case-insensitive file systems),
+ * the file will be renamed.
+ *
+ * Throws an exception if ``destination`` exists and it's a different file from ``this``.
+ */
+fun JavaPath.smartCopyTo(destination: JavaPath,
+                         createDestinationExistsException: () -> Exception) {
+    if (this.doesNotExist) {
+        return
+    }
+
+    if (destination.doesNotExist) {
+        if (this.isDirectory) {
+            FileUtils.copyDirectory(this.toFile(), destination.toFile())
+        } else {
+            destination.parent?.createDirectories()
+            Files.copy(this, destination)
+        }
+    } else {
+        throw createDestinationExistsException()
     }
 }
 

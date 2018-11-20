@@ -18,8 +18,11 @@ export class FeaturesTreeService {
     treeModel: JsonTreeModel;
     treeFilter: FeaturesTreeFilter = FeaturesTreeFilter.createEmptyFilter();
 
+    pathToCut: Path = null;
+    pathToCopy: Path = null;
+
     constructor(private jsonTreeService: JsonTreeService,
-                private featureService: FeatureService){
+                private featureService: FeatureService) {
     }
 
     initializeTestsTreeFromServer(selectedPath: Path, expandToLevel: number = 2) {
@@ -45,13 +48,6 @@ export class FeaturesTreeService {
         }
     }
 
-    copy(pathToCopy: Path, destinationPath: Path) {
-        JsonTreePathUtil.copy(this.treeModel, pathToCopy, destinationPath);
-
-        let newParent:FeatureTreeContainerModel = JsonTreePathUtil.getNode(this.treeModel, destinationPath) as FeatureTreeContainerModel;
-        newParent.sort();
-    }
-
     private sort(testsJsonTreeModel: JsonTreeModel): void {
         this.sortChildren(testsJsonTreeModel.children);
     }
@@ -73,10 +69,25 @@ export class FeaturesTreeService {
             return 0;
         });
 
-        children.forEach( it => {
-            if(it.isContainer()) {
+        children.forEach(it => {
+            if (it.isContainer()) {
                 this.sortChildren((it as FeatureTreeContainerModel).children)
             }
         })
+    }
+
+    setPathToCut(path: Path) {
+        this.pathToCopy = null;
+        this.pathToCut = path;
+    }
+
+    setPathToCopy(path: Path) {
+        this.pathToCopy = path;
+        this.pathToCut = null;
+    }
+
+    canPaste(path: Path): boolean {
+        return (this.pathToCopy != null && !this.pathToCopy.equals(path))
+            || (this.pathToCut != null && !this.pathToCut.equals(path));
     }
 }

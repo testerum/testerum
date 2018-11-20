@@ -37,6 +37,23 @@
             </div>
 
             <div *ngIf="model.editable"
+                 title="Cut Feature" class="btn btn-default btn-xs btn-group"
+                 (click)="onCutFeature(); $event.stopPropagation()">
+                <i class="fa_my-cut" aria-hidden="true"></i>
+            </div>
+
+            <div *ngIf="model.editable"
+                 title="Copy Feature" class="btn btn-default btn-xs btn-group"
+                 (click)="onCopyFeature(); $event.stopPropagation()">
+                <i class="fa_my-copy" aria-hidden="true"></i>
+            </div>
+
+            <div *ngIf="canPaste()" title="Paste Feature" class="btn btn-default btn-xs btn-group"
+                 (click)="onPasteFeature(); $event.stopPropagation()">
+                <i class="fa_my-paste" aria-hidden="true"></i>
+            </div>
+
+            <div *ngIf="model.editable"
                  title="Delete Folder" class="btn btn-default btn-xs btn-group"
                  (click)="deleteDirectory(); $event.stopPropagation()">
                 <i class="fa_my-delete" aria-hidden="true"></i>

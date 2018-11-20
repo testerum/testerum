@@ -1,28 +1,40 @@
+.feature-tree_test-node {
+    width: 100%;
 
-.param-icon {
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
+    .test-node-text {
+        display: inline-block;
+    }
 
-    background-image: url(../../../../../../media/32px-tree.png);
-    background-repeat: no-repeat;
+    .param-icon {
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
 
-    display: inline-block;
-    text-decoration: none;
-    margin: 0;
-    padding: 0;
-    vertical-align: top;
-    text-align: center;
-    background-position: -68px -4px;
+        background-image: url(../../../../../../media/32px-tree.png);
+        background-repeat: no-repeat;
+
+        display: inline-block;
+        text-decoration: none;
+        margin: 0;
+        padding: 0;
+        vertical-align: top;
+        text-align: center;
+        background-position: -68px -4px;
+    }
+
+    .step-parameters-table {
+        display: inline-block;
+        width: auto;
+        background-color: whitesmoke;
+        margin-bottom: 0;
+    }
+
+    i {
+        margin-left: 1px;
+    }
+
+    .my-button-panel {
+        margin-left: 5px;
+    }
 }
 
-.step-parameters-table {
-    display: inline-block;
-    width: auto;
-    background-color: whitesmoke;
-    margin-bottom: 0;
-}
-
-i {
-    margin-left: 1px;
-}

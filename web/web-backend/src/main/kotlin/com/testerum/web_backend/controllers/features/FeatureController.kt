@@ -70,5 +70,25 @@ class FeatureController(private val featuresFrontendService: FeaturesFrontendSer
         )
     }
 
+    @RequestMapping(method = [RequestMethod.POST], path = ["/copy"])
+    @ResponseBody
+    fun copy(@RequestParam("sourcePath") sourcePath: String,
+             @RequestParam("destinationPath") destinationPath: String): Path {
 
+        return featuresFrontendService.copyFeatureOrTest(
+                Path.createInstance(sourcePath),
+                Path.createInstance(destinationPath)
+        );
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/move"])
+    @ResponseBody
+    fun move(@RequestParam("sourcePath") sourcePath: String,
+             @RequestParam("destinationPath") destinationPath: String): Path {
+
+        return featuresFrontendService.moveFeatureOrTest(
+                Path.createInstance(sourcePath),
+                Path.createInstance(destinationPath)
+        );
+    }
 }

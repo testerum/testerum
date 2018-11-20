@@ -4,4 +4,5 @@ export enum JsonTreeContainerEditorEnum {
     DELETE,
     UPDATE,
     COPY,
+    MOVE,
 }

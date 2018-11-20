@@ -132,16 +132,33 @@ class TestsCache(private val testFileService: TestFileService,
         }
     }
 
-    fun moveTestDirectoryOrFile(copyPath: CopyPath) {
+    fun moveFeatureOrFile(sourcePath: Path, destinationPath: Path): Path {
         lock.write {
             val testsDir = this.testsDir
                     ?: throw IllegalStateException("cannot save composed step because the testsDir is not set")
             val resourcesDir = this.resourcesDir
                     ?: throw IllegalStateException("cannot save composed step because the resourcesDir is not set")
 
-            testFileService.moveTestDirectoryOrFile(copyPath, testsDir)
+            val movedFeatureOrFileNewPath = testFileService.moveFeatureOrTest(sourcePath, destinationPath, testsDir)
 
             initialize(testsDir, resourcesDir)
+
+            return movedFeatureOrFileNewPath;
+        }
+    }
+
+    fun copyFeatureOrFile(sourcePath: Path, destinationPath: Path): Path {
+        lock.write {
+            val testsDir = this.testsDir
+                    ?: throw IllegalStateException("cannot save composed step because the testsDir is not set")
+            val resourcesDir = this.resourcesDir
+                    ?: throw IllegalStateException("cannot save composed step because the resourcesDir is not set")
+
+            val copiedFeatureOrFileNewPath = testFileService.copyFeatureOrTest(sourcePath, destinationPath, testsDir)
+
+            initialize(testsDir, resourcesDir)
+
+            return copiedFeatureOrFileNewPath;
         }
     }
 
@@ -155,5 +172,4 @@ class TestsCache(private val testFileService: TestFileService,
             initialize(testsDir, resourcesDir)
         }
     }
-
 }

@@ -69,18 +69,6 @@ export class TestsService {
         this.urlService.navigateToFeatures();
     }
 
-    moveDirectoryOrFile(copyPath: CopyPath): Observable<void> {
-        let body = copyPath.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
-
-        return this.http
-            .post<void>(this.TESTS_URL + "/directory/move", body, httpOptions);
-    }
-
     getWarnings(testModel:TestModel): Observable<TestModel> {
         let body = testModel.serialize();
         const httpOptions = {

@@ -66,6 +66,14 @@ export class JsonTreeContainerEditor {
         this.editorEventEmitter = new EventEmitter<JsonTreeContainerEditorEvent>();
         return this.editorEventEmitter;
     }
+    showToMoveContainer(pathToCopy: Path, destinationPath: Path): EventEmitter<JsonTreeContainerEditorEvent> {
+        this.actionType = JsonTreeContainerEditorEnum.MOVE;
+        this.name = destinationPath.toString();
+        this.oldName = pathToCopy.toString();
+        this.isFile = pathToCopy.isFile();
+        this.editorEventEmitter = new EventEmitter<JsonTreeContainerEditorEvent>();
+        return this.editorEventEmitter;
+    }
 
     hide(): void {
         this.editorEventEmitter.complete();

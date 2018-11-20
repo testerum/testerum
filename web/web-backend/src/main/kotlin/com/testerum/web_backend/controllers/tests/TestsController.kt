@@ -41,13 +41,4 @@ class TestsController(private val testsFrontendService: TestsFrontendService) {
                 Path.createInstance(path)
         )
     }
-
-    // todo: refactor:
-    // - in the UI, if the node we drag is a feature, call "POST /features?path=:path" to move the feature
-    // - in the UI, if the node we drag is a test, call "POST /tests/save" to move the test
-    @RequestMapping(method = [RequestMethod.POST], path = ["/directory/move"])
-    fun moveDirectoryOrFile(@RequestBody copyPath: CopyPath) {
-        testsFrontendService.moveDirectoryOrFile(copyPath)
-    }
-
 }

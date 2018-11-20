@@ -12,6 +12,7 @@ import {Subscription} from "rxjs";
 import {UrlService} from "../../../../service/url.service";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {FeatureService} from '../../../../service/feature.service';
+import {Path} from "../../../../model/infrastructure/path/path.model";
 
 @Component({
     moduleId: module.id,
@@ -104,19 +105,62 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
         this.jsonTreeService.triggerCopyAction(pathToCopy, destinationPath).subscribe(
             (copyEvent: JsonTreeContainerEditorEvent) => {
 
-                let copyPath = new CopyPath(pathToCopy, destinationPath);
-                this.testsService.moveDirectoryOrFile (
-                    copyPath
-                ).subscribe(
-                    it => {
-                        this.featuresTreeService.copy(pathToCopy, destinationPath);
-                    }
-                )
+                this.featureService.move(pathToCopy, destinationPath).subscribe( (resultPath: Path) => {
+                    this.afterPasteOperation(resultPath);
+                });
             }
         )
     }
 
     isOpenedNode(): boolean {
         return this.model.jsonTreeNodeState.showChildren
+    }
+
+    onCutFeature() {
+        this.setSelected();
+        this.featuresTreeService.setPathToCut(this.model.path);
+    }
+
+    onCopyFeature() {
+        this.setSelected();
+        this.featuresTreeService.setPathToCopy(this.model.path);
+    }
+
+    onPasteFeature() {
+        let destinationPath = this.model.path;
+        if (this.featuresTreeService.pathToCopy) {
+            let sourcePath = this.featuresTreeService.pathToCopy;
+            this.jsonTreeService.triggerCopyAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
+                    this.featureService.copy(sourcePath, destinationPath).subscribe( (resultPath: Path) => {
+                        this.afterPasteOperation(resultPath);
+                    });
+                }
+            )
+        }
+        if (this.featuresTreeService.pathToCut) {
+            let sourcePath = this.featuresTreeService.pathToCut;
+            this.jsonTreeService.triggerMoveAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
+                    this.featureService.move(sourcePath, destinationPath).subscribe( (resultPath: Path) => {
+                        this.afterPasteOperation(resultPath);
+                    });
+                }
+            )
+        }
+    }
+
+    private afterPasteOperation(resultPath: Path) {
+        this.featuresTreeService.pathToCut = null;
+        this.featuresTreeService.pathToCopy = null;
+
+        this.featuresTreeService.initializeTestsTreeFromServer(resultPath);
+        if (resultPath.isFile()) {
+            this.urlService.navigateToTest(resultPath);
+        } else {
+            this.urlService.navigateToFeature(resultPath);
+        }
+    }
+
+    canPaste(): boolean {
+        return this.featuresTreeService.canPaste(this.model.path);
     }
 }

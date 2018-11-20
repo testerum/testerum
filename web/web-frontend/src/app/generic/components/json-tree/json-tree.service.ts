@@ -72,4 +72,8 @@ export class JsonTreeService {
         let bsModalRef = this.modalService.show(JsonTreeContainerEditor);
         return bsModalRef.content.showToCopyContainer(pathToCopy, destinationPath);
     }
+    triggerMoveAction(pathToCopy: Path, destinationPath: Path): EventEmitter<JsonTreeContainerEditorEvent> {
+        let bsModalRef = this.modalService.show(JsonTreeContainerEditor);
+        return bsModalRef.content.showToMoveContainer(pathToCopy, destinationPath);
+    }
 }

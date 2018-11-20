@@ -244,7 +244,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             frontendDirs = frontendDirs,
             featuresCache = fileServiceModuleFactory.featuresCache,
             testsCache = fileServiceModuleFactory.testsCache,
-            featureFileService = fileServiceModuleFactory.featuresFileService
+            featureFileService = fileServiceModuleFactory.featuresFileService,
+            featuresCacheInitializer = featuresCacheInitializer
     )
 
     private val tagsFrontendService = TagsFrontendService(

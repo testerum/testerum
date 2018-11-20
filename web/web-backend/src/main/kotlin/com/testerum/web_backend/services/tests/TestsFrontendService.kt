@@ -24,9 +24,4 @@ class TestsFrontendService(private val saveFrontendService: SaveFrontendService,
     fun deleteTest(path: Path) {
         testsCache.deleteTest(path)
     }
-
-    fun moveDirectoryOrFile(copyPath: CopyPath) {
-        testsCache.moveTestDirectoryOrFile(copyPath)
-    }
-
 }

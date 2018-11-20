@@ -14,6 +14,7 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.test.TestModel
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.features.filterer.FeaturesTreeFilterer
+import com.testerum.web_backend.services.initializers.caches.impl.FeaturesCacheInitializer
 import org.apache.commons.io.IOUtils
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletResponse
@@ -22,7 +23,8 @@ import java.nio.file.Path as JavaPath
 class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
                               private val featuresCache: FeaturesCache,
                               private val testsCache: TestsCache,
-                              private val featureFileService: FeatureFileService) {
+                              private val featureFileService: FeatureFileService,
+                              private val featuresCacheInitializer: FeaturesCacheInitializer) {
 
     companion object {
         private val ATTACHMENT_THUMBNAIL_WIDTH = 200
@@ -207,4 +209,15 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
         }
     }
 
+    fun copyFeatureOrTest(sourcePath: Path, destinationPath: Path): Path {
+        val resultPath = testsCache.copyFeatureOrFile(sourcePath, destinationPath)
+        featuresCacheInitializer.initialize()
+        return resultPath
+    }
+
+    fun moveFeatureOrTest(sourcePath: Path, destinationPath: Path): Path {
+        val moveFeatureOrFile = testsCache.moveFeatureOrFile(sourcePath, destinationPath)
+        featuresCacheInitializer.initialize()
+        return moveFeatureOrFile
+    }
 }

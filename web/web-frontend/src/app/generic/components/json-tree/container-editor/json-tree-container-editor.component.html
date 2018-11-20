@@ -4,7 +4,8 @@
         <button (click)="hide()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">
-            {{actionType == JsonTreeContainerEditorEnum.COPY?'Move?':""}}
+            {{actionType == JsonTreeContainerEditorEnum.MOVE?'Move?':""}}
+            {{actionType == JsonTreeContainerEditorEnum.COPY?'Copy?':""}}
             {{actionType == JsonTreeContainerEditorEnum.DELETE?'Delete "'+name+'" directory?':""}}
             {{actionType == JsonTreeContainerEditorEnum.UPDATE?'Rename "'+oldName+'" directory':""}}
             {{actionType == JsonTreeContainerEditorEnum.CREATE?'Create directory':""}}
@@ -13,11 +14,17 @@
     <div class="modal-body">
 
         <ng-container *ngIf="actionType == JsonTreeContainerEditorEnum.COPY">
+            <div>Are you sure you want to copy</div>
+            <div class="tab bold">{{oldName}}</div>
+            <div>to</div>
+            <div class="tab bold">{{name}}</div>
+        </ng-container>
+
+        <ng-container *ngIf="actionType == JsonTreeContainerEditorEnum.MOVE">
             <div>Are you sure you want to move</div>
             <div class="tab bold">{{oldName}}</div>
-            <div>{{isFile? "file" : "directory"}} to</div>
+            <div>to</div>
             <div class="tab bold">{{name}}</div>
-            <div>directory</div>
         </ng-container>
 
         {{actionType == JsonTreeContainerEditorEnum.DELETE?'Are you sure you want to delete "'+name+'" directory?':""}}
@@ -45,6 +52,7 @@
         <button class="btn btn-primary"
                 [disabled]="currentForm && !currentForm.form.valid">
             {{actionType == JsonTreeContainerEditorEnum.COPY?'Copy':""}}
+            {{actionType == JsonTreeContainerEditorEnum.MOVE?'Move':""}}
             {{actionType == JsonTreeContainerEditorEnum.DELETE?'Delete':""}}
             {{actionType == JsonTreeContainerEditorEnum.UPDATE?'Rename':""}}
             {{actionType == JsonTreeContainerEditorEnum.CREATE?'Create':""}}
