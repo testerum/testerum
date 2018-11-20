@@ -10,6 +10,7 @@ import com.testerum.model.manual.status_tree.ManualTestsStatusTreeNode
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeRoot
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
+import java.util.*
 
 class ManualTestPlanTreeBuilder(private val testPlanName: String) {
 
@@ -36,8 +37,8 @@ class ManualTestPlanTreeBuilder(private val testPlanName: String) {
             @Suppress("UNCHECKED_CAST")
             val children = childrenNodes as List<ManualTestsStatusTreeBase>
 
-            // todo: discuss with Ionut and implement this
-            val status = ManualTestStatus.NOT_APPLICABLE
+            val testStatuses = getDescendantsTestStatuses(childrenNodes)
+            val status = testStatuses.minBy { it.priority } ?: ManualTestStatus.NOT_APPLICABLE
 
             return ManualTestsStatusTreeRoot(
                     path = Path.EMPTY,
@@ -57,8 +58,8 @@ class ManualTestPlanTreeBuilder(private val testPlanName: String) {
                     @Suppress("UNCHECKED_CAST")
                     val children = childrenNodes as List<ManualTestsStatusTreeBase>
 
-                    // todo: discuss with Ionut and implement this
-                    val status = ManualTestStatus.NOT_APPLICABLE
+                    val testStatuses = getDescendantsTestStatuses(childrenNodes)
+                    val status = testStatuses.minBy { it.priority } ?: ManualTestStatus.NOT_APPLICABLE
 
                     ManualTestsStatusTreeContainer(
                             path = Path(directories = path),
@@ -76,5 +77,29 @@ class ManualTestPlanTreeBuilder(private val testPlanName: String) {
             }
 
         }
+
+        private fun getDescendantsTestStatuses(nodes: List<ManualTestsStatusTreeBase>): EnumSet<ManualTestStatus> {
+            val result = EnumSet.noneOf(ManualTestStatus::class.java)
+
+            for (node in nodes) {
+                getDescendantsTestStatuses(result, node)
+            }
+
+            return result
+        }
+
+        private fun getDescendantsTestStatuses(result: EnumSet<ManualTestStatus>,
+                                               node: ManualTestsStatusTreeBase) {
+            when (node) {
+                is ManualTestsStatusTreeRoot -> {
+                    for (child in node.children) {
+                        getDescendantsTestStatuses(result, child)
+                    }
+                }
+                is ManualTestsStatusTreeContainer -> result += node.status
+                is ManualTestsStatusTreeNode      -> result += node.status
+            }
+        }
+
     }
 }
