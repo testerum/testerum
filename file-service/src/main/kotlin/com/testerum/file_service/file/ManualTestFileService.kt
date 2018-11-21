@@ -3,6 +3,7 @@ package com.testerum.file_service.file
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common.serializing.Serializer
 import com.testerum.common_kotlin.createDirectories
+import com.testerum.common_kotlin.deleteIfExists
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.common_kotlin.getContent
 import com.testerum.common_kotlin.hasExtension
@@ -113,6 +114,16 @@ class ManualTestFileService(private val businessToFileManualTestMapper: Business
                 .filterNotNull()
 
         return tests
+    }
+
+    fun deleteTestAtPath(testPath: Path, planPath: Path, manualTestsDir: JavaPath) {
+        val escapedTestPath = testPath.escape()
+        val escapedPlanPath = planPath.escape()
+
+        val planJavaPath = manualTestsDir.resolve(escapedPlanPath.toString())
+        val testFileJavaPath = planJavaPath.resolve(escapedTestPath.toString())
+
+        testFileJavaPath.deleteIfExists()
     }
 
 }

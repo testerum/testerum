@@ -15,54 +15,64 @@ object FeaturesTreeFilterer {
     private val LOG = LoggerFactory.getLogger(FeaturesTreeFilterer::class.java)
 
     fun filterFeatures(features: Collection<Feature>, filter: FeaturesTreeFilter): List<Feature> {
-        val results = mutableListOf<Feature>()
+        val result = mutableListOf<Feature>()
 
         for (feature in features) {
-            val matchesTextSearch = featureMatchesTextSearch(feature, filter)
-            val matchesTags = matchesTags(feature.tags, filter)
-
-            if (matchesTextSearch && matchesTags) {
-                results.add(feature)
+            if (!featureMatchesTextSearch(feature, filter.search)) {
+                continue
             }
+            if (!matchesTags(feature.tags, filter.tags)) {
+                continue
+            }
+
+            result += feature
         }
 
-        return results
+        return result
     }
 
-    private fun featureMatchesTextSearch(feature: Feature, filter: FeaturesTreeFilter): Boolean {
-        if (feature.path.toString().containsSearchStringParts(filter.search)) {
+    private fun featureMatchesTextSearch(feature: Feature, filterSearch: String?): Boolean {
+        if (filterSearch == null) {
+            return true // not filtering on text
+        }
+
+        if (feature.path.toString().containsSearchStringParts(filterSearch)) {
             return true
         }
 
-        if (feature.name.containsSearchStringParts(filter.search)) {
+        if (feature.name.containsSearchStringParts(filterSearch)) {
             return true
         }
 
-        if (feature.description.containsSearchStringParts(filter.search)) {
+        if (feature.description.containsSearchStringParts(filterSearch)) {
             return true
         }
 
         return false
     }
 
-    private fun matchesTags(tags: List<String>, filer: FeaturesTreeFilter): Boolean {
+    private fun matchesTags(tags: List<String>, filterTags: List<String>): Boolean {
         val featureUpperCasedTags = tags.map(String::toUpperCase)
 
         return featureUpperCasedTags.containsAll(
-                filer.tags.map(String::toUpperCase)
+                filterTags.map(String::toUpperCase)
         )
     }
 
     fun filterTests(tests: Collection<TestModel>, filter: FeaturesTreeFilter): List<TestModel> {
         val results = mutableListOf<TestModel>()
         for (test in tests) {
-            val testMatchesTypeFilter = testMatchesType(test, filter)
-            val testMatchesTestFilter = testMatchesTextSearch(test, filter)
-            val matchesTags = matchesTags(test.tags, filter)
-
-            if (testMatchesTypeFilter && testMatchesTestFilter && matchesTags) {
-                results.add(test)
+            if (!testMatchesType(test, filter)) {
+                continue
             }
+            if (!testMatchesTextSearch(test, filter)) {
+                continue
+            }
+            if (!matchesTags(test.tags, filter.tags)) {
+                continue
+            }
+
+            results += test
         }
 
         return results

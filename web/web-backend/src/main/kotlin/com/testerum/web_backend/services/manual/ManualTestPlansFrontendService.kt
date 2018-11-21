@@ -14,14 +14,16 @@ import com.testerum.model.manual.ManualTreeTest
 import com.testerum.model.manual.enums.ManualTestStatus
 import com.testerum.model.manual.enums.ManualTestStepStatus
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeRoot
-import com.testerum.model.manual.status_tree.builder.ManualTestPlanTreeBuilder
+import com.testerum.model.manual.status_tree.builder.ManualTestsTreeBuilder
 import com.testerum.model.manual.status_tree.filter.ManualTreeStatusFilter
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.TextStepPatternPart
+import com.testerum.test_file_format.manual_test_plan.FileManualTestPlan
 import com.testerum.web_backend.services.dirs.FrontendDirs
+import com.testerum.web_backend.services.manual.filterer.ManualTestsTreeFilterer
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 import java.nio.file.Path as JavaPath
@@ -37,13 +39,24 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
     }
 
     fun savePlan(plan: ManualTestPlan): ManualTestPlan {
-        // todo: check if the directory already exists, and update if needed
-
-        // save test plan
         val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
+
+        val existingPlan = getPlanAtPath(plan.path)
+        if (existingPlan != null) {
+            // delete tests
+            val testPaths = plan.manualTreeTests.map { it.path }
+            val existingTestPaths = existingPlan.manualTreeTests.map { it.path }
+            val pathsOfTestsToDelete = existingTestPaths.filter { it !in testPaths }
+
+            for (path in pathsOfTestsToDelete) {
+                manualTestFileService.deleteTestAtPath(path, plan.path, manualTestsDir)
+            }
+        }
+
+        // save plan
         val savedTestPlan = manualTestPlanFileService.save(plan, manualTestsDir)
 
-
+        // save tests
         val pathsToSave = plan.manualTreeTests.map { it.path }
 
         for (pathToSave in pathsToSave) {
@@ -107,7 +120,7 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
         val notExecutedOrInProgressTests = testsWithFinalizedFlag.count { it.status == ManualTestStatus.NOT_EXECUTED || it.status == ManualTestStatus.IN_PROGRESS }
 
         return plan.copy(
-                manualTreeTests = manualTreeTests,
+                manualTreeTests = manualTreeTests.sortedBy { it.testName },
                 passedTests = passedTests,
                 failedTests = failedTests,
                 blockedTests = blockedTests,
@@ -132,10 +145,9 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
         val tests = manualTestFileService.getTestsAtPlanPath(plan.path, manualTestsDir)
         val testsWithFinalizedFlag = tests.map { it.copy(isFinalized = plan.isFinalized) }
 
-        val treeBuilder = ManualTestPlanTreeBuilder(testPlanName = plan.name)
+        val treeBuilder = ManualTestsTreeBuilder(testPlanName = plan.name)
 
-        // todo: filter
-        val filteredTests = testsWithFinalizedFlag
+        val filteredTests = ManualTestsTreeFilterer.filterTests(testsWithFinalizedFlag, filter)
 
         for (test in filteredTests) {
             treeBuilder.addTest(test)
@@ -148,9 +160,13 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
                       testPath: Path): ManualTest? {
         val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
 
-        // todo: read is-finalized from containing plan
+        val test: ManualTest = manualTestFileService.getTestAtPath(planPath, testPath, manualTestsDir)
+                ?: return null
 
-        return manualTestFileService.getTestAtPath(planPath, testPath, manualTestsDir)
+        val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
+        val isFinalized = plan?.isFinalized ?: FileManualTestPlan.IS_FINALIZED_DEFAULT
+
+        return test.copy(isFinalized = isFinalized)
     }
 
     fun finalizePlan(planPath: Path): ManualTestPlan {
@@ -282,6 +298,26 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
                 "",
                 false
         )
+    }
+
+    fun getNextTestToExecute(planPath: Path,
+                             currentTestPath: Path): Path? {
+        val plan: ManualTestPlan = getPlanAtPath(planPath)
+                ?: return null
+
+        val testPaths = plan.manualTreeTests.map { it.path }
+        if (testPaths.isEmpty()) {
+            return null
+        }
+
+        val indexOfCurrentTestPath = testPaths.indexOf(currentTestPath)
+        if (indexOfCurrentTestPath == -1) {
+            return testPaths[0]
+        } else if (indexOfCurrentTestPath == testPaths.size - 1) {
+            return null
+        } else {
+            return testPaths[indexOfCurrentTestPath + 1]
+        }
     }
 
 }

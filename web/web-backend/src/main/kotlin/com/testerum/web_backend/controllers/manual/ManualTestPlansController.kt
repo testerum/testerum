@@ -93,8 +93,11 @@ class ManualTestPlansController(private val manualTestPlansFrontendService: Manu
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/plans/runner/next"], params = ["planPath", "currentTestPath"])
     @ResponseBody
-    fun getNextUnExecutedTest(@RequestParam(value = "planPath") planPath: String,
-                              @RequestParam(value = "currentTestPath") currentTestPath: String): Path {
-        return Path.createInstance(currentTestPath)
+    fun getNextTestToExecute(@RequestParam(value = "planPath") planPath: String,
+                              @RequestParam(value = "currentTestPath") currentTestPath: String): Path? {
+        return manualTestPlansFrontendService.getNextTestToExecute(
+                Path.createInstance(planPath),
+                Path.createInstance(currentTestPath)
+        )
     }
 }

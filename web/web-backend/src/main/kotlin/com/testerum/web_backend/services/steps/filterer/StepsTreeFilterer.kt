@@ -8,32 +8,6 @@ import com.testerum.model.step.filter.StepsTreeFilter
 
 object StepsTreeFilterer {
 
-    fun filterBasicSteps(steps: Collection<StepDef>,
-                         filter: StepsTreeFilter): List<BasicStepDef> {
-        val result = mutableListOf<BasicStepDef>()
-
-        for (step in steps) {
-            if (step is BasicStepDef && matches(step, filter)) {
-                result += step
-            }
-        }
-
-        return result
-    }
-
-    fun filterComposedSteps(steps: Collection<StepDef>,
-                            filter: StepsTreeFilter): List<ComposedStepDef> {
-        val result = mutableListOf<ComposedStepDef>()
-
-        for (step in steps) {
-            if (step is ComposedStepDef && matches(step, filter)) {
-                result += step
-            }
-        }
-
-        return result
-    }
-
     fun matches(step: StepDef, filter: StepsTreeFilter): Boolean {
         val stepMatchesTypeFilter = stepMatchesTypeFilter(step, filter)
         val stepMatchesTestFilter = stepMatchesSearchFilter(step, filter)

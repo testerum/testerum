@@ -12,10 +12,10 @@ import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
 import java.util.*
 
-class ManualTestPlanTreeBuilder(private val testPlanName: String) {
+class ManualTestsTreeBuilder(testPlanName: String) {
 
     private val builder = TreeBuilder(
-            ManualTestPlanTreeBuilderCustomizer(testPlanName)
+            ManualTestsTreeBuilderCustomizer(testPlanName)
     )
 
     fun addTest(test: ManualTest) = builder.add(test)
@@ -24,7 +24,7 @@ class ManualTestPlanTreeBuilder(private val testPlanName: String) {
 
     override fun toString(): String = builder.toString()
 
-    private class ManualTestPlanTreeBuilderCustomizer(private val testPlanName: String) : TreeBuilderCustomizer {
+    private class ManualTestsTreeBuilderCustomizer(private val testPlanName: String) : TreeBuilderCustomizer {
         override fun getPath(payload: Any): List<String> = (payload as ManualTest).path.directories.withAdditional(getLabel(payload))
 
         override fun isContainer(payload: Any): Boolean = false
@@ -65,7 +65,7 @@ class ManualTestPlanTreeBuilder(private val testPlanName: String) {
                             path = Path(directories = path),
                             name = label,
                             status = status,
-                            children = children
+                            children = children.sortedBy { it.name }
                     )
                 }
                 is ManualTest -> ManualTestsStatusTreeNode(
