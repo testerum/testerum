@@ -23,7 +23,7 @@ import {filter, map} from "rxjs/operators";
 export class ManualTestsStatusTreeComponent implements OnInit, OnDestroy {
 
     @Input() isNavigationTree: boolean = false;
-    private planPath: Path = null;
+    planPath: Path = null;
 
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(ManualUiTreeRootStatusModel, ManualTestsStatusTreeNodeComponent)
