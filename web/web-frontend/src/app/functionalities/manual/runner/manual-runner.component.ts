@@ -23,7 +23,10 @@ export class ManualRunnerComponent extends AbstractComponentCanDeactivate implem
     }
 
     ngOnInit() {
-        this.manualExecPlansService.getManualExecPlan(Path.createInstance(runnerPlanPathAsString)).subscribe( (manualExecPlan: ManualTestPlan) => {
+        let planPathAsString = this.route.snapshot.params["planPath"];
+        let planPath = Path.createInstance(planPathAsString);
+
+        this.manualExecPlansService.getManualExecPlan(planPath).subscribe( (manualExecPlan: ManualTestPlan) => {
             this.manualExecPlan = manualExecPlan;
         });
     }
