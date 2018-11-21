@@ -104,4 +104,27 @@ export class ManualSelectTestsTreeComponent implements OnInit, OnChanges {
             true
         );
     }
+
+    getSelectedTests(): ManualTreeTest[] {
+        let result: ManualTreeTest[] = [];
+        this.collectSelectedTests(result, this.treeModel.getChildren()[0]);
+
+        return result;
+    }
+
+    private collectSelectedTests(result: ManualTreeTest[], parentNode: ManualSelectTestsTreeContainerModel) {
+        for (const child of parentNode.children) {
+            if (child instanceof ManualSelectTestsTreeContainerModel) {
+                this.collectSelectedTests(result, parentNode);
+            }
+
+            let selectTest = child as ManualSelectTestsTreeNodeModel;
+            if (selectTest.isSelected()) {
+                let manualTreeTest = new ManualTreeTest();
+                manualTreeTest.path = selectTest.path;
+                manualTreeTest.testName = selectTest.name;
+                result.push(manualTreeTest)
+            }
+        }
+    }
 }

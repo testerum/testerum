@@ -7,6 +7,7 @@ import {MarkdownEditorComponent} from "../../../../generic/components/markdown-e
 import {AreYouSureModalService} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AbstractComponentCanDeactivate} from "../../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
+import {ManualSelectTestsTreeComponent} from "./manual-select-tests-tree/manual-select-tests-tree.component";
 
 @Component({
     selector: 'manual-test-plan-editor',
@@ -25,6 +26,7 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
     pieChartData: any;
 
     @ViewChild(MarkdownEditorComponent) descriptionMarkdownEditor: MarkdownEditorComponent;
+    @ViewChild(ManualSelectTestsTreeComponent) manualSelectTestsTreeComponent: ManualSelectTestsTreeComponent;
 
     markdownEditorOptions = {
         status: false,
@@ -148,6 +150,9 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
     }
 
     saveAction(): void {
+        this.model.manualTreeTests = this.manualSelectTestsTreeComponent.getSelectedTests();
+        this.model.description = this.descriptionMarkdownEditor.getValue();
+
         this.manualExecPlansService
             .save(this.model)
             .subscribe((savedModel: ManualTestPlan) => this.afterSaveHandler(savedModel));
