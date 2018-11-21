@@ -17,7 +17,7 @@ export class ManualTest implements Serializable<ManualTest>{
     status: ManualTestStatus = ManualTestStatus.NOT_EXECUTED;
     comments: string;
 
-    isFinalized: boolean;
+    finalized: boolean;
 
     deserialize(input: Object): ManualTest {
         this.path = Path.deserialize(input["path"]);
@@ -36,7 +36,7 @@ export class ManualTest implements Serializable<ManualTest>{
         }
 
         this.comments = input['comments'];
-        this.isFinalized = input['isFinalized'];
+        this.finalized = input['finalized'];
 
         return this;
     }
@@ -52,7 +52,7 @@ export class ManualTest implements Serializable<ManualTest>{
             ',"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) +
             ',"status":' + JsonUtil.stringify(this.status.toString()) +
             ',"comments":' + JsonUtil.stringify(this.comments) +
-            ',"isFinalized":' + JsonUtil.stringify(this.isFinalized) +
+            ',"finalized":' + JsonUtil.stringify(this.finalized) +
             '}'
     }
 }

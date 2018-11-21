@@ -118,7 +118,7 @@ export class ManualRunnerEditorComponent implements OnInit {
     }
 
     isFinalized(): boolean {
-        return this.model.isFinalized;
+        return this.model.finalized;
     }
 
     getTestPathDirectoryAsString(): string {

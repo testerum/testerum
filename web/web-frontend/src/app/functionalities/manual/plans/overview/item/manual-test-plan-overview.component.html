@@ -12,7 +12,7 @@
                 </button>
 
                 <button type="button" class="btn btn-success"
-                        *ngIf="!model.isFinalized"
+                        *ngIf="!model.finalized"
                         (click)="navigateToManualExecPlanRunner();$event.stopPropagation();">
                     Execute
                 </button>

@@ -18,6 +18,10 @@ export class ManualTestsStatusTreeService {
     }
 
     initializeTreeFromServer(planPath: Path, testPath: Path, filter: ManualTreeStatusFilterModel) {
+        if (planPath == null) {
+            this.treeModel.children.length = 0;
+            return;
+        }
         this.manualExecPlanService.getManualTestsStatusTree(planPath, filter).subscribe((manualTestsStatusTreeRoot: ManualTestsStatusTreeRoot) => {
             ManualTestsStatusTreeUtil.mapServerModelToTreeModel(manualTestsStatusTreeRoot, this.treeModel);
             this.selectNodeAtPath(testPath);

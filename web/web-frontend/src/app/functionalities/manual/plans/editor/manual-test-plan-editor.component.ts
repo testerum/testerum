@@ -73,7 +73,7 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
         }
 
         this.setEditMode(this.model.path.isEmpty());
-        this.isFinalized = manualTestsRunner.isFinalized;
+        this.isFinalized = manualTestsRunner.finalized;
 
         this.isCreateAction = this.model.path.isEmpty();
 

@@ -161,6 +161,8 @@ export class Path implements Serializable<Path> {
     }
 
     equals(path: Path): boolean {
+        if(path == null) return false;
+
         if (this.fileName != path.fileName) return false;
         if (this.fileExtension != path.fileExtension) return false;
         if (this.directories.length != path.directories.length) return false;
