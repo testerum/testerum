@@ -55,7 +55,7 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
         }
 
         // save plan
-        val savedTestPlan = manualTestPlanFileService.save(plan, manualTestsDir)
+        val savedTestPlan = manualTestPlanFileService.save(planToSave, manualTestsDir)
 
         // save tests
         val pathsToSave = plan.manualTreeTests.map { it.path }
