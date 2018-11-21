@@ -8,6 +8,7 @@ import {AreYouSureModalService} from "../../../../generic/components/are_you_sur
 import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AbstractComponentCanDeactivate} from "../../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 import {ManualSelectTestsTreeComponent} from "./manual-select-tests-tree/manual-select-tests-tree.component";
+import {ManualTestPlansOverviewService} from "../overview/manual-test-plans-overview.service";
 
 @Component({
     selector: 'manual-test-plan-editor',
@@ -35,6 +36,7 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
+                private manualTestPlansOverviewService: ManualTestPlansOverviewService,
                 private manualExecPlansService: ManualTestPlansService,
                 private areYouSureModalService: AreYouSureModalService) {
         super();
@@ -161,6 +163,7 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
     private afterSaveHandler(savedManualTestRunner: ManualTestPlan) {
         this.initialize(savedManualTestRunner);
         this.setEditMode(false);
+        this.manualTestPlansOverviewService.initializeManualPlansOverview();
         this.urlService.navigateToManualExecPlanEditor(savedManualTestRunner.path);
     }
 }

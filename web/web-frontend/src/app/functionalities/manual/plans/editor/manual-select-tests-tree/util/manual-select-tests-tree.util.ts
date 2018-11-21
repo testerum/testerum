@@ -33,7 +33,12 @@ export default class ManualSelectTestsTreeUtil {
     private static mapFeatureContainerToTreeContainer(containerFeatureNode: ContainerFeatureNode, parentTreeContainer: ManualSelectTestsTreeContainerModel) {
         for (const featureNode of containerFeatureNode.children) {
             if (featureNode instanceof TestFeatureNode) {
-                let testNode = new ManualSelectTestsTreeNodeModel(parentTreeContainer, featureNode.name, featureNode.path, false);
+                let testNode = new ManualSelectTestsTreeNodeModel(
+                    parentTreeContainer,
+                    featureNode.name,
+                    new Path(featureNode.path.directories, featureNode.path.fileName, "manual_test"),
+                    false
+                );
                 parentTreeContainer.getChildren().push(testNode)
             }
             if (featureNode instanceof FeatureFeatureNode) {

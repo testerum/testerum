@@ -9,7 +9,7 @@
 
 <div class="panel panel-default execution-card">
     <h4 class="execution-title">Active Executions</h4>
-    <div class="panel-body" *ngFor="let activeExecPlan of activeTestPlans">
+    <div class="panel-body" *ngFor="let activeExecPlan of manualTestPlansOverviewService.activeTestPlans">
 
         <manual-test-plan-overview [model]="activeExecPlan"></manual-test-plan-overview>
 
@@ -18,7 +18,7 @@
 
 <div class="panel panel-default execution-card">
     <h4 class="execution-title">Finalized Executions</h4>
-    <div class="panel-body" *ngFor="let finalizedExecPlan of finalizedTestPlans">
+    <div class="panel-body" *ngFor="let finalizedExecPlan of manualTestPlansOverviewService.finalizedTestPlans">
 
         <manual-test-plan-overview [model]="finalizedExecPlan"></manual-test-plan-overview>
 
