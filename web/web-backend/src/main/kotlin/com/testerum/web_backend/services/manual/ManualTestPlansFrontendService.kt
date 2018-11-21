@@ -41,8 +41,12 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
     fun savePlan(plan: ManualTestPlan): ManualTestPlan {
         val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
 
+        val planToSave: ManualTestPlan
+
         val existingPlan = getPlanAtPath(plan.path)
-        if (existingPlan != null) {
+        if (existingPlan == null) {
+            planToSave = plan
+        } else {
             // delete tests
             val testPaths = plan.manualTreeTests.map { it.path }
             val existingTestPaths = existingPlan.manualTreeTests.map { it.path }
@@ -51,6 +55,11 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
             for (path in pathsOfTestsToDelete) {
                 manualTestFileService.deleteTestAtPath(path, plan.path, manualTestsDir)
             }
+
+            // ignore common tests; when updating a plan, we don't update the tests, we merely create/delete (select/deselect)
+            planToSave = plan.copy(
+                    manualTreeTests = plan.manualTreeTests.filter { it.path in existingTestPaths }
+            )
         }
 
         // save plan
@@ -314,7 +323,7 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
         if (indexOfCurrentTestPath == -1) {
             return testPaths[0]
         } else if (indexOfCurrentTestPath == testPaths.size - 1) {
-            return null
+            return testPaths[0]
         } else {
             return testPaths[indexOfCurrentTestPath + 1]
         }

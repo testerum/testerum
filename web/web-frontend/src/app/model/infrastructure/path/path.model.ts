@@ -147,6 +147,31 @@ export class Path implements Serializable<Path> {
         return result
     }
 
+    isFile(): boolean {
+        return !StringUtils.isEmpty(this.fileName)
+    }
+
+    isEmpty(): boolean {
+        return this.directories.length == 0 && this.fileName == null && this.fileExtension == null;
+    }
+
+    getParentPath():Path {
+        if (this.isFile()) {
+            return new Path(this.directories, null, null);
+        }
+        if (this.directories.length == 0) {
+            return Path.createInstanceOfEmptyPath();
+        }
+
+        let directories = ArrayUtil.copyArray(this.directories);
+        directories.pop();
+        return new Path(directories, null, null)
+    }
+
+    withoutFileExtension(): Path {
+        return new Path(this.directories, this.fileName, null);
+    }
+
     toString(): string {
         let result = this.toDirectoryString();
 
@@ -174,24 +199,4 @@ export class Path implements Serializable<Path> {
         return true;
     }
 
-    isFile(): boolean {
-        return !StringUtils.isEmpty(this.fileName)
-    }
-
-    isEmpty(): boolean {
-        return this.directories.length == 0 && this.fileName == null && this.fileExtension == null;
-    }
-
-    getParentPath():Path {
-        if (this.isFile()) {
-            return new Path(this.directories, null, null);
-        }
-        if (this.directories.length == 0) {
-            return Path.createInstanceOfEmptyPath();
-        }
-
-        let directories = ArrayUtil.copyArray(this.directories);
-        directories.pop();
-        return new Path(directories, null, null)
-    }
 }

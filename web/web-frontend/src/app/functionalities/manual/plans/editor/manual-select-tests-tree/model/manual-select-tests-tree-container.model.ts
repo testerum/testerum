@@ -119,7 +119,9 @@ export class ManualSelectTestsTreeContainerModel extends ManualSelectTestsTreeNo
 
     getChildNodeWithPath(path: Path): ManualSelectTestsTreeNodeModel {
         for (const child of this.children) {
-            if (child.path.equals(path)) {
+            // ignoring file extension to be able to match a path from "features" (having the extension ".test)
+            // with a path from manual tests (having the extension ".manual_test")
+            if (child.path.withoutFileExtension().equals(path.withoutFileExtension())) {
                 return child;
             }
         }
@@ -129,4 +131,5 @@ export class ManualSelectTestsTreeContainerModel extends ManualSelectTestsTreeNo
     getOptions(): JsonTreeContainerOptions {
         return this.options;
     }
+
 }

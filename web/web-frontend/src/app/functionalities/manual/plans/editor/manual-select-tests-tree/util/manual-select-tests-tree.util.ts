@@ -36,7 +36,7 @@ export default class ManualSelectTestsTreeUtil {
                 let testNode = new ManualSelectTestsTreeNodeModel(
                     parentTreeContainer,
                     featureNode.name,
-                    new Path(featureNode.path.directories, featureNode.path.fileName, "manual_test"),
+                    featureNode.path,
                     false
                 );
                 parentTreeContainer.getChildren().push(testNode)
