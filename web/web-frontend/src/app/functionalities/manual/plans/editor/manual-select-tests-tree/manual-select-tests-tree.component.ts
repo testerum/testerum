@@ -107,7 +107,7 @@ export class ManualSelectTestsTreeComponent implements OnInit, OnChanges {
 
     getSelectedTests(): ManualTreeTest[] {
         let result: ManualTreeTest[] = [];
-        this.collectSelectedTests(result, this.treeModel.getChildren()[0]);
+        this.collectSelectedTests(result, this.treeModel.getChildren()[0] as ManualSelectTestsTreeContainerModel);
 
         return result;
     }
