@@ -181,7 +181,9 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
                 finalizedDate = LocalDateTime.now()
         )
 
-        return savePlan(finalizedPlan)
+        manualTestPlanFileService.save(finalizedPlan, manualTestsDir)
+
+        return getPlanAtPath(planPath)!!
     }
 
     fun makePlanActive(planPath: Path): ManualTestPlan {
@@ -195,7 +197,9 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
                 finalizedDate = null
         )
 
-        return savePlan(activePlan)
+        manualTestPlanFileService.save(activePlan, manualTestsDir)
+
+        return getPlanAtPath(planPath)!!
     }
 
     fun updateTest(planPath: Path, test: ManualTest): ManualTest {
