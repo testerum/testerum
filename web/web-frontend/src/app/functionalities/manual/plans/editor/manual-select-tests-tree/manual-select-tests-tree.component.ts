@@ -115,7 +115,7 @@ export class ManualSelectTestsTreeComponent implements OnInit, OnChanges {
     private collectSelectedTests(result: ManualTreeTest[], parentNode: ManualSelectTestsTreeContainerModel) {
         for (const child of parentNode.children) {
             if (child instanceof ManualSelectTestsTreeContainerModel) {
-                this.collectSelectedTests(result, parentNode);
+                this.collectSelectedTests(result, child);
             }
 
             let selectTest = child as ManualSelectTestsTreeNodeModel;
