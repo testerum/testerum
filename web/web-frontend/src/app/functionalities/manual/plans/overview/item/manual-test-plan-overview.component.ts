@@ -19,6 +19,7 @@ export class ManualTestPlanOverviewComponent implements OnInit {
     }
 
     percentageFromTotalTest(amount: number): number {
+        if(this.model.totalTests == 0 ) return 0;
         return (amount * 100)/this.model.totalTests;
     }
 
