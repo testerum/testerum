@@ -12,7 +12,7 @@ export class ManualTestPlanEditorResolver implements Resolve<any> {
 
     resolve(route: ActivatedRouteSnapshot) {
         let action = route.params['action'];
-        let pathAsString = route.params['path'];
+        let pathAsString = route.params['planPath'];
         let path = pathAsString ? Path.createInstance(pathAsString) : Path.createInstanceOfEmptyPath();
 
         if (action == "create") {
