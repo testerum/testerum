@@ -106,7 +106,7 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
 
     cancelAction(): void {
         if (this.isCreateAction) {
-            this.urlService.navigateToManualExecPlanCreate();
+            this.urlService.navigateToManualExecPlans();
         } else {
             this.manualExecPlansService.getManualExecPlan(this.model.path).subscribe(
                 (result: ManualTestPlan) => {
