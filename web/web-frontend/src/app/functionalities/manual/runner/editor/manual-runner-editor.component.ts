@@ -31,7 +31,7 @@ export class ManualRunnerEditorComponent implements OnInit {
     model: ManualTest;
     planPath: Path;
     testPath: Path;
-    hasStateChanged = false;
+    isEditMode = false;
 
     testStatusDropdownOptions = [
         {label:'Not Executed', value: ManualTestStatus.NOT_EXECUTED},
@@ -58,7 +58,7 @@ export class ManualRunnerEditorComponent implements OnInit {
     }
 
     init(queryParams: Params) {
-        this.hasStateChanged = false;
+        this.setEditMode(false);
         this.steps = [];
 
         let planPathAsString = queryParams["planPath"];
@@ -86,8 +86,16 @@ export class ManualRunnerEditorComponent implements OnInit {
         }
     }
 
+    setEditMode(editMode: boolean) {
+        this.isEditMode = editMode;
+        if (this.commentMarkdownEditor) {
+            this.commentMarkdownEditor.setEditMode(editMode);
+            this.commentMarkdownEditor.setValue(this.model.comments);
+        }
+    }
+
     stepStatusChanged(stepStatusEnum: any, stepIndex: number) {
-        this.hasStateChanged = true;
+        this.setEditMode(true);
 
         for (let i = 0; i < stepIndex; i++) {
             if (this.model.stepCalls[i].status == ManualTestStepStatus.NOT_EXECUTED ) {
@@ -114,7 +122,7 @@ export class ManualRunnerEditorComponent implements OnInit {
     }
 
     onTestChange() {
-        this.hasStateChanged = true;
+        this.setEditMode(true);
     }
 
     isFinalized(): boolean {
@@ -130,6 +138,8 @@ export class ManualRunnerEditorComponent implements OnInit {
     }
 
     saveAction(): void {
+        this.model.comments = this.commentMarkdownEditor.getValue();
+
         this.manualExecPlansService
             .updateTestRun(this.planPath, this.model)
             .subscribe((manualTest: ManualTest) => {

@@ -32,6 +32,6 @@ export class ManualRunnerComponent extends AbstractComponentCanDeactivate implem
     }
 
     canDeactivate(): boolean {
-        return !this.manualRunnerEditorComponent.hasStateChanged;
+        return !this.manualRunnerEditorComponent.isEditMode;
     }
 }
