@@ -4,13 +4,21 @@
         <div class="filters-group">
             <span class="filters-label">Filters:</span>
             <div class="btn-group" role="group">
-                <div title="{{model.showNotExecuted? 'Hide Waiting':'Show Waiting'}}"
+                <div title="{{model.showNotExecuted? 'Hide Not Executed':'Show Not Executed'}}"
                      class="btn btn-default btn-xs btn-group"
                      [class.active]="model.showNotExecuted"
-                     (click)="onToggleWaiting()">
+                     (click)="onToggleNotExecuted()">
                     <i class="fa_my-runner-waiting" aria-hidden="true"></i>
                 </div>
             </div>
+            <!--<div class="btn-group" role="group">-->
+                <!--<div title="{{model.showInProgress? 'Hide In Progress':'Show In Progress'}}"-->
+                     <!--class="btn btn-default btn-xs btn-group"-->
+                     <!--[class.active]="model.showInProgress"-->
+                     <!--(click)="onToggleInProgress()">-->
+                    <!--<i class="fa_my-runner-executing-colored" aria-hidden="true"></i>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="btn-group" role="group">
                 <div title="{{model.showPassed ? 'Hide Passed': 'Show Passed'}}"
                      class="btn btn-default btn-xs btn-group"

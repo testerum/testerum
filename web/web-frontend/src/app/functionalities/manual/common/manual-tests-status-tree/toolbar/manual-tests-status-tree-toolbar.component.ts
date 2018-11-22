@@ -70,8 +70,13 @@ export class ManualTestsStatusTreeToolbarComponent implements OnInit {
         }
     }
 
-    onToggleWaiting() {
+    onToggleNotExecuted() {
         this.model.showNotExecuted = !this.model.showNotExecuted;
+        this.filter();
+    }
+
+    onToggleInProgress() {
+        this.model.showInProgress = !this.model.showInProgress;
         this.filter();
     }
 
@@ -114,14 +119,18 @@ export class ManualTestsStatusTreeToolbarComponent implements OnInit {
         let filter = this.model.clone();
 
         if(filter.showNotExecuted  == false &&
+           // filter.showInProgress == false &&
            filter.showPassed == false &&
            filter.showFailed == false &&
-           filter.showBlocked == false) {
+           filter.showBlocked == false &&
+           filter.showNotApplicable == false) {
 
             filter.showNotExecuted = true;
+            // filter.showInProgress = true;
             filter.showPassed = true;
             filter.showFailed = true;
             filter.showBlocked = true;
+            filter.showNotApplicable = true;
         }
 
         let testPath = Path.createInstanceOfEmptyPath();

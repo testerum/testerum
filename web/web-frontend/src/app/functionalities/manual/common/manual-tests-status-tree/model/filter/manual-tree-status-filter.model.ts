@@ -4,6 +4,7 @@ import {Serializable} from "../../../../../../model/infrastructure/serializable.
 
 export class ManualTreeStatusFilterModel implements Serializable<ManualTreeStatusFilterModel> {
     showNotExecuted = false;
+    showInProgress = false;
     showPassed = false;
     showFailed = false;
     showBlocked = false;
@@ -14,6 +15,7 @@ export class ManualTreeStatusFilterModel implements Serializable<ManualTreeStatu
     static createEmptyFilter() {
         let manualTreeStatusFilterModel = new ManualTreeStatusFilterModel();
         manualTreeStatusFilterModel.showNotExecuted = true;
+        manualTreeStatusFilterModel.showInProgress = true;
         manualTreeStatusFilterModel.showPassed = true;
         manualTreeStatusFilterModel.showFailed = true;
         manualTreeStatusFilterModel.showBlocked = true;
@@ -23,6 +25,7 @@ export class ManualTreeStatusFilterModel implements Serializable<ManualTreeStatu
 
     isEmpty(): boolean {
         if (!this.showNotExecuted
+            || !this.showInProgress
             || !this.showPassed
             || !this.showFailed
             || !this.showBlocked
@@ -43,6 +46,7 @@ export class ManualTreeStatusFilterModel implements Serializable<ManualTreeStatu
 
     deserialize(input: Object): ManualTreeStatusFilterModel {
         this.showNotExecuted = input["showNotExecuted"];
+        this.showInProgress = input["showInProgress"];
         this.showPassed = input['showPassed'];
         this.showFailed = input['showFailed'];
         this.showBlocked = input['showBlocked'];
@@ -59,6 +63,7 @@ export class ManualTreeStatusFilterModel implements Serializable<ManualTreeStatu
         return "" +
             '{' +
             '"showNotExecuted":' + JsonUtil.stringify(this.showNotExecuted) +
+            ',"showInProgress":' + JsonUtil.stringify(this.showInProgress) +
             ',"showPassed":' + JsonUtil.stringify(this.showPassed) +
             ',"showFailed":' + JsonUtil.stringify(this.showFailed) +
             ',"showBlocked":' + JsonUtil.stringify(this.showBlocked) +
