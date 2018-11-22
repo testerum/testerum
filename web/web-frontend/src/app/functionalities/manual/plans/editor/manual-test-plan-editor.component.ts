@@ -125,6 +125,7 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
                 if (event == AreYouSureModalEnum.OK) {
                     this.manualExecPlansService.deleteManualExecPlan(this.model.path).subscribe(result => {
                         this.isEditMode = false; // to not show CanDeactivateGuard
+                        this.manualTestPlansOverviewService.initializeManualPlansOverview();
                         this.urlService.navigateToManualExecPlans();
                     });
                 }
