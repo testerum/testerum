@@ -10,6 +10,7 @@ import {UrlService} from "../../../../service/url.service";
 import {MarkdownEditorComponent} from "../../../../generic/components/markdown-editor/markdown-editor.component";
 import {StepCall} from "../../../../model/step-call.model";
 import {ManualTestsStatusTreeComponent} from "../../common/manual-tests-status-tree/manual-tests-status-tree.component";
+import {ManualStepCall} from "../../plans/model/manual-step-call.model";
 
 @Component({
     selector: 'manual-runner-editor',
@@ -77,8 +78,14 @@ export class ManualRunnerEditorComponent implements OnInit {
                     this.commentMarkdownEditor.setValue(this.model.comments);
                 }
 
-                for (const stepCall of manualTest.stepCalls) {
-                    this.steps.push([stepCall.stepCall])
+                let previewsStepPhase: StepPhaseEnum = null;
+                for (const manualStepCall of manualTest.stepCalls) {
+                    let stepCallForView = manualStepCall.stepCall.clone();
+                    if(previewsStepPhase == stepCallForView.stepDef.phase) {
+                        stepCallForView.stepDef.phase = StepPhaseEnum.AND;
+                    }
+                    previewsStepPhase = manualStepCall.stepCall.stepDef.phase;
+                    this.steps.push([stepCallForView])
                 }
             });
         } else {

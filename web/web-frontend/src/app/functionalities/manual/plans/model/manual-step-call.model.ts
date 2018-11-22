@@ -24,5 +24,8 @@ export class ManualStepCall implements Serializable<ManualStepCall> {
             '}'
     }
 
+    clone(): ManualStepCall {
+        return new ManualStepCall().deserialize(JSON.parse(this.serialize()));
+    }
 
 }

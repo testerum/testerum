@@ -111,6 +111,10 @@ export class StepCall implements Serializable<StepCall> {
             '}'
     }
 
+    clone(): StepCall {
+        return new StepCall().deserialize(JSON.parse(this.serialize()));
+    }
+
     getTextWithParamValues(previousPhase: StepPhaseEnum): string {
         let paramIndex = 0;
 
