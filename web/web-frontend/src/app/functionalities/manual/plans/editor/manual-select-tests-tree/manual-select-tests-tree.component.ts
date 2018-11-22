@@ -67,6 +67,7 @@ export class ManualSelectTestsTreeComponent implements OnInit, OnChanges {
         } else {
             nodeToSelect.setSelected(true);
         }
+        testContainer.calculateCheckState();
     }
 
     private getOrCreateContainersForPath(stepPath: Path, parentContainer: ManualSelectTestsTreeContainerModel) {
