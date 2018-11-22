@@ -121,7 +121,7 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
         val notExecutedOrInProgressTests = testsWithFinalizedFlag.count { it.status == ManualTestStatus.NOT_EXECUTED || it.status == ManualTestStatus.IN_PROGRESS }
 
         return plan.copy(
-                manualTreeTests = manualTreeTests.sortedBy { it.testName },
+                manualTreeTests = manualTreeTests.sortedBy { it.path.withoutFileExtension().toString().toLowerCase() },
                 passedTests = passedTests,
                 failedTests = failedTests,
                 blockedTests = blockedTests,

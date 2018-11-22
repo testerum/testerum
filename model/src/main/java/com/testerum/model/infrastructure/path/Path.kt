@@ -73,8 +73,6 @@ data class Path @JsonCreator constructor(
         return Paths.get("/" + this.toString())
     }
 
-    override fun toString(): String = parts.joinToString(separator = "/")
-
     @JsonIgnore
     fun isFile(): Boolean {
         return fileName != null || fileExtension != null
@@ -111,7 +109,6 @@ data class Path @JsonCreator constructor(
         return false
     }
 
-
     fun replaceDirs(oldPath: Path, newPath: Path): Path {
         val indexOfSubList = Collections.indexOfSubList(directories, oldPath.directories)
         if (indexOfSubList == -1) {
@@ -129,6 +126,11 @@ data class Path @JsonCreator constructor(
         )
     }
 
+
     fun withoutFile(): Path = this.copy(fileName = null, fileExtension = null)
+
+    fun withoutFileExtension() = this.copy(fileExtension = null)
+
+    override fun toString(): String = parts.joinToString(separator = "/")
 
 }
