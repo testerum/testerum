@@ -68,11 +68,13 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
 
     private initialize(manualTestsRunner: ManualTestPlan) {
         this.model = manualTestsRunner;
+
+        this.setEditMode(this.model.path.isEmpty());
+
         if (this.descriptionMarkdownEditor) {
             this.descriptionMarkdownEditor.setValue(manualTestsRunner.description);
         }
 
-        this.setEditMode(this.model.path.isEmpty());
         this.isFinalized = manualTestsRunner.finalized;
 
         this.isCreateAction = this.model.path.isEmpty();
