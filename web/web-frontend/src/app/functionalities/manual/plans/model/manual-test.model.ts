@@ -35,6 +35,7 @@ export class ManualTest implements Serializable<ManualTest>{
             );
         }
 
+        this.status = input['status'];
         this.comments = input['comments'];
         this.finalized = input['finalized'];
 
