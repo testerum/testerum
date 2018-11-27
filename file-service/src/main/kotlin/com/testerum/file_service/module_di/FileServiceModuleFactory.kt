@@ -173,7 +173,7 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
             warningService = warningService
     )
 
-    private val testResolver = TestResolver(
+    val testResolver = TestResolver(
             stepsCache = stepsCache,
             argsResolver = argsResolver
     )

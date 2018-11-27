@@ -1,6 +1,7 @@
 package com.testerum.web_backend.services.manual
 
 import com.testerum.file_service.caches.resolved.TestsCache
+import com.testerum.file_service.caches.resolved.resolvers.TestResolver
 import com.testerum.file_service.file.ManualTestFileService
 import com.testerum.file_service.file.ManualTestPlanFileService
 import com.testerum.model.exception.ValidationException
@@ -24,7 +25,8 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
                                      private val automatedToManualTestMapper: AutomatedToManualTestMapper,
                                      private val frontendDirs: FrontendDirs,
                                      private val manualTestPlanFileService: ManualTestPlanFileService,
-                                     private val manualTestFileService: ManualTestFileService) {
+                                     private val manualTestFileService: ManualTestFileService,
+                                     private val testResolver: TestResolver) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ManualTestPlansFrontendService::class.java)
@@ -86,11 +88,12 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
 
     fun getPlans(): ManualTestPlans {
         val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
+        val resourcesDir = frontendDirs.getRequiredResourcesDir()
 
         val plans = manualTestPlanFileService.getPlans(manualTestsDir)
 
-        val activeTestPlans = plans.activeTestPlans.map { loadPlanTests(it, manualTestsDir) }
-        val finalizedTestPlans = plans.finalizedTestPlans.map { loadPlanTests(it, manualTestsDir) }
+        val activeTestPlans = plans.activeTestPlans.map { loadPlanTests(it, manualTestsDir, resourcesDir) }
+        val finalizedTestPlans = plans.finalizedTestPlans.map { loadPlanTests(it, manualTestsDir, resourcesDir) }
 
         return plans.copy(
                 activeTestPlans = activeTestPlans,
@@ -100,16 +103,20 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
 
     fun getPlanAtPath(planPath: Path): ManualTestPlan? {
         val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
+        val resourcesDir = frontendDirs.getRequiredResourcesDir()
 
         val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
                 ?: return null
 
-        return loadPlanTests(plan, manualTestsDir)
+        return loadPlanTests(plan, manualTestsDir, resourcesDir)
     }
 
-    private fun loadPlanTests(plan: ManualTestPlan, manualTestsDir: JavaPath): ManualTestPlan {
+    private fun loadPlanTests(plan: ManualTestPlan,
+                              manualTestsDir: JavaPath,
+                              resourcesDir: JavaPath): ManualTestPlan {
         val tests = manualTestFileService.getTestsAtPlanPath(plan.path, manualTestsDir)
-        val testsWithFinalizedFlag = tests.map { it.copy(isFinalized = plan.isFinalized) }
+        val resolvedTests = tests.map { testResolver.resolveManualStepDefs(it, resourcesDir) }
+        val testsWithFinalizedFlag = resolvedTests.map { it.copy(isFinalized = plan.isFinalized) }
 
         val manualTreeTests = testsWithFinalizedFlag.map {
             ManualTreeTest(
@@ -143,12 +150,14 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
     fun getTestsTreeAtPlanPath(planPath: Path,
                                filter: ManualTreeStatusFilter): ManualTestsStatusTreeRoot {
         val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
+        val resourcesDir = frontendDirs.getRequiredResourcesDir()
 
         val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
                 ?: return ManualTestsStatusTreeRoot.EMPTY
 
         val tests = manualTestFileService.getTestsAtPlanPath(plan.path, manualTestsDir)
-        val testsWithFinalizedFlag = tests.map { it.copy(isFinalized = plan.isFinalized) }
+        val resolvedTests = tests.map { testResolver.resolveManualStepDefs(it, resourcesDir) }
+        val testsWithFinalizedFlag = resolvedTests.map { it.copy(isFinalized = plan.isFinalized) }
 
         val treeBuilder = ManualTestsTreeBuilder(testPlanName = plan.name)
 
@@ -164,14 +173,16 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
     fun getTestAtPath(planPath: Path,
                       testPath: Path): ManualTest? {
         val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
+        val resourcesDir = frontendDirs.getRequiredResourcesDir()
 
         val test: ManualTest = manualTestFileService.getTestAtPath(planPath, testPath, manualTestsDir)
                 ?: return null
+        val resolvedTest = testResolver.resolveManualStepDefs(test, resourcesDir)
 
         val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
         val isFinalized = plan?.isFinalized ?: FileManualTestPlan.IS_FINALIZED_DEFAULT
 
-        return test.copy(isFinalized = isFinalized)
+        return resolvedTest.copy(isFinalized = isFinalized)
     }
 
     fun finalizePlan(planPath: Path): ManualTestPlan {

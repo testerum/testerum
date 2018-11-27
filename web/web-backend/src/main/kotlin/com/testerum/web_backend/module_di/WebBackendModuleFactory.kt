@@ -360,7 +360,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             automatedToManualTestMapper = automatedToManualTestMapper,
             frontendDirs = frontendDirs,
             manualTestPlanFileService = fileServiceModuleFactory.manualTestPlanFileService,
-            manualTestFileService = fileServiceModuleFactory.manualTestFileService
+            manualTestFileService = fileServiceModuleFactory.manualTestFileService,
+            testResolver = fileServiceModuleFactory.testResolver
     )
 
 
