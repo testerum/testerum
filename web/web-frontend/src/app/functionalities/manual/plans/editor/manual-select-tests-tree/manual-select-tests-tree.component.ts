@@ -34,7 +34,6 @@ export class ManualSelectTestsTreeComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.manualSelectTestsTreeComponentService.isEditMode = this.isEditMode;
-        this.initTree();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
