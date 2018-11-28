@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {ManualTestStatus} from "../../plans/model/enums/manual-test-status.enum";
 import {Path} from "../../../../model/infrastructure/path/path.model";
@@ -41,8 +41,23 @@ export class ManualRunnerEditorComponent implements OnInit {
         {label:'Blocked', value: ManualTestStatus.BLOCKED},
         {label:'Not Applicable', value: ManualTestStatus.NOT_APPLICABLE},
     ];
-    @ViewChild("descriptionMarkdownEditor") descriptionMarkdownEditor: MarkdownEditorComponent;
-    @ViewChild("commentMarkdownEditor") commentMarkdownEditor: MarkdownEditorComponent;
+
+    descriptionMarkdownEditor: MarkdownEditorComponent;
+    @ViewChild("descriptionMarkdownEditor") set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
+        if (descriptionMarkdownEditor != null) {
+            descriptionMarkdownEditor.setEditMode(this.isEditMode);
+            descriptionMarkdownEditor.setValue(this.model.description);
+        }
+        this.descriptionMarkdownEditor = descriptionMarkdownEditor;
+    }
+    commentMarkdownEditor: MarkdownEditorComponent;
+    @ViewChild("commentMarkdownEditor") set setCommentMarkdownEditor(commentMarkdownEditor: MarkdownEditorComponent) {
+        if (commentMarkdownEditor != null) {
+            commentMarkdownEditor.setEditMode(this.isEditMode);
+            commentMarkdownEditor.setValue(this.model.comments);
+        }
+        this.commentMarkdownEditor = commentMarkdownEditor;
+    }
 
     steps: Array<StepCall[]> = [];
 
@@ -72,9 +87,11 @@ export class ManualRunnerEditorComponent implements OnInit {
             this.manualExecPlansService.getManualTest(this.planPath, this.testPath).subscribe((manualTest: ManualTest) => {
                 this.model = manualTest;
                 if (this.descriptionMarkdownEditor) {
+                    this.descriptionMarkdownEditor.setEditMode(this.isEditMode);
                     this.descriptionMarkdownEditor.setValue(this.model.description);
                 }
                 if (this.commentMarkdownEditor) {
+                    this.commentMarkdownEditor.setEditMode(this.isEditMode);
                     this.commentMarkdownEditor.setValue(this.model.comments);
                 }
 
@@ -94,6 +111,10 @@ export class ManualRunnerEditorComponent implements OnInit {
     }
 
     setEditMode(editMode: boolean) {
+        if (this.isEditMode == editMode) {
+            return;
+        }
+
         this.isEditMode = editMode;
         if (this.commentMarkdownEditor) {
             this.commentMarkdownEditor.setEditMode(editMode);
@@ -144,8 +165,18 @@ export class ManualRunnerEditorComponent implements OnInit {
         this.init(this.activatedRoute.snapshot.params);
     }
 
+    shouldDisplayComment(): boolean{
+        return this.model.status == ManualTestStatus.FAILED
+            || this.model.status == ManualTestStatus.BLOCKED
+            || this.model.status == ManualTestStatus.NOT_APPLICABLE
+    }
+
     saveAction(): void {
-        this.model.comments = this.commentMarkdownEditor.getValue();
+        if (this.shouldDisplayComment()) {
+            this.model.comments = this.commentMarkdownEditor.getValue();
+        } else {
+            this.model.comments = null;
+        }
 
         this.manualExecPlansService
             .updateTestRun(this.planPath, this.model)

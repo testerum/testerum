@@ -29,7 +29,7 @@
                 </div>
 
                 <!-- DESCRIPTION -->
-                <div class="my-line" *ngIf="model.description">
+                <div class="my-line" [class.hidden]="!model.description">
                     <label class="my-label label-size">Description</label>
                     <div class="my-value">
                         <markdown-editor #descriptionMarkdownEditor
@@ -126,12 +126,10 @@
 
                 <!-- COMMENT -->
                 <div class="my-line"
-                     *ngIf="model.status == ManualTestStatus.FAILED
-                            || model.status == ManualTestStatus.BLOCKED
-                            || model.status == ManualTestStatus.NOT_APPLICABLE">
+                     [class.hidden]="!shouldDisplayComment()">
                     <label class="my-label label-size">Comment</label>
 
-                    <div class="my-value">
+                    <div class="my-value" (dblclick)="setEditMode(true)">
                         <markdown-editor #commentMarkdownEditor
                                          [options]="markdownEditorOptions"
                                          [editMode]="!isFinalized()"
