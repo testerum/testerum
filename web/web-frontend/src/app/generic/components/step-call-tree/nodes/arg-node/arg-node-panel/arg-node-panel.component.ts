@@ -116,7 +116,7 @@ export class ArgNodePanelComponent implements OnInit, OnDestroy {
         return this.arg.warnings.length > 0;
     }
 
-    isManualStep(): boolean {
-        return this.stepCallTreeComponentService.areManualSteps;
+    isManualExecutionMode(): boolean {
+        return this.stepCallTreeComponentService.isManualExecutionMode;
     }
 }

@@ -25,7 +25,8 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
 
     @Input() stepCalls: Array<StepCall> = [];
     @Input() isEditMode: boolean;
-    @Input() areManualSteps: boolean;
+    @Input() areManualSteps: boolean = false;
+    @Input() isManualExecutionMode: boolean = false;
 
     @Output() change = new EventEmitter<void>();
 
@@ -43,6 +44,7 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
         this.stepCallTreeComponentService.jsonTreeModel = this.jsonTreeModel;
         this.stepCallTreeComponentService.isEditMode = this.isEditMode;
         this.stepCallTreeComponentService.areManualSteps = this.areManualSteps;
+        this.stepCallTreeComponentService.isManualExecutionMode = this.isManualExecutionMode;
         this.stepCallTreeComponentService.changeEventEmitter = this.change;
         this.initTree();
     }

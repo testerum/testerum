@@ -33,7 +33,7 @@
                    [position]="'top'"
                    class="param-info-icon"></info-icon>
 
-        <div *ngIf="!isManualStep()"
+        <div *ngIf="!isManualExecutionMode()"
              [attr.title]="arg.content?'Edit':'Add'"
              class="btn btn-default btn-xs btn-group"
              (click)="editOrViewResourceInModal(); $event.stopPropagation()">
