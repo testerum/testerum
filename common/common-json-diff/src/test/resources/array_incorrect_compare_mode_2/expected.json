@@ -1,0 +1,12 @@
+{
+  "members": [
+    "=compareMode: exact",
+    {
+      "name": "Eternal Flame",
+      "powers": [
+        "=compareMode: contains",
+        "Immortality"
+      ]
+    }
+  ]
+}

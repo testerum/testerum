@@ -10,6 +10,9 @@ import com.testerum.common.json_diff.module_di.JsonDiffModuleFactory
 import com.testerum.common_assertion_functions.module_di.AssertionFunctionsModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import org.apache.commons.io.IOUtils
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.instanceOf
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Disabled
@@ -375,6 +378,28 @@ class JsonComparerTest {
         @Test
         fun `should fail if actual field has different type than expected`() {
             performTestWithDifferentTypes(JsonCompareMode.CONTAINS)
+        }
+    }
+
+    @Nested
+    inner class OtherTests {
+        @Test
+        fun `should succeed if the array compare mode is contains and the expected array has less elements than the actual`() {
+            performTest("array_incorrect_compare_mode", SHOULD_SUCCEED)
+        }
+
+        @Test
+        fun `should fail if the array compare mode is exact and the expected array has less elements than the actual`() {
+            val testFilesDirectory = "array_incorrect_compare_mode_2"
+            val expectedJson: String = loadClasspathResource("$testFilesDirectory/expected.json")
+            val actualJson: String = loadClasspathResource("$testFilesDirectory/actual.json")
+
+            val compareResult: JsonCompareResult = comparer.compare(expectedJson, actualJson)
+            assertThat(compareResult, instanceOf(DifferentJsonCompareResult::class.java))
+
+            val differentJsonCompareResult = compareResult as DifferentJsonCompareResult
+            assertThat(differentJsonCompareResult.message, equalTo("mismatched number of items in the arrays: expected 1, but got 2 instead"))
+            assertThat(differentJsonCompareResult.jsonPath.toString(), equalTo("\$.members"))
         }
     }
 

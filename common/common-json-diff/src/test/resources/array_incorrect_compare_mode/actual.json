@@ -1,0 +1,13 @@
+{
+  "squadName": "Super hero squad",
+  "members": [
+    {
+      "name": "Eternal Flame",
+      "age": 29
+    },
+    {
+      "name": "Molecule Man",
+      "age": 39
+    }
+  ]
+}

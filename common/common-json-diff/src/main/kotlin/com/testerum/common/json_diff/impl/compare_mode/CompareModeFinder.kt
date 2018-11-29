@@ -31,11 +31,41 @@ object CompareModeFinder {
     }
 
     fun getCompareModeForPathElement(pathElement: JsonPathElement<*>, path: JsonPath): JsonCompareMode? = when (pathElement) {
-        is JsonArrayItemPathElement -> getCompareModeForArray(pathElement.parent, path)
-        is JsonNodePathElement -> getCompareModeForObject(pathElement.node, path)
+        is JsonArrayItemPathElement -> getCompareModeForNode(pathElement.parent[pathElement.index], path)
+        is JsonNodePathElement -> getCompareModeForNode(pathElement.node, path)
     }
 
-    fun getCompareModeForArray(arrayNode: ArrayNode, path: JsonPath): JsonCompareMode? {
+    fun getCompareModeForNode(node: JsonNode, path: JsonPath): JsonCompareMode? {
+        return if (node is ObjectNode) {
+            getCompareModeForObjectNode(node, path)
+        } else if (node is ArrayNode) {
+            getCompareModeForArrayNode(node, path)
+        } else {
+            null
+        }
+    }
+
+    private fun getCompareModeForObjectNode(objectNode: ObjectNode, path: JsonPath): JsonCompareMode? {
+        val compareModeNode = objectNode[OBJECT_COMPARE_MODE_FIELD_NAME]
+                ?: return null
+
+        if (compareModeNode !is TextNode) {
+            throw IllegalArgumentException(
+                    "compare mode value must be a String, but found [${compareModeNode.javaClass.name}] instead" +
+                    "; error found at $path"
+            )
+        }
+
+        try {
+            return JsonCompareMode.parse(
+                    compareModeNode.textValue()
+            )
+        } catch (e: Exception) {
+            throw IllegalArgumentException("${e.message}; error found at $path", e)
+        }
+    }
+
+    fun getCompareModeForArrayNode(arrayNode: ArrayNode, path: JsonPath): JsonCompareMode? {
         val firstItem: JsonNode = arrayNode[0]
                 ?: return null
 
@@ -54,30 +84,7 @@ object CompareModeFinder {
                             .trim()
             )
         } catch (e: Exception) {
-            throw IllegalArgumentException("${e.message}; error found at $path")
-        }
-    }
-
-    fun getCompareModeForObject(objectNode: JsonNode, path: JsonPath): JsonCompareMode? {
-        if (objectNode !is ObjectNode) {
-            return null
-        }
-        val compareModeNode = objectNode[OBJECT_COMPARE_MODE_FIELD_NAME]
-                ?: return null
-
-        if (compareModeNode !is TextNode) {
-            throw IllegalArgumentException(
-                    "compare mode value must be a String, but found [${compareModeNode.javaClass.name}] instead" +
-                            "; error found at $path"
-            )
-        }
-
-        try {
-            return JsonCompareMode.parse(
-                    compareModeNode.textValue()
-            )
-        } catch (e: Exception) {
-            throw IllegalArgumentException("${e.message}; error found at $path")
+            throw IllegalArgumentException("${e.message}; error found at $path", e)
         }
     }
 

@@ -27,7 +27,7 @@ fun childrenIgnoringCompareModeForArray(arrayNode: ArrayNode, path: JsonPath): M
         return mutableListOf()
     }
 
-    val compareMode = CompareModeFinder.getCompareModeForArray(arrayNode, path)
+    val compareMode = CompareModeFinder.getCompareModeForArrayNode(arrayNode, path)
     if (compareMode == null) {
         return arrayNode.toMutableList()
     } else {

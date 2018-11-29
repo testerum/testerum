@@ -1,0 +1,10 @@
+{
+  "=compareMode": "exact",
+  "squadName": "Super hero squad",
+  "members": [
+    "=compareMode: contains",
+    {
+      "name": "Eternal Flame"
+    }
+  ]
+}
