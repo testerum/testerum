@@ -11,6 +11,8 @@ import {MarkdownEditorComponent} from "../../../../generic/components/markdown-e
 import {StepCall} from "../../../../model/step-call.model";
 import {ManualTestsStatusTreeComponent} from "../../common/manual-tests-status-tree/manual-tests-status-tree.component";
 import {ManualStepCall} from "../../plans/model/manual-step-call.model";
+import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
+import {AreYouSureModalService} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 
 @Component({
     selector: 'manual-runner-editor',
@@ -64,7 +66,8 @@ export class ManualRunnerEditorComponent implements OnInit {
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private manualExecPlansService: ManualTestPlansService,
-                private urlService: UrlService) {
+                private urlService: UrlService,
+                private areYouSureModalService: AreYouSureModalService) {
     }
 
     ngOnInit(): void {
@@ -161,8 +164,15 @@ export class ManualRunnerEditorComponent implements OnInit {
         return this.testPath ? this.testPath.toDirectoryString() : ""
     }
 
-    resetChanges(): void {
-        this.init(this.activatedRoute.snapshot.params);
+    cancelChanges(): void {
+        this.areYouSureModalService.showAreYouSureModal(
+            "Cancel",
+            "Are you sure you want to cancel all your changes?"
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                this.init(this.activatedRoute.snapshot.params);
+            }
+        });
     }
 
     shouldDisplayComment(): boolean{

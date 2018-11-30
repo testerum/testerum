@@ -143,12 +143,12 @@
                 <!-- ACTION BUTTONS -->
                 <div class="panel-footer-button" *ngIf="!isFinalized()">
                     <ng-container *ngIf="!isEditMode">
+                        <button *ngIf="!isEditMode" (click)="setEditMode(true)" class="btn btn-primary">Edit</button>
                         <button (click)="showNextUnExecutedTest();" class="btn btn-primary">Next</button>
-
                     </ng-container>
 
                     <ng-container *ngIf="isEditMode">
-                        <button (click)="resetChanges()" type="button" class="btn btn-default">Reset</button>
+                        <button (click)="cancelChanges()" type="button" class="btn btn-default">Cancel</button>
                         <button (click)="saveAction()" class="btn btn-primary">Save</button>
                     </ng-container>
                 </div>
