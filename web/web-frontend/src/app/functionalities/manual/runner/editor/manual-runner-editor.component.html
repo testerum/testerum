@@ -19,7 +19,7 @@
                 </div>
 
                 <!-- TAGS -->
-                <div class="my-line">
+                <div *ngIf="model.tags.length != 0" class="my-line">
                     <label class="my-label label-size">Tags</label>
                     <div class="my-value">
                         <ng-container *ngFor="let tag of model.tags">
