@@ -24,6 +24,7 @@ import {ComposedStepDef} from "../../../../model/composed-step-def.model";
 import {RunnerComposedStepTreeNodeModel} from "../../../features/tests-runner/tests-runner-tree/model/runner-composed-step-tree-node.model";
 import {RunnerBasicStepTreeNodeModel} from "../../../features/tests-runner/tests-runner-tree/model/runner-basic-step-tree-node.model";
 import {RunnerFeatureTreeNodeModel} from "../../../features/tests-runner/tests-runner-tree/model/runner-feature-tree-node.model";
+import {RunnerTreeComponent} from "../../../features/tests-runner/tests-runner-tree/runner-tree.component";
 
 @Component({
     selector: 'result',
@@ -37,6 +38,7 @@ export class ResultComponent implements OnInit {
     runnerEvents: Array<RunnerEvent> = [];
 
     @ViewChild(TestsRunnerLogsComponent) testsRunnerLogsComponent: TestsRunnerLogsComponent;
+    @ViewChild(RunnerTreeComponent) runnerTreeComponent: RunnerTreeComponent;
 
     constructor(private route: ActivatedRoute,
                 private executionPieService: ExecutionPieService) {
@@ -171,6 +173,7 @@ export class ResultComponent implements OnInit {
                 currentNode.state = stepEndEvent.status;
             }
         }
+        this.runnerTreeComponent.refresh();
     }
 
     private pushNodeToStack(parentNodesStack: Array<RunnerTreeNodeModel>, currentNode:RunnerTreeNodeModel) {
