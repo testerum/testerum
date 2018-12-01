@@ -34,11 +34,11 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
     }
 
     ngOnInit() {
-        if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
-            let jsonVerifyAsJson = JSON.parse(this.expectedBody.bodyVerify);
-            let jsonTreeNode = new SerializationUtil().deserialize(jsonVerifyAsJson);
+        // if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
+            // let jsonVerifyAsJson = JSON.parse(this.expectedBody.bodyVerify);
+            // let jsonTreeNode = new SerializationUtil().deserialize(jsonVerifyAsJson);
             // this.jsonVerifyTreeService.setJsonVerifyRootResource(jsonTreeNode);
-        }
+        // }
     }
 
     isEditMode(): boolean {

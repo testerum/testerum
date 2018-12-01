@@ -2,6 +2,12 @@
     width: 8em;
 }
 
+.json-verify-container {
+    min-height: 400px;
+    position: relative;
+    flex-grow: 2;
+}
+
 .ace-editor-container {
     position: relative;
     min-height: 200px;
@@ -10,8 +16,4 @@
     position: absolute;
     top: 0;
     bottom: 0;
-}
-.json-verify-container {
-    min-height: 400px;
-    position: relative;
 }

@@ -61,5 +61,5 @@
 
     <http-response-verify-header *ngIf="editMode || model.getHeadersWithValue().length > 0" [headers]="model.expectedHeaders"></http-response-verify-header>
 
-    <http-response-verify-body [expectedBody]="model.expectedBody"></http-response-verify-body>
+    <http-response-verify-body [expectedBody]="model.expectedBody" class="http-response-verify-body"></http-response-verify-body>
 </form>

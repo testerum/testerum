@@ -22,14 +22,14 @@ export class HttpResponseVerifyService {
         this.model ? Object.assign(this.model, httpResponseVerify) : this.model = httpResponseVerify;
 
         this.jsonVerifyTreeService.setEmpty();
-        let expectedBody = this.model.expectedBody;
-        if(expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY &&
-            expectedBody.bodyVerify) {
-
-            let jsonVerifyAsJson = JSON.parse(expectedBody.bodyVerify);
-            let jsonTreeNode = new SerializationUtil().deserialize(jsonVerifyAsJson);
-            this.jsonVerifyTreeService.setJsonVerifyRootResource(jsonTreeNode);
-        }
+        // let expectedBody = this.model.expectedBody;
+        // if(expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY &&
+        //     expectedBody.bodyVerify) {
+            //
+            // let jsonVerifyAsJson = JSON.parse(expectedBody.bodyVerify);
+            // let jsonTreeNode = new SerializationUtil().deserialize(jsonVerifyAsJson);
+            // this.jsonVerifyTreeService.setJsonVerifyRootResource(jsonTreeNode);
+        // }
     }
 
     getModel(): HttpResponseVerify {
