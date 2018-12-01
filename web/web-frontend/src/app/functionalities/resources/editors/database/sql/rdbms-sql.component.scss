@@ -1,3 +1,13 @@
 .label-size {
-    width: 5em;
+    width: 6em;
+}
+
+.full-height-line {
+    flex-grow: 2;
+}
+
+.full-height-value {
+    align-self: stretch;
+    position: relative;
+    min-height: 400px;
 }

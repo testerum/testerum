@@ -4,7 +4,7 @@
 
 
 <!-- REGULAR RESPONSE -->
-<form *ngIf="!condensedViewMode" class="form-horizontal">
+<form *ngIf="!condensedViewMode"  class="form-horizontal flex-panel">
 
     <!-- NAME -->
     <div class="my-line">
@@ -25,9 +25,9 @@
     </div>
 
     <!-- SQL EDITOR-->
-    <div class="my-line">
+    <div class="my-line full-height-line ">
         <label class="my-label label-size">SQL Script</label>
-        <div class="my-value">
+        <div class="my-value full-height-value">
             <rdbms-sql-editor-component [sqlText]="model.content"
                                         (change)="sqlChange($event)"
                                         [editMode]="editMode"></rdbms-sql-editor-component>

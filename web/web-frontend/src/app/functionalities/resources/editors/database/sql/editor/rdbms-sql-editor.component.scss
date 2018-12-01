@@ -1,6 +1,10 @@
 .sql-editor {
-    border: 1px solid #ccc;
-    min-height: 500px;
-    width: 100%;
-    overflow: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+.ace-editor-container {
+    position: relative;
+    min-height: 200px;
+    height: 100%;
 }

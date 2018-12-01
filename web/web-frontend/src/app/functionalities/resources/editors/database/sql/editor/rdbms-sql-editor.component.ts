@@ -19,7 +19,6 @@ export class RdbmsSqlEditorComponent {
     @ViewChild('editor') editor: AceEditorComponent;
 
     options: any = {
-        maxLines: 1000,
         printMargin: true,
         highlightActiveLine: true,
         useSoftTabs: true
