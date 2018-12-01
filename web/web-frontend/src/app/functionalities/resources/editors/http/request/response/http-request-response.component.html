@@ -1,13 +1,15 @@
 
 <ng-container *ngIf="httpCallService.httpResponse">
-    <span>{{httpCallService.httpResponse.protocol}} {{httpCallService.httpResponse.statusCode}}</span>
-    <div *ngFor="let header of httpCallService.httpResponse.headers">
-        <div *ngFor="let headerValue of header.values">
-            <span>{{header.key}}: {{headerValue}}</span>
+    <div class="http-request-response-root">
+        <span>{{httpCallService.httpResponse.protocol}} {{httpCallService.httpResponse.statusCode}}</span>
+        <div *ngFor="let header of httpCallService.httpResponse.headers">
+            <div *ngFor="let headerValue of header.values">
+                <span>{{header.key}}: {{headerValue}}</span>
+            </div>
         </div>
+        <br/>
+        <span>
+            {{httpCallService.httpResponse.bodyAsString()}}
+        </span>
     </div>
-    <br/>
-    <span>
-        {{httpCallService.httpResponse.bodyAsString()}}
-    </span>
 </ng-container>
