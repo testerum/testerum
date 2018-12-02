@@ -60,7 +60,10 @@ export class AttachmentsComponent implements OnInit {
     }
 
     getDateAsString(date: Date): string {
-        return DateUtil.dateTimeToShortString(date)
+        if (!date) {
+            return "";
+        }
+        return DateUtil.dateTimeToShortString(date);
     }
 
     getFileName(attachment: Attachment): string {
