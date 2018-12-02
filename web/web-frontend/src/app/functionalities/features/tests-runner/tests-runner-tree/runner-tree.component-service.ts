@@ -37,7 +37,7 @@ export class RunnerTreeComponentService {
     private allNodesMapByEventKey: Map<string, RunnerTreeNodeModel> = new Map<string, RunnerTreeNodeModel>();
 
     private currentTreeFilter: RunnerTreeFilterModel = new RunnerTreeFilterModel();
-    private runnerEventSubscription: Subscription = null;
+    runnerEventSubscription: Subscription = null;
 
     constructor(private cd: ChangeDetectorRef,
                 private jsonTreeService: JsonTreeService,

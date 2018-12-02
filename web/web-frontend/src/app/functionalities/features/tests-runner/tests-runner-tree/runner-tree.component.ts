@@ -59,6 +59,10 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
         if (this.startTestExecutionSubscription != null) {
             this.startTestExecutionSubscription.unsubscribe();
         }
+
+        if (this.runnerTreeComponentService.runnerEventSubscription) {
+            this.runnerTreeComponentService.runnerEventSubscription.unsubscribe();
+        }
     }
 
     stopTests() {
