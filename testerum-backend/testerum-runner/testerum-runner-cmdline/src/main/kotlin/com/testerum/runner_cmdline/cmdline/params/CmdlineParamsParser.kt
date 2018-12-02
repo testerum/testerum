@@ -5,6 +5,7 @@ import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserP
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import picocli.CommandLine
 import java.io.ByteArrayOutputStream
+import java.io.PrintStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path as JavaPath
@@ -29,10 +30,9 @@ object CmdlineParamsParser {
     private fun usageToString(command: Any): String {
         val result = ByteArrayOutputStream()
 
-        // todo: debug: windows problem: this looks like an infinite loop
-//        PrintStream(result, true, StandardCharsets.UTF_8.name()).use { printStream: PrintStream ->
-//            CommandLine.usage(command, printStream)
-//        }
+        PrintStream(result, true, StandardCharsets.UTF_8.name()).use { printStream: PrintStream ->
+            CommandLine.usage(command, printStream)
+        }
 
         return result.toString(StandardCharsets.UTF_8.name())
     }
