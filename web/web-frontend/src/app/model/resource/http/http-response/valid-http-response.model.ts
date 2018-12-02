@@ -1,10 +1,10 @@
-import {HttpResponseHeader} from "./http-response-header.model";
-import {StringUtils} from "../../../utils/string-utils.util";
-import {Resource} from "../resource.model";
-import {HttpContentType} from "./enum/http-content-type.enum";
-import {HttpRequestHeader} from "./http-request-header.model";
+import {HttpResponseHeader} from "../http-response-header.model";
+import {StringUtils} from "../../../../utils/string-utils.util";
+import {Resource} from "../../resource.model";
+import {HttpContentType} from "../enum/http-content-type.enum";
+import {HttpResponse} from "./http-response.model";
 
-export class HttpResponse implements Resource<HttpResponse> {
+export class ValidHttpResponse implements HttpResponse, Resource<ValidHttpResponse> {
 
     private TEXT_MIME_TYPES: string[] = [
         "application/xml",
@@ -105,7 +105,7 @@ export class HttpResponse implements Resource<HttpResponse> {
         return null;
     }
 
-    deserialize(input: Object): HttpResponse {
+    deserialize(input: Object): ValidHttpResponse {
         this.protocol = input["protocol"];
         this.statusCode = input["statusCode"];
 
@@ -124,15 +124,15 @@ export class HttpResponse implements Resource<HttpResponse> {
     }
 
     serialize(): string {
-        return undefined;
+        throw Error('unimplemented');
     }
 
-    clone(): HttpResponse {
+    clone(): ValidHttpResponse {
         let objectAsJson = JSON.parse(this.serialize());
-        return new HttpResponse().deserialize(objectAsJson);
+        return new ValidHttpResponse().deserialize(objectAsJson);
     }
 
-    createInstance(): HttpResponse {
-        return new HttpResponse();
+    createInstance(): ValidHttpResponse {
+        return new ValidHttpResponse();
     }
 }

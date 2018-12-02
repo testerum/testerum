@@ -8,8 +8,8 @@ import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
 import com.testerum.common.json_diff.impl.node_comparer.JsonCompareResult
 import com.testerum.model.resources.http.request.HttpRequest
-import com.testerum.model.resources.http.response.HttpResponse
 import com.testerum.model.resources.http.response.HttpResponseHeader
+import com.testerum.model.resources.http.response.ValidHttpResponse
 import http.response.verify.model.HttpBodyVerifyMatchingType
 import http.response.verify.model.HttpBodyVerifyMatchingType.EXACT_MATCH
 import http.response.verify.model.HttpBodyVerifyMatchingType.IS_EMPTY
@@ -43,7 +43,7 @@ class HttpResponseVerifySteps {
             httpResponseVerify: HttpResponseVerify
     ) {
         val httpRequest: HttpRequest = variables["httpRequest"] as HttpRequest
-        val httpResponse: HttpResponse = variables["httpResponse"] as HttpResponse
+        val httpResponse: ValidHttpResponse = variables["httpResponse"] as ValidHttpResponse
 
         LOG.debug("Verifying HTTP Response [\n$httpResponse\n]")
 
@@ -54,7 +54,7 @@ class HttpResponseVerifySteps {
         LOG.debug("Http Request executed successfully")
     }
 
-    private fun verifyExpectedBody(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: HttpResponse) {
+    private fun verifyExpectedBody(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: ValidHttpResponse) {
         val expectedBody = httpResponseVerify.expectedBody ?: return
 
         val matchingType: HttpBodyVerifyMatchingType = expectedBody.httpBodyVerifyMatchingType
@@ -66,7 +66,7 @@ class HttpResponseVerifySteps {
 
     }
 
-    private fun verifyBodyAsJsonVerify(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: HttpResponse) {
+    private fun verifyBodyAsJsonVerify(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: ValidHttpResponse) {
         val compareMode = httpResponseVerify.expectedBody?.httpBodyVerifyMatchingType ?: EXACT_MATCH
 
         val expectedBody = httpResponseVerify.expectedBody!!.bodyVerify
@@ -90,7 +90,7 @@ class HttpResponseVerifySteps {
         }
     }
 
-    private fun verifyBodyAsText(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: HttpResponse) {
+    private fun verifyBodyAsText(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: ValidHttpResponse) {
         val compareMode = httpResponseVerify.expectedBody?.httpBodyVerifyMatchingType ?: EXACT_MATCH
 
         val expectedBody = httpResponseVerify.expectedBody!!.bodyVerify
@@ -144,7 +144,7 @@ class HttpResponseVerifySteps {
         )
     }
 
-    private fun verifyBodyIsEmpty(httpRequest: HttpRequest, httpResponse: HttpResponse) {
+    private fun verifyBodyIsEmpty(httpRequest: HttpRequest, httpResponse: ValidHttpResponse) {
         val actualBody = httpResponse.body
         if (actualBody.isNotEmpty()) {
             throw AssertionError(
@@ -158,7 +158,7 @@ class HttpResponseVerifySteps {
         }
     }
 
-    private fun verifyExpectedHeaders(httpResponseVerify: HttpResponseVerify, httpResponse: HttpResponse, httpRequest: HttpRequest) {
+    private fun verifyExpectedHeaders(httpResponseVerify: HttpResponseVerify, httpResponse: ValidHttpResponse, httpRequest: HttpRequest) {
         if (httpResponseVerify.expectedHeaders != null) {
             for (expectedHeader in httpResponseVerify.expectedHeaders!!) {
                 val expectedHeaderKey = expectedHeader.key
@@ -197,7 +197,7 @@ class HttpResponseVerifySteps {
         }
     }
 
-    private fun verifyExpectedCode(httpResponseVerify: HttpResponseVerify, httpResponse: HttpResponse, httpRequest: HttpRequest) {
+    private fun verifyExpectedCode(httpResponseVerify: HttpResponseVerify, httpResponse: ValidHttpResponse, httpRequest: HttpRequest) {
         if (httpResponseVerify.expectedStatusCode != null) {
             if (httpResponseVerify.expectedStatusCode != httpResponse.statusCode) {
                 throw AssertionError(
@@ -299,7 +299,7 @@ class HttpResponseVerifySteps {
         )
     }
 
-    private fun getContextInfoForLogging(httpRequest: HttpRequest, httpResponse: HttpResponse): String {
+    private fun getContextInfoForLogging(httpRequest: HttpRequest, httpResponse: ValidHttpResponse): String {
         var response =
                 "\t Http Request: [\n" +
                         "\t \t ${httpRequest.method} ${httpRequest.url} HTTP/1.1 \n"
@@ -335,7 +335,7 @@ class HttpResponseVerifySteps {
         return response
     }
 
-    private fun getActualHeader(httpResponse: HttpResponse, expectedHeaderKey: String): HttpResponseHeader? {
+    private fun getActualHeader(httpResponse: ValidHttpResponse, expectedHeaderKey: String): HttpResponseHeader? {
 
         val headers: List<HttpResponseHeader> = httpResponse.headers
         for (header in headers) {

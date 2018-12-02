@@ -1,25 +1,46 @@
-
 import {EventEmitter, Injectable} from "@angular/core";
 import {HttpRequest} from "../../../../../model/resource/http/http-request.model";
 import {HttpContentType} from "../../../../../model/resource/http/enum/http-content-type.enum";
 import {HttpRequestHeader} from "../../../../../model/resource/http/http-request-header.model";
 import {HttpService} from "../../../../../service/resources/http/http.service";
-import {HttpResponse} from "../../../../../model/resource/http/http-response.model";
+import {ValidHttpResponse} from "../../../../../model/resource/http/http-response/valid-http-response.model";
+import {HttpResponse} from "../../../../../model/resource/http/http-response/http-response.model";
+import {InvalidHttpResponse} from "../../../../../model/resource/http/http-response/invalid-http-response.model";
 
 @Injectable()
 export class HttpRequestService {
 
     httpRequest: HttpRequest;
-    httpResponse: HttpResponse;
+    httpRequestForResponse: HttpRequest; // additional request to use to display an invalidHttpResponse, in such a way that changing the URL on the form doesn't change the error message
+    validHttpResponse: ValidHttpResponse;
+    invalidHttpResponse: InvalidHttpResponse;
     editMode: boolean;
     editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     constructor(private httpService:HttpService) {
     }
 
+    setHttpResponse(response: HttpResponse) {
+        this.validHttpResponse = null;
+        this.invalidHttpResponse = null;
+        this.httpRequestForResponse = this.httpRequest.clone();
+
+        if (response instanceof ValidHttpResponse) {
+            this.validHttpResponse = response;
+        }
+        if (response instanceof InvalidHttpResponse) {
+            this.invalidHttpResponse = response;
+        }
+    }
+
+    isHttpResponseNull(): boolean {
+        return (this.validHttpResponse == null)
+            && (this.invalidHttpResponse == null);
+    }
+
     executeRequest() {
-        this.httpService.executeRequest(this.httpRequest).subscribe(response => {
-            this.httpResponse = response;
+        this.httpService.executeRequest(this.httpRequest).subscribe((response: HttpResponse)=> {
+            this.setHttpResponse(response);
         })
     }
 

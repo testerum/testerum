@@ -1,22 +1,35 @@
 package com.testerum.web_backend.services.resources.http
 
 import com.testerum.common_httpclient.HttpClientService
+import com.testerum.common_kotlin.rootCause
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.request.HttpRequestBody
 import com.testerum.model.resources.http.response.HttpResponse
+import com.testerum.model.resources.http.response.InvalidHttpResponse
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.variables.VariablesResolverService
+import org.slf4j.LoggerFactory
 
 class HttpFrontendService(private val httpClientService: HttpClientService,
                           private val frontendDirs: FrontendDirs,
                           private val variablesFileService: VariablesFileService,
                           private val variablesResolverService: VariablesResolverService) {
 
-    fun executeHttpRequest(request: HttpRequest): HttpResponse {
-        val resolvedRequest = resolveVariables(request)
+    companion object {
+        private val LOG = LoggerFactory.getLogger(HttpFrontendService::class.java)
+    }
 
-        return httpClientService.executeHttpRequest(resolvedRequest)
+    fun executeHttpRequest(request: HttpRequest): HttpResponse {
+        return try {
+            val resolvedRequest = resolveVariables(request)
+
+            httpClientService.executeHttpRequest(resolvedRequest)
+        } catch (e: Exception) {
+            LOG.warn("could not execute HTTP request $request", e)
+
+            InvalidHttpResponse(e.rootCause.message ?: "Unknown error while trying to get a response")
+        }
     }
 
     private fun resolveVariables(request: HttpRequest): HttpRequest {

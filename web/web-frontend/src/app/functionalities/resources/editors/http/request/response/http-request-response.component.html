@@ -1,15 +1,32 @@
 
-<ng-container *ngIf="httpCallService.httpResponse">
-    <div class="http-request-response-root">
-        <span>{{httpCallService.httpResponse.protocol}} {{httpCallService.httpResponse.statusCode}}</span>
-        <div *ngFor="let header of httpCallService.httpResponse.headers">
+<ng-container *ngIf="httpCallService.invalidHttpResponse">
+    <div class="http-request-response-invalid-root">
+        <h3>Could not get any response</h3>
+        Could not connect to
+        <a href="{{httpCallService.httpRequestForResponse.url}}" target="_blank">{{httpCallService.httpRequestForResponse.url}}</a>:
+        {{httpCallService.invalidHttpResponse.errorMessage}}.
+
+        <div class="suggestions">
+            <h4 class="title">Why this might have happened:</h4>
+            <ul>
+                <li><b>The URL is not valid:</b> check the URL and make sure it's correctly formed.</li>
+                <li><b>The server doesn't exist, or you misspelled its name:</b> ensure that the URL's domain name is correct.</li>
+            </ul>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="httpCallService.validHttpResponse">
+    <div class="http-request-response-valid-root">
+        <span>{{httpCallService.validHttpResponse.protocol}} {{httpCallService.validHttpResponse.statusCode}}</span>
+        <div *ngFor="let header of httpCallService.validHttpResponse.headers">
             <div *ngFor="let headerValue of header.values">
                 <span>{{header.key}}: {{headerValue}}</span>
             </div>
         </div>
         <br/>
         <span>
-            {{httpCallService.httpResponse.bodyAsString()}}
+            {{httpCallService.validHttpResponse.bodyAsString()}}
         </span>
     </div>
 </ng-container>
