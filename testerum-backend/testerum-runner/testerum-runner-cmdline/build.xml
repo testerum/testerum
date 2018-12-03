@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<project name="testerum-package" default="main" basedir=".">
+
+    <!--======================================== properties ========================================-->
+
+    <property name="src.base_url" value="https://nodejs.org/dist" />
+    <property name="src.version"  value="v10.14.1" />
+
+    <property name="src.filename_without_extension.windows" value="node-${src.version}-win-x64" />
+    <property name="src.filename_without_extension.mac"     value="node-${src.version}-darwin-x64" />
+    <property name="src.filename_without_extension.linux"   value="node-${src.version}-linux-x64" />
+
+    <property name="node_dir"                      location="src/main/assembly/node" />
+    <property name="dest.download_dir"             location="${node_dir}/download" />
+    <property name="dest.node_package_dir.windows" location="${node_dir}/windows" />
+    <property name="dest.node_package_dir.mac"     location="${node_dir}/mac" />
+    <property name="dest.node_package_dir.linux"   location="${node_dir}/linux" />
+
+    <condition property="node_package_dir.current_os" value="${dest.node_package_dir.windows}">
+        <os family="windows" />
+    </condition>
+
+    <condition property="node_package_dir.current_os" value="${dest.node_package_dir.mac}">
+        <os family="mac" />
+    </condition>
+
+    <condition property="node_package_dir.current_os" value="${dest.node_package_dir.linux}">
+        <os family="unix" />
+    </condition>
+
+    <property name="runner.package_dir_node" location="../../../package/runner/node" />
+
+
+    <!--======================================== targets ========================================-->
+
+    <target name="main-dev" depends="download-node, extract-node, copy-extracted-node-to-dev-package-dir" />
+
+    <target name="main-prod" depends="download-node, extract-node" />
+
+    <target name="clean">
+        <delete dir="${node_dir}"/>
+        <delete dir="${runner.package_dir_node}"/>
+    </target>
+
+    <target name="download-node">
+        <mkdir dir="${dest.download_dir}" />
+        <get src="${src.base_url}/${src.version}/${src.filename_without_extension.windows}.zip"  dest="${dest.download_dir}/${src.filename_without_extension.windows}.zip"  skipexisting="true" />
+        <get src="${src.base_url}/${src.version}/${src.filename_without_extension.mac}.tar.gz"   dest="${dest.download_dir}/${src.filename_without_extension.mac}.tar.gz"   skipexisting="true" />
+        <get src="${src.base_url}/${src.version}/${src.filename_without_extension.linux}.tar.gz" dest="${dest.download_dir}/${src.filename_without_extension.linux}.tar.gz" skipexisting="true" />
+    </target>
+
+    <target name="extract-node">
+        <!-- windows -->
+        <mkdir dir="${dest.node_package_dir.windows}" />
+        <unzip src="${dest.download_dir}/${src.filename_without_extension.windows}.zip" dest="${dest.node_package_dir.windows}">
+            <patternset>
+                <include name="${src.filename_without_extension.windows}/node.exe" />
+                <include name="${src.filename_without_extension.windows}/LICENSE" />
+            </patternset>
+            <mapper>
+                <globmapper from="${src.filename_without_extension.windows}/*" to="*"/>
+            </mapper>
+        </unzip>
+
+        <!-- mac -->
+        <mkdir dir="${dest.node_package_dir.mac}" />
+        <untar src="${dest.download_dir}/${src.filename_without_extension.mac}.tar.gz" compression="gzip" dest="${dest.node_package_dir.mac}">
+            <patternset>
+                <include name="${src.filename_without_extension.mac}/bin/node" />
+                <include name="${src.filename_without_extension.mac}/LICENSE" />
+            </patternset>
+            <mapper>
+                <globmapper from="${src.filename_without_extension.mac}/bin/*" to="*"/>
+                <globmapper from="${src.filename_without_extension.mac}/*" to="*"/>
+            </mapper>
+        </untar>
+        <chmod file="${dest.node_package_dir.mac}/node" perm="ugo+rx"/>
+
+        <!-- linux -->
+        <mkdir dir="${dest.node_package_dir.linux}" />
+        <untar src="${dest.download_dir}/${src.filename_without_extension.linux}.tar.gz" compression="gzip" dest="${dest.node_package_dir.linux}">
+            <patternset>
+                <include name="${src.filename_without_extension.linux}/bin/node" />
+                <include name="${src.filename_without_extension.linux}/LICENSE" />
+            </patternset>
+            <mapper>
+                <globmapper from="${src.filename_without_extension.linux}/bin/*" to="*"/>
+                <globmapper from="${src.filename_without_extension.linux}/*" to="*"/>
+            </mapper>
+        </untar>
+        <chmod file="${dest.node_package_dir.linux}/node" perm="ugo+rx"/>
+    </target>
+
+    <target name="copy-extracted-node-to-dev-package-dir">
+        <mkdir  dir="${runner.package_dir_node}" />
+        <copy todir="${runner.package_dir_node}">
+            <fileset dir="${node_package_dir.current_os}"/>
+        </copy>
+        <chmod file="${runner.package_dir_node}/node" perm="ugo+rx" />
+    </target>
+
+</project>
+
