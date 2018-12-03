@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {RunnerTreeNodeModel} from "../../model/runner-tree-node.model";
 import {ExecutionStatusEnum} from "../../../../../../model/test/event/enums/execution-status.enum";
-import {RunnerTreeComponentService} from "../../runner-tree.component-service";
+import {RunnerTreeService} from "../../runner-tree.service";
 import {RunnerComposedStepTreeNodeModel} from "../../model/runner-composed-step-tree-node.model";
 import {RunnerBasicStepTreeNodeModel} from "../../model/runner-basic-step-tree-node.model";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
@@ -27,7 +27,7 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
 
     RunnerTreeNodeStateEnum = ExecutionStatusEnum;
 
-    constructor(private runnerTreeComponentService:RunnerTreeComponentService,
+    constructor(private runnerTreeComponentService:RunnerTreeService,
                 private testsRunnerService: TestsRunnerService){}
 
     runnerTreeFilterSubscription: Subscription;

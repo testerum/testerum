@@ -1,13 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ExecutionPieModel} from "./model/execution-pie.model";
 import {ExecutionPieService} from "./execution-pie.service";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
     selector: 'execution-pie',
     templateUrl: 'execution-pie.component.html',
     styleUrls: ['execution-pie.component.scss']
 })
-
 export class ExecutionPieComponent implements OnInit {
 
     @Input() width: string;
@@ -18,7 +18,8 @@ export class ExecutionPieComponent implements OnInit {
 
     pieChartOptions:any;
 
-    constructor(private executionPieService: ExecutionPieService) { }
+    constructor(private cd: ChangeDetectorRef,
+                private executionPieService: ExecutionPieService) { }
 
     ngOnInit(): void {
         this.pieChartOptions = {
@@ -32,8 +33,11 @@ export class ExecutionPieComponent implements OnInit {
         this.executionPieService.pieModel.changeEventEmitter.subscribe(
             event => {
                 this.pieChartData = ExecutionPieComponent.getPieDataFromModel(this.executionPieService.pieModel);
+                this.refresh();
             }
         );
+        this.refresh();
+
     }
 
     private static getPieDataFromModel(model: ExecutionPieModel): any {
@@ -61,5 +65,11 @@ export class ExecutionPieComponent implements OnInit {
 
     model(): ExecutionPieModel {
         return this.executionPieService.pieModel;
+    }
+
+    refresh() {
+        if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
+        }
     }
 }

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {TestsRunnerService} from "../tests-runner.service";
-import {RunnerTreeComponentService} from "./runner-tree.component-service";
+import {RunnerTreeService} from "./runner-tree.service";
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {RunnerRootTreeNodeModel} from "./model/runner-root-tree-node.model";
@@ -18,7 +18,6 @@ import {Subscription} from "rxjs";
     selector: 'runner-tree',
     templateUrl: 'runner-tree.component.html',
     styleUrls:['runner-tree.component.scss'],
-    providers: [RunnerTreeComponentService],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RunnerTreeComponent implements OnInit, OnDestroy {
@@ -36,20 +35,18 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
     startTestExecutionSubscription: Subscription;
     constructor(private cd: ChangeDetectorRef,
                 private testsRunnerService: TestsRunnerService,
-                private runnerTreeComponentService: RunnerTreeComponentService) {
+                private runnerTreeService: RunnerTreeService) {
     }
 
-
     ngOnInit(): void {
-        this.runnerTreeComponentService.treeModel = this.treeModel;
+        this.runnerTreeService.treeModel = this.treeModel;
 
         this.startTestExecutionSubscription = this.testsRunnerService.startTestExecutionObservable.subscribe((runnerRootNode: RunnerRootNode) => {
-            this.runnerTreeComponentService.onStartTestExecution(runnerRootNode);
             this.refresh();
-
         });
+
         this.testsRunnerService.showTestFoldersEventObservable.subscribe((showTestFolders: boolean) => {
-            this.runnerTreeComponentService.showTestFolders(showTestFolders);
+            this.runnerTreeService.showTestFolders(showTestFolders);
             this.refresh();
         });
         this.refresh();
@@ -58,10 +55,6 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if (this.startTestExecutionSubscription != null) {
             this.startTestExecutionSubscription.unsubscribe();
-        }
-
-        if (this.runnerTreeComponentService.runnerEventSubscription) {
-            this.runnerTreeComponentService.runnerEventSubscription.unsubscribe();
         }
     }
 

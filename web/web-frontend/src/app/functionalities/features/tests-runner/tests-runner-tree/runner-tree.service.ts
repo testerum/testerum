@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, EventEmitter, Injectable} from "@angular/core";
+import {ChangeDetectorRef, Injectable} from "@angular/core";
 import {RunnerTreeNodeModel} from "./model/runner-tree-node.model";
 import {RunnerEvent} from "../../../../model/test/event/runner.event";
 import {ExecutionStatusEnum} from "../../../../model/test/event/enums/execution-status.enum";
@@ -24,11 +24,10 @@ import {FeatureStartEvent} from "../../../../model/test/event/feature-start.even
 import {FeatureEndEvent} from "../../../../model/test/event/feature-end.event";
 import {RunnerTreeFilterModel} from "./model/filter/runner-tree-filter.model";
 import {RunnerStoppedEvent} from '../../../../model/test/event/runner-stopped.event';
-import {RunnerTreeComponent} from "./runner-tree.component";
 import {JsonTreeService} from "../../../../generic/components/json-tree/json-tree.service";
 
 @Injectable()
-export class RunnerTreeComponentService {
+export class RunnerTreeService {
 
     treeModel: JsonTreeModel;
     private treeRootNode: RunnerRootTreeNodeModel;
@@ -37,20 +36,46 @@ export class RunnerTreeComponentService {
     private allNodesMapByEventKey: Map<string, RunnerTreeNodeModel> = new Map<string, RunnerTreeNodeModel>();
 
     private currentTreeFilter: RunnerTreeFilterModel = new RunnerTreeFilterModel();
-    runnerEventSubscription: Subscription = null;
 
-    constructor(private cd: ChangeDetectorRef,
-                private jsonTreeService: JsonTreeService,
+    private treeFilterSubscription: Subscription = null;
+    private runnerEventSubscription: Subscription = null;
+    private startTestExecutionSubscription: Subscription = null;
+
+    constructor(private jsonTreeService: JsonTreeService,
                 private testsRunnerService: TestsRunnerService,
                 private executionPieService: ExecutionPieService) {
-        testsRunnerService.treeFilterObservable.subscribe((filter: RunnerTreeFilterModel) => {
-            this.currentTreeFilter = filter;
-        });
+
+        this.onDestroy();
+        if(!this.treeFilterSubscription) {
+            this.treeFilterSubscription = testsRunnerService.treeFilterObservable.subscribe((filter: RunnerTreeFilterModel) => {
+                this.currentTreeFilter = filter;
+            });
+        }
+
+        if(!this.runnerEventSubscription) {
+            this.runnerEventSubscription = this.testsRunnerService.runnerEventObservable.subscribe((runnerEvent) => {
+                this.onRunnerEvent(runnerEvent);
+            });
+        }
+
+        if(!this.startTestExecutionSubscription) {
+            this.startTestExecutionSubscription = testsRunnerService.startTestExecutionObservable.subscribe((runnerRootNode: RunnerRootNode) => {
+                this.onStartTestExecution(runnerRootNode);
+            });
+        }
     }
 
-    refresh() {
-        if (!this.cd['destroyed']) {
-            this.cd.detectChanges();
+    onDestroy() {
+        if(this.treeFilterSubscription) {
+            this.treeFilterSubscription.unsubscribe();
+        }
+
+        if(this.runnerEventSubscription) {
+            this.runnerEventSubscription.unsubscribe();
+        }
+
+        if(this.startTestExecutionSubscription) {
+            this.startTestExecutionSubscription.unsubscribe();
         }
     }
 
@@ -62,7 +87,6 @@ export class RunnerTreeComponentService {
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
-            this.refresh();
             return;
         }
 
@@ -70,7 +94,6 @@ export class RunnerTreeComponentService {
             let runnerTreeNode: RunnerTreeNodeModel = this.treeRootNode;
             runnerTreeNode.changeState(runnerEvent.status);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
-            this.refresh();
             return;
         }
 
@@ -79,7 +102,6 @@ export class RunnerTreeComponentService {
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
-            this.refresh();
             return;
         }
 
@@ -87,7 +109,6 @@ export class RunnerTreeComponentService {
             let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
             runnerTreeNode.changeState(runnerEvent.status);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
-            this.refresh();
             return;
         }
 
@@ -96,7 +117,6 @@ export class RunnerTreeComponentService {
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
-            this.refresh();
             return;
         }
 
@@ -112,7 +132,6 @@ export class RunnerTreeComponentService {
                 case ExecutionStatusEnum.SKIPPED: this.executionPieService.pieModel.incrementSkipped(); break;
             }
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
-            this.refresh();
             return;
         }
 
@@ -121,7 +140,6 @@ export class RunnerTreeComponentService {
             runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
-            this.refresh();
             return;
         }
 
@@ -129,19 +147,16 @@ export class RunnerTreeComponentService {
             let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
             runnerTreeNode.changeState(runnerEvent.status);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
-            this.refresh();
             return;
         }
 
         if (runnerEvent instanceof RunnerErrorEvent) {
             this.setStateOnAllUnexecutedNodes(this.treeRootNode, ExecutionStatusEnum.FAILED);
-            this.refresh();
             return;
         }
 
         if (runnerEvent instanceof RunnerStoppedEvent) {
             this.setStateOnAllUnexecutedNodes(this.treeRootNode, ExecutionStatusEnum.SKIPPED);
-            this.refresh();
             return;
         }
     }
@@ -182,15 +197,7 @@ export class RunnerTreeComponentService {
         this.treeTestsNodes = RunnerTreeUtil.getTreeTestNodes(this.treeRootNode);
         this.allNodesMapByEventKey = RunnerTreeUtil.getAllNodesMapByEventKey(this.treeRootNode);
 
-        if (this.runnerEventSubscription) {
-            this.runnerEventSubscription.unsubscribe();
-        }
-        this.runnerEventSubscription = this.testsRunnerService.runnerEventObservable.subscribe((runnerEvent) => {
-            this.onRunnerEvent(runnerEvent);
-        });
-
         this.restPieData(this.executionPieService.pieModel);
-        this.refresh();
     }
 
     private restPieData(pieModel: ExecutionPieModel) {
@@ -203,7 +210,6 @@ export class RunnerTreeComponentService {
         this.testsRunnerService.setSelectedNode(runnerTreeNodeModel);
 
         this.jsonTreeService.setSelectedNode(runnerTreeNodeModel);
-        this.refresh();
     }
 
     showTestFolders(showTestFolders: boolean) {
@@ -212,6 +218,5 @@ export class RunnerTreeComponentService {
         } else {
             ArrayUtil.replaceElementsInArray(this.treeRootNode.children, this.treeTestsNodes);
         }
-        this.refresh();
     }
 }

@@ -14,7 +14,7 @@ import {TestResolver} from "./test-editor/test.resolver";
 import {AngularSplitModule} from "angular-split-ng6";
 import {TestsRunnerComponent} from "./tests-runner/tests-runner.component";
 import {TestsRunnerService} from "./tests-runner/tests-runner.service";
-import {RunnerTreeComponentService} from "./tests-runner/tests-runner-tree/runner-tree.component-service";
+import {RunnerTreeService} from "./tests-runner/tests-runner-tree/runner-tree.service";
 import {RunnerTreeComponent} from "./tests-runner/tests-runner-tree/runner-tree.component";
 import {RunnerTreeNodeComponent} from "./tests-runner/tests-runner-tree/nodes/runner-tree-node/runner-tree-node.component";
 import {TestsRunnerLogsComponent} from "./tests-runner/tests-runner-logs/tests-runner-logs.component";
@@ -95,6 +95,7 @@ import {TestsRunnerLogsToolbarComponent} from "./tests-runner/tests-runner-logs/
         FeaturesTreeService,
         TestsRunnerService,
         TestsRunnerLogsService,
+        RunnerTreeService,
 
         FeatureResolver,
 

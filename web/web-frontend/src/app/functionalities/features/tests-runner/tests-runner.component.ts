@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {TestsRunnerService} from "./tests-runner.service";
 import {TestsRunnerLogsService} from "./tests-runner-logs/tests-runner-logs.service";
-import {RunnerTreeComponentService} from "./tests-runner-tree/runner-tree.component-service";
+import {RunnerTreeService} from "./tests-runner-tree/runner-tree.service";
 
 @Component({
     moduleId: module.id,
