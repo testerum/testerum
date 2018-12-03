@@ -9,6 +9,7 @@ import com.testerum.model.config.dir_tree.CreateFileSystemDirectoryRequest
 import com.testerum.model.config.dir_tree.FileSystemDirectory
 import com.testerum.model.exception.ValidationException
 import com.testerum.model.exception.model.ValidationModel
+import org.slf4j.LoggerFactory
 import java.nio.file.AccessDeniedException
 import java.nio.file.FileSystems
 import java.nio.file.Files
@@ -17,6 +18,10 @@ import java.util.stream.Stream
 import java.nio.file.Path as JavaPath
 
 class FileSystemFrontendService {
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(FileSystemFrontendService::class.java)
+    }
 
     fun getDirectoryTree(pathAsString: String): FileSystemDirectory {
         return if (pathAsString == "") {
@@ -91,7 +96,7 @@ class FileSystemFrontendService {
     private fun getSubDirectories(dir: JavaPath): List<FileSystemDirectory> {
         val result = mutableListOf<FileSystemDirectory>()
 
-        dir.list().use { pathStream ->
+        dir.listSafely().use { pathStream ->
             pathStream.forEach { path ->
                 if (path.isDirectory) {
                     result += FileSystemDirectory(
@@ -107,6 +112,13 @@ class FileSystemFrontendService {
         return result
     }
 
-    private fun JavaPath.list(): Stream<JavaPath> = Files.list(this)
+    private fun JavaPath.listSafely(): Stream<JavaPath> {
+        try {
+            return Files.list(this)
+        } catch (e: Exception) {
+            LOG.warn("error while trying to list files and sub-directories of [${this.toAbsolutePath().normalize()}]; will consider the directory to be empty", e)
+            return Stream.empty()
+        }
+    }
 
 }
