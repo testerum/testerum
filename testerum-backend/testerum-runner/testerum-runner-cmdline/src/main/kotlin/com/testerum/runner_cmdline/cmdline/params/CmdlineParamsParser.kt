@@ -2,9 +2,11 @@ package com.testerum.runner_cmdline.cmdline.params
 
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
+import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserVersionHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import picocli.CommandLine
 import java.io.ByteArrayOutputStream
+import java.io.PrintStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path as JavaPath
@@ -29,10 +31,9 @@ object CmdlineParamsParser {
     private fun usageToString(command: Any): String {
         val result = ByteArrayOutputStream()
 
-        // todo: debug: windows problem: this looks like an infinite loop
-//        PrintStream(result, true, StandardCharsets.UTF_8.name()).use { printStream: PrintStream ->
-//            CommandLine.usage(command, printStream)
-//        }
+        PrintStream(result, true, StandardCharsets.UTF_8.name()).use { printStream: PrintStream ->
+            CommandLine.usage(command, printStream)
+        }
 
         return result.toString(StandardCharsets.UTF_8.name())
     }
@@ -44,14 +45,19 @@ object CmdlineParamsParser {
     )
     private class MutableCmdlineParams {
 
-        // todo: implement --version (versionHelp = true)
-
         @CommandLine.Option(
                 names = ["-h", "--help"],
                 usageHelp = true,
                 description = ["displays this help message and exit"]
         )
         var usageHelpRequested: Boolean = false
+
+        @CommandLine.Option(
+                names = ["-V", "--version"],
+                versionHelp = true,
+                description = ["displays program version information"]
+        )
+        var versionHelpRequested: Boolean = false
 
         @CommandLine.Option(
                 names = ["-r", "--repository-directory"],
@@ -114,6 +120,10 @@ object CmdlineParamsParser {
                 throw CmdlineParamsParserHelpRequestedException(
                         usageHelp = usageToString(this)
                 )
+            }
+
+            if (versionHelpRequested) {
+                throw CmdlineParamsParserVersionHelpRequestedException()
             }
 
             return CmdlineParams(

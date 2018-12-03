@@ -1,0 +1,24 @@
+.http-request-response-valid-root {
+    white-space: pre;
+    font-family: "Hack Regular Nerd Font Complete", monospace;
+    font-size: 1.2rem;
+}
+
+$marginBetweenSuggestions: 1.5em;
+
+.http-request-response-invalid-root {
+    .suggestions {
+        margin-top: 1.5em;
+
+        .title {
+            margin: $marginBetweenSuggestions 0;
+        }
+        ul {
+            padding-left: $marginBetweenSuggestions;
+
+            li {
+                margin-bottom: 1em;
+            }
+        }
+    }
+}

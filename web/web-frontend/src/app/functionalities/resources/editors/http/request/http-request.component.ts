@@ -133,14 +133,14 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
     }
 
     hasResponseToDisplay(): boolean {
-        return this.httpRequestService.httpResponse == null;
+        return this.httpRequestService.isHttpResponseNull();
     }
 
     closeResponseTab(): void {
         if (this.partToDisplay == this.HttpPart.RESPONSE) {
             this.partToDisplay = HttpPart.HEADERS;
         }
-        this.httpRequestService.httpResponse = null;
+        this.httpRequestService.setHttpResponse(null);
     }
 
     isFormValid(): boolean {

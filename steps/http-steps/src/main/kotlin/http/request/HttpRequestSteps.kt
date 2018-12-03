@@ -7,7 +7,7 @@ import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common_httpclient.HttpClientService
 import com.testerum.model.resources.http.request.HttpRequest
-import com.testerum.model.resources.http.response.HttpResponse
+import com.testerum.model.resources.http.response.ValidHttpResponse
 import http.request.transformer.HttpRequestTransformer
 import http_support.module_di.HttpStepsModuleServiceLocator
 
@@ -30,7 +30,7 @@ class HttpRequestSteps {
             httpRequest: HttpRequest
     ) {
         logger.logInfo("HTTP Request [\n$httpRequest\n]")
-        val httpResponse: HttpResponse = httpClientService.executeHttpRequest(httpRequest)
+        val httpResponse: ValidHttpResponse = httpClientService.executeHttpRequest(httpRequest)
         logger.logInfo("HTTP Response [\n$httpResponse\n]")
 
         variables["httpRequest"] = httpRequest

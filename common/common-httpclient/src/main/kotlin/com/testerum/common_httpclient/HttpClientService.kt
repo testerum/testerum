@@ -4,11 +4,19 @@ import com.google.common.collect.LinkedHashMultimap
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.request.HttpRequestBody
 import com.testerum.model.resources.http.request.enums.HttpRequestMethod
-import com.testerum.model.resources.http.response.HttpResponse
 import com.testerum.model.resources.http.response.HttpResponseHeader
+import com.testerum.model.resources.http.response.ValidHttpResponse
 import org.apache.http.HttpEntityEnclosingRequest
 import org.apache.http.client.HttpClient
-import org.apache.http.client.methods.*
+import org.apache.http.client.methods.HttpDelete
+import org.apache.http.client.methods.HttpGet
+import org.apache.http.client.methods.HttpHead
+import org.apache.http.client.methods.HttpOptions
+import org.apache.http.client.methods.HttpPatch
+import org.apache.http.client.methods.HttpPost
+import org.apache.http.client.methods.HttpPut
+import org.apache.http.client.methods.HttpRequestBase
+import org.apache.http.client.methods.HttpTrace
 import org.apache.http.entity.ContentType
 import org.apache.http.entity.StringEntity
 import org.apache.http.util.EntityUtils
@@ -17,7 +25,7 @@ import java.net.URI
 
 class HttpClientService(private val httpClient: HttpClient) {
 
-    fun executeHttpRequest(request: HttpRequest): HttpResponse {
+    fun executeHttpRequest(request: HttpRequest): ValidHttpResponse {
         // method
         val httpRequest: HttpRequestBase = when (request.method) {
             HttpRequestMethod.GET     -> HttpGet()
@@ -67,7 +75,7 @@ class HttpClientService(private val httpClient: HttpClient) {
         return response
     }
 
-    private fun convertResponse(httpResponse: org.apache.http.HttpResponse): HttpResponse {
+    private fun convertResponse(httpResponse: org.apache.http.HttpResponse): ValidHttpResponse {
         val headers = LinkedHashMultimap.create<String, String>()
 
         for (header in httpResponse.allHeaders) {
@@ -81,7 +89,7 @@ class HttpClientService(private val httpClient: HttpClient) {
             )
         }
 
-        return HttpResponse(
+        return ValidHttpResponse(
                 protocol = httpResponse.protocolVersion.toString(),
                 statusCode = httpResponse.statusLine.statusCode,
                 headers = headersListModel,
