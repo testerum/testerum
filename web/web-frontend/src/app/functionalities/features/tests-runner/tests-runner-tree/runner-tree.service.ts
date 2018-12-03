@@ -29,7 +29,7 @@ import {JsonTreeService} from "../../../../generic/components/json-tree/json-tre
 @Injectable()
 export class RunnerTreeService {
 
-    treeModel: JsonTreeModel;
+    treeModel: JsonTreeModel = new JsonTreeModel();
     private treeRootNode: RunnerRootTreeNodeModel;
     private treeTestsNodes: RunnerTestTreeNodeModel[] = [];
     private treeTestsWithFoldersNodes: RunnerTestTreeNodeModel[] = [];

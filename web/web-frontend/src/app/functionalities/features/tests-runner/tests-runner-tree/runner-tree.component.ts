@@ -22,7 +22,7 @@ import {Subscription} from "rxjs";
 })
 export class RunnerTreeComponent implements OnInit, OnDestroy {
 
-    @Input() treeModel: JsonTreeModel = new JsonTreeModel();
+    @Input() treeModel: JsonTreeModel;
     @Input() reportMode: boolean = false;
 
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
@@ -33,19 +33,32 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
         .addPair(RunnerBasicStepTreeNodeModel, RunnerTreeNodeComponent);
 
     startTestExecutionSubscription: Subscription;
+    runnerEventSubscription: Subscription;
+    showTestFoldersEventSubscription: Subscription;
     constructor(private cd: ChangeDetectorRef,
                 private testsRunnerService: TestsRunnerService,
                 private runnerTreeService: RunnerTreeService) {
     }
 
     ngOnInit(): void {
-        this.runnerTreeService.treeModel = this.treeModel;
+        if (this.treeModel != null) {
+            this.runnerTreeService.treeModel = this.treeModel;
+        } else {
+            this.treeModel = this.runnerTreeService.treeModel;
+        }
 
         this.startTestExecutionSubscription = this.testsRunnerService.startTestExecutionObservable.subscribe((runnerRootNode: RunnerRootNode) => {
             this.refresh();
         });
 
-        this.testsRunnerService.showTestFoldersEventObservable.subscribe((showTestFolders: boolean) => {
+
+        if(!this.runnerEventSubscription) {
+            this.runnerEventSubscription = this.testsRunnerService.runnerEventObservable.subscribe((runnerEvent) => {
+                this.refresh();
+            });
+        }
+
+        this.showTestFoldersEventSubscription = this.testsRunnerService.showTestFoldersEventObservable.subscribe((showTestFolders: boolean) => {
             this.runnerTreeService.showTestFolders(showTestFolders);
             this.refresh();
         });
@@ -55,6 +68,12 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if (this.startTestExecutionSubscription != null) {
             this.startTestExecutionSubscription.unsubscribe();
+        }
+        if (this.runnerEventSubscription != null) {
+            this.runnerEventSubscription.unsubscribe();
+        }
+        if (this.showTestFoldersEventSubscription != null) {
+            this.showTestFoldersEventSubscription.unsubscribe();
         }
     }
 
