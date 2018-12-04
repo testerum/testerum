@@ -9,15 +9,16 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.api.test_context.ExecutionStatus
-import com.testerum.common_kotlin.*
+import com.testerum.common_kotlin.hasExtension
+import com.testerum.common_kotlin.isRegularFile
+import com.testerum.common_kotlin.readAllLines
+import com.testerum.common_kotlin.walkAndCollect
 import com.testerum.file_service.file.util.escape
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.run_result.RunnerResultFileInfo
 import com.testerum.model.run_result.RunnerResultsDirInfo
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.SuiteEndEvent
-import java.nio.file.Files
-import java.nio.file.StandardOpenOption
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.nio.file.Path as JavaPath
@@ -109,33 +110,17 @@ class RunnerResultFileService {
         return parseResultFile(resultFile)
     }
 
-    fun createResultsFileName(): Path {
+    fun createResultsFileName(resultsDir: JavaPath): JavaPath {
         val localDate: LocalDateTime = LocalDateTime.now()
         val directoryName: String = localDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
         val fileName: String = localDate.format(FILE_NAME_FORMATTER)
 
-        return Path(listOf(directoryName), fileName, FILE_EXTENSION)
-    }
+        val file = Path(listOf(directoryName), fileName, FILE_EXTENSION)
 
-    fun saveEvent(runnerEvent: RunnerEvent,
-                  file: Path,
-                  resultsDir: JavaPath) {
         val escapedPath = file.escape()
-        val resultFile = resultsDir.resolve(
+
+        return resultsDir.resolve(
                 escapedPath.toString()
-        )
-
-
-        val fileLogLine:String = OBJECT_MAPPER.writeValueAsString(runnerEvent).plus("\n")
-
-        resultFile.parent?.createDirectories()
-
-        Files.write(
-                resultFile,
-                fileLogLine.toByteArray(charset = Charsets.UTF_8),
-                StandardOpenOption.WRITE,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.APPEND
         )
     }
 

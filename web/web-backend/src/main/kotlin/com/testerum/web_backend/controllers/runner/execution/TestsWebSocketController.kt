@@ -48,14 +48,12 @@ class TestsWebSocketController(private val testsExecutionFrontendService: TestsE
 
         testsExecutionFrontendService.startExecution(
                 executionId = executionId,
+                resultFilePath = resultFilePath,
                 eventProcessor = { event ->
                     if (session.isOpen) {
                         // send to UI
                         val eventAsString = objectMapper.writeValueAsString(event)
                         session.sendMessageIgnoringErrors(TextMessage(eventAsString))
-
-                        // save to file
-                        runnerResultFrontendService.saveEvent(event, resultFilePath)
                     } else {
                         LOG.warn("webSocket communication is closed; will stop test execution")
                         testsExecutionFrontendService.stopExecution(executionId)

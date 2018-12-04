@@ -2,11 +2,16 @@ package com.testerum.web_backend.services.runner.execution
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.testerum.runner.events.model.*
-import com.testerum.runner.events.model.log_level.LogLevel
+import com.testerum.runner.events.model.RunnerEvent
+import com.testerum.runner.events.model.StepEndEvent
+import com.testerum.runner.events.model.StepStartEvent
+import com.testerum.runner.events.model.SuiteEndEvent
+import com.testerum.runner.events.model.SuiteStartEvent
+import com.testerum.runner.events.model.TestEndEvent
+import com.testerum.runner.events.model.TestStartEvent
+import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.position.EventKey
 import org.slf4j.LoggerFactory
-import java.time.LocalDateTime
 import javax.annotation.concurrent.NotThreadSafe
 
 @NotThreadSafe
@@ -15,10 +20,6 @@ class TestRunnerEventParser(private val jsonObjectMapper: ObjectMapper,
 
     companion object {
         private val LOG = LoggerFactory.getLogger(TestRunnerEventParser::class.java)
-
-        // IMPORTANT: if you change these, also change it in com.testerum.runner.events.execution_listeners.json_to_console.JsonToConsoleExecutionListener
-        private const val TESTERUM_EVENT_PREFIX = "-->testerum\u0000-->"
-        private const val TESTERUM_EVENT_SUFFIX = "<--testerum\u0000<--"
     }
 
     private val eventKeysStack = mutableListOf<EventKey>()
@@ -32,24 +33,9 @@ class TestRunnerEventParser(private val jsonObjectMapper: ObjectMapper,
     }
 
     private fun processEventWithoutErrorHandling(eventAsString: String) {
-//        LOG.debug("event line: [{}]", eventAsString)
+        val testRunnerEvent = jsonObjectMapper.readValue<RunnerEvent>(eventAsString)
 
-        if (eventAsString.startsWith(TESTERUM_EVENT_PREFIX) && eventAsString.endsWith(TESTERUM_EVENT_SUFFIX)) {
-            val json: String = eventAsString.removePrefix(TESTERUM_EVENT_PREFIX)
-                                            .removeSuffix(TESTERUM_EVENT_SUFFIX)
-            val testRunnerEvent = jsonObjectMapper.readValue<RunnerEvent>(json)
-
-            processTestRunnerEvent(testRunnerEvent)
-        } else {
-            eventProcessor(
-                    TextLogEvent(
-                            time = LocalDateTime.now(),
-                            eventKey = eventKeysStack.lastOrNull() ?: EventKey.SUITE_EVENT_KEY,
-                            logLevel = LogLevel.DEBUG,
-                            message = eventAsString
-                    )
-            )
-        }
+        processTestRunnerEvent(testRunnerEvent)
     }
 
     private fun processTestRunnerEvent(event: RunnerEvent) {
