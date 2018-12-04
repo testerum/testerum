@@ -341,7 +341,7 @@
                         <executions>
                             <execution>
                                 <id>copy-runner-to-package-dir</id>
-                                <phase>package</phase>
+                                <phase>prepare-package</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
                                 </goals>
@@ -358,22 +358,7 @@
                         </executions>
                     </plugin>
 
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- unix -->
-        <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-
-            <build>
-                <plugins>
-                    <!-- set executable bit on testerum shell script -->
+                    <!-- set executable bit on linux/mac shell script -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
@@ -383,10 +368,11 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <target>
-                                        <exec executable="/bin/sh" failifexecutionfails="true" failonerror="false">
-                                            <arg value="-c" />
-                                            <arg value="chmod +x '${project.basedir}/../../../package/runner/bin/*.sh'" />
-                                        </exec>
+                                        <chmod perm="ugo+x">
+                                            <fileset dir="${project.basedir}/../../../package/runner/bin">
+                                                <include name="**/*.sh" />
+                                            </fileset>
+                                        </chmod>
                                     </target>
                                 </configuration>
                                 <goals>
