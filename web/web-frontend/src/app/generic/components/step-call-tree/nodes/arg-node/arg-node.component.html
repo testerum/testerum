@@ -47,8 +47,6 @@
          [@expandCollapse]="animationState"
          (@expandCollapse.done)="onAnimateEnd()">
 
-        {{model.arg.content.instanceId}} - {{model.arg.content.serialize()}}
-
         <div #resourceContainer></div>
 
         <div *ngIf="!argHasContent()"
