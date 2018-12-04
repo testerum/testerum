@@ -4,7 +4,7 @@
               http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0     http://maven.apache.org/xsd/assembly-1.1.0.xsd
           ">
 
-    <id>dist</id>
+    <id>dist-mac</id>
 
     <includeBaseDirectory>false</includeBaseDirectory>
 
@@ -22,9 +22,21 @@
     </dependencySets>
 
     <fileSets>
+        <!-- shell scripts -->
         <fileSet>
             <directory>${project.basedir}/src/main/assembly/package</directory>
             <outputDirectory>/</outputDirectory>
+            <useDefaultExcludes>false</useDefaultExcludes>
+
+            <includes>
+                <include>bin/*.sh</include>
+            </includes>
+        </fileSet>
+
+        <!-- nodejs -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/assembly/node/mac</directory>
+            <outputDirectory>/node</outputDirectory>
             <useDefaultExcludes>false</useDefaultExcludes>
         </fileSet>
     </fileSets>

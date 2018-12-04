@@ -1124,11 +1124,6 @@
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>1.5</version>
-
-                    <configuration>
-                        <nodeVersion>v8.11.3</nodeVersion>
-                        <npmVersion>6.3.0</npmVersion>
-                    </configuration>
                 </plugin>
 
                 <!--maven-release-plugin -->

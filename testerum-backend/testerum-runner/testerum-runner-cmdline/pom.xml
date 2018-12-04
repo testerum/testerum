@@ -343,12 +343,42 @@
 
             <build>
                 <plugins>
+                    <!-- download nodejs -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+
+                        <executions>
+                            <!-- download-node -->
+                            <execution>
+                                <id>download-node</id>
+                                <phase>prepare-package</phase>
+                                <configuration>
+                                    <target>
+                                        <ant antfile="build.xml" target="main-prod" />
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
                     <!-- maven-assembly-plugin (create final dist file) -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
+
+                        <configuration>
+                            <appendAssemblyId>true</appendAssemblyId>
+                            <attach>true</attach>
+                        </configuration>
+
                         <executions>
+                            <!-- assemble-dist-linux -->
                             <execution>
+                                <id>assemble-dist-linux</id>
                                 <phase>package</phase>
 
                                 <goals>
@@ -356,13 +386,44 @@
                                 </goals>
 
                                 <configuration>
-                                    <appendAssemblyId>true</appendAssemblyId>
                                     <descriptors>
-                                        <descriptor>${basedir}/src/main/assembly/assembly-descriptor.xml</descriptor>
+                                        <descriptor>src/main/assembly/assembly-descriptor-linux.xml</descriptor>
                                     </descriptors>
-                                    <attach>true</attach>
                                 </configuration>
                             </execution>
+
+                            <!-- assemble-dist-mac -->
+                            <execution>
+                                <id>assemble-dist-mac</id>
+                                <phase>package</phase>
+
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/assembly-descriptor-mac.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+
+                            <!-- assemble-dist-windows -->
+                            <execution>
+                                <id>assemble-dist-windows</id>
+                                <phase>package</phase>
+
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/assembly-descriptor-windows.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+
                         </executions>
                     </plugin>
                 </plugins>
@@ -393,7 +454,43 @@
                         </configuration>
                     </plugin>
 
-                    <!-- copy to package directory  -->
+                    <!-- download nodejs & copy to package directory -->
+                   <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+
+                       <executions>
+                           <!-- delete-node-download -->
+                           <execution>
+                               <id>delete-node-download</id>
+                               <phase>clean</phase>
+                               <configuration>
+                                   <target>
+                                       <ant antfile="build.xml" target="clean" />
+                                   </target>
+                               </configuration>
+                               <goals>
+                                   <goal>run</goal>
+                               </goals>
+                           </execution>
+
+                           <!-- download-node -->
+                           <execution>
+                               <id>download-node</id>
+                               <phase>prepare-package</phase>
+                               <configuration>
+                                   <target>
+                                       <ant antfile="build.xml" target="main-dev" />
+                                   </target>
+                               </configuration>
+                               <goals>
+                                   <goal>run</goal>
+                               </goals>
+                           </execution>
+                       </executions>
+                    </plugin>
+
+                    <!-- copy shell scripts to package directory  -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
@@ -416,6 +513,7 @@
                             </execution>
                         </executions>
                     </plugin>
+
                 </plugins>
             </build>
         </profile>
@@ -443,7 +541,7 @@
                                     <target>
                                         <exec executable="/bin/sh" failifexecutionfails="true" failonerror="false">
                                             <arg value="-c" />
-                                            <arg value="chmod +x '${project.basedir}/../../../package/runner/bin'/*.sh" />
+                                            <arg value="chmod +x '${project.basedir}/../../../package/runner/bin/*.sh'" />
                                         </exec>
                                     </target>
                                 </configuration>
