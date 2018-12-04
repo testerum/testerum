@@ -15,6 +15,9 @@ import {BasicStepDef} from "../../../../../model/basic-step-def.model";
 import {SubStepsContainerModel} from "../../model/sub-steps-container.model";
 import {StepCallTreeUtil} from "../../util/step-call-tree.util";
 import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
+import {JsonTreeContainerEditorEvent} from "../../../json-tree/container-editor/model/json-tree-container-editor.event";
+import {Path} from "../../../../../model/infrastructure/path/path.model";
+import {ContextService} from "../../../../../service/context.service";
 
 @Component({
     selector: 'step-call-container',
@@ -36,7 +39,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     showParameters: boolean = true;
 
     constructor(private stepCallTreeComponentService: StepCallTreeComponentService,
-                private stepModalService: StepModalService) {
+                private stepModalService: StepModalService,
+                private contextService: ContextService) {
     }
 
     private editModeSubscription: any;
@@ -275,5 +279,58 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
 
     hasOwnWarnings(): boolean {
         return this.model.stepCall.getAllWarnings().length > 0;
+    }
+
+
+    onCutStep() {
+        this.setSelected();
+        this.contextService.setPathToCut(this.model.path);
+    }
+
+    onCopyStep() {
+        this.setSelected();
+        this.contextService.setPathToCopy(this.model.path);
+    }
+
+    onPasteStep() {
+        let destinationPath = this.model.path;
+        if (this.contextService.stepPathToCopy) {
+            let sourcePath = this.contextService.stepPathToCopy;
+            this.jsonTreeService.triggerCopyAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
+                    this.featureService.copy(sourcePath, destinationPath).subscribe( (resultPath: Path) => {
+                        this.afterPasteOperation(resultPath);
+                    });
+                }
+            )
+        }
+        if (this.contextService.stepPathToCut) {
+            let sourcePath = this.contextService.stepPathToCut;
+            this.jsonTreeService.triggerMoveAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
+                    this.featureService.move(sourcePath, destinationPath).subscribe( (resultPath: Path) => {
+                        this.afterPasteOperation(resultPath);
+                    });
+                }
+            )
+        }
+    }
+
+    private afterPasteOperation(resultPath: Path) {
+        this.contextService.stepPathToCut = null;
+        this.contextService.stepPathToCopy = null;
+
+        this.contextService.initializeTestsTreeFromServer(resultPath);
+        if (resultPath.isFile()) {
+            this.urlService.navigateToTest(resultPath);
+        } else {
+            this.urlService.navigateToFeature(resultPath);
+        }
+    }
+
+    canPaste(): boolean {
+        return this.contextService.canPaste(this.model.path);
+    }
+
+    private setSelected() {
+        this.model.selected = true;
     }
 }

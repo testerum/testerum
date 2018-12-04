@@ -43,6 +43,7 @@ import {CanDeactivateGuard} from "./service/guards/CanDeactivateGuard";
 import {LicenseService} from "./functionalities/config/license/license.service";
 import {LicenseComponent} from "./functionalities/config/license/license.component";
 import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
+import {ContextService} from "./service/context.service";
 
 @NgModule({
     imports: [
@@ -84,6 +85,7 @@ import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
 
         ApplicationEventBus,
 
+        ContextService,
         StepsService,
         TestsService,
         VariablesService,
