@@ -113,7 +113,7 @@ object CmdlineParamsParser {
                 names = ["-o", "--output-format"]
                 // todo: description
         )
-        var outputFormat: CmdlineParams.OutputFormat? = null
+        var outputFormats: List<CmdlineParams.OutputFormat> = arrayListOf()
 
         fun getValidatedParams(): CmdlineParams {
             if (usageHelpRequested) {
@@ -133,8 +133,11 @@ object CmdlineParamsParser {
                     settingOverrides = settingOverrides,
                     testFilesOrDirectories = getValidatedTestFilesOrDirectories(),
                     verbose = verbose,
-                    outputFormat = outputFormat
-                            ?: CmdlineParams.OutputFormat.TREE
+                    outputFormats = if (outputFormats.isNotEmpty()) {
+                        outputFormats
+                    } else {
+                        listOf(CmdlineParams.DEFAULT_OUTPUT_FORMAT)
+                    }
             )
         }
 

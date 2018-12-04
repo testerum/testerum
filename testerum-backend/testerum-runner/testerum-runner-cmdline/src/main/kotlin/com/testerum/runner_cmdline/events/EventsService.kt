@@ -6,7 +6,9 @@ import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerF
 class EventsService(private val executionListenerFinder: ExecutionListenerFinder) {
 
     fun logEvent(runnerEvent: RunnerEvent) {
-        executionListenerFinder.findExecutionListener().onEvent(runnerEvent)
+        for (executionListener in executionListenerFinder.executionListeners) {
+            executionListener.onEvent(runnerEvent)
+        }
     }
 
 }

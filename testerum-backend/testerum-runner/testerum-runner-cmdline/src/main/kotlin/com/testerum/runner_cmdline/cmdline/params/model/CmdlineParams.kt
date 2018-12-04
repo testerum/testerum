@@ -8,7 +8,11 @@ data class CmdlineParams(val repositoryDirectory: JavaPath,
                          val settingOverrides: Map<String, String>,
                          val testFilesOrDirectories: List<JavaPath>,
                          val verbose: Boolean,
-                         val outputFormat: OutputFormat) {
+                         val outputFormats: List<OutputFormat>) {
+
+    companion object {
+        val DEFAULT_OUTPUT_FORMAT = OutputFormat.TREE
+    }
 
     enum class OutputFormat {
         TREE,
