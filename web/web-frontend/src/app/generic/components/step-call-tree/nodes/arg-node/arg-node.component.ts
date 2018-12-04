@@ -12,12 +12,11 @@ import {
 import {ArgNodeModel} from "../../model/arg-node.model";
 import {ResourceComponent} from "../../../../../functionalities/resources/editors/resource-component.interface";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
-import {ArgNodePanelComponent} from "./arg-node-panel/arg-node-panel.component";
-import {Arg} from "../../../../../model/arg/arg.model";
 import {Subscription} from "rxjs";
 import {StepCallTreeComponentService} from "../../step-call-tree.component-service";
 import {ArgModalService} from "../../arg-modal/arg-modal.service";
 import {ArgModalEnum} from "../../arg-modal/enum/arg-modal.enum";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
     selector: 'arg-node',
@@ -26,52 +25,67 @@ import {ArgModalEnum} from "../../arg-modal/enum/arg-modal.enum";
         'arg-node.component.scss',
         '../step-call-tree.scss',
         '../../../../../generic/css/tree.scss',
+    ],
+    animations: [
+        trigger('expandCollapse', [
+            state('open', style({
+                'height': '*'
+            })),
+            state('close', style({
+                'height': '0px'
+            })),
+            transition('open => close', animate('400ms ease-in-out')),
+            transition('close => open', animate('400ms ease-in-out'))
+        ])
     ]
 })
 export class ArgNodeComponent implements OnInit {
     @Input() model: ArgNodeModel;
 
-    hasMouseOver: boolean = false;
-    showChildren: boolean = true;
+    collapsed: boolean = false;
+    animationState: string = 'open';
+    isEditMode: boolean;
 
-    @ViewChild(ArgNodePanelComponent) argNodePanelComponent:ArgNodePanelComponent;
+    @Input('collapsed')
+    set setCollapsed(value: boolean) {
+        if (this.collapsed != value) {
+            this.collapsed = value;
+            this.animationState = this.collapsed ? 'close' : 'open';
+        }
+    }
+
+    private resourceComponentRef: ComponentRef<ResourceComponent<any>>;
     @ViewChild('resourceContainer', {read: ViewContainerRef}) content:ViewContainerRef;
 
-    private afterUpdateSubscription: Subscription;
-
+    editModeSubscription: Subscription;
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
                 private stepCallTreeComponentService: StepCallTreeComponentService,
-                private argModalService: ArgModalService) {
+                private argModalService: ArgModalService){
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+        this.isEditMode = this.stepCallTreeComponentService.isEditMode;
+        this.editModeSubscription = this.stepCallTreeComponentService.editModeEventEmitter.subscribe(
+            (editMode: boolean) => {this.isEditMode = editMode}
+        );
+
         let paramRendererContainer: Type<any> = this.getResourceRenderer();
-
         const factory: ComponentFactory<any> = this.componentFactoryResolver.resolveComponentFactory(paramRendererContainer);
-        let resourceComponentRef: ComponentRef<ResourceComponent<any>> = this.content.createComponent(factory);
-        resourceComponentRef.instance.model = this.model.arg.content;
-        resourceComponentRef.instance.name = this.model.arg.name;
-        resourceComponentRef.instance.stepParameter = this.model.stepPatternParam;
-        resourceComponentRef.instance.condensedViewMode = true;
-        resourceComponentRef.instance.editMode = false;
+        this.resourceComponentRef = this.content.createComponent(factory);
 
-        this.argNodePanelComponent.editButtonClickedEventEmitter.subscribe(event => {
-            this.afterUpdateSubscription = this.argModalService.showAreYouSureModal(this.model.arg, this.model.stepPatternParam).subscribe( (event:ArgModalEnum) => {
-                resourceComponentRef.instance.refresh();
-            });
-        });
+        this.initCondensedViewMode(this.model.arg);
     }
+
+    private initCondensedViewMode(arg) {
+        this.resourceComponentRef.instance.model = arg.content.clone();
+        this.resourceComponentRef.instance.name = arg.name;
+        this.resourceComponentRef.instance.stepParameter = this.model.stepPatternParam;
+        this.resourceComponentRef.instance.condensedViewMode = true;
+        this.resourceComponentRef.instance.editMode = false;
+    }
+
     ngOnDestroy(): void {
-        if (this.afterUpdateSubscription) this.afterUpdateSubscription.unsubscribe();
-    }
-
-    getArg(): Arg {
-        return this.model.arg
-    }
-
-    argHasContent(): boolean {
-        let arg = this.getArg();
-        return (arg !== null) && (arg.content != null) && (!arg.content.isEmpty());
+        this.editModeSubscription.unsubscribe();
     }
 
     private getResourceRenderer():Type<any>  {
@@ -83,7 +97,73 @@ export class ArgNodeComponent implements OnInit {
         throw new Error("Unmapped class to a resource class name [" + this.model.arg.uiType + "] ");
     }
 
-    isEditMode(): boolean {
-        return this.stepCallTreeComponentService.isEditMode;
+    editOrViewResourceInModal() {
+        if (!this.isEditMode) {
+            this.stepCallTreeComponentService.editModeEventEmitter.emit(true);
+        }
+
+        this.argModalService.showAreYouSureModal(this.model.arg, this.model.stepPatternParam).subscribe( (event:ArgModalEnum) => {
+            this.initCondensedViewMode(this.model.arg);
+            this.resourceComponentRef.instance.refresh();
+        });
+    }
+
+    argHasContent(): boolean {
+        let arg = this.model.arg;
+        return (arg !== null) && (arg.content != null) && (!arg.content.isEmpty());
+    }
+
+    getArgName(): string {
+        if (this.model.arg.name) {
+            return this.model.arg.name
+        }
+
+        if (this.model.stepPatternParam.name) {
+            return this.model.stepPatternParam.name
+        }
+
+        if (this.model.arg.path && this.model.arg.path.fileName) {
+            return this.model.arg.path.fileName;
+        }
+
+        return "param";
+    }
+
+    getArgUiType(): string {
+        let resourceType = ResourceMapEnum.getResourceMapEnumByUiType(this.model.arg.uiType);
+        if (resourceType) {
+            return resourceType.uiName;
+        }
+
+        return this.model.arg.uiType;
+    }
+
+    animate() {
+        if(this.animationState == "close") {
+            this.animationState = "open";
+        } else {
+            this.animationState = "close";
+        }
+    }
+
+    collapse() {
+        this.collapsed = true;
+        this.animationState = "close";
+    }
+
+    expand() {
+        this.collapsed = false;
+        this.animationState = "open";
+    }
+
+    onAnimateEnd() {
+    }
+
+    hasOwnWarnings(): boolean {
+        return this.model.arg.warnings.length > 0;
+    }
+
+    isManualExecutionMode(): boolean {
+        return this.stepCallTreeComponentService.isManualExecutionMode;
     }
 }

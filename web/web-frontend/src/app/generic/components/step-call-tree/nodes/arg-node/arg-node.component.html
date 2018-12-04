@@ -1,12 +1,61 @@
-<div>
-    <arg-node-panel #argNodePanel
-                    [arg]="model.arg"
-                    [paramStepPart]="model.stepPatternParam">
+<fieldset class="shell">
+    <legend class="header"
+            (click)="animate()">
+
+        <i *ngIf="model.arg.content"
+           class="fas toggle-icon"
+           [class.fa-caret-right]="animationState == 'close'"
+           [class.fa-caret-down]="animationState == 'open'"
+           aria-hidden="true"></i>
+
+        <span [class.error_squiggly]="model.arg.hasOwnOrDescendantWarnings">
+            <span>{{getArgName()}}</span>
+            <span *ngIf="getArgName()">:&nbsp;</span>
+            <span>{{getArgUiType()}}</span>
+        </span>
+
+        <!-- WARNING ICON -->
+        <i *ngIf="hasOwnWarnings()" class="fas fa-exclamation-triangle error_color" aria-hidden="true"
+           [popover]="warningPopTemplate" containerClass="popover-warning" triggers="" container="body" #pop="bs-popover"
+           (mouseenter)="pop.show()"
+           (mouseleave)="pop.hide()">
+        </i>
+
+        <ng-template #warningPopTemplate>
+            <i class="fas fa-exclamation-triangle error_color" aria-hidden="true"></i>
+            <div *ngFor="let warning of model.arg.warnings">
+                <div>{{warning.message}}</div>
+            </div>
+        </ng-template>
+
+        <info-icon *ngIf="model.stepPatternParam.description"
+                   [message]="model.stepPatternParam.description"
+                   [position]="'top'"
+                   class="param-info-icon"></info-icon>
+        <div *ngIf="!isManualExecutionMode()"
+             [attr.title]="model.arg.content?'Edit':'Add'"
+             class="btn btn-default btn-xs btn-group"
+             (click)="editOrViewResourceInModal(); $event.stopPropagation()">
+            <span class="fas"
+                  [class.fa-plus]="!model.arg.content"
+                  [class.fa-pencil-alt]="model.arg.content">
+            </span>
+        </div>
+    </legend>
+
+    <div class="content-shell"
+         [@expandCollapse]="animationState"
+         (@expandCollapse.done)="onAnimateEnd()">
+
+        {{model.arg.content.instanceId}} - {{model.arg.content.serialize()}}
+
         <div #resourceContainer></div>
 
         <div *ngIf="!argHasContent()"
              class="empty-body-label">
             Undefined value
         </div>
-    </arg-node-panel>
-</div>
+    </div>
+
+</fieldset>
+

@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {BrowserModule} from "@angular/platform-browser";
 import {AreYouSureModalComponent} from "./components/are_you_sure_modal/are-you-sure-modal.component";
 import {PopoverModule} from "ngx-bootstrap";
-import {ModalModule } from 'ngx-bootstrap/modal';
+import {ModalModule} from 'ngx-bootstrap/modal';
 import {TreeComponent} from "./components/tree/tree.component";
 import {TreeContainerComponent} from "./components/tree/tree-container/tree-container.component";
 import {TreeNodeComponent} from "./components/tree/tree-container/tree-node/tree-node.component";
@@ -49,7 +49,6 @@ import {SubStepsContainerComponent} from "./components/step-call-tree/nodes/sub-
 import {ArgsContainerComponent} from "./components/step-call-tree/nodes/args-container/args-container.component";
 import {ArgNodeComponent} from "./components/step-call-tree/nodes/arg-node/arg-node.component";
 import {HttpRequestComponent} from "../functionalities/resources/editors/http/request/http-request.component";
-import {ArgNodePanelComponent} from "./components/step-call-tree/nodes/arg-node/arg-node-panel/arg-node-panel.component";
 import {ArgModalComponent} from "./components/step-call-tree/arg-modal/arg-modal.component";
 import {NewSharedResourcePathModalComponent} from "./components/step-call-tree/new-shared-resource-path-modal/new-shared-resource-path-modal.component";
 import {PathChooserComponent} from "./components/path-chooser/path-chooser.component";
@@ -60,8 +59,10 @@ import {SelectSharedResourceModalComponent} from "./components/step-call-tree/se
 import {
     AutoCompleteModule,
     FileUploadModule,
-    InputTextModule, MessageService,
-    SelectButtonModule, ToggleButtonModule,
+    InputTextModule,
+    MessageService,
+    SelectButtonModule,
+    ToggleButtonModule,
     ToolbarModule,
     TooltipModule
 } from "primeng/primeng";
@@ -217,7 +218,6 @@ import {MarkdownModule} from 'ngx-markdown'
         SubStepsContainerComponent,
         ArgsContainerComponent,
         ArgNodeComponent,
-        ArgNodePanelComponent,
         ArgModalComponent,
         NewSharedResourcePathModalComponent,
         SelectSharedResourceModalComponent,

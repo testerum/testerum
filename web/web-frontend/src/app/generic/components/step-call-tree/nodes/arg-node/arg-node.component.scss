@@ -3,3 +3,50 @@
     display: flex;
     justify-content: center;
 }
+
+
+.shell {
+    border-radius: 3px;
+    border: 1px solid #D5D5D5;
+    color: #222222;
+    padding: .0em 1em 0.5em .0em;
+    cursor: default;
+    width: fit-content;
+}
+
+.header {
+    display: block;
+    padding-right: 7px;
+    border: none;
+    width: inherit;
+    cursor: pointer;
+    margin-bottom: 0;
+    margin-left: -4px;
+    font-size: 14px;
+}
+
+.collapsed-header {
+    margin-left: 15px;
+}
+
+.content-shell {
+    padding-left: 1em;
+    max-height: 150px;
+    overflow: auto;
+    cursor: default;
+}
+
+.btn-xs {
+    margin-left: 6px;
+    margin-top: -4px;
+}
+
+.toggle-icon {
+    width: 8px;
+    margin-right: 5px;
+}
+
+.param-info-icon {
+    display: inline-block;
+    margin-left: 5px;
+}
