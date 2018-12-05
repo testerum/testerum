@@ -17,9 +17,6 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
                                            private val globalVars: GlobalVariablesContext) {
 
     companion object {
-        // todo: support escape sequences
-        private val variableUsageRegex = Regex("""\{\{([^}]+)}}""")
-
         private val ARG_PART_PARSER: ParserExecuter<List<FileArgPart>> = ParserExecuter(FileArgPartParserFactory.argParts())
 
         fun forTest(dynamicVars: DynamicVariablesContext, globalVars: GlobalVariablesContext)
@@ -64,32 +61,39 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
 
     private fun toMap(): Map<String, Any?> {
         // todo: this looks slow...
-        val result = hashMapOf<String, Any?>()
+        val result = LinkedHashMap<String, Any?>()
 
         result.putAll(globalVars.toMap())
         result.putAll(dynamicVars.toMap())
         result.putAll(argsVars)
 
+        // evaluate expressions in values
+        for ((key, value) in result) {
+            if (value is String) {
+                result[key] = evaluateExpressionSafely(value, result)
+            }
+        }
+
         return result
     }
 
-    fun resolveIn(arg: Arg): Any? {
-        val content = arg.content
-                ?: return null
+    fun resolveIn(arg: Arg): Any? = resolveInText(arg.content, this.toMap())
+
+    private fun resolveInText(text: String?,
+                              context: Map<String, Any?>): Any? {
+        if (text == null) {
+            return null
+        }
 
         val resolvedArgParts = mutableListOf<Any?>()
 
-        val parts: List<FileArgPart> = ARG_PART_PARSER.parse(content)
+        val parts: List<FileArgPart> = ARG_PART_PARSER.parse(text)
 
         for (part: FileArgPart in parts) {
             val resolvedArgPartPart: Any? = when (part) {
                 is FileTextArgPart       -> part.text
                 is FileExpressionArgPart -> {
-                    try {
-                         ExpressionEvaluator.evaluate(part.text, this.toMap())
-                    } catch (e: Exception) {
-                        part.text
-                    }
+                    evaluateExpressionSafely(part.text, context)
                 }
             }
 
@@ -103,12 +107,16 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
         }
     }
 
-    fun resolveIn(text: String): String
-            = variableUsageRegex.replace(text) { matchResult ->
-                val expression = matchResult.groups[1]!!.value
-                        .trim()
+    // todo: why do we need this, and can we replace it?
+    fun resolveIn(text: String): String = resolveInText(text, this.toMap()).toString()
 
-                return@replace ExpressionEvaluator.evaluate(expression, this.toMap()).toString()
-            }
+    private fun evaluateExpressionSafely(expression: String,
+                                         context: Map<String, Any?>): Any? {
+        return try {
+            ExpressionEvaluator.evaluate(expression, context)
+        } catch (e: Exception) {
+            expression
+        }
+    }
 
 }
