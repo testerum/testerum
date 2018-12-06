@@ -4,6 +4,9 @@ import {StepCallTreeComponentService} from "../../step-call-tree.component-servi
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {ContextService} from "../../../../../service/context.service";
+import {InfoModalService} from "../../../info_modal/info-modal.service";
+import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
+import {StepCallContainerComponent} from "../step-call-container/step-call-container.component";
 
 @Component({
     selector: 'sub-steps-container',
@@ -22,7 +25,8 @@ export class SubStepsContainerComponent {
     showChildren: boolean = true;
 
     constructor(private stepCallTreeComponentService: StepCallTreeComponentService,
-                private contextService: ContextService) {
+                private contextService: ContextService,
+                private infoModalService: InfoModalService) {
     }
 
     collapseNode() {
@@ -41,7 +45,17 @@ export class SubStepsContainerComponent {
 
     onPasteStep() {
         let parentContainer = this.model.parentContainer as StepCallContainerModel;
-        let destinationStepCall = parentContainer.stepCall;
+
+        if (this.isPasteOperationCreatingACycle(this.model)) {
+            this.infoModalService.showInfoModal(
+                "Operation not allowed",
+                "You are not allowed to paste a step as its own child/descendant.\n" +
+                "This operation would create a cycle and the world as we know it might end!"
+            );
+
+            return;
+        }
+
         if (this.contextService.stepToCopy) {
             let stepCallContainerComponent = this.contextService.stepToCopy;
             let parentSubStepsContainerModel = parentContainer.getSubStepsContainerModel();
@@ -70,5 +84,20 @@ export class SubStepsContainerComponent {
     canPaste(): boolean {
         let destinationContainer = this.model.parentContainer as StepCallContainerModel;
         return this.contextService.canPaste(destinationContainer);
+    }
+
+    private isPasteOperationCreatingACycle(parent: JsonTreeContainer): boolean {
+        let stepToCopyOrCut: StepCallContainerComponent = this.contextService.stepToCopy ? this.contextService.stepToCopy: this.contextService.stepToCut;
+        if(!stepToCopyOrCut) {
+            return false;
+        }
+
+        while (parent) {
+            if(parent == stepToCopyOrCut.model) {
+                return true
+            }
+            parent = parent.parentContainer;
+        }
+        return false;
     }
 }
