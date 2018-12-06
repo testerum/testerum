@@ -3,6 +3,7 @@ import {JsonTreeNodeState} from "../../json-tree/model/json-tree-node-state.mode
 import {JsonTreeContainer} from "../../json-tree/model/json-tree-container.model";
 import {StepCall} from "../../../../model/step-call.model";
 import {JsonTreeContainerOptions} from "../../json-tree/model/behavior/JsonTreeContainerOptions";
+import {SubStepsContainerModel} from "./sub-steps-container.model";
 
 export class StepCallContainerModel extends JsonTreeContainerAbstract {
 
@@ -36,5 +37,15 @@ export class StepCallContainerModel extends JsonTreeContainerAbstract {
 
     getOptions(): JsonTreeContainerOptions {
         return this.options;
+    }
+
+    getSubStepsContainerModel(): SubStepsContainerModel {
+        for (const child of this.children) {
+            if (child instanceof SubStepsContainerModel) {
+                return child;
+            }
+        }
+
+        return null;
     }
 }

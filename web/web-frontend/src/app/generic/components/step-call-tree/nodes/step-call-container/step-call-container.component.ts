@@ -47,11 +47,9 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     private stepCallOrderChangeSubscription: any;
     ngOnInit() {
         if(!this.isEditMode()) this.showParameters = false;
-        this.editModeSubscription = this.stepCallTreeComponentService.editModeEventEmitter.subscribe(
-            (editMode: boolean) => {
+        this.editModeSubscription = this.stepCallTreeComponentService.editModeEventEmitter.subscribe((editMode: boolean) => {
                 this.showParameters = editMode;
-            }
-        );
+        });
 
         this.stepCallOrderChangeSubscription = this.stepCallTreeComponentService.stepCallOrderChangeEventEmitter.subscribe(
             event => {
@@ -253,6 +251,13 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         this.stepCallTreeComponentService.removeStepCall(this.model);
     }
 
+    public moveStep(newParentContainer: JsonTreeContainer ) {
+        if (this.stepCallOrderChangeSubscription) {
+            this.stepCallOrderChangeSubscription.unsubscribe();
+        }
+        this.stepCallTreeComponentService.moveStep(this.model, newParentContainer);
+    }
+
     private findStepIndex(): number {
         return this.model.parentContainer.getChildren().indexOf(this.model);
     }
@@ -281,56 +286,18 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         return this.model.stepCall.getAllWarnings().length > 0;
     }
 
-
     onCutStep() {
         this.setSelected();
-        this.contextService.setPathToCut(this.model.path);
+        this.contextService.setPathToCut(this);
     }
 
     onCopyStep() {
         this.setSelected();
-        this.contextService.setPathToCopy(this.model.path);
-    }
-
-    onPasteStep() {
-        let destinationPath = this.model.path;
-        if (this.contextService.stepPathToCopy) {
-            let sourcePath = this.contextService.stepPathToCopy;
-            this.jsonTreeService.triggerCopyAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
-                    this.featureService.copy(sourcePath, destinationPath).subscribe( (resultPath: Path) => {
-                        this.afterPasteOperation(resultPath);
-                    });
-                }
-            )
-        }
-        if (this.contextService.stepPathToCut) {
-            let sourcePath = this.contextService.stepPathToCut;
-            this.jsonTreeService.triggerMoveAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
-                    this.featureService.move(sourcePath, destinationPath).subscribe( (resultPath: Path) => {
-                        this.afterPasteOperation(resultPath);
-                    });
-                }
-            )
-        }
-    }
-
-    private afterPasteOperation(resultPath: Path) {
-        this.contextService.stepPathToCut = null;
-        this.contextService.stepPathToCopy = null;
-
-        this.contextService.initializeTestsTreeFromServer(resultPath);
-        if (resultPath.isFile()) {
-            this.urlService.navigateToTest(resultPath);
-        } else {
-            this.urlService.navigateToFeature(resultPath);
-        }
-    }
-
-    canPaste(): boolean {
-        return this.contextService.canPaste(this.model.path);
+        this.contextService.setPathToCopy(this);
     }
 
     private setSelected() {
-        this.model.selected = true;
+        this.stepCallTreeComponentService.setSelectedNode(this);
     }
+
 }

@@ -115,7 +115,7 @@ export class StepCall implements Serializable<StepCall> {
         return new StepCall().deserialize(JSON.parse(this.serialize()));
     }
 
-    getTextWithParamValues(previousPhase: StepPhaseEnum): string {
+    getTextWithParamValues(previousPhase: StepPhaseEnum, escapeHtml: boolean = false): string {
         let paramIndex = 0;
 
         let phaseAsString: string = StepPhaseEnum[this.stepDef.phase];
@@ -131,9 +131,9 @@ export class StepCall implements Serializable<StepCall> {
             if (patternPart instanceof ParamStepPatternPart) {
                 let currentArg = this.args[paramIndex];
                 if (StepTextParamUtil.hasValue(currentArg)) {
-                    stepText += "<<" + StepTextParamUtil.getArgumentValue(currentArg) + ">>"
+                    stepText += (escapeHtml?"&lt;&lt;":"<<") + StepTextParamUtil.getArgumentValue(currentArg) + (escapeHtml?"&gt;&gt;":">>")
                 } else {
-                    stepText += "<<" + StepTextParamUtil.getArgumentName(currentArg, patternPart) + ">>"
+                    stepText += (escapeHtml?"&lt;&lt;":"<<") + StepTextParamUtil.getArgumentName(currentArg, patternPart) + (escapeHtml?"&gt;&gt;":">>")
                 }
                 paramIndex++;
             }

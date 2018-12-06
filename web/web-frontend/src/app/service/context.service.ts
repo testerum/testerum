@@ -1,24 +1,25 @@
 import {Injectable} from "@angular/core";
-import {Path} from "../model/infrastructure/path/path.model";
+import {StepCallContainerComponent} from "../generic/components/step-call-tree/nodes/step-call-container/step-call-container.component";
+import {StepCallContainerModel} from "../generic/components/step-call-tree/model/step-call-container.model";
 
 @Injectable()
 export class ContextService {
 
-    stepPathToCut: Path = null;
-    stepPathToCopy: Path = null;
+    stepToCut: StepCallContainerComponent = null;
+    stepToCopy: StepCallContainerComponent = null;
 
-    setPathToCut(path: Path) {
-        this.pathToCopy = null;
-        this.pathToCut = path;
+    setPathToCut(stepCallContainerComponent: StepCallContainerComponent) {
+        this.stepToCopy = null;
+        this.stepToCut = stepCallContainerComponent;
     }
 
-    setPathToCopy(path: Path) {
-        this.pathToCopy = path;
-        this.pathToCut = null;
+    setPathToCopy(stepCallContainerComponent: StepCallContainerComponent) {
+        this.stepToCopy = stepCallContainerComponent;
+        this.stepToCut = null;
     }
 
-    canPaste(path: Path): boolean {
-        return (this.pathToCopy != null && !this.pathToCopy.equals(path))
-            || (this.pathToCut != null && !this.pathToCut.equals(path));
+    canPaste(stepCallContainerModel: StepCallContainerModel): boolean {
+        return (this.stepToCopy != null && !(this.stepToCopy.model.stepCall == stepCallContainerModel.stepCall))
+            || (this.stepToCut != null && !(this.stepToCut.model.stepCall == stepCallContainerModel.stepCall));
     }
 }

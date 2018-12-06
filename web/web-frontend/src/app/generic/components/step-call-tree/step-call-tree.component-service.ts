@@ -9,6 +9,7 @@ import {JsonTreeModel} from "../json-tree/model/json-tree.model";
 import {SubStepsContainerModel} from "./model/sub-steps-container.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
 import {ArrayUtil} from "../../../utils/array.util";
+import {StepCallContainerComponent} from "./nodes/step-call-container/step-call-container.component";
 
 @Injectable()
 export class StepCallTreeComponentService {
@@ -26,6 +27,8 @@ export class StepCallTreeComponentService {
     currentStepCallEditorModel: StepCallEditorContainerModel;
 
     id: string = this.guid();
+
+    private selectedStep: StepCallContainerComponent;
 
     private guid() {
         function s4() {
@@ -108,6 +111,16 @@ export class StepCallTreeComponentService {
         this.triggerWarningRecalculationChangesEvent();
     }
 
+    moveStep(stepCallContainerModel: StepCallContainerModel, newParentContainer: JsonTreeContainer) {
+        ArrayUtil.removeElementFromArray(stepCallContainerModel.parentContainer.getChildren(), stepCallContainerModel);
+        this.removeStepCallFromParent(stepCallContainerModel.stepCall, stepCallContainerModel.parentContainer);
+
+        this.addStepCallToParentContainer(stepCallContainerModel.stepCall, newParentContainer);
+
+        this.triggerStepCallOrderChangeEvent();
+        this.triggerChangeEvent();
+    }
+
     private getFirstParentOfTypeStepCallContainerModel(parentContainer: JsonTreeContainer): StepCallContainerModel {
         if (parentContainer instanceof StepCallContainerModel) {
             return parentContainer;
@@ -145,5 +158,12 @@ export class StepCallTreeComponentService {
         this.currentStepCallEditorModel = stepCallEditorContainerModel;
 
         this.triggerChangeEvent();
+    }
+
+    setSelectedNode(selectedStep: StepCallContainerComponent) {
+        this.selectedStep = selectedStep;
+    }
+    getSelectedNode(): StepCallContainerComponent {
+        return this.selectedStep;
     }
 }

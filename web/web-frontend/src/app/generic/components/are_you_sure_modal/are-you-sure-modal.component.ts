@@ -6,7 +6,8 @@ import {Subject} from "rxjs";
 @Component({
     moduleId: module.id,
     selector: 'are-you-sure-modal',
-    templateUrl: 'are-you-sure-modal.component.html'
+    templateUrl: 'are-you-sure-modal.component.html',
+    styleUrls: ['are-you-sure-modal.component.scss']
 })
 export class AreYouSureModalComponent implements AfterViewInit {
 

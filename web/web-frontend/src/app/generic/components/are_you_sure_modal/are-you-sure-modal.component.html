@@ -1,4 +1,4 @@
-<div bsModal #areYouSureModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+<div bsModal #areYouSureModal="bs-modal" class="modal fade are-you-sure-modal" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,7 +8,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                {{text}}
+                <pre [innerHTML]="text"></pre>
             </div>
             <div class="modal-footer">
                 <button (click)="ok()" type="button" class="btn btn-warning" data-dismiss="modal">Ok</button>

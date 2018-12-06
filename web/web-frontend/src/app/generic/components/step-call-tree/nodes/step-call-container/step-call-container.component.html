@@ -61,20 +61,16 @@
                 <i class="fas fa-arrow-down" aria-hidden="true"></i>
             </div>
 
-            <div title="Cut Feature" class="btn btn-default btn-xs btn-group"
+            <div title="Cut Step" class="btn btn-default btn-xs btn-group"
                  (click)="onCutStep(); $event.stopPropagation()">
                 <i class="fa_my-cut" aria-hidden="true"></i>
             </div>
 
-            <div title="Copy Feature" class="btn btn-default btn-xs btn-group"
+            <div title="Copy Step" class="btn btn-default btn-xs btn-group"
                  (click)="onCopyStep(); $event.stopPropagation()">
                 <i class="fa_my-copy" aria-hidden="true"></i>
             </div>
 
-            <div *ngIf="canPaste()" title="Paste Feature" class="btn btn-default btn-xs btn-group"
-                 (click)="onPasteStep(); $event.stopPropagation()">
-                <i class="fa_my-paste" aria-hidden="true"></i>
-            </div>
             <div title="Remove Step"
                  class="btn btn-default btn-xs btn-group"
                  (click)="removeStep(); $event.stopPropagation()">
