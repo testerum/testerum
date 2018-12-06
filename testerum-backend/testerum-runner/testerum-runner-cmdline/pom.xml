@@ -158,6 +158,37 @@
             <artifactId>picocli</artifactId>
         </dependency>
 
+        <!--==================== test dependencies ====================-->
+
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- java-hamcrest -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>java-hamcrest</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -169,162 +200,6 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
             </plugin>
-
-            <!-- maven-shade-plugin -->
-<!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-
-                <executions>
-                    <execution>
-                        <id>runner-create-fat-jar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-
-                        <configuration>
-                            &lt;!&ndash;<createDependencyReducedPom>true</createDependencyReducedPom>&ndash;&gt;
-
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-
-                            <relocations>
-                                <relocation>
-                                    <pattern>ch</pattern>
-                                    <shadedPattern>com.testerum.shaded.ch</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.fasterxml</pattern>
-                                    <shadedPattern>com.testerum.shaded.com.fasterxml</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.google</pattern>
-                                    <shadedPattern>com.testerum.shaded.com.google</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.sun</pattern>
-                                    <shadedPattern>com.testerum.shaded.com.sun</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>delight</pattern>
-                                    <shadedPattern>com.testerum.shaded.delight</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javassist</pattern>
-                                    <shadedPattern>com.testerum.shaded.javassist</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.annotation</pattern>
-                                    <shadedPattern>com.testerum.shaded.javax.annotation</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>kotlin</pattern>
-                                    <shadedPattern>com.testerum.shaded.kotlin</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>mozilla</pattern>
-                                    <shadedPattern>com.testerum.shaded.mozilla</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>net.sf</pattern>
-                                    <shadedPattern>com.testerum.shaded.net.sf</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.aopalliance</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.aopalliance</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.apache</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.apache</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.codehaus</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.codehaus</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.fusesource</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.fusesource</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.intellij</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.intellij</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.jetbrains</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.jetbrains</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.jparsec</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.jparsec</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.reflections</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.reflections</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.slf4j</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.slf4j</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.springframework</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.springframework</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.yaml</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.yaml</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.zeroturnaround</pattern>
-                                    <shadedPattern>com.testerum.shaded.org.zeroturnaround</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>picocli</pattern>
-                                    <shadedPattern>com.testerum.shaded.picocli</shadedPattern>
-                                </relocation>
-                            </relocations>
-
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>dist</shadedClassifierName>
-
-                            <transformers>
-                                &lt;!&ndash; set main class&ndash;&gt;
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>${mainClass}</mainClass>
-                                </transformer>
-
-                                &lt;!&ndash; concatenate service entries &ndash;&gt;
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-
-                                &lt;!&ndash; concatenate spring files &ndash;&gt;
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/spring.handlers</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/spring.schemas</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/spring.factories</resource>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/spring.tooling</resource>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
--->
-
         </plugins>
     </build>
 
@@ -497,7 +372,7 @@
                         <executions>
                             <execution>
                                 <id>copy-runner-to-package-dir</id>
-                                <phase>package</phase>
+                                <phase>prepare-package</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
                                 </goals>
@@ -514,22 +389,7 @@
                         </executions>
                     </plugin>
 
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- unix -->
-        <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-
-            <build>
-                <plugins>
-                    <!-- set executable bit on testerum shell script -->
+                    <!-- set executable bit on linux/mac shell script -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
@@ -539,10 +399,11 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <target>
-                                        <exec executable="/bin/sh" failifexecutionfails="true" failonerror="false">
-                                            <arg value="-c" />
-                                            <arg value="chmod +x '${project.basedir}/../../../package/runner/bin/*.sh'" />
-                                        </exec>
+                                        <chmod perm="ugo+x">
+                                            <fileset dir="${project.basedir}/../../../package/runner/bin">
+                                                <include name="**/*.sh" />
+                                            </fileset>
+                                        </chmod>
                                     </target>
                                 </configuration>
                                 <goals>

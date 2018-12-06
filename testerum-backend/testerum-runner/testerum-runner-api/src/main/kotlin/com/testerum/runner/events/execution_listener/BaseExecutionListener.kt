@@ -1,6 +1,15 @@
 package com.testerum.runner.events.execution_listener
 
-import com.testerum.runner.events.model.*
+import com.testerum.runner.events.model.FeatureEndEvent
+import com.testerum.runner.events.model.FeatureStartEvent
+import com.testerum.runner.events.model.RunnerEvent
+import com.testerum.runner.events.model.StepEndEvent
+import com.testerum.runner.events.model.StepStartEvent
+import com.testerum.runner.events.model.SuiteEndEvent
+import com.testerum.runner.events.model.SuiteStartEvent
+import com.testerum.runner.events.model.TestEndEvent
+import com.testerum.runner.events.model.TestStartEvent
+import com.testerum.runner.events.model.TextLogEvent
 
 open class BaseExecutionListener : ExecutionListener {
 
@@ -45,5 +54,7 @@ open class BaseExecutionListener : ExecutionListener {
     protected open fun onUnknownEvent(event: RunnerEvent) {
         throw IllegalArgumentException("unknown runner event [${event.javaClass.name}]")
     }
+
+    override fun stop() {}
 
 }

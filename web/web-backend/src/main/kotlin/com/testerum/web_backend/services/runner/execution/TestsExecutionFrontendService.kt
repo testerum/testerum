@@ -8,6 +8,7 @@ import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
+import com.testerum.runner.cmdline.jsonEventsOutputFormat
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.exit_code.ExitCode
@@ -89,6 +90,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     }
 
     fun startExecution(executionId: Long,
+                       resultFilePath: JavaPath,
                        eventProcessor: (event: RunnerEvent) -> Unit,
                        doneProcessor: () -> Unit) {
         val execution = testExecutionsById[executionId]
@@ -103,7 +105,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
         LOG.debug("==========================================[ start test execution {} ]=========================================", executionId)
 
-        val args = createArgs(execution.testOrDirectoryPathsToRun)
+        val args = createArgs(execution.testOrDirectoryPathsToRun, resultFilePath)
         val argsFile: JavaPath = createArgsFile(args)
         val commandLine: List<String> = createCommandLine(argsFile)
 
@@ -220,7 +222,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         return argsFile
     }
 
-    private fun createArgs(testsPathsToRun: List<Path>): List<String> {
+    private fun createArgs(testsPathsToRun: List<Path>,
+                           resultFilePath: JavaPath): List<String> {
         val args = mutableListOf<String>()
 
         // repository directory
@@ -234,7 +237,13 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         args += "--basic-steps-directory '${builtInBasicStepsDir.escape()}'"
 
         // output
-        args += "--output-format JSON"
+        val outputFormatConsole = jsonEventsOutputFormat {}
+        val outputFormatFile = jsonEventsOutputFormat {
+            destinationFileName = resultFilePath
+        }
+
+        args += "--output-format '$outputFormatConsole'"
+        args += "--output-format '$outputFormatFile'"
 
         // tests
         for (testPathToRun in testsPathsToRun) {

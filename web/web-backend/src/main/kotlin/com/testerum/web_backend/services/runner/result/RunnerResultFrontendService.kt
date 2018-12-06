@@ -5,6 +5,7 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.run_result.RunnerResultsDirInfo
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.web_backend.services.dirs.FrontendDirs
+import java.nio.file.Path as JavaPath
 
 class RunnerResultFrontendService(private val frontendDirs: FrontendDirs,
                                   private val runnerResultFileService: RunnerResultFileService) {
@@ -23,14 +24,11 @@ class RunnerResultFrontendService(private val frontendDirs: FrontendDirs,
         return runnerResultFileService.getResultAtPath(path, resultsDir)
     }
 
-    fun saveEvent(runnerEvent: RunnerEvent,
-                  file: Path) {
+    fun createResultsFileName(): JavaPath {
         val resultsDir = frontendDirs.getResultsDir()
-                ?: throw IllegalStateException("cannot save runner event because the resultsDir is not set")
+                ?: throw IllegalStateException("cannot create test result file because the resultsDir is not set")
 
-        runnerResultFileService.saveEvent(runnerEvent, file, resultsDir)
+        return runnerResultFileService.createResultsFileName(resultsDir)
     }
-
-    fun createResultsFileName(): Path = runnerResultFileService.createResultsFileName()
 
 }

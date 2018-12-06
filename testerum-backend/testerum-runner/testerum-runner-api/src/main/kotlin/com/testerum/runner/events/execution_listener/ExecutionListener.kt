@@ -6,4 +6,6 @@ interface ExecutionListener {
 
     fun onEvent(event: RunnerEvent)
 
+    fun stop()
+
 }
