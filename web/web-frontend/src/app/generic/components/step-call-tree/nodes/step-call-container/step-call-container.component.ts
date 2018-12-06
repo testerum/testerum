@@ -300,4 +300,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         this.stepCallTreeComponentService.setSelectedNode(this);
     }
 
+    isSelectedForCopyOrCut(): boolean {
+        return this.stepCallTreeComponentService.getSelectedNode() == this;
+    }
+
 }

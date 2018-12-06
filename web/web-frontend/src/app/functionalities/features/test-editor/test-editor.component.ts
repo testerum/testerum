@@ -18,6 +18,7 @@ import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_moda
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 import {StepCallWarningUtil} from "../../../generic/components/step-call-tree/util/step-call-warning.util";
+import {ContextService} from "../../../service/context.service";
 
 @Component({
     moduleId: module.id,
@@ -60,6 +61,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
                 private testsService: TestsService,
                 private testsRunnerService: TestsRunnerService,
                 private tagsService: TagsService,
+                private contextService: ContextService,
                 private areYouSureModalService: AreYouSureModalService) {
         super();
     }
@@ -268,5 +270,51 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
     runTest(): void {
         this.testsRunnerService.runTests([this.testModel.path]);
+    }
+
+    canPasteStep(): boolean {
+        return this.contextService.stepToCut != null || this.contextService.stepToCopy != null;
+    }
+
+    onPasteStep() {
+        let stepCallTreeComponentService = this.stepCallTreeComponent.stepCallTreeComponentService;
+
+        let treeModel = this.stepCallTreeComponent.jsonTreeModel;
+        if (this.contextService.stepToCopy) {
+            let stepToCopyModel = this.contextService.stepToCopy.model;
+            this.areYouSureModalService.showAreYouSureModal(
+                "Copy Step",
+                "Are you sure you want to copy step\n" +
+                "<b><span>"+stepToCopyModel.stepCall.getTextWithParamValues(null, true)+"</span></b>\n" +
+                "as a root step"
+            ).subscribe((action: AreYouSureModalEnum) => {
+                if (action == AreYouSureModalEnum.OK) {
+                    stepCallTreeComponentService.addStepCallToParentContainer(stepToCopyModel.stepCall, treeModel);
+                    this.afterPasteOperation();
+                }
+            })
+        }
+        if (this.contextService.stepToCut) {
+            let stepToCutModel = this.contextService.stepToCut.model;
+            this.areYouSureModalService.showAreYouSureModal(
+                "Move Step",
+                "Are you sure you want to move step\n" +
+                "<b><span>"+stepToCutModel.stepCall.getTextWithParamValues(null, true)+"</span></b>\n" +
+                "as a root step"
+            ).subscribe((action: AreYouSureModalEnum) => {
+                if (action == AreYouSureModalEnum.OK) {
+                    this.contextService.stepToCut.moveStep(treeModel);
+
+                    this.afterPasteOperation();
+                }
+            })
+        }
+    }
+
+    private afterPasteOperation() {
+        this.contextService.stepToCut = null;
+        this.contextService.stepToCopy = null;
+
+        this.stepCallTreeComponent.stepCallTreeComponentService.setSelectedNode(null);
     }
 }

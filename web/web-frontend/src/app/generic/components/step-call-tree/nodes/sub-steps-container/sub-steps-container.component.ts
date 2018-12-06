@@ -85,6 +85,7 @@ export class SubStepsContainerComponent {
     private afterPasteOperation() {
         this.contextService.stepToCut = null;
         this.contextService.stepToCopy = null;
+        this.stepCallTreeComponentService.setSelectedNode(null);
     }
 
     canPaste(): boolean {

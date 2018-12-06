@@ -1,6 +1,5 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import {StepCallEditorContainerModel} from "./model/step-call-editor-container.model";
-import {ArgModalComponent} from "./arg-modal/arg-modal.component";
 import {JsonTreeContainer} from "../json-tree/model/json-tree-container.model";
 import {StepCall} from "../../../model/step-call.model";
 import {ComposedStepDef} from "../../../model/composed-step-def.model";
