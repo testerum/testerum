@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {StepTextComponent} from "../../../step-text/step-text.component";
 import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
@@ -15,8 +15,6 @@ import {BasicStepDef} from "../../../../../model/basic-step-def.model";
 import {SubStepsContainerModel} from "../../model/sub-steps-container.model";
 import {StepCallTreeUtil} from "../../util/step-call-tree.util";
 import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
-import {JsonTreeContainerEditorEvent} from "../../../json-tree/container-editor/model/json-tree-container-editor.event";
-import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {ContextService} from "../../../../../service/context.service";
 
 @Component({
@@ -38,7 +36,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     hasMouseOver: boolean = false;
     showParameters: boolean = true;
 
-    constructor(private stepCallTreeComponentService: StepCallTreeComponentService,
+    constructor(public stepCallTreeComponentService: StepCallTreeComponentService, //is public with a reason, to access is selected from ComposedStepViewComponent for afterPasteOperation()
                 private stepModalService: StepModalService,
                 private contextService: ContextService) {
     }

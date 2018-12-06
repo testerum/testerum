@@ -28,6 +28,7 @@ import {Subscription} from "rxjs";
 import {StepsService} from "../../../../service/steps.service";
 import {MarkdownEditorComponent} from "../../markdown-editor/markdown-editor.component";
 import {StepCallWarningUtil} from "../../step-call-tree/util/step-call-warning.util";
+import {ContextService} from "../../../../service/context.service";
 
 @Component({
     selector: 'composed-step-view',
@@ -70,7 +71,8 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
 
     constructor(private stepPathModalService: StepPathModalService,
                 private tagsService: TagsService,
-                private stepsService: StepsService) {
+                private stepsService: StepsService,
+                private contextService: ContextService) {
     }
 
     ngOnInit(): void {
@@ -303,5 +305,38 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
 
     private setDescription() {
         this.model.description = this.descriptionMarkdownEditor.getValue()
+    }
+
+    canPasteStep(): boolean {
+        return this.contextService.stepToCut != null || this.contextService.stepToCopy != null;
+    }
+
+    onPasteStep() {
+        let stepCallTreeComponentService = this.stepCallTreeComponent.stepCallTreeComponentService;
+
+        let treeModel = this.stepCallTreeComponent.jsonTreeModel;
+        if (this.contextService.stepToCopy) {
+            let stepToCopyModel = this.contextService.stepToCopy.model;
+
+            stepCallTreeComponentService.addStepCallToParentContainer(stepToCopyModel.stepCall, treeModel);
+            this.afterPasteOperation();
+        }
+        if (this.contextService.stepToCut) {
+            let stepToCutModel = this.contextService.stepToCut.model;
+
+            this.contextService.stepToCut.moveStep(treeModel);
+            this.afterPasteOperation();
+        }
+    }
+
+    private afterPasteOperation() {
+        let stepForOperation = this.contextService.stepToCopy? this.contextService.stepToCopy: this.contextService.stepToCut;
+
+        if (stepForOperation) {
+            stepForOperation.stepCallTreeComponentService.setSelectedNode(null);
+        }
+
+        this.contextService.stepToCut = null;
+        this.contextService.stepToCopy = null;
     }
 }
