@@ -225,7 +225,8 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
                     Object.assign(this.testModel, result);
                     this.descriptionMarkdownEditor.setValue(this.testModel.description);
 
-                    this.setEditMode(false)
+                    this.setEditMode(false);
+                    this.refreshWarnings();
                 }
             )
         }
