@@ -318,7 +318,10 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         if (this.contextService.stepToCopy) {
             let stepToCopyModel = this.contextService.stepToCopy.model;
 
-            stepCallTreeComponentService.addStepCallToParentContainer(stepToCopyModel.stepCall, treeModel);
+            let newStepCall = stepToCopyModel.stepCall.clone();
+            newStepCall.stepDef = stepToCopyModel.stepCall.stepDef; //do not clone the StepDef, we still want to point to the same def
+
+            stepCallTreeComponentService.addStepCallToParentContainer(newStepCall, treeModel);
             this.afterPasteOperation();
         }
         if (this.contextService.stepToCut) {

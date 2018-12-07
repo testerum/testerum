@@ -6,6 +6,7 @@ import {Path} from "../infrastructure/path/path.model";
 import {TestProperties} from "./test-properties.model";
 import {Warning} from "../warning/Warning";
 import {Serializable} from "../infrastructure/serializable.model";
+import {ComposedStepDef} from "../composed-step-def.model";
 
 export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 
@@ -41,6 +42,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
                 new StepCall().deserialize(stepCall)
             );
         }
+        this.fixStepDefInstance(this.stepCalls);
 
         this.warnings = [];
         for (let warning of (input['warnings'] || [])) {
@@ -74,4 +76,21 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
         return new TestModel().deserialize(objectAsJson);
     }
 
+    private fixStepDefInstance(stepCalls: Array<StepCall>) {
+        let uniqueStepDefs = new Map();
+        for (const stepCall of stepCalls) {
+            if (!(stepCall.stepDef instanceof ComposedStepDef)) {
+                continue
+            }
+
+            let stepDefKey = stepCall.stepDef.path.toString();
+            let sharedStepDefInstance = uniqueStepDefs.get(stepDefKey);
+
+            if (sharedStepDefInstance) {
+                stepCall.stepDef = sharedStepDefInstance;
+            } else {
+                uniqueStepDefs.set(stepDefKey, stepCall.stepDef)
+            }
+        }
+    }
 }

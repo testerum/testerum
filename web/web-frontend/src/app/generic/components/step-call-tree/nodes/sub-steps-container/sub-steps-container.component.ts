@@ -60,7 +60,10 @@ export class SubStepsContainerComponent {
             let stepCallContainerComponent = this.contextService.stepToCopy;
             let parentSubStepsContainerModel = parentContainer.getSubStepsContainerModel();
 
-            this.stepCallTreeComponentService.addStepCallToParentContainer(stepCallContainerComponent.model.stepCall, parentSubStepsContainerModel);
+            let newStepCall = stepCallContainerComponent.model.stepCall.clone();
+            newStepCall.stepDef = stepCallContainerComponent.model.stepCall.stepDef; //do not clone the StepDef, we still want to point to the same def
+
+            this.stepCallTreeComponentService.addStepCallToParentContainer(newStepCall, parentSubStepsContainerModel);
             parentSubStepsContainerModel.jsonTreeNodeState.showChildren = true;
             this.afterPasteOperation();
         }
