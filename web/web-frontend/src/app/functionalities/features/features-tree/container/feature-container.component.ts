@@ -98,14 +98,14 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
         this.model.jsonTreeNodeState.showChildren = true;
     }
 
-    copyResource(event: any) {
-        let stepToCopyTreeNode: TestTreeNodeModel = event.dragData;
-        let pathToCopy = stepToCopyTreeNode.path;
+    moveResource(event: any) {
+        let stepToMoveTreeNode: TestTreeNodeModel = event.dragData;
+        let pathToMove = stepToMoveTreeNode.path;
         let destinationPath = this.model.path;
-        this.jsonTreeService.triggerCopyAction(pathToCopy, destinationPath).subscribe(
+        this.jsonTreeService.triggerMoveAction(pathToMove, destinationPath).subscribe(
             (copyEvent: JsonTreeContainerEditorEvent) => {
 
-                this.featureService.move(pathToCopy, destinationPath).subscribe( (resultPath: Path) => {
+                this.featureService.move(pathToMove, destinationPath).subscribe( (resultPath: Path) => {
                     this.afterPasteOperation(resultPath);
                 });
             }

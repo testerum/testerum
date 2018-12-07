@@ -7,7 +7,7 @@
          (click)="setSelected(); expandNode(); $event.stopPropagation();"
          (dblclick)="toggleNode()"
 
-         dnd-droppable [allowDrop]="allowDrop()" (onDropSuccess)="copyResource($event)">
+         dnd-droppable [allowDrop]="allowDrop()" (onDropSuccess)="moveResource($event)">
 
         <i aria-hidden="true"
            [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
