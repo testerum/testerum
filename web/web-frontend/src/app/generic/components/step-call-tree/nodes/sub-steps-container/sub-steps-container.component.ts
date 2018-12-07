@@ -99,7 +99,7 @@ export class SubStepsContainerComponent {
             if(parent == stepToCopyOrCut.model) {
                 return true
             }
-            parent = parent.parentContainer;
+            parent = parent.getParent();
         }
         return false;
     }
