@@ -57,7 +57,7 @@ export class StepCallTreeComponentService {
 
     addStepCall(stepCall: StepCall) {
         this.stepCalls.push(stepCall);
-        let stepCallContainer = StepCallTreeUtil.createStepCallContainerWithChildren(stepCall, this.jsonTreeModel);
+        let stepCallContainer = StepCallTreeUtil.createStepCallContainerWithChildren(stepCall, this.jsonTreeModel, new Map());
         stepCallContainer.jsonTreeNodeState.showChildren = true;
         this.jsonTreeModel.getChildren().push(stepCallContainer);
 
@@ -90,7 +90,7 @@ export class StepCallTreeComponentService {
     }
 
     addStepCallToParentContainer(stepCall: StepCall, parentContainer: JsonTreeContainer) {
-        let stepCallContainerModel = StepCallTreeUtil.createStepCallContainerWithChildren(stepCall, parentContainer);
+        let stepCallContainerModel = StepCallTreeUtil.createStepCallContainerWithChildren(stepCall, parentContainer, new Map());
 
         parentContainer.getChildren().push(
             stepCallContainerModel

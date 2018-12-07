@@ -13,22 +13,23 @@ export class StepCallTreeUtil {
 
     static mapStepCallsToJsonTreeModel(stepCalls: Array<StepCall>, treeModel:JsonTreeModel): JsonTreeModel {
 
-        treeModel.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCalls, treeModel);
+        let mappedStepCallContainer = new Map<string, SubStepsContainerModel>();
+        treeModel.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCalls, treeModel, mappedStepCallContainer);
 
         return treeModel;
     }
 
-    private static mapChildrenStepCallsToJsonTreeModel(stepCalls: Array<StepCall>, parentNode: JsonTreeContainer): Array<StepCallContainerModel> {
+    private static mapChildrenStepCallsToJsonTreeModel(stepCalls: Array<StepCall>, parentNode: JsonTreeContainer, mappedStepCallContainer: Map<string, SubStepsContainerModel>): Array<StepCallContainerModel> {
 
         let children: Array<StepCallContainerModel> = [];
         for (const stepCall of stepCalls) {
-            let childStepCallContainerModel = this.createStepCallContainerWithChildren(stepCall, parentNode);
+            let childStepCallContainerModel = this.createStepCallContainerWithChildren(stepCall, parentNode, mappedStepCallContainer);
             children.push(childStepCallContainerModel);
         }
         return children;
     }
 
-    public static createStepCallContainerWithChildren(stepCall: StepCall, parentNode: JsonTreeContainer): StepCallContainerModel {
+    public static createStepCallContainerWithChildren(stepCall: StepCall, parentNode: JsonTreeContainer, mappedStepCallContainer: Map<string, SubStepsContainerModel>): StepCallContainerModel {
         let childStepCallContainerModel = StepCallTreeUtil.createStepCallContainer(stepCall, parentNode, parentNode.getChildren().length);
 
         if (stepCall.args.length > 0) {
@@ -45,7 +46,7 @@ export class StepCallTreeUtil {
             });
         }
 
-        let subStepContainer = StepCallTreeUtil.createSubStepsContainerWithChildren(stepCall.stepDef);
+        let subStepContainer = StepCallTreeUtil.createSubStepsContainerWithChildren(stepCall.stepDef, mappedStepCallContainer);
         if(subStepContainer != null) {
             subStepContainer.parentContainer = childStepCallContainerModel;
             childStepCallContainerModel.children.push(
@@ -56,12 +57,19 @@ export class StepCallTreeUtil {
         return childStepCallContainerModel;
     }
 
-    public static createSubStepsContainerWithChildren(stepDef: StepDef): SubStepsContainerModel {
+    public static createSubStepsContainerWithChildren(stepDef: StepDef, mappedStepCallContainer: Map<string, SubStepsContainerModel>): SubStepsContainerModel {
         if (stepDef instanceof ComposedStepDef) {
+
+            let stepDefKey = stepDef.path.toString();
+            let existingSubStepsContainerModel = mappedStepCallContainer.get(stepDefKey);
+            if (existingSubStepsContainerModel) {
+                return existingSubStepsContainerModel;
+            }
+
             let subStepsContainer = new SubStepsContainerModel(null);
 
             if (stepDef.stepCalls) {
-                subStepsContainer.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepDef.stepCalls, subStepsContainer);
+                subStepsContainer.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepDef.stepCalls, subStepsContainer, mappedStepCallContainer);
             }
 
             subStepsContainer.descendantsHaveWarnings = false;
@@ -71,6 +79,8 @@ export class StepCallTreeUtil {
                     break;
                 }
             }
+
+            mappedStepCallContainer.set(stepDefKey, subStepsContainer);
 
             return subStepsContainer;
         }
