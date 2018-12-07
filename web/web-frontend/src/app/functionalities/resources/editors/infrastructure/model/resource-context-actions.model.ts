@@ -1,0 +1,6 @@
+
+interface ResourceContextActions {
+
+    save();
+    cancel();
+}

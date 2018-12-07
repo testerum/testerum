@@ -29,6 +29,10 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
     @Input() editMode: boolean = false;
     @Input() condensedViewMode: boolean = false;
     @Input() isSharedResource: boolean = false;
+    @Input() contextActions: ResourceContextActions = new class implements ResourceContextActions {
+        cancel() {}
+        save() {}
+    };
 
     @ViewChild(NgForm) form: NgForm;
 

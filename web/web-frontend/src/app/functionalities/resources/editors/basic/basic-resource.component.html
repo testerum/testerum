@@ -13,6 +13,7 @@
         <div class="my-value" *ngIf="editMode">
             <input argValueValidator arg="arg" stepParameter="stepParameter"
                    #valueNgModel="ngModel" [(ngModel)]="model.content"
+                   (keyup)="onKeyUp($event)"
                    type="text" class="form-control" name="value">
 
             <input-error [model]="valueNgModel"

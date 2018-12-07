@@ -11,6 +11,10 @@ export abstract class ResourceComponent<T extends Resource<T>> {
     @Input() editMode: boolean = true;
     @Input() condensedViewMode: boolean = false;
     @Input() isSharedResource: boolean = false;
+    @Input() contextActions: ResourceContextActions = new class implements ResourceContextActions {
+        cancel() {}
+        save() {}
+    };
 
     abstract isFormValid(): boolean;
     abstract getForm(): NgForm;

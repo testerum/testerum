@@ -22,6 +22,10 @@ export class JsonVerifyResourceComponent extends ResourceComponent<JsonVerify> i
     @Input() editMode: boolean = true;
     @Input() condensedViewMode: boolean = false;
     @Input() isSharedResource: boolean = false;
+    @Input() contextActions: ResourceContextActions = new class implements ResourceContextActions {
+        cancel() {}
+        save() {}
+    };
 
     @ViewChild(NgForm) form: NgForm;
 

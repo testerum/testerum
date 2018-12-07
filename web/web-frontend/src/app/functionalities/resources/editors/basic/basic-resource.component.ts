@@ -21,6 +21,10 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
     @Input() stepParameter?: ParamStepPatternPart;
     @Input() editMode: boolean = false;
     @Input() condensedViewMode: boolean = false;
+    @Input() contextActions: ResourceContextActions = new class implements ResourceContextActions {
+        cancel() {}
+        save() {}
+    };
 
     @ViewChild(NgForm) form: NgForm;
 
@@ -50,5 +54,15 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
 
     getForm(): NgForm {
         return this.form;
+    }
+
+    onKeyUp(event: KeyboardEvent) {
+        if (event.code == 'Escape') {
+            this.contextActions.cancel();
+        }
+
+        if (event.code == 'Enter') {
+            this.contextActions.save();
+        }
     }
 }

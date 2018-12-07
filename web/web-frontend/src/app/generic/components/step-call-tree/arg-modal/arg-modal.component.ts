@@ -138,6 +138,7 @@ export class ArgModalComponent {
         this.resourceComponentRef.instance.condensedViewMode = false;
         this.resourceComponentRef.instance.editMode = this.isEditMode;
         this.resourceComponentRef.instance.isSharedResource = this.isSharedResource;
+        this.resourceComponentRef.instance.contextActions = this.getContextActions();
         if (this.resourceComponentRef.instance.refresh) {
             this.resourceComponentRef.instance.refresh()
         }
@@ -226,5 +227,18 @@ export class ArgModalComponent {
             return false;
         }
         return this.resourceMapping.fileExtension != null;
+    }
+
+    private getContextActions(): ResourceContextActions {
+        let that = this;
+        return new class implements ResourceContextActions {
+            cancel() {
+                that.cancel();
+            }
+
+            save() {
+                that.update();
+            }
+        };
     }
 }
