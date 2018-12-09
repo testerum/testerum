@@ -1,75 +1,90 @@
-import {Router} from "@angular/router";
+import {NavigationExtras, Router} from "@angular/router";
 import {Path} from "../model/infrastructure/path/path.model";
 import {Injectable} from "@angular/core";
+import {ContextService} from "./context.service";
 
 @Injectable()
 export class UrlService {
 
-    constructor(private router: Router) {}
+    constructor(private router: Router,
+                private contextService: ContextService) {
+    }
 
     public navigateToRoot() {
-        this.router.navigate(['']);
+        this.navigate(['']);
     }
 
     public navigateToFeatures() {
-        this.router.navigate(["/features"]);
+        this.navigateToProjectPath(["/features"]);
     }
 
     public navigateToCreateFeature(path: Path) {
-        if (!path) { throw new Error("A path should be provided")}
-        this.router.navigate(["/features/create", {path : path.toString()} ]);
+        if (!path) {
+            throw new Error("A path should be provided")
+        }
+        this.navigateToProjectPath(["/features/create", {path: path.toString()}]);
     }
 
     public navigateToFeature(path: Path) {
-        if (!path) { throw new Error("A path should be provided")}
-        this.router.navigate(["/features/show", {path : path.toString()} ]);
+        if (!path) {
+            throw new Error("A path should be provided")
+        }
+        this.navigateToProjectPath(["/features/show", {path: path.toString()}]);
     }
 
     public navigateToCreateTest(path: Path) {
-        if (!path) { throw new Error("A path should be provided")}
-        this.router.navigate(["/features/tests/create", { path : path.toString()}]);
+        if (!path) {
+            throw new Error("A path should be provided")
+        }
+        this.navigateToProjectPath(["/features/tests/create", {path: path.toString()}]);
     }
 
     public navigateToTest(path: Path) {
-        if (!path) { throw new Error("A path should be provided")}
-        this.router.navigate(["/features/tests/show", {path : path.toString()} ]);
+        if (!path) {
+            throw new Error("A path should be provided")
+        }
+        this.navigateToProjectPath(["/features/tests/show", {path: path.toString()}]);
     }
 
     public navigateToResources() {
-        this.router.navigate(["/resources"]);
+        this.navigateToProjectPath(["/resources"]);
     }
 
     public navigateToResource(path: Path) {
-        this.router.navigate([
-            "/resources/show",
-            {"path":path}]);
+        this.navigateToProjectPath(["/resources/show", {"path": path}]);
     }
 
     public navigateToSteps() {
-        this.router.navigate(["/steps"]);
+        this.navigateToProjectPath(["/steps"]);
     }
 
     public navigateToComposedStep(path: Path) {
-        if (!path) { throw new Error("A path should be provided")}
-        this.router.navigate(['/steps/composed', {path: path.toString()}]);
+        if (!path) {
+            throw new Error("A path should be provided")
+        }
+        this.navigateToProjectPath(['/steps/composed', {path: path.toString()}]);
     }
 
     public navigateToBasicStep(path: Path) {
-        if (!path) { throw new Error("A path should be provided")}
-        this.router.navigate(['/steps/basic', {path: path.toString()}]);
+        if (!path) {
+            throw new Error("A path should be provided")
+        }
+        this.navigateToProjectPath(['/steps/basic', {path: path.toString()}]);
     }
 
     public navigateToCreateComposedStep(path: Path) {
-        if (!path) { throw new Error("A path should be provided")}
-        this.router.navigate(["/steps/composed/create", { path : path.toString()}]);
+        if (!path) {
+            throw new Error("A path should be provided")
+        }
+        this.navigateToProjectPath(["/steps/composed/create", {path: path.toString()}]);
     }
 
     public navigateToSetup() {
-        this.router.navigate(["/setup"]);
+        this.navigateToProjectPath(["/setup"]);
     }
 
     public navigateToLicense() {
-        this.router.navigate(["/license"]);
+        this.navigateToProjectPath(["/license"]);
     }
 
     public navigateToLicenseBuy() {
@@ -78,22 +93,31 @@ export class UrlService {
     }
 
     public navigateToManualExecPlans() {
-        this.router.navigate(["/manual/plans"])
+        this.navigateToProjectPath(["/manual/plans"])
     }
 
     public navigateToManualExecPlanCreate() {
-        this.router.navigate(["/manual/plans/create"])
+        this.navigateToProjectPath(["/manual/plans/create"])
     }
 
     public navigateToManualExecPlanEditor(path: Path) {
-        this.router.navigate(["/manual/plans/show", {planPath : path.toString()} ])
+        this.navigateToProjectPath(["/manual/plans/show", {planPath: path.toString()}])
     }
 
     public navigateToManualExecPlanRunner(planPath: Path) {
-        this.router.navigate(["/manual/plans/runner", {planPath : planPath.toString()} ])
+        this.navigateToProjectPath(["/manual/plans/runner", {planPath: planPath.toString()}])
     }
 
     public navigateToManualExecPlanTestRunner(planPath: Path, testPath: Path) {
-        this.router.navigate(["/manual/plans/runner", {planPath : planPath.toString(), testPath: testPath.toString()} ])
+        this.navigateToProjectPath(["/manual/plans/runner", {planPath: planPath.toString(), testPath: testPath.toString()}])
+    }
+
+    private navigate(commands: any[], extras?: NavigationExtras): Promise<boolean> {
+        return this.router.navigate(commands, extras);
+    }
+
+    private navigateToProjectPath(commands: any[], extras?: NavigationExtras): Promise<boolean> {
+        commands[0] = "/" + this.contextService.getProjectName() + commands[0];
+        return this.router.navigate(commands, extras);
     }
 }

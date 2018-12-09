@@ -7,7 +7,7 @@ import {RunnerResultTabsComponent} from "./main/runner-result-tabs.component";
 
 const testsRoutes: Routes = [
     {
-        path: "automated/results", component: RunnerComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
+        path: ":project/automated/results", component: RunnerComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
         children: [
             {
                 path: ':action', component: RunnerResultTabsComponent, resolve: {runnerEvents: ResultResolver}

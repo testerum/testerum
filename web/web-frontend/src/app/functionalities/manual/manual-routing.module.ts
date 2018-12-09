@@ -10,14 +10,14 @@ import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
 
 const manualRoutes: Routes = [
     {
-        path: "manual/plans/runner",
+        path: ":project/manual/plans/runner",
         component: ManualRunnerComponent,
         canActivate: [SetupGuard],
         canActivateChild: [SetupGuard],
         canDeactivate: [CanDeactivateGuard]
     },
     {
-        path: "manual/plans",
+        path: ":project/manual/plans",
         component: ManualTestPlansComponent,
         canActivate: [SetupGuard],
         canActivateChild: [SetupGuard],

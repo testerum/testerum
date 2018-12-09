@@ -8,7 +8,6 @@ import {LicenseComponent} from "./functionalities/config/license/license.compone
 
 const appRoutes: Routes = [
 
-    { path: '',   redirectTo: '/features', pathMatch: 'full' },
     { path: "setup", component: SetupComponent},
     { path: "license", component: LicenseComponent},
     { path: "settings", component: SettingsComponent, canActivate: [SetupGuard]},

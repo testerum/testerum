@@ -1,38 +1,32 @@
 <nav class="menu navbar navbar-inverse" *ngIf="shouldDisplay">
-    <ul class="nav navbar-nav testerum-logo">
+    <ul *ngIf="isProjectSelected()" class="nav navbar-nav testerum-logo">
         <li>
-            <a [routerLink]="['/features']" routerLinkActive="active">
+            <a [routerLink]="['/'+getProjectName()+'/features']" routerLinkActive="active">
                 <logo [whiteColor]="true"></logo>
             </a>
         </li>
     </ul>
 
-    <ul class="nav navbar-nav">
+    <ul *ngIf="isProjectSelected()" class="nav navbar-nav">
         <li>
-            <a [routerLink]="['/features']" routerLinkActive="active">Features</a>
+            <a [routerLink]="['/'+getProjectName()+'/features']" routerLinkActive="active">Features</a>
         </li>
         <li>
-            <a [routerLink]="['/steps']" routerLinkActive="active">Steps</a>
+            <a [routerLink]="['/'+getProjectName()+'/steps']" routerLinkActive="active">Steps</a>
         </li>
         <li>
-            <a [routerLink]="['/resources']" routerLinkActive="active">Resources</a>
+            <a [routerLink]="['/'+getProjectName()+'/resources']" routerLinkActive="active">Resources</a>
         </li>
         <li>
-            <a [routerLink]="['/automated/results']" routerLinkActive="active">Automated Tests Results</a>
+            <a [routerLink]="['/'+getProjectName()+'/automated/results']" routerLinkActive="active">Automated Tests Results</a>
         </li>
         <li>
-            <a [routerLink]="['/manual/plans']" routerLinkActive="active">Manual Test Execution</a>
+            <a [routerLink]="['/'+getProjectName()+'/manual/plans']" routerLinkActive="active">Manual Test Execution</a>
         </li>
-        <!--<li>-->
-            <!--<a [routerLink]="['/manual/tests']" routerLinkActive="active">OLD Manual Tests</a>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a [routerLink]="['/manual/runner']" routerLinkActive="active">OLD Manual Runner</a>-->
-        <!--</li>-->
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-        <li>
+        <li *ngIf="isProjectSelected">
             <a href="" (click)="showVariables(); false;">Variables</a>
         </li>
         <li>

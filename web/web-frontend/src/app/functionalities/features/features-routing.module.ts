@@ -11,7 +11,7 @@ import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
 
 const testsRoutes: Routes = [
     {
-        path: "features", component: FeaturesComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
+        path: ":project/features", component: FeaturesComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
         children: [
             {
                 path: ':action', component: FeatureEditorComponent, resolve: {featureModel: FeatureResolver}, canDeactivate: [CanDeactivateGuard]

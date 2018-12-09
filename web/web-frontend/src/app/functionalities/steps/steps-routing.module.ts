@@ -12,7 +12,7 @@ import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
 
 const stepsRoutes: Routes = [
     {
-        path:"steps", component:StepsComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
+        path:":project/steps", component:StepsComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
         children: [
             {
                 path: 'composed', component: ComposedStepEditorComponent, resolve: {composedStepDef: ComposedStepEditorResolver}, canDeactivate: [CanDeactivateGuard]

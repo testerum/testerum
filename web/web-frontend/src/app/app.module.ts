@@ -44,6 +44,8 @@ import {LicenseService} from "./functionalities/config/license/license.service";
 import {LicenseComponent} from "./functionalities/config/license/license.component";
 import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
+import {MultiProjectHttpInterceptor} from "./service/interceptors/multi-prject.http-interceptor";
+import {HomeModule} from "./functionalities/home/home.module";
 
 @NgModule({
     imports: [
@@ -57,6 +59,7 @@ import {ContextService} from "./service/context.service";
         RadioButtonModule,
         FileUploadModule,
 
+        HomeModule,
         FeaturesModule,
         RunnerModule,
         StepsModule,
@@ -103,6 +106,10 @@ import {ContextService} from "./service/context.service";
         UrlService,
         ErrorService,
         { provide: HTTP_INTERCEPTORS, useExisting: ErrorService,  multi: true },
+
+        MultiProjectHttpInterceptor,
+        { provide: HTTP_INTERCEPTORS, useClass: MultiProjectHttpInterceptor, multi: true },
+
 
         MessageService,
         { provide: APP_INITIALIZER, useFactory: initMessages, deps: [MessageService], multi: true },

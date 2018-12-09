@@ -2,6 +2,8 @@ import {Component, ViewChild} from "@angular/core";
 import {VariablesComponent} from "../functionalities/variables/variables.component";
 import {NavigationEnd, Router} from "@angular/router";
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {ContextService} from "../service/context.service";
+import {UrlService} from "../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -29,7 +31,9 @@ export class MenuComponent {
 
     shouldDisplay = false;
 
-    constructor(private router:Router) {
+    constructor(private router:Router,
+                private contextService: ContextService,
+                public urlService: UrlService) {
         router.events.subscribe(event => {
 
             if (event instanceof NavigationEnd) {
@@ -63,6 +67,14 @@ export class MenuComponent {
 
     showVariables() {
         this.variablesComponent.show()
+    }
+
+    isProjectSelected(): boolean {
+        return this.contextService.project != null;
+    }
+
+    getProjectName(): string {
+        return this.contextService.project.name;
     }
 }
 

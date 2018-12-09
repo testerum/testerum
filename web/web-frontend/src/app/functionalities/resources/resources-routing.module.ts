@@ -8,7 +8,7 @@ import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
 
 const resourcesRoutes: Routes = [
     {
-        path: "resources", component: ResourcesComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
+        path: ":project/resources", component: ResourcesComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
         children: [
             {
                 path: 'create',
