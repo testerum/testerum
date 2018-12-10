@@ -80,11 +80,11 @@ export class UrlService {
     }
 
     public navigateToSetup() {
-        this.navigateToProjectPath(["/setup"]);
+        this.navigate(["/setup"]);
     }
 
     public navigateToLicense() {
-        this.navigateToProjectPath(["/license"]);
+        this.navigate(["/license"]);
     }
 
     public navigateToLicenseBuy() {

@@ -1,0 +1,34 @@
+.center-content {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    font-size: 3rem;
+    display: block;
+
+    width: 13.5em;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+}
+
+.setup-footer {
+    padding-right: 0;
+    border: 0;
+}
+
+.setup .file-dir-chooser .form-control {
+    padding: 0 5px;
+    position: static;
+    border-radius: 0 !important;
+    border-left: 0;
+    height: 25px;
+    line-height: 1;
+    width: inherit;
+}
