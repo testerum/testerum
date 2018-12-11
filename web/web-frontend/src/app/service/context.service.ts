@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {StepCallContainerComponent} from "../generic/components/step-call-tree/nodes/step-call-container/step-call-container.component";
 import {StepCallContainerModel} from "../generic/components/step-call-tree/model/step-call-container.model";
-import {Project} from "../model/project/project.model";
+import {Project} from "../model/home/project.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {NavigationStart, Router} from "@angular/router";
 import {StringUtils} from "../utils/string-utils.util";
@@ -34,6 +34,10 @@ export class ContextService {
 
     get project(): Project {
         return this._project;
+    }
+
+    set project(value: Project) {
+        this._project = value;
     }
 
     getProjectName(): string {

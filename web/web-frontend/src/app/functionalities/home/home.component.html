@@ -1,33 +1,50 @@
-<div class="my_home-page row">
-    <logo class="logo"></logo>
+<div class="my_home-page">
 
-    <div class="setup col-sm-4 col-sm-offset-2">
-
-
-        <div class="panel panel-info">
-            <div class="panel-heading">Recent Projects</div>
-            <div class="page-body">
-                <ul>
-                    <li *ngFor="let recentProject of recentProjects">
-
-                    </li>
-                </ul>
-
-            </div>
+    <div class="header">
+        <div class="header-content">
+            <logo class="logo"></logo>
+            <div class="version">{{testerumVersion}}</div>
+            <div class="quote">{{quote}}</div>
         </div>
     </div>
 
-    <div class="setup col-sm-4">
+    <div class="body">
+        <div class="col-sm-3 col-sm-offset-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">Recent Projects</div>
+                <div class="recent-project panel-body">
+                    <ul>
+                        <li *ngFor="let recentProject of recentProjects"
+                            (click)="navigateToProject(recentProject)">
+                            <div class="project-name">{{recentProject.name}}</div>
+                            <div class="project-path">{{recentProject.path.toString(true)}}</div>
+                        </li>
+                    </ul>
 
-
-        <div class="panel panel-info">
-            <div class="panel-heading">Quick Start</div>
-            <div class="page-body ">
-
-
+                </div>
             </div>
+        </div>
 
+        <div class="col-sm-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">Quick Start</div>
+                <div class="quick-start panel-body">
+                    <ul>
+                        <li>
+                            <i class="fas fa-star"></i>
+                            Create New Project
+                        </li>
+                        <li>
+                            <i class="fas fa-folder-open"></i>
+                            Open Project
+                        </li>
+                        <li>
+                            <i class="fab fa-git-square"></i>
+                            Check out from GIT
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-
 </div>

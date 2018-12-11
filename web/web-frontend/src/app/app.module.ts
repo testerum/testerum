@@ -46,6 +46,7 @@ import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
 import {MultiProjectHttpInterceptor} from "./service/interceptors/multi-prject.http-interceptor";
 import {HomeModule} from "./functionalities/home/home.module";
+import {HomeService} from "./service/home.service";
 
 @NgModule({
     imports: [
@@ -94,6 +95,7 @@ import {HomeModule} from "./functionalities/home/home.module";
         VariablesService,
         SetupService,
         SettingsService,
+        HomeService,
         FileSystemService,
         ResultService,
         FeatureService,

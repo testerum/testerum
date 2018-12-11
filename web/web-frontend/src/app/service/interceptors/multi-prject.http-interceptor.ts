@@ -15,7 +15,7 @@ export class MultiProjectHttpInterceptor implements HttpInterceptor {
         if (this.contextService.project) {
             request = request.clone({
                 setHeaders: {
-                    Project: this.contextService.project.name
+                    'X-Testerum-Project': this.contextService.project.name
                 }
             });
         }
