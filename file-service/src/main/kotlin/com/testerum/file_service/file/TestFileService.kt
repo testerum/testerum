@@ -1,7 +1,15 @@
 package com.testerum.file_service.file
 
 import com.testerum.common.parsing.executer.ParserExecuter
-import com.testerum.common_kotlin.*
+import com.testerum.common_kotlin.createDirectories
+import com.testerum.common_kotlin.deleteIfExists
+import com.testerum.common_kotlin.exists
+import com.testerum.common_kotlin.getContent
+import com.testerum.common_kotlin.hasExtension
+import com.testerum.common_kotlin.isRegularFile
+import com.testerum.common_kotlin.smartCopyTo
+import com.testerum.common_kotlin.smartMoveTo
+import com.testerum.common_kotlin.walk
 import com.testerum.file_service.file.util.escape
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileTestMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessTestMapper
@@ -203,7 +211,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
                         ValidationException("A test with the same file name already exists.")
                     }
             )
-            return escapedDestinationFile;
+            return escapedDestinationFile
 
         } else {
 
@@ -220,7 +228,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
 
             val savedTest = changeTestNameWithNewSuffix(escapedDestinationPathWithSuffix, destinationFileSuffixIfIsNotUnique, testsDir)
             if (savedTest != null) {
-                return savedTest.path;
+                return savedTest.path
             }
 
             return escapedDestinationPathWithSuffix
@@ -236,10 +244,10 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
                     destinationJavaFileWithSuffix,
                     testsDir
             )
-            val testWithNewName = test.copy(name = test.name + destinationFileSuffixIfIsNotUnique);
+            val testWithNewName = test.copy(name = test.name + destinationFileSuffixIfIsNotUnique)
             return save(testWithNewName, testsDir)
         }
-        return null;
+        return null
     }
 
     private fun getDestinationFileSuffixToBeUnique(escapedDestinationPath: Path, testsDir: JavaPath): String {
@@ -249,13 +257,13 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         }
 
         val destinationFileSuffix = " - Copy"
-        var destinationFileSuffixCount = 0;
+        var destinationFileSuffixCount = 0
 
-        var destinationUniqueSuffix: String = "";
+        var destinationUniqueSuffix: String
 
         do {
             destinationUniqueSuffix = destinationFileSuffix + (if (destinationFileSuffixCount != 0) "_$destinationFileSuffixCount" else "")
-            destinationFileSuffixCount++;
+            destinationFileSuffixCount++
 
             var destinationPath = escapedDestinationPath
             if (destinationPath.isFile()) {
@@ -266,21 +274,21 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
                 )
             } else {
                 val uniqueDirPath = destinationPath.directories.toMutableList()
-                uniqueDirPath[uniqueDirPath.size-1] = uniqueDirPath[uniqueDirPath.size-1] + destinationUniqueSuffix;
+                uniqueDirPath[uniqueDirPath.size-1] = uniqueDirPath[uniqueDirPath.size-1] + destinationUniqueSuffix
                 destinationPath = Path(
                         uniqueDirPath
                 )
             }
 
-            val destinationUniqueJavaPath = testsDir.resolve(destinationPath.escape().toString());
+            val destinationUniqueJavaPath = testsDir.resolve(destinationPath.escape().toString())
         } while(destinationUniqueJavaPath.exists)
 
-        return destinationUniqueSuffix;
+        return destinationUniqueSuffix
     }
 
     private fun appendSuffixToPath(escapedDestinationPath: Path, destinationFileSuffix: String): Path {
         if (destinationFileSuffix.isEmpty()) {
-            return escapedDestinationPath;
+            return escapedDestinationPath
         }
 
         var escapedResultPath = escapedDestinationPath
@@ -292,12 +300,12 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
             ).escape()
         } else {
             val uniqueDirPath = escapedResultPath.directories.toMutableList()
-            uniqueDirPath[uniqueDirPath.size-1] = uniqueDirPath[uniqueDirPath.size-1] + destinationFileSuffix;
+            uniqueDirPath[uniqueDirPath.size-1] = uniqueDirPath[uniqueDirPath.size-1] + destinationFileSuffix
             escapedResultPath = Path(
                     uniqueDirPath
             ).escape()
         }
 
-        return escapedResultPath;
+        return escapedResultPath
     }
 }
