@@ -37,7 +37,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     navigateToProject(recentProject: Project) {
-        this.contextService.project = recentProject;
-        this.urlService.navigateToFeatures();
+        this.contextService.project = recentProject.name;
     }
 }

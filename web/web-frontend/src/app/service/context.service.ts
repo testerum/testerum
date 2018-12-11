@@ -3,41 +3,25 @@ import {StepCallContainerComponent} from "../generic/components/step-call-tree/n
 import {StepCallContainerModel} from "../generic/components/step-call-tree/model/step-call-container.model";
 import {Project} from "../model/home/project.model";
 import {Path} from "../model/infrastructure/path/path.model";
-import {NavigationStart, Router} from "@angular/router";
+import {ActivatedRouteSnapshot, NavigationStart, Router} from "@angular/router";
 import {StringUtils} from "../utils/string-utils.util";
 
 @Injectable()
 export class ContextService {
-
-    private _project: Project;
 
     stepToCut: StepCallContainerComponent = null;
     stepToCopy: StepCallContainerComponent = null;
 
 
     constructor(private router: Router) {
-        router.events.forEach((event) => {
-            if (event instanceof NavigationStart) {
-                let allUrlParts = event.url.split("/");
-                let urlParts = allUrlParts.filter((it: string) => StringUtils.isNotEmpty(it));
-
-                if (urlParts.length == 0 ) {
-                    this._project = null;
-                    return;
-                }
-
-                let projectNameAsString = urlParts[0];
-                this._project = new Project(projectNameAsString, Path.createInstanceOfEmptyPath());
-            }
-        });
     }
 
     get project(): Project {
-        return this._project;
+        return this.getProjectFromUrl();
     }
 
-    set project(value: Project) {
-        this._project = value;
+    set project(projectName: string) {
+        this.router.navigate(["/" + projectName + "/features"]);
     }
 
     getProjectName(): string {
@@ -57,5 +41,21 @@ export class ContextService {
     canPaste(stepCallContainerModel: StepCallContainerModel): boolean {
         return (this.stepToCopy != null && !(this.stepToCopy.model.stepCall == stepCallContainerModel.stepCall))
             || (this.stepToCut != null && !(this.stepToCut.model.stepCall == stepCallContainerModel.stepCall));
+    }
+
+    private getProjectFromUrl(): Project {
+        let root: ActivatedRouteSnapshot = this.router.routerState.snapshot.root;
+        if(root.children.length == 0) {
+            return null;
+        }
+
+        let firstActivatedRoute = root.children[0];
+        let projectParam: string = firstActivatedRoute.params['project'];
+
+        if (!projectParam) {
+            return null
+        }
+
+        return new Project(projectParam, Path.createInstanceOfEmptyPath());
     }
 }
