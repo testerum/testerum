@@ -1,5 +1,4 @@
 import {ComponentRef, Injectable} from "@angular/core";
-import {StepDef} from "../../../model/step-def.model";
 import {Observable, Subject} from "rxjs";
 import {AppComponent} from "../../../app.component";
 import {CreateProjectComponent} from "./create-project.component";

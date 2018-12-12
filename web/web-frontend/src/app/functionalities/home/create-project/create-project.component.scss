@@ -1,14 +1,46 @@
-.modal-dialog {
-    height: 90%;
-    width: 1000px;
-}
-.modal-content {
-    height: 100%;
-}
+.my_create-project-modal {
+    display: flex !important;
 
-.modal-body {
-    /* 100% = dialog height, 120px = header + footer */
-    height: calc(100% - 120px);
-    overflow-y: auto;
-    padding: 0;
+    .modal-dialog {
+        align-self: center;
+        height: 350px;
+        width: 1000px;
+
+        .modal-content {
+            height: 100%;
+
+
+            .modal-body {
+                /* 100% = dialog height, 120px = header + footer */
+                height: calc(100% - 120px);
+                overflow-y: auto;
+                padding: 3em 1em;
+
+                .my-line {
+                    .my-label {
+                        width: 7em;
+                    }
+
+                    .my-value {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
+            }
+        }
+    }
+
+    .file-dir-chooser {
+        border-radius: 4px;
+    }
+
+    .file-dir-chooser .form-control {
+        padding: 0 5px;
+        position: static;
+        border-radius: 0 !important;
+        border-left: 0;
+        height: 25px;
+        line-height: 1;
+        width: inherit;
+    }
 }

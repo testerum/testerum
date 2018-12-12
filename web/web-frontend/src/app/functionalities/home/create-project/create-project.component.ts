@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {CreateProjectService} from "./create-project.service";
 import {Project} from "../../../model/home/project.model";
@@ -8,7 +8,8 @@ import {Path} from "../../../model/infrastructure/path/path.model";
     moduleId: module.id,
     selector: 'step-chooser',
     templateUrl: 'create-project.component.html',
-    styleUrls: ['create-project.component.scss']
+    styleUrls: ['create-project.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class CreateProjectComponent implements AfterViewInit {
 

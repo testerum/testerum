@@ -1,4 +1,4 @@
-<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+<div bsModal #modal="bs-modal" class="my_create-project-modal modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
@@ -12,18 +12,39 @@
 
             <div class="modal-body">
                 <form #form="ngForm">
-                    <p class="input-description">Please set the path to a directory where you want your work to be saved</p>
 
-                    <span class="full-width input-group input-container">
-                        <file-dir-chooser name="repositoryPath" required
-                                          style="width: 100%;"
-                                          [(ngModel)]="path"
-                                          #repositoryPath="ngModel" class="file-dir-chooser"></file-dir-chooser>
-                        <input-error [model]="repositoryPath"
-                                     [errorMessages]="{
+
+                    <div class="my-line">
+                        <label class="my-label label-size">Project Name</label>
+
+                        <div class="my-value">
+                            <input name="name"
+                                   required
+                                   #nameNgModel="ngModel" [(ngModel)]="name"
+                                   type="text" class="form-control" >
+                            <input-error [model]="nameNgModel"
+                                         [errorMessages]="{
+                                        required: 'A name for the new project is required',
+                                        a_project_with_the_same_name_already_exist: 'A project with the same name already exists',
+                                        access_denied: 'Couldn\'t create this project. File access is denied'
+                                     }"></input-error>
+                        </div>
+                    </div>
+
+
+                    <div class="my-line">
+                        <label class="my-label label-size">Path</label>
+
+                        <div class="my-value">
+                            <file-dir-chooser name="repositoryPath" required
+                                              [(ngModel)]="path"
+                                              #repositoryPath="ngModel" class="file-dir-chooser"></file-dir-chooser>
+                            <input-error [model]="repositoryPath"
+                                         [errorMessages]="{
                                             required: 'A path to your workspace is required'
                                      }"></input-error>
-                    </span>
+                        </div>
+                    </div>
                 </form>
 
             </div>
