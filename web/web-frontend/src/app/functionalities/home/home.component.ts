@@ -2,10 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Project} from "../../model/home/project.model";
 import {HomeService} from "../../service/home.service";
 import {Subscription} from "rxjs";
-import {UrlService} from "../../service/url.service";
 import {ContextService} from "../../service/context.service";
 import {Home} from "../../model/home/home.model";
 import {ArrayUtil} from "../../utils/array.util";
+import {CreateProjectService} from "./create-project/create-project.service";
 
 @Component({
     selector: 'home',
@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private getHomePageModelSubscription: Subscription;
     constructor(private homeService: HomeService,
                 private contextService: ContextService,
-                private urlService: UrlService) {
+                private createProjectService: CreateProjectService) {
     }
 
     ngOnInit() {
@@ -37,6 +37,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     navigateToProject(recentProject: Project) {
-        this.contextService.project = recentProject.name;
+        this.contextService.setProjectName(recentProject.name);
+    }
+
+    onCreateNewProject() {
+        this.createProjectService.showCreteProjectModal();
+    }
+
+    onOpenProject() {
     }
 }

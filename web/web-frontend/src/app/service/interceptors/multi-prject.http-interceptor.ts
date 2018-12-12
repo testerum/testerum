@@ -12,10 +12,10 @@ export class MultiProjectHttpInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        if (this.contextService.project) {
+        if (this.contextService.getProjectName()) {
             request = request.clone({
                 setHeaders: {
-                    'X-Testerum-Project': this.contextService.project.name
+                    'X-Testerum-Project': this.contextService.getProjectName()
                 }
             });
         }

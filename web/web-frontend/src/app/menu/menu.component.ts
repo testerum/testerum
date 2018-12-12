@@ -70,11 +70,11 @@ export class MenuComponent {
     }
 
     isProjectSelected(): boolean {
-        return this.contextService.project != null;
+        return this.contextService.getProjectName() != null;
     }
 
     getProjectName(): string {
-        return this.contextService.project.name;
+        return this.contextService.getProjectName();
     }
 }
 

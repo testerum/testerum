@@ -1,0 +1,38 @@
+<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <button (click)="onCancelAction()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    Create Project
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <form #form="ngForm">
+                    <p class="input-description">Please set the path to a directory where you want your work to be saved</p>
+
+                    <span class="full-width input-group input-container">
+                        <file-dir-chooser name="repositoryPath" required
+                                          style="width: 100%;"
+                                          [(ngModel)]="path"
+                                          #repositoryPath="ngModel" class="file-dir-chooser"></file-dir-chooser>
+                        <input-error [model]="repositoryPath"
+                                     [errorMessages]="{
+                                            required: 'A path to your workspace is required'
+                                     }"></input-error>
+                    </span>
+                </form>
+
+            </div>
+
+            <!-- FOOTER Buttons-->
+            <div class="modal-footer">
+                <button (click)="onCancelAction()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button (click)="onCreateProjectAction()" type="button" class="btn btn-primary">Create Project</button>
+            </div>
+        </div>
+    </div>
+</div>

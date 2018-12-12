@@ -1,10 +1,7 @@
 import {Injectable} from "@angular/core";
 import {StepCallContainerComponent} from "../generic/components/step-call-tree/nodes/step-call-container/step-call-container.component";
 import {StepCallContainerModel} from "../generic/components/step-call-tree/model/step-call-container.model";
-import {Project} from "../model/home/project.model";
-import {Path} from "../model/infrastructure/path/path.model";
-import {ActivatedRouteSnapshot, NavigationStart, Router} from "@angular/router";
-import {StringUtils} from "../utils/string-utils.util";
+import {ActivatedRouteSnapshot, Router} from "@angular/router";
 
 @Injectable()
 export class ContextService {
@@ -16,16 +13,12 @@ export class ContextService {
     constructor(private router: Router) {
     }
 
-    get project(): Project {
+    getProjectName(): string {
         return this.getProjectFromUrl();
     }
 
-    set project(projectName: string) {
+    setProjectName(projectName: string) {
         this.router.navigate(["/" + projectName + "/features"]);
-    }
-
-    getProjectName(): string {
-        return this._project? this._project.name: null;
     }
 
     setPathToCut(stepCallContainerComponent: StepCallContainerComponent) {
@@ -43,19 +36,13 @@ export class ContextService {
             || (this.stepToCut != null && !(this.stepToCut.model.stepCall == stepCallContainerModel.stepCall));
     }
 
-    private getProjectFromUrl(): Project {
+    private getProjectFromUrl(): string {
         let root: ActivatedRouteSnapshot = this.router.routerState.snapshot.root;
         if(root.children.length == 0) {
             return null;
         }
 
         let firstActivatedRoute = root.children[0];
-        let projectParam: string = firstActivatedRoute.params['project'];
-
-        if (!projectParam) {
-            return null
-        }
-
-        return new Project(projectParam, Path.createInstanceOfEmptyPath());
+        return firstActivatedRoute.params['project'];
     }
 }
