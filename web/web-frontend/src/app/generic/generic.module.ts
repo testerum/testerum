@@ -95,6 +95,7 @@ import {InfoModalService} from "./components/info_modal/info-modal.service";
 import {InfoIconComponent} from './components/info-icon/info-icon.component';
 import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
 import {MarkdownModule} from 'ngx-markdown'
+import {DirectoryChooserDialogService} from "./components/form/file_dir_chooser/dialog/directory-chooser-dialog.service";
 
 @NgModule({
     imports: [
@@ -252,6 +253,7 @@ import {MarkdownModule} from 'ngx-markdown'
         JsonTreeService,
         StepChooserService,
         FileDirectoryChooserService,
+        DirectoryChooserDialogService,
         ExecutionPieService,
         PathChooserService,
         StepModalService,
@@ -277,6 +279,7 @@ import {MarkdownModule} from 'ngx-markdown'
         ArgNodeComponent,
         PathChooserContainerComponent,
         PathChooserNodeComponent,
+        DirectoryChooserDialogComponent,
 
         JsonContainerNodeComponent,
         JsonLeafNodeComponent,

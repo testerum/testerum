@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {FileDirectoryChooserService} from "../file-directory-chooser.service";
 import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tree-node-event.model";
@@ -10,6 +10,8 @@ import {FileSystemService} from "../../../../../service/file-system.service";
 import {FileSystemDirectory} from "../../../../../model/file/file-system-directory.model";
 import {ErrorService} from "../../../../../service/error.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Project} from "../../../../../model/home/project.model";
+import {DirectoryChooserDialogService} from "./directory-chooser-dialog.service";
 
 @Component({
     moduleId: module.id,
@@ -17,22 +19,20 @@ import {HttpErrorResponse} from "@angular/common/http";
     templateUrl: 'directory-chooser-dialog.component.html',
     styleUrls: ['directory-chooser-dialog.component.scss']
 })
-export class DirectoryChooserDialogComponent implements OnInit, OnDestroy {
+export class DirectoryChooserDialogComponent implements OnInit, OnDestroy, AfterViewInit {
 
-    @ViewChild("infoModal") infoModal:ModalDirective;
+    @ViewChild("infoModal") modal: ModalDirective;
+    directoryChooserDialogService: DirectoryChooserDialogService;
 
     selectedPath: string;
     selectedNode: FileDirectoryChooserContainerModel;
     private selectedNodeSubscriber: any;
-    @Output() nodeSelected: EventEmitter<string> = new EventEmitter<string>();
     fileDirectoryChooserJsonTreeModel: JsonTreeModel = new JsonTreeModel();
 
-    fileDirectoryChooserService: FileDirectoryChooserService;
-    constructor(fileDirectoryChooserService: FileDirectoryChooserService,
+    constructor(public fileDirectoryChooserService: FileDirectoryChooserService,
                 private fileSystemService: FileSystemService,
                 private jsonTreeService: JsonTreeService,
                 private errorService: ErrorService) {
-        this.fileDirectoryChooserService = fileDirectoryChooserService;
     }
 
     ngOnInit() {
@@ -59,27 +59,26 @@ export class DirectoryChooserDialogComponent implements OnInit, OnDestroy {
         );
     }
 
-
     ngOnDestroy(): void {
         this.selectedNodeSubscriber.unsubscribe();
     }
 
-    show(): void {
-        this.infoModal.show();
+    ngAfterViewInit(): void {
+        this.modal.show();
+        this.modal.onHidden.subscribe(event => {
+            this.directoryChooserDialogService.clearModal()
+        })
     }
 
-    close(): void {
-        this.infoModal.hide();
+    onCancelAction() {
+        this.modal.hide()
     }
 
-    selectDirectory(): void {
-        this.nodeSelected.emit(this.selectedPath);
-        this.close();
+    onDirectoryChooseAction() {
+        this.directoryChooserDialogService.onDirectoryChooseAction(this.selectedPath);
+        this.modal.hide()
     }
 
-    cancel(): void {
-        this.close();
-    }
     createDirectory(): void {
         if(!this.selectedPath) {
             return

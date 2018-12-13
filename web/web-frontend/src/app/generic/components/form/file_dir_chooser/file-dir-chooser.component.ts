@@ -1,6 +1,8 @@
 import {Component, forwardRef, Input, ViewChild} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {DirectoryChooserDialogComponent} from "./dialog/directory-chooser-dialog.component";
+import {DirectoryChooserDialogService} from "./dialog/directory-chooser-dialog.service";
+import {Path} from "../../../../model/infrastructure/path/path.model";
 
 @Component({
     selector: 'file-dir-chooser',
@@ -21,7 +23,10 @@ export class FileDirChooserComponent implements ControlValueAccessor {
     @Input() disabled = false;
     @ViewChild(DirectoryChooserDialogComponent) directoryChooserDialogComponent: DirectoryChooserDialogComponent;
 
-    // this is the initial value set to the component
+    constructor(private directoryChooserDialogService: DirectoryChooserDialogService) {
+    }
+
+// this is the initial value set to the component
     public writeValue(obj: any) {
         if(obj) {
             this.value = obj;
@@ -48,13 +53,11 @@ export class FileDirChooserComponent implements ControlValueAccessor {
 
     public showDirectoryChooserModal() {
         if (!this.disabled) {
-            this.directoryChooserDialogComponent.show();
+            this.directoryChooserDialogService.showDirectoryChooserDialogModal().subscribe( (selectedPath: string) => {
+                this.value = selectedPath;
+                this.propagateChange(selectedPath);
+            });
         }
-    }
-
-    onPathSelected($event:any) {
-        this.value = $event ? $event : "";
-        this.propagateChange(this.value);
     }
 
     validate(c: FormControl) {
