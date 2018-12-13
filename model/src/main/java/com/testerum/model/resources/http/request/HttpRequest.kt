@@ -9,7 +9,8 @@ data class HttpRequest @JsonCreator constructor(
         @JsonProperty("method") val method: HttpRequestMethod,
         @JsonProperty("url") val url: String,
         @JsonProperty("headers") val headers: Map<String, String> = emptyMap(),
-        @JsonProperty("body") val body: HttpRequestBody?
+        @JsonProperty("body") val body: HttpRequestBody?,
+        @JsonProperty("followRedirects") val followRedirects: Boolean = true
 ) {
 
     fun getFirstHeaderValue(headerName: String): String? {
