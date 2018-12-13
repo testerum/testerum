@@ -52,7 +52,7 @@
             <!-- FOOTER Buttons-->
             <div class="modal-footer">
                 <button (click)="onCancelAction()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button (click)="onCreateProjectAction()" type="button" class="btn btn-primary">Create Project</button>
+                <button (click)="onCreateProjectAction()" [disabled]="!form.form.valid" type="button" class="btn btn-primary">Create Project</button>
             </div>
         </div>
     </div>

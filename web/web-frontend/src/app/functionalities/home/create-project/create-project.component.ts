@@ -14,7 +14,7 @@ import {Path} from "../../../model/infrastructure/path/path.model";
 export class CreateProjectComponent implements AfterViewInit {
 
     name: string;
-    path: Path;
+    path: string;
 
     @ViewChild("modal") modal:ModalDirective;
 
@@ -34,7 +34,7 @@ export class CreateProjectComponent implements AfterViewInit {
     }
 
     onCreateProjectAction() {
-        this.createProjectService.onCreateProjectAction(new Project(this.name, this.path));
+        this.createProjectService.onCreateProjectAction(new Project(this.name, Path.createInstance(this.path)));
         this.modal.hide()
     }
 }
