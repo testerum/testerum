@@ -1,11 +1,11 @@
 package com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.impl
 
-import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.TextWriter
+import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.TextPrinter
 import java.io.PrintStream
 
-class PrinterTextWriter(private val wrappedPrintStream: PrintStream) : TextWriter {
+class PrinterTextWriter(private val wrappedPrintStream: PrintStream) : TextPrinter {
 
-    override fun write(text: String) {
+    override fun print(text: String) {
         wrappedPrintStream.print(text)
     }
 

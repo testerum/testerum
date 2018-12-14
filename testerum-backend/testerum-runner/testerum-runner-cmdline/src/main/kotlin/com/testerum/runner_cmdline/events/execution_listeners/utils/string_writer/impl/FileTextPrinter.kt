@@ -1,13 +1,13 @@
 package com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.impl
 
 import com.testerum.common_kotlin.createDirectories
-import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.TextWriter
+import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.TextPrinter
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.io.Writer
 import java.nio.file.Path as JavaPath
 
-class FileTextWriter(filePath: JavaPath): TextWriter {
+class FileTextPrinter(filePath: JavaPath): TextPrinter {
 
     private val file: Writer
 
@@ -17,7 +17,7 @@ class FileTextWriter(filePath: JavaPath): TextWriter {
         file = OutputStreamWriter(FileOutputStream(filePath.toFile()))
     }
 
-    override fun write(text: String) {
+    override fun print(text: String) {
         file.write(text)
     }
 

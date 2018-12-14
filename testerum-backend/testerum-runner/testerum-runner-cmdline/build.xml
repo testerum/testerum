@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<project name="testerum-package" default="main" basedir=".">
+<project name="testerum-package" basedir=".">
 
     <!--======================================== properties ========================================-->
 
     <property name="src.base_url" value="https://nodejs.org/dist" />
-    <property name="src.version"  value="v10.14.1" />
+    <property name="src.version"  value="${reportTemplatesNodeVersion}" />
 
     <property name="src.filename_without_extension.windows" value="node-${src.version}-win-x64" />
     <property name="src.filename_without_extension.mac"     value="node-${src.version}-darwin-x64" />
@@ -38,7 +38,6 @@
     <target name="main-prod" depends="download-node, extract-node" />
 
     <target name="clean">
-        <delete dir="${node_dir}"/>
         <delete dir="${runner.package_dir_node}"/>
     </target>
 

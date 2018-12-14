@@ -29,7 +29,7 @@
             <useDefaultExcludes>false</useDefaultExcludes>
 
             <includes>
-                <include>bin/*.sh</include>
+                <include>**/*</include>
             </includes>
         </fileSet>
 

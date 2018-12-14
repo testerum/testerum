@@ -23,8 +23,11 @@ object TesterumRunner {
     @JvmStatic
     fun main(args: Array<String>) {
         val stopWatch = StopWatch.start()
+
         ConsoleOutputCapturer.startCapture("main")
+
         val exitCode: ExitCode
+        val remainingConsoleCapturedText: String
         try {
             TesterumRunnerLoggingConfigurator.configureLogging()
             AnsiConsole.systemInstall()
@@ -40,8 +43,12 @@ object TesterumRunner {
                 runnerApplication.execute(cmdlineParams)
             }
         } finally {
+            remainingConsoleCapturedText = ConsoleOutputCapturer.drainCapturedText()
+
             ConsoleOutputCapturer.stopCapture()
         }
+
+        println(remainingConsoleCapturedText)
 
         Exiter.exit(exitCode)
     }
@@ -73,7 +80,7 @@ object TesterumRunner {
     }
 
     private fun consolePrintln(text: String) {
-        ConsoleOutputCapturer.getOriginalTextWriter().write("$text\n")
+        ConsoleOutputCapturer.getOriginalTextWriter().print("$text\n")
     }
 
 }

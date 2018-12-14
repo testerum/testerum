@@ -1,0 +1,23 @@
+<%_
+    /** @type {Array<ReportTest>} */
+    var tests = tests;
+_%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Tests Results</title>
+</head>
+
+<body>
+    <h1>Test results</h1>
+
+    <ul>
+        <% for (const test of tests) { %>
+            <li><a href="<%=test.testFilePath.fileName%>.html"><%=test.testName%></a></li>
+        <% } %>
+    </ul>
+</body>
+
+</html>
+

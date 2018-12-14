@@ -12,8 +12,8 @@ import com.testerum.runner.cmdline.EventListenerProperties
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner_cmdline.events.execution_listeners.utils.console_output_capture.ConsoleOutputCapturer
-import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.TextWriter
-import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.impl.FileTextWriter
+import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.TextPrinter
+import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.impl.FileTextPrinter
 import java.nio.file.Paths
 
 class JsonEventsExecutionListener constructor(private val properties: Map<String, String>) : ExecutionListener {
@@ -46,23 +46,23 @@ class JsonEventsExecutionListener constructor(private val properties: Map<String
         }
     }
 
-    private val textWriter: TextWriter = run {
+    private val textPrinter: TextPrinter = run {
         val destinationFileName = properties[EventListenerProperties.JsonEvents.DESTINATION_FILE_NAME]
         if (destinationFileName == null) {
             return@run ConsoleOutputCapturer.getOriginalTextWriter()
         } else {
-            return@run FileTextWriter(
+            return@run FileTextPrinter(
                     Paths.get(destinationFileName)
             )
         }
     }
 
     override fun onEvent(event: RunnerEvent) {
-        textWriter.write("${OBJECT_MAPPER.writeValueAsString(event)}\n")
+        textPrinter.print("${OBJECT_MAPPER.writeValueAsString(event)}\n")
     }
 
     override fun stop() {
-        textWriter.close()
+        textPrinter.close()
     }
 
 }

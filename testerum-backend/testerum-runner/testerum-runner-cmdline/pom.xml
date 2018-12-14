@@ -15,6 +15,9 @@
 
     <properties>
         <mainClass>com.testerum.runner_cmdline.TesterumRunner</mainClass>
+
+        <reportTemplatesNodeVersion>v10.14.1</reportTemplatesNodeVersion>
+        <reportTemplatesNodePath>${project.basedir}/src/main/assembly/report_templates</reportTemplatesNodePath>
     </properties>
 
     <dependencies>
@@ -157,6 +160,13 @@
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
         </dependency>
+
+        <!-- zt-exec -->
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-exec</artifactId>
+        </dependency>
+
 
         <!--==================== test dependencies ====================-->
 
@@ -362,16 +372,94 @@
                                    <goal>run</goal>
                                </goals>
                            </execution>
+
+                           <!-- set executable bit on linux/mac shell script -->
+                           <execution>
+                               <id>make-runner-shell-script-executable</id>
+                               <phase>package</phase>
+                               <configuration>
+                                   <target>
+                                       <chmod perm="ugo+x">
+                                           <fileset dir="${project.basedir}/../../../package/runner/bin">
+                                               <include name="**/*.sh" />
+                                           </fileset>
+                                       </chmod>
+                                   </target>
+                               </configuration>
+                               <goals>
+                                   <goal>run</goal>
+                               </goals>
+                           </execution>
+
                        </executions>
                     </plugin>
 
-                    <!-- copy shell scripts to package directory  -->
+                    <!-- compile report templates  -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+
+                        <configuration>
+                            <nodeVersion>${reportTemplatesNodeVersion}</nodeVersion>
+                            <npmVersion>6.4.1</npmVersion>
+                            <installDirectory>${reportTemplatesNodePath}</installDirectory>
+                        </configuration>
+
+                        <executions>
+                            <execution>
+                                <id>compile-report-templates--install-node-and-npm</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                            </execution>
+
+                            <execution>
+                                <id>compile-report-templates--npm-install--basic_html</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install</arguments>
+                                    <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html</workingDirectory>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>compile-report-templates--npm-build--basic_html</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run build-prod</arguments>
+                                    <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html</workingDirectory>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>compile-report-templates--npm-install-dependencies-in-dist-dir--basic_html</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install --only=production</arguments>
+                                    <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html/dist</workingDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- copy shell scripts & compiled report templates to package directory  -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
                         <executions>
+                            <!-- copy-shell-scripts-to-package-dir -->
                             <execution>
-                                <id>copy-runner-to-package-dir</id>
+                                <id>copy-shell-scripts-to-package-dir</id>
                                 <phase>prepare-package</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
@@ -386,32 +474,27 @@
                                     </resources>
                                 </configuration>
                             </execution>
-                        </executions>
-                    </plugin>
 
-                    <!-- set executable bit on linux/mac shell script -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <executions>
+                            <!-- -->
                             <execution>
-                                <id>make-runner-shell-script-executable</id>
-                                <phase>package</phase>
-                                <configuration>
-                                    <target>
-                                        <chmod perm="ugo+x">
-                                            <fileset dir="${project.basedir}/../../../package/runner/bin">
-                                                <include name="**/*.sh" />
-                                            </fileset>
-                                        </chmod>
-                                    </target>
-                                </configuration>
+                                <id>copy-compiled-report-templates-to-package-dir--basic_html</id>
+                                <phase>prepare-package</phase>
                                 <goals>
-                                    <goal>run</goal>
+                                    <goal>copy-resources</goal>
                                 </goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/../../../package/runner/report_templates/basic_html</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html/dist</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
+
                 </plugins>
             </build>
         </profile>

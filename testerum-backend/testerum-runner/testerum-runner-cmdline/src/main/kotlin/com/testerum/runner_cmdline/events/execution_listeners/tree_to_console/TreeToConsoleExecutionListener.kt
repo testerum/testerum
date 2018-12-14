@@ -140,6 +140,6 @@ class TreeToConsoleExecutionListener : BaseExecutionListener() {
     }
 
     private fun log(text: String) {
-        ConsoleOutputCapturer.getOriginalTextWriter().write(text)
+        ConsoleOutputCapturer.getOriginalTextWriter().print(text)
     }
 }
