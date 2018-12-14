@@ -1,9 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {JsonTreeModel} from "../../json-tree/model/json-tree.model";
 import {FileSystemService} from "../../../../service/file-system.service";
-import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {FileDirectoryChooserContainerModel} from "./model/file-directory-chooser-container.model";
-import {FileDirectoryChooserContainerComponent} from "./container/file-directory-chooser-container.component";
 import {JsonTreeService} from "../../json-tree/json-tree.service";
 import {JsonTreeNodeEventModel} from "../../json-tree/event/selected-json-tree-node-event.model";
 import {Observable, Subject} from "rxjs";
@@ -12,9 +10,6 @@ import {Observable, Subject} from "rxjs";
 export class FileDirectoryChooserService {
 
     selectedNodeEmitter: EventEmitter<JsonTreeNodeEventModel> = new EventEmitter<JsonTreeNodeEventModel>();
-
-    jsonModelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
-        .addPair(FileDirectoryChooserContainerModel, FileDirectoryChooserContainerComponent);
 
     constructor(private fileSystemService: FileSystemService,
                 private jsonTreeService: JsonTreeService){
