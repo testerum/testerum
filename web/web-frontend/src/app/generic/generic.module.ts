@@ -96,6 +96,7 @@ import {InfoIconComponent} from './components/info-icon/info-icon.component';
 import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
 import {MarkdownModule} from 'ngx-markdown'
 import {DirectoryChooserDialogService} from "./components/form/file_dir_chooser/dialog/directory-chooser-dialog.service";
+import {UrlNameValidatorDirective} from "./validators/url-name-validator.directive";
 
 @NgModule({
     imports: [
@@ -154,6 +155,7 @@ import {DirectoryChooserDialogService} from "./components/form/file_dir_chooser/
 
         PortValidatorDirective,
         IsNumberValidatorDirective,
+        UrlNameValidatorDirective,
 
         FileDirChooserComponent,
 
@@ -206,6 +208,7 @@ import {DirectoryChooserDialogService} from "./components/form/file_dir_chooser/
 
         PortValidatorDirective,
         IsNumberValidatorDirective,
+        UrlNameValidatorDirective,
 
         FileDirChooserComponent,
         FileDirectoryChooserContainerComponent,

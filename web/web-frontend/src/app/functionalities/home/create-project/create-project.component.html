@@ -20,13 +20,15 @@
                         <div class="my-value">
                             <input name="name"
                                    required
+                                   urlNameValidator
                                    #nameNgModel="ngModel" [(ngModel)]="name"
                                    type="text" class="form-control" >
                             <input-error [model]="nameNgModel"
                                          [errorMessages]="{
                                         required: 'A name for the new project is required',
                                         a_project_with_the_same_name_already_exist: 'A project with the same name already exists',
-                                        access_denied: 'Couldn\'t create this project. File access is denied'
+                                        access_denied: 'Couldn\'t create this project. File access is denied',
+                                        urlNameValidator: 'Project Name can contain only the following characters (space is not allowed): 0-9 a-z A-Z $-_.,\'()'
                                      }"></input-error>
                         </div>
                     </div>

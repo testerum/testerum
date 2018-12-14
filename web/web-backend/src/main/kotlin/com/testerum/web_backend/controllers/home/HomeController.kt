@@ -3,16 +3,15 @@ package com.testerum.web_backend.controllers.home
 import com.testerum.model.home.Home
 import com.testerum.model.home.Project
 import com.testerum.model.infrastructure.path.Path
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import com.testerum.model.license.AuthRequest
+import com.testerum.model.license.AuthResponse
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/home")
 open class HomeController() {
 
-    @RequestMapping(method = [RequestMethod.GET], path = [""])
+    @RequestMapping(method = [RequestMethod.GET])
     @ResponseBody
     fun getHomePageModel(): Home {
 
@@ -27,5 +26,11 @@ open class HomeController() {
                 "v0.7.3",
                 recentProjects
         )
+    }
+
+    @RequestMapping (method = [RequestMethod.POST])
+    @ResponseBody
+    fun createProject(@RequestBody project: Project): Project {
+        return project;
     }
 }
