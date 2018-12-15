@@ -4,7 +4,7 @@ import {FileDirTreeContainerModel} from "./model/file-dir-tree-container.model";
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {FileDirTreeContainerComponent} from "./nodes/container/file-dir-tree-container.component";
 import {Subscription} from "rxjs";
-import {FileDirectoryChooserService} from "../file-directory-chooser.service";
+import {FileDirChooserService} from "../file-dir-chooser.service";
 import {FileSystemService} from "../../../../../service/file-system.service";
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
 import {ErrorService} from "../../../../../service/error.service";
@@ -27,7 +27,7 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
 
     private initializeDirectoryTreeFromServerSubscription: Subscription;
 
-    constructor(public fileDirectoryChooserService: FileDirectoryChooserService,
+    constructor(public fileDirectoryChooserService: FileDirChooserService,
                 private fileDirTreeComponentService: FileDirTreeComponentService,
                 private fileSystemService: FileSystemService,
                 private jsonTreeService: JsonTreeService,

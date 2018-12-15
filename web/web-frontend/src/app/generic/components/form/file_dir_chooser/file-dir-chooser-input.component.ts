@@ -1,19 +1,18 @@
 import {Component, forwardRef, Input, ViewChild} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {DirectoryChooserDialogComponent} from "./dialog/directory-chooser-dialog.component";
-import {DirectoryChooserDialogService} from "./dialog/directory-chooser-dialog.service";
-import {Path} from "../../../../model/infrastructure/path/path.model";
+import {FileDirChooserModalComponent} from "./dialog/file-dir-chooser-modal.component";
+import {FileDirChooserModalService} from "./dialog/file-dir-chooser-modal.service";
 
 @Component({
     selector: 'file-dir-chooser',
-    templateUrl: 'file-dir-chooser.component.html',
-    styleUrls: ["file-dir-chooser.component.scss"],
+    templateUrl: 'file-dir-chooser-input.component.html',
+    styleUrls: ["file-dir-chooser-input.component.scss"],
     providers: [
-        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => FileDirChooserComponent), multi: true},
-        { provide: NG_VALIDATORS, useExisting: forwardRef(() => FileDirChooserComponent), multi: true }
+        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => FileDirChooserInputComponent), multi: true},
+        { provide: NG_VALIDATORS, useExisting: forwardRef(() => FileDirChooserInputComponent), multi: true }
     ]
 })
-export class FileDirChooserComponent implements ControlValueAccessor {
+export class FileDirChooserInputComponent implements ControlValueAccessor {
 
     // the method set in registerOnChange to emit changes back to the form
     private propagateChange = (_: any) => { };
@@ -21,9 +20,9 @@ export class FileDirChooserComponent implements ControlValueAccessor {
 
     value: string;
     @Input() disabled = false;
-    @ViewChild(DirectoryChooserDialogComponent) directoryChooserDialogComponent: DirectoryChooserDialogComponent;
+    @ViewChild(FileDirChooserModalComponent) directoryChooserDialogComponent: FileDirChooserModalComponent;
 
-    constructor(private directoryChooserDialogService: DirectoryChooserDialogService) {
+    constructor(private directoryChooserDialogService: FileDirChooserModalService) {
     }
 
 // this is the initial value set to the component

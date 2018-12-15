@@ -7,7 +7,7 @@ import {JsonTreeNodeEventModel} from "../../json-tree/event/selected-json-tree-n
 import {Observable, Subject} from "rxjs";
 
 @Injectable()
-export class FileDirectoryChooserService {
+export class FileDirChooserService {
 
     constructor(private fileSystemService: FileSystemService,
                 private jsonTreeService: JsonTreeService){

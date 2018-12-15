@@ -1,21 +1,21 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {DirectoryChooserDialogService} from "./directory-chooser-dialog.service";
+import {FileDirChooserModalService} from "./file-dir-chooser-modal.service";
 import {FileDirTreeComponent} from "../file-dir-tree/file-dir-tree.component";
 import {FileDirTreeContainerModel} from "../file-dir-tree/model/file-dir-tree-container.model";
 
 @Component({
     moduleId: module.id,
-    selector: 'directory-chooser-dialog',
-    templateUrl: 'directory-chooser-dialog.component.html',
-    styleUrls: ['directory-chooser-dialog.component.scss']
+    selector: 'file-dir-chooser-modal',
+    templateUrl: 'file-dir-chooser-modal.component.html',
+    styleUrls: ['file-dir-chooser-modal.component.scss']
 })
-export class DirectoryChooserDialogComponent implements AfterViewInit {
+export class FileDirChooserModalComponent implements AfterViewInit {
 
     @ViewChild(FileDirTreeComponent) fileDirTreeComponent: FileDirTreeComponent;
 
     @ViewChild("infoModal") modal: ModalDirective;
-    directoryChooserDialogService: DirectoryChooserDialogService;
+    directoryChooserDialogService: FileDirChooserModalService;
 
     ngAfterViewInit(): void {
         this.modal.show();

@@ -35,10 +35,10 @@ import {TestNodeComponent} from "../functionalities/features/features-tree/conta
 import {CollapsablePanelComponent} from "./components/panels/collapsable-panel/collapsable-panel.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {IsNumberValidatorDirective} from "./validators/is-number-validator.directive";
-import {FileDirectoryChooserService} from "./components/form/file_dir_chooser/file-directory-chooser.service";
+import {FileDirChooserService} from "./components/form/file_dir_chooser/file-dir-chooser.service";
 import {FileDirTreeContainerComponent} from "./components/form/file_dir_chooser/file-dir-tree/nodes/container/file-dir-tree-container.component";
-import {FileDirChooserComponent} from "./components/form/file_dir_chooser/file-dir-chooser.component";
-import {DirectoryChooserDialogComponent} from "./components/form/file_dir_chooser/dialog/directory-chooser-dialog.component";
+import {FileDirChooserInputComponent} from "./components/form/file_dir_chooser/file-dir-chooser-input.component";
+import {FileDirChooserModalComponent} from "./components/form/file_dir_chooser/dialog/file-dir-chooser-modal.component";
 import {SafeHtmlPipe} from "./pipes/safe-html.pipe";
 import {ChartModule} from "primeng/chart";
 import {ExecutionPieComponent} from "./components/charts/execution-pie/execution-pie.component";
@@ -95,7 +95,7 @@ import {InfoModalService} from "./components/info_modal/info-modal.service";
 import {InfoIconComponent} from './components/info-icon/info-icon.component';
 import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
 import {MarkdownModule} from 'ngx-markdown'
-import {DirectoryChooserDialogService} from "./components/form/file_dir_chooser/dialog/directory-chooser-dialog.service";
+import {FileDirChooserModalService} from "./components/form/file_dir_chooser/dialog/file-dir-chooser-modal.service";
 import {UrlNameValidatorDirective} from "./validators/url-name-validator.directive";
 import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-dir-tree/file-dir-tree.component';
 
@@ -158,7 +158,7 @@ import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-di
         IsNumberValidatorDirective,
         UrlNameValidatorDirective,
 
-        FileDirChooserComponent,
+        FileDirChooserInputComponent,
 
         ExecutionPieComponent,
 
@@ -211,9 +211,9 @@ import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-di
         IsNumberValidatorDirective,
         UrlNameValidatorDirective,
 
-        FileDirChooserComponent,
+        FileDirChooserInputComponent,
         FileDirTreeContainerComponent,
-        DirectoryChooserDialogComponent,
+        FileDirChooserModalComponent,
 
         ExecutionPieComponent,
 
@@ -257,8 +257,8 @@ import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-di
         TreeService,
         JsonTreeService,
         StepChooserService,
-        FileDirectoryChooserService,
-        DirectoryChooserDialogService,
+        FileDirChooserService,
+        FileDirChooserModalService,
         ExecutionPieService,
         PathChooserService,
         StepModalService,
@@ -284,7 +284,7 @@ import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-di
         ArgNodeComponent,
         PathChooserContainerComponent,
         PathChooserNodeComponent,
-        DirectoryChooserDialogComponent,
+        FileDirChooserModalComponent,
 
         JsonContainerNodeComponent,
         JsonLeafNodeComponent,

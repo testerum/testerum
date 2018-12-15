@@ -27,7 +27,7 @@ import {FileSystemService} from "./service/file-system.service";
 import {SetupGuard} from "./service/guards/setup.guard";
 import {SettingsComponent} from "./functionalities/config/settings/settings.component";
 import {SettingsService} from "./service/settings.service";
-import {FileDirChooserComponent} from "./generic/components/form/file_dir_chooser/file-dir-chooser.component";
+import {FileDirChooserInputComponent} from "./generic/components/form/file_dir_chooser/file-dir-chooser-input.component";
 import {FileDirTreeContainerComponent} from "./generic/components/form/file_dir_chooser/file-dir-tree/nodes/container/file-dir-tree-container.component";
 import {RunnerModule} from "./functionalities/runner/runner.module";
 import {ResultService} from "./service/report/result.service";
@@ -119,7 +119,7 @@ import {HomeService} from "./service/home.service";
         LicenseService,
     ],
     entryComponents: [
-        FileDirChooserComponent,
+        FileDirChooserInputComponent,
         FileDirTreeContainerComponent,
     ],
     bootstrap: [AppComponent]
