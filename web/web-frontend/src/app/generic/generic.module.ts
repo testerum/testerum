@@ -36,7 +36,7 @@ import {CollapsablePanelComponent} from "./components/panels/collapsable-panel/c
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {IsNumberValidatorDirective} from "./validators/is-number-validator.directive";
 import {FileDirectoryChooserService} from "./components/form/file_dir_chooser/file-directory-chooser.service";
-import {FileDirectoryChooserContainerComponent} from "./components/form/file_dir_chooser/container/file-directory-chooser-container.component";
+import {FileDirTreeContainerComponent} from "./components/form/file_dir_chooser/file-dir-tree/nodes/container/file-dir-tree-container.component";
 import {FileDirChooserComponent} from "./components/form/file_dir_chooser/file-dir-chooser.component";
 import {DirectoryChooserDialogComponent} from "./components/form/file_dir_chooser/dialog/directory-chooser-dialog.component";
 import {SafeHtmlPipe} from "./pipes/safe-html.pipe";
@@ -97,6 +97,7 @@ import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.s
 import {MarkdownModule} from 'ngx-markdown'
 import {DirectoryChooserDialogService} from "./components/form/file_dir_chooser/dialog/directory-chooser-dialog.service";
 import {UrlNameValidatorDirective} from "./validators/url-name-validator.directive";
+import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-dir-tree/file-dir-tree.component';
 
 @NgModule({
     imports: [
@@ -211,7 +212,7 @@ import {UrlNameValidatorDirective} from "./validators/url-name-validator.directi
         UrlNameValidatorDirective,
 
         FileDirChooserComponent,
-        FileDirectoryChooserContainerComponent,
+        FileDirTreeContainerComponent,
         DirectoryChooserDialogComponent,
 
         ExecutionPieComponent,
@@ -250,6 +251,7 @@ import {UrlNameValidatorDirective} from "./validators/url-name-validator.directi
         JsonEmptyVerifyNodeComponent,
         LogoComponent,
         InfoIconComponent,
+        FileDirTreeComponent,
     ],
     providers: [
         TreeService,

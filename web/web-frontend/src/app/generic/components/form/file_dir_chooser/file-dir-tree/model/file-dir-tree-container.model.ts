@@ -1,21 +1,21 @@
-import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
-import {JsonTreeNodeState} from "../../../json-tree/model/json-tree-node-state.model";
-import {JsonTreeContainerOptions} from "../../../json-tree/model/behavior/JsonTreeContainerOptions";
+import {JsonTreeContainer} from "../../../../json-tree/model/json-tree-container.model";
+import {JsonTreeNodeState} from "../../../../json-tree/model/json-tree-node-state.model";
+import {JsonTreeContainerOptions} from "../../../../json-tree/model/behavior/JsonTreeContainerOptions";
 
-export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
+export class FileDirTreeContainerModel implements JsonTreeContainer {
 
     parent: JsonTreeContainer;
     name: string;
     absoluteJavaPath: string;
     canCreateChild: boolean;
-    private children: Array<FileDirectoryChooserContainerModel> = [];
+    private children: Array<FileDirTreeContainerModel> = [];
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
     hidden: boolean = false;
     selected: boolean = false;
 
     private options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
-    constructor(parent: FileDirectoryChooserContainerModel,
+    constructor(parent: FileDirTreeContainerModel,
                 name: string = "",
                 absoluteJavaPath: string = "",
                 canCreateChild: boolean = true,
@@ -31,7 +31,7 @@ export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
         return this.parent;
     }
 
-    getChildren(): Array<FileDirectoryChooserContainerModel> {
+    getChildren(): Array<FileDirTreeContainerModel> {
         return this.children;
     }
 
@@ -39,7 +39,7 @@ export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
         return this.children.length > 0 || this.containsChildren;
     }
 
-    setChildren(children: Array<FileDirectoryChooserContainerModel>) {
+    setChildren(children: Array<FileDirTreeContainerModel>) {
         for (let child of children) {
             this.children.push(child)
         }
@@ -47,7 +47,7 @@ export class FileDirectoryChooserContainerModel implements JsonTreeContainer {
     }
 
     sort() {
-        this.children.sort((left: FileDirectoryChooserContainerModel, right: FileDirectoryChooserContainerModel) => {
+        this.children.sort((left: FileDirTreeContainerModel, right: FileDirTreeContainerModel) => {
             if(left.isContainer() && !right.isContainer()) {
                 return -1;
             }

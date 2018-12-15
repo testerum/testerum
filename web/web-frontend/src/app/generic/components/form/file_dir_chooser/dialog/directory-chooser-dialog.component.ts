@@ -1,19 +1,8 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {FileDirectoryChooserService} from "../file-directory-chooser.service";
-import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tree-node-event.model";
-import {FileDirectoryChooserContainerModel} from "../model/file-directory-chooser-container.model";
-import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
-import {JsonTreeContainerEditorEvent} from "../../../json-tree/container-editor/model/json-tree-container-editor.event";
-import {JsonTreeService} from "../../../json-tree/json-tree.service";
-import {FileSystemService} from "../../../../../service/file-system.service";
-import {FileSystemDirectory} from "../../../../../model/file/file-system-directory.model";
-import {ErrorService} from "../../../../../service/error.service";
-import {HttpErrorResponse} from "@angular/common/http";
 import {DirectoryChooserDialogService} from "./directory-chooser-dialog.service";
-import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
-import {FileDirectoryChooserContainerComponent} from "../container/file-directory-chooser-container.component";
-import {Subscription} from "rxjs";
+import {FileDirTreeComponent} from "../file-dir-tree/file-dir-tree.component";
+import {FileDirTreeContainerModel} from "../file-dir-tree/model/file-dir-tree-container.model";
 
 @Component({
     moduleId: module.id,
@@ -21,55 +10,12 @@ import {Subscription} from "rxjs";
     templateUrl: 'directory-chooser-dialog.component.html',
     styleUrls: ['directory-chooser-dialog.component.scss']
 })
-export class DirectoryChooserDialogComponent implements OnInit, OnDestroy, AfterViewInit {
+export class DirectoryChooserDialogComponent implements AfterViewInit {
+
+    @ViewChild(FileDirTreeComponent) fileDirTreeComponent: FileDirTreeComponent;
 
     @ViewChild("infoModal") modal: ModalDirective;
     directoryChooserDialogService: DirectoryChooserDialogService;
-
-    selectedPath: string;
-    selectedNode: FileDirectoryChooserContainerModel;
-    fileDirectoryChooserJsonTreeModel: JsonTreeModel = new JsonTreeModel();
-
-    jsonModelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
-        .addPair(FileDirectoryChooserContainerModel, FileDirectoryChooserContainerComponent);
-
-    private selectedNodeSubscription: Subscription;
-    private initializeDirectoryTreeFromServerSubscription: Subscription;
-
-    constructor(public fileDirectoryChooserService: FileDirectoryChooserService,
-                private fileSystemService: FileSystemService,
-                private jsonTreeService: JsonTreeService,
-                private errorService: ErrorService) {
-    }
-
-    ngOnInit() {
-        this.initializeDirectoryTreeFromServerSubscription = this.fileDirectoryChooserService.initializeDirectoryTreeFromServer().subscribe(
-            (dirTree: JsonTreeModel) => {
-                this.fileDirectoryChooserJsonTreeModel.children.length = 0;
-
-                for (let dirTreeChild of dirTree.children) {
-                    this.fileDirectoryChooserJsonTreeModel.children.push(
-                        dirTreeChild
-                    )
-                }
-            }
-        );
-
-        this.selectedNodeSubscription = this.fileDirectoryChooserService.selectedNodeEmitter.subscribe (
-            (item: JsonTreeNodeEventModel) => {
-                let selectedNode = item.treeNode as FileDirectoryChooserContainerModel;
-                if ((selectedNode).absoluteJavaPath) {
-                    this.selectedNode = selectedNode;
-                    this.selectedPath = selectedNode.absoluteJavaPath
-                }
-            }
-        );
-    }
-
-    ngOnDestroy(): void {
-        if(this.selectedNodeSubscription) {this.selectedNodeSubscription.unsubscribe();}
-        if(this.initializeDirectoryTreeFromServerSubscription) {this.initializeDirectoryTreeFromServerSubscription.unsubscribe();}
-    }
 
     ngAfterViewInit(): void {
         this.modal.show();
@@ -83,47 +29,15 @@ export class DirectoryChooserDialogComponent implements OnInit, OnDestroy, After
     }
 
     onDirectoryChooseAction() {
-        this.directoryChooserDialogService.onDirectoryChooseAction(this.selectedPath);
+        this.directoryChooserDialogService.onDirectoryChooseAction(this.fileDirTreeComponent.getSelectedPathAsString());
         this.modal.hide()
     }
 
-    createDirectory(): void {
-        if(!this.selectedPath) {
-            return
-        }
-
-        let childrenContainersName = this.getChildrenContanersName();
-
-        this.jsonTreeService.triggerCreateContainerAction(childrenContainersName).subscribe(
-            (createEvent: JsonTreeContainerEditorEvent) => {
-
-                this.fileSystemService.createFileSystemDirectory (this.selectedNode.absoluteJavaPath, createEvent.newName).subscribe(
-                    (newFileSystemDirectory: FileSystemDirectory) => {
-                        let newContainer = new FileDirectoryChooserContainerModel(
-                            this.selectedNode,
-                            newFileSystemDirectory.name,
-                            newFileSystemDirectory.absoluteJavaPath,
-                            newFileSystemDirectory.canCreateChild,
-                            false
-                        );
-                        this.selectedNode.getChildren().push(newContainer);
-                        this.selectedNode.sort();
-                    },
-                    (error: HttpErrorResponse) => {
-                        this.errorService.handleHttpResponseException(error)
-                    }
-                );
-            }
-        )
+    getSelectedNode(): FileDirTreeContainerModel {
+        return this.fileDirTreeComponent.getSelectedNode();
     }
 
-    private getChildrenContanersName(): Array<string> {
-        let childrenContainersName: Array<string> = [];
-        for (const child of this.selectedNode.getChildren()) {
-            if (child.isContainer()) {
-                childrenContainersName.push(child.name)
-            }
-        }
-        return childrenContainersName;
+    getSelectedPathAsString(): string {
+        return this.fileDirTreeComponent.getSelectedPathAsString();
     }
 }

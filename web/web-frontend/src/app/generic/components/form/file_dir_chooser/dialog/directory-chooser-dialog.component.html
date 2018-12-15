@@ -10,25 +10,23 @@
             <div class="modal-body">
 
                 <div class="file-chooser">
-                    <json-tree [treeModel]="fileDirectoryChooserJsonTreeModel"
-                               [modelComponentMapping]="jsonModelComponentMapping">
-                    </json-tree>
+                    <file-dir-tree></file-dir-tree>
                 </div>
             </div>
 
             <!-- BUTTONS -->
             <div class="modal-footer">
                 <div class="selected-path-container">
-                    <span class="selecte-path-label">Selected path:</span> {{selectedPath}}
+                    <span class="selecte-path-label">Selected path:</span> {{getSelectedPathAsString()}}
                 </div>
                 <div class="button-container">
                     <button (click)="createDirectory()" type="button" class="btn btn-default pull-left"
-                            [disabled]="!selectedPath || !selectedNode.canCreateChild">
+                            [disabled]="!getSelectedNode() || !getSelectedNode().canCreateChild">
                         Create Directory
                     </button>
                     <button (click)="onCancelAction();" type="button" class="btn btn-default">Cancel</button>
                     <button (click)="onDirectoryChooseAction()" class="btn btn-primary"
-                            [disabled]="!selectedPath || !selectedNode.canCreateChild">Select</button>
+                            [disabled]="!getSelectedNode() || !getSelectedNode().canCreateChild">Select</button>
                 </div>
             </div>
         </div>
