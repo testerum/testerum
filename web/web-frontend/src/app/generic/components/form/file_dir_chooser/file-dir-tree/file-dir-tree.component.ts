@@ -8,7 +8,6 @@ import {FileDirectoryChooserService} from "../file-directory-chooser.service";
 import {FileSystemService} from "../../../../../service/file-system.service";
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
 import {ErrorService} from "../../../../../service/error.service";
-import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tree-node-event.model";
 import {JsonTreeContainerEditorEvent} from "../../../json-tree/container-editor/model/json-tree-container-editor.event";
 import {FileSystemDirectory} from "../../../../../model/file/file-system-directory.model";
 import {HttpErrorResponse} from "@angular/common/http";
