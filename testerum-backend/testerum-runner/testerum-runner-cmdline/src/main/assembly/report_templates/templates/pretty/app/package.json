@@ -1,0 +1,35 @@
+{
+  "name": "runner-report-app",
+  "version": "0.0.0",
+  "scripts": {
+    "serve": "ng serve",
+    "build": "ng build",
+    "lint": "ng lint"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "7.0.4",
+    "@angular/common": "7.0.4",
+    "@angular/compiler": "7.0.4",
+    "@angular/core": "7.0.4",
+    "@angular/forms": "7.0.4",
+    "@angular/http": "7.0.4",
+    "@angular/platform-browser": "7.0.4",
+    "@angular/platform-browser-dynamic": "7.0.4",
+    "@angular/router": "7.0.4",
+    "core-js": "2.4.1",
+    "rxjs": "6.3.3",
+    "zone.js": "0.8.26"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "0.10.6",
+    "@angular/cli": "7.0.6",
+    "@angular/compiler-cli": "7.0.4",
+    "@angular/language-service": "7.0.4",
+    "@types/node": "8.9.4",
+    "codelyzer": "4.2.1",
+    "ts-node": "7.0.0",
+    "tslint": "5.11.0",
+    "typescript": "3.1.6"
+  }
+}
