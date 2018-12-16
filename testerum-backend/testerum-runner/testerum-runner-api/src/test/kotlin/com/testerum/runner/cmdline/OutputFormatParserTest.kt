@@ -15,7 +15,7 @@ class OutputFormatParserTest {
             OutputFormatParser.parse("BLAH")
         }
 
-        assertThat(exception.message, Is(equalTo("there is no output format [BLAH]; valid values are: [TREE], [JSON_EVENTS], [CUSTOM_TEMPLATE]")))
+        assertThat(exception.message, Is(equalTo("there is no output format [BLAH]; valid values are: ${OutputFormat.VALID_OUTPUT_FORMATS}")))
     }
 
     @Test

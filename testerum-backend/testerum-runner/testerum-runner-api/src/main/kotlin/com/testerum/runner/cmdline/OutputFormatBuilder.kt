@@ -7,6 +7,11 @@ object EventListenerProperties {
         const val DESTINATION_FILE_NAME = "destinationFileName"
     }
 
+    object JsonModel {
+        const val DESTINATION_FILE_NAME = "destinationFileName"
+        const val FORMATTED = "formatted"
+    }
+
     object CustomTemplate {
         const val SCRIPT_FILE = "scriptFile"
     }

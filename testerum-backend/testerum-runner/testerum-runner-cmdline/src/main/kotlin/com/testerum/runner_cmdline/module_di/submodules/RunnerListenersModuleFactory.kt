@@ -5,7 +5,8 @@ import com.testerum.common_di.ModuleFactoryContext
 import com.testerum.runner.cmdline.OutputFormat
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
 import com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.template.custom_template.CustomTemplateExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model.JsonModelExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template.CustomTemplateExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.tree_to_console.TreeToConsoleExecutionListener
 import org.slf4j.LoggerFactory
 
@@ -20,6 +21,7 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
             mapOf(
                     OutputFormat.TREE            to { properties: Map<String, String> -> TreeToConsoleExecutionListener() },
                     OutputFormat.JSON_EVENTS     to { properties: Map<String, String> -> JsonEventsExecutionListener(properties) },
+                    OutputFormat.JSON_MODEL      to { properties: Map<String, String> -> JsonModelExecutionListener(properties) },
                     OutputFormat.CUSTOM_TEMPLATE to { properties: Map<String, String> -> CustomTemplateExecutionListener(properties) }
             )
     ).apply {
