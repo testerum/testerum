@@ -2,9 +2,12 @@ package com.testerum.runner.cmdline
 
 enum class OutputFormat {
     TREE,
+
     JSON_EVENTS,
     JSON_MODEL,
+
     CUSTOM_TEMPLATE,
+    BASIC_HTML,
     ;
 
     companion object {
