@@ -16,7 +16,6 @@
     <properties>
         <mainClass>com.testerum.runner_cmdline.TesterumRunner</mainClass>
 
-        <reportTemplatesNodeVersion>v10.14.1</reportTemplatesNodeVersion>
         <reportTemplatesNodePath>${project.basedir}/src/main/assembly/report_templates</reportTemplatesNodePath>
     </properties>
 
@@ -217,8 +216,6 @@
                 <artifactId>frontend-maven-plugin</artifactId>
 
                 <configuration>
-                    <nodeVersion>${reportTemplatesNodeVersion}</nodeVersion>
-                    <npmVersion>6.4.1</npmVersion>
                     <installDirectory>${reportTemplatesNodePath}</installDirectory>
                 </configuration>
 
