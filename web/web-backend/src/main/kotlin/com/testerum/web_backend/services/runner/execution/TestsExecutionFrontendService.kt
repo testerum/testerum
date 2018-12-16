@@ -11,6 +11,7 @@ import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
 import com.testerum.runner.cmdline.jsonEventsOutputFormat
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
+import com.testerum.runner.events.model.RunnerStoppedEvent
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.settings.SettingsManager
 import com.testerum.settings.getRequiredSetting
@@ -165,6 +166,13 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
                 println("failed to delete argsFile [$argsFile]")
             }
             LOG.debug("==========================================[ DONE ]=========================================")
+            try {
+                eventProcessor(
+                        RunnerStoppedEvent()
+                )
+            } catch (e: Exception) {
+                LOG.warn("failed to process ${RunnerStoppedEvent::class.simpleName}", e)
+            }
             doneProcessor()
         }
     }
