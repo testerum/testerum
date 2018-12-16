@@ -39,6 +39,13 @@
             <outputDirectory>/node</outputDirectory>
             <useDefaultExcludes>false</useDefaultExcludes>
         </fileSet>
+
+        <!-- compiled report templates: basic_html -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html/dist</directory>
+            <outputDirectory>report_templates/basic_html</outputDirectory>
+            <useDefaultExcludes>false</useDefaultExcludes>
+        </fileSet>
     </fileSets>
 
 </assembly>

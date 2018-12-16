@@ -28,4 +28,6 @@ object RunnerDirs {
 
     fun getRunnerNodeDir(): JavaPath = getRunnerDir().resolve("node")
 
+    fun getReportTemplatesDir(): JavaPath = getRunnerDir().resolve("report_templates")
+
 }

@@ -2,12 +2,16 @@ package com.testerum.runner.cmdline
 
 enum class OutputFormat {
     TREE,
+
     JSON_EVENTS,
+    JSON_MODEL,
+
     CUSTOM_TEMPLATE,
+    BASIC_HTML,
     ;
 
     companion object {
-        private val validOutputFormats = values()
+        val VALID_OUTPUT_FORMATS = values()
                 .toList()
                 .joinToString(separator = ", ", prefix = "", postfix = "") { "[$it]" }
 
@@ -18,7 +22,7 @@ enum class OutputFormat {
                 }
             }
 
-            throw IllegalArgumentException("there is no output format [$text]; valid values are: $validOutputFormats")
+            throw IllegalArgumentException("there is no output format [$text]; valid values are: $VALID_OUTPUT_FORMATS")
         }
     }
 }

@@ -17,6 +17,10 @@ class Application {
     constructor(private readonly dataFilePath: string,
                 properties: {[key: string]: string}) {
         this.destinationDirectory = properties["destinationDirectory"];
+
+        if (!this.destinationDirectory) {
+            throw Error("the [destinationDirectory] property is required");
+        }
     }
 
     run() {

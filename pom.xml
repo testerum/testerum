@@ -50,12 +50,16 @@
         <maven.build.timestamp.format>yyyy-MM-dd_HH-mm-ss</maven.build.timestamp.format>
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
-        <!--Kotlin settings-->
+        <!-- Kotlin settings -->
         <kotlin.version>1.2.70</kotlin.version>
         <kotlin.apiVersion>1.2</kotlin.apiVersion>
         <kotlin.languageVersion>1.2</kotlin.languageVersion>
         <kotlin.jvmTarget>${maven.compiler.target}</kotlin.jvmTarget>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+
+        <!--node versions -->
+        <testerumNodeVersion>v10.14.2</testerumNodeVersion>
+        <testerumNpmVersion>6.4.1</testerumNpmVersion>
 
         <!--========== dependencies versions ==========-->
         <slf4j.version>1.7.25</slf4j.version>
@@ -1124,6 +1128,11 @@
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>1.5</version>
+
+                    <configuration>
+                        <nodeVersion>${testerumNodeVersion}</nodeVersion>
+                        <npmVersion>${testerumNpmVersion}</npmVersion>
+                    </configuration>
                 </plugin>
 
                 <!--maven-release-plugin -->
@@ -1150,36 +1159,6 @@
         </pluginManagement>
 
         <plugins>
-            <!-- maven-clean-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>delete-package-dirs</id>
-
-                        <phase>clean</phase>
-
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>${basedir}/package/basic_steps</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${basedir}/package/runner</directory>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-
             <!-- jgit buildnumber plugin to get tag name -->
             <plugin>
                 <groupId>ru.concerteza.buildnumber</groupId>
@@ -1238,6 +1217,36 @@
                     </resource>
                 </resources>
 
+                <plugins>
+                    <!-- delete-package-dirs -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <id>delete-package-dirs</id>
+
+                                <phase>clean</phase>
+
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+
+                                <configuration>
+                                    <filesets>
+                                        <fileset>
+                                            <directory>${basedir}/package/basic_steps</directory>
+                                        </fileset>
+                                        <fileset>
+                                            <directory>${basedir}/package/runner</directory>
+                                        </fileset>
+                                    </filesets>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
 

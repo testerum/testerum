@@ -1,13 +1,5 @@
-package com.testerum.runner_cmdline.events.execution_listeners.template.custom_template
+package com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.guava.GuavaModule
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.common_kotlin.deleteOnExit
@@ -16,7 +8,7 @@ import com.testerum.runner.cmdline.EventListenerProperties
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner.report_model.ReportSuite
 import com.testerum.runner_cmdline.dirs.RunnerDirs
-import com.testerum.runner_cmdline.events.execution_listeners.template.BaseReportModelExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.report_model.BaseReportModelExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.println
 import org.zeroturnaround.exec.ProcessExecutor
@@ -27,22 +19,6 @@ import java.nio.file.Paths
 import java.nio.file.Path as JavaPath
 
 class CustomTemplateExecutionListener(private val properties: Map<String, String>) : BaseReportModelExecutionListener() {
-
-    companion object {
-        private val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper().apply {
-            registerModule(AfterburnerModule())
-            registerModule(JavaTimeModule())
-            registerModule(GuavaModule())
-
-            disable(SerializationFeature.INDENT_OUTPUT)
-            setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            enable(SerializationFeature.WRITE_DATES_WITH_ZONE_ID)
-
-            disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
-            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-        }
-    }
 
     private val scriptFile: JavaPath = run {
         val scriptFileProperty = properties[EventListenerProperties.CustomTemplate.SCRIPT_FILE]

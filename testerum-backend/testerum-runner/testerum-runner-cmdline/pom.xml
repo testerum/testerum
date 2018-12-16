@@ -16,7 +16,6 @@
     <properties>
         <mainClass>com.testerum.runner_cmdline.TesterumRunner</mainClass>
 
-        <reportTemplatesNodeVersion>v10.14.1</reportTemplatesNodeVersion>
         <reportTemplatesNodePath>${project.basedir}/src/main/assembly/report_templates</reportTemplatesNodePath>
     </properties>
 
@@ -210,6 +209,63 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
             </plugin>
+
+            <!-- compile report templates  -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+
+                <configuration>
+                    <installDirectory>${reportTemplatesNodePath}</installDirectory>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>compile-report-templates--install-node-and-npm</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-install--basic_html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-build--basic_html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build-prod</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-install-dependencies-in-dist-dir--basic_html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install --only=production</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html/dist</workingDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -394,64 +450,6 @@
                        </executions>
                     </plugin>
 
-                    <!-- compile report templates  -->
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-
-                        <configuration>
-                            <nodeVersion>${reportTemplatesNodeVersion}</nodeVersion>
-                            <npmVersion>6.4.1</npmVersion>
-                            <installDirectory>${reportTemplatesNodePath}</installDirectory>
-                        </configuration>
-
-                        <executions>
-                            <execution>
-                                <id>compile-report-templates--install-node-and-npm</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>install-node-and-npm</goal>
-                                </goals>
-                            </execution>
-
-                            <execution>
-                                <id>compile-report-templates--npm-install--basic_html</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>install</arguments>
-                                    <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html</workingDirectory>
-                                </configuration>
-                            </execution>
-
-                            <execution>
-                                <id>compile-report-templates--npm-build--basic_html</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>run build-prod</arguments>
-                                    <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html</workingDirectory>
-                                </configuration>
-                            </execution>
-
-                            <execution>
-                                <id>compile-report-templates--npm-install-dependencies-in-dist-dir--basic_html</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>install --only=production</arguments>
-                                    <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html/dist</workingDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                     <!-- copy shell scripts & compiled report templates to package directory  -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -475,7 +473,7 @@
                                 </configuration>
                             </execution>
 
-                            <!-- -->
+                            <!-- copy-compiled-report-templates-to-package-dir: basic_html -->
                             <execution>
                                 <id>copy-compiled-report-templates-to-package-dir--basic_html</id>
                                 <phase>prepare-package</phase>
