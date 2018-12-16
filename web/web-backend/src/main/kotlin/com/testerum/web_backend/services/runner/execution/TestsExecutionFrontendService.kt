@@ -230,11 +230,13 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         val repositoryDir: JavaPath = frontendDirs.getRepositoryDir()
                 ?: throw IllegalArgumentException("cannot run tests because the repositoryDir is not set")
 
-        args += "--repository-directory '${repositoryDir.escape()}'"
+        args += "--repository-directory"
+        args += "${repositoryDir.escape()}"
 
         // built-in basic steps
         val builtInBasicStepsDir: JavaPath = getBuiltInBasicStepsDirectory()
-        args += "--basic-steps-directory '${builtInBasicStepsDir.escape()}'"
+        args += "--basic-steps-directory"
+        args += "${builtInBasicStepsDir.escape()}"
 
         // output
         val outputFormatConsole = jsonEventsOutputFormat {}
@@ -242,8 +244,10 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
             destinationFileName = resultFilePath
         }
 
-        args += "--output-format '$outputFormatConsole'"
-        args += "--output-format '$outputFormatFile'"
+        args += "--output-format"
+        args += outputFormatConsole
+        args += "--output-format"
+        args += outputFormatFile
 
         // tests
         for (testPathToRun in testsPathsToRun) {
@@ -252,7 +256,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
                                                         .toAbsolutePath()
                                                         .normalize()
 
-            args.add("--test-path '${path.escape()}'")
+            args.add("--test-path")
+            args.add("${path.escape()}")
         }
 
         // settings
@@ -271,7 +276,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
                 continue
             }
 
-            args.add("--setting '${setting.key.escape()}=${setting.value.escape()}'")
+            args.add("--setting")
+            args.add("${setting.key.escape()}=${setting.value.escape()}")
         }
 
         LOG.debug("args = {}", args)

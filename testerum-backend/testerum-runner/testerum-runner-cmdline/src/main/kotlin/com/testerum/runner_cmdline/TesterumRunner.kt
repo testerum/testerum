@@ -55,6 +55,7 @@ object TesterumRunner {
 
     private fun getCmdlineParams(args: Array<out String>): CmdlineParams {
         return try {
+            System.setProperty("picocli.useSimplifiedAtFiles", "true")
             CmdlineParamsParser.parse(*args)
         } catch (e: CmdlineParamsParserHelpRequestedException) {
             consolePrintln(e.usageHelp)
