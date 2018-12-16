@@ -15,10 +15,10 @@ object ChromeDriverBinaryClasspathLocationFinder {
         val is64BitArchitecture = OsUtils.is64BitArchitecture
 
         if (isWindows) {
-            return BASE_PATH + "/windows/chromedriver_win32_v2.37.exe"
+            return BASE_PATH + "/windows/chromedriver_win32_v2.45.exe"
         } else if (isLinux) {
             if (is64BitArchitecture) {
-                return BASE_PATH + "/linux/chromedriver_linux64_v2.37"
+                return BASE_PATH + "/linux/chromedriver_linux64_v2.45"
             } else {
                 throw IllegalArgumentException(
                         "unsupported Linux architecture [" + OsUtils.osArchitecture + "]"
@@ -26,7 +26,7 @@ object ChromeDriverBinaryClasspathLocationFinder {
             }
         } else if (isMac) {
             if (is64BitArchitecture) {
-                return BASE_PATH + "/mac/chromedriver_mac64_v2.37"
+                return BASE_PATH + "/mac/chromedriver_mac64_v2.45"
             } else {
                 throw IllegalArgumentException(
                         "unsupported Mac architecture [" + OsUtils.osArchitecture + "]"

@@ -12,6 +12,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.webdriver_factory.chrome.ChromeWebDriverFactory
+import selenium_steps_support.service.webdriver_factory.util.OsUtils
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTINGS_CATEGORY
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_AFTER_STEP_DELAY_MILLIS
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
@@ -82,7 +83,10 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager)
         get() = synchronized(lock) {
             if (_webDriver == null) {
                 _webDriver = ChromeWebDriverFactory.createWebDriver().apply {
-                    manage().window().maximize() // todo: make this configurable
+                    // not maximizing on Mac because it makes WebDriver throw an exception for Chrome on Mac: "failed to change window state to normal, current state is maximized"
+                    if (!OsUtils.isMac) {
+                        manage().window().maximize() // todo: make this configurable
+                    }
                 }
             }
 

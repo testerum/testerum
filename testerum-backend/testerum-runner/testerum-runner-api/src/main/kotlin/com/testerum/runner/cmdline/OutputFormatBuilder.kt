@@ -6,6 +6,10 @@ object EventListenerProperties {
     object JsonEvents {
         const val DESTINATION_FILE_NAME = "destinationFileName"
     }
+
+    object CustomTemplate {
+        const val SCRIPT_FILE = "scriptFile"
+    }
 }
 
 class OutputFormatBuilder(private val outputFormat: OutputFormat) {
@@ -60,18 +64,4 @@ fun jsonEventsOutputFormat(body: JsonEventsOutputFormatBuilder.() -> Unit): Stri
     builder.body()
 
     return builder.build()
-}
-
-fun main(args: Array<String>) {
-    val builder = OutputFormatBuilder(OutputFormat.JSON_EVENTS)
-
-    "all together now" to "equals=/comma,/works"
-
-    builder.properties["equation"]         = "1+2=3"
-    builder.properties["greeting"]         = "Hello, world!"
-    builder.properties["all together now"] = "equals=/comma,/works"
-
-    println(
-            builder.build()
-    )
 }

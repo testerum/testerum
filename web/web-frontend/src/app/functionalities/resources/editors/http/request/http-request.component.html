@@ -88,7 +88,10 @@
     <!-- PARAMS -->
     <http-params #httpParams></http-params>
 
-    <div class="vertical-space"></div>
+    <label class="follow-redirects">
+        <p-checkbox [(ngModel)]="model.followRedirects" name="followRedirectsInputName" binary="true"></p-checkbox>
+        Follow redirect responses
+    </label>
 
     <ul class="nav nav-tabs">
         <li role="tab"

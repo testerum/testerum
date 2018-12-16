@@ -46,19 +46,4 @@ class ValidHttpResponse @JsonCreator constructor(
         OBJECT_MAPPER.readValue(bodyAsUtf8String, Object::class.java)
     }
 
-    override fun toString(): String {
-        var response = "$protocol $statusCode\n"
-        for (header in headers) {
-            for (value in header.values) {
-                response += "${header.key}: $value\n"
-            }
-        }
-
-        if (body.isNotEmpty()) {
-            response +=  "\n"
-            response += String(body)
-        }
-
-        return response
-    }
 }

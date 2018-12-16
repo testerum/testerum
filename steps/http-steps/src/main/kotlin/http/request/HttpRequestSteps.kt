@@ -6,12 +6,19 @@ import com.testerum.api.services.TesterumServiceLocator
 import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common_httpclient.HttpClientService
+import com.testerum.common_httpclient.util.MediaTypeUtils
+import com.testerum.common_json.util.JsonUtils
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.ValidHttpResponse
 import http.request.transformer.HttpRequestTransformer
 import http_support.module_di.HttpStepsModuleServiceLocator
+import org.slf4j.LoggerFactory
 
 class HttpRequestSteps {
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(HttpRequestSteps::class.java)
+    }
 
     private val httpClientService: HttpClientService = HttpStepsModuleServiceLocator.bootstrapper.httpStepsModuleFactory.httpClientService
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
@@ -29,14 +36,88 @@ class HttpRequestSteps {
             )
             httpRequest: HttpRequest
     ) {
-        logger.logInfo("HTTP Request [\n$httpRequest\n]")
+        logger.logInfo("HTTP Request [\n${httpRequest.prettyPrint()}\n]")
         val httpResponse: ValidHttpResponse = httpClientService.executeHttpRequest(httpRequest)
-        logger.logInfo("HTTP Response [\n$httpResponse\n]")
+        logger.logInfo("HTTP Response [\n${httpResponse.prettyPrint()}\n]")
 
         variables["httpRequest"] = httpRequest
         variables["httpResponse"] = httpResponse
 
         logger.logInfo("Http Request executed successfully")
+    }
+
+    private fun HttpRequest.prettyPrint(): String {
+        var response = "$method $url\n"
+
+        for ((headerName, headerValue) in headers) {
+            response += "$headerName: $headerValue\n"
+        }
+
+        val body = this.body
+        if (body?.bodyType != null) {
+            response += "\n"
+            response += "Body type: ${body.bodyType}\n"
+        }
+
+        if (body?.content?.isNotEmpty() == true) {
+            response +=  "\n"
+            response += formatHttpBody(
+                    body = body.content,
+                    contentType = getContentTypeHeaderValue().orEmpty(),
+                    bodyDescription = "HTTP request body"
+            )
+        }
+
+        return response
+    }
+
+    private fun ValidHttpResponse.prettyPrint(): String {
+        var response = "$protocol $statusCode\n"
+        for (header in headers) {
+            for (value in header.values) {
+                response += "${header.key}: $value\n"
+            }
+        }
+
+        val contentTypeHeader = headers.find {
+            it.key.equals("Content-Type", ignoreCase = true)
+        }
+
+        val contentType = contentTypeHeader
+                ?.values
+                ?.firstOrNull()
+                .orEmpty()
+        if (body.isNotEmpty()) {
+            response +=  "\n"
+            response += formatHttpBody(
+                    body = bodyAsUtf8String,
+                    contentType = contentType,
+                    bodyDescription = "HTTP response body"
+            )
+        }
+
+        return response
+    }
+
+    private fun formatHttpBody(body: String,
+                               contentType: String,
+                               bodyDescription: String): String {
+        // remove things not related to media type; examples:
+        // Content-Type: text/html; charset=utf-8
+        // Content-Type: multipart/form-data; boundary=something
+        val mediaType = contentType.substringBefore(";").trim()
+
+        return if (MediaTypeUtils.isJsonMediaType(mediaType)) {
+            try {
+                JsonUtils.prettyPrintJson(body)
+            } catch (e: Exception) {
+                LOG.warn("failed to format $bodyDescription as JSON: it's not valid JSON; contentType=[$contentType])")
+
+                body
+            }
+        } else {
+            body
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.events.execution_listeners.utils.console_output_capture
 
-import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.TextWriter
+import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.TextPrinter
 import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.impl.PrinterTextWriter
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
@@ -27,7 +27,7 @@ object ConsoleOutputCapturer {
         }
     }
 
-    fun getOriginalTextWriter(): TextWriter {
+    fun getOriginalTextWriter(): TextPrinter {
         val capturingData = this.capturingData
                 ?: throw IllegalStateException("output not yet captured; did you forget to call startCapture()?")
 

@@ -3,6 +3,7 @@ package com.testerum.runner_cmdline.runner_tree.vars_context
 import com.testerum.api.test_context.test_vars.VariableNotFoundException
 import com.testerum.common.expression_evaluator.ExpressionEvaluator
 import com.testerum.common.parsing.executer.ParserExecuter
+import com.testerum.file_service.caches.resolved.resolvers.file_arg_transformer.FileArgTransformer
 import com.testerum.model.arg.Arg
 import com.testerum.model.step.StepCall
 import com.testerum.model.step.StepDef
@@ -11,6 +12,7 @@ import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
+import org.apache.commons.lang3.StringEscapeUtils
 
 class VariablesContext private constructor(private val argsVars: Map<String, Any?>,
                                            private val dynamicVars: DynamicVariablesContext,
@@ -77,10 +79,19 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
         return result
     }
 
-    fun resolveIn(arg: Arg): Any? = resolveInText(arg.content, this.toMap())
+    fun resolveIn(arg: Arg): Any? {
+        val escape: (String) -> String = if (FileArgTransformer.shouldTransform(arg.type)) {
+            { StringEscapeUtils.escapeJson(it) }
+        } else {
+            { it }
+        }
+
+        return resolveInText(arg.content, this.toMap(), escape)
+    }
 
     private fun resolveInText(text: String?,
-                              context: Map<String, Any?>): Any? {
+                              context: Map<String, Any?>,
+                              escape: (String) -> String = {it}): Any? {
         if (text == null) {
             return null
         }
@@ -93,7 +104,13 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
             val resolvedArgPartPart: Any? = when (part) {
                 is FileTextArgPart       -> part.text
                 is FileExpressionArgPart -> {
-                    evaluateExpressionSafely(part.text, context)
+                    val expressionResult = evaluateExpressionSafely(part.text, context)
+
+                    if (expressionResult is String) {
+                        escape(expressionResult)
+                    } else {
+                        expressionResult
+                    }
                 }
             }
 
@@ -108,7 +125,7 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
     }
 
     // todo: why do we need this, and can we replace it?
-    fun resolveIn(text: String): String = resolveInText(text, this.toMap()).toString()
+    fun resolveIn(text: String, escape: (String) -> String = {it}): String = resolveInText(text, this.toMap(), escape).toString()
 
     private fun evaluateExpressionSafely(expression: String,
                                          context: Map<String, Any?>): Any? {

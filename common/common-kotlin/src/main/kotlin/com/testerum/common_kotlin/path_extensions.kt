@@ -5,7 +5,11 @@ package com.testerum.common_kotlin
 import org.apache.commons.io.FileUtils
 import java.io.IOException
 import java.nio.charset.Charset
-import java.nio.file.*
+import java.nio.file.FileVisitResult
+import java.nio.file.FileVisitor
+import java.nio.file.Files
+import java.nio.file.NoSuchFileException
+import java.nio.file.SimpleFileVisitor
 import java.nio.file.attribute.BasicFileAttributeView
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileAttribute
@@ -241,3 +245,5 @@ inline fun JavaPath.walkAndCollect(crossinline shouldUse: (JavaPath) -> Boolean)
 
     return results
 }
+
+fun JavaPath.deleteOnExit() = this.toFile().deleteOnExit()

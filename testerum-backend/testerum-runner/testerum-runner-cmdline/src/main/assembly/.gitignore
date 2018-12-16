@@ -1,1 +1,5 @@
 node/
+**/node_modules/
+**/dist/
+report_templates/node/
+

@@ -3,7 +3,7 @@ import {ResourcesRoutingModule} from "./resources-routing.module";
 import {ResourcesComponent} from "./resources.component";
 import {AngularSplitModule} from "angular-split-ng6";
 import {DndModule} from "ng2-dnd";
-import {ModalModule, TabsModule} from "ngx-bootstrap";
+import {BsDropdownModule, ModalModule, TabsModule} from "ngx-bootstrap";
 import {FormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {GenericModule} from "../../generic/generic.module";
@@ -27,10 +27,9 @@ import {HttpRequestService} from "./editors/http/request/http-request.service";
 import {HttpRequestComponent} from "./editors/http/request/http-request.component";
 import {HttpHeaderComponent} from "./editors/http/request/header/http-header.component";
 import {HttpBodyComponent} from "./editors/http/request/body/http-body.component";
-import {BsDropdownModule} from "ngx-bootstrap";
 import {HttpBodyTypeFormComponent} from "./editors/http/request/body-type-form/http-body-type-form.component";
 import {HttpParamsComponent} from "./editors/http/request/params/http-params.component";
-import {AutoCompleteModule, DropdownModule, ToggleButtonModule, ToolbarModule} from "primeng/primeng";
+import {AutoCompleteModule, CheckboxModule, DropdownModule, ToggleButtonModule, ToolbarModule} from "primeng/primeng";
 import {HttpResponseComponent} from "./editors/http/request/response/http-request-response.component";
 import {HttpResponseVerifyComponent} from "./editors/http/response_verify/http-response-verify.component";
 import {HttpResponseVerifyService} from "./editors/http/response_verify/http-response-verify.service";
@@ -68,6 +67,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
         DndModule.forRoot(),
         AngularSplitModule,
         AceEditorModule,
+        CheckboxModule,
 
         AutoCompleteModule,
         ToggleButtonModule,

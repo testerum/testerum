@@ -80,7 +80,7 @@ object FileArgTransformer {
         return JSON_MAPPER.writeValueAsString(jsonTree)
     }
 
-    private fun shouldTransform(argType: String?): Boolean {
+    fun shouldTransform(argType: String?): Boolean {
         return argType != null
                 && ARG_TYPES_TO_TRANSFORM.contains(argType)
     }
