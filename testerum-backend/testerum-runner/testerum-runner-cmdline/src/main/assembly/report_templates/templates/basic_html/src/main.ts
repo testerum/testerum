@@ -50,7 +50,7 @@ class Application {
     }
 
     private loadModel(): ReportSuite {
-        const dataFileContent = FsUtils.readFile(dataFilePath);
+        const dataFileContent = FsUtils.readFile(this.dataFilePath);
         const dataFileJson = JSON.parse(dataFileContent);
 
         return ReportSuite.parse(dataFileJson);
