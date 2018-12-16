@@ -1150,36 +1150,6 @@
         </pluginManagement>
 
         <plugins>
-            <!-- maven-clean-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>delete-package-dirs</id>
-
-                        <phase>clean</phase>
-
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>${basedir}/package/basic_steps</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${basedir}/package/runner</directory>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-
             <!-- jgit buildnumber plugin to get tag name -->
             <plugin>
                 <groupId>ru.concerteza.buildnumber</groupId>
@@ -1238,6 +1208,36 @@
                     </resource>
                 </resources>
 
+                <plugins>
+                    <!-- delete-package-dirs -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <id>delete-package-dirs</id>
+
+                                <phase>clean</phase>
+
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+
+                                <configuration>
+                                    <filesets>
+                                        <fileset>
+                                            <directory>${basedir}/package/basic_steps</directory>
+                                        </fileset>
+                                        <fileset>
+                                            <directory>${basedir}/package/runner</directory>
+                                        </fileset>
+                                    </filesets>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
 
