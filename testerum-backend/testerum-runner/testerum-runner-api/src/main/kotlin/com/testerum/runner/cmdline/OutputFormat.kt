@@ -8,6 +8,7 @@ enum class OutputFormat {
 
     CUSTOM_TEMPLATE,
     BASIC_HTML,
+    STEPS_TAG_OVERVIEW,
     ;
 
     companion object {

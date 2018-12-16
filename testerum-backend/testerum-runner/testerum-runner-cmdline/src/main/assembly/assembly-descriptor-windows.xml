@@ -46,6 +46,13 @@
             <outputDirectory>report_templates/basic_html</outputDirectory>
             <useDefaultExcludes>false</useDefaultExcludes>
         </fileSet>
+
+        <!-- compiled report templates: steps_tag_overview -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/assembly/report_templates/templates/steps_tag_overview/dist</directory>
+            <outputDirectory>report_templates/steps_tag_overview</outputDirectory>
+            <useDefaultExcludes>false</useDefaultExcludes>
+        </fileSet>
     </fileSets>
 
 </assembly>
