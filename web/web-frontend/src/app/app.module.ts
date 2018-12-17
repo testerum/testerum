@@ -44,6 +44,8 @@ import {LicenseService} from "./functionalities/config/license/license.service";
 import {LicenseComponent} from "./functionalities/config/license/license.component";
 import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
+import {UserProfileModule} from "./functionalities/user-profile/user-profile.module";
+
 
 @NgModule({
     imports: [
@@ -63,6 +65,7 @@ import {ContextService} from "./service/context.service";
         ResourcesModule,
         ManualModule,
         GenericModule,
+        UserProfileModule,
 
         AppRoutingModule
     ],

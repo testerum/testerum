@@ -1,0 +1,54 @@
+<div bsModal #feedbackModal="bs-modal" class="modal fade feedback-modal" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="cancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    Feedback
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="error-message" *ngIf="errorMessage">
+                    <div class="fas fa-exclamation-triangle"></div>{{errorMessage}}
+            </div>
+
+                <form #feedbackForm="ngForm" class="form-horizontal">
+
+                    <div class="my-line">
+                        <label class="my-label label-size">Email</label>
+
+                        <div class="my-value">
+                            <input name="email"
+                                   [(ngModel)]="model.email"
+                                   type="text" class="form-control" >
+                        </div>
+                    </div>
+
+                    <div class="my-line">
+                        <label class="my-label label-size">Subject</label>
+
+                        <div class="my-value">
+                            <input name="subject"
+                                  [(ngModel)]="model.subject"
+                                   type="text" class="form-control" >
+                        </div>
+                    </div>
+
+                    <div class="my-line">
+                        <label class="my-label label-size">Description</label>
+
+                        <div class="my-value">
+                            <textarea name="description"
+                                      [(ngModel)]="model.description"
+                                      class="form-control description" rows="11"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button (click)="ok()" type="button" class="btn btn-warning" data-dismiss="modal">Ok</button>
+                <button (click)="cancel()" type="button" class="btn btn-primary">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
