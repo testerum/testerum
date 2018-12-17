@@ -1,5 +1,6 @@
-import {ReportTest} from "../../../../common/testerum-model/model/report/report-test";
+import {ExecutionStatus} from "../../../../common/testerum-model/model/report/execution-status";
 
 export interface TemplateIndexData {
-    tests: Array<ReportTest>;
+    statusByTagMap: Map<string, ExecutionStatus>;
+    ExecutionStatus: typeof ExecutionStatus;
 }

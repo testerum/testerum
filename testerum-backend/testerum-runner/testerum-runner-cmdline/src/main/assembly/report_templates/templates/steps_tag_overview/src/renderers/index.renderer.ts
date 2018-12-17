@@ -1,7 +1,7 @@
 import {ReportModelExtractor} from "../../../../common/testerum-model/model-extractor/report-model-extractor";
 import {FsUtils} from "../../../../common/util/FsUtils";
 import * as path from "path";
-import {Templates} from "../../../basic_html/src/templates/Templates";
+import {Templates} from "../templates/Templates";
 import {ReportStep} from "../../../../common/testerum-model/model/report/report-step";
 import {ExecutionStatus} from "../../../../common/testerum-model/model/report/execution-status";
 
