@@ -220,6 +220,7 @@
                 </configuration>
 
                 <executions>
+                    <!-- install-node-and-npm -->
                     <execution>
                         <id>compile-report-templates--install-node-and-npm</id>
                         <phase>generate-resources</phase>
@@ -228,6 +229,7 @@
                         </goals>
                     </execution>
 
+                    <!-- basic_html -->
                     <execution>
                         <id>compile-report-templates--npm-install--basic_html</id>
                         <phase>generate-resources</phase>
@@ -264,6 +266,7 @@
                         </configuration>
                     </execution>
 
+                    <!-- steps_tag_overview -->
                     <execution>
                         <id>compile-report-templates--npm-install--steps_tag_overview</id>
                         <phase>generate-resources</phase>
@@ -297,6 +300,68 @@
                         <configuration>
                             <arguments>install --only=production</arguments>
                             <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/steps_tag_overview/dist</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <!-- pretty / app -->
+                    <execution>
+                        <id>compile-report-templates--npm-install--pretty-app</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/app</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-build--pretty-app</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build-prod</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/app</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <!-- pretty / generator -->
+                    <execution>
+                        <id>compile-report-templates--npm-install--pretty-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-build--pretty-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build-prod</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-install-dependencies-in-dist-dir--pretty-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install --only=production</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</workingDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -539,6 +604,24 @@
                                     <resources>
                                         <resource>
                                             <directory>${project.basedir}/src/main/assembly/report_templates/templates/steps_tag_overview/dist</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+                            <!-- copy-compiled-report-templates-to-package-dir: pretty -->
+                            <execution>
+                                <id>copy-compiled-report-templates-to-package-dir--pretty</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/../../../package/runner/report_templates/pretty</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</directory>
                                             <filtering>false</filtering>
                                         </resource>
                                     </resources>
