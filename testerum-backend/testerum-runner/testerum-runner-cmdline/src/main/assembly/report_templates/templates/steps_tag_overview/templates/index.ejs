@@ -1,22 +1,75 @@
 <%_
-    /** @type {Array<ReportTest>} */
-    var tests = tests;
+    /** @type {Map<string, ExecutionStatus>} */
+    var statusByTagMap = statusByTagMap;
+    /** @type {ExecutionStatus} */
+    var ExecutionStatus = ExecutionStatus;
 _%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title>Tests Results</title>
+    <style>
+        h1 {
+            text-align: center;
+            font-size: 3em;
+        }
+
+        .tag-status-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .tag-status {
+            width: 10em;
+            height: 5em;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            border-radius: 1.5em;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+
+            -webkit-box-shadow: -20px 25px 40px -4px rgba(0,0,0,0.75);
+            -moz-box-shadow: -20px 25px 40px -4px rgba(0,0,0,0.75);
+            box-shadow: -20px 25px 40px -4px rgba(0,0,0,0.75);
+        }
+
+        .disabled {
+            background-color: #cacaca;
+        }
+        .skipped {
+            background-color: #cacaca;
+        }
+        .undefined {
+            background-color: #fd9705;
+        }
+        .passed {
+            background-color: #05fd5a;
+        }
+        .failed {
+            background-color: #fd0505;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Test results</h1>
 
-    <ul>
-        <% for (const test of tests) { %>
-            <li><a href="<%=test.testFilePath.fileName%>.html"><%=test.testName%></a></li>
+    <div class="tag-status-container">
+        <% for (const statusByTagMapEntry of statusByTagMap) { %>
+            <% var tagStatusClass = null %>
+            <% if(statusByTagMapEntry[1] == ExecutionStatus.DISABLED) { tagStatusClass = "disabled"}%>
+            <% if(statusByTagMapEntry[1] == ExecutionStatus.SKIPPED) { tagStatusClass = "skipped"}%>
+            <% if(statusByTagMapEntry[1] == ExecutionStatus.UNDEFINED) { tagStatusClass = "undefined"}%>
+            <% if(statusByTagMapEntry[1] == ExecutionStatus.PASSED) { tagStatusClass = "passed"}%>
+            <% if(statusByTagMapEntry[1] == ExecutionStatus.FAILED) { tagStatusClass = "failed"}%>
+
+            <div class="tag-status <%= tagStatusClass%>"><%=statusByTagMapEntry[0]%></div>
         <% } %>
-    </ul>
+    </div>
 </body>
 
 </html>
