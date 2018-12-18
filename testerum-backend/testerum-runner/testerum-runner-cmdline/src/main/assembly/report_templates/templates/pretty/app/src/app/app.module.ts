@@ -3,18 +3,28 @@ import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {AboutComponent} from './about/about.component';
+import {ReportComponent} from './report/report.component';
+import {ReportPieComponent} from './report/pie/report-pie.component';
+import {ReportService} from "./report/report.service";
+import {ChartModule} from "primeng/chart";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AboutComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+
+        ChartModule,
+    ],
+    declarations: [
+        AppComponent,
+        ReportComponent,
+        ReportPieComponent,
+    ],
+
+    providers: [
+        ReportService,
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

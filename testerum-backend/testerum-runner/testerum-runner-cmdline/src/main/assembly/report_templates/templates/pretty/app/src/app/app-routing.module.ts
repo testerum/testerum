@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {APP_BASE_HREF} from "@angular/common";
-import {AboutComponent} from "./about/about.component";
+import {ReportComponent} from "./report/report.component";
 
 const routes: Routes = [
-  { path: 'about', component: AboutComponent }
+  { path: '', component: ReportComponent }
 ];
 
 @NgModule({

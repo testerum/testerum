@@ -17,7 +17,10 @@
     "@angular/platform-browser": "7.0.4",
     "@angular/platform-browser-dynamic": "7.0.4",
     "@angular/router": "7.0.4",
+    "chart.js": "^2.7.3",
     "core-js": "2.4.1",
+    "primeicons": "1.0.0",
+    "primeng": "7.0.3",
     "rxjs": "6.3.3",
     "zone.js": "0.8.26"
   },
