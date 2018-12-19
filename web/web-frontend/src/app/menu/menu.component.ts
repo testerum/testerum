@@ -71,5 +71,9 @@ export class MenuComponent {
     showFeedback() {
         this.feedbackModalService.showFeedbackModal();
     }
+
+    showDropdownMenu() {
+
+    }
 }
 

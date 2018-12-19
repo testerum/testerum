@@ -36,16 +36,25 @@
             <a href="" (click)="showVariables(); false;">Variables</a>
         </li>
         <li>
-            <a [routerLink]="['/settings']" routerLinkActive="active" class="sttings-icon-menu-item">
+            <a [routerLink]="['/settings']" class="sttings-icon-menu-item">
                 <i  class="fas fa-cogs" aria-hidden="true"></i>
             </a>
         </li>
-        <li>
-            <a href="" (click)="showFeedback(); false;">
+        <li dropdown>
+            <a dropdownToggle
+               aria-controls="dropdown-basic"
+               routerLinkActive="active">
                 <i class="fas fa-user"></i>
+                <span class="caret"></span>
             </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem"><a class="dropdown-item" href="">Profile details</a></li>
+                <li><a href="" (click)="showFeedback(); false;">Feedback</a></li>
+                <li class="divider dropdown-divider"></li>
+                <li role="menuitem"><a class="dropdown-item" href="#">Logout</a>
+                </li>
+            </ul>
         </li>
-
     </ul>
 </nav>
 <variables></variables>

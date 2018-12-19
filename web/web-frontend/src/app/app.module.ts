@@ -45,6 +45,7 @@ import {LicenseComponent} from "./functionalities/config/license/license.compone
 import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
 import {UserProfileModule} from "./functionalities/user-profile/user-profile.module";
+import {BsDropdownModule} from "ngx-bootstrap";
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import {UserProfileModule} from "./functionalities/user-profile/user-profile.mod
         HttpClientModule,
         FormsModule,
         ModalModule.forRoot(),
+        BsDropdownModule.forRoot(),
 
         RadioButtonModule,
         FileUploadModule,
