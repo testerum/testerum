@@ -1,18 +1,25 @@
-import {AfterViewInit, Component, ComponentRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ComponentRef, OnDestroy, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Feedback} from "./model/feedback.model";
+import {UserProfileService} from "../../../service/user-profile.service";
+import {InfoModalService} from "../../../generic/components/info_modal/info-modal.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'feedback.component',
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.scss']
 })
-export class FeedbackComponent implements AfterViewInit {
+export class FeedbackComponent implements AfterViewInit, OnDestroy {
     errorMessage: string;
     model: Feedback = new Feedback();
 
     @ViewChild("feedbackModal") modal:ModalDirective;
     modalComponentRef: ComponentRef<FeedbackComponent>;
+
+    saveFeedbackSubscription: Subscription;
+    constructor(private userProfileService: UserProfileService,
+                private infoModalService: InfoModalService) {}
 
     ngAfterViewInit(): void {
         this.modal.show();
@@ -24,13 +31,24 @@ export class FeedbackComponent implements AfterViewInit {
         })
     }
 
+    ngOnDestroy(): void {
+        if(this.saveFeedbackSubscription) this.saveFeedbackSubscription.unsubscribe();
+    }
+
     ok() {
         if (!this.hasSubjectOrDescription()) {
             this.errorMessage = "A subject or a description is required";
             return;
         }
 
-        this.modal.hide();
+        this.saveFeedbackSubscription = this.userProfileService.saveFeedback(this.model).subscribe( (feedbackResponse: Feedback) => {
+            this.infoModalService.showInfoModal(
+                "Feedback",
+                "We really appreciate the time you took to help us improve Testerum!" +
+                " \n Thanks for using Testerum and being an awesome customer!"
+            );
+            this.modal.hide();
+        });
     }
 
     cancel() {
@@ -47,3 +65,4 @@ export class FeedbackComponent implements AfterViewInit {
         return false;
     }
 }
+

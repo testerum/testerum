@@ -48,6 +48,7 @@ import com.testerum.web_backend.controllers.steps.ComposedStepsController
 import com.testerum.web_backend.controllers.steps.StepsTreeController
 import com.testerum.web_backend.controllers.tags.TagsController
 import com.testerum.web_backend.controllers.tests.TestsController
+import com.testerum.web_backend.controllers.user_profile.UserProfileController
 import com.testerum.web_backend.controllers.variables.VariablesController
 import com.testerum.web_backend.controllers.version_info.VersionController
 import com.testerum.web_backend.services.dirs.FrontendDirs
@@ -453,6 +454,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             manualTestPlansFrontendService = manualTestPlansFrontendService
     )
 
+    private val userProfileController = UserProfileController(
+    )
+
 
     //---------------------------------------- list of web controllers ----------------------------------------//
 
@@ -476,7 +480,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             httpController,
             rdbmsController,
             fileSystemController,
-            manualExecPlansController
+            manualExecPlansController,
+            userProfileController
     )
 
 

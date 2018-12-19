@@ -46,6 +46,7 @@ import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
 import {UserProfileModule} from "./functionalities/user-profile/user-profile.module";
 import {BsDropdownModule} from "ngx-bootstrap";
+import {UserProfileService} from "./service/user-profile.service";
 
 
 @NgModule({
@@ -100,6 +101,7 @@ import {BsDropdownModule} from "ngx-bootstrap";
         ResultService,
         FeatureService,
         TagsService,
+        UserProfileService,
 
         ResourceService,
         RdbmsService,
