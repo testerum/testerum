@@ -40,7 +40,10 @@
                 <td class="my-duration-cell">{{durationString(rowData.durationMillis)}}</td>
                 <td class="my-log-cell">
                     <i class="far fa-file-alt"></i>
-                    <button type="button" class="btn btn-primary" title="Show Logs"><i class="far fa-file-alt"></i></button>
+                    <button type="button" class="btn btn-primary" title="Show Logs"
+                            (click)="onShowLogs(rowData.logs)">
+                        <i class="far fa-file-alt"></i>
+                    </button>
                 </td>
             </tr>
         </ng-template>

@@ -9,14 +9,16 @@ import {ReportService} from "./report/report.service";
 import {ChartModule} from "primeng/chart";
 import {TreeTableModule} from "primeng/primeng";
 import {ReportGridComponent} from './report/grid/report-grid.component';
-import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {LogsModalService} from "./report/grid/logs/logs-modal.service";
+import {LogsModalComponent} from "./report/grid/logs/logs-modal.component";
+import {ModalModule} from "ngx-bootstrap";
 
 @NgModule({
     imports: [
         BrowserModule,
         AppRoutingModule,
 
-        FontAwesomeModule,
+        ModalModule.forRoot(),
         ChartModule,
         TreeTableModule,
     ],
@@ -25,10 +27,14 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
         ReportComponent,
         ReportPieComponent,
         ReportGridComponent,
+        LogsModalComponent,
     ],
-
+    entryComponents: [
+        LogsModalComponent,
+    ],
     providers: [
         ReportService,
+        LogsModalService,
     ],
     bootstrap: [AppComponent]
 })
