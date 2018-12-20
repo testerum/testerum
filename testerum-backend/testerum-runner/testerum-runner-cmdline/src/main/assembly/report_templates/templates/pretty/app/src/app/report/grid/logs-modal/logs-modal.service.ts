@@ -3,6 +3,7 @@ import {Observable, Subject} from "rxjs";
 import {LogsModalComponent} from "./logs-modal.component";
 import {AppComponent} from "../../../app.component";
 import {ReportLog} from "../../../../../../../../common/testerum-model/model/report/report-log";
+import {ExceptionDetail} from "../../../../../../../../common/testerum-model/model/exception/exception-detail";
 
 @Injectable()
 export class LogsModalService {
@@ -10,7 +11,7 @@ export class LogsModalService {
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
-    showLogsModal(logs: Array<ReportLog>): Observable<void> {
+    showLogsModal(logs: Array<ReportLog>, exceptionDetail: ExceptionDetail = null): Observable<void> {
         let modalSubject = new Subject<void>();
 
         const factory = this.componentFactoryResolver.resolveComponentFactory(LogsModalComponent);
@@ -18,6 +19,7 @@ export class LogsModalService {
         let modalInstance: LogsModalComponent = modalComponentRef.instance;
 
         modalInstance.logs = logs;
+        modalInstance.exceptionDetail = exceptionDetail;
 
         modalInstance.modalComponentRef = modalComponentRef;
         modalInstance.modalSubject = modalSubject;

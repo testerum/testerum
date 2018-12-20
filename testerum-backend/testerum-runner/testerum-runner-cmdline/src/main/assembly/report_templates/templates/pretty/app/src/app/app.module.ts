@@ -9,9 +9,11 @@ import {ReportService} from "./report/report.service";
 import {ChartModule} from "primeng/chart";
 import {TreeTableModule} from "primeng/primeng";
 import {ReportGridComponent} from './report/grid/report-grid.component';
-import {LogsModalService} from "./report/grid/logs/logs-modal.service";
-import {LogsModalComponent} from "./report/grid/logs/logs-modal.component";
+import {LogsModalService} from "./report/grid/logs-modal/logs-modal.service";
+import {LogsModalComponent} from "./report/grid/logs-modal/logs-modal.component";
 import {ModalModule} from "ngx-bootstrap";
+import {LogsComponent} from "./report/grid/logs-modal/logs/logs.component";
+import {LogsToolbarComponent} from "./report/grid/logs-modal/logs/logs-toolbar/logs-toolbar.component";
 
 @NgModule({
     imports: [
@@ -28,6 +30,7 @@ import {ModalModule} from "ngx-bootstrap";
         ReportPieComponent,
         ReportGridComponent,
         LogsModalComponent,
+        LogsComponent,
     ],
     entryComponents: [
         LogsModalComponent,

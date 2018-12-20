@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ComponentRef, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Subject} from "rxjs";
 import {ReportLog} from "../../../../../../../../common/testerum-model/model/report/report-log";
+import {ExceptionDetail} from "../../../../../../../../common/testerum-model/model/exception/exception-detail";
 
 @Component({
     selector: 'logs-modal',
@@ -13,6 +14,9 @@ export class LogsModalComponent implements AfterViewInit {
     @ViewChild("infoModal") modal:ModalDirective;
 
     logs: Array<ReportLog>;
+    exceptionDetail: ExceptionDetail;
+
+    shouldWrapLogs: boolean = false;
 
     modalComponentRef: ComponentRef<LogsModalComponent>;
     modalSubject:Subject<void>;
@@ -32,5 +36,9 @@ export class LogsModalComponent implements AfterViewInit {
     close() {
         this.modalSubject.next();
         this.modal.hide();
+    }
+
+    onToggleWrap() {
+        this.shouldWrapLogs = !this.shouldWrapLogs;
     }
 }

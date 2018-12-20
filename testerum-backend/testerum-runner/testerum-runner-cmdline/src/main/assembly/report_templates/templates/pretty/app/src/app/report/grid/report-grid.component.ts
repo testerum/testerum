@@ -6,7 +6,8 @@ import {DateUtil} from "../../util/date.util";
 import {ExecutionStatus} from "../../../../../../../common/testerum-model/model/report/execution-status";
 import {ReportGridNodeType} from "./model/enums/report-grid-node-type.enum";
 import {ReportLog} from "../../../../../../../common/testerum-model/model/report/report-log";
-import {LogsModalService} from "./logs/logs-modal.service";
+import {LogsModalService} from "./logs-modal/logs-modal.service";
+import {ReportGridNodeData} from "./model/report-grid-node-data.model";
 
 @Component({
     selector: 'report-grid',
@@ -27,16 +28,14 @@ export class ReportGridComponent implements OnInit {
     ngOnInit() {
         let reportSuite = this.reportService.reportModelExtractor.reportSuite;
         this.suiteGridRootNodes.length = 0;
-        for (const node of ReportGridNodeMapper.map(reportSuite)) {
-            this.suiteGridRootNodes.push(node)
-        }
+        this.suiteGridRootNodes.push(ReportGridNodeMapper.map(reportSuite))
     }
 
     durationString(durationMillis: number): string {
         return DateUtil.durationToShortString(durationMillis)
     }
 
-    onShowLogs(logs: Array<ReportLog>) {
-        this.logsModalService.showLogsModal(logs);
+    onShowLogs(nodeData: ReportGridNodeData) {
+        this.logsModalService.showLogsModal(nodeData.logs, nodeData.exceptionDetail);
     }
 }
