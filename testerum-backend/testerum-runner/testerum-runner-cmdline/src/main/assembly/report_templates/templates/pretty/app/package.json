@@ -1,9 +1,10 @@
 {
-  "name": "runner-report-app",
+  "name": "runner-report-pretty-app",
   "version": "0.0.0",
   "scripts": {
     "serve": "ng serve",
-    "build": "ng build",
+    "build-dev": "ng build",
+    "build-prod": "ng build --prod --source-map",
     "lint": "ng lint"
   },
   "private": true,
