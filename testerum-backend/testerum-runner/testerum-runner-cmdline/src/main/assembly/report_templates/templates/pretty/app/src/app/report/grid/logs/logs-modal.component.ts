@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ComponentRef, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Subject} from "rxjs";
+import {ReportLog} from "../../../../../../../../common/testerum-model/model/report/report-log";
 
 @Component({
     selector: 'logs-modal',
@@ -11,8 +12,7 @@ export class LogsModalComponent implements AfterViewInit {
 
     @ViewChild("infoModal") modal:ModalDirective;
 
-    title:string;
-    text:string;
+    logs: Array<ReportLog>;
 
     modalComponentRef: ComponentRef<LogsModalComponent>;
     modalSubject:Subject<void>;

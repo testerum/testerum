@@ -6,6 +6,7 @@ import {DateUtil} from "../../util/date.util";
 import {ExecutionStatus} from "../../../../../../../common/testerum-model/model/report/execution-status";
 import {ReportGridNodeType} from "./model/enums/report-grid-node-type.enum";
 import {ReportLog} from "../../../../../../../common/testerum-model/model/report/report-log";
+import {LogsModalService} from "./logs/logs-modal.service";
 
 @Component({
     selector: 'report-grid',
@@ -19,7 +20,8 @@ export class ReportGridComponent implements OnInit {
     ExecutionStatus = ExecutionStatus;
     ReportGridNodeType = ReportGridNodeType;
 
-    constructor(private reportService: ReportService) {
+    constructor(private reportService: ReportService,
+                private logsModalService: LogsModalService) {
     }
 
     ngOnInit() {
@@ -35,6 +37,6 @@ export class ReportGridComponent implements OnInit {
     }
 
     onShowLogs(logs: Array<ReportLog>) {
-        
+        this.logsModalService.showLogsModal(logs);
     }
 }
