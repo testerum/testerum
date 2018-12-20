@@ -1,7 +1,6 @@
 import {ReportSuite} from "../../../../../../../../common/testerum-model/model/report/report-suite";
 import {ReportGridNode} from "../model/report-grid-node.model";
 import {ReportGridNodeData} from "../model/report-grid-node-data.model";
-import {DateUtil} from "../../../util/date.util";
 import {ReportFeature} from "../../../../../../../../common/testerum-model/model/report/report-feature";
 import {ReportTest} from "../../../../../../../../common/testerum-model/model/report/report-test";
 import {ReportStep} from "../../../../../../../../common/testerum-model/model/report/report-step";
@@ -14,33 +13,24 @@ import {UndefinedStepDef} from "../../../../../../../../common/testerum-model/mo
 
 export class ReportGridNodeMapper {
 
-    static map(suite: ReportSuite): ReportGridNode {
-        let node = new ReportGridNode();
-        node.leaf = false;
-        node.expanded = true;
-        node.data = new ReportGridNodeData();
-
-        node.data.textAsHtml = "Test Suite - " + DateUtil.dateTimeToShortString(suite.startTime);
-        node.data.status = suite.status;
-        node.data.durationMillis = suite.durationMillis;
-        node.data.logs = suite.logs;
-        node.data.nodeType = ReportGridNodeType.SUITE;
+    static map(suite: ReportSuite): ReportGridNode[] {
+        let nodes: ReportGridNode[] = [];
 
         for (const testOrFeature of suite.children) {
             if (testOrFeature instanceof ReportFeature) {
-                node.children.push(
+                nodes.push(
                     this.mapFeature(testOrFeature)
                 );
                 continue;
             }
             if (testOrFeature instanceof ReportTest) {
-                node.children.push(
+                nodes.push(
                     this.mapTest(testOrFeature)
                 );
             }
         }
 
-        return node;
+        return nodes;
     }
 
     private static mapFeature(feature: ReportFeature): ReportGridNode {

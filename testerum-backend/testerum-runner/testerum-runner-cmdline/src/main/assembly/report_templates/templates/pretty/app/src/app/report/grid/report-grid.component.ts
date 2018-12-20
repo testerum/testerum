@@ -24,7 +24,9 @@ export class ReportGridComponent implements OnInit {
     ngOnInit() {
         let reportSuite = this.reportService.reportModelExtractor.reportSuite;
         this.suiteGridRootNodes.length = 0;
-        this.suiteGridRootNodes.push(ReportGridNodeMapper.map(reportSuite));
+        for (const node of ReportGridNodeMapper.map(reportSuite)) {
+            this.suiteGridRootNodes.push(node)
+        }
     }
 
     durationString(durationMillis: number): string {
