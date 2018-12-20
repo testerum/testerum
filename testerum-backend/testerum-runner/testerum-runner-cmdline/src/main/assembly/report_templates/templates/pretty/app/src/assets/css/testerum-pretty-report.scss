@@ -1,0 +1,28 @@
+$fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts/';
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/regular';
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/solid';
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/brands';
+
+//------ ICONS ------
+//-------------------
+.fa_my-tree-folder-closed-colored {
+    @extend .fas;
+    @extend .fa-folder;
+    color: #c7c308;
+    font-size: 15px;
+    align-self: center;
+}
+.fa_my-tree-folder-opened-colored {
+    @extend .fas;
+    @extend .fa-folder-open;
+    color: #c7c308;
+    font-size: 15px;
+    align-self: center;
+}
+.fa_my-automated-test {
+    @extend .fas;
+    @extend .fa-bolt;
+    color: #333333;
+    align-self: center;
+}

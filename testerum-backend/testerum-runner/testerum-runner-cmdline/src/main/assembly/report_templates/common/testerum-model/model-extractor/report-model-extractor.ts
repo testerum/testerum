@@ -6,7 +6,7 @@ import {ReportStep} from "../model/report/report-step";
 
 export class ReportModelExtractor {
 
-    private reportSuite: ReportSuite;
+    readonly reportSuite: ReportSuite;
 
     private reportTests: Array<ReportTest>;
     private reportSteps: Array<ReportStep>;

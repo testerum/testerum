@@ -7,18 +7,24 @@ import {ReportComponent} from './report/report.component';
 import {ReportPieComponent} from './report/pie/report-pie.component';
 import {ReportService} from "./report/report.service";
 import {ChartModule} from "primeng/chart";
+import {TreeTableModule} from "primeng/primeng";
+import {ReportGridComponent} from './report/grid/report-grid.component';
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 @NgModule({
     imports: [
         BrowserModule,
         AppRoutingModule,
 
+        FontAwesomeModule,
         ChartModule,
+        TreeTableModule,
     ],
     declarations: [
         AppComponent,
         ReportComponent,
         ReportPieComponent,
+        ReportGridComponent,
     ],
 
     providers: [

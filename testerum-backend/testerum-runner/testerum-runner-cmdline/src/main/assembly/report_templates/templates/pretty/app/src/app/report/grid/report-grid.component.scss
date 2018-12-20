@@ -1,0 +1,125 @@
+.my-report-grid {
+    .my-name-cell {
+        display: flex;
+        flex-direction: row;
+    }
+
+    thead {
+        tr {
+            th {
+                text-align: center;
+            }
+        }
+        .my-name-col {
+        }
+        .my-status-col {
+            width: 10em;
+        }
+        .my-duration-col {
+            width: 10em;
+        }
+
+        .my-logs-col {
+            width: 5em;
+        }
+    }
+
+    tbody {
+        tr {
+            td {
+                padding: 0 !important;
+            }
+
+            .my-name-cell {
+                .ui-treetable-toggler {
+                    top: auto;
+
+                    .pi {
+                        font-size: 1em;
+                    }
+
+                    .pi-chevron-right {
+                        color: #C0C0C0;
+                    }
+                    .pi-chevron-down {
+                        color: #5F5F5F;
+                    }
+                }
+
+                >i {
+                    margin-right: 5px;
+                }
+
+                .step-call {
+                    .step-phase {
+                        color: #0000CD;
+                        font-weight: bolder;
+                        display: inline-block;
+                        vertical-align: top;
+                    }
+                    .step-text-part {
+                    }
+                    .step-param-part {
+                        color: #4169E1;
+                    }
+                }
+            }
+
+            .my-status-cell {
+                text-align: center;
+
+                &.my-status-disabled {
+                    background-color: #c0bebc;
+                }
+                &.my-status-skipped {
+                    background-color: #aae8ff;
+                }
+                &.my-status-undefined {
+                    background-color: #FFCE56;
+                }
+                &.my-status-passed {
+                    background-color: #5cb85c;
+                }
+                &.my-status-failed {
+                    background-color: #FF6384;
+                }
+            }
+            .my-duration-cell {
+                text-align: center;
+            }
+            .my-log-cell {
+                text-align: center;
+                cursor: pointer;
+
+                &:hover>.far {
+                    display: none;
+                }
+                .btn {
+                    display: none;
+                }
+                &:hover .btn {
+                    display: block;
+                    line-height: 1em;
+                    font-size: 1em;
+                    padding: 2px 28px;
+                }
+            }
+        }
+
+        .row-color-passed {
+            background-color: #5cb85c24 !important;
+        }
+        .row-color-failed {
+            background-color: #FF638424 !important;
+        }
+        .row-color-disabled {
+            background-color: #c0bebc24 !important;
+        }
+        .row-color-undefined {
+            background-color: #FFCE5624 !important;
+        }
+        .row-color-skipped {
+            background-color: #aae8ff24 !important;
+        }
+    }
+}

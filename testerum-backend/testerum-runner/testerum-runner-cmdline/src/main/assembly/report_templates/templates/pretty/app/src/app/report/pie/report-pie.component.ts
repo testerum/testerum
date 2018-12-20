@@ -10,10 +10,6 @@ import {ExecutionStatus} from "../../../../../../../common/testerum-model/model/
 })
 export class ReportPieComponent implements OnInit {
 
-    @Input() width: string;
-    @Input() height: string;
-    @Input() showLegend: boolean = true;
-
     pieChartData: any;
 
     pieChartOptions:any;

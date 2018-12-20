@@ -1,0 +1,48 @@
+<div class="my-report-grid">
+    <p-treeTable [value]="suiteGridRootNodes"
+                 [resizableColumns]="true"
+                 responsive="true"
+                 columnResizeMode="expand">
+        <ng-template pTemplate="header">
+            <tr>
+                <th ttResizableColumn class="my-name-col">Name</th>
+                <th ttResizableColumn class="my-status-col">Status</th>
+                <th ttResizableColumn class="my-duration-col">Duration</th>
+                <th ttResizableColumn class="my-logs-col">Logs</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+            <tr [class.row-color-disabled]="rowData.status == ExecutionStatus.DISABLED"
+                [class.row-color-skipped]="rowData.status == ExecutionStatus.SKIPPED"
+                [class.row-color-undefined]="rowData.status == ExecutionStatus.UNDEFINED"
+                [class.row-color-passed]="rowData.status == ExecutionStatus.PASSED"
+                [class.row-color-failed]="rowData.status == ExecutionStatus.FAILED">
+
+                <td class="my-name-cell">
+                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                    <i *ngIf="rowData.nodeType == ReportGridNodeType.FEATURE && !rowNode.node.expanded" class="fa_my-tree-folder-closed-colored"></i>
+                    <i *ngIf="rowData.nodeType == ReportGridNodeType.FEATURE && rowNode.node.expanded" class="fa_my-tree-folder-opened-colored"></i>
+                    <i *ngIf="rowData.nodeType == ReportGridNodeType.TEST" class="fa_my-automated-test"></i>
+
+                    <div [innerHTML]="rowData.textAsHtml"></div>
+
+                </td>
+                <td class="my-status-cell"
+                    [class.my-status-disabled]="rowData.status == ExecutionStatus.DISABLED"
+                    [class.my-status-skipped]="rowData.status == ExecutionStatus.SKIPPED"
+                    [class.my-status-undefined]="rowData.status == ExecutionStatus.UNDEFINED"
+                    [class.my-status-passed]="rowData.status == ExecutionStatus.PASSED"
+                    [class.my-status-failed]="rowData.status == ExecutionStatus.FAILED">
+
+                    {{ExecutionStatus[rowData.status]}}
+                </td>
+
+                <td class="my-duration-cell">{{durationString(rowData.durationMillis)}}</td>
+                <td class="my-log-cell">
+                    <i class="far fa-file-alt"></i>
+                    <button type="button" class="btn btn-primary" title="Show Logs"><i class="far fa-file-alt"></i></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-treeTable>
+</div>

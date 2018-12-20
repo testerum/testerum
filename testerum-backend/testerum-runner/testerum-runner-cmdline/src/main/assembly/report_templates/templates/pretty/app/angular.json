@@ -43,10 +43,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/nova-light/theme.css",
-              "node_modules/primeng/resources/primeng.min.css"
+              "node_modules/primeng/resources/primeng.min.css",
+              "src/assets/css/bootstrap.min.css",
+              "src/assets/css/bootstrap-theme.min.css",
+              "src/assets/css/testerum-pretty-report.scss"
             ],
             "scripts": [
                 "node_modules/chart.js/dist/Chart.js"
