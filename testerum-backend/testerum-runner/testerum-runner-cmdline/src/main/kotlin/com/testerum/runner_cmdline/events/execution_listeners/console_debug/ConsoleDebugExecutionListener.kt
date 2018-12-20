@@ -1,4 +1,4 @@
-package com.testerum.runner_cmdline.events.execution_listeners.tree_to_console
+package com.testerum.runner_cmdline.events.execution_listeners.console_debug
 
 import com.testerum.runner.events.execution_listener.BaseExecutionListener
 import com.testerum.runner.events.model.FeatureEndEvent
@@ -15,7 +15,7 @@ import com.testerum.runner_cmdline.events.execution_listeners.utils.console_outp
 import javax.annotation.concurrent.NotThreadSafe
 
 @NotThreadSafe
-class TreeToConsoleExecutionListener : BaseExecutionListener() {
+class ConsoleDebugExecutionListener : BaseExecutionListener() {
 
     private var indentLevel = 0
 

@@ -1,7 +1,7 @@
 package com.testerum.runner.cmdline
 
 enum class OutputFormat {
-    TREE,
+    CONSOLE_DEBUG,
 
     JSON_EVENTS,
     JSON_MODEL,
