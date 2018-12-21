@@ -13,6 +13,7 @@ import {LogsModalService} from "./report/grid/logs-modal/logs-modal.service";
 import {LogsModalComponent} from "./report/grid/logs-modal/logs-modal.component";
 import {ModalModule} from "ngx-bootstrap";
 import {LogsComponent} from "./report/grid/logs-modal/logs/logs.component";
+import { TitleComponent } from './report/title/title.component';
 
 @NgModule({
     imports: [
@@ -30,6 +31,7 @@ import {LogsComponent} from "./report/grid/logs-modal/logs/logs.component";
         ReportGridComponent,
         LogsModalComponent,
         LogsComponent,
+        TitleComponent,
     ],
     entryComponents: [
         LogsModalComponent,

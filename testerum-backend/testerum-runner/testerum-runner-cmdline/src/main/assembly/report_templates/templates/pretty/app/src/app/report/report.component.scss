@@ -1,4 +1,17 @@
 
 .my-report {
     margin: 20px;
+
+    .header {
+        margin: auto;
+
+        .pie {
+            float: left;
+        }
+
+        .title {
+            width: 50%;
+            margin: auto;
+        }
+    }
 }

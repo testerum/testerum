@@ -5,7 +5,6 @@ import {ReportGridNodeMapper} from "./util/report-grid-node.mapper";
 import {DateUtil} from "../../util/date.util";
 import {ExecutionStatus} from "../../../../../../../common/testerum-model/model/report/execution-status";
 import {ReportGridNodeType} from "./model/enums/report-grid-node-type.enum";
-import {ReportLog} from "../../../../../../../common/testerum-model/model/report/report-log";
 import {LogsModalService} from "./logs-modal/logs-modal.service";
 import {ReportGridNodeData} from "./model/report-grid-node-data.model";
 
