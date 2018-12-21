@@ -1,10 +1,8 @@
-
 import {TestsRunnerLogLineModel} from "./tests-runner-log-line.model";
 import {LogLineTypeEnum} from "./log-line-type.enum";
-import {RunnerTreeNodeModel} from "../../tests-runner-tree/model/runner-tree-node.model";
-import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {EventKey} from "../../../../../model/test/event/fields/event-key.model";
 import {RunnerEventTypeEnum} from "../../../../../model/test/event/enums/runner-event-type.enum";
+
 export class TestsRunnerLogModel {
 
     eventKey: EventKey;

@@ -13,7 +13,8 @@ export class ReportSuite implements RunnerReportNode {
                 public readonly durationMillis: number,
                 public readonly status: ExecutionStatus,
                 public readonly logs: Array<ReportLog>,
-                public readonly children: Array<FeatureOrTestRunnerReportNode>) { }
+                public readonly children: Array<FeatureOrTestRunnerReportNode>,
+                public readonly name: string = 'Test Suite') { }
 
     static parse(input: Object): ReportSuite {
         if (!input) {
@@ -29,8 +30,8 @@ export class ReportSuite implements RunnerReportNode {
             [RunnerReportNodeType[RunnerReportNodeType.FEATURE]]: ReportFeature,
             [RunnerReportNodeType[RunnerReportNodeType.TEST]]: ReportTest
         });
-
-        return new ReportSuite(startTime, endTime, durationMillis, status, logs, children);
+        const name = input["name"];
+        return new ReportSuite(startTime, endTime, durationMillis, status, logs, children, name ? name: 'Test Suite');
     }
 
 }

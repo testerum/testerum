@@ -31,7 +31,7 @@
                     [class.my-status-disabled]="rowData.status == ExecutionStatus.DISABLED"
                     [class.my-status-skipped]="rowData.status == ExecutionStatus.SKIPPED"
                     [class.my-status-undefined]="rowData.status == ExecutionStatus.UNDEFINED"
-                    [class.my-status-passed]="rowData.status == ExecutionStatus.PASSED"
+                    [class.my-status-passed]="rowData.status == ExecutionStatus.PASSED"tests-runner-log-line.model.ts
                     [class.my-status-failed]="rowData.status == ExecutionStatus.FAILED">
 
                     {{ExecutionStatus[rowData.status]}}
