@@ -83,43 +83,75 @@
                 &.my-status-failed {
                     background-color: #FF6384;
                 }
+
             }
             .my-duration-cell {
                 text-align: center;
             }
             .my-log-cell {
-                text-align: center;
-                cursor: pointer;
+                display: flex;
+                flex-direction: row;
 
-                &:hover>.far {
-                    display: none;
-                }
-                .btn {
-                    display: none;
-                }
-                &:hover .btn {
-                    display: block;
-                    line-height: 1em;
-                    font-size: 1em;
-                    padding: 2px 28px;
+
+                .my-log-action {
+                    text-align: center;
+                    cursor: pointer;
+
+                    display: flex;
+                    flex-direction: row;
+                    width: 50%;
+                    justify-content: center;
+
+                    .far, .fas {
+                        line-height: inherit;
+                        align-self: center;
+                    }
+                    &:hover>.far, &:hover>.fas {
+                        display: none;
+                    }
+                    .btn {
+                        display: none;
+                    }
+                    &:hover .btn {
+                        display: block;
+                        line-height: 1em;
+                        font-size: 1em;
+                        padding: 0;
+                        width: 100%;
+                    }
                 }
             }
         }
 
         .row-color-passed {
             background-color: #5cb85c24 !important;
+            &:hover {
+                background-color: #5cb85c !important;
+            }
         }
         .row-color-failed {
             background-color: #FF638424 !important;
+            &:hover {
+                background-color: #FF6384 !important;
+            }
         }
         .row-color-disabled {
             background-color: #c0bebc24 !important;
+            &:hover {
+                background-color: #c0bebc !important;
+            }
         }
         .row-color-undefined {
             background-color: #FFCE5624 !important;
+            &:hover {
+                background-color: #FFCE56 !important;
+            }
         }
         .row-color-skipped {
             background-color: #aae8ff24 !important;
+            &:hover {
+                background-color: #aae8ff !important;
+            }
         }
     }
 }

@@ -39,11 +39,22 @@
 
                 <td class="my-duration-cell">{{durationString(rowData.durationMillis)}}</td>
                 <td class="my-log-cell">
-                    <i class="far fa-file-alt"></i>
-                    <button type="button" class="btn btn-primary" title="Show Logs"
-                            (click)="onShowLogs(rowData)">
-                        <i class="far fa-file-alt"></i>
-                    </button>
+
+                    <div class="my-log-action">
+                        <i class="far fa-eye"></i>
+                        <button type="button" class="btn btn-primary" title="View Logs"
+                                (click)="onShowLogs(rowData)">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <div class="my-log-action">
+                        <i class="fas fa-file-download"></i>
+                        <button type="button" class="btn btn-primary" title="Download Logs"
+                                (click)="onShowLogs(rowData)">
+                            <i class="fas fa-file-download"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
         </ng-template>
