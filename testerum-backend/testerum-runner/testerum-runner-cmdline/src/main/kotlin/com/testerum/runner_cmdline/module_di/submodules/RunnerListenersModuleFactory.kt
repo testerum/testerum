@@ -7,10 +7,10 @@ import com.testerum.runner.cmdline.OutputFormat
 import com.testerum.runner.events.execution_listener.ExecutionListenerFactory
 import com.testerum.runner_cmdline.dirs.RunnerDirs
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
+import com.testerum.runner_cmdline.events.execution_listeners.console_debug.ConsoleDebugExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model.JsonModelExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template.CustomTemplateExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.tree_to_console.TreeToConsoleExecutionListener
 import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
@@ -23,7 +23,7 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     val executionListenerFinder = ExecutionListenerFinder(
             mapOf(
-                    OutputFormat.TREE               to { properties: Map<String, String> -> TreeToConsoleExecutionListener() },
+                    OutputFormat.CONSOLE_DEBUG               to { properties: Map<String, String> -> ConsoleDebugExecutionListener() },
 
                     OutputFormat.JSON_EVENTS        to { properties: Map<String, String> -> JsonEventsExecutionListener(properties) },
                     OutputFormat.JSON_MODEL         to { properties: Map<String, String> -> JsonModelExecutionListener(properties) },

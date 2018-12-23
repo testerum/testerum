@@ -12,7 +12,7 @@ data class CmdlineParams(val repositoryDirectory: JavaPath,
                          val outputFormatsWithProperties: List<String>) {
 
     companion object {
-        val DEFAULT_OUTPUT_FORMAT = OutputFormat.TREE
+        val DEFAULT_OUTPUT_FORMAT = OutputFormat.CONSOLE_DEBUG
     }
 
 }
