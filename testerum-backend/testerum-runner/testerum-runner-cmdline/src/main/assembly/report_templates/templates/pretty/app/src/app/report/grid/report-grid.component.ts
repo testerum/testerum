@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ReportService} from "../report.service";
 import {ReportGridNode} from "./model/report-grid-node.model";
 import {ReportGridNodeMapper} from "./util/report-grid-node.mapper";
@@ -9,6 +9,7 @@ import {LogsModalService} from "./logs-modal/logs-modal.service";
 import {ReportGridNodeData} from "./model/report-grid-node-data.model";
 import {ReportGridFilter} from "./model/report-grid-filter.model";
 import {ArrayUtil} from "../../util/array.util";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
     selector: 'report-grid',
@@ -20,6 +21,12 @@ export class ReportGridComponent implements OnInit {
 
     suiteGridRootNodes: ReportGridNode[];
     filter: ReportGridFilter = new ReportGridFilter();
+
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    allKnownTags: Array<string> = [];
+    selectedTags: Array<string> = [];
+    tagsToShow:string[] = [];
+    currentTagSearch:string;
 
     ExecutionStatus = ExecutionStatus;
     ReportGridNodeType = ReportGridNodeType;
@@ -109,4 +116,30 @@ export class ReportGridComponent implements OnInit {
             this.expandNodesThatMatchExpression(node.children as ReportGridNode[], expresion);
         }
     }
+
+    onTagsButtonClickEvent() {
+        this.filter.isTagsButtonActive = !this.filter.isTagsButtonActive;
+    }
+
+    onTagSelect(event) {
+        this.currentTagSearch = null;
+    }
+
+    onTagUnSelect(event) {
+    }
+
+    searchTags(event) {
+        this.currentTagSearch = event.query;
+
+        let newTagsToShow = ArrayUtil.filterArray(
+            this.allKnownTags,
+            event.query
+        );
+        for (let currentTag of this.selectedTags) {
+            ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
+        }
+        this.tagsToShow = newTagsToShow;
+
+    }
+
 }

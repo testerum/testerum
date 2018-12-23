@@ -6,4 +6,5 @@ export class ReportGridFilter {
     showDisabled: boolean = true;
     showUndefined: boolean = true;
     showSkipped: boolean = true;
+    isTagsButtonActive: boolean = false;
 }

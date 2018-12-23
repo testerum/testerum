@@ -57,6 +57,36 @@
                                     <i class="fa_my-runner-skipped-colored" aria-hidden="true"></i>
                                 </div>
                             </div>
+                            <div pTooltip="{{filter.isTagsButtonActive?'Hide ':'Show '}} Filter by Tags"
+                                 tooltipPosition="bottom"
+                                 (click)="onTagsButtonClickEvent()"
+                                 [class.active]="filter.isTagsButtonActive"
+                                 class="btn btn-default btn-xs btn-group">
+                                <i class="fa_my-tag" aria-hidden="true"></i>
+                            </div>
+
+                            <div class="my-filter-input ui-inputgroup line-tags full-width"
+                                 *ngIf="filter.isTagsButtonActive">
+                                <span class="ui-inputgroup-addon"
+                                      tooltipPosition="bottom"
+                                      pTooltip="Tags"
+                                      (click)="filter()">
+                                    <i class="fa_my-tag tags-search-icon"></i>
+                                </span>
+                                <p-autoComplete #tagsElement
+                                                [suggestions]="tagsToShow"
+                                                (completeMethod)="searchTags($event)"
+                                                (onSelect)="onTagSelect($event)"
+                                                (onUnselect)="onTagUnSelect($event)"
+                                                [delay]="0"
+                                                [multiple]="true"
+                                                [dropdown]="true"
+                                                placeholder="Tags"
+                                                tooltipPosition="bottom"
+                                                pTooltip="Tags"
+                                                name="tags"></p-autoComplete>
+                            </div>
+
                         </div>
 
                         Name

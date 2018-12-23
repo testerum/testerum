@@ -78,6 +78,10 @@ $warning-color: #f0ad4e;
     color: #333333;
     align-self: center;
 }
+.fa_my-tag {
+    @extend .fas;
+    @extend .fa-tag;
+}
 .fa_my-expand {
     @extend .nf;
     @extend .nf-fa-expand;
