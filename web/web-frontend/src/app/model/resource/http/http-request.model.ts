@@ -11,7 +11,7 @@ export class HttpRequest implements Resource<HttpRequest> {
     url: string;
     headers:Array<HttpRequestHeader> = [];
     body: HttpRequestBody = new HttpRequestBody();
-    followRedirects: boolean;
+    followRedirects: boolean = true;
 
     constructor() {
         this.reset();
@@ -86,7 +86,7 @@ export class HttpRequest implements Resource<HttpRequest> {
             '{' +
             '"method":' + JsonUtil.stringify(this.method.toString()) + ',' +
             '"url":' + JsonUtil.stringify(this.url) + ',' +
-            '"followRedirects":' + this.followRedirects ;
+            '"followRedirects":' + JsonUtil.stringify(this.followRedirects);
 
         result += ',"headers":{';
         let headers = this.getHeadersWithValue();
