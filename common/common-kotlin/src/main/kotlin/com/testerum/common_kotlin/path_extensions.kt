@@ -92,6 +92,10 @@ fun JavaPath.isSameFileAs(other: JavaPath): Boolean {
 fun JavaPath.isNotSameFileAs(other: JavaPath): Boolean = !this.isSameFileAs(other)
 
 fun JavaPath.list(): List<JavaPath> {
+    if (this.doesNotExist) {
+        return emptyList()
+    }
+
     Files.list(this).use { pathStream ->
         return pathStream.collect(
                 Collectors.toList()
