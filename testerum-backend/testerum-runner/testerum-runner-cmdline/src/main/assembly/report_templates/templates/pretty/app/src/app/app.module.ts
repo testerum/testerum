@@ -7,7 +7,7 @@ import {ReportComponent} from './report/report.component';
 import {ReportPieComponent} from './report/pie/report-pie.component';
 import {ReportService} from "./report/report.service";
 import {ChartModule} from "primeng/chart";
-import {TreeTableModule} from "primeng/primeng";
+import {TooltipModule, TreeTableModule} from "primeng/primeng";
 import {ReportGridComponent} from './report/grid/report-grid.component';
 import {LogsModalService} from "./report/grid/logs-modal/logs-modal.service";
 import {LogsModalComponent} from "./report/grid/logs-modal/logs-modal.component";
@@ -23,6 +23,7 @@ import { TitleComponent } from './report/title/title.component';
         ModalModule.forRoot(),
         ChartModule,
         TreeTableModule,
+        TooltipModule,
     ],
     declarations: [
         AppComponent,

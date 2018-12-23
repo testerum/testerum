@@ -7,6 +7,8 @@ import {ExecutionStatus} from "../../../../../../../common/testerum-model/model/
 import {ReportGridNodeType} from "./model/enums/report-grid-node-type.enum";
 import {LogsModalService} from "./logs-modal/logs-modal.service";
 import {ReportGridNodeData} from "./model/report-grid-node-data.model";
+import {ReportGridFilter} from "./model/report-grid-filter.model";
+import {ArrayUtil} from "../../util/array.util";
 
 @Component({
     selector: 'report-grid',
@@ -16,7 +18,9 @@ import {ReportGridNodeData} from "./model/report-grid-node-data.model";
 })
 export class ReportGridComponent implements OnInit {
 
-    suiteGridRootNodes: ReportGridNode[] = [];
+    suiteGridRootNodes: ReportGridNode[];
+    filter: ReportGridFilter = new ReportGridFilter();
+
     ExecutionStatus = ExecutionStatus;
     ReportGridNodeType = ReportGridNodeType;
 
@@ -25,9 +29,12 @@ export class ReportGridComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.refreshGrid();
+    }
+
+    private refreshGrid() {
         let reportSuite = this.reportService.reportModelExtractor.reportSuite;
-        this.suiteGridRootNodes.length = 0;
-        this.suiteGridRootNodes.push(ReportGridNodeMapper.map(reportSuite))
+        this.suiteGridRootNodes = ReportGridNodeMapper.map(reportSuite, this.filter);
     }
 
     durationString(durationMillis: number): string {
@@ -36,5 +43,70 @@ export class ReportGridComponent implements OnInit {
 
     onShowLogs(nodeData: ReportGridNodeData) {
         this.logsModalService.showLogsModal(nodeData.logs, nodeData.exceptionDetail);
+    }
+
+    onToggleFolders() {
+        this.filter.areTestFoldersShown = !this.filter.areTestFoldersShown;
+        this.refreshGrid();
+    }
+
+    onTogglePassed() {
+        this.filter.showPassed = !this.filter.showPassed;
+        this.refreshGrid();
+    }
+
+    onToggleFailed() {
+        this.filter.showFailed = !this.filter.showFailed;
+        this.refreshGrid();
+    }
+
+    onToggleDisabled() {
+        this.filter.showDisabled = !this.filter.showDisabled;
+        this.refreshGrid();
+    }
+
+    onToggleUndefined() {
+        this.filter.showUndefined = !this.filter.showUndefined;
+        this.refreshGrid();
+    }
+
+    onToggleSkipped() {
+        this.filter.showSkipped = !this.filter.showSkipped;
+        this.refreshGrid();
+    }
+
+    onExpandToTests() {
+        this.expandNodesThatMatchExpression(this.suiteGridRootNodes, (node: ReportGridNode) => {
+            return node.data.nodeType == ReportGridNodeType.SUITE ||
+                node.data.nodeType == ReportGridNodeType.FEATURE;
+        });
+
+        this.suiteGridRootNodes = ArrayUtil.copyArrayOfObjects(this.suiteGridRootNodes);
+    }
+
+    onExpandToSteps() {
+        this.expandNodesThatMatchExpression(this.suiteGridRootNodes, (node: ReportGridNode) => {
+            return node.data.nodeType == ReportGridNodeType.SUITE ||
+                node.data.nodeType == ReportGridNodeType.FEATURE ||
+                node.data.nodeType == ReportGridNodeType.TEST;
+        });
+
+        this.suiteGridRootNodes = ArrayUtil.copyArrayOfObjects(this.suiteGridRootNodes)
+
+    }
+
+    onExpandAllNodes() {
+        this.expandNodesThatMatchExpression(this.suiteGridRootNodes, (node: ReportGridNode) => {
+            return true;
+        });
+
+        this.suiteGridRootNodes = ArrayUtil.copyArrayOfObjects(this.suiteGridRootNodes)
+    }
+
+    private expandNodesThatMatchExpression(nodes: ReportGridNode[], expresion: any) {
+        for (const node of nodes) {
+            node.expanded = expresion(node);
+            this.expandNodesThatMatchExpression(node.children as ReportGridNode[], expresion);
+        }
     }
 }

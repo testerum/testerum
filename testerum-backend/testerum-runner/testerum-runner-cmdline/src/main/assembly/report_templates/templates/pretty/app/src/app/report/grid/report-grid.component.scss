@@ -22,6 +22,16 @@
         .my-logs-col {
             width: 5em;
         }
+
+        .line-filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .filters-label {
+                margin-right: 10px;
+            }
+        }
     }
 
     tbody {
@@ -102,10 +112,6 @@
                     width: 50%;
                     justify-content: center;
 
-                    .far, .fas {
-                        line-height: inherit;
-                        align-self: center;
-                    }
                     &:hover>.far, &:hover>.fas {
                         display: none;
                     }
