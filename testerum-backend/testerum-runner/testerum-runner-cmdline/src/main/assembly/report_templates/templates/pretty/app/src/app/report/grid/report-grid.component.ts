@@ -10,6 +10,7 @@ import {ReportGridNodeData} from "./model/report-grid-node-data.model";
 import {ReportGridFilter} from "./model/report-grid-filter.model";
 import {ArrayUtil} from "../../util/array.util";
 import {AutoComplete} from "primeng/autocomplete";
+import {ReportGridTagsUtil} from "./util/report-grid-tags.util";
 
 @Component({
     selector: 'report-grid',
@@ -42,6 +43,7 @@ export class ReportGridComponent implements OnInit {
     private refreshGrid() {
         let reportSuite = this.reportService.reportModelExtractor.reportSuite;
         this.suiteGridRootNodes = ReportGridNodeMapper.map(reportSuite, this.filter);
+        this.allKnownTags = ReportGridTagsUtil.getTags(this.suiteGridRootNodes);
     }
 
     durationString(durationMillis: number): string {
@@ -123,9 +125,11 @@ export class ReportGridComponent implements OnInit {
 
     onTagSelect(event) {
         this.currentTagSearch = null;
+        this.selectedTags.push(event);
     }
 
     onTagUnSelect(event) {
+        ArrayUtil.removeElementFromArray(this.selectedTags, event);
     }
 
     searchTags(event) {
@@ -139,7 +143,5 @@ export class ReportGridComponent implements OnInit {
             ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
         }
         this.tagsToShow = newTagsToShow;
-
     }
-
 }

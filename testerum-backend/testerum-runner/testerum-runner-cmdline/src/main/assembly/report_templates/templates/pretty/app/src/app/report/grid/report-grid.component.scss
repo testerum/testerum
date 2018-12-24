@@ -1,4 +1,38 @@
 .my-report-grid {
+
+    .grid-filters {
+        display: flex;
+
+        .filters-label {
+            margin-right: 10px;
+        }
+
+        .my-filter-input {
+
+            .ui-autocomplete-multiple-container {
+                padding: 0 3px;
+                font-size: 12px;
+                .ui-autocomplete-input-token{
+                    padding: 0 3px;
+                    border-radius: 3px;
+                    border-right: 0;
+                }
+                .ui-autocomplete-token {
+                    font-size: 9px;
+                    padding: .125em .5em;
+                }
+            }
+            .ui-autocomplete-dropdown {
+                line-height: 1.5;
+                height: 22px;
+                width: 22px;
+                .ui-button-text{
+                    padding: 0;
+                }
+            }
+        }
+    }
+
     .my-name-cell {
         display: flex;
         flex-direction: row;
@@ -7,30 +41,31 @@
     thead {
         tr {
             th {
+                padding: 0 5px !important;
                 text-align: center;
             }
         }
         .my-name-col {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .filters-group {
+                display: flex;
+                flex-direction: row;
+            }
         }
+
         .my-status-col {
             width: 10em;
         }
+
         .my-duration-col {
             width: 10em;
         }
 
         .my-logs-col {
             width: 5em;
-        }
-
-        .line-filters {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            .filters-label {
-                margin-right: 10px;
-            }
         }
     }
 

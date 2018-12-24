@@ -15,11 +15,13 @@ import {LogsModalComponent} from "./report/grid/logs-modal/logs-modal.component"
 import {ModalModule} from "ngx-bootstrap";
 import {LogsComponent} from "./report/grid/logs-modal/logs/logs.component";
 import { TitleComponent } from './report/title/title.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
     imports: [
         BrowserModule,
         AppRoutingModule,
+        BrowserAnimationsModule,
 
         ModalModule.forRoot(),
         ChartModule,

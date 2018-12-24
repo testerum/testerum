@@ -7,7 +7,8 @@ export class ReportGridNodeData {
     textAsHtml: string;
     status: ExecutionStatus;
     durationMillis: number;
-    logs: Array<ReportLog>;
+    logs: Array<ReportLog> = [];
     exceptionDetail: ExceptionDetail;
     nodeType: ReportGridNodeType;
+    tags: string[] = [];
 }

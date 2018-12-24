@@ -1,93 +1,91 @@
+
 <div class="my-report-grid">
+
+    <div class="grid-filters">
+        <span class="filters-label">Filters:</span>
+        <!-- TODO: This IF is should be removed and the button should work. Took this decision to not spend critical time now and implement later when we have more time -->
+        <div class="btn-group" role="group">
+            <div title="{{filter.areTestFoldersShown? 'Hide Folders': 'Show Folders'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.areTestFoldersShown"
+                 (click)="onToggleFolders()">
+                <i class="fa_my-tree-folder-opened-colored color-inherit" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <div title="{{filter.showPassed ? 'Hide Passed': 'Show Passed'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.showPassed"
+                 (click)="onTogglePassed()">
+                <i class="fa_my-runner-passed-colored" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <div title="{{filter.showFailed ? 'Hide Failed': 'Show Failed'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.showFailed"
+                 (click)="onToggleFailed()">
+                <i class="fa_my-runner-failed-colored" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <div title="{{filter.showDisabled ? 'Hide Disabled': 'Show Disabled'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.showDisabled"
+                 (click)="onToggleDisabled()">
+                <i class="fa_my-runner-disabled-colored" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <div title="{{filter.showUndefined ? 'Hide Undefined': 'Show Undefined'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.showUndefined"
+                 (click)="onToggleUndefined()">
+                <i class="fa_my-runner-undefined-colored" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <div title="{{filter.showSkipped ? 'Hide Skipped': 'Show Skipped'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.showSkipped"
+                 (click)="onToggleSkipped()">
+                <i class="fa_my-runner-skipped-colored" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div pTooltip="{{filter.isTagsButtonActive?'Hide ':'Show '}} Filter by Tags"
+             tooltipPosition="bottom"
+             (click)="onTagsButtonClickEvent()"
+             [class.active]="filter.isTagsButtonActive"
+             class="btn btn-default btn-xs btn-group">
+            <i class="fa_my-tag" aria-hidden="true"></i>
+        </div>
+
+        <div class="my-filter-input ui-inputgroup line-tags full-width"
+             *ngIf="filter.isTagsButtonActive">
+
+            <p-autoComplete #tagsElement
+                            [suggestions]="tagsToShow"
+                            (completeMethod)="searchTags($event)"
+                            (onSelect)="onTagSelect($event)"
+                            (onUnselect)="onTagUnSelect($event)"
+                            [delay]="0"
+                            [multiple]="true"
+                            [dropdown]="true"
+                            placeholder="Tags"
+                            tooltipPosition="top"
+                            pTooltip="Tags"
+                            name="tags"></p-autoComplete>
+        </div>
+    </div>
+
     <p-treeTable [value]="suiteGridRootNodes"
                  [resizableColumns]="true"
                  columnResizeMode="expand">
         <ng-template pTemplate="header">
             <tr>
                 <th ttResizableColumn>
-                    <div class="my-name-col line-filters">
-                        <div class="filters-group">
-                            <span class="filters-label">Filters:</span>
-                            <!-- TODO: This IF is should be removed and the button should work. Took this decision to not spend critical time now and implement later when we have more time -->
-                            <div class="btn-group" role="group">
-                                <div title="{{filter.areTestFoldersShown? 'Hide Folders': 'Show Folders'}}"
-                                     class="btn btn-default btn-xs btn-group"
-                                     [class.active]="filter.areTestFoldersShown"
-                                     (click)="onToggleFolders()">
-                                    <i class="fa_my-tree-folder-opened-colored color-inherit" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                            <div class="btn-group" role="group">
-                                <div title="{{filter.showPassed ? 'Hide Passed': 'Show Passed'}}"
-                                     class="btn btn-default btn-xs btn-group"
-                                     [class.active]="filter.showPassed"
-                                     (click)="onTogglePassed()">
-                                    <i class="fa_my-runner-passed-colored" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                            <div class="btn-group" role="group">
-                                <div title="{{filter.showFailed ? 'Hide Failed': 'Show Failed'}}"
-                                     class="btn btn-default btn-xs btn-group"
-                                     [class.active]="filter.showFailed"
-                                     (click)="onToggleFailed()">
-                                    <i class="fa_my-runner-failed-colored" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                            <div class="btn-group" role="group">
-                                <div title="{{filter.showDisabled ? 'Hide Disabled': 'Show Disabled'}}"
-                                     class="btn btn-default btn-xs btn-group"
-                                     [class.active]="filter.showDisabled"
-                                     (click)="onToggleDisabled()">
-                                    <i class="fa_my-runner-disabled-colored" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                            <div class="btn-group" role="group">
-                                <div title="{{filter.showUndefined ? 'Hide Undefined': 'Show Undefined'}}"
-                                     class="btn btn-default btn-xs btn-group"
-                                     [class.active]="filter.showUndefined"
-                                     (click)="onToggleUndefined()">
-                                    <i class="fa_my-runner-undefined-colored" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                            <div class="btn-group" role="group">
-                                <div title="{{filter.showSkipped ? 'Hide Skipped': 'Show Skipped'}}"
-                                     class="btn btn-default btn-xs btn-group"
-                                     [class.active]="filter.showSkipped"
-                                     (click)="onToggleSkipped()">
-                                    <i class="fa_my-runner-skipped-colored" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                            <div pTooltip="{{filter.isTagsButtonActive?'Hide ':'Show '}} Filter by Tags"
-                                 tooltipPosition="bottom"
-                                 (click)="onTagsButtonClickEvent()"
-                                 [class.active]="filter.isTagsButtonActive"
-                                 class="btn btn-default btn-xs btn-group">
-                                <i class="fa_my-tag" aria-hidden="true"></i>
-                            </div>
-
-                            <div class="my-filter-input ui-inputgroup line-tags full-width"
-                                 *ngIf="filter.isTagsButtonActive">
-                                <span class="ui-inputgroup-addon"
-                                      tooltipPosition="bottom"
-                                      pTooltip="Tags"
-                                      (click)="filter()">
-                                    <i class="fa_my-tag tags-search-icon"></i>
-                                </span>
-                                <p-autoComplete #tagsElement
-                                                [suggestions]="tagsToShow"
-                                                (completeMethod)="searchTags($event)"
-                                                (onSelect)="onTagSelect($event)"
-                                                (onUnselect)="onTagUnSelect($event)"
-                                                [delay]="0"
-                                                [multiple]="true"
-                                                [dropdown]="true"
-                                                placeholder="Tags"
-                                                tooltipPosition="bottom"
-                                                pTooltip="Tags"
-                                                name="tags"></p-autoComplete>
-                            </div>
-
-                        </div>
+                    <div class="my-name-col">
+                        <div></div>
 
                         Name
 

@@ -62,6 +62,7 @@ export class ReportGridNodeMapper {
         node.data.logs = feature.logs;
         node.data.exceptionDetail = feature.exceptionDetail;
         node.data.nodeType = ReportGridNodeType.FEATURE;
+        // node.data.tags = TODO: map Feature tags
 
         for (const testOrFeature of feature.children) {
             if (testOrFeature instanceof ReportFeature) {
@@ -110,6 +111,7 @@ export class ReportGridNodeMapper {
         node.data.logs = test.logs;
         node.data.exceptionDetail = test.exceptionDetail;
         node.data.nodeType = ReportGridNodeType.TEST;
+        // node.data.tags = TODO: map Feature tags
 
         for (const step of test.children) {
             node.children.push(
@@ -131,6 +133,8 @@ export class ReportGridNodeMapper {
         node.data.durationMillis = step.durationMillis;
         node.data.logs = step.logs;
         node.data.exceptionDetail = step.exceptionDetail;
+        node.data.tags = step.stepCall.stepDef.tags;
+
         if (step.stepCall.stepDef instanceof ComposedStepDef) {
             node.data.nodeType = ReportGridNodeType.COMPOSED_STEP;
         }
