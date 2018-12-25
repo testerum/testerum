@@ -6,7 +6,7 @@ export class Application {
 
     private readonly destinationDirectory: string;
 
-    constructor(private readonly dataFilePath: string,
+    constructor(private readonly modelDirectory: string,
                 properties: {[key: string]: string}) {
         this.destinationDirectory = properties["destinationDirectory"];
 
@@ -25,7 +25,9 @@ export class Application {
         const originalContent = FsUtils.readFile(indexFilePath);
         // replace dev model with actual model
 
-        const dataFileContent = FsUtils.readFile(this.dataFilePath);
+        const dataFileContent = FsUtils.readFile(
+            path.resolve(this.modelDirectory, "model.json")
+        );
         const replacedContent = originalContent.replace(
             /<!--### START: testerumRunnerReportModel ### -->[\s\S]*<!--### END: testerumRunnerReportModel ### -->/,
             `<script type='text/javascript'>\n    window.testerumRunnerReportModel = ${dataFileContent};\n  </script>`
