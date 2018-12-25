@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ReportService} from "../../service/report.service";
 import {DateUtil} from "../../util/date.util";
 
@@ -9,6 +9,7 @@ import {DateUtil} from "../../util/date.util";
 })
 export class TitleComponent implements OnInit {
 
+    @Input() titlePrefix: string;
     suiteName: string;
     executionDate: string;
     duration: string;
@@ -19,7 +20,7 @@ export class TitleComponent implements OnInit {
     ngOnInit() {
         let reportSuite = this.reportService.reportModelExtractor.reportSuite;
 
-        this.suiteName = reportSuite.name;
+        this.suiteName = this.titlePrefix + (reportSuite.name ? " - " + reportSuite.name: "");
         this.executionDate = DateUtil.dateTimeToShortString(reportSuite.startTime);
         this.duration = DateUtil.durationToShortString(reportSuite.durationMillis);
     }

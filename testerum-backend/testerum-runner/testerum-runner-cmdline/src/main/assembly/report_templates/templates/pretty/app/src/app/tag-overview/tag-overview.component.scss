@@ -1,7 +1,8 @@
 @import "../../assets/css/testerum-pretty-variables";
 
 .tag-overview {
-
+    margin: 20px;
+    
     .header {
         margin: auto;
 
@@ -32,9 +33,9 @@
             color: white;
             cursor: pointer;
 
-            -webkit-box-shadow: -20px 25px 40px -4px rgba(0,0,0,0.75);
-            -moz-box-shadow: -20px 25px 40px -4px rgba(0,0,0,0.75);
-            box-shadow: -20px 25px 40px -4px rgba(0,0,0,0.75);
+            -webkit-box-shadow: -20px 25px 40px -4px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: -20px 25px 40px -4px rgba(0, 0, 0, 0.75);
+            box-shadow: -20px 25px 40px -4px rgba(0, 0, 0, 0.75);
         }
 
         .disabled {

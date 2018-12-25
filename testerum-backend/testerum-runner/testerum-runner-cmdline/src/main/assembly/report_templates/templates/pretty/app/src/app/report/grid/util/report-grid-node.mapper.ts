@@ -112,7 +112,7 @@ export class ReportGridNodeMapper {
 
         let node = new ReportGridNode();
         node.leaf = !(test.children && test.children.length > 0);
-        node.expanded = !node.leaf && this.hasAnFailureStatus(test.status);
+        node.expanded = false; //!node.leaf && this.hasAnFailureStatus(test.status);
 
         node.data = new ReportGridNodeData();
         node.data.textAsHtml = test.testName;

@@ -167,31 +167,31 @@
         }
 
         .row-color-passed {
-            background-color: $passed-color !important;
+            background-color: #5cb85c24 !important;
             &:hover {
                 background-color: $passed-color !important;
             }
         }
         .row-color-failed {
-            background-color: $failed-color !important;
+            background-color: #FF638424 !important;
             &:hover {
                 background-color: $failed-color !important;
             }
         }
         .row-color-disabled {
-            background-color: $disabled-color !important;
+            background-color: #c0bebc24 !important;
             &:hover {
                 background-color: $disabled-color !important;
             }
         }
         .row-color-undefined {
-            background-color: $undefined-color !important;
+            background-color: #FFCE5624 !important;
             &:hover {
                 background-color: $undefined-color !important;
             }
         }
         .row-color-skipped {
-            background-color: $skipped-color !important;
+            background-color: #aae8ff24 !important;
             &:hover {
                 background-color: $skipped-color !important;
             }

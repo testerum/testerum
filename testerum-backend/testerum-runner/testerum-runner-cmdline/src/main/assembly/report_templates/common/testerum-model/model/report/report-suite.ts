@@ -14,7 +14,7 @@ export class ReportSuite implements RunnerReportNode {
                 public readonly status: ExecutionStatus,
                 public readonly logs: Array<ReportLog>,
                 public readonly children: Array<FeatureOrTestRunnerReportNode>,
-                public readonly name: string = 'Test Suite') { }
+                public readonly name: string) { }
 
     static parse(input: Object): ReportSuite {
         if (!input) {
@@ -31,7 +31,6 @@ export class ReportSuite implements RunnerReportNode {
             [RunnerReportNodeType[RunnerReportNodeType.TEST]]: ReportTest
         });
         const name = input["name"];
-        return new ReportSuite(startTime, endTime, durationMillis, status, logs, children, name ? name: 'Test Suite');
+        return new ReportSuite(startTime, endTime, durationMillis, status, logs, children, name);
     }
-
 }
