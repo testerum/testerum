@@ -7,4 +7,6 @@ export class ReportGridFilter {
     showUndefined: boolean = true;
     showSkipped: boolean = true;
     isTagsButtonActive: boolean = false;
+    selectedTags: Array<string> = [];
+
 }

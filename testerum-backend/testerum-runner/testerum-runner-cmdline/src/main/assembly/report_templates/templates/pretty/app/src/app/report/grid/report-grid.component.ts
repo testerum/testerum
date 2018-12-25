@@ -25,7 +25,6 @@ export class ReportGridComponent implements OnInit {
 
     @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
-    selectedTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;
 
@@ -125,11 +124,13 @@ export class ReportGridComponent implements OnInit {
 
     onTagSelect(event) {
         this.currentTagSearch = null;
-        this.selectedTags.push(event);
+        this.filter.selectedTags.push(event);
+        this.refreshGrid();
     }
 
     onTagUnSelect(event) {
-        ArrayUtil.removeElementFromArray(this.selectedTags, event);
+        ArrayUtil.removeElementFromArray(this.filter.selectedTags, event);
+        this.refreshGrid();
     }
 
     searchTags(event) {
@@ -139,7 +140,7 @@ export class ReportGridComponent implements OnInit {
             this.allKnownTags,
             event.query
         );
-        for (let currentTag of this.selectedTags) {
+        for (let currentTag of this.filter.selectedTags) {
             ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
         }
         this.tagsToShow = newTagsToShow;

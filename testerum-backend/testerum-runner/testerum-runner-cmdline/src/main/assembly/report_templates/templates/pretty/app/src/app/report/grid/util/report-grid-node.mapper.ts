@@ -12,6 +12,8 @@ import {ComposedStepDef} from "../../../../../../../../common/testerum-model/mod
 import {BasicStepDef} from "../../../../../../../../common/testerum-model/model/step/def/basic-step-def";
 import {UndefinedStepDef} from "../../../../../../../../common/testerum-model/model/step/def/undefined-step-def";
 import {ReportGridFilter} from "../model/report-grid-filter.model";
+import {ReportGridTagsUtil} from "./report-grid-tags.util";
+import {ArrayUtil} from "../../../util/array.util";
 
 export class ReportGridNodeMapper {
 
@@ -86,7 +88,15 @@ export class ReportGridNodeMapper {
             return node.children as ReportGridNode[];
         }
 
+
         let result: ReportGridNode[] = [];
+
+        if(filter.selectedTags.length != 0) {
+            if(!this.nodeOrSubNodesMatchesAnyOfTheTags(node, filter.selectedTags)) {
+                return result
+            }
+        }
+
         result.push(node);
         return result;
     }
@@ -117,6 +127,12 @@ export class ReportGridNodeMapper {
             node.children.push(
                 this.mapSteps(step, filter)
             );
+        }
+
+        if(filter.selectedTags.length != 0) {
+            if(!this.nodeOrSubNodesMatchesAnyOfTheTags(node, filter.selectedTags)) {
+                return null;
+            }
         }
 
         return node;
@@ -158,6 +174,16 @@ export class ReportGridNodeMapper {
         switch (status) {
             case ExecutionStatus.FAILED: return true;
             case ExecutionStatus.UNDEFINED: return true;
+        }
+        return false;
+    }
+
+    private static nodeOrSubNodesMatchesAnyOfTheTags(node: ReportGridNode, selectedTags: Array<string>): boolean {
+        let nodeTags = ReportGridTagsUtil.getTags([node]);
+        for (const selectedTag of selectedTags) {
+            if(ArrayUtil.containsElement(nodeTags, selectedTag)) {
+                return true;
+            }
         }
         return false;
     }
