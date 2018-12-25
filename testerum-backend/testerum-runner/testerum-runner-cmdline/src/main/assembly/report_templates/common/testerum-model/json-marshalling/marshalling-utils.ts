@@ -73,4 +73,24 @@ export class MarshallingUtils {
         return result;
     }
 
+    static parseMapPolymorficaly<T>(input: Object,
+                                    typeMap: { [key:string]: {parse(input: Object): T} }): Map<string, T> {
+        if (!input) {
+            return new Map();
+        }
+
+        const result: Map<string, T> = new Map();
+
+        for (const key in input) {
+            if (!input.hasOwnProperty(key)) {
+                continue;
+            }
+
+            let value = input[key];
+
+            result[key] = this.parsePolymorphically(value, typeMap)
+        }
+        return result;
+    }
+
 }

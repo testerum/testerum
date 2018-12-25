@@ -4,9 +4,9 @@ import {ReportTest} from "../../../common/testerum-model/model/report/report-tes
 import {RunnerReportNode} from "../../../common/testerum-model/model/report/runner-report-node";
 import {ReportFeature} from "../../../common/testerum-model/model/report/report-feature";
 import * as path from "path";
-import {ComposedStepDef} from "../../../common/testerum-model/model/step/def/composed-step-def";
-import {BasicStepDef} from "../../../common/testerum-model/model/step/def/basic-step-def";
-import {UndefinedStepDef} from "../../../common/testerum-model/model/step/def/undefined-step-def";
+import {ReportComposedStepDef} from "../../../common/testerum-model/model/step/def/report-composed-step-def";
+import {ReportBasicStepDef} from "../../../common/testerum-model/model/step/def/report-basic-step-def";
+import {ReportUndefinedStepDef} from "../../../common/testerum-model/model/step/def/report-undefined-step-def";
 import {Templates} from "./templates/Templates";
 import {ExecutionStatus} from "../../../common/testerum-model/model/report/execution-status";
 
@@ -14,7 +14,7 @@ class Application {
 
     private readonly destinationDirectory: string;
 
-    constructor(private readonly dataFilePath: string,
+    constructor(private readonly modelDirectory: string,
                 properties: {[key: string]: string}) {
         this.destinationDirectory = properties["destinationDirectory"];
 
@@ -40,17 +40,20 @@ class Application {
                 path.resolve(properties.destinationDirectory, `${test.testFilePath.fileName}.html`),
                 Templates.TEST({
                     test: test,
-                    BasicStepDef: BasicStepDef,
-                    ComposedStepDef: ComposedStepDef,
-                    UndefinedStepDef: UndefinedStepDef,
-                    ExecutionStatus: ExecutionStatus
+                    ReportBasicStepDef: ReportBasicStepDef,
+                    ReportComposedStepDef: ReportComposedStepDef,
+                    ReportUndefinedStepDef: ReportUndefinedStepDef,
+                    ExecutionStatus: ExecutionStatus,
+                    stepDefsById: reportSuite.stepDefsById
                 })
             );
         }
     }
 
     private loadModel(): ReportSuite {
-        const dataFileContent = FsUtils.readFile(this.dataFilePath);
+        const dataFileContent = FsUtils.readFile(
+            path.resolve(this.modelDirectory, "model.json")
+        );
         const dataFileJson = JSON.parse(dataFileContent);
 
         return ReportSuite.parse(dataFileJson);
@@ -76,7 +79,7 @@ class Application {
 
 }
 
-const dataFilePath = process.argv[2];
+const modelDirectory = process.argv[2];
 const properties=JSON.parse(process.argv[3]);
 
-new Application(dataFilePath, properties).run();
+new Application(modelDirectory, properties).run();

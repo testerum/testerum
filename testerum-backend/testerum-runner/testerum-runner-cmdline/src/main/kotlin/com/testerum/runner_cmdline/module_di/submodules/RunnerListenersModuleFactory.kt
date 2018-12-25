@@ -35,7 +35,7 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
             )
     ).apply {
         context.registerShutdownHook {
-            for (executionListener in executionListeners) {
+            for (executionListener in getExecutionListenersSafely()) {
                 try {
                     executionListener.stop()
                 } catch (e: Exception) {

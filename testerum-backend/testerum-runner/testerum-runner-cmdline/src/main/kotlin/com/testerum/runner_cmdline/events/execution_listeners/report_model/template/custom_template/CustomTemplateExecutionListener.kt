@@ -2,13 +2,12 @@ package com.testerum.runner_cmdline.events.execution_listeners.report_model.temp
 
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
-import com.testerum.common_kotlin.deleteOnExit
+import com.testerum.common_kotlin.deleteRecursivelyIfExists
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.runner.cmdline.EventListenerProperties
 import com.testerum.runner.exit_code.ExitCode
-import com.testerum.runner.report_model.ReportSuite
 import com.testerum.runner_cmdline.dirs.RunnerDirs
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.BaseReportModelExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.BaseReportModelExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.println
 import org.zeroturnaround.exec.ProcessExecutor
@@ -19,6 +18,18 @@ import java.nio.file.Paths
 import java.nio.file.Path as JavaPath
 
 class CustomTemplateExecutionListener(private val properties: Map<String, String>) : BaseReportModelExecutionListener() {
+
+    private val _destinationDirectory: JavaPath = run {
+        return@run Files.createTempDirectory("testerum.runner-report-data")
+    }
+
+    override val destinationDirectory: JavaPath
+        get() = _destinationDirectory
+
+    override val formatted: Boolean
+        get() = false
+
+
 
     private val scriptFile: JavaPath = run {
         val scriptFileProperty = properties[EventListenerProperties.CustomTemplate.SCRIPT_FILE]
@@ -33,12 +44,8 @@ class CustomTemplateExecutionListener(private val properties: Map<String, String
         return@run normalizedScriptFilePath
     }
 
-    override fun handleReportModel(reportSuite: ReportSuite) {
-        // write data file
-        val reportDataFile = Files.createTempFile("testerum.runner-report-data-", ".json").toAbsolutePath().normalize()
-        reportDataFile.deleteOnExit()
-        OBJECT_MAPPER.writeValue(reportDataFile.toFile(), reportSuite)
 
+    override fun afterModelSavedToFile() {
         var commandLine: List<String> = emptyList()
         try {
             // serialize properties to JSON
@@ -46,7 +53,7 @@ class CustomTemplateExecutionListener(private val properties: Map<String, String
 
             // execute node
             val scriptFileName = scriptFile.fileName?.toString()
-            commandLine = createCommandLine(reportDataFile, jsonProperties)
+            commandLine = createCommandLine(jsonProperties)
             val processExecutor = ProcessExecutor()
                     .command(commandLine)
                     .redirectOutput(
@@ -77,21 +84,20 @@ class CustomTemplateExecutionListener(private val properties: Map<String, String
             )
         } finally {
             try {
-                Files.delete(reportDataFile)
+                destinationDirectory.deleteRecursivelyIfExists()
             } catch (e: Exception) {
-                println("failed to delete reportDataFile [$reportDataFile]")
+                println("failed to delete temporary data file directory [$destinationDirectory]")
             }
         }
     }
 
-    private fun createCommandLine(reportDataFile: JavaPath,
-                                  jsonProperties: String): List<String> {
+    private fun createCommandLine(jsonProperties: String): List<String> {
         val commandLine = mutableListOf<String>()
 
         commandLine += getNodeBinaryPath().toString()
 
         commandLine += scriptFile.toString()
-        commandLine += reportDataFile.toString()
+        commandLine += destinationDirectory.toString()
         commandLine += jsonProperties
 
         return commandLine

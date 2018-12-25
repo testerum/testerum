@@ -1,7 +1,7 @@
-import {StepCall} from "../../../../../../common/testerum-model/model/step/call/step-call";
+import {StepCall} from "../../../../../../common/testerum-model/model/step/call/report-step-call";
 import {ParamStepPatternPart} from "../../../../../../common/testerum-model/model/step/def/pattern/part/param-step-pattern-part";
 import {TextStepPatternPart} from "../../../../../../common/testerum-model/model/step/def/pattern/part/text-step-pattern-part";
-import {Arg} from "../../../../../../common/testerum-model/model/step/call/arg";
+import {Arg} from "../../../../../../common/testerum-model/model/step/call/report-step-call-arg";
 import {StepPhaseEnum} from "../../../../../../common/testerum-model/model/step/def/step-phase-enum";
 import {HtmlUtil} from "./html.util";
 

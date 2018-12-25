@@ -8,9 +8,9 @@ import {ReportStep} from "../../../../../../../../common/testerum-model/model/re
 import {ExecutionStatus} from "../../../../../../../../common/testerum-model/model/report/execution-status";
 import {StepCallUtil} from "../../../util/step-call.util";
 import {ReportGridNodeType} from "../model/enums/report-grid-node-type.enum";
-import {ComposedStepDef} from "../../../../../../../../common/testerum-model/model/step/def/composed-step-def";
-import {BasicStepDef} from "../../../../../../../../common/testerum-model/model/step/def/basic-step-def";
-import {UndefinedStepDef} from "../../../../../../../../common/testerum-model/model/step/def/undefined-step-def";
+import {ComposedStepDef} from "../../../../../../../../common/testerum-model/model/step/def/report-composed-step-def";
+import {BasicStepDef} from "../../../../../../../../common/testerum-model/model/step/def/report-basic-step-def";
+import {UndefinedStepDef} from "../../../../../../../../common/testerum-model/model/step/def/report-undefined-step-def";
 import {ReportGridFilter} from "../model/report-grid-filter.model";
 import {ReportGridTagsUtil} from "./report-grid-tags.util";
 import {ArrayUtil} from "../../../util/array.util";

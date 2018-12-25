@@ -205,7 +205,8 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                 TestStartEvent(
                         eventKey = eventKey,
                         testName = test.name,
-                        testFilePath = test.path
+                        testFilePath = test.path,
+                        tags = test.tags
                 )
         )
     }

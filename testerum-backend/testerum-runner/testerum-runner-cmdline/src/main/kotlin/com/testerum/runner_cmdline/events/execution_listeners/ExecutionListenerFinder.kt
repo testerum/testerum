@@ -32,6 +32,12 @@ class ExecutionListenerFinder(private val executionListenerFactories: Map<Output
             }
         }
 
+    fun getExecutionListenersSafely(): List<ExecutionListener> {
+        lock.withLock {
+            return _executionListeners ?: emptyList()
+        }
+    }
+
     private fun createExecutionListener(outputFormatWithProperties: String): ExecutionListener {
         val (outputFormat, properties) = OutputFormatParser.parse(outputFormatWithProperties)
 

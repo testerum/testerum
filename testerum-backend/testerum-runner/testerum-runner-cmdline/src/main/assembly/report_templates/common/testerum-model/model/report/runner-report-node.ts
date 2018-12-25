@@ -1,7 +1,6 @@
-import {ReportLog} from "./report-log";
-
 export interface RunnerReportNode {
-    readonly logs: Array<ReportLog>;
+    readonly textLogFilePath: string;
+    readonly modelLogFilePath: string;
 }
 
 export enum RunnerReportNodeType {

@@ -1,6 +1,5 @@
 import {FeatureOrTestRunnerReportNode} from "./feature-or-test-runner-report-node";
 import {ExecutionStatus} from "./execution-status";
-import {ReportLog} from "./report-log";
 import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
 import {ExceptionDetail} from "../exception/exception-detail";
 import {RunnerReportNodeType} from "./runner-report-node";
@@ -14,7 +13,8 @@ export class ReportFeature implements FeatureOrTestRunnerReportNode {
                 public readonly durationMillis: number,
                 public readonly status: ExecutionStatus,
                 public readonly exceptionDetail: ExceptionDetail | null,
-                public readonly logs: Array<ReportLog>,
+                public readonly textLogFilePath: string,
+                public readonly modelLogFilePath: string,
                 public readonly children: Array<FeatureOrTestRunnerReportNode>) {
     }
 
@@ -29,13 +29,14 @@ export class ReportFeature implements FeatureOrTestRunnerReportNode {
         const durationMillis = input["durationMillis"];
         const status = MarshallingUtils.parseEnum(input["status"], ExecutionStatus);
         const exceptionDetail = ExceptionDetail.parse(input["exceptionDetail"]);
-        const logs = MarshallingUtils.parseList(input["logs"], ReportLog);
+        const textLogFilePath = input["textLogFilePath"];
+        const modelLogFilePath = input["textLogFilePath"];
         const children = MarshallingUtils.parseListPolymorphically<FeatureOrTestRunnerReportNode>(input["children"], {
             [RunnerReportNodeType[RunnerReportNodeType.FEATURE]]: ReportFeature,
             [RunnerReportNodeType[RunnerReportNodeType.TEST]]: ReportTest
         });
 
-        return new ReportFeature(featureName, startTime, endTime, durationMillis, status, exceptionDetail, logs, children);
+        return new ReportFeature(featureName, startTime, endTime, durationMillis, status, exceptionDetail, textLogFilePath, modelLogFilePath, children);
     }
 
 }

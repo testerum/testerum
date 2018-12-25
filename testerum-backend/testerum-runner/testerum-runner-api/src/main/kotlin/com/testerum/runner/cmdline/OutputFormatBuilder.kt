@@ -8,7 +8,7 @@ object EventListenerProperties {
     }
 
     object JsonModel {
-        const val DESTINATION_FILE_NAME = "destinationFileName"
+        const val DESTINATION_DIRECTORY = "destinationDirectory"
         const val FORMATTED = "formatted"
     }
 
