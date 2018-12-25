@@ -2,8 +2,8 @@ import {Component, ViewChild} from "@angular/core";
 import {VariablesComponent} from "../functionalities/variables/variables.component";
 import {NavigationEnd, Router} from "@angular/router";
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {FeedbackComponent} from "../functionalities/user-profile/feedback/feedback.component";
 import {FeedbackModalService} from "../functionalities/user-profile/feedback/feedback-modal.service";
+import {AboutModalService} from "../functionalities/user-profile/about/about-modal.service";
 
 @Component({
     moduleId: module.id,
@@ -32,6 +32,7 @@ export class MenuComponent {
     shouldDisplay = false;
 
     constructor(private router: Router,
+                private aboutModalService: AboutModalService,
                 private feedbackModalService: FeedbackModalService) {
         router.events.subscribe(event => {
 
@@ -72,8 +73,8 @@ export class MenuComponent {
         this.feedbackModalService.showFeedbackModal();
     }
 
-    showDropdownMenu() {
-
+    showAbout() {
+        this.aboutModalService.showAboutModal();
     }
 }
 

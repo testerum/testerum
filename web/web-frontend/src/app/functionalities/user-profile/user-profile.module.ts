@@ -6,6 +6,8 @@ import {FeedbackComponent} from "./feedback/feedback.component";
 import {UserProfileRoutingModule} from "./user-profile-routing.module";
 import {ModalModule} from "ngx-bootstrap";
 import {FeedbackModalService} from "./feedback/feedback-modal.service";
+import {AboutComponent} from "./about/about.component";
+import {AboutModalService} from "./about/about-modal.service";
 
 @NgModule({
     imports: [
@@ -21,12 +23,15 @@ import {FeedbackModalService} from "./feedback/feedback-modal.service";
     ],
     declarations: [
         FeedbackComponent,
+        AboutComponent,
     ],
     entryComponents: [
         FeedbackComponent,
+        AboutComponent,
     ],
     providers: [
         FeedbackModalService,
+        AboutModalService,
     ],
 })
 export class UserProfileModule { }
