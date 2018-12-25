@@ -68,7 +68,7 @@ export class ReportGridComponent implements OnInit, OnDestroy {
     }
 
     onShowLogs(nodeData: ReportGridNodeData) {
-        this.logsModalService.showLogsModal(nodeData.logs, nodeData.exceptionDetail);
+        this.logsModalService.showLogsModal(null, nodeData.exceptionDetail);
     }
 
     onToggleFolders() {

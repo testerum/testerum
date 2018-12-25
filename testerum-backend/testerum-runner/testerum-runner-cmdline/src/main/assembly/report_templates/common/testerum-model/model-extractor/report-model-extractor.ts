@@ -3,6 +3,7 @@ import {ReportTest} from "../model/report/report-test";
 import {RunnerReportNode} from "../model/report/runner-report-node";
 import {ReportFeature} from "../model/report/report-feature";
 import {ReportStep} from "../model/report/report-step";
+import {ReportComposedStepDef} from "../model/step/def/report-composed-step-def";
 
 export class ReportModelExtractor {
 
@@ -74,16 +75,18 @@ export class ReportModelExtractor {
     }
 
     private addStepByTagToReportStepMap(reportStep: ReportStep, result: Map<string, Array<ReportStep>>) {
-        let tags = reportStep.stepCall.stepDef.tags;
-        for (const tag of tags) {
+        let stepDef = this.reportSuite.stepDefsById.get(reportStep.stepCall.stepDefId);
+        if (stepDef instanceof ReportComposedStepDef) {
+            for (const tag of stepDef.tags) {
 
-            let values: Array<ReportStep> = result.get(tag);
-            if (!values) {
-                values = [];
-                result.set(tag, values);
+                let values: Array<ReportStep> = result.get(tag);
+                if (!values) {
+                    values = [];
+                    result.set(tag, values);
+                }
+
+                values.push(reportStep);
             }
-
-            values.push(reportStep);
         }
     }
 }

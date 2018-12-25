@@ -1,27 +1,28 @@
-import {StepCall} from "../../../../../../common/testerum-model/model/step/call/report-step-call";
 import {ParamStepPatternPart} from "../../../../../../common/testerum-model/model/step/def/pattern/part/param-step-pattern-part";
 import {TextStepPatternPart} from "../../../../../../common/testerum-model/model/step/def/pattern/part/text-step-pattern-part";
-import {Arg} from "../../../../../../common/testerum-model/model/step/call/report-step-call-arg";
 import {StepPhaseEnum} from "../../../../../../common/testerum-model/model/step/def/step-phase-enum";
 import {HtmlUtil} from "./html.util";
+import {ReportStepCall} from "../../../../../../common/testerum-model/model/step/call/report-step-call";
+import {ReportStepCallArg} from "../../../../../../common/testerum-model/model/step/call/report-step-call-arg";
+import {ReportStepDef} from "../../../../../../common/testerum-model/model/step/def/report-step-def";
 
 export class StepCallUtil {
-    static getStepCallAsHtmlText(stepCall: StepCall): string {
+    static getStepCallAsHtmlText(stepCall: ReportStepCall, reportStepDef: ReportStepDef): string {
         let result = '<div class="step-call">';
-        result += StepCallUtil.getStepCallPhase(stepCall) + ' ';
-        result += StepCallUtil.getStepCallPattern(stepCall);
+        result += StepCallUtil.getStepCallPhase(stepCall, reportStepDef) + ' ';
+        result += StepCallUtil.getStepCallPattern(stepCall, reportStepDef);
         result +='</div>';
         return result;
     }
 
-    private static getStepCallPhase(stepCall: StepCall): string {
-        return '<span class="step-phase">'+StepPhaseEnum[stepCall.stepDef.phase]+'</span>';
+    private static getStepCallPhase(stepCall: ReportStepCall, reportStepDef: ReportStepDef): string {
+        return '<span class="step-phase">'+StepPhaseEnum[reportStepDef.phase]+'</span>';
     }
 
-    private static getStepCallPattern(stepCall: StepCall) {
+    private static getStepCallPattern(stepCall: ReportStepCall, reportStepDef: ReportStepDef) {
         let result = '';
         let paramIndex = 0;
-        for (const patternPart of stepCall.stepDef.stepPattern.patternParts) {
+        for (const patternPart of reportStepDef.stepPattern.patternParts) {
             if (patternPart instanceof TextStepPatternPart) {
                 result += '<span class="step-text-part">'+HtmlUtil.escapeHtml(patternPart.text)+'</span>';
             }
@@ -38,12 +39,12 @@ export class StepCallUtil {
         return result;
     }
 
-    private static getParamNameFromArg(stepCall: StepCall, paramIndex: number) {
+    private static getParamNameFromArg(stepCall: ReportStepCall, paramIndex: number) {
         if (stepCall.args.length <= paramIndex) {
             return null;
         }
 
-        let arg: Arg = stepCall.args[paramIndex];
+        let arg: ReportStepCallArg = stepCall.args[paramIndex];
 
         if (arg.name) {
             return arg.name;

@@ -1,5 +1,4 @@
 import {FeatureOrTestRunnerReportNode} from "./feature-or-test-runner-report-node";
-import {Path} from "../path";
 import {ExecutionStatus} from "./execution-status";
 import {ExceptionDetail} from "../exception/exception-detail";
 import {ReportStep} from "./report-step";
@@ -8,7 +7,7 @@ import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
 export class ReportTest implements FeatureOrTestRunnerReportNode {
 
     constructor(public readonly testName: string,
-                public readonly testFilePath: Path,
+                public readonly testFilePath: string,
                 public readonly tags: Array<string>,
                 public readonly startTime: Date,
                 public readonly endTime: Date,
@@ -25,7 +24,7 @@ export class ReportTest implements FeatureOrTestRunnerReportNode {
         }
 
         const testName = input["testName"];
-        const testFilePath = Path.createInstance(input["testFilePath"]);
+        const testFilePath = input["testFilePath"];
         const tags = MarshallingUtils.parseListOfStrings(input["tags"]);
         const startTime = MarshallingUtils.parseLocalDateTime(input["startTime"]);
         const endTime = MarshallingUtils.parseLocalDateTime(input["endTime"]);
