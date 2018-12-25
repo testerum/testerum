@@ -5,11 +5,7 @@ $fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts/';
 @import '../../../node_modules/@fortawesome/fontawesome-free/scss/brands';
 
 @import "nerd-fonts-generated-2.0.0.min";
-
-$error-color: #d9534f;
-$success-color: #5cb85c;
-$info-color: #31b0d5;
-$warning-color: #f0ad4e;
+@import "testerum-pretty-variables";
 
 //------ ICONS ------
 //-------------------

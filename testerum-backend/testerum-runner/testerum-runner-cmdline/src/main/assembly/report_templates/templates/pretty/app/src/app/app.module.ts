@@ -19,6 +19,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { TagOverviewComponent } from './tag-overview/tag-overview.component';
 import {ReportUrlService} from "./service/report-url.service";
 import {FormsModule} from "@angular/forms";
+import {ReportTagPieComponent} from "./tag-overview/pie/report-tag-pie.component";
 
 @NgModule({
     imports: [
@@ -43,6 +44,7 @@ import {FormsModule} from "@angular/forms";
         TitleComponent,
 
         TagOverviewComponent,
+        ReportTagPieComponent,
     ],
     entryComponents: [
         LogsModalComponent,

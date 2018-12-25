@@ -1,7 +1,18 @@
+@import "../../assets/css/testerum-pretty-variables";
+
 .tag-overview {
-    h1 {
-        text-align: center;
-        font-size: 3em;
+
+    .header {
+        margin: auto;
+
+        .pie {
+            float: left;
+        }
+
+        .title {
+            width: 50%;
+            margin: auto;
+        }
     }
 
     .tag-status-container {
@@ -27,19 +38,19 @@
         }
 
         .disabled {
-            background-color: #cacaca;
+            background-color: $disabled-color;
         }
         .skipped {
-            background-color: #cacaca;
+            background-color: $skipped-color;
         }
         .undefined {
-            background-color: #fd9705;
+            background-color: $undefined-color;
         }
         .passed {
-            background-color: #05fd5a;
+            background-color: $passed-color;
         }
         .failed {
-            background-color: #fd0505;
+            background-color: $failed-color;
         }
     }
 

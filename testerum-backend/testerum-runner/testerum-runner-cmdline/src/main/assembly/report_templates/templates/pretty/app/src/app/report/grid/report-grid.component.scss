@@ -1,3 +1,5 @@
+@import "../../../assets/css/testerum-pretty-variables";
+
 .my-report-grid {
 
     .grid-filters {
@@ -114,19 +116,19 @@
                 text-align: center;
 
                 &.my-status-disabled {
-                    background-color: #c0bebc;
+                    background-color: $disabled-color;
                 }
                 &.my-status-skipped {
-                    background-color: #aae8ff;
+                    background-color: $skipped-color;
                 }
                 &.my-status-undefined {
-                    background-color: #FFCE56;
+                    background-color: $undefined-color;
                 }
                 &.my-status-passed {
-                    background-color: #5cb85c;
+                    background-color: $passed-color;
                 }
                 &.my-status-failed {
-                    background-color: #FF6384;
+                    background-color: $failed-color;
                 }
 
             }
@@ -165,33 +167,33 @@
         }
 
         .row-color-passed {
-            background-color: #5cb85c24 !important;
+            background-color: $passed-color !important;
             &:hover {
-                background-color: #5cb85c !important;
+                background-color: $passed-color !important;
             }
         }
         .row-color-failed {
-            background-color: #FF638424 !important;
+            background-color: $failed-color !important;
             &:hover {
-                background-color: #FF6384 !important;
+                background-color: $failed-color !important;
             }
         }
         .row-color-disabled {
-            background-color: #c0bebc24 !important;
+            background-color: $disabled-color !important;
             &:hover {
-                background-color: #c0bebc !important;
+                background-color: $disabled-color !important;
             }
         }
         .row-color-undefined {
-            background-color: #FFCE5624 !important;
+            background-color: $undefined-color !important;
             &:hover {
-                background-color: #FFCE56 !important;
+                background-color: $undefined-color !important;
             }
         }
         .row-color-skipped {
-            background-color: #aae8ff24 !important;
+            background-color: $skipped-color !important;
             &:hover {
-                background-color: #aae8ff !important;
+                background-color: $skipped-color !important;
             }
         }
     }

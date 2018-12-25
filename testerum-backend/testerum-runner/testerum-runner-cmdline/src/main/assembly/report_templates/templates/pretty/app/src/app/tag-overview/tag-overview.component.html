@@ -1,5 +1,14 @@
 <div class="tag-overview">
-    <h1>Test results</h1>
+
+    <div class="header">
+        <div class="pie">
+            <report-tag-pie [statusByTagMap]="statusByTagMap"></report-tag-pie>
+        </div>
+
+        <div class="title">
+            <report-title></report-title>
+        </div>
+    </div>
 
     <div class="tag-status-container">
         <ng-container *ngFor="let statusByTagMapEntry of statusByTagMap | keyvalue">
