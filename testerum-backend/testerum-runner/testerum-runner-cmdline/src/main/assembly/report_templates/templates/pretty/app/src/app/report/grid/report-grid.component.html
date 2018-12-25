@@ -65,6 +65,7 @@
 
             <p-autoComplete #tagsElement
                             [suggestions]="tagsToShow"
+                            [ngModel]="filter.selectedTags"
                             (completeMethod)="searchTags($event)"
                             (onSelect)="onTagSelect($event)"
                             (onUnselect)="onTagUnSelect($event)"

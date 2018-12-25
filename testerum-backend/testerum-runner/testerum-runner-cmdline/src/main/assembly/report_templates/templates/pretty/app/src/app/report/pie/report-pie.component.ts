@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ReportPieModel} from "./model/report-pie.model";
-import {ReportService} from "../report.service";
+import {ReportService} from "../../service/report.service";
 import {ExecutionStatus} from "../../../../../../../common/testerum-model/model/report/execution-status";
 
 @Component({

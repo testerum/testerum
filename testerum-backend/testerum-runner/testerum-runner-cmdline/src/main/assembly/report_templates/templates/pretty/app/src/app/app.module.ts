@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ReportComponent} from './report/report.component';
 import {ReportPieComponent} from './report/pie/report-pie.component';
-import {ReportService} from "./report/report.service";
+import {ReportService} from "./service/report.service";
 import {ChartModule} from "primeng/chart";
 import {TooltipModule, TreeTableModule} from "primeng/primeng";
 import {AutoCompleteModule} from 'primeng/autocomplete';
@@ -16,10 +16,14 @@ import {ModalModule} from "ngx-bootstrap";
 import {LogsComponent} from "./report/grid/logs-modal/logs/logs.component";
 import { TitleComponent } from './report/title/title.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { TagOverviewComponent } from './tag-overview/tag-overview.component';
+import {ReportUrlService} from "./service/report-url.service";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
     imports: [
         BrowserModule,
+        FormsModule,
         AppRoutingModule,
         BrowserAnimationsModule,
 
@@ -37,11 +41,14 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
         LogsModalComponent,
         LogsComponent,
         TitleComponent,
+
+        TagOverviewComponent,
     ],
     entryComponents: [
         LogsModalComponent,
     ],
     providers: [
+        ReportUrlService,
         ReportService,
         LogsModalService,
     ],

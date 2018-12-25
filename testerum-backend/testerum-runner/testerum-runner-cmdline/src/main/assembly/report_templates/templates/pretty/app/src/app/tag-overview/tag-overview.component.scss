@@ -1,0 +1,46 @@
+.tag-overview {
+    h1 {
+        text-align: center;
+        font-size: 3em;
+    }
+
+    .tag-status-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        .tag-status {
+            width: 10em;
+            height: 5em;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            border-radius: 1.5em;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+
+            -webkit-box-shadow: -20px 25px 40px -4px rgba(0,0,0,0.75);
+            -moz-box-shadow: -20px 25px 40px -4px rgba(0,0,0,0.75);
+            box-shadow: -20px 25px 40px -4px rgba(0,0,0,0.75);
+        }
+
+        .disabled {
+            background-color: #cacaca;
+        }
+        .skipped {
+            background-color: #cacaca;
+        }
+        .undefined {
+            background-color: #fd9705;
+        }
+        .passed {
+            background-color: #05fd5a;
+        }
+        .failed {
+            background-color: #fd0505;
+        }
+    }
+
+}

@@ -1,0 +1,19 @@
+<div class="tag-overview">
+    <h1>Test results</h1>
+
+    <div class="tag-status-container">
+        <ng-container *ngFor="let statusByTagMapEntry of statusByTagMap | keyvalue">
+
+            <div class="tag-status"
+                 [class.disabled]="statusByTagMapEntry.value == ExecutionStatus.DISABLED"
+                 [class.skipped]="statusByTagMapEntry.value == ExecutionStatus.SKIPPED"
+                 [class.undefined]="statusByTagMapEntry.value == ExecutionStatus.UNDEFINED"
+                 [class.passed]="statusByTagMapEntry.value == ExecutionStatus.PASSED"
+                 [class.failed]="statusByTagMapEntry.value == ExecutionStatus.FAILED"
+                 (click)="onTagClick(statusByTagMapEntry.key)">
+                {{statusByTagMapEntry.key}}
+            </div>
+
+        </ng-container>
+    </div>
+</div>

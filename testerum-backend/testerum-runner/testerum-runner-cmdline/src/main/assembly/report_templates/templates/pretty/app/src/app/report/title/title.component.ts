@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ReportService} from "../report.service";
+import {ReportService} from "../../service/report.service";
 import {DateUtil} from "../../util/date.util";
 
 @Component({

@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {ReportService} from "../report.service";
+import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {ReportService} from "../../service/report.service";
 import {ReportGridNode} from "./model/report-grid-node.model";
 import {ReportGridNodeMapper} from "./util/report-grid-node.mapper";
 import {DateUtil} from "../../util/date.util";
@@ -11,6 +11,8 @@ import {ReportGridFilter} from "./model/report-grid-filter.model";
 import {ArrayUtil} from "../../util/array.util";
 import {AutoComplete} from "primeng/autocomplete";
 import {ReportGridTagsUtil} from "./util/report-grid-tags.util";
+import {ActivatedRoute} from "@angular/router";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'report-grid',
@@ -18,7 +20,7 @@ import {ReportGridTagsUtil} from "./util/report-grid-tags.util";
     styleUrls: ['./report-grid.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ReportGridComponent implements OnInit {
+export class ReportGridComponent implements OnInit, OnDestroy {
 
     suiteGridRootNodes: ReportGridNode[];
     filter: ReportGridFilter = new ReportGridFilter();
@@ -31,12 +33,27 @@ export class ReportGridComponent implements OnInit {
     ExecutionStatus = ExecutionStatus;
     ReportGridNodeType = ReportGridNodeType;
 
-    constructor(private reportService: ReportService,
+    private routeParamsSubscription: Subscription;
+
+    constructor(private route: ActivatedRoute,
+                private reportService: ReportService,
                 private logsModalService: LogsModalService) {
     }
 
     ngOnInit() {
+        this.routeParamsSubscription = this.route.params.subscribe(params => {
+            if (params.tag) {
+                this.filter.isTagsButtonActive = true;
+                this.filter.selectedTags.push(
+                    params.tag
+                );
+            }
+        });
         this.refreshGrid();
+    }
+
+    ngOnDestroy(): void {
+        if(this.routeParamsSubscription) {this.routeParamsSubscription.unsubscribe()}
     }
 
     private refreshGrid() {
@@ -120,6 +137,10 @@ export class ReportGridComponent implements OnInit {
 
     onTagsButtonClickEvent() {
         this.filter.isTagsButtonActive = !this.filter.isTagsButtonActive;
+        if (!this.filter.isTagsButtonActive) {
+            this.filter.selectedTags.length = 0;
+            this.refreshGrid();
+        }
     }
 
     onTagSelect(event) {
