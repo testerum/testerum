@@ -1,6 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {Subscription} from "rxjs";
+import {Component} from '@angular/core';
+import {ReportUrlService} from "../service/report-url.service";
 
 @Component({
     selector: 'app-report',
@@ -9,5 +8,9 @@ import {Subscription} from "rxjs";
 })
 export class ReportComponent {
 
+    constructor(private reportUrlService: ReportUrlService){}
 
+    goToTagsOverview () {
+        this.reportUrlService.navigateToTagsOverview();
+    }
 }
