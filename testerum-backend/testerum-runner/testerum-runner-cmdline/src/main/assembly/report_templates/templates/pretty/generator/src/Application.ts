@@ -16,24 +16,43 @@ export class Application {
     }
 
     run() {
-        // copy template
-        const srcDir = path.resolve(__dirname, "report-template");
+        this.copyTemplateFiles();
+        this.replaceDevModelWithActualModel();
+        this.copyLogs();
+    }
 
-        fse.copySync(srcDir, this.destinationDirectory);
+    private copyTemplateFiles() {
+        const templatesSrcDir = path.resolve(__dirname, "report-template");
 
+        console.log(`copying templates from [${templatesSrcDir}] to ${this.destinationDirectory}`);
+
+        fse.copySync(templatesSrcDir, this.destinationDirectory);
+    }
+
+    private replaceDevModelWithActualModel() {
         const indexFilePath = path.resolve(this.destinationDirectory, "index.html");
-        const originalContent = FsUtils.readFile(indexFilePath);
-        // replace dev model with actual model
+        const modelPath = path.resolve(this.modelDirectory, "model.json");
 
-        const dataFileContent = FsUtils.readFile(
-            path.resolve(this.modelDirectory, "model.json")
-        );
+        console.log(`replacing model in [${indexFilePath}] with the content of [${modelPath}]`);
+
+        const originalContent = FsUtils.readFile(indexFilePath);
+        const modelFileContent = FsUtils.readFile(modelPath);
         const replacedContent = originalContent.replace(
             /<!--### START: testerumRunnerReportModel ### -->[\s\S]*<!--### END: testerumRunnerReportModel ### -->/,
-            `<script type='text/javascript'>\n    window.testerumRunnerReportModel = ${dataFileContent};\n  </script>`
+            `<script type='text/javascript'>\n    window.testerumRunnerReportModel = ${modelFileContent};\n  </script>`
         );
 
         FsUtils.writeFile(indexFilePath, replacedContent);
+    }
+
+    private copyLogs() {
+        const logsSrcDir = path.resolve(this.modelDirectory, "logs");
+        const logsDestDir = path.resolve(this.destinationDirectory, "logs");
+
+        console.log(`copying log files from [${logsSrcDir}] to [${logsDestDir}]`);
+
+        FsUtils.createDirectories(logsDestDir);
+        fse.copySync(logsSrcDir, logsDestDir);
     }
 
 }
