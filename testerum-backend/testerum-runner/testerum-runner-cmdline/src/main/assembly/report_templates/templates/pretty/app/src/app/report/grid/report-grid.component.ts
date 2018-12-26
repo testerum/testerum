@@ -167,4 +167,17 @@ export class ReportGridComponent implements OnInit, OnDestroy {
         }
         this.tagsToShow = newTagsToShow;
     }
+
+    onDownloadLogs(rowData: ReportGridNodeData) {
+        var element = document.createElement('a');
+        element.setAttribute('href', rowData.textLogFilePath);
+        element.setAttribute('download', "logs.txt");
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
 }
