@@ -67,10 +67,6 @@ export class ReportGridComponent implements OnInit, OnDestroy {
         return DateUtil.durationToShortString(durationMillis)
     }
 
-    onShowLogs(nodeData: ReportGridNodeData) {
-        this.logsModalService.showLogsModal(null, nodeData.exceptionDetail);
-    }
-
     onToggleFolders() {
         this.filter.areTestFoldersShown = !this.filter.areTestFoldersShown;
         this.refreshGrid();
@@ -168,9 +164,9 @@ export class ReportGridComponent implements OnInit, OnDestroy {
         this.tagsToShow = newTagsToShow;
     }
 
-    onDownloadLogs(rowData: ReportGridNodeData) {
+    onDownloadLogs(nodeData: ReportGridNodeData) {
         var element = document.createElement('a');
-        element.setAttribute('href', rowData.textLogFilePath);
+        element.setAttribute('href', nodeData.textLogFilePath);
         element.setAttribute('download', "logs.txt");
 
         element.style.display = 'none';
@@ -179,5 +175,21 @@ export class ReportGridComponent implements OnInit, OnDestroy {
         element.click();
 
         document.body.removeChild(element);
+    }
+
+    onShowLogs(nodeData: ReportGridNodeData) {
+        window['receiveModel'] = this.onLogsLoad;
+
+        var element = document.createElement('script');
+        element.setAttribute('type', 'text/javascript');
+        element.setAttribute('src', nodeData.modelLogFilePath);
+        document.body.appendChild(element);
+
+        document.body.removeChild(element);
+    }
+
+    onLogsLoad(data: any) {
+        console.log(data);
+        this.logsModalService.showLogsModal(null, data);
     }
 }
