@@ -88,7 +88,7 @@ export class MarshallingUtils {
 
             let value = input[key];
 
-            result[key] = this.parsePolymorphically(value, typeMap)
+            result.set(key, this.parsePolymorphically(value, typeMap));
         }
         return result;
     }
