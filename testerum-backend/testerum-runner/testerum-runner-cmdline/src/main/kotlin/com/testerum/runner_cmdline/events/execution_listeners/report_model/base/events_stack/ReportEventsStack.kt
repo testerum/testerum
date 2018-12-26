@@ -42,19 +42,19 @@ class ReportEventsStack {
 
     fun computeCurrentTestLogBaseName(): String {
         val featurePath = getCurrentFeaturePath()
-        val testName = getCurrentTestName()
+        val testFileName = getCurrentTestFileName()
 
         if (featurePath == "") {
-            return "$testName-logs"
+            return "$testFileName-logs"
         } else {
-            return "$featurePath/$testName/test-logs"
+            return "$featurePath/$testFileName/test-logs"
         }
     }
 
-    private fun getCurrentTestName(): String {
+    private fun getCurrentTestFileName(): String {
         for (event in stack.descendingIterator()) {
             if (event is TestStartEvent) {
-                return event.testName
+                return event.testFilePath.fileName!!
             }
         }
 
@@ -63,7 +63,7 @@ class ReportEventsStack {
 
     fun computeCurrentStepLogBaseName(): String {
         val featurePath = getCurrentFeaturePath()
-        val testName = getCurrentTestName()
+        val testName = getCurrentTestFileName()
         val stepPath = getCurrentStepPath()
 
         if (featurePath == "") {
