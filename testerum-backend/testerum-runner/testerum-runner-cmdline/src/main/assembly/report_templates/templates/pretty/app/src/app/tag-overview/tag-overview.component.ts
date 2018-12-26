@@ -56,4 +56,8 @@ export class TagOverviewComponent implements OnInit {
     onTagClick(tag: string) {
         this.reportUrlService.navigateToTagReport(tag);
     }
+
+    goToFullReport() {
+        this.reportUrlService.navigateReport();
+    }
 }

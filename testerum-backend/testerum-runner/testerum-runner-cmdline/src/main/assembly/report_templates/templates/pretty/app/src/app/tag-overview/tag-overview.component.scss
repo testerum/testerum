@@ -2,7 +2,7 @@
 
 .tag-overview {
     margin: 20px;
-    
+
     .header {
         margin: auto;
 
@@ -13,6 +13,11 @@
         .title {
             width: 50%;
             margin: auto;
+        }
+
+        .links {
+            float: right;
+            cursor: pointer;
         }
     }
 
