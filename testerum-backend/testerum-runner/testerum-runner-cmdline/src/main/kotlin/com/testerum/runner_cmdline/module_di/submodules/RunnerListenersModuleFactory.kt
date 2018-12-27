@@ -11,14 +11,9 @@ import com.testerum.runner_cmdline.events.execution_listeners.console_debug.Cons
 import com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model.JsonModelExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template.CustomTemplateExecutionListener
-import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
 class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFactory(context) {
-
-    companion object {
-        private val LOG = LoggerFactory.getLogger(RunnerListenersModuleFactory::class.java)
-    }
 
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     val executionListenerFinder = ExecutionListenerFinder(
@@ -33,17 +28,7 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
                     OutputFormat.STEPS_TAG_OVERVIEW to builtInTemplateExecutionListenerFactory("steps_tag_overview"),
                     OutputFormat.PRETTY             to builtInTemplateExecutionListenerFactory("pretty")
             )
-    ).apply {
-        context.registerShutdownHook {
-            for (executionListener in getExecutionListenersSafely()) {
-                try {
-                    executionListener.stop()
-                } catch (e: Exception) {
-                    LOG.error("failed to shutdown execution listener ${executionListener.javaClass.simpleName}", e)
-                }
-            }
-        }
-    }
+    )
 
     private fun builtInTemplateExecutionListenerFactory(name: String): ExecutionListenerFactory = { properties: Map<String, String> ->
         val scriptFileName: JavaPath = RunnerDirs.getReportTemplatesDir()

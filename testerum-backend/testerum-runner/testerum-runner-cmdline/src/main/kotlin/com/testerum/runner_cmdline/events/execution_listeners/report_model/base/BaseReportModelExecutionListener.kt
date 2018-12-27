@@ -72,13 +72,18 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
     private fun getTextLogsDirectory(): JavaPath = destinationDirectory.resolve("logs/text")
     private fun getModelLogsDirectory(): JavaPath = destinationDirectory.resolve("logs/model")
 
-    final override fun onSuiteStart(event: SuiteStartEvent) {
-        eventsStack.push(event)
-
+    override fun start() {
+        // Starting to record suite logs here, rather than in onSuiteStart(),
+        // because we want to capture also the logs before the suite started
         loggerStack.push(
                 textFilePath = getTextLogsDirectory().resolve("suite-logs.$LOG_TEXT_EXTENSION"),
                 modelFilePath = getModelLogsDirectory().resolve("suite-logs.$LOG_MODEL_EXTENSION")
         )
+    }
+
+    final override fun onSuiteStart(event: SuiteStartEvent) {
+        eventsStack.push(event)
+
         onTextLog(
                 createLogEvent("Executing test suite")
         )

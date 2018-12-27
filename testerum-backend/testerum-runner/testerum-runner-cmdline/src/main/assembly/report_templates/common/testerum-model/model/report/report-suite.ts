@@ -8,6 +8,7 @@ import {ReportStepDef, StepDefType} from "../step/def/report-step-def";
 import {ReportBasicStepDef} from "../step/def/report-basic-step-def";
 import {ReportComposedStepDef} from "../step/def/report-composed-step-def";
 import {ReportUndefinedStepDef} from "../step/def/report-undefined-step-def";
+import {ExceptionDetail} from "../exception/exception-detail";
 
 export class ReportSuite implements RunnerReportNode {
 
@@ -15,6 +16,7 @@ export class ReportSuite implements RunnerReportNode {
                 public readonly endTime: Date,
                 public readonly durationMillis: number,
                 public readonly status: ExecutionStatus,
+                public readonly exceptionDetail: ExceptionDetail | null,
                 public readonly textLogFilePath: string,
                 public readonly modelLogFilePath: string,
                 public readonly children: Array<FeatureOrTestRunnerReportNode>,
@@ -34,6 +36,7 @@ export class ReportSuite implements RunnerReportNode {
         const endTime = MarshallingUtils.parseLocalDateTime(input["endTime"]);
         const durationMillis = input["durationMillis"];
         const status = MarshallingUtils.parseEnum(input["status"], ExecutionStatus);
+        const exceptionDetail = ExceptionDetail.parse(input["exceptionDetail"]);
         const textLogFilePath = input["textLogFilePath"];
         const modelLogFilePath = input["modelLogFilePath"];
 
@@ -49,6 +52,6 @@ export class ReportSuite implements RunnerReportNode {
 
         });
 
-        return new ReportSuite(startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children, stepDefsById);
+        return new ReportSuite(startTime, endTime, durationMillis, status, exceptionDetail, textLogFilePath, modelLogFilePath, children, stepDefsById);
     }
 }

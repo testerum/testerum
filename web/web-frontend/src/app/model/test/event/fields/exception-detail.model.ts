@@ -9,25 +9,8 @@ export class ExceptionDetail implements Serializable<ExceptionDetail> {
     cause: ExceptionDetail;
     suppressed: Array<ExceptionDetail> = [];
 
-    exceptionMessage(): string {
-        let result = this.exceptionClassName;
-
-        if (this.message != null) {
-            result += ": " + this.message;
-        }
-
-        return result;
-    }
-
-    //TODO: this is not a finished implementation
-    exceptionStackTrace(): string {
-        let result = "";
-        for (const traceElement of this.stackTrace) {
-            result += "\tat " + traceElement.toString() + "\n";
-        }
-
-        return result;
-    }
+    asString: string;
+    asDetailedString: string;
 
     deserialize(input: Object): ExceptionDetail {
         this.exceptionClassName = input["exceptionClassName"];
@@ -44,6 +27,9 @@ export class ExceptionDetail implements Serializable<ExceptionDetail> {
         for (let suppressedJson of input["suppressed"]) {
             this.suppressed.push(new ExceptionDetail().deserialize(suppressedJson))
         }
+
+        this.asString = input["asString"];
+        this.asDetailedString = input["asDetailedString"];
 
         return this;
     }

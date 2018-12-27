@@ -5,6 +5,7 @@ import com.testerum.api.test_context.ExecutionStatus.PASSED
 import com.testerum.common_kotlin.indent
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.events.model.SuiteStartEvent
+import com.testerum.runner.events.model.error.ExceptionDetail
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
@@ -54,6 +55,8 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         logSuiteStart(context)
 
         var suiteStatus: ExecutionStatus = PASSED
+        var exception: Throwable? = null
+
         val startTime = System.currentTimeMillis()
         try {
             // run before all hooks
@@ -71,10 +74,13 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
             if (suiteStatus == PASSED && afterAllHooksStatus != PASSED) {
                 suiteStatus = afterAllHooksStatus
             }
+        } catch (e: Exception) {
+            suiteStatus = ExecutionStatus.FAILED
+            exception = e
         } finally {
             val durationMillis = System.currentTimeMillis() - startTime
 
-            logSuiteEnd(context, suiteStatus, durationMillis)
+            logSuiteEnd(context, suiteStatus, exception, durationMillis)
         }
 
         return suiteStatus
@@ -120,10 +126,14 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         }
     }
 
-    private fun logSuiteEnd(context: RunnerContext, executionStatus: ExecutionStatus, durationMillis: Long) {
+    private fun logSuiteEnd(context: RunnerContext,
+                            executionStatus: ExecutionStatus,
+                            exception: Throwable?,
+                            durationMillis: Long) {
         context.eventsService.logEvent(
                 SuiteEndEvent(
                         status = executionStatus,
+                        exceptionDetail = exception?.let { ExceptionDetail.fromThrowable(it) },
                         durationMillis = durationMillis
                 )
         )

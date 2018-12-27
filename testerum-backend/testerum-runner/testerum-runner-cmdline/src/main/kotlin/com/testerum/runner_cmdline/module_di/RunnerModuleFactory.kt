@@ -24,9 +24,13 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
 
                           stopWatch: StopWatch) : BaseModuleFactory(context) {
 
-    private val eventsService = EventsService(
+    val eventsService = EventsService(
             executionListenerFinder = runnerListenersModuleFactory.executionListenerFinder
-    )
+    ).apply {
+        context.registerShutdownHook {
+            stop()
+        }
+    }
 
     private val testerumLogger = TesterumLoggerImpl(
             eventsService = eventsService

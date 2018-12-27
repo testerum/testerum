@@ -4,6 +4,8 @@ import com.testerum.runner.events.model.RunnerEvent
 
 interface ExecutionListener {
 
+    fun start()
+
     fun onEvent(event: RunnerEvent)
 
     fun stop()
