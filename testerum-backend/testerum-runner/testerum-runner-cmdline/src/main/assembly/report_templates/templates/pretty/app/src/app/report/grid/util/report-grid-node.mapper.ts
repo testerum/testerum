@@ -32,6 +32,7 @@ export class ReportGridNodeMapper {
         node.data.durationMillis = suite.durationMillis;
         node.data.textLogFilePath = suite.textLogFilePath;
         node.data.modelLogFilePath = suite.modelLogFilePath;
+        node.data.exceptionDetail = suite.exceptionDetail;
         node.data.nodeType = ReportGridNodeType.SUITE;
 
         for (const testOrFeature of suite.children) {

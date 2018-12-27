@@ -1,3 +1,5 @@
+@import "../../../../../assets/css/testerum-pretty-variables";
+
 .logs-panel {
     display: flex;
     flex-wrap: nowrap;
@@ -79,3 +81,17 @@ table {
     word-break: break-word;
     overflow-wrap: break-word;
 }
+
+.log-type-debug {
+    color: $log-type-debug-color;
+}
+.log-type-info {
+    color: $log-type-info-color;
+}
+.log-type-warning {
+    color: $log-type-warning-color;
+}
+.log-type-exception {
+    color: $log-type-warning-color;
+}
+

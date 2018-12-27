@@ -190,6 +190,6 @@ export class ReportGridComponent implements OnInit, OnDestroy {
     }
 
     onLogsLoad(data: any) {
-        window['logsModalService'].showLogsModal(data, null); //TODO: exceptionDetail should not be null
+        window['logsModalService'].showLogsModal(data);
     }
 }
