@@ -1,15 +1,15 @@
-11:13:11.175  [INFO ] Executing test Mock Get User
-11:13:11.176  [INFO ] 11:13:11.176 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
-11:13:11.176  [INFO ] 11:13:11.176 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
-11:13:11.176  [INFO ] 
-11:13:11.177  [INFO ] Executing step BASIC: GIVEN the HTTP Mock Server <<httpMockServer = file:Sample Mock Server.http.mock.server.yaml>> with the Mock Request <<httpMock = {"expectedRequest":{"method":"GET","url":"/users/([0-9]+)"},"mockResponse":{"statusCode":200,"headers":{"Content-Type":"application/json"},"body":{"bodyType":"JSON","content":"{\n    \"userName\": \"Ionut Pruteanu\",\n    \"email\": \"ipruteanu@testerum.com\"\n}"}}}>>
-11:13:11.288  [INFO ] Finished executing step BASIC: GIVEN the HTTP Mock Server <<httpMockServer = file:Sample Mock Server.http.mock.server.yaml>> with the Mock Request <<httpMock = {"expectedRequest":{"method":"GET","url":"/users/([0-9]+)"},"mockResponse":{"statusCode":200,"headers":{"Content-Type":"application/json"},"body":{"bodyType":"JSON","content":"{\n    \"userName\": \"Ionut Pruteanu\",\n    \"email\": \"ipruteanu@testerum.com\"\n}"}}}>>
-11:13:11.289  [INFO ] Executing step BASIC: WHEN I execute <<httpRequest = {"method":"GET","url":"http://localhost:12121/users/1"}>> HTTP Request
-11:13:11.332  [INFO ] HTTP Request [
+18:09:46.086  [INFO ] Started executing test [Mock Get User] at [unrelated/Mock Get User.test]
+18:09:46.087  [INFO ] 18:09:46.086 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+18:09:46.087  [INFO ] 18:09:46.087 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+18:09:46.087  [INFO ] 
+18:09:46.088  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock={"expectedRequest":{"method":"GET","url"...>>]
+18:09:46.175  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock={"expectedRequest":{"method":"GET","url"...>>]; status: [PASSED]
+18:09:46.177  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+18:09:46.213  [INFO ] HTTP Request [
 GET http://localhost:12121/users/1
 
 ]
-11:13:11.339  [INFO ] HTTP Response [
+18:09:46.220  [INFO ] HTTP Response [
 HTTP/1.1 200
 Content-Type: application/json
 Vary: Accept-Encoding, User-Agent
@@ -21,11 +21,11 @@ Server: Jetty(9.2.z-SNAPSHOT)
   "email" : "ipruteanu@testerum.com"
 }
 ]
-11:13:11.339  [INFO ] Http Request executed successfully
-11:13:11.339  [INFO ] Finished executing step BASIC: WHEN I execute <<httpRequest = {"method":"GET","url":"http://localhost:12121/users/1"}>> HTTP Request
-11:13:11.340  [INFO ] Executing step BASIC: THEN I expect <<httpResponseVerify = {"expectedStatusCode":200,"expectedBody":{"httpBodyVerifyMatchingType":"JSON_VERIFY","httpBodyType":"JSON","bodyVerify":"{\"=compareMode\":\"exact\",\"userName\":\"Ionut Pruteanu\",\"email\":\"ipruteanu@testerum.com\"}"}}>> HTTP Response
-11:13:11.409  [INFO ] Finished executing step BASIC: THEN I expect <<httpResponseVerify = {"expectedStatusCode":200,"expectedBody":{"httpBodyVerifyMatchingType":"JSON_VERIFY","httpBodyType":"JSON","bodyVerify":"{\"=compareMode\":\"exact\",\"userName\":\"Ionut Pruteanu\",\"email\":\"ipruteanu@testerum.com\"}"}}>> HTTP Response
-11:13:11.410  [INFO ] 11:13:11.410 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
-11:13:11.410  [INFO ] 11:13:11.410 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
-11:13:11.410  [INFO ] 
-11:13:11.411  [INFO ] Finished executing test Mock Get User
+18:09:46.220  [INFO ] Http Request executed successfully
+18:09:46.221  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
+18:09:46.222  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+18:09:46.269  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
+18:09:46.270  [INFO ] 18:09:46.269 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+18:09:46.270  [INFO ] 18:09:46.269 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+18:09:46.270  [INFO ] 
+18:09:46.270  [INFO ] Finished executing test [Mock Get User] at [unrelated/Mock Get User.test]; status: [PASSED]

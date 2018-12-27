@@ -16,8 +16,6 @@ import kotlin.reflect.jvm.jvmName
 
 object ReportStepDefAndCallMapper {
 
-    private val MAX_ARG_CONTENT_LENGTH = 80
-
     fun mapStepDef(stepDef: StepDef,
                            stepDefsByMinId: StepDefsByMinId) : ReportStepDef {
         val minStepDefId = stepDefsByMinId.addStepDefsRecursively(stepDef)
@@ -74,31 +72,10 @@ object ReportStepDefAndCallMapper {
 
         return ReportStepCallArg(
                 name = arg.name,
-                content = cleanupArgContent(arg),
+                content = arg.contentForLogging,
                 type = arg.type,
                 path = arg.path?.toString()
         )
-    }
-
-    private fun cleanupArgContent(arg: Arg): String? {
-        var content = arg.content
-
-        // remove content of external arg
-        if (arg.path != null) {
-            content = null
-        }
-
-        // remove content containing newlines
-        if (content != null && content.contains('\n')) {
-            content = null
-        }
-
-        // remove long content
-        if (content != null && content.length > MAX_ARG_CONTENT_LENGTH) {
-            content = content.substring(0, MAX_ARG_CONTENT_LENGTH) + "..."
-        }
-
-        return content
     }
 
 }

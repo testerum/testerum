@@ -32,7 +32,6 @@ export class ReportGridNodeMapper {
         node.data.durationMillis = suite.durationMillis;
         node.data.textLogFilePath = suite.textLogFilePath;
         node.data.modelLogFilePath = suite.modelLogFilePath;
-        node.data.exceptionDetail = suite.exceptionDetail;
         node.data.nodeType = ReportGridNodeType.SUITE;
 
         for (const testOrFeature of suite.children) {
@@ -69,7 +68,6 @@ export class ReportGridNodeMapper {
         node.data.durationMillis = feature.durationMillis;
         node.data.textLogFilePath = feature.textLogFilePath;
         node.data.modelLogFilePath = feature.modelLogFilePath;
-        node.data.exceptionDetail = feature.exceptionDetail;
         node.data.nodeType = ReportGridNodeType.FEATURE;
         // node.data.tags = TODO: map Feature tags
 
@@ -127,7 +125,6 @@ export class ReportGridNodeMapper {
         node.data.durationMillis = test.durationMillis;
         node.data.textLogFilePath = test.textLogFilePath;
         node.data.modelLogFilePath = test.modelLogFilePath;
-        node.data.exceptionDetail = test.exceptionDetail;
         node.data.nodeType = ReportGridNodeType.TEST;
         node.data.tags = test.tags;
 
@@ -159,7 +156,6 @@ export class ReportGridNodeMapper {
         node.data.durationMillis = step.durationMillis;
         node.data.textLogFilePath = step.textLogFilePath;
         node.data.modelLogFilePath = step.modelLogFilePath;
-        node.data.exceptionDetail = step.exceptionDetail;
 
         if (reportStepDef instanceof ReportComposedStepDef) {
             node.data.tags = reportStepDef.tags;

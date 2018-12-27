@@ -20,7 +20,6 @@ object ReportSuiteMapper {
                 endTime = endEvent.time,
                 durationMillis = endEvent.durationMillis,
                 status = endEvent.status,
-                exceptionDetail = endEvent.exceptionDetail,
                 textLogFilePath = destinationDirectory.relativize(suiteLogger.textFilePath).toString(),
                 modelLogFilePath = destinationDirectory.relativize(suiteLogger.modelFilePath).toString(),
                 children = children.toList(),

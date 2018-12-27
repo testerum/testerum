@@ -5,7 +5,6 @@ import com.testerum.api.test_context.ExecutionStatus.PASSED
 import com.testerum.common_kotlin.indent
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.events.model.SuiteStartEvent
-import com.testerum.runner.events.model.error.ExceptionDetail
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
@@ -126,22 +125,23 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         }
     }
 
+    private fun logSuiteStart(context: RunnerContext) {
+        context.logEvent(
+                SuiteStartEvent()
+        )
+        context.logMessage("Started executing test suite")
+    }
+
     private fun logSuiteEnd(context: RunnerContext,
                             executionStatus: ExecutionStatus,
                             exception: Throwable?,
                             durationMillis: Long) {
-        context.eventsService.logEvent(
+        context.logMessage("Finished executing test suite; status: [$executionStatus]", exception)
+        context.logEvent(
                 SuiteEndEvent(
                         status = executionStatus,
-                        exceptionDetail = exception?.let { ExceptionDetail.fromThrowable(it) },
                         durationMillis = durationMillis
                 )
-        )
-    }
-
-    private fun logSuiteStart(context: RunnerContext) {
-        context.eventsService.logEvent(
-                SuiteStartEvent()
         )
     }
 

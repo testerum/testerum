@@ -35,7 +35,7 @@ class EventsService(private val executionListenerFinder: ExecutionListenerFinder
         }
 
         val lines = capturedText.lines()
-        val events = lines.map { TextLogEvent(LocalDateTime.now(), EventKey.LOG_EVENT_KEY, LogLevel.INFO, it) }
+        val events = lines.map { TextLogEvent(LocalDateTime.now(), EventKey.LOG_EVENT_KEY, LogLevel.INFO, it, null) }
 
         for (event in events) {
             informEventListeners(event)

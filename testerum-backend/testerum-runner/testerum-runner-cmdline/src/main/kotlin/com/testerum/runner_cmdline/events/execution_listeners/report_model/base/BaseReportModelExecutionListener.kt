@@ -21,8 +21,6 @@ import com.testerum.runner.events.model.SuiteStartEvent
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
-import com.testerum.runner.events.model.log_level.LogLevel
-import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.report_model.FeatureOrTestRunnerReportNode
 import com.testerum.runner.report_model.ReportLog
 import com.testerum.runner.report_model.ReportStep
@@ -33,7 +31,6 @@ import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportSuiteMapper
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportTestMapper
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.StepDefsByMinId
-import java.time.LocalDateTime
 import java.util.*
 import javax.annotation.concurrent.NotThreadSafe
 import java.nio.file.Path as JavaPath
@@ -83,19 +80,12 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
 
     final override fun onSuiteStart(event: SuiteStartEvent) {
         eventsStack.push(event)
-
-        onTextLog(
-                createLogEvent("Executing test suite")
-        )
     }
 
     final override fun onSuiteEnd(event: SuiteEndEvent) {
         // Because ReportSuite should contain log messages that happened after SuiteEndEvent,
         // we are handling postponing the handling of this event until the stop() method,
         // where we know for sure that there won't me any more events.
-        onTextLog(
-                createLogEvent("Finished executing test suite")
-        )
         eventsStack.push(event)
     }
 
@@ -107,16 +97,9 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
                 textFilePath = getTextLogsDirectory().resolve("$logBaseName.$LOG_TEXT_EXTENSION"),
                 modelFilePath = getModelLogsDirectory().resolve("$logBaseName.$LOG_MODEL_EXTENSION")
         )
-        onTextLog(
-                createLogEvent("Executing feature ${event.featureName}")
-        )
     }
 
     final override fun onFeatureEnd(event: FeatureEndEvent) {
-        onTextLog(
-                createLogEvent("Finished executing feature ${event.featureName}")
-        )
-
         @Suppress("UnnecessaryVariable")
         val featureEndEvent = event
 
@@ -170,16 +153,9 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
                 textFilePath = getTextLogsDirectory().resolve("$logBaseName.$LOG_TEXT_EXTENSION"),
                 modelFilePath = getModelLogsDirectory().resolve("$logBaseName.$LOG_MODEL_EXTENSION")
         )
-        onTextLog(
-                createLogEvent("Executing test ${event.testName}")
-        )
     }
 
     final override fun onTestEnd(event: TestEndEvent) {
-        onTextLog(
-                createLogEvent("Finished executing test ${event.testName}")
-        )
-
         @Suppress("UnnecessaryVariable")
         val testEndEvent = event
 
@@ -233,15 +209,15 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
                 textFilePath = getTextLogsDirectory().resolve("$logBaseName.$LOG_TEXT_EXTENSION"),
                 modelFilePath = getModelLogsDirectory().resolve("$logBaseName.$LOG_MODEL_EXTENSION")
         )
-        onTextLog(
-                createLogEvent("Executing step ${event.stepCall}")
-        )
+//        onTextLog(
+//                createLogEvent("Executing step ${event.stepCall}")
+//        )
     }
 
     final override fun onStepEnd(event: StepEndEvent) {
-        onTextLog(
-                createLogEvent("Finished executing step ${event.stepCall}")
-        )
+//        onTextLog(
+//                createLogEvent("Finished executing step ${event.stepCall}")
+//        )
 
         @Suppress("UnnecessaryVariable")
         val stepEndEvent = event
@@ -263,7 +239,8 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
                                 ReportLog(
                                         time = eventFromStack.time,
                                         logLevel = eventFromStack.logLevel,
-                                        message = eventFromStack.message
+                                        message = eventFromStack.message,
+                                        exceptionDetail = eventFromStack.exceptionDetail
                                 )
                         )
                     }
@@ -304,7 +281,8 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
                 ReportLog(
                         time = event.time,
                         logLevel = event.logLevel,
-                        message = event.message
+                        message = event.message,
+                        exceptionDetail = event.exceptionDetail
                 )
         )
     }
@@ -328,7 +306,8 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
                                 ReportLog(
                                         time = eventFromStack.time,
                                         logLevel = eventFromStack.logLevel,
-                                        message = eventFromStack.message
+                                        message = eventFromStack.message,
+                                        exceptionDetail = eventFromStack.exceptionDetail
                                 )
                         )
                     }
@@ -376,15 +355,6 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
         destinationDirectory.resolve(MODEL_DESTINATION_FILE_NAME).writeText(serializedModel)
 
         afterModelSavedToFile()
-    }
-
-    private fun createLogEvent(message: String): TextLogEvent {
-        return TextLogEvent(
-                time = LocalDateTime.now(),
-                eventKey = EventKey.LOG_EVENT_KEY,
-                logLevel = LogLevel.INFO,
-                message = message
-        )
     }
 
 }

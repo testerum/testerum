@@ -5,7 +5,6 @@ import com.testerum.common_kotlin.indent
 import com.testerum.model.test.TestModel
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
-import com.testerum.runner.events.model.error.ExceptionDetail
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
@@ -201,7 +200,7 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
     }
 
     private fun logTestStart(context: RunnerContext) {
-        context.eventsService.logEvent(
+        context.logEvent(
                 TestStartEvent(
                         eventKey = eventKey,
                         testName = test.name,
@@ -209,19 +208,20 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                         tags = test.tags
                 )
         )
+        context.logMessage("Started executing test [${test.name}] at [${test.path}]")
     }
 
     private fun logTestEnd(context: RunnerContext,
                            executionStatus: ExecutionStatus,
                            exception: Throwable?,
                            durationMillis: Long) {
-        context.eventsService.logEvent(
+        context.logMessage("Finished executing test [${test.name}] at [${test.path}]; status: [$executionStatus]", exception)
+        context.logEvent(
                 TestEndEvent(
                         eventKey = eventKey,
                         testFilePath = test.path,
                         testName = test.name,
                         status = executionStatus,
-                        exceptionDetail = exception?.let { ExceptionDetail.fromThrowable(it) },
                         durationMillis = durationMillis
                 )
         )

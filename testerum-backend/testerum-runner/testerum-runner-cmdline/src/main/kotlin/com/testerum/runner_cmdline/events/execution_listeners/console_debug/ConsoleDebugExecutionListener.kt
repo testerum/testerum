@@ -30,18 +30,7 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-       log(
-                buildString {
-                    append("SUITE_END: ")
-                    append("status=${event.status}")
-                    if (event.exceptionDetail != null) {
-                        append(", exceptionDetail='${event.exceptionDetail}'")
-                    }
-                    append(", durationMillis=${event.durationMillis}")
-                    append(", eventKey=${event.eventKey}")
-                    append('\n')
-                }
-        )
+        log("SUITE_END: status=${event.status}, durationMillis=${event.durationMillis}, eventKey=${event.eventKey}\n")
     }
 
     override fun onFeatureStart(event: FeatureStartEvent) {
@@ -55,19 +44,7 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log(
-                buildString {
-                    append("FEATURE_END: ")
-                    append("status=${event.status}")
-                    if (event.exceptionDetail != null) {
-                        append(", exceptionDetail='${event.exceptionDetail}'")
-                    }
-                    append(", featureName='${event.featureName}'")
-                    append(", durationMillis=${event.durationMillis}")
-                    append(", eventKey=${event.eventKey}")
-                    append('\n')
-                }
-        )
+        log("FEATURE_END: status=${event.status}, featureName='${event.featureName}', durationMillis=${event.durationMillis}, eventKey=${event.eventKey}\n")
     }
 
     override fun onTestStart(event: TestStartEvent) {
@@ -81,20 +58,7 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log(
-                buildString {
-                    append("TEST_END: ")
-                    append("status=${event.status}")
-                    if (event.exceptionDetail != null) {
-                        append(", exceptionDetail='${event.exceptionDetail}'")
-                    }
-                    append(", testName='${event.testName}'")
-                    append(", testFilePath='${event.testFilePath}'")
-                    append(", durationMillis=${event.durationMillis}")
-                    append(", eventKey=${event.eventKey}")
-                    append('\n')
-                }
-        )
+        log("TEST_END: status=${event.status}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}, eventKey=${event.eventKey}\n")
     }
 
     override fun onStepStart(event: StepStartEvent) {
@@ -108,37 +72,33 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        val exceptionDetail = event.exceptionDetail
-
-        log(
-                buildString {
-                    append("STEP_END: ")
-                    append("status=${event.status}")
-                    if (exceptionDetail != null) {
-                        append(", exceptionDetail='$exceptionDetail'")
-                    }
-                    append(", stepCall='${event.stepCall}'")
-                    append(", durationMillis=${event.durationMillis}")
-                    append(", eventKey=${event.eventKey}")
-                    append('\n')
-                }
-        )
-        if (exceptionDetail != null) {
-            log(
-                    exceptionDetail.detailedToString()
-                            .lines()
-                            .filter { it.isNotBlank() }
-                            .joinToString(separator = "\n") {
-                                "    ".repeat(indentLevel + 1) + it
-                            }
-                            + "\n"
-            )
-        }
+        log("STEP_END: status=${event.status}, stepCall='${event.stepCall}', durationMillis=${event.durationMillis}, eventKey=${event.eventKey}\n")
     }
 
     override fun onTextLog(event: TextLogEvent) {
         indent()
-        log("TEXT_LOG: message='${event.message}', eventKey=${event.eventKey}\n")
+        log(
+                buildString {
+                    append("TEXT_LOG: ")
+                    append(
+                            event.message
+                                    .lines()
+                                    .joinToString(separator = "\n${"    ".repeat(indentLevel + 1)}")
+                    )
+                    append("\n")
+                    val exceptionDetail = event.exceptionDetail
+                    if (exceptionDetail != null) {
+                        append(
+                                exceptionDetail.detailedToString()
+                                        .lines()
+                                        .joinToString(separator = "\n") {
+                                            "    ".repeat(indentLevel + 1) + it
+                                        }
+                        )
+                        append("\n")
+                    }
+                }
+        )
     }
 
     override fun onUnknownEvent(event: RunnerEvent) {

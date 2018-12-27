@@ -1,2 +1,2 @@
-11:13:11.168  [INFO ] Executing step BASIC: GIVEN the variable <<name = tenDaysFromToday>> with value <<value = {{(function(){var futureDate = new Date(); futureDate.setDate(futureDate.getDate()+10); return futureDate.toISOString().substr(0, 10);})()}}>>
-11:13:11.169  [INFO ] Finished executing step BASIC: GIVEN the variable <<name = tenDaysFromToday>> with value <<value = {{(function(){var futureDate = new Date(); futureDate.setDate(futureDate.getDate()+10); return futureDate.toISOString().substr(0, 10);})()}}>>
+18:09:46.082  [INFO ] Started executing step [BASIC: GIVEN the variable <<name=tenDaysFromToday>> with value <<value={{(function(){var futureDate = new Date(...>>]
+18:09:46.082  [INFO ] Finished executing step [BASIC: GIVEN the variable <<name=tenDaysFromToday>> with value <<value={{(function(){var futureDate = new Date(...>>]; status: [SKIPPED]

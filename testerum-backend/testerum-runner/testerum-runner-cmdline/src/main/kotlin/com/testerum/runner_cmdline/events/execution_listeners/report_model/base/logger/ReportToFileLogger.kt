@@ -43,8 +43,17 @@ class ReportToFileLogger(val textFilePath: JavaPath,
         val timestamp = TIMESTAMP_FORMATTER.format(logEvent.time)
         val logLevel = formatLogLevel(logEvent.logLevel)
         val message = logEvent.message
+        val exceptionWithStackTrace = logEvent.exceptionDetail?.asDetailedString
 
-        textFile.write("$timestamp  $logLevel $message\n")
+        textFile.write(
+                buildString {
+                    append(timestamp).append("  ").append(logLevel).append(" ").append(message)
+                    if (exceptionWithStackTrace != null) {
+                        append("; exception:\n").append(exceptionWithStackTrace)
+                    }
+                    append('\n')
+                }
+        )
     }
 
     private fun formatLogLevel(logLevel: LogLevel): String {

@@ -1,9 +1,9 @@
-11:13:10.916  [INFO ] Executing step BASIC: WHEN I execute <<httpRequest = {"method":"GET","url":"http://localhost:12121/heros","headers":{}}>> HTTP Request
-11:13:10.969  [INFO ] HTTP Request [
+18:09:45.823  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+18:09:45.862  [INFO ] HTTP Request [
 GET http://localhost:12121/heros
 
 ]
-11:13:10.981  [INFO ] HTTP Response [
+18:09:45.873  [INFO ] HTTP Response [
 HTTP/1.1 200
 Content-Type: application/json
 Vary: Accept-Encoding, User-Agent
@@ -34,5 +34,5 @@ Server: Jetty(9.2.z-SNAPSHOT)
   } ]
 }
 ]
-11:13:10.982  [INFO ] Http Request executed successfully
-11:13:10.982  [INFO ] Finished executing step BASIC: WHEN I execute <<httpRequest = {"method":"GET","url":"http://localhost:12121/heros","headers":{}}>> HTTP Request
+18:09:45.874  [INFO ] Http Request executed successfully
+18:09:45.874  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]

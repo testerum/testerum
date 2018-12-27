@@ -36,7 +36,6 @@ class Application {
         // render tests
         for (const test of tests) {
             FsUtils.writeFile(
-                // todo: save put tests under feature directories
                 path.resolve(properties.destinationDirectory, `${test.testFilePath}.html`),
                 Templates.TEST({
                     test: test,

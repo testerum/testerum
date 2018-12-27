@@ -1,2 +1,2 @@
-11:13:10.787  [INFO ] Executing step BASIC: GIVEN the HTTP Mock Server <<httpMockServer = file:Sample Mock Server.http.mock.server.yaml>> with the Mock Request <<httpMock = file:heroes/Hero Squad.http.stub.yaml>>
-11:13:10.915  [INFO ] Finished executing step BASIC: GIVEN the HTTP Mock Server <<httpMockServer = file:Sample Mock Server.http.mock.server.yaml>> with the Mock Request <<httpMock = file:heroes/Hero Squad.http.stub.yaml>>
+18:09:45.728  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:heroes/Hero Squad.http.stub.yaml>>]
+18:09:45.822  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:heroes/Hero Squad.http.stub.yaml>>]; status: [PASSED]

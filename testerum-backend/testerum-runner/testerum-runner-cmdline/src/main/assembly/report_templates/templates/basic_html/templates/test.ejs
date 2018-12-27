@@ -24,7 +24,7 @@ _%>
             const stepCall = reportStep.stepCall;
 
             /** @type StepDef */
-            const stepDef = stepDefsById[stepCall.stepDefId];
+            const stepDef = stepDefsById.get(stepCall.stepDefId);
 
             if (stepDef instanceof ReportComposedStepDef) {
                 step = `COMPOSED: path=${stepDef.path.toString()}`;
@@ -33,7 +33,7 @@ _%>
             } else if (stepDef instanceof ReportUndefinedStepDef) {
                 step = `UNDEFINED: id=${stepDef.id}`;
             } else {
-                step = "[Unknown step]"
+                step = `[Unknown step: ${JSON.stringify(stepDefsById)}]`
             }
         _%>
             <li><%=step%></li>

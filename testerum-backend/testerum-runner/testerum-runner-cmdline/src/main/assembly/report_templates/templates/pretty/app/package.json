@@ -4,6 +4,7 @@
   "scripts": {
     "serve": "ng serve",
     "build-dev": "ng build",
+    "watch": "ng build --watch --source-map",
     "build-prod": "ng build --prod --source-map",
     "lint": "ng lint"
   },

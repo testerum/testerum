@@ -1,2 +1,2 @@
-11:13:11.041  [INFO ] Executing step BASIC: GIVEN the variable <<name = today>> with value <<value = {{new Date().toISOString().substr(0, 10)}}>>
-11:13:11.096  [INFO ] Finished executing step BASIC: GIVEN the variable <<name = today>> with value <<value = {{new Date().toISOString().substr(0, 10)}}>>
+18:09:45.953  [INFO ] Started executing step [BASIC: GIVEN the variable <<name=today>> with value <<value={{new Date().toISOString().substr(0, 10)...>>]
+18:09:46.013  [INFO ] Finished executing step [BASIC: GIVEN the variable <<name=today>> with value <<value={{new Date().toISOString().substr(0, 10)...>>]; status: [PASSED]

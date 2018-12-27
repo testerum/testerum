@@ -53,7 +53,8 @@ object TesterumRunner {
                                     time = LocalDateTime.now(),
                                     eventKey = EventKey.LOG_EVENT_KEY,
                                     logLevel = LogLevel.INFO,
-                                    message = line
+                                    message = line,
+                                    exceptionDetail = null
                             )
                     )
                 }

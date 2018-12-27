@@ -1,2 +1,2 @@
-11:13:11.340  [INFO ] Executing step BASIC: THEN I expect <<httpResponseVerify = {"expectedStatusCode":200,"expectedBody":{"httpBodyVerifyMatchingType":"JSON_VERIFY","httpBodyType":"JSON","bodyVerify":"{\"=compareMode\":\"exact\",\"userName\":\"Ionut Pruteanu\",\"email\":\"ipruteanu@testerum.com\"}"}}>> HTTP Response
-11:13:11.409  [INFO ] Finished executing step BASIC: THEN I expect <<httpResponseVerify = {"expectedStatusCode":200,"expectedBody":{"httpBodyVerifyMatchingType":"JSON_VERIFY","httpBodyType":"JSON","bodyVerify":"{\"=compareMode\":\"exact\",\"userName\":\"Ionut Pruteanu\",\"email\":\"ipruteanu@testerum.com\"}"}}>> HTTP Response
+18:09:46.222  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+18:09:46.269  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]

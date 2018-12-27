@@ -4,10 +4,13 @@ import com.testerum.api.services.TesterumService
 
 interface TesterumLogger : TesterumService {
 
-    fun logWarning(message: String)
+    fun warn(message: String) = warn(message, null)
+    fun warn(message: String, exception: Throwable?)
 
-    fun logInfo(message: String)
+    fun info(message: String) = info(message, null)
+    fun info(message: String, exception: Throwable?)
 
-    fun logDebug(message: String)
+    fun debug(message: String) = info(message, null)
+    fun debug(message: String, exception: Throwable?)
 
 }

@@ -22,7 +22,6 @@ object ReportTestMapper {
                 endTime = endEvent.time,
                 durationMillis = endEvent.durationMillis,
                 status = endEvent.status,
-                exceptionDetail = endEvent.exceptionDetail,
                 textLogFilePath = destinationDirectory.relativize(testLogger.textFilePath).toString(),
                 modelLogFilePath = destinationDirectory.relativize(testLogger.modelFilePath).toString(),
                 children = children

@@ -20,7 +20,6 @@ object ReportFeatureMapper {
                 endTime = endEvent.time,
                 durationMillis = endEvent.durationMillis,
                 status = endEvent.status,
-                exceptionDetail = endEvent.exceptionDetail,
                 textLogFilePath = destinationDirectory.relativize(featureLogger.textFilePath).toString(),
                 modelLogFilePath = destinationDirectory.relativize(featureLogger.modelFilePath).toString(),
                 children = children.toList()

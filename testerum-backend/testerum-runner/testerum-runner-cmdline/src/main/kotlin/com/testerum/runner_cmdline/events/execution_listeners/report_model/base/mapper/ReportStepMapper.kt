@@ -23,7 +23,6 @@ object ReportStepMapper {
                 endTime = endEvent.time,
                 durationMillis = endEvent.durationMillis,
                 status = endEvent.status,
-                exceptionDetail = endEvent.exceptionDetail,
                 textLogFilePath = destinationDirectory.relativize(stepLogger.textFilePath).toString(),
                 modelLogFilePath = destinationDirectory.relativize(stepLogger.modelFilePath).toString(),
                 children = children

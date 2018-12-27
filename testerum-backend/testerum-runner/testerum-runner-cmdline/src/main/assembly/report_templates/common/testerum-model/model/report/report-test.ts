@@ -1,6 +1,5 @@
 import {FeatureOrTestRunnerReportNode} from "./feature-or-test-runner-report-node";
 import {ExecutionStatus} from "./execution-status";
-import {ExceptionDetail} from "../exception/exception-detail";
 import {ReportStep} from "./report-step";
 import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
 
@@ -13,7 +12,6 @@ export class ReportTest implements FeatureOrTestRunnerReportNode {
                 public readonly endTime: Date,
                 public readonly durationMillis: number,
                 public readonly status: ExecutionStatus,
-                public readonly exceptionDetail: ExceptionDetail | null,
                 public readonly textLogFilePath: string,
                 public readonly modelLogFilePath: string,
                 public readonly children: Array<ReportStep>) {}
@@ -30,11 +28,10 @@ export class ReportTest implements FeatureOrTestRunnerReportNode {
         const endTime = MarshallingUtils.parseLocalDateTime(input["endTime"]);
         const durationMillis = input["durationMillis"];
         const status = MarshallingUtils.parseEnum(input["status"], ExecutionStatus);
-        const exceptionDetail = ExceptionDetail.parse(input["exceptionDetail"]);
         const textLogFilePath = input["textLogFilePath"];
         const modelLogFilePath = input["modelLogFilePath"];
         const children = MarshallingUtils.parseList(input["children"], ReportStep);
 
-        return new ReportTest(testName, testFilePath, tags, startTime, endTime, durationMillis, status, exceptionDetail, textLogFilePath, modelLogFilePath, children);
+        return new ReportTest(testName, testFilePath, tags, startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children);
     }
 }
