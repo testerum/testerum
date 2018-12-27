@@ -35,7 +35,7 @@ export class ReportSuite implements RunnerReportNode {
         const durationMillis = input["durationMillis"];
         const status = MarshallingUtils.parseEnum(input["status"], ExecutionStatus);
         const textLogFilePath = input["textLogFilePath"];
-        const modelLogFilePath = input["textLogFilePath"];
+        const modelLogFilePath = input["modelLogFilePath"];
 
         const children = MarshallingUtils.parseListPolymorphically<FeatureOrTestRunnerReportNode>(input["children"], {
             [RunnerReportNodeType[RunnerReportNodeType.FEATURE]]: ReportFeature,

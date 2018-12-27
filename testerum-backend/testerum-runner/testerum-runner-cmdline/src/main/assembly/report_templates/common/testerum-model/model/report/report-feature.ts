@@ -30,7 +30,7 @@ export class ReportFeature implements FeatureOrTestRunnerReportNode {
         const status = MarshallingUtils.parseEnum(input["status"], ExecutionStatus);
         const exceptionDetail = ExceptionDetail.parse(input["exceptionDetail"]);
         const textLogFilePath = input["textLogFilePath"];
-        const modelLogFilePath = input["textLogFilePath"];
+        const modelLogFilePath = input["modelLogFilePath"];
         const children = MarshallingUtils.parseListPolymorphically<FeatureOrTestRunnerReportNode>(input["children"], {
             [RunnerReportNodeType[RunnerReportNodeType.FEATURE]]: ReportFeature,
             [RunnerReportNodeType[RunnerReportNodeType.TEST]]: ReportTest

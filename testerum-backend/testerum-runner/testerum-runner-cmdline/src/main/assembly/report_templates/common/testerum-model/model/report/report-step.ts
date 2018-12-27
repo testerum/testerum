@@ -24,7 +24,7 @@ export class ReportStep implements RunnerReportNode {
         const status = MarshallingUtils.parseEnum(input["status"], ExecutionStatus);
         const exceptionDetail = ExceptionDetail.parse(input["exceptionDetail"]);
         const textLogFilePath = input["textLogFilePath"];
-        const modelLogFilePath = input["textLogFilePath"];
+        const modelLogFilePath = input["modelLogFilePath"];
         const children = MarshallingUtils.parseList(input["children"], ReportStep);
 
         return new ReportStep(stepCall, startTime, endTime, durationMillis, status, exceptionDetail, textLogFilePath, modelLogFilePath, children);

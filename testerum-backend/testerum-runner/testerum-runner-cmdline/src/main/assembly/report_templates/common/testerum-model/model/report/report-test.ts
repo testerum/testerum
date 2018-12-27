@@ -32,7 +32,7 @@ export class ReportTest implements FeatureOrTestRunnerReportNode {
         const status = MarshallingUtils.parseEnum(input["status"], ExecutionStatus);
         const exceptionDetail = ExceptionDetail.parse(input["exceptionDetail"]);
         const textLogFilePath = input["textLogFilePath"];
-        const modelLogFilePath = input["textLogFilePath"];
+        const modelLogFilePath = input["modelLogFilePath"];
         const children = MarshallingUtils.parseList(input["children"], ReportStep);
 
         return new ReportTest(testName, testFilePath, tags, startTime, endTime, durationMillis, status, exceptionDetail, textLogFilePath, modelLogFilePath, children);
