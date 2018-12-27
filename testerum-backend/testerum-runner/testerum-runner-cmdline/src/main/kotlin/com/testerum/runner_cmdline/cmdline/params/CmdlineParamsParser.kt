@@ -60,6 +60,12 @@ object CmdlineParamsParser {
         var versionHelpRequested: Boolean = false
 
         @CommandLine.Option(
+                names = ["-v", "--verbose"],
+                description = ["be verbose"]
+        )
+        var verbose: Boolean = false
+
+        @CommandLine.Option(
                 names = ["-r", "--repository-directory"],
                 required = true,
                 description = ["path to the root of the repository"]
@@ -104,16 +110,19 @@ object CmdlineParamsParser {
         var testFilesOrDirectories: List<JavaPath> = arrayListOf()
 
         @CommandLine.Option(
-                names = ["-v", "--verbose"],
-                description = ["be verbose"]
-        )
-        var verbose: Boolean = false
-
-        @CommandLine.Option(
                 names = ["-o", "--output-format"]
                 // todo: description
         )
         var outputFormats: List<String> = arrayListOf()
+
+        @CommandLine.Option(
+                names = ["--execution-name"],
+                description = [
+                    "human-readable title of this execution",
+                    "useful to distinguish one report from another"
+                ]
+        )
+        var executionName: String? = null
 
         fun getValidatedParams(): CmdlineParams {
             if (usageHelpRequested) {
@@ -127,17 +136,18 @@ object CmdlineParamsParser {
             }
 
             return CmdlineParams(
+                    verbose = verbose,
                     repositoryDirectory = getValidatedRepositoryDirectory(),
                     basicStepsDirectory = getValidatedBasicStepsDirectory(),
                     settingsFile = getValidatedSettingsFile(),
                     settingOverrides = settingOverrides,
                     testFilesOrDirectories = getValidatedTestFilesOrDirectories(),
-                    verbose = verbose,
                     outputFormatsWithProperties = if (outputFormats.isNotEmpty()) {
                         outputFormats
                     } else {
                         listOf(CmdlineParams.DEFAULT_OUTPUT_FORMAT.name)
-                    }
+                    },
+                    executionName = executionName
             )
         }
 

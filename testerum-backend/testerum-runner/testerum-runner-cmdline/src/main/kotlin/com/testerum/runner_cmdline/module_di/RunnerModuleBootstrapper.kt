@@ -28,6 +28,6 @@ class RunnerModuleBootstrapper(cmdlineParams: CmdlineParams,
 
     private val fileServiceModuleFactory = FileServiceModuleFactory(context, settingsModuleFactory, scannerModuleFactory)
 
-    val runnerModuleFactory = RunnerModuleFactory(context, runnerTransformersModuleFactory, runnerListenersModuleFactory, settingsModuleFactory, fileServiceModuleFactory, stopWatch)
+    val runnerModuleFactory = RunnerModuleFactory(context, runnerTransformersModuleFactory, runnerListenersModuleFactory, settingsModuleFactory, fileServiceModuleFactory, cmdlineParams.executionName, stopWatch)
 
 }

@@ -20,7 +20,7 @@ export class TitleComponent implements OnInit {
     ngOnInit() {
         let reportSuite = this.reportService.reportModelExtractor.reportSuite;
 
-        this.suiteName = this.titlePrefix + (reportSuite.name ? " - " + reportSuite.name: "");
+        this.suiteName = this.titlePrefix + (reportSuite.executionName ? (" - " + reportSuite.executionName) : "");
         this.executionDate = DateUtil.dateTimeToShortString(reportSuite.startTime);
         this.duration = DateUtil.durationToShortString(reportSuite.durationMillis);
     }

@@ -15,7 +15,8 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesConte
 
 data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
                        private val featuresOrTests: List<RunnerFeatureOrTest>,
-                       private val afterAllTestsHooks: List<RunnerHook>) : RunnerTreeNode() {
+                       private val afterAllTestsHooks: List<RunnerHook>,
+                       private val executionName: String?) : RunnerTreeNode() {
 
     init {
         for (featureOrTest in featuresOrTests) {
@@ -127,7 +128,7 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
 
     private fun logSuiteStart(context: RunnerContext) {
         context.logEvent(
-                SuiteStartEvent()
+                SuiteStartEvent(executionName = executionName)
         )
         context.logMessage("Started executing test suite")
     }

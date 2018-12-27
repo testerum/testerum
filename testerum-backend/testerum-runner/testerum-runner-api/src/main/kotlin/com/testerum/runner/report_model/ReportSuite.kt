@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.api.test_context.ExecutionStatus
 import java.time.LocalDateTime
 
-data class ReportSuite @JsonCreator constructor(@JsonProperty("startTime")        val startTime: LocalDateTime,
+data class ReportSuite @JsonCreator constructor(@JsonProperty("executionName")    val executionName: String?,
+                                                @JsonProperty("startTime")        val startTime: LocalDateTime,
                                                 @JsonProperty("endTime")          val endTime: LocalDateTime,
                                                 @JsonProperty("durationMillis")   val durationMillis: Long,
                                                 @JsonProperty("status")           val status: ExecutionStatus,

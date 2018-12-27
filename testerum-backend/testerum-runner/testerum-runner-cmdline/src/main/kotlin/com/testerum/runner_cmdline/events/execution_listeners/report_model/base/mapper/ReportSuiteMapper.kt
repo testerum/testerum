@@ -16,6 +16,7 @@ object ReportSuiteMapper {
                        children: List<FeatureOrTestRunnerReportNode>,
                        stepDefsByMinId: StepDefsByMinId): ReportSuite {
         return ReportSuite(
+                executionName = startEvent.executionName,
                 startTime = startEvent.time,
                 endTime = endEvent.time,
                 durationMillis = endEvent.durationMillis,

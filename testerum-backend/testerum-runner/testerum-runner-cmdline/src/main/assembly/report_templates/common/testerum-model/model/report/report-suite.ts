@@ -11,7 +11,8 @@ import {ReportUndefinedStepDef} from "../step/def/report-undefined-step-def";
 
 export class ReportSuite implements RunnerReportNode {
 
-    constructor(public readonly startTime: Date,
+    constructor(public readonly executionName: string | null,
+                public readonly startTime: Date,
                 public readonly endTime: Date,
                 public readonly durationMillis: number,
                 public readonly status: ExecutionStatus,
@@ -20,16 +21,12 @@ export class ReportSuite implements RunnerReportNode {
                 public readonly children: Array<FeatureOrTestRunnerReportNode>,
                 public readonly stepDefsById: Map<string, ReportStepDef>) { }
 
-    // noinspection JSMethodCanBeStatic
-    get name(): string {
-        return "Test Suite";
-    }
-
     static parse(input: Object): ReportSuite {
         if (!input) {
             return null;
         }
 
+        const executionName = input["executionName"] || null;
         const startTime = MarshallingUtils.parseLocalDateTime(input["startTime"]);
         const endTime = MarshallingUtils.parseLocalDateTime(input["endTime"]);
         const durationMillis = input["durationMillis"];
@@ -48,6 +45,6 @@ export class ReportSuite implements RunnerReportNode {
             [StepDefType[StepDefType.UNDEFINED_STEP]]: ReportUndefinedStepDef
         });
 
-        return new ReportSuite(startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children, stepDefsById);
+        return new ReportSuite(executionName, startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children, stepDefsById);
     }
 }

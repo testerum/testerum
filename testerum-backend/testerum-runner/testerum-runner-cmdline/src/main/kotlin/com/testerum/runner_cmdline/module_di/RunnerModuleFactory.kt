@@ -21,6 +21,7 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
                           runnerListenersModuleFactory: RunnerListenersModuleFactory,
                           settingsModuleFactory: SettingsModuleFactory,
                           fileServiceModuleFactory: FileServiceModuleFactory,
+                          executionName: String?,
 
                           stopWatch: StopWatch) : BaseModuleFactory(context) {
 
@@ -45,7 +46,8 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
     private val runnerExecutionTreeBuilder = RunnerExecutionTreeBuilder(
             runnerTestsFinder = runnerTestsFinder,
             stepsCache = fileServiceModuleFactory.stepsCache,
-            testsCache = fileServiceModuleFactory.testsCache
+            testsCache = fileServiceModuleFactory.testsCache,
+            executionName = executionName
     )
 
     private val runnerSettingsManager = RunnerSettingsManagerImpl(

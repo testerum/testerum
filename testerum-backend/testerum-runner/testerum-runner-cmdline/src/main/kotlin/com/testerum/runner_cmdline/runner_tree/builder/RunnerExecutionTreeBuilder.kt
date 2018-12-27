@@ -27,7 +27,8 @@ import java.nio.file.Path as JavaPath
 
 class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinder,
                                  private val stepsCache: StepsCache,
-                                 private val testsCache: TestsCache) {
+                                 private val testsCache: TestsCache,
+                                 private val executionName: String?) {
 
     //
     // VERY IMPORTANT!!!
@@ -45,7 +46,7 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
         val tests = loadTests(pathsToTestsToExecute, testsDirectoryRoot)
 
         val builder = TreeBuilder(
-                customizer = RunnerExecutionTreeBuilderCustomizer(hooks)
+                customizer = RunnerExecutionTreeBuilderCustomizer(hooks, executionName)
         )
         tests.forEach { builder.add(it) }
 
@@ -86,7 +87,8 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
 
     private data class TestWithFilePath(val test: TestModel, val filePath: JavaPath)
 
-    private class RunnerExecutionTreeBuilderCustomizer(hooks: Collection<HookDef>) : TreeBuilderCustomizer {
+    private class RunnerExecutionTreeBuilderCustomizer(hooks: Collection<HookDef>,
+                                                       private val executionName: String?) : TreeBuilderCustomizer {
 
         private val beforeEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_EACH_TEST)
         private val afterEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_EACH_TEST)
@@ -117,7 +119,8 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
             return RunnerSuite(
                     beforeAllTestsHooks = beforeAllTestsHooks,
                     featuresOrTests = children,
-                    afterAllTestsHooks = afterAllTestsHooks
+                    afterAllTestsHooks = afterAllTestsHooks,
+                    executionName = executionName
             )
         }
 
