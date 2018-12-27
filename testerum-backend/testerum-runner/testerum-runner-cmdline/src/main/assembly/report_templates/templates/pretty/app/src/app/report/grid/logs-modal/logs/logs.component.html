@@ -10,7 +10,7 @@
                         <p class="log-line"
                            [class.log-type-debug]="log.logLevel == LogLevel.DEBUG"
                            [class.log-type-info]="log.logLevel == LogLevel.INFO"
-                           [class.log-type-warning]="log.logLevel == LogLevel.WARNING">{{log.message}}</p>
+                           [class.log-type-warning]="log.logLevel == LogLevel.WARNING">{{getLogAsString(log)}}</p>
                 </td>
             </tr>
             </tbody>

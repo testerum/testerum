@@ -13,6 +13,7 @@ import {AutoComplete} from "primeng/autocomplete";
 import {ReportGridTagsUtil} from "./util/report-grid-tags.util";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
+import {ReportLog} from "../../../../../../../common/testerum-model/model/report/report-log";
 
 @Component({
     selector: 'report-grid',
@@ -189,7 +190,7 @@ export class ReportGridComponent implements OnInit, OnDestroy {
 
     }
 
-    onLogsLoad(data: any) {
+    onLogsLoad(data: ReportLog[]) {
         window['logsModalService'].showLogsModal(data);
     }
 }

@@ -9,7 +9,7 @@ export class ReportLog {
                 public readonly message: string,
                 public readonly exceptionDetail: ExceptionDetail | null) { }
 
-    static parse(input: Object): ReportLog {
+    public static parse(input: Object): ReportLog {
         if (!input) {
             return null;
         }
@@ -22,17 +22,16 @@ export class ReportLog {
         return new ReportLog(time, logLevel, message, exceptionDetail);
     }
 
-    getMessageWithException(): string {
+    public static getMessageWithException(obj: ReportLog): string {
         let result = "";
 
-        result += this.message;
+        result += obj.message;
 
-        if (this.exceptionDetail != null) {
+        if (obj.exceptionDetail != null) {
             result += "; exception:\n";
-            result += this.exceptionDetail.asDetailedString;
+            result += obj.exceptionDetail.asDetailedString;
         }
 
         return result;
     }
-
 }

@@ -14,4 +14,8 @@ export class LogsComponent {
     @Input() shouldWrapLogs: boolean;
 
     LogLevel = LogLevel;
+
+    getLogAsString(log: ReportLog): string {
+        return ReportLog.getMessageWithException(log);
+    }
 }
