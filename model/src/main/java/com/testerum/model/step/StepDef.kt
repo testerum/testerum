@@ -23,7 +23,6 @@ interface StepDef {
     val phase: StepPhaseEnum
     val stepPattern: StepPattern //TODO: rename to StepSignature
     val description: String?
-    val tags: List<String>
 
     val warnings: List<Warning>
     val descendantsHaveWarnings: Boolean

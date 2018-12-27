@@ -1,7 +1,9 @@
 package com.testerum.runner_cmdline.runner_tree.builder
 
+import com.testerum.file_service.caches.resolved.FeaturesCache
 import com.testerum.file_service.caches.resolved.StepsCache
 import com.testerum.file_service.caches.resolved.TestsCache
+import com.testerum.model.feature.Feature
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
@@ -26,8 +28,9 @@ import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import java.nio.file.Path as JavaPath
 
 class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinder,
-                                 private val stepsCache: StepsCache,
+                                 private val featuresCache: FeaturesCache,
                                  private val testsCache: TestsCache,
+                                 private val stepsCache: StepsCache,
                                  private val executionName: String?) {
 
     //
@@ -43,20 +46,55 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
 
         val testsDirectoryRoot = testsDir.toAbsolutePath()
         val pathsToTestsToExecute: List<JavaPath> = runnerTestsFinder.findPathsToTestsToExecute(cmdlineParams, testsDir)
+        val features = loadFeatures(pathsToTestsToExecute, testsDirectoryRoot)
         val tests = loadTests(pathsToTestsToExecute, testsDirectoryRoot)
 
         val builder = TreeBuilder(
                 customizer = RunnerExecutionTreeBuilderCustomizer(hooks, executionName)
         )
+        features.forEach { builder.add(it) }
         tests.forEach { builder.add(it) }
 
         return builder.build() as RunnerSuite
     }
 
-    private fun loadTests(testPaths: List<JavaPath>, testsDirectoryRoot: JavaPath): List<TestWithFilePath> {
+    private fun loadFeatures(testJavaPaths: List<JavaPath>, testsDirectoryRoot: JavaPath): List<Feature> {
+        val result = arrayListOf<Feature>()
+
+        val possibleFeaturePaths = getPossibleFeaturePaths(testJavaPaths, testsDirectoryRoot)
+        for (possibleFeaturePath in possibleFeaturePaths) {
+            val feature = featuresCache.getFeatureAtPath(possibleFeaturePath)
+                    ?: continue
+
+            result += feature
+        }
+
+        return result
+    }
+
+    private fun getPossibleFeaturePaths(testJavaPaths: List<JavaPath>, testsDirectoryRoot: JavaPath): List<Path> {
+        val result = linkedSetOf<String>()
+
+        for (testJavaPath in testJavaPaths) {
+            val relativeTestJavaPath = testsDirectoryRoot.relativize(testJavaPath)
+            val testPath = Path.createInstance(relativeTestJavaPath.toString())
+
+            val testPathDirectories = testPath.directories
+            for (i in 1..testPathDirectories.size) {
+                result += testPathDirectories.subList(0, i)
+                        .joinToString(separator = "/")
+            }
+        }
+
+        return result.map {
+            Path.createInstance(it)
+        }
+    }
+
+    private fun loadTests(testJavaPaths: List<JavaPath>, testsDirectoryRoot: JavaPath): List<TestWithFilePath> {
         val result = arrayListOf<TestWithFilePath>()
 
-        for (testPath in testPaths) {
+        for (testPath in testJavaPaths) {
             val testWithFilePath: TestWithFilePath = loadTest(testPath, testsDirectoryRoot)
 
             // ignore manual tests
@@ -96,18 +134,26 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
         private val afterAllTestsHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_ALL_TESTS)
 
         override fun getPath(payload: Any): List<String> = when (payload) {
+            is Feature          -> payload.path.parts
             is TestWithFilePath -> payload.test.path.parts
             else                -> throw unknownPayloadException(payload)
         }
 
         override fun isContainer(payload: Any): Boolean = when (payload) {
+            is Feature          -> true
             is TestWithFilePath -> false
             else                -> throw unknownPayloadException(payload)
         }
 
-        override fun getRootLabel(): String = "Suite"
+        override fun getRootLabel(): String = buildString {
+            append("Suite")
+            if (executionName != null) {
+                append(" - ").append(executionName)
+            }
+        }
 
         override fun getLabel(payload: Any): String = when (payload) {
+            is Feature          -> payload.path.directories.last()
             is TestWithFilePath -> payload.test.name
             else                -> throw unknownPayloadException(payload)
         }
@@ -134,6 +180,19 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
                     RunnerFeature(
                             featurePathFromRoot = path,
                             featureName = label,
+                            tags = emptyList(),
+                            featuresOrTests = children,
+                            indexInParent = indexInParent
+                    )
+                }
+                is Feature -> {
+                    @Suppress("UNCHECKED_CAST")
+                    val children: List<RunnerFeatureOrTest> = childrenNodes as List<RunnerFeatureOrTest>
+
+                    RunnerFeature(
+                            featurePathFromRoot = path,
+                            featureName = label,
+                            tags = payload.tags,
                             featuresOrTests = children,
                             indexInParent = indexInParent
                     )

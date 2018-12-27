@@ -7,6 +7,7 @@ import {ReportTest} from "./report-test";
 export class ReportFeature implements FeatureOrTestRunnerReportNode {
 
     constructor(public readonly featureName: string,
+                public readonly tags: Array<string>,
                 public readonly startTime: Date,
                 public readonly endTime: Date,
                 public readonly durationMillis: number,
@@ -22,6 +23,7 @@ export class ReportFeature implements FeatureOrTestRunnerReportNode {
         }
 
         const featureName = input["featureName"];
+        const tags = MarshallingUtils.parseListOfStrings(input["tags"]);
         const startTime = MarshallingUtils.parseLocalDateTime(input["startTime"]);
         const endTime = MarshallingUtils.parseLocalDateTime(input["endTime"]);
         const durationMillis = input["durationMillis"];
@@ -33,7 +35,7 @@ export class ReportFeature implements FeatureOrTestRunnerReportNode {
             [RunnerReportNodeType[RunnerReportNodeType.TEST]]: ReportTest
         });
 
-        return new ReportFeature(featureName, startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children);
+        return new ReportFeature(featureName, tags, startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children);
     }
 
 }

@@ -16,6 +16,7 @@ object ReportFeatureMapper {
                          children: List<FeatureOrTestRunnerReportNode>): ReportFeature {
         return ReportFeature(
                 featureName = startEvent.featureName,
+                tags = startEvent.tags,
                 startTime = startEvent.time,
                 endTime = endEvent.time,
                 durationMillis = endEvent.durationMillis,

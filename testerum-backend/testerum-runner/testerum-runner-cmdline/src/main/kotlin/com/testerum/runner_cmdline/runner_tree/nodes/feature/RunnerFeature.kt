@@ -15,6 +15,7 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesConte
 
 class RunnerFeature(featurePathFromRoot: List<String>,
                     private val featureName: String,
+                    private val tags: List<String>,
                     private val featuresOrTests: List<RunnerFeatureOrTest>,
                     indexInParent: Int): RunnerFeatureOrTest() {
 
@@ -102,7 +103,8 @@ class RunnerFeature(featurePathFromRoot: List<String>,
         context.logEvent(
                 FeatureStartEvent(
                         eventKey = eventKey,
-                        featureName = featureName
+                        featureName = featureName,
+                        tags = tags
                 )
         )
         context.logMessage("Started executing feature [$featureName]")

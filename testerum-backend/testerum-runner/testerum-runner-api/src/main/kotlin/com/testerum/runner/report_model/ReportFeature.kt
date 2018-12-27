@@ -5,6 +5,7 @@ import com.testerum.api.test_context.ExecutionStatus
 import java.time.LocalDateTime
 
 data class ReportFeature(@JsonProperty("featureName")      val featureName: String,
+                         @JsonProperty("tags")             val tags: List<String>,
                          @JsonProperty("startTime")        val startTime: LocalDateTime,
                          @JsonProperty("endTime")          val endTime: LocalDateTime,
                          @JsonProperty("durationMillis")   val durationMillis: Long,

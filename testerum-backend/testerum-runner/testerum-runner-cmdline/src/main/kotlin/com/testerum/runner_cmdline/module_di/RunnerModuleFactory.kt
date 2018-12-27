@@ -45,8 +45,9 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
 
     private val runnerExecutionTreeBuilder = RunnerExecutionTreeBuilder(
             runnerTestsFinder = runnerTestsFinder,
-            stepsCache = fileServiceModuleFactory.stepsCache,
+            featuresCache = fileServiceModuleFactory.featuresCache,
             testsCache = fileServiceModuleFactory.testsCache,
+            stepsCache = fileServiceModuleFactory.stepsCache,
             executionName = executionName
     )
 

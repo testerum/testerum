@@ -19,9 +19,6 @@ data class UndefinedStepDef @JsonCreator constructor(@JsonProperty("phase") over
     override val description: String?
         get() = null
 
-    override val tags: List<String>
-        get() = emptyList()
-
     override val warnings: List<Warning>
         get() = emptyList() // undefined steps don't have warnings; "undefined step" is a warning of a step call, not a step definition
 
