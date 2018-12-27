@@ -24,6 +24,8 @@ export class LogsModalService {
         modalInstance.modalComponentRef = modalComponentRef;
         modalInstance.modalSubject = modalSubject;
 
+        modalComponentRef.changeDetectorRef.detectChanges();
+
         return modalSubject.asObservable();
     }
 }

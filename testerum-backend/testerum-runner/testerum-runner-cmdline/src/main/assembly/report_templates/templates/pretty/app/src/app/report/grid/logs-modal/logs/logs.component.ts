@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild,} from '@angular/core';
+import {Component, Input,} from '@angular/core';
 import {ReportLog} from "../../../../../../../../../common/testerum-model/model/report/report-log";
 import {LogLevel} from "../../../../../../../../../common/testerum-model/model/report/log-level";
 import {ExceptionDetail} from "../../../../../../../../../common/testerum-model/model/exception/exception-detail";

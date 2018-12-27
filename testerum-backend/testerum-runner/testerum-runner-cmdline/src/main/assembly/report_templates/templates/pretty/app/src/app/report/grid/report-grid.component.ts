@@ -168,6 +168,7 @@ export class ReportGridComponent implements OnInit, OnDestroy {
         var element = document.createElement('a');
         element.setAttribute('href', nodeData.textLogFilePath);
         element.setAttribute('download', "logs.txt");
+        element.setAttribute('target', "_blank");
 
         element.style.display = 'none';
         document.body.appendChild(element);
@@ -179,17 +180,16 @@ export class ReportGridComponent implements OnInit, OnDestroy {
 
     onShowLogs(nodeData: ReportGridNodeData) {
         window['receiveModel'] = this.onLogsLoad;
+        window['logsModalService'] = this.logsModalService;
 
         var element = document.createElement('script');
         element.setAttribute('type', 'text/javascript');
         element.setAttribute('src', nodeData.modelLogFilePath);
         document.body.appendChild(element);
 
-        document.body.removeChild(element);
     }
 
     onLogsLoad(data: any) {
-        console.log(data);
-        this.logsModalService.showLogsModal(null, data);
+        window['logsModalService'].showLogsModal(data, null); //TODO: exceptionDetail should not be null
     }
 }

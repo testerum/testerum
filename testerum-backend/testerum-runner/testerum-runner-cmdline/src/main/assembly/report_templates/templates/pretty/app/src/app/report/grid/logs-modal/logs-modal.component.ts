@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ComponentRef, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Subject} from "rxjs";
 import {ReportLog} from "../../../../../../../../common/testerum-model/model/report/report-log";
@@ -21,6 +21,10 @@ export class LogsModalComponent implements AfterViewInit {
     modalComponentRef: ComponentRef<LogsModalComponent>;
     modalSubject:Subject<void>;
 
+
+    constructor(private cd: ChangeDetectorRef) {
+    }
+
     ngAfterViewInit(): void {
         this.modal.show();
         this.modal.onHidden.subscribe(event => {
@@ -33,6 +37,12 @@ export class LogsModalComponent implements AfterViewInit {
         })
     }
 
+    refresh() {
+        if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
+            this.cd.detectChanges();
+        }
+    }
+
     close() {
         this.modalSubject.next();
         this.modal.hide();
@@ -40,5 +50,6 @@ export class LogsModalComponent implements AfterViewInit {
 
     onToggleWrap() {
         this.shouldWrapLogs = !this.shouldWrapLogs;
+        this.refresh();
     }
 }
