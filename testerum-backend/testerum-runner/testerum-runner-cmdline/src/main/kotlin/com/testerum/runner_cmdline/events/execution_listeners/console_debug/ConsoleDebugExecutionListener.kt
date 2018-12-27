@@ -30,7 +30,18 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("SUITE_END: status=${event.status}, durationMillis=${event.durationMillis}, eventKey=${event.eventKey}\n")
+       log(
+                buildString {
+                    append("SUITE_END: ")
+                    append("status=${event.status}")
+                    if (event.exceptionDetail != null) {
+                        append(", exceptionDetail='${event.exceptionDetail}'")
+                    }
+                    append(", durationMillis=${event.durationMillis}")
+                    append(", eventKey=${event.eventKey}")
+                    append('\n')
+                }
+        )
     }
 
     override fun onFeatureStart(event: FeatureStartEvent) {
