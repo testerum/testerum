@@ -1,24 +1,25 @@
-18:09:42.643  [INFO ] Started executing test ["Eternal Flame" is immortal] at [unrelated/super hero squad/_Eternal Flame_ is immortal.test]
-18:09:43.203  [INFO ] 18:09:42.645 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
-18:09:43.203  [INFO ] 18:09:43.203 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
-18:09:43.203  [INFO ] 
-18:09:43.206  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:heroes/Hero Squad.http.stub.yaml>>]
-18:09:44.981  [INFO ] 18:09:44.845 [main] INFO wiremock.org.eclipse.jetty.util.log - Logging initialized @4869ms
-18:09:44.981  [INFO ] 18:09:44.921 [main] INFO wiremock.org.eclipse.jetty.server.Server - jetty-9.2.z-SNAPSHOT
-18:09:44.981  [INFO ] 18:09:44.938 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@3ab70d34{/__admin,null,AVAILABLE}
-18:09:44.981  [INFO ] 18:09:44.938 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@7af0693b{/,null,AVAILABLE}
-18:09:44.981  [INFO ] 18:09:44.950 [main] INFO wiremock.org.eclipse.jetty.server.NetworkTrafficServerConnector - Started NetworkTrafficServerConnector@37f627d0{HTTP/1.1}{0.0.0.0:12121}
-18:09:44.981  [INFO ] 18:09:44.950 [main] INFO wiremock.org.eclipse.jetty.server.Server - Started @4975ms
-18:09:44.981  [INFO ] 
-18:09:44.981  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:heroes/Hero Squad.http.stub.yaml>>]; status: [PASSED]
-18:09:44.987  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
-18:09:45.053  [INFO ] HTTP Request [
-GET http://localhost:12121/heros
+23:44:33.214  [INFO ] Started executing test ["Eternal Flame" is immortal] at [unrelated/super hero squad/_Eternal Flame_ is immortal.test]
+23:44:34.811  [INFO ] 23:44:33.217 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:34.811  [INFO ] 23:44:34.810 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:34.811  [INFO ] 
+23:44:34.818  [INFO ] Started executing step [COMPOSED: GIVEN step 1]
+23:44:34.821  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]
+23:44:38.567  [INFO ] 23:44:38.231 [main] INFO wiremock.org.eclipse.jetty.util.log - Logging initialized @19927ms
+23:44:38.567  [INFO ] 23:44:38.431 [main] INFO wiremock.org.eclipse.jetty.server.Server - jetty-9.2.z-SNAPSHOT
+23:44:38.567  [INFO ] 23:44:38.465 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@1255de25{/__admin,null,AVAILABLE}
+23:44:38.567  [INFO ] 23:44:38.466 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@4fc3529{/,null,AVAILABLE}
+23:44:38.567  [INFO ] 23:44:38.491 [main] INFO wiremock.org.eclipse.jetty.server.NetworkTrafficServerConnector - Started NetworkTrafficServerConnector@5d58dc61{HTTP/1.1}{0.0.0.0:12121}
+23:44:38.567  [INFO ] 23:44:38.491 [main] INFO wiremock.org.eclipse.jetty.server.Server - Started @20190ms
+23:44:38.567  [INFO ] 
+23:44:38.567  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]; status: [PASSED]
+23:44:38.579  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+23:44:38.714  [INFO ] HTTP Request [
+GET http://localhost:12121/heroes
 
 ]
-18:09:45.577  [INFO ] 18:09:45.186 [qtp848019559-20] INFO / - RequestHandlerClass from context returned com.github.tomakehurst.wiremock.http.StubRequestHandler. Normalized mapped under returned 'null'
-18:09:45.577  [INFO ] 
-18:09:45.577  [INFO ] HTTP Response [
+23:44:39.747  [INFO ] 23:44:39.075 [qtp1266333611-25] INFO / - RequestHandlerClass from context returned com.github.tomakehurst.wiremock.http.StubRequestHandler. Normalized mapped under returned 'null'
+23:44:39.747  [INFO ] 
+23:44:39.747  [INFO ] HTTP Response [
 HTTP/1.1 200
 Content-Type: application/json
 Vary: Accept-Encoding, User-Agent
@@ -49,11 +50,56 @@ Server: Jetty(9.2.z-SNAPSHOT)
   } ]
 }
 ]
-18:09:45.579  [INFO ] Http Request executed successfully
-18:09:45.579  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
-18:09:45.580  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
-18:09:45.719  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
-18:09:45.721  [INFO ] 18:09:45.720 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
-18:09:45.721  [INFO ] 18:09:45.720 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
-18:09:45.721  [INFO ] 
-18:09:45.721  [INFO ] Finished executing test ["Eternal Flame" is immortal] at [unrelated/super hero squad/_Eternal Flame_ is immortal.test]; status: [PASSED]
+23:44:39.749  [INFO ] Http Request executed successfully
+23:44:39.749  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
+23:44:39.751  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+23:44:39.991  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
+23:44:39.995  [INFO ] Started executing step [COMPOSED: GIVEN step 2]
+23:44:39.997  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]
+23:44:40.190  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]; status: [PASSED]
+23:44:40.194  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+23:44:40.309  [INFO ] HTTP Request [
+GET http://localhost:12121/heroes
+
+]
+23:44:40.335  [INFO ] HTTP Response [
+HTTP/1.1 200
+Content-Type: application/json
+Vary: Accept-Encoding, User-Agent
+Transfer-Encoding: chunked
+Server: Jetty(9.2.z-SNAPSHOT)
+
+{
+  "squadName" : "Super hero squad",
+  "homeTown" : "Metro City",
+  "formed" : 2016,
+  "secretBase" : "Super tower",
+  "active" : true,
+  "members" : [ {
+    "name" : "Molecule Man",
+    "age" : 29,
+    "secretIdentity" : "Dan Jukes",
+    "powers" : [ "Radiation resistance", "Turning tiny", "Radiation blast" ]
+  }, {
+    "name" : "Madame Uppercut",
+    "age" : 39,
+    "secretIdentity" : "Jane Wilson",
+    "powers" : [ "Million tonne punch", "Damage resistance", "Superhuman reflexes" ]
+  }, {
+    "name" : "Eternal Flame",
+    "age" : 1000000,
+    "secretIdentity" : "Unknown",
+    "powers" : [ "Immortality", "Heat Immunity", "Inferno", "Teleportation", "Interdimensional travel" ]
+  } ]
+}
+]
+23:44:40.336  [INFO ] Http Request executed successfully
+23:44:40.337  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
+23:44:40.341  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+23:44:40.452  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
+23:44:40.454  [INFO ] Finished executing step [COMPOSED: GIVEN step 2]; status: [PASSED]
+23:44:40.457  [INFO ] Finished executing step [COMPOSED: GIVEN step 1]; status: [PASSED]
+23:44:40.460  [INFO ] 23:44:40.458 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:40.460  [INFO ] 23:44:40.459 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:40.460  [INFO ] 
+23:44:40.460  [INFO ] Finished executing test ["Eternal Flame" is immortal] at [unrelated/super hero squad/_Eternal Flame_ is immortal.test]; status: [PASSED]

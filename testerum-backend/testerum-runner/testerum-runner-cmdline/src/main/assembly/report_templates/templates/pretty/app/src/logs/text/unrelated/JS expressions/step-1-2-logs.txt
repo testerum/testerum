@@ -1,5 +1,5 @@
-18:09:46.014  [INFO ] Started executing step [BASIC: THEN <<actualValue={{today}}>> is equal to <<expectedValue=2018-11-29>>]
-18:09:46.069  [INFO ] Finished executing step [BASIC: THEN <<actualValue={{today}}>> is equal to <<expectedValue=2018-11-29>>]; status: [FAILED]; exception:
+23:44:41.025  [INFO ] Started executing step [BASIC: THEN <<actualValue={{today}}>> is equal to <<expectedValue=2018-11-29>>]
+23:44:41.149  [WARN ] Finished executing step [BASIC: THEN <<actualValue={{today}}>> is equal to <<expectedValue=2018-11-29>>]; status: [FAILED]; exception:
 java.lang.AssertionError: expected [1979] to be equal to [2018-11-29], but was not
 	at assertions.AssertionsSteps.assertEqualValues(AssertionsSteps.kt:12)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
@@ -8,12 +8,14 @@ java.lang.AssertionError: expected [1979] to be equal to [2018-11-29], but was n
 	at java.lang.reflect.Method.invoke(Method.java:498)
 	at com.testerum.runner_cmdline.runner_tree.nodes.step.impl.RunnerBasicStep.doRun(RunnerBasicStep.kt:53)
 	at com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep.run(RunnerStep.kt:32)
+	at com.testerum.runner_cmdline.runner_tree.nodes.step.impl.RunnerComposedStep.doRun(RunnerComposedStep.kt:40)
+	at com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep.run(RunnerStep.kt:32)
 	at com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest.tryToRun(RunnerTest.kt:109)
 	at com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest.run(RunnerTest.kt:62)
-	at com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature.tryToRun(RunnerFeature.kt:61)
-	at com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature.run(RunnerFeature.kt:46)
-	at com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite.runTests(RunnerSuite.kt:112)
-	at com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite.run(RunnerSuite.kt:66)
+	at com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature.tryToRun(RunnerFeature.kt:62)
+	at com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature.run(RunnerFeature.kt:47)
+	at com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite.runTests(RunnerSuite.kt:113)
+	at com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite.run(RunnerSuite.kt:67)
 	at com.testerum.runner_cmdline.RunnerApplication$tryToExecute$executionStatus$1.invoke(RunnerApplication.kt:116)
 	at com.testerum.runner_cmdline.RunnerApplication$tryToExecute$executionStatus$1.invoke(RunnerApplication.kt:41)
 	at com.testerum.common_kotlin.Classloader_utilsKt.runWithThreadContextClassLoader(classloader_utils.kt:8)

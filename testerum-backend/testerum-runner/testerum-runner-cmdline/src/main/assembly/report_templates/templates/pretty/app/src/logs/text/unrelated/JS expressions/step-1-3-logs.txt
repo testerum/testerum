@@ -1,0 +1,2 @@
+23:44:41.174  [INFO ] Started executing step [BASIC: GIVEN the variable <<name=tenDaysFromToday>> with value <<value={{(function(){var futureDate = new Date(...>>]
+23:44:41.175  [INFO ] Finished executing step [BASIC: GIVEN the variable <<name=tenDaysFromToday>> with value <<value={{(function(){var futureDate = new Date(...>>]; status: [SKIPPED]

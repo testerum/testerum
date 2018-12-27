@@ -1,0 +1,40 @@
+23:44:38.579  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+23:44:38.714  [INFO ] HTTP Request [
+GET http://localhost:12121/heroes
+
+]
+23:44:39.747  [INFO ] 23:44:39.075 [qtp1266333611-25] INFO / - RequestHandlerClass from context returned com.github.tomakehurst.wiremock.http.StubRequestHandler. Normalized mapped under returned 'null'
+23:44:39.747  [INFO ] 
+23:44:39.747  [INFO ] HTTP Response [
+HTTP/1.1 200
+Content-Type: application/json
+Vary: Accept-Encoding, User-Agent
+Transfer-Encoding: chunked
+Server: Jetty(9.2.z-SNAPSHOT)
+
+{
+  "squadName" : "Super hero squad",
+  "homeTown" : "Metro City",
+  "formed" : 2016,
+  "secretBase" : "Super tower",
+  "active" : true,
+  "members" : [ {
+    "name" : "Molecule Man",
+    "age" : 29,
+    "secretIdentity" : "Dan Jukes",
+    "powers" : [ "Radiation resistance", "Turning tiny", "Radiation blast" ]
+  }, {
+    "name" : "Madame Uppercut",
+    "age" : 39,
+    "secretIdentity" : "Jane Wilson",
+    "powers" : [ "Million tonne punch", "Damage resistance", "Superhuman reflexes" ]
+  }, {
+    "name" : "Eternal Flame",
+    "age" : 1000000,
+    "secretIdentity" : "Unknown",
+    "powers" : [ "Immortality", "Heat Immunity", "Inferno", "Teleportation", "Interdimensional travel" ]
+  } ]
+}
+]
+23:44:39.749  [INFO ] Http Request executed successfully
+23:44:39.749  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]

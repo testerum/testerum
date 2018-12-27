@@ -1,15 +1,16 @@
-18:09:45.725  [INFO ] Started executing test [Verify full squad] at [unrelated/super hero squad/Verify full squad.test]
-18:09:45.726  [INFO ] 18:09:45.725 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
-18:09:45.726  [INFO ] 18:09:45.725 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
-18:09:45.726  [INFO ] 
-18:09:45.728  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:heroes/Hero Squad.http.stub.yaml>>]
-18:09:45.822  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:heroes/Hero Squad.http.stub.yaml>>]; status: [PASSED]
-18:09:45.823  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
-18:09:45.862  [INFO ] HTTP Request [
-GET http://localhost:12121/heros
+23:44:40.469  [INFO ] Started executing test [Verify full squad] at [unrelated/super hero squad/Verify full squad.test]
+23:44:40.470  [INFO ] 23:44:40.469 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:40.470  [INFO ] 23:44:40.470 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:40.470  [INFO ] 
+23:44:40.473  [INFO ] Started executing step [COMPOSED: GIVEN step 2]
+23:44:40.476  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]
+23:44:40.705  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]; status: [PASSED]
+23:44:40.709  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+23:44:40.773  [INFO ] HTTP Request [
+GET http://localhost:12121/heroes
 
 ]
-18:09:45.873  [INFO ] HTTP Response [
+23:44:40.789  [INFO ] HTTP Response [
 HTTP/1.1 200
 Content-Type: application/json
 Vary: Accept-Encoding, User-Agent
@@ -40,11 +41,12 @@ Server: Jetty(9.2.z-SNAPSHOT)
   } ]
 }
 ]
-18:09:45.874  [INFO ] Http Request executed successfully
-18:09:45.874  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
-18:09:45.875  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
-18:09:45.945  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
-18:09:45.946  [INFO ] 18:09:45.946 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
-18:09:45.946  [INFO ] 18:09:45.946 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
-18:09:45.946  [INFO ] 
-18:09:45.946  [INFO ] Finished executing test [Verify full squad] at [unrelated/super hero squad/Verify full squad.test]; status: [PASSED]
+23:44:40.789  [INFO ] Http Request executed successfully
+23:44:40.790  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
+23:44:40.793  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+23:44:40.884  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
+23:44:40.885  [INFO ] Finished executing step [COMPOSED: GIVEN step 2]; status: [PASSED]
+23:44:40.887  [INFO ] 23:44:40.886 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:40.887  [INFO ] 23:44:40.887 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:40.887  [INFO ] 
+23:44:40.887  [INFO ] Finished executing test [Verify full squad] at [unrelated/super hero squad/Verify full squad.test]; status: [PASSED]
