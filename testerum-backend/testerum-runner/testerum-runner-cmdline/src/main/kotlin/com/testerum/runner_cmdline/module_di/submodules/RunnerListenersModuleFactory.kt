@@ -25,7 +25,6 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
 
                     OutputFormat.CUSTOM_TEMPLATE    to { properties: Map<String, String> -> CustomTemplateExecutionListener(properties) },
                     OutputFormat.BASIC_HTML         to builtInTemplateExecutionListenerFactory("basic_html"),
-                    OutputFormat.STEPS_TAG_OVERVIEW to builtInTemplateExecutionListenerFactory("steps_tag_overview"),
                     OutputFormat.PRETTY             to builtInTemplateExecutionListenerFactory("pretty")
             )
     )

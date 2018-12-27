@@ -47,13 +47,6 @@
             <useDefaultExcludes>false</useDefaultExcludes>
         </fileSet>
 
-        <!-- compiled report templates: steps_tag_overview -->
-        <fileSet>
-            <directory>${project.basedir}/src/main/assembly/report_templates/templates/steps_tag_overview/dist</directory>
-            <outputDirectory>report_templates/steps_tag_overview</outputDirectory>
-            <useDefaultExcludes>false</useDefaultExcludes>
-        </fileSet>
-
         <!-- compiled report templates: pretty -->
         <fileSet>
             <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</directory>

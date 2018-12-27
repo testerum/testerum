@@ -266,43 +266,6 @@
                         </configuration>
                     </execution>
 
-                    <!-- steps_tag_overview -->
-                    <execution>
-                        <id>compile-report-templates--npm-install--steps_tag_overview</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/steps_tag_overview</workingDirectory>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>compile-report-templates--npm-build--steps_tag_overview</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run build-prod</arguments>
-                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/steps_tag_overview</workingDirectory>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>compile-report-templates--npm-install-dependencies-in-dist-dir--steps_tag_overview</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install --only=production</arguments>
-                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/steps_tag_overview/dist</workingDirectory>
-                        </configuration>
-                    </execution>
-
                     <!-- pretty / app -->
                     <execution>
                         <id>compile-report-templates--npm-install--pretty-app</id>
@@ -586,24 +549,6 @@
                                     <resources>
                                         <resource>
                                             <directory>${project.basedir}/src/main/assembly/report_templates/templates/basic_html/dist</directory>
-                                            <filtering>false</filtering>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-
-                            <!-- copy-compiled-report-templates-to-package-dir: steps_tag_overview -->
-                            <execution>
-                                <id>copy-compiled-report-templates-to-package-dir--steps_tag_overview</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${project.basedir}/../../../package/runner/report_templates/steps_tag_overview</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/src/main/assembly/report_templates/templates/steps_tag_overview/dist</directory>
                                             <filtering>false</filtering>
                                         </resource>
                                     </resources>
