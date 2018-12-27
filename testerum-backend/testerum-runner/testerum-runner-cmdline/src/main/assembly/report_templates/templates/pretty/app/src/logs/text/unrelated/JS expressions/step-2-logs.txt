@@ -1,0 +1,2 @@
+11:13:11.097  [INFO ] Executing step BASIC: THEN <<actualValue = {{today}}>> is equal to <<expectedValue = 2018-11-29>>
+11:13:11.167  [INFO ] Finished executing step BASIC: THEN <<actualValue = {{today}}>> is equal to <<expectedValue = 2018-11-29>>

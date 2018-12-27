@@ -1,0 +1,1 @@
+receiveModel([{"time":"2018-12-27T11:13:11.17","logLevel":"INFO","message":"Executing step BASIC: THEN <<actualValue = {{tenDaysFromToday}}>> is equal to <<expectedValue = 2018-12-09>>"},{"time":"2018-12-27T11:13:11.171","logLevel":"INFO","message":"Finished executing step BASIC: THEN <<actualValue = {{tenDaysFromToday}}>> is equal to <<expectedValue = 2018-12-09>>"},]);

@@ -1,0 +1,19 @@
+11:13:11.289  [INFO ] Executing step BASIC: WHEN I execute <<httpRequest = {"method":"GET","url":"http://localhost:12121/users/1"}>> HTTP Request
+11:13:11.332  [INFO ] HTTP Request [
+GET http://localhost:12121/users/1
+
+]
+11:13:11.339  [INFO ] HTTP Response [
+HTTP/1.1 200
+Content-Type: application/json
+Vary: Accept-Encoding, User-Agent
+Transfer-Encoding: chunked
+Server: Jetty(9.2.z-SNAPSHOT)
+
+{
+  "userName" : "Ionut Pruteanu",
+  "email" : "ipruteanu@testerum.com"
+}
+]
+11:13:11.339  [INFO ] Http Request executed successfully
+11:13:11.339  [INFO ] Finished executing step BASIC: WHEN I execute <<httpRequest = {"method":"GET","url":"http://localhost:12121/users/1"}>> HTTP Request

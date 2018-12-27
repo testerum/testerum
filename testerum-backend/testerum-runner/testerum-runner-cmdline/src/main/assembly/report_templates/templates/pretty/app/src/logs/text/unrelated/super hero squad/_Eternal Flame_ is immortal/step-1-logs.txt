@@ -1,0 +1,9 @@
+11:13:07.759  [INFO ] Executing step BASIC: GIVEN the HTTP Mock Server <<httpMockServer = file:Sample Mock Server.http.mock.server.yaml>> with the Mock Request <<httpMock = file:heroes/Hero Squad.http.stub.yaml>>
+11:13:09.966  [INFO ] 11:13:09.797 [main] INFO wiremock.org.eclipse.jetty.util.log - Logging initialized @6307ms
+11:13:09.966  [INFO ] 11:13:09.893 [main] INFO wiremock.org.eclipse.jetty.server.Server - jetty-9.2.z-SNAPSHOT
+11:13:09.966  [INFO ] 11:13:09.912 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@772bc4c9{/__admin,null,AVAILABLE}
+11:13:09.966  [INFO ] 11:13:09.913 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@1ac2829e{/,null,AVAILABLE}
+11:13:09.966  [INFO ] 11:13:09.926 [main] INFO wiremock.org.eclipse.jetty.server.NetworkTrafficServerConnector - Started NetworkTrafficServerConnector@7fe0ca60{HTTP/1.1}{0.0.0.0:12121}
+11:13:09.966  [INFO ] 11:13:09.927 [main] INFO wiremock.org.eclipse.jetty.server.Server - Started @6438ms
+11:13:09.966  [INFO ] 
+11:13:09.969  [INFO ] Finished executing step BASIC: GIVEN the HTTP Mock Server <<httpMockServer = file:Sample Mock Server.http.mock.server.yaml>> with the Mock Request <<httpMock = file:heroes/Hero Squad.http.stub.yaml>>

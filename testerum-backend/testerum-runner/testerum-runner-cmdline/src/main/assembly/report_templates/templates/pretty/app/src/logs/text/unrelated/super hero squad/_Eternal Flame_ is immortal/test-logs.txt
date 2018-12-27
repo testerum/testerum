@@ -1,0 +1,59 @@
+11:13:07.014  [INFO ] Executing test "Eternal Flame" is immortal
+11:13:07.750  [INFO ] 11:13:07.017 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+11:13:07.750  [INFO ] 11:13:07.749 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+11:13:07.750  [INFO ] 
+11:13:07.759  [INFO ] Executing step BASIC: GIVEN the HTTP Mock Server <<httpMockServer = file:Sample Mock Server.http.mock.server.yaml>> with the Mock Request <<httpMock = file:heroes/Hero Squad.http.stub.yaml>>
+11:13:09.966  [INFO ] 11:13:09.797 [main] INFO wiremock.org.eclipse.jetty.util.log - Logging initialized @6307ms
+11:13:09.966  [INFO ] 11:13:09.893 [main] INFO wiremock.org.eclipse.jetty.server.Server - jetty-9.2.z-SNAPSHOT
+11:13:09.966  [INFO ] 11:13:09.912 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@772bc4c9{/__admin,null,AVAILABLE}
+11:13:09.966  [INFO ] 11:13:09.913 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@1ac2829e{/,null,AVAILABLE}
+11:13:09.966  [INFO ] 11:13:09.926 [main] INFO wiremock.org.eclipse.jetty.server.NetworkTrafficServerConnector - Started NetworkTrafficServerConnector@7fe0ca60{HTTP/1.1}{0.0.0.0:12121}
+11:13:09.966  [INFO ] 11:13:09.927 [main] INFO wiremock.org.eclipse.jetty.server.Server - Started @6438ms
+11:13:09.966  [INFO ] 
+11:13:09.969  [INFO ] Finished executing step BASIC: GIVEN the HTTP Mock Server <<httpMockServer = file:Sample Mock Server.http.mock.server.yaml>> with the Mock Request <<httpMock = file:heroes/Hero Squad.http.stub.yaml>>
+11:13:09.974  [INFO ] Executing step BASIC: WHEN I execute <<httpRequest = {"method":"GET","url":"http://localhost:12121/heros","headers":{}}>> HTTP Request
+11:13:10.053  [INFO ] HTTP Request [
+GET http://localhost:12121/heros
+
+]
+11:13:10.627  [INFO ] 11:13:10.202 [qtp2127092492-20] INFO / - RequestHandlerClass from context returned com.github.tomakehurst.wiremock.http.StubRequestHandler. Normalized mapped under returned 'null'
+11:13:10.627  [INFO ] 
+11:13:10.627  [INFO ] HTTP Response [
+HTTP/1.1 200
+Content-Type: application/json
+Vary: Accept-Encoding, User-Agent
+Transfer-Encoding: chunked
+Server: Jetty(9.2.z-SNAPSHOT)
+
+{
+  "squadName" : "Super hero squad",
+  "homeTown" : "Metro City",
+  "formed" : 2016,
+  "secretBase" : "Super tower",
+  "active" : true,
+  "members" : [ {
+    "name" : "Molecule Man",
+    "age" : 29,
+    "secretIdentity" : "Dan Jukes",
+    "powers" : [ "Radiation resistance", "Turning tiny", "Radiation blast" ]
+  }, {
+    "name" : "Madame Uppercut",
+    "age" : 39,
+    "secretIdentity" : "Jane Wilson",
+    "powers" : [ "Million tonne punch", "Damage resistance", "Superhuman reflexes" ]
+  }, {
+    "name" : "Eternal Flame",
+    "age" : 1000000,
+    "secretIdentity" : "Unknown",
+    "powers" : [ "Immortality", "Heat Immunity", "Inferno", "Teleportation", "Interdimensional travel" ]
+  } ]
+}
+]
+11:13:10.628  [INFO ] Http Request executed successfully
+11:13:10.629  [INFO ] Finished executing step BASIC: WHEN I execute <<httpRequest = {"method":"GET","url":"http://localhost:12121/heros","headers":{}}>> HTTP Request
+11:13:10.630  [INFO ] Executing step BASIC: THEN I expect <<httpResponseVerify = {"expectedStatusCode":200,"expectedBody":{"httpBodyVerifyMatchingType":"JSON_VERIFY","httpBodyType":"JSON","bodyVerify":"{\"=compareMode\": \"exact\",\r\n  \"squadName\": \"Super hero squad\",\r\n  \"homeTown\": \"Metro City\",\r\n  \"formed\": 2016,\r\n  \"secretBase\": \"Super tower\",\r\n  \"active\": true,\r\n  \"members\": [\"=compareMode: contains\",\r\n    {\r\n      \"name\": \"Eternal Flame\",\r\n      \"powers\": [\r\n        \"Immortality\"\r\n      ]\r\n    }\r\n  ]\r\n}"}}>> HTTP Response
+11:13:10.779  [INFO ] Finished executing step BASIC: THEN I expect <<httpResponseVerify = {"expectedStatusCode":200,"expectedBody":{"httpBodyVerifyMatchingType":"JSON_VERIFY","httpBodyType":"JSON","bodyVerify":"{\"=compareMode\": \"exact\",\r\n  \"squadName\": \"Super hero squad\",\r\n  \"homeTown\": \"Metro City\",\r\n  \"formed\": 2016,\r\n  \"secretBase\": \"Super tower\",\r\n  \"active\": true,\r\n  \"members\": [\"=compareMode: contains\",\r\n    {\r\n      \"name\": \"Eternal Flame\",\r\n      \"powers\": [\r\n        \"Immortality\"\r\n      ]\r\n    }\r\n  ]\r\n}"}}>> HTTP Response
+11:13:10.780  [INFO ] 11:13:10.779 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+11:13:10.780  [INFO ] 11:13:10.779 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+11:13:10.780  [INFO ] 
+11:13:10.781  [INFO ] Finished executing test "Eternal Flame" is immortal

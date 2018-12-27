@@ -1,0 +1,16 @@
+11:13:11.039  [INFO ] Executing test JS expressions
+11:13:11.040  [INFO ] 11:13:11.039 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+11:13:11.040  [INFO ] 11:13:11.039 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+11:13:11.040  [INFO ] 
+11:13:11.041  [INFO ] Executing step BASIC: GIVEN the variable <<name = today>> with value <<value = {{new Date().toISOString().substr(0, 10)}}>>
+11:13:11.096  [INFO ] Finished executing step BASIC: GIVEN the variable <<name = today>> with value <<value = {{new Date().toISOString().substr(0, 10)}}>>
+11:13:11.097  [INFO ] Executing step BASIC: THEN <<actualValue = {{today}}>> is equal to <<expectedValue = 2018-11-29>>
+11:13:11.167  [INFO ] Finished executing step BASIC: THEN <<actualValue = {{today}}>> is equal to <<expectedValue = 2018-11-29>>
+11:13:11.168  [INFO ] Executing step BASIC: GIVEN the variable <<name = tenDaysFromToday>> with value <<value = {{(function(){var futureDate = new Date(); futureDate.setDate(futureDate.getDate()+10); return futureDate.toISOString().substr(0, 10);})()}}>>
+11:13:11.169  [INFO ] Finished executing step BASIC: GIVEN the variable <<name = tenDaysFromToday>> with value <<value = {{(function(){var futureDate = new Date(); futureDate.setDate(futureDate.getDate()+10); return futureDate.toISOString().substr(0, 10);})()}}>>
+11:13:11.170  [INFO ] Executing step BASIC: THEN <<actualValue = {{tenDaysFromToday}}>> is equal to <<expectedValue = 2018-12-09>>
+11:13:11.171  [INFO ] Finished executing step BASIC: THEN <<actualValue = {{tenDaysFromToday}}>> is equal to <<expectedValue = 2018-12-09>>
+11:13:11.173  [INFO ] 11:13:11.172 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+11:13:11.173  [INFO ] 11:13:11.173 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+11:13:11.173  [INFO ] 
+11:13:11.174  [INFO ] Finished executing test JS expressions

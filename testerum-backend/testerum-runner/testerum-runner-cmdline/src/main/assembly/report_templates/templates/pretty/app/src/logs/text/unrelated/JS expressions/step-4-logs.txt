@@ -1,0 +1,2 @@
+11:13:11.170  [INFO ] Executing step BASIC: THEN <<actualValue = {{tenDaysFromToday}}>> is equal to <<expectedValue = 2018-12-09>>
+11:13:11.171  [INFO ] Finished executing step BASIC: THEN <<actualValue = {{tenDaysFromToday}}>> is equal to <<expectedValue = 2018-12-09>>
