@@ -3,7 +3,6 @@ import {Observable, Subject} from "rxjs";
 import {LogsModalComponent} from "./logs-modal.component";
 import {AppComponent} from "../../../app.component";
 import {ReportLog} from "../../../../../../../../common/testerum-model/model/report/report-log";
-import {ExceptionDetail} from "../../../../../../../../common/testerum-model/model/exception/exception-detail";
 
 @Injectable()
 export class LogsModalService {
