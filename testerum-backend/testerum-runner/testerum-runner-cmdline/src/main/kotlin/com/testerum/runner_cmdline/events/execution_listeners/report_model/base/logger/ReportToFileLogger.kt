@@ -1,7 +1,6 @@
 package com.testerum.runner_cmdline.events.execution_listeners.report_model.base.logger
 
 import com.testerum.common_kotlin.createDirectories
-import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.report_model.ReportLog
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.BaseReportModelExecutionListener
 import org.slf4j.LoggerFactory
@@ -41,7 +40,7 @@ class ReportToFileLogger(val textFilePath: JavaPath,
 
     private fun logToTextFile(logEvent: ReportLog) {
         val timestamp = TIMESTAMP_FORMATTER.format(logEvent.time)
-        val logLevel = formatLogLevel(logEvent.logLevel)
+        val logLevel = logEvent.logLevel.formatForLogging
         val message = logEvent.message
         val exceptionWithStackTrace = logEvent.exceptionDetail?.asDetailedString
 
@@ -54,14 +53,6 @@ class ReportToFileLogger(val textFilePath: JavaPath,
                     append('\n')
                 }
         )
-    }
-
-    private fun formatLogLevel(logLevel: LogLevel): String {
-        return when (logLevel) {
-            LogLevel.DEBUG   -> "[DEBUG]"
-            LogLevel.INFO    -> "[INFO ]"
-            LogLevel.WARNING -> "[WARN ]"
-        }
     }
 
     private fun logToModelFile(logEvent: ReportLog) {

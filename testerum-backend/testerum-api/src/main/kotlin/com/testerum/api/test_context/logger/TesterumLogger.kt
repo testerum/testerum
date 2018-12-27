@@ -4,6 +4,9 @@ import com.testerum.api.services.TesterumService
 
 interface TesterumLogger : TesterumService {
 
+    fun error(message: String) = error(message, null)
+    fun error(message: String, exception: Throwable?)
+
     fun warn(message: String) = warn(message, null)
     fun warn(message: String, exception: Throwable?)
 

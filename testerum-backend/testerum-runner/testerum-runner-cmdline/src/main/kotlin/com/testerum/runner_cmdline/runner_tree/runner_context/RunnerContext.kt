@@ -25,11 +25,21 @@ data class RunnerContext(val eventsService: EventsService,
 
     fun logMessage(message: String,
                    exception: Throwable? = null) {
+        val logLevel = if (exception != null) {
+            if (exception is AssertionError) {
+                LogLevel.WARNING
+            } else {
+                LogLevel.ERROR
+            }
+        } else {
+            LogLevel.INFO
+        }
+
         eventsService.logEvent(
                 TextLogEvent(
                         time = LocalDateTime.now(),
                         eventKey = EventKey.LOG_EVENT_KEY,
-                        logLevel = LogLevel.INFO,
+                        logLevel = logLevel,
                         message = message,
                         exceptionDetail = exception?.let { ExceptionDetail.fromThrowable(it) }
                 )

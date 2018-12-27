@@ -10,6 +10,18 @@ import java.time.LocalDateTime
 
 class TesterumLoggerImpl(private val eventsService: EventsService): TesterumLogger {
 
+    override fun error(message: String, exception: Throwable?) {
+        eventsService.logEvent(
+                TextLogEvent(
+                        time = LocalDateTime.now(),
+                        eventKey = EventKey.LOG_EVENT_KEY,
+                        logLevel = LogLevel.ERROR,
+                        message = message,
+                        exceptionDetail = exception?.let { ExceptionDetail.fromThrowable(it) }
+                )
+        )
+    }
+
     override fun warn(message: String, exception: Throwable?) {
         eventsService.logEvent(
                 TextLogEvent(

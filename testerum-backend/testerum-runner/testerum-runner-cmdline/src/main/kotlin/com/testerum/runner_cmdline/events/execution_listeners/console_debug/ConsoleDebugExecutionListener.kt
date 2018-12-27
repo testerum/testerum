@@ -80,6 +80,8 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         log(
                 buildString {
                     append("TEXT_LOG: ")
+                    append(event.logLevel.formatForLogging)
+                    append(" ")
                     append(
                             event.message
                                     .lines()
