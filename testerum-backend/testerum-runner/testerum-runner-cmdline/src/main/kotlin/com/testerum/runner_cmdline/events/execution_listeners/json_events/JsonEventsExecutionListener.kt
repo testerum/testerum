@@ -46,6 +46,8 @@ class JsonEventsExecutionListener constructor(private val properties: Map<String
         }
     }
 
+    override fun start() { }
+
     private val textPrinter: TextPrinter = run {
         val destinationFileName = properties[EventListenerProperties.JsonEvents.DESTINATION_FILE_NAME]
         if (destinationFileName == null) {

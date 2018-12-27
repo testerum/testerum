@@ -110,6 +110,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         )
 
         // execute tests
+        eventsService.start()
         println("STARTUP TIME: ${stopWatch.elapsedMillis()}ms")
         val executionStatus: ExecutionStatus = runWithThreadContextClassLoader(stepsClassLoader) {
             suite.run(runnerContext, globalVars)

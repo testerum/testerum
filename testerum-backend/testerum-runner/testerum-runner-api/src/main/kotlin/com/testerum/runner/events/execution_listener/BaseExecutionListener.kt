@@ -13,6 +13,8 @@ import com.testerum.runner.events.model.TextLogEvent
 
 open class BaseExecutionListener : ExecutionListener {
 
+    override fun start() { }
+
     /**
      * if you want to override this method, implement [ExecutionListener] instead
      */

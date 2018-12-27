@@ -2,6 +2,9 @@ package com.testerum.runner_cmdline
 
 import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.common_jdk.stopwatch.StopWatch
+import com.testerum.runner.events.model.TextLogEvent
+import com.testerum.runner.events.model.log_level.LogLevel
+import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner_cmdline.cmdline.exiter.Exiter
 import com.testerum.runner_cmdline.cmdline.params.CmdlineParamsParser
@@ -17,6 +20,7 @@ import org.fusesource.jansi.Ansi
 import org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD
 import org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD_OFF
 import org.fusesource.jansi.AnsiConsole
+import java.time.LocalDateTime
 
 object TesterumRunner {
 
@@ -26,29 +30,37 @@ object TesterumRunner {
 
         ConsoleOutputCapturer.startCapture("main")
 
-        val exitCode: ExitCode
-        val remainingConsoleCapturedText: String
-        try {
-            TesterumRunnerLoggingConfigurator.configureLogging()
-            AnsiConsole.systemInstall()
-            println(TesterumBanner.BANNER)
+        TesterumRunnerLoggingConfigurator.configureLogging()
+        AnsiConsole.systemInstall()
+        println(TesterumBanner.BANNER)
 
-            val cmdlineParams: CmdlineParams = getCmdlineParams(args)
-            println("cmdlineParams = $cmdlineParams")
+        val cmdlineParams: CmdlineParams = getCmdlineParams(args)
+        println("cmdlineParams = $cmdlineParams")
 
-            val bootstrapper = RunnerModuleBootstrapper(cmdlineParams, stopWatch)
-            exitCode = bootstrapper.context.use {
-                val runnerApplication = bootstrapper.runnerModuleFactory.runnerApplication
+        val bootstrapper = RunnerModuleBootstrapper(cmdlineParams, stopWatch)
+        val exitCode: ExitCode = bootstrapper.context.use {
+            val appExitCode: ExitCode
+            try {
+                appExitCode = bootstrapper.runnerModuleFactory.runnerApplication.execute(cmdlineParams)
+            } finally {
+                val remainingConsoleCapturedText: String = ConsoleOutputCapturer.drainCapturedText()
 
-                runnerApplication.execute(cmdlineParams)
+                ConsoleOutputCapturer.stopCapture()
+
+                for (line in remainingConsoleCapturedText.lines()) {
+                    bootstrapper.runnerModuleFactory.eventsService.logEvent(
+                            TextLogEvent(
+                                    time = LocalDateTime.now(),
+                                    eventKey = EventKey.LOG_EVENT_KEY,
+                                    logLevel = LogLevel.INFO,
+                                    message = line
+                            )
+                    )
+                }
             }
-        } finally {
-            remainingConsoleCapturedText = ConsoleOutputCapturer.drainCapturedText()
 
-            ConsoleOutputCapturer.stopCapture()
+            appExitCode
         }
-
-        println(remainingConsoleCapturedText)
 
         Exiter.exit(exitCode)
     }
