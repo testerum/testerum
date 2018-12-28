@@ -36,14 +36,14 @@ export class ReportGridNodeMapper {
 
         for (const testOrFeature of suite.children) {
             if (testOrFeature instanceof ReportFeature) {
-                let featureChildren: ReportGridNode[] = this.mapFeature(testOrFeature, filter);
+                let featureChildren: ReportGridNode[] = this.mapFeature(testOrFeature, filter, node);
                 for (const featureChild of featureChildren) {
                     node.children.push(featureChild);
                 }
                 continue;
             }
             if (testOrFeature instanceof ReportTest) {
-                let test = this.mapTest(testOrFeature, filter);
+                let test = this.mapTest(testOrFeature, filter, node);
                 if (test) {
                     node.children.push(
                         test
@@ -57,8 +57,9 @@ export class ReportGridNodeMapper {
         return result;
     }
 
-    private static mapFeature(feature: ReportFeature, filter: ReportGridFilter): ReportGridNode[] {
+    private static mapFeature(feature: ReportFeature, filter: ReportGridFilter, parentNode: ReportGridNode): ReportGridNode[] {
         let node = new ReportGridNode();
+        node.parent = parentNode;
         node.leaf = false;
         node.expanded = true;
 
@@ -69,19 +70,21 @@ export class ReportGridNodeMapper {
         node.data.textLogFilePath = feature.textLogFilePath;
         node.data.modelLogFilePath = feature.modelLogFilePath;
         node.data.nodeType = ReportGridNodeType.FEATURE;
-        // node.data.tags = TODO: map Feature tags
+        node.data.tags = feature.tags;
 
         for (const testOrFeature of feature.children) {
             if (testOrFeature instanceof ReportFeature) {
-                let featureChildren: ReportGridNode[] = this.mapFeature(testOrFeature, filter);
+                let featureChildren: ReportGridNode[] = this.mapFeature(testOrFeature, filter, node);
                 for (const featureChild of featureChildren) {
+                    featureChild.parent = node;
                     node.children.push(featureChild);
                 }
                 continue;
             }
             if (testOrFeature instanceof ReportTest) {
-                let test = this.mapTest(testOrFeature, filter);
+                let test = this.mapTest(testOrFeature, filter, node);
                 if (test) {
+                    test.parent = node;
                     node.children.push(
                         test
                     );
@@ -97,7 +100,7 @@ export class ReportGridNodeMapper {
         let result: ReportGridNode[] = [];
 
         if(filter.selectedTags.length != 0) {
-            if(!this.nodeOrSubNodesMatchesAnyOfTheTags(node, filter.selectedTags)) {
+            if(!this.nodeOrParentOrSubNodesMatchesAnyOfTheTags(node, filter.selectedTags)) {
                 return result
             }
         }
@@ -106,7 +109,7 @@ export class ReportGridNodeMapper {
         return result;
     }
 
-    private static mapTest(test: ReportTest, filter: ReportGridFilter): ReportGridNode {
+    private static mapTest(test: ReportTest, filter: ReportGridFilter, parentNode: ReportGridNode): ReportGridNode {
         if (test.status == ExecutionStatus.PASSED && !filter.showPassed ||
             test.status == ExecutionStatus.FAILED && !filter.showFailed ||
             test.status == ExecutionStatus.DISABLED && !filter.showDisabled ||
@@ -116,6 +119,7 @@ export class ReportGridNodeMapper {
         }
 
         let node = new ReportGridNode();
+        node.parent = parentNode;
         node.leaf = !(test.children && test.children.length > 0);
         node.expanded = false; //!node.leaf && this.hasAnFailureStatus(test.status);
 
@@ -129,13 +133,16 @@ export class ReportGridNodeMapper {
         node.data.tags = test.tags;
 
         for (const step of test.children) {
+            let stepNode = this.mapSteps(step, filter, node);
+            stepNode.parent = node;
+
             node.children.push(
-                this.mapSteps(step, filter)
+                stepNode
             );
         }
 
         if(filter.selectedTags.length != 0) {
-            if(!this.nodeOrSubNodesMatchesAnyOfTheTags(node, filter.selectedTags)) {
+            if(!this.nodeOrParentOrSubNodesMatchesAnyOfTheTags(node, filter.selectedTags)) {
                 return null;
             }
         }
@@ -143,10 +150,11 @@ export class ReportGridNodeMapper {
         return node;
     }
 
-    private static mapSteps(step: ReportStep, filter: ReportGridFilter): ReportGridNode {
+    private static mapSteps(step: ReportStep, filter: ReportGridFilter, parentNode: ReportGridNode): ReportGridNode {
         let reportStepDef: ReportStepDef = ReportGridNodeMapper.suite.stepDefsById.get(step.stepCall.stepDefId);
 
         let node = new ReportGridNode();
+        node.parent = parentNode;
         node.leaf = !(step.children && step.children.length > 0);
         node.expanded = !node.leaf && this.hasAnFailureStatus(step.status);
 
@@ -172,8 +180,11 @@ export class ReportGridNodeMapper {
         }
 
         for (const subStep of step.children) {
+            let stepNode = this.mapSteps(subStep, filter, node);
+            stepNode.parent = node;
+
             node.children.push(
-                this.mapSteps(subStep, filter)
+                stepNode
             );
         }
 
@@ -188,7 +199,7 @@ export class ReportGridNodeMapper {
         return false;
     }
 
-    private static nodeOrSubNodesMatchesAnyOfTheTags(node: ReportGridNode, selectedTags: Array<string>): boolean {
+    private static nodeOrParentOrSubNodesMatchesAnyOfTheTags(node: ReportGridNode, selectedTags: Array<string>): boolean {
         let nodeTags = ReportGridTagsUtil.getTags([node]);
         for (const selectedTag of selectedTags) {
             if(ArrayUtil.containsElement(nodeTags, selectedTag)) {

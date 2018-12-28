@@ -6,22 +6,38 @@ export class ReportGridTagsUtil {
     static getTags(reportNodes: ReportGridNode[]): string [] {
         let result: string[] = [];
 
-        ReportGridTagsUtil.mapTagsToResult(reportNodes, result);
+        ReportGridTagsUtil.mapNodeTagsAndChildTagsToResult(reportNodes, result);
+        for (const reportNode of reportNodes) {
+            ReportGridTagsUtil.mapNodeParentTagsToResult(reportNode.parent, result);
+        }
         ArrayUtil.sort(result);
 
         return result;
     }
 
-    private static mapTagsToResult(reportNodes: ReportGridNode[], result: string[]) {
+    private static mapNodeTagsAndChildTagsToResult(reportNodes: ReportGridNode[], result: string[]) {
         for (const reportNode of reportNodes) {
-            let nodeTags = reportNode.data.tags;
-
-            for (const tag of nodeTags) {
-                if (!ArrayUtil.containsElement(result, tag)) {
-                    result.push(tag)
-                }
-            }
-            ReportGridTagsUtil.mapTagsToResult(reportNode.children as ReportGridNode[], result);
+            this.addNodeTagsToResult(reportNode, result);
+            ReportGridTagsUtil.mapNodeTagsAndChildTagsToResult(reportNode.children as ReportGridNode[], result);
         }
+    }
+
+    private static addNodeTagsToResult(reportNode, result: string[]) {
+        let nodeTags = reportNode.data.tags;
+
+        for (const tag of nodeTags) {
+            if (!ArrayUtil.containsElement(result, tag)) {
+                result.push(tag)
+            }
+        }
+    }
+
+    private static mapNodeParentTagsToResult(reportNode: ReportGridNode, result: string[]) {
+        if (!reportNode) {
+            return;
+        }
+
+        this.addNodeTagsToResult(reportNode, result);
+        this.mapNodeParentTagsToResult(reportNode.parent, result);
     }
 }
