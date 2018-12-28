@@ -62,31 +62,4 @@ export class ReportModelExtractor {
             }
         }
     }
-
-    getReportStepsMapByTag(): Map<string, Array<ReportStep>> {
-        let result = new Map<string, Array<ReportStep>>();
-        let allReportSteps = this.getAllReportSteps();
-
-        for (const reportStep of allReportSteps) {
-            this.addStepByTagToReportStepMap(reportStep, result);
-        }
-
-        return result;
-    }
-
-    private addStepByTagToReportStepMap(reportStep: ReportStep, result: Map<string, Array<ReportStep>>) {
-        let stepDef = this.reportSuite.stepDefsById.get(reportStep.stepCall.stepDefId);
-        if (stepDef instanceof ReportComposedStepDef) {
-            for (const tag of stepDef.tags) {
-
-                let values: Array<ReportStep> = result.get(tag);
-                if (!values) {
-                    values = [];
-                    result.set(tag, values);
-                }
-
-                values.push(reportStep);
-            }
-        }
-    }
 }

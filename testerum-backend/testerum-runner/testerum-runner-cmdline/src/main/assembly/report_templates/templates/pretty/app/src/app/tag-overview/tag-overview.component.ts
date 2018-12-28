@@ -2,8 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ReportService} from "../service/report.service";
 import {ExecutionStatus} from "../../../../../../common/testerum-model/model/report/execution-status";
 import {ReportModelExtractor} from "../../../../../../common/testerum-model/model-extractor/report-model-extractor";
-import {ReportStep} from "../../../../../../common/testerum-model/model/report/report-step";
 import {ReportUrlService} from "../service/report-url.service";
+import {ReportGridNodeMapper} from "../report/grid/util/report-grid-node.mapper";
+import {ReportGridFilter} from "../report/grid/model/report-grid-filter.model";
+import {ReportGridNode} from "../report/grid/model/report-grid-node.model";
 
 @Component({
     selector: 'app-tag-overview',
@@ -28,26 +30,15 @@ export class TagOverviewComponent implements OnInit {
     private extractStatusByTagMap(reportModelExtractor: ReportModelExtractor): Map<string, ExecutionStatus> {
         let result = new Map<string, ExecutionStatus>();
 
-        const reportStepsByTag: Map<string, Array<ReportStep>> = reportModelExtractor.getReportStepsMapByTag();
+        let reportGridNodes: ReportGridNode[] = ReportGridNodeMapper.map(this.reportService.reportModelExtractor.reportSuite, new ReportGridFilter());
+
+
+        const reportStepsByTag: Map<string, ExecutionStatus> = this.getExecutionStatusMapByTag(reportGridNodes);
         let tags = Array.from(reportStepsByTag.keys());
         tags.sort();
 
         for (const tag of tags) {
-            let status: ExecutionStatus = this.extractStatusFromReportSteps(reportStepsByTag.get(tag));
-
-            result.set(tag, status);
-        }
-
-        return result;
-    }
-
-    private extractStatusFromReportSteps(reportSteps: Array<ReportStep>): ExecutionStatus {
-        let result: ExecutionStatus = ExecutionStatus.SKIPPED;
-
-        for (const reportStep of reportSteps) {
-            if (result < reportStep.status) {
-                result = reportStep.status;
-            }
+            result.set(tag, reportStepsByTag.get(tag));
         }
 
         return result;
@@ -59,5 +50,32 @@ export class TagOverviewComponent implements OnInit {
 
     goToFullReport() {
         this.reportUrlService.navigateReport();
+    }
+
+    getExecutionStatusMapByTag(reportGridNodes: ReportGridNode[]): Map<string, ExecutionStatus> {
+        let result = new Map<string, ExecutionStatus>();
+
+        for (const node of reportGridNodes) {
+            this.addNodeTagsToTagExecutionStatusMap(node, result);
+        }
+
+        return result;
+    }
+
+
+    private addNodeTagsToTagExecutionStatusMap(node: ReportGridNode, result: Map<string, ExecutionStatus>) {
+        for (const tag of node.data.tags) {
+
+            let oldStatus = result.get(tag);
+            let newStatus = node.data.status;
+            if (oldStatus && newStatus < oldStatus) {
+                newStatus = oldStatus;
+            }
+            result.set(tag, newStatus);
+        }
+
+        for (const child of node.children) {
+            this.addNodeTagsToTagExecutionStatusMap(child as ReportGridNode, result);
+        }
     }
 }
