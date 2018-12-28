@@ -7,7 +7,6 @@ enum class OutputFormat {
     JSON_MODEL,
 
     CUSTOM_TEMPLATE,
-    BASIC_HTML,
     PRETTY,
     ;
 
