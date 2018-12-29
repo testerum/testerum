@@ -47,7 +47,14 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     currentTagSearch:string;
 
     @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
-    @ViewChild("descriptionMarkdownEditor") descriptionMarkdownEditor: MarkdownEditorComponent;
+    descriptionMarkdownEditor: MarkdownEditorComponent;
+    @ViewChild("descriptionMarkdownEditor") set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
+        if (descriptionMarkdownEditor != null) {
+            descriptionMarkdownEditor.setEditMode(this.isEditMode);
+            descriptionMarkdownEditor.setValue(this.testModel.description);
+        }
+        this.descriptionMarkdownEditor = descriptionMarkdownEditor;
+    }
 
     warnings: Message[] = [];
 
