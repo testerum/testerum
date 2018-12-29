@@ -16,7 +16,7 @@
                 </option>
             </select>
             <input-error [model]="testPhase"
-                         [width]="70"
+                         [width]="85"
                          [errorMessages]="{
                     required: 'Phase is required'
              }"></input-error>
@@ -57,6 +57,7 @@
             <input [ngModel]="model.path?.toString()"
                    #pathInput="ngModel"
                    readonly
+                   required
                    type="text"
                    class="path-input form-control"
                    name="pathInput">
@@ -69,6 +70,7 @@
             </span>
             </div>
             <input-error [model]="pathInput"
+                         [width]="350"
                          [errorMessages]="{
                                 required: 'A path is required'
                          }">
