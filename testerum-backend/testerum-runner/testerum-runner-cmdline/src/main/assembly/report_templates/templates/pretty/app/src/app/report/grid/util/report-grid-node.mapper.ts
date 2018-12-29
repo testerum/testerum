@@ -58,6 +58,14 @@ export class ReportGridNodeMapper {
     }
 
     private static mapFeature(feature: ReportFeature, filter: ReportGridFilter, parentNode: ReportGridNode): ReportGridNode[] {
+        if (feature.status == ExecutionStatus.PASSED && !filter.showPassed ||
+            feature.status == ExecutionStatus.FAILED && !filter.showFailed ||
+            feature.status == ExecutionStatus.DISABLED && !filter.showDisabled ||
+            feature.status == ExecutionStatus.UNDEFINED && !filter.showUndefined ||
+            feature.status == ExecutionStatus.SKIPPED && !filter.showSkipped) {
+            return [];
+        }
+
         let node = new ReportGridNode();
         node.parent = parentNode;
         node.leaf = false;
