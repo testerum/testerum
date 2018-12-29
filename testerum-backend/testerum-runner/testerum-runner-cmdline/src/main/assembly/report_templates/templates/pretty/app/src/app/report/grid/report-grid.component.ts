@@ -44,7 +44,6 @@ export class ReportGridComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.routeParamsSubscription = this.route.params.subscribe(params => {
             if (params.tag) {
-                this.filter.areTestFoldersShown = false;
                 this.filter.isTagsButtonActive = true;
                 this.filter.selectedTags.push(
                     params.tag
