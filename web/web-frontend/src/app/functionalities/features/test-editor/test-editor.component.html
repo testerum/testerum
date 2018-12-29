@@ -27,12 +27,10 @@
                         <input required
                                #testName="ngModel" [(ngModel)]="testModel.name"
                                type="text" class="form-control" name="testName">
-                        <div *ngIf="testName.errors && (testName.dirty || testName.touched)"
-                             class="alert alert-danger">
-                            <div [hidden]="!testName.errors.required">
-                                Name is required
-                            </div>
-                        </div>
+                        <input-error [model]="testName"
+                                     [errorMessages]="{
+                                        required: 'A name for this test is required'
+                                     }"></input-error>
                     </div>
                 </div>
 
