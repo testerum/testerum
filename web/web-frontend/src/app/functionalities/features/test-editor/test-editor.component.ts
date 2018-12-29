@@ -253,8 +253,8 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     private deleteActionAfterConfirmation(): void {
         this.testsService.delete(this.testModel).subscribe(restul => {
             this.isEditMode = false; // to not show CanDeactivateGuard
-            this.testsTreeService.initializeTestsTreeFromServer(null);
-            this.urlService.navigateToFeatures();
+            this.testsTreeService.initializeTestsTreeFromServer(this.testModel.path.getParentPath());
+            this.urlService.navigateToFeature(this.testModel.path.getParentPath());
         });
     }
 

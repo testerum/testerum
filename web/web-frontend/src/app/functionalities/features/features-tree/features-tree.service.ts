@@ -32,6 +32,9 @@ export class FeaturesTreeService {
 
                 JsonTreeExpandUtil.expandTreeToLevel(newJsonTree, expandToLevel);
                 let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(newJsonTree, selectedPath);
+                if (selectedNode.isContainer()) {
+                    (selectedNode as FeatureTreeContainerModel).getNodeState().showChildren = true
+                }
                 this.sort(newJsonTree);
 
                 this.treeModel = newJsonTree;
