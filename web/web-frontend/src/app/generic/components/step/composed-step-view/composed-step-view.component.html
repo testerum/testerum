@@ -15,12 +15,11 @@
                     {{StepPhaseEnum[enumName]}}
                 </option>
             </select>
-            <div *ngIf="testPhase.errors && (testPhase.dirty || testPhase.touched)"
-                 class="alert alert-danger">
-                <div [hidden]="!testPhase.errors.required">
-                    Phase is required
-                </div>
-            </div>
+            <input-error [model]="testPhase"
+                         [width]="70"
+                         [errorMessages]="{
+                    required: 'Phase is required'
+             }"></input-error>
         </span>
 
         <!-- STEP PATTERN -->

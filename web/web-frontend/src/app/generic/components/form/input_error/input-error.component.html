@@ -2,7 +2,7 @@
     *ngIf="model.errors"
     class="alert alert-danger">
     <ng-container *ngFor="let errorKey of errorKeys()">
-        <div>
+        <div [style.width.px]="width">
             {{errorMessages[errorKey]}}
         </div>
     </ng-container>
