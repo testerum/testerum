@@ -7,6 +7,7 @@ enum class OutputFormat {
 
     JSON_EVENTS,
     JSON_MODEL,
+    JSON_STATS,
 
     CUSTOM_TEMPLATE,
     PRETTY,

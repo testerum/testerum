@@ -9,6 +9,7 @@ import com.testerum.runner_cmdline.dirs.RunnerDirs
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
 import com.testerum.runner_cmdline.events.execution_listeners.console_debug.ConsoleDebugExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.json_stats.JsonStatsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model.JsonModelExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template.CustomTemplateExecutionListener
 import java.nio.file.Path as JavaPath
@@ -22,6 +23,7 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
 
                     OutputFormat.JSON_EVENTS        to { properties: Map<String, String> -> JsonEventsExecutionListener(properties) },
                     OutputFormat.JSON_MODEL         to { properties: Map<String, String> -> JsonModelExecutionListener(properties) },
+                    OutputFormat.JSON_STATS         to { properties: Map<String, String> -> JsonStatsExecutionListener(properties) },
 
                     OutputFormat.CUSTOM_TEMPLATE    to { properties: Map<String, String> -> CustomTemplateExecutionListener(properties) },
                     OutputFormat.PRETTY             to builtInTemplateExecutionListenerFactory("pretty")

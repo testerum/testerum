@@ -16,7 +16,7 @@ import com.testerum.runner_cmdline.events.execution_listeners.utils.string_write
 import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.impl.FileTextPrinter
 import java.nio.file.Paths
 
-class JsonEventsExecutionListener constructor(private val properties: Map<String, String>) : ExecutionListener {
+class JsonEventsExecutionListener(private val properties: Map<String, String>) : ExecutionListener {
 
     companion object {
         // IMPORTANT: if you change these, also change it in com.testerum.web_backend.services.runner.execution.TestRunnerEventParser
@@ -59,7 +59,7 @@ class JsonEventsExecutionListener constructor(private val properties: Map<String
         }
     }
 
-    override fun start() { }
+    override fun start() {}
 
     override fun onEvent(event: RunnerEvent) {
         val serializedEvent = OBJECT_MAPPER.writeValueAsString(event)

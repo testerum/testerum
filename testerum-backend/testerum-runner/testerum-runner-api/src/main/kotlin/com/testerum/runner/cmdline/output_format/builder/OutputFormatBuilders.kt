@@ -4,6 +4,7 @@ import com.testerum.runner.cmdline.output_format.builder.impl.ConsoleDebugOutput
 import com.testerum.runner.cmdline.output_format.builder.impl.CustomTemplateOutputFormatBuilder
 import com.testerum.runner.cmdline.output_format.builder.impl.JsonEventsOutputFormatBuilder
 import com.testerum.runner.cmdline.output_format.builder.impl.JsonModelOutputFormatBuilder
+import com.testerum.runner.cmdline.output_format.builder.impl.JsonStatsOutputFormatBuilder
 import com.testerum.runner.cmdline.output_format.builder.impl.PrettyOutputFormatBuilder
 
 // facade to make it easy to access all builders using auto-completion
@@ -27,6 +28,14 @@ object OutputFormatBuilders {
 
     fun jsonModel(body: JsonModelOutputFormatBuilder.() -> Unit): String {
         val builder = JsonModelOutputFormatBuilder()
+
+        builder.body()
+
+        return builder.build()
+    }
+
+    fun jsonStats(body: JsonStatsOutputFormatBuilder.() -> Unit): String {
+        val builder = JsonStatsOutputFormatBuilder()
 
         builder.body()
 

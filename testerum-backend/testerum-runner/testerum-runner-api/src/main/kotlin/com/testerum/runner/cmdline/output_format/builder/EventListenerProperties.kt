@@ -1,6 +1,7 @@
 package com.testerum.runner.cmdline.output_format.builder
 
 object EventListenerProperties {
+
     object JsonEvents {
         /**
          * type     : java.nio.file.Path
@@ -30,6 +31,10 @@ object EventListenerProperties {
     object JsonModel {
         const val DESTINATION_DIRECTORY = "destinationDirectory"
         const val FORMATTED = "formatted"
+    }
+
+    object JsonStats {
+        const val DESTINATION_FILE_NAME = "destinationFileName"
     }
 
     object CustomTemplate {
