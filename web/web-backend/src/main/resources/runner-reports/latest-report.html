@@ -1,0 +1,81 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Latest Testerum report</title>
+
+    <style type="text/css">
+        html,
+        body {
+            top: 0;
+            bottom: 0;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #report-iframe-0,
+        #report-iframe-1 {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: none;
+        }
+
+        #report-iframe-0 {
+            display: block;
+        }
+    </style>
+
+    <script type="text/javascript">
+        window.testerum = {};
+        window.testerum.durationBetweenReloadsMillis = 10000;
+
+        window.onload = function () {
+            //
+            // We are using 2 iframes to avoid flicker.
+            // Basically, we show one iframe only after it was loaded, and hide the other
+            // and keep switching between them.
+            //
+            // This seems to work fine in Firefox, but works only sometimes in Chrome.
+            //
+            window.testerum.currentIframeIndex = 0;
+
+            window.testerum.refreshIframe = function () {
+                var currentIframeId = "report-iframe-" + window.testerum.currentIframeIndex;
+                var otherIframeId = "report-iframe-" + (1 - window.testerum.currentIframeIndex);
+
+                const currentIframe = document.getElementById(currentIframeId);
+                const othertIframe = document.getElementById(otherIframeId);
+
+                othertIframe.onload = null;
+                currentIframe.onload = function () {
+                    currentIframe.style.display = "block";
+                    othertIframe.classList = "hidden";
+                    window.testerum.currentIframeIndex = 1 - testerum.currentIframeIndex;
+
+                    setTimeout(function () {
+                        window.testerum.refreshIframe();
+                    }, window.testerum.durationBetweenReloadsMillis);
+                };
+                currentIframe.src = "latest/pretty/index.html?cacheBusting=" + encodeURIComponent((new Date()).getTime()) + "#/tags";
+            };
+
+            testerum.refreshIframe();
+        };
+    </script>
+</head>
+
+<body>
+
+<iframe id="report-iframe-0" frameBorder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="auto">Please use a browser that supports IFRAME-s.</iframe>
+<iframe id="report-iframe-1" frameBorder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="auto">Please use a browser that supports IFRAME-s.</iframe>
+
+</body>
+
+</html>

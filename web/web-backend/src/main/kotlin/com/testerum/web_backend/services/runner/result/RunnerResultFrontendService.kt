@@ -28,7 +28,7 @@ class RunnerResultFrontendService(private val frontendDirs: FrontendDirs,
     }
 
     fun createResultsDirectoryName(): JavaPath {
-        val reportsDir = frontendDirs.getRunnerReportsDir()
+        val reportsDir = frontendDirs.getReportsDir()
 
         return runnerResultFileService.createResultsDirectoryName(reportsDir, OutputFormat.PRETTY)
     }

@@ -17,7 +17,9 @@ class FrontendDirs(private val settingsManager: SettingsManager) {
 
     fun getCacheDir(): JavaPath = getTesterumDir().resolve("cache")
     fun getLicensesDir(): JavaPath = getTesterumDir().resolve("licenses")
-    fun getRunnerReportsDir(): JavaPath = getTesterumDir().resolve("reports")
+
+    fun getReportsDir(): JavaPath = getTesterumDir().resolve("reports")
+    fun getLatestReportSymlink(): JavaPath = getReportsDir().resolve("latest")
 
     fun getRequiredResourcesDir(): JavaPath = getResourcesDir(getRequiredRepositoryDir())
     fun getOptionalResourcesDir(): JavaPath? = getRepositoryDir()?.resolve("resources")

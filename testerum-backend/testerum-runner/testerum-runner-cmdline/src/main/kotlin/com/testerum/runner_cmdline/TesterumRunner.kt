@@ -47,16 +47,28 @@ object TesterumRunner {
 
                 ConsoleOutputCapturer.stopCapture()
 
-                for (line in remainingConsoleCapturedText.lines()) {
-                    bootstrapper.runnerModuleFactory.eventsService.logEvent(
-                            TextLogEvent(
-                                    time = LocalDateTime.now(),
-                                    eventKey = EventKey.LOG_EVENT_KEY,
-                                    logLevel = LogLevel.INFO,
-                                    message = line,
-                                    exceptionDetail = null
-                            )
-                    )
+                try {
+                    for (line in remainingConsoleCapturedText.lines()) {
+                        bootstrapper.runnerModuleFactory.eventsService.logEvent(
+                                TextLogEvent(
+                                        time = LocalDateTime.now(),
+                                        eventKey = EventKey.LOG_EVENT_KEY,
+                                        logLevel = LogLevel.INFO,
+                                        message = line,
+                                        exceptionDetail = null
+                                )
+                        )
+                    }
+                } catch (e: Exception) {
+                    // if we failed to notify listeners, show output to console, so we don't lose it
+                    println("An error occurred while trying to notify event listeners of remaining logs:")
+                    e.printStackTrace()
+
+                    println()
+                    println("Remaining logs:")
+                    println("----------------------------------------(start)----------------------------------------")
+                    println(remainingConsoleCapturedText)
+                    println("----------------------------------------( end )----------------------------------------")
                 }
             }
 
