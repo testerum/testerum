@@ -27,6 +27,10 @@
         justify-content: center;
         margin-top: 40px;
 
+        .no-tags-found {
+            font-size: 5em;
+            color: #0005ca;
+        }
         .tag-status {
             width: 10em;
             height: 5em;
