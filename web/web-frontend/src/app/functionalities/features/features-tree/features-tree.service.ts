@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
-import { JsonTreeModel } from "../../../generic/components/json-tree/model/json-tree.model";
-import { JsonTreeNode } from "../../../generic/components/json-tree/model/json-tree-node.model";
-import { TestTreeNodeModel } from "./model/test-tree-node.model";
-import { FeatureTreeContainerModel } from "./model/feature-tree-container.model";
-import { Path } from "../../../model/infrastructure/path/path.model";
-import { JsonTreePathUtil } from "../../../generic/components/json-tree/util/json-tree-path.util";
+import {Injectable} from '@angular/core';
+import {JsonTreeModel} from "../../../generic/components/json-tree/model/json-tree.model";
+import {JsonTreeNode} from "../../../generic/components/json-tree/model/json-tree-node.model";
+import {TestTreeNodeModel} from "./model/test-tree-node.model";
+import {FeatureTreeContainerModel} from "./model/feature-tree-container.model";
+import {Path} from "../../../model/infrastructure/path/path.model";
 import FeaturesTreeUtil from "./util/features-tree.util";
-import { FeatureService } from "../../../service/feature.service";
-import { RootFeatureNode } from "../../../model/feature/tree/root-feature-node.model";
-import { FeaturesTreeFilter } from "../../../model/feature/filter/features-tree-filter.model";
-import { JsonTreeExpandUtil } from "../../../generic/components/json-tree/util/json-tree-expand.util";
-import { JsonTreeService } from "../../../generic/components/json-tree/json-tree.service";
+import {FeatureService} from "../../../service/feature.service";
+import {RootFeatureNode} from "../../../model/feature/tree/root-feature-node.model";
+import {FeaturesTreeFilter} from "../../../model/feature/filter/features-tree-filter.model";
+import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
+import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
 
 @Injectable()
 export class FeaturesTreeService {
@@ -32,7 +31,7 @@ export class FeaturesTreeService {
 
                 JsonTreeExpandUtil.expandTreeToLevel(newJsonTree, expandToLevel);
                 let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(newJsonTree, selectedPath);
-                if (selectedNode.isContainer()) {
+                if (selectedNode && selectedNode.isContainer()) {
                     (selectedNode as FeatureTreeContainerModel).getNodeState().showChildren = true
                 }
                 this.sort(newJsonTree);
