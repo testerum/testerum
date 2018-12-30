@@ -103,6 +103,17 @@ fun JavaPath.list(): List<JavaPath> {
     }
 }
 
+fun JavaPath.list(shouldUse: (JavaPath) -> Boolean): List<JavaPath> {
+    if (this.doesNotExist) {
+        return emptyList()
+    }
+
+    Files.list(this).use { pathStream ->
+        return pathStream.filter(shouldUse)
+                .collect(Collectors.toList())
+    }
+}
+
 /**
  * Moves this file to the path represented by ``destination``.
  *

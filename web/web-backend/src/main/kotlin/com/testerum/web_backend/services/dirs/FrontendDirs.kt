@@ -20,8 +20,8 @@ class FrontendDirs(private val settingsManager: SettingsManager) {
 
     fun getReportsDir(): JavaPath = getTesterumDir().resolve("reports")
     fun getLatestReportSymlink(): JavaPath = getReportsDir().resolve("latest")
-    fun getReportsPrettyDir(reportDir: JavaPath): JavaPath = reportDir.resolve("pretty")
-    fun getReportsStatsFileName(reportDir: JavaPath): JavaPath = reportDir.resolve("json_stats").resolve("stats.json")
+    fun getReportsPrettyDir(executionDir: JavaPath): JavaPath = executionDir.resolve("pretty")
+    fun getReportsStatsFileName(executionDir: JavaPath): JavaPath = executionDir.resolve("json_stats").resolve("stats.json") // todo: remove duplication between this method and RunnerResultFileService.loadStatistics()
 
     fun getRequiredResourcesDir(): JavaPath = getResourcesDir(getRequiredRepositoryDir())
     fun getOptionalResourcesDir(): JavaPath? = getRepositoryDir()?.resolve("resources")

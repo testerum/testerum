@@ -1,4 +1,4 @@
-package com.testerum.runner_cmdline.events.execution_listeners.json_stats.model
+package com.testerum.runner.cmdline.output_format.model.json_stats
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty

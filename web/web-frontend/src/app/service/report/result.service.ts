@@ -10,7 +10,7 @@ import {RunnerEventMarshaller} from '../../model/test/event/marshaller/runner-ev
 @Injectable()
 export class ResultService {
 
-    private BASE_URL = "/rest/runResults";
+    private BASE_URL = "/rest/runner-reports";
 
     constructor(private http: HttpClient) {}
 
@@ -32,6 +32,7 @@ export class ResultService {
         return response;
     }
 
+    // todo: delete this method: the endpoint no longer exists
     getResult(path: Path): Observable<Array<RunnerEvent>> {
 
         const httpOptions = {

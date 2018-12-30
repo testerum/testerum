@@ -8,17 +8,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.testerum.api.test_context.ExecutionStatus
-import com.testerum.common_kotlin.hasExtension
-import com.testerum.common_kotlin.isRegularFile
-import com.testerum.common_kotlin.readAllLines
-import com.testerum.common_kotlin.walkAndCollect
-import com.testerum.file_service.file.util.escape
+import com.testerum.common_kotlin.list
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.run_result.RunnerResultFileInfo
 import com.testerum.model.run_result.RunnerResultsDirInfo
-import com.testerum.runner.events.model.RunnerEvent
-import com.testerum.runner.events.model.SuiteEndEvent
+import com.testerum.runner.cmdline.output_format.model.json_stats.JsonStatistics
+import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.nio.file.Path as JavaPath
@@ -26,10 +21,12 @@ import java.nio.file.Path as JavaPath
 class RunnerResultFileService {
 
     companion object {
+        private val LOG = LoggerFactory.getLogger(RunnerResultFileService::class.java)
+
         private val DAY_DIR_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         private val EXECUTION_DIR_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH-mm-ss-SSS")
 
-        private const val FILE_EXTENSION = "result"
+        private val DAY_DIR_NAME_REGEX = Regex("""[0-9]{4}-[0-9]{2}-[0-9]{2}""")
 
         private val OBJECT_MAPPER = jacksonObjectMapper().apply {
             registerModule(AfterburnerModule())
@@ -45,72 +42,57 @@ class RunnerResultFileService {
         }
     }
 
-    fun getResults(resultsDir: JavaPath): List<RunnerResultsDirInfo> {
-        val directoryInfos = mutableListOf<RunnerResultsDirInfo>()
-
-        val resultFiles = resultsDir.walkAndCollect {
-            it.isRegularFile && it.hasExtension(".result")
+    fun getReports(reportsDir: JavaPath): List<RunnerResultsDirInfo> {
+        val reportDayDirs: List<JavaPath> = reportsDir.list { path ->
+            DAY_DIR_NAME_REGEX.matches(path.fileName.toString())
         }
 
-        val resultsGroupedByDirectory: Map<String, List<JavaPath>> = resultFiles.groupBy { resultFile ->
-            val relativeResultPath = resultsDir.relativize(resultFile)
-
-            relativeResultPath.parent?.toString().orEmpty()
+        return reportDayDirs.map {
+            createRunnerResultsDirInfo(reportsDir, it)
         }
-
-        for ((directoryName, files) in resultsGroupedByDirectory) {
-            val fileInfos = files.map { createRunnerResultFileInfo(it, resultsDir) }
-                                                        .sortedBy { it.name }
-
-            directoryInfos.add(
-                    RunnerResultsDirInfo(
-                            directoryName = directoryName,
-                            runnerResultFilesInfo = fileInfos
-                    )
-            )
-        }
-
-        directoryInfos.sortBy { it.directoryName }
-
-        return directoryInfos
     }
 
-    private fun createRunnerResultFileInfo(resultFile: JavaPath,
-                                           resultsDir: JavaPath): RunnerResultFileInfo {
-        val runnerEvents: List<RunnerEvent> = parseResultFile(resultFile)
+    private fun createRunnerResultsDirInfo(reportsDir: JavaPath,
+                                           reportDayDir: JavaPath): RunnerResultsDirInfo {
+        val executionDirs: List<JavaPath> = reportDayDir.list()
 
-        var status: ExecutionStatus? = ExecutionStatus.SKIPPED
-        var durationMillis: Long? = null
+        val runnerResultFilesInfo = executionDirs.map { createRunnerResultFileInfo(reportsDir, it) }
+                .filterNotNull()
 
-        val suiteEndEvent = runnerEvents.find { it is SuiteEndEvent }
-                as? SuiteEndEvent
-        if (suiteEndEvent != null) {
-            status = suiteEndEvent.status
-            durationMillis = suiteEndEvent.durationMillis
-        }
+        return RunnerResultsDirInfo(
+                directoryName = reportDayDir.fileName.toString(),
+                runnerResultFilesInfo = runnerResultFilesInfo
+        )
+    }
 
-        val relativeResultPath = resultsDir.relativize(resultFile)
+    private fun createRunnerResultFileInfo(reportsDir: JavaPath,
+                                           executionDir: JavaPath): RunnerResultFileInfo? {
+        val relativePath: JavaPath = reportsDir.relativize(executionDir)
+
+        val stats: JsonStatistics = loadStatistics(executionDir)
+                ?: return null
 
         return RunnerResultFileInfo(
-                path = Path.createInstance(
-                        relativeResultPath.toString()
-                ),
-                name = resultFile.fileName?.toString().orEmpty(),
-                executionResult = status,
-                durationMillis = durationMillis
+                path = Path.createInstance(relativePath.toString()),
+                name = executionDir.fileName.toString(),
+                executionResult = stats.executionStatus,
+                durationMillis = stats.durationMillis
         )
     }
 
+    private fun loadStatistics(executionDir: JavaPath): JsonStatistics? {
+        val statsFile = executionDir.resolve("json_stats").resolve("stats.json")
+                .toAbsolutePath()
+                .normalize()
 
-    fun getResultAtPath(path: Path,
-                        resultsDir: JavaPath): List<RunnerEvent> {
-        val escapedPath = path.escape()
-        val resultFile = resultsDir.resolve(
-                escapedPath.toString()
-        )
-
-        return parseResultFile(resultFile)
+        return try {
+            OBJECT_MAPPER.readValue(statsFile.toFile())
+        } catch (e: Exception) {
+            LOG.warn("failed to parse [$statsFile]", e)
+            null
+        }
     }
+
 
     fun createResultsDirectoryName(reportsDir: JavaPath): JavaPath {
         val localDate: LocalDateTime = LocalDateTime.now()
@@ -119,16 +101,6 @@ class RunnerResultFileService {
 
         return reportsDir.resolve(dayDirName)
                 .resolve(executionDirName)
-    }
-
-    private fun parseResultFile(javaPath: JavaPath): List<RunnerEvent> {
-        try {
-            val lines = javaPath.readAllLines()
-
-            return lines.map { OBJECT_MAPPER.readValue<RunnerEvent>(it) }
-        } catch (e: Exception) {
-            throw RuntimeException("The result file at [${javaPath.toAbsolutePath().normalize()}] couldn't be deserialized", e)
-        }
     }
 
 }
