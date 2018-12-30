@@ -44,11 +44,11 @@ class TestsWebSocketController(private val testsExecutionFrontendService: TestsE
                              payload: String) {
         val executionId: Long = payload.toLong()
 
-        val resultFilePath = runnerResultFrontendService.createResultsFileName()
+        val resultFilePath = runnerResultFrontendService.createResultsDirectoryName()
 
         testsExecutionFrontendService.startExecution(
                 executionId = executionId,
-                resultFilePath = resultFilePath,
+                reportsDestinationDirectory = resultFilePath,
                 eventProcessor = { event ->
                     if (session.isOpen) {
                         // send to UI

@@ -1,4 +1,6 @@
-package com.testerum.runner.cmdline
+package com.testerum.runner.cmdline.output_format.parser
+
+import com.testerum.runner.cmdline.output_format.OutputFormat
 
 object OutputFormatParser {
 

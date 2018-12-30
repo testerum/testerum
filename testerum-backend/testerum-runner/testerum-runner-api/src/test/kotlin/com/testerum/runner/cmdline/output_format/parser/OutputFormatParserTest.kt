@@ -1,5 +1,6 @@
-package com.testerum.runner.cmdline
+package com.testerum.runner.cmdline.output_format.parser
 
+import com.testerum.runner.cmdline.output_format.OutputFormat
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.anEmptyMap

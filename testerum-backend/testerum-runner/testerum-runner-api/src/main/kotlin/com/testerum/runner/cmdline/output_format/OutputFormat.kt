@@ -1,4 +1,6 @@
-package com.testerum.runner.cmdline
+package com.testerum.runner.cmdline.output_format
+
+import com.testerum.runner.cmdline.output_format.builder.OutputFormatBuilders
 
 enum class OutputFormat {
     CONSOLE_DEBUG,
@@ -24,5 +26,7 @@ enum class OutputFormat {
 
             throw IllegalArgumentException("there is no output format [$text]; valid values are: $VALID_OUTPUT_FORMATS")
         }
+
+        fun builders() = OutputFormatBuilders
     }
 }

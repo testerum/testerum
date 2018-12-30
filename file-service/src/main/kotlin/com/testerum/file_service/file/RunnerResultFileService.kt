@@ -17,6 +17,7 @@ import com.testerum.file_service.file.util.escape
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.run_result.RunnerResultFileInfo
 import com.testerum.model.run_result.RunnerResultsDirInfo
+import com.testerum.runner.cmdline.output_format.OutputFormat
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.SuiteEndEvent
 import java.time.LocalDateTime
@@ -26,7 +27,9 @@ import java.nio.file.Path as JavaPath
 class RunnerResultFileService {
 
     companion object {
-        private val FILE_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH-mm-ss_SSS")
+        private val DAY_DIR_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        private val EXECUTION_DIR_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH-mm-ss-SSS")
+
         private const val FILE_EXTENSION = "result"
 
         private val OBJECT_MAPPER = jacksonObjectMapper().apply {
@@ -110,18 +113,15 @@ class RunnerResultFileService {
         return parseResultFile(resultFile)
     }
 
-    fun createResultsFileName(resultsDir: JavaPath): JavaPath {
+    fun createResultsDirectoryName(reportsDir: JavaPath,
+                                   outputFormat: OutputFormat): JavaPath {
         val localDate: LocalDateTime = LocalDateTime.now()
-        val directoryName: String = localDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
-        val fileName: String = localDate.format(FILE_NAME_FORMATTER)
+        val dayDirName: String = localDate.format(DAY_DIR_NAME_FORMATTER)
+        val executionDirName: String = localDate.format(EXECUTION_DIR_NAME_FORMATTER)
 
-        val file = Path(listOf(directoryName), fileName, FILE_EXTENSION)
-
-        val escapedPath = file.escape()
-
-        return resultsDir.resolve(
-                escapedPath.toString()
-        )
+        return reportsDir.resolve(dayDirName)
+                .resolve(executionDirName)
+                .resolve(outputFormat.name.toLowerCase())
     }
 
     private fun parseResultFile(javaPath: JavaPath): List<RunnerEvent> {

@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model
 
-import com.testerum.runner.cmdline.EventListenerProperties
+import com.testerum.runner.cmdline.output_format.builder.EventListenerProperties
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.BaseReportModelExecutionListener
 import com.testerum.runner_cmdline.transformer.builtin.lang.BooleanTransformer
 import java.nio.file.Paths
