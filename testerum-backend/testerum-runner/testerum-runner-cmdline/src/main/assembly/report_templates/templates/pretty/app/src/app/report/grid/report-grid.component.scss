@@ -156,7 +156,8 @@
                         display: none;
                     }
                     &:hover .btn {
-                        display: block;
+                        display: flex;
+                        justify-content: center;
                         line-height: 1em;
                         font-size: 1em;
                         padding: 0;
