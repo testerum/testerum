@@ -17,7 +17,6 @@ import com.testerum.file_service.file.util.escape
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.run_result.RunnerResultFileInfo
 import com.testerum.model.run_result.RunnerResultsDirInfo
-import com.testerum.runner.cmdline.output_format.OutputFormat
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.SuiteEndEvent
 import java.time.LocalDateTime
@@ -113,15 +112,13 @@ class RunnerResultFileService {
         return parseResultFile(resultFile)
     }
 
-    fun createResultsDirectoryName(reportsDir: JavaPath,
-                                   outputFormat: OutputFormat): JavaPath {
+    fun createResultsDirectoryName(reportsDir: JavaPath): JavaPath {
         val localDate: LocalDateTime = LocalDateTime.now()
         val dayDirName: String = localDate.format(DAY_DIR_NAME_FORMATTER)
         val executionDirName: String = localDate.format(EXECUTION_DIR_NAME_FORMATTER)
 
         return reportsDir.resolve(dayDirName)
                 .resolve(executionDirName)
-                .resolve(outputFormat.name.toLowerCase())
     }
 
     private fun parseResultFile(javaPath: JavaPath): List<RunnerEvent> {

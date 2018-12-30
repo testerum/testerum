@@ -193,9 +193,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
             // create/update "latest" report symlink
             try {
-                val relativeReportDestinationDirectory: JavaPath = frontendDirs.getReportsDir().relativize(
-                        reportsDestinationDirectory.resolve("..").toAbsolutePath().normalize() // get outside of "pretty"
-                )
+                val relativeReportDestinationDirectory: JavaPath = frontendDirs.getReportsDir().relativize(reportsDestinationDirectory)
 
                 frontendDirs.getLatestReportSymlink().deleteIfExists()
 
@@ -294,17 +292,18 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         args += "${builtInBasicStepsDir.escape()}"
 
         // output
-        val outputFormatConsoleEvents = OutputFormat.builders().jsonEvents {
+        args += "--output-format"
+        args += OutputFormat.builders().jsonEvents {
             wrapJsonWithPrefixAndPostfix = true
         }
-        val outputFormatPretty = OutputFormat.builders().pretty {
-            destinationDirectory = reportsDestinationDirectory
+        args += "--output-format"
+        args += OutputFormat.builders().pretty {
+            destinationDirectory = frontendDirs.getReportsPrettyDir(reportsDestinationDirectory)
         }
-
         args += "--output-format"
-        args += outputFormatConsoleEvents
-        args += "--output-format"
-        args += outputFormatPretty
+        args += OutputFormat.builders().jsonStats {
+            destinationFileName =  frontendDirs.getReportsStatsFileName(reportsDestinationDirectory)
+        }
 
         // tests
         for (testPathToRun in testsPathsToRun) {

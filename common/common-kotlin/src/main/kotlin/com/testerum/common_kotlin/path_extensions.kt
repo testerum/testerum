@@ -168,6 +168,8 @@ fun JavaPath.smartCopyTo(destination: JavaPath,
 
 fun JavaPath.readAllLines(charset: Charset = Charsets.UTF_8): List<String> = Files.readAllLines(this, charset)
 fun JavaPath.writeText(text: String, charset: Charset = Charsets.UTF_8) {
+    this.parent?.createDirectories()
+
     Files.newBufferedWriter(this, charset).use {
         it.write(text)
     }
