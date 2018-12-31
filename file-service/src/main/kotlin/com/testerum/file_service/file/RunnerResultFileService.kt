@@ -47,9 +47,11 @@ class RunnerResultFileService {
             DAY_DIR_NAME_REGEX.matches(path.fileName.toString())
         }
 
-        return reportDayDirs.map {
+        val reportDayDirInfos = reportDayDirs.map {
             createRunnerResultsDirInfo(reportsDir, it)
         }
+
+        return reportDayDirInfos.sortedByDescending { it.directoryName }
     }
 
     private fun createRunnerResultsDirInfo(reportsDir: JavaPath,
@@ -58,6 +60,7 @@ class RunnerResultFileService {
 
         val runnerResultFilesInfo = executionDirs.map { createRunnerResultFileInfo(reportsDir, it) }
                 .filterNotNull()
+                .sortedBy { it.name }
 
         return RunnerResultsDirInfo(
                 directoryName = reportDayDir.fileName.toString(),
