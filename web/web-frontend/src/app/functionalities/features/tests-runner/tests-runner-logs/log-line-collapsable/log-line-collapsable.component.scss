@@ -1,0 +1,35 @@
+@import "../../../../../../resources/css/testerum-variables";
+
+.log-line-collapsable {
+    &.log-type-debug {
+        color: $log-type-debug-color;
+    }
+    &.log-type-info {
+        color: $log-type-info-color;
+    }
+    &.log-type-warning {
+        color: $log-type-warning-color;
+    }
+    &.log-type-exception {
+        color: $log-type-exception-color;
+    }
+
+    p {
+        white-space: pre;
+        margin: 0;
+    }
+
+    .log-message {
+        cursor: pointer;
+
+        .fas {
+            width: 0.5em;
+            margin: 0 0.5em 0 0;
+        }
+    }
+
+    .log-sub-message {
+        margin-left: 2em;
+    }
+}
+

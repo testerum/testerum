@@ -5,6 +5,7 @@ import {RunnerErrorEvent} from "../../../../model/test/event/runner-error.event"
 import {TextLogEvent} from "../../../../model/test/event/text-log.event";
 import {TestsRunnerService} from "../tests-runner.service";
 import {Subscription} from "rxjs";
+import {LogLevel} from "../../../../model/test/event/enums/log-level.enum";
 
 @Injectable()
 export class TestsRunnerLogsService {
@@ -48,13 +49,20 @@ export class TestsRunnerLogsService {
         log.eventKey = runnerEvent.eventKey;
 
         if (runnerEvent instanceof RunnerErrorEvent) {
-            log.addExceptionLine("Exception: " + runnerEvent.errorMessage)
+            log.addException("Exception: " + runnerEvent.errorMessage);
+            log.logLevel = LogLevel.ERROR;
         }
         if (runnerEvent instanceof TextLogEvent) {
-            log.addLogLine(runnerEvent.getMessageWithException())
+            log.addLogLine(runnerEvent.message);
+            log.logLevel = runnerEvent.logLevel;
+            if (runnerEvent.exceptionDetail != null) {
+                log.addException(
+                    runnerEvent.exceptionDetail.message,
+                    runnerEvent.exceptionDetail.asDetailedString
+                );
+            }
         }
 
         return log;
     }
-
 }

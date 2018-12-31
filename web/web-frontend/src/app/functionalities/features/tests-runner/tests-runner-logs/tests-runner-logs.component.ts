@@ -6,6 +6,7 @@ import {TestsRunnerLogsService} from "./tests-runner-logs.service";
 import {Subscription} from "rxjs";
 import {TestsRunnerService} from "../tests-runner.service";
 import {RunnerRootTreeNodeModel} from "../tests-runner-tree/model/runner-root-tree-node.model";
+import {LogLevel} from "../../../../model/test/event/enums/log-level.enum";
 
 @Component({
     moduleId: module.id,
@@ -28,6 +29,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
     private lastLogsCount: number = 0;
 
     LogLineTypeEnum = LogLineTypeEnum;
+    LogLevel = LogLevel;
 
     logAddedEventEmitterSubscription:any;
     emptyLogsEventEmitterSubscription:any;

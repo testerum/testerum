@@ -21,7 +21,7 @@ export class TextLogEvent implements RunnerEvent, Serializable<TextLogEvent> {
         if (input["exceptionDetail"]) {
             this.exceptionDetail = new ExceptionDetail().deserialize(input["exceptionDetail"]);
         }
-        this.logLevel = LogLevel[""+input["executionResult"]];
+        this.logLevel = LogLevel[""+input["logLevel"]];
 
 
         return this;

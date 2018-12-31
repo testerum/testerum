@@ -1,0 +1,13 @@
+<div class="log-line-collapsable"
+     [class.log-type-debug]="logLevel == LogLevel.DEBUG"
+     [class.log-type-info]="logLevel == LogLevel.INFO"
+     [class.log-type-warning]="logLevel == LogLevel.WARNING"
+     [class.log-type-exception]="logLevel == LogLevel.ERROR">
+    <p (click)="toggle()"
+        class="log-message"><i class="fas"
+          [class.fa-caret-down]="!collapsed"
+          [class.fa-caret-right]="collapsed"></i>{{mainMessage}}
+    </p>
+    <p class="log-sub-message" [class.hidden]="collapsed">{{collapsedMessage}}</p>
+
+</div>

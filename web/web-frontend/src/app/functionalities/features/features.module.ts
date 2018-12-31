@@ -38,6 +38,7 @@ import {FeaturesTreeComponent} from "./features-tree/features-tree.component";
 import {FeaturesTreeFilterComponent} from "./features-tree/features-tree-filter/features-tree-filter.component";
 import {TestsRunnerTreeToolbarComponent} from './tests-runner/tests-runner-tree/tests-runner-tree-toolbar/tests-runner-tree-toolbar.component';
 import {TestsRunnerLogsToolbarComponent} from "./tests-runner/tests-runner-logs/tests-runner-logs-toolbar/tests-runner-logs-toolbar.component";
+import { LogLineCollapsableComponent } from './tests-runner/tests-runner-logs/log-line-collapsable/log-line-collapsable.component';
 
 @NgModule({
     imports: [
@@ -84,6 +85,7 @@ import {TestsRunnerLogsToolbarComponent} from "./tests-runner/tests-runner-logs/
 
         TestsRunnerTreeToolbarComponent,
         TestsRunnerLogsToolbarComponent,
+        LogLineCollapsableComponent,
     ],
     entryComponents: [
         RunnerTreeNodeComponent,

@@ -12,6 +12,7 @@ export class StepEndEvent implements RunnerEvent, Serializable<StepEndEvent> {
 
     stepCall: StepCall;
     status: ExecutionStatusEnum;
+    durationMillis: number;
 
     deserialize(input: Object): StepEndEvent {
         this.eventKey = new EventKey().deserialize(input["eventKey"]);
@@ -21,6 +22,7 @@ export class StepEndEvent implements RunnerEvent, Serializable<StepEndEvent> {
 
         let statusAsString:string = input["status"];
         this.status = ExecutionStatusEnum[statusAsString];
+        this.durationMillis = input["durationMillis"];
 
         return this;
     }
