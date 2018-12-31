@@ -25,6 +25,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
     logsToDisplay: Array<TestsRunnerLogModel> = [];
     selectedRunnerTreeNode: RunnerTreeNodeModel;
     shouldWrapLogs: boolean;
+    minLogLevelToShow: LogLevel = LogLevel.INFO;
 
     private lastLogsCount: number = 0;
 
@@ -94,13 +95,20 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
 
     private onRunnerTreeNodeSelected(runnerTreeNode: RunnerTreeNodeModel): void {
         this.selectedRunnerTreeNode = runnerTreeNode;
+        this.refreshLogs();
+    }
 
+    private refreshLogs() {
         this.logsToDisplay.length = 0;
 
         for (let log of this.logs) {
-            if (runnerTreeNode == null || this.isLogBelogingToRunnerTreeNode(log, runnerTreeNode)) {
-                this.logsToDisplay.push(log)
+            if (this.selectedRunnerTreeNode && !this.isLogBelogingToRunnerTreeNode(log, this.selectedRunnerTreeNode)) {
+                continue;
             }
+            if (log.logLevel < this.minLogLevelToShow) {
+                continue;
+            }
+            this.logsToDisplay.push(log);
         }
     }
 
@@ -113,5 +121,10 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
             return false;
         }
         return runnerTreeNode.eventKey.isParentOf(log.eventKey)
+    }
+
+    onLogLevelChange(event: LogLevel) {
+        this.minLogLevelToShow = event;
+        this.refreshLogs()
     }
 }

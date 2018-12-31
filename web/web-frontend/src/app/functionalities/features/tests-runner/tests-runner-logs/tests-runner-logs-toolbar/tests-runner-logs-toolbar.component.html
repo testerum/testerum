@@ -11,6 +11,30 @@
             </div>
         </div>
 
+
+        <div class="filters-group log-level-container">
+            <div class="btn-group" role="group">
+                <div title="{{minLogLevelToShow <= LogLevel.DEBUG? 'Hide Debug Logs':'Show Debug Logs'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="minLogLevelToShow <= LogLevel.DEBUG"
+                     (click)="onLogLevelChange(LogLevel.DEBUG)">
+                    D
+                </div>
+                <div title="{{minLogLevelToShow <= LogLevel.INFO? 'Hide Info Logs':'Show Info Logs'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="minLogLevelToShow <= LogLevel.INFO"
+                     (click)="onLogLevelChange(LogLevel.INFO)">
+                    I
+                </div>
+                <div title="{{minLogLevelToShow <= LogLevel.WARNING? 'Hide Warning Logs':'Show Worning Logs'}}"
+                     class="btn btn-default btn-xs btn-group"
+                     [class.active]="minLogLevelToShow <= LogLevel.WARNING"
+                     (click)="onLogLevelChange(LogLevel.WARNING)">
+                    W
+                </div>
+            </div>
+        </div>
+
         <div class="filters-group">
             <div class="btn-group" role="group">
                 <div title="Wrap Lines"

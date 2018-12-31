@@ -11,11 +11,19 @@
     border: 1px solid #d9d9d9;
     border-radius: 3px;
     background: linear-gradient(to left, #f6f7f9 0%, #ebedf0 100%);
+
+    .line-filters {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .log-level-container {
+        .btn {
+            font-weight: 900;
+        }
+    }
 }
 
-.line-filters {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-}
+
