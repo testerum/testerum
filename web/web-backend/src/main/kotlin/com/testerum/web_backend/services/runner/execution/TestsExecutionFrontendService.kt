@@ -195,7 +195,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
             try {
                 PathUtils.createOrUpdateSymbolicLink(
                         absoluteSymlinkPath = frontendDirs.getLatestReportSymlink().toAbsolutePath().normalize(),
-                        absoluteTarget = reportsDestinationDirectory.toAbsolutePath().normalize()
+                        absoluteTarget = reportsDestinationDirectory.toAbsolutePath().normalize(),
+                        symlinkRelativeTo = frontendDirs.getReportsDir()
                 )
             } catch (e: Exception) {
                 LOG.warn("""failed to create/update "latest" report symlink""", e)
