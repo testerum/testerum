@@ -9,6 +9,7 @@ import {ReportBasicStepDef} from "../../../common/testerum-model/model/step/def/
 import {ReportUndefinedStepDef} from "../../../common/testerum-model/model/step/def/report-undefined-step-def";
 import {Templates} from "./templates/Templates";
 import {ExecutionStatus} from "../../../common/testerum-model/model/report/execution-status";
+import {RunnerPropertiesParser} from "../../../common/util/RunnerPropertiesParser";
 
 class Application {
 
@@ -79,6 +80,6 @@ class Application {
 }
 
 const modelDirectory = process.argv[2];
-const properties=JSON.parse(process.argv[3]);
+const properties=RunnerPropertiesParser.parse(process.argv[3]);
 
 new Application(modelDirectory, properties).run();

@@ -1,4 +1,4 @@
-package com.testerum.runner.cmdline.output_format.parser
+package com.testerum.runner.cmdline.output_format.marshaller
 
 import com.testerum.runner.cmdline.output_format.OutputFormat
 import org.hamcrest.CoreMatchers.equalTo

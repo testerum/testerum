@@ -1,7 +1,7 @@
 package com.testerum.runner_cmdline.events.execution_listeners
 
 import com.testerum.runner.cmdline.output_format.OutputFormat
-import com.testerum.runner.cmdline.output_format.parser.OutputFormatParser
+import com.testerum.runner.cmdline.output_format.marshaller.OutputFormatParser
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.execution_listener.ExecutionListenerFactory
 import java.util.concurrent.locks.ReentrantLock

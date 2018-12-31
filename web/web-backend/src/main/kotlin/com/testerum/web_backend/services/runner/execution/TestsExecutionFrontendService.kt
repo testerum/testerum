@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
-import com.testerum.common_kotlin.deleteIfExists
+import com.testerum.common_kotlin.PathUtils
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.common_kotlin.writeText
 import com.testerum.file_service.caches.resolved.TestsCache
@@ -193,13 +193,9 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
             // create/update "latest" report symlink
             try {
-                val relativeReportDestinationDirectory: JavaPath = frontendDirs.getReportsDir().relativize(reportsDestinationDirectory)
-
-                frontendDirs.getLatestReportSymlink().deleteIfExists()
-
-                Files.createSymbolicLink(
-                        frontendDirs.getLatestReportSymlink(),
-                        relativeReportDestinationDirectory
+                PathUtils.createOrUpdateSymbolicLink(
+                        absoluteSymlinkPath = frontendDirs.getLatestReportSymlink().toAbsolutePath().normalize(),
+                        absoluteTarget = reportsDestinationDirectory.toAbsolutePath().normalize()
                 )
             } catch (e: Exception) {
                 LOG.warn("""failed to create/update "latest" report symlink""", e)

@@ -5,6 +5,7 @@ import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.common_kotlin.deleteRecursivelyIfExists
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.runner.cmdline.output_format.builder.EventListenerProperties
+import com.testerum.runner.cmdline.output_format.marshaller.properties.RunnerPropertiesSerializer
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner_cmdline.dirs.RunnerDirs
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.BaseReportModelExecutionListener
@@ -48,12 +49,9 @@ class CustomTemplateExecutionListener(private val properties: Map<String, String
     override fun afterModelSavedToFile() {
         var commandLine: List<String> = emptyList()
         try {
-            // serialize properties to JSON
-            val jsonProperties: String = OBJECT_MAPPER.writeValueAsString(properties)
-
             // execute node
             val scriptFileName = scriptFile.fileName?.toString()
-            commandLine = createCommandLine(jsonProperties)
+            commandLine = createCommandLine(properties)
             val processExecutor = ProcessExecutor()
                     .command(commandLine)
                     .redirectOutput(
@@ -91,14 +89,14 @@ class CustomTemplateExecutionListener(private val properties: Map<String, String
         }
     }
 
-    private fun createCommandLine(jsonProperties: String): List<String> {
+    private fun createCommandLine(properties: Map<String, String>): List<String> {
         val commandLine = mutableListOf<String>()
 
         commandLine += getNodeBinaryPath().toString()
 
         commandLine += scriptFile.toString()
         commandLine += destinationDirectory.toString()
-        commandLine += jsonProperties
+        commandLine += RunnerPropertiesSerializer.serialize(properties)
 
         return commandLine
     }

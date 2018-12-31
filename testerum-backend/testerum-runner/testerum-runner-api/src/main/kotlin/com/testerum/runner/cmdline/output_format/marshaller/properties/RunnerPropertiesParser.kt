@@ -1,33 +1,11 @@
-package com.testerum.runner.cmdline.output_format.parser
+package com.testerum.runner.cmdline.output_format.marshaller.properties
 
-import com.testerum.runner.cmdline.output_format.OutputFormat
-
-object OutputFormatParser {
+object RunnerPropertiesParser {
 
     private val PROPERTIES_SPLITTER = Regex("""(?<!\\),""")
     private val PROPERTY_PAIR_SPLITTER = Regex("""(?<!\\)=""")
 
-    fun parse(outputFormatWithProperties: String): Pair<OutputFormat, Map<String, String>> {
-        val indexOfColon = outputFormatWithProperties.indexOf(":")
-
-        val outputFormatString: String
-        val propertiesString: String
-
-        if (indexOfColon == -1) {
-            outputFormatString = outputFormatWithProperties
-            propertiesString = ""
-        } else {
-            outputFormatString = outputFormatWithProperties.substring(0, indexOfColon)
-            propertiesString = outputFormatWithProperties.substring(indexOfColon + 1)
-        }
-
-        val outputFormat = OutputFormat.parse(outputFormatString)
-        val properties = parseProperties(propertiesString)
-
-        return Pair(outputFormat, properties)
-    }
-
-    private fun parseProperties(propertiesString: String): Map<String, String> {
+    fun parse(propertiesString: String): Map<String, String> {
         if (propertiesString.isEmpty()) {
             return emptyMap()
         }
@@ -53,7 +31,6 @@ object OutputFormatParser {
                                 ": the pair [$propertyPair] should contain an '=' character that separates the key and the value"
                 )
             }
-
         }
 
         return result
@@ -63,4 +40,5 @@ object OutputFormatParser {
         return this.replace("\\=", "=")
                 .replace("\\,", ",")
     }
+
 }
