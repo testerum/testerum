@@ -72,9 +72,15 @@ class RunnerResultFileService {
         val stats: JsonStatistics = loadStatistics(executionDir)
                 ?: return null
 
+        // The URL will be filled-in by the web module (since URL-s are a web concern).
+        // I chose to do it this way to minimize the number of model classes -
+        // normally the "file-service" module would need to return a model without "url".
+        val url = "";
+
         return RunnerResultFileInfo(
                 path = Path.createInstance(relativePath.toString()),
                 name = executionDir.fileName.toString(),
+                url = url,
                 executionResult = stats.executionStatus,
                 durationMillis = stats.durationMillis
         )

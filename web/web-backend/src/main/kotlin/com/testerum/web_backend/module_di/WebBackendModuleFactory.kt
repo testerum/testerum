@@ -41,6 +41,7 @@ import com.testerum.web_backend.controllers.resources.rdbms.RdbmsController
 import com.testerum.web_backend.controllers.runner.execution.TestExecutionController
 import com.testerum.web_backend.controllers.runner.execution.TestsWebSocketController
 import com.testerum.web_backend.controllers.runner.result.RunnerResultController
+import com.testerum.web_backend.controllers.runner.result.TestRunnerReportFileServerController
 import com.testerum.web_backend.controllers.settings.SettingsController
 import com.testerum.web_backend.controllers.setup.SetupController
 import com.testerum.web_backend.controllers.steps.BasicStepController
@@ -408,6 +409,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             runnerResultFrontendService = runnerResultFrontendService
     )
 
+    private val testRunnerReportFileServerController = TestRunnerReportFileServerController(
+            frontendDirs = frontendDirs
+    )
+
     private val featureController = FeatureController(
             featuresFrontendService = featuresFrontendService,
             restApiObjectMapper = restApiObjectMapper
@@ -466,6 +471,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             variablesController,
             testExecutionController,
             testRunnerReportController,
+            testRunnerReportFileServerController,
             featureController,
             tagsController,
             testsController,

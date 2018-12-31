@@ -6,12 +6,14 @@ export class RunnerResultFileInfo implements Serializable<RunnerResultFileInfo> 
 
     path: Path;
     name: string;
+    url: string;
     executionResult: ExecutionStatusEnum;
     durationMillis: number;
 
     deserialize(input: Object): RunnerResultFileInfo {
         this.path = Path.deserialize(input["path"]);
         this.name = input["name"];
+        this.url = input["url"];
 
         let executionResultAsString:string = input["executionResult"];
         this.executionResult = ExecutionStatusEnum[executionResultAsString];
