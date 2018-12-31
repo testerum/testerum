@@ -2,11 +2,9 @@ import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
 import {TestTreeNodeModel} from "../../model/test-tree-node.model";
 import {UrlService} from "../../../../../service/url.service";
-import {JsonTreeContainerEditorEvent} from "../../../../../generic/components/json-tree/container-editor/model/json-tree-container-editor.event";
-import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {FeaturesTreeService} from "../../features-tree.service";
-import {FeatureService} from "../../../../../service/feature.service";
 import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
+import {TestsRunnerService} from "../../../tests-runner/tests-runner.service";
 
 @Component({
     moduleId: module.id,
@@ -23,6 +21,7 @@ export class TestNodeComponent {
     constructor(private router: Router,
                 private urlService: UrlService,
                 private jsonTreeService: JsonTreeService,
+                private testsRunnerService: TestsRunnerService,
                 private featuresTreeService: FeaturesTreeService) {
     }
 
@@ -38,5 +37,9 @@ export class TestNodeComponent {
     onCopyFeature() {
         this.setSelected();
         this.featuresTreeService.setPathToCopy(this.model.path);
+    }
+
+    runTests() {
+        this.testsRunnerService.runTests([this.model.path]);
     }
 }
