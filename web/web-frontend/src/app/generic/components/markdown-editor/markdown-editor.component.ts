@@ -72,7 +72,9 @@ export class MarkdownEditorComponent implements AfterViewInit {
     private handleEditModeChanged() {
         if (this.editMode != this.oldEditMode) {
             if (this.simpleMDE) {
-                this.simpleMDE.togglePreview();
+                if (this.simpleMDE.isPreviewActive() == this.editMode) {
+                    this.simpleMDE.togglePreview();
+                }
                 this.simpleMDE.gui.toolbar.hidden = !this.editMode;
                 this.oldEditMode = this.editMode;
             }
