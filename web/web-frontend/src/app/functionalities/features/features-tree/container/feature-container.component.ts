@@ -83,7 +83,8 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
                     .subscribe(
                         it => {
                             this.testsService.showTestsScreen();
-                            this.featuresTreeService.initializeTestsTreeFromServer(null);
+                            this.featuresTreeService.initializeTestsTreeFromServer(this.model.parentContainer.path);
+                            this.urlService.navigateToFeature(this.model.parentContainer.path);
                         }
                     )
             }
