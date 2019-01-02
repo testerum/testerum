@@ -1,28 +1,32 @@
+.runner-results-tabs {
+    height: calc(100% - 3px);
 
-/* STYLE FOR TAB COMPONENT */
-::ng-deep .ui-tabview {
-    height: 100%;
-}
+    /* STYLE FOR TAB COMPONENT */
+    .ui-tabview {
+        height: 100%;
+    }
 
-::ng-deep .ui-tabview-panels {
-    height: calc(100% - 35px);
-    border: 1px solid #bebebe;
-    border-top: 0;
-    margin-left: 3px;
-}
+    .ui-tabview-panels {
+        height: calc(100% - 35px);
+        border: 1px solid #bebebe;
+        border-top: 0;
+        margin-left: 2px;
+        border-right: 2px solid #bebebe;
+    }
 
-::ng-deep .ui-tabview-panel {
-    height: 100%;
-    padding: 0 !important;
-}
+    .ui-tabview-panel {
+        height: 100%;
+        padding: 0 !important;
+    }
 
-::ng-deep .ui-tabview-nav {
-    border: 0;
-    border-bottom: 1px solid #bebebe;
-}
+    .ui-tabview-nav {
+        border: 0;
+        border-bottom: 1px solid #bebebe;
+    }
 
-::ng-deep .ui-tabview-selected {
-    background: white;
-    border-bottom: 1px solid white !important;
-    margin-bottom: -1px !important;
+    .ui-tabview-selected {
+        background: white;
+        border-bottom: 1px solid white !important;
+        margin-bottom: -1px !important;
+    }
 }
