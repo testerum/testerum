@@ -6,6 +6,7 @@ import {ReportUrlService} from "../service/report-url.service";
 import {ReportGridNodeMapper} from "../report/grid/util/report-grid-node.mapper";
 import {ReportGridFilter} from "../report/grid/model/report-grid-filter.model";
 import {ReportGridNode} from "../report/grid/model/report-grid-node.model";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'app-tag-overview',
@@ -14,17 +15,21 @@ import {ReportGridNode} from "../report/grid/model/report-grid-node.model";
 })
 export class TagOverviewComponent implements OnInit {
 
+    hideLinksToOtherReports = false;
     statusByTagMap: Map<string, ExecutionStatus>;
 
     ExecutionStatus = ExecutionStatus;
 
-    constructor(private reportService: ReportService,
+    constructor(private activatedRoute: ActivatedRoute,
+                private reportService: ReportService,
                 private reportUrlService: ReportUrlService) {
     }
 
     ngOnInit() {
         let reportModelExtractor = this.reportService.reportModelExtractor;
         this.statusByTagMap = this.extractStatusByTagMap(reportModelExtractor);
+
+        this.hideLinksToOtherReports = (this.activatedRoute.snapshot.queryParams["hideLinksToOtherReports"] == "true");
     }
 
     private extractStatusByTagMap(reportModelExtractor: ReportModelExtractor): Map<string, ExecutionStatus> {

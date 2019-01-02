@@ -7,4 +7,6 @@ import {Component, ViewEncapsulation} from '@angular/core';
     encapsulation: ViewEncapsulation.None
 })
 export class RunnerResultTabsComponent {
+    tagsResultsUrlSuffix = "#/tags?hideLinksToOtherReports=true";
+    testsResultsUrlSuffix = "#/?hideLinksToOtherReports=true";
 }

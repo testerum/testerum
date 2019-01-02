@@ -1,12 +1,12 @@
 <div class="runner-results-tabs">
     <p-tabView>
 
-        <p-tabPanel header="Results">
-            <result></result>
+        <p-tabPanel header="Tests Results">
+            <result [urlSuffix]="testsResultsUrlSuffix"></result>
         </p-tabPanel>
 
-        <p-tabPanel header="Statistics">
-            Statistics
+        <p-tabPanel header="Tags Results">
+            <result [urlSuffix]="tagsResultsUrlSuffix"></result>
         </p-tabPanel>
 
     </p-tabView>

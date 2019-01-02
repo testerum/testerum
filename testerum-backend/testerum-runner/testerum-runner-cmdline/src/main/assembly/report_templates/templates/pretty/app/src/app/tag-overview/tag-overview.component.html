@@ -5,7 +5,7 @@
             <report-tag-pie [statusByTagMap]="statusByTagMap"></report-tag-pie>
         </div>
 
-        <div class="links">
+        <div *ngIf="!hideLinksToOtherReports" class="links">
             <a (click)="goToFullReport()">Full Report >></a>
         </div>
 

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
 import {filter, map} from "rxjs/operators";
 import {UrlUtil} from "../../../../utils/url.util";
@@ -10,6 +10,8 @@ import {Subscription} from "rxjs";
     styleUrls: ['result.component.scss']
 })
 export class ResultComponent implements OnInit, OnDestroy {
+
+    @Input() urlSuffix: string;
 
     url: string;
 
@@ -29,13 +31,17 @@ export class ResultComponent implements OnInit, OnDestroy {
                 return leafRoute.params
             }))
             .subscribe((params: Params) => {
-                    this.url = params["url"];
+                    this.refreshUrl(params["url"])
                 }
             );
-        this.url = this.activatedRoute.snapshot.params["url"];
+        this.refreshUrl(this.activatedRoute.snapshot.params["url"])
     }
 
     ngOnDestroy(): void {
         if (this.routerEventsSubscription) this.routerEventsSubscription.unsubscribe();
+    }
+
+    private refreshUrl(baseUrl: string) {
+        this.url = baseUrl + (this.urlSuffix ? this.urlSuffix: "")
     }
 }

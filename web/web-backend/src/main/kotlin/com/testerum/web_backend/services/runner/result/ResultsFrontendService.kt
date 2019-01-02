@@ -35,7 +35,6 @@ class ResultsFrontendService(private val frontendDirs: FrontendDirs,
                     setReportsUrlsForReport(it)
                 }
         )
-
     }
 
     private fun setReportsUrlsForReport(report: RunnerResultFileInfo): RunnerResultFileInfo {
