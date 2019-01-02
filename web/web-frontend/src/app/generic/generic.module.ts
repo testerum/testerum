@@ -94,7 +94,8 @@ import {LogoComponent} from './components/logo/logo.component';
 import {InfoModalService} from "./components/info_modal/info-modal.service";
 import {InfoIconComponent} from './components/info-icon/info-icon.component';
 import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
-import {MarkdownModule} from 'ngx-markdown'
+import {MarkdownModule} from 'ngx-markdown';
+import { SafeUrlPipe } from './pipes/safe-url.pipe'
 
 @NgModule({
     imports: [
@@ -121,6 +122,7 @@ import {MarkdownModule} from 'ngx-markdown'
     ],
     exports: [
         SafeHtmlPipe,
+        SafeUrlPipe,
 
         FocusDirective,
 
@@ -172,6 +174,7 @@ import {MarkdownModule} from 'ngx-markdown'
     ],
     declarations: [
         SafeHtmlPipe,
+        SafeUrlPipe,
 
         FocusDirective,
 

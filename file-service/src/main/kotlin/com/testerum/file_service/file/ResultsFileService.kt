@@ -18,10 +18,10 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.nio.file.Path as JavaPath
 
-class RunnerResultFileService {
+class ResultsFileService {
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(RunnerResultFileService::class.java)
+        private val LOG = LoggerFactory.getLogger(ResultsFileService::class.java)
 
         private val DAY_DIR_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         private val EXECUTION_DIR_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH-mm-ss-SSS")

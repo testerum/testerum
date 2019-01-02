@@ -10,7 +10,7 @@ import {RunnerEventMarshaller} from '../../model/test/event/marshaller/runner-ev
 @Injectable()
 export class ResultService {
 
-    private BASE_URL = "/rest/runner-reports";
+    private BASE_URL = "/rest/results";
 
     constructor(private http: HttpClient) {}
 

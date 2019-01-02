@@ -1,21 +1,22 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {ResultFile} from "../../model/result-file.model";
-import {ExecutionStatusEnum} from "../../../../../../model/test/event/enums/execution-status.enum";
-import {StringUtils} from "../../../../../../utils/string-utils.util";
-import {JsonTreeNodeEventModel} from "../../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
-import {JsonTreeService} from "../../../../../../generic/components/json-tree/json-tree.service";
+import {ResultsTreeNodeModel} from "../../model/results-tree-node.model";
+import {ExecutionStatusEnum} from "../../../../../model/test/event/enums/execution-status.enum";
+import {StringUtils} from "../../../../../utils/string-utils.util";
+import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
+import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {Subscription} from "rxjs";
+import {UrlService} from "../../../../../service/url.service";
 
 @Component({
-    selector: 'result-file',
-    templateUrl: 'result-file.component.html',
-    styleUrls:['result-file.component.scss']
+    selector: 'results-tree-node',
+    templateUrl: 'results-tree-node.component.html',
+    styleUrls:['results-tree-node.component.scss']
 })
 
-export class ResultFileComponent implements OnInit, OnDestroy {
+export class ResultsTreeNodeComponent implements OnInit, OnDestroy {
 
-    @Input() model:ResultFile;
+    @Input() model:ResultsTreeNodeModel;
     isSelected:boolean = false;
 
     ExecutionStatusEnum = ExecutionStatusEnum;
@@ -24,7 +25,8 @@ export class ResultFileComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private jsonTreeService:JsonTreeService) {
+                private jsonTreeService:JsonTreeService,
+                private urlService: UrlService) {
         this.selectedNodeSubscription = jsonTreeService.selectedNodeEmitter.subscribe((item:JsonTreeNodeEventModel) => this.onNodeSelected(item));
     }
 
@@ -41,12 +43,14 @@ export class ResultFileComponent implements OnInit, OnDestroy {
     }
 
     getNodeText(): string {
-        let result = StringUtils.substringBefore(this.model.name, "_");
-        return result.split("-").join(":");
+        let minHourSec = StringUtils.substringBeforeLast(this.model.name, "-");
+        minHourSec = minHourSec.split("-").join(":");
+        let millis = StringUtils.substringAfterLast(this.model.name, "-");
+        return minHourSec+"."+millis;
     }
 
     showResultFile() {
-        this.router.navigate(["/automated/results/show", {path : this.model.path.toString()} ]);
+        this.urlService.navigateToAutomatedResult(this.model.path, this.model.url);
         this.jsonTreeService.setSelectedNode(this.model);
     }
 

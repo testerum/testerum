@@ -48,7 +48,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         private val LOG: Logger = LoggerFactory.getLogger(TestsExecutionFrontendService::class.java)
 
         private val LATEST_REPORT_HTML_FILE_CONTENT: String = run {
-            val filePath = "/runner-reports/latest-report.html"
+            val filePath = "/results/latest-report.html"
 
             val fileInputStream = TestsExecutionFrontendService::class.java.getResourceAsStream(filePath)
                     ?: throw RuntimeException("could not load classpath resource at [${filePath}]")

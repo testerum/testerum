@@ -1,20 +1,19 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
-import {RunnerComponent} from "./runner.component";
-import {RunnerRoutingModule} from "./runner-routing.module";
+import {ResultsRoutingModule} from "./results-routing.module";
 import {AngularSplitModule} from "angular-split-ng6";
-import {ResultsComponent} from "./leftSide/results/results.component";
-import {ResultDirectoryComponent} from "./leftSide/results/container/result-directory.component";
-import {ResultFileComponent} from "./leftSide/results/container/leaf/result-file.component";
+import {ResultsTreeComponent} from "./results-tree/results-tree.component";
+import {ResultsTreeContainerComponent} from "./results-tree/container/results-tree-container.component";
+import {ResultsTreeNodeComponent} from "./results-tree/container/leaf/results-tree-node.component";
 import {GenericModule} from "../../generic/generic.module";
 import {DndModule} from "ng2-dnd";
 import {ResultComponent} from "./main/result/result.component";
-import {ResultResolver} from "./main/result/result.resolver";
 import {FeaturesModule} from "../features/features.module";
 import {RunnerResultTabsComponent} from "./main/runner-result-tabs.component";
 import {TabViewModule} from "primeng/primeng";
+import {ResultsComponent} from "./results.component";
 
 @NgModule({
     imports: [
@@ -26,26 +25,25 @@ import {TabViewModule} from "primeng/primeng";
         TabViewModule,
 
         GenericModule,
-        RunnerRoutingModule,
+        ResultsRoutingModule,
         FeaturesModule,
     ],
     exports: [
-        RunnerComponent,
+        ResultsTreeComponent,
     ],
     declarations: [
-        RunnerComponent,
         ResultsComponent,
-        ResultDirectoryComponent,
-        ResultFileComponent,
+        ResultsTreeComponent,
+        ResultsTreeContainerComponent,
+        ResultsTreeNodeComponent,
         ResultComponent,
         RunnerResultTabsComponent,
     ],
     entryComponents: [
-        ResultDirectoryComponent,
-        ResultFileComponent,
+        ResultsTreeContainerComponent,
+        ResultsTreeNodeComponent,
     ],
     providers: [
-        ResultResolver,
     ],
 })
-export class RunnerModule { }
+export class ResultsModule { }

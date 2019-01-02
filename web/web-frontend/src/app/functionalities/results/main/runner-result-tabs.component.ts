@@ -6,10 +6,5 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: ["runner-result-tabs.component.scss"]
 })
 
-export class RunnerResultTabsComponent implements OnInit {
-    constructor() {
-    }
-
-    ngOnInit() {
-    }
+export class RunnerResultTabsComponent {
 }

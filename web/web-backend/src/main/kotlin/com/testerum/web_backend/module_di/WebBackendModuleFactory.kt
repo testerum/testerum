@@ -40,8 +40,8 @@ import com.testerum.web_backend.controllers.resources.http.HttpController
 import com.testerum.web_backend.controllers.resources.rdbms.RdbmsController
 import com.testerum.web_backend.controllers.runner.execution.TestExecutionController
 import com.testerum.web_backend.controllers.runner.execution.TestsWebSocketController
-import com.testerum.web_backend.controllers.runner.result.RunnerResultController
-import com.testerum.web_backend.controllers.runner.result.TestRunnerReportFileServerController
+import com.testerum.web_backend.controllers.results.ResultsController
+import com.testerum.web_backend.controllers.results.ResultsFileServerController
 import com.testerum.web_backend.controllers.settings.SettingsController
 import com.testerum.web_backend.controllers.setup.SetupController
 import com.testerum.web_backend.controllers.steps.BasicStepController
@@ -72,7 +72,7 @@ import com.testerum.web_backend.services.resources.ResourcesFrontendService
 import com.testerum.web_backend.services.resources.http.HttpFrontendService
 import com.testerum.web_backend.services.resources.rdbms.RdbmsFrontendService
 import com.testerum.web_backend.services.runner.execution.TestsExecutionFrontendService
-import com.testerum.web_backend.services.runner.result.RunnerResultFrontendService
+import com.testerum.web_backend.services.runner.result.ResultsFrontendService
 import com.testerum.web_backend.services.save.SaveFrontendService
 import com.testerum.web_backend.services.settings.SettingsFrontendService
 import com.testerum.web_backend.services.setup.SetupFrontendService
@@ -329,9 +329,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             frontendDirs = frontendDirs
     )
 
-    private val runnerResultFrontendService = RunnerResultFrontendService(
+    private val runnerResultFrontendService = ResultsFrontendService(
             frontendDirs = frontendDirs,
-            runnerResultFileService = fileServiceModuleFactory.runnerResultFileService
+            resultsFileService = fileServiceModuleFactory.runnerResultFileService
     )
 
     private val networkService = NetworkService()
@@ -405,11 +405,11 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             testsExecutionFrontendService = testsExecutionFrontendService
     )
 
-    private val testRunnerReportController = RunnerResultController(
-            runnerResultFrontendService = runnerResultFrontendService
+    private val testRunnerReportController = ResultsController(
+            resultsFrontendService = runnerResultFrontendService
     )
 
-    private val testRunnerReportFileServerController = TestRunnerReportFileServerController(
+    private val resultsFileServerController = ResultsFileServerController(
             frontendDirs = frontendDirs
     )
 
@@ -471,7 +471,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             variablesController,
             testExecutionController,
             testRunnerReportController,
-            testRunnerReportFileServerController,
+            resultsFileServerController,
             featureController,
             tagsController,
             testsController,
@@ -491,7 +491,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     val testsWebSocketController = TestsWebSocketController(
             testsExecutionFrontendService = testsExecutionFrontendService,
             objectMapper = testsRunnerJsonObjectMapper,
-            runnerResultFrontendService = runnerResultFrontendService
+            resultsFrontendService = runnerResultFrontendService
     )
 
 }

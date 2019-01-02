@@ -1,4 +1,4 @@
-package com.testerum.web_backend.controllers.runner.result
+package com.testerum.web_backend.controllers.results
 
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import org.springframework.beans.factory.annotation.Qualifier
@@ -12,8 +12,8 @@ import java.util.*
 import javax.servlet.http.HttpServletRequest
 import java.nio.file.Path as JavaPath
 
-@Qualifier("testRunnerReportFileServerController")
-class TestRunnerReportFileServerController(private val frontendDirs: FrontendDirs) : ResourceHttpRequestHandler()  {
+@Qualifier("resultsFileServerController")
+class ResultsFileServerController(private val frontendDirs: FrontendDirs) : ResourceHttpRequestHandler()  {
 
     // the URL path at which this controller is available is configured in "spring_web.xml" (look for the SimpleUrlHandlerMapping bean)
 

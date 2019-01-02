@@ -1,38 +1,37 @@
-import {filter, map} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NavigationEnd, Params, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
+import {filter, map} from "rxjs/operators";
+import {UrlUtil} from "../../../../utils/url.util";
 import {Subscription} from "rxjs";
 
 @Component({
-    selector: 'runner',
-    templateUrl: 'runner.component.html'
+    selector: 'result',
+    templateUrl: 'result.component.html'
 })
+export class ResultComponent implements OnInit, OnDestroy {
 
-export class RunnerComponent implements OnInit, OnDestroy {
+    url: string;
 
-    isItemSelected: boolean = true;
     routerEventsSubscription: Subscription;
 
-    constructor(private router: Router) {
+    constructor(private router: Router,
+                private activatedRoute: ActivatedRoute,) {
     }
 
     ngOnInit() {
+
         this.routerEventsSubscription = this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(route => {
                 let leafRoute: any = this.router.routerState.snapshot.root;
                 while (leafRoute.firstChild) leafRoute = leafRoute.firstChild;
                 return leafRoute.params
-            }),)
+            }))
             .subscribe((params: Params) => {
-                    let action = params['path'];
-                    if (action) {
-                        this.isItemSelected = true;
-                    } else {
-                        this.isItemSelected = false;
-                    }
+                    this.url = params["url"];
                 }
             );
+        this.url = this.activatedRoute.snapshot.params["url"];
     }
 
     ngOnDestroy(): void {
