@@ -12,6 +12,15 @@
     <artifactId>common-kotlin</artifactId>
 
     <dependencies>
+        <!--==================== Internal Dependencies ====================-->
+
+        <!-- common-jdk -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-jdk</artifactId>
+        </dependency>
+        
+
         <!--==================== External Dependencies ====================-->
         <!-- Kotlin -->
         <dependency>

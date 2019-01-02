@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.cmdline.params.model
 
-import com.testerum.runner.cmdline.OutputFormat
+import com.testerum.runner.cmdline.output_format.OutputFormat
 import java.nio.file.Path as JavaPath
 
 data class CmdlineParams(val verbose: Boolean,

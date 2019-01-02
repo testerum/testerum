@@ -96,4 +96,8 @@ export class UrlService {
     public navigateToManualExecPlanTestRunner(planPath: Path, testPath: Path) {
         this.router.navigate(["/manual/plans/runner", {planPath : planPath.toString(), testPath: testPath.toString()} ])
     }
+
+    navigateToAutomatedResult(path: Path, url: string) {
+        this.router.navigate(["/automated/results/show", {path : path.toString(), url: url} ])
+    }
 }

@@ -29,7 +29,7 @@ import {SettingsComponent} from "./functionalities/config/settings/settings.comp
 import {SettingsService} from "./service/settings.service";
 import {FileDirChooserComponent} from "./generic/components/form/file_dir_chooser/file-dir-chooser.component";
 import {FileDirectoryChooserContainerComponent} from "./generic/components/form/file_dir_chooser/container/file-directory-chooser-container.component";
-import {RunnerModule} from "./functionalities/runner/runner.module";
+import {ResultsModule} from "./functionalities/results/results.module";
 import {ResultService} from "./service/report/result.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ArgValueValidatorDirective} from "./generic/components/step-call-tree/arg-modal/validator/arg-value-validator.directive";
@@ -58,7 +58,7 @@ import {ContextService} from "./service/context.service";
         FileUploadModule,
 
         FeaturesModule,
-        RunnerModule,
+        ResultsModule,
         StepsModule,
         ResourcesModule,
         ManualModule,

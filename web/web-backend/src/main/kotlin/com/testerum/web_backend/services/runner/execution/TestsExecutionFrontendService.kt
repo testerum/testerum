@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
+import com.testerum.common_kotlin.PathUtils
+import com.testerum.common_kotlin.doesNotExist
+import com.testerum.common_kotlin.writeText
 import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
-import com.testerum.runner.cmdline.jsonEventsOutputFormat
+import com.testerum.runner.cmdline.output_format.OutputFormat
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.RunnerStoppedEvent
@@ -22,6 +25,7 @@ import com.testerum.web_backend.services.runner.execution.model.RunningTestExecu
 import com.testerum.web_backend.services.runner.execution.model.TestExecution
 import com.testerum.web_backend.services.runner.execution.model.TestExecutionResponse
 import com.testerum.web_backend.services.runner.execution.stopper.ProcessKillerTestExecutionStopper
+import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.zeroturnaround.exec.ProcessExecutor
@@ -42,6 +46,17 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(TestsExecutionFrontendService::class.java)
+
+        private val LATEST_REPORT_HTML_FILE_CONTENT: String = run {
+            val filePath = "/results/latest-report.html"
+
+            val fileInputStream = TestsExecutionFrontendService::class.java.getResourceAsStream(filePath)
+                    ?: throw RuntimeException("could not load classpath resource at [${filePath}]")
+
+            fileInputStream.use {
+                IOUtils.toString(it, Charsets.UTF_8)
+            }
+        }
     }
 
     private class TestExecutionIdGenerator {
@@ -91,7 +106,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     }
 
     fun startExecution(executionId: Long,
-                       resultFilePath: JavaPath,
+                       reportsDestinationDirectory: JavaPath,
                        eventProcessor: (event: RunnerEvent) -> Unit,
                        doneProcessor: () -> Unit) {
         val execution = testExecutionsById[executionId]
@@ -106,7 +121,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
         LOG.debug("==========================================[ start test execution {} ]=========================================", executionId)
 
-        val args = createArgs(execution.testOrDirectoryPathsToRun, resultFilePath)
+        val args = createArgs(execution.testOrDirectoryPathsToRun, reportsDestinationDirectory)
         val argsFile: JavaPath = createArgsFile(args)
         val commandLine: List<String> = createCommandLine(argsFile)
 
@@ -166,6 +181,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
                 println("failed to delete argsFile [$argsFile]")
             }
             LOG.debug("==========================================[ DONE ]=========================================")
+
+            // send RunnerStoppedEvent
             try {
                 eventProcessor(
                         RunnerStoppedEvent()
@@ -173,6 +190,31 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
             } catch (e: Exception) {
                 LOG.warn("failed to process ${RunnerStoppedEvent::class.simpleName}", e)
             }
+
+            // create/update "latest" report symlink
+            try {
+                PathUtils.createOrUpdateSymbolicLink(
+                        absoluteSymlinkPath = frontendDirs.getLatestReportSymlink().toAbsolutePath().normalize(),
+                        absoluteTarget = reportsDestinationDirectory.toAbsolutePath().normalize(),
+                        symlinkRelativeTo = frontendDirs.getReportsDir()
+                )
+            } catch (e: Exception) {
+                LOG.warn("""failed to create/update "latest" report symlink""", e)
+            }
+
+            // write "latest-report.html" file
+            try {
+                val latestReportFile: JavaPath = frontendDirs.getReportsDir().resolve("latest-report.html")
+
+                if (latestReportFile.doesNotExist) {
+                    latestReportFile.writeText(LATEST_REPORT_HTML_FILE_CONTENT)
+                }
+            } catch (e: Exception) {
+                LOG.warn("failed to write [latest-report.html] file", e)
+            }
+
+
+            // call doneProcessor
             doneProcessor()
         }
     }
@@ -231,7 +273,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     }
 
     private fun createArgs(testsPathsToRun: List<Path>,
-                           resultFilePath: JavaPath): List<String> {
+                           reportsDestinationDirectory: JavaPath): List<String> {
         val args = mutableListOf<String>()
 
         // repository directory
@@ -247,15 +289,18 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         args += "${builtInBasicStepsDir.escape()}"
 
         // output
-        val outputFormatConsole = jsonEventsOutputFormat {}
-        val outputFormatFile = jsonEventsOutputFormat {
-            destinationFileName = resultFilePath
+        args += "--output-format"
+        args += OutputFormat.builders().jsonEvents {
+            wrapJsonWithPrefixAndPostfix = true
         }
-
         args += "--output-format"
-        args += outputFormatConsole
+        args += OutputFormat.builders().pretty {
+            destinationDirectory = frontendDirs.getReportsPrettyDir(reportsDestinationDirectory)
+        }
         args += "--output-format"
-        args += outputFormatFile
+        args += OutputFormat.builders().jsonStats {
+            destinationFileName =  frontendDirs.getReportsStatsFileName(reportsDestinationDirectory)
+        }
 
         // tests
         for (testPathToRun in testsPathsToRun) {
