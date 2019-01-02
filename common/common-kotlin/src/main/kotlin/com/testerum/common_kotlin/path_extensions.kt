@@ -3,6 +3,7 @@
 package com.testerum.common_kotlin
 
 import org.apache.commons.io.FileUtils
+import org.apache.commons.io.IOUtils
 import java.io.IOException
 import java.nio.charset.Charset
 import java.nio.file.FileVisitResult
@@ -178,6 +179,13 @@ fun JavaPath.smartCopyTo(destination: JavaPath,
 }
 
 fun JavaPath.readAllLines(charset: Charset = Charsets.UTF_8): List<String> = Files.readAllLines(this, charset)
+
+fun JavaPath.readText(charset: Charset = Charsets.UTF_8): String {
+    return Files.newBufferedReader(this, charset).use {
+        IOUtils.toString(it)
+    }
+}
+
 fun JavaPath.writeText(text: String, charset: Charset = Charsets.UTF_8) {
     this.parent?.createDirectories()
 

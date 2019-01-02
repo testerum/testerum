@@ -17,12 +17,6 @@ class ResultsFrontendService(private val frontendDirs: FrontendDirs,
         return setReportsUrlsForDirs(reports)
     }
 
-    fun createResultsDirectoryName(): JavaPath {
-        val reportsDir: JavaPath = frontendDirs.getReportsDir()
-
-        return resultsFileService.createResultsDirectoryName(reportsDir)
-    }
-
     private fun setReportsUrlsForDirs(reports: List<RunnerResultsDirInfo>): List<RunnerResultsDirInfo> {
         return reports.map {
             setReportsUrlsForDir(it)

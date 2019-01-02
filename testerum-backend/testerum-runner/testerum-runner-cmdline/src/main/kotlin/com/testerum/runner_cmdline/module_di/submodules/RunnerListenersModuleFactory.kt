@@ -11,6 +11,7 @@ import com.testerum.runner_cmdline.events.execution_listeners.console_debug.Cons
 import com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.json_stats.JsonStatsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model.JsonModelExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.ManagedReportsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template.CustomTemplateExecutionListener
 import java.nio.file.Path as JavaPath
 
@@ -18,7 +19,7 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
 
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     val executionListenerFinder = ExecutionListenerFinder(
-            mapOf(
+            executionListenerFactories = mapOf(
                     OutputFormat.CONSOLE_DEBUG      to { properties: Map<String, String> -> ConsoleDebugExecutionListener() },
 
                     OutputFormat.JSON_EVENTS        to { properties: Map<String, String> -> JsonEventsExecutionListener(properties) },
@@ -27,7 +28,8 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
 
                     OutputFormat.CUSTOM_TEMPLATE    to { properties: Map<String, String> -> CustomTemplateExecutionListener(properties) },
                     OutputFormat.PRETTY             to builtInTemplateExecutionListenerFactory("pretty")
-            )
+            ),
+            managedReportsExecutionListenerFactory = {  managedReportsDir: JavaPath -> ManagedReportsExecutionListener(managedReportsDir) }
     )
 
     private fun builtInTemplateExecutionListenerFactory(name: String): ExecutionListenerFactory = { properties: Map<String, String> ->

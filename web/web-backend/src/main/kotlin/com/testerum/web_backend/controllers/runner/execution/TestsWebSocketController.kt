@@ -44,11 +44,8 @@ class TestsWebSocketController(private val testsExecutionFrontendService: TestsE
                              payload: String) {
         val executionId: Long = payload.toLong()
 
-        val resultFilePath = resultsFrontendService.createResultsDirectoryName()
-
         testsExecutionFrontendService.startExecution(
                 executionId = executionId,
-                reportsDestinationDirectory = resultFilePath,
                 eventProcessor = { event ->
                     if (session.isOpen) {
                         // send to UI
