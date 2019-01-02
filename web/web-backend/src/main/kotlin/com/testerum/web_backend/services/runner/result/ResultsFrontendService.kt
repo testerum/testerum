@@ -40,7 +40,7 @@ class ResultsFrontendService(private val frontendDirs: FrontendDirs,
 
     private fun setReportsUrlsForReport(report: RunnerResultFileInfo): RunnerResultFileInfo {
         return report.copy(
-                url = "/rest/results/files/${report.path}/pretty/index.html"
+                url = "/rest/report-results/files/${report.path}/pretty/index.html"
         )
     }
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/results")
+@RequestMapping("/report-results")
 class ResultsController(private val resultsFrontendService: ResultsFrontendService) {
 
     @RequestMapping(method = [RequestMethod.GET], path = [""])

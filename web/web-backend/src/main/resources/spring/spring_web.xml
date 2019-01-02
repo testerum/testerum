@@ -61,7 +61,7 @@
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <prop key="/results/files/**">resultsFileServerController</prop>
+                <prop key="/report-results/files/**">resultsFileServerController</prop>
             </props>
         </property>
     </bean>
