@@ -46,28 +46,46 @@
             -webkit-box-shadow: 5px 6px 10px 0 #777;
             -moz-box-shadow: 5px 6px 10px 0 #777;
             box-shadow: 5px 6px 10px 0 #777;
-            &:hover {
+            &:active {
                 -moz-box-shadow:    inset 0 0 10px #000000;
                 -webkit-box-shadow: inset 0 0 10px #000000;
                 box-shadow:         inset 0 0 10px #000000;
             }
         }
 
-
         .disabled {
             background-color: $disabled-color;
         }
+        .disabled:hover {
+            background-color: lighten($disabled-color, 10%);
+        }
+
         .skipped {
             background-color: $skipped-color;
         }
+        .skipped:hover {
+            background-color: lighten($skipped-color, 10%);
+        }
+
         .undefined {
             background-color: $undefined-color;
         }
+        .undefined:hover {
+            background-color: lighten($undefined-color, 10%);
+        }
+
         .passed {
             background-color: $passed-color;
         }
+        .passed:hover {
+            background-color: lighten($passed-color, 10%);
+        }
+
         .failed {
             background-color: $failed-color;
+        }
+        .failed:hover {
+            background-color: lighten($failed-color, 10%);
         }
     }
 
