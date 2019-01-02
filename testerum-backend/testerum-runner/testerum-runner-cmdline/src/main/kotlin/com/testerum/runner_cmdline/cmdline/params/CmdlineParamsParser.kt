@@ -116,6 +116,12 @@ object CmdlineParamsParser {
         var outputFormats: List<String> = arrayListOf()
 
         @CommandLine.Option(
+                names = ["--managed-reports-directory"]
+                // todo: description
+        )
+        var managedReportsDir: JavaPath? = null
+
+        @CommandLine.Option(
                 names = ["--execution-name"],
                 description = [
                     "human-readable title of this execution",
@@ -147,6 +153,7 @@ object CmdlineParamsParser {
                     } else {
                         listOf(CmdlineParams.DEFAULT_OUTPUT_FORMAT.name)
                     },
+                    managedReportsDir = managedReportsDir,
                     executionName = executionName
             )
         }

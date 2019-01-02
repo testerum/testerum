@@ -14,17 +14,12 @@ import com.testerum.model.run_result.RunnerResultFileInfo
 import com.testerum.model.run_result.RunnerResultsDirInfo
 import com.testerum.runner.cmdline.output_format.model.json_stats.JsonStatistics
 import org.slf4j.LoggerFactory
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.nio.file.Path as JavaPath
 
 class ResultsFileService {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ResultsFileService::class.java)
-
-        private val DAY_DIR_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        private val EXECUTION_DIR_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH-mm-ss-SSS")
 
         private val DAY_DIR_NAME_REGEX = Regex("""[0-9]{4}-[0-9]{2}-[0-9]{2}""")
 
@@ -100,16 +95,6 @@ class ResultsFileService {
             LOG.warn("failed to parse [$statsFile]", e)
             null
         }
-    }
-
-
-    fun createResultsDirectoryName(reportsDir: JavaPath): JavaPath {
-        val localDate: LocalDateTime = LocalDateTime.now()
-        val dayDirName: String = localDate.format(DAY_DIR_NAME_FORMATTER)
-        val executionDirName: String = localDate.format(EXECUTION_DIR_NAME_FORMATTER)
-
-        return reportsDir.resolve(dayDirName)
-                .resolve(executionDirName)
     }
 
 }

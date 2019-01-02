@@ -4,23 +4,25 @@ import com.testerum.runner.cmdline.output_format.OutputFormat
 import com.testerum.runner.cmdline.output_format.marshaller.OutputFormatParser
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.execution_listener.ExecutionListenerFactory
+import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.ManagedReportsExecutionListener
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
+import java.nio.file.Path as JavaPath
 
-class ExecutionListenerFinder(private val executionListenerFactories: Map<OutputFormat, ExecutionListenerFactory>) {
+class ExecutionListenerFinder(private val executionListenerFactories: Map<OutputFormat, ExecutionListenerFactory>,
+                              private val managedReportsExecutionListenerFactory: (managedReportsDir: JavaPath) -> ManagedReportsExecutionListener) {
 
     private val lock = ReentrantLock()
     private var _executionListeners: List<ExecutionListener>? = null
 
-    fun setOutputFormats(outputFormatsWithProperties: List<String>) {
+    fun setOutputFormats(outputFormatsWithProperties: List<String>,
+                         managedReportsDir: JavaPath?) {
         lock.withLock {
             if (_executionListeners != null) {
                 throw throw IllegalStateException("execution listeners already set")
             }
 
-            _executionListeners = outputFormatsWithProperties.map {
-                createExecutionListener(it)
-            }
+            _executionListeners = createExecutionListeners(outputFormatsWithProperties, managedReportsDir)
         }
     }
 
@@ -36,6 +38,23 @@ class ExecutionListenerFinder(private val executionListenerFactories: Map<Output
         lock.withLock {
             return _executionListeners ?: emptyList()
         }
+    }
+
+    private fun createExecutionListeners(outputFormatsWithProperties: List<String>,
+                                         managedReportsDir: JavaPath?): List<ExecutionListener> {
+        val result = ArrayList<ExecutionListener>()
+
+        // create from output formats
+        for (outputFormatWithProperties in outputFormatsWithProperties) {
+            result += createExecutionListener(outputFormatWithProperties)
+        }
+
+        // create from managedReportsDir
+        if (managedReportsDir != null) {
+            result += managedReportsExecutionListenerFactory(managedReportsDir)
+        }
+
+        return result
     }
 
     private fun createExecutionListener(outputFormatWithProperties: String): ExecutionListener {

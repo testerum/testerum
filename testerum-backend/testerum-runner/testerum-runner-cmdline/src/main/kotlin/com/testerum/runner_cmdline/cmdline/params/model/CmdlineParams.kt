@@ -10,6 +10,7 @@ data class CmdlineParams(val verbose: Boolean,
                          val settingOverrides: Map<String, String>,
                          val testFilesOrDirectories: List<JavaPath>,
                          val outputFormatsWithProperties: List<String>,
+                         val managedReportsDir: JavaPath?,
                          val executionName: String?) {
 
     companion object {
