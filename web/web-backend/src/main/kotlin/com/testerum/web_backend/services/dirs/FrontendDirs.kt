@@ -18,6 +18,11 @@ class FrontendDirs(private val settingsManager: SettingsManager) {
     fun getCacheDir(): JavaPath = getTesterumDir().resolve("cache")
     fun getLicensesDir(): JavaPath = getTesterumDir().resolve("licenses")
 
+    fun getReportsDir(): JavaPath = getTesterumDir().resolve("reports")
+    fun getLatestReportSymlink(): JavaPath = getReportsDir().resolve("latest")
+    fun getReportsPrettyDir(executionDir: JavaPath): JavaPath = executionDir.resolve("pretty")
+    fun getReportsStatsFileName(executionDir: JavaPath): JavaPath = executionDir.resolve("json_stats").resolve("stats.json") // todo: remove duplication between this method and ResultsFileService.loadStatistics()
+
     fun getRequiredResourcesDir(): JavaPath = getResourcesDir(getRequiredRepositoryDir())
     fun getOptionalResourcesDir(): JavaPath? = getRepositoryDir()?.resolve("resources")
     fun getResourcesDir(repositoryDir: JavaPath): JavaPath = repositoryDir.resolve("resources")
@@ -41,8 +46,6 @@ class FrontendDirs(private val settingsManager: SettingsManager) {
     fun getRequiredVariablesDir(): JavaPath = getVariablesDir(getRequiredRepositoryDir())
     fun getOptionalVariablesDir(): JavaPath? = getRepositoryDir()?.resolve("variables")
     fun getVariablesDir(repositoryDir: JavaPath): JavaPath = repositoryDir.resolve("variables")
-
-    fun getResultsDir(): JavaPath? = getRepositoryDir()?.resolve("results")
 
     fun getRepositoryDir(): JavaPath? {
         if (!settingsManager.hasValue(SystemSettingKeys.REPOSITORY_DIR)) {

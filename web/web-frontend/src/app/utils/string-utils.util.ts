@@ -50,6 +50,13 @@ export class StringUtils {
         }
         return mainString.substring(0, index);
     }
+    static substringAfterLast(mainString: string, searchedPart: string): string {
+        let index = mainString.lastIndexOf(searchedPart);
+        if(index < 0) {
+            return null;
+        }
+        return mainString.substring(index+1);
+    }
 
     static substringBefore(mainString: string, searchedPart: string): string {
         let index = mainString.indexOf(searchedPart);
