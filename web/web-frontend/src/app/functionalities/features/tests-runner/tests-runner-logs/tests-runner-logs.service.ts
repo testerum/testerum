@@ -10,7 +10,7 @@ import {LogLevel} from "../../../../model/test/event/enums/log-level.enum";
 @Injectable()
 export class TestsRunnerLogsService {
 
-    logs: Array<TestsRunnerLogModel> = [];
+    logsByEventKey: Map<string, Array<TestsRunnerLogModel>> = new Map<string, Array<TestsRunnerLogModel>>();
     logAddedEventEmitter: EventEmitter<TestsRunnerLogModel> = new EventEmitter<TestsRunnerLogModel>();
     emptyLogsEventEmitter: EventEmitter<void> = new EventEmitter<void>();
 
@@ -30,14 +30,20 @@ export class TestsRunnerLogsService {
             this.onRunnerEvent(runnerEvent);
         });
 
-        this.logs.length = 0;
+        this.logsByEventKey.clear();
         this.emptyLogsEventEmitter.emit();
     }
 
     private onRunnerEvent(runnerEvent: RunnerEvent): void {
         let logEvent: TestsRunnerLogModel = TestsRunnerLogsService.transformEvent(runnerEvent);
 
-        this.logs.push(logEvent);
+        let logsValue: Array<TestsRunnerLogModel> = this.logsByEventKey.get(logEvent.eventKey);
+        if (!logsValue) {
+            logsValue = [];
+            this.logsByEventKey.set(logEvent.eventKey, logsValue)
+        }
+        logsValue.push(logEvent);
+
         this.logAddedEventEmitter.emit(logEvent);
     }
 
@@ -46,7 +52,7 @@ export class TestsRunnerLogsService {
         let log = new TestsRunnerLogModel();
         log.time = runnerEvent.time;
         log.eventType = runnerEvent.eventType;
-        log.eventKey = runnerEvent.eventKey;
+        log.eventKey = runnerEvent.eventKey.eventKeyAsString;
 
         if (runnerEvent instanceof RunnerErrorEvent) {
             log.addException("Exception: " + runnerEvent.errorMessage);

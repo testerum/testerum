@@ -6,7 +6,7 @@ import {LogLevel} from "../../../../../model/test/event/enums/log-level.enum";
 
 export class TestsRunnerLogModel {
 
-    eventKey: EventKey;
+    eventKey: string;
     eventType: RunnerEventTypeEnum;
     time: Date;
     logLevel: LogLevel = LogLevel.DEBUG;

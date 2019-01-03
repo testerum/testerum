@@ -11,6 +11,7 @@ export class RunnerErrorEvent implements RunnerEvent, Serializable<RunnerErrorEv
     errorMessage: string;
 
     deserialize(input: Object): RunnerErrorEvent {
+        this.eventKey = new EventKey().deserialize(input["eventKey"]);
         this.time = new Date(input["time"]);
         this.errorMessage = input["errorMessage"];
         return this;
