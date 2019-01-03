@@ -58,13 +58,6 @@ export class ReportGridNodeMapper {
     }
 
     private static mapFeature(feature: ReportFeature, filter: ReportGridFilter, parentNode: ReportGridNode): ReportGridNode[] {
-        if (feature.status == ExecutionStatus.PASSED && !filter.showPassed ||
-            feature.status == ExecutionStatus.FAILED && !filter.showFailed ||
-            feature.status == ExecutionStatus.DISABLED && !filter.showDisabled ||
-            feature.status == ExecutionStatus.UNDEFINED && !filter.showUndefined ||
-            feature.status == ExecutionStatus.SKIPPED && !filter.showSkipped) {
-            return [];
-        }
 
         let node = new ReportGridNode();
         node.parent = parentNode;
@@ -106,6 +99,10 @@ export class ReportGridNodeMapper {
 
 
         let result: ReportGridNode[] = [];
+
+        if (node.children.length == 0) {
+            return result;
+        }
 
         if(filter.selectedTags.length != 0) {
             if(!this.nodeOrParentOrSubNodesMatchesAnyOfTheTags(node, filter.selectedTags)) {
