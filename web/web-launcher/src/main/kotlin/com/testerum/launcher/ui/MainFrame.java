@@ -87,6 +87,13 @@ public class MainFrame extends JFrame {
         openInBrowserButton.setEnabled(true);
     }
 
+    public void setServerAsLoading() {
+        arrowImage.setVisible(false);
+        statusLabel.setIcon(new ImageIcon(getClass().getResource("/loading.gif")));
+        statusLabel.setText(" Restarting Testerum Server");
+        openInBrowserButton.setEnabled(false);
+    }
+
     @SuppressWarnings("unused")
     private void onCopyUrlToClipboardClicked(final ActionEvent actionEvent) {
         final StringSelection stringSelection = new StringSelection(urlTextFiled.getText());
@@ -127,6 +134,7 @@ public class MainFrame extends JFrame {
         configManager.saveConfig(newConfig);
 
         reloadConfig();
+        setServerAsLoading();
 
         // restart Testerum
         testerumExecuter.stopTesterum();
