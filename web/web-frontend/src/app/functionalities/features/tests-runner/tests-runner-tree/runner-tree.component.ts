@@ -12,6 +12,8 @@ import {RunnerComposedStepTreeNodeModel} from "./model/runner-composed-step-tree
 import {RunnerBasicStepTreeNodeModel} from "./model/runner-basic-step-tree-node.model";
 import {RunnerRootNode} from "../../../../model/runner/tree/runner-root-node.model";
 import {Subscription} from "rxjs";
+import {RunnerEvent} from "../../../../model/test/event/runner.event";
+import {RunnerEventTypeEnum} from "../../../../model/test/event/enums/runner-event-type.enum";
 
 @Component({
     moduleId: module.id,
@@ -53,8 +55,10 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
 
 
         if(!this.runnerEventSubscription) {
-            this.runnerEventSubscription = this.testsRunnerService.runnerEventObservable.subscribe((runnerEvent) => {
-                this.refresh();
+            this.runnerEventSubscription = this.testsRunnerService.runnerEventObservable.subscribe((runnerEvent: RunnerEvent) => {
+                if (runnerEvent.eventType != RunnerEventTypeEnum.LOG_EVENT) {
+                    this.refresh();
+                }
             });
         }
 
