@@ -46,8 +46,8 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
 
         val testsDirectoryRoot = testsDir.toAbsolutePath()
         val pathsToTestsToExecute: List<JavaPath> = runnerTestsFinder.findPathsToTestsToExecute(cmdlineParams, testsDir)
-        val features = loadFeatures(pathsToTestsToExecute, testsDirectoryRoot)
         val tests = loadTests(pathsToTestsToExecute, testsDirectoryRoot)
+        val features = loadFeatures(tests.map { it.filePath }, testsDirectoryRoot)
 
         val builder = TreeBuilder(
                 customizer = RunnerExecutionTreeBuilderCustomizer(hooks, executionName)
