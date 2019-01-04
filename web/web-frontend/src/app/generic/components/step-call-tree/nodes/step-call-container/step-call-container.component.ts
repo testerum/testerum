@@ -132,8 +132,11 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
                 this.model.stepCall.stepDef = newUndefinedStep;
             }
 
-            let subStepContainer = StepCallTreeUtil.createSubStepsContainerWithChildren(newStepDef, new Map());
+            let subStepContainer: SubStepsContainerModel = StepCallTreeUtil.createSubStepsContainerWithChildren(newStepDef, new Map());
             if(subStepContainer != null) {
+                this.model.removeSubStepsContainerModel();
+
+                subStepContainer.jsonTreeNodeState.showChildren = true;
                 subStepContainer.parentContainer = this.model;
                 this.model.children.push(
                     subStepContainer
