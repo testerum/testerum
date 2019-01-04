@@ -13,8 +13,26 @@
             var global = window;
         }
     </script>
+
+    <style>
+        .blink_me {
+            font-size: 3em;
+            font-weight: bold;
+            animation: blinker 1s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+    </style>
+
 </head>
 <body>
-<my-app>Loading ...</my-app>
+<my-app>
+    <div style="height: 100%;display: flex;justify-content: center;align-items: center;flex-flow: column;">
+        <img src="/media/testerum-logo.svg" alt="Loading Testerum">
+        <span class="blink_me">Loading</span>
+    </div>
+</my-app>
 </body>
 </html>
