@@ -3,6 +3,7 @@ package com.testerum.runner.cmdline.output_format
 import com.testerum.runner.cmdline.output_format.builder.OutputFormatBuilders
 
 enum class OutputFormat {
+    CONSOLE,
     CONSOLE_DEBUG,
 
     JSON_EVENTS,

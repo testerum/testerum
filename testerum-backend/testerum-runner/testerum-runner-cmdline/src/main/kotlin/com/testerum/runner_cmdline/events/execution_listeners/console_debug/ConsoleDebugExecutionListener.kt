@@ -21,7 +21,7 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
 
     override fun onSuiteStart(event: SuiteStartEvent) {
         indent()
-        log("SUITE_START: eventKey=${event.eventKey}\n")
+        log("SUITE_START\n")
 
         indentLevel++
     }
@@ -30,12 +30,12 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("SUITE_END: status=${event.status}, durationMillis=${event.durationMillis}, eventKey=${event.eventKey}\n")
+        log("SUITE_END: status=${event.status}, durationMillis=${event.durationMillis}\n")
     }
 
     override fun onFeatureStart(event: FeatureStartEvent) {
         indent()
-        log("FEATURE_START: featureName='${event.featureName}', eventKey=${event.eventKey}\n")
+        log("FEATURE_START: featureName='${event.featureName}'\n")
 
         indentLevel++
     }
@@ -44,12 +44,12 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("FEATURE_END: status=${event.status}, featureName='${event.featureName}', durationMillis=${event.durationMillis}, eventKey=${event.eventKey}\n")
+        log("FEATURE_END: status=${event.status}, featureName='${event.featureName}', durationMillis=${event.durationMillis}\n")
     }
 
     override fun onTestStart(event: TestStartEvent) {
         indent()
-        log("TEST_START: testName='${event.testName}', testFilePath='${event.testFilePath}', eventKey=${event.eventKey}\n")
+        log("TEST_START: testName='${event.testName}', testFilePath='${event.testFilePath}'\n")
 
         indentLevel++
     }
@@ -58,12 +58,12 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("TEST_END: status=${event.status}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}, eventKey=${event.eventKey}\n")
+        log("TEST_END: status=${event.status}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}\n")
     }
 
     override fun onStepStart(event: StepStartEvent) {
         indent()
-        log("STEP_START: stepCall='${event.stepCall}', eventKey=${event.eventKey}\n")
+        log("STEP_START: stepCall='${event.stepCall}'\n")
 
         indentLevel++
     }
@@ -72,7 +72,7 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("STEP_END: status=${event.status}, stepCall='${event.stepCall}', durationMillis=${event.durationMillis}, eventKey=${event.eventKey}\n")
+        log("STEP_END: status=${event.status}, stepCall='${event.stepCall}', durationMillis=${event.durationMillis}\n")
     }
 
     override fun onTextLog(event: TextLogEvent) {
@@ -92,6 +92,7 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
                     if (exceptionDetail != null) {
                         append(
                                 exceptionDetail.detailedToString()
+                                        .removeSuffix("\n")
                                         .lines()
                                         .joinToString(separator = "\n") {
                                             "    ".repeat(indentLevel + 1) + it

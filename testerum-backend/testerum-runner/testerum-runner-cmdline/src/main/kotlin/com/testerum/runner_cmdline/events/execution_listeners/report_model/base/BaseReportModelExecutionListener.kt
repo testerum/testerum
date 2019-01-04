@@ -24,13 +24,13 @@ import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.report_model.FeatureOrTestRunnerReportNode
 import com.testerum.runner.report_model.ReportLog
 import com.testerum.runner.report_model.ReportStep
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.events_stack.ReportEventsStack
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.logger.ReportToFileLoggerStack
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportFeatureMapper
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportStepMapper
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportSuiteMapper
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportTestMapper
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.StepDefsByMinId
+import com.testerum.runner_cmdline.events.execution_listeners.utils.events_stack.ExecutionEventsStack
 import java.util.*
 import javax.annotation.concurrent.NotThreadSafe
 import java.nio.file.Path as JavaPath
@@ -58,7 +58,7 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
         private val LOG_MODEL_EXTENSION = "js"
     }
 
-    private val eventsStack = ReportEventsStack() // contains both RunnerEvent and RunnerReportNode
+    private val eventsStack = ExecutionEventsStack() // contains both RunnerEvent and RunnerReportNode
     private val loggerStack = ReportToFileLoggerStack()
     private val stepDefsByMinId = StepDefsByMinId()
 
