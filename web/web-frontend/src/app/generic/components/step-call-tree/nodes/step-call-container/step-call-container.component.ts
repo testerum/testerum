@@ -232,6 +232,10 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
             let siblingStepCalls: StepCall[];
             if(parentContainer instanceof JsonTreeModel) {
                 siblingStepCalls = this.stepCallTreeComponentService.stepCalls;
+            } else if (parentContainer instanceof SubStepsContainerModel) {
+                let parentStepCallContainer: StepCallContainerModel = (parentContainer as SubStepsContainerModel).parentContainer as StepCallContainerModel;
+                let parentStepDef = parentStepCallContainer.stepCall.stepDef as ComposedStepDef;
+                siblingStepCalls = parentStepDef.stepCalls;
             } else {
                 let parentStepDef = (parentContainer as StepCallContainerModel).stepCall.stepDef as ComposedStepDef;
                 siblingStepCalls = parentStepDef.stepCalls;
