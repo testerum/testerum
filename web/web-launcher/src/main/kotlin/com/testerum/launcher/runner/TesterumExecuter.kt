@@ -17,6 +17,7 @@ class TesterumExecuter {
     private var process: Process? = null
 
     lateinit var serverStartedHandler: () -> Unit
+    lateinit var serverPortNotAvailableHandler: () -> Unit
 
     fun startTesterum() {
         ProcessExecutor()
@@ -33,6 +34,9 @@ class TesterumExecuter {
                                 println(line)
                                 if (line == "Testerum server started.") {
                                     serverStartedHandler()
+                                }
+                                if (line.contains("java.net.BindException: Address already in use")) {
+                                    serverPortNotAvailableHandler()
                                 }
                             }
                         }

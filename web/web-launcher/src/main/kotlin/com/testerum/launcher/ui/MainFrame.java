@@ -34,6 +34,7 @@ public class MainFrame extends JFrame {
     private JButton saveAndRestartApplicationButton;
     private JLabel statusLabel;
     private JLabel arrowImage;
+    private JLabel portErrorMessage;
 
     public MainFrame(@NotNull final ConfigManager configManager,
                      @NotNull final TesterumExecuter testerumExecuter) throws HeadlessException {
@@ -42,6 +43,10 @@ public class MainFrame extends JFrame {
 
         this.testerumExecuter.setServerStartedHandler(() -> {
             setServerAsStarted();
+            return Unit.INSTANCE;
+        });
+        this.testerumExecuter.setServerPortNotAvailableHandler(() -> {
+            setServerPortNotAvailable();
             return Unit.INSTANCE;
         });
 
@@ -54,6 +59,7 @@ public class MainFrame extends JFrame {
         setResizable(false);
         saveAndRestartApplicationButton.setEnabled(false);
         arrowImage.setVisible(false);
+        portErrorMessage.setVisible(false);
 
         setSize(800, 400);
 
@@ -80,17 +86,27 @@ public class MainFrame extends JFrame {
         saveAndRestartApplicationButton.addActionListener(this::onSaveAndRestartApplicationClicked);
     }
 
-    public void setServerAsStarted() {
+    private void setServerAsStarted() {
         arrowImage.setVisible(true);
         statusLabel.setIcon(null);
         statusLabel.setText("Testerum Server Started");
+        portErrorMessage.setVisible(false);
         openInBrowserButton.setEnabled(true);
     }
 
-    public void setServerAsLoading() {
+    private void setServerAsLoading() {
         arrowImage.setVisible(false);
         statusLabel.setIcon(new ImageIcon(getClass().getResource("/loading.gif")));
         statusLabel.setText(" Restarting Testerum Server");
+        portErrorMessage.setVisible(false);
+        openInBrowserButton.setEnabled(false);
+    }
+
+    private void setServerPortNotAvailable() {
+        arrowImage.setVisible(false);
+        statusLabel.setIcon(new ImageIcon(getClass().getResource("/attention.gif")));
+        statusLabel.setText(" Selected port is not available!");
+        portErrorMessage.setVisible(true);
         openInBrowserButton.setEnabled(false);
     }
 
@@ -183,7 +199,7 @@ public class MainFrame extends JFrame {
         label1.setText("");
         panel1.add(label1, cc.xy(1, 1));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:202px:grow,left:4dlu:noGrow,fill:90dlu:noGrow,right:10dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow"));
+        panel2.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:202px:grow,left:4dlu:noGrow,fill:90dlu:noGrow,right:10dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:50px:noGrow"));
         panel2.setMaximumSize(new Dimension(509, 104));
         rootPanel.add(panel2, cc.xyw(1, 3, 2, CellConstraints.DEFAULT, CellConstraints.CENTER));
         copyUrlToClipboardButton = new JButton();
@@ -211,25 +227,34 @@ public class MainFrame extends JFrame {
         arrowImage.putClientProperty("html.disable", Boolean.FALSE);
         panel2.add(arrowImage, cc.xy(5, 5, CellConstraints.CENTER, CellConstraints.DEFAULT));
         final JPanel panel3 = new JPanel();
-        panel3.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:d:grow,left:4dlu:noGrow,right:d:noGrow,left:10dlu:noGrow,fill:max(d;4px):noGrow", "center:30px:grow"));
-        rootPanel.add(panel3, cc.xy(2, 7, CellConstraints.DEFAULT, CellConstraints.BOTTOM));
+        panel3.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,center:d:noGrow,left:4dlu:noGrow,left:d:grow,left:4dlu:noGrow,fill:max(d;4px):noGrow,left:m:noGrow,right:d:noGrow,left:10dlu:noGrow,fill:max(d;4px):noGrow", "center:30px:grow"));
+        rootPanel.add(panel3, cc.xy(2, 7, CellConstraints.FILL, CellConstraints.BOTTOM));
         final JLabel label3 = new JLabel();
         label3.setText("Application Port:");
         panel3.add(label3, cc.xy(3, 1));
-        portInputField = new JTextField();
-        portInputField.setColumns(6);
-        panel3.add(portInputField, cc.xy(5, 1, CellConstraints.LEFT, CellConstraints.DEFAULT));
         saveAndRestartApplicationButton = new JButton();
         saveAndRestartApplicationButton.setEnabled(true);
         saveAndRestartApplicationButton.setText("Save and Restart Application");
         saveAndRestartApplicationButton.putClientProperty("html.disable", Boolean.TRUE);
-        panel3.add(saveAndRestartApplicationButton, cc.xy(7, 1, CellConstraints.LEFT, CellConstraints.DEFAULT));
+        panel3.add(saveAndRestartApplicationButton, cc.xy(11, 1, CellConstraints.RIGHT, CellConstraints.DEFAULT));
+        portInputField = new JTextField();
+        portInputField.setColumns(5);
+        portInputField.setHorizontalAlignment(2);
+        portInputField.setToolTipText("Port number range between 1023 and 65535");
+        panel3.add(portInputField, cc.xy(5, 1, CellConstraints.LEFT, CellConstraints.DEFAULT));
+        portErrorMessage = new JLabel();
+        portErrorMessage.setForeground(new Color(-65529));
+        portErrorMessage.setHorizontalAlignment(2);
+        portErrorMessage.setHorizontalTextPosition(2);
+        portErrorMessage.setText("Choose a different port and save the change");
+        portErrorMessage.setVisible(true);
+        panel3.add(portErrorMessage, cc.xy(7, 1, CellConstraints.LEFT, CellConstraints.DEFAULT));
         statusLabel = new JLabel();
         Font statusLabelFont = this.$$$getFont$$$("SansSerif", Font.BOLD, 28, statusLabel.getFont());
         if (statusLabelFont != null) statusLabel.setFont(statusLabelFont);
         statusLabel.setIcon(new ImageIcon(getClass().getResource("/loading.gif")));
         statusLabel.setText(" Starting Testerum Server");
-        rootPanel.add(statusLabel, cc.xy(2, 6, CellConstraints.CENTER, CellConstraints.CENTER));
+        rootPanel.add(statusLabel, cc.xy(2, 6, CellConstraints.CENTER, CellConstraints.TOP));
     }
 
     /**
@@ -257,4 +282,5 @@ public class MainFrame extends JFrame {
     public JComponent $$$getRootComponent$$$() {
         return rootPanel;
     }
+
 }
