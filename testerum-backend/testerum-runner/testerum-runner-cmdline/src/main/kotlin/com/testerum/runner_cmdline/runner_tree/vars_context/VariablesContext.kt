@@ -72,7 +72,7 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
         // evaluate expressions in values
         for ((key, value) in result) {
             if (value is String) {
-                result[key] = evaluateExpressionSafely(value, result)
+                result[key] = resolveInText(value, result)
             }
         }
 
