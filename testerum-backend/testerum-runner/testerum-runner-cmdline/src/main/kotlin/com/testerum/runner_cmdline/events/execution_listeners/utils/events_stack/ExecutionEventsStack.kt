@@ -1,4 +1,4 @@
-package com.testerum.runner_cmdline.events.execution_listeners.report_model.base.events_stack
+package com.testerum.runner_cmdline.events.execution_listeners.utils.events_stack
 
 import com.testerum.runner.events.model.FeatureStartEvent
 import com.testerum.runner.events.model.StepStartEvent
@@ -6,8 +6,9 @@ import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.report_model.ReportStep
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.collections.ArrayList
 
-class ReportEventsStack {
+class ExecutionEventsStack {
 
     private val stack = ArrayDeque<Any>() // contains both RunnerEvent and RunnerReportNode
 
@@ -93,6 +94,29 @@ class ReportEventsStack {
         }
 
         return stepCallNumberStack.joinToString(separator = "-")
+    }
+
+    fun <T, R> peek(untilItemType: Class<T>? = null,
+                    desiredItemType: Class<R>? = null): List<R>  {
+        val result = ArrayList<R>()
+
+        for (event in stack.descendingIterator()) {
+            if (untilItemType != null && untilItemType.isInstance(event)) {
+                break
+            }
+
+            val shouldAdd = (desiredItemType == null)
+                    || ( desiredItemType.isInstance(event))
+
+            @Suppress("UNCHECKED_CAST") // safe because of the "isInstance()" check above
+            if (shouldAdd) {
+                result += event as R
+            }
+        }
+
+        result.reverse()
+
+        return result
     }
 
 }

@@ -20,6 +20,7 @@ import java.time.LocalDateTime
         JsonSubTypes.Type(value = RunnerStoppedEvent::class , name = "RUNNER_STOPPED_EVENT")
 ])
 interface RunnerEvent {
+
     val time: LocalDateTime
 
     val eventKey: EventKey

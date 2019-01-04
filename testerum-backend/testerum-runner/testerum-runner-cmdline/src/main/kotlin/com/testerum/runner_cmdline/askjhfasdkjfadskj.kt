@@ -37,22 +37,33 @@ fun main(args: Array<String>) {
 
     val spinner = Spinner()
 
+    val failedTests = mutableListOf<String>()
+
     val testsCount = RANDOM.nextInt(5) + 10
     val stepsCount = RANDOM.nextInt(5) + 10
 
     for (testNumber in 1..testsCount) {
-        print("     [ ] Test number $testNumber")
-
         for (stepNumber in 1..(stepsCount)) {
             Thread.sleep(100)
 
-            print("\r${percentage((testNumber - 1) * stepsCount + stepNumber, testsCount * stepsCount)} ${ansi().fgBrightYellow()}[${ansi().fgDefault()}${ansi().fgBrightBlue()}${spinner.currentValue()}${ansi().fgDefault()}${ansi().fgBrightYellow()}]${ansi().fgDefault()} Test number $testNumber")
+            print("\r${ansi().fgBrightYellow()}[${ansi().fgDefault()}${ansi().fgBrightBlue()}${spinner.currentValue()}${ansi().fgDefault()}${ansi().fgBrightYellow()}]${ansi().fgDefault()} Test number $testNumber")
         }
 
         if (RANDOM.nextBoolean()) {
             println("\r${ansi().fgBrightYellow()}[ OK ]${ansi().fgDefault()} Test number $testNumber                   ")
         } else {
             println("\r${ansi().fgBrightRed()}${ansi().a(Ansi.Attribute.INTENSITY_BOLD)}[FAIL]${ansi().a(Ansi.Attribute.INTENSITY_BOLD_OFF)} Test number $testNumber                  ${ansi().fgDefault()}")
+            failedTests += "Test number $testNumber"
+        }
+    }
+
+    if (failedTests.isNotEmpty()) {
+        println()
+        println("${failedTests.size} failed tests:")
+        println("---------------------------------") // todo: align this with the above line (title)
+
+        for (failedTest in failedTests) {
+            println("  * $failedTest")
         }
     }
 }

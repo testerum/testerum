@@ -7,6 +7,7 @@ import com.testerum.runner.cmdline.output_format.builder.EventListenerProperties
 import com.testerum.runner.events.execution_listener.ExecutionListenerFactory
 import com.testerum.runner_cmdline.dirs.RunnerDirs
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
+import com.testerum.runner_cmdline.events.execution_listeners.console.ConsoleExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.console_debug.ConsoleDebugExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.json_stats.JsonStatsExecutionListener
@@ -20,6 +21,7 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     val executionListenerFinder = ExecutionListenerFinder(
             executionListenerFactories = mapOf(
+                    OutputFormat.CONSOLE            to { properties: Map<String, String> -> ConsoleExecutionListener() },
                     OutputFormat.CONSOLE_DEBUG      to { properties: Map<String, String> -> ConsoleDebugExecutionListener() },
 
                     OutputFormat.JSON_EVENTS        to { properties: Map<String, String> -> JsonEventsExecutionListener(properties) },

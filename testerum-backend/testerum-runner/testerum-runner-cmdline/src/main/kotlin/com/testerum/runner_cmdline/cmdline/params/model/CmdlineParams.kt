@@ -14,7 +14,7 @@ data class CmdlineParams(val verbose: Boolean,
                          val executionName: String?) {
 
     companion object {
-        val DEFAULT_OUTPUT_FORMAT = OutputFormat.CONSOLE_DEBUG
+        val DEFAULT_OUTPUT_FORMAT = OutputFormat.CONSOLE
     }
 
 }
