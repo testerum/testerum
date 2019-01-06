@@ -1,4 +1,4 @@
-package com.testerum.runner.cmdline.output_format.builder
+package com.testerum.runner.cmdline.report_type.builder
 
 object EventListenerProperties {
 

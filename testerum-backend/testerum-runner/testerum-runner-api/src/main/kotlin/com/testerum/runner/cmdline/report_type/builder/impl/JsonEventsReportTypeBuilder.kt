@@ -1,17 +1,17 @@
-package com.testerum.runner.cmdline.output_format.builder.impl
+package com.testerum.runner.cmdline.report_type.builder.impl
 
-import com.testerum.runner.cmdline.output_format.OutputFormat
-import com.testerum.runner.cmdline.output_format.builder.EventListenerProperties
-import com.testerum.runner.cmdline.output_format.builder.GenericOutputFormatBuilder
+import com.testerum.runner.cmdline.report_type.RunnerReportType
+import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
+import com.testerum.runner.cmdline.report_type.builder.GenericReportTypeBuilder
 import java.nio.file.Path
 
-class JsonEventsOutputFormatBuilder {
+class JsonEventsReportTypeBuilder {
 
     var destinationFileName: Path? = null
     var wrapJsonWithPrefixAndPostfix: Boolean? = null
 
     fun build(): String {
-        val builder = GenericOutputFormatBuilder(OutputFormat.JSON_EVENTS)
+        val builder = GenericReportTypeBuilder(RunnerReportType.JSON_EVENTS)
 
         destinationFileName?.let {
             builder.properties[EventListenerProperties.JsonEvents.DESTINATION_FILE_NAME] = it.toAbsolutePath().normalize().toString()

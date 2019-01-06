@@ -1,9 +1,9 @@
-package com.testerum.runner.cmdline.output_format.builder
+package com.testerum.runner.cmdline.report_type.builder
 
-import com.testerum.runner.cmdline.output_format.OutputFormat
+import com.testerum.runner.cmdline.report_type.RunnerReportType
 import java.nio.file.Path as JavaPath
 
-class GenericOutputFormatBuilder(private val outputFormat: OutputFormat) {
+class GenericReportTypeBuilder(private val teportType: RunnerReportType) {
 
     companion object {
         private val ESCAPE_PROPERTY_REGEX = Regex("([,=])")
@@ -13,7 +13,7 @@ class GenericOutputFormatBuilder(private val outputFormat: OutputFormat) {
     val properties = LinkedHashMap<String, String?>()
 
     fun build(): String = buildString {
-        append(outputFormat.name)
+        append(teportType.name)
 
         if (properties.isNotEmpty()) {
             append(':')

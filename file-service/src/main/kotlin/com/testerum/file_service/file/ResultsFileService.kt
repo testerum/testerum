@@ -12,7 +12,7 @@ import com.testerum.common_kotlin.list
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.run_result.RunnerResultFileInfo
 import com.testerum.model.run_result.RunnerResultsDirInfo
-import com.testerum.runner.cmdline.output_format.model.json_stats.JsonStatistics
+import com.testerum.runner.cmdline.report_type.model.json_stats.JsonStatistics
 import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 

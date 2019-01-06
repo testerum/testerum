@@ -4,6 +4,7 @@ import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserH
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserVersionHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
+import com.testerum.runner_cmdline.dirs.RunnerDirs
 import picocli.CommandLine
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
@@ -39,7 +40,7 @@ object CmdlineParamsParser {
     }
 
     @CommandLine.Command(
-            name="testerum-runner",
+            name = "testerum-runner",
             showDefaultValues = true,
             requiredOptionMarker = '*'
     )
@@ -48,45 +49,83 @@ object CmdlineParamsParser {
         @CommandLine.Option(
                 names = ["-h", "--help"],
                 usageHelp = true,
-                description = ["displays this help message and exit"]
+                description = [
+                    "displays this help message and exits",
+                    ""
+                ]
         )
         var usageHelpRequested: Boolean = false
 
         @CommandLine.Option(
                 names = ["-V", "--version"],
                 versionHelp = true,
-                description = ["displays program version information"]
+                description = [
+                    "displays program version information and exits",
+                    ""
+                ]
         )
         var versionHelpRequested: Boolean = false
 
         @CommandLine.Option(
                 names = ["-v", "--verbose"],
-                description = ["be verbose"]
+                description = [
+                    "log extra information",
+                    ""
+                ],
+                hidden = true
         )
         var verbose: Boolean = false
 
         @CommandLine.Option(
-                names = ["-r", "--repository-directory"],
+                names = ["--repository-directory"],
                 required = true,
-                description = ["path to the root of the repository"]
+                description = [
+                    "path  to   the  root  of  the   repository,  where  the",
+                    "test/feature/resource/etc. files are stored",
+                    "",
+                    "Example:",
+                    "    --repository-directory /path/to/repo/dir",
+                    ""
+                ]
         )
         var repositoryDirectory: JavaPath? = null
 
         // todo: step directory separation: we should have 2 directories: "built-in" vs "user" basic steps (last one is optional)
         @CommandLine.Option(
-                names = ["-b", "--basic-steps-directory"],
-                required = true,
-                description = ["path to the directory containing the basic steps jars"]
+                names = ["--basic-steps-directory"],
+                required = false,
+                description = [
+                    "path to the directory containing the basic steps jar",
+                    "files",
+                    "",
+                    "If  missing,   the  path  will  be   the  \"basic_steps\"",
+                    "directory in the Testerum installation directory.",
+                    "",
+                    "You will very rarely need to use this parameter.",
+                    "",
+                    "Example:",
+                    "    --basic-steps-directory /testerum/basic_steps",
+                    ""
+                ]
         )
         var basicStepsDirectory: JavaPath? = null
 
         @CommandLine.Option(
-                names = ["-s", "--setting"],
+                names = ["--setting"],
                 description = [
-                    "settings values overrides",
-                    "overrides default settings",
-                    "overrides the settings from the settings file, if one is specified"
-                ]
+                    "override default settings",
+                    "",
+                    "Also overrides the settings  from the settings file, if",
+                    "one is specified.",
+                    "",
+                    "Example:",
+                    "    --setting testerum.selenium.afterStepDelayMillis=0",
+                    "",
+                    "See also:",
+                    "    --settings-file",
+                    ""
+                ],
+                showDefaultValue = CommandLine.Help.Visibility.NEVER
         )
         var settingOverrides: Map<String, String> = linkedMapOf()
 
@@ -94,38 +133,160 @@ object CmdlineParamsParser {
                 names = ["--settings-file"],
                 description = [
                     "path to the settings file",
-                    "settings in this file override default settings"
+                    "",
+                    "The  settings   in  this  file  override   the  default",
+                    "settings.",
+                    "The file must be in the standard Java .properties format.",
+                    "",
+                    "Example:",
+                    "    --settings-file /path/to/file.properties",
+                    "",
+                    "See also:",
+                    "    --setting",
+                    ""
                 ]
         )
         var settingsFile: JavaPath? = null
 
         @CommandLine.Option(
-                names = ["-t", "--test-path"],
+                names = ["--test-path"],
                 paramLabel = "testPath",
                 description = [
                     "path to test file or directory",
-                    "if no test path is specified, all tests will be run"
-                ]
+                    "",
+                    "If no test path is specified, all tests will be run.",
+                    "",
+                    "If  the  paths  are  relative, they  will  be  resolved",
+                    "relative to the features directory.",
+                    "",
+                    "Example:",
+                    "    --test-path \"/path/to/some feature/\"",
+                    "    --test-path \"/path/to/another-feature/File 1.test\"",
+                    "    --test-path \"another-feature/File 2.test\"",
+                    ""
+                ],
+                showDefaultValue = CommandLine.Help.Visibility.NEVER
         )
         var testFilesOrDirectories: List<JavaPath> = arrayListOf()
 
         @CommandLine.Option(
-                names = ["-o", "--output-format"]
-                // todo: description
+                names = ["--report"],
+                defaultValue = "CONSOLE",
+                description = [
+                    "what report(s) to produce",
+                    "",
+                    "The value  of this parameter has  the following generic",
+                    "syntax:",
+                    "    <reportType>[:prop1=val1,prop2=val2,...]",
+                    "",
+                    "where:",
+                    "* reportType is one of the following:",
+                    "    CONSOLE",
+                    "    CONSOLE_DEBUG",
+                    "    PRETTY",
+                    "* the properties  are optional, and they  depend on the",
+                    "  reportType.",
+                    "  Multiple  properties are  separated by  comma (,).",
+                    "  Keys  are  separated  from  values  by  equal (=).",
+                    "  If the value is empty, the equal sign is optional.",
+                    "  If the key or the value must contain  comma (,) or",
+                    "  equal (=), they must be escaped  using  backslash.",
+                    "  For example:",
+                    "    equation=1+2\\=3,greeting=Hello\\\\, world!",
+                    "  will produce 2 properties:",
+                    "    \"equation\" with the value \"1+2=3\"",
+                    "    \"greeting\" with the value \"Hello, world!\"",
+                    "",
+                    "If \"--report\" is missing, the default value will be:",
+                    "    \${DEFAULT-VALUE}.",
+                    "",
+                    "CONSOLE report type",
+                    "-------------------",
+                    "This report  shows the test execution  progress and the",
+                    "results to the console.",
+                    "",
+                    "Logs are only shown when a test failed.",
+                    "",
+                    "This report type doesn't have any properties.",
+                    "",
+                    "Example:",
+                    "    --report CONSOLE",
+                    "",
+                    "",
+                    "CONSOLE_DEBUG report type",
+                    "-------------------------",
+                    "This reports  shows as much information  as possible to",
+                    "aid in debugging problems.",
+                    "",
+                    "This report type doesn't have any properties.",
+                    "",
+                    "Example:",
+                    "    --report CONSOLE_DEBUG",
+                    "",
+                    "",
+                    "PRETTY report type",
+                    "------------------",
+                    "This produces an interactive HTML report.",
+                    "",
+                    "This   report   has   one  required   property   called",
+                    "\"destinationDirectory\", which  must be the path  to the",
+                    "directory where the report will be written.",
+                    "",
+                    "Example:",
+                    "    --report PRETTY:destinationDirectory=/some/path",
+                    "",
+                    "If the path doesn't exist yet, it will be created.",
+                    "",
+                    "",
+                    "Multiple report types can be specified at the same time:",
+                    "--report CONSOLE --report PRETTY:destinationDirectory=/p",
+                    "",
+                    "Do  not  specify multiple  report  types  that use  the",
+                    "console, for example:",
+                    "    --report CONSOLE --report CONSOLE_DEBUG",
+                    "If you do this, since  all reports will be interleaved,",
+                    "it will be hard to understand the results.",
+                    "",
+                    "",
+                    "See also:",
+                    "    --managed-reports-directory",
+                    ""
+                ],
+                showDefaultValue = CommandLine.Help.Visibility.NEVER
         )
-        var outputFormats: List<String> = arrayListOf()
+        var reports: List<String> = arrayListOf()
 
         @CommandLine.Option(
-                names = ["--managed-reports-directory"]
-                // todo: description
+                names = ["--managed-reports-directory"],
+                description = [
+                    "path to the root directory of managed reports.",
+                    "",
+                    "Normally,  you  need  to  specify  a  different  report",
+                    "directory every  time you invoke the  runner, otherwise",
+                    "the new report will overwrite the previous one.",
+                    "",
+                    "If this argument  is present, the runner  will create a",
+                    "separate  directory  at  every  execution.  This  makes",
+                    "automation  easier (e.g.  from shell  scripts or  CI/CD",
+                    "servers).",
+                    "",
+                    "In addition, a latest-report.html  file will be created",
+                    "that always shows the latest report.",
+                    "",
+                    "",
+                    "See also:",
+                    "    --report",
+                    ""
+                ]
         )
         var managedReportsDir: JavaPath? = null
 
         @CommandLine.Option(
                 names = ["--execution-name"],
                 description = [
-                    "human-readable title of this execution",
-                    "useful to distinguish one report from another"
+                    "human-readable title of this execution,",
+                    "used in the reports",
+                    ""
                 ]
         )
         var executionName: String? = null
@@ -148,27 +309,37 @@ object CmdlineParamsParser {
                     settingsFile = getValidatedSettingsFile(),
                     settingOverrides = settingOverrides,
                     testFilesOrDirectories = getValidatedTestFilesOrDirectories(),
-                    outputFormatsWithProperties = if (outputFormats.isNotEmpty()) {
-                        outputFormats
-                    } else {
-                        listOf(CmdlineParams.DEFAULT_OUTPUT_FORMAT.name)
-                    },
+                    reportsWithProperties = reports,
                     managedReportsDir = managedReportsDir,
                     executionName = executionName
             )
         }
 
-        private fun getValidatedRepositoryDirectory(): JavaPath
-                = getValidatedRequiredDirectory(repositoryDirectory, "repositoryDirectory")
+        private fun getValidatedRepositoryDirectory(): JavaPath = getValidatedRequiredDirectory(repositoryDirectory, "repositoryDirectory")
 
-        private fun getValidatedBasicStepsDirectory(): JavaPath
-                = getValidatedRequiredDirectory(basicStepsDirectory, "basicStepsDirectory")
+        private fun getValidatedBasicStepsDirectory(): JavaPath {
+            val basicStepsDir = if (basicStepsDirectory != null) {
+                basicStepsDirectory
+            } else {
+                RunnerDirs.getDefaultBasicStepsDir()
+            }
 
-        private fun getValidatedSettingsFile(): JavaPath?
-                = getValidatedOptionalFile(settingsFile, "settingsFile")
+            return getValidatedRequiredDirectory(basicStepsDir, "basicStepsDirectory")
+        }
 
-        private fun getValidatedTestFilesOrDirectories(): List<JavaPath>
-                = testFilesOrDirectories.map { getValidatedRequiredFileOrDirectory(it, "testPath") }
+        private fun getValidatedSettingsFile(): JavaPath? = getValidatedOptionalFile(settingsFile, "settingsFile")
+
+        private fun getValidatedTestFilesOrDirectories(): List<JavaPath> {
+            return testFilesOrDirectories.map {
+                val testPath = if (it.isAbsolute) {
+                    it
+                } else {
+                    repositoryDirectory!!.resolve("features").resolve(it)
+                }
+
+                getValidatedRequiredFileOrDirectory(testPath, "testPath")
+            }
+        }
 
         private fun getValidatedRequiredDirectory(directory: JavaPath?, directoryLabel: String): JavaPath {
             val usageHelp = usageToString(this)

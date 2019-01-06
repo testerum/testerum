@@ -1,4 +1,4 @@
-package com.testerum.runner.cmdline.output_format.marshaller.properties
+package com.testerum.runner.cmdline.report_type.marshaller.properties
 
 object RunnerPropertiesParser {
 

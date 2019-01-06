@@ -1,9 +1,9 @@
 package com.testerum.runner_cmdline.events.execution_listeners.json_stats
 
 import com.testerum.common_kotlin.writeText
-import com.testerum.runner.cmdline.output_format.OutputFormat
-import com.testerum.runner.cmdline.output_format.builder.EventListenerProperties
-import com.testerum.runner.cmdline.output_format.model.json_stats.JsonStatistics
+import com.testerum.runner.cmdline.report_type.RunnerReportType
+import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
+import com.testerum.runner.cmdline.report_type.model.json_stats.JsonStatistics
 import com.testerum.runner.events.execution_listener.BaseExecutionListener
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.BaseReportModelExecutionListener
@@ -14,7 +14,7 @@ class JsonStatsExecutionListener (private val properties: Map<String, String>) :
 
     private val destinationFile: JavaPath = run {
         val destinationFileNameProperty = properties[EventListenerProperties.JsonStats.DESTINATION_FILE_NAME]
-                ?: throw IllegalArgumentException("missing required property ${EventListenerProperties.JsonStats.DESTINATION_FILE_NAME} for the output format ${OutputFormat.JSON_STATS}")
+                ?: throw IllegalArgumentException("missing required property ${EventListenerProperties.JsonStats.DESTINATION_FILE_NAME} for the report type [${RunnerReportType.JSON_STATS}]")
 
         return@run Paths.get(destinationFileNameProperty).toAbsolutePath().normalize()
     }

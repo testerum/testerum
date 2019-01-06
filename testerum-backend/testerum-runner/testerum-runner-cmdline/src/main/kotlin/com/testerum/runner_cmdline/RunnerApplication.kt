@@ -125,7 +125,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
     }
 
     private fun initialize(cmdlineParams: CmdlineParams) {
-        executionListenerFinder.setOutputFormats(cmdlineParams.outputFormatsWithProperties, cmdlineParams.managedReportsDir)
+        executionListenerFinder.setReports(cmdlineParams.reportsWithProperties, cmdlineParams.managedReportsDir)
 
         val repositoryDir = getRepositoryDir()
         val basicStepsDir = getBasicStepsDir()

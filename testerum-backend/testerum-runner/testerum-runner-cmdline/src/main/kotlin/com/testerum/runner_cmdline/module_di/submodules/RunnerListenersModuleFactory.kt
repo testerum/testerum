@@ -2,8 +2,8 @@ package com.testerum.runner_cmdline.module_di.submodules
 
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
-import com.testerum.runner.cmdline.output_format.OutputFormat
-import com.testerum.runner.cmdline.output_format.builder.EventListenerProperties
+import com.testerum.runner.cmdline.report_type.RunnerReportType
+import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import com.testerum.runner.events.execution_listener.ExecutionListenerFactory
 import com.testerum.runner_cmdline.dirs.RunnerDirs
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
@@ -21,15 +21,15 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     val executionListenerFinder = ExecutionListenerFinder(
             executionListenerFactories = mapOf(
-                    OutputFormat.CONSOLE            to { properties: Map<String, String> -> ConsoleExecutionListener() },
-                    OutputFormat.CONSOLE_DEBUG      to { properties: Map<String, String> -> ConsoleDebugExecutionListener() },
+                    RunnerReportType.CONSOLE            to { properties: Map<String, String> -> ConsoleExecutionListener() },
+                    RunnerReportType.CONSOLE_DEBUG      to { properties: Map<String, String> -> ConsoleDebugExecutionListener() },
 
-                    OutputFormat.JSON_EVENTS        to { properties: Map<String, String> -> JsonEventsExecutionListener(properties) },
-                    OutputFormat.JSON_MODEL         to { properties: Map<String, String> -> JsonModelExecutionListener(properties) },
-                    OutputFormat.JSON_STATS         to { properties: Map<String, String> -> JsonStatsExecutionListener(properties) },
+                    RunnerReportType.JSON_EVENTS        to { properties: Map<String, String> -> JsonEventsExecutionListener(properties) },
+                    RunnerReportType.JSON_MODEL         to { properties: Map<String, String> -> JsonModelExecutionListener(properties) },
+                    RunnerReportType.JSON_STATS         to { properties: Map<String, String> -> JsonStatsExecutionListener(properties) },
 
-                    OutputFormat.CUSTOM_TEMPLATE    to { properties: Map<String, String> -> CustomTemplateExecutionListener(properties) },
-                    OutputFormat.PRETTY             to builtInTemplateExecutionListenerFactory("pretty")
+                    RunnerReportType.CUSTOM_TEMPLATE    to { properties: Map<String, String> -> CustomTemplateExecutionListener(properties) },
+                    RunnerReportType.PRETTY             to builtInTemplateExecutionListenerFactory("pretty")
             ),
             managedReportsExecutionListenerFactory = {  managedReportsDir: JavaPath -> ManagedReportsExecutionListener(managedReportsDir) }
     )

@@ -8,7 +8,7 @@ import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
-import com.testerum.runner.cmdline.output_format.OutputFormat
+import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.RunnerStoppedEvent
@@ -249,8 +249,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         args += "${builtInBasicStepsDir.escape()}"
 
         // output
-        args += "--output-format"
-        args += OutputFormat.builders().jsonEvents {
+        args += "--report"
+        args += RunnerReportType.builders().jsonEvents {
             wrapJsonWithPrefixAndPostfix = true
         }
 

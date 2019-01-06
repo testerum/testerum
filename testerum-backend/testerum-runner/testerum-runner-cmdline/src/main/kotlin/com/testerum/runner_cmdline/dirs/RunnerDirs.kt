@@ -29,6 +29,8 @@ object RunnerDirs {
         return@run absolutePath
     }
 
+    fun getDefaultBasicStepsDir(): JavaPath = getPackageDir().resolve("basic_steps")
+
     fun getRunnerDir(): JavaPath = getPackageDir().resolve("runner")
 
     fun getRunnerNodeDir(): JavaPath = getRunnerDir().resolve("node")

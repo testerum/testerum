@@ -4,7 +4,7 @@ import com.testerum.common_kotlin.PathUtils
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.common_kotlin.readText
 import com.testerum.common_kotlin.writeText
-import com.testerum.runner.cmdline.output_format.builder.EventListenerProperties
+import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner_cmdline.dirs.RunnerDirs

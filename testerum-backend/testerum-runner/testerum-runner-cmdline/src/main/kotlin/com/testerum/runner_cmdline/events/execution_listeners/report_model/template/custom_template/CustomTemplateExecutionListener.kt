@@ -4,8 +4,8 @@ import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.common_kotlin.deleteRecursivelyIfExists
 import com.testerum.common_kotlin.doesNotExist
-import com.testerum.runner.cmdline.output_format.builder.EventListenerProperties
-import com.testerum.runner.cmdline.output_format.marshaller.properties.RunnerPropertiesSerializer
+import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
+import com.testerum.runner.cmdline.report_type.marshaller.properties.RunnerPropertiesSerializer
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner_cmdline.dirs.RunnerDirs
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.BaseReportModelExecutionListener

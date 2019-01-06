@@ -1,4 +1,4 @@
-package com.testerum.runner.cmdline.output_format.marshaller.properties
+package com.testerum.runner.cmdline.report_type.marshaller.properties
 
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
