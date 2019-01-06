@@ -1,6 +1,7 @@
 package com.testerum.common.expression_evaluator
 
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.DateScriptingHelper
 import com.testerum.common.expression_evaluator.helpers.impl.UuidScriptingHelper
 import delight.nashornsandbox.NashornSandbox
 import delight.nashornsandbox.NashornSandboxes
@@ -10,7 +11,8 @@ object ExpressionEvaluator {
 
     // todo: make these configurable
     private val helpers = listOf<ScriptingHelper>(
-            UuidScriptingHelper
+            UuidScriptingHelper,
+            DateScriptingHelper
     )
 
     private val sandbox: NashornSandbox = NashornSandboxes.create().apply {
