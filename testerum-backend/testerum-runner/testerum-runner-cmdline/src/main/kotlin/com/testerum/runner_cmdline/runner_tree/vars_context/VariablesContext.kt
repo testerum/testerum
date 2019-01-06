@@ -104,8 +104,7 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
             val resolvedArgPartPart: Any? = when (part) {
                 is FileTextArgPart       -> part.text
                 is FileExpressionArgPart -> {
-                    val expressionResult = evaluateExpressionSafely(part.text, context)
-
+                    val expressionResult = ExpressionEvaluator.evaluate(part.text, context)
                     if (expressionResult is String) {
                         escape(expressionResult)
                     } else {
@@ -126,14 +125,5 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
 
     // todo: why do we need this, and can we replace it?
     fun resolveIn(text: String, escape: (String) -> String = {it}): String = resolveInText(text, this.toMap(), escape).toString()
-
-    private fun evaluateExpressionSafely(expression: String,
-                                         context: Map<String, Any?>): Any? {
-        return try {
-            ExpressionEvaluator.evaluate(expression, context)
-        } catch (e: Exception) {
-            expression
-        }
-    }
 
 }
