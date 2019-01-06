@@ -14,7 +14,7 @@ import com.testerum.file_service.file.FeatureFileService
 import com.testerum.file_service.file.ManualTestFileService
 import com.testerum.file_service.file.ManualTestPlanFileService
 import com.testerum.file_service.file.ResourceFileService
-import com.testerum.file_service.file.RunnerResultFileService
+import com.testerum.file_service.file.ResultsFileService
 import com.testerum.file_service.file.SettingsFileService
 import com.testerum.file_service.file.TestFileService
 import com.testerum.file_service.file.VariablesFileService
@@ -150,7 +150,7 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
 
     val settingsFileService = SettingsFileService()
 
-    val runnerResultFileService = RunnerResultFileService()
+    val runnerResultFileService = ResultsFileService()
 
     val warningService = WarningService()
 

@@ -7,7 +7,6 @@ import com.testerum.common_kotlin.indent
 import com.testerum.model.feature.Feature
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
-import com.testerum.runner.events.model.error.ExceptionDetail
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
@@ -16,6 +15,7 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesConte
 
 class RunnerFeature(featurePathFromRoot: List<String>,
                     private val featureName: String,
+                    private val tags: List<String>,
                     private val featuresOrTests: List<RunnerFeatureOrTest>,
                     indexInParent: Int): RunnerFeatureOrTest() {
 
@@ -100,24 +100,26 @@ class RunnerFeature(featurePathFromRoot: List<String>,
     }
 
     private fun logFeatureStart(context: RunnerContext) {
-        context.eventsService.logEvent(
+        context.logEvent(
                 FeatureStartEvent(
                         eventKey = eventKey,
-                        featureName = featureName
+                        featureName = featureName,
+                        tags = tags
                 )
         )
+        context.logMessage("Started executing feature [$featureName]")
     }
 
     private fun logFeatureEnd(context: RunnerContext,
                              executionStatus: ExecutionStatus,
                              exception: Throwable?,
                              durationMillis: Long) {
-        context.eventsService.logEvent(
+        context.logMessage("Finished executing feature [$featureName]; status: [$executionStatus]", exception)
+        context.logEvent(
                 FeatureEndEvent(
                         eventKey = eventKey,
                         featureName = featureName,
                         status = executionStatus,
-                        exceptionDetail = exception?.let { ExceptionDetail.fromThrowable(it) },
                         durationMillis = durationMillis
                 )
         )

@@ -69,7 +69,7 @@ class BusinessToFileStepCallMapper(private val businessToFilePhaseMapper: Busine
             // this is an external resource
             // the content is saved separately
             // here, we only need to reference it
-            return FileArgStepCallPart("file:${path.fileName}.${path.fileExtension}")
+            return FileArgStepCallPart("file:$path")
         }
 
         val introduceVariable: Boolean = (arg.name?.isNotBlank() == true) || content.contains(NEWLINES_REGEX) || (content.length > 80)

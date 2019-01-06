@@ -1,0 +1,97 @@
+@import "../../../../../assets/css/testerum-pretty-variables";
+
+.logs-panel {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100%;
+}
+
+.logs-container {
+    width: 100%;
+    overflow:  auto;
+}
+
+.date-column {
+    width: 50px;
+    background-color: lightgray;
+}
+
+.text-column {
+    margin: 0;
+    padding: 0 10px;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.log-line {
+    margin: 0;
+    line-height: 1.3;
+}
+
+.log-type-exception {
+    color: #e76a74;
+}
+.log-type-step {
+    background: white;
+}
+.log-type-log {
+    color: black;
+}
+
+table {
+    padding: 0;
+    border: 0;
+}
+
+table td {
+    padding: 0 5px;
+    border: 0;
+}
+
+table tr:hover {
+    color: #000;
+    background-color: #FFFAE3;
+}
+
+table td {
+    font-family: "Hack Regular Nerd Font Complete", monospace;
+    font-size: 12px;
+}
+
+table {
+    margin-left: 0;
+    margin-bottom: 0;
+}
+
+.horizontal-scroll {
+    overflow: auto;
+}
+
+.horizontal-scroll .log-line {
+    white-space: pre;
+}
+
+.horizontal-wrap {
+    overflow-x: inherit;
+    overflow-y: auto;
+}
+
+.horizontal-wrap .log-line {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.log-type-debug {
+    color: $log-type-debug-color;
+}
+.log-type-info {
+    color: $log-type-info-color;
+}
+.log-type-warning {
+    color: $log-type-warning-color;
+}
+.log-type-exception {
+    color: $log-type-warning-color;
+}
+

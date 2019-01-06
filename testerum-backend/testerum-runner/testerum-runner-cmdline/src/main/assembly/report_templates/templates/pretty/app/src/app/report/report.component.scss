@@ -1,0 +1,22 @@
+
+.my-report {
+    margin: 20px;
+
+    .header {
+        margin: auto;
+
+        .pie {
+            float: left;
+        }
+
+        .title {
+            width: 50%;
+            margin: auto;
+        }
+
+        .links {
+            float: right;
+            cursor: pointer;
+        }
+    }
+}

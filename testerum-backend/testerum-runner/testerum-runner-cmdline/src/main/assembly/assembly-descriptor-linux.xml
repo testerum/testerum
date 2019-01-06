@@ -39,6 +39,13 @@
             <outputDirectory>/node</outputDirectory>
             <useDefaultExcludes>false</useDefaultExcludes>
         </fileSet>
+
+        <!-- compiled report templates: pretty -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</directory>
+            <outputDirectory>report_templates/pretty</outputDirectory>
+            <useDefaultExcludes>false</useDefaultExcludes>
+        </fileSet>
     </fileSets>
 
 </assembly>

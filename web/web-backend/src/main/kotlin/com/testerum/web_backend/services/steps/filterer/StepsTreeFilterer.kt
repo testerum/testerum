@@ -11,7 +11,12 @@ object StepsTreeFilterer {
     fun matches(step: StepDef, filter: StepsTreeFilter): Boolean {
         val stepMatchesTypeFilter = stepMatchesTypeFilter(step, filter)
         val stepMatchesTestFilter = stepMatchesSearchFilter(step, filter)
-        val stepIsMatchTagsFilterCriteria = tagListMatchesTagsFilterCriteria(step.tags, filter)
+        val stepTags: List<String> = when (step) {
+            is BasicStepDef    -> step.tags
+            is ComposedStepDef -> step.tags
+            else               -> emptyList()
+        }
+        val stepIsMatchTagsFilterCriteria = tagListMatchesTagsFilterCriteria(stepTags, filter)
 
         if (stepMatchesTypeFilter && stepMatchesTestFilter && stepIsMatchTagsFilterCriteria) {
             return true

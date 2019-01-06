@@ -4,7 +4,7 @@
     <!--======================================== properties ========================================-->
 
     <property name="src.base_url" value="https://nodejs.org/dist" />
-    <property name="src.version"  value="${reportTemplatesNodeVersion}" />
+    <property name="src.version"  value="${testerumNodeVersion}" />
 
     <property name="src.filename_without_extension.windows" value="node-${src.version}-win-x64" />
     <property name="src.filename_without_extension.mac"     value="node-${src.version}-darwin-x64" />

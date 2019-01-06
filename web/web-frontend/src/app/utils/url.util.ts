@@ -7,4 +7,12 @@ export class UrlUtil {
         let pathAsString = activatedRoute.firstChild ? activatedRoute.firstChild.snapshot.params[paramName] : null;
         return pathAsString != null ? Path.createInstance(pathAsString) : null;
     }
+
+    public static getParamFromUrl(activatedRoute: ActivatedRoute, paramName: string): string {
+        if (!paramName) {
+            return null;
+        }
+
+        return activatedRoute.firstChild ? activatedRoute.firstChild.snapshot.params[paramName] : null;
+    }
 }

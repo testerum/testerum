@@ -59,11 +59,6 @@
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
 
-                        <configuration>
-                            <nodeVersion>v8.11.3</nodeVersion>
-                            <npmVersion>6.3.0</npmVersion>
-                        </configuration>
-
                         <executions>
                             <execution>
                                 <id>install node and npm</id>

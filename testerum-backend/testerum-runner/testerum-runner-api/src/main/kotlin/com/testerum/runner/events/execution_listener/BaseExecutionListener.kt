@@ -13,10 +13,9 @@ import com.testerum.runner.events.model.TextLogEvent
 
 open class BaseExecutionListener : ExecutionListener {
 
-    /**
-     * if you want to override this method, implement [ExecutionListener] instead
-     */
-    final override fun onEvent(event: RunnerEvent) {
+    override fun start() { }
+
+    override fun onEvent(event: RunnerEvent) {
         when (event) {
             is SuiteStartEvent   -> onSuiteStart(event)
             is SuiteEndEvent     -> onSuiteEnd(event)

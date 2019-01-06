@@ -11,12 +11,15 @@ export class TestStartEvent implements RunnerEvent, Serializable<TestStartEvent>
 
     testName: string;
     testFilePath: Path;
+    tags: Array<string> = [];
 
     deserialize(input: Object): TestStartEvent {
         this.eventKey = new EventKey().deserialize(input["eventKey"]);
         this.time = new Date(input["time"]);
         this.testName = input["testName"];
         this.testFilePath = Path.deserialize(input["testFilePath"]);
+        this.tags = input['tags'] || [];
+
         return this;
     }
 

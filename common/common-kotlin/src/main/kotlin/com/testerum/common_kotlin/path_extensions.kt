@@ -3,6 +3,7 @@
 package com.testerum.common_kotlin
 
 import org.apache.commons.io.FileUtils
+import org.apache.commons.io.IOUtils
 import java.io.IOException
 import java.nio.charset.Charset
 import java.nio.file.FileVisitResult
@@ -92,10 +93,25 @@ fun JavaPath.isSameFileAs(other: JavaPath): Boolean {
 fun JavaPath.isNotSameFileAs(other: JavaPath): Boolean = !this.isSameFileAs(other)
 
 fun JavaPath.list(): List<JavaPath> {
+    if (this.doesNotExist) {
+        return emptyList()
+    }
+
     Files.list(this).use { pathStream ->
         return pathStream.collect(
                 Collectors.toList()
         )
+    }
+}
+
+fun JavaPath.list(shouldUse: (JavaPath) -> Boolean): List<JavaPath> {
+    if (this.doesNotExist) {
+        return emptyList()
+    }
+
+    Files.list(this).use { pathStream ->
+        return pathStream.filter(shouldUse)
+                .collect(Collectors.toList())
     }
 }
 
@@ -162,7 +178,21 @@ fun JavaPath.smartCopyTo(destination: JavaPath,
     }
 }
 
-fun JavaPath.readAllLines(charset: Charset = Charsets.UTF_8) = Files.readAllLines(this, charset)
+fun JavaPath.readAllLines(charset: Charset = Charsets.UTF_8): List<String> = Files.readAllLines(this, charset)
+
+fun JavaPath.readText(charset: Charset = Charsets.UTF_8): String {
+    return Files.newBufferedReader(this, charset).use {
+        IOUtils.toString(it)
+    }
+}
+
+fun JavaPath.writeText(text: String, charset: Charset = Charsets.UTF_8) {
+    this.parent?.createDirectories()
+
+    Files.newBufferedWriter(this, charset).use {
+        it.write(text)
+    }
+}
 
 fun JavaPath.deleteIfExists(): Boolean = Files.deleteIfExists(this)
 fun JavaPath.delete(): Unit = Files.delete(this)

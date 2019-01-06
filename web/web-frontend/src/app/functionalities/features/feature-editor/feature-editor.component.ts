@@ -186,8 +186,8 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     private deleteActionAfterConfirmation(): void {
         this.featureService.delete(this.model.path).subscribe(result => {
             this.isEditMode = false; // to not show CanDeactivateGuard
-            this.featuresTreeService.initializeTestsTreeFromServer(null);
-            this.urlService.navigateToFeatures();
+            this.featuresTreeService.initializeTestsTreeFromServer(this.model.path.getParentPath());
+            this.urlService.navigateToFeature(this.model.path.getParentPath());
         });
     }
 

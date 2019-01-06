@@ -1,26 +1,28 @@
 package com.testerum.runner_cmdline.events.execution_listeners
 
-import com.testerum.runner.cmdline.OutputFormat
-import com.testerum.runner.cmdline.OutputFormatParser
+import com.testerum.runner.cmdline.report_type.RunnerReportType
+import com.testerum.runner.cmdline.report_type.marshaller.RunnerReportTypeParser
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.execution_listener.ExecutionListenerFactory
+import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.ManagedReportsExecutionListener
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
+import java.nio.file.Path as JavaPath
 
-class ExecutionListenerFinder(private val executionListenerFactories: Map<OutputFormat, ExecutionListenerFactory>) {
+class ExecutionListenerFinder(private val executionListenerFactories: Map<RunnerReportType, ExecutionListenerFactory>,
+                              private val managedReportsExecutionListenerFactory: (managedReportsDir: JavaPath) -> ManagedReportsExecutionListener) {
 
     private val lock = ReentrantLock()
     private var _executionListeners: List<ExecutionListener>? = null
 
-    fun setOutputFormats(outputFormatsWithProperties: List<String>) {
+    fun setReports(reportsWithProperties: List<String>,
+                   managedReportsDir: JavaPath?) {
         lock.withLock {
             if (_executionListeners != null) {
                 throw throw IllegalStateException("execution listeners already set")
             }
 
-            _executionListeners = outputFormatsWithProperties.map {
-                createExecutionListener(it)
-            }
+            _executionListeners = createExecutionListeners(reportsWithProperties, managedReportsDir)
         }
     }
 
@@ -32,11 +34,34 @@ class ExecutionListenerFinder(private val executionListenerFactories: Map<Output
             }
         }
 
-    private fun createExecutionListener(outputFormatWithProperties: String): ExecutionListener {
-        val (outputFormat, properties) = OutputFormatParser.parse(outputFormatWithProperties)
+    fun getExecutionListenersSafely(): List<ExecutionListener> {
+        lock.withLock {
+            return _executionListeners ?: emptyList()
+        }
+    }
 
-        val createExecutionListener = executionListenerFactories[outputFormat]
-                ?: throw IllegalArgumentException("cannot find an execution listener for output format [$outputFormat]")
+    private fun createExecutionListeners(reportsWithProperties: List<String>,
+                                         managedReportsDir: JavaPath?): List<ExecutionListener> {
+        val result = ArrayList<ExecutionListener>()
+
+        // create from reports
+        for (reportWithProperties in reportsWithProperties) {
+            result += createExecutionListener(reportWithProperties)
+        }
+
+        // create from managedReportsDir
+        if (managedReportsDir != null) {
+            result += managedReportsExecutionListenerFactory(managedReportsDir)
+        }
+
+        return result
+    }
+
+    private fun createExecutionListener(reportWithProperties: String): ExecutionListener {
+        val (reportType, properties) = RunnerReportTypeParser.parse(reportWithProperties)
+
+        val createExecutionListener = executionListenerFactories[reportType]
+                ?: throw IllegalArgumentException("cannot find an execution listener for report type [$reportType]")
 
         return createExecutionListener(properties)
     }

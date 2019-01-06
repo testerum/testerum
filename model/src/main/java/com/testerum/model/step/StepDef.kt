@@ -13,9 +13,9 @@ import com.testerum.model.warning.Warning
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonSubTypes(value = [
-        JsonSubTypes.Type(value = BasicStepDef::class, name = "BASIC_STEP"),
-        JsonSubTypes.Type(value = ComposedStepDef::class, name = "COMPOSED_STEP"),
-        JsonSubTypes.Type(value = UndefinedStepDef::class, name = "UNDEFINED_STEP")
+        JsonSubTypes.Type(value = UndefinedStepDef::class, name = "UNDEFINED_STEP"),
+        JsonSubTypes.Type(value = BasicStepDef::class    , name = "BASIC_STEP"),
+        JsonSubTypes.Type(value = ComposedStepDef::class , name = "COMPOSED_STEP")
 ])
 interface StepDef {
     val id: String
@@ -23,7 +23,6 @@ interface StepDef {
     val phase: StepPhaseEnum
     val stepPattern: StepPattern //TODO: rename to StepSignature
     val description: String?
-    val tags: List<String>
 
     val warnings: List<Warning>
     val descendantsHaveWarnings: Boolean

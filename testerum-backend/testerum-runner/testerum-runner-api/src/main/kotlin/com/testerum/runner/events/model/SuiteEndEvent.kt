@@ -7,9 +7,9 @@ import com.testerum.runner.events.model.position.EventKey
 import java.time.LocalDateTime
 
 data class SuiteEndEvent @JsonCreator constructor(
-        @JsonProperty("time")           override val time: LocalDateTime = LocalDateTime.now(),
-        @JsonProperty("status")         val status: ExecutionStatus,
-        @JsonProperty("durationMillis") val durationMillis: Long
+        @JsonProperty("time")            override val time: LocalDateTime = LocalDateTime.now(),
+        @JsonProperty("status")          val status: ExecutionStatus,
+        @JsonProperty("durationMillis")  val durationMillis: Long
 ): RunnerEvent {
 
     @get:JsonProperty("eventKey")

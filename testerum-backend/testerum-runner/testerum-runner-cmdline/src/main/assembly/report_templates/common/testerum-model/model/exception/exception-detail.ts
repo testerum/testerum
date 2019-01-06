@@ -7,7 +7,9 @@ export class ExceptionDetail {
                 public readonly message: string,
                 public readonly stackTrace: Array<ExceptionStackTraceElementDetail> = [],
                 public readonly cause: ExceptionDetail,
-                public readonly suppressed: Array<ExceptionDetail> = []) { }
+                public readonly suppressed: Array<ExceptionDetail> = [],
+                public readonly asString: string,
+                public readonly asDetailedString: string) { }
 
     static parse(input: Object): ExceptionDetail {
         if (!input) {
@@ -20,7 +22,10 @@ export class ExceptionDetail {
         const cause = ExceptionDetail.parse(input["cause"]);
         const suppressed = MarshallingUtils.parseList(input["suppressed"], ExceptionDetail);
 
-        return new ExceptionDetail(exceptionClassName, message, stackTrace, cause, suppressed);
+        const asString = input["asString"];
+        const asDetailedString = input["asDetailedString"];
+
+        return new ExceptionDetail(exceptionClassName, message, stackTrace, cause, suppressed, asString, asDetailedString);
     }
 
 }

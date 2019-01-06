@@ -83,7 +83,8 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
                     .subscribe(
                         it => {
                             this.testsService.showTestsScreen();
-                            this.featuresTreeService.initializeTestsTreeFromServer(null);
+                            this.featuresTreeService.initializeTestsTreeFromServer(this.model.parentContainer.path);
+                            this.urlService.navigateToFeature(this.model.parentContainer.path);
                         }
                     )
             }
@@ -91,11 +92,20 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     }
 
     toggleNode() {
-        this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
+        this.model.getNodeState().showChildren = !this.model.getNodeState().showChildren
     }
 
     expandNode() {
-        this.model.jsonTreeNodeState.showChildren = true;
+        this.model.getNodeState().showChildren = true;
+        this.expandChildIfIsASingleFeature(this.model);
+    }
+
+    private expandChildIfIsASingleFeature(parentContainer: FeatureTreeContainerModel) {
+        if(parentContainer.getChildren().length == 1 && parentContainer.getChildren()[0] instanceof FeatureTreeContainerModel) {
+            let currentNodeToExpand = parentContainer.getChildren()[0] as FeatureTreeContainerModel;
+            currentNodeToExpand.getNodeState().showChildren = true;
+            this.expandChildIfIsASingleFeature(currentNodeToExpand);
+        }
     }
 
     moveResource(event: any) {
@@ -113,7 +123,7 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     }
 
     isOpenedNode(): boolean {
-        return this.model.jsonTreeNodeState.showChildren
+        return this.model.getNodeState().showChildren
     }
 
     onCutFeature() {

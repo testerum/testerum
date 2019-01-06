@@ -1,0 +1,37 @@
+.my_info-modal {
+    .modal-dialog {
+        width: 90%;
+        height: 90%;
+    }
+
+    .modal-content {
+        height: 100%;
+    }
+
+    .modal-title {
+        display: flex;
+        align-items: center;
+
+        .btn {
+            display: flex;
+            align-self: center;
+            margin-left: 10px;
+        }
+    }
+
+    .modal-body {
+        /* 100% = dialog height, 120px = header + footer */
+        max-height: calc(100% - 120px);
+        height: 100%;
+        overflow-x: hidden;
+        padding: 0;
+
+        pre {
+            text-align: center;
+            border: 0;
+            background-color: inherit;
+            color: inherit;
+        }
+    }
+}
+

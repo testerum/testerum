@@ -21,12 +21,17 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
                           runnerListenersModuleFactory: RunnerListenersModuleFactory,
                           settingsModuleFactory: SettingsModuleFactory,
                           fileServiceModuleFactory: FileServiceModuleFactory,
+                          executionName: String?,
 
                           stopWatch: StopWatch) : BaseModuleFactory(context) {
 
-    private val eventsService = EventsService(
+    val eventsService = EventsService(
             executionListenerFinder = runnerListenersModuleFactory.executionListenerFinder
-    )
+    ).apply {
+        context.registerShutdownHook {
+            stop()
+        }
+    }
 
     private val testerumLogger = TesterumLoggerImpl(
             eventsService = eventsService
@@ -40,8 +45,10 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
 
     private val runnerExecutionTreeBuilder = RunnerExecutionTreeBuilder(
             runnerTestsFinder = runnerTestsFinder,
+            featuresCache = fileServiceModuleFactory.featuresCache,
+            testsCache = fileServiceModuleFactory.testsCache,
             stepsCache = fileServiceModuleFactory.stepsCache,
-            testsCache = fileServiceModuleFactory.testsCache
+            executionName = executionName
     )
 
     private val runnerSettingsManager = RunnerSettingsManagerImpl(

@@ -132,8 +132,11 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
                 this.model.stepCall.stepDef = newUndefinedStep;
             }
 
-            let subStepContainer = StepCallTreeUtil.createSubStepsContainerWithChildren(newStepDef, new Map());
+            let subStepContainer: SubStepsContainerModel = StepCallTreeUtil.createSubStepsContainerWithChildren(newStepDef, new Map());
             if(subStepContainer != null) {
+                this.model.removeSubStepsContainerModel();
+
+                subStepContainer.jsonTreeNodeState.showChildren = true;
                 subStepContainer.parentContainer = this.model;
                 this.model.children.push(
                     subStepContainer
@@ -229,6 +232,10 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
             let siblingStepCalls: StepCall[];
             if(parentContainer instanceof JsonTreeModel) {
                 siblingStepCalls = this.stepCallTreeComponentService.stepCalls;
+            } else if (parentContainer instanceof SubStepsContainerModel) {
+                let parentStepCallContainer: StepCallContainerModel = (parentContainer as SubStepsContainerModel).parentContainer as StepCallContainerModel;
+                let parentStepDef = parentStepCallContainer.stepCall.stepDef as ComposedStepDef;
+                siblingStepCalls = parentStepDef.stepCalls;
             } else {
                 let parentStepDef = (parentContainer as StepCallContainerModel).stepCall.stepDef as ComposedStepDef;
                 siblingStepCalls = parentStepDef.stepCalls;

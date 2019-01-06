@@ -10,8 +10,10 @@ import com.testerum.runner.events.model.SuiteStartEvent
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
+import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
 import org.slf4j.LoggerFactory
+import java.time.LocalDateTime
 import javax.annotation.concurrent.NotThreadSafe
 
 @NotThreadSafe
@@ -20,6 +22,10 @@ class TestRunnerEventParser(private val jsonObjectMapper: ObjectMapper,
 
     companion object {
         private val LOG = LoggerFactory.getLogger(TestRunnerEventParser::class.java)
+
+        // IMPORTANT: if you change these, also change it in com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
+        private const val TESTERUM_EVENT_PREFIX  = "-->testerum\u0000-->"
+        private const val TESTERUM_EVENT_POSTFIX = "<--testerum\u0000<--"
     }
 
     private val eventKeysStack = mutableListOf<EventKey>()
@@ -33,9 +39,23 @@ class TestRunnerEventParser(private val jsonObjectMapper: ObjectMapper,
     }
 
     private fun processEventWithoutErrorHandling(eventAsString: String) {
-        val testRunnerEvent = jsonObjectMapper.readValue<RunnerEvent>(eventAsString)
+        if (eventAsString.startsWith(TESTERUM_EVENT_PREFIX) && eventAsString.endsWith(TESTERUM_EVENT_POSTFIX)) {
+            val json: String = eventAsString.removePrefix(TESTERUM_EVENT_PREFIX)
+                    .removeSuffix(TESTERUM_EVENT_POSTFIX)
+            val testRunnerEvent = jsonObjectMapper.readValue<RunnerEvent>(json)
 
-        processTestRunnerEvent(testRunnerEvent)
+            processTestRunnerEvent(testRunnerEvent)
+        } else {
+            processTestRunnerEvent(
+                    TextLogEvent(
+                            time = LocalDateTime.now(),
+                            eventKey = eventKeysStack.lastOrNull() ?: EventKey.SUITE_EVENT_KEY,
+                            logLevel = LogLevel.DEBUG,
+                            message = eventAsString,
+                            exceptionDetail = null
+                    )
+            )
+        }
     }
 
     private fun processTestRunnerEvent(event: RunnerEvent) {

@@ -10,5 +10,6 @@ data class TestStartEvent @JsonCreator constructor(
         @JsonProperty("time")         override val time: LocalDateTime = LocalDateTime.now(),
         @JsonProperty("eventKey")     override val eventKey: EventKey,
         @JsonProperty("testName")     val testName: String,
-        @JsonProperty("testFilePath") val testFilePath: Path
+        @JsonProperty("testFilePath") val testFilePath: Path,
+        @JsonProperty("tags")         val tags: List<String>
 ): RunnerEvent

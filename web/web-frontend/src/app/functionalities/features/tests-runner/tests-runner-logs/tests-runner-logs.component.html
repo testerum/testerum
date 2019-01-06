@@ -9,9 +9,16 @@
                 <td class="text-column">
                     <ng-container *ngFor="let textLine of log.textLines">
                         <p class="log-line"
-                           [class.log-type-log]="textLine.type == LogLineTypeEnum.LOG"
-                           [class.log-type-step]="textLine.type == LogLineTypeEnum.STEP"
-                           [class.log-type-exception]="textLine.type == LogLineTypeEnum.EXCEPTION">{{textLine.text}}</p>
+                           *ngIf="textLine.type != LogLineTypeEnum.EXCEPTION"
+                           [class.log-type-debug]="log.logLevel == LogLevel.DEBUG"
+                           [class.log-type-info]="log.logLevel == LogLevel.INFO"
+                           [class.log-type-warning]="log.logLevel == LogLevel.WARNING"
+                           [class.log-type-exception]="log.logLevel == LogLevel.ERROR">{{textLine.text}}</p>
+                        <log-line-collapsable *ngIf="textLine.type == LogLineTypeEnum.EXCEPTION"
+                            [mainMessage]="textLine.text"
+                            [collapsedMessage]="textLine.subText"
+                            [collapsed]="true"
+                            [logLevel]="log.logLevel"></log-line-collapsable>
                     </ng-container>
                 </td>
             </tr>
@@ -20,5 +27,8 @@
         </table>
     </div>
 
-    <tests-runner-logs-toolbar [(shouldWrapLogs)]="shouldWrapLogs" [reportMode]="reportMode"></tests-runner-logs-toolbar>
+    <tests-runner-logs-toolbar [(shouldWrapLogs)]="shouldWrapLogs"
+                               [minLogLevelToShow]="minLogLevelToShow"
+                               (minLogLevelToShowChange)="onLogLevelChange($event)"
+                               [reportMode]="reportMode"></tests-runner-logs-toolbar>
 </div>

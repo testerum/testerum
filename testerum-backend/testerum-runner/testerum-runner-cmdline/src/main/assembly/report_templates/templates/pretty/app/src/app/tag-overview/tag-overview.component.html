@@ -1,0 +1,34 @@
+<div class="tag-overview">
+
+    <div class="header">
+        <div class="pie">
+            <report-tag-pie [statusByTagMap]="statusByTagMap"></report-tag-pie>
+        </div>
+
+        <div *ngIf="!hideLinksToOtherReports" class="links">
+            <a (click)="goToFullReport()">Full Report >></a>
+        </div>
+
+        <div class="title">
+            <report-title [titlePrefix]="'Tags Results'"></report-title>
+        </div>
+    </div>
+
+    <div class="tag-status-container">
+        <ng-container *ngFor="let statusByTagMapEntry of statusByTagMap | keyvalue">
+            <div class="tag-status"
+                 [class.disabled]="statusByTagMapEntry.value == ExecutionStatus.DISABLED"
+                 [class.skipped]="statusByTagMapEntry.value == ExecutionStatus.SKIPPED"
+                 [class.undefined]="statusByTagMapEntry.value == ExecutionStatus.UNDEFINED"
+                 [class.passed]="statusByTagMapEntry.value == ExecutionStatus.PASSED"
+                 [class.failed]="statusByTagMapEntry.value == ExecutionStatus.FAILED"
+                 (click)="onTagClick(statusByTagMapEntry.key)">
+                {{statusByTagMapEntry.key}}
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="statusByTagMap.size == 0">
+            <div class="no-tags-found">No tags have been found</div>
+        </ng-container>
+    </div>
+</div>

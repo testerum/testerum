@@ -20,7 +20,7 @@ import java.time.LocalDateTime
         JsonSubTypes.Type(value = RunnerStoppedEvent::class , name = "RUNNER_STOPPED_EVENT")
 ])
 interface RunnerEvent {
-    // todo: convert to UTC; helps for example if the tests are run on different servers that can have different timezones (for we store this in a database); when we produce the report, we should convert from UTC to local timezone
+
     val time: LocalDateTime
 
     val eventKey: EventKey

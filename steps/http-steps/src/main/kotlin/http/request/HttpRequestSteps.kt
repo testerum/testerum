@@ -36,14 +36,14 @@ class HttpRequestSteps {
             )
             httpRequest: HttpRequest
     ) {
-        logger.logInfo("HTTP Request [\n${httpRequest.prettyPrint()}\n]")
+        logger.info("HTTP Request [\n${httpRequest.prettyPrint()}\n]")
         val httpResponse: ValidHttpResponse = httpClientService.executeHttpRequest(httpRequest)
-        logger.logInfo("HTTP Response [\n${httpResponse.prettyPrint()}\n]")
+        logger.info("HTTP Response [\n${httpResponse.prettyPrint()}\n]")
 
         variables["httpRequest"] = httpRequest
         variables["httpResponse"] = httpResponse
 
-        logger.logInfo("Http Request executed successfully")
+        logger.info("Http Request executed successfully")
     }
 
     private fun HttpRequest.prettyPrint(): String {

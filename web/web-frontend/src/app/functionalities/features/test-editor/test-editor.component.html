@@ -27,12 +27,10 @@
                         <input required
                                #testName="ngModel" [(ngModel)]="testModel.name"
                                type="text" class="form-control" name="testName">
-                        <div *ngIf="testName.errors && (testName.dirty || testName.touched)"
-                             class="alert alert-danger">
-                            <div [hidden]="!testName.errors.required">
-                                Name is required
-                            </div>
-                        </div>
+                        <input-error [model]="testName"
+                                     [errorMessages]="{
+                                        required: 'A name for this test is required'
+                                     }"></input-error>
                     </div>
                 </div>
 
@@ -109,7 +107,7 @@
                     <!-- BUTTONS -->
                     <div class="step-action-panel inline btn-group">
 
-                        <div *ngIf="!isEditMode && !testModel.properties.isManual"
+                        <div *ngIf="!isEditMode && !testModel.properties.isManual && testModel.stepCalls.length != 0"
                              title="Run Tests" class="btn btn-default btn-xs btn-group"
                              (click)="runTest(); $event.stopPropagation()">
                             <i class="fa_my-run" aria-hidden="true"></i>

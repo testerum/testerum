@@ -5,5 +5,6 @@ import com.testerum.model.infrastructure.path.Path
 
 data class RunnerResultFileInfo(val path: Path,
                                 val name: String,
+                                val url: String,
                                 val executionResult: ExecutionStatus?,
                                 val durationMillis: Long?)

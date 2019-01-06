@@ -1,13 +1,15 @@
 import {ReportTest} from "../../../../common/testerum-model/model/report/report-test";
-import {BasicStepDef} from "../../../../common/testerum-model/model/step/def/basic-step-def";
-import {ComposedStepDef} from "../../../../common/testerum-model/model/step/def/composed-step-def";
-import {UndefinedStepDef} from "../../../../common/testerum-model/model/step/def/undefined-step-def";
+import {ReportBasicStepDef} from "../../../../common/testerum-model/model/step/def/report-basic-step-def";
+import {ReportComposedStepDef} from "../../../../common/testerum-model/model/step/def/report-composed-step-def";
+import {ReportUndefinedStepDef} from "../../../../common/testerum-model/model/step/def/report-undefined-step-def";
 import {ExecutionStatus} from "../../../../common/testerum-model/model/report/execution-status";
+import {ReportStepDef} from "../../../../common/testerum-model/model/step/def/report-step-def";
 
 export interface TemplateTestData {
     test: ReportTest;
-    BasicStepDef: typeof BasicStepDef;
-    ComposedStepDef: typeof ComposedStepDef;
-    UndefinedStepDef: typeof UndefinedStepDef;
+    ReportBasicStepDef: typeof ReportBasicStepDef;
+    ReportComposedStepDef: typeof ReportComposedStepDef;
+    ReportUndefinedStepDef: typeof ReportUndefinedStepDef;
     ExecutionStatus: typeof ExecutionStatus;
+    stepDefsById: Map<string, ReportStepDef>;
 }

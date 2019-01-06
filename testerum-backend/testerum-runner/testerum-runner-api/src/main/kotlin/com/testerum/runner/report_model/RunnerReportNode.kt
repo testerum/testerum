@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 ])
 interface RunnerReportNode {
 
-    val logs: List<ReportLog>
+    val textLogFilePath: String
+    val modelLogFilePath: String
 
 }

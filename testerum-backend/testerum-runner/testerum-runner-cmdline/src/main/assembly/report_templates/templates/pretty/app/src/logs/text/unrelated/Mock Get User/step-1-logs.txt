@@ -1,0 +1,2 @@
+23:44:41.192  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock={"expectedRequest":{"method":"GET","url"...>>]
+23:44:41.419  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock={"expectedRequest":{"method":"GET","url"...>>]; status: [PASSED]
