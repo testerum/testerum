@@ -3,15 +3,15 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {FeedbackComponent} from "./feedback/feedback.component";
-import {UserProfileRoutingModule} from "./user-profile-routing.module";
+import {UserRoutingModule} from "./user-routing.module";
 import {ModalModule} from "ngx-bootstrap";
 import {FeedbackModalService} from "./feedback/feedback-modal.service";
-import {AboutComponent} from "./about/about.component";
-import {AboutModalService} from "./about/about-modal.service";
+import {UserProfileComponent} from "./user-profile/user-profile.component";
+import {UserProfileModalService} from "./user-profile/user-profile-modal.service";
 
 @NgModule({
     imports: [
-        // UserProfileRoutingModule,
+        // UserRoutingModule,
 
         BrowserModule,
         FormsModule,
@@ -23,15 +23,15 @@ import {AboutModalService} from "./about/about-modal.service";
     ],
     declarations: [
         FeedbackComponent,
-        AboutComponent,
+        UserProfileComponent,
     ],
     entryComponents: [
         FeedbackComponent,
-        AboutComponent,
+        UserProfileComponent,
     ],
     providers: [
         FeedbackModalService,
-        AboutModalService,
+        UserProfileModalService,
     ],
 })
-export class UserProfileModule { }
+export class UserModule { }

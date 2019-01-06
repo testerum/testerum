@@ -1,17 +1,17 @@
 import {ComponentFactoryResolver, Injectable} from "@angular/core";
 import {AppComponent} from "../../../app.component";
-import {AboutComponent} from "./about.component";
+import {UserProfileComponent} from "./user-profile.component";
 
 @Injectable()
-export class AboutModalService {
+export class UserProfileModalService {
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
-    showAboutModal() {
-        const factory = this.componentFactoryResolver.resolveComponentFactory(AboutComponent);
+    showUserProfileModal() {
+        const factory = this.componentFactoryResolver.resolveComponentFactory(UserProfileComponent);
         let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
-        let modalInstance: AboutComponent = modalComponentRef.instance;
+        let modalInstance: UserProfileComponent = modalComponentRef.instance;
 
         modalInstance.modalComponentRef = modalComponentRef;
     }

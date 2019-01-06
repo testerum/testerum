@@ -5,16 +5,16 @@ import {SetupGuard} from "../../service/guards/setup.guard";
 import {FeedbackComponent } from "./feedback/feedback.component"
 
 
-const userProfileRoutes: Routes = [
+const userRoutes: Routes = [
     {
     },
 ];
 @NgModule({
     imports: [
-        RouterModule.forChild(userProfileRoutes)
+        RouterModule.forChild(userRoutes)
     ],
     exports: [RouterModule],
     providers: [],
 })
-export class UserProfileRoutingModule {
+export class UserRoutingModule { 
 }

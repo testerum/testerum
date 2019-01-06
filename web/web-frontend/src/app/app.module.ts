@@ -44,7 +44,7 @@ import {LicenseService} from "./functionalities/config/license/license.service";
 import {LicenseComponent} from "./functionalities/config/license/license.component";
 import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
-import {UserProfileModule} from "./functionalities/user-profile/user-profile.module";
+import {UserModule} from "./functionalities/user/user.module";
 import {BsDropdownModule} from "ngx-bootstrap";
 import {UserProfileService} from "./service/user-profile.service";
 
@@ -68,7 +68,7 @@ import {UserProfileService} from "./service/user-profile.service";
         ResourcesModule,
         ManualModule,
         GenericModule,
-        UserProfileModule,
+        UserModule,
 
         AppRoutingModule
     ],
