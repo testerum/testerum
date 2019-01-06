@@ -48,8 +48,9 @@ object ExpressionEvaluator {
             append("\n")
             append("\n")
 
-            append(expression)
         }
+
+        append(expression)
     }
 
 }
