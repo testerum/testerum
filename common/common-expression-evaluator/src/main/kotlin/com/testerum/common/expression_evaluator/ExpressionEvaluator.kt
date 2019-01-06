@@ -33,12 +33,21 @@ object ExpressionEvaluator {
             putAll(context)
         }
 
+        var enhancedExpression: String? = null
         try {
-            val enhancedExpression = enhanceExpression(expression)
+            enhancedExpression = enhanceExpression(expression)
 
             return sandbox.eval(enhancedExpression, bindings)
         } catch (e: Exception) {
-            throw e
+            val errorMessage = buildString {
+                append("failed to evaluate expression [").append(expression).append("]")
+
+                if (enhancedExpression != null) {
+                    append(", enhancedExpression=[").append(enhancedExpression).append("]")
+                }
+            }
+
+            throw RuntimeException(errorMessage, e)
         }
     }
 
