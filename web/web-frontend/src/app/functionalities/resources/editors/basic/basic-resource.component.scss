@@ -1,9 +1,25 @@
 .basic-resource {
+    .condensed-view-container {
+        white-space: pre-wrap;
+    }
+
     .label-size {
         width: auto;
     }
 
     .my-button-panel {
         margin-left: 5px;
+        margin-top: 2px;
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+
+        textarea {
+            width: 100%;
+            height: 200px;
+        }
     }
 }

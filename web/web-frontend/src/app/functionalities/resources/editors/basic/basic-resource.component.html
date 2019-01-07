@@ -1,8 +1,5 @@
 <div class="basic-resource">
-    <div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
-        <span class="condensed-view-label">{{name}}</span>
-        {{model.content}}
-    </div>
+    <div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">{{model.content}}</div>
 
     <form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
 
@@ -37,17 +34,49 @@
             <div class="my-value" *ngIf="!editMode">
                 {{model.content || ""}}
             </div>
-            <div class="my-value" *ngIf="editMode">
-                <input argValueValidator arg="arg" stepParameter="stepParameter"
-                       #valueNgModel="ngModel" [(ngModel)]="model.content"
-                       (keyup)="onKeyUp($event)"
-                       type="text" class="form-control" name="value">
 
+            <!--INPUT component-->
+            <div class="my-value"
+                 [class.hidden]="isMultilineText()">
+                <div class="input-container">
+                    <input argValueValidator
+                           #valueNgModel="ngModel" [(ngModel)]="model.content"
+                           (keyup)="onKeyUp($event)"
+                           type="text" class="form-control" name="value">
+
+                    <div class="button-panel btn-group my-button-panel">
+                        <div title="Multi line" class="btn btn-default btn-xs btn-group"
+                             (click)="setMultilineText(true);$event.stopPropagation();">
+                            <i class="fas fa-align-justify" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
                 <input-error [model]="valueNgModel"
                              [errorMessages]="{
-                                            argValueValidator_notANumber: 'This field should be a valid number.'
-                                         }"></input-error>
+                                argValueValidator_notANumber: 'This field should be a valid number.'
+                             }"></input-error>
+            </div>
 
+            <!--TEXT ARIA component-->
+            <div class="my-value"
+                 [class.hidden]="!isMultilineText()">
+                <div class="input-container">
+                    <textarea argValueValidator
+                              #valueNgModel="ngModel" [(ngModel)]="model.content"
+                              (keyup)="onKeyUp($event)"
+                              type="text" class="form-control" name="value"></textarea>
+                    <div class="button-panel btn-group my-button-panel">
+                        <div *ngIf="isSmallText()"
+                             title="Set custom name" class="btn btn-default btn-xs btn-group"
+                             (click)="setMultilineText(false);$event.stopPropagation();">
+                            <i class="fas fa-minus"></i>
+                        </div>
+                    </div>
+                </div>
+                <input-error [model]="valueNgModel"
+                             [errorMessages]="{
+                                argValueValidator_notANumber: 'This field should be a valid number.'
+                             }"></input-error>
             </div>
         </div>
     </form>

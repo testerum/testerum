@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    Input,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {BasicResource} from "../../../../model/resource/basic/basic-resource.model";
 import {ResourceComponent} from "../resource-component.interface";
@@ -29,7 +37,8 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
 
     @ViewChild(NgForm) form: NgForm;
 
-    editNameMode = false;
+    editNameMode: boolean = false;
+    multiLineText: boolean = false;
 
     constructor(private cd: ChangeDetectorRef){
         super();
@@ -39,6 +48,10 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
         if (this.model == null) {
             this.model = new BasicResource();
         }
+
+        this.multiLineText = !this.model.isSmallText();
+        console.log("onInit", this.multiLineText);
+
     }
 
     refresh() {
@@ -64,7 +77,7 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
             this.contextActions.cancel();
         }
 
-        if (event.code == 'Enter') {
+        if (event.code == 'Enter' && !this.isMultilineText()) {
             this.contextActions.save();
         }
     }
@@ -75,6 +88,21 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
 
     onRemoveCustomName() {
         this.name = this.stepParameter.name;
+    }
+
+    isSmallText(): boolean {
+        return this.model.isSmallText()
+    }
+
+    isMultilineText(): boolean {
+        if (!this.model.isSmallText()) {
+            return true;
+        }
+        return this.multiLineText;
+    }
+
+    setMultilineText(multiline: boolean) {
+        this.multiLineText = multiline;
     }
 
     onBeforeSave(): void {
