@@ -23,10 +23,13 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
     @Input() condensedViewMode: boolean = false;
     @Input() contextActions: ResourceContextActions = new class implements ResourceContextActions {
         cancel() {}
-        save() {}
+        save() {
+        }
     };
 
     @ViewChild(NgForm) form: NgForm;
+
+    editNameMode = false;
 
     constructor(private cd: ChangeDetectorRef){
         super();
@@ -63,6 +66,20 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
 
         if (event.code == 'Enter') {
             this.contextActions.save();
+        }
+    }
+
+    onEditName() {
+        this.editNameMode = true;
+    }
+
+    onRemoveCustomName() {
+        this.name = this.stepParameter.name;
+    }
+
+    onBeforeSave(): void {
+        if (!this.name || this.name == this.stepParameter.name) {
+            this.name = null;
         }
     }
 }

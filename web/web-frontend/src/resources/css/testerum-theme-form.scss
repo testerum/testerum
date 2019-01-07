@@ -65,6 +65,7 @@ input[type=checkbox]:focus {
     display: block;
     margin-left: 1em;
     flex-grow: 2;
+    align-self: baseline;
 
     input {
         width: 100%;

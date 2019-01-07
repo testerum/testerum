@@ -1,26 +1,54 @@
-<div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
-    <span class="condensed-view-label">{{name}}</span>
-    {{model.content}}
-</div>
-
-<form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
-
-    <div class="my-line">
-        <label class="my-label label-size">{{name}}</label>
-        <div class="my-value" *ngIf="!editMode">
-            {{model.content || ""}}
-        </div>
-        <div class="my-value" *ngIf="editMode">
-            <input argValueValidator arg="arg" stepParameter="stepParameter"
-                   #valueNgModel="ngModel" [(ngModel)]="model.content"
-                   (keyup)="onKeyUp($event)"
-                   type="text" class="form-control" name="value">
-
-            <input-error [model]="valueNgModel"
-                         [errorMessages]="{
-                                        argValueValidator_notANumber: 'This field should be a valid number.'
-                                     }"></input-error>
-
-        </div>
+<div class="basic-resource">
+    <div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
+        <span class="condensed-view-label">{{name}}</span>
+        {{model.content}}
     </div>
-</form>
+
+    <form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
+
+
+        <div class="my-line">
+            <label class="my-label label-size">Name:</label>
+
+            <div class="my-value full-line" *ngIf="!editNameMode">
+                {{name}}
+                <div class="button-panel btn-group my-button-panel">
+
+                    <div title="Set custom name" class="btn btn-default btn-xs btn-group"
+                         (click)="onEditName();$event.stopPropagation();">
+                        <i class="fa_my-edit" aria-hidden="true"></i>
+                    </div>
+                    <div *ngIf="name != stepParameter.name"
+                         title="Remove custom name" class="btn btn-default btn-xs btn-group"
+                         (click)="onRemoveCustomName(); $event.stopPropagation()">
+                        <i class="fa_my-delete" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="my-value" *ngIf="editNameMode">
+                <input [(ngModel)]="name"
+                       type="text" class="form-control" name="name">
+            </div>
+        </div>
+
+        <div class="my-line">
+            <label class="my-label label-size">Value:</label>
+            <div class="my-value" *ngIf="!editMode">
+                {{model.content || ""}}
+            </div>
+            <div class="my-value" *ngIf="editMode">
+                <input argValueValidator arg="arg" stepParameter="stepParameter"
+                       #valueNgModel="ngModel" [(ngModel)]="model.content"
+                       (keyup)="onKeyUp($event)"
+                       type="text" class="form-control" name="value">
+
+                <input-error [model]="valueNgModel"
+                             [errorMessages]="{
+                                            argValueValidator_notANumber: 'This field should be a valid number.'
+                                         }"></input-error>
+
+            </div>
+        </div>
+    </form>
+</div>

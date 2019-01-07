@@ -188,9 +188,15 @@ export class ArgModalComponent {
 
         let argName = null;
 
+        if ((this.resourceComponentRef.instance.model instanceof BasicResource) &&
+            this.resourceComponentRef.instance.name != this.arg.name) { //do not save the name for the basic resources
+            argName = this.resourceComponentRef.instance.name;
+        }
+
         if (!(this.resourceComponentRef.instance.model instanceof BasicResource)) { //do not save the name for the basic resources
             argName = this.resourceComponentRef.instance.name;
         }
+
 
         this.arg.name = argName;
         this.arg.path = this.argPath;
