@@ -50,8 +50,6 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
         }
 
         this.multiLineText = !this.model.isSmallText();
-        console.log("onInit", this.multiLineText);
-
     }
 
     refresh() {
