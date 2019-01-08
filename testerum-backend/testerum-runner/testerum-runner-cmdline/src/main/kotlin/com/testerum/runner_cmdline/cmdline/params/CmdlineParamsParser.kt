@@ -113,7 +113,7 @@ object CmdlineParamsParser {
         @CommandLine.Option(
                 names = ["--setting"],
                 description = [
-                    "override default settings",
+                    "override Testerum settings",
                     "",
                     "Also overrides the settings  from the settings file, if",
                     "one is specified.",
