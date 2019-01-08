@@ -116,7 +116,7 @@ object CmdlineParamsParser {
                     "override Testerum settings",
                     "",
                     "This argument takes precedence over --settings-file, if",
-                    "the same key are found in both.",
+                    "the same key is found in both.",
                     "",
                     "Example:",
                     "    --setting testerum.selenium.afterStepDelayMillis=0",
