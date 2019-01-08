@@ -239,7 +239,7 @@ object CmdlineParamsParser {
                     "be created.",
                     "",
                     "",
-                    "Multiple report types can be specified at the same time:",
+                    "Multiple reports can be specified at the same time:",
                     "--report CONSOLE --report PRETTY:destinationDirectory=/p",
                     "",
                     "Do  not  specify multiple  report  types  that use  the",
