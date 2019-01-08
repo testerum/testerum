@@ -82,7 +82,10 @@ if NOT "%CLASSPATH_PREFIX%" == "" set CLASSPATH=%CLASSPATH_PREFIX%;%CLASSPATH%
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-%JAVACMD% %JAVA_OPTS%  -classpath %CLASSPATH% -Dapp.name="testerum-runner" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" com.testerum.runner_cmdline.TesterumRunner %CMD_LINE_ARGS%
+set SCRIPT_DIR=%~dp0
+
+%JAVACMD% "-Dtesterum.packageDirectory=%SCRIPT_DIR%..\.." %JAVA_OPTS% -classpath %CLASSPATH% -Dapp.name="testerum-runner" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" com.testerum.runner_cmdline.TesterumRunner %CMD_LINE_ARGS%
+
 if %ERRORLEVEL% NEQ 0 goto error
 goto end
 
