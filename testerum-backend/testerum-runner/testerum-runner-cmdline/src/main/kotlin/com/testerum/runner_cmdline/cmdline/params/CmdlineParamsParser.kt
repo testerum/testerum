@@ -57,7 +57,7 @@ object CmdlineParamsParser {
         var usageHelpRequested: Boolean = false
 
         @CommandLine.Option(
-                names = ["-V", "--version"],
+                names = ["--version"],
                 versionHelp = true,
                 description = [
                     "displays program version information and exits",
@@ -67,7 +67,7 @@ object CmdlineParamsParser {
         var versionHelpRequested: Boolean = false
 
         @CommandLine.Option(
-                names = ["-v", "--verbose"],
+                names = ["--verbose"],
                 description = [
                     "log extra information",
                     ""
