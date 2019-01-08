@@ -613,6 +613,25 @@
                 <version>1.60</version>
             </dependency>
 
+            <!-- JavaFaker - lib to generate fake data -->
+            <dependency>
+                <groupId>com.github.javafaker</groupId>
+                <artifactId>javafaker</artifactId>
+                <version>0.16</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.yaml</groupId>
+                        <artifactId>snakeyaml</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- generex - library to generate strings based on a regex expresion-->
+            <dependency>
+                <groupId>com.github.mifmif</groupId>
+                <artifactId>generex</artifactId>
+                <version>1.0.2</version>
+            </dependency>
 
             <!--==================== Apache Commons ====================-->
             <dependency>
