@@ -134,9 +134,9 @@ object CmdlineParamsParser {
                 description = [
                     "path to a settings file",
                     "",
-                    "The  settings   in  this  file  override   the  default",
-                    "settings.",
-                    "The file must be in the standard Java .properties format.",
+                    "The settings  in this file override Testerum  settings.",
+                    "The  file  must be  in  the  standard Java  .properties",
+                    "format.",
                     "",
                     "Example:",
                     "    --settings-file /path/to/file.properties",
