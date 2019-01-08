@@ -286,7 +286,7 @@ object CmdlineParamsParser {
                 names = ["--execution-name"],
                 description = [
                     "human-readable title of this execution,",
-                    "used in the reports",
+                    "displayed in the reports",
                     ""
                 ]
         )
