@@ -132,7 +132,7 @@ object CmdlineParamsParser {
         @CommandLine.Option(
                 names = ["--settings-file"],
                 description = [
-                    "path to the settings file",
+                    "path to a settings file",
                     "",
                     "The  settings   in  this  file  override   the  default",
                     "settings.",
