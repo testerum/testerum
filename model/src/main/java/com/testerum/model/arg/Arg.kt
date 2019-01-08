@@ -56,6 +56,7 @@ data class Arg @JsonCreator constructor(@JsonProperty("name") val name: String?,
 
     override fun toString(): String = buildString {
         append("Arg(")
+        append(" name=[").append(name).append("]")
         append(" type=[").append(type).append("]")
         append(", path=[").append(path).append("]")
         append(", content=[").append(content).append("]")
