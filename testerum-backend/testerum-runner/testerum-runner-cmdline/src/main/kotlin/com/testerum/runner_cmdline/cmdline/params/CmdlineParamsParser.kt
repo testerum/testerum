@@ -205,7 +205,7 @@ object CmdlineParamsParser {
                     "This report  shows the test execution  progress and the",
                     "results to the console.",
                     "",
-                    "Logs are only shown when a test failed.",
+                    "Logs are only shown for failed tests.",
                     "",
                     "This report type doesn't have any properties.",
                     "",
