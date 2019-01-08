@@ -101,7 +101,7 @@ object CmdlineParamsParser {
                     "If  missing,   the  path  will  be   the  \"basic_steps\"",
                     "directory in the Testerum installation directory.",
                     "",
-                    "You will very rarely need to use this parameter.",
+                    "You will very rarely need to use this argument.",
                     "",
                     "Example:",
                     "    --basic-steps-directory /testerum/basic_steps",
@@ -175,7 +175,7 @@ object CmdlineParamsParser {
                 description = [
                     "what report(s) to produce",
                     "",
-                    "The value  of this parameter has  the following generic",
+                    "The value  of this argument has  the following generic",
                     "syntax:",
                     "    <reportType>[:prop1=val1,prop2=val2,...]",
                     "",
