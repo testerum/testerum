@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter
 
 class TesterumDate {
 
+    private val defaultDateToStringPattern = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSS")
     private val date: LocalDateTime
 
     constructor(date: LocalDateTime) {
@@ -52,15 +53,15 @@ class TesterumDate {
         )
     }
 
-    fun minusWeeks(weeks: Long): TesterumDate {
+    fun minusDays(days: Long): TesterumDate {
         return TesterumDate(
-                date.minusWeeks(weeks)
+                date.minusDays(days)
         )
     }
 
-    fun plusWeeks(weeks: Long): TesterumDate {
+    fun plusDays(days: Long): TesterumDate {
         return TesterumDate(
-                date.plusWeeks(weeks)
+                date.plusDays(days)
         )
     }
 
@@ -113,7 +114,9 @@ class TesterumDate {
     }
 
     override fun toString(): String {
-        return date.toString()
+        return date.format(
+                defaultDateToStringPattern
+        )
     }
 
     fun toString(format: String): String {
