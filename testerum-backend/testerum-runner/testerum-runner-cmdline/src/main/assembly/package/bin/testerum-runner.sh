@@ -117,7 +117,11 @@ if $cygwin; then
   [ -n "$REPO" ] && REPO=`cygpath --path --windows "$REPO"`
 fi
 
-exec "$JAVACMD" $JAVA_OPTS  \
+SCRIPT_DIR="$(dirname "$0")"
+
+exec "$JAVACMD" \
+ "-Dtesterum.packageDirectory=${SCRIPT_DIR}/../.." \
+   $JAVA_OPTS  \
   -classpath "$CLASSPATH" \
   -Dapp.name="testerum-runner" \
   -Dapp.pid="$$" \
