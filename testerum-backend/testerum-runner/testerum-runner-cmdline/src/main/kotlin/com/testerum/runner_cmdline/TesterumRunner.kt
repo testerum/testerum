@@ -28,10 +28,10 @@ object TesterumRunner {
     fun main(args: Array<String>) {
         val stopWatch = StopWatch.start()
 
+        AnsiConsole.systemInstall()
         ConsoleOutputCapturer.startCapture("main")
 
         TesterumRunnerLoggingConfigurator.configureLogging()
-        AnsiConsole.systemInstall()
         println(TesterumBanner.BANNER)
 
         val cmdlineParams: CmdlineParams = getCmdlineParams(args)
