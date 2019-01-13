@@ -42,7 +42,7 @@ class FileExpressionArgPartParserTest {
                 equalTo(
                         "failed to parse:\n" +
                         "{{varName\n" +
-                        "         ^--- ERROR at line 1, column 10: [notClosingCurlyBrackets or }}] expected, [EOF] encountered"
+                        "         ^--- ERROR at line 1, column 10: [\\}}, notClosingCurlyBrackets or }}] expected, [EOF] encountered"
                 )
         )
     }

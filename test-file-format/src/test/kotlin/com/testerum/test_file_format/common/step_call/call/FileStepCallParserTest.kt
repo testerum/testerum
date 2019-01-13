@@ -103,4 +103,34 @@ class FileStepCallParserTest {
         )
     }
 
+    @Test
+    fun `should parse call with escaped text parts`() {
+        assertThat(
+                parser.parse("""step: Given the \<< stuff"""),
+                equalTo(
+                        FileStepCall(
+                                phase = FileStepPhase.GIVEN,
+                                parts = listOf(
+                                        FileTextStepCallPart("the << stuff")
+                                )
+                        )
+                )
+        )
+    }
+
+    @Test
+    fun `should parse call with escaped arg ending`() {
+        assertThat(
+                parser.parse("""step: Given <<left \>> right>>"""),
+                equalTo(
+                        FileStepCall(
+                                phase = FileStepPhase.GIVEN,
+                                parts = listOf(
+                                        FileArgStepCallPart("""left >> right""")
+                                )
+                        )
+                )
+        )
+    }
+
 }

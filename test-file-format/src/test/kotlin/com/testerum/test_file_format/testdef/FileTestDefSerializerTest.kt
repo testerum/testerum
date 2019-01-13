@@ -23,7 +23,8 @@ class FileTestDefSerializerTest {
                         properties = FileTestDefProperties(isManual = false, isDisabled = false),
                         description = """ |This is a wonderful test.
                                           |It tests many cools things.
-                                          |Just read it and you'll see what I mean.""".trimMargin(),
+                                          |Just read it and you'll see what I mean.
+                                          |Escaped >> multiline end.""".trimMargin(),
                         tags = listOf("one", "two", "three", "four"),
                         steps = listOf(
                                 FileStepCall(
@@ -53,6 +54,7 @@ class FileTestDefSerializerTest {
                               |        This is a wonderful test.
                               |        It tests many cools things.
                               |        Just read it and you'll see what I mean.
+                              |        Escaped \>> multiline end.
                               |    >>
                               |
                               |    tags = <<one, two, three, four>>

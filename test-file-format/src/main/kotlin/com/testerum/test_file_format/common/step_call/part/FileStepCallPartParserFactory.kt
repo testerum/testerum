@@ -21,24 +21,35 @@ object FileStepCallPartParserFactory : ParserFactory<FileStepCallPart> {
     }
 
     private fun textStepDefStepCallPart(): Parser<FileTextStepCallPart> {
-        return Patterns.and(NEWLINE.not(), Patterns.notString("<<"))
-                .many1()
-                .toScanner("textStepDefStepCallPart")
-                .source()
-                .map { text -> FileTextStepCallPart(text) }
+        return or(
+                escapeSequence("<<"),
+                notStartOfArgStepCallPart()
+        ).many1()
+         .map { texts -> FileTextStepCallPart(texts.joinToString(separator = "")) }
     }
 
     private fun argStepDefStepCallPart(): Parser<FileArgStepCallPart> {
         return sequence(
                 Scanners.string("<<"),
-                or(escapeSequence(), notEndOfArgStepCallPart()).many(),
+                or(
+                        escapeSequence(">>"),
+                        notEndOfArgStepCallPart()
+                ).many(),
                 Scanners.string(">>")
-        ) { _, texts, _ -> FileArgStepCallPart(texts.joinToString(separator = "")) }
+        ) { _, texts, _ ->
+            FileArgStepCallPart(texts.joinToString(separator = ""))
+        }
     }
 
     private fun notEndOfArgStepCallPart(): Parser<String> {
         return Patterns.and(NEWLINE.not(), Patterns.notString(">>"))
                 .toScanner("(not newline or >>)")
+                .source()
+    }
+
+    private fun notStartOfArgStepCallPart(): Parser<String> {
+        return Patterns.and(NEWLINE.not(), Patterns.notString("<<"))
+                .toScanner("(not newline or <<)")
                 .source()
     }
 

@@ -7,12 +7,14 @@ object FileStepCallPartSerializer : BaseSerializer<FileStepCallPart>() {
 
     override fun serialize(source: FileStepCallPart, destination: Writer, indentLevel: Int) {
         when (source) {
-            is FileTextStepCallPart -> destination.write(source.text)
+            is FileTextStepCallPart -> destination.write(
+                    source.text
+                            .replace("<<", "\\<<")
+            )
             is FileArgStepCallPart -> {
                 destination.write("<<")
                 destination.write(
                         source.text
-                              .replace("\\", "\\\\")
                               .replace(">>", "\\>>")
                 )
                 destination.write(">>")
