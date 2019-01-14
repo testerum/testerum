@@ -7,7 +7,7 @@
         <div class="my-line">
             <label class="my-label label-size">Name:</label>
 
-            <div class="my-value full-line" *ngIf="!editNameMode">
+            <div class="my-value-text full-line" *ngIf="!editNameMode">
                 {{name}}
                 <div class="button-panel btn-group my-button-panel">
 
@@ -67,7 +67,7 @@
                               type="text" class="form-control" name="value"></textarea>
                     <div class="button-panel btn-group my-button-panel">
                         <div *ngIf="isSmallText()"
-                             title="Set custom name" class="btn btn-default btn-xs btn-group"
+                             title="Single line" class="btn btn-default btn-xs btn-group"
                              (click)="setMultilineText(false);$event.stopPropagation();">
                             <i class="fas fa-minus"></i>
                         </div>
