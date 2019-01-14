@@ -14,6 +14,7 @@ import com.testerum.runner_cmdline.events.execution_listeners.json_stats.JsonSta
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model.JsonModelExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.ManagedReportsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template.CustomTemplateExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.stats.StatsExecutionListener
 import java.nio.file.Path as JavaPath
 
 class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFactory(context) {
@@ -29,7 +30,8 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
                     RunnerReportType.JSON_STATS         to { properties: Map<String, String> -> JsonStatsExecutionListener(properties) },
 
                     RunnerReportType.CUSTOM_TEMPLATE    to { properties: Map<String, String> -> CustomTemplateExecutionListener(properties) },
-                    RunnerReportType.PRETTY             to builtInTemplateExecutionListenerFactory("pretty")
+                    RunnerReportType.PRETTY             to builtInTemplateExecutionListenerFactory("pretty"),
+                    RunnerReportType.STATS              to { properties: Map<String, String> -> StatsExecutionListener() }
             ),
             managedReportsExecutionListenerFactory = {  managedReportsDir: JavaPath -> ManagedReportsExecutionListener(managedReportsDir) }
     )

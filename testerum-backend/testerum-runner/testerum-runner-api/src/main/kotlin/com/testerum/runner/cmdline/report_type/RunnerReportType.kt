@@ -12,6 +12,7 @@ enum class RunnerReportType {
 
     CUSTOM_TEMPLATE,
     PRETTY,
+    STATS,
     ;
 
     companion object {
