@@ -3,6 +3,7 @@ import {ComposedStepDef} from "../../../../model/composed-step-def.model";
 import {ModalDirective} from "ngx-bootstrap";
 import {ComposedStepViewComponent} from "../../step/composed-step-view/composed-step-view.component";
 import {Subject} from "rxjs";
+import {StepContext} from "../../../../model/step/context/step-context.model";
 
 @Component({
     selector: 'step-modal',
@@ -13,6 +14,7 @@ export class StepModalComponent implements AfterViewInit {
 
     model: ComposedStepDef;
     isCreateAction: boolean = false;
+    stepContext: StepContext = new StepContext();
 
     @ViewChild("modal") modal: ModalDirective;
     @ViewChild("composedStepView") composedStepViewComponent: ComposedStepViewComponent;

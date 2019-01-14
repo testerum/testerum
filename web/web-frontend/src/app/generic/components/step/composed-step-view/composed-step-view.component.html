@@ -47,17 +47,17 @@
     </div>
 
     <!-- PATH -->
-    <div class="my-line">
+    <div class="my-line" [class.hidden]="!allowPathEdit && !model.path">
         <label class="my-label label-size">Path</label>
-        <span class="my-value" *ngIf="hasPathDefined">
+        <span class="my-value-text" *ngIf="!allowPathEdit">
             {{model.path?.toString() || ""}}
         </span>
-        <div class="my-value input-group" *ngIf="!hasPathDefined">
+        <div class="my-value input-group"
+             [class.hidden]="!allowPathEdit">
             <div>
             <input [ngModel]="model.path?.toString()"
                    #pathInput="ngModel"
                    readonly
-                   required
                    type="text"
                    class="path-input form-control"
                    name="pathInput">

@@ -11,7 +11,7 @@
 
                 <div class="my-line">
                     <label class="my-label label-size">Path</label>
-                    <div class="my-value">
+                    <div class="my-value-text">
                         {{getPathWithoutTestName()}}
                     </div>
                 </div>
@@ -20,7 +20,7 @@
                 <div class="my-line">
                     <label class="my-label label-size">Name</label>
 
-                    <div class="my-value" *ngIf="!isEditMode">
+                    <div class="my-value-text" *ngIf="!isEditMode">
                         {{testModel.name || ""}}
                     </div>
                     <div class="my-value" *ngIf="isEditMode">
@@ -29,7 +29,7 @@
                                type="text" class="form-control" name="testName">
                         <input-error [model]="testName"
                                      [errorMessages]="{
-                                        required: 'A name for this test is required'
+                                        required: 'The name is required'
                                      }"></input-error>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                 <!-- TEST TYPE & DISABLED -->
                 <div class="my-line">
                     <label class="my-label label-size">Type</label>
-                    <div class="type-value-container my-value">
+                    <div class="type-value-container my-value-text">
                         <div *ngIf="!isEditMode" class="type-container">
                             <span *ngIf="!testModel.properties.isManual" class="label label-success">Automated</span>
                             <span *ngIf="testModel.properties.isManual" class="label label-warning">Manual</span>
@@ -68,7 +68,7 @@
                 <!-- TAGS -->
                 <div class="my-line" *ngIf="!isEditMode && testModel.tags.length > 0 ">
                     <label class="my-label label-size">Tags</label>
-                    <div class="my-value" *ngIf="!isEditMode">
+                    <div class="my-value-text" *ngIf="!isEditMode">
                         <ng-container *ngFor="let tag of testModel.tags">
                             <span class="label label-primary">{{tag}}</span>
                         </ng-container>
