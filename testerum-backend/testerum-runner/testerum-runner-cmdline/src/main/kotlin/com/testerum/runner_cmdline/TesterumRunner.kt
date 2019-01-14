@@ -28,10 +28,10 @@ object TesterumRunner {
     fun main(args: Array<String>) {
         val stopWatch = StopWatch.start()
 
+        AnsiConsole.systemInstall()
         ConsoleOutputCapturer.startCapture("main")
 
         TesterumRunnerLoggingConfigurator.configureLogging()
-        AnsiConsole.systemInstall()
         println(TesterumBanner.BANNER)
 
         val cmdlineParams: CmdlineParams = getCmdlineParams(args)
@@ -83,30 +83,26 @@ object TesterumRunner {
             System.setProperty("picocli.useSimplifiedAtFiles", "true")
             CmdlineParamsParser.parse(*args)
         } catch (e: CmdlineParamsParserHelpRequestedException) {
-            consolePrintln(e.usageHelp)
+            println(e.usageHelp)
 
             Exiter.exit(ExitCode.OK)
         } catch (e: CmdlineParamsParserVersionHelpRequestedException) {
-            consolePrintln(
+            println(
                     RunnerVersionInfoService.getFormattedVersionProperties()
             )
 
             Exiter.exit(ExitCode.OK)
         } catch (e: CmdlineParamsParserParsingException) {
-            consolePrintln(
+            println(
                     "${Ansi.ansi().fgBrightRed()}${Ansi.ansi().a(INTENSITY_BOLD)}" +
                     "ERROR: ${e.errorMessage}" +
                     "${Ansi.ansi().a(INTENSITY_BOLD_OFF)}${Ansi.ansi().fgDefault()}" +
                     "\n"
             )
-            consolePrintln(e.usageHelp)
+            println(e.usageHelp)
 
             Exiter.exit(ExitCode.RUNNER_FAILED)
         }
-    }
-
-    private fun consolePrintln(text: String) {
-        ConsoleOutputCapturer.getOriginalTextWriter().print("$text\n")
     }
 
 }

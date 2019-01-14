@@ -29,6 +29,8 @@ class FileManualTestDefParserTest {
                             |    description = <<
                             |       A composed step that allows us to bypass the login screen.
                             |       Will be useful from many tests.
+                            |
+                            |       Escaped \>> multiline end.
                             |    >>
                             |
                             |    tags = <<one, two, three>>
@@ -60,7 +62,9 @@ class FileManualTestDefParserTest {
                         FileManualTestDef(
                                 name = "Successful login",
                                 description = """ |A composed step that allows us to bypass the login screen.
-                                                   |Will be useful from many tests.""".trimMargin(),
+                                                  |Will be useful from many tests.
+                                                  |
+                                                  |Escaped >> multiline end.""".trimMargin(),
                                 tags = listOf("one", "two", "three"),
                                 stepCalls = listOf(
                                         FileManualStepCall(

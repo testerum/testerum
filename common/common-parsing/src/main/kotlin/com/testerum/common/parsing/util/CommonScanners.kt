@@ -18,15 +18,11 @@ object CommonScanners {
 
     fun notNewLine(): Parser<String> = Patterns.many(CharPredicates.notAmong("\r\n")).toScanner("notNewLine").source()
 
-    fun escapeSequence(): Parser<String> {
+    fun escapeSequence(vararg textsToEscape: String): Parser<String> {
         return or(
-                escapeFor("<<"),
-                escapeFor(">>"),
-                escapeFor("{{"),
-                escapeFor("}}")
+                textsToEscape.map { escapeFor(it) }
         )
     }
-
 
     private fun escapeFor(text: String): Parser<String> {
         return Scanners.string("\\$text")

@@ -11,14 +11,16 @@ object FileTextArgPartParserFactory : ParserFactory<FileTextArgPart> {
     override fun createParser() = textArgPart()
 
     fun textArgPart(): Parser<FileTextArgPart> {
-        return or(escapeSequence(), notEndOfTextArgPart())
-                .many()
+        return or(
+                   escapeSequence("{{"),
+                   notEndOfTextArgPart()
+               ).many()
                 .map { texts -> FileTextArgPart(texts.joinToString(separator = "")) }
     }
 
     private fun notEndOfTextArgPart(): Parser<String> {
-        return Patterns.and(Patterns.notString(">>"), Patterns.notString("{{"))
-                .toScanner("(not newline, >>, or {{)")
+        return Patterns.notString("{{")
+                .toScanner("(not {{)")
                 .source()
     }
 

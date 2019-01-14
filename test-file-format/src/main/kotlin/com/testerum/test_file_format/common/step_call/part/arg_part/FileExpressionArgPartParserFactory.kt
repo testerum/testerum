@@ -1,7 +1,9 @@
 package com.testerum.test_file_format.common.step_call.part.arg_part
 
 import com.testerum.common.parsing.ParserFactory
+import com.testerum.common.parsing.util.CommonScanners.escapeSequence
 import org.jparsec.Parser
+import org.jparsec.Parsers.or
 import org.jparsec.Parsers.sequence
 import org.jparsec.Scanners.string
 import org.jparsec.pattern.Patterns
@@ -14,7 +16,10 @@ object FileExpressionArgPartParserFactory : ParserFactory<FileExpressionArgPart>
     fun expressionArgPart(): Parser<FileExpressionArgPart> {
         return sequence(
                 string("{{"),
-                notClosingCurlyBrackets().many(),
+                or(
+                        escapeSequence("}}"),
+                        notClosingCurlyBrackets()
+                ).many(),
                 string("}}")
         ) { _, texts, _ -> FileExpressionArgPart(texts.joinToString(separator = "")) }
     }
