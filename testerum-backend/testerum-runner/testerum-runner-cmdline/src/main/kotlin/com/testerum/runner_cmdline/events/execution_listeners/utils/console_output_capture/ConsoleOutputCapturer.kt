@@ -24,6 +24,10 @@ object ConsoleOutputCapturer {
             }
 
             this.capturingData = ConsoleOutputCapturingData.startCapture(owner)
+
+            Runtime.getRuntime().addShutdownHook(Thread {
+                cleanup()
+            })
         }
     }
 
@@ -51,6 +55,11 @@ object ConsoleOutputCapturer {
         }
     }
 
+    private fun cleanup() {
+        val remainingConsoleCapturedText: String = drainCapturedText()
+        stopCapture()
+        println(remainingConsoleCapturedText)
+    }
 }
 
 private class ConsoleOutputCapturingData(val owner: String) {
