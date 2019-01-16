@@ -58,6 +58,26 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
         }
     }
 
+    hasTestsToRun(): boolean {
+        return this.hasNodeTestsToRun(this.model);
+    }
+
+    private hasNodeTestsToRun(featureNode: FeatureTreeContainerModel): boolean {
+        for (const child of featureNode.children) {
+            if (child instanceof FeatureTreeContainerModel) {
+                let hasTestsToRun = this.hasNodeTestsToRun(child as FeatureTreeContainerModel);
+                if(hasTestsToRun) {
+                    return true
+                }
+            } else {
+                if (!child.testProperties.isManual && !child.testProperties.isDisabled) {
+                    return true
+                }
+            }
+        }
+        return false;
+    }
+
     runTests() {
         this.testsRunnerService.runTests([this.model.path]);
     }
