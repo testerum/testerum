@@ -11,7 +11,7 @@
 
                 <div class="my-line">
                     <label class="my-label label-size">Path</label>
-                    <div class="my-value-text">
+                    <div class="my-value">
                         {{getPathWithoutTestName()}}
                     </div>
                 </div>
@@ -20,7 +20,7 @@
                 <div class="my-line">
                     <label class="my-label label-size">Name</label>
 
-                    <div class="my-value-text" *ngIf="!isEditMode">
+                    <div class="my-value" *ngIf="!isEditMode">
                         {{testModel.name || ""}}
                     </div>
                     <div class="my-value" *ngIf="isEditMode">
@@ -37,7 +37,7 @@
                 <!-- TEST TYPE & DISABLED -->
                 <div class="my-line">
                     <label class="my-label label-size">Type</label>
-                    <div class="type-value-container my-value-text">
+                    <div class="type-value-container my-value">
                         <div *ngIf="!isEditMode" class="type-container">
                             <span *ngIf="!testModel.properties.isManual" class="label label-success">Automated</span>
                             <span *ngIf="testModel.properties.isManual" class="label label-warning">Manual</span>
@@ -68,7 +68,7 @@
                 <!-- TAGS -->
                 <div class="my-line" *ngIf="!isEditMode && testModel.tags.length > 0 ">
                     <label class="my-label label-size">Tags</label>
-                    <div class="my-value-text" *ngIf="!isEditMode">
+                    <div class="my-value" *ngIf="!isEditMode">
                         <ng-container *ngFor="let tag of testModel.tags">
                             <span class="label label-primary">{{tag}}</span>
                         </ng-container>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="my-line" *ngIf="isEditMode">
                     <label class="my-label label-size">Tags</label>
-                    <div class="my-value">
+                    <div class="my-value my-default-line-height">
                         <p-autoComplete #tagsElement
                                         [(ngModel)]="testModel.tags"
                                         [suggestions]="tagsToShow"
@@ -92,7 +92,7 @@
 
                 <div class="my-line" *ngIf="testModel.description || isEditMode">
                     <label class="my-label label-size">Description</label>
-                    <div class="my-value">
+                    <div class="my-value my-default-line-height">
                         <markdown-editor #descriptionMarkdownEditor
                                          [options]="markdownEditorOptions"
                                          class="markdown-editor-dynamic-size"></markdown-editor>

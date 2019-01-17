@@ -61,20 +61,20 @@ input[type=checkbox]:focus {
     align-self: baseline;
 }
 
-.my-value, %my-value {
+.my-value {
     display: block;
     margin-left: 1em;
     flex-grow: 2;
     align-self: baseline;
+    line-height: 25px;
 
     input {
         width: 100%;
     }
 }
 
-.my-value-text {
-    @extend %my-value;
-    line-height: 25px;
+.my-default-line-height {
+    line-height: 12px;
 }
 
 .vertical-space {

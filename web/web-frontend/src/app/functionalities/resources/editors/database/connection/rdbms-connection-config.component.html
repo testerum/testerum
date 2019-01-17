@@ -128,12 +128,10 @@
                     <input portValidator
                            #port="ngModel" [(ngModel)]="model.port"
                            type="text" class="form-control" name="port">
-                    <div *ngIf="port.errors && (port.dirty || port.touched)"
-                         class="alert alert-danger">
-                        <div [hidden]="!port.errors.portValidator">
-                            This is not a valid port
-                        </div>
-                    </div>
+                    <input-error [model]="port"
+                                 [errorMessages]="{
+                                portValidator: 'This is not a valid port'
+                             }"></input-error>
                 </div>
             </div>
 

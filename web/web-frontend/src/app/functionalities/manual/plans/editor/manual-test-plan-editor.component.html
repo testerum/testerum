@@ -17,12 +17,10 @@
                         <input required
                                #name="ngModel" [(ngModel)]="model.name"
                                type="text" class="form-control" name="environment">
-                        <div *ngIf="name.errors && (name.dirty || name.touched)"
-                             class="alert alert-danger">
-                            <div [hidden]="!name.errors.required">
-                                Name is required
-                            </div>
-                        </div>
+                        <input-error [model]="name"
+                                     [errorMessages]="{
+                                required: 'Name is required'
+                             }"></input-error>
                     </div>
                 </div>
 
@@ -30,7 +28,7 @@
                 <div class="my-line">
                     <label class="my-label-top label-size">Description</label>
 
-                    <div class="my-value">
+                    <div class="my-value my-default-line-height">
                         <markdown-editor #descriptionMarkdownEditor
                                          [options]="markdownEditorOptions"></markdown-editor>
                     </div>

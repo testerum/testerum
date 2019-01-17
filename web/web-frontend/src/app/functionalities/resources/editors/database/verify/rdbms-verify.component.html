@@ -26,7 +26,7 @@
     <!-- RDBMS CONNECTION -->
     <div class="my-line" *ngIf="editMode">
         <label class="my-label label-size">DB Connection</label>
-        <div class="my-value connection-value-container">
+        <div class="my-value my-default-line-height connection-value-container">
             <p-dropdown #connectionDropdown
                         [options]="availableRdbmsConnections"
                         [(ngModel)]="selectedRdbmsConnection"
