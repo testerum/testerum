@@ -1,4 +1,4 @@
-import {EMPTY, Observable, throwError as observableThrowError} from 'rxjs';
+import {EMPTY, Observable, Subject, throwError as observableThrowError} from 'rxjs';
 
 import {tap} from 'rxjs/operators';
 import {EventEmitter, Injectable} from "@angular/core";
@@ -6,13 +6,29 @@ import {ErrorCode} from "../model/exception/enums/error-code.enum";
 import {FullLogErrorResponse} from "../model/exception/full-log-error-response.model";
 import {ErrorResponse} from "../model/exception/error-response.model";
 import {ValidationErrorResponse} from "../model/exception/validation-error-response.model";
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
+import {
+    HttpClient,
+    HttpErrorResponse,
+    HttpEvent,
+    HttpHandler,
+    HttpInterceptor,
+    HttpRequest
+} from "@angular/common/http";
+import {ServerNotAvailableModalService} from "../generic/error/server-not-available/server-not-available-modal.service";
+import {UtilService} from "./util.service";
 
 @Injectable()
 export class ErrorService implements HttpInterceptor {
 
+    private PING_REQUEST_PATH = "/rest/version";
 
     errorEventEmitter: EventEmitter<ErrorResponse> = new EventEmitter<ErrorResponse>();
+    static isServerAvailable: boolean = true;
+
+    constructor(private http: HttpClient,
+                private utilService: UtilService,
+                private serverNotAvailableModalService: ServerNotAvailableModalService) {
+    }
 
     trick(errorResponse: Response | any): Observable<Response> {
         return this.handleHttpResponseException(errorResponse);
@@ -22,9 +38,28 @@ export class ErrorService implements HttpInterceptor {
         return next.handle(request).pipe(tap(
             (event: HttpEvent<any>) => {},
             (err: any) => {
+
                 if (err instanceof HttpErrorResponse) {
                     let httpErrorResponse: HttpErrorResponse = err;
                     if (httpErrorResponse.status >= 400) {
+
+                        if (err.status == 504) {
+                            if (httpErrorResponse.url.endsWith(this.PING_REQUEST_PATH)) {
+                                return EMPTY;
+                            }
+                            this.utilService.checkIfServerIsAvailable().subscribe((isServerAvailable: boolean) => {
+                                if (!isServerAvailable) {
+                                    if (ErrorService.isServerAvailable) {
+                                        ErrorService.isServerAvailable = false;
+                                        this.serverNotAvailableModalService.show();
+                                    }
+                                } else {
+                                    this.errorEventEmitter.emit(httpErrorResponse.error);
+                                }
+                            });
+                            return EMPTY;
+                        }
+
                         let contentTypeHeader = httpErrorResponse.headers.get('content-type');
                         if(contentTypeHeader) {
                             let contentTypeToLowerCase = contentTypeHeader.toLowerCase();

@@ -95,7 +95,9 @@ import {InfoModalService} from "./components/info_modal/info-modal.service";
 import {InfoIconComponent} from './components/info-icon/info-icon.component';
 import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
 import {MarkdownModule} from 'ngx-markdown';
-import { SafeUrlPipe } from './pipes/safe-url.pipe'
+import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { ServerNotAvailableModalComponent } from './error/server-not-available/server-not-available-modal.component'
+import {ServerNotAvailableModalService} from "./error/server-not-available/server-not-available-modal.service";
 
 @NgModule({
     imports: [
@@ -249,6 +251,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe'
         JsonEmptyVerifyNodeComponent,
         LogoComponent,
         InfoIconComponent,
+        ServerNotAvailableModalComponent,
     ],
     providers: [
         TreeService,
@@ -265,6 +268,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe'
         AreYouSureModalService,
         InfoModalService,
         ArgModalService,
+        ServerNotAvailableModalService,
     ],
     entryComponents: [
         FeatureContainerComponent,
@@ -304,6 +308,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe'
         AreYouSureModalComponent,
         InfoModalComponent,
         ArgModalComponent,
+        ServerNotAvailableModalComponent,
     ]
 })
 export class GenericModule { }

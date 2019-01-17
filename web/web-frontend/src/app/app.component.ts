@@ -13,9 +13,9 @@ export class AppComponent  {
     constructor(messageService: MessageService,
                 private viewContainerRef: ViewContainerRef,
                 private componentFactoryResolver: ComponentFactoryResolver) {
-        messageService.init();
-
         AppComponent.rootViewContainerRef = viewContainerRef;
+
+        messageService.init();
         AppComponent.componentFactoryResolver = componentFactoryResolver
     }
 }

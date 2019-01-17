@@ -44,6 +44,7 @@ import {LicenseService} from "./functionalities/config/license/license.service";
 import {LicenseComponent} from "./functionalities/config/license/license.component";
 import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
+import {UtilService} from "./service/util.service";
 
 @NgModule({
     imports: [
@@ -101,11 +102,11 @@ import {ContextService} from "./service/context.service";
         HttpService,
 
         UrlService,
+        UtilService,
         ErrorService,
         { provide: HTTP_INTERCEPTORS, useExisting: ErrorService,  multi: true },
 
         MessageService,
-        { provide: APP_INITIALIZER, useFactory: initMessages, deps: [MessageService], multi: true },
 
         LicenseService,
     ],
