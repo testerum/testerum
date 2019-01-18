@@ -43,7 +43,7 @@ export class ErrorService implements HttpInterceptor {
                     let httpErrorResponse: HttpErrorResponse = err;
                     if (httpErrorResponse.status >= 400) {
 
-                        if (err.status == 504) {
+                        if (err.status == 504 || err.error instanceof ErrorEvent) {
                             if (httpErrorResponse.url.endsWith(this.PING_REQUEST_PATH)) {
                                 return EMPTY;
                             }
