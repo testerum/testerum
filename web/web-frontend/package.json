@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod",
-    "maven-build": "node --max_old_space_size=8192 maven-build.js",
+    "maven-build": "node --max_old_space_size=16384 maven-build.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
