@@ -44,7 +44,7 @@ export class ErrorService implements HttpInterceptor {
                     if (httpErrorResponse.status >= 400 || httpErrorResponse.status == 0) {
 
                         if (err.status == 504 || err.status == 0) {
-                            if (httpErrorResponse.url.endsWith(this.PING_REQUEST_PATH)) {
+                            if (httpErrorResponse.url && httpErrorResponse.url.endsWith(this.PING_REQUEST_PATH)) {
                                 return EMPTY;
                             }
                             this.utilService.checkIfServerIsAvailable().subscribe((isServerAvailable: boolean) => {
