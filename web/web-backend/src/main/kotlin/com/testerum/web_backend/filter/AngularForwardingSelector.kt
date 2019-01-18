@@ -23,6 +23,9 @@ object AngularForwardingSelector {
             matchesFileExtension(".woff"),
             matchesFileExtension(".woff2"),
 
+            // source maps
+            matchesFileExtension(".map"),
+
             // REST web services
             Regex("^/rest/.*"),
 
