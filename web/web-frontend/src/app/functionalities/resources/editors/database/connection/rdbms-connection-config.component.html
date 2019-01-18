@@ -201,7 +201,9 @@
             <input [(ngModel)]="model.database"
                    type="text" class="form-control db-input" name="database">
 
-            <button (click)="showSchemasChooser();" type="button" class="btn btn-default db-choose-button">
+            <button [disabled]="model.isEmpty()"
+                    (click)="showSchemasChooser();"
+                    type="button" class="btn btn-default db-choose-button">
                 <i class="fas fa-list" aria-hidden="true"></i>
                 Select Database
             </button>
