@@ -16,6 +16,3 @@ class StatsCountByStatus constructor(countByStatusMap: Map<ExecutionStatus, Long
     override fun toString(): String = "StatsCountByStatus $countByStatusMap"
 
 }
-
-// todo: don't add to map zero-count entries
-// todo: TypeScript utility method: getCount(status) that returns 0 if the status is not in the map

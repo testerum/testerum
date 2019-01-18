@@ -5,6 +5,20 @@ export class StatsCountByStatus {
 
     constructor(public readonly countByStatusMap: Map<ExecutionStatus, number>) {}
 
+    /**
+     * safe way to get the count for a particular status,
+     * since if the count is zero, the map doesn't contain it at all
+     */
+    getCount(status: ExecutionStatus): number {
+        const count = this.countByStatusMap.get(status);
+
+        if (count) {
+            return count;
+        } else {
+            return 0;
+        }
+    }
+
     static parse(input: Object): StatsCountByStatus {
         if (!input) {
             return null;
