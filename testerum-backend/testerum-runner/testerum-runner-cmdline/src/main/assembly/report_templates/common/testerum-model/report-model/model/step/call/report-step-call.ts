@@ -1,5 +1,5 @@
 import {ReportStepCallArg} from "./report-step-call-arg";
-import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../../json-marshalling/marshalling-utils";
 
 export class ReportStepCall {
 

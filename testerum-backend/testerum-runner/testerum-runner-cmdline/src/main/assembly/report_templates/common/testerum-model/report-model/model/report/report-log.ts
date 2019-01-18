@@ -1,5 +1,5 @@
 import {LogLevel} from "./log-level";
-import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
 import {ExceptionDetail} from "../exception/exception-detail";
 
 export class ReportLog {

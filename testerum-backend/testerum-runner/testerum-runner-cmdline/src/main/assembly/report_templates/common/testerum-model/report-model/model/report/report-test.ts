@@ -1,7 +1,7 @@
 import {FeatureOrTestRunnerReportNode} from "./feature-or-test-runner-report-node";
 import {ExecutionStatus} from "./execution-status";
 import {ReportStep} from "./report-step";
-import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
 
 export class ReportTest implements FeatureOrTestRunnerReportNode {
 

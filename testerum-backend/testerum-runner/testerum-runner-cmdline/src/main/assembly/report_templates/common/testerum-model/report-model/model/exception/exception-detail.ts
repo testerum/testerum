@@ -1,5 +1,5 @@
 import {ExceptionStackTraceElementDetail} from "./exception-stack-trace-element-detail";
-import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
 
 export class ExceptionDetail {
 

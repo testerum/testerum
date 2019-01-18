@@ -1,7 +1,7 @@
 import {RunnerReportNode, RunnerReportNodeType} from "./runner-report-node";
 import {ExecutionStatus} from "./execution-status";
 import {FeatureOrTestRunnerReportNode} from "./feature-or-test-runner-report-node";
-import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
 import {ReportTest} from "./report-test";
 import {ReportFeature} from "./report-feature";
 import {ReportStepDef, StepDefType} from "../step/def/report-step-def";

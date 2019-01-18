@@ -1,6 +1,6 @@
 import {ReportStepCall} from "../step/call/report-step-call";
 import {ExecutionStatus} from "./execution-status";
-import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
 import {RunnerReportNode} from "./runner-report-node";
 
 export class ReportStep implements RunnerReportNode {
