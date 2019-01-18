@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {ReportSuite} from "../../../../../../common/testerum-model/model/report/report-suite";
-import {ReportModelExtractor} from "../../../../../../common/testerum-model/model-extractor/report-model-extractor";
+import {ReportSuite} from "../../../../../../common/testerum-model/report-model/model/report/report-suite";
+import {ReportModelExtractor} from "../../../../../../common/testerum-model/report-model/model-extractor/report-model-extractor";
 
 @Injectable()
 export class ReportService {
