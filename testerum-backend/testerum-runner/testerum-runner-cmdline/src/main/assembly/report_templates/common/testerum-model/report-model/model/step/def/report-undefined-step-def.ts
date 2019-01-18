@@ -1,7 +1,7 @@
 import {ReportStepDef} from "./report-step-def";
 import {StepPhaseEnum} from "./step-phase-enum";
 import {StepPattern} from "./pattern/step-pattern";
-import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../../json-marshalling/marshalling-utils";
 
 export class ReportUndefinedStepDef implements ReportStepDef {
 

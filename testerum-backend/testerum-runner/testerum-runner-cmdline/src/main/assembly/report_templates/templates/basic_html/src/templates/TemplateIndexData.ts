@@ -1,4 +1,4 @@
-import {ReportTest} from "../../../../common/testerum-model/model/report/report-test";
+import {ReportTest} from "../../../../common/testerum-model/report-model/model/report/report-test";
 
 export interface TemplateIndexData {
     tests: Array<ReportTest>;

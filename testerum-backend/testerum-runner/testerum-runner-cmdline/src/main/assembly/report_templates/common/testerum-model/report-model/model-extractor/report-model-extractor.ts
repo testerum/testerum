@@ -3,7 +3,6 @@ import {ReportTest} from "../model/report/report-test";
 import {RunnerReportNode} from "../model/report/runner-report-node";
 import {ReportFeature} from "../model/report/report-feature";
 import {ReportStep} from "../model/report/report-step";
-import {ReportComposedStepDef} from "../model/step/def/report-composed-step-def";
 
 export class ReportModelExtractor {
 

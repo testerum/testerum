@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ReportService} from "../service/report.service";
-import {ExecutionStatus} from "../../../../../../common/testerum-model/model/report/execution-status";
-import {ReportModelExtractor} from "../../../../../../common/testerum-model/model-extractor/report-model-extractor";
+import {ExecutionStatus} from "../../../../../../common/testerum-model/report-model/model/report/execution-status";
+import {ReportModelExtractor} from "../../../../../../common/testerum-model/report-model/model-extractor/report-model-extractor";
 import {ReportUrlService} from "../service/report-url.service";
 import {ReportGridNodeMapper} from "../report/grid/util/report-grid-node.mapper";
 import {ReportGridFilter} from "../report/grid/model/report-grid-filter.model";

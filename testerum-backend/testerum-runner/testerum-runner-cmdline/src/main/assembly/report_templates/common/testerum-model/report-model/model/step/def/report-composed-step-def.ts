@@ -3,7 +3,7 @@ import {Path} from "../../path";
 import {StepPhaseEnum} from "./step-phase-enum";
 import {StepPattern} from "./pattern/step-pattern";
 import {ReportStepCall} from "../call/report-step-call";
-import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../../json-marshalling/marshalling-utils";
 
 export class ReportComposedStepDef implements ReportStepDef {
 

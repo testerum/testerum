@@ -1,4 +1,4 @@
-import {MarshallingUtils} from "../../../../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../../../../json-marshalling/marshalling-utils";
 
 export class ParamStepPatternPart {
 

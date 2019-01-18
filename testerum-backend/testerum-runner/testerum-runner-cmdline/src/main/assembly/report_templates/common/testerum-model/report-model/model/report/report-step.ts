@@ -1,13 +1,11 @@
-import {FeatureOrTestRunnerReportNode} from "./feature-or-test-runner-report-node";
+import {ReportStepCall} from "../step/call/report-step-call";
 import {ExecutionStatus} from "./execution-status";
-import {ReportStep} from "./report-step";
-import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
+import {RunnerReportNode} from "./runner-report-node";
 
-export class ReportTest implements FeatureOrTestRunnerReportNode {
+export class ReportStep implements RunnerReportNode {
 
-    constructor(public readonly testName: string,
-                public readonly testFilePath: string,
-                public readonly tags: Array<string>,
+    constructor(public readonly stepCall: ReportStepCall,
                 public readonly startTime: Date,
                 public readonly endTime: Date,
                 public readonly durationMillis: number,
@@ -16,14 +14,8 @@ export class ReportTest implements FeatureOrTestRunnerReportNode {
                 public readonly modelLogFilePath: string,
                 public readonly children: Array<ReportStep>) {}
 
-    static parse(input: Object): ReportTest {
-        if (!input) {
-            return null;
-        }
-
-        const testName = input["testName"];
-        const testFilePath = input["testFilePath"];
-        const tags = MarshallingUtils.parseListOfStrings(input["tags"]);
+    static parse(input: Object): ReportStep {
+        const stepCall = ReportStepCall.parse(input["stepCall"]);
         const startTime = MarshallingUtils.parseLocalDateTime(input["startTime"]);
         const endTime = MarshallingUtils.parseLocalDateTime(input["endTime"]);
         const durationMillis = input["durationMillis"];
@@ -32,6 +24,7 @@ export class ReportTest implements FeatureOrTestRunnerReportNode {
         const modelLogFilePath = input["modelLogFilePath"];
         const children = MarshallingUtils.parseList(input["children"], ReportStep);
 
-        return new ReportTest(testName, testFilePath, tags, startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children);
+        return new ReportStep(stepCall, startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children);
     }
+
 }

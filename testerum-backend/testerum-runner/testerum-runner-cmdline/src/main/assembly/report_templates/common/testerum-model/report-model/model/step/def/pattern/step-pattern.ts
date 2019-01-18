@@ -1,5 +1,5 @@
 import {StepPatternPart, StepPatternPartType} from "./part/step-pattern-part";
-import {MarshallingUtils} from "../../../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../../../json-marshalling/marshalling-utils";
 import {ParamStepPatternPart} from "./part/param-step-pattern-part";
 import {TextStepPatternPart} from "./part/text-step-pattern-part";
 

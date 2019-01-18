@@ -1,6 +1,6 @@
 import {FeatureOrTestRunnerReportNode} from "./feature-or-test-runner-report-node";
 import {ExecutionStatus} from "./execution-status";
-import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
 import {RunnerReportNodeType} from "./runner-report-node";
 import {ReportTest} from "./report-test";
 
