@@ -1,10 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, ComponentFactoryResolver, ViewContainerRef} from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'runner-stats-app';
+
+    static rootViewContainerRef: ViewContainerRef;
+    static componentFactoryResolver: ComponentFactoryResolver;
+
+    constructor(private viewContainerRef: ViewContainerRef,
+                private componentFactoryResolver: ComponentFactoryResolver) {
+
+        AppComponent.rootViewContainerRef = viewContainerRef;
+        AppComponent.componentFactoryResolver = componentFactoryResolver
+    }
 }

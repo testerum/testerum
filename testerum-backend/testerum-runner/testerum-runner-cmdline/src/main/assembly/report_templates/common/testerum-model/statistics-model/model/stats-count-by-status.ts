@@ -1,5 +1,5 @@
-import {ExecutionStatus} from "../report-model/model/report/execution-status";
-import {MarshallingUtils} from "../json-marshalling/marshalling-utils";
+import {ExecutionStatus} from "../../report-model/model/report/execution-status";
+import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
 
 export class StatsCountByStatus {
 

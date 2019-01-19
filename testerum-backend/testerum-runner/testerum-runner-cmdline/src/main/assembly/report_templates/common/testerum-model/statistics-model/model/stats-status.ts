@@ -1,5 +1,5 @@
 import {StatsCountByStatus} from "./stats-count-by-status";
-import {MarshallingUtils} from "../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
 
 export class StatsStatus {
 

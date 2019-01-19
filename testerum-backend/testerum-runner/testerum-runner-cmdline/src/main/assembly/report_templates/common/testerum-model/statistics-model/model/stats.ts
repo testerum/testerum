@@ -1,5 +1,5 @@
 import {StatsAll} from "./stats-all";
-import {MarshallingUtils} from "../json-marshalling/marshalling-utils";
+import {MarshallingUtils} from "../../json-marshalling/marshalling-utils";
 
 export class Stats {
 

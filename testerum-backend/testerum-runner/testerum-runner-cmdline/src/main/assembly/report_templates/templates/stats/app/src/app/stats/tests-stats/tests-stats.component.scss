@@ -1,0 +1,26 @@
+.my-tests-stats {
+    .header {
+        position: relative;
+
+        .range {
+            position: absolute;
+            display: flex;
+            height: 100%;
+            align-items: center;
+
+            label {
+                margin-right: 0.5em;
+            }
+            input {
+                padding: 0;
+                font-family: inherit;
+                text-align: center;
+            }
+        }
+        .title {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+}

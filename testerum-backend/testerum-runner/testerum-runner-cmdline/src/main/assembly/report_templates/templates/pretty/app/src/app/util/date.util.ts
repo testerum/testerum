@@ -48,4 +48,17 @@ export class DateUtil {
 
         return result + " " + suffix;
     }
+
+
+    static dateToString(date: Date): string {
+        let year = date.getFullYear(),
+            month = date.getMonth() + 1, // months are zero indexed
+            day = date.getDate();
+
+        return DateUtil.twoDigitToString(day)
+            + "/"
+            + DateUtil.twoDigitToString(month)
+            + "/"
+            + DateUtil.twoDigitToString(year);
+    }
 }
