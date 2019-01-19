@@ -30,4 +30,24 @@ export class StatsModelExtractor {
 
         return result;
     }
+
+    getSuitesData(status: ExecutionStatus, startDate: Date, endDate: Date): Array<DataPoint> {
+        let result: Array<DataPoint> = [];
+
+        if (!this.stats || !this.stats.perDay) {
+            return result;
+        }
+
+        this.stats.perDay.forEach((value: StatsAll, key: Date) => {
+            if (startDate && key < startDate) {return;}
+            if (endDate && endDate < key) {return;}
+
+            let amount = value.status.suiteCount.getCount(status);
+            amount = amount? amount: 0;
+            let dataPoint = new DataPoint(key, amount);
+            result.push(dataPoint);
+        });
+
+        return result;
+    }
 }

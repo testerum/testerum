@@ -11,6 +11,7 @@ import {ChartModule} from "primeng/chart";
 import {ModalModule} from "ngx-bootstrap";
 import {CalendarModule, TooltipModule, TreeTableModule} from "primeng/primeng";
 import {StatsService} from "./service/stats.service";
+import {SuiteStatsComponent} from "./stats/suite-stats/suite-stats.component";
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import {StatsService} from "./service/stats.service";
     declarations: [
         AppComponent,
         StatsComponent,
-        TestsStatsComponent
+        TestsStatsComponent,
+        SuiteStatsComponent,
     ],
     entryComponents: [],
     providers: [

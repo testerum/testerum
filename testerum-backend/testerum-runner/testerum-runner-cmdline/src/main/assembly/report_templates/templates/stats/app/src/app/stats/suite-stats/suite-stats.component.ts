@@ -5,11 +5,11 @@ import {DataPoint} from "../../model/DataPoint";
 import {UIChart} from "primeng/chart";
 
 @Component({
-    selector: 'tests-stats',
-    templateUrl: './tests-stats.component.html',
-    styleUrls: ['./tests-stats.component.scss'],
+    selector: 'suite-stats',
+    templateUrl: './suite-stats.component.html',
+    styleUrls: ['./suite-stats.component.scss']
 })
-export class TestsStatsComponent implements OnInit {
+export class SuiteStatsComponent implements OnInit {
 
     data: any;
     options: any;
@@ -22,41 +22,40 @@ export class TestsStatsComponent implements OnInit {
 
     rangeDates: Date[] = [];
 
-    allPassedTestData: DataPoint[] = [];
-    allFailedTestData: DataPoint[] = [];
-    allUndefinedTestData: DataPoint[] = [];
-    allDisabledTestData: DataPoint[] = [];
-    allSkippedTestData: DataPoint[] = [];
+    allPassedSuiteData: DataPoint[] = [];
+    allFailedSuiteData: DataPoint[] = [];
+    allUndefinedSuiteData: DataPoint[] = [];
+    allDisabledSuiteData: DataPoint[] = [];
+    allSkippedSuiteData: DataPoint[] = [];
 
-    passedTestData: DataPoint[] = [];
-    failedTestData: DataPoint[] = [];
-    undefinedTestData: DataPoint[] = [];
-    disabledTestData: DataPoint[] = [];
-    skippedTestData: DataPoint[] = [];
+    passedSuiteData: DataPoint[] = [];
+    failedSuiteData: DataPoint[] = [];
+    undefinedSuiteData: DataPoint[] = [];
+    disabledSuiteData: DataPoint[] = [];
+    skippedSuiteData: DataPoint[] = [];
 
     @HostBinding('class.full-width') fullWidth: boolean = false;
-
     @ViewChild("chart") chart: UIChart;
 
     constructor(private statsService: StatsService) {
     }
 
     ngOnInit() {
-        this.allPassedTestData = this.statsService.statsModelExtractor.getTestData(ExecutionStatus.PASSED, null, null);
-        this.allFailedTestData = this.statsService.statsModelExtractor.getTestData(ExecutionStatus.FAILED, null, null);
-        this.allUndefinedTestData = this.statsService.statsModelExtractor.getTestData(ExecutionStatus.UNDEFINED, null, null);
-        this.allDisabledTestData = this.statsService.statsModelExtractor.getTestData(ExecutionStatus.DISABLED, null, null);
-        this.allSkippedTestData = this.statsService.statsModelExtractor.getTestData(ExecutionStatus.SKIPPED, null, null);
+        this.allPassedSuiteData = this.statsService.statsModelExtractor.getSuitesData(ExecutionStatus.PASSED, null, null);
+        this.allFailedSuiteData = this.statsService.statsModelExtractor.getSuitesData(ExecutionStatus.FAILED, null, null);
+        this.allUndefinedSuiteData = this.statsService.statsModelExtractor.getSuitesData(ExecutionStatus.UNDEFINED, null, null);
+        this.allDisabledSuiteData = this.statsService.statsModelExtractor.getSuitesData(ExecutionStatus.DISABLED, null, null);
+        this.allSkippedSuiteData = this.statsService.statsModelExtractor.getSuitesData(ExecutionStatus.SKIPPED, null, null);
 
-        this.passedTestData = this.allPassedTestData;
-        this.failedTestData = this.allFailedTestData;
-        this.undefinedTestData = this.allUndefinedTestData;
-        this.disabledTestData = this.allDisabledTestData;
-        this.skippedTestData = this.allSkippedTestData;
+        this.passedSuiteData = this.allPassedSuiteData;
+        this.failedSuiteData = this.allFailedSuiteData;
+        this.undefinedSuiteData = this.allUndefinedSuiteData;
+        this.disabledSuiteData = this.allDisabledSuiteData;
+        this.skippedSuiteData = this.allSkippedSuiteData;
 
-        if (this.passedTestData.length > 0) {
-            this.firstPossibleDate = this.passedTestData[0].x;
-            this.lastPossibleDate = this.passedTestData[this.passedTestData.length - 1].x;
+        if (this.passedSuiteData.length > 0) {
+            this.firstPossibleDate = this.passedSuiteData[0].x;
+            this.lastPossibleDate = this.passedSuiteData[this.passedSuiteData.length - 1].x;
 
             this.firstDisplayedDate = this.firstPossibleDate;
             this.lastDisplayedDate = this.lastPossibleDate;
@@ -106,34 +105,34 @@ export class TestsStatsComponent implements OnInit {
     }
 
     private refreshDisplayedData() {
-        this.passedTestData = [];
-        for (const dataPoint of this.allPassedTestData) {
+        this.passedSuiteData = [];
+        for (const dataPoint of this.allPassedSuiteData) {
             if (this.firstDisplayedDate <= dataPoint.x && dataPoint.x <= this.lastDisplayedDate) {
-                this.passedTestData.push(dataPoint)
+                this.passedSuiteData.push(dataPoint)
             }
         }
-        this.failedTestData = [];
-        for (const dataPoint of this.allFailedTestData) {
+        this.failedSuiteData = [];
+        for (const dataPoint of this.allFailedSuiteData) {
             if (this.firstDisplayedDate <= dataPoint.x && dataPoint.x <= this.lastDisplayedDate) {
-                this.failedTestData.push(dataPoint)
+                this.failedSuiteData.push(dataPoint)
             }
         }
-        this.undefinedTestData = [];
-        for (const dataPoint of this.allUndefinedTestData) {
+        this.undefinedSuiteData = [];
+        for (const dataPoint of this.allUndefinedSuiteData) {
             if (this.firstDisplayedDate <= dataPoint.x && dataPoint.x <= this.lastDisplayedDate) {
-                this.undefinedTestData.push(dataPoint)
+                this.undefinedSuiteData.push(dataPoint)
             }
         }
-        this.disabledTestData = [];
-        for (const dataPoint of this.allDisabledTestData) {
+        this.disabledSuiteData = [];
+        for (const dataPoint of this.allDisabledSuiteData) {
             if (this.firstDisplayedDate <= dataPoint.x && dataPoint.x <= this.lastDisplayedDate) {
-                this.disabledTestData.push(dataPoint)
+                this.disabledSuiteData.push(dataPoint)
             }
         }
-        this.skippedTestData = [];
-        for (const dataPoint of this.allSkippedTestData) {
+        this.skippedSuiteData = [];
+        for (const dataPoint of this.allSkippedSuiteData) {
             if (this.firstDisplayedDate <= dataPoint.x && dataPoint.x <= this.lastDisplayedDate) {
-                this.skippedTestData.push(dataPoint)
+                this.skippedSuiteData.push(dataPoint)
             }
         }
         this.data = this.createData();
@@ -145,35 +144,35 @@ export class TestsStatsComponent implements OnInit {
 
                 {
                     label: 'Disabled',
-                    data: this.disabledTestData,
+                    data: this.disabledSuiteData,
                     fill: true,
                     borderColor: "#c0bebc",
                     backgroundColor: "#c0bebc"
                 },
                 {
                     label: 'Skipped',
-                    data: this.skippedTestData,
+                    data: this.skippedSuiteData,
                     fill: true,
                     borderColor: "#aae8ff",
                     backgroundColor: "#aae8ff"
                 },
                 {
                     label: 'Undefined',
-                    data: this.undefinedTestData,
+                    data: this.undefinedSuiteData,
                     fill: true,
                     borderColor: "#FFCE56",
                     backgroundColor: "#ffce56"
                 },
                 {
                     label: 'Passed',
-                    data: this.passedTestData,
+                    data: this.passedSuiteData,
                     fill: true,
                     borderColor: "#5cb85c",
                     backgroundColor: "#5cb85c"
                 },
                 {
                     label: 'Failed',
-                    data: this.failedTestData,
+                    data: this.failedSuiteData,
                     fill: true,
                     borderColor: "#FF6384",
                     backgroundColor: "#ff6384"
