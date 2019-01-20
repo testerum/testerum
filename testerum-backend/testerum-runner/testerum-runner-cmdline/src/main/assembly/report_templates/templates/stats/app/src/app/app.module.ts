@@ -6,12 +6,11 @@ import {AppComponent} from './app.component';
 import {StatsComponent} from './stats/stats.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule} from "@angular/forms";
-import { TestsStatsComponent } from './stats/tests-stats/tests-stats.component';
+import { LineStatsComponent } from './stats/line-stats/line-stats.component';
 import {ChartModule} from "primeng/chart";
 import {ModalModule} from "ngx-bootstrap";
-import {CalendarModule, TooltipModule, TreeTableModule} from "primeng/primeng";
+import {CalendarModule, ToggleButtonModule, TooltipModule, TreeTableModule} from "primeng/primeng";
 import {StatsService} from "./service/stats.service";
-import {SuiteStatsComponent} from "./stats/suite-stats/suite-stats.component";
 
 @NgModule({
     imports: [
@@ -25,12 +24,12 @@ import {SuiteStatsComponent} from "./stats/suite-stats/suite-stats.component";
         TreeTableModule,
         TooltipModule,
         CalendarModule,
+        ToggleButtonModule,
     ],
     declarations: [
         AppComponent,
         StatsComponent,
-        TestsStatsComponent,
-        SuiteStatsComponent,
+        LineStatsComponent,
     ],
     entryComponents: [],
     providers: [

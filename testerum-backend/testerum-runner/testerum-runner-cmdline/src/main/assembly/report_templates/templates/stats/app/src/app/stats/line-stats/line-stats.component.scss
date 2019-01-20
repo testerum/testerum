@@ -1,23 +1,22 @@
 :host {
     margin-top: 5em;
-    width: 45%;
 
     &.full-width {
-        width: 100%;
+        width: 100% !important;
     }
 }
 .my-tests-stats {
     .header {
-        position: relative;
+        display: flex;
+        justify-content: space-between;
 
         .range {
-            position: absolute;
-
             label {
                 margin-right: 0.5em;
             }
 
         }
+
         .title {
             font-size: 2em;
             font-weight: bold;
@@ -25,9 +24,6 @@
         }
 
         .my-button-panel {
-            position: absolute;
-            right: 0;
-            top: 0;
         }
     }
 }

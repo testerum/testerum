@@ -1,5 +1,5 @@
 
-export class DataPoint {
+export class DataPointModel {
     x: Date;
     y: number;
 

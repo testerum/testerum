@@ -4,12 +4,36 @@
 
     .header {
         margin: auto;
+        position: relative;
 
         .title {
             font-size: 3.1em;
             font-weight: bold;
             text-align: center;
             margin: auto;
+        }
+
+        .config {
+            position: absolute;
+            right: 0;
+            top: 0;
+
+            background: #add8e6;
+            padding: 0.5em 1em;
+            border-radius: 15px;
+
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+
+            .config-title {
+                font-weight: bold;
+            }
+
+            .detail-level {
+                margin-top: 5px;
+            }
         }
     }
 

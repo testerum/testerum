@@ -5,10 +5,51 @@
         <div class="title">
             Statistics
         </div>
+        <div class="config">
+            <div class="config-title">Config</div>
+            <div class="start-date">
+                <p-calendar [(ngModel)]="startDate"
+                            [minDate]="firstAbsoluteDate"
+                            [maxDate]="lastAbsoluteDate"
+                            [readonlyInput]="true"
+                            pTooltip="Start Date"></p-calendar>
+            </div>
+            <div class="end-date">
+                <p-calendar [(ngModel)]="endDate"
+                            [minDate]="firstAbsoluteDate"
+                            [maxDate]="lastAbsoluteDate"
+                            [readonlyInput]="true"
+                            pTooltip="End Date"></p-calendar>
+            </div>
+            <div class="detail-level">
+                <button type="button"
+                        class="btn btn-primary btn-xs"
+                        (click)="showDetails = !showDetails"
+                        [class.active]="showDetails">{{showDetails ? "Show Details" : "Hide Details"}}</button>
+            </div>
+        </div>
     </div>
 
     <div class="components">
-        <tests-stats></tests-stats>
-        <suite-stats></suite-stats>
+        <line-stats [title]="'Tests Overview'"
+                    [statsType]="StatsType.TESTS_RESULTS"></line-stats>
+
+        <line-stats [title]="'Executions Overview'"
+                    [statsType]="StatsType.SUITES_RESULTS"></line-stats>
+    </div>
+
+    <div class="header">
+        <div class="title">
+            Tags Statistics
+        </div>
+    </div>
+
+    <div class="components">
+        <ng-container *ngFor="let tag of getTags()">
+            <line-stats [title]="tag"
+                        [statsType]="StatsType.TAG_RESULTS"
+                        [tag]="tag"
+                        [widthInPercentage]="33"></line-stats>
+        </ng-container>
     </div>
 </div>
