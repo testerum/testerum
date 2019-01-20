@@ -4,21 +4,12 @@ import {FsUtils} from "../../../../common/util/FsUtils";
 
 export class Application {
 
-    private readonly destinationDirectory: string;
-
-    constructor(private readonly modelDirectory: string,
-                properties: {[key: string]: string}) {
-        this.destinationDirectory = properties["destinationDirectory"];
-
-        if (!this.destinationDirectory) {
-            throw Error("the [destinationDirectory] property is required");
-        }
-    }
+    constructor(private readonly modelFile: string,
+                private readonly destinationDirectory: string) {}
 
     run() {
         this.copyTemplateFiles();
         this.replaceDevModelWithActualModel();
-        this.copyLogs();
     }
 
     private copyTemplateFiles() {
@@ -31,28 +22,16 @@ export class Application {
 
     private replaceDevModelWithActualModel() {
         const indexFilePath = path.resolve(this.destinationDirectory, "index.html");
-        const modelPath = path.resolve(this.modelDirectory, "stats.json");
-
-        console.log(`replacing model in [${indexFilePath}] with the content of [${modelPath}]`);
+        console.log(`replacing model in [${indexFilePath}] with the content of [${this.modelFile}]`);
 
         const originalContent = FsUtils.readFile(indexFilePath);
-        const modelFileContent = FsUtils.readFile(modelPath);
+        const modelFileContent = FsUtils.readFile(this.modelFile);
         const replacedContent = originalContent.replace(
             /<!--### START: testerumRunnerStatisticsModel ### -->[\s\S]*<!--### END: testerumRunnerStatisticsModel ### -->/,
             `<script type='text/javascript'>\n    window.testerumRunnerStatisticsModel = ${modelFileContent};\n  </script>`
         );
 
         FsUtils.writeFile(indexFilePath, replacedContent);
-    }
-
-    private copyLogs() {
-        const logsSrcDir = path.resolve(this.modelDirectory, "logs");
-        const logsDestDir = path.resolve(this.destinationDirectory, "logs");
-
-        console.log(`copying log files from [${logsSrcDir}] to [${logsDestDir}]`);
-
-        FsUtils.createDirectories(logsDestDir);
-        fse.copySync(logsSrcDir, logsDestDir);
     }
 
 }

@@ -197,10 +197,10 @@ fun JavaPath.writeText(text: String, charset: Charset = Charsets.UTF_8) {
 fun JavaPath.deleteIfExists(): Boolean = Files.deleteIfExists(this)
 fun JavaPath.delete(): Unit = Files.delete(this)
 fun JavaPath.deleteRecursivelyIfExists() {
-    if (doesNotExist) {
+    if (this.doesNotExist) {
         return
     }
-    if (!isDirectory) {
+    if (!this.isDirectory) {
         deleteIfExists()
     }
 
@@ -221,6 +221,19 @@ fun JavaPath.deleteRecursivelyIfExists() {
             return FileVisitResult.CONTINUE
         }
     })
+}
+
+fun JavaPath.deleteContentsRecursivelyIfExists() {
+    if (this.doesNotExist) {
+        return
+    }
+    if (!this.isDirectory) {
+        deleteIfExists()
+    }
+
+    for (fileOrDir in list()) {
+        fileOrDir.deleteRecursivelyIfExists()
+    }
 }
 
 fun JavaPath.createDirectories(vararg attrs: FileAttribute<*>): JavaPath = Files.createDirectories(this, *attrs)
@@ -247,7 +260,16 @@ fun <V : FileAttributeView> JavaPath.getFileAttributeView(type: Class<V>): V = F
 fun JavaPath.getBasicFileAttributeView(): BasicFileAttributeView = getFileAttributeView(BasicFileAttributeView::class.java)
 fun JavaPath.getBasicFileAttributes(): BasicFileAttributes = getBasicFileAttributeView().readAttributes()
 
-fun JavaPath.walkFileTree(visitor: FileVisitor<JavaPath>) = Files.walkFileTree(this, visitor)
+fun JavaPath.walkFileTree(visitor: FileVisitor<JavaPath>) {
+    if (this.doesNotExist) {
+        return
+    }
+    if (!this.isDirectory) {
+        deleteIfExists()
+    }
+
+    Files.walkFileTree(this, visitor)
+}
 
 /**
  * Traverse this directory recursively, passing each path (file or directory) to the given lambda.

@@ -11,7 +11,7 @@ import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.statistics_model.StatsCountByStatus
 import java.util.*
 
-class StatsCountByStatusPerTagAggregator : Aggregator<RunnerEvent, Map<String, StatsCountByStatus>> {
+class StatsEventsCountByStatusPerTagAggregator : Aggregator<RunnerEvent, Map<String, StatsCountByStatus>> {
 
     private val featureTagsStack = ArrayDeque<Set<String>>()
     private var testTags = emptySet<String>()

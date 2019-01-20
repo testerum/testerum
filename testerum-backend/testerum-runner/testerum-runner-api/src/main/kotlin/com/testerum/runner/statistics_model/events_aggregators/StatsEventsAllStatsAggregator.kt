@@ -6,9 +6,9 @@ import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.statistics_model.StatsAll
 
-class StatsAllStatsAggregator : Aggregator<RunnerEvent, StatsAll> {
+class StatsEventsAllStatsAggregator : Aggregator<RunnerEvent, StatsAll> {
 
-    private val statusAggregator = StatsStatusStatsAggregator()
+    private val statusAggregator = StatsEventsStatusStatsAggregator()
     private val suiteAvgDurationMillisAggregator = AvgAggregator()
 
     override fun aggregate(event: RunnerEvent) {
