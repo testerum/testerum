@@ -134,8 +134,9 @@ export class LineStatsComponent implements OnInit, OnChanges {
         this.disabledData = [];
         for (const dataPoint of this.allDisabledData) {
             if (this.startDate <= dataPoint.x && dataPoint.x <= this.endDate) {
-                this.showDetails ? this.disabledData.push(dataPoint) : this.addPointToFailedData(dataPoint);
-
+                if(this.showDetails) {
+                    this.disabledData.push(dataPoint);
+                }
             }
         }
         this.skippedData = [];

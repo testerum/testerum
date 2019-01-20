@@ -4,7 +4,8 @@
 
     .header {
         margin: auto;
-        position: relative;
+        display: flex;
+        flex-direction: column;
 
         .title {
             font-size: 3em;
@@ -13,26 +14,34 @@
             margin: auto;
         }
 
-        .config {
-            position: absolute;
-            right: 0;
-            top: 0;
-
-            background: #add8e6;
-            padding: 0.5em 1em;
-            border-radius: 15px;
-
+        .config-line {
             display: flex;
-            flex-flow: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-end;
 
-            .config-title {
-                font-weight: bold;
-            }
+            .config {
 
-            .detail-level {
-                margin-top: 5px;
+                background: #add8e6;
+                padding: 0.5em 1em;
+                border-radius: 15px;
+
+                display: flex;
+                flex-flow: row;
+                justify-content: center;
+                align-items: center;
+
+                .config-title {
+                    font-weight: bold;
+                    margin-right: 5px;
+                }
+
+
+
+                .detail-level {
+                    margin-left: 5px;
+                    display: flex;
+                    align-items: center;
+
+                }
             }
         }
     }

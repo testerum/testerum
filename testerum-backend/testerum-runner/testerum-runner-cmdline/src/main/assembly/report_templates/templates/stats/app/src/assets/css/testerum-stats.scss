@@ -13,6 +13,12 @@ $fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts/';
         padding: 0 !important;
         font-family: inherit !important;
         text-align: center !important;
+        cursor: pointer;
+    }
+}
+p-checkbox {
+    label {
+        cursor: pointer;
     }
 }
 
