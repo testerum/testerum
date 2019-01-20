@@ -6,7 +6,7 @@ import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import com.testerum.runner.cmdline.report_type.model.json_stats.JsonStatistics
 import com.testerum.runner.events.execution_listener.BaseExecutionListener
 import com.testerum.runner.events.model.SuiteEndEvent
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.BaseReportModelExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
 import java.nio.file.Paths
 import java.nio.file.Path as JavaPath
 
@@ -25,7 +25,7 @@ class JsonStatsExecutionListener (private val properties: Map<String, String>) :
                 durationMillis = event.durationMillis
         )
 
-        val serializedStatistics: String = BaseReportModelExecutionListener.OBJECT_MAPPER.writeValueAsString(statistics)
+        val serializedStatistics: String = EXECUTION_LISTENERS_OBJECT_MAPPER.writeValueAsString(statistics)
         destinationFile.writeText(serializedStatistics)
     }
 

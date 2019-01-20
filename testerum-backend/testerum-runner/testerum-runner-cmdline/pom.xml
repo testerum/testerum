@@ -290,6 +290,68 @@
                             <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</workingDirectory>
                         </configuration>
                     </execution>
+
+                    <!-- stats / app -->
+                    <execution>
+                        <id>compile-report-templates--npm-install--stats-app</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/stats/app</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-build--stats-app</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build-prod</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/stats/app</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <!-- stats / generator -->
+                    <execution>
+                        <id>compile-report-templates--npm-install--stats-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-build--stats-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build-prod</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-install-dependencies-in-dist-dir--stats-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install --only=production</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator/dist</workingDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -512,6 +574,24 @@
                                     <resources>
                                         <resource>
                                             <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+                            <!-- copy-compiled-report-templates-to-package-dir: stats -->
+                            <execution>
+                                <id>copy-compiled-report-templates-to-package-dir--stats</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/../../../package/runner/report_templates/stats</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator/dist</directory>
                                             <filtering>false</filtering>
                                         </resource>
                                     </resources>

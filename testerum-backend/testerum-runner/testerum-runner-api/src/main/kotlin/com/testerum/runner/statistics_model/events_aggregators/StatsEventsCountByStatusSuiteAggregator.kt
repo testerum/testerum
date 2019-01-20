@@ -8,7 +8,7 @@ import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.statistics_model.StatsCountByStatus
 
-class StatsCountByStatusSuiteAggregator : Aggregator<RunnerEvent, StatsCountByStatus> {
+class StatsEventsCountByStatusSuiteAggregator : Aggregator<RunnerEvent, StatsCountByStatus> {
 
     private val aggregator = GroupingAggregator<SuiteEndEvent, ExecutionStatus, Long>(
             extractKey = { suiteEndEvent -> suiteEndEvent.status },

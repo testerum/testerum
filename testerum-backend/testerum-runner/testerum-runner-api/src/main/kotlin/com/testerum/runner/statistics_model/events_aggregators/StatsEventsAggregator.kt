@@ -7,11 +7,11 @@ import com.testerum.runner.statistics_model.Stats
 import com.testerum.runner.statistics_model.StatsAll
 import java.time.LocalDate
 
-class StatsAggregator : Aggregator<RunnerEvent, Stats> {
+class StatsEventsAggregator : Aggregator<RunnerEvent, Stats> {
 
     private val perDayAggregator = GroupingAggregator<RunnerEvent, LocalDate, StatsAll>(
             extractKey = { runnerEvent -> runnerEvent.time.toLocalDate() },
-            createValueAggregator = { StatsAllStatsAggregator() }
+            createValueAggregator = { StatsEventsAllStatsAggregator() }
     )
 
     override fun aggregate(event: RunnerEvent) {
