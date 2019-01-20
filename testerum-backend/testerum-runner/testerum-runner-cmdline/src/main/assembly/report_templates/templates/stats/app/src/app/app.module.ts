@@ -11,6 +11,8 @@ import {ChartModule} from "primeng/chart";
 import {ModalModule} from "ngx-bootstrap";
 import {CalendarModule, CheckboxModule, ToggleButtonModule, TooltipModule, TreeTableModule} from "primeng/primeng";
 import {StatsService} from "./service/stats.service";
+import { TagUptimeComponent } from './stats/tag-uptime/tag-uptime.component';
+import {TableModule} from "primeng/table";
 
 @NgModule({
     imports: [
@@ -26,11 +28,13 @@ import {StatsService} from "./service/stats.service";
         CalendarModule,
         ToggleButtonModule,
         CheckboxModule,
+        TableModule,
     ],
     declarations: [
         AppComponent,
         StatsComponent,
         LineStatsComponent,
+        TagUptimeComponent,
     ],
     entryComponents: [],
     providers: [

@@ -1,5 +1,5 @@
 :host {
-    margin-top: 5em;
+    margin-top: 2em;
 
     &.full-width {
         width: 100% !important;
@@ -12,20 +12,10 @@
         align-items: center;
         margin-right: 1em;
 
-        .range {
-            label {
-                margin-right: 0.5em;
-            }
-
-        }
-
         .title {
             font-size: 2em;
             font-weight: bold;
             text-align: center;
-        }
-
-        .my-button-panel {
         }
     }
 }

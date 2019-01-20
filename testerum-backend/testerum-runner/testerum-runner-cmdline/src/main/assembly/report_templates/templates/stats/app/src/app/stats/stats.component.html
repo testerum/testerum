@@ -52,6 +52,10 @@
     </div>
 
     <div class="components">
+        <tag-uptime [widthInPercentage]="33"
+                    [startDate]="startDate"
+                    [endDate]="endDate"></tag-uptime>
+
         <ng-container *ngFor="let tag of getTags()">
             <line-stats [title]="tag"
                         [statsType]="StatsType.TAG_RESULTS"
