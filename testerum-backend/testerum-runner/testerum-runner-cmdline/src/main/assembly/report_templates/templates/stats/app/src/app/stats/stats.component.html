@@ -12,6 +12,7 @@
                             [minDate]="firstAbsoluteDate"
                             [maxDate]="lastAbsoluteDate"
                             [readonlyInput]="true"
+                            dateFormat="dd.MM.yy"
                             pTooltip="Start Date"></p-calendar>
             </div>
             <div class="end-date">
@@ -19,23 +20,30 @@
                             [minDate]="firstAbsoluteDate"
                             [maxDate]="lastAbsoluteDate"
                             [readonlyInput]="true"
+                            dateFormat="dd.MM.yy"
                             pTooltip="End Date"></p-calendar>
             </div>
             <div class="detail-level">
                 <button type="button"
-                        class="btn btn-primary btn-xs"
+                        class="btn btn-info btn-xs"
                         (click)="showDetails = !showDetails"
-                        [class.active]="showDetails">{{showDetails ? "Show Details" : "Hide Details"}}</button>
+                        [class.active]="showDetails">{{showDetails ? "Hide Details" : "Show Details"}}</button>
             </div>
         </div>
     </div>
 
     <div class="components">
         <line-stats [title]="'Tests Overview'"
-                    [statsType]="StatsType.TESTS_RESULTS"></line-stats>
+                    [statsType]="StatsType.TESTS_RESULTS"
+                    [startDate]="startDate"
+                    [endDate]="endDate"
+                    [showDetails]="showDetails"></line-stats>
 
         <line-stats [title]="'Executions Overview'"
-                    [statsType]="StatsType.SUITES_RESULTS"></line-stats>
+                    [statsType]="StatsType.SUITES_RESULTS"
+                    [startDate]="startDate"
+                    [endDate]="endDate"
+                    [showDetails]="showDetails"></line-stats>
     </div>
 
     <div class="header">
@@ -49,7 +57,10 @@
             <line-stats [title]="tag"
                         [statsType]="StatsType.TAG_RESULTS"
                         [tag]="tag"
-                        [widthInPercentage]="33"></line-stats>
+                        [widthInPercentage]="33"
+                        [startDate]="startDate"
+                        [endDate]="endDate"
+                        [showDetails]="showDetails"></line-stats>
         </ng-container>
     </div>
 </div>

@@ -1,14 +1,5 @@
 <div class="my-tests-stats">
     <div class="header">
-        <div class="range">
-            <label>Range</label>
-            <p-calendar [(ngModel)]="rangeDates"
-                        selectionMode="range"
-                        [readonlyInput]="true"
-                        [yearRange]="getMinYear() + ':' + getMaxYear()"
-                        dateFormat="dd/mm/yy"
-            (ngModelChange)="onDateRangeChange($event)"></p-calendar>
-        </div>
 
         <div class="title">{{title}}</div>
 
