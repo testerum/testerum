@@ -10,7 +10,6 @@ class LongSumAggregator : Aggregator<Long, Long> {
         result += event
     }
 
-
     override fun getResult(): Long = result
 
 }

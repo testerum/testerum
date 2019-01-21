@@ -10,7 +10,6 @@ class CountAggregator : Aggregator<Any, Long> {
         result++
     }
 
-
     override fun getResult(): Long = result
 
 }
