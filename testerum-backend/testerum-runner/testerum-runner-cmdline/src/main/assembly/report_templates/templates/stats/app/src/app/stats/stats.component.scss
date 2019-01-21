@@ -8,39 +8,41 @@
         flex-direction: column;
 
         .title {
-            font-size: 3em;
-            font-weight: bold;
             text-align: center;
             margin: auto;
         }
 
-        .config-line {
+        .config {
+            position: absolute;
+            top: 0;
+            left: 0;
             display: flex;
             justify-content: flex-end;
+            flex-direction: column;
 
-            .config {
+            background: #e4e4e4;
+            padding: 0.5em 1em;
+            border-bottom-right-radius: 5px;
 
-                background: #add8e6;
-                padding: 0.5em 1em;
-                border-radius: 15px;
-
+            .config-line {
                 display: flex;
                 flex-flow: row;
-                justify-content: center;
                 align-items: center;
 
-                .config-title {
+                .date-input {
                     font-weight: bold;
                     margin-right: 5px;
+                    .date-label {
+                        margin: 0;
+                    }
+                    .date-value {
+
+                    }
                 }
-
-
-
-                .detail-level {
-                    margin-left: 5px;
+                .show-details {
                     display: flex;
                     align-items: center;
-
+                    margin-top: 3px;
                 }
             }
         }

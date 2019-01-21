@@ -98,6 +98,6 @@ export class UrlService {
     }
 
     navigateToAutomatedResult(path: Path, url: string) {
-        this.router.navigate(["/automated/results/show", {path : path.toString(), url: url} ])
+        this.router.navigate(["/automated/results", {path : path.toString(), url: url} ])
     }
 }

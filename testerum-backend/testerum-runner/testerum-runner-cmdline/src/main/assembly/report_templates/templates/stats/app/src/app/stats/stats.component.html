@@ -2,33 +2,44 @@
 <div class="my-stats">
 
     <div class="header">
-        <div class="title">
-            Statistics
-        </div>
-        <div class="config-line">
-            <div class="config">
-                <div class="config-title">Config:</div>
-                <div class="start-date">
-                    <p-calendar [(ngModel)]="startDate"
-                                [minDate]="firstAbsoluteDate"
-                                [maxDate]="lastAbsoluteDate"
-                                [readonlyInput]="true"
-                                dateFormat="dd.MM.yy"
-                                pTooltip="Start Date"></p-calendar>
+        <div class="config">
+            <div class="config-line">
+
+                <div class="date-input">
+                    <label class="date-label">Start Date:</label>
+                    <div class="date-value">
+                        <p-calendar [(ngModel)]="startDate"
+                                    [minDate]="firstAbsoluteDate"
+                                    [maxDate]="lastAbsoluteDate"
+                                    [readonlyInput]="true"
+                                    dateFormat="dd.MM.yy"
+                                    pTooltip="Start Date"></p-calendar>
+                    </div>
                 </div>
-                <div class="end-date">
-                    <p-calendar [(ngModel)]="endDate"
-                                [minDate]="firstAbsoluteDate"
-                                [maxDate]="lastAbsoluteDate"
-                                [readonlyInput]="true"
-                                dateFormat="dd.MM.yy"
-                                pTooltip="End Date"></p-calendar>
+
+                <div class="date-input">
+                    <label class="date-label">End Date:</label>
+                    <div class="date-value">
+                        <p-calendar [(ngModel)]="endDate"
+                                    [minDate]="firstAbsoluteDate"
+                                    [maxDate]="lastAbsoluteDate"
+                                    [readonlyInput]="true"
+                                    dateFormat="dd.MM.yy"
+                                    pTooltip="End Date"></p-calendar>
+                    </div>
                 </div>
-                <div class="detail-level">
+            </div>
+
+            <div class="config-line">
+                <div class="show-details">
                     <p-checkbox [(ngModel)]="showDetails" binary="true" label="Show Details"></p-checkbox>
                 </div>
             </div>
         </div>
+
+        <h1 class="title">
+            Statistics
+        </h1>
     </div>
 
     <div class="components">
