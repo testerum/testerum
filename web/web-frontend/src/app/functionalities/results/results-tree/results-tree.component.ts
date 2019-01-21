@@ -36,10 +36,6 @@ export class ResultsTreeComponent implements OnInit {
         let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path']: null;
         let path: Path = pathAsString !=null ? Path.createInstance(pathAsString) : null;
 
-        this.resultService.getStatisticsUrl().subscribe((statisticsUrl) =>
-            prompt("Statistics URL", statisticsUrl)
-        );
-
         this.resultService.getRunnerReportDirInfo().subscribe(
             (dirs: Array<RunnerResultDirInfo>) => {
                 this.directoryTreeModel.children.length = 0;
