@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {StatsService} from "../service/stats.service";
 import {StatsType} from "../model/stats-type.enum";
 

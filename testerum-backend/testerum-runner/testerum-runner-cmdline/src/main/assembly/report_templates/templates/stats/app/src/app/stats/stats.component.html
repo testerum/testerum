@@ -5,29 +5,28 @@
         <div class="title">
             Statistics
         </div>
-        <div class="config">
-            <div class="config-title">Config</div>
-            <div class="start-date">
-                <p-calendar [(ngModel)]="startDate"
-                            [minDate]="firstAbsoluteDate"
-                            [maxDate]="lastAbsoluteDate"
-                            [readonlyInput]="true"
-                            dateFormat="dd.MM.yy"
-                            pTooltip="Start Date"></p-calendar>
-            </div>
-            <div class="end-date">
-                <p-calendar [(ngModel)]="endDate"
-                            [minDate]="firstAbsoluteDate"
-                            [maxDate]="lastAbsoluteDate"
-                            [readonlyInput]="true"
-                            dateFormat="dd.MM.yy"
-                            pTooltip="End Date"></p-calendar>
-            </div>
-            <div class="detail-level">
-                <button type="button"
-                        class="btn btn-info btn-xs"
-                        (click)="showDetails = !showDetails"
-                        [class.active]="showDetails">{{showDetails ? "Hide Details" : "Show Details"}}</button>
+        <div class="config-line">
+            <div class="config">
+                <div class="config-title">Config:</div>
+                <div class="start-date">
+                    <p-calendar [(ngModel)]="startDate"
+                                [minDate]="firstAbsoluteDate"
+                                [maxDate]="lastAbsoluteDate"
+                                [readonlyInput]="true"
+                                dateFormat="dd.MM.yy"
+                                pTooltip="Start Date"></p-calendar>
+                </div>
+                <div class="end-date">
+                    <p-calendar [(ngModel)]="endDate"
+                                [minDate]="firstAbsoluteDate"
+                                [maxDate]="lastAbsoluteDate"
+                                [readonlyInput]="true"
+                                dateFormat="dd.MM.yy"
+                                pTooltip="End Date"></p-calendar>
+                </div>
+                <div class="detail-level">
+                    <p-checkbox [(ngModel)]="showDetails" binary="true" label="Show Details"></p-checkbox>
+                </div>
             </div>
         </div>
     </div>
@@ -53,6 +52,10 @@
     </div>
 
     <div class="components">
+        <tag-uptime [widthInPercentage]="33"
+                    [startDate]="startDate"
+                    [endDate]="endDate"></tag-uptime>
+
         <ng-container *ngFor="let tag of getTags()">
             <line-stats [title]="tag"
                         [statsType]="StatsType.TAG_RESULTS"

@@ -16,7 +16,7 @@ export class LineStatsComponent implements OnInit, OnChanges {
     @Input() title: string;
     @Input() statsType: StatsType;
     @Input() tag: string;
-    @Input()  widthInPercentage: number = 45;
+    @Input() widthInPercentage: number = 45;
 
     @Input() startDate: Date;
     @Input() endDate: Date;
@@ -134,15 +134,17 @@ export class LineStatsComponent implements OnInit, OnChanges {
         this.disabledData = [];
         for (const dataPoint of this.allDisabledData) {
             if (this.startDate <= dataPoint.x && dataPoint.x <= this.endDate) {
-                this.showDetails ? this.disabledData.push(dataPoint) : this.addPointToFailedData(dataPoint);
-
+                if(this.showDetails) {
+                    this.disabledData.push(dataPoint);
+                }
             }
         }
         this.skippedData = [];
         for (const dataPoint of this.allSkippedData) {
             if (this.startDate <= dataPoint.x && dataPoint.x <= this.endDate) {
-                this.showDetails ? this.skippedData.push(dataPoint) : this.addPointToFailedData(dataPoint);
-
+                if(this.showDetails) {
+                    this.skippedData.push(dataPoint);
+                }
             }
         }
         this.data = this.createData();
