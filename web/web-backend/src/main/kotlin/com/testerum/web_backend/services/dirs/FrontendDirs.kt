@@ -19,6 +19,7 @@ class FrontendDirs(private val settingsManager: SettingsManager) {
     fun getLicensesDir(): JavaPath = getTesterumDir().resolve("licenses")
 
     fun getReportsDir(): JavaPath = getTesterumDir().resolve("reports")
+    fun getAggregatedStatisticsDir(): JavaPath = getReportsDir().resolve("statistics")
     fun getLatestReportSymlink(): JavaPath = getReportsDir().resolve("latest")
     fun getReportsPrettyDir(executionDir: JavaPath): JavaPath = executionDir.resolve("pretty")
     fun getReportsStatsFileName(executionDir: JavaPath): JavaPath = executionDir.resolve("json_stats").resolve("stats.json") // todo: remove duplication between this method and ResultsFileService.loadStatistics()

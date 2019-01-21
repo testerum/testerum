@@ -1,5 +1,6 @@
 package com.testerum.web_backend.services.runner.result
 
+import com.testerum.common_kotlin.exists
 import com.testerum.file_service.file.ResultsFileService
 import com.testerum.model.run_result.RunnerResultFileInfo
 import com.testerum.model.run_result.RunnerResultsDirInfo
@@ -17,7 +18,8 @@ class ResultsFrontendService(private val frontendDirs: FrontendDirs,
         val reportsWithUrlsForDirs = setReportsUrlsForDirs(reports)
 
         return RunnerResultsInfo(
-                reportDirs = reportsWithUrlsForDirs
+                reportDirs = reportsWithUrlsForDirs,
+                statisticsUrl = getStatisticsUrl()
         )
     }
 
@@ -39,6 +41,17 @@ class ResultsFrontendService(private val frontendDirs: FrontendDirs,
         return report.copy(
                 url = "/rest/report-results/files/${report.path}/pretty/index.html"
         )
+    }
+
+    private fun getStatisticsUrl(): String? {
+        val statisticsIndexFile = frontendDirs.getAggregatedStatisticsDir()
+                .resolve("index.html")
+
+        if (statisticsIndexFile.exists) {
+            return "/rest/report-results/files/statistics/index.html"
+        } else {
+            return null
+        }
     }
 
 }
