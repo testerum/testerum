@@ -5,7 +5,7 @@
     "serve": "ng serve",
     "build-dev": "ng build",
     "watch": "ng build --watch --source-map",
-    "build-prod": "ng build --prod --source-map",
+    "build-prod": "ng build --prod",
     "lint": "ng lint"
   },
   "private": true,

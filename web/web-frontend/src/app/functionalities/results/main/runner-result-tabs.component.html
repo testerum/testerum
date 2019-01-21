@@ -9,7 +9,7 @@
             <result [url]="tagsResultsUrl"></result>
         </p-tabPanel>
 
-        <p-tabPanel header="Statistics" *ngIf="statisticsUrl">
+        <p-tabPanel header="Statistics" [disabled]="!statisticsUrl">
             <result [url]="statisticsUrl"></result>
         </p-tabPanel>
 

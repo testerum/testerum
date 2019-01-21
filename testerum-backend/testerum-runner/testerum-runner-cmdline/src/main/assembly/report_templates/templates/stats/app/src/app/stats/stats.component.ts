@@ -38,4 +38,8 @@ export class StatsComponent implements OnInit{
     hasTags(): boolean {
         return this.tags && this.tags.length > 0;
     }
+
+    getYearRange(): string {
+        return this.firstAbsoluteDate.getFullYear() + ":" + this.lastAbsoluteDate.getFullYear();
+    }
 }

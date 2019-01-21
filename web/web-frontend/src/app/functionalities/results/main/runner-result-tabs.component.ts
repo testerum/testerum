@@ -26,8 +26,6 @@ export class RunnerResultTabsComponent implements OnInit, OnDestroy {
     tagsResultsUrl;
     statisticsUrl;
 
-    hasTestsResultsToDisplay: boolean;
-
     routerEventsSubscription: Subscription;
 
     constructor(private cd: ChangeDetectorRef,
@@ -55,6 +53,7 @@ export class RunnerResultTabsComponent implements OnInit, OnDestroy {
             this.statisticsUrl = statisticsUrl;
             this.refresh()
         });
+        this.refresh()
     }
 
     ngOnDestroy(): void {
