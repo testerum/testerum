@@ -60,7 +60,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     ngOnInit(): void {
         this.routeSubscription = this.route.data.subscribe(data => {
             this.model = data['featureModel'];
-            if (this.descriptionMarkdownEditor) {
+            if (this.descriptionMarkdownEditor && this.model.description) {
                 this.descriptionMarkdownEditor.setValue(this.model.description);
             }
 

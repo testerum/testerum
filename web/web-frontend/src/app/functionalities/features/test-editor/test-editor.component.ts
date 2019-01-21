@@ -78,7 +78,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
         this.routeSubscription = this.route.data.subscribe(data => {
             this.testModel = data['testModel'];
-            if (this.descriptionMarkdownEditor) {
+            if (this.descriptionMarkdownEditor && this.testModel.description) {
                 this.descriptionMarkdownEditor.setValue(this.testModel.description);
             }
 
