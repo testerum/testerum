@@ -2,9 +2,8 @@ import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {RunnerResultDirInfo} from "../../model/report/runner-result-dir-info.model";
 import {Injectable} from "@angular/core";
-import {Path} from "../../model/infrastructure/path/path.model";
 import {RunnerEvent} from "../../model/test/event/runner.event";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {RunnerEventMarshaller} from '../../model/test/event/marshaller/runner-event-marshaller';
 
 @Injectable()
@@ -15,7 +14,6 @@ export class ResultService {
     constructor(private http: HttpClient) {}
 
     getRunnerReportDirInfo(): Observable<Array<RunnerResultDirInfo>> {
-
         return this.http
             .get<Array<RunnerResultDirInfo>>(this.BASE_URL).pipe(
             map(ResultService.extractRunnerReportDirInfo));
@@ -30,19 +28,6 @@ export class ResultService {
         }
 
         return response;
-    }
-
-    // todo: delete this method: the endpoint no longer exists
-    getResult(path: Path): Observable<Array<RunnerEvent>> {
-
-        const httpOptions = {
-            params: new HttpParams()
-                .append('path', path.toString())
-        };
-
-        return this.http
-            .get<Array<RunnerEvent>>(this.BASE_URL, httpOptions)
-            .pipe(map(ResultService.extractRunnerResult));
     }
 
     private static extractRunnerResult(res: Array<RunnerEvent>):Array<RunnerEvent> {
