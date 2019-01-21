@@ -4,23 +4,19 @@ import com.testerum.common_kotlin.exists
 import com.testerum.file_service.file.ResultsFileService
 import com.testerum.model.run_result.RunnerResultFileInfo
 import com.testerum.model.run_result.RunnerResultsDirInfo
-import com.testerum.model.run_result.RunnerResultsInfo
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import java.nio.file.Path as JavaPath
 
 class ResultsFrontendService(private val frontendDirs: FrontendDirs,
                              private val resultsFileService: ResultsFileService) {
 
-    fun getResults(): RunnerResultsInfo {
+    fun getResults(): List<RunnerResultsDirInfo> {
         val reportsDir: JavaPath = frontendDirs.getReportsDir()
 
         val reports = resultsFileService.getReports(reportsDir)
         val reportsWithUrlsForDirs = setReportsUrlsForDirs(reports)
 
-        return RunnerResultsInfo(
-                reportDirs = reportsWithUrlsForDirs,
-                statisticsUrl = getStatisticsUrl()
-        )
+        return reportsWithUrlsForDirs
     }
 
     private fun setReportsUrlsForDirs(reports: List<RunnerResultsDirInfo>): List<RunnerResultsDirInfo> {
@@ -43,7 +39,7 @@ class ResultsFrontendService(private val frontendDirs: FrontendDirs,
         )
     }
 
-    private fun getStatisticsUrl(): String? {
+    fun getStatisticsUrl(): String? {
         val statisticsIndexFile = frontendDirs.getAggregatedStatisticsDir()
                 .resolve("index.html")
 

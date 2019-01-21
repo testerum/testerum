@@ -13,7 +13,6 @@ import {Path} from "../../../model/infrastructure/path/path.model";
 import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
 import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
 import {ActivatedRoute} from "@angular/router";
-import {RunnerResultsInfoModel} from "../../../model/report/runner-results-info.model";
 
 @Component({
     selector: 'results-tree',
@@ -37,10 +36,14 @@ export class ResultsTreeComponent implements OnInit {
         let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path']: null;
         let path: Path = pathAsString !=null ? Path.createInstance(pathAsString) : null;
 
+        this.resultService.getStatisticsUrl().subscribe((statisticsUrl) =>
+            prompt("Statistics URL", statisticsUrl)
+        );
+
         this.resultService.getRunnerReportDirInfo().subscribe(
-            (result: RunnerResultsInfoModel) => {
+            (dirs: Array<RunnerResultDirInfo>) => {
                 this.directoryTreeModel.children.length = 0;
-                for (let dir of result.reportDirs) {
+                for (let dir of dirs) {
                     this.directoryTreeModel.children.push(
                         ResultsTreeComponent.mapToTreeModel(dir, this.directoryTreeModel)
                     )

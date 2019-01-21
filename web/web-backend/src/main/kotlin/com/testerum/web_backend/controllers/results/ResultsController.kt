@@ -1,6 +1,6 @@
 package com.testerum.web_backend.controllers.results
 
-import com.testerum.model.run_result.RunnerResultsInfo
+import com.testerum.model.run_result.RunnerResultsDirInfo
 import com.testerum.web_backend.services.runner.result.ResultsFrontendService
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -13,8 +13,14 @@ class ResultsController(private val resultsFrontendService: ResultsFrontendServi
 
     @RequestMapping(method = [RequestMethod.GET], path = [""])
     @ResponseBody
-    fun getResults(): RunnerResultsInfo {
+    fun getResults(): List<RunnerResultsDirInfo> {
         return resultsFrontendService.getResults()
+    }
+
+    @RequestMapping(method = [RequestMethod.GET], path = ["statistics-url"])
+    @ResponseBody
+    fun getStatisticsUrl(): String? {
+        return resultsFrontendService.getStatisticsUrl()
     }
 
 }
