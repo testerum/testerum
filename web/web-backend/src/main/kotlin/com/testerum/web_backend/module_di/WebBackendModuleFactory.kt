@@ -38,10 +38,10 @@ import com.testerum.web_backend.controllers.message.MessageController
 import com.testerum.web_backend.controllers.resources.ResourcesController
 import com.testerum.web_backend.controllers.resources.http.HttpController
 import com.testerum.web_backend.controllers.resources.rdbms.RdbmsController
-import com.testerum.web_backend.controllers.runner.execution.TestExecutionController
-import com.testerum.web_backend.controllers.runner.execution.TestsWebSocketController
 import com.testerum.web_backend.controllers.results.ResultsController
 import com.testerum.web_backend.controllers.results.ResultsFileServerController
+import com.testerum.web_backend.controllers.runner.execution.TestExecutionController
+import com.testerum.web_backend.controllers.runner.execution.TestsWebSocketController
 import com.testerum.web_backend.controllers.settings.SettingsController
 import com.testerum.web_backend.controllers.setup.SetupController
 import com.testerum.web_backend.controllers.steps.BasicStepController
@@ -336,7 +336,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val networkService = NetworkService()
 
-    private val fileSystemFrontendService = FileSystemFrontendService()
+    private val fileSystemFrontendService = FileSystemFrontendService(
+            testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService
+    )
 
     private val httpClientService = HttpClientService(httpClient)
 
