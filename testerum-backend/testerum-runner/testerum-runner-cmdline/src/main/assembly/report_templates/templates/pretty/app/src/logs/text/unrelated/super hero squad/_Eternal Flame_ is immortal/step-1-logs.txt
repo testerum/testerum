@@ -1,0 +1,97 @@
+23:44:34.818  [INFO ] Started executing step [COMPOSED: GIVEN step 1]
+23:44:34.821  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]
+23:44:38.567  [INFO ] 23:44:38.231 [main] INFO wiremock.org.eclipse.jetty.util.log - Logging initialized @19927ms
+23:44:38.567  [INFO ] 23:44:38.431 [main] INFO wiremock.org.eclipse.jetty.server.Server - jetty-9.2.z-SNAPSHOT
+23:44:38.567  [INFO ] 23:44:38.465 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@1255de25{/__admin,null,AVAILABLE}
+23:44:38.567  [INFO ] 23:44:38.466 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@4fc3529{/,null,AVAILABLE}
+23:44:38.567  [INFO ] 23:44:38.491 [main] INFO wiremock.org.eclipse.jetty.server.NetworkTrafficServerConnector - Started NetworkTrafficServerConnector@5d58dc61{HTTP/1.1}{0.0.0.0:12121}
+23:44:38.567  [INFO ] 23:44:38.491 [main] INFO wiremock.org.eclipse.jetty.server.Server - Started @20190ms
+23:44:38.567  [INFO ] 
+23:44:38.567  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]; status: [PASSED]
+23:44:38.579  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+23:44:38.714  [INFO ] HTTP Request [
+GET http://localhost:12121/heroes
+
+]
+23:44:39.747  [INFO ] 23:44:39.075 [qtp1266333611-25] INFO / - RequestHandlerClass from context returned com.github.tomakehurst.wiremock.http.StubRequestHandler. Normalized mapped under returned 'null'
+23:44:39.747  [INFO ] 
+23:44:39.747  [INFO ] HTTP Response [
+HTTP/1.1 200
+Content-Type: application/json
+Vary: Accept-Encoding, User-Agent
+Transfer-Encoding: chunked
+Server: Jetty(9.2.z-SNAPSHOT)
+
+{
+  "squadName" : "Super hero squad",
+  "homeTown" : "Metro City",
+  "formed" : 2016,
+  "secretBase" : "Super tower",
+  "active" : true,
+  "members" : [ {
+    "name" : "Molecule Man",
+    "age" : 29,
+    "secretIdentity" : "Dan Jukes",
+    "powers" : [ "Radiation resistance", "Turning tiny", "Radiation blast" ]
+  }, {
+    "name" : "Madame Uppercut",
+    "age" : 39,
+    "secretIdentity" : "Jane Wilson",
+    "powers" : [ "Million tonne punch", "Damage resistance", "Superhuman reflexes" ]
+  }, {
+    "name" : "Eternal Flame",
+    "age" : 1000000,
+    "secretIdentity" : "Unknown",
+    "powers" : [ "Immortality", "Heat Immunity", "Inferno", "Teleportation", "Interdimensional travel" ]
+  } ]
+}
+]
+23:44:39.749  [INFO ] Http Request executed successfully
+23:44:39.749  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
+23:44:39.751  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+23:44:39.991  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
+23:44:39.995  [INFO ] Started executing step [COMPOSED: GIVEN step 2]
+23:44:39.997  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]
+23:44:40.190  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]; status: [PASSED]
+23:44:40.194  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+23:44:40.309  [INFO ] HTTP Request [
+GET http://localhost:12121/heroes
+
+]
+23:44:40.335  [INFO ] HTTP Response [
+HTTP/1.1 200
+Content-Type: application/json
+Vary: Accept-Encoding, User-Agent
+Transfer-Encoding: chunked
+Server: Jetty(9.2.z-SNAPSHOT)
+
+{
+  "squadName" : "Super hero squad",
+  "homeTown" : "Metro City",
+  "formed" : 2016,
+  "secretBase" : "Super tower",
+  "active" : true,
+  "members" : [ {
+    "name" : "Molecule Man",
+    "age" : 29,
+    "secretIdentity" : "Dan Jukes",
+    "powers" : [ "Radiation resistance", "Turning tiny", "Radiation blast" ]
+  }, {
+    "name" : "Madame Uppercut",
+    "age" : 39,
+    "secretIdentity" : "Jane Wilson",
+    "powers" : [ "Million tonne punch", "Damage resistance", "Superhuman reflexes" ]
+  }, {
+    "name" : "Eternal Flame",
+    "age" : 1000000,
+    "secretIdentity" : "Unknown",
+    "powers" : [ "Immortality", "Heat Immunity", "Inferno", "Teleportation", "Interdimensional travel" ]
+  } ]
+}
+]
+23:44:40.336  [INFO ] Http Request executed successfully
+23:44:40.337  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
+23:44:40.341  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+23:44:40.452  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
+23:44:40.454  [INFO ] Finished executing step [COMPOSED: GIVEN step 2]; status: [PASSED]
+23:44:40.457  [INFO ] Finished executing step [COMPOSED: GIVEN step 1]; status: [PASSED]

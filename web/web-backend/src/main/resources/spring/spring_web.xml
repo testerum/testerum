@@ -36,6 +36,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+
     <!--====== WEB SOCKET STOMP CONFIGURATION ======-->
     <websocket:message-broker application-destination-prefix="/tests">
         <websocket:stomp-endpoint allowed-origins="*" path="/results">
@@ -56,5 +57,13 @@
     </bean>
     <!--====== END OF - WEB SOCKET CONFIGURATION ======-->
 
+
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/report-results/files/**">resultsFileServerController</prop>
+            </props>
+        </property>
+    </bean>
 
 </beans>

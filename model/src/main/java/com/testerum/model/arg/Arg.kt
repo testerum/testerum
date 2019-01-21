@@ -13,6 +13,10 @@ data class Arg @JsonCreator constructor(@JsonProperty("name") val name: String?,
                                         @JsonProperty("oldPath") val oldPath: Path? = path,
                                         @JsonProperty("warnings") val warnings: List<Warning> = emptyList()) {
 
+    companion object {
+        private val MAX_ARG_CONTENT_LENGTH = 40
+    }
+
     private val _descendantsHaveWarnings: Boolean = false
 
     @get:JsonProperty("descendantsHaveWarnings")
@@ -23,8 +27,36 @@ data class Arg @JsonCreator constructor(@JsonProperty("name") val name: String?,
     val hasOwnOrDescendantWarnings: Boolean
         get() = warnings.isNotEmpty() || descendantsHaveWarnings
 
+    @get:JsonIgnore
+    val contentForLogging: String?
+        get() {
+            var result = content
+
+            // remove content of external arg
+            if (path != null) {
+                result = "file:$path"
+            }
+
+            // trim content containing newlines
+            val indexOfNewline = result?.indexOf('\n')
+            if (result != null && indexOfNewline != null && indexOfNewline != -1) {
+                result = result.substring(0, indexOfNewline)
+                if (indexOfNewline != result.length - 1) {
+                    result += "..."
+                }
+            }
+
+            // trim long content
+            if (result != null && result.length > MAX_ARG_CONTENT_LENGTH) {
+                result = result.substring(0, MAX_ARG_CONTENT_LENGTH) + "..."
+            }
+
+            return result
+        }
+
     override fun toString(): String = buildString {
         append("Arg(")
+        append(" name=[").append(name).append("]")
         append(" type=[").append(type).append("]")
         append(", path=[").append(path).append("]")
         append(", content=[").append(content).append("]")

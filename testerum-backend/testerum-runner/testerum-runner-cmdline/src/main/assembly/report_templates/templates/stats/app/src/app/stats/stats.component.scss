@@ -1,0 +1,58 @@
+
+.my-stats {
+    margin: 20px;
+
+    .header {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        .title {
+            text-align: center;
+            margin: auto;
+        }
+
+        .config {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            display: flex;
+            justify-content: flex-end;
+            flex-direction: column;
+
+            background: #e4e4e4;
+            padding: 0.5em 1em;
+            border-radius: 5px;
+
+            .config-line {
+                display: flex;
+                flex-flow: row;
+                align-items: center;
+
+                .date-input {
+                    font-weight: bold;
+                    margin-right: 5px;
+                    .date-label {
+                        margin: 0;
+                    }
+                    .date-value {
+
+                    }
+                }
+                .show-details {
+                    display: flex;
+                    align-items: center;
+                    margin-top: 3px;
+                }
+            }
+        }
+    }
+
+    .components {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}

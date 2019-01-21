@@ -3,9 +3,14 @@
 package com.testerum.common_kotlin
 
 import org.apache.commons.io.FileUtils
+import org.apache.commons.io.IOUtils
 import java.io.IOException
 import java.nio.charset.Charset
-import java.nio.file.*
+import java.nio.file.FileVisitResult
+import java.nio.file.FileVisitor
+import java.nio.file.Files
+import java.nio.file.NoSuchFileException
+import java.nio.file.SimpleFileVisitor
 import java.nio.file.attribute.BasicFileAttributeView
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileAttribute
@@ -88,10 +93,25 @@ fun JavaPath.isSameFileAs(other: JavaPath): Boolean {
 fun JavaPath.isNotSameFileAs(other: JavaPath): Boolean = !this.isSameFileAs(other)
 
 fun JavaPath.list(): List<JavaPath> {
+    if (this.doesNotExist) {
+        return emptyList()
+    }
+
     Files.list(this).use { pathStream ->
         return pathStream.collect(
                 Collectors.toList()
         )
+    }
+}
+
+fun JavaPath.list(shouldUse: (JavaPath) -> Boolean): List<JavaPath> {
+    if (this.doesNotExist) {
+        return emptyList()
+    }
+
+    Files.list(this).use { pathStream ->
+        return pathStream.filter(shouldUse)
+                .collect(Collectors.toList())
     }
 }
 
@@ -158,15 +178,29 @@ fun JavaPath.smartCopyTo(destination: JavaPath,
     }
 }
 
-fun JavaPath.readAllLines(charset: Charset = Charsets.UTF_8) = Files.readAllLines(this, charset)
+fun JavaPath.readAllLines(charset: Charset = Charsets.UTF_8): List<String> = Files.readAllLines(this, charset)
+
+fun JavaPath.readText(charset: Charset = Charsets.UTF_8): String {
+    return Files.newBufferedReader(this, charset).use {
+        IOUtils.toString(it)
+    }
+}
+
+fun JavaPath.writeText(text: String, charset: Charset = Charsets.UTF_8) {
+    this.parent?.createDirectories()
+
+    Files.newBufferedWriter(this, charset).use {
+        it.write(text)
+    }
+}
 
 fun JavaPath.deleteIfExists(): Boolean = Files.deleteIfExists(this)
 fun JavaPath.delete(): Unit = Files.delete(this)
 fun JavaPath.deleteRecursivelyIfExists() {
-    if (doesNotExist) {
+    if (this.doesNotExist) {
         return
     }
-    if (!isDirectory) {
+    if (!this.isDirectory) {
         deleteIfExists()
     }
 
@@ -187,6 +221,19 @@ fun JavaPath.deleteRecursivelyIfExists() {
             return FileVisitResult.CONTINUE
         }
     })
+}
+
+fun JavaPath.deleteContentsRecursivelyIfExists() {
+    if (this.doesNotExist) {
+        return
+    }
+    if (!this.isDirectory) {
+        deleteIfExists()
+    }
+
+    for (fileOrDir in list()) {
+        fileOrDir.deleteRecursivelyIfExists()
+    }
 }
 
 fun JavaPath.createDirectories(vararg attrs: FileAttribute<*>): JavaPath = Files.createDirectories(this, *attrs)
@@ -213,7 +260,16 @@ fun <V : FileAttributeView> JavaPath.getFileAttributeView(type: Class<V>): V = F
 fun JavaPath.getBasicFileAttributeView(): BasicFileAttributeView = getFileAttributeView(BasicFileAttributeView::class.java)
 fun JavaPath.getBasicFileAttributes(): BasicFileAttributes = getBasicFileAttributeView().readAttributes()
 
-fun JavaPath.walkFileTree(visitor: FileVisitor<JavaPath>) = Files.walkFileTree(this, visitor)
+fun JavaPath.walkFileTree(visitor: FileVisitor<JavaPath>) {
+    if (this.doesNotExist) {
+        return
+    }
+    if (!this.isDirectory) {
+        deleteIfExists()
+    }
+
+    Files.walkFileTree(this, visitor)
+}
 
 /**
  * Traverse this directory recursively, passing each path (file or directory) to the given lambda.
@@ -241,3 +297,5 @@ inline fun JavaPath.walkAndCollect(crossinline shouldUse: (JavaPath) -> Boolean)
 
     return results
 }
+
+fun JavaPath.deleteOnExit() = this.toFile().deleteOnExit()

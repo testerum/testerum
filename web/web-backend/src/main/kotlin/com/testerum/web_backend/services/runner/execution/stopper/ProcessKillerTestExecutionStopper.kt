@@ -1,7 +1,6 @@
 package com.testerum.web_backend.services.runner.execution.stopper
 
 import com.testerum.runner.events.model.RunnerEvent
-import com.testerum.runner.events.model.RunnerStoppedEvent
 import org.slf4j.LoggerFactory
 import org.zeroturnaround.process.ProcessUtil
 import org.zeroturnaround.process.Processes
@@ -25,10 +24,6 @@ class ProcessKillerTestExecutionStopper(private val executionId: Long,
                 systemProcess,
                 2, TimeUnit.SECONDS,
                 10, TimeUnit.SECONDS
-        )
-
-        eventProcessor(
-                RunnerStoppedEvent()
         )
     }
 

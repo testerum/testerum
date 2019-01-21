@@ -4,6 +4,7 @@ import {JsonTreeContainer} from "../../json-tree/model/json-tree-container.model
 import {StepCall} from "../../../../model/step-call.model";
 import {JsonTreeContainerOptions} from "../../json-tree/model/behavior/JsonTreeContainerOptions";
 import {SubStepsContainerModel} from "./sub-steps-container.model";
+import {ArrayUtil} from "../../../../utils/array.util";
 
 export class StepCallContainerModel extends JsonTreeContainerAbstract {
 
@@ -47,5 +48,13 @@ export class StepCallContainerModel extends JsonTreeContainerAbstract {
         }
 
         return null;
+    }
+
+    removeSubStepsContainerModel() {
+        let subStepsContainerModel = this.getSubStepsContainerModel();
+        if (subStepsContainerModel) {
+            ArrayUtil.removeElementFromArray(this.children, subStepsContainerModel);
+            subStepsContainerModel.parentContainer = null;
+        }
     }
 }

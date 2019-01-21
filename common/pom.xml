@@ -26,6 +26,7 @@
         <module>common-parsing</module>
         <module>common-json</module>
         <module>common-jdk</module>
+        <module>common-stats</module>
     </modules>
 
 </project>

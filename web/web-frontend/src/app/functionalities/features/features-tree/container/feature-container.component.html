@@ -21,7 +21,8 @@
         <div class="button-panel btn-group my-button-panel"
              [class.hidden]="!hasMouseOver">
 
-            <div title="Run Tests" class="btn btn-default btn-xs btn-group"
+            <div *ngIf="hasTestsToRun()"
+                 title="Run Tests" class="btn btn-default btn-xs btn-group"
                  (click)="runTests();$event.stopPropagation();">
                 <i class="fa_my-run" aria-hidden="true"></i>
             </div>
@@ -53,11 +54,11 @@
                 <i class="fa_my-paste" aria-hidden="true"></i>
             </div>
 
-            <div *ngIf="model.editable"
-                 title="Delete Folder" class="btn btn-default btn-xs btn-group"
-                 (click)="deleteDirectory(); $event.stopPropagation()">
-                <i class="fa_my-delete" aria-hidden="true"></i>
-            </div>
+            <!--<div *ngIf="model.editable"-->
+                 <!--title="Delete Folder" class="btn btn-default btn-xs btn-group"-->
+                 <!--(click)="deleteDirectory(); $event.stopPropagation()">-->
+                <!--<i class="fa_my-delete" aria-hidden="true"></i>-->
+            <!--</div>-->
         </div>
     </div>
 

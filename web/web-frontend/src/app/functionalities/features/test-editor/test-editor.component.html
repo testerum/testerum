@@ -27,12 +27,10 @@
                         <input required
                                #testName="ngModel" [(ngModel)]="testModel.name"
                                type="text" class="form-control" name="testName">
-                        <div *ngIf="testName.errors && (testName.dirty || testName.touched)"
-                             class="alert alert-danger">
-                            <div [hidden]="!testName.errors.required">
-                                Name is required
-                            </div>
-                        </div>
+                        <input-error [model]="testName"
+                                     [errorMessages]="{
+                                        required: 'The name is required'
+                                     }"></input-error>
                     </div>
                 </div>
 
@@ -78,7 +76,7 @@
                 </div>
                 <div class="my-line" *ngIf="isEditMode">
                     <label class="my-label label-size">Tags</label>
-                    <div class="my-value">
+                    <div class="my-value my-default-line-height">
                         <p-autoComplete #tagsElement
                                         [(ngModel)]="testModel.tags"
                                         [suggestions]="tagsToShow"
@@ -94,7 +92,7 @@
 
                 <div class="my-line" *ngIf="testModel.description || isEditMode">
                     <label class="my-label label-size">Description</label>
-                    <div class="my-value">
+                    <div class="my-value my-default-line-height">
                         <markdown-editor #descriptionMarkdownEditor
                                          [options]="markdownEditorOptions"
                                          class="markdown-editor-dynamic-size"></markdown-editor>

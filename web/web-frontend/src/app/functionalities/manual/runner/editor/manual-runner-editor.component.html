@@ -31,7 +31,7 @@
                 <!-- DESCRIPTION -->
                 <div class="my-line" [class.hidden]="!model.description">
                     <label class="my-label label-size">Description</label>
-                    <div class="my-value">
+                    <div class="my-value my-default-line-height">
                         <markdown-editor #descriptionMarkdownEditor
                                          [options]="markdownEditorOptions"
                                          [editMode]="false"
@@ -77,7 +77,7 @@
                 <!-- TEST STATUS -->
                 <div class="my-line">
                     <label class="my-label label-size">Test Result</label>
-                    <div class="my-value">
+                    <div class="my-value my-default-line-height">
 
                         <p-dropdown name="testStatus"
                                     [readonly]="isFinalized()"
@@ -132,7 +132,7 @@
                      [class.hidden]="!shouldDisplayComment()">
                     <label class="my-label label-size">Comment</label>
 
-                    <div class="my-value" (dblclick)="setEditMode(true)">
+                    <div class="my-value my-default-line-height" (dblclick)="setEditMode(true)">
                         <markdown-editor #commentMarkdownEditor
                                          [options]="markdownEditorOptions"
                                          [editMode]="!isFinalized()"

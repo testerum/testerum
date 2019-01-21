@@ -15,7 +15,8 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesConte
 
 data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
                        private val featuresOrTests: List<RunnerFeatureOrTest>,
-                       private val afterAllTestsHooks: List<RunnerHook>) : RunnerTreeNode() {
+                       private val afterAllTestsHooks: List<RunnerHook>,
+                       private val executionName: String?) : RunnerTreeNode() {
 
     init {
         for (featureOrTest in featuresOrTests) {
@@ -54,6 +55,8 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         logSuiteStart(context)
 
         var suiteStatus: ExecutionStatus = PASSED
+        var exception: Throwable? = null
+
         val startTime = System.currentTimeMillis()
         try {
             // run before all hooks
@@ -71,10 +74,13 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
             if (suiteStatus == PASSED && afterAllHooksStatus != PASSED) {
                 suiteStatus = afterAllHooksStatus
             }
+        } catch (e: Exception) {
+            suiteStatus = ExecutionStatus.FAILED
+            exception = e
         } finally {
             val durationMillis = System.currentTimeMillis() - startTime
 
-            logSuiteEnd(context, suiteStatus, durationMillis)
+            logSuiteEnd(context, suiteStatus, exception, durationMillis)
         }
 
         return suiteStatus
@@ -120,18 +126,23 @@ data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         }
     }
 
-    private fun logSuiteEnd(context: RunnerContext, executionStatus: ExecutionStatus, durationMillis: Long) {
-        context.eventsService.logEvent(
+    private fun logSuiteStart(context: RunnerContext) {
+        context.logEvent(
+                SuiteStartEvent(executionName = executionName)
+        )
+        context.logMessage("Started executing test suite")
+    }
+
+    private fun logSuiteEnd(context: RunnerContext,
+                            executionStatus: ExecutionStatus,
+                            exception: Throwable?,
+                            durationMillis: Long) {
+        context.logMessage("Finished executing test suite; status: [$executionStatus]", exception)
+        context.logEvent(
                 SuiteEndEvent(
                         status = executionStatus,
                         durationMillis = durationMillis
                 )
-        )
-    }
-
-    private fun logSuiteStart(context: RunnerContext) {
-        context.eventsService.logEvent(
-                SuiteStartEvent()
         )
     }
 

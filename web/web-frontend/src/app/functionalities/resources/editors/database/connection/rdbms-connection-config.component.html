@@ -128,12 +128,10 @@
                     <input portValidator
                            #port="ngModel" [(ngModel)]="model.port"
                            type="text" class="form-control" name="port">
-                    <div *ngIf="port.errors && (port.dirty || port.touched)"
-                         class="alert alert-danger">
-                        <div [hidden]="!port.errors.portValidator">
-                            This is not a valid port
-                        </div>
-                    </div>
+                    <input-error [model]="port"
+                                 [errorMessages]="{
+                                portValidator: 'This is not a valid port'
+                             }"></input-error>
                 </div>
             </div>
 
@@ -203,7 +201,9 @@
             <input [(ngModel)]="model.database"
                    type="text" class="form-control db-input" name="database">
 
-            <button (click)="showSchemasChooser();" type="button" class="btn btn-default db-choose-button">
+            <button [disabled]="model.isEmpty()"
+                    (click)="showSchemasChooser();"
+                    type="button" class="btn btn-default db-choose-button">
                 <i class="fas fa-list" aria-hidden="true"></i>
                 Select Database
             </button>

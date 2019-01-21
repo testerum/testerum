@@ -94,10 +94,13 @@ import {LogoComponent} from './components/logo/logo.component';
 import {InfoModalService} from "./components/info_modal/info-modal.service";
 import {InfoIconComponent} from './components/info-icon/info-icon.component';
 import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
-import {MarkdownModule} from 'ngx-markdown'
 import {FileDirChooserModalService} from "./components/form/file_dir_chooser/dialog/file-dir-chooser-modal.service";
 import {UrlNameValidatorDirective} from "./validators/url-name-validator.directive";
 import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-dir-tree/file-dir-tree.component';
+import {MarkdownModule} from 'ngx-markdown';
+import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { ServerNotAvailableModalComponent } from './error/server-not-available/server-not-available-modal.component'
+import {ServerNotAvailableModalService} from "./error/server-not-available/server-not-available-modal.service";
 
 @NgModule({
     imports: [
@@ -124,6 +127,7 @@ import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-di
     ],
     exports: [
         SafeHtmlPipe,
+        SafeUrlPipe,
 
         FocusDirective,
 
@@ -176,6 +180,7 @@ import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-di
     ],
     declarations: [
         SafeHtmlPipe,
+        SafeUrlPipe,
 
         FocusDirective,
 
@@ -252,6 +257,7 @@ import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-di
         LogoComponent,
         InfoIconComponent,
         FileDirTreeComponent,
+        ServerNotAvailableModalComponent,
     ],
     providers: [
         TreeService,
@@ -269,6 +275,7 @@ import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-di
         AreYouSureModalService,
         InfoModalService,
         ArgModalService,
+        ServerNotAvailableModalService,
     ],
     entryComponents: [
         FeatureContainerComponent,
@@ -309,6 +316,7 @@ import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-di
         AreYouSureModalComponent,
         InfoModalComponent,
         ArgModalComponent,
+        ServerNotAvailableModalComponent,
     ]
 })
 export class GenericModule { }

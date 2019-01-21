@@ -1,0 +1,313 @@
+23:44:33.123  [INFO ]      __  __                                             __  __
+23:44:33.126  [INFO ]     / / / / _____         _                             \ \ \ \
+23:44:33.126  [INFO ]    / / / / |_   _|__  ___| |_ ___ _ __ _   _ _ __ ___    \ \ \ \
+23:44:33.126  [INFO ]   ( ( ( (    | |/ _ \/ __| __/ _ \ '__| | | | '_ ` _ \    ) ) ) )
+23:44:33.126  [INFO ]    \ \ \ \   | |  __/\__ \ ||  __/ |  | |_| | | | | | |  / / / /
+23:44:33.126  [INFO ]     \_\ \_\  |_|\___||___/\__\___|_|   \__,_|_| |_| |_| /_/ /_/
+23:44:33.126  [INFO ] 
+23:44:33.126  [INFO ] cmdlineParams = CmdlineParams(verbose=false, repositoryDirectory=c:\programing\workspace\testerum-demos\pet-clinic-angular2\tests, basicStepsDirectory=C:\programing\workspace\testerum\package\basic_steps, settingsFile=null, settingOverrides={}, testFilesOrDirectories=[c:\programing\workspace\testerum-demos\pet-clinic-angular2\tests\features\unrelated], outputFormatsWithProperties=[JSON_MODEL:destinationDirectory=c:/temp/testerum-reports,formatted=false, CONSOLE_DEBUG], executionName=null)
+23:44:33.126  [INFO ] Settings:
+23:44:33.126  [INFO ] ---------
+23:44:33.126  [INFO ] [testerum.packageDirectory] = [C:\programing\workspace\testerum\package]
+23:44:33.126  [INFO ] [testerum.repositoryDirectory] = [c:\programing\workspace\testerum-demos\pet-clinic-angular2\tests]
+23:44:33.126  [INFO ] [testerum.builtInBasicStepsDirectory] = [C:\programing\workspace\testerum\package\basic_steps]
+23:44:33.126  [INFO ] [testerum.jdbcDriversDirectory] = [C:\programing\workspace\testerum\package\relational_database_drivers]
+23:44:33.126  [INFO ] 
+23:44:33.126  [INFO ] 23:44:22.318 [main] INFO com.testerum.scanner.step_lib_scanner.StepLibraryPersistentCacheManger - scanning 93 jars...
+23:44:33.126  [INFO ] 23:44:32.672 [main] INFO com.testerum.scanner.step_lib_scanner.StepLibraryPersistentCacheManger - scanning 93 jars took 10208 ms
+23:44:33.126  [INFO ] 23:44:32.674 [main] INFO com.testerum.file_service.caches.resolved.StepsCache - loading step libraries (41 steps & 6 hooks) took 10357 ms
+23:44:33.126  [INFO ] 23:44:32.750 [main] INFO com.testerum.file_service.caches.resolved.StepsCache - loading 47 composed steps took 75 ms
+23:44:33.126  [INFO ] 23:44:32.894 [main] INFO com.testerum.file_service.caches.resolved.StepsCache - resolving 87 steps took 144 ms
+23:44:33.126  [INFO ] 23:44:32.968 [main] INFO com.testerum.file_service.caches.resolved.TestsCache - loading 36 tests took 74 ms
+23:44:33.126  [INFO ] 23:44:32.993 [main] INFO com.testerum.file_service.caches.resolved.FeaturesCache - loading 10 features took 25 ms
+23:44:33.126  [INFO ] ------------------------------[ execution tree ]------------------------------
+23:44:33.126  [INFO ] Suite
+23:44:33.126  [INFO ]     hook BEFORE_ALL_TESTS: selenium.actions.hooks.WebDriverShutdownHook.registerShutdownHook()
+23:44:33.126  [INFO ]     feature 'unrelated'
+23:44:33.126  [INFO ]         feature 'super hero squad'
+23:44:33.126  [INFO ]             test '"Eternal Flame" is immortal', tags=[unu, doi, trei]
+23:44:33.126  [INFO ]                 hook BEFORE_EACH_TEST: http.mock.HttpMockSteps.beforeTest()
+23:44:33.126  [INFO ]                 step COMPOSED: GIVEN step 1
+23:44:33.126  [INFO ]                     step BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>
+23:44:33.126  [INFO ]                     step BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request
+23:44:33.126  [INFO ]                     step BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response
+23:44:33.126  [INFO ]                     step COMPOSED: GIVEN step 2
+23:44:33.126  [INFO ]                         step BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>
+23:44:33.126  [INFO ]                         step BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request
+23:44:33.126  [INFO ]                         step BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response
+23:44:33.126  [INFO ]                 hook AFTER_EACH_TEST: selenium.actions.hooks.WebDriverShutdownHook.destroyWebDriver()
+23:44:33.126  [INFO ]             test 'Verify full squad', tags=[patru]
+23:44:33.126  [INFO ]                 hook BEFORE_EACH_TEST: http.mock.HttpMockSteps.beforeTest()
+23:44:33.126  [INFO ]                 step COMPOSED: GIVEN step 2
+23:44:33.126  [INFO ]                     step BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>
+23:44:33.126  [INFO ]                     step BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request
+23:44:33.126  [INFO ]                     step BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response
+23:44:33.126  [INFO ]                 hook AFTER_EACH_TEST: selenium.actions.hooks.WebDriverShutdownHook.destroyWebDriver()
+23:44:33.126  [INFO ]         test 'JS expressions', tags=[cinci, sase]
+23:44:33.126  [INFO ]             hook BEFORE_EACH_TEST: http.mock.HttpMockSteps.beforeTest()
+23:44:33.126  [INFO ]             step COMPOSED: GIVEN step 3
+23:44:33.126  [INFO ]                 step BASIC: GIVEN the variable <<name=today>> with value <<value={{new Date().toISOString().substr(0, 10)...>>
+23:44:33.126  [INFO ]                 step BASIC: THEN <<actualValue={{today}}>> is equal to <<expectedValue=2018-11-29>>
+23:44:33.126  [INFO ]                 step BASIC: GIVEN the variable <<name=tenDaysFromToday>> with value <<value={{(function(){var futureDate = new Date(...>>
+23:44:33.126  [INFO ]                 step BASIC: THEN <<actualValue={{tenDaysFromToday}}>> is equal to <<expectedValue=2018-12-09>>
+23:44:33.126  [INFO ]             hook AFTER_EACH_TEST: selenium.actions.hooks.WebDriverShutdownHook.destroyWebDriver()
+23:44:33.126  [INFO ]         test 'Mock Get User', tags=[patru, sase]
+23:44:33.126  [INFO ]             hook BEFORE_EACH_TEST: http.mock.HttpMockSteps.beforeTest()
+23:44:33.126  [INFO ]             step BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock={"expectedRequest":{"method":"GET","url"...>>
+23:44:33.126  [INFO ]             step BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request
+23:44:33.126  [INFO ]             step BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response
+23:44:33.126  [INFO ]             hook AFTER_EACH_TEST: selenium.actions.hooks.WebDriverShutdownHook.destroyWebDriver()
+23:44:33.126  [INFO ]     hook AFTER_ALL_TESTS: http.HttpStepsShutdownHook.shutdown()
+23:44:33.126  [INFO ]     hook AFTER_ALL_TESTS: database.relational.RdbmsStepsShutdownHook.shutdown()
+23:44:33.126  [INFO ]     hook AFTER_ALL_TESTS: selenium.actions.hooks.SeleniumModuleBootstrapperShutdownHook.shutdownContext()
+23:44:33.127  [INFO ] ------------------------------------------------------------------------------
+23:44:33.127  [INFO ] 
+23:44:33.127  [INFO ] STARTUP TIME: 14503ms
+23:44:33.127  [INFO ] 
+23:44:33.194  [INFO ] Started executing test suite
+23:44:33.206  [INFO ] 23:44:33.194 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_ALL_TESTS, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=registerShutdownHook, order=1000000, description=null)
+23:44:33.206  [INFO ] 23:44:33.206 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_ALL_TESTS, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=registerShutdownHook, order=1000000, description=null)
+23:44:33.206  [INFO ] 
+23:44:33.208  [INFO ] Started executing feature [unrelated]
+23:44:33.211  [INFO ] Started executing feature [super hero squad]
+23:44:33.214  [INFO ] Started executing test ["Eternal Flame" is immortal] at [unrelated/super hero squad/_Eternal Flame_ is immortal.test]
+23:44:34.811  [INFO ] 23:44:33.217 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:34.811  [INFO ] 23:44:34.810 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:34.811  [INFO ] 
+23:44:34.818  [INFO ] Started executing step [COMPOSED: GIVEN step 1]
+23:44:34.821  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]
+23:44:38.567  [INFO ] 23:44:38.231 [main] INFO wiremock.org.eclipse.jetty.util.log - Logging initialized @19927ms
+23:44:38.567  [INFO ] 23:44:38.431 [main] INFO wiremock.org.eclipse.jetty.server.Server - jetty-9.2.z-SNAPSHOT
+23:44:38.567  [INFO ] 23:44:38.465 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@1255de25{/__admin,null,AVAILABLE}
+23:44:38.567  [INFO ] 23:44:38.466 [main] INFO wiremock.org.eclipse.jetty.server.handler.ContextHandler - Started w.o.e.j.s.ServletContextHandler@4fc3529{/,null,AVAILABLE}
+23:44:38.567  [INFO ] 23:44:38.491 [main] INFO wiremock.org.eclipse.jetty.server.NetworkTrafficServerConnector - Started NetworkTrafficServerConnector@5d58dc61{HTTP/1.1}{0.0.0.0:12121}
+23:44:38.567  [INFO ] 23:44:38.491 [main] INFO wiremock.org.eclipse.jetty.server.Server - Started @20190ms
+23:44:38.567  [INFO ] 
+23:44:38.567  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]; status: [PASSED]
+23:44:38.579  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+23:44:38.714  [INFO ] HTTP Request [
+GET http://localhost:12121/heroes
+
+]
+23:44:39.747  [INFO ] 23:44:39.075 [qtp1266333611-25] INFO / - RequestHandlerClass from context returned com.github.tomakehurst.wiremock.http.StubRequestHandler. Normalized mapped under returned 'null'
+23:44:39.747  [INFO ] 
+23:44:39.747  [INFO ] HTTP Response [
+HTTP/1.1 200
+Content-Type: application/json
+Vary: Accept-Encoding, User-Agent
+Transfer-Encoding: chunked
+Server: Jetty(9.2.z-SNAPSHOT)
+
+{
+  "squadName" : "Super hero squad",
+  "homeTown" : "Metro City",
+  "formed" : 2016,
+  "secretBase" : "Super tower",
+  "active" : true,
+  "members" : [ {
+    "name" : "Molecule Man",
+    "age" : 29,
+    "secretIdentity" : "Dan Jukes",
+    "powers" : [ "Radiation resistance", "Turning tiny", "Radiation blast" ]
+  }, {
+    "name" : "Madame Uppercut",
+    "age" : 39,
+    "secretIdentity" : "Jane Wilson",
+    "powers" : [ "Million tonne punch", "Damage resistance", "Superhuman reflexes" ]
+  }, {
+    "name" : "Eternal Flame",
+    "age" : 1000000,
+    "secretIdentity" : "Unknown",
+    "powers" : [ "Immortality", "Heat Immunity", "Inferno", "Teleportation", "Interdimensional travel" ]
+  } ]
+}
+]
+23:44:39.749  [INFO ] Http Request executed successfully
+23:44:39.749  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
+23:44:39.751  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+23:44:39.991  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
+23:44:39.995  [INFO ] Started executing step [COMPOSED: GIVEN step 2]
+23:44:39.997  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]
+23:44:40.190  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]; status: [PASSED]
+23:44:40.194  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+23:44:40.309  [INFO ] HTTP Request [
+GET http://localhost:12121/heroes
+
+]
+23:44:40.335  [INFO ] HTTP Response [
+HTTP/1.1 200
+Content-Type: application/json
+Vary: Accept-Encoding, User-Agent
+Transfer-Encoding: chunked
+Server: Jetty(9.2.z-SNAPSHOT)
+
+{
+  "squadName" : "Super hero squad",
+  "homeTown" : "Metro City",
+  "formed" : 2016,
+  "secretBase" : "Super tower",
+  "active" : true,
+  "members" : [ {
+    "name" : "Molecule Man",
+    "age" : 29,
+    "secretIdentity" : "Dan Jukes",
+    "powers" : [ "Radiation resistance", "Turning tiny", "Radiation blast" ]
+  }, {
+    "name" : "Madame Uppercut",
+    "age" : 39,
+    "secretIdentity" : "Jane Wilson",
+    "powers" : [ "Million tonne punch", "Damage resistance", "Superhuman reflexes" ]
+  }, {
+    "name" : "Eternal Flame",
+    "age" : 1000000,
+    "secretIdentity" : "Unknown",
+    "powers" : [ "Immortality", "Heat Immunity", "Inferno", "Teleportation", "Interdimensional travel" ]
+  } ]
+}
+]
+23:44:40.336  [INFO ] Http Request executed successfully
+23:44:40.337  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
+23:44:40.341  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+23:44:40.452  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
+23:44:40.454  [INFO ] Finished executing step [COMPOSED: GIVEN step 2]; status: [PASSED]
+23:44:40.457  [INFO ] Finished executing step [COMPOSED: GIVEN step 1]; status: [PASSED]
+23:44:40.460  [INFO ] 23:44:40.458 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:40.460  [INFO ] 23:44:40.459 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:40.460  [INFO ] 
+23:44:40.460  [INFO ] Finished executing test ["Eternal Flame" is immortal] at [unrelated/super hero squad/_Eternal Flame_ is immortal.test]; status: [PASSED]
+23:44:40.469  [INFO ] Started executing test [Verify full squad] at [unrelated/super hero squad/Verify full squad.test]
+23:44:40.470  [INFO ] 23:44:40.469 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:40.470  [INFO ] 23:44:40.470 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:40.470  [INFO ] 
+23:44:40.473  [INFO ] Started executing step [COMPOSED: GIVEN step 2]
+23:44:40.476  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]
+23:44:40.705  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock=file:Hero Squad.http.stub.yaml>>]; status: [PASSED]
+23:44:40.709  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+23:44:40.773  [INFO ] HTTP Request [
+GET http://localhost:12121/heroes
+
+]
+23:44:40.789  [INFO ] HTTP Response [
+HTTP/1.1 200
+Content-Type: application/json
+Vary: Accept-Encoding, User-Agent
+Transfer-Encoding: chunked
+Server: Jetty(9.2.z-SNAPSHOT)
+
+{
+  "squadName" : "Super hero squad",
+  "homeTown" : "Metro City",
+  "formed" : 2016,
+  "secretBase" : "Super tower",
+  "active" : true,
+  "members" : [ {
+    "name" : "Molecule Man",
+    "age" : 29,
+    "secretIdentity" : "Dan Jukes",
+    "powers" : [ "Radiation resistance", "Turning tiny", "Radiation blast" ]
+  }, {
+    "name" : "Madame Uppercut",
+    "age" : 39,
+    "secretIdentity" : "Jane Wilson",
+    "powers" : [ "Million tonne punch", "Damage resistance", "Superhuman reflexes" ]
+  }, {
+    "name" : "Eternal Flame",
+    "age" : 1000000,
+    "secretIdentity" : "Unknown",
+    "powers" : [ "Immortality", "Heat Immunity", "Inferno", "Teleportation", "Interdimensional travel" ]
+  } ]
+}
+]
+23:44:40.789  [INFO ] Http Request executed successfully
+23:44:40.790  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
+23:44:40.793  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+23:44:40.884  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
+23:44:40.885  [INFO ] Finished executing step [COMPOSED: GIVEN step 2]; status: [PASSED]
+23:44:40.887  [INFO ] 23:44:40.886 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:40.887  [INFO ] 23:44:40.887 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:40.887  [INFO ] 
+23:44:40.887  [INFO ] Finished executing test [Verify full squad] at [unrelated/super hero squad/Verify full squad.test]; status: [PASSED]
+23:44:40.889  [INFO ] Finished executing feature [super hero squad]; status: [PASSED]
+23:44:40.895  [INFO ] Started executing test [JS expressions] at [unrelated/JS expressions.test]
+23:44:40.896  [INFO ] 23:44:40.895 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:40.896  [INFO ] 23:44:40.896 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:40.896  [INFO ] 
+23:44:40.898  [INFO ] Started executing step [COMPOSED: GIVEN step 3]
+23:44:40.900  [INFO ] Started executing step [BASIC: GIVEN the variable <<name=today>> with value <<value={{new Date().toISOString().substr(0, 10)...>>]
+23:44:41.019  [INFO ] Finished executing step [BASIC: GIVEN the variable <<name=today>> with value <<value={{new Date().toISOString().substr(0, 10)...>>]; status: [PASSED]
+23:44:41.025  [INFO ] Started executing step [BASIC: THEN <<actualValue={{today}}>> is equal to <<expectedValue=2018-11-29>>]
+23:44:41.149  [WARN ] Finished executing step [BASIC: THEN <<actualValue={{today}}>> is equal to <<expectedValue=2018-11-29>>]; status: [FAILED]; exception:
+java.lang.AssertionError: expected [1979] to be equal to [2018-11-29], but was not
+	at assertions.AssertionsSteps.assertEqualValues(AssertionsSteps.kt:12)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at com.testerum.runner_cmdline.runner_tree.nodes.step.impl.RunnerBasicStep.doRun(RunnerBasicStep.kt:53)
+	at com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep.run(RunnerStep.kt:32)
+	at com.testerum.runner_cmdline.runner_tree.nodes.step.impl.RunnerComposedStep.doRun(RunnerComposedStep.kt:40)
+	at com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep.run(RunnerStep.kt:32)
+	at com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest.tryToRun(RunnerTest.kt:109)
+	at com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest.run(RunnerTest.kt:62)
+	at com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature.tryToRun(RunnerFeature.kt:62)
+	at com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature.run(RunnerFeature.kt:47)
+	at com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite.runTests(RunnerSuite.kt:113)
+	at com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite.run(RunnerSuite.kt:67)
+	at com.testerum.runner_cmdline.RunnerApplication$tryToExecute$executionStatus$1.invoke(RunnerApplication.kt:116)
+	at com.testerum.runner_cmdline.RunnerApplication$tryToExecute$executionStatus$1.invoke(RunnerApplication.kt:41)
+	at com.testerum.common_kotlin.Classloader_utilsKt.runWithThreadContextClassLoader(classloader_utils.kt:8)
+	at com.testerum.runner_cmdline.RunnerApplication.tryToExecute(RunnerApplication.kt:115)
+	at com.testerum.runner_cmdline.RunnerApplication.execute(RunnerApplication.kt:60)
+	at com.testerum.runner_cmdline.TesterumRunner.main(TesterumRunner.kt:44)
+
+23:44:41.174  [INFO ] Started executing step [BASIC: GIVEN the variable <<name=tenDaysFromToday>> with value <<value={{(function(){var futureDate = new Date(...>>]
+23:44:41.175  [INFO ] Finished executing step [BASIC: GIVEN the variable <<name=tenDaysFromToday>> with value <<value={{(function(){var futureDate = new Date(...>>]; status: [SKIPPED]
+23:44:41.178  [INFO ] Started executing step [BASIC: THEN <<actualValue={{tenDaysFromToday}}>> is equal to <<expectedValue=2018-12-09>>]
+23:44:41.179  [INFO ] Finished executing step [BASIC: THEN <<actualValue={{tenDaysFromToday}}>> is equal to <<expectedValue=2018-12-09>>]; status: [SKIPPED]
+23:44:41.180  [INFO ] Finished executing step [COMPOSED: GIVEN step 3]; status: [FAILED]
+23:44:41.182  [INFO ] 23:44:41.182 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:41.182  [INFO ] 23:44:41.182 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:41.182  [INFO ] 
+23:44:41.182  [INFO ] Finished executing test [JS expressions] at [unrelated/JS expressions.test]; status: [FAILED]
+23:44:41.187  [INFO ] Started executing test [Mock Get User] at [unrelated/Mock Get User.test]
+23:44:41.189  [INFO ] 23:44:41.188 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:41.189  [INFO ] 23:44:41.188 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=BEFORE_EACH_TEST, className=http.mock.HttpMockSteps, methodName=beforeTest, order=1000000, description=null)
+23:44:41.189  [INFO ] 
+23:44:41.192  [INFO ] Started executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock={"expectedRequest":{"method":"GET","url"...>>]
+23:44:41.419  [INFO ] Finished executing step [BASIC: GIVEN the HTTP Mock Server <<httpMockServer=file:Sample Mock Server.http.mock.server...>> with the Mock Request <<httpMock={"expectedRequest":{"method":"GET","url"...>>]; status: [PASSED]
+23:44:41.422  [INFO ] Started executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]
+23:44:41.482  [INFO ] HTTP Request [
+GET http://localhost:12121/users/1
+
+]
+23:44:41.495  [INFO ] HTTP Response [
+HTTP/1.1 200
+Content-Type: application/json
+Vary: Accept-Encoding, User-Agent
+Transfer-Encoding: chunked
+Server: Jetty(9.2.z-SNAPSHOT)
+
+{
+  "userName" : "Ionut Pruteanu",
+  "email" : "ipruteanu@testerum.com"
+}
+]
+23:44:41.495  [INFO ] Http Request executed successfully
+23:44:41.496  [INFO ] Finished executing step [BASIC: WHEN I execute <<httpRequest={"method":"GET","url":"http://localhost:...>> HTTP Request]; status: [PASSED]
+23:44:41.498  [INFO ] Started executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]
+23:44:41.583  [INFO ] Finished executing step [BASIC: THEN I expect <<httpResponseVerify={"expectedStatusCode":200,"expectedBody"...>> HTTP Response]; status: [PASSED]
+23:44:41.585  [INFO ] 23:44:41.584 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:41.585  [INFO ] 23:44:41.585 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_EACH_TEST, className=selenium.actions.hooks.WebDriverShutdownHook, methodName=destroyWebDriver, order=2147483647, description=null)
+23:44:41.585  [INFO ] 
+23:44:41.585  [INFO ] Finished executing test [Mock Get User] at [unrelated/Mock Get User.test]; status: [PASSED]
+23:44:41.587  [INFO ] Finished executing feature [unrelated]; status: [FAILED]
+23:44:41.725  [INFO ] 23:44:41.588 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_ALL_TESTS, className=http.HttpStepsShutdownHook, methodName=shutdown, order=1000000, description=null)
+23:44:41.725  [INFO ] 23:44:41.589 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_ALL_TESTS, className=http.HttpStepsShutdownHook, methodName=shutdown, order=1000000, description=null)
+23:44:41.725  [INFO ] 23:44:41.590 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_ALL_TESTS, className=database.relational.RdbmsStepsShutdownHook, methodName=shutdown, order=1000000, description=null)
+23:44:41.725  [INFO ] 23:44:41.723 [main] INFO com.testerum.common_rdbms.JdbcDriversCache - loading 4 JDBC driver configs took 13 ms
+23:44:41.725  [INFO ] 23:44:41.723 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_ALL_TESTS, className=database.relational.RdbmsStepsShutdownHook, methodName=shutdown, order=1000000, description=null)
+23:44:41.725  [INFO ] 23:44:41.724 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - start executing hook HookDef(phase=AFTER_ALL_TESTS, className=selenium.actions.hooks.SeleniumModuleBootstrapperShutdownHook, methodName=shutdownContext, order=1000000, description=null)
+23:44:41.725  [INFO ] 23:44:41.724 [main] INFO com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook - done executing hook HookDef(phase=AFTER_ALL_TESTS, className=selenium.actions.hooks.SeleniumModuleBootstrapperShutdownHook, methodName=shutdownContext, order=1000000, description=null)
+23:44:41.725  [INFO ] 
+23:44:41.724  [INFO ] Finished executing test suite; status: [FAILED]
+23:44:41.729  [INFO ] 

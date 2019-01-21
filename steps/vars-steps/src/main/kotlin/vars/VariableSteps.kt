@@ -15,7 +15,7 @@ class VariableSteps {
                           "If the variable doesn't exist yet, it will be first created."
     )
     fun declareVariable(name: String,
-                        @Param(required = false) value: String?) {
+                        @Param(required = false) value: Any?) {
         variables[name] = value
     }
 

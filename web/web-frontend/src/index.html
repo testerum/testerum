@@ -13,8 +13,41 @@
             var global = window;
         }
     </script>
+
+    <style type="text/css">
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .loading-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        .blink_me {
+            font-family: sans-serif;
+            font-size: 3em;
+            font-weight: bold;
+            animation: blinker 1s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+    </style>
 </head>
 <body>
-<my-app>Loading ...</my-app>
+
+<my-app>
+    <div class="loading-container">
+        <img src="/media/testerum-logo.svg" alt="Loading Testerum">
+        <span class="blink_me">Loading</span>
+    </div>
+</my-app>
+
 </body>
 </html>

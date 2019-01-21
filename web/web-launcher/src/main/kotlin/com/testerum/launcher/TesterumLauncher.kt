@@ -1,11 +1,9 @@
 package com.testerum.launcher
 
-import com.jgoodies.looks.plastic.Plastic3DLookAndFeel
 import com.testerum.launcher.config.ConfigManager
 import com.testerum.launcher.runner.TesterumExecuter
 import com.testerum.launcher.ui.MainFrame
 import javax.swing.JOptionPane
-import javax.swing.UIManager
 import javax.swing.WindowConstants
 
 fun main(args: Array<String>) {
@@ -23,11 +21,11 @@ fun main(args: Array<String>) {
     frame.addWindowListener(object : java.awt.event.WindowAdapter() {
         override fun windowClosing(windowEvent: java.awt.event.WindowEvent) {
             val confirmDialogResult = JOptionPane.showConfirmDialog(frame,
-                    "Are you sure you want to close this window?", "Close Window?",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE
+                    "Closing this window will stop Testerum and it won't be accessible from the browser anymore.\n Do you want to continue?", "Close Window?",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE
             )
-            if (confirmDialogResult == JOptionPane.YES_OPTION) {
+            if (confirmDialogResult == JOptionPane.OK_OPTION) {
                 testerumRunner.stopTesterum()
                 System.exit(0)
             }

@@ -1,0 +1,175 @@
+
+<div class="my-report-grid">
+
+    <div class="grid-filters">
+        <span class="filters-label">Filters:</span>
+        <!-- TODO: This IF is should be removed and the button should work. Took this decision to not spend critical time now and implement later when we have more time -->
+        <div class="btn-group" role="group">
+            <div title="{{filter.areTestFoldersShown? 'Hide Folders': 'Show Folders'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.areTestFoldersShown"
+                 (click)="onToggleFolders()">
+                <i class="fa_my-tree-folder-opened-colored color-inherit" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <div title="{{filter.showPassed ? 'Hide Passed': 'Show Passed'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.showPassed"
+                 (click)="onTogglePassed()">
+                <i class="fa_my-runner-passed-colored" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <div title="{{filter.showFailed ? 'Hide Failed': 'Show Failed'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.showFailed"
+                 (click)="onToggleFailed()">
+                <i class="fa_my-runner-failed-colored" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <div title="{{filter.showDisabled ? 'Hide Disabled': 'Show Disabled'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.showDisabled"
+                 (click)="onToggleDisabled()">
+                <i class="fa_my-runner-disabled-colored" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <div title="{{filter.showUndefined ? 'Hide Undefined': 'Show Undefined'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.showUndefined"
+                 (click)="onToggleUndefined()">
+                <i class="fa_my-runner-undefined-colored" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="btn-group" role="group">
+            <div title="{{filter.showSkipped ? 'Hide Skipped': 'Show Skipped'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="filter.showSkipped"
+                 (click)="onToggleSkipped()">
+                <i class="fa_my-runner-skipped-colored" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div pTooltip="{{filter.isTagsButtonActive?'Hide ':'Show '}} Filter by Tags"
+             tooltipPosition="bottom"
+             (click)="onTagsButtonClickEvent()"
+             [class.active]="filter.isTagsButtonActive"
+             class="btn btn-default btn-xs btn-group">
+            <i class="fa_my-tag" aria-hidden="true"></i>
+        </div>
+
+        <div class="my-filter-input ui-inputgroup line-tags full-width"
+             *ngIf="filter.isTagsButtonActive">
+
+            <p-autoComplete #tagsElement
+                            [suggestions]="tagsToShow"
+                            [ngModel]="filter.selectedTags"
+                            (completeMethod)="searchTags($event)"
+                            (onSelect)="onTagSelect($event)"
+                            (onUnselect)="onTagUnSelect($event)"
+                            [delay]="0"
+                            [multiple]="true"
+                            [dropdown]="true"
+                            placeholder="Tags"
+                            tooltipPosition="top"
+                            pTooltip="Tags"
+                            name="tags"></p-autoComplete>
+        </div>
+    </div>
+
+    <p-treeTable [value]="suiteGridRootNodes"
+                 [resizableColumns]="true"
+                 columnResizeMode="expand">
+        <ng-template pTemplate="header">
+            <tr>
+                <th ttResizableColumn>
+                    <div class="my-name-col">
+                        <div></div>
+
+                        Name
+
+                        <div class="filters-group">
+                            <div class="btn-group" role="group">
+                                <div title="Show Tests"
+                                     class="btn btn-default btn-xs btn-group"
+                                     (click)="onExpandToTests()">
+                                    <i class="fa_my-expand" aria-hidden="true">
+                                        <i class="fa_my-automated-test" aria-hidden="true" style="font-size: 8px"></i>
+                                    </i>
+                                </div>
+                                <div title="Show Steps"
+                                     class="btn btn-default btn-xs btn-group"
+                                     (click)="onExpandToSteps()">
+                                    <i class="fa_my-expand" aria-hidden="true">
+                                        <i class="fa_my-step" aria-hidden="true" style="font-size: 8px"></i>
+                                    </i>
+                                </div>
+                                <div title="Expand All"
+                                     class="btn btn-default btn-xs btn-group"
+                                     (click)="onExpandAllNodes()">
+                                    <i class="fa_my-expand" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </th>
+                <th ttResizableColumn class="my-status-col">Status</th>
+                <th ttResizableColumn class="my-duration-col">Duration</th>
+                <th ttResizableColumn class="my-logs-col">Logs</th>
+            </tr>
+        </ng-template>
+
+
+        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+            <tr [class.row-color-disabled]="rowData.status == ExecutionStatus.DISABLED"
+                [class.row-color-skipped]="rowData.status == ExecutionStatus.SKIPPED"
+                [class.row-color-undefined]="rowData.status == ExecutionStatus.UNDEFINED"
+                [class.row-color-passed]="rowData.status == ExecutionStatus.PASSED"
+                [class.row-color-failed]="rowData.status == ExecutionStatus.FAILED">
+
+                <td>
+                    <div class="my-name-cell">
+                        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                        <i *ngIf="rowData.nodeType == ReportGridNodeType.FEATURE && !rowNode.node.expanded" class="fa_my-tree-folder-closed-colored" title="Feature"></i>
+                        <i *ngIf="rowData.nodeType == ReportGridNodeType.FEATURE && rowNode.node.expanded" class="fa_my-tree-folder-opened-colored" title="Feature"></i>
+                        <i *ngIf="rowData.nodeType == ReportGridNodeType.TEST" class="fa_my-automated-test" title="Test"></i>
+
+                        <div [innerHTML]="rowData.textAsHtml"></div>
+                    </div>
+                </td>
+                <td class="my-status-cell"
+                    [class.my-status-disabled]="rowData.status == ExecutionStatus.DISABLED"
+                    [class.my-status-skipped]="rowData.status == ExecutionStatus.SKIPPED"
+                    [class.my-status-undefined]="rowData.status == ExecutionStatus.UNDEFINED"
+                    [class.my-status-passed]="rowData.status == ExecutionStatus.PASSED"
+                    [class.my-status-failed]="rowData.status == ExecutionStatus.FAILED">
+
+                    {{ExecutionStatus[rowData.status]}}
+                </td>
+
+                <td class="my-duration-cell">{{durationString(rowData.durationMillis)}}</td>
+                <td>
+                    <div class="my-log-cell">
+                        <div class="my-log-action">
+                            <i class="far fa-eye"></i>
+                            <button type="button" class="btn btn-primary" title="View Logs"
+                                    (click)="onShowLogs(rowData)">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+
+                        <div class="my-log-action">
+                            <i class="fas fa-file-download"></i>
+                            <a href="{{rowData.textLogFilePath}}" download="logs.txt" target="_blank"
+                               class="btn btn-primary" title="Download Logs">
+                                <i class="fas fa-file-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-treeTable>
+</div>

@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import {Routes, RouterModule} from "@angular/router";
+import {RouterModule, Routes} from "@angular/router";
 import {StepsComponent} from "./steps.component";
-import {TestResolver} from "../features/test-editor/test.resolver";
 import {ComposedStepEditorComponent} from "./composed-step-editor/composed-step-editor.component";
 import {ComposedStepEditorResolver} from "./composed-step-editor/composed-step-editor.resolver";
 import {SetupGuard} from "../../service/guards/setup.guard";

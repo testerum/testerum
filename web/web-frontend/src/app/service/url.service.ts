@@ -120,4 +120,8 @@ export class UrlService {
         commands[0] = "/" + this.contextService.getProjectName() + commands[0];
         return this.router.navigate(commands, extras);
     }
+
+    navigateToAutomatedResult(path: Path, url: string) {
+        this.router.navigate(["/automated/results", {path : path.toString(), url: url} ])
+    }
 }

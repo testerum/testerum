@@ -1,10 +1,11 @@
 package com.testerum.runner.events.model.log_level
 
-enum class LogLevel {
+enum class LogLevel(val formatForLogging: String) {
 
-    WARNING,
-    INFO,
-    DEBUG
+    ERROR   ("[ERROR]"),
+    WARNING ("[WARN ]"),
+    INFO    ("[INFO ]"),
+    DEBUG   ("[DEBUG]")
     ;
 
 }

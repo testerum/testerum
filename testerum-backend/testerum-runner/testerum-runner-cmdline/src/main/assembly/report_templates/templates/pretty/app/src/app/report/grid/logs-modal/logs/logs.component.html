@@ -1,0 +1,22 @@
+<div class="logs-panel">
+    <div class="logs-container"
+         [class.horizontal-wrap]="shouldWrapLogs"
+         [class.horizontal-scroll]="!shouldWrapLogs">
+        <table class="table table-hover table-condensed">
+            <tbody>
+            <tr *ngFor="let log of logs">
+                <!--<td class="date-column">{{log.time | date:"HH:mm:ss"}}</td>-->
+                <td class="text-column">
+                        <p class="log-line"
+                           [class.log-type-debug]="LogLevel[log.logLevel] == LogLevel.DEBUG"
+                           [class.log-type-info]="LogLevel[log.logLevel] == LogLevel.INFO"
+                           [class.log-type-warning]="LogLevel[log.logLevel] == LogLevel.WARNING"
+                           [class.log-type-exception]="LogLevel[log.logLevel] == LogLevel.ERROR">{{getLogAsString(log)}}</p>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot #logsFooter></tfoot>
+        </table>
+    </div>
+
+</div>

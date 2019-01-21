@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ResourceService} from "../../../../../service/resources/resource.service";
 import {ResourcesTreeService} from "../../../tree/resources-tree.service";
@@ -10,17 +10,19 @@ import {HttpParamsComponent} from "./params/http-params.component";
 import {NgForm} from "@angular/forms";
 import {ResourceComponent} from "../../resource-component.interface";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+import {Subscription} from "rxjs";
 
 @Component({
     moduleId: module.id,
     selector: 'http-request',
     templateUrl: 'http-request.component.html',
+    providers: [HttpRequestService],
     styleUrls: [
         'http-request.component.scss',
         '../../resource-editor.scss'
     ]
 })
-export class HttpRequestComponent extends ResourceComponent<HttpRequest> implements OnInit {
+export class HttpRequestComponent extends ResourceComponent<HttpRequest> implements OnInit, OnDestroy {
 
     @Input() name: string;
     @Input() model:HttpRequest;
@@ -41,6 +43,7 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
 
     @ViewChild("httpParams") httpParams: HttpParamsComponent;
 
+    private changesMadeEventSubscription: Subscription;
     constructor(private cd: ChangeDetectorRef,
                 private route: ActivatedRoute,
                 private resourceService: ResourceService,
@@ -53,7 +56,16 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
         if (this.model == null) {
             this.model = new HttpRequest();
         }
+
+        this.changesMadeEventSubscription = this.httpRequestService.changesMadeEventEmitter.subscribe(() => {
+            this.refresh();
+        });
+
         this.initPartToDisplay(this.model);
+    }
+
+    ngOnDestroy(): void {
+        if (this.changesMadeEventSubscription) { this.changesMadeEventSubscription.unsubscribe()}
     }
 
     refresh() {
@@ -136,15 +148,15 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
         this.httpRequestService.executeRequest();
     }
 
-    hasResponseToDisplay(): boolean {
-        return this.httpRequestService.isHttpResponseNull();
+    shouldDisplayResponseTab(): boolean {
+        return this.httpRequestService.shouldDisplayHttpResponseTab;
     }
 
     closeResponseTab(): void {
         if (this.partToDisplay == this.HttpPart.RESPONSE) {
             this.partToDisplay = HttpPart.HEADERS;
         }
-        this.httpRequestService.setHttpResponse(null);
+        this.httpRequestService.shouldDisplayHttpResponseTab = false;
     }
 
     isFormValid(): boolean {

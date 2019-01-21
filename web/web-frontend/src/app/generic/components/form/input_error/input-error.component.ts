@@ -11,6 +11,7 @@ import {NgModel} from "@angular/forms";
 export class InputErrorComponent implements OnInit {
     @Input() model: NgModel;
     @Input() errorMessages: any;
+    @Input() width: number;
 
     constructor() {
     }

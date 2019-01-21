@@ -29,7 +29,7 @@ import {SettingsComponent} from "./functionalities/config/settings/settings.comp
 import {SettingsService} from "./service/settings.service";
 import {FileDirChooserInputComponent} from "./generic/components/form/file_dir_chooser/file-dir-chooser-input.component";
 import {FileDirTreeContainerComponent} from "./generic/components/form/file_dir_chooser/file-dir-tree/nodes/container/file-dir-tree-container.component";
-import {RunnerModule} from "./functionalities/runner/runner.module";
+import {ResultsModule} from "./functionalities/results/results.module";
 import {ResultService} from "./service/report/result.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ArgValueValidatorDirective} from "./generic/components/step-call-tree/arg-modal/validator/arg-value-validator.directive";
@@ -47,6 +47,7 @@ import {ContextService} from "./service/context.service";
 import {MultiProjectHttpInterceptor} from "./service/interceptors/multi-prject.http-interceptor";
 import {HomeModule} from "./functionalities/home/home.module";
 import {HomeService} from "./service/home.service";
+import {UtilService} from "./service/util.service";
 
 @NgModule({
     imports: [
@@ -62,7 +63,7 @@ import {HomeService} from "./service/home.service";
 
         HomeModule,
         FeaturesModule,
-        RunnerModule,
+        ResultsModule,
         StepsModule,
         ResourcesModule,
         ManualModule,
@@ -106,6 +107,7 @@ import {HomeService} from "./service/home.service";
         HttpService,
 
         UrlService,
+        UtilService,
         ErrorService,
         { provide: HTTP_INTERCEPTORS, useExisting: ErrorService,  multi: true },
 
@@ -114,7 +116,6 @@ import {HomeService} from "./service/home.service";
 
 
         MessageService,
-        { provide: APP_INITIALIZER, useFactory: initMessages, deps: [MessageService], multi: true },
 
         LicenseService,
     ],

@@ -2,7 +2,6 @@ import {ExecutionStatusEnum} from "./enums/execution-status.enum";
 import {RunnerEvent} from "./runner.event";
 import {StepCall} from "../../step-call.model";
 import {EventKey} from "./fields/event-key.model";
-import {ExceptionDetail} from "./fields/exception-detail.model";
 import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
 import {Serializable} from "../../infrastructure/serializable.model";
 
@@ -13,8 +12,6 @@ export class StepEndEvent implements RunnerEvent, Serializable<StepEndEvent> {
 
     stepCall: StepCall;
     status: ExecutionStatusEnum;
-    exceptionDetail: ExceptionDetail;
-    exceptionDetailAsString: string;
     durationMillis: number;
 
     deserialize(input: Object): StepEndEvent {
@@ -25,12 +22,8 @@ export class StepEndEvent implements RunnerEvent, Serializable<StepEndEvent> {
 
         let statusAsString:string = input["status"];
         this.status = ExecutionStatusEnum[statusAsString];
-
-        if (input["exceptionDetail"]) {
-            this.exceptionDetail = new ExceptionDetail().deserialize(input["exceptionDetail"]);
-        }
-        this.exceptionDetailAsString = input["exceptionDetailAsString"];
         this.durationMillis = input["durationMillis"];
+
         return this;
     }
 

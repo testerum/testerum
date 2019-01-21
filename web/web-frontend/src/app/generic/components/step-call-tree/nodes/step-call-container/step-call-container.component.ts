@@ -16,6 +16,7 @@ import {SubStepsContainerModel} from "../../model/sub-steps-container.model";
 import {StepCallTreeUtil} from "../../util/step-call-tree.util";
 import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
 import {ContextService} from "../../../../../service/context.service";
+import {StepContext} from "../../../../../model/step/context/step-context.model";
 
 @Component({
     selector: 'step-call-container',
@@ -108,6 +109,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
 
     editStep() {
         let stepToEdit;
+        let stepContext: StepContext = new StepContext(this.isManualStep());
+
         if (this.model.stepCall.stepDef instanceof ComposedStepDef) {
             stepToEdit = this.model.stepCall.stepDef;
         }else
@@ -121,7 +124,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         }
 
         this.stepModalService.showStepModal(
-            stepToEdit
+            stepToEdit,
+            stepContext
         ).subscribe((newStepDef: ComposedStepDef) => {
             if (newStepDef.path) {
                 this.model.stepCall.stepDef = newStepDef;
@@ -132,8 +136,11 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
                 this.model.stepCall.stepDef = newUndefinedStep;
             }
 
-            let subStepContainer = StepCallTreeUtil.createSubStepsContainerWithChildren(newStepDef, new Map());
+            let subStepContainer: SubStepsContainerModel = StepCallTreeUtil.createSubStepsContainerWithChildren(this.model.stepCall.stepDef, new Map());
             if(subStepContainer != null) {
+                this.model.removeSubStepsContainerModel();
+
+                subStepContainer.jsonTreeNodeState.showChildren = true;
                 subStepContainer.parentContainer = this.model;
                 this.model.children.push(
                     subStepContainer
@@ -229,6 +236,10 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
             let siblingStepCalls: StepCall[];
             if(parentContainer instanceof JsonTreeModel) {
                 siblingStepCalls = this.stepCallTreeComponentService.stepCalls;
+            } else if (parentContainer instanceof SubStepsContainerModel) {
+                let parentStepCallContainer: StepCallContainerModel = (parentContainer as SubStepsContainerModel).parentContainer as StepCallContainerModel;
+                let parentStepDef = parentStepCallContainer.stepCall.stepDef as ComposedStepDef;
+                siblingStepCalls = parentStepDef.stepCalls;
             } else {
                 let parentStepDef = (parentContainer as StepCallContainerModel).stepCall.stepDef as ComposedStepDef;
                 siblingStepCalls = parentStepDef.stepCalls;

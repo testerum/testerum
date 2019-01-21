@@ -13,7 +13,7 @@
     <colspec value="fill:d:noGrow"/>
     <colspec value="fill:d:grow"/>
     <constraints>
-      <xy x="9" y="20" width="624" height="480"/>
+      <xy x="9" y="20" width="792" height="415"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -46,7 +46,7 @@
         <rowspec value="top:4dlu:noGrow"/>
         <rowspec value="center:max(d;4px):noGrow"/>
         <rowspec value="top:4dlu:noGrow"/>
-        <rowspec value="center:max(d;4px):noGrow"/>
+        <rowspec value="center:50px:noGrow"/>
         <colspec value="fill:max(d;10dlu):noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:d:noGrow"/>
@@ -131,14 +131,18 @@
         <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:d:noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
-        <colspec value="fill:d:grow"/>
+        <colspec value="center:d:noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
+        <colspec value="left:d:grow"/>
+        <colspec value="left:4dlu:noGrow"/>
+        <colspec value="fill:max(d;4px):noGrow"/>
+        <colspec value="left:m:noGrow"/>
         <colspec value="right:d:noGrow"/>
         <colspec value="left:10dlu:noGrow"/>
         <colspec value="fill:max(d;4px):noGrow"/>
         <constraints>
           <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-vert="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -152,20 +156,9 @@
               <text value="Application Port:"/>
             </properties>
           </component>
-          <component id="23af9" class="javax.swing.JTextField" binding="portInputField">
-            <constraints>
-              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-              <forms defaultalign-horz="false"/>
-            </constraints>
-            <properties>
-              <columns value="6"/>
-            </properties>
-          </component>
           <component id="bc960" class="javax.swing.JButton" binding="saveAndRestartApplicationButton" default-binding="true">
             <constraints>
-              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties>
@@ -176,11 +169,37 @@
               <html.disable class="java.lang.Boolean" value="true"/>
             </clientProperties>
           </component>
+          <component id="23af9" class="javax.swing.JTextField" binding="portInputField">
+            <constraints>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <columns value="5"/>
+              <horizontalAlignment value="2"/>
+              <toolTipText value="Port number range between 1023 and 65535"/>
+            </properties>
+          </component>
+          <component id="a4091" class="javax.swing.JLabel" binding="portErrorMessage">
+            <constraints>
+              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <foreground color="-65529"/>
+              <horizontalAlignment value="2"/>
+              <horizontalTextPosition value="2"/>
+              <text value="Choose a different port and save the change"/>
+              <visible value="true"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <component id="7e621" class="javax.swing.JLabel" binding="statusLabel">
         <constraints>
-          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties>

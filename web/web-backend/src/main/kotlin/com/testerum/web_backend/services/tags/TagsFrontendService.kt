@@ -3,6 +3,8 @@ package com.testerum.web_backend.services.tags
 import com.testerum.file_service.caches.resolved.FeaturesCache
 import com.testerum.file_service.caches.resolved.StepsCache
 import com.testerum.file_service.caches.resolved.TestsCache
+import com.testerum.model.step.BasicStepDef
+import com.testerum.model.step.ComposedStepDef
 
 class TagsFrontendService(private val featuresCache: FeaturesCache,
                           private val testsCache: TestsCache,
@@ -29,6 +31,12 @@ class TagsFrontendService(private val featuresCache: FeaturesCache,
 
     private fun getFeatureTags(): List<String> = featuresCache.getAllFeatures().flatMap { it.tags }
     private fun getTestTags(): List<String> = testsCache.getAllTests().flatMap { it.tags }
-    private fun getStepTags(): List<String> = stepsCache.getAllSteps().flatMap { it.tags }
+    private fun getStepTags(): List<String> = stepsCache.getAllSteps().flatMap {
+        when (it) {
+            is BasicStepDef    -> it.tags
+            is ComposedStepDef -> it.tags
+            else               -> emptyList()
+        }
+    }
 
 }

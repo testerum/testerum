@@ -1,0 +1,18 @@
+<div class="runner-results-tabs">
+    <p-tabView>
+
+        <p-tabPanel header="Tests Results" *ngIf="testsResultUrl">
+            <result [url]="testsResultUrl"></result>
+        </p-tabPanel>
+
+        <p-tabPanel header="Tags Results" *ngIf="tagsResultsUrl">
+            <result [url]="tagsResultsUrl"></result>
+        </p-tabPanel>
+
+        <p-tabPanel header="Statistics" *ngIf="statisticsUrl">
+            <result [url]="statisticsUrl"></result>
+        </p-tabPanel>
+
+    </p-tabView>
+
+</div>

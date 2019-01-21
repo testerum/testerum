@@ -9,14 +9,14 @@ import com.testerum.model.text.StepPattern
 import com.testerum.model.util.StepHashUtil
 import com.testerum.model.warning.Warning
 
-data class ComposedStepDef @JsonCreator constructor(@JsonProperty("path") override val path: Path,
-                                                    @JsonProperty("oldPath") val oldPath: Path? = path,
-                                                    @JsonProperty("phase") override val phase: StepPhaseEnum,
+data class ComposedStepDef @JsonCreator constructor(@JsonProperty("path")        override val path: Path,
+                                                    @JsonProperty("oldPath")     val oldPath: Path? = path,
+                                                    @JsonProperty("phase")       override val phase: StepPhaseEnum,
                                                     @JsonProperty("stepPattern") override val stepPattern: StepPattern,
                                                     @JsonProperty("description") override val description: String? = null,
-                                                    @JsonProperty("tags") override val tags: List<String> = emptyList(),
-                                                    @JsonProperty("stepCalls") val stepCalls: List<StepCall>,
-                                                    @JsonProperty("warnings") override val warnings: List<Warning> = emptyList()): StepDef {
+                                                    @JsonProperty("tags")        val tags: List<String> = emptyList(),
+                                                    @JsonProperty("stepCalls")   val stepCalls: List<StepCall>,
+                                                    @JsonProperty("warnings")    override val warnings: List<Warning> = emptyList()): StepDef {
 
     companion object {
         val COMPOSED_STEP_FILE_EXTENSION = "step"

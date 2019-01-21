@@ -14,9 +14,10 @@ import com.testerum.file_service.file.FeatureFileService
 import com.testerum.file_service.file.ManualTestFileService
 import com.testerum.file_service.file.ManualTestPlanFileService
 import com.testerum.file_service.file.ResourceFileService
-import com.testerum.file_service.file.RunnerResultFileService
+import com.testerum.file_service.file.ResultsFileService
 import com.testerum.file_service.file.SettingsFileService
 import com.testerum.file_service.file.TestFileService
+import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileFeatureMapper
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileStepMapper
@@ -146,11 +147,13 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
             fileToBusinessManualTestMapper = fileToBusinessManualTestMapper
     )
 
+    val testerumProjectFileService = TesterumProjectFileService()
+
     val variablesFileService = VariablesFileService()
 
     val settingsFileService = SettingsFileService()
 
-    val runnerResultFileService = RunnerResultFileService()
+    val runnerResultFileService = ResultsFileService()
 
     val warningService = WarningService()
 

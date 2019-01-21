@@ -29,7 +29,6 @@ export class Path implements Serializable<Path> {
         let fileName:string = null;
         let extension:string = null;
 
-        let lastPathPart = null;
         let dotIndexInFileName = 0;
         if (pathsPart.length > 0) {
             let lastPathPart = pathsPart[pathsPart.length - 1];

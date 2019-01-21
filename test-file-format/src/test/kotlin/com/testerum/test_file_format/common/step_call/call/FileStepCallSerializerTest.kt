@@ -28,7 +28,38 @@ class FileStepCallSerializerTest {
                 indentLevel = 0,
                 expected = "step: Given an empty database\n"
         )
+    }
 
+    @Test
+    fun `simple call, with text part escape sequence`() {
+        testRunner.execute(
+                original = FileStepCall(
+                        phase = FileStepPhase.GIVEN,
+                        parts = listOf(
+                                FileTextStepCallPart("the << stuff")
+                        )
+                ),
+                indentLevel = 0,
+                expected = """|step: Given the \<< stuff
+                              |""".trimMargin()
+        )
+
+    }
+
+    @Test
+    fun `simple call, with arg part ending escape sequence`() {
+        testRunner.execute(
+                original = FileStepCall(
+                        phase = FileStepPhase.GIVEN,
+                        parts = listOf(
+                                FileArgStepCallPart("""left >> right""")
+                        )
+                )
+                ,
+                indentLevel = 0,
+                expected = """|step: Given <<left \>> right>>
+                              |""".trimMargin()
+        )
     }
 
     @Test

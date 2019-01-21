@@ -20,6 +20,12 @@
     <div class="button-panel btn-group my-button-panel"
          [class.hidden]="!hasMouseOver">
 
+        <div *ngIf="!model.testProperties.isManual"
+             title="Run Tests" class="btn btn-default btn-xs btn-group"
+             (click)="runTests();$event.stopPropagation();">
+            <i class="fa_my-run" aria-hidden="true"></i>
+        </div>
+
         <div title="Cut Test" class="btn btn-default btn-xs btn-group"
              (click)="onCutFeature(); $event.stopPropagation()">
             <i class="fa_my-cut" aria-hidden="true"></i>

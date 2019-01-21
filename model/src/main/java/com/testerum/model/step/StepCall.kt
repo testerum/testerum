@@ -90,18 +90,9 @@ data class StepCall @JsonCreator constructor(
                     destination.append("<<")
 
                     if (patternPart.name.isNotBlank()) {
-                        destination.append(patternPart.name).append(" = ")
+                        destination.append(patternPart.name).append("=")
                     }
-
-                    val arg = args[argIndex]
-
-                    // todo: escape ">>" (should we also escape "<<"?)
-                    if (arg.path == null) {
-                        destination.append(arg.content.orEmpty())
-                    } else {
-                        destination.append("file:").append(arg.path)
-                    }
-
+                    destination.append(args[argIndex].contentForLogging)
                     destination.append(">>")
 
                     argIndex++

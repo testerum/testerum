@@ -9,6 +9,7 @@ export class RunnerStoppedEvent implements RunnerEvent, Serializable<RunnerStopp
     eventType: RunnerEventTypeEnum = RunnerEventTypeEnum.RUNNER_STOPPED_EVENT;
 
     deserialize(input: Object): RunnerStoppedEvent {
+        this.eventKey = new EventKey().deserialize(input["eventKey"]);
         this.time = new Date(input["time"]);
 
         return this;

@@ -8,13 +8,13 @@ import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.warning.Warning
 
-data class BasicStepDef @JsonCreator constructor(@JsonProperty("phase") override val phase: StepPhaseEnum,
+data class BasicStepDef @JsonCreator constructor(@JsonProperty("phase")       override val phase: StepPhaseEnum,
                                                  @JsonProperty("stepPattern") override val stepPattern: StepPattern,
                                                  @JsonProperty("description") override val description: String? = null,
-                                                 @JsonProperty("tags") override val tags: List<String> = emptyList(),
-                                                 @JsonProperty("className") val className: String,
-                                                 @JsonProperty("methodName") val methodName: String,
-                                                 @JsonProperty("warnings") override val warnings: List<Warning> = emptyList()): StepDef {
+                                                 @JsonProperty("tags")        val tags: List<String> = emptyList(),
+                                                 @JsonProperty("className")   val className: String,
+                                                 @JsonProperty("methodName")  val methodName: String,
+                                                 @JsonProperty("warnings")    override val warnings: List<Warning> = emptyList()): StepDef {
 
     private val _path = run {
         val paramTypes = stepPattern.patternParts

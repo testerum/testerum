@@ -1,0 +1,45 @@
+<%_
+    /** @type {ReportTest} */
+    var test = test;
+_%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title><%=test.testName%></title>
+</head>
+
+<body>
+    <h1><%=test.testName%></h1>
+
+    <h2>Status: <%=ExecutionStatus[test.status]%></h2>
+
+    <h3>Steps</h3>
+    <ul>
+        <% for (const reportStep of test.children) { %>
+        <%_
+            var step = "";
+
+            /** @type StepCall */
+            const stepCall = reportStep.stepCall;
+
+            /** @type StepDef */
+            const stepDef = stepDefsById.get(stepCall.stepDefId);
+
+            if (stepDef instanceof ReportComposedStepDef) {
+                step = `COMPOSED: path=${stepDef.path.toString()}`;
+            } else if (stepDef instanceof ReportBasicStepDef) {
+                step = `BASIC: ${stepDef.className}.${stepDef.methodName}()`;
+            } else if (stepDef instanceof ReportUndefinedStepDef) {
+                step = `UNDEFINED: id=${stepDef.id}`;
+            } else {
+                step = `[Unknown step: ${JSON.stringify(stepDefsById)}]`
+            }
+        _%>
+            <li><%=step%></li>
+        <% } %>
+    </ul>
+</body>
+
+</html>
+

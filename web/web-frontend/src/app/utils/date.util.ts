@@ -22,4 +22,31 @@ export class DateUtil {
     private static twoDigitToString(number: number): string {
         return number < 10 ? "0"+number : ""+number;
     }
+
+    static durationToShortString(durantionInMillis: number): string {
+        let date = new Date(durantionInMillis),
+            hours = Math.floor(durantionInMillis / (3600*1000)),
+            minutes = date.getMinutes(),
+            seconds = date.getSeconds(),
+            millis = ("" + date.getUTCMilliseconds()).slice(0, 2);
+
+        let result = "" + millis;
+        let suffix = "millis";
+
+        if (seconds) {
+            result = "" + seconds + "." + result;
+            suffix = "seconds";
+        }
+
+        if (minutes) {
+            result = "" + minutes + ":" + result;
+            suffix = "minutes";
+        }
+        if (hours) {
+            result = "" + hours + ":" + result;
+            suffix = "hours";
+        }
+
+        return result + " " + suffix;
+    }
 }

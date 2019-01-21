@@ -80,7 +80,7 @@ export class RunnerTreeService {
     }
 
     private onRunnerEvent(runnerEvent: RunnerEvent): void {
-        let eventKey: string = RunnerTreeUtil.getEventKey(runnerEvent);
+        let eventKey: string = runnerEvent.eventKey.eventKeyAsString;
 
         if (runnerEvent instanceof SuiteStartEvent) {
             let runnerTreeNode: RunnerTreeNodeModel = this.treeRootNode;

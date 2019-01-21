@@ -11,6 +11,7 @@ import {
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeContainer} from "../../model/json-tree-container.model";
 import {JsonTreeService} from "../../json-tree.service";
+import {FeatureTreeContainerModel} from "../../../../../functionalities/features/features-tree/model/feature-tree-container.model";
 
 @Component({
     moduleId: module.id,
@@ -52,7 +53,9 @@ export class JsonContainerNodeComponent implements OnInit {
 
         this.model.getNodeState().showChildren = !this.model.getNodeState().showChildren;
         if(this.model.getNodeState().showChildren) {
-            this.jsonTreeService.triggerExpendedNodeEvent(this.model)
+            this.jsonTreeService.triggerExpendedNodeEvent(this.model);
+
+            this.expandChildIfIsASingleContainer(this.model);
         }
     }
 
@@ -60,9 +63,22 @@ export class JsonContainerNodeComponent implements OnInit {
         this.jsonTreeService.setSelectedNode(this.model);
 
         this.model.getNodeState().showChildren = true;
-        this.jsonTreeService.triggerExpendedNodeEvent(this.model)
+        this.jsonTreeService.triggerExpendedNodeEvent(this.model);
+
+        this.expandChildIfIsASingleContainer(this.model);
 
         return false;
+    }
+
+
+    private expandChildIfIsASingleContainer(parentContainer: JsonTreeContainer) {
+        if(parentContainer.getChildren().length == 1 && parentContainer.getChildren()[0].isContainer()) {
+            let currentNodeToExpand = parentContainer.getChildren()[0] as JsonTreeContainer;
+            currentNodeToExpand.getNodeState().showChildren = true;
+            this.jsonTreeService.triggerExpendedNodeEvent(currentNodeToExpand);
+
+            this.expandChildIfIsASingleContainer(currentNodeToExpand);
+        }
     }
 
     hasChildren(): boolean {

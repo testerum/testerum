@@ -14,7 +14,7 @@ export class TestTreeNodeModel extends JsonTreePathNode implements Comparable<Te
     name: string;
     path: Path;
 
-    testProperties: TestProperties
+    testProperties: TestProperties;
     hasOwnOrDescendantWarnings: boolean = false;
 
     constructor(parentContainer: FeatureTreeContainerModel, name: string, path?: Path, testProperties: TestProperties = new TestProperties(), hasOwnOrDescendantWarnings: boolean = false) {

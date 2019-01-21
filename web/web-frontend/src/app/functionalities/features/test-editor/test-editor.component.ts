@@ -47,7 +47,14 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     currentTagSearch:string;
 
     @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
-    @ViewChild("descriptionMarkdownEditor") descriptionMarkdownEditor: MarkdownEditorComponent;
+    descriptionMarkdownEditor: MarkdownEditorComponent;
+    @ViewChild("descriptionMarkdownEditor") set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
+        if (descriptionMarkdownEditor != null) {
+            descriptionMarkdownEditor.setEditMode(this.isEditMode);
+            descriptionMarkdownEditor.setValue(this.testModel.description);
+        }
+        this.descriptionMarkdownEditor = descriptionMarkdownEditor;
+    }
 
     warnings: Message[] = [];
 
@@ -71,7 +78,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
         this.routeSubscription = this.route.data.subscribe(data => {
             this.testModel = data['testModel'];
-            if (this.descriptionMarkdownEditor) {
+            if (this.descriptionMarkdownEditor && this.testModel.description) {
                 this.descriptionMarkdownEditor.setValue(this.testModel.description);
             }
 
@@ -246,8 +253,8 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     private deleteActionAfterConfirmation(): void {
         this.testsService.delete(this.testModel).subscribe(restul => {
             this.isEditMode = false; // to not show CanDeactivateGuard
-            this.testsTreeService.initializeTestsTreeFromServer(null);
-            this.urlService.navigateToFeatures();
+            this.testsTreeService.initializeTestsTreeFromServer(this.testModel.path.getParentPath());
+            this.urlService.navigateToFeature(this.testModel.path.getParentPath());
         });
     }
 

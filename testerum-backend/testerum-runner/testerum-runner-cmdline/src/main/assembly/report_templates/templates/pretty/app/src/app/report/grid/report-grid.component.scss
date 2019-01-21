@@ -1,0 +1,204 @@
+@import "../../../assets/css/testerum-pretty-variables";
+
+.my-report-grid {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+
+    .grid-filters {
+        display: flex;
+
+        .filters-label {
+            margin-right: 10px;
+        }
+
+        .my-filter-input {
+
+            .ui-autocomplete-multiple-container {
+                padding: 0 3px;
+                font-size: 12px;
+                .ui-autocomplete-input-token{
+                    padding: 0 3px;
+                    border-radius: 3px;
+                    border-right: 0;
+                }
+                .ui-autocomplete-token {
+                    font-size: 9px;
+                    padding: .125em .5em;
+                }
+            }
+            .ui-autocomplete-dropdown {
+                line-height: 1.5;
+                height: 22px;
+                width: 22px;
+                .ui-button-text{
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    .my-name-cell {
+        display: flex;
+        flex-direction: row;
+    }
+
+    thead {
+        tr {
+            th {
+                padding: 0 5px !important;
+                text-align: center;
+            }
+        }
+        .my-name-col {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .filters-group {
+                display: flex;
+                flex-direction: row;
+            }
+        }
+
+        .my-status-col {
+            width: 10em;
+        }
+
+        .my-duration-col {
+            width: 10em;
+        }
+
+        .my-logs-col {
+            width: 5em;
+        }
+    }
+
+    tbody {
+        tr {
+            td {
+                padding: 0 !important;
+            }
+
+            .my-name-cell {
+                .ui-treetable-toggler {
+                    top: auto;
+
+                    .pi {
+                        font-size: 1em;
+                    }
+
+                    .pi-chevron-right {
+                        color: #C0C0C0;
+                    }
+                    .pi-chevron-down {
+                        color: #5F5F5F;
+                    }
+                }
+
+                >i {
+                    margin-right: 5px;
+                }
+
+                .step-call {
+                    .step-phase {
+                        color: #0000CD;
+                        font-weight: bolder;
+                        display: inline-block;
+                        vertical-align: top;
+                    }
+                    .step-text-part {
+                    }
+                    .step-param-part {
+                        color: #4169E1;
+                    }
+                }
+            }
+
+            .my-status-cell {
+                text-align: center;
+
+                &.my-status-disabled {
+                    background-color: $disabled-color;
+                }
+                &.my-status-skipped {
+                    background-color: $skipped-color;
+                }
+                &.my-status-undefined {
+                    background-color: $undefined-color;
+                }
+                &.my-status-passed {
+                    background-color: $passed-color;
+                }
+                &.my-status-failed {
+                    background-color: $failed-color;
+                }
+
+            }
+            .my-duration-cell {
+                text-align: center;
+            }
+            .my-log-cell {
+                display: flex;
+                flex-direction: row;
+
+
+                .my-log-action {
+                    text-align: center;
+                    cursor: pointer;
+
+                    display: flex;
+                    flex-direction: row;
+                    width: 50%;
+                    justify-content: center;
+
+                    &:hover>.far, &:hover>.fas {
+                        display: none;
+                    }
+                    .btn {
+                        display: none;
+                    }
+                    &:hover .btn {
+                        display: flex;
+                        justify-content: center;
+                        line-height: 1em;
+                        font-size: 1em;
+                        padding: 0;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .row-color-passed {
+            background-color: #5cb85c24 !important;
+            &:hover {
+                background-color: $passed-color !important;
+            }
+        }
+        .row-color-failed {
+            background-color: #FF638424 !important;
+            &:hover {
+                background-color: $failed-color !important;
+            }
+        }
+        .row-color-disabled {
+            background-color: #c0bebc24 !important;
+            &:hover {
+                background-color: $disabled-color !important;
+            }
+        }
+        .row-color-undefined {
+            background-color: #FFCE5624 !important;
+            &:hover {
+                background-color: $undefined-color !important;
+            }
+        }
+        .row-color-skipped {
+            background-color: #aae8ff24 !important;
+            &:hover {
+                background-color: $skipped-color !important;
+            }
+        }
+    }
+}

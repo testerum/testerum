@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.events.execution_listeners.utils.console_output_capture
 
-import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.TextWriter
+import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.TextPrinter
 import com.testerum.runner_cmdline.events.execution_listeners.utils.string_writer.impl.PrinterTextWriter
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
@@ -24,10 +24,14 @@ object ConsoleOutputCapturer {
             }
 
             this.capturingData = ConsoleOutputCapturingData.startCapture(owner)
+
+            Runtime.getRuntime().addShutdownHook(Thread {
+                cleanup()
+            })
         }
     }
 
-    fun getOriginalTextWriter(): TextWriter {
+    fun getOriginalTextWriter(): TextPrinter {
         val capturingData = this.capturingData
                 ?: throw IllegalStateException("output not yet captured; did you forget to call startCapture()?")
 
@@ -51,6 +55,11 @@ object ConsoleOutputCapturer {
         }
     }
 
+    private fun cleanup() {
+        val remainingConsoleCapturedText: String = drainCapturedText()
+        stopCapture()
+        println(remainingConsoleCapturedText)
+    }
 }
 
 private class ConsoleOutputCapturingData(val owner: String) {

@@ -2,7 +2,6 @@ import {Path} from "../../infrastructure/path/path.model";
 import {RunnerEvent} from "./runner.event";
 import {EventKey} from "./fields/event-key.model";
 import {ExecutionStatusEnum} from "./enums/execution-status.enum";
-import {ExceptionDetail} from "./fields/exception-detail.model";
 import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
 import {Serializable} from "../../infrastructure/serializable.model";
 
@@ -14,8 +13,6 @@ export class TestEndEvent implements RunnerEvent, Serializable<TestEndEvent> {
     testName: string;
     testFilePath: Path;
     status: ExecutionStatusEnum;
-    exceptionDetail: ExceptionDetail;
-    exceptionDetailAsString: string;
     durationMillis: number;
 
     deserialize(input: Object): TestEndEvent {
@@ -26,11 +23,6 @@ export class TestEndEvent implements RunnerEvent, Serializable<TestEndEvent> {
 
         let statusAsString:string = input["status"];
         this.status = ExecutionStatusEnum[statusAsString];
-
-        if (input["exceptionDetail"]) {
-            this.exceptionDetail = new ExceptionDetail().deserialize(input["exceptionDetail"]);
-        }
-        this.exceptionDetailAsString = input["exceptionDetailAsString"];
 
         this.durationMillis = input["durationMillis"];
         return this;

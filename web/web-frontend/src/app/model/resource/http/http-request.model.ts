@@ -11,6 +11,7 @@ export class HttpRequest implements Resource<HttpRequest> {
     url: string;
     headers:Array<HttpRequestHeader> = [];
     body: HttpRequestBody = new HttpRequestBody();
+    followRedirects: boolean = true;
 
     constructor() {
         this.reset();
@@ -66,6 +67,13 @@ export class HttpRequest implements Resource<HttpRequest> {
         if (input['body']) {
             this.body = new HttpRequestBody().deserialize(input['body']);
         }
+
+        let followRedirects = input['followRedirects'];
+        if (followRedirects === undefined || followRedirects === null) {
+            followRedirects = true;
+        }
+        this.followRedirects = followRedirects;
+
         return this;
     }
 
@@ -77,7 +85,8 @@ export class HttpRequest implements Resource<HttpRequest> {
         let result = '' +
             '{' +
             '"method":' + JsonUtil.stringify(this.method.toString()) + ',' +
-            '"url":' + JsonUtil.stringify(this.url) ;
+            '"url":' + JsonUtil.stringify(this.url) + ',' +
+            '"followRedirects":' + JsonUtil.stringify(this.followRedirects);
 
         result += ',"headers":{';
         let headers = this.getHeadersWithValue();
@@ -94,6 +103,7 @@ export class HttpRequest implements Resource<HttpRequest> {
             result += ',"body":' + JsonUtil.serializeSerializable(this.body);
         }
         result += '}';
+
         return result;
     }
 

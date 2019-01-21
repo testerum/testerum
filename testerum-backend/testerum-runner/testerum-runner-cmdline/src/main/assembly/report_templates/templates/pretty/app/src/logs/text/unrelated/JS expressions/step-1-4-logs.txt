@@ -1,0 +1,2 @@
+23:44:41.178  [INFO ] Started executing step [BASIC: THEN <<actualValue={{tenDaysFromToday}}>> is equal to <<expectedValue=2018-12-09>>]
+23:44:41.179  [INFO ] Finished executing step [BASIC: THEN <<actualValue={{tenDaysFromToday}}>> is equal to <<expectedValue=2018-12-09>>]; status: [SKIPPED]

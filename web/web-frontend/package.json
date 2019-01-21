@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod",
-    "maven-build": "node --max_old_space_size=2048 maven-build.js",
+    "maven-build": "node --max_old_space_size=4096 maven-build.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -40,7 +40,7 @@
     "zone.js": "0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.10.0",
+    "@angular-devkit/build-angular": "0.10.6",
     "@angular/cli": "7.0.6",
     "@angular/compiler-cli": "7.0.4",
     "@angular/language-service": "7.0.4",

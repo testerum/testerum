@@ -27,7 +27,7 @@ export class HttpParamsComponent implements OnInit {
     }
 
     refreshParamsFromUrl() {
-        let url = this.httpCallService.httpRequest.url;
+        let url = this.httpCallService.httpRequest? this.httpCallService.httpRequest.url: null;
 
         if(!url || !url.includes("?")) {
             this.params.length = 0;

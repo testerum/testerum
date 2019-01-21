@@ -1,0 +1,19 @@
+
+<div class="my-report">
+
+    <div class="header">
+        <div class="pie">
+            <report-pie></report-pie>
+        </div>
+
+        <div *ngIf="!hideLinksToOtherReports" class="links">
+            <a (click)="goToTagsOverview()">Tags Results >></a>
+        </div>
+
+        <div class="title">
+            <report-title [titlePrefix]="'Tests Results'"></report-title>
+        </div>
+    </div>
+
+    <report-grid></report-grid>
+</div>

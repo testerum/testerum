@@ -37,7 +37,7 @@
             </div>
             <div class="my-line" *ngIf="!isRootFeature() && isEditMode">
                 <label class="my-label label-size">Tags</label>
-                <div class="my-value">
+                <div class="my-value my-default-line-height">
                     <p-autoComplete #tagsElement
                                     [(ngModel)]="model.tags"
                                     [suggestions]="tagsToShow"
@@ -55,7 +55,7 @@
             <div class="my-line">
                 <label class="my-label-top label-size">Description</label>
 
-                <div class="my-value">
+                <div class="my-value my-default-line-height">
                     <markdown-editor #markdownEditor
                                      [options]="markdownEditorOptions"></markdown-editor>
                 </div>
@@ -65,7 +65,7 @@
             <div class="my-line" *ngIf="isEditMode || model.attachments.length > 0">
                 <label class="my-label-top label-size">Attachments</label>
 
-                <div class="my-value">
+                <div class="my-value my-default-line-height">
                     <attachments-component [attachments]="model.attachments"
                                            [editMode]="isEditMode"
                                            [fileAttachmentsAdded]="fileAttachmentsAdded"

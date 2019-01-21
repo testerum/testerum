@@ -8,9 +8,10 @@ import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
-import com.testerum.runner.cmdline.jsonEventsOutputFormat
+import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
+import com.testerum.runner.events.model.RunnerStoppedEvent
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.settings.SettingsManager
 import com.testerum.settings.getRequiredSetting
@@ -90,7 +91,6 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     }
 
     fun startExecution(executionId: Long,
-                       resultFilePath: JavaPath,
                        eventProcessor: (event: RunnerEvent) -> Unit,
                        doneProcessor: () -> Unit) {
         val execution = testExecutionsById[executionId]
@@ -105,7 +105,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
         LOG.debug("==========================================[ start test execution {} ]=========================================", executionId)
 
-        val args = createArgs(execution.testOrDirectoryPathsToRun, resultFilePath)
+        val args = createArgs(execution.testOrDirectoryPathsToRun)
         val argsFile: JavaPath = createArgsFile(args)
         val commandLine: List<String> = createCommandLine(argsFile)
 
@@ -165,6 +165,17 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
                 println("failed to delete argsFile [$argsFile]")
             }
             LOG.debug("==========================================[ DONE ]=========================================")
+
+            // send RunnerStoppedEvent
+            try {
+                eventProcessor(
+                        RunnerStoppedEvent()
+                )
+            } catch (e: Exception) {
+                LOG.warn("failed to process ${RunnerStoppedEvent::class.simpleName}", e)
+            }
+
+            // call doneProcessor
             doneProcessor()
         }
     }
@@ -222,28 +233,29 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         return argsFile
     }
 
-    private fun createArgs(testsPathsToRun: List<Path>,
-                           resultFilePath: JavaPath): List<String> {
+    private fun createArgs(testsPathsToRun: List<Path>): List<String> {
         val args = mutableListOf<String>()
 
         // repository directory
         val repositoryDir: JavaPath = frontendDirs.getRepositoryDir()
                 ?: throw IllegalArgumentException("cannot run tests because the repositoryDir is not set")
 
-        args += "--repository-directory '${repositoryDir.escape()}'"
+        args += "--repository-directory"
+        args += "${repositoryDir.escape()}"
 
         // built-in basic steps
         val builtInBasicStepsDir: JavaPath = getBuiltInBasicStepsDirectory()
-        args += "--basic-steps-directory '${builtInBasicStepsDir.escape()}'"
+        args += "--basic-steps-directory"
+        args += "${builtInBasicStepsDir.escape()}"
 
         // output
-        val outputFormatConsole = jsonEventsOutputFormat {}
-        val outputFormatFile = jsonEventsOutputFormat {
-            destinationFileName = resultFilePath
+        args += "--report"
+        args += RunnerReportType.builders().jsonEvents {
+            wrapJsonWithPrefixAndPostfix = true
         }
 
-        args += "--output-format '$outputFormatConsole'"
-        args += "--output-format '$outputFormatFile'"
+        args += "--managed-reports-directory"
+        args += frontendDirs.getReportsDir().toAbsolutePath().normalize().toString()
 
         // tests
         for (testPathToRun in testsPathsToRun) {
@@ -252,7 +264,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
                                                         .toAbsolutePath()
                                                         .normalize()
 
-            args.add("--test-path '${path.escape()}'")
+            args.add("--test-path")
+            args.add("${path.escape()}")
         }
 
         // settings
@@ -271,7 +284,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
                 continue
             }
 
-            args.add("--setting '${setting.key.escape()}=${setting.value.escape()}'")
+            args.add("--setting")
+            args.add("${setting.key.escape()}=${setting.value.escape()}")
         }
 
         LOG.debug("args = {}", args)

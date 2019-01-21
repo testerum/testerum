@@ -110,6 +110,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         )
 
         // execute tests
+        eventsService.start()
         println("STARTUP TIME: ${stopWatch.elapsedMillis()}ms")
         val executionStatus: ExecutionStatus = runWithThreadContextClassLoader(stepsClassLoader) {
             suite.run(runnerContext, globalVars)
@@ -124,7 +125,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
     }
 
     private fun initialize(cmdlineParams: CmdlineParams) {
-        executionListenerFinder.setOutputFormats(cmdlineParams.outputFormatsWithProperties)
+        executionListenerFinder.setReports(cmdlineParams.reportsWithProperties, cmdlineParams.managedReportsDir)
 
         val repositoryDir = getRepositoryDir()
         val basicStepsDir = getBasicStepsDir()

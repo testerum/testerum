@@ -32,6 +32,12 @@ data class ExceptionDetail @JsonCreator constructor(
         }
     }
 
+    @JsonProperty("asString")
+    val asString: String = toString()
+
+    @JsonProperty("asDetailedString")
+    val asDetailedString: String = detailedToString()
+
     override fun toString() = buildString { toString(this) }
 
     private fun toString(destination: StringBuilder) {

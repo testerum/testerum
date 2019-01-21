@@ -15,6 +15,8 @@
 
     <properties>
         <mainClass>com.testerum.runner_cmdline.TesterumRunner</mainClass>
+
+        <reportTemplatesNodePath>${project.basedir}/src/main/assembly/report_templates</reportTemplatesNodePath>
     </properties>
 
     <dependencies>
@@ -158,6 +160,13 @@
             <artifactId>picocli</artifactId>
         </dependency>
 
+        <!-- zt-exec -->
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-exec</artifactId>
+        </dependency>
+
+
         <!--==================== test dependencies ====================-->
 
         <!-- JUnit 5 -->
@@ -200,6 +209,152 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
             </plugin>
+
+            <!-- compile report templates  -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+
+                <configuration>
+                    <installDirectory>${reportTemplatesNodePath}</installDirectory>
+                </configuration>
+
+                <executions>
+                    <!-- install-node-and-npm -->
+                    <execution>
+                        <id>compile-report-templates--install-node-and-npm</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
+
+                    <!-- pretty / app -->
+                    <execution>
+                        <id>compile-report-templates--npm-install--pretty-app</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/app</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-build--pretty-app</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build-prod</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/app</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <!-- pretty / generator -->
+                    <execution>
+                        <id>compile-report-templates--npm-install--pretty-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-build--pretty-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build-prod</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-install-dependencies-in-dist-dir--pretty-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install --only=production</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <!-- stats / app -->
+                    <execution>
+                        <id>compile-report-templates--npm-install--stats-app</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/stats/app</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-build--stats-app</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build-prod</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/stats/app</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <!-- stats / generator -->
+                    <execution>
+                        <id>compile-report-templates--npm-install--stats-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-build--stats-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build-prod</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>compile-report-templates--npm-install-dependencies-in-dist-dir--stats-generator</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install --only=production</arguments>
+                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator/dist</workingDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -362,16 +517,36 @@
                                    <goal>run</goal>
                                </goals>
                            </execution>
+
+                           <!-- set executable bit on linux/mac shell script -->
+                           <execution>
+                               <id>make-runner-shell-script-executable</id>
+                               <phase>package</phase>
+                               <configuration>
+                                   <target>
+                                       <chmod perm="ugo+x">
+                                           <fileset dir="${project.basedir}/../../../package/runner/bin">
+                                               <include name="**/*.sh" />
+                                           </fileset>
+                                       </chmod>
+                                   </target>
+                               </configuration>
+                               <goals>
+                                   <goal>run</goal>
+                               </goals>
+                           </execution>
+
                        </executions>
                     </plugin>
 
-                    <!-- copy shell scripts to package directory  -->
+                    <!-- copy shell scripts & compiled report templates to package directory  -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
                         <executions>
+                            <!-- copy-shell-scripts-to-package-dir -->
                             <execution>
-                                <id>copy-runner-to-package-dir</id>
+                                <id>copy-shell-scripts-to-package-dir</id>
                                 <phase>prepare-package</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
@@ -386,32 +561,45 @@
                                     </resources>
                                 </configuration>
                             </execution>
-                        </executions>
-                    </plugin>
 
-                    <!-- set executable bit on linux/mac shell script -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <executions>
+                            <!-- copy-compiled-report-templates-to-package-dir: pretty -->
                             <execution>
-                                <id>make-runner-shell-script-executable</id>
-                                <phase>package</phase>
-                                <configuration>
-                                    <target>
-                                        <chmod perm="ugo+x">
-                                            <fileset dir="${project.basedir}/../../../package/runner/bin">
-                                                <include name="**/*.sh" />
-                                            </fileset>
-                                        </chmod>
-                                    </target>
-                                </configuration>
+                                <id>copy-compiled-report-templates-to-package-dir--pretty</id>
+                                <phase>prepare-package</phase>
                                 <goals>
-                                    <goal>run</goal>
+                                    <goal>copy-resources</goal>
                                 </goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/../../../package/runner/report_templates/pretty</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+
+                            <!-- copy-compiled-report-templates-to-package-dir: stats -->
+                            <execution>
+                                <id>copy-compiled-report-templates-to-package-dir--stats</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/../../../package/runner/report_templates/stats</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator/dist</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
+
                 </plugins>
             </build>
         </profile>

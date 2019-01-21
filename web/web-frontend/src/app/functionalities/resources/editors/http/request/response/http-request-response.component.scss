@@ -22,3 +22,21 @@ $marginBetweenSuggestions: 1.5em;
         }
     }
 }
+
+.http-request-response-loading {
+    text-align: center;
+    margin-top: 100px;
+
+    .blink_me {
+        font-family: sans-serif;
+        font-size: 3em;
+        font-weight: bold;
+        animation: blinker 1s linear infinite;
+    }
+
+    @keyframes blinker {
+        50% {
+            opacity: 0;
+        }
+    }
+}

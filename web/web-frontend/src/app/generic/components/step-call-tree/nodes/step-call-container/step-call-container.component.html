@@ -29,7 +29,7 @@
         </div>
 
         <!-- BUTTONS -->
-        <div *ngIf="isUndefinedStep() && isEditMode()"
+        <div *ngIf="isUndefinedStep() && isEditMode() && !isManualStep()"
              class="step-button-panel-hide-on-hover btn-group">
             <div *ngIf="!model.jsonTreeNodeState.showChildren"
                  title="Define Step" class="btn btn-default btn-xs btn-group"
@@ -40,10 +40,10 @@
 
         <div *ngIf="isEditMode()" class="step-button-panel btn-group">
 
-            <div *ngIf="isUndefinedStep()"
+            <div *ngIf="!isBasicStep()"
                  title="{{isUndefinedStep() ? 'Define Step': 'Edit Step'}}"
                  class="btn btn-default btn-xs btn-group"
-                (click)="editStep(); $event.stopPropagation()">
+                 (click)="editStep(); $event.stopPropagation()">
                 <i class="fa_my-edit" aria-hidden="true"></i>
             </div>
 

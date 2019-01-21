@@ -35,6 +35,17 @@
             <artifactId>delight-nashorn-sandbox</artifactId>
         </dependency>
 
+        <!-- JavaFaker - lib to generate fake data -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+        </dependency>
+
+        <!-- generex - library to generate strings based on a regex expresion-->
+        <dependency>
+            <groupId>com.github.mifmif</groupId>
+            <artifactId>generex</artifactId>
+        </dependency>
     </dependencies>
 
 

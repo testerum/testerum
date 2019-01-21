@@ -1,8 +1,7 @@
-import { RunnerEvent } from "./runner.event";
-import { EventKey } from "./fields/event-key.model";
-import { ExecutionStatusEnum } from "./enums/execution-status.enum";
-import { ExceptionDetail } from "./fields/exception-detail.model";
-import { RunnerEventTypeEnum } from "./enums/runner-event-type.enum";
+import {RunnerEvent} from "./runner.event";
+import {EventKey} from "./fields/event-key.model";
+import {ExecutionStatusEnum} from "./enums/execution-status.enum";
+import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
 import {Serializable} from "../../infrastructure/serializable.model";
 
 export class FeatureEndEvent implements RunnerEvent, Serializable<FeatureEndEvent> {
@@ -13,8 +12,6 @@ export class FeatureEndEvent implements RunnerEvent, Serializable<FeatureEndEven
     featureName: string;
 
     status: ExecutionStatusEnum;
-    exceptionDetail: ExceptionDetail;
-    exceptionDetailAsString: string;
     durationMillis: number;
 
     deserialize(input: Object): FeatureEndEvent {
@@ -24,11 +21,6 @@ export class FeatureEndEvent implements RunnerEvent, Serializable<FeatureEndEven
 
         let statusAsString:string = input["status"];
         this.status = ExecutionStatusEnum[statusAsString];
-
-        if (input["exceptionDetail"]) {
-            this.exceptionDetail = new ExceptionDetail().deserialize(input["exceptionDetail"]);
-        }
-        this.exceptionDetailAsString = input["exceptionDetailAsString"];
 
         this.durationMillis = input["durationMillis"];
         return this;

@@ -35,6 +35,10 @@ export class StepTextParamUtil {
 
     static getArgumentValue(arg:Arg): string {
 
+        if (arg.name) {
+            return arg.name
+        }
+
         if (arg.content instanceof BasicResource) {
             if(typeof arg.content.content === "string" || typeof arg.content.content === "number" ) {
                 if (arg.path && arg.path.fileName) {
@@ -49,10 +53,6 @@ export class StepTextParamUtil {
                 }
                 return arg.content.content;
             }
-        }
-
-        if (arg.name) {
-            return arg.name
         }
 
         if (arg.path && arg.path.fileName) {

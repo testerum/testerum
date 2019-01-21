@@ -8,6 +8,7 @@ import com.testerum.model.resources.http.response.HttpResponseHeader
 import com.testerum.model.resources.http.response.ValidHttpResponse
 import org.apache.http.HttpEntityEnclosingRequest
 import org.apache.http.client.HttpClient
+import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpDelete
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpHead
@@ -38,6 +39,16 @@ class HttpClientService(private val httpClient: HttpClient) {
             HttpRequestMethod.PATCH   -> HttpPatch()
             else                      -> throw RuntimeException("Unrecognized request method [${request.method}]")
         }
+
+        // follow redirects
+        val requestConfig = if (httpRequest.config == null) {
+            RequestConfig.DEFAULT
+        } else {
+            httpRequest.config
+        }
+        httpRequest.config = RequestConfig.copy(requestConfig)
+                .setRedirectsEnabled(request.followRedirects)
+                .build()
 
         // URI
         httpRequest.uri = URI.create(request.url)

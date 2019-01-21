@@ -1,0 +1,50 @@
+<div class="report-pie">
+    <p-chart type="pie"
+             [responsive]="false"
+             [width]="150"
+             [height]="150"
+             [data]="pieChartData"
+             [options]="pieChartOptions">
+    </p-chart>
+
+    <div class="legend-container">
+        <table class="table-striped">
+            <tr>
+                <td colspan="3" class="total_tests_label">Total Tests:</td>
+                <td>{{model().totalTests}}</td>
+            </tr>
+            <tr>
+                <td><div class="legend passed"></div></td>
+                <td><i class="fa_my-runner-passed-colored" aria-hidden="true"></i></td>
+                <td class="legend_label">Passed:</td>
+                <td>{{model().passed}}</td>
+            </tr>
+            <tr>
+                <td><div class="legend failed"></div></td>
+                <td><i class="fa_my-runner-failed-colored" aria-hidden="true"></i></td>
+                <td class="legend_label">Failed:</td>
+                <td>{{model().failed}}</td>
+            </tr>
+
+            <tr>
+                <td><div class="legend disabled"></div></td>
+                <td><i class="fa_my-runner-disabled-colored" aria-hidden="true"></i></td>
+                <td class="legend_label">Disabled:</td>
+                <td>{{model().disabled}}</td>
+            </tr>
+            <tr>
+                <td><div class="legend undefined"></div></td>
+                <td><i class="fa_my-runner-undefined-colored" aria-hidden="true"></i></td>
+                <td class="legend_label">Undefined:</td>
+                <td>{{model().undefined}}</td>
+            </tr>
+            <tr>
+                <td><div class="legend skipped"></div></td>
+                <td><i class="fa_my-runner-skipped-colored" aria-hidden="true"></i></td>
+                <td class="legend_label">Skipped:</td>
+                <td>{{model().skipped}}</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
