@@ -1,6 +1,9 @@
 @import "../../../assets/css/testerum-pretty-variables";
 
 .my-report-grid {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
 
     .grid-filters {
         display: flex;

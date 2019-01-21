@@ -56,13 +56,13 @@
                     [showDetails]="showDetails"></line-stats>
     </div>
 
-    <div class="header">
-        <div class="title">
+    <div class="header" *ngIf="hasTags()">
+        <h1 class="title">
             Tags Statistics
-        </div>
+        </h1>
     </div>
 
-    <div class="components">
+    <div class="components" *ngIf="hasTags()">
         <tag-uptime [widthInPercentage]="33"
                     [startDate]="startDate"
                     [endDate]="endDate"></tag-uptime>

@@ -17,6 +17,8 @@ export class StatsComponent implements OnInit{
     endDate: Date;
     showDetails: boolean = false;
 
+    tags: string[] = [];
+
     constructor(private statsService: StatsService) {
     }
 
@@ -25,9 +27,15 @@ export class StatsComponent implements OnInit{
         this.lastAbsoluteDate = this.statsService.statsModelExtractor.getLastDate();
         this.startDate = this.firstAbsoluteDate;
         this.endDate = this.lastAbsoluteDate;
+
+        this.tags = this.statsService.statsModelExtractor.getTags();
     }
 
     getTags(): string[] {
-        return this.statsService.statsModelExtractor.getTags();
+        return this.tags;
+    }
+
+    hasTags(): boolean {
+        return this.tags && this.tags.length > 0;
     }
 }

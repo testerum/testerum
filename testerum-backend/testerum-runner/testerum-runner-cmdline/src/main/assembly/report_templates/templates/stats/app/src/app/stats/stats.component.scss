@@ -6,6 +6,7 @@
         margin: auto;
         display: flex;
         flex-direction: column;
+        position: relative;
 
         .title {
             text-align: center;
@@ -14,15 +15,15 @@
 
         .config {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: -15px;
+            left: -15px;
             display: flex;
             justify-content: flex-end;
             flex-direction: column;
 
             background: #e4e4e4;
             padding: 0.5em 1em;
-            border-bottom-right-radius: 5px;
+            border-radius: 5px;
 
             .config-line {
                 display: flex;
