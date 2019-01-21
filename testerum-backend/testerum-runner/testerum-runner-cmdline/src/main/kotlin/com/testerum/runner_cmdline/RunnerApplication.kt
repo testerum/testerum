@@ -5,6 +5,7 @@ import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.api.test_context.TestContext
 import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.settings.RunnerSettingsManager
+import com.testerum.api.test_context.settings.RunnerTesterumDirs
 import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.api.transformer.Transformer
@@ -29,18 +30,20 @@ import com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
-import com.testerum.runner_cmdline.settings.RunnerSettingsManagerImpl
 import com.testerum.runner_cmdline.test_context.TestContextImpl
 import com.testerum.runner_cmdline.transformer.TransformerFactory
 import com.testerum.settings.SettingsManager
+import com.testerum.settings.TesterumDirs
 import com.testerum.settings.hasValue
 import com.testerum.settings.keys.SystemSettingKeys
 import java.nio.file.Paths
 import java.nio.file.Path as JavaPath
 
 class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderFactory,
-                        private val runnerSettingsManager: RunnerSettingsManagerImpl,
+                        private val runnerSettingsManager: RunnerSettingsManager,
+                        private val runnerTesterumDirs: RunnerTesterumDirs,
                         private val settingsManager: SettingsManager,
+                        private val testerumDirs: TesterumDirs,
                         private val eventsService: EventsService,
                         private val stepsCache: StepsCache,
                         private val testsCache: TestsCache,
@@ -81,6 +84,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         run {
             TesterumServiceLocator.registerService(TestVariables::class.java, testVariables)
             TesterumServiceLocator.registerService(RunnerSettingsManager::class.java, runnerSettingsManager)
+            TesterumServiceLocator.registerService(RunnerTesterumDirs::class.java, runnerTesterumDirs)
             TesterumServiceLocator.registerService(TesterumLogger::class.java, testerumLogger)
             TesterumServiceLocator.registerService(TestContext::class.java, testContext)
         }
@@ -128,7 +132,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         executionListenerFinder.setReports(cmdlineParams.reportsWithProperties, cmdlineParams.managedReportsDir)
 
         val repositoryDir = getRepositoryDir()
-        val basicStepsDir = getBasicStepsDir()
+        val basicStepsDir = testerumDirs.getBasicStepsDir()
         val composedStepsDir = getComposedStepsDir(repositoryDir)
         val resourcesDir = getResourcesDir(repositoryDir)
         val testsDir = getTestsDir(repositoryDir)
@@ -149,11 +153,6 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         featuresCache.initialize(
                 featuresDir = featuresDir
         )
-    }
-
-    private fun getBasicStepsDir(): JavaPath {
-        return runnerSettingsManager.getSetting(SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR)?.resolvedValueAsPath
-                ?: throw IllegalStateException("the setting [${SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR}] is required")
     }
 
     private fun getPersistentCacheFile(): JavaPath {

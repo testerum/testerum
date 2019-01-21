@@ -4,7 +4,6 @@ import com.testerum.common_kotlin.hasExtension
 import com.testerum.common_kotlin.isRegularFile
 import com.testerum.common_kotlin.walkAndCollect
 import com.testerum.file_service.caches.resolved.StepsCache
-import com.testerum.settings.keys.SystemSettingKeys
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import org.slf4j.LoggerFactory
 import java.nio.file.Path
@@ -18,10 +17,6 @@ class StepsCacheInitializer(private val frontendDirs: FrontendDirs,
 
     fun initialize() {
         val basicStepsDir = frontendDirs.getBasicStepsDir()
-        if (basicStepsDir == null) {
-            LOG.info("not initializing the steps cache, because the setting [${SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR}] is not set")
-            return
-        }
 
         val cacheDir = frontendDirs.getCacheDir()
         val resourcesDir = frontendDirs.getOptionalResourcesDir()

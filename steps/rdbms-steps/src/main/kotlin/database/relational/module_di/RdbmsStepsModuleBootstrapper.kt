@@ -1,11 +1,9 @@
 package database.relational.module_di
 
 import com.testerum.api.services.TesterumServiceLocator
-import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.common.json_diff.module_di.JsonDiffModuleFactory
 import com.testerum.common_assertion_functions.module_di.AssertionFunctionsModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
-import com.testerum.settings.keys.SystemSettingKeys
 
 class RdbmsStepsModuleBootstrapper {
 
@@ -19,9 +17,7 @@ class RdbmsStepsModuleBootstrapper {
 
     //======================================== initialization ========================================//
     init {
-        val jdbcDriversDir = TesterumServiceLocator.getSettingsManager()
-                .getRequiredSetting(SystemSettingKeys.JDBC_DRIVERS_DIR)
-                .resolvedValueAsPath
+        val jdbcDriversDir = TesterumServiceLocator.getTesterumDirs().getJdbcDriversDir()
 
         rdbmsStepsModuleFactory.rdbmsDriverConfigCache.initialize(jdbcDriversDir)
     }

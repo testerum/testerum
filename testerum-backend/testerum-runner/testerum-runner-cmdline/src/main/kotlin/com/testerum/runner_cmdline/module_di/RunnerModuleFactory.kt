@@ -13,6 +13,7 @@ import com.testerum.runner_cmdline.module_di.submodules.RunnerTransformersModule
 import com.testerum.runner_cmdline.runner_tree.builder.RunnerExecutionTreeBuilder
 import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.settings.RunnerSettingsManagerImpl
+import com.testerum.runner_cmdline.settings.RunnerTesterumDirsImpl
 import com.testerum.runner_cmdline.tests_finder.RunnerTestsFinder
 import com.testerum.settings.module_di.SettingsModuleFactory
 
@@ -38,7 +39,8 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
     )
 
     private val runnerClassloaderFactory = RunnerClassloaderFactory(
-            settingsManager = settingsModuleFactory.settingsManager
+            settingsManager = settingsModuleFactory.settingsManager,
+            testerumDirs = settingsModuleFactory.testerumDirs
     )
 
     private val runnerTestsFinder = RunnerTestsFinder()
@@ -55,10 +57,16 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
             settingsManager = settingsModuleFactory.settingsManager
     )
 
+    private val runnerTesterumDirs = RunnerTesterumDirsImpl(
+            testerumDirs = settingsModuleFactory.testerumDirs
+    )
+
     val runnerApplication = RunnerApplication(
             runnerClassloaderFactory = runnerClassloaderFactory,
             runnerSettingsManager = runnerSettingsManager,
+            runnerTesterumDirs = runnerTesterumDirs,
             settingsManager = settingsModuleFactory.settingsManager,
+            testerumDirs = settingsModuleFactory.testerumDirs, 
             eventsService = eventsService,
             stepsCache = fileServiceModuleFactory.stepsCache,
             testsCache = fileServiceModuleFactory.testsCache,

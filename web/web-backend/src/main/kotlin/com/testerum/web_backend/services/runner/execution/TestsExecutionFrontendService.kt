@@ -1,7 +1,6 @@
 package com.testerum.web_backend.services.runner.execution
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.file_service.caches.resolved.TestsCache
@@ -14,8 +13,7 @@ import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.RunnerStoppedEvent
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.settings.SettingsManager
-import com.testerum.settings.getRequiredSetting
-import com.testerum.settings.getValue
+import com.testerum.settings.TesterumDirs
 import com.testerum.settings.keys.SystemSettingKeys
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.runner.execution.model.RunningTestExecution
@@ -29,13 +27,13 @@ import org.zeroturnaround.exec.ProcessResult
 import org.zeroturnaround.exec.listener.ProcessListener
 import org.zeroturnaround.exec.stream.LogOutputStream
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import java.nio.file.Path as JavaPath
 
 class TestsExecutionFrontendService(private val testsCache: TestsCache,
+                                    private val testerumDirs: TesterumDirs,
                                     private val frontendDirs: FrontendDirs,
                                     private val settingsManager: SettingsManager,
                                     private val jsonObjectMapper: ObjectMapper) {
@@ -188,7 +186,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         commandLine += "-classpath"
         commandLine += "${getRunnerRepoPath()}/*"
 
-        commandLine += "-Dtesterum.packageDirectory=${getPackageDir()}"
+        commandLine += "-Dtesterum.packageDirectory=${testerumDirs.getInstallDir()}"
         commandLine += "-XX:-OmitStackTraceInFastThrow"
 //        commandLine += "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000" // todo: make this an option to allow people to do remote debugging
 
@@ -201,25 +199,15 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     }
 
     private fun getRunnerRepoPath(): JavaPath {
-        val packageDir: JavaPath = getPackageDir()
+        val packageDir: JavaPath = testerumDirs.getInstallDir()
 
         return packageDir.resolve("runner/repo")
                          .toAbsolutePath()
                          .normalize()
     }
 
-    private fun getPackageDir(): JavaPath {
-        val packageDirKey = SystemSettingKeys.TESTERUM_INSTALL_DIR
-        val packageDirSettingValue = settingsManager.getValue(packageDirKey)!!
-
-        return Paths.get(packageDirSettingValue)
-                    .toAbsolutePath()
-                    .normalize()
-    }
-
     private fun getBuiltInBasicStepsDirectory(): JavaPath {
-        val builtInBasicStepsDir = settingsManager.getRequiredSetting(SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR)
-                .resolvedValueAsPath
+        val builtInBasicStepsDir = testerumDirs.getBasicStepsDir()
 
         return builtInBasicStepsDir.toAbsolutePath().normalize()
     }
@@ -270,9 +258,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
         // settings
         val keysOfSettingsToExclude = setOf(
-                SystemSettingKeys.TESTERUM_INSTALL_DIR,
-                SystemSettingKeys.REPOSITORY_DIR,
-                SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR
+                SystemSettingKeys.REPOSITORY_DIR
         )
         val settings: Map<String, String?> = settingsManager.getSettings()
                 .associateBy({ it.definition.key }, { it.resolvedValue })

@@ -1,10 +1,8 @@
 package com.testerum.runner_cmdline.classloader
 
-import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.runner_cmdline.RunnerApplication
 import com.testerum.settings.SettingsManager
-import com.testerum.settings.getRequiredSetting
-import com.testerum.settings.keys.SystemSettingKeys
+import com.testerum.settings.TesterumDirs
 import java.net.URL
 import java.net.URLClassLoader
 import java.nio.file.Files
@@ -13,7 +11,8 @@ import java.util.function.BiPredicate
 import java.util.stream.Collectors
 import java.nio.file.Path as JavaPath
 
-class RunnerClassloaderFactory(private val settingsManager: SettingsManager) {
+class RunnerClassloaderFactory(private val settingsManager: SettingsManager,
+                               private val testerumDirs: TesterumDirs) {
 
     // todo: how to reduce duplication between this class and StepLibraryPersistentCacheManger?
     fun createStepsClassLoader(): ClassLoader {
@@ -30,7 +29,7 @@ class RunnerClassloaderFactory(private val settingsManager: SettingsManager) {
     // todo: how to reduce duplication between this class and BasicStepScanner?
     private fun getStepJarFiles(): List<JavaPath> {
         // todo: user step directory
-        val basicStepsDirectory: JavaPath = settingsManager.getRequiredSetting(SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR).resolvedValueAsPath
+        val basicStepsDirectory: JavaPath = testerumDirs.getBasicStepsDir()
 
         val isJarFile = BiPredicate { file: JavaPath, _: BasicFileAttributes ->
             Files.isRegularFile(file) && file.toString().endsWith(".jar")
