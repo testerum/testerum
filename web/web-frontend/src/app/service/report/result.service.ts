@@ -1,10 +1,8 @@
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {RunnerResultDirInfo} from "../../model/report/runner-result-dir-info.model";
 import {Injectable} from "@angular/core";
-import {RunnerEvent} from "../../model/test/event/runner.event";
 import {HttpClient} from "@angular/common/http";
-import {RunnerEventMarshaller} from '../../model/test/event/marshaller/runner-event-marshaller';
+import {RunnerResultsInfoModel} from "../../model/report/runner-results-info.model";
 
 @Injectable()
 export class ResultService {
@@ -13,30 +11,14 @@ export class ResultService {
 
     constructor(private http: HttpClient) {}
 
-    getRunnerReportDirInfo(): Observable<Array<RunnerResultDirInfo>> {
+    getRunnerReportDirInfo(): Observable<RunnerResultsInfoModel> {
         return this.http
-            .get<Array<RunnerResultDirInfo>>(this.BASE_URL).pipe(
+            .get<RunnerResultsInfoModel>(this.BASE_URL).pipe(
             map(ResultService.extractRunnerReportDirInfo));
     }
 
-    private static extractRunnerReportDirInfo(res: Array<RunnerResultDirInfo>): Array<RunnerResultDirInfo> {
-
-        let response: Array<RunnerResultDirInfo> = [];
-        for (let reportAsJson of res) {
-            let report = new RunnerResultDirInfo().deserialize(reportAsJson);
-            response.push(report)
-        }
-
-        return response;
+    private static extractRunnerReportDirInfo(input: Object): RunnerResultsInfoModel {
+        return new RunnerResultsInfoModel().deserialize(input);
     }
 
-    private static extractRunnerResult(res: Array<RunnerEvent>):Array<RunnerEvent> {
-        let result:Array<RunnerEvent> = [];
-        for (let event of res) {
-            result.push(
-                RunnerEventMarshaller.deserializeRunnerEvent(event)
-            )
-        }
-        return result;
-    }
 }
