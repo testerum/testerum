@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
     frame.addWindowListener(object : java.awt.event.WindowAdapter() {
         override fun windowClosing(windowEvent: java.awt.event.WindowEvent) {
             val confirmDialogResult = JOptionPane.showConfirmDialog(frame,
-                    "Closing this window will stop Testerum and it won't be accessible from the browser anymore.\n Do you want to continue?", "Close Window?",
+                    "Closing this window will stop Testerum and it won't be accessible from the browser anymore.\nDo you want to continue?", "Close Window?",
                     JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.WARNING_MESSAGE
             )
