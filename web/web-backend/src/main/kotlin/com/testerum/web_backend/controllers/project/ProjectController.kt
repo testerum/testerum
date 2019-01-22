@@ -1,32 +1,28 @@
 package com.testerum.web_backend.controllers.project
 
-import com.testerum.model.home.Home
 import com.testerum.model.home.Project
-import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.license.AuthRequest
-import com.testerum.model.license.AuthResponse
-import org.springframework.web.bind.annotation.*
+import com.testerum.web_backend.services.project.ProjectFrontendService
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/projects")
-open class ProjectController() {
+open class ProjectController(private val projectFrontendService: ProjectFrontendService) {
 
     @RequestMapping(method = [RequestMethod.GET])
     @ResponseBody
     fun getProjects(): List<Project> {
-
-        val recentProjects = listOf(
-                Project("Superman", Path.createInstance("c:/projects/superman")),
-                Project("Batman", Path.createInstance("c:/projects/batman")),
-                Project("SampleProject", Path.createInstance(".Testerum/samplePorject"))
-        )
-
-        return recentProjects;
+        return projectFrontendService.getProjects()
     }
 
     @RequestMapping (method = [RequestMethod.POST])
     @ResponseBody
     fun createProject(@RequestBody project: Project): Project {
-        return project;
+        // todo: implement this
+        return project
     }
+
 }

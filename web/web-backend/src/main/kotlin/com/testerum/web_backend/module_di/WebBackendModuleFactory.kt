@@ -61,6 +61,7 @@ import com.testerum.web_backend.services.initializers.caches.CachesInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.FeaturesCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.JdbcDriversCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.LicenseCacheInitializer
+import com.testerum.web_backend.services.initializers.caches.impl.RecentProjectsCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.StepsCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.TestsCacheInitializer
 import com.testerum.web_backend.services.initializers.info_logging.InfoLoggerInitializer
@@ -69,6 +70,7 @@ import com.testerum.web_backend.services.license.LicenseFrontendService
 import com.testerum.web_backend.services.manual.AutomatedToManualTestMapper
 import com.testerum.web_backend.services.manual.ManualTestPlansFrontendService
 import com.testerum.web_backend.services.message.MessageFrontendService
+import com.testerum.web_backend.services.project.ProjectFrontendService
 import com.testerum.web_backend.services.resources.NetworkService
 import com.testerum.web_backend.services.resources.ResourcesFrontendService
 import com.testerum.web_backend.services.resources.http.HttpFrontendService
@@ -149,6 +151,11 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             jdbcDriversCache = rdbmsDriverConfigCache
     )
 
+    private val recentProjectsCacheInitializer = RecentProjectsCacheInitializer(
+            frontendDirs = frontendDirs,
+            recentProjectsCache = fileServiceModuleFactory.recentProjectsCache
+    )
+
     private val licensePublicKeyForVerification: PublicKey = PemMarshaller.parsePublicKey(
             StringObfuscator.deobfuscate(
                     "rSVJ6P64sg4d6DvbvqjX0Q==.Zn2o9B/zBEF4To/YtBuWTAhwzpxrnGwrHC2lxagQmUwhEcubVdowblp" +
@@ -190,6 +197,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             stepsCacheInitializer = stepCachesInitializer,
             testsCacheInitializer = testsCacheInitializer,
             featuresCacheInitializer = featuresCacheInitializer,
+            recentProjectsCacheInitializer = recentProjectsCacheInitializer, 
             jdbcDriversCacheInitializer = jdbcDriversCacheInitializer,
             licenseCacheInitializer = licenseCacheInitializer
     )
@@ -372,6 +380,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             testResolver = fileServiceModuleFactory.testResolver
     )
 
+    private val projectFrontendService = ProjectFrontendService(
+            recentProjectsCache = fileServiceModuleFactory.recentProjectsCache
+    )
+
 
     //---------------------------------------- web controllers ----------------------------------------//
 
@@ -392,9 +404,12 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             setupFrontendService = setupFrontendService
     )
 
-    private val homeController = HomeController()
+    private val homeController = HomeController(
+            projectFrontendService = projectFrontendService
+    )
 
     private val projectController = ProjectController(
+            projectFrontendService = projectFrontendService
     )
 
     private val licenseController = LicenseController(

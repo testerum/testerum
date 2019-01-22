@@ -4,7 +4,6 @@ import com.testerum.file_service.caches.resolved.resolvers.TestResolver
 import com.testerum.file_service.caches.warnings.WarningService
 import com.testerum.file_service.file.TestFileService
 import com.testerum.file_service.util.isChangedRequiringSave
-import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.test.TestModel
 import org.slf4j.LoggerFactory
@@ -143,7 +142,7 @@ class TestsCache(private val testFileService: TestFileService,
 
             initialize(testsDir, resourcesDir)
 
-            return movedFeatureOrFileNewPath;
+            return movedFeatureOrFileNewPath
         }
     }
 
@@ -158,7 +157,7 @@ class TestsCache(private val testFileService: TestFileService,
 
             initialize(testsDir, resourcesDir)
 
-            return copiedFeatureOrFileNewPath;
+            return copiedFeatureOrFileNewPath
         }
     }
 

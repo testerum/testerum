@@ -26,7 +26,7 @@ export class Project implements Serializable<Project> {
 
     deserialize(input: Object): Project {
         this._name = input["name"];
-        this._path = Path.deserialize(input["path"]);
+        this._path = Path.createInstance(input["path"]);
 
         return this;
     }
@@ -35,7 +35,7 @@ export class Project implements Serializable<Project> {
         return "" +
             '{' +
             '"name":' + JsonUtil.stringify(this._name) + ',' +
-            '"path":' + this._path.serialize() +
+            '"path":' + JsonUtil.stringify(this._path.toString()) +
             '}'
     }
 }
