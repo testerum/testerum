@@ -23,7 +23,8 @@
                 <div class="date-input">
                     <label class="date-label">End Date:</label>
                     <div class="date-value">
-                        <p-calendar [(ngModel)]="endDate"
+                        <p-calendar [ngModel]="endDate"
+                                    (onSelect)="onEndDateSelect($event)"
                                     [minDate]="firstAbsoluteDate"
                                     [maxDate]="lastAbsoluteDate"
                                     [readonlyInput]="true"
