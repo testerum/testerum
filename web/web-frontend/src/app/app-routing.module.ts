@@ -11,6 +11,7 @@ const appRoutes: Routes = [
     { path: "setup", component: SetupComponent},
     { path: "license", component: LicenseComponent},
     { path: "settings", component: SettingsComponent, canActivate: [SetupGuard]},
+    { path: ":project", redirectTo: ":project/features"},
     { path: '**', component: PageNotFoundComponent }
 ];
 @NgModule({
