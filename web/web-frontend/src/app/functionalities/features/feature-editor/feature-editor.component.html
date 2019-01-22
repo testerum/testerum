@@ -16,7 +16,8 @@
                     <input name="name"
                            required
                            #nameNgModel="ngModel" [(ngModel)]="model.name"
-                           type="text" class="form-control" >
+                           type="text" class="form-control"
+                           (keydown.enter)="$event.preventDefault()">
                     <input-error [model]="nameNgModel"
                                  [errorMessages]="{
                                         required: 'A name for this feature is required',
