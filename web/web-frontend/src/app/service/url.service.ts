@@ -14,6 +14,22 @@ export class UrlService {
         this.navigate(['']);
     }
 
+    public navigateToHomePage() {
+        this.navigate(["/"]);
+    }
+    public navigateToSetup() {
+        this.navigate(["/setup"]);
+    }
+
+    public navigateToLicense() {
+        this.navigate(["/license"]);
+    }
+
+    public navigateToLicenseBuy() {
+        let win = window.open("https://www.testerum.com/pricing/", '_blank');
+        win.focus();
+    }
+
     public navigateToFeatures() {
         this.navigateToProjectPath(["/features"]);
     }
@@ -79,19 +95,6 @@ export class UrlService {
         this.navigateToProjectPath(["/steps/composed/create", {path: path.toString()}]);
     }
 
-    public navigateToSetup() {
-        this.navigate(["/setup"]);
-    }
-
-    public navigateToLicense() {
-        this.navigate(["/license"]);
-    }
-
-    public navigateToLicenseBuy() {
-        let win = window.open("https://www.testerum.com/pricing/", '_blank');
-        win.focus();
-    }
-
     public navigateToManualExecPlans() {
         this.navigateToProjectPath(["/manual/plans"])
     }
@@ -124,4 +127,5 @@ export class UrlService {
         commands[0] = "/" + this.contextService.getProjectName() + commands[0];
         return this.router.navigate(commands, extras);
     }
+
 }
