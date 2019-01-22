@@ -4,6 +4,8 @@ import {ModalDirective} from "ngx-bootstrap";
 import {ErrorResponse} from "../../model/exception/error-response.model";
 import {FullLogErrorResponse} from "../../model/exception/full-log-error-response.model";
 import {ValidationErrorResponse} from "../../model/exception/validation-error-response.model";
+import {UrlService} from "../../service/url.service";
+import {ContextService} from "../../service/context.service";
 
 @Component({
     moduleId: module.id,
@@ -21,7 +23,9 @@ export class ErrorComponent implements OnInit {
     shouldShowDetails: boolean = false;
     shouldRefreshPage: boolean = true;
 
-    constructor(private errorService: ErrorService) {
+    constructor(private errorService: ErrorService,
+                private urlService: UrlService,
+                private contextService: ContextService) {
     }
 
     ngOnInit() {
@@ -59,7 +63,11 @@ export class ErrorComponent implements OnInit {
     close(): void {
         this.infoModal.hide();
         if (this.shouldRefreshPage) {
-            window.location.href = window.location.protocol + "//" + window.location.host + "/";
+            if (this.contextService.getProjectName()) {
+                window.location.href = window.location.protocol + "//" + window.location.host + "/" + this.contextService.getProjectName() + "/" ;
+            } else {
+                window.location.href = window.location.protocol + "//" + window.location.host + "/";
+            }
         }
     }
 }

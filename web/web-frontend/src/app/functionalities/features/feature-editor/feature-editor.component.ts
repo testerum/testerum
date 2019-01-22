@@ -15,6 +15,7 @@ import {TagsService} from "../../../service/tags.service";
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
+import {ExceptionDetail} from "../../../model/test/event/fields/exception-detail.model";
 
 @Component({
     moduleId: module.id,
@@ -101,7 +102,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
         }
     }
 
-    enableEditTestMode(): void {
+    enableEditMode(): void {
         this.setEditMode(true);
     }
 
