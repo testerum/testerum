@@ -24,7 +24,8 @@ export class LineStatsComponent implements OnInit, OnChanges {
     @Input() showDetails: boolean;
 
     data: any;
-    options: any;
+    lineChatOptions: any;
+    barChatOptions: any;
 
     firstPossibleDate: Date;
     lastPossibleDate: Date;
@@ -88,7 +89,7 @@ export class LineStatsComponent implements OnInit, OnChanges {
 
         this.refreshDisplayedData();
 
-        this.options = {
+        this.lineChatOptions = {
             legend: {
                 position: 'bottom'
             },
@@ -103,6 +104,34 @@ export class LineStatsComponent implements OnInit, OnChanges {
             animation: {
                 duration: 0
             }
+        };
+
+        this.barChatOptions = {
+            legend: {
+                position: 'bottom'
+            },
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        "tooltipFormat": "DD-MMM-YY",
+                        "displayFormats": {
+                            "day": "DD-MMM"
+                        }
+                    },
+                    offset: true,
+                    maxBarThickness: 100
+                }],
+                yAxes: [{
+                    stacked: true
+                }],
+            },
+            animation: {
+                duration: 0
+            },
+
         };
     }
 
@@ -228,5 +257,11 @@ export class LineStatsComponent implements OnInit, OnChanges {
         let failedDataPointIndex = this.failedData.findIndex(value => {return dataPoint.x == value.x});
         let failedDataPoint = this.failedData[failedDataPointIndex];
         this.failedData[failedDataPointIndex] = new DataPointModel(failedDataPoint.x, failedDataPoint.y + dataPoint.y)
+    }
+
+    shouldDisplayBarGrid(): boolean {
+        var timeDiff = Math.abs(this.endDate.getTime() - this.startDate.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return diffDays <= 7;
     }
 }

@@ -15,6 +15,7 @@
     </div>
 
     <div class="body">
-        <p-chart #chart type="line" [data]="data" [options]="options"></p-chart>
+        <p-chart *ngIf="!shouldDisplayBarGrid()" type="line" [data]="data" [options]="lineChatOptions"></p-chart>
+        <p-chart *ngIf="shouldDisplayBarGrid()" type="bar" [data]="data" [options]="barChatOptions"></p-chart>
     </div>
 </div>

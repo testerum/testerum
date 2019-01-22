@@ -26,7 +26,8 @@
                     <div class="my-value" *ngIf="isEditMode">
                         <input required
                                #testName="ngModel" [(ngModel)]="testModel.name"
-                               type="text" class="form-control" name="testName">
+                               type="text" class="form-control" name="testName"
+                               (keydown.enter)="$event.preventDefault()">
                         <input-error [model]="testName"
                                      [errorMessages]="{
                                         required: 'The name is required'

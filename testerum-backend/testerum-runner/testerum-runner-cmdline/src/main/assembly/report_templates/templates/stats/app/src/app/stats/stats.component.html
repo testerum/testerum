@@ -12,6 +12,9 @@
                                     [minDate]="firstAbsoluteDate"
                                     [maxDate]="lastAbsoluteDate"
                                     [readonlyInput]="true"
+                                    [monthNavigator]="true"
+                                    [yearNavigator]="true"
+                                    [yearRange]="getYearRange()"
                                     dateFormat="dd.MM.yy"
                                     pTooltip="Start Date"></p-calendar>
                     </div>
@@ -20,10 +23,14 @@
                 <div class="date-input">
                     <label class="date-label">End Date:</label>
                     <div class="date-value">
-                        <p-calendar [(ngModel)]="endDate"
+                        <p-calendar [ngModel]="endDate"
+                                    (onSelect)="onEndDateSelect($event)"
                                     [minDate]="firstAbsoluteDate"
                                     [maxDate]="lastAbsoluteDate"
                                     [readonlyInput]="true"
+                                    [monthNavigator]="true"
+                                    [yearNavigator]="true"
+                                    [yearRange]="getYearRange()"
                                     dateFormat="dd.MM.yy"
                                     pTooltip="End Date"></p-calendar>
                     </div>

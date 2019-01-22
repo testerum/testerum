@@ -38,4 +38,12 @@ export class StatsComponent implements OnInit{
     hasTags(): boolean {
         return this.tags && this.tags.length > 0;
     }
+
+    getYearRange(): string {
+        return this.firstAbsoluteDate.getFullYear() + ":" + this.lastAbsoluteDate.getFullYear();
+    }
+
+    onEndDateSelect(selectedDate: Date) {
+        this.endDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 23, 59, 59);
+    }
 }

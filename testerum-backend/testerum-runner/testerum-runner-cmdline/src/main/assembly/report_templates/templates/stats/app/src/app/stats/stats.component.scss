@@ -7,6 +7,7 @@
         display: flex;
         flex-direction: column;
         position: relative;
+        height: 6em;
 
         .title {
             text-align: center;
@@ -15,10 +16,11 @@
 
         .config {
             position: absolute;
-            top: -15px;
-            left: -15px;
+            top: 0;
+            left: 0;
             display: flex;
-            justify-content: flex-end;
+            height: 6em;
+            justify-content: center;
             flex-direction: column;
 
             background: #e4e4e4;
