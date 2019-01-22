@@ -4,7 +4,7 @@ import {tap} from 'rxjs/operators';
 import {EventEmitter, Injectable} from "@angular/core";
 import {ErrorCode} from "../model/exception/enums/error-code.enum";
 import {FullLogErrorResponse} from "../model/exception/full-log-error-response.model";
-import {ErrorResponse} from "../model/exception/error-response.model";
+import {MyError} from "../model/exception/my-error.model";
 import {ValidationErrorResponse} from "../model/exception/validation-error-response.model";
 import {
     HttpClient,
@@ -22,7 +22,7 @@ export class ErrorService implements HttpInterceptor {
 
     private PING_REQUEST_PATH = "/rest/version";
 
-    errorEventEmitter: EventEmitter<ErrorResponse> = new EventEmitter<ErrorResponse>();
+    errorEventEmitter: EventEmitter<MyError> = new EventEmitter<MyError>();
     static isServerAvailable: boolean = true;
 
     constructor(private http: HttpClient,
@@ -65,7 +65,7 @@ export class ErrorService implements HttpInterceptor {
                             let contentTypeToLowerCase = contentTypeHeader.toLowerCase();
                             if (contentTypeToLowerCase.startsWith("application/json", 0)) {
 
-                                let errorResponse: ErrorResponse = httpErrorResponse.error;
+                                let errorResponse: MyError = httpErrorResponse.error;
 
                                 if (errorResponse.errorCode.toString() == ErrorCode.CLOUD_ERROR.enumAsString) {
                                     return EMPTY;
@@ -107,7 +107,7 @@ export class ErrorService implements HttpInterceptor {
                 let contentTypeToLowerCase = contentTypeHeader.toLowerCase();
                 if (contentTypeToLowerCase.startsWith("application/json", 0)) {
 
-                    let errorResponse: ErrorResponse = httpErrorResponse.error;
+                    let errorResponse: MyError = httpErrorResponse.error;
 
                     if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
                         let validationException = new ValidationErrorResponse().deserialize(errorResponse);

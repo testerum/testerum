@@ -4,7 +4,7 @@ import {tap} from 'rxjs/operators';
 import {EventEmitter, Injectable} from "@angular/core";
 import {ErrorCode} from "../model/exception/enums/error-code.enum";
 import {FullLogErrorResponse} from "../model/exception/full-log-error-response.model";
-import {ErrorResponse} from "../model/exception/error-response.model";
+import {MyError} from "../model/exception/my-error.model";
 import {ValidationErrorResponse} from "../model/exception/validation-error-response.model";
 import {
     HttpClient,

@@ -1,7 +1,7 @@
 
 import {ErrorCode} from "./enums/error-code.enum";
 
-export class ErrorResponse {
+export class MyError {
 
     errorCode: ErrorCode;
 }

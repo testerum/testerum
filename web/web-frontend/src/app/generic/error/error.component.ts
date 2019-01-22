@@ -1,11 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ErrorService} from "../../service/error.service";
 import {ModalDirective} from "ngx-bootstrap";
-import {ErrorResponse} from "../../model/exception/error-response.model";
+import {MyError} from "../../model/exception/my-error.model";
 import {FullLogErrorResponse} from "../../model/exception/full-log-error-response.model";
 import {ValidationErrorResponse} from "../../model/exception/validation-error-response.model";
 import {UrlService} from "../../service/url.service";
 import {ContextService} from "../../service/context.service";
+import {JavaScriptError} from "../../model/exception/javascript-error.model";
 
 @Component({
     moduleId: module.id,
@@ -17,7 +18,6 @@ export class ErrorComponent implements OnInit {
 
     @ViewChild("infoModal") infoModal:ModalDirective;
 
-    title:string = "ERROR";
     message:string;
     details:string;
     shouldShowDetails: boolean = false;
@@ -30,8 +30,8 @@ export class ErrorComponent implements OnInit {
 
     ngOnInit() {
         this.errorService.errorEventEmitter.subscribe(
-            (error: ErrorResponse) => {
-                this.message = "An error occurred";
+            (error: MyError) => {
+                this.message = "Oops... One of our bugs has escaped!";
                 this.details = null;
                 this.shouldShowDetails = false;
                 this.shouldRefreshPage = true;
@@ -45,6 +45,16 @@ export class ErrorComponent implements OnInit {
                     this.message = error.validationModel.globalValidationMessage;
                     this.details = error.validationModel.globalValidationMessageDetails;
                     this.shouldRefreshPage = false;
+                }
+
+                if (error instanceof JavaScriptError) {
+
+                    if (error.error) {
+                        let exceptionDetails = "Exception: " + (error.error.message ? error.error.message : null) + "\n";
+                        exceptionDetails += error.error.stack;
+
+                        this.details = exceptionDetails;
+                    }
                 }
 
                 this.show();

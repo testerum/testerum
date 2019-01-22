@@ -1,9 +1,9 @@
-import {ErrorResponse} from "./error-response.model";
+import {MyError} from "./my-error.model";
 import {ErrorCode} from "./enums/error-code.enum";
 import {FormValidationModel} from "./form-validation.model";
 import {Serializable} from "../infrastructure/serializable.model";
 
-export class ValidationErrorResponse implements ErrorResponse, Serializable<ValidationErrorResponse> {
+export class ValidationErrorResponse implements MyError, Serializable<ValidationErrorResponse> {
 
     errorCode: ErrorCode;
     validationModel: FormValidationModel;

@@ -7,7 +7,7 @@ import {FormUtil} from "../../../utils/form.util";
 import {NgForm} from "@angular/forms";
 import {HttpErrorResponse} from "@angular/common/http";
 import {FileUpload} from "primeng/primeng";
-import {ErrorResponse} from "../../../model/exception/error-response.model";
+import {MyError} from "../../../model/exception/my-error.model";
 import {ErrorCode} from "../../../model/exception/enums/error-code.enum";
 import {ValidationErrorResponse} from "../../../model/exception/validation-error-response.model";
 
@@ -121,7 +121,7 @@ export class LicenseComponent implements OnInit {
                 },
                 (httpError: HttpErrorResponse) => {
 
-                        let errorResponse: ErrorResponse = httpError.error;
+                        let errorResponse: MyError = httpError.error;
 
                         if (errorResponse.errorCode.toString() == ErrorCode.CLOUD_ERROR.enumAsString) {
                             let validationException: ValidationErrorResponse = new ValidationErrorResponse().deserialize(errorResponse);

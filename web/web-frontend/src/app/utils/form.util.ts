@@ -1,7 +1,7 @@
 import {NgForm} from "@angular/forms";
 import {FormValidationModel} from "../model/exception/form-validation.model";
 import {HttpErrorResponse} from "@angular/common/http";
-import {ErrorResponse} from "../model/exception/error-response.model";
+import {MyError} from "../model/exception/my-error.model";
 import {ErrorCode} from "../model/exception/enums/error-code.enum";
 import {ValidationErrorResponse} from "../model/exception/validation-error-response.model";
 
@@ -19,7 +19,7 @@ export class FormUtil {
         }
 
         if(error instanceof HttpErrorResponse) {
-            let errorResponse: ErrorResponse = error.error;
+            let errorResponse: MyError = error.error;
 
             if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
                 let validationException: ValidationErrorResponse = new ValidationErrorResponse().deserialize(errorResponse);

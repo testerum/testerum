@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -49,6 +49,7 @@ import {HomeModule} from "./functionalities/home/home.module";
 import {HomeService} from "./service/home.service";
 import {UtilService} from "./service/util.service";
 import {ProjectService} from "./service/project.service";
+import {ErrorsHandlerInterceptor} from "./generic/error/error-handler.interceptor";
 
 @NgModule({
     imports: [
@@ -116,6 +117,8 @@ import {ProjectService} from "./service/project.service";
         MultiProjectHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useClass: MultiProjectHttpInterceptor, multi: true },
 
+        ErrorsHandlerInterceptor,
+        { provide: ErrorHandler, useClass: ErrorsHandlerInterceptor},
 
         MessageService,
 
