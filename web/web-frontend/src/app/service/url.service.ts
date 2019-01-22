@@ -112,6 +112,10 @@ export class UrlService {
         this.navigateToProjectPath(["/manual/plans/runner", {planPath: planPath.toString(), testPath: testPath.toString()}])
     }
 
+    public navigateToAutomatedResult(path: Path, url: string) {
+        this.navigateToProjectPath(["/automated/results", {path : path.toString(), url: url} ])
+    }
+
     private navigate(commands: any[], extras?: NavigationExtras): Promise<boolean> {
         return this.router.navigate(commands, extras);
     }
@@ -119,9 +123,5 @@ export class UrlService {
     private navigateToProjectPath(commands: any[], extras?: NavigationExtras): Promise<boolean> {
         commands[0] = "/" + this.contextService.getProjectName() + commands[0];
         return this.router.navigate(commands, extras);
-    }
-
-    navigateToAutomatedResult(path: Path, url: string) {
-        this.router.navigate(["/automated/results", {path : path.toString(), url: url} ])
     }
 }
