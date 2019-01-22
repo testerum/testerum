@@ -5,6 +5,7 @@ import {CreateProjectComponent} from "./create-project.component";
 import {Project} from "../../../model/home/project.model";
 import {HomeService} from "../../../service/home.service";
 import {ContextService} from "../../../service/context.service";
+import {ProjectService} from "../../../service/project.service";
 
 @Injectable()
 export class CreateProjectService {
@@ -13,7 +14,7 @@ export class CreateProjectService {
     private modalComponent: CreateProjectComponent;
 
 
-    constructor(private homeService: HomeService,
+    constructor(private projectService: ProjectService,
                 private contextService: ContextService) {
     }
 
@@ -28,7 +29,7 @@ export class CreateProjectService {
     }
 
     onCreateProjectAction(project: Project) {
-        this.homeService.createProject(project).subscribe((project: Project) => {
+        this.projectService.createProject(project).subscribe((project: Project) => {
             this.contextService.setProjectName(project.name)
         })
     }

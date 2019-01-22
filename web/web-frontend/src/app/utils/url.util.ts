@@ -15,4 +15,8 @@ export class UrlUtil {
 
         return activatedRoute.firstChild ? activatedRoute.firstChild.snapshot.params[paramName] : null;
     }
+
+    public static getProjectNameFromUrl(activatedRoute: ActivatedRoute): string {
+        return activatedRoute.snapshot.url.length ? activatedRoute.snapshot.url[0].path : null;
+    }
 }

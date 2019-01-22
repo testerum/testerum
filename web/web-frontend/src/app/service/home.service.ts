@@ -26,17 +26,4 @@ export class HomeService {
             .get<Home>(this.HOME_URL, httpOptions)
             .pipe(map(it => new Home().deserialize(it)));
     }
-
-    createProject(project: Project): Observable<Project> {
-        const body = project.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
-
-        return this.http
-            .post<any>(this.HOME_URL, body, httpOptions)
-            .pipe(map(it => Project.deserialize(it)));
-    }
 }

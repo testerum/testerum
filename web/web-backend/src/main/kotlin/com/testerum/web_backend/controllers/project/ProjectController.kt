@@ -1,4 +1,4 @@
-package com.testerum.web_backend.controllers.home
+package com.testerum.web_backend.controllers.project
 
 import com.testerum.model.home.Home
 import com.testerum.model.home.Project
@@ -8,12 +8,12 @@ import com.testerum.model.license.AuthResponse
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/home")
-open class HomeController() {
+@RequestMapping("/projects")
+open class ProjectController() {
 
     @RequestMapping(method = [RequestMethod.GET])
     @ResponseBody
-    fun getHomePageModel(): Home {
+    fun getProjects(): List<Project> {
 
         val recentProjects = listOf(
                 Project("Superman", Path.createInstance("c:/projects/superman")),
@@ -21,10 +21,12 @@ open class HomeController() {
                 Project("SampleProject", Path.createInstance(".Testerum/samplePorject"))
         )
 
-        return Home(
-                "We work to make your life better",
-                "v0.7.3",
-                recentProjects
-        )
+        return recentProjects;
+    }
+
+    @RequestMapping (method = [RequestMethod.POST])
+    @ResponseBody
+    fun createProject(@RequestBody project: Project): Project {
+        return project;
     }
 }

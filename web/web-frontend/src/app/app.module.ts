@@ -48,6 +48,7 @@ import {MultiProjectHttpInterceptor} from "./service/interceptors/multi-prject.h
 import {HomeModule} from "./functionalities/home/home.module";
 import {HomeService} from "./service/home.service";
 import {UtilService} from "./service/util.service";
+import {ProjectService} from "./service/project.service";
 
 @NgModule({
     imports: [
@@ -97,6 +98,7 @@ import {UtilService} from "./service/util.service";
         SetupService,
         SettingsService,
         HomeService,
+        ProjectService,
         FileSystemService,
         ResultService,
         FeatureService,

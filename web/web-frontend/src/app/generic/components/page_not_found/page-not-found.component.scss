@@ -23,8 +23,14 @@
             margin-top: 0.5em;
             margin-bottom: 2em;
         }
-        .message {
+        .suggestions {
             margin-bottom: 1em;
+
+            .suggestions-title {
+                font-size: 1.2em;
+                font-weight: bold;
+                margin-bottom: 0.5em;
+            }
         }
     }
 }

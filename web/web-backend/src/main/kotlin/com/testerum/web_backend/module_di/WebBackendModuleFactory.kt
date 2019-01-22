@@ -36,6 +36,7 @@ import com.testerum.web_backend.controllers.home.HomeController
 import com.testerum.web_backend.controllers.license.LicenseController
 import com.testerum.web_backend.controllers.manual.ManualTestPlansController
 import com.testerum.web_backend.controllers.message.MessageController
+import com.testerum.web_backend.controllers.project.ProjectController
 import com.testerum.web_backend.controllers.resources.ResourcesController
 import com.testerum.web_backend.controllers.resources.http.HttpController
 import com.testerum.web_backend.controllers.resources.rdbms.RdbmsController
@@ -391,6 +392,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val homeController = HomeController(
     )
 
+    private val projectController = ProjectController(
+    )
+
     private val licenseController = LicenseController(
             licenseFrontendService = licenseFrontendService
     )
@@ -472,6 +476,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             versionController,
             setupController,
             homeController,
+            projectController,
             licenseController,
             settingsController,
             messageController,
