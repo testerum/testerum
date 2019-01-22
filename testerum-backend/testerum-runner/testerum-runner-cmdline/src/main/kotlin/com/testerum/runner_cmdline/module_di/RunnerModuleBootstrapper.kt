@@ -16,7 +16,7 @@ class RunnerModuleBootstrapper(cmdlineParams: CmdlineParams,
     val context = ModuleFactoryContext()
 
     private val settingsModuleFactory = SettingsModuleFactory(context).also {
-        RunnerSettingsInitializer(cmdlineParams)
+        RunnerSettingsInitializer(cmdlineParams, it.testerumDirs)
                 .initSettings(it.settingsManager)
     }
 

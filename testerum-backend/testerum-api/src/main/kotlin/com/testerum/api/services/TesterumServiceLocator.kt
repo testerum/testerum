@@ -3,6 +3,7 @@ package com.testerum.api.services
 import com.testerum.api.test_context.TestContext
 import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.settings.RunnerSettingsManager
+import com.testerum.api.test_context.settings.RunnerTesterumDirs
 import com.testerum.api.test_context.test_vars.TestVariables
 import java.util.concurrent.ConcurrentHashMap
 
@@ -15,6 +16,9 @@ object TesterumServiceLocator {
 
     @JvmStatic
     fun getTestVariables(): TestVariables = getService(TestVariables::class.java)
+
+    @JvmStatic
+    fun getTesterumDirs(): RunnerTesterumDirs = getService(RunnerTesterumDirs::class.java)
 
     @JvmStatic
     fun getSettingsManager(): RunnerSettingsManager = getService(RunnerSettingsManager::class.java)

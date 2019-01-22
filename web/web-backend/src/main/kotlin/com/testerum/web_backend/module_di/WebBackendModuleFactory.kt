@@ -98,7 +98,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     //---------------------------------------- misc ----------------------------------------//
 
     val frontendDirs = FrontendDirs(
-            settingsManager = settingsModuleFactory.settingsManager
+            settingsManager = settingsModuleFactory.settingsManager,
+            testerumDirs = settingsModuleFactory.testerumDirs
     )
 
     private val rdbmsDriverConfigCache = JdbcDriversCache()
@@ -123,8 +124,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val settingsManagerInitializer = SettingsManagerInitializer(
             settingsFileService = fileServiceModuleFactory.settingsFileService,
-            settingsDir = frontendDirs.getSettingsDir(),
-            settingsManager = settingsModuleFactory.settingsManager
+            settingsManager = settingsModuleFactory.settingsManager,
+            testerumDirs = settingsModuleFactory.testerumDirs,
+            settingsDir = frontendDirs.getSettingsDir()
     )
 
     private val stepCachesInitializer = StepsCacheInitializer(
@@ -326,9 +328,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val testsExecutionFrontendService = TestsExecutionFrontendService(
             testsCache = fileServiceModuleFactory.testsCache,
+            testerumDirs = settingsModuleFactory.testerumDirs,
+            frontendDirs = frontendDirs,
             settingsManager = settingsModuleFactory.settingsManager,
-            jsonObjectMapper = testsRunnerJsonObjectMapper,
-            frontendDirs = frontendDirs
+            jsonObjectMapper = testsRunnerJsonObjectMapper
     )
 
     private val runnerResultFrontendService = ResultsFrontendService(
@@ -389,8 +392,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             setupFrontendService = setupFrontendService
     )
 
-    private val homeController = HomeController(
-    )
+    private val homeController = HomeController()
 
     private val projectController = ProjectController(
     )

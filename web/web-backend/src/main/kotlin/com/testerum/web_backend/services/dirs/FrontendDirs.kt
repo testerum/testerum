@@ -2,16 +2,18 @@ package com.testerum.web_backend.services.dirs
 
 import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.settings.SettingsManager
+import com.testerum.settings.TesterumDirs
 import com.testerum.settings.hasValue
 import com.testerum.settings.keys.SystemSettingKeys
 import java.nio.file.Paths
 import java.nio.file.Path as JavaPath
 
-class FrontendDirs(private val settingsManager: SettingsManager) {
+class FrontendDirs(private val settingsManager: SettingsManager,
+                   private val testerumDirs: TesterumDirs) {
 
     fun getTesterumDir(): JavaPath = Paths.get(System.getProperty("user.home")).resolve(".testerum")
 
-    fun getBasicStepsDir(): JavaPath? = settingsManager.getSetting(SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR)?.resolvedValueAsPath
+    fun getBasicStepsDir(): JavaPath = testerumDirs.getBasicStepsDir()
 
     fun getSettingsDir(): JavaPath = getTesterumDir().resolve("conf")
 
@@ -61,12 +63,6 @@ class FrontendDirs(private val settingsManager: SettingsManager) {
                 ?: throw IllegalStateException("the setting [${SystemSettingKeys.REPOSITORY_DIR}] is not set")
     }
 
-    fun getJdbcDriversDir(): JavaPath? {
-        if (!settingsManager.hasValue(SystemSettingKeys.JDBC_DRIVERS_DIR)) {
-            return null
-        }
-
-        return settingsManager.getSetting(SystemSettingKeys.JDBC_DRIVERS_DIR)?.resolvedValueAsPath
-    }
+    fun getJdbcDriversDir(): JavaPath = testerumDirs.getJdbcDriversDir()
 
 }
