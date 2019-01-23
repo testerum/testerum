@@ -56,6 +56,7 @@ import com.testerum.web_backend.controllers.version_info.VersionController
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.features.FeaturesFrontendService
 import com.testerum.web_backend.services.filesystem.FileSystemFrontendService
+import com.testerum.web_backend.services.home.HomeFrontendService
 import com.testerum.web_backend.services.initializers.WebBackendInitializer
 import com.testerum.web_backend.services.initializers.caches.CachesInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.FeaturesCacheInitializer
@@ -384,6 +385,11 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             recentProjectsCache = fileServiceModuleFactory.recentProjectsCache
     )
 
+    private val homeFrontendService = HomeFrontendService(
+            projectFrontendService = projectFrontendService,
+            versionInfoFrontendService = versionInfoFrontendService
+    )
+
 
     //---------------------------------------- web controllers ----------------------------------------//
 
@@ -405,7 +411,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val homeController = HomeController(
-            projectFrontendService = projectFrontendService
+            homeFrontendService = homeFrontendService
     )
 
     private val projectController = ProjectController(
