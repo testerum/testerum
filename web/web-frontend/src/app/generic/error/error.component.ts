@@ -50,8 +50,8 @@ export class ErrorComponent implements OnInit {
                 if (error instanceof JavaScriptError) {
 
                     if (error.error) {
-                        let exceptionDetails = "Exception: " + (error.error.message ? error.error.message : null) + "\n";
-                        exceptionDetails += error.error.stack;
+                        let exceptionDetails = "Exception: " + (error.error.message ? error.error.message : "") + "\n";
+                        exceptionDetails += (error.error.stack ? error.error.stack : "");
 
                         this.details = exceptionDetails;
                     }

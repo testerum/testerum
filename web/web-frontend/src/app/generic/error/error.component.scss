@@ -16,6 +16,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        line-height: 1.4;
     }
 
     .error-detail-toggle {
@@ -24,10 +25,15 @@
     }
 
     .stack-trace-panel {
-        overflow: scroll;
+        overflow: auto;
         height: 500px;
         width: 100%;
         white-space: pre;
+        font-family: "Hack Regular Nerd Font Complete", monospace;
+        font-size: 12px;
+        border: 1px solid #908f8f;
+        padding: 0.5em;
+        background-color: #eee;
     }
 }
 
