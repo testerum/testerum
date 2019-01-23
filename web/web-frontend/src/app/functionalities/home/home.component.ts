@@ -38,8 +38,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (this.getHomePageModelSubscription) this.getHomePageModelSubscription.unsubscribe();
     }
 
-    navigateToProject(recentProject: Project) {
-        this.contextService.setProjectName(recentProject.name);
+    navigateToProject(project: Project) {
+        this.contextService.setCurrentProject(project);
     }
 
     onCreateNewProject() {

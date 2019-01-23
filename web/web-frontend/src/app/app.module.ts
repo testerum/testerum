@@ -92,7 +92,6 @@ import {ErrorsHandlerInterceptor} from "./generic/error/error-handler.intercepto
 
         ApplicationEventBus,
 
-        ContextService,
         StepsService,
         TestsService,
         VariablesService,
@@ -120,6 +119,9 @@ import {ErrorsHandlerInterceptor} from "./generic/error/error-handler.intercepto
         ErrorsHandlerInterceptor,
         { provide: ErrorHandler, useClass: ErrorsHandlerInterceptor},
 
+        ContextService,
+        {provide: APP_INITIALIZER, useFactory: initApplicationContext, deps: [ContextService], multi: true},
+
         MessageService,
 
         LicenseService,
@@ -134,8 +136,8 @@ export class AppModule {
 }
 
 
-export function initMessages(messageService: MessageService){
+export function initApplicationContext(contextService: ContextService){
     // Do initing of services that is required before app loads
     // NOTE: this factory needs to return a function (that then returns a promise)
-    return () => messageService.init();
+    return () => contextService.init();
 }

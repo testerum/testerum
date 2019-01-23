@@ -73,7 +73,7 @@ export class ErrorComponent implements OnInit {
     close(): void {
         this.infoModal.hide();
         if (this.shouldRefreshPage) {
-            if (this.contextService.getProjectName()) {
+            if (this.contextService.isProjectSelected()) {
                 window.location.href = window.location.protocol + "//" + window.location.host + "/" + this.contextService.getProjectName() + "/" ;
             } else {
                 window.location.href = window.location.protocol + "//" + window.location.host + "/";

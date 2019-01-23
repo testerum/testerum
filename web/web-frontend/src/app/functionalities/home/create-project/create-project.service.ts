@@ -30,7 +30,7 @@ export class CreateProjectService {
 
     onCreateProjectAction(project: Project) {
         this.projectService.createProject(project).subscribe((project: Project) => {
-            this.contextService.setProjectName(project.name)
+            this.contextService.setCurrentProject(project)
         })
     }
 

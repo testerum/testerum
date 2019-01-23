@@ -2,10 +2,7 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {map} from "rxjs/operators";
-import {Project} from "../model/home/project.model";
-import {Setting} from "../functionalities/config/settings/model/setting.model";
 import {Home} from "../model/home/home.model";
-import {JsonUtil} from "../utils/json.util";
 
 
 @Injectable()
