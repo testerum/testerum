@@ -53,8 +53,6 @@ export class ErrorService implements HttpInterceptor {
                                         ErrorService.isServerAvailable = false;
                                         this.serverNotAvailableModalService.show();
                                     }
-                                } else {
-                                    this.errorEventEmitter.emit(httpErrorResponse.error);
                                 }
                             });
                             return EMPTY;
