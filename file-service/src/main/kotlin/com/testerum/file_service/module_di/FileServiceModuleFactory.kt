@@ -2,6 +2,7 @@ package com.testerum.file_service.module_di
 
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
+import com.testerum.file_service.caches.RecentProjectsCache
 import com.testerum.file_service.caches.resolved.FeaturesCache
 import com.testerum.file_service.caches.resolved.StepsCache
 import com.testerum.file_service.caches.resolved.TestsCache
@@ -13,6 +14,7 @@ import com.testerum.file_service.file.ComposedStepFileService
 import com.testerum.file_service.file.FeatureFileService
 import com.testerum.file_service.file.ManualTestFileService
 import com.testerum.file_service.file.ManualTestPlanFileService
+import com.testerum.file_service.file.RecentProjectsFileService
 import com.testerum.file_service.file.ResourceFileService
 import com.testerum.file_service.file.ResultsFileService
 import com.testerum.file_service.file.SettingsFileService
@@ -149,6 +151,10 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
 
     val testerumProjectFileService = TesterumProjectFileService()
 
+    val recentProjectsFileService = RecentProjectsFileService(
+            testerumProjectFileService = testerumProjectFileService
+    )
+
     val variablesFileService = VariablesFileService()
 
     val settingsFileService = SettingsFileService()
@@ -189,6 +195,11 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
 
     val featuresCache = FeaturesCache(
             featureFileService = featuresFileService
+    )
+
+    val recentProjectsCache = RecentProjectsCache(
+            recentProjectsFileService = recentProjectsFileService,
+            testerumProjectFileService = testerumProjectFileService
     )
 
 }

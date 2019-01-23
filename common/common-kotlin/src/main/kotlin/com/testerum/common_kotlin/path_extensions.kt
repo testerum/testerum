@@ -178,7 +178,7 @@ fun JavaPath.smartCopyTo(destination: JavaPath,
     }
 }
 
-fun JavaPath.readAllLines(charset: Charset = Charsets.UTF_8): List<String> = Files.readAllLines(this, charset)
+fun JavaPath.readLines(charset: Charset = Charsets.UTF_8): List<String> = Files.readAllLines(this, charset)
 
 fun JavaPath.readText(charset: Charset = Charsets.UTF_8): String {
     return Files.newBufferedReader(this, charset).use {
@@ -192,6 +192,13 @@ fun JavaPath.writeText(text: String, charset: Charset = Charsets.UTF_8) {
     Files.newBufferedWriter(this, charset).use {
         it.write(text)
     }
+}
+
+fun JavaPath.writeLines(lines: List<String>, charset: Charset = Charsets.UTF_8) {
+    writeText(
+            text = lines.joinToString(separator = "\n"),
+            charset = charset
+    )
 }
 
 fun JavaPath.deleteIfExists(): Boolean = Files.deleteIfExists(this)

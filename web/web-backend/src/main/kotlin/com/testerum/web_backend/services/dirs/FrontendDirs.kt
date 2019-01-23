@@ -17,6 +17,8 @@ class FrontendDirs(private val settingsManager: SettingsManager,
 
     fun getSettingsDir(): JavaPath = getTesterumDir().resolve("conf")
 
+    fun getRecentProjectsFile(): JavaPath = getSettingsDir().resolve("recent-projects.json")
+
     fun getCacheDir(): JavaPath = getTesterumDir().resolve("cache")
     fun getLicensesDir(): JavaPath = getTesterumDir().resolve("licenses")
 
