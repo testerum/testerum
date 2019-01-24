@@ -1,15 +1,16 @@
 import {Serializable} from "../infrastructure/serializable.model";
 import {Project} from "./project.model";
 import {JsonUtil} from "../../utils/json.util";
+import {Quote} from "./quote.model";
 
 export class Home implements Serializable<Home>  {
 
-    quote: string;
+    quote: Quote;
     testerumVersion: string;
     recentProjects: Project[] = [];
 
     deserialize(input: Object): Home {
-        this.quote = input["quote"];
+        this.quote = new Quote().deserialize(input["quote"]);
         this.testerumVersion = input["testerumVersion"];
 
         for (let recentProject of (input['recentProjects']) || []) {
