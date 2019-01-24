@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.getHomePageModelSubscription = this.homeService.getHomePageModel().subscribe((home: Home) => {
-            this.quote = home.quote;
+            this.quote = home.quote.text;
             this.testerumVersion = home.testerumVersion;
             ArrayUtil.replaceElementsInArray(this.recentProjects, home.recentProjects);
         });

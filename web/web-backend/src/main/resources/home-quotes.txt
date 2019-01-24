@@ -1,21 +1,21 @@
-"I don't care if it works on your machine! We are not shipping your machine!" -- Ovidiu Platon
-"If you don't like testing your product, most likely your customers won't like to test it either." -- Anonymous
-"All code is guilty until proven innocent." -- Anonymous
-"Why do we never have time to do it right, but always have time to do it over?" -- Anonymous
-"Testers don't like to break things; they like to dispel the illusion that things work." -- Kaner, Bach, Pettichord
-"Software testers do not make software; they only make them better." -- Anonymous
-"Don't just fix the bugs; fix whatever permitted the bugs in the first place." -- Anonymous
-"Quality is never an accident; it is always the result of intelligent effort." -- John Ruskin
-"Quality means doing it right even when no one is looking." -- Henry Ford
-"It's hard enough to find an error in your code when you’re looking for it; it's even harder when you’ve assumed your code is error-free." -- Steve McConnell
-"There is nothing quite so permanent as a quick fix." -- Anonymous
-"'That hardly ever happens' is another way of saying 'it happens'." -- Douglas Crockford
-"If it doesn't work, it doesn't matter how fast it doesn't work." -- Mich Ravera
-"Writing specs is like flossing: everybody agrees that it's a good thing, but nobody does it." -- Joel Spolsky
-"Without requirements or design, programming is the art of adding bugs to an empty text file." -- Louis Srygley
-"Good specifications will always improve programmer productivity far better than any programming tool or technique." -- Milt Bryce
-"The most important single aspect of software development is to be clear about what you are trying to build." -- Bjarne Stroustrup
-"An evolving system increases its complexity unless work is done to reduce it." -- Meir Lehman
-"Blame doesn't fix bugs." -- Anonymous
-"Be gentle, kind, and forgiving of your peers; respect from people you respect is really the only reward that sticks." -- Rusty Russell
-"Be humble, communicate clearly, and respect others. It costs nothing to be kind, but the impact is priceless." -- Addy Osmani
+I don't care if it works on your machine! We are not shipping your machine!%%Ovidiu Platon
+If you don't like testing your product, most likely your customers won't like to test it either.
+All code is guilty until proven innocent.
+Why do we never have time to do it right, but always have time to do it over?
+Testers don't like to break things; they like to dispel the illusion that things work.%%Kaner, Bach, Pettichord
+Software testers do not make software; they only make them better.
+Don't just fix the bugs; fix whatever permitted the bugs in the first place.
+Quality is never an accident; it is always the result of intelligent effort.%%John Ruskin
+Quality means doing it right even when no one is looking.%%Henry Ford
+It's hard enough to find an error in your code when you’re looking for it; it's even harder when you’ve assumed your code is error-free.%%Steve McConnell
+There is nothing quite so permanent as a quick fix.
+'That hardly ever happens' is another way of saying 'it happens'.%%Douglas Crockford
+If it doesn't work, it doesn't matter how fast it doesn't work.%%Mich Ravera
+Writing specs is like flossing: everybody agrees that it's a good thing, but nobody does it.%%Joel Spolsky
+Without requirements or design, programming is the art of adding bugs to an empty text file.%%Louis Srygley
+Good specifications will always improve programmer productivity far better than any programming tool or technique.%%Milt Bryce
+The most important single aspect of software development is to be clear about what you are trying to build.%%Bjarne Stroustrup
+An evolving system increases its complexity unless work is done to reduce it.%%Meir Lehman
+Blame doesn't fix bugs.
+Be gentle, kind, and forgiving of your peers; respect from people you respect is really the only reward that sticks.%%Rusty Russell
+Be humble, communicate clearly, and respect others. It costs nothing to be kind, but the impact is priceless.%%Addy Osmani

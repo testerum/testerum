@@ -57,6 +57,7 @@ import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.features.FeaturesFrontendService
 import com.testerum.web_backend.services.filesystem.FileSystemFrontendService
 import com.testerum.web_backend.services.home.HomeFrontendService
+import com.testerum.web_backend.services.home.QuotesService
 import com.testerum.web_backend.services.initializers.WebBackendInitializer
 import com.testerum.web_backend.services.initializers.caches.CachesInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.FeaturesCacheInitializer
@@ -385,9 +386,12 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             recentProjectsCache = fileServiceModuleFactory.recentProjectsCache
     )
 
+    private val quotesService = QuotesService()
+
     private val homeFrontendService = HomeFrontendService(
-            projectFrontendService = projectFrontendService,
-            versionInfoFrontendService = versionInfoFrontendService
+            quotesService = quotesService,
+            versionInfoFrontendService = versionInfoFrontendService,
+            projectFrontendService = projectFrontendService
     )
 
 
