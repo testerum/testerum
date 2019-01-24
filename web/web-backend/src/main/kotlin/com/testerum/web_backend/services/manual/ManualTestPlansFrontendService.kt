@@ -189,7 +189,7 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
         val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
 
         val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
-                ?: throw ValidationException("The test plan at path [$planPath] does not exist")
+                ?: throw ValidationException("The test plan at path<br/><code>$planPath</code><br/>does not exist")
 
         val finalizedPlan = plan.copy(
                 isFinalized = true,
@@ -205,7 +205,7 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
         val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
 
         val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
-                ?: throw ValidationException("The test plan at path [$planPath] does not exist")
+                ?: throw ValidationException("The test plan at path<br/><code>$planPath</code><br/>does not exist")
 
         val activePlan = plan.copy(
                 isFinalized = false,

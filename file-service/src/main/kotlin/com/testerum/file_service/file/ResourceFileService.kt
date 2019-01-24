@@ -112,7 +112,7 @@ class ResourceFileService {
         oldResourceFile?.smartMoveTo(
                 newResourceFile,
                 createDestinationExistsException = {
-                    ValidationException("the test at path [$newEscapedPath] already exists")
+                    ValidationException("The test at path<br/><code>$newEscapedPath</code><br/>already exists")
                 }
         )
 
@@ -162,7 +162,7 @@ class ResourceFileService {
         try {
             OBJECT_MAPPER.readValue<RdbmsConnectionConfig>(resourceContext.body)
         } catch (e: Exception) {
-            throw ValidationException("The following text is not a valid Rdbms Connection Config Json: [${resourceContext.body}].")
+            throw ValidationException("The following text is not a valid Rdbms Connection Config Json:<br/><code>${resourceContext.body}</code>")
         }
     }
 
@@ -221,7 +221,7 @@ class ResourceFileService {
         javaPathToRename.smartMoveTo(
                 javaNewPath,
                 createDestinationExistsException = {
-                    ValidationException("the directory at path [${javaNewPath.toAbsolutePath().normalize()}] already exists")
+                    ValidationException("The directory at path<br/><code>${javaNewPath.toAbsolutePath().normalize()}</code><br/>already exists")
                 }
         )
 
@@ -270,7 +270,7 @@ class ResourceFileService {
         sourceJavaFile.smartMoveTo(
                 destinationJavaFile,
                 createDestinationExistsException = {
-                    ValidationException("the file at path [$escapedDestinationFile] already exists")
+                    ValidationException("The file at path<br/><code>$escapedDestinationFile</code><br/>already exists")
                 }
         )
 

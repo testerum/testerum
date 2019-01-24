@@ -4,13 +4,13 @@
             <div class="modal-header">
                 <button (click)="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">
-                    Exception
+                    {{title}}
                 </h4>
             </div>
             <div class="modal-body">
                 <p class="error-message" [innerHTML]="message"></p>
 
-                <div class="excuse-messages">
+                <div *ngIf="isOurBug" class="excuse-messages">
                     <div>We are making mistakes too!</div>
                     <div>We are very sorry for any inconvenience we may have caused.</div>
                     <div>Please report this issue to us and we will fix it as soon as possible.</div>

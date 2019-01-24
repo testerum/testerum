@@ -109,7 +109,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         oldTestFile?.smartMoveTo(
                 newTestFile,
                 createDestinationExistsException = {
-                    ValidationException("the test at path [$newEscapedPath] already exists")
+                    ValidationException("The test at path<br/><code>$newEscapedPath</code><br/>already exists")
                 }
         )
 
@@ -172,7 +172,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         sourceJavaFile.smartMoveTo(
                 destinationJavaFile,
                 createDestinationExistsException = {
-                    ValidationException("the file at path [$destinationJavaFile] already exists")
+                    ValidationException("The file at path<br/><code>$destinationJavaFile</code><br/>already exists")
                 }
         )
 
@@ -222,7 +222,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
             sourceJavaFile.smartCopyTo(
                     fullDestinationJavaPath,
                     createDestinationExistsException = {
-                        ValidationException("the file at path [$fullDestinationJavaPath] already exists")
+                        ValidationException("The file at path<br/><code>$fullDestinationJavaPath</code><br/>already exists")
                     }
             )
 

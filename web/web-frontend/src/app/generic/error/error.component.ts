@@ -18,10 +18,12 @@ export class ErrorComponent implements OnInit {
 
     @ViewChild("infoModal") infoModal:ModalDirective;
 
+    title: string;
     message:string;
     details:string;
     shouldShowDetails: boolean = false;
     shouldRefreshPage: boolean = true;
+    isOurBug: boolean = true;
 
     constructor(private errorService: ErrorHttpInterceptor,
                 private urlService: UrlService,
@@ -31,10 +33,12 @@ export class ErrorComponent implements OnInit {
     ngOnInit() {
         this.errorService.errorEventEmitter.subscribe(
             (error: MyError) => {
+                this.title = "Exception";
                 this.message = "Oops... One of our bugs has escaped!";
                 this.details = null;
                 this.shouldShowDetails = false;
                 this.shouldRefreshPage = true;
+                this.isOurBug = true;
 
                 if(error instanceof FullLogErrorResponse) {
                     this.message = error.uiMessage;
@@ -42,9 +46,11 @@ export class ErrorComponent implements OnInit {
                 }
 
                 if(error instanceof ValidationErrorResponse) {
+                    this.title = "Validation Exception";
                     this.message = error.validationModel.globalValidationMessage;
                     this.details = error.validationModel.globalValidationMessageDetails;
                     this.shouldRefreshPage = false;
+                    this.isOurBug = false;
                 }
 
                 if (error instanceof JavaScriptError) {

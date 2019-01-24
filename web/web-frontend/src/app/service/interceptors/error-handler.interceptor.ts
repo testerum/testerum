@@ -11,6 +11,10 @@ export class ErrorsHandlerInterceptor implements ErrorHandler {
     }
 
     handleError(error: Error) {
+        if (error instanceof HttpErrorResponse) {
+            return
+        }
+
         if (error['rejection'] && error['rejection'] instanceof HttpErrorResponse) { //To handle exception when server is down
             let httpError = error['rejection'] as HttpErrorResponse;
             if (httpError.status == 504 || httpError.status == 0) {
