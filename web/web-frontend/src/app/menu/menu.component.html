@@ -1,4 +1,4 @@
-<nav class="menu navbar navbar-inverse" *ngIf="shouldDisplay">
+<nav class="menu navbar navbar-inverse" *ngIf="shouldDisplay && isProjectSelected()">
     <ul *ngIf="isProjectSelected()" class="nav navbar-nav testerum-logo">
         <li>
             <a [routerLink]="['/']" routerLinkActive="active">
@@ -26,11 +26,11 @@
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="isProjectSelected">
+        <li *ngIf="isProjectSelected()">
             <a href="" (click)="showVariables(); false;">Variables</a>
         </li>
-        <li>
-            <a [routerLink]="['/settings']" routerLinkActive="active" class="sttings-icon-menu-item">
+        <li *ngIf="isProjectSelected()">
+            <a [routerLink]="['/'+getProjectName()+'/settings']" routerLinkActive="active" class="sttings-icon-menu-item">
                 <i  class="fas fa-cogs" aria-hidden="true"></i>
             </a>
         </li>
