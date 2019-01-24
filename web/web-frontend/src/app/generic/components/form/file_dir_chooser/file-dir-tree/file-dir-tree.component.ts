@@ -7,7 +7,7 @@ import {Subscription} from "rxjs";
 import {FileDirChooserService} from "../file-dir-chooser.service";
 import {FileSystemService} from "../../../../../service/file-system.service";
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
-import {ErrorService} from "../../../../../service/error.service";
+import {ErrorHttpInterceptor} from "../../../../../service/interceptors/error.http-interceptor";
 import {JsonTreeContainerEditorEvent} from "../../../json-tree/container-editor/model/json-tree-container-editor.event";
 import {FileSystemDirectory} from "../../../../../model/file/file-system-directory.model";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -31,7 +31,7 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
                 private fileDirTreeComponentService: FileDirTreeComponentService,
                 private fileSystemService: FileSystemService,
                 private jsonTreeService: JsonTreeService,
-                private errorService: ErrorService) {
+                private errorService: ErrorHttpInterceptor) {
     }
 
 

@@ -1,9 +1,13 @@
 import {Injectable, Injector} from "@angular/core";
 import {StepCallContainerComponent} from "../generic/components/step-call-tree/nodes/step-call-container/step-call-container.component";
 import {StepCallContainerModel} from "../generic/components/step-call-tree/model/step-call-container.model";
-import {ActivatedRouteSnapshot, Router} from "@angular/router";
+import {ActivatedRouteSnapshot, NavigationEnd, Params, Router, RouterEvent} from "@angular/router";
 import {ProjectService} from "./project.service";
 import {Project} from "../model/home/project.model";
+import {filter, map} from "rxjs/operators";
+import {Path} from "../model/infrastructure/path/path.model";
+import {Subscription} from "rxjs";
+import {UrlUtil} from "../utils/url.util";
 
 @Injectable()
 export class ContextService {
@@ -13,32 +17,47 @@ export class ContextService {
     stepToCut: StepCallContainerComponent = null;
     stepToCopy: StepCallContainerComponent = null;
 
+    private knownProjects: Project[] = [];
     constructor(private injector: Injector,
                 private projectService: ProjectService) {
     }
 
     init() {
         return new Promise((resolve, reject) => {
+            this.getRouter().events.pipe(
+                filter(event => event instanceof NavigationEnd))
+                .subscribe((value: RouterEvent) => {
+                    let projectName = UrlUtil.getProjectNameFromUrl(value.url);
+                    this.resolveCurrentProject(projectName);
+                });
+
             let projectName = this.getProjectFromUrl();
 
-            if (projectName) {
-                this.projectService.getAllProjects().subscribe((value: Project[]) => {
-                    let foundProjects = value.filter((project:Project) => projectName.toUpperCase() === project.name.toUpperCase());
-                    if (foundProjects.length == 0) {
-                        // showUnknownProjectAlert();
-                    }
-                    if (foundProjects.length > 1) {
-                        // showChooseProjectForUrl();
-                    }
+            this.projectService.getAllProjects().subscribe((value: Project[]) => {
+                this.knownProjects = value;
 
-                    this.currentProject = foundProjects[0];
+                this.resolveCurrentProject(projectName);
 
-                    resolve(true);
-                });
-            } else {
                 resolve(true);
-            }
+            });
         })
+    }
+
+    private resolveCurrentProject(projectName) {
+        if (projectName == null) {
+            this.currentProject = null;
+            return;
+        }
+
+        let foundProjects = this.knownProjects.filter((project: Project) => projectName.toUpperCase() === project.name.toUpperCase());
+        if (foundProjects.length == 0) {
+            // showUnknownProjectAlert();
+        }
+        if (foundProjects.length > 1) {
+            // showChooseProjectForUrl();
+        }
+
+        this.currentProject = foundProjects[0];
     }
 
     isProjectSelected(): boolean {

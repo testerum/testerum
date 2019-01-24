@@ -1,11 +1,11 @@
-import {EMPTY, Observable, Subject, throwError as observableThrowError} from 'rxjs';
+import {EMPTY, Observable, throwError as observableThrowError} from 'rxjs';
 
 import {tap} from 'rxjs/operators';
 import {EventEmitter, Injectable} from "@angular/core";
-import {ErrorCode} from "../model/exception/enums/error-code.enum";
-import {FullLogErrorResponse} from "../model/exception/full-log-error-response.model";
-import {MyError} from "../model/exception/my-error.model";
-import {ValidationErrorResponse} from "../model/exception/validation-error-response.model";
+import {ErrorCode} from "../../model/exception/enums/error-code.enum";
+import {FullLogErrorResponse} from "../../model/exception/full-log-error-response.model";
+import {MyError} from "../../model/exception/my-error.model";
+import {ValidationErrorResponse} from "../../model/exception/validation-error-response.model";
 import {
     HttpClient,
     HttpErrorResponse,
@@ -14,13 +14,11 @@ import {
     HttpInterceptor,
     HttpRequest
 } from "@angular/common/http";
-import {ServerNotAvailableModalService} from "../generic/error/server-not-available/server-not-available-modal.service";
-import {UtilService} from "./util.service";
+import {ServerNotAvailableModalService} from "../../generic/error/server-not-available/server-not-available-modal.service";
+import {UtilService} from "../util.service";
 
 @Injectable()
-export class ErrorService implements HttpInterceptor {
-
-    private PING_REQUEST_PATH = "/rest/version";
+export class ErrorHttpInterceptor implements HttpInterceptor {
 
     errorEventEmitter: EventEmitter<MyError> = new EventEmitter<MyError>();
     static isServerAvailable: boolean = true;
@@ -28,10 +26,6 @@ export class ErrorService implements HttpInterceptor {
     constructor(private http: HttpClient,
                 private utilService: UtilService,
                 private serverNotAvailableModalService: ServerNotAvailableModalService) {
-    }
-
-    trick(errorResponse: Response | any): Observable<Response> {
-        return this.handleHttpResponseException(errorResponse);
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -44,13 +38,13 @@ export class ErrorService implements HttpInterceptor {
                     if (httpErrorResponse.status >= 400 || httpErrorResponse.status == 0) {
 
                         if (err.status == 504 || err.status == 0) {
-                            if (!ErrorService.isServerAvailable) {
+                            if (!ErrorHttpInterceptor.isServerAvailable) {
                                 return EMPTY;
                             }
                             this.utilService.checkIfServerIsAvailable().subscribe((isServerAvailable: boolean) => {
                                 if (!isServerAvailable) {
-                                    if (ErrorService.isServerAvailable) {
-                                        ErrorService.isServerAvailable = false;
+                                    if (ErrorHttpInterceptor.isServerAvailable) {
+                                        ErrorHttpInterceptor.isServerAvailable = false;
                                         this.serverNotAvailableModalService.show();
                                     }
                                 }

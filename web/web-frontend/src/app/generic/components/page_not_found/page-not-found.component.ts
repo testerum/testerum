@@ -20,7 +20,7 @@ export class PageNotFoundComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        let projectNameFromUrl = UrlUtil.getProjectNameFromUrl(this.activatedRoute);
+        let projectNameFromUrl = UrlUtil.getProjectNameFromActivatedRoute(this.activatedRoute);
         if (projectNameFromUrl) {
             this.projectService.getAllProjects().subscribe(((projects: Array<Project>) => {
                 projects.forEach((project: Project) => {

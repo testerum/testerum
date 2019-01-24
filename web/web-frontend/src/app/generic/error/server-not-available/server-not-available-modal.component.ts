@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ComponentRef, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {ErrorService} from "../../../service/error.service";
+import {ErrorHttpInterceptor} from "../../../service/interceptors/error.http-interceptor";
 import {UtilService} from "../../../service/util.service";
 import {interval, Subscription} from "rxjs";
 import {map} from "rxjs/operators";
@@ -45,7 +45,7 @@ export class ServerNotAvailableModalComponent implements AfterViewInit {
         this.utilService.checkIfServerIsAvailable().subscribe((isServerAvailable: boolean) => {
             if(isServerAvailable) {
                 this.counterSubscription.unsubscribe();
-                ErrorService.isServerAvailable = true;
+                ErrorHttpInterceptor.isServerAvailable = true;
                 this.modal.hide();
             }
         })

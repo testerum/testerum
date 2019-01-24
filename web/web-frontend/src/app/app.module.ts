@@ -16,7 +16,7 @@ import {ResourcesModule} from "./functionalities/resources/resources.module";
 import {RdbmsService} from "./service/resources/rdbms/rdbms.service";
 import {ResourceService} from "./service/resources/resource.service";
 import {HttpService} from "./service/resources/http/http.service";
-import {ErrorService} from "./service/error.service";
+import {ErrorHttpInterceptor} from "./service/interceptors/error.http-interceptor";
 import {ApplicationEventBus} from "./event-bus/application.eventbus";
 import {VariablesComponent} from "./functionalities/variables/variables.component";
 import {ModalModule} from "ngx-bootstrap/modal";
@@ -49,7 +49,7 @@ import {HomeModule} from "./functionalities/home/home.module";
 import {HomeService} from "./service/home.service";
 import {UtilService} from "./service/util.service";
 import {ProjectService} from "./service/project.service";
-import {ErrorsHandlerInterceptor} from "./generic/error/error-handler.interceptor";
+import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.interceptor";
 
 @NgModule({
     imports: [
@@ -110,8 +110,9 @@ import {ErrorsHandlerInterceptor} from "./generic/error/error-handler.intercepto
 
         UrlService,
         UtilService,
-        ErrorService,
-        { provide: HTTP_INTERCEPTORS, useExisting: ErrorService,  multi: true },
+
+        ErrorHttpInterceptor,
+        { provide: HTTP_INTERCEPTORS, useExisting: ErrorHttpInterceptor,  multi: true },
 
         MultiProjectHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useClass: MultiProjectHttpInterceptor, multi: true },

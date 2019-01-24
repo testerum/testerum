@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ErrorService} from "../../service/error.service";
+import {ErrorHttpInterceptor} from "../../service/interceptors/error.http-interceptor";
 import {ModalDirective} from "ngx-bootstrap";
 import {MyError} from "../../model/exception/my-error.model";
 import {FullLogErrorResponse} from "../../model/exception/full-log-error-response.model";
@@ -23,7 +23,7 @@ export class ErrorComponent implements OnInit {
     shouldShowDetails: boolean = false;
     shouldRefreshPage: boolean = true;
 
-    constructor(private errorService: ErrorService,
+    constructor(private errorService: ErrorHttpInterceptor,
                 private urlService: UrlService,
                 private contextService: ContextService) {
     }

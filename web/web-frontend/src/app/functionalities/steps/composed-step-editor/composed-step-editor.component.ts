@@ -5,7 +5,7 @@ import {StepsService} from "../../../service/steps.service";
 import {StepsTreeService} from "../steps-tree/steps-tree.service";
 import {IdUtils} from "../../../utils/id.util";
 import {FormValidationModel} from "../../../model/exception/form-validation.model";
-import {ErrorService} from "../../../service/error.service";
+import {ErrorHttpInterceptor} from "../../../service/interceptors/error.http-interceptor";
 import {FormUtil} from "../../../utils/form.util";
 import {ValidationErrorResponse} from "../../../model/exception/validation-error-response.model";
 import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/step/CheckComposedStepDefUpdateCompatibilityResponse";
@@ -41,7 +41,7 @@ export class ComposedStepEditorComponent extends AbstractComponentCanDeactivate 
                 private urlService: UrlService,
                 private stepsService: StepsService,
                 private stepsTreeService: StepsTreeService,
-                private errorService: ErrorService,
+                private errorService: ErrorHttpInterceptor,
                 private applicationEventBus: ApplicationEventBus,
                 private areYouSureModalService: AreYouSureModalService) {
         super();

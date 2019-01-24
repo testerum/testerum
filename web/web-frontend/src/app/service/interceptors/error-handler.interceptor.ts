@@ -1,5 +1,5 @@
 import {ErrorHandler, Injectable} from "@angular/core";
-import {ErrorService} from "../../service/error.service";
+import {ErrorHttpInterceptor} from "./error.http-interceptor";
 import {JavaScriptError} from "../../model/exception/javascript-error.model";
 import {HttpErrorResponse} from "@angular/common/http";
 
@@ -7,7 +7,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 @Injectable()
 export class ErrorsHandlerInterceptor implements ErrorHandler {
 
-    constructor (private errorService: ErrorService) {
+    constructor (private errorService: ErrorHttpInterceptor) {
     }
 
     handleError(error: Error) {
