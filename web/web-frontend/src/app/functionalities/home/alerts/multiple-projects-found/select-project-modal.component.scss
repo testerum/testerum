@@ -1,3 +1,5 @@
+@import "../../../../../resources/css/testerum-variables.scss";
+
 .server-not-available-modal {
     .modal-body {
         .main-message {
@@ -5,22 +7,39 @@
             border: 0;
             background-color: inherit;
             color: inherit;
-            font-size: 2em;
+            font-size: 1.5em;
+            line-height: 1.2em;
         }
 
-        .action-message {
-            margin-left: 1em;
-            margin-top: 3em;
+        .projects {
+            margin-top: 2em;
+
+            .projects-title {
+                text-align: center;
+                font-size: 1.3em;
+                font-weight: bold;
+                margin-bottom: 0.5em;
+            }
+
+            .project {
+                cursor: pointer;
+                &:hover {
+                    background-color: $hover-color;
+                }
+                .project-name {
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: 1.1em;
+                }
+                .project-path {
+                    color: #9d9d9d;
+                    text-align: center;
+                }
+            }
         }
     }
 
     .modal-footer {
-        .auto-retry {
-            float: left;
-            height: 28px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+
     }
 }

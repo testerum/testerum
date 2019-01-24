@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ComponentRef, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {interval, Subscription} from "rxjs";
-import {map} from "rxjs/operators";
+import {Project} from "../../../../model/home/project.model";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'server-not-available',
@@ -11,8 +11,10 @@ import {map} from "rxjs/operators";
 export class SelectProjectModalComponent implements AfterViewInit {
 
     @ViewChild("selectProjectModal") modal:ModalDirective;
-
     modalComponentRef: ComponentRef<SelectProjectModalComponent>;
+    modalSubject:Subject<Project>;
+
+    projects: Array<Project>;
 
     constructor() {
     }
@@ -21,9 +23,15 @@ export class SelectProjectModalComponent implements AfterViewInit {
         this.modal.show();
         this.modal.onHidden.subscribe(event => {
             this.modalComponentRef.destroy();
+            this.modalSubject.complete();
 
             this.modalComponentRef = null;
+            this.modalSubject = null;
         });
+    }
 
+    onProjectSelected(project: Project) {
+        this.modalSubject.next(project);
+        this.modal.hide();
     }
 }

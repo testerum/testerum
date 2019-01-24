@@ -10,6 +10,7 @@ import {Subscription} from "rxjs";
 import {UrlUtil} from "../utils/url.util";
 import {InfoModalService} from "../generic/components/info_modal/info-modal.service";
 import {UrlService} from "./url.service";
+import {SelectProjectModalService} from "../functionalities/home/alerts/multiple-projects-found/select-project-modal.service";
 
 @Injectable()
 export class ContextService {
@@ -22,7 +23,8 @@ export class ContextService {
     private knownProjects: Project[] = [];
     constructor(private injector: Injector,
                 private projectService: ProjectService,
-                private infoModalService: InfoModalService) {
+                private infoModalService: InfoModalService,
+                private selectProjectModelService: SelectProjectModalService) {
     }
 
     init() {
@@ -52,6 +54,10 @@ export class ContextService {
             return;
         }
 
+        if (this.currentProject != null && this.currentProject.name.toUpperCase() == projectName.toUpperCase()) {
+            return
+        }
+
         let foundProjects = this.knownProjects.filter((project: Project) => projectName.toUpperCase() === project.name.toUpperCase());
         if (foundProjects.length == 0) {
             this.infoModalService.showInfoModal(
@@ -65,15 +71,16 @@ export class ContextService {
             })
         }
         if (foundProjects.length > 1) {
-            // showChooseProjectForUrl();
+            this.selectProjectModelService.show(foundProjects).subscribe((selectedProject:Project) => {
+                this.currentProject = selectedProject;
+                this.navigateToProject();
+            });
         }
 
         this.currentProject = foundProjects[0];
     }
 
-    private navigateToHomePage() {
-        this.getRouter().navigate(["/"]);
-    }
+
 
     isProjectSelected(): boolean {
         return this.currentProject != null;
@@ -85,7 +92,7 @@ export class ContextService {
 
     setCurrentProject(currentProject: Project) {
         this.currentProject = currentProject;
-        this.getRouter().navigate(["/" + currentProject.name + "/features"]);
+        this.navigateToProject();
     }
 
     getProjectPath(): string {
@@ -119,5 +126,13 @@ export class ContextService {
 
     private getRouter(): Router {
         return this.injector.get(Router);
+    }
+
+    private navigateToHomePage() {
+        this.getRouter().navigate(["/"]);
+    }
+
+    private navigateToProject() {
+        this.getRouter().navigate(["/" + this.currentProject.name + "/features"]);
     }
 }

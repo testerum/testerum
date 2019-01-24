@@ -1,3 +1,5 @@
+@import "../../../resources/css/testerum-variables.scss";
+
 .my_home-page {
     .header {
         width: 100%;
@@ -49,7 +51,7 @@
                 }
 
                 :hover {
-                    background-color: #c5c5c5;
+                    background-color: $hover-color;
                 }
             }
         }
