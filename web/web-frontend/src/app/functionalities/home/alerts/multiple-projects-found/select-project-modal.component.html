@@ -13,8 +13,8 @@
                 </div>
                 <div class="projects">
                     <div class="projects-title">Projects</div>
-                    <ul class="list-group">
-                        <li *ngFor="let project of projects" class="project list-group-item"
+                    <ul>
+                        <li *ngFor="let project of projects" class="project"
                             (click)="onProjectSelected(project)">
                             <div class="project-name">{{project.name}}</div>
                             <div class="project-path">{{project.path}}</div>
