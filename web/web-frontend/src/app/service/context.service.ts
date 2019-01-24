@@ -8,6 +8,8 @@ import {filter, map} from "rxjs/operators";
 import {Path} from "../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
 import {UrlUtil} from "../utils/url.util";
+import {InfoModalService} from "../generic/components/info_modal/info-modal.service";
+import {UrlService} from "./url.service";
 
 @Injectable()
 export class ContextService {
@@ -19,7 +21,8 @@ export class ContextService {
 
     private knownProjects: Project[] = [];
     constructor(private injector: Injector,
-                private projectService: ProjectService) {
+                private projectService: ProjectService,
+                private infoModalService: InfoModalService) {
     }
 
     init() {
@@ -51,13 +54,25 @@ export class ContextService {
 
         let foundProjects = this.knownProjects.filter((project: Project) => projectName.toUpperCase() === project.name.toUpperCase());
         if (foundProjects.length == 0) {
-            // showUnknownProjectAlert();
+            this.infoModalService.showInfoModal(
+                "Project Not Found",
+                "Project <b>"+projectName+"</b> is not known by this Testerum instance.",
+                [
+                    "Please first open this project with Testerum and retry your URL."
+                ]
+            ).subscribe(value => {
+                this.navigateToHomePage();
+            })
         }
         if (foundProjects.length > 1) {
             // showChooseProjectForUrl();
         }
 
         this.currentProject = foundProjects[0];
+    }
+
+    private navigateToHomePage() {
+        this.getRouter().navigate(["/"]);
     }
 
     isProjectSelected(): boolean {

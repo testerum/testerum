@@ -9,7 +9,7 @@ export class InfoModalService {
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
-    showInfoModal(title:string, text:string,): Observable<void> {
+    showInfoModal(title:string, text:string, suggestions: Array<string> = []): Observable<void> {
         let modalSubject = new Subject<void>();
 
         const factory = this.componentFactoryResolver.resolveComponentFactory(InfoModalComponent);
@@ -18,6 +18,7 @@ export class InfoModalService {
 
         modalInstance.title = title;
         modalInstance.text = text;
+        modalInstance.suggestions = suggestions;
 
         modalInstance.modalComponentRef = modalComponentRef;
         modalInstance.modalSubject = modalSubject;

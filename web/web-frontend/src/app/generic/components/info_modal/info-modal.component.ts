@@ -14,6 +14,7 @@ export class InfoModalComponent implements AfterViewInit {
 
     title:string;
     text:string;
+    suggestions: Array<string> = [];
 
     modalComponentRef: ComponentRef<InfoModalComponent>;
     modalSubject:Subject<void>;

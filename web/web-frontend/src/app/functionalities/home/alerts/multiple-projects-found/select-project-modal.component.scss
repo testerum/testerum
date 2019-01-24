@@ -1,0 +1,26 @@
+.server-not-available-modal {
+    .modal-body {
+        .main-message {
+            text-align: center;
+            border: 0;
+            background-color: inherit;
+            color: inherit;
+            font-size: 2em;
+        }
+
+        .action-message {
+            margin-left: 1em;
+            margin-top: 3em;
+        }
+    }
+
+    .modal-footer {
+        .auto-retry {
+            float: left;
+            height: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
