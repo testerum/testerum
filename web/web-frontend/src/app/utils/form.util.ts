@@ -1,5 +1,5 @@
 import {NgForm} from "@angular/forms";
-import {FormValidationModel} from "../model/exception/form-validation.model";
+import {ValidationModel} from "../model/exception/validation.model";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MyError} from "../model/exception/my-error.model";
 import {ErrorCode} from "../model/exception/enums/error-code.enum";
@@ -9,12 +9,12 @@ export class FormUtil {
 
     static setErrorsToForm(form: NgForm, error: any): void {
 
-        let formValidationModel: FormValidationModel;
+        let formValidationModel: ValidationModel;
         if(error instanceof ValidationErrorResponse) {
             formValidationModel = error.validationModel;
         }
 
-        if (error instanceof FormValidationModel) {
+        if (error instanceof ValidationModel) {
             formValidationModel = error;
         }
 

@@ -1,13 +1,13 @@
 import {Serializable} from "../infrastructure/serializable.model";
 
-export class FormValidationModel implements Serializable<FormValidationModel> {
+export class ValidationModel implements Serializable<ValidationModel> {
 
     globalMessage: string;
     globalHtmlMessage: string;
     globalMessageDetails: string;
     fieldsWithValidationErrors: Map<string, string> = new Map<string, string>();
 
-    deserialize(input: Object): FormValidationModel {
+    deserialize(input: Object): ValidationModel {
 
         this.globalMessage = input["globalMessage"];
         this.globalHtmlMessage = input["globalHtmlMessage"];

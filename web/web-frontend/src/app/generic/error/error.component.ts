@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {ErrorHttpInterceptor} from "../../service/interceptors/error.http-interceptor";
 import {ModalDirective} from "ngx-bootstrap";
 import {MyError} from "../../model/exception/my-error.model";
@@ -12,11 +12,12 @@ import {JavaScriptError} from "../../model/exception/javascript-error.model";
     moduleId: module.id,
     selector: 'error',
     templateUrl: 'error.component.html',
-    styleUrls:['error.component.scss']
+    styleUrls:['error.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
 })
 export class ErrorComponent implements OnInit {
 
-    @ViewChild("infoModal") infoModal:ModalDirective;
+    @ViewChild("errorModal") modal: ModalDirective;
 
     title: string;
     message:string;
@@ -25,7 +26,8 @@ export class ErrorComponent implements OnInit {
     shouldRefreshPage: boolean = true;
     isOurBug: boolean = true;
 
-    constructor(private errorService: ErrorHttpInterceptor,
+    constructor(private cd: ChangeDetectorRef,
+                private errorService: ErrorHttpInterceptor,
                 private urlService: UrlService,
                 private contextService: ContextService) {
     }
@@ -63,13 +65,14 @@ export class ErrorComponent implements OnInit {
                     }
                 }
 
+                this.refresh();
                 this.show();
             }
         )
     }
 
     show(): void {
-        this.infoModal.show();
+        this.modal.show();
     }
 
     toggleShowDetails(): void {
@@ -77,13 +80,19 @@ export class ErrorComponent implements OnInit {
     }
 
     close(): void {
-        this.infoModal.hide();
+        this.modal.hide();
         if (this.shouldRefreshPage) {
             if (this.contextService.isProjectSelected()) {
                 window.location.href = window.location.protocol + "//" + window.location.host + "/" + this.contextService.getProjectName() + "/" ;
             } else {
                 window.location.href = window.location.protocol + "//" + window.location.host + "/";
             }
+        }
+    }
+
+    refresh() {
+        if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
         }
     }
 }

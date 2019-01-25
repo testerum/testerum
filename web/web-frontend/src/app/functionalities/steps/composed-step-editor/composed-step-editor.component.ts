@@ -4,7 +4,7 @@ import {ComposedStepDef} from "../../../model/composed-step-def.model";
 import {StepsService} from "../../../service/steps.service";
 import {StepsTreeService} from "../steps-tree/steps-tree.service";
 import {IdUtils} from "../../../utils/id.util";
-import {FormValidationModel} from "../../../model/exception/form-validation.model";
+import {ValidationModel} from "../../../model/exception/validation.model";
 import {ErrorHttpInterceptor} from "../../../service/interceptors/error.http-interceptor";
 import {FormUtil} from "../../../utils/form.util";
 import {ValidationErrorResponse} from "../../../model/exception/validation-error-response.model";
@@ -140,7 +140,7 @@ export class ComposedStepEditorComponent extends AbstractComponentCanDeactivate 
             this.stepsService.checkComposedStepDefUpdate(this.model).subscribe (
                 (compatibilityResponse: CheckComposedStepDefUpdateCompatibilityResponse) => {
                     if(!compatibilityResponse.isUniqueStepPattern) {
-                        let formValidationModel = new FormValidationModel();
+                        let formValidationModel = new ValidationModel();
                         formValidationModel.fieldsWithValidationErrors.set("stepPattern", "step_pattern_already_exists");
                         FormUtil.setErrorsToForm(this.composedStepViewComponent.form, formValidationModel);
                         return;
