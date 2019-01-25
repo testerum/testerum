@@ -22,61 +22,79 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
+        <!-- common-di -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-di</artifactId>
         </dependency>
 
+        <!-- common-kotlin -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-kotlin</artifactId>
         </dependency>
 
+        <!-- common-cmdline -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-cmdline</artifactId>
         </dependency>
 
+        <!-- common-expression-evaluator -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-expression-evaluator</artifactId>
         </dependency>
 
+        <!-- common-rdbms -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-rdbms</artifactId>
         </dependency>
 
+        <!-- testerum-runner-api -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>testerum-runner-api</artifactId>
         </dependency>
 
+        <!-- model -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>model</artifactId>
         </dependency>
 
+        <!-- settings -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>settings</artifactId>
         </dependency>
 
+        <!-- testerum-scanner -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>testerum-scanner</artifactId>
         </dependency>
 
+        <!-- file-service -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>file-service</artifactId>
         </dependency>
 
+        <!-- project-manager -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>project-manager</artifactId>
+        </dependency>
+
+        <!-- common-json -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-json</artifactId>
         </dependency>
 
+        <!-- common-jdk -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-jdk</artifactId>

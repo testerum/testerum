@@ -3,9 +3,7 @@ package com.testerum.file_service.module_di
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import com.testerum.file_service.caches.RecentProjectsCache
-import com.testerum.file_service.caches.resolved.FeaturesCache
-import com.testerum.file_service.caches.resolved.StepsCache
-import com.testerum.file_service.caches.resolved.TestsCache
+import com.testerum.file_service.caches.resolved.BasicStepsCache
 import com.testerum.file_service.caches.resolved.resolvers.ArgsResolver
 import com.testerum.file_service.caches.resolved.resolvers.StepsResolver
 import com.testerum.file_service.caches.resolved.resolvers.TestResolver
@@ -124,12 +122,12 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
 
     val resourceFileService = ResourceFileService()
 
-    private val composedStepFileService = ComposedStepFileService(
+    val composedStepFileService = ComposedStepFileService(
             fileToBusinessStepMapper = fileToBusinessStepMapper,
             businessToFileStepMapper = businessToFileStepMapper
     )
 
-    private val testsFileService = TestFileService(
+    val testsFileService = TestFileService(
             fileToBusinessTestMapper = fileToBusinessTestMapper,
             businessToFileTestMapper = businessToFileTestMapper
     )
@@ -170,31 +168,17 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
             resourceFileService = resourceFileService
     )
 
-    private val stepsResolver = StepsResolver(
+    val stepsResolver = StepsResolver(
             argsResolver = argsResolver
     )
 
-    val stepsCache = StepsCache(
+    val basicStepsCache = BasicStepsCache(
             persistentCacheManger = scannerModuleFactory.stepLibraryPersistentCacheManger,
-            settingsManager = settingsModuleFactory.settingsManager,
-            composedStepFileService = composedStepFileService,
-            stepsResolver = stepsResolver,
-            warningService = warningService
+            settingsManager = settingsModuleFactory.settingsManager
     )
 
     val testResolver = TestResolver(
-            stepsCache = stepsCache,
             argsResolver = argsResolver
-    )
-
-    val testsCache = TestsCache(
-            testFileService = testsFileService,
-            testResolver = testResolver,
-            warningService = warningService
-    )
-
-    val featuresCache = FeaturesCache(
-            featureFileService = featuresFileService
     )
 
     val recentProjectsCache = RecentProjectsCache(

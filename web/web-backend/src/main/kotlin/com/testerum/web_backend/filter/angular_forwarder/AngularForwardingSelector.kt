@@ -1,4 +1,4 @@
-package com.testerum.web_backend.filter
+package com.testerum.web_backend.filter.angular_forwarder
 
 object AngularForwardingSelector {
 

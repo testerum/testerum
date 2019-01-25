@@ -7,18 +7,20 @@ import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.request.HttpRequestBody
 import com.testerum.model.resources.http.response.HttpResponse
 import com.testerum.model.resources.http.response.InvalidHttpResponse
-import com.testerum.web_backend.services.dirs.FrontendDirs
+import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.variables.VariablesResolverService
 import org.slf4j.LoggerFactory
 
-class HttpFrontendService(private val httpClientService: HttpClientService,
-                          private val frontendDirs: FrontendDirs,
+class HttpFrontendService(private val webProjectManager: WebProjectManager,
+                          private val httpClientService: HttpClientService,
                           private val variablesFileService: VariablesFileService,
                           private val variablesResolverService: VariablesResolverService) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(HttpFrontendService::class.java)
     }
+
+    private fun getVariablesDir() = webProjectManager.getProjectServices().dirs().getVariablesDir()
 
     fun executeHttpRequest(request: HttpRequest): HttpResponse {
         return try {
@@ -33,8 +35,9 @@ class HttpFrontendService(private val httpClientService: HttpClientService,
     }
 
     private fun resolveVariables(request: HttpRequest): HttpRequest {
-        val variablesDir = frontendDirs.getRequiredVariablesDir()
-        val variablesMap = variablesFileService.getVariablesAsMap(variablesDir)
+        val variablesMap = variablesFileService.getVariablesAsMap(
+                getVariablesDir()
+        )
 
         return resolveVariablesInRequest(request, variablesMap)
     }
@@ -42,7 +45,7 @@ class HttpFrontendService(private val httpClientService: HttpClientService,
     private fun resolveVariablesInRequest(request: HttpRequest,
                                           variablesMap: Map<String, String>): HttpRequest {
         val resolvedUrl = variablesResolverService.resolve(request.url, variablesMap)
-        val resolvedHeaders = getResolvedVariablesInHeader(request.headers, variablesMap);
+        val resolvedHeaders = getResolvedVariablesInHeader(request.headers, variablesMap)
         val resolvedBody = request.body?.let {
             resolveVariablesInBody(it, variablesMap)
         }
@@ -64,7 +67,7 @@ class HttpFrontendService(private val httpClientService: HttpClientService,
             )
         }
 
-        return resultMap;
+        return resultMap
     }
 
     private fun resolveVariablesInBody(body: HttpRequestBody,

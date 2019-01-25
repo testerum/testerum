@@ -14,8 +14,14 @@ export class VariablesService {
 
 
     getVariables(): Observable<Array<Variable>> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'X-Testerum-Project':  '/media/cvmocanu/data/Development/testerum/testerum-demos/pet-clinic-angular2/tests', // todo: replace this with the actual project path
+            })
+        };
+
         return this.http
-            .get<Array<Variable>>(this.VARIABLES_URL).pipe(
+            .get<Array<Variable>>(this.VARIABLES_URL, httpOptions).pipe(
             map(VariablesService.extractVariablesModel));
     }
 
@@ -24,6 +30,7 @@ export class VariablesService {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type':  'application/json',
+                'X-Testerum-Project':  '/media/cvmocanu/data/Development/testerum/testerum-demos/pet-clinic-angular2/tests', // todo: replace this with the actual project path
             })
         };
 

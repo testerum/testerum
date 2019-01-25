@@ -7,10 +7,13 @@ import com.testerum.model.step.StepCall
 import com.testerum.model.test.TestModel
 import java.nio.file.Path as JavaPath
 
-class TestResolver(private val stepsCache: StepsCache,
-                   private val argsResolver: ArgsResolver) {
+class TestResolver(private val argsResolver: ArgsResolver) {
 
-    fun resolveStepsDefs(test: TestModel, resourcesDir: JavaPath): TestModel {
+    fun resolveStepsDefs(getStepsCache: () -> StepsCache,
+                         test: TestModel,
+                         resourcesDir: JavaPath): TestModel {
+        val stepsCache = getStepsCache()
+
         val resolvedStepCalls = mutableListOf<StepCall>()
 
         for (stepCall in test.stepCalls) {
@@ -29,7 +32,11 @@ class TestResolver(private val stepsCache: StepsCache,
         )
     }
 
-    fun resolveManualStepDefs(manualTest: ManualTest, resourcesDir: JavaPath): ManualTest {
+    fun resolveManualStepDefs(getStepsCache: () -> StepsCache,
+                              manualTest: ManualTest,
+                              resourcesDir: JavaPath): ManualTest {
+        val stepsCache = getStepsCache()
+
         val resolvedManualStepCalls = mutableListOf<ManualStepCall>()
 
         for (manualStepCall in manualTest.stepCalls) {

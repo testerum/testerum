@@ -1,4 +1,4 @@
-package com.testerum.web_backend.filter
+package com.testerum.web_backend.filter.angular_forwarder
 
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
@@ -21,6 +21,12 @@ class AngularForwardingSelectorTest {
     fun `should NOT forward CSS`() {
         test(requestUri = "/styles.c9a855dafa8f592b1a8b.css"               , expectedShouldForward = false)
         test(requestUri = "/some/other/dir/styles.c9a855dafa8f592b1a8b.css", expectedShouldForward = false)
+    }
+
+    @Test
+    fun `should NOT forward source maps`() {
+        test(requestUri = "/styles.c9a855dafa8f592b1a8b.map"               , expectedShouldForward = false)
+        test(requestUri = "/some/other/dir/styles.c9a855dafa8f592b1a8b.map", expectedShouldForward = false)
     }
 
     @Test

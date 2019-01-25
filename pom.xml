@@ -10,6 +10,7 @@
         <module>common</module>
         <module>model</module>
         <module>file-service</module>
+        <module>project-manager</module>
         <module>cloud-client</module>
         <module>test-file-format</module>
         <module>testerum-backend</module>
@@ -175,6 +176,12 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>settings</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>project-manager</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

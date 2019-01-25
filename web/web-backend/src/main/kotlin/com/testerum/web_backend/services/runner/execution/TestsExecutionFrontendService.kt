@@ -3,7 +3,6 @@ package com.testerum.web_backend.services.runner.execution
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
-import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
@@ -16,6 +15,7 @@ import com.testerum.settings.SettingsManager
 import com.testerum.settings.TesterumDirs
 import com.testerum.settings.keys.SystemSettingKeys
 import com.testerum.web_backend.services.dirs.FrontendDirs
+import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.runner.execution.model.RunningTestExecution
 import com.testerum.web_backend.services.runner.execution.model.TestExecution
 import com.testerum.web_backend.services.runner.execution.model.TestExecutionResponse
@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import java.nio.file.Path as JavaPath
 
-class TestsExecutionFrontendService(private val testsCache: TestsCache,
+class TestsExecutionFrontendService(private val webProjectManager: WebProjectManager,
                                     private val testerumDirs: TesterumDirs,
                                     private val frontendDirs: FrontendDirs,
                                     private val settingsManager: SettingsManager,
@@ -65,7 +65,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     }
 
     private fun getRunnerRootNode(testOrDirectoryPaths: List<Path>): RunnerRootNode {
-        val tests = testsCache.getTestsForPaths(testOrDirectoryPaths)
+        val tests = webProjectManager.getProjectServices().getTestsCache().getTestsForPaths(testOrDirectoryPaths)
 
         val builder = RunnerTreeBuilder()
         tests.forEach { builder.addTest(it) }
@@ -202,8 +202,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         val packageDir: JavaPath = testerumDirs.getInstallDir()
 
         return packageDir.resolve("runner/repo")
-                         .toAbsolutePath()
-                         .normalize()
+                .toAbsolutePath()
+                .normalize()
     }
 
     private fun getBuiltInBasicStepsDirectory(): JavaPath {
@@ -224,9 +224,10 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     private fun createArgs(testsPathsToRun: List<Path>): List<String> {
         val args = mutableListOf<String>()
 
+        val projectDirs = webProjectManager.getProjectServices().dirs()
+
         // repository directory
-        val repositoryDir: JavaPath = frontendDirs.getRepositoryDir()
-                ?: throw IllegalArgumentException("cannot run tests because the repositoryDir is not set")
+        val repositoryDir: JavaPath = projectDirs.projectRootDir
 
         args += "--repository-directory"
         args += "${repositoryDir.escape()}"
@@ -247,10 +248,10 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
         // tests
         for (testPathToRun in testsPathsToRun) {
-            val path: JavaPath = frontendDirs.getTestsDir(repositoryDir)
-                                                        .resolve(testPathToRun.toString())
-                                                        .toAbsolutePath()
-                                                        .normalize()
+            val path: JavaPath = projectDirs.getTestsDir()
+                    .resolve(testPathToRun.toString())
+                    .toAbsolutePath()
+                    .normalize()
 
             args.add("--test-path")
             args.add("${path.escape()}")
@@ -290,8 +291,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     }
 
     private fun Any?.escape(): String? = this?.toString()
-                                             ?.replace("\\", "\\\\")
-                                             ?.replace("\"", "\\\"")
-                                             ?.replace("'", "\\'")
+            ?.replace("\\", "\\\\")
+            ?.replace("\"", "\\\"")
+            ?.replace("'", "\\'")
 
 }

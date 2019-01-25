@@ -83,7 +83,9 @@ export class AttachmentsComponent implements OnInit {
     }
 
     getAttachmentUrl(attachment: Attachment, thumbnailVersion: boolean = false): string {
-        let url = "/rest/features/attachments?path=" + encodeURIComponent(attachment.path.toString());
+        let url = "/rest/features/attachments"
+            + "?path=" + encodeURIComponent(attachment.path.toString())
+            + "&X-Testerum-Project=/media/cvmocanu/data/Development/testerum/testerum-demos/pet-clinic-angular2/tests"; // todo: add the actual project path
         if (thumbnailVersion) {
             url += "&thumbnail=true"
         }

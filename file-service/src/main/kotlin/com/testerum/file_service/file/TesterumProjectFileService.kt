@@ -18,7 +18,7 @@ import com.testerum.common_kotlin.exists
 import com.testerum.common_kotlin.isNotADirectory
 import com.testerum.common_kotlin.writeText
 import com.testerum.model.exception.ValidationException
-import com.testerum.model.project.TesterumProject
+import com.testerum.model.project.FileProject
 import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
@@ -51,7 +51,7 @@ class TesterumProjectFileService {
         }
     }
 
-    fun save(project: TesterumProject, directory: JavaPath) {
+    fun save(project: FileProject, directory: JavaPath) {
         val serializedProject = OBJECT_MAPPER.writeValueAsString(project)
 
         val projectFile = projectFilePath(directory)
@@ -59,7 +59,7 @@ class TesterumProjectFileService {
         projectFile.writeText(serializedProject)
     }
 
-    fun load(directory: JavaPath): TesterumProject {
+    fun load(directory: JavaPath): FileProject {
         if (!isTesterumProject(directory)) {
             throw ValidationException(
                     globalMessage = "The directory [${directory.toAbsolutePath().normalize()}] is not a Testerum project.",

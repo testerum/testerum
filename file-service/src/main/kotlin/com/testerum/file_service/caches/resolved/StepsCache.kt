@@ -18,9 +18,6 @@ import com.testerum.model.step.tree.ComposedContainerStepNode
 import com.testerum.model.step.tree.builder.ComposedStepDirectoryTreeBuilder
 import com.testerum.model.text.StepPattern
 import com.testerum.model.util.StepHashUtil
-import com.testerum.scanner.step_lib_scanner.StepLibraryPersistentCacheManger
-import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
-import com.testerum.settings.SettingsManager
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.util.concurrent.locks.ReentrantReadWriteLock
@@ -28,8 +25,7 @@ import kotlin.concurrent.read
 import kotlin.concurrent.write
 import java.nio.file.Path as JavaPath
 
-class StepsCache(private val persistentCacheManger: StepLibraryPersistentCacheManger,
-                 private val settingsManager: SettingsManager,
+class StepsCache(private val basicStepsCache: BasicStepsCache,
                  private val composedStepFileService: ComposedStepFileService,
                  private val stepsResolver: StepsResolver,
                  private val warningService: WarningService) {
@@ -43,23 +39,14 @@ class StepsCache(private val persistentCacheManger: StepLibraryPersistentCacheMa
     private var composedStepsDir: JavaPath? = null
     private var resourcesDir: JavaPath? = null
 
-    private var hooks: MutableList<HookDef> = mutableListOf()
-    private var basicSteps: MutableList<BasicStepDef> = mutableListOf()
     private var unresolvedComposedSteps: MutableList<ComposedStepDef> = mutableListOf()
 
     private var stepsByHash: MutableMap</*hash: */String, StepDef> = hashMapOf()
     private var stepsByPath: MutableMap<Path, StepDef> = hashMapOf()
 
-    fun initialize(stepLibraryJarFiles: List<JavaPath>,
-                   persistentCacheFile: JavaPath,
-                   composedStepsDir: JavaPath?,
+    fun initialize(composedStepsDir: JavaPath?,
                    resourcesDir: JavaPath?) {
         lock.write {
-            // load step libs
-            val (basicSteps, hooks) = loadStepLibs(stepLibraryJarFiles, persistentCacheFile)
-            this.basicSteps = ArrayList(basicSteps)
-            this.hooks = ArrayList(hooks)
-
             if (composedStepsDir == null || resourcesDir == null) {
                 LOG.info("not loading composed steps because either the composed steps dir or the resources dir is unknown")
             } else {
@@ -86,28 +73,6 @@ class StepsCache(private val persistentCacheManger: StepLibraryPersistentCacheMa
         }
     }
 
-    private fun loadStepLibs(stepLibraryJarFiles: List<JavaPath>,
-                             persistentCacheFile: JavaPath): Pair<List<BasicStepDef>, List<HookDef>> {
-        val startTimeMillis = System.currentTimeMillis()
-
-        val scanResult = persistentCacheManger.scan(stepLibraryJarFiles, persistentCacheFile)
-
-        // register setting definitions
-        settingsManager.modify {
-            for (library in scanResult.libraries) {
-                registerDefinitions(library.settingDefinitions)
-            }
-        }
-
-        val basicSteps: List<BasicStepDef> = scanResult.libraries.flatMap { it.steps }
-        val hooks: List<HookDef> = scanResult.libraries.flatMap { it.hooks }
-
-        val endTimeInitMillis = System.currentTimeMillis()
-        LOG.info("loading step libraries (${basicSteps.size} steps & ${hooks.size} hooks) took ${endTimeInitMillis - startTimeMillis} ms")
-
-        return Pair(basicSteps, hooks)
-    }
-
     private fun loadComposedSteps(composedStepsDir: JavaPath): List<ComposedStepDef> {
         val startTimeMillis = System.currentTimeMillis()
 
@@ -124,13 +89,14 @@ class StepsCache(private val persistentCacheManger: StepLibraryPersistentCacheMa
                 ?: throw IllegalStateException("cannot resolve steps because the resourcesDir is not set")
 
         // resolve steps
+        val basicSteps = basicStepsCache.getBasicSteps()
         stepsByHash = resolveSteps(basicSteps, this.unresolvedComposedSteps, resourcesDir)
 
         stepsByPath = hashMapOf()
         stepsByHash.mapKeysTo(stepsByPath) { it.value.path }
     }
 
-    private fun resolveSteps(basicSteps: List<BasicStepDef>, composedSteps: List<ComposedStepDef>, resourcesDir: JavaPath): MutableMap<String, StepDef> {
+    private fun resolveSteps(basicSteps: Collection<BasicStepDef>, composedSteps: List<ComposedStepDef>, resourcesDir: JavaPath): MutableMap<String, StepDef> {
         val startTimeMillis = System.currentTimeMillis()
 
         val basicStepsByHash = basicSteps.associateBy { it.hash }
@@ -160,10 +126,6 @@ class StepsCache(private val persistentCacheManger: StepLibraryPersistentCacheMa
 
         return result
     }
-
-    fun getBasicSteps(): Collection<BasicStepDef> = lock.read { basicSteps }
-
-    fun getHooks(): Collection<HookDef> = lock.read { hooks }
 
     fun getAllSteps(): Collection<StepDef> = lock.read { stepsByHash.values }
 

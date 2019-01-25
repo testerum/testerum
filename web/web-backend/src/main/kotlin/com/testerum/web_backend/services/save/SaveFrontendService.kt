@@ -1,7 +1,5 @@
 package com.testerum.web_backend.services.save
 
-import com.testerum.file_service.caches.resolved.StepsCache
-import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.file_service.file.ResourceFileService
 import com.testerum.file_service.util.isChangedRequiringSave
 import com.testerum.file_service.util.isStepPatternChangeCompatible
@@ -12,73 +10,64 @@ import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.test.TestModel
 import com.testerum.model.text.StepPattern
-import com.testerum.settings.keys.SystemSettingKeys
 import com.testerum.test_file_format.stepdef.signature.FileStepDefSignatureParserFactory
-import com.testerum.web_backend.services.dirs.FrontendDirs
-import com.testerum.web_backend.services.initializers.caches.impl.StepsCacheInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.TestsCacheInitializer
+import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.util.isOtherStepWithTheSameStepPatternAsTheNew
 import com.testerum.web_backend.util.isTestUsingStepPattern
-import java.nio.file.Path
 
-class SaveFrontendService(private val frontendDirs: FrontendDirs,
-                          private val stepsCache: StepsCache,
-                          private val stepsCacheInitializer: StepsCacheInitializer,
-                          private val testsCache: TestsCache,
-                          private val testsCacheInitializer: TestsCacheInitializer,
+class SaveFrontendService(private val webProjectManager: WebProjectManager,
                           private val resourceFileService: ResourceFileService) {
 
-    fun saveTest(test: TestModel): TestModel {
-        val repositoryDir = frontendDirs.getRequiredRepositoryDir()
+    private fun stepsCache() = webProjectManager.getProjectServices().getStepsCache()
 
-        val savedTest = saveTest(test, repositoryDir)
+    private fun getResourcesDir() = webProjectManager.getProjectServices().dirs().getResourcesDir()
+
+    fun saveTest(test: TestModel): TestModel {
+        val savedTest = saveTestWithoutReinitializingCaches(test)
 
         reinitializeCaches()
 
         return savedTest
     }
 
-    private fun saveTest(test: TestModel, repositoryDir: Path, recursiveSave: Boolean = true): TestModel {
+    private fun saveTestWithoutReinitializingCaches(test: TestModel, recursiveSave: Boolean = true): TestModel {
         if (recursiveSave) {
-            saveStepCallsRecursively(test.stepCalls, repositoryDir)
+            saveStepCallsRecursively(test.stepCalls)
         }
 
         val testToSave = if (recursiveSave) {
-            saveExternalResources(test, repositoryDir)
+            saveExternalResources(test)
         } else {
             test
         }
 
-        return testsCache.save(testToSave)
+        return webProjectManager.getProjectServices().getTestsCache().save(testToSave)
     }
 
     fun saveComposedStep(composedStep: ComposedStepDef): ComposedStepDef {
-        val repositoryDir = frontendDirs.getRepositoryDir()
-                ?: throw java.lang.IllegalStateException("cannot save composed step, because the setting [${SystemSettingKeys.REPOSITORY_DIR}] is not set")
-
-        val savedStep = saveComposedStep(composedStep, repositoryDir)
+        val savedStep = saveComposedStepWithoutReinitializingCaches(composedStep)
 
         reinitializeCaches()
 
         return savedStep
     }
 
-    private fun saveComposedStep(composedStep: ComposedStepDef, repositoryDir: Path, recursiveSave: Boolean = true): ComposedStepDef {
+    private fun saveComposedStepWithoutReinitializingCaches(composedStep: ComposedStepDef, recursiveSave: Boolean = true): ComposedStepDef {
         validateComposedStepSave(composedStep)
 
         if (recursiveSave) {
-            saveStepCallsRecursively(composedStep.stepCalls, repositoryDir)
+            saveStepCallsRecursively(composedStep.stepCalls)
         }
 
         val stepToSave: ComposedStepDef = if (recursiveSave) {
-            saveExternalResources(composedStep, repositoryDir)
+            saveExternalResources(composedStep)
         } else {
             composedStep
         }
 
-        val existingStep = stepToSave.oldPath?.let { stepsCache.getComposedStepAtPath(it) }
+        val existingStep = stepToSave.oldPath?.let { stepsCache().getComposedStepAtPath(it) }
 
-        val savedComposedStep = stepsCache.saveComposedStep(stepToSave)
+        val savedComposedStep = stepsCache().saveComposedStep(stepToSave)
 
         // update affected tests & steps
         if (existingStep != null) {
@@ -87,8 +76,8 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
                 val newStepPattern = savedComposedStep.stepPattern
 
                 if (existingStepPattern.isStepPatternChangeCompatible(newStepPattern)) {
-                    updateTestsThatUseOldStep(existingStep, savedComposedStep, repositoryDir)
-                    updateStepsThatUsesOldStep(existingStep, savedComposedStep, repositoryDir)
+                    updateTestsThatUseOldStep(existingStep, savedComposedStep)
+                    updateStepsThatUsesOldStep(existingStep, savedComposedStep)
                 }
             }
         }
@@ -96,7 +85,7 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         return savedComposedStep
     }
 
-    private fun updateTestsThatUseOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef, repositoryDir: Path) {
+    private fun updateTestsThatUseOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef) {
         val testsThatUsesOldStep = findTestsThatCall(oldStep.stepPattern)
 
         for (testToUpdate in testsThatUsesOldStep) {
@@ -107,14 +96,14 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
                 }
             }
 
-            saveTest(updatedTest, repositoryDir, recursiveSave = false)
+            saveTestWithoutReinitializingCaches(updatedTest, recursiveSave = false)
         }
     }
 
     private fun findTestsThatCall(searchedStepPattern: StepPattern): List<TestModel> {
         val result: MutableList<TestModel> = mutableListOf()
 
-        val allTests = testsCache.getAllTests()
+        val allTests = webProjectManager.getProjectServices().getTestsCache().getAllTests()
 
         for (test in allTests) {
             if (test.isTestUsingStepPattern(searchedStepPattern)) {
@@ -132,7 +121,7 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         return testToUpdate.copy(stepCalls = updatedCalls)
     }
 
-    private fun updateStepsThatUsesOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef, repositoryDir: Path) {
+    private fun updateStepsThatUsesOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef) {
         val stepsThatUseOldStep = findStepsThatCall(oldStep)
         for (stepDefToUpdate in stepsThatUseOldStep) {
             var updatedStepDef = stepDefToUpdate
@@ -142,14 +131,14 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
                 }
             }
 
-            saveComposedStep(updatedStepDef, repositoryDir, recursiveSave = false)
+            saveComposedStepWithoutReinitializingCaches(updatedStepDef, recursiveSave = false)
         }
     }
 
     private fun findStepsThatCall(step: ComposedStepDef): List<ComposedStepDef> {
         val result: MutableSet<ComposedStepDef> = mutableSetOf()
 
-        val composedSteps = stepsCache.getComposedSteps()
+        val composedSteps = stepsCache().getComposedSteps()
         for (composedStep in composedSteps) {
             for (stepCall in composedStep.stepCalls) {
                 if (stepCall.isCallOf(step)) {
@@ -195,7 +184,7 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         val oldPath = composedStep.oldPath
                 ?: return // create
 
-        val oldStep = stepsCache.getStepAtPath(oldPath) as? ComposedStepDef
+        val oldStep = stepsCache().getStepAtPath(oldPath) as? ComposedStepDef
                 ?: return // update, but the old step was deleted in the mean time; handle it as create
 
         val oldStepPattern = oldStep.stepPattern
@@ -205,7 +194,7 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
             return
         }
 
-        val allSteps = stepsCache.getAllSteps()
+        val allSteps = stepsCache().getAllSteps()
         if (isOtherStepWithTheSameStepPatternAsTheNew(oldStepPattern, newStepPattern, allSteps)) {
             throw ValidationException(
                     "another step with the same pattern exists at path [${oldStep.path}]"
@@ -213,34 +202,34 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
         }
     }
 
-    private fun saveStepCallsRecursively(stepCalls: List<StepCall>, repositoryDir: Path) {
+    private fun saveStepCallsRecursively(stepCalls: List<StepCall>) {
         for (stepCall in stepCalls) {
             val composedStepDef = stepCall.stepDef as? ComposedStepDef
                     ?: continue
 
-            saveComposedStep(composedStepDef, repositoryDir)
+            saveComposedStep(composedStepDef)
         }
     }
 
-    private fun saveExternalResources(composedStep: ComposedStepDef, repositoryDir: Path): ComposedStepDef {
+    private fun saveExternalResources(composedStep: ComposedStepDef): ComposedStepDef {
         val stepCalls: List<StepCall> = composedStep.stepCalls.map { stepCall ->
-            saveExternalResources(stepCall, repositoryDir)
+            saveExternalResources(stepCall)
         }
 
         return composedStep.copy(stepCalls = stepCalls)
     }
 
-    private fun saveExternalResources(testModel: TestModel, repositoryDir: Path): TestModel {
+    private fun saveExternalResources(testModel: TestModel): TestModel {
         val stepCalls: List<StepCall> = testModel.stepCalls.map { stepCall ->
-            saveExternalResources(stepCall, repositoryDir)
+            saveExternalResources(stepCall)
         }
 
         return testModel.copy(stepCalls = stepCalls)
     }
 
-    private fun saveExternalResources(stepCall: StepCall, repositoryDir: Path): StepCall {
+    private fun saveExternalResources(stepCall: StepCall): StepCall {
         val argsWithNewNames: List<Arg> = stepCall.args.map { arg ->
-            saveExternalResource(arg, repositoryDir)
+            saveExternalResource(arg)
         }
 
         return stepCall.copy(args = argsWithNewNames)
@@ -250,12 +239,10 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
      * if Arg does not represent an external resource, do nothing;
      * otherwise save it and return the new name
      */
-    private fun saveExternalResource(arg: Arg, repositoryDir: Path): Arg {
+    private fun saveExternalResource(arg: Arg): Arg {
         // todo: don't save if the content didn't change?
         val path: com.testerum.model.infrastructure.path.Path = arg.path
                 ?: return arg // if we don't have a path, then this is an internal resource
-
-        val resourcesDir = frontendDirs.getResourcesDir(repositoryDir)
 
         val resourceContext: ResourceContext = resourceFileService.save(
                 resourceContext = ResourceContext(
@@ -263,7 +250,7 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
                         path = path,
                         body = arg.content.orEmpty()
                 ),
-                resourcesDir = resourcesDir
+                resourcesDir = getResourcesDir()
         )
 
         val actualPath: com.testerum.model.infrastructure.path.Path = resourceContext.path
@@ -274,8 +261,8 @@ class SaveFrontendService(private val frontendDirs: FrontendDirs,
     private fun reinitializeCaches() {
         // re-loading steps & tests to make sure tests are resolved properly
         // to optimize, we could re-load only the affected tests and/or steps
-        stepsCacheInitializer.reinitializeComposedSteps()
-        testsCacheInitializer.initialize()
+        webProjectManager.getProjectServices().reinitializeStepsCache()
+        webProjectManager.getProjectServices().reinitializeTestsCache()
     }
 
 }

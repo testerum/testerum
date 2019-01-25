@@ -62,7 +62,10 @@ class ResourceFileService {
 
         val escapedPath = path.escape()
         val fileContent = resourceJavaPath.getContentOrNull()
-            ?: return null
+        if (fileContent == null) {
+            println("cannot find resource <<<<$resourceJavaPath>>>> / <<<<${resourceJavaPath.toAbsolutePath().normalize()}>>>>")
+            return null
+        }
 
         return ResourceContext(
                 path = escapedPath,

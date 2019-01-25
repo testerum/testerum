@@ -7,16 +7,13 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.infrastructure.path.RenamePath
 import com.testerum.model.resources.ResourceContext
 import com.testerum.model.resources.ResourceType
-import com.testerum.settings.keys.SystemSettingKeys
-import com.testerum.web_backend.services.dirs.FrontendDirs
-import com.testerum.web_backend.services.initializers.caches.impl.StepsCacheInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.TestsCacheInitializer
+import com.testerum.web_backend.services.project.WebProjectManager
 import java.nio.file.Path as JavaPath
 
-class ResourcesFrontendService(private val frontendDirs: FrontendDirs,
-                               private val resourceFileService: ResourceFileService,
-                               private val stepsCacheInitializer: StepsCacheInitializer,
-                               private val testsCacheInitializer: TestsCacheInitializer) {
+class ResourcesFrontendService(private val webProjectManager: WebProjectManager,
+                               private val resourceFileService: ResourceFileService) {
+
+    private fun getResourcesDir(): JavaPath = webProjectManager.getProjectServices().dirs().getResourcesDir()
 
     fun getResourceAtPath(path: Path): ResourceContext? {
         val resourcesDir = getResourcesDir()
@@ -88,18 +85,11 @@ class ResourcesFrontendService(private val frontendDirs: FrontendDirs,
         return result
     }
 
-    private fun getResourcesDir(): JavaPath {
-        val repositoryDir = frontendDirs.getRepositoryDir()
-                ?: throw IllegalStateException("the setting [${SystemSettingKeys.REPOSITORY_DIR}] is not set")
-
-        return frontendDirs.getResourcesDir(repositoryDir)
-    }
-
     private fun reinitializeCaches() {
         // re-loading steps & tests to make sure tests are resolved properly
         // to optimize, we could re-load only the affected tests and/or steps
-        stepsCacheInitializer.reinitializeComposedSteps()
-        testsCacheInitializer.initialize()
+        webProjectManager.getProjectServices().reinitializeStepsCache()
+        webProjectManager.getProjectServices().reinitializeTestsCache()
     }
 
 }

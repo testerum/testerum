@@ -14,7 +14,8 @@ import java.nio.file.Path as JavaPath
 
 class TestsCache(private val testFileService: TestFileService,
                  private val testResolver: TestResolver,
-                 private val warningService: WarningService) {
+                 private val warningService: WarningService,
+                 private val getStepsCache: () -> StepsCache) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(TestsCache::class.java)
@@ -54,7 +55,7 @@ class TestsCache(private val testFileService: TestFileService,
     private fun resolveTest(test: TestModel, resourcesDir: java.nio.file.Path): TestModel {
         var result = test
 
-        result = testResolver.resolveStepsDefs(result, resourcesDir)
+        result = testResolver.resolveStepsDefs(getStepsCache, result, resourcesDir)
         result = warningService.testWithWarnings(result)
 
         return result
@@ -107,7 +108,7 @@ class TestsCache(private val testFileService: TestFileService,
             val savedTest = testFileService.save(test, testsDir)
 
             // resolve test
-            val resolvedTest = testResolver.resolveStepsDefs(savedTest, resourcesDir)
+            val resolvedTest = testResolver.resolveStepsDefs(getStepsCache, savedTest, resourcesDir)
             val resolvedTestWithWarnings = warningService.testWithWarnings(resolvedTest)
 
             // update cache

@@ -3,8 +3,8 @@ package com.testerum.file_service.caches
 import com.testerum.file_service.file.RecentProjectsFileService
 import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.model.home.Project
+import com.testerum.model.project.FileProject
 import com.testerum.model.project.RecentProject
-import com.testerum.model.project.TesterumProject
 import org.slf4j.LoggerFactory
 import java.nio.file.Paths
 import java.util.concurrent.locks.ReentrantReadWriteLock
@@ -50,9 +50,9 @@ class RecentProjectsCache(private val recentProjectsFileService: RecentProjectsF
         }
 
         for (recentProject in loadResult.validProjects.sortedByDescending { it.lastOpened }) {
-            val testerumProject: TesterumProject? = loadProjectSafely(recentProject.path)
+            val fileProject: FileProject? = loadProjectSafely(recentProject.path)
 
-            if (testerumProject == null) {
+            if (fileProject == null) {
                 // invalid project file: remove from list of projects to re-save
                 shouldReSave = true
             } else {
@@ -62,7 +62,7 @@ class RecentProjectsCache(private val recentProjectsFileService: RecentProjectsF
                 val path = recentProject.path.toString()
 
                 result[path] = Project(
-                        name = testerumProject.name,
+                        name = fileProject.name,
                         path = path,
                         lastOpened = recentProject.lastOpened
                 )
@@ -87,7 +87,7 @@ class RecentProjectsCache(private val recentProjectsFileService: RecentProjectsF
         return result
     }
 
-    private fun loadProjectSafely(directory: JavaPath): TesterumProject? {
+    private fun loadProjectSafely(directory: JavaPath): FileProject? {
         return try {
             testerumProjectFileService.load(directory)
         } catch (e: Exception) {

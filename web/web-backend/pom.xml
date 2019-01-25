@@ -62,6 +62,12 @@
             <artifactId>file-service</artifactId>
         </dependency>
 
+        <!-- project-manager -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>project-manager</artifactId>
+        </dependency>
+
         <!-- common-expression-evaluator -->
         <dependency>
             <groupId>com.testerum</groupId>

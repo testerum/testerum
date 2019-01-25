@@ -1,7 +1,8 @@
 package com.testerum.web_backend
 
 import com.testerum.common_cmdline.banner.TesterumBanner
-import com.testerum.web_backend.filter.AngularForwarderFilter
+import com.testerum.web_backend.filter.angular_forwarder.AngularForwarderFilter
+import com.testerum.web_backend.filter.project.ProjectFilter
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.eclipse.jetty.security.SecurityHandler
 import org.eclipse.jetty.server.Handler
@@ -12,7 +13,12 @@ import org.eclipse.jetty.server.handler.ErrorHandler
 import org.eclipse.jetty.server.handler.HandlerList
 import org.eclipse.jetty.server.handler.StatisticsHandler
 import org.eclipse.jetty.server.session.SessionHandler
-import org.eclipse.jetty.servlet.*
+import org.eclipse.jetty.servlet.DefaultServlet
+import org.eclipse.jetty.servlet.ErrorPageErrorHandler
+import org.eclipse.jetty.servlet.FilterHolder
+import org.eclipse.jetty.servlet.ServletContextHandler
+import org.eclipse.jetty.servlet.ServletHandler
+import org.eclipse.jetty.servlet.ServletHolder
 import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer
 import org.fusesource.jansi.Ansi
@@ -94,6 +100,16 @@ object TesterumWebMain {
                     name = CharacterEncodingFilter::class.java.simpleName.decapitalize()
 
                     initParameters["encoding"] = "UTF-8"
+                },
+                "/*",
+                EnumSet.of(DispatcherType.REQUEST)
+        )
+
+        // add ProjectFilter
+        webAppContext.addFilter(
+                FilterHolder().apply {
+                    filter = ProjectFilter()
+                    name = ProjectFilter::class.java.simpleName.decapitalize()
                 },
                 "/*",
                 EnumSet.of(DispatcherType.REQUEST)
