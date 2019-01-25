@@ -48,7 +48,12 @@ class RdbmsConnectionCache(private val jdbcDriversCache: JdbcDriversCache) {
                 readSchemasFromMetaData(dbConnectionWithoutDatabase)
             }
         } catch (e: Exception) {
-            RdbmsSchemasNames(errorMessage = "failed to get schemas for config [$rdbmsConnectionConfig]\n${e.toStringWithStacktrace()}")
+            throw ValidationException(
+                ValidationModel(
+                    globalMessage = "The database connection couldn't be established using the provided details",
+                    globalMessageDetails = "RDBMS Connection Config = [\n\t$rdbmsConnectionConfig\n]"
+                )
+            )
         }
     }
 
