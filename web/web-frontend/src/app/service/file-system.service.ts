@@ -37,6 +37,7 @@ export class FileSystemService {
             parent,
             fileSystemDirectory.name,
             fileSystemDirectory.absoluteJavaPath,
+            fileSystemDirectory.isProject,
             fileSystemDirectory.canCreateChild,
             fileSystemDirectory.hasChildrenDirectories
         );
@@ -53,6 +54,7 @@ export class FileSystemService {
                 parent,
                 childDirectory.name,
                 childDirectory.absoluteJavaPath,
+                childDirectory.isProject,
                 childDirectory.canCreateChild,
                 childDirectory.hasChildrenDirectories
             );

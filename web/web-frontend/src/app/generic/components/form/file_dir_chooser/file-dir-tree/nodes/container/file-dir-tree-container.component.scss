@@ -1,3 +1,5 @@
+@import "../../../../../../../../resources/css/testerum-variables.scss";
+
 .flip {
     -moz-transform: scale(1, -1);
     -webkit-transform: scale(1, -1);
@@ -24,3 +26,19 @@
      font-size: 9px;
      color: #ff6161 !important;
  }
+
+
+.testerum-icon {
+
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    color: $testerum-color;
+
+    .fa-angle-double-left {
+    }
+    .fa-angle-double-right {
+        position: absolute;
+        left: 7px;
+    }
+}

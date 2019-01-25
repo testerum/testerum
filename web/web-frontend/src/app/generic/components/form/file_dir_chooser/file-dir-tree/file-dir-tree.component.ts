@@ -82,6 +82,7 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
                             this.getSelectedNode(),
                             newFileSystemDirectory.name,
                             newFileSystemDirectory.absoluteJavaPath,
+                            newFileSystemDirectory.isProject,
                             newFileSystemDirectory.canCreateChild,
                             false
                         );

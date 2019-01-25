@@ -15,7 +15,7 @@ import {FileDirTreeComponentService} from "../../file-dir-tree.component-service
         '../../../../../../../generic/css/tree.scss'
     ]
 })
-export class FileDirTreeContainerComponent implements OnInit, OnDestroy {
+export class FileDirTreeContainerComponent {
 
     @Input() model: FileDirTreeContainerModel;
     @Input() modelComponentMapping: ModelComponentMapping;
@@ -25,12 +25,6 @@ export class FileDirTreeContainerComponent implements OnInit, OnDestroy {
 
     constructor(private jsonTreeService: JsonTreeService,
                 private fileDirTreeComponentService: FileDirTreeComponentService) {
-    }
-
-    ngOnInit(): void {
-    }
-
-    ngOnDestroy(): void {
     }
 
     collapseNode() {

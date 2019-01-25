@@ -7,6 +7,7 @@ export class FileDirTreeContainerModel implements JsonTreeContainer {
     parent: JsonTreeContainer;
     name: string;
     absoluteJavaPath: string;
+    isProject: boolean = false;
     canCreateChild: boolean;
     private children: Array<FileDirTreeContainerModel> = [];
     jsonTreeNodeState: JsonTreeNodeState = new JsonTreeNodeState();
@@ -18,12 +19,14 @@ export class FileDirTreeContainerModel implements JsonTreeContainer {
     constructor(parent: FileDirTreeContainerModel,
                 name: string = "",
                 absoluteJavaPath: string = "",
+                isProject: boolean = false,
                 canCreateChild: boolean = true,
                 private containsChildren: boolean) {
         this.parent = parent;
         this.name = name;
-        this.canCreateChild = canCreateChild;
         this.absoluteJavaPath = absoluteJavaPath;
+        this.isProject = isProject;
+        this.canCreateChild = canCreateChild;
         this.jsonTreeNodeState.showChildren = false;
     }
 
