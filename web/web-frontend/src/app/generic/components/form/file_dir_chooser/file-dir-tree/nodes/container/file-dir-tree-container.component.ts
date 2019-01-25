@@ -35,6 +35,11 @@ export class FileDirTreeContainerComponent {
     }
 
     setSelected() {
+        if (this.fileDirTreeComponentService.isTesterumProjectChooser && !this.model.isProject) {
+            this.fileDirTreeComponentService.selectedNode = null;
+            return;
+        }
+
         this.fileDirTreeComponentService.selectedNode = this.model;
     }
 

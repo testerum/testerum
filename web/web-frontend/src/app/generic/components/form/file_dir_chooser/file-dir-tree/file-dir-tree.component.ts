@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FileDirTreeComponentService} from "./file-dir-tree.component-service";
 import {FileDirTreeContainerModel} from "./model/file-dir-tree-container.model";
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
@@ -20,6 +20,7 @@ import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
 })
 export class FileDirTreeComponent  implements OnInit, OnDestroy {
 
+    @Input() isTesterumProjectChooser: boolean = false;
     fileDirectoryChooserJsonTreeModel: JsonTreeModel = new JsonTreeModel();
 
     jsonModelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
@@ -36,6 +37,8 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
 
 
     ngOnInit() {
+        this.fileDirTreeComponentService.isTesterumProjectChooser = this.isTesterumProjectChooser;
+
         this.initializeDirectoryTreeFromServerSubscription = this.fileDirectoryChooserService.initializeDirectoryTreeFromServer().subscribe(
             (dirTree: JsonTreeModel) => {
                 this.fileDirectoryChooserJsonTreeModel.children.length = 0;

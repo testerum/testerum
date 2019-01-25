@@ -7,6 +7,7 @@ import {Home} from "../../model/home/home.model";
 import {ArrayUtil} from "../../utils/array.util";
 import {CreateProjectService} from "./create-project/create-project.service";
 import {FileDirChooserModalService} from "../../generic/components/form/file_dir_chooser/dialog/file-dir-chooser-modal.service";
+import {ProjectService} from "../../service/project.service";
 
 @Component({
     selector: 'home',
@@ -21,6 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     private getHomePageModelSubscription: Subscription;
     constructor(private homeService: HomeService,
+                private projectService: ProjectService,
                 private contextService: ContextService,
                 private createProjectService: CreateProjectService,
                 private fileDirChooserModalService: FileDirChooserModalService) {
@@ -47,8 +49,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     onOpenProject() {
-        this.fileDirChooserModalService.showDirectoryChooserDialogModal().subscribe((selectedPathAsString: string) => {
-            console.log("selectedPathAsString", selectedPathAsString);
+        this.fileDirChooserModalService.showTesterumProjectChooserModal().subscribe((selectedPathAsString: string) => {
+            this.projectService.openProject(selectedPathAsString).subscribe((project: Project) => {
+                this.contextService.setCurrentProject(project);
+            });
         })
     }
 }

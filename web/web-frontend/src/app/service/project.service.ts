@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {Project} from "../model/home/project.model";
 import {Setting} from "../functionalities/config/settings/model/setting.model";
@@ -48,6 +48,17 @@ export class ProjectService {
 
         return this.http
             .post<any>(this.BASE_URL, body, httpOptions)
+            .pipe(map(it => Project.deserialize(it)));
+    }
+
+    openProject(selectedPathAsString: string): Observable<Project> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', selectedPathAsString)
+        };
+
+        return this.http
+            .post<any>(this.BASE_URL+"/open", null, httpOptions)
             .pipe(map(it => Project.deserialize(it)));
     }
 }

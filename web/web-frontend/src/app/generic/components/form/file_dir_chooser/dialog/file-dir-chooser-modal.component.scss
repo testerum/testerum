@@ -5,7 +5,10 @@
 
 .modal-footer {
     padding-top: 5px;
-    height: 75px;
+    border-top: 1px solid #e5e5e5;
+    display: flex;
+    justify-content: flex-end;
+    flex-flow: column;
 }
 
 .file-chooser {

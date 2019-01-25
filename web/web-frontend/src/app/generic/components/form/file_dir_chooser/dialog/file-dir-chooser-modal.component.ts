@@ -17,6 +17,8 @@ export class FileDirChooserModalComponent implements AfterViewInit {
     @ViewChild("infoModal") modal: ModalDirective;
     directoryChooserDialogService: FileDirChooserModalService;
 
+    isTesterumProjectChooser: boolean = false;
+
     ngAfterViewInit(): void {
         this.modal.show();
         this.modal.onHidden.subscribe(event => {
@@ -39,5 +41,9 @@ export class FileDirChooserModalComponent implements AfterViewInit {
 
     getSelectedPathAsString(): string {
         return this.fileDirTreeComponent.getSelectedPathAsString();
+    }
+
+    createDirectory(): void {
+        this.fileDirTreeComponent.createDirectory()
     }
 }

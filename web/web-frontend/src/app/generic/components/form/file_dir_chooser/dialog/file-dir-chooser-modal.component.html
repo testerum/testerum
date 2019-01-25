@@ -10,17 +10,18 @@
             <div class="modal-body">
 
                 <div class="file-chooser">
-                    <file-dir-tree></file-dir-tree>
+                    <file-dir-tree [isTesterumProjectChooser]="isTesterumProjectChooser"></file-dir-tree>
                 </div>
             </div>
 
             <!-- BUTTONS -->
             <div class="modal-footer">
                 <div class="selected-path-container">
-                    <span class="selecte-path-label">Selected path:</span> {{getSelectedPathAsString()}}
+                    <span class="selecte-path-label">{{isTesterumProjectChooser? "Selected project path:" : "Selected path:"}}</span> {{getSelectedPathAsString()}}
                 </div>
                 <div class="button-container">
-                    <button (click)="createDirectory()" type="button" class="btn btn-default pull-left"
+                    <button *ngIf="!isTesterumProjectChooser"
+                            (click)="createDirectory()" type="button" class="btn btn-default pull-left"
                             [disabled]="!getSelectedNode() || !getSelectedNode().canCreateChild">
                         Create Directory
                     </button>

@@ -23,6 +23,14 @@ export class FileDirChooserModalService {
         return this.modalSubject.asObservable();
     }
 
+    showTesterumProjectChooserModal(): Observable<string> {
+
+        let observable = this.showDirectoryChooserDialogModal();
+        this.modalComponent.isTesterumProjectChooser = true;
+
+        return observable;
+    }
+
     onDirectoryChooseAction(selectedPath: string) {
         this.modalSubject.next(selectedPath);
     }
