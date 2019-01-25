@@ -5,7 +5,7 @@ import {Project} from "../../../model/home/project.model";
 
 @Component({
     moduleId: module.id,
-    selector: 'step-chooser',
+    selector: 'create-project',
     templateUrl: 'create-project.component.html',
     styleUrls: ['create-project.component.scss'],
     encapsulation: ViewEncapsulation.None
