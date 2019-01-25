@@ -125,7 +125,7 @@ export class LicenseComponent implements OnInit {
 
                         if (errorResponse.errorCode.toString() == ErrorCode.CLOUD_ERROR.enumAsString) {
                             let validationException: ValidationErrorResponse = new ValidationErrorResponse().deserialize(errorResponse);
-                            this.errorMessage = validationException.validationModel.globalValidationMessage;
+                            this.errorMessage = validationException.validationModel.globalMessage;
                             return;
                         }
 

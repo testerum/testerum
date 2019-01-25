@@ -52,7 +52,10 @@ class ManualTestPlanFileService(private val businessToFileManualTestPlanMapper: 
                 createDestinationExistsException = {
                     val planDirPath = newEscapedPath.copy(fileName = null, fileExtension = null)
 
-                    ValidationException("The plan at path<br/><code>$planDirPath</code><br/>already exists")
+                    ValidationException(
+                            globalMessage = "The plan at path [$planDirPath] already exists",
+                            globalHtmlMessage = "The plan at path<br/><code>$planDirPath</code><br/>already exists"
+                    )
                 }
         )
 

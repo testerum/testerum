@@ -120,8 +120,8 @@ class RdbmsConnectionCache(private val jdbcDriversCache: JdbcDriversCache) {
 
             throw ValidationException(
                     ValidationModel(
-                            globalValidationMessage = "The database connection couldn't be established using the provided details",
-                            globalValidationMessageDetails = "RDBMS Connection Config = [\n\t$configAsString\n]"
+                            globalMessage = "The database connection couldn't be established using the provided details",
+                            globalMessageDetails = "RDBMS Connection Config = [\n\t$configAsString\n]"
                     )
             )
         }

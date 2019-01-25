@@ -112,7 +112,10 @@ class ResourceFileService {
         oldResourceFile?.smartMoveTo(
                 newResourceFile,
                 createDestinationExistsException = {
-                    ValidationException("The test at path<br/><code>$newEscapedPath</code><br/>already exists")
+                    ValidationException(
+                            globalMessage = "The test at path [$newEscapedPath] already exists",
+                            globalHtmlMessage = "The test at path<br/><code>$newEscapedPath</code><br/>already exists"
+                    )
                 }
         )
 
@@ -162,7 +165,10 @@ class ResourceFileService {
         try {
             OBJECT_MAPPER.readValue<RdbmsConnectionConfig>(resourceContext.body)
         } catch (e: Exception) {
-            throw ValidationException("The following text is not a valid Rdbms Connection Config Json:<br/><code>${resourceContext.body}</code>")
+            throw ValidationException(
+                    globalMessage = "The following text is not a valid Rdbms Connection Config Json: ${resourceContext.body}",
+                    globalHtmlMessage = "The following text is not a valid Rdbms Connection Config Json:<br/><code>${resourceContext.body}</code>"
+            )
         }
     }
 
@@ -221,7 +227,10 @@ class ResourceFileService {
         javaPathToRename.smartMoveTo(
                 javaNewPath,
                 createDestinationExistsException = {
-                    ValidationException("The directory at path<br/><code>${javaNewPath.toAbsolutePath().normalize()}</code><br/>already exists")
+                    ValidationException(
+                            globalMessage = "The directory at path [${javaNewPath.toAbsolutePath().normalize()}] already exists",
+                            globalHtmlMessage = "The directory at path<br/><code>${javaNewPath.toAbsolutePath().normalize()}</code><br/>already exists"
+                    )
                 }
         )
 
@@ -270,7 +279,10 @@ class ResourceFileService {
         sourceJavaFile.smartMoveTo(
                 destinationJavaFile,
                 createDestinationExistsException = {
-                    ValidationException("The file at path<br/><code>$escapedDestinationFile</code><br/>already exists")
+                    ValidationException(
+                            globalMessage = "The file at path [$escapedDestinationFile] already exists",
+                            globalHtmlMessage = "The file at path<br/><code>$escapedDestinationFile</code><br/>already exists"
+                    )
                 }
         )
 

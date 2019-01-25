@@ -61,7 +61,10 @@ class TesterumProjectFileService {
 
     fun load(directory: JavaPath): TesterumProject {
         if (!isTesterumProject(directory)) {
-            throw ValidationException("The directory<br/><code>${directory.toAbsolutePath().normalize()}</code><br/>is not a Testerum project.")
+            throw ValidationException(
+                    globalMessage = "The directory [${directory.toAbsolutePath().normalize()}] is not a Testerum project.",
+                    globalHtmlMessage = "The directory<br/><code>${directory.toAbsolutePath().normalize()}</code><br/>is not a Testerum project."
+            )
         }
 
         try {

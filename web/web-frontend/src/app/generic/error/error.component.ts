@@ -47,8 +47,8 @@ export class ErrorComponent implements OnInit {
 
                 if(error instanceof ValidationErrorResponse) {
                     this.title = "Validation Exception";
-                    this.message = error.validationModel.globalValidationMessage;
-                    this.details = error.validationModel.globalValidationMessageDetails;
+                    this.message = error.validationModel.globalHtmlMessage ? error.validationModel.globalHtmlMessage : error.validationModel.globalMessage;
+                    this.details = error.validationModel.globalMessageDetails;
                     this.shouldRefreshPage = false;
                     this.isOurBug = false;
                 }

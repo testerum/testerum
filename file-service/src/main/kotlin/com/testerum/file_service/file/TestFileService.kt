@@ -109,7 +109,10 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         oldTestFile?.smartMoveTo(
                 newTestFile,
                 createDestinationExistsException = {
-                    ValidationException("The test at path<br/><code>$newEscapedPath</code><br/>already exists")
+                    ValidationException(
+                            globalMessage = "The test at path [$newEscapedPath] already exists",
+                            globalHtmlMessage = "The test at path<br/><code>$newEscapedPath</code><br/>already exists"
+                    )
                 }
         )
 
@@ -172,7 +175,10 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         sourceJavaFile.smartMoveTo(
                 destinationJavaFile,
                 createDestinationExistsException = {
-                    ValidationException("The file at path<br/><code>$destinationJavaFile</code><br/>already exists")
+                    ValidationException(
+                            globalMessage = "The file at path [$destinationJavaFile] already exists",
+                            globalHtmlMessage = "The file at path<br/><code>$destinationJavaFile</code><br/>already exists"
+                    )
                 }
         )
 
@@ -222,7 +228,10 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
             sourceJavaFile.smartCopyTo(
                     fullDestinationJavaPath,
                     createDestinationExistsException = {
-                        ValidationException("The file at path<br/><code>$fullDestinationJavaPath</code><br/>already exists")
+                        ValidationException(
+                                globalMessage = "The file at path [$fullDestinationJavaPath] already exists",
+                                globalHtmlMessage = "The file at path<br/><code>$fullDestinationJavaPath</code><br/>already exists"
+                        )
                     }
             )
 

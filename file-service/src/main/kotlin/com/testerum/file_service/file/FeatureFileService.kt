@@ -113,7 +113,10 @@ class FeatureFileService(private val featureMapper: FileToBusinessFeatureMapper,
                 createDestinationExistsException = {
                     val featureDirPath = newEscapedPath.copy(fileName = null, fileExtension = null)
 
-                    ValidationException("The feature at path<br/><code>$featureDirPath</code><br/>already exists")
+                    ValidationException(
+                            globalMessage = "The feature at path [$featureDirPath] already exists",
+                            globalHtmlMessage = "The feature at path<br/><code>$featureDirPath</code><br/>already exists"
+                    )
                 }
         )
 

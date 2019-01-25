@@ -2,15 +2,16 @@ import {Serializable} from "../infrastructure/serializable.model";
 
 export class FormValidationModel implements Serializable<FormValidationModel> {
 
-    globalValidationMessage: string;
-    globalValidationMessageDetails: string;
+    globalMessage: string;
+    globalHtmlMessage: string;
+    globalMessageDetails: string;
     fieldsWithValidationErrors: Map<string, string> = new Map<string, string>();
-
 
     deserialize(input: Object): FormValidationModel {
 
-        this.globalValidationMessage = input["globalValidationMessage"];
-        this.globalValidationMessageDetails = input["globalValidationMessageDetails"];
+        this.globalMessage = input["globalMessage"];
+        this.globalHtmlMessage = input["globalHtmlMessage"];
+        this.globalMessageDetails = input["globalMessageDetails"];
         let inputFieldsWithValidationErrors = input["fieldsWithValidationErrors"];
         Object.keys(inputFieldsWithValidationErrors).forEach( key => {
             let value = inputFieldsWithValidationErrors[key];
@@ -22,15 +23,5 @@ export class FormValidationModel implements Serializable<FormValidationModel> {
 
     serialize(): string {
         return null;
-    }
-
-    static createInstanceFromJson( json: any): FormValidationModel {
-        let validationException = new FormValidationModel();
-
-        validationException.globalValidationMessage = json["globalValidationMessage"];
-        validationException.globalValidationMessageDetails = json["globalValidationMessageDetails"];
-        validationException.fieldsWithValidationErrors = json["fieldsWithValidationErrors"];
-
-        return validationException;
     }
 }

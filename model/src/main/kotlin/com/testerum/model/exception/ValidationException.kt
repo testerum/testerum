@@ -13,7 +13,7 @@ class ValidationException : RuntimeException {
         this.validationModel = ValidationModel.EMPTY
     }
 
-    constructor(globalValidationMessage: String?, globalValidationMessageDetails: String? = null) : this(ValidationModel(globalValidationMessage, globalValidationMessageDetails))
+    constructor(globalMessage: String?, globalHtmlMessage: String? = null, globalMessageDetails: String? = null) : this(ValidationModel(globalMessage, globalHtmlMessage, globalMessageDetails))
 
     constructor(validationModel: ValidationModel) {
         this.validationModel = validationModel
@@ -23,5 +23,4 @@ class ValidationException : RuntimeException {
         validationModel.fieldsWithValidationErrors[filedName] = errorCode
         return this
     }
-
 }

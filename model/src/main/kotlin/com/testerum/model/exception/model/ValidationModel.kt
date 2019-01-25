@@ -10,20 +10,20 @@ class ValidationModel {
 
     constructor()
 
-    @JsonProperty("globalValidationMessage") var globalValidationMessage: String? = null
-    @JsonProperty("globalValidationMessageDetails") var globalValidationMessageDetails: String? = null
+    @JsonProperty("globalMessage") var globalMessage: String? = null
+    @JsonProperty("globalHtmlMessage") var globalHtmlMessage: String? = null
+    @JsonProperty("globalMessageDetails") var globalMessageDetails: String? = null
     @JsonProperty("fieldsWithValidationErrors") val fieldsWithValidationErrors: MutableMap<String, String> = mutableMapOf()
 
-    constructor(globalValidationMessage: String?, globalValidationMessageDetails: String? = null) {
-        this.globalValidationMessage = globalValidationMessage
-        this.globalValidationMessageDetails = globalValidationMessageDetails
+    constructor(globalMessage: String?, globalHtmlMessage: String? = null, globalMessageDetails: String? = null) {
+        this.globalMessage = globalMessage
+        this.globalHtmlMessage = globalHtmlMessage
+        this.globalMessageDetails = globalMessageDetails
     }
 
     override fun toString(): String {
-        return "ValidationModel(globalValidationMessage=$globalValidationMessage, globalValidationMessageDetails=$globalValidationMessageDetails, fieldsWithValidationErrors=$fieldsWithValidationErrors)"
+        return "ValidationModel(globalMessage=$globalMessage, globalMessageDetails=$globalMessageDetails, fieldsWithValidationErrors=$fieldsWithValidationErrors)"
     }
-
-
 }
 
 

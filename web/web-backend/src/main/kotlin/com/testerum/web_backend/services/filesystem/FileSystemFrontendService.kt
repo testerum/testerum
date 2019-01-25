@@ -44,15 +44,15 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
             } catch (e: AccessDeniedException) {
                 throw ValidationException(
                         ValidationModel(
-                                globalValidationMessage = "Got access denied while creating directory [${directoryToCreate.toAbsolutePath().normalize()}].",
-                                globalValidationMessageDetails = e.toStringWithStacktrace()
+                                globalMessage = "Got access denied while creating directory [${directoryToCreate.toAbsolutePath().normalize()}].",
+                                globalMessageDetails = e.toStringWithStacktrace()
                         )
                 )
             } catch (e: Exception) {
                 throw ValidationException(
                         ValidationModel(
-                                globalValidationMessage = "Failed to create directory [${directoryToCreate.toAbsolutePath().normalize()}].",
-                                globalValidationMessageDetails = e.toStringWithStacktrace()
+                                globalMessage = "Failed to create directory [${directoryToCreate.toAbsolutePath().normalize()}].",
+                                globalMessageDetails = e.toStringWithStacktrace()
                         )
                 )
             }

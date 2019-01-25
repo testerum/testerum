@@ -47,7 +47,10 @@ class ManualTestFileService(private val businessToFileManualTestMapper: Business
         oldTestFile?.smartMoveTo(
                 newTestFile,
                 createDestinationExistsException = {
-                    ValidationException("The manual test at path<br/><code>$newEscapedPath</code><br/>>already exists")
+                    ValidationException(
+                            globalMessage = "The manual test at path [$newEscapedPath] already exists",
+                            globalHtmlMessage = "The manual test at path<br/><code>$newEscapedPath</code><br/>already exists"
+                    )
                 }
         )
 

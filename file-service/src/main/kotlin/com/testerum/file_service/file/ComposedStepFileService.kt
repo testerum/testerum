@@ -115,7 +115,10 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
         oldStepFile?.smartMoveTo(
                 newStepFile,
                 createDestinationExistsException = {
-                    ValidationException("The step at path<br/><code>$newEscapedPath</code><br/>already exists")
+                    ValidationException(
+                            globalMessage = "The step at path [$newEscapedPath] already exists",
+                            globalHtmlMessage = "The step at path<br/><code>$newEscapedPath</code><br/>already exists"
+                    )
                 }
         )
 
@@ -127,7 +130,10 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
 
         val validationException = COMPOSED_STEP_PARSER.validate(serializedFileComposedStep)
         if (validationException != null) {
-            throw ValidationException("Invalid step definition:<br/><code>${validationException.message}</code>")
+            throw ValidationException(
+                    globalMessage = "Invalid step definition: [${validationException.message}]",
+                    globalHtmlMessage = "Invalid step definition:<br/><code>${validationException.message}</code>"
+            )
         }
 
         newStepFile.parent?.createDirectories()
@@ -157,7 +163,7 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
         if (newJavaDir.exists) {
             throw ValidationException(
                     ValidationModel(
-                            globalValidationMessage = "the directory at path [$newRelativePath] already exists"
+                            globalMessage = "the directory at path [$newRelativePath] already exists"
                     )
             )
         }
@@ -211,7 +217,9 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
         sourceJavaFile.smartMoveTo(
                 destinationJavaFile,
                 createDestinationExistsException = {
-                    ValidationException("The file at path<br/><code>$escapedDestinationFile</code><br/>already exists")
+                    ValidationException(
+                            globalMessage = "The file at path [$escapedDestinationFile] already exists",
+                            globalHtmlMessage = "The file at path<br/><code>$escapedDestinationFile</code><br/>already exists")
                 }
         )
 

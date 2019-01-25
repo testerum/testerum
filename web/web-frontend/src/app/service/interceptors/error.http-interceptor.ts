@@ -51,40 +51,8 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
                             });
                             return EMPTY;
                         }
-
-                        let contentTypeHeader = httpErrorResponse.headers.get('content-type');
-                        if(contentTypeHeader) {
-                            let contentTypeToLowerCase = contentTypeHeader.toLowerCase();
-                            if (contentTypeToLowerCase.startsWith("application/json", 0)) {
-
-                                let errorResponse: MyError = httpErrorResponse.error;
-
-                                if (errorResponse.errorCode.toString() == ErrorCode.CLOUD_ERROR.enumAsString) {
-                                    return EMPTY;
-                                }
-
-                                if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
-                                    let validationException = new ValidationErrorResponse().deserialize(errorResponse);
-                                    this.errorEventEmitter.emit(validationException);
-
-                                    console.warn(validationException);
-
-                                    return EMPTY;
-                                }
-
-                                if (errorResponse.errorCode.toString() == ErrorCode.GENERIC_ERROR.enumAsString) {
-                                    let fullLogErrorResponse = new FullLogErrorResponse().deserialize(errorResponse);
-                                    this.errorEventEmitter.emit(fullLogErrorResponse);
-                                    console.error(fullLogErrorResponse);
-
-                                    return EMPTY;
-                                }
-                            }
-                        }
                     }
                 }
-                this.errorEventEmitter.emit(err);
-                console.error(err);
 
                 return EMPTY;
             }
