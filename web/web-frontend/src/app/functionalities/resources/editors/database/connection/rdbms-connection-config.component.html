@@ -64,7 +64,7 @@
             {{name}}
         </div>
         <div class="my-value" *ngIf="editMode && !isSharedResource">
-            <input required
+            <input required isNotBlankValidator
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
             <input-error [model]="nameNgModel"
@@ -83,9 +83,9 @@
         </div>
         <div class="my-value" *ngIf="editMode">
             <select class="form-control phase-input"
+                    required isNotBlankValidator
                     #rdbmsNgModel="ngModel" [(ngModel)]="selectedDriver" name="rdbms"
-                    (change)="setSelectedDriverInModel()"
-                    required>
+                    (change)="setSelectedDriverInModel()">
                 <option [value]=""></option>
                 <option *ngFor="let driver of drivers" [ngValue]="driver">
                     {{driver.name}}

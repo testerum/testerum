@@ -19,8 +19,7 @@
 
                         <div class="my-value">
                             <input name="name"
-                                   required
-                                   urlNameValidator
+                                   required isNotBlankValidator urlNameValidator
                                    #nameNgModel="ngModel" [(ngModel)]="name"
                                    type="text" class="form-control" >
                             <input-error [model]="nameNgModel"
@@ -37,7 +36,7 @@
                         <label class="my-label label-size">Path</label>
 
                         <div class="my-value">
-                            <file-dir-chooser name="repositoryPath" required
+                            <file-dir-chooser name="repositoryPath" required isNotBlankValidator
                                               [(ngModel)]="path"
                                               #repositoryPath="ngModel" class="file-dir-chooser"></file-dir-chooser>
                             <input-error [model]="repositoryPath"

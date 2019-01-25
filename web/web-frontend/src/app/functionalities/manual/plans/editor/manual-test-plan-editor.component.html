@@ -14,7 +14,7 @@
                         {{model.name || ""}}
                     </div>
                     <div class="my-value" *ngIf="isEditMode">
-                        <input required
+                        <input required isNotBlankValidator
                                #name="ngModel" [(ngModel)]="model.name"
                                type="text" class="form-control" name="environment">
                         <input-error [model]="name"

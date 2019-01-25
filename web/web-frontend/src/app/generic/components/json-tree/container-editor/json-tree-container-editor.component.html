@@ -36,7 +36,7 @@
                        [(ngModel)]="name"
                        #packageName="ngModel"
                        class="form-control"
-                       required
+                       required isNotBlankValidator
                        style="width: 100%"
                        name="packageName">
                 <input-error [model]="packageName"

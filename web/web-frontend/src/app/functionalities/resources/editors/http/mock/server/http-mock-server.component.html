@@ -14,7 +14,7 @@
             {{name}}
         </div>
         <div class="my-value" *ngIf="editMode && !isSharedResource">
-            <input required
+            <input required isNotBlankValidator
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
             <input-error [model]="nameNgModel"
@@ -32,7 +32,7 @@
             {{model.port || ""}}
         </div>
         <div class="my-value" *ngIf="editMode">
-            <input required
+            <input required isNotBlankValidator
                    portValidator
                    #portNgModel="ngModel" [(ngModel)]="model.port"
                    type="text" class="form-control" name="port">

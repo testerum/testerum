@@ -22,7 +22,7 @@
             {{name}}
         </div>
         <div class="my-value" *ngIf="isEditMode() && !isSharedResource">
-            <input required
+            <input required isNotBlankValidator
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
             <input-error [model]="nameNgModel"
@@ -67,7 +67,7 @@
             </option>
         </select>
         <div class="full-width">
-            <input required
+            <input required isNotBlankValidator
                    #urlNgModel="ngModel" [(ngModel)]="getModel().url" (ngModelChange)="urlChanged()"
                    type="text" class="form-control" name="url" placeholder="URL">
             <input-error [model]="urlNgModel"

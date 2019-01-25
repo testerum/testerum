@@ -101,6 +101,7 @@ import {MarkdownModule} from 'ngx-markdown';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { ServerNotAvailableModalComponent } from './error/server-not-available/server-not-available-modal.component'
 import {ServerNotAvailableModalService} from "./error/server-not-available/server-not-available-modal.service";
+import {IsNotBlankValidatorDirective} from "./validators/is_not_blank-validator.directive";
 
 @NgModule({
     imports: [
@@ -161,6 +162,7 @@ import {ServerNotAvailableModalService} from "./error/server-not-available/serve
         PortValidatorDirective,
         IsNumberValidatorDirective,
         UrlNameValidatorDirective,
+        IsNotBlankValidatorDirective,
 
         FileDirChooserInputComponent,
 
@@ -215,6 +217,7 @@ import {ServerNotAvailableModalService} from "./error/server-not-available/serve
         PortValidatorDirective,
         IsNumberValidatorDirective,
         UrlNameValidatorDirective,
+        IsNotBlankValidatorDirective,
 
         FileDirChooserInputComponent,
         FileDirTreeContainerComponent,

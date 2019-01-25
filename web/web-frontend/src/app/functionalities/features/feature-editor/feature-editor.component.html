@@ -15,6 +15,7 @@
                 <div class="my-value" *ngIf="isEditMode">
                     <input name="name"
                            required
+                           isNotBlankValidator
                            #nameNgModel="ngModel" [(ngModel)]="model.name"
                            type="text" class="form-control"
                            (keydown.enter)="$event.preventDefault()">

@@ -7,7 +7,7 @@
             {{name}}
         </div>
         <div class="my-value" *ngIf="editMode">
-            <input required
+            <input required isNotBlankValidator
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
             <input-error [model]="nameNgModel"
