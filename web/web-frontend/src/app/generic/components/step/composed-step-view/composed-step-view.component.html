@@ -9,7 +9,7 @@
         <!-- STEP PHASE -->
         <span *ngIf="isEditMode">
             <select class="form-control"
-                    required isNotBlankValidator
+                    required
                     #testPhase="ngModel" [(ngModel)]="model.phase" name="testPhase">
                 <option *ngFor="let enumName of getPhaseEnumValues()" [value]="enumName">
                     {{StepPhaseEnum[enumName]}}

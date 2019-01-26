@@ -83,7 +83,7 @@
         </div>
         <div class="my-value" *ngIf="editMode">
             <select class="form-control phase-input"
-                    required isNotBlankValidator
+                    required
                     #rdbmsNgModel="ngModel" [(ngModel)]="selectedDriver" name="rdbms"
                     (change)="setSelectedDriverInModel()">
                 <option [value]=""></option>
