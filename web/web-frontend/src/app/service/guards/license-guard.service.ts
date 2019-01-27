@@ -5,7 +5,7 @@ import {UrlService} from "../url.service";
 import {LicenseService} from "../../functionalities/config/license/license.service";
 
 @Injectable()
-export class SetupGuard implements CanActivate, CanActivateChild {
+export class LicenseGuard implements CanActivate, CanActivateChild {
 
     constructor(
         private licenseService: LicenseService,
@@ -27,9 +27,9 @@ export class SetupGuard implements CanActivate, CanActivateChild {
     }
 
     private startConfigCanActivate() {
-        if (!this.licenseService.isLoggedIn()) {
-            this.urlService.navigateToLicense();
-        }
+        // if (!this.licenseService.isLoggedIn()) {
+        //     this.urlService.navigateToLicense();
+        // }
 
         return true;
     }

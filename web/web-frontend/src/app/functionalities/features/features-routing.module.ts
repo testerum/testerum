@@ -4,14 +4,14 @@ import {Routes, RouterModule} from "@angular/router";
 import {FeaturesComponent} from "./features.component";
 import {TestEditorComponent} from "./test-editor/test-editor.component";
 import {TestResolver} from "./test-editor/test.resolver";
-import {SetupGuard} from "../../service/guards/setup.guard";
+import {LicenseGuard} from "../../service/guards/license-guard.service";
 import {FeatureEditorComponent} from "./feature-editor/feature-editor.component";
 import {FeatureResolver} from "./feature-editor/feature.resolver";
 import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
 
 const testsRoutes: Routes = [
     {
-        path: ":project/features", component: FeaturesComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
+        path: ":project/features", component: FeaturesComponent, canActivate: [LicenseGuard], canActivateChild: [LicenseGuard],
         children: [
             {
                 path: ':action', component: FeatureEditorComponent, resolve: {featureModel: FeatureResolver}, canDeactivate: [CanDeactivateGuard]

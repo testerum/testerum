@@ -21,9 +21,8 @@ import {ApplicationEventBus} from "./event-bus/application.eventbus";
 import {VariablesComponent} from "./functionalities/variables/variables.component";
 import {ModalModule} from "ngx-bootstrap/modal";
 import {VariablesService} from "./service/variables.service";
-import {SetupComponent} from "./functionalities/config/setup/setup.component";
 import {FileSystemService} from "./service/file-system.service";
-import {SetupGuard} from "./service/guards/setup.guard";
+import {LicenseGuard} from "./service/guards/license-guard.service";
 import {SettingsComponent} from "./functionalities/config/settings/settings.component";
 import {SettingsService} from "./service/settings.service";
 import {FileDirChooserInputComponent} from "./generic/components/form/file_dir_chooser/file-dir-chooser-input.component";
@@ -79,7 +78,6 @@ import {SelectProjectModalComponent} from "./functionalities/home/alerts/multipl
         MenuComponent,
         PageNotFoundComponent,
         VariablesComponent,
-        SetupComponent,
         LicenseComponent,
         SettingsComponent,
         ArgValueValidatorDirective,
@@ -89,7 +87,7 @@ import {SelectProjectModalComponent} from "./functionalities/home/alerts/multipl
         VariablesComponent,
     ],
     providers: [
-        SetupGuard,
+        LicenseGuard,
         CanDeactivateGuard,
 
         ApplicationEventBus,

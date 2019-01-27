@@ -17,9 +17,6 @@ export class UrlService {
     public navigateToHomePage() {
         this.navigate(["/"]);
     }
-    public navigateToSetup() {
-        this.navigate(["/setup"]);
-    }
 
     public navigateToLicense() {
         this.navigate(["/license"]);

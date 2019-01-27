@@ -1,16 +1,14 @@
 import {RouterModule, Routes} from "@angular/router";
 import {PageNotFoundComponent} from "./generic/components/page_not_found/page-not-found.component";
 import {NgModule} from "@angular/core";
-import {SetupComponent} from "./functionalities/config/setup/setup.component";
 import {SettingsComponent} from "./functionalities/config/settings/settings.component";
-import {SetupGuard} from "./service/guards/setup.guard";
+import {LicenseGuard} from "./service/guards/license-guard.service";
 import {LicenseComponent} from "./functionalities/config/license/license.component";
 
 const appRoutes: Routes = [
 
-    { path: "setup", component: SetupComponent},
     { path: "license", component: LicenseComponent},
-    { path: ":project/settings", component: SettingsComponent, canActivate: [SetupGuard]},
+    { path: ":project/settings", component: SettingsComponent, canActivate: [LicenseGuard]},
     { path: ":project", redirectTo: ":project/features"},
     { path: '**', component: PageNotFoundComponent }
 ];

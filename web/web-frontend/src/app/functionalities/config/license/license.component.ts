@@ -48,7 +48,7 @@ export class LicenseComponent implements OnInit {
 
     ngOnInit() {
         if (this.licenseService.isLoggedIn()) {
-            this.urlService.navigateToSetup();
+            this.urlService.navigateToHomePage();
         }
     }
 

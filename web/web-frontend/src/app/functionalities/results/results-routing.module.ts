@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
-import {SetupGuard} from "../../service/guards/setup.guard";
+import {LicenseGuard} from "../../service/guards/license-guard.service";
 import {ResultsComponent} from "./results.component";
 
 const testsRoutes: Routes = [
     {
-        path: ":project/automated/results", component: ResultsComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
+        path: ":project/automated/results", component: ResultsComponent, canActivate: [LicenseGuard], canActivateChild: [LicenseGuard],
     },
 ];
 @NgModule({
