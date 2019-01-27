@@ -46,12 +46,12 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
                                     if (ErrorHttpInterceptor.isServerAvailable) {
                                         ErrorHttpInterceptor.isServerAvailable = false;
 
-                                        let shouldRefreshWhenServerIsBack: boolean = false;
-                                        let contentTypeHeader = err.headers.get('content-type');
+                                        let shouldRefreshWhenServerIsBack: boolean = true;
+                                        let contentTypeHeader = request.headers.get('content-type');
                                         if(contentTypeHeader) {
                                             let contentTypeToLowerCase = contentTypeHeader.toLowerCase();
                                             if (contentTypeToLowerCase.startsWith("application/json", 0)) {
-                                                shouldRefreshWhenServerIsBack = true
+                                                shouldRefreshWhenServerIsBack = false
                                             }
                                         }
 
