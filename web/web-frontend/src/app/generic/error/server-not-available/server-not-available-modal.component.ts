@@ -15,6 +15,7 @@ export class ServerNotAvailableModalComponent implements AfterViewInit {
     @ViewChild("serverNotAvailableModal") modal:ModalDirective;
 
     modalComponentRef: ComponentRef<ServerNotAvailableModalComponent>;
+    shouldRefreshWhenServerIsBack: boolean = false;
 
     RETRY_NUMBER_OF_SECONDS: number = 5;
     retryIn: number = this.RETRY_NUMBER_OF_SECONDS;
@@ -47,6 +48,10 @@ export class ServerNotAvailableModalComponent implements AfterViewInit {
                 this.counterSubscription.unsubscribe();
                 ErrorHttpInterceptor.isServerAvailable = true;
                 this.modal.hide();
+
+                if (this.shouldRefreshWhenServerIsBack) {
+                    window.location.reload();
+                }
             }
         })
     }

@@ -45,7 +45,17 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
                                 if (!isServerAvailable) {
                                     if (ErrorHttpInterceptor.isServerAvailable) {
                                         ErrorHttpInterceptor.isServerAvailable = false;
-                                        this.serverNotAvailableModalService.show();
+
+                                        let shouldRefreshWhenServerIsBack: boolean = false;
+                                        let contentTypeHeader = err.headers.get('content-type');
+                                        if(contentTypeHeader) {
+                                            let contentTypeToLowerCase = contentTypeHeader.toLowerCase();
+                                            if (contentTypeToLowerCase.startsWith("application/json", 0)) {
+                                                shouldRefreshWhenServerIsBack = true
+                                            }
+                                        }
+
+                                        this.serverNotAvailableModalService.show(shouldRefreshWhenServerIsBack);
                                     }
                                 }
                             });

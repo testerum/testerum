@@ -17,32 +17,25 @@ export class ErrorsHandlerInterceptor implements ErrorHandler {
     handleError(error: Error) {
         if (error instanceof HttpErrorResponse) {
 
-            let contentTypeHeader = error.headers.get('content-type');
-            if(contentTypeHeader) {
-                let contentTypeToLowerCase = contentTypeHeader.toLowerCase();
-                if (contentTypeToLowerCase.startsWith("application/json", 0)) {
+            let errorResponse: MyError = error.error;
 
-                    let errorResponse: MyError = error.error;
+            if (errorResponse.errorCode.toString() == ErrorCode.CLOUD_ERROR.enumAsString) {
+                return;
+            }
 
-                    if (errorResponse.errorCode.toString() == ErrorCode.CLOUD_ERROR.enumAsString) {
-                        return;
-                    }
+            if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
+                let validationException = new ValidationErrorResponse().deserialize(errorResponse);
+                this.errorService.errorEventEmitter.emit(validationException);
 
-                    if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
-                        let validationException = new ValidationErrorResponse().deserialize(errorResponse);
-                        this.errorService.errorEventEmitter.emit(validationException);
+                return;
+            }
 
-                       return;
-                    }
+            if (errorResponse.errorCode.toString() == ErrorCode.GENERIC_ERROR.enumAsString) {
+                let fullLogErrorResponse = new FullLogErrorResponse().deserialize(errorResponse);
+                this.errorService.errorEventEmitter.emit(fullLogErrorResponse);
+                console.error(fullLogErrorResponse);
 
-                    if (errorResponse.errorCode.toString() == ErrorCode.GENERIC_ERROR.enumAsString) {
-                        let fullLogErrorResponse = new FullLogErrorResponse().deserialize(errorResponse);
-                        this.errorService.errorEventEmitter.emit(fullLogErrorResponse);
-                        console.error(fullLogErrorResponse);
-
-                        return;
-                    }
-                }
+                return;
             }
         }
 

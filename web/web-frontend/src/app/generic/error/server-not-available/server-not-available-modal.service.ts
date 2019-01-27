@@ -8,11 +8,12 @@ export class ServerNotAvailableModalService {
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
-    show() {
+    show(shouldRefreshWhenServerIsBack: boolean = false) {
         const factory = this.componentFactoryResolver.resolveComponentFactory(ServerNotAvailableModalComponent);
         let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
         let modalInstance: ServerNotAvailableModalComponent = modalComponentRef.instance;
 
         modalInstance.modalComponentRef = modalComponentRef;
+        modalInstance.shouldRefreshWhenServerIsBack = shouldRefreshWhenServerIsBack;
     }
 }
