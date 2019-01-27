@@ -28,6 +28,7 @@
     <ul class="nav navbar-nav navbar-right">
         <li *ngIf="isProjectSelected()">
             <a href="" (click)="showVariables(); false;">Variables</a>
+            <variables></variables>
         </li>
         <li *ngIf="isProjectSelected()">
             <a [routerLink]="['/'+getProjectName()+'/settings']" routerLinkActive="active" class="sttings-icon-menu-item">
@@ -36,4 +37,3 @@
         </li>
     </ul>
 </nav>
-<variables></variables>
