@@ -13,6 +13,8 @@ class ProjectServices(projectRootDir: Path,
 
     private val dirs = ProjectDirs(projectRootDir)
 
+    // todo: don't pass a ProjectServices reference to the factory methods, since this can create initialization problems, leading to NPEs
+
     private val stepsCache = createStepsCache(this).apply {
         initializeStepsCacheFromProjectServices()
     }

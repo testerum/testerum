@@ -13,7 +13,6 @@ import com.testerum.runner.events.model.RunnerStoppedEvent
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.settings.SettingsManager
 import com.testerum.settings.TesterumDirs
-import com.testerum.settings.keys.SystemSettingKeys
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.runner.execution.model.RunningTestExecution
@@ -258,15 +257,9 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         }
 
         // settings
-        val keysOfSettingsToExclude = setOf(
-                SystemSettingKeys.REPOSITORY_DIR
-        )
         val settings: Map<String, String?> = settingsManager.getSettings()
                 .associateBy({ it.definition.key }, { it.resolvedValue })
         for (setting in settings) {
-            if (setting.key in keysOfSettingsToExclude) {
-                continue
-            }
             if (setting.value == null) {
                 continue
             }

@@ -22,7 +22,6 @@ import {VariablesComponent} from "./functionalities/variables/variables.componen
 import {ModalModule} from "ngx-bootstrap/modal";
 import {VariablesService} from "./service/variables.service";
 import {SetupComponent} from "./functionalities/config/setup/setup.component";
-import {SetupService} from "./service/setup.service";
 import {FileSystemService} from "./service/file-system.service";
 import {SetupGuard} from "./service/guards/setup.guard";
 import {SettingsComponent} from "./functionalities/config/settings/settings.component";
@@ -99,7 +98,6 @@ import {SelectProjectModalComponent} from "./functionalities/home/alerts/multipl
         StepsService,
         TestsService,
         VariablesService,
-        SetupService,
         SettingsService,
         HomeService,
         ProjectService,

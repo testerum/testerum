@@ -1,6 +1,4 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Setup} from "./model/setup.model";
-import {SetupService} from "../../../service/setup.service";
 import {UrlService} from "../../../service/url.service";
 import {LicenseService} from "../license/license.service";
 
@@ -15,7 +13,6 @@ export class SetupComponent implements OnInit {
     repositoryAbsoluteJavaPath: string;
 
     constructor(private urlService: UrlService,
-                private setupService: SetupService,
                 private licenseService: LicenseService) {
     }
 
@@ -24,23 +21,8 @@ export class SetupComponent implements OnInit {
             this.urlService.navigateToLicense();
         }
 
-        this.setupService.isConfigSet().subscribe(
-            (isConfigSet: boolean) => {
-                if(isConfigSet) {
-                    this.urlService.navigateToRoot()
-                }
-            }
-        );
+        this.urlService.navigateToRoot();
     }
 
-    save(): void {
-        let startConfig = new Setup();
-        startConfig.repositoryAbsoluteJavaPath = this.repositoryAbsoluteJavaPath;
-
-        this.setupService.save(startConfig).subscribe(
-            result => {
-                this.urlService.navigateToRoot()
-            }
-        )
-    }
+    save(): void { }
 }

@@ -6,9 +6,11 @@ import java.nio.file.Path as JavaPath
 
 class FrontendDirs(private val testerumDirs: TesterumDirs) {
 
-    fun getTesterumDir(): JavaPath = Paths.get(System.getProperty("user.home")).resolve(".testerum")
-
     fun getBasicStepsDir(): JavaPath = testerumDirs.getBasicStepsDir()
+
+    fun getJdbcDriversDir(): JavaPath = testerumDirs.getJdbcDriversDir()
+
+    fun getTesterumDir(): JavaPath = Paths.get(System.getProperty("user.home")).resolve(".testerum")
 
     fun getSettingsDir(): JavaPath = getTesterumDir().resolve("conf")
 
@@ -19,7 +21,5 @@ class FrontendDirs(private val testerumDirs: TesterumDirs) {
 
     fun getReportsDir(): JavaPath = getTesterumDir().resolve("reports")
     fun getAggregatedStatisticsDir(): JavaPath = getReportsDir().resolve("statistics")
-
-    fun getJdbcDriversDir(): JavaPath = testerumDirs.getJdbcDriversDir()
 
 }

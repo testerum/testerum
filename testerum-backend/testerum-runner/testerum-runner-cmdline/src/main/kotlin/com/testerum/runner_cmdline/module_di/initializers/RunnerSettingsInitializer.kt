@@ -3,14 +3,11 @@ package com.testerum.runner_cmdline.module_di.initializers
 import com.testerum.common_jdk.asMap
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.settings.SettingsManager
-import com.testerum.settings.TesterumDirs
 import com.testerum.settings.getResolvedSettingValues
-import com.testerum.settings.keys.SystemSettingKeys
 import java.nio.file.Files
 import java.util.*
 
-class RunnerSettingsInitializer(private val cmdlineParams: CmdlineParams,
-                                private val testerumDirs: TesterumDirs) {
+class RunnerSettingsInitializer(private val cmdlineParams: CmdlineParams) {
 
     fun initSettings(settingsManager: SettingsManager) {
         val settingsValues = settingsFromCommandLine()
@@ -25,7 +22,6 @@ class RunnerSettingsInitializer(private val cmdlineParams: CmdlineParams,
     private fun settingsFromCommandLine(): Map<String, String> {
         val result = mutableMapOf<String, String>()
 
-        result.putAll(systemSettings())
         result.putAll(loadSettingsFromFile())
         result.putAll(cmdlineParams.settingOverrides)
 
@@ -47,14 +43,6 @@ class RunnerSettingsInitializer(private val cmdlineParams: CmdlineParams,
         }
 
         return properties.asMap()
-    }
-
-    private fun systemSettings(): Map<String, String> {
-        val result = mutableMapOf<String, String>()
-
-        result[SystemSettingKeys.REPOSITORY_DIR] = cmdlineParams.repositoryDirectory.toAbsolutePath().normalize().toString()
-
-        return result
     }
 
     private fun logSettings(settingsManager: SettingsManager) {

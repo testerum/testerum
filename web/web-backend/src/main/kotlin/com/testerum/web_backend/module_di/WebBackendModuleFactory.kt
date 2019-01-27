@@ -46,7 +46,6 @@ import com.testerum.web_backend.controllers.results.ResultsFileServerController
 import com.testerum.web_backend.controllers.runner.execution.TestExecutionController
 import com.testerum.web_backend.controllers.runner.execution.TestsWebSocketController
 import com.testerum.web_backend.controllers.settings.SettingsController
-import com.testerum.web_backend.controllers.setup.SetupController
 import com.testerum.web_backend.controllers.steps.BasicStepController
 import com.testerum.web_backend.controllers.steps.ComposedStepsController
 import com.testerum.web_backend.controllers.steps.StepsTreeController
@@ -81,7 +80,6 @@ import com.testerum.web_backend.services.runner.execution.TestsExecutionFrontend
 import com.testerum.web_backend.services.runner.result.ResultsFrontendService
 import com.testerum.web_backend.services.save.SaveFrontendService
 import com.testerum.web_backend.services.settings.SettingsFrontendService
-import com.testerum.web_backend.services.setup.SetupFrontendService
 import com.testerum.web_backend.services.steps.BasicStepsFrontendService
 import com.testerum.web_backend.services.steps.ComposedStepUpdateCompatibilityFrontendService
 import com.testerum.web_backend.services.steps.ComposedStepsFrontendService
@@ -129,7 +127,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val settingsManagerInitializer = SettingsManagerInitializer(
             settingsFileService = fileServiceModuleFactory.settingsFileService,
             settingsManager = settingsModuleFactory.settingsManager,
-            testerumDirs = settingsModuleFactory.testerumDirs,
             settingsDir = frontendDirs.getSettingsDir()
     )
 
@@ -301,13 +298,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val messageFrontendService = MessageFrontendService()
 
-    private val setupFrontendService = SetupFrontendService(
-            frontendDirs = frontendDirs,
-            settingsManager = settingsModuleFactory.settingsManager,
-            settingsFileService = fileServiceModuleFactory.settingsFileService,
-            webBackendInitializer = webBackendInitializer
-    )
-
     private val settingsFrontendService = SettingsFrontendService(
             frontendDirs = frontendDirs,
             settingsManager = settingsModuleFactory.settingsManager,
@@ -386,10 +376,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val versionController = VersionController(
             versionInfoFrontendService = versionInfoFrontendService
-    )
-
-    private val setupController = SetupController(
-            setupFrontendService = setupFrontendService
     )
 
     private val homeController = HomeController(
@@ -479,7 +465,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     val webControllers: List<Any> = listOf(
             errorController,
             versionController,
-            setupController,
             homeController,
             projectController,
             licenseController,
