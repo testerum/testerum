@@ -148,6 +148,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
             }
 
             this.refreshStepCallArgsBasedOnStepDef();
+            this.triggerStepOrderChangedEvent();
 
             this.stepCallTreeComponentService.triggerWarningRecalculationChangesEvent();
 
