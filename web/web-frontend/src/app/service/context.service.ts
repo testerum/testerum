@@ -1,19 +1,20 @@
 import {Injectable, Injector} from "@angular/core";
 import {StepCallContainerComponent} from "../generic/components/step-call-tree/nodes/step-call-container/step-call-container.component";
 import {StepCallContainerModel} from "../generic/components/step-call-tree/model/step-call-container.model";
-import {ActivatedRouteSnapshot, NavigationEnd, Params, Router, RouterEvent} from "@angular/router";
+import {NavigationEnd, Router, RouterEvent} from "@angular/router";
 import {ProjectService} from "./project.service";
 import {Project} from "../model/home/project.model";
-import {filter, map} from "rxjs/operators";
-import {Path} from "../model/infrastructure/path/path.model";
-import {Subscription} from "rxjs";
+import {filter} from "rxjs/operators";
 import {UrlUtil} from "../utils/url.util";
-import {InfoModalService} from "../generic/components/info_modal/info-modal.service";
-import {UrlService} from "./url.service";
-import {SelectProjectModalService} from "../functionalities/home/alerts/multiple-projects-found/select-project-modal.service";
+import {MultipleProjectsFound} from "../functionalities/home/alerts/multiple-projects-found/model/multiple-projects-found.model";
 
 @Injectable()
 export class ContextService {
+
+    readonly routsWithoutProject: string[] = [
+        "/multipleProjectsFound",
+        "/noProjectFound"
+    ];
 
     currentProject: Project;
 
@@ -22,9 +23,7 @@ export class ContextService {
 
     private knownProjects: Project[] = [];
     constructor(private injector: Injector,
-                private projectService: ProjectService,
-                private infoModalService: InfoModalService,
-                private selectProjectModelService: SelectProjectModalService) {
+                private projectService: ProjectService) {
     }
 
     init() {
@@ -32,9 +31,18 @@ export class ContextService {
             this.getRouter().events.pipe(
                 filter(event => event instanceof NavigationEnd))
                 .subscribe((value: RouterEvent) => {
+                    if(this.isPathWithoutRequiredProject()) {
+                        return
+                    }
+
                     let projectName = UrlUtil.getProjectNameFromUrl(value.url);
                     this.resolveCurrentProject(projectName);
                 });
+
+            if(this.isPathWithoutRequiredProject()) {
+                resolve(true);
+                return;
+            }
 
             let projectName = this.getProjectFromUrl();
 
@@ -48,7 +56,7 @@ export class ContextService {
         })
     }
 
-    private resolveCurrentProject(projectName) {
+    private resolveCurrentProject(projectName: string) {
         if (projectName == null) {
             this.currentProject = null;
             return;
@@ -60,27 +68,14 @@ export class ContextService {
 
         let foundProjects = this.knownProjects.filter((project: Project) => projectName.toUpperCase() === project.name.toUpperCase());
         if (foundProjects.length == 0) {
-            this.infoModalService.showInfoModal(
-                "Project Not Found",
-                "Project <b>"+projectName+"</b> is not known by this Testerum instance.",
-                [
-                    "Please first open this project with Testerum and retry your URL."
-                ]
-            ).subscribe(value => {
-                this.navigateToHomePage();
-            })
+            this.navigateToNoProjectFound(projectName);
         }
         if (foundProjects.length > 1) {
-            this.selectProjectModelService.show(foundProjects).subscribe((selectedProject:Project) => {
-                this.currentProject = selectedProject;
-                this.navigateToProject();
-            });
+            this.navigateToMultipleProjectsFoundChooser(foundProjects);
         }
 
         this.currentProject = foundProjects[0];
     }
-
-
 
     isProjectSelected(): boolean {
         return this.currentProject != null;
@@ -115,13 +110,8 @@ export class ContextService {
     }
 
     private getProjectFromUrl(): string {
-        let root: ActivatedRouteSnapshot = this.getRouter().routerState.snapshot.root;
-        if(root.children.length == 0) {
-            return null;
-        }
-
-        let firstActivatedRoute = root.children[0];
-        return firstActivatedRoute.params['project'];
+        let pathAsString = window.location.pathname;
+        return UrlUtil.getProjectNameFromUrl(pathAsString)
     }
 
     private getRouter(): Router {
@@ -134,5 +124,31 @@ export class ContextService {
 
     private navigateToProject() {
         this.getRouter().navigate(["/" + this.currentProject.name + "/features"]);
+    }
+
+    private navigateToMultipleProjectsFoundChooser(projectsToChoose: Project[]) {
+        let pathAsString = window.location.pathname;
+        let model: MultipleProjectsFound = new MultipleProjectsFound();
+        model.projects = projectsToChoose;
+        model.urlToNavigate = pathAsString;
+
+        this.getRouter().navigate(["/multipleProjectsFound", {data: model.serialize()}]);
+    }
+
+    private navigateToNoProjectFound(projectName: string) {
+        this.getRouter().navigate(["/noProjectFound", {projectName: projectName}]);
+    }
+
+    private isPathWithoutRequiredProject(): boolean {
+        let currentUrl: string = window.location.pathname;
+        if(currentUrl == null) {
+            return true;
+        }
+        for (const routeWithoutProject of this.routsWithoutProject) {
+            if (currentUrl.startsWith(routeWithoutProject)) {
+                return true
+            }
+        }
+        return false;
     }
 }

@@ -39,10 +39,13 @@ export class Project implements Serializable<Project> {
     }
 
     serialize(): string {
-        return "" +
+        let response = "" +
             '{' +
             '"name":' + JsonUtil.stringify(this._name) + ',' +
-            '"path":' + JsonUtil.stringify(this._path.toString()) +
-            '}'
+            '"path":' + JsonUtil.stringify(this._path.toString());
+        if (this._lastOpened) {
+            response += ',"lastOpened":' + JsonUtil.stringify(this._lastOpened.toJSON());
+        }
+        return response + '}'
     }
 }

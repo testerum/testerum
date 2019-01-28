@@ -1,0 +1,13 @@
+.big-logo {
+    height: 100%;
+    width: 100%;
+
+    .logo {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+}

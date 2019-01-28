@@ -48,8 +48,6 @@ import {HomeService} from "./service/home.service";
 import {UtilService} from "./service/util.service";
 import {ProjectService} from "./service/project.service";
 import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.interceptor";
-import {SelectProjectModalService} from "./functionalities/home/alerts/multiple-projects-found/select-project-modal.service";
-import {SelectProjectModalComponent} from "./functionalities/home/alerts/multiple-projects-found/select-project-modal.component";
 
 @NgModule({
     imports: [
@@ -80,8 +78,7 @@ import {SelectProjectModalComponent} from "./functionalities/home/alerts/multipl
         VariablesComponent,
         LicenseComponent,
         SettingsComponent,
-        ArgValueValidatorDirective,
-        SelectProjectModalComponent,
+        ArgValueValidatorDirective
     ],
     exports: [
         VariablesComponent,
@@ -92,7 +89,6 @@ import {SelectProjectModalComponent} from "./functionalities/home/alerts/multipl
 
         ApplicationEventBus,
 
-        SelectProjectModalService,
         StepsService,
         TestsService,
         VariablesService,
@@ -130,7 +126,6 @@ import {SelectProjectModalComponent} from "./functionalities/home/alerts/multipl
     entryComponents: [
         FileDirChooserInputComponent,
         FileDirTreeContainerComponent,
-        SelectProjectModalComponent,
     ],
     bootstrap: [AppComponent]
 })
