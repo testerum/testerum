@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/projects")
@@ -29,8 +28,7 @@ open class ProjectController(private val projectFrontendService: ProjectFrontend
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/open"], params = ["path"])
     @ResponseBody
-    fun getComposedStepAtPath(@RequestParam(value = "path") path: String): Project {
-        // todo: implement this
-        return Project("happy", path, LocalDateTime.now())
+    fun openProject(@RequestParam(value = "path") path: String): Project {
+        return projectFrontendService.openProject(path)
     }
 }

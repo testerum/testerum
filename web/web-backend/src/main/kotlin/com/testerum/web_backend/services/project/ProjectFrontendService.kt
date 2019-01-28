@@ -19,4 +19,8 @@ class ProjectFrontendService(private val recentProjectsCache: RecentProjectsCach
         )
     }
 
+    fun openProject(path: String): Project {
+        return recentProjectsCache.openProject(path)
+    }
+
 }

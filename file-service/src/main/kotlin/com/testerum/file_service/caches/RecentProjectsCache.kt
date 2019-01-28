@@ -132,6 +132,35 @@ class RecentProjectsCache(private val recentProjectsFileService: RecentProjectsF
         }
     }
 
+    fun openProject(path: String): Project {
+        lock.write {
+            val absoluteProjectRootDir = Paths.get(path).toAbsolutePath().normalize()
+
+            if (!testerumProjectFileService.isTesterumProject(absoluteProjectRootDir)) {
+                throw ValidationException(
+                        globalMessage = "The directory [$absoluteProjectRootDir] is not a Testerum project.",
+                        globalHtmlMessage = "The directory <br/><code>$absoluteProjectRootDir</code><br/>is not a Testerum project.")
+            }
+
+            val loadedFileProject = testerumProjectFileService.load(absoluteProjectRootDir)
+
+            val recentProject = RecentProject(
+                    path = absoluteProjectRootDir,
+                    lastOpened = LocalDateTime.now()
+            )
+
+            val project = mapFileAndRecentToProject(loadedFileProject, recentProject)
+
+            projectsByPath[project.path] = project
+
+            val recentProjectsToReSave = projectsByPath.values.map { it.toRecentProject() }
+
+            recentProjectsFileService.save(recentProjectsToReSave, recentProjectsFile!!)
+
+            return project
+        }
+    }
+
     private fun mapFileAndRecentToProject(fileProject: FileProject,
                                           recentProject: RecentProject): Project {
         val path = recentProject.path.toAbsolutePath().normalize().toString()

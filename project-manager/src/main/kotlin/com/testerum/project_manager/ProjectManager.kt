@@ -61,7 +61,7 @@ class ProjectManager(private val createFeaturesCache: (ProjectServices) -> Featu
         return projectServices
     }
 
-    private fun onProjectClosed(notification: RemovalNotification<java.nio.file.Path, ProjectServices>) {
+    private fun onProjectClosed(notification: RemovalNotification<JavaPath, ProjectServices>) {
         val projectRootDir = notification.key
 
         LOG.info("closed project at path [$projectRootDir] (cause: ${notification.cause})")
