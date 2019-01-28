@@ -13,6 +13,7 @@ import com.testerum.runner.events.model.RunnerStoppedEvent
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.settings.SettingsManager
 import com.testerum.settings.TesterumDirs
+import com.testerum.web_backend.filter.project.ProjectDirHolder
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.runner.execution.model.RunningTestExecution
@@ -53,7 +54,12 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
     fun createExecution(testOrDirectoryPaths: List<Path>): TestExecutionResponse {
         val executionId = testExecutionIdGenerator.nextId()
-        testExecutionsById[executionId] = TestExecution(executionId, testOrDirectoryPaths)
+        val projectRootDir = ProjectDirHolder.get().toAbsolutePath().normalize()
+        testExecutionsById[executionId] = TestExecution(
+                executionId = executionId,
+                testOrDirectoryPathsToRun = testOrDirectoryPaths,
+                projectRootDir = projectRootDir
+        )
 
         val runnerRootNode = getRunnerRootNode(testOrDirectoryPaths)
 
@@ -99,6 +105,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
             LOG.warn("trying to start an execution that is already started")
             return
         }
+        ProjectDirHolder.set(execution.projectRootDir, null)
 
         LOG.debug("==========================================[ start test execution {} ]=========================================", executionId)
 
