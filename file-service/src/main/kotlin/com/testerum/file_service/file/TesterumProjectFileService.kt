@@ -51,12 +51,14 @@ class TesterumProjectFileService {
         }
     }
 
-    fun save(project: FileProject, directory: JavaPath) {
-        val serializedProject = OBJECT_MAPPER.writeValueAsString(project)
+    fun save(fileProject: FileProject, directory: JavaPath): FileProject {
+        val serializedProject = OBJECT_MAPPER.writeValueAsString(fileProject)
 
         val projectFile = projectFilePath(directory)
         projectFile.parent?.createDirectories()
         projectFile.writeText(serializedProject)
+
+        return fileProject
     }
 
     fun load(directory: JavaPath): FileProject {

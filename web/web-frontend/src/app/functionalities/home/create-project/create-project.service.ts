@@ -1,11 +1,10 @@
 import {ComponentRef, Injectable} from "@angular/core";
-import {Observable, Subject} from "rxjs";
 import {AppComponent} from "../../../app.component";
 import {CreateProjectComponent} from "./create-project.component";
 import {Project} from "../../../model/home/project.model";
-import {HomeService} from "../../../service/home.service";
 import {ContextService} from "../../../service/context.service";
 import {ProjectService} from "../../../service/project.service";
+import {CreateProjectRequest} from "../../../model/home/create-project-request.model";
 
 @Injectable()
 export class CreateProjectService {
@@ -28,8 +27,8 @@ export class CreateProjectService {
         this.modalComponent = modalComponentRef.instance;
     }
 
-    onCreateProjectAction(project: Project) {
-        this.projectService.createProject(project).subscribe((project: Project) => {
+    onCreateProjectAction(createProjectRequest: CreateProjectRequest) {
+        this.projectService.createProject(createProjectRequest).subscribe((project: Project) => {
             this.contextService.setCurrentProject(project)
         })
     }
