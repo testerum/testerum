@@ -17,6 +17,7 @@ import {ProjectService} from "../../service/project.service";
 export class HomeComponent implements OnInit, OnDestroy {
 
     quote: string;
+    author: string;
     testerumVersion: string;
     recentProjects: Project[] = [];
 
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.getHomePageModelSubscription = this.homeService.getHomePageModel().subscribe((home: Home) => {
             this.quote = home.quote.text;
+            this.author = home.quote.author;
             this.testerumVersion = home.testerumVersion;
             ArrayUtil.replaceElementsInArray(this.recentProjects, home.recentProjects);
         });

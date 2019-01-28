@@ -6,12 +6,15 @@
                 <logo class="logo"></logo>
                 <div class="version">{{testerumVersion}}</div>
             </div>
-            <div class="quote">{{quote}}</div>
+            <div class="quote">
+                <div class="quote-sign">“</div>{{quote}}<div class="quote-sign">”</div>
+                <div *ngIf="author" class="author">- {{author}}</div>
+            </div>
         </div>
     </div>
 
     <div class="body">
-        <div class="col-sm-3 col-sm-offset-3">
+        <div class="recent-project-panel">
             <div class="panel panel-info">
                 <div class="panel-heading">Recent Projects</div>
                 <div class="recent-project panel-body">
@@ -27,7 +30,7 @@
             </div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="quick-start-panel">
             <div class="panel panel-info">
                 <div class="panel-heading">Quick Start</div>
                 <div class="quick-start panel-body">

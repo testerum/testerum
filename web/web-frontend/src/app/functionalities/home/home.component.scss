@@ -1,6 +1,9 @@
 @import "../../../resources/css/testerum-variables.scss";
 
 .my_home-page {
+    max-width: 1200px;
+    margin: auto;
+
     .header {
         width: 100%;
         display: flex;
@@ -32,11 +35,58 @@
                 margin-top: 0.5em;
                 margin-bottom: 2em;
                 font-size: 1.5em;
+                text-align: center;
+                width: 35em;
+
+                .quote-sign {
+                    display: inline-block;
+                    font-size: 1.2em;
+                    font-weight: bold;
+                }
+
+                .author {
+                    text-align: right;
+                    font-style: italic;
+                    font-size: 0.8em;
+                    color: #b1b1b1;
+                }
             }
         }
     }
 
     .body {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        div {
+            max-width: 450px;
+        }
+
+        .recent-project-panel {
+            width: 45%;
+            margin-right: 1em;
+
+            .recent-project {
+                .project-name {
+                    font-size: 1.5em;
+                }
+
+                .project-path {
+                    color: #9d9d9d;
+                }
+            }
+        }
+
+        .quick-start-panel {
+            width: 45%;
+            margin-left: 1em;
+
+            .quick-start {
+                font-size: 1.5em;
+            }
+        }
+
         .panel-body {
             max-height: 30em;
             overflow: auto;
@@ -55,20 +105,5 @@
                 }
             }
         }
-
-        .recent-project {
-            .project-name {
-                font-size: 1.5em;
-            }
-
-            .project-path {
-                color: #9d9d9d;
-            }
-        }
-
-        .quick-start {
-            font-size: 1.5em;
-        }
     }
-
 }
