@@ -1,4 +1,4 @@
-<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+<div bsModal #infoModal="bs-modal" class="file-dir-chooser-modal modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,7 +17,7 @@
             <!-- BUTTONS -->
             <div class="modal-footer">
                 <div class="selected-path-container">
-                    <span class="selecte-path-label">{{isTesterumProjectChooser? "Selected project path:" : "Selected path:"}}</span> {{getSelectedPathAsString()}}
+                    <span class="selected-path-label">{{isTesterumProjectChooser? "Selected project path:" : "Selected path:"}}</span> {{getSelectedPathAsString()}}
                 </div>
                 <div class="button-container">
                     <button *ngIf="!isTesterumProjectChooser"
