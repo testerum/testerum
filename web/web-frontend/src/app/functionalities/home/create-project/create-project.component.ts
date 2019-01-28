@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {CreateProjectService} from "./create-project.service";
-import {Project} from "../../../model/home/project.model";
+import {CreateProjectRequest} from "../../../model/home/create-project-request.model";
 
 @Component({
     moduleId: module.id,
@@ -33,7 +33,9 @@ export class CreateProjectComponent implements AfterViewInit {
     }
 
     onCreateProjectAction() {
-        this.createProjectService.onCreateProjectAction(new Project(this.name, this.path));
+        this.createProjectService.onCreateProjectAction(
+            CreateProjectRequest.create(this.path, this.name)
+        );
         this.modal.hide()
     }
 }

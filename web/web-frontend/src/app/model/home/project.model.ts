@@ -1,4 +1,3 @@
-import {Path} from "../infrastructure/path/path.model";
 import {Serializable} from "../infrastructure/serializable.model";
 import {JsonUtil} from "../../utils/json.util";
 

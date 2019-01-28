@@ -3,10 +3,7 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {Project} from "../model/home/project.model";
-import {Setting} from "../functionalities/config/settings/model/setting.model";
-import {Home} from "../model/home/home.model";
-import {JsonUtil} from "../utils/json.util";
-import {TestModel} from "../model/test/test.model";
+import {CreateProjectRequest} from "../model/home/create-project-request.model";
 
 
 @Injectable()
@@ -38,8 +35,8 @@ export class ProjectService {
         return response;
     }
 
-    createProject(project: Project): Observable<Project> {
-        const body = project.serialize();
+    createProject(createProjectRequest: CreateProjectRequest): Observable<Project> {
+        const body = createProjectRequest.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type':  'application/json',
