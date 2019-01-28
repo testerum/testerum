@@ -5,6 +5,7 @@ import {ArrayUtil} from "../../../../utils/array.util";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {FileUpload} from "primeng/primeng";
 import {InfoModalService} from "../../info_modal/info-modal.service";
+import {ContextService} from "../../../../service/context.service";
 
 @Component({
     selector: 'attachments-component',
@@ -22,7 +23,8 @@ export class AttachmentsComponent implements OnInit {
 
     @ViewChild("fileUpload") fileUpload: FileUpload;
 
-    constructor(private infoModalService: InfoModalService){}
+    constructor(private infoModalService: InfoModalService,
+                private contextService: ContextService){}
 
     ngOnInit() {
     }
@@ -83,9 +85,10 @@ export class AttachmentsComponent implements OnInit {
     }
 
     getAttachmentUrl(attachment: Attachment, thumbnailVersion: boolean = false): string {
+        let projectPath = this.contextService.getProjectPath();
         let url = "/rest/features/attachments"
             + "?path=" + encodeURIComponent(attachment.path.toString())
-            + "&X-Testerum-Project=/media/cvmocanu/data/Development/testerum/testerum-demos/pet-clinic-angular2/tests"; // todo: add the actual project path
+            + "&X-Testerum-Project="+projectPath;
         if (thumbnailVersion) {
             url += "&thumbnail=true"
         }
