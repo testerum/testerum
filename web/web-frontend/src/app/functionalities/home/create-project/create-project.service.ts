@@ -5,6 +5,7 @@ import {Project} from "../../../model/home/project.model";
 import {ContextService} from "../../../service/context.service";
 import {ProjectService} from "../../../service/project.service";
 import {CreateProjectRequest} from "../../../model/home/create-project-request.model";
+import {UrlService} from "../../../service/url.service";
 
 @Injectable()
 export class CreateProjectService {
@@ -14,7 +15,8 @@ export class CreateProjectService {
 
 
     constructor(private projectService: ProjectService,
-                private contextService: ContextService) {
+                private contextService: ContextService,
+                private urlService: UrlService) {
     }
 
     showCreteProjectModal() {
@@ -29,7 +31,8 @@ export class CreateProjectService {
 
     onCreateProjectAction(createProjectRequest: CreateProjectRequest) {
         this.projectService.createProject(createProjectRequest).subscribe((project: Project) => {
-            this.contextService.setCurrentProject(project)
+            this.contextService.setCurrentProject(project);
+            this.urlService.navigateToFeatures();
         })
     }
 

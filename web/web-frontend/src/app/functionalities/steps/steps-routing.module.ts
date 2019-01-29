@@ -8,10 +8,11 @@ import {LicenseGuard} from "../../service/guards/license.guard";
 import {BasicStepEditorComponent} from "./basic-step-editor/basic-step-editor.component";
 import {BasicStepEditorResolver} from "./basic-step-editor/basic-step-editor.resolver";
 import {UnsavedChangesGuard} from "../../service/guards/unsaved-changes.guard";
+import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
 const stepsRoutes: Routes = [
     {
-        path:":project/steps", component:StepsComponent, canActivate: [LicenseGuard], canActivateChild: [LicenseGuard],
+        path:":project/steps", component:StepsComponent, canActivate: [LicenseGuard, CurrentProjectGuard], canActivateChild: [LicenseGuard],
         children: [
             {
                 path: 'composed', component: ComposedStepEditorComponent, resolve: {composedStepDef: ComposedStepEditorResolver}, canDeactivate: [UnsavedChangesGuard]

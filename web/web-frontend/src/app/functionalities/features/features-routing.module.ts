@@ -8,10 +8,11 @@ import {LicenseGuard} from "../../service/guards/license.guard";
 import {FeatureEditorComponent} from "./feature-editor/feature-editor.component";
 import {FeatureResolver} from "./feature-editor/feature.resolver";
 import {UnsavedChangesGuard} from "../../service/guards/unsaved-changes.guard";
+import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
 const testsRoutes: Routes = [
     {
-        path: ":project/features", component: FeaturesComponent, canActivate: [LicenseGuard], canActivateChild: [LicenseGuard],
+        path: ":project/features", component: FeaturesComponent, canActivate: [LicenseGuard, CurrentProjectGuard], canActivateChild: [LicenseGuard],
         children: [
             {
                 path: ':action', component: FeatureEditorComponent, resolve: {featureModel: FeatureResolver}, canDeactivate: [UnsavedChangesGuard]

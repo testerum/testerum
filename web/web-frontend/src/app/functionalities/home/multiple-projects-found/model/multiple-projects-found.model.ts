@@ -1,6 +1,6 @@
-import {Project} from "../../../../../model/home/project.model";
-import {Serializable} from "../../../../../model/infrastructure/serializable.model";
-import {JsonUtil} from "../../../../../utils/json.util";
+import {Project} from "../../../../model/home/project.model";
+import {Serializable} from "../../../../model/infrastructure/serializable.model";
+import {JsonUtil} from "../../../../utils/json.util";
 
 export class MultipleProjectsFound implements Serializable<MultipleProjectsFound>{
     urlToNavigate: string;

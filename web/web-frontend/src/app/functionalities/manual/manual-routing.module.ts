@@ -7,19 +7,20 @@ import {ManualTestPlanEditorComponent} from "./plans/editor/manual-test-plan-edi
 import {ManualTestPlanEditorResolver} from "./plans/editor/manual-test-plan-editor-resolver.service";
 import {ManualRunnerComponent} from "./runner/manual-runner.component";
 import {UnsavedChangesGuard} from "../../service/guards/unsaved-changes.guard";
+import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
 const manualRoutes: Routes = [
     {
         path: ":project/manual/plans/runner",
         component: ManualRunnerComponent,
-        canActivate: [LicenseGuard],
+        canActivate: [LicenseGuard, CurrentProjectGuard],
         canActivateChild: [LicenseGuard],
         canDeactivate: [UnsavedChangesGuard]
     },
     {
         path: ":project/manual/plans",
         component: ManualTestPlansComponent,
-        canActivate: [LicenseGuard],
+        canActivate: [LicenseGuard, CurrentProjectGuard],
         canActivateChild: [LicenseGuard],
         children: [
             {

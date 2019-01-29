@@ -8,6 +8,7 @@ import {ArrayUtil} from "../../utils/array.util";
 import {CreateProjectService} from "./create-project/create-project.service";
 import {FileDirChooserModalService} from "../../generic/components/form/file_dir_chooser/dialog/file-dir-chooser-modal.service";
 import {ProjectService} from "../../service/project.service";
+import {UrlService} from "../../service/url.service";
 
 @Component({
     selector: 'home',
@@ -26,7 +27,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                 private projectService: ProjectService,
                 private contextService: ContextService,
                 private createProjectService: CreateProjectService,
-                private fileDirChooserModalService: FileDirChooserModalService) {
+                private fileDirChooserModalService: FileDirChooserModalService,
+                private urlService: UrlService) {
     }
 
     ngOnInit() {
@@ -44,6 +46,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     navigateToProject(project: Project) {
         this.contextService.setCurrentProject(project);
+        this.urlService.navigateToFeatures()
     }
 
     onCreateNewProject() {
@@ -54,6 +57,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.fileDirChooserModalService.showTesterumProjectChooserModal().subscribe((selectedPathAsString: string) => {
             this.projectService.openProject(selectedPathAsString).subscribe((project: Project) => {
                 this.contextService.setCurrentProject(project);
+                this.urlService.navigateToFeatures()
             });
         })
     }

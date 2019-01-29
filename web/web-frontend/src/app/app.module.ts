@@ -48,6 +48,7 @@ import {HomeService} from "./service/home.service";
 import {UtilService} from "./service/util.service";
 import {ProjectService} from "./service/project.service";
 import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.interceptor";
+import {CurrentProjectGuard} from "./service/guards/current-project.guard";
 
 @NgModule({
     imports: [
@@ -86,6 +87,7 @@ import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.int
     providers: [
         LicenseGuard,
         UnsavedChangesGuard,
+        CurrentProjectGuard,
 
         ApplicationEventBus,
 
@@ -117,7 +119,7 @@ import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.int
         { provide: ErrorHandler, useClass: ErrorsHandlerInterceptor},
 
         ContextService,
-        {provide: APP_INITIALIZER, useFactory: initApplicationContext, deps: [ContextService], multi: true},
+        // {provide: APP_INITIALIZER, useFactory: initApplicationContext, deps: [ContextService], multi: true},
 
         MessageService,
 
@@ -136,5 +138,5 @@ export class AppModule {
 export function initApplicationContext(contextService: ContextService){
     // Do initing of services that is required before app loads
     // NOTE: this factory needs to return a function (that then returns a promise)
-    return () => contextService.init();
+    // return () => contextService.init();
 }

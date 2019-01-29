@@ -5,10 +5,11 @@ import {LicenseGuard} from "../../service/guards/license.guard";
 import {ResourceResolver} from "./editors/resource.resolver";
 import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alown-resource-panel.component";
 import {UnsavedChangesGuard} from "../../service/guards/unsaved-changes.guard";
+import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
 const resourcesRoutes: Routes = [
     {
-        path: ":project/resources", component: ResourcesComponent, canActivate: [LicenseGuard], canActivateChild: [LicenseGuard],
+        path: ":project/resources", component: ResourcesComponent, canActivate: [LicenseGuard, CurrentProjectGuard], canActivateChild: [LicenseGuard],
         children: [
             {
                 path: 'create',
