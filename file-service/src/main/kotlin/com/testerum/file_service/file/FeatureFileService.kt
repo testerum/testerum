@@ -142,8 +142,10 @@ class FeatureFileService(private val featureMapper: FileToBusinessFeatureMapper,
                 featuresDir.relativize(newFeatureDir).toString()
         ).escape()
 
+        val name = featuresDir.relativize(newFeatureDir)?.fileName?.toString().orEmpty()
+
         return feature.copy(
-                name = newFeatureDir.fileName?.toString() ?: feature.name,
+                name = name,
                 path = newPath,
                 oldPath = newPath
         )
