@@ -125,7 +125,7 @@ export class ComposedStepEditorComponent extends AbstractComponentCanDeactivate 
 
     private deleteActionAfterConfirmation(): void {
         this.stepsService.deleteComposedStepsDef(this.model).subscribe(restul => {
-            this.isEditMode = false; // to not show CanDeactivateGuard
+            this.isEditMode = false; // to not show UnsavedChangesGuard
             this.stepsTreeService.initializeStepsTreeFromServer();
             this.urlService.navigateToSteps();
         });

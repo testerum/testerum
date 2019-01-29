@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {ResourcesComponent} from "./resources.component";
-import {LicenseGuard} from "../../service/guards/license-guard.service";
+import {LicenseGuard} from "../../service/guards/license.guard";
 import {ResourceResolver} from "./editors/resource.resolver";
 import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alown-resource-panel.component";
-import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
+import {UnsavedChangesGuard} from "../../service/guards/unsaved-changes.guard";
 
 const resourcesRoutes: Routes = [
     {
@@ -12,11 +12,11 @@ const resourcesRoutes: Routes = [
         children: [
             {
                 path: 'create',
-                component: StandAlownResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [CanDeactivateGuard]
+                component: StandAlownResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [UnsavedChangesGuard]
             },
             {
                 path: 'show',
-                component: StandAlownResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [CanDeactivateGuard]
+                component: StandAlownResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [UnsavedChangesGuard]
             }
         ]
     },

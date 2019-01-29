@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
-import {LicenseGuard} from "../../service/guards/license-guard.service";
+import {LicenseGuard} from "../../service/guards/license.guard";
 import {ResultsComponent} from "./results.component";
 
 const testsRoutes: Routes = [

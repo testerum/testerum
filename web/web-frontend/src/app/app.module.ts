@@ -22,7 +22,7 @@ import {VariablesComponent} from "./functionalities/variables/variables.componen
 import {ModalModule} from "ngx-bootstrap/modal";
 import {VariablesService} from "./service/variables.service";
 import {FileSystemService} from "./service/file-system.service";
-import {LicenseGuard} from "./service/guards/license-guard.service";
+import {LicenseGuard} from "./service/guards/license.guard";
 import {SettingsComponent} from "./functionalities/config/settings/settings.component";
 import {SettingsService} from "./service/settings.service";
 import {FileDirChooserInputComponent} from "./generic/components/form/file_dir_chooser/file-dir-chooser-input.component";
@@ -37,7 +37,7 @@ import {UrlService} from "./service/url.service";
 import {TagsService} from "./service/tags.service";
 import {MessageService} from "./service/message.service";
 import {ManualModule} from "./functionalities/manual/manual.module";
-import {CanDeactivateGuard} from "./service/guards/CanDeactivateGuard";
+import {UnsavedChangesGuard} from "./service/guards/unsaved-changes.guard";
 import {LicenseService} from "./functionalities/config/license/license.service";
 import {LicenseComponent} from "./functionalities/config/license/license.component";
 import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
@@ -85,7 +85,7 @@ import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.int
     ],
     providers: [
         LicenseGuard,
-        CanDeactivateGuard,
+        UnsavedChangesGuard,
 
         ApplicationEventBus,
 
