@@ -1,5 +1,9 @@
 @import "../../../../../../../../resources/css/testerum-variables.scss";
 
+.is-project-dir {
+    font-weight: bold;
+}
+
 .flip {
     -moz-transform: scale(1, -1);
     -webkit-transform: scale(1, -1);

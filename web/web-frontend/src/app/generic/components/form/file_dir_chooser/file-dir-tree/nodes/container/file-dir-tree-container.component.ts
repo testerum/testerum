@@ -47,6 +47,10 @@ export class FileDirTreeContainerComponent {
         return this.model == this.fileDirTreeComponentService.selectedNode;
     }
 
+    isTesterumProjectChooser(): boolean {
+        return this.fileDirTreeComponentService.isTesterumProjectChooser;
+    }
+
     isOpenedNode(): boolean {
         return this.model.jsonTreeNodeState.showChildren
     }
