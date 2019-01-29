@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.getHomePageModelSubscription = this.homeService.getHomePageModel().subscribe((home: Home) => {
+            this.contextService.setCurrentProject(null);
             this.quote = home.quote.text;
             this.author = home.quote.author;
             this.testerumVersion = home.testerumVersion;

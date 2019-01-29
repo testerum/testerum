@@ -119,10 +119,7 @@ import {CurrentProjectGuard} from "./service/guards/current-project.guard";
         { provide: ErrorHandler, useClass: ErrorsHandlerInterceptor},
 
         ContextService,
-        // {provide: APP_INITIALIZER, useFactory: initApplicationContext, deps: [ContextService], multi: true},
-
         MessageService,
-
         LicenseService,
     ],
     entryComponents: [
@@ -132,11 +129,4 @@ import {CurrentProjectGuard} from "./service/guards/current-project.guard";
     bootstrap: [AppComponent]
 })
 export class AppModule {
-}
-
-
-export function initApplicationContext(contextService: ContextService){
-    // Do initing of services that is required before app loads
-    // NOTE: this factory needs to return a function (that then returns a promise)
-    // return () => contextService.init();
 }
