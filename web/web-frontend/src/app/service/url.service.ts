@@ -67,6 +67,10 @@ export class UrlService {
         this.navigateToProjectPath(["/resources/show", {"path": path}]);
     }
 
+    public navigateToCreateResource(path: Path, resourceExtension: string) {
+        this.navigateToProjectPath(["/resources/create", {"path": path, "resourceExt": resourceExtension}]);
+    }
+
     public navigateToSteps() {
         this.navigateToProjectPath(["/steps"]);
     }
@@ -124,5 +128,4 @@ export class UrlService {
         commands[0] = "/" + this.contextService.getProjectName() + commands[0];
         return this.router.navigate(commands, extras);
     }
-
 }

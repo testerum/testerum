@@ -51,17 +51,7 @@ export class ResourcesContainerComponent {
     }
 
     showCreateSubResource() {
-        let resourceType = this.model.resourceType;
-
-        this.router.navigate(
-            [
-                "/resources/create",
-                {
-                    "path":this.model.path,
-                    "resourceExt":this.model.resourceType.fileExtension,
-                }
-            ]
-        );
+        this.urlService.navigateToCreateResource(this.model.path, this.model.resourceType.fileExtension);
     }
 
     showCreateDirectoryModal(): void {
