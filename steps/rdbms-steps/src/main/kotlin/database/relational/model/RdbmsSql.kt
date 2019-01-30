@@ -1,3 +1,3 @@
 package database.relational.model
 
-data class RdbmsSql(var sql: String)
+data class RdbmsSql(val sql: String)
