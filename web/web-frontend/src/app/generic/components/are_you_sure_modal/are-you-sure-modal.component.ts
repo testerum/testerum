@@ -40,4 +40,10 @@ export class AreYouSureModalComponent implements AfterViewInit {
         this.modalSubject.next(AreYouSureModalEnum.CANCEL);
         this.modal.hide();
     }
+
+    onKeyDown(event: KeyboardEvent) {
+        if (event.code == "Escape") {
+            this.cancel();
+        }
+    }
 }
