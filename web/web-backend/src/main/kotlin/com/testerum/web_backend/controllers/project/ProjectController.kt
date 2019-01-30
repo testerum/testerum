@@ -3,12 +3,7 @@ package com.testerum.web_backend.controllers.project
 import com.testerum.model.home.Project
 import com.testerum.web_backend.controllers.project.model.CreateProjectRequest
 import com.testerum.web_backend.services.project.ProjectFrontendService
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/projects")
@@ -31,4 +26,11 @@ open class ProjectController(private val projectFrontendService: ProjectFrontend
     fun openProject(@RequestParam(value = "path") path: String): Project {
         return projectFrontendService.openProject(path)
     }
+
+    @RequestMapping (method = [RequestMethod.DELETE], path = ["/recent"], params = ["path"])
+    @ResponseBody
+    fun deleteRecentProject(@RequestParam(value = "path") path: String) {
+        projectFrontendService.deleteRecentProject(path)
+    }
+
 }

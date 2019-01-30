@@ -161,6 +161,18 @@ class RecentProjectsCache(private val recentProjectsFileService: RecentProjectsF
         }
     }
 
+    fun deleteRecentProject(projectRootDir: JavaPath) {
+        lock.write {
+            val absoluteProjectRootDir = projectRootDir.toAbsolutePath().normalize()
+
+            projectsByPath.remove(absoluteProjectRootDir.toString())
+
+            val recentProjectsToReSave = projectsByPath.values.map { it.toRecentProject() }
+
+            recentProjectsFileService.save(recentProjectsToReSave, recentProjectsFile!!)
+        }
+    }
+
     private fun mapFileAndRecentToProject(fileProject: FileProject,
                                           recentProject: RecentProject): Project {
         val path = recentProject.path.toAbsolutePath().normalize().toString()
