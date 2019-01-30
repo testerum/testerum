@@ -11,9 +11,9 @@ import com.testerum.model.test.TestModel
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
 
-class FeatureTreeBuilder {
+class FeatureTreeBuilder(rootLabel: String) {
 
-    private val builder = TreeBuilder(FeatureTreeBuilderCustomizer)
+    private val builder = TreeBuilder(FeatureTreeBuilderCustomizer(rootLabel))
 
     fun addFeature(feature: Feature): Unit = builder.add(feature)
 
@@ -24,7 +24,7 @@ class FeatureTreeBuilder {
     override fun toString(): String = builder.toString()
 
 
-    private object FeatureTreeBuilderCustomizer : TreeBuilderCustomizer {
+    private class FeatureTreeBuilderCustomizer(private val rootLabel: String) : TreeBuilderCustomizer {
         override fun getPath(payload: Any): List<String> = when (payload) {
             is Feature   -> payload.path.directories
             is TestModel -> payload.path.directories.withAdditional(getLabel(payload))
@@ -37,7 +37,7 @@ class FeatureTreeBuilder {
             else         -> throw unknownPayloadException(payload)
         }
 
-        override fun getRootLabel(): String = "Features"
+        override fun getRootLabel(): String = rootLabel
 
         override fun getLabel(payload: Any): String = when (payload) {
             is Feature   -> payload.path.directories.last()

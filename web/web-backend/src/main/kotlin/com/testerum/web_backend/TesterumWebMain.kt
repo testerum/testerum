@@ -102,7 +102,7 @@ object TesterumWebMain {
 
         // add ProjectFilter
         webAppContext.addFilter(
-                FilterHolder().apply {10
+                FilterHolder().apply {
                     filter = ProjectFilter()
                     name = ProjectFilter::class.java.simpleName.decapitalize()
                 },
