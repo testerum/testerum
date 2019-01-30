@@ -7,12 +7,14 @@ import com.google.common.cache.RemovalNotification
 import com.testerum.file_service.caches.resolved.FeaturesCache
 import com.testerum.file_service.caches.resolved.StepsCache
 import com.testerum.file_service.caches.resolved.TestsCache
+import com.testerum.file_service.file.TesterumProjectFileService
 import org.slf4j.LoggerFactory
 import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit
 import java.nio.file.Path as JavaPath
 
-class ProjectManager(private val createFeaturesCache: (ProjectServices) -> FeaturesCache,
+class ProjectManager(private val testerumProjectFileService: TesterumProjectFileService,
+                     private val createFeaturesCache: (ProjectServices) -> FeaturesCache,
                      private val createTestsCache: (ProjectServices) -> TestsCache,
                      private val createStepsCache: (ProjectServices) -> StepsCache) {
 
@@ -54,7 +56,9 @@ class ProjectManager(private val createFeaturesCache: (ProjectServices) -> Featu
 
         LOG.info("opening project at path [$absoluteProjectRootDir]...")
         val startTimeMillis = System.currentTimeMillis()
-        val projectServices = ProjectServices(projectRootDir, createFeaturesCache, createTestsCache, createStepsCache)
+
+        val project = testerumProjectFileService.load(projectRootDir)
+        val projectServices = ProjectServices(projectRootDir, project, createFeaturesCache, createTestsCache, createStepsCache)
         val endTimeInitMillis = System.currentTimeMillis()
         LOG.info("...done opening project at path [$absoluteProjectRootDir] (took ${endTimeInitMillis - startTimeMillis} ms)")
 

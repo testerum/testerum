@@ -119,7 +119,19 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
         return when {
             resolvedArgParts.isEmpty() -> ""
             resolvedArgParts.size == 1 -> resolvedArgParts[0] // not doing joinToString() to preserve the type
-            else                       -> resolvedArgParts.joinToString(separator = "")
+            else -> {
+                resolvedArgParts.joinToString(
+                        separator = "",
+                        transform = {
+                            if (it is CharSequence) {
+                                it
+                            } else {
+                                escape(it.toString())
+                            }
+
+                        }
+                )
+            }
         }
     }
 

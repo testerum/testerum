@@ -9,9 +9,11 @@ import org.hamcrest.Matchers.`is` as Is
 
 class MapMergerTest {
 
+    // todo: add more tests
+
     @Test
     fun test() {
-        assertThat<TreeMap<String, Any?>>(
+        assertThat<LinkedHashMap<String, Any?>>(
                 MapMerger.override(
                         base = createMap {
                             "company" % {

@@ -4,16 +4,18 @@ import java.util.*
 
 object MapMerger {
 
+    private val DELETE_MARKER_VALUE = "@delete()"
+
     fun override(base: Map<String, Any?>,
-                 overrides: Map<String, Any?>): TreeMap<String, Any?> {
-        val result = TreeMap<String, Any?>()
+                 overrides: Map<String, Any?>): LinkedHashMap<String, Any?> {
+        val result = LinkedHashMap<String, Any?>()
 
         override(result, base, overrides)
 
         return result
     }
 
-    private fun override(result: TreeMap<String, Any?>,
+    private fun override(result: LinkedHashMap<String, Any?>,
                          base: Map<String, Any?>,
                          overrides: Map<String, Any?>) {
         for ((baseKey, baseValue) in base) {
@@ -32,7 +34,13 @@ object MapMerger {
                         overrides = overrideValue as Map<String, Any?>
                 )
             } else {
-                result[baseKey] = overrideValue
+                if (overrideValue == "\\$DELETE_MARKER_VALUE") {
+                    result[baseKey] = DELETE_MARKER_VALUE
+                } else if (overrideValue != DELETE_MARKER_VALUE) {
+                    // we only add the override value if it's not the DELETE_MARKER_VALUE
+                    result[baseKey] = overrideValue
+                }
+
             }
         }
 

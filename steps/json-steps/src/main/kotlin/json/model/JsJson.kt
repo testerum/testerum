@@ -3,34 +3,39 @@ package json.model
 import com.fasterxml.jackson.module.kotlin.readValue
 import jdk.nashorn.api.scripting.AbstractJSObject
 import json.utils.JSON_STEPS_OBJECT_MAPPER
-import java.util.TreeMap
+import json.utils.MapMerger
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.write
 
 class JsJson : AbstractJSObject {
 
-    private val unparsedJson: String
+    private val lock = ReentrantReadWriteLock()
 
     @Suppress("MemberVisibilityCanBePrivate")
-    val data: TreeMap<String, Any?>
+    private val data: LinkedHashMap<String, Any?>
 
-    private constructor(unparsedJson: String,
-                        data: TreeMap<String, Any?>) : super() {
-        this.unparsedJson = unparsedJson
-        this.data = data
-    }
+    private var serialized: String? = null
 
     constructor(unparsedJson: String) : super() {
-        this.unparsedJson = unparsedJson
-        this.data = TreeMap(
+        this.data = LinkedHashMap(
                 try {
                     JSON_STEPS_OBJECT_MAPPER.readValue<Map<String, Any?>>(unparsedJson)
                 } catch (e: Exception) {
                     throw IllegalArgumentException("invalid JSON: [$unparsedJson]", e)
                 }
         )
+        this.serialized = unparsedJson
+    }
+
+    private constructor(data: LinkedHashMap<String, Any?>) : super() {
+        this.data = data
     }
 
     override fun setMember(name: String, value: Any?) {
-        data[name] = value
+        lock.write {
+            data[name] = value
+            serialized = null
+        }
     }
 
     override fun getMember(name: String): Any? {
@@ -38,11 +43,22 @@ class JsJson : AbstractJSObject {
     }
 
     override fun toString(): String {
-        return unparsedJson
+        lock.write {
+            if (serialized == null) {
+                serialized = JSON_STEPS_OBJECT_MAPPER.writeValueAsString(this.data)
+            }
+
+            return serialized!!
+        }
     }
 
-    fun overrideWith(overrides: JsJson) {
-
+    fun overrideWith(overrides: JsJson): JsJson {
+        return JsJson(
+                MapMerger.override(
+                        base = this.data,
+                        overrides = overrides.data
+                )
+        )
     }
 
 }

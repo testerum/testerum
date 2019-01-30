@@ -23,4 +23,10 @@ class ProjectFrontendService(private val recentProjectsCache: RecentProjectsCach
         return recentProjectsCache.openProject(path)
     }
 
+    fun deleteRecentProject(path: String) {
+        recentProjectsCache.deleteRecentProject(
+                Paths.get(path)
+        )
+    }
+
 }

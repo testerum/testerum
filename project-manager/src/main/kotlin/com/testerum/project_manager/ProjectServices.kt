@@ -3,10 +3,12 @@ package com.testerum.project_manager
 import com.testerum.file_service.caches.resolved.FeaturesCache
 import com.testerum.file_service.caches.resolved.StepsCache
 import com.testerum.file_service.caches.resolved.TestsCache
+import com.testerum.model.project.FileProject
 import com.testerum.project_manager.dirs.ProjectDirs
 import java.nio.file.Path
 
 class ProjectServices(projectRootDir: Path,
+                      val project: FileProject,
                       createFeaturesCache: (ProjectServices) -> FeaturesCache,
                       createTestsCache: (ProjectServices) -> TestsCache,
                       createStepsCache: (ProjectServices) -> StepsCache) {

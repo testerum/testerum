@@ -37,7 +37,9 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
      * @return the features tree, containing features and test information, filtered with the given filter
      */
     fun getFeaturesTree(filter: FeaturesTreeFilter): RootFeatureNode {
-        val rootNodeBuilder = FeatureTreeBuilder()
+        val rootNodeBuilder = FeatureTreeBuilder(
+                rootLabel = webProjectManager.getProjectServices().project.name
+        )
 
         // features
         val features: Collection<Feature> = getAllFeatures()
