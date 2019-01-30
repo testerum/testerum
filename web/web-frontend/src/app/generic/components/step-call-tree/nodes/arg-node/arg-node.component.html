@@ -44,6 +44,7 @@
     </legend>
 
     <div class="content-shell"
+         [class.content-shell-close]="animationState == 'close'"
          [@expandCollapse]="animationState"
          (@expandCollapse.done)="onAnimateEnd()">
 
