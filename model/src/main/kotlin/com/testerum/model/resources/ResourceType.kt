@@ -16,6 +16,7 @@ enum class ResourceType(val relativeRootDir: String,
     HTTP_MOCK_STUB      ("HTTP/Mock/Stub"      , "http.stub.yaml"           , "com.testerum.model.resources.http.mock.stub.HttpMock"),
 
     JSON_VERIFY         ("JSON/Verify"         , "verify.json"),
+    JSON                ("JSON/Resource"       , "json"),
     ;
 
     companion object {

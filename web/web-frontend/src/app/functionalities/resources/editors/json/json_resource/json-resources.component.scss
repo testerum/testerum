@@ -1,0 +1,27 @@
+.json-resource {
+    height: 100%;
+
+    .condensed-view-container {
+        .condensed-view-body {
+            white-space: pre;
+        }
+    }
+
+    .label-size {
+        width: 6em;
+    }
+
+    .full-height-line {
+        flex-grow: 2;
+    }
+
+    .full-height-value {
+        align-self: stretch;
+        position: relative;
+
+        .ace-editor {
+            height: 100%;
+        }
+    }
+}
+

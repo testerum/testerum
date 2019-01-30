@@ -22,7 +22,7 @@ import {RdbmsVerifyTableNodeComponent} from "./editors/database/verify/rdbms-ver
 import {RdbmsVerifyTableRowNodeComponent} from "./editors/database/verify/rdbms-verify-tree/schema-node/table-node/table-row/rdbms-verify-table-row-node.component";
 import {RdbmsVerifyFieldNodeComponent} from "./editors/database/verify/rdbms-verify-tree/schema-node/table-node/table-row/field/rdbms-verify-field-node.component";
 import {RdbmsVerifyTreeService} from "./editors/database/verify/rdbms-verify-tree/rdbms-verify-tree.service";
-import {JsonVerifyResourceComponent} from "./editors/json_verify/json-verify-resource.component";
+import {JsonVerifyResourceComponent} from "./editors/json/json_verify/json-verify-resource.component";
 import {HttpRequestComponent} from "./editors/http/request/http-request.component";
 import {HttpHeaderComponent} from "./editors/http/request/header/http-header.component";
 import {HttpBodyComponent} from "./editors/http/request/body/http-body.component";
@@ -60,6 +60,7 @@ import {ResourceResolver} from "./editors/resource.resolver";
 import {BasicResourceComponent} from "./editors/basic/basic-resource.component";
 import {ResourcesTreeComponent} from "./tree/resources-tree.component";
 import {SchemaChooserModalService} from "./editors/database/connection/schema_chooser_modal/schema-chooser-modal.service";
+import {JsonResourceComponent} from "./editors/json/json_resource/json-resource.component";
 
 @NgModule({
     imports: [
@@ -97,6 +98,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
         RdbmsVerifyComponent,
         BasicResourceComponent,
         JsonVerifyResourceComponent,
+        JsonResourceComponent,
 
         SchemaChooserModalComponent,
     ],
@@ -107,6 +109,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
 
         BasicResourceComponent,
         JsonVerifyResourceComponent,
+        JsonResourceComponent,
         HttpRequestComponent,
         HttpResponseVerifyComponent,
         HttpMockComponent,
@@ -135,6 +138,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
         RdbmsVerifyFieldNodeComponent,
 
         JsonVerifyResourceComponent,
+        JsonResourceComponent,
 
         HttpRequestComponent,
         HttpHeaderComponent,

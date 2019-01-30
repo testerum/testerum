@@ -1,9 +1,9 @@
 import {ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {ResourceComponent} from "../resource-component.interface";
-import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
+import {ResourceComponent} from "../../resource-component.interface";
+import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {NgForm} from "@angular/forms";
-import {JsonUtil} from '../../../../utils/json.util';
-import {JsonVerify} from "../../../../generic/components/json-verify/model/json-verify.model";
+import {JsonUtil} from '../../../../../utils/json.util';
+import {JsonVerify} from "../../../../../generic/components/json-verify/model/json-verify.model";
 
 @Component({
     moduleId: module.id,

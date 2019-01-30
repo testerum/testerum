@@ -1,0 +1,44 @@
+<div class="json-resource">
+    <div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
+        <div class="condensed-view-body">{{model.content}}</div>
+    </div>
+
+    <!-- REGULAR RESPONSE -->
+    <form *ngIf="!condensedViewMode"  class="form-horizontal flex-panel">
+
+        <!-- NAME -->
+        <div class="my-line">
+            <label class="my-label label-size">Name</label>
+            <div class="my-value" *ngIf="!editMode || isSharedResource">
+                {{name}}
+            </div>
+            <div class="my-value" *ngIf="editMode && !isSharedResource">
+                <input required isNotBlankValidator
+                       #nameNgModel="ngModel" [(ngModel)]="name"
+                       type="text" class="form-control" name="name">
+                <input-error [model]="nameNgModel"
+                             [errorMessages]="{
+                                required: 'A name for this JSON resource is required',
+                                a_resource_with_the_same_name_already_exist: 'A resource with the same name already exists'
+                             }"></input-error>
+            </div>
+        </div>
+
+        <!-- SQL EDITOR-->
+        <div class="my-line full-height-line ">
+            <label class="my-label label-size">JSON</label>
+            <div class="my-value full-height-value">
+                <ace-editor
+                    #editor
+                    [(text)]="model.content"
+                    [mode]="'javascript'"
+                    [theme]="'eclipse'"
+                    [options]="options"
+                    [autoUpdateContent]="true"
+                    [durationBeforeCallback]="1000"
+                    class="ace-editor"></ace-editor>
+            </div>
+        </div>
+
+    </form>
+</div>

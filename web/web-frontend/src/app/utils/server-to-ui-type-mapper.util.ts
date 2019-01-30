@@ -39,6 +39,8 @@ export class ServerToUiTypeMapperUtil {
         ['com.testerum.model.resources.http.mock.server.HttpMockServer', 'com.testerum.model.resources.http.mock.server.HttpMockServer'],
 
         ['com.testerum.model.resources.http.mock.stub.HttpMock', 'com.testerum.model.resources.http.mock.stub.HttpMock'],
+
+        ['json.model.JsonResource', 'json.model.JsonResource'],
     ]);
 
     private constructor() {}
