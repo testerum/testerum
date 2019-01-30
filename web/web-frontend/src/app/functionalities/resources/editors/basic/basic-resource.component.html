@@ -29,7 +29,8 @@
             </div>
         </div>
 
-        <div class="my-line">
+        <div class="my-line"
+             [class.multiline-text-line]="isMultilineText()">
             <label class="my-label label-size">Value:</label>
             <div class="my-value" *ngIf="!editMode">
                 {{model.content || ""}}
@@ -58,7 +59,7 @@
             </div>
 
             <!--TEXT ARIA component-->
-            <div class="my-value"
+            <div class="my-value multiline-text"
                  [class.hidden]="!isMultilineText()">
                 <div class="input-container">
                     <textarea argValueValidator
