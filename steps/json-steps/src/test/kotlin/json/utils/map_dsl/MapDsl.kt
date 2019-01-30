@@ -1,6 +1,6 @@
 package json.utils.map_dsl
 
-import java.util.TreeMap
+import java.util.*
 
 class MapDsl {
 
@@ -31,18 +31,4 @@ fun createMap(body: MapDsl.() -> Unit): Map<String, Any?> {
     builder.body()
 
     return builder.build()
-}
-
-fun main() {
-
-    println(
-            createMap {
-                "company" % {
-                    "driver" % {
-                        "name" % "John"
-                    }
-                }
-            }
-    )
-
 }
