@@ -5,15 +5,15 @@ import java.util.*
 object MapMerger {
 
     fun override(base: Map<String, Any?>,
-                 overrides: Map<String, Any?>): TreeMap<String, Any?> {
-        val result = TreeMap<String, Any?>()
+                 overrides: Map<String, Any?>): LinkedHashMap<String, Any?> {
+        val result = LinkedHashMap<String, Any?>()
 
         override(result, base, overrides)
 
         return result
     }
 
-    private fun override(result: TreeMap<String, Any?>,
+    private fun override(result: LinkedHashMap<String, Any?>,
                          base: Map<String, Any?>,
                          overrides: Map<String, Any?>) {
         for ((baseKey, baseValue) in base) {

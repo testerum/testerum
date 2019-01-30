@@ -3,30 +3,25 @@ package json.model
 import com.fasterxml.jackson.module.kotlin.readValue
 import jdk.nashorn.api.scripting.AbstractJSObject
 import json.utils.JSON_STEPS_OBJECT_MAPPER
-import java.util.TreeMap
+import json.utils.MapMerger
 
 class JsJson : AbstractJSObject {
 
-    private val unparsedJson: String
-
     @Suppress("MemberVisibilityCanBePrivate")
-    val data: TreeMap<String, Any?>
-
-    private constructor(unparsedJson: String,
-                        data: TreeMap<String, Any?>) : super() {
-        this.unparsedJson = unparsedJson
-        this.data = data
-    }
+    val data: LinkedHashMap<String, Any?>
 
     constructor(unparsedJson: String) : super() {
-        this.unparsedJson = unparsedJson
-        this.data = TreeMap(
+        this.data = LinkedHashMap(
                 try {
                     JSON_STEPS_OBJECT_MAPPER.readValue<Map<String, Any?>>(unparsedJson)
                 } catch (e: Exception) {
                     throw IllegalArgumentException("invalid JSON: [$unparsedJson]", e)
                 }
         )
+    }
+
+    private constructor(data: LinkedHashMap<String, Any?>) : super() {
+        this.data = data
     }
 
     override fun setMember(name: String, value: Any?) {
@@ -38,11 +33,17 @@ class JsJson : AbstractJSObject {
     }
 
     override fun toString(): String {
-        return unparsedJson
+        // todo: how to avoid serializing multiple times?
+        return JSON_STEPS_OBJECT_MAPPER.writeValueAsString(this.data)
     }
 
-    fun overrideWith(overrides: JsJson) {
-
+    fun overrideWith(overrides: JsJson): JsJson {
+        return JsJson(
+                MapMerger.override(
+                        base = this.data,
+                        overrides = overrides.data
+                )
+        )
     }
 
 }
