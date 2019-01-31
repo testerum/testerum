@@ -17,11 +17,7 @@ import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
-import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
-import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
-import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartSerializer
-import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
-import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
+import com.testerum.test_file_format.common.step_call.part.arg_part.*
 
 class FileToBusinessStepCallMapper(private val phaseMapper: FileToBusinessPhaseMapper) {
 
@@ -54,20 +50,37 @@ class FileToBusinessStepCallMapper(private val phaseMapper: FileToBusinessPhaseM
     private fun mapStepsCall(fileStepCall: FileStepCall): StepDef {
         return UndefinedStepDef( // at this point, we don't know the definition; we will only know it after step resolving
                 phase = phaseMapper.mapStepPhase(fileStepCall.phase),
-                stepPattern = mapStepCallParts(fileStepCall.parts)
+                stepPattern = mapStepCallParts(fileStepCall.parts, fileStepCall.vars)
         )
     }
 
-    private fun mapStepCallParts(fileStepCallParts: List<FileStepCallPart>): StepPattern {
-        return StepPattern(
-                fileStepCallParts.map { mapStepCallPart(it) }
-        )
+    private fun mapStepCallParts(fileStepCallParts: List<FileStepCallPart>,
+                                 vars: List<FileStepVar>): StepPattern {
+        val patternParts = mutableListOf<StepPatternPart>()
+
+        var patternPartIndex = -1
+        for (filePart in fileStepCallParts) {
+            if (filePart is FileArgStepCallPart) {
+                patternPartIndex++
+            }
+
+            val varName = if (patternPartIndex >= 0 && patternPartIndex < vars.size) {
+                vars[patternPartIndex].name
+            } else {
+                ""
+            }
+
+            patternParts += mapStepCallPart(filePart, varName)
+        }
+
+        return StepPattern(patternParts)
     }
 
-    private fun mapStepCallPart(filePart: FileStepCallPart): StepPatternPart {
+    private fun mapStepCallPart(filePart: FileStepCallPart,
+                                varName: String): StepPatternPart {
         return when (filePart) {
             is FileTextStepCallPart -> TextStepPatternPart(filePart.text)
-            is FileArgStepCallPart  -> ParamStepPatternPart("", "TEXT") // at this point we don't know anything about how this parameter is defined; this will come later, after step resolving
+            is FileArgStepCallPart  -> ParamStepPatternPart(varName, "TEXT") // at this point we don't know anything about how this parameter is defined (actual name or type); this will come later, after step resolving
             else                    -> throw Exception("unknown FileStepCallPart [${filePart.javaClass.name}]")
         }
     }
