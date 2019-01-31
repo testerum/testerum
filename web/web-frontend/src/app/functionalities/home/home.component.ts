@@ -9,6 +9,8 @@ import {CreateProjectService} from "./create-project/create-project.service";
 import {FileDirChooserModalService} from "../../generic/components/form/file_dir_chooser/dialog/file-dir-chooser-modal.service";
 import {ProjectService} from "../../service/project.service";
 import {UrlService} from "../../service/url.service";
+import {AreYouSureModalService} from "../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
+import {AreYouSureModalEnum} from "../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 
 @Component({
     selector: 'home',
@@ -28,6 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 private contextService: ContextService,
                 private createProjectService: CreateProjectService,
                 private fileDirChooserModalService: FileDirChooserModalService,
+                private areYouSureModalService: AreYouSureModalService,
                 private urlService: UrlService) {
     }
 
@@ -61,5 +64,17 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.urlService.navigateToFeatures()
             });
         })
+    }
+
+    removeProject(project: Project) {
+        this.areYouSureModalService.showAreYouSureModal(
+            "Remove Project",
+            `Are you sure you want to remove project <br/><b>${project.name}</b><br/>  from Recent Project list?`
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                this.projectService.deleteProject(project.path).subscribe( value => {
+                    ArrayUtil.removeElementFromArray(this.recentProjects, project);
+                });            }
+        });
     }
 }

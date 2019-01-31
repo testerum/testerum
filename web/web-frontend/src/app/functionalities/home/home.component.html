@@ -17,12 +17,19 @@
         <div class="recent-project-panel">
             <div class="panel panel-info">
                 <div class="panel-heading">Recent Projects</div>
-                <div class="recent-project panel-body">
+                <div class="recent-projects panel-body">
                     <ul>
                         <li *ngFor="let recentProject of recentProjects"
+                            class="recent-project"
                             (click)="navigateToProject(recentProject)">
                             <div class="project-name">{{recentProject.name}}</div>
                             <div class="project-path">{{recentProject.path.toString(true)}}</div>
+                            <div class="button-panel btn-group my-project-button-panel">
+                                <div title="Remove project from list" class="btn btn-default btn-xs btn-group"
+                                     (click)="removeProject(recentProject);$event.stopPropagation();">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                            </div>
                         </li>
                     </ul>
 

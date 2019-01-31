@@ -58,4 +58,14 @@ export class ProjectService {
             .post<any>(this.BASE_URL+"/open", null, httpOptions)
             .pipe(map(it => Project.deserialize(it)));
     }
+
+    deleteProject(projectPathAsString: string): Observable<void> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', projectPathAsString)
+        };
+
+        return this.http
+            .delete<any>(this.BASE_URL+"/recent", httpOptions);
+    }
 }
