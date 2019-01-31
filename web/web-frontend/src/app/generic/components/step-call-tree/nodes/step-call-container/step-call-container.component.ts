@@ -35,20 +35,14 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     @ViewChild(StepTextComponent) stepTextComponent: StepTextComponent<any>;
 
     hasMouseOver: boolean = false;
-    showParameters: boolean = true;
 
     constructor(public stepCallTreeComponentService: StepCallTreeComponentService, //is public with a reason, to access is selected from ComposedStepViewComponent for afterPasteOperation()
                 private stepModalService: StepModalService,
                 private contextService: ContextService) {
     }
 
-    private editModeSubscription: any;
     private stepCallOrderChangeSubscription: any;
     ngOnInit() {
-        if(!this.isEditMode()) this.showParameters = false;
-        this.editModeSubscription = this.stepCallTreeComponentService.editModeEventEmitter.subscribe((editMode: boolean) => {
-                this.showParameters = editMode;
-        });
 
         this.stepCallOrderChangeSubscription = this.stepCallTreeComponentService.stepCallOrderChangeEventEmitter.subscribe(
             event => {
@@ -59,9 +53,6 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.editModeSubscription) {
-            this.editModeSubscription.unsubscribe();
-        }
         if (this.stepCallOrderChangeSubscription) {
             this.stepCallOrderChangeSubscription.unsubscribe();
         }
