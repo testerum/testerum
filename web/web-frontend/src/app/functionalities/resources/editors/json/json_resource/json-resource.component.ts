@@ -1,18 +1,10 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    Input,
-    OnInit,
-    ViewChild,
-    ViewEncapsulation
-} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ResourceComponent} from "../../resource-component.interface";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {NgForm} from "@angular/forms";
-import {JsonUtil} from '../../../../../utils/json.util';
-import {JsonVerify} from "../../../../../generic/components/json-verify/model/json-verify.model";
 import {BasicResource} from "../../../../../model/resource/basic/basic-resource.model";
+import * as Prism from 'prismjs';
+import 'prismjs/components/prism-json';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -66,5 +58,9 @@ export class JsonResourceComponent extends ResourceComponent<BasicResource> impl
 
     getForm(): NgForm {
         return this.form;
+    }
+
+    getHighlightedJson(): string {
+        return Prism.highlight(this.model.content, Prism.languages.json, 'json');
     }
 }

@@ -1,6 +1,8 @@
 <div class="json-resource">
     <div *ngIf="condensedViewMode && !model.isEmpty()" class="condensed-view-container">
-        <div class="condensed-view-body">{{model.content}}</div>
+        <div class="condensed-view-body">
+            <code [innerHtml]="getHighlightedJson()"></code>
+        </div>
     </div>
 
     <!-- REGULAR RESPONSE -->
@@ -31,7 +33,7 @@
                 <ace-editor
                     #editor
                     [(text)]="model.content"
-                    [mode]="'javascript'"
+                    [mode]="'json'"
                     [theme]="'eclipse'"
                     [options]="options"
                     [autoUpdateContent]="true"

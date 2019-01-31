@@ -4,6 +4,16 @@
     .condensed-view-container {
         .condensed-view-body {
             white-space: pre;
+            line-height: 1em;
+            font-size: 1em;
+
+            code {
+                background-color: inherit;
+                font-family: "Hack Regular Nerd Font Complete", monospace;
+                line-height: .85em;
+                padding: 0;
+                font-size: .85em;
+            }
         }
     }
 
