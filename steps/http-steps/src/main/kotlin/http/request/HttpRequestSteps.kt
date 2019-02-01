@@ -12,7 +12,9 @@ import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.ValidHttpResponse
 import http.request.transformer.HttpRequestTransformer
 import http_support.module_di.HttpStepsModuleServiceLocator
+import org.apache.http.impl.EnglishReasonPhraseCatalog
 import org.slf4j.LoggerFactory
+import java.util.*
 
 class HttpRequestSteps {
 
@@ -72,7 +74,7 @@ class HttpRequestSteps {
     }
 
     private fun ValidHttpResponse.prettyPrint(): String {
-        var response = "$protocol $statusCode\n"
+        var response = "$protocol $statusCode ${EnglishReasonPhraseCatalog.INSTANCE.getReason(statusCode, Locale.ENGLISH)}\n"
         for (header in headers) {
             for (value in header.values) {
                 response += "${header.key}: $value\n"
