@@ -153,7 +153,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         for (let stepParam of this.model.stepCall.stepDef.stepPattern.getParamParts()) {
             let newArg = null;
 
-            let oldArg = this.getArgFromListByNameAndType(oldArgs, stepParam.name, stepParam.uiType);
+            let oldArg = this.getArgFromListByParamNameAndType(oldArgs, stepParam.name, stepParam.uiType);
             if (oldArg) {
                 newArg = oldArg;
             } else {
@@ -168,9 +168,9 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getArgFromListByNameAndType(args: Array<Arg>, name: string, uiType: string): Arg {
+    private getArgFromListByParamNameAndType(args: Array<Arg>, paramName: string, uiType: string): Arg {
         for (const arg of args) {
-            if (arg.name == name && arg.uiType == uiType) {
+            if (arg.paramName == paramName && arg.uiType == uiType) {
                 return arg;
             }
         }

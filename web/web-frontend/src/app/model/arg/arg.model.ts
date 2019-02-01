@@ -21,6 +21,8 @@ export class Arg implements Serializable<Arg> {
     warnings: Array<Warning> = [];
     descendantsHaveWarnings: boolean = false;
 
+    paramName: string; //this param should not be serialized
+
     get hasOwnOrDescendantWarnings(): boolean {
         return this.warnings.length > 0 || this.descendantsHaveWarnings;
     }
