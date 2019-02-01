@@ -50,12 +50,12 @@
     <div class="my-line" [class.hidden]="!allowPathEdit && !model.path">
         <label class="my-label label-size">Path</label>
         <span class="my-value" *ngIf="!allowPathEdit">
-            {{model.path?.toString() || ""}}
+            {{model.path?.toDirectoryString() || ""}}
         </span>
         <div class="my-value input-group"
              [class.hidden]="!allowPathEdit">
             <div>
-            <input [ngModel]="model.path?.toString()"
+            <input [ngModel]="model.path?.toDirectoryString()"
                    #pathInput="ngModel"
                    readonly
                    type="text"
