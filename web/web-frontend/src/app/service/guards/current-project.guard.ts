@@ -26,11 +26,11 @@ export class CurrentProjectGuard implements CanActivate, CanActivateChild {
 
         let projectName = UrlUtil.getProjectNameFromUrl(state.url);
         if (projectName == null) {
-            this.contextService.currentProject = null;
+            this.contextService.setCurrentProject(null);
             return false;
         }
 
-        if (this.contextService.currentProject != null && this.contextService.currentProject.name.toUpperCase() == projectName.toUpperCase()) {
+        if (this.contextService.getCurrentProject() != null && this.contextService.getCurrentProject().name.toUpperCase() == projectName.toUpperCase()) {
             return true;
         }
 
@@ -61,12 +61,14 @@ export class CurrentProjectGuard implements CanActivate, CanActivateChild {
         }
 
         if (foundProjects.length > 1) {
-            this.contextService.currentProject = await this.selectProjectModalService.showModal(foundProjects).toPromise();
+            this.contextService.setCurrentProject(
+                await this.selectProjectModalService.showModal(foundProjects).toPromise()
+            );
 
             return true;
         }
 
-        this.contextService.currentProject = foundProjects[0];
+        this.contextService.setCurrentProject (foundProjects[0]);
 
         return true;
     }

@@ -6,7 +6,7 @@ import {Project} from "../model/home/project.model";
 @Injectable()
 export class ContextService {
 
-    currentProject: Project;
+    private currentProject: Project;
 
     stepToCut: StepCallContainerComponent = null;
     stepToCopy: StepCallContainerComponent = null;
@@ -15,12 +15,17 @@ export class ContextService {
         return this.currentProject != null;
     }
 
+    getCurrentProject(): Project {
+        return this.currentProject
+    }
+
     getProjectName(): string {
         return this.currentProject ? this.currentProject.name: null;
     }
 
     setCurrentProject(currentProject: Project) {
         this.currentProject = currentProject;
+        this.setPageTitle(currentProject);
     }
 
     getProjectPath(): string {
@@ -40,5 +45,14 @@ export class ContextService {
     canPaste(stepCallContainerModel: StepCallContainerModel): boolean {
         return (this.stepToCopy != null && !(this.stepToCopy.model.stepCall == stepCallContainerModel.stepCall))
             || (this.stepToCut != null && !(this.stepToCut.model.stepCall == stepCallContainerModel.stepCall));
+    }
+
+    private setPageTitle(currentProject: Project) {
+        if (!currentProject || !currentProject.name) {
+            document.title = "Testerum";
+            return;
+        }
+
+        document.title = currentProject.name + " - Testerum" ;
     }
 }
