@@ -9,12 +9,14 @@ import {SubStepsContainerModel} from "./model/sub-steps-container.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
 import {ArrayUtil} from "../../../utils/array.util";
 import {StepCallContainerComponent} from "./nodes/step-call-container/step-call-container.component";
+import {Path} from "../../../model/infrastructure/path/path.model";
 
 @Injectable()
 export class StepCallTreeComponentService {
     jsonTreeModel: JsonTreeModel;
     stepCalls: Array<StepCall> = [];
 
+    containerPath: Path;
     isEditMode: boolean;
     areManualSteps: boolean;
     isManualExecutionMode: boolean;

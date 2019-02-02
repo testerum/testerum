@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {StepCall} from "../../../model/step-call.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
 import {JsonTreeModel} from "../json-tree/model/json-tree.model";
@@ -11,10 +11,10 @@ import {ArgsContainerComponent} from "./nodes/args-container/args-container.comp
 import {ParamsContainerModel} from "./model/params-container.model";
 import {ArgNodeModel} from "./model/arg-node.model";
 import {ArgNodeComponent} from "./nodes/arg-node/arg-node.component";
-import {ArgModalComponent} from "./arg-modal/arg-modal.component";
 import {StepCallEditorContainerComponent} from "./nodes/step-call-editor-container/step-call-editor-container.component";
 import {StepCallEditorContainerModel} from "./model/step-call-editor-container.model";
 import {StepCallTreeComponentService} from "./step-call-tree.component-service";
+import {Path} from "../../../model/infrastructure/path/path.model";
 
 @Component({
     selector: 'step-call-tree',
@@ -24,6 +24,7 @@ import {StepCallTreeComponentService} from "./step-call-tree.component-service";
 export class StepCallTreeComponent implements OnInit, OnChanges {
 
     @Input() stepCalls: Array<StepCall> = [];
+    @Input() containerPath: Path;
     @Input() isEditMode: boolean;
     @Input() areManualSteps: boolean = false;
     @Input() isManualExecutionMode: boolean = false;
@@ -42,6 +43,7 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.stepCallTreeComponentService.jsonTreeModel = this.jsonTreeModel;
+        this.stepCallTreeComponentService.containerPath = this.containerPath;
         this.stepCallTreeComponentService.isEditMode = this.isEditMode;
         this.stepCallTreeComponentService.areManualSteps = this.areManualSteps;
         this.stepCallTreeComponentService.isManualExecutionMode = this.isManualExecutionMode;

@@ -137,5 +137,8 @@
         </div>
     </div>
 
-    <step-call-tree [stepCalls]="model.stepCalls" [isEditMode]="isEditMode" (change)="onStepCallTreeChange()"></step-call-tree>
+    <step-call-tree [stepCalls]="model.stepCalls"
+                    [containerPath]="model.path"
+                    [isEditMode]="isEditMode"
+                    (change)="onStepCallTreeChange()"></step-call-tree>
 </form>
