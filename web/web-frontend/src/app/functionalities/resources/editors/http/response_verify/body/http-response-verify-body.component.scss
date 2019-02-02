@@ -1,19 +1,27 @@
-.label-size {
-    width: 8em;
-}
+//.http-response-verify-body {
 
-.json-verify-container {
-    min-height: 400px;
-    position: relative;
-    flex-grow: 2;
-}
+    .phase-input {
+        width: auto;
+    }
 
-.ace-editor-container {
-    position: relative;
-    min-height: 200px;
-}
-.ace-editor {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-}
+    .label-size {
+        width: 8em;
+    }
+
+    .json-verify-container {
+        min-height: 400px;
+        position: relative;
+        flex-grow: 2;
+    }
+
+    .ace-editor-container {
+        position: relative;
+        min-height: 200px;
+    }
+    .ace-editor {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+    }
+//}
+
