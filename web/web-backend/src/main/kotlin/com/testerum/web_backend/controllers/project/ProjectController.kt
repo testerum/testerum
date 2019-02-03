@@ -1,7 +1,7 @@
 package com.testerum.web_backend.controllers.project
 
 import com.testerum.model.home.Project
-import com.testerum.web_backend.controllers.project.model.CreateProjectRequest
+import com.testerum.web_backend.controllers.project.model.ProjectRequest
 import com.testerum.web_backend.services.project.ProjectFrontendService
 import org.springframework.web.bind.annotation.*
 
@@ -17,7 +17,7 @@ open class ProjectController(private val projectFrontendService: ProjectFrontend
 
     @RequestMapping (method = [RequestMethod.POST])
     @ResponseBody
-    fun createProject(@RequestBody createProjectRequest: CreateProjectRequest): Project {
+    fun createProject(@RequestBody createProjectRequest: ProjectRequest): Project {
         return projectFrontendService.createProject(createProjectRequest)
     }
 
@@ -33,4 +33,10 @@ open class ProjectController(private val projectFrontendService: ProjectFrontend
         projectFrontendService.deleteRecentProject(path)
     }
 
+
+    @RequestMapping (method = [RequestMethod.PUT], path = ["/rename"])
+    @ResponseBody
+    fun renameProject(@RequestBody renameProjectRequest: ProjectRequest): Project {
+        return projectFrontendService.renameProject(renameProjectRequest)
+    }
 }

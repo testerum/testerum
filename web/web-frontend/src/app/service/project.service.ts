@@ -68,4 +68,17 @@ export class ProjectService {
         return this.http
             .delete<any>(this.BASE_URL+"/recent", httpOptions);
     }
+
+    renameProject(renameProject: Project): Observable<Project> {
+        const body = renameProject.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
+        return this.http
+            .put<any>(this.BASE_URL+"/rename", body, httpOptions)
+            .pipe(map(it => Project.deserialize(it)));
+    }
 }
