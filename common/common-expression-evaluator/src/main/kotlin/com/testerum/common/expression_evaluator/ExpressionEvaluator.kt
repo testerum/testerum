@@ -35,6 +35,7 @@ object ExpressionEvaluator {
                  context: Map<String, Any?>): Any? {
         val bindings: Bindings = sandbox.createBindings().apply {
             putAll(context)
+            put("vars", context)
         }
 
         var enhancedExpression: String? = null
