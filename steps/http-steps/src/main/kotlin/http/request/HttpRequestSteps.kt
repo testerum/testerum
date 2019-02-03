@@ -38,9 +38,9 @@ class HttpRequestSteps {
             )
             httpRequest: HttpRequest
     ) {
-        logger.info("HTTP Request [\n${httpRequest.prettyPrint()}\n]")
+        logger.info("HTTP Request\n${httpRequest.prettyPrint()}\n")
         val httpResponse: ValidHttpResponse = httpClientService.executeHttpRequest(httpRequest)
-        logger.info("HTTP Response [\n${httpResponse.prettyPrint()}\n]")
+        logger.info("HTTP Response\n${httpResponse.prettyPrint()}\n")
 
         variables["httpRequest"] = httpRequest
         variables["httpResponse"] = httpResponse
@@ -49,16 +49,16 @@ class HttpRequestSteps {
     }
 
     private fun HttpRequest.prettyPrint(): String {
-        var response = "$method $url\n"
+        var response = "\t$method $url\n"
 
         for ((headerName, headerValue) in headers) {
-            response += "$headerName: $headerValue\n"
+            response += "\t$headerName: $headerValue\n"
         }
 
         val body = this.body
         if (body?.bodyType != null) {
             response += "\n"
-            response += "Body type: ${body.bodyType}\n"
+            response += "\tBody type: ${body.bodyType}\n"
         }
 
         if (body?.content?.isNotEmpty() == true) {
@@ -74,10 +74,10 @@ class HttpRequestSteps {
     }
 
     private fun ValidHttpResponse.prettyPrint(): String {
-        var response = "$protocol $statusCode ${EnglishReasonPhraseCatalog.INSTANCE.getReason(statusCode, Locale.ENGLISH)}\n"
+        var response = "\t$protocol $statusCode ${EnglishReasonPhraseCatalog.INSTANCE.getReason(statusCode, Locale.ENGLISH)}\n"
         for (header in headers) {
             for (value in header.values) {
-                response += "${header.key}: $value\n"
+                response += "\t${header.key}: $value\n"
             }
         }
 
@@ -111,7 +111,12 @@ class HttpRequestSteps {
 
         return if (MediaTypeUtils.isJsonMediaType(mediaType)) {
             try {
-                JsonUtils.prettyPrintJson(body)
+                val serializedBody = JsonUtils.prettyPrintJson(body)
+
+                serializedBody.lines()
+                        .joinToString(separator = "\n") {
+                            "\t" + it
+                        }
             } catch (e: Exception) {
                 LOG.warn("failed to format $bodyDescription as JSON: it's not valid JSON; contentType=[$contentType])")
 
