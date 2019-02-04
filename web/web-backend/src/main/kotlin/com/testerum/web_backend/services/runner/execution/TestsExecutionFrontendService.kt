@@ -189,6 +189,8 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
         commandLine += OsUtils.getJavaBinaryPath().toString()
 
+        commandLine += "-Dfile.encoding=UTF-8"
+
         commandLine += "-classpath"
         commandLine += "${getRunnerRepoPath()}/*"
 

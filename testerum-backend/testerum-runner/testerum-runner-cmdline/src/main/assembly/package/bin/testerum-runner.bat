@@ -19,6 +19,13 @@
 
 @echo off
 
+@REM switch to UTF-8 "code page"
+chcp 65001 > nul
+
+@REM set JAVA home & path
+set JAVA_HOME=%~dp0%..\..\jre
+set PATH=%JAVA_HOME%\bin;%PATH%
+
 set ERROR_CODE=0
 
 :init
@@ -84,7 +91,7 @@ if NOT "%CLASSPATH_PREFIX%" == "" set CLASSPATH=%CLASSPATH_PREFIX%;%CLASSPATH%
 
 set SCRIPT_DIR=%~dp0
 
-%JAVACMD% "-Dtesterum.packageDirectory=%SCRIPT_DIR%..\.." %JAVA_OPTS% -classpath %CLASSPATH% -Dapp.name="testerum-runner" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" com.testerum.runner_cmdline.TesterumRunner %CMD_LINE_ARGS%
+%JAVACMD% -Dfile.encoding=UTF-8 "-Dtesterum.packageDirectory=%SCRIPT_DIR%..\.." %JAVA_OPTS% -classpath %CLASSPATH% -Dapp.name="testerum-runner" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" com.testerum.runner_cmdline.TesterumRunner %CMD_LINE_ARGS%
 
 if %ERRORLEVEL% NEQ 0 goto error
 goto end

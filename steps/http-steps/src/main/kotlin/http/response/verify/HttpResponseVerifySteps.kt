@@ -1,5 +1,7 @@
 package http.response.verify
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then
 import com.testerum.api.services.TesterumServiceLocator
@@ -11,9 +13,7 @@ import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.HttpResponseHeader
 import com.testerum.model.resources.http.response.ValidHttpResponse
 import http.response.verify.model.HttpBodyVerifyMatchingType
-import http.response.verify.model.HttpBodyVerifyMatchingType.EXACT_MATCH
-import http.response.verify.model.HttpBodyVerifyMatchingType.IS_EMPTY
-import http.response.verify.model.HttpBodyVerifyMatchingType.JSON_VERIFY
+import http.response.verify.model.HttpBodyVerifyMatchingType.*
 import http.response.verify.model.HttpResponseHeaderVerify
 import http.response.verify.model.HttpResponseVerify
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode
@@ -26,6 +26,10 @@ class HttpResponseVerifySteps {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
+
+        private val OBJECT_MAPPER = ObjectMapper().apply {
+            enable(SerializationFeature.INDENT_OUTPUT)
+        }
     }
 
     private val jsonComparer: JsonComparer = HttpStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
@@ -45,7 +49,7 @@ class HttpResponseVerifySteps {
         val httpRequest: HttpRequest = variables["httpRequest"] as HttpRequest
         val httpResponse: ValidHttpResponse = variables["httpResponse"] as ValidHttpResponse
 
-        LOG.debug("Verifying HTTP Response [\n$httpResponse\n]")
+        LOG.debug("Verifying HTTP Response\n$httpResponse\n")
 
         verifyExpectedCode(httpResponseVerify, httpResponse, httpRequest)
         verifyExpectedHeaders(httpResponseVerify, httpResponse, httpRequest)
@@ -80,8 +84,22 @@ class HttpResponseVerifySteps {
         if (compareResult is DifferentJsonCompareResult) {
             LOG.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
 
+            val prettyExpectedBody = expectedBody.prettyPrintJson()
+                    .lines()
+                    .joinToString(separator = "\n") {
+                        "\t\t$it"
+                    }
+            val prettyActualBody = actualBody.prettyPrintJson()
+                    .lines()
+                    .joinToString(separator = "\n") {
+                        "\t\t$it"
+                    }
+
             throw AssertionError(
-                    "Expected Response Body to match [$expectedBody] but [$actualBody] found. \n" +
+                    "Expected Response Body to match\n" +
+                            "$prettyExpectedBody\n" +
+                            "\tbut found\n" +
+                            "$prettyActualBody\n" +
                             "\t Matching message: [${compareResult.message}] \n" +
                             "\t Not matching element path: [${compareResult.jsonPath}] \n" +
                             "\t Comparison Mode: [$compareMode] \n" +
@@ -137,8 +155,21 @@ class HttpResponseVerifySteps {
             compareMode: HttpBodyVerifyMatchingType,
             contextInfo: String) {
 
+        val prettyExpectedBody = expectedBody.orEmpty()
+                .lines()
+                .joinToString(separator = "\n") {
+                    "\t\t$it"
+                }
+        val prettyActualBody = actualBody.orEmpty()
+                .lines()
+                .joinToString(separator = "\n") {
+                    "\t\t$it"
+                }
         throw AssertionError(
-                "Expected Response Body [$expectedBody] but [$actualBody] found. \n" +
+                "Expected Response Body\n" +
+                        "$prettyExpectedBody\n" +
+                        "\tbut found\n" +
+                        "$prettyActualBody\n" +
                         "\tComparison Mode: [$compareMode]\n" +
                         contextInfo
         )
@@ -301,7 +332,7 @@ class HttpResponseVerifySteps {
 
     private fun getContextInfoForLogging(httpRequest: HttpRequest, httpResponse: ValidHttpResponse): String {
         var response =
-                "\t Http Request: [\n" +
+                "\t Http Request: \n" +
                         "\t \t ${httpRequest.method} ${httpRequest.url} HTTP/1.1 \n"
 
         for (header in httpRequest.headers) {
@@ -312,13 +343,11 @@ class HttpResponseVerifySteps {
             response +=
                     "\n" +
                     "\t \t ${httpRequest.body!!.content} \n"
-        response +=
-                "\t ]\n" +
-                "\n"
+        response +="\n"
 
 
         response +=
-                "\t Http Response: [\n" +
+                "\t Http Response: \n" +
                 "\t \t HTTP/1.1 ${httpResponse.statusCode} \n"
 
         for (header in httpResponse.headers) {
@@ -329,8 +358,6 @@ class HttpResponseVerifySteps {
         response +=
                 "\n"
         "\t \t ${String(httpResponse.body)} \n"
-        response +=
-                "\t ]"
 
         return response
     }
@@ -354,5 +381,15 @@ class HttpResponseVerifySteps {
         }
 
         return compareMode
+    }
+
+    private fun String?.prettyPrintJson(): String {
+        if (this == null) {
+            return "null-value"
+        }
+
+        val jsonTree = OBJECT_MAPPER.readTree(this)
+
+        return OBJECT_MAPPER.writeValueAsString(jsonTree)
     }
 }
