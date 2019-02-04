@@ -59,14 +59,18 @@ export class StepCallTreeUtil {
     }
 
     public static createSubStepsContainerWithChildren(stepDef: StepDef, mappedStepCallContainer: Map<string, SubStepsContainerModel>): SubStepsContainerModel {
-        let stepDefKey = stepDef.path.toString();
-        let existingSubStepsContainerModel = mappedStepCallContainer.get(stepDefKey);
-        if (existingSubStepsContainerModel) {
-            return existingSubStepsContainerModel;
-        }
 
         let subStepsContainer = new SubStepsContainerModel(null);
-        mappedStepCallContainer.set(stepDefKey, subStepsContainer);
+
+        if (stepDef.path) {
+            let stepDefKey = stepDef.path.toString();
+            let existingSubStepsContainerModel = mappedStepCallContainer.get(stepDefKey);
+            if (existingSubStepsContainerModel) {
+                return existingSubStepsContainerModel;
+            }
+
+            mappedStepCallContainer.set(stepDefKey, subStepsContainer);
+        }
 
         if (stepDef instanceof UndefinedStepDef) {
             return subStepsContainer;
