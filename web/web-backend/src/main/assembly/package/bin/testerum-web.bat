@@ -19,6 +19,9 @@
 
 @echo off
 
+@REM switch to UTF-8 "code page"
+chcp 65001 > nul
+
 set ERROR_CODE=0
 
 :init
@@ -82,7 +85,7 @@ if NOT "%CLASSPATH_PREFIX%" == "" set CLASSPATH=%CLASSPATH_PREFIX%;%CLASSPATH%
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-%JAVACMD% %JAVA_OPTS%  -classpath %CLASSPATH% com.testerum.web_backend.TesterumWebMain %CMD_LINE_ARGS%
+%JAVACMD% %JAVA_OPTS% -Dfile.encoding=UTF-8 -classpath %CLASSPATH% com.testerum.web_backend.TesterumWebMain %CMD_LINE_ARGS%
 if %ERRORLEVEL% NEQ 0 goto error
 goto end
 
