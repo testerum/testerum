@@ -117,7 +117,8 @@ if $cygwin; then
   [ -n "$REPO" ] && REPO=`cygpath --path --windows "$REPO"`
 fi
 
-exec "$JAVACMD" $JAVA_OPTS  \
+exec "$JAVACMD" $JAVA_OPTS \
+  -Dfile.encoding=UTF-8 \
   -classpath "$CLASSPATH" \
   com.testerum.web_backend.TesterumWebMain \
   "$@"

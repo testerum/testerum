@@ -120,6 +120,7 @@ fi
 SCRIPT_DIR="$(dirname "$0")"
 
 exec "$JAVACMD" \
+ -Dfile.encoding=UTF-8 \
  "-Dtesterum.packageDirectory=${SCRIPT_DIR}/../.." \
    $JAVA_OPTS  \
   -classpath "$CLASSPATH" \
