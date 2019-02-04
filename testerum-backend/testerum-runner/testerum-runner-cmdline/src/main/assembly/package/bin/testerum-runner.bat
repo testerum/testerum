@@ -22,6 +22,10 @@
 @REM switch to UTF-8 "code page"
 chcp 65001 > nul
 
+@REM set JAVA home & path
+set JAVA_HOME=%~dp0%..\..\jre
+set PATH=%JAVA_HOME%\bin;%PATH%
+
 set ERROR_CODE=0
 
 :init
