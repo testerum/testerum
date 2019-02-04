@@ -45,7 +45,7 @@ object MapMerger {
         }
 
         for ((overrideKey, overrideValue) in overrides) {
-            if (!base.containsKey(overrideKey)) {
+            if (!base.containsKey(overrideKey) && overrideValue != DELETE_MARKER_VALUE) {
                 result[overrideKey] = overrideValue
             }
         }
