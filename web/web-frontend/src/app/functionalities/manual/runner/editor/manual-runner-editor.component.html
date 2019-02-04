@@ -59,7 +59,7 @@
                             <!-- DESCRIPTION -->
                             <td>
                                 <step-call-tree [stepCalls]="steps[index]"
-                                                [containerPath]="model.path"
+                                                [containerPath]="model.path.getParentPath()"
                                                 [isEditMode]="false"
                                                 [areManualSteps]="true"
                                                 [isManualExecutionMode]="true"></step-call-tree>

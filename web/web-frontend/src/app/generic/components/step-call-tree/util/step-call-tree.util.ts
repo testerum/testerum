@@ -8,6 +8,7 @@ import {ParamsContainerModel} from "../model/params-container.model";
 import {ArgNodeModel} from "../model/arg-node.model";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
 import {StepDef} from "../../../../model/step-def.model";
+import {UndefinedStepDef} from "../../../../model/undefined-step-def.model";
 
 export class StepCallTreeUtil {
 
@@ -58,16 +59,20 @@ export class StepCallTreeUtil {
     }
 
     public static createSubStepsContainerWithChildren(stepDef: StepDef, mappedStepCallContainer: Map<string, SubStepsContainerModel>): SubStepsContainerModel {
+        let stepDefKey = stepDef.path.toString();
+        let existingSubStepsContainerModel = mappedStepCallContainer.get(stepDefKey);
+        if (existingSubStepsContainerModel) {
+            return existingSubStepsContainerModel;
+        }
+
+        let subStepsContainer = new SubStepsContainerModel(null);
+        mappedStepCallContainer.set(stepDefKey, subStepsContainer);
+
+        if (stepDef instanceof UndefinedStepDef) {
+            return subStepsContainer;
+        }
+
         if (stepDef instanceof ComposedStepDef) {
-
-            let stepDefKey = stepDef.path.toString();
-            let existingSubStepsContainerModel = mappedStepCallContainer.get(stepDefKey);
-            if (existingSubStepsContainerModel) {
-                return existingSubStepsContainerModel;
-            }
-
-            let subStepsContainer = new SubStepsContainerModel(null);
-
             if (stepDef.stepCalls) {
                 subStepsContainer.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepDef.stepCalls, subStepsContainer, mappedStepCallContainer);
             }
@@ -80,10 +85,10 @@ export class StepCallTreeUtil {
                 }
             }
 
-            mappedStepCallContainer.set(stepDefKey, subStepsContainer);
-
             return subStepsContainer;
         }
+
+
         return null;
     }
 
