@@ -15,14 +15,14 @@ export class Application {
     private copyTemplateFiles() {
         const templatesSrcDir = path.resolve(__dirname, "report-template");
 
-        console.log(`copying templates from [${templatesSrcDir}] to ${this.destinationDirectory}`);
+        console.log(`[stats/generator] copying templates from [${templatesSrcDir}] to ${this.destinationDirectory}`);
 
         fse.copySync(templatesSrcDir, this.destinationDirectory);
     }
 
     private replaceDevModelWithActualModel() {
         const indexFilePath = path.resolve(this.destinationDirectory, "index.html");
-        console.log(`replacing model in [${indexFilePath}] with the content of [${this.modelFile}]`);
+        console.log(`[stats/generator] replacing model in [${indexFilePath}] with the content of [${this.modelFile}]`);
 
         const originalContent = FsUtils.readFile(indexFilePath);
         const modelFileContent = FsUtils.readFile(this.modelFile);
