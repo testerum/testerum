@@ -16,7 +16,8 @@
                 <i class="fa_my-plus" aria-hidden="true"></i>
             </div>
 
-            <div title="Paste Step" class="btn btn-default btn-xs btn-group"
+            <div *ngIf="canPaste()"
+                 title="Paste Step" class="btn btn-default btn-xs btn-group"
                  (click)="onPasteStep(); $event.stopPropagation()">
                 <i class="fa_my-paste" aria-hidden="true"></i>
             </div>

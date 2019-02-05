@@ -128,7 +128,7 @@
                 </div>
 
                 <step-call-tree [stepCalls]="testModel.stepCalls"
-                                [containerPath]="testModel.path"
+                                [containerPath]="testModel.path.getParentPath()"
                                 [isEditMode]="isEditMode"
                                 [areManualSteps]="testModel.properties.isManual"></step-call-tree>
 

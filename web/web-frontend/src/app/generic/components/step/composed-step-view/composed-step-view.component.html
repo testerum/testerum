@@ -138,7 +138,7 @@
     </div>
 
     <step-call-tree [stepCalls]="model.stepCalls"
-                    [containerPath]="model.path"
+                    [containerPath]="model.path.getParentPath()"
                     [isEditMode]="isEditMode"
                     (change)="onStepCallTreeChange()"></step-call-tree>
 </form>

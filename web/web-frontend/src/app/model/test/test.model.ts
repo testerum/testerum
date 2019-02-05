@@ -7,6 +7,7 @@ import {TestProperties} from "./test-properties.model";
 import {Warning} from "../warning/Warning";
 import {Serializable} from "../infrastructure/serializable.model";
 import {ComposedStepDef} from "../composed-step-def.model";
+import {UndefinedStepDef} from "../undefined-step-def.model";
 
 export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 
@@ -37,10 +38,12 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
         this.tags = input['tags'] || [];
 
         this.stepCalls = [];
-        for (let stepCall of (input['stepCalls'] || [])) {
-            this.stepCalls.push(
-                new StepCall().deserialize(stepCall)
-            );
+        for (let stepCallJson of (input['stepCalls'] || [])) {
+            let stepCall = new StepCall().deserialize(stepCallJson);
+            if (stepCall.stepDef instanceof UndefinedStepDef) {
+                stepCall.stepDef.path = this.path.getParentPath();
+            }
+            this.stepCalls.push(stepCall);
         }
         this.fixStepDefInstance(this.stepCalls);
 

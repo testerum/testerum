@@ -8,6 +8,7 @@ import {Path} from "./infrastructure/path/path.model";
 import {Warning} from "./warning/Warning";
 import {StringUtils} from "../utils/string-utils.util";
 import {Serializable} from "./infrastructure/serializable.model";
+import {UndefinedStepDef} from "./undefined-step-def.model";
 
 export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
 
@@ -45,10 +46,12 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
         this.tags = input["tags"] || [];
 
         this.stepCalls = [];
-        for (let stepCall of (input["stepCalls"] || [])) {
-            this.addStepCall(
-                new StepCall().deserialize(stepCall)
-            )
+        for (let stepCallJson of (input["stepCalls"] || [])) {
+            let stepCall = new StepCall().deserialize(stepCallJson);
+            if (stepCall.stepDef instanceof UndefinedStepDef) {
+                stepCall.stepDef.path = this.path.getParentPath();
+            }
+            this.addStepCall(stepCall);
         }
 
         this.warnings = [];

@@ -110,6 +110,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
             stepToEdit = new ComposedStepDef();
             stepToEdit.phase = currentStep.phase;
             stepToEdit.stepPattern = currentStep.stepPattern;
+            stepToEdit.path = currentStep.path;
         } else {
             throw new Error("This step is not editable");
         }
@@ -118,12 +119,16 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
             stepToEdit,
             stepContext
         ).subscribe((newStepDef: ComposedStepDef) => {
-            if (newStepDef.path) {
+            let hasDifferentPath = !newStepDef.path.equals(this.stepCallTreeComponentService.containerPath);
+            let hasSubSteps = newStepDef.stepCalls.length > 0;
+            let isUndefinedStep = this.isUndefinedStep();
+            if (hasDifferentPath || hasSubSteps || !isUndefinedStep) {
                 this.model.stepCall.stepDef = newStepDef;
             } else {
                 let newUndefinedStep = new UndefinedStepDef();
                 newUndefinedStep.phase = newStepDef.phase;
                 newUndefinedStep.stepPattern = newStepDef.stepPattern;
+                newUndefinedStep.path = this.stepCallTreeComponentService.containerPath;
                 this.model.stepCall.stepDef = newUndefinedStep;
             }
 
