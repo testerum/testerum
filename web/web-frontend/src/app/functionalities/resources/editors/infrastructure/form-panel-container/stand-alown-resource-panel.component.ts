@@ -145,6 +145,7 @@ export class StandAlownResourcePanelComponent extends AbstractComponentCanDeacti
 
     private cancelActionAfterConfirmation(): void {
         if (this.resource.isCreateNewResource()) {
+            this.isEditMode = false; //this is required for CanDeactivate
             this.urlService.navigateToResources();
         } else {
             this.initialize();

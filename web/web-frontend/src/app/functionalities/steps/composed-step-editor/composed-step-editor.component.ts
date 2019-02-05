@@ -100,6 +100,7 @@ export class ComposedStepEditorComponent extends AbstractComponentCanDeactivate 
 
     private cancelActionAfterConfirmation(): void {
         if (this.isCreateAction) {
+            this.isEditMode = false; //this is required for CanDeactivate
             this.urlService.navigateToSteps();
         } else {
             this.stepsService.getComposedStepDef(this.model.path.toString()).subscribe(
