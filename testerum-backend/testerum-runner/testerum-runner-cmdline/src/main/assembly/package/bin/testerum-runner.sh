@@ -32,6 +32,12 @@ fi
 
 JAVACMD="${JAVA_HOME}/bin/java"
 
+# workaround to Mac issue: the Mac extract utility doesn't properly restore the executable bit on this file
+if [ -f "${JAVA_HOME}/lib/jspawnhelper" ]
+then
+    chmod +x "${JAVA_HOME}/lib/jspawnhelper"
+fi
+
 exec "$JAVACMD" \
     -Dfile.encoding=UTF8 \
     -Duser.timezone=GMT \
