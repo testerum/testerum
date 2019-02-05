@@ -35,8 +35,8 @@ done
 PRGDIR=`dirname "$PRG"`
 BASEDIR=`cd "$PRGDIR/.." >/dev/null; pwd`
 
-# Reset the REPO variable. If you need to influence this use the environment setup file.
-REPO=
+# Reset the LIB variable. If you need to influence this use the environment setup file.
+LIB=
 
 
 # OS specific support.  $var _must_ be set to either true or false.
@@ -92,12 +92,12 @@ if [ ! -x "$JAVACMD" ] ; then
   exit 1
 fi
 
-if [ -z "$REPO" ]
+if [ -z "$LIB" ]
 then
-  REPO="$BASEDIR"/repo
+  LIB="$BASEDIR"/lib
 fi
 
-CLASSPATH="$BASEDIR"/etc:"$REPO"/*
+CLASSPATH="$BASEDIR"/etc:"$LIB"/*
 
 ENDORSED_DIR=
 if [ -n "$ENDORSED_DIR" ] ; then
@@ -114,7 +114,7 @@ if $cygwin; then
   [ -n "$JAVA_HOME" ] && JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
   [ -n "$HOME" ] && HOME=`cygpath --path --windows "$HOME"`
   [ -n "$BASEDIR" ] && BASEDIR=`cygpath --path --windows "$BASEDIR"`
-  [ -n "$REPO" ] && REPO=`cygpath --path --windows "$REPO"`
+  [ -n "$LIB" ] && LIB=`cygpath --path --windows "$LIB"`
 fi
 
 exec "$JAVACMD" $JAVA_OPTS \

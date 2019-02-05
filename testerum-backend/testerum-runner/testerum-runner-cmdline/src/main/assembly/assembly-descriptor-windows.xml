@@ -14,7 +14,7 @@
 
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/repo</outputDirectory>
+            <outputDirectory>/lib</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
             <unpack>false</unpack>
             <scope>runtime</scope>

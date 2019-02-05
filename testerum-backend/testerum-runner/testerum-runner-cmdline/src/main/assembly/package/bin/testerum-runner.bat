@@ -66,32 +66,25 @@ cd %0\..\..
 set BASEDIR=%CD%
 cd %SAVEDIR%
 set SAVE_DIR=
-goto repoSetup
+goto libSetup
 
 :WinNTGetScriptDir
 set BASEDIR=%~dp0\..
 
-:repoSetup
-set REPO=
+:libSetup
+set LIB=
 
 
-if "%JAVACMD%"=="" set JAVACMD=java
-
-if "%REPO%"=="" set REPO=%BASEDIR%\repo
-
-set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\*
-
-set ENDORSED_DIR=
-if NOT "%ENDORSED_DIR%" == "" set CLASSPATH="%BASEDIR%"\%ENDORSED_DIR%\*;%CLASSPATH%
-
-if NOT "%CLASSPATH_PREFIX%" == "" set CLASSPATH=%CLASSPATH_PREFIX%;%CLASSPATH%
+set JAVACMD=java
+set LIB=%BASEDIR%\lib
+set CLASSPATH="%LIB%"\*
 
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
 set SCRIPT_DIR=%~dp0
 
-%JAVACMD% -Dfile.encoding=UTF-8 "-Dtesterum.packageDirectory=%SCRIPT_DIR%..\.." %JAVA_OPTS% -classpath %CLASSPATH% -Dapp.name="testerum-runner" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" com.testerum.runner_cmdline.TesterumRunner %CMD_LINE_ARGS%
+%JAVACMD% -Dfile.encoding=UTF-8 "-Dtesterum.packageDirectory=%SCRIPT_DIR%..\.." %JAVA_OPTS% -classpath %CLASSPATH% com.testerum.runner_cmdline.TesterumRunner %CMD_LINE_ARGS%
 
 if %ERRORLEVEL% NEQ 0 goto error
 goto end

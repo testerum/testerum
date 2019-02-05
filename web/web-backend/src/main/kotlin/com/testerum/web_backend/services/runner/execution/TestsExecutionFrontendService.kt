@@ -192,7 +192,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         commandLine += "-Dfile.encoding=UTF-8"
 
         commandLine += "-classpath"
-        commandLine += "${getRunnerRepoPath()}/*"
+        commandLine += "${getRunnerLibPath()}/*"
 
         commandLine += "-Dtesterum.packageDirectory=${testerumDirs.getInstallDir()}"
         commandLine += "-XX:-OmitStackTraceInFastThrow"
@@ -206,10 +206,10 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         return commandLine
     }
 
-    private fun getRunnerRepoPath(): JavaPath {
-        val packageDir: JavaPath = testerumDirs.getInstallDir()
+    private fun getRunnerLibPath(): JavaPath {
+        val runnerDir: JavaPath = testerumDirs.getRunnerDir()
 
-        return packageDir.resolve("runner/repo")
+        return runnerDir.resolve("lib")
                 .toAbsolutePath()
                 .normalize()
     }

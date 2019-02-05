@@ -62,20 +62,20 @@ cd %0\..\..
 set BASEDIR=%CD%
 cd %SAVEDIR%
 set SAVE_DIR=
-goto repoSetup
+goto libSetup
 
 :WinNTGetScriptDir
 set BASEDIR=%~dp0\..
 
-:repoSetup
-set REPO=
+:libSetup
+set LIB=
 
 
 if "%JAVACMD%"=="" set JAVACMD=java
 
-if "%REPO%"=="" set REPO=%BASEDIR%\repo
+if "%LIB%"=="" set LIB=%BASEDIR%\lib
 
-set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\*
+set CLASSPATH="%BASEDIR%"\etc;"%LIB%"\*
 
 set ENDORSED_DIR=
 if NOT "%ENDORSED_DIR%" == "" set CLASSPATH="%BASEDIR%"\%ENDORSED_DIR%\*;%CLASSPATH%
