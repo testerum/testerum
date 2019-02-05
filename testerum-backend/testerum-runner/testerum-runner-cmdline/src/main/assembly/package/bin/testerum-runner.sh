@@ -27,7 +27,7 @@ fi
 
 JAVA_HOME="${BASEDIR}/jre"
 if [ ! -d "$JAVA_HOME" ]; then
-    JAVA_HOME="$(cd $(dirname "${SCRIPT_DIR}/../../PlugIns/jre.bundle/Contents/Home/jre") && pwd -P)/$(basename "${SCRIPT_DIR}/jre")"
+    JAVA_HOME="$(cd $(dirname "${BASEDIR}/../../PlugIns/jre.bundle/Contents/Home/jre") && pwd -P)/$(basename "${BASEDIR}/jre")"
 fi
 
 JAVACMD="${JAVA_HOME}/bin/java"
