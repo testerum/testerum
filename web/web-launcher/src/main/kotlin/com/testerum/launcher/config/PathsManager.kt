@@ -22,5 +22,5 @@ object PathsManager {
 
     val logConfigFilePath: JavaPath = testerumRootDir.resolve("conf/testerum-logback.xml").toAbsolutePath().normalize()
 
-    val classpathRepoDir: JavaPath = testerumRootDir.resolve("repo").toAbsolutePath().normalize()
+    val classpathLibDir: JavaPath = testerumRootDir.resolve("lib").toAbsolutePath().normalize()
 }

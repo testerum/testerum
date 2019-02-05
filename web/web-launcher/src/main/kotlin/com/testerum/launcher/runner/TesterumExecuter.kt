@@ -69,7 +69,7 @@ class TesterumExecuter {
 
         // classpath
         result += "-classpath"
-        result += "${PathsManager.classpathRepoDir}/*"
+        result += "${PathsManager.classpathLibDir}/*"
 
         // main class
         result += "com.testerum.web_backend.TesterumWebMain"

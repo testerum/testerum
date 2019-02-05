@@ -13,6 +13,8 @@ class TesterumDirs {
                 ?: throw RuntimeException("the system property $systemPropertyName is missing")
     }
 
+    fun getRunnerDir(): JavaPath = getInstallDir().resolve("runner")
+
     fun getBasicStepsDir(): JavaPath = getInstallDir().resolve("basic_steps")
     fun getJdbcDriversDir(): JavaPath = getInstallDir().resolve("relational_database_drivers")
 

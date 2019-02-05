@@ -14,7 +14,7 @@
 
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/repo</outputDirectory>
+            <outputDirectory>/lib</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
             <unpack>false</unpack>
             <scope>runtime</scope>
@@ -38,6 +38,10 @@
             <directory>${project.basedir}/src/main/assembly/node/windows</directory>
             <outputDirectory>/node</outputDirectory>
             <useDefaultExcludes>false</useDefaultExcludes>
+
+            <excludes>
+                <exclude>node_modules/</exclude>
+            </excludes>
         </fileSet>
 
         <!-- compiled report templates: pretty -->

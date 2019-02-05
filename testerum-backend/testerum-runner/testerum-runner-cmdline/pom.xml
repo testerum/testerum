@@ -380,13 +380,13 @@
 
             <build>
                 <plugins>
-                    <!-- copy dependencies to "package/basic_steps" directory -->
+                    <!-- copy dependencies to "package/runner/lib" directory -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
 
                         <configuration>
-                            <outputDirectory>${packageDir}/runner/repo</outputDirectory>
+                            <outputDirectory>${packageDir}/runner/lib</outputDirectory>
                             <includeScope>runtime</includeScope>
                         </configuration>
                     </plugin>
