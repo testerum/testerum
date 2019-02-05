@@ -38,6 +38,10 @@
             <directory>${project.basedir}/src/main/assembly/node/mac</directory>
             <outputDirectory>/node</outputDirectory>
             <useDefaultExcludes>false</useDefaultExcludes>
+
+            <excludes>
+                <exclude>node_modules/</exclude>
+            </excludes>
         </fileSet>
 
         <!-- compiled report templates: pretty -->
