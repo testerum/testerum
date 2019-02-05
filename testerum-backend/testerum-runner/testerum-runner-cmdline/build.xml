@@ -177,11 +177,11 @@
         <local name="current_dir"/>
         <property name="current_dir" value="${app_dirs.pretty_app}"/>
 
-        <antcall target="npm-run">
+        <antcall target="npm">
             <param name="args"        value="install" />
             <param name="current_dir" value="${current_dir}" />
         </antcall>
-        <antcall target="npm-run">
+        <antcall target="npm">
             <param name="args"        value="run build-prod" />
             <param name="current_dir" value="${current_dir}" />
         </antcall>
@@ -191,17 +191,17 @@
         <local name="current_dir"/>
         <property name="current_dir" value="${app_dirs.pretty_generator}"/>
 
-        <antcall target="npm-run">
+        <antcall target="npm">
             <param name="args"        value="install" />
             <param name="current_dir" value="${current_dir}" />
         </antcall>
-        <antcall target="npm-run">
+        <antcall target="npm">
             <param name="args"        value="run build-prod" />
             <param name="current_dir" value="${current_dir}" />
         </antcall>
-        <antcall target="npm-run">
+        <antcall target="npm">
             <param name="args"        value="install --only=production" />
-            <param name="current_dir" value="src/main/assembly/report_templates/templates/pretty/generator/dist/" />
+            <param name="current_dir" value="${app_dirs.pretty_generator}/dist/" />
         </antcall>
     </target>
 
@@ -209,11 +209,11 @@
         <local name="current_dir"/>
         <property name="current_dir" value="${app_dirs.stats_app}"/>
 
-        <antcall target="npm-run">
+        <antcall target="npm">
             <param name="args"        value="install" />
             <param name="current_dir" value="${current_dir}" />
         </antcall>
-        <antcall target="npm-run">
+        <antcall target="npm">
             <param name="args"        value="run build-prod" />
             <param name="current_dir" value="${current_dir}" />
         </antcall>
@@ -223,28 +223,28 @@
         <local name="current_dir"/>
         <property name="current_dir" value="${app_dirs.stats_generator}"/>
 
-        <antcall target="npm-run">
+        <antcall target="npm">
             <param name="args"        value="install" />
             <param name="current_dir" value="${current_dir}" />
         </antcall>
-        <antcall target="npm-run">
+        <antcall target="npm">
             <param name="args"        value="run build-prod" />
             <param name="current_dir" value="${current_dir}" />
         </antcall>
-        <antcall target="npm-run">
+        <antcall target="npm">
             <param name="args"        value="install --only=production" />
-            <param name="current_dir" value="src/main/assembly/report_templates/templates/pretty/generator/dist/" />
+            <param name="current_dir" value="${app_dirs.stats_generator}/dist/" />
         </antcall>
     </target>
 
     <!--
-        npm-run
+        npm
 
         required params:
         - args
         - current_dir
     -->
-    <target name="npm-run">
+    <target name="npm">
         <echo message="running [npm ${args}] in [${current_dir}]"/>
         <exec executable="${node_binary.current_os}" dir="${current_dir}">
             <arg line='"${npm_cli_js.current_os}" --scripts-prepend-node-path=true ${args}'/>
