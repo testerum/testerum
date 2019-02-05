@@ -36,12 +36,12 @@ export class JsonVerifyEditorComponent {
     setCompareModeEvent(selectedJsonCompareMode: JsonCompareModeEnum) {
         let aceEditor = this.aceEditor.getEditor();
         let aceDocument = aceEditor.env.document;
-        let cursor = aceDocument.selection.getCursor();
+        let cursor = aceDocument.selection.getCursor(null);
         let tokenIterator = new (ace.acequire('ace/token_iterator').TokenIterator)(aceDocument, cursor.row, cursor.column);
         while (tokenIterator.getCurrentToken() != null && tokenIterator.getCurrentToken().type != 'paren.lparen') {
             tokenIterator.stepBackward();
         }
-        if(tokenIterator.getCurrentToken().value == "{") {
+        if(tokenIterator.getCurrentToken() && tokenIterator.getCurrentToken().value == "{") {
             aceEditor.navigateTo(tokenIterator.getCurrentTokenRow(), tokenIterator.getCurrentTokenColumn() + 1);
 
             if(this.currentTokenContainsCompareMode(tokenIterator)) {
@@ -49,7 +49,7 @@ export class JsonVerifyEditorComponent {
             }
             aceEditor.insert('"=compareMode": "'+ selectedJsonCompareMode.enumAsString +'",');
         }
-        if(tokenIterator.getCurrentToken().value == "[") {
+        if(tokenIterator.getCurrentToken() && tokenIterator.getCurrentToken().value == "[") {
             aceEditor.navigateTo(tokenIterator.getCurrentTokenRow(), tokenIterator.getCurrentTokenColumn() + 1);
 
             if(this.currentTokenContainsCompareMode(tokenIterator)) {
