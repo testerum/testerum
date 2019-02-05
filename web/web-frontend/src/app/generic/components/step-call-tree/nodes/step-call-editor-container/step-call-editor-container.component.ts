@@ -211,13 +211,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
 
             newStepCall.stepDef = new UndefinedStepDef();
             newStepCall.stepDef.path = this.stepCallTreeComponentService.containerPath;
-
-            if (event.phase == StepPhaseEnum.AND) {
-                let previewsStepCallSuggestion = this.model.parentContainer.getChildren()[this.findStepIndex() - 1] as StepCallEditorContainerModel;
-                newStepCall.stepDef.phase = previewsStepCallSuggestion.stepCall.stepDef.phase;
-            } else {
-                newStepCall.stepDef.phase = event.phase;
-            }
+            newStepCall.stepDef.phase = event.phase;
 
             newStepCall.stepDef.stepPattern = new StepPattern();
             newStepCall.stepDef.stepPattern.setPatternText(event.stepCallText);
