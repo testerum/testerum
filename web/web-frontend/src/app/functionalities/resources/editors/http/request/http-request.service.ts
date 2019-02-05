@@ -90,7 +90,7 @@ export class HttpRequestService {
         if(contentTypeHeader == null) {
             contentTypeHeader = new HttpRequestHeader();
             contentTypeHeader.key = HttpContentType.CONTENT_TYPE_HEADER_KEY;
-            this.httpRequest.headers.push(contentTypeHeader)
+            this.httpRequest.headers.splice(this.httpRequest.headers.length - 1, 0, contentTypeHeader)
         }
 
         contentTypeHeader.value = httpContentType.contentType;
@@ -101,7 +101,7 @@ export class HttpRequestService {
         if(contentTypeHeader == null) {
             contentTypeHeader = new HttpRequestHeader();
             contentTypeHeader.key = HttpContentType.CONTENT_TYPE_HEADER_KEY;
-            this.httpRequest.headers.push(contentTypeHeader)
+            this.httpRequest.headers.splice(this.httpRequest.headers.length - 1, 0,contentTypeHeader)
         }
 
         contentTypeHeader.value = contentTypeHeaderValue;
