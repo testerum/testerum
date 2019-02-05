@@ -11,6 +11,8 @@ import {SuiteEndEvent} from "../../../model/test/event/suite-end.event";
 import {RunnerErrorEvent} from "../../../model/test/event/runner-error.event";
 import {RunnerTreeFilterModel} from "./tests-runner-tree/model/filter/runner-tree-filter.model";
 import {RunnerEventMarshaller} from '../../../model/test/event/marshaller/runner-event-marshaller';
+import {ContextService} from "../../../service/context.service";
+import {Project} from "../../../model/home/project.model";
 
 @Injectable()
 export class TestsRunnerService {
@@ -35,7 +37,12 @@ export class TestsRunnerService {
     readonly showTestFoldersEventObservable: EventEmitter<boolean> = new EventEmitter<boolean>();
     readonly treeFilterObservable: EventEmitter<RunnerTreeFilterModel> = new EventEmitter<RunnerTreeFilterModel>();
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                private contextService: ContextService) {
+        contextService.projectChangedEventEmitter.subscribe((project: Project) => {
+            this.isTestRunnerVisible = false
+        });
+    }
 
     runTests(pathsToExecute: Path[]) {
         this.lastRunPaths = pathsToExecute;

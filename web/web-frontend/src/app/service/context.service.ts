@@ -1,12 +1,14 @@
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import {StepCallContainerComponent} from "../generic/components/step-call-tree/nodes/step-call-container/step-call-container.component";
 import {StepCallContainerModel} from "../generic/components/step-call-tree/model/step-call-container.model";
 import {Project} from "../model/home/project.model";
+import {RunnerTreeNodeModel} from "../functionalities/features/tests-runner/tests-runner-tree/model/runner-tree-node.model";
 
 @Injectable()
 export class ContextService {
 
     private currentProject: Project;
+    projectChangedEventEmitter: EventEmitter<Project> = new EventEmitter<Project>();
 
     stepToCut: StepCallContainerComponent = null;
     stepToCopy: StepCallContainerComponent = null;
@@ -23,9 +25,17 @@ export class ContextService {
         return this.currentProject ? this.currentProject.name: null;
     }
 
-    setCurrentProject(currentProject: Project) {
-        this.currentProject = currentProject;
-        this.setPageTitle(currentProject);
+    setCurrentProject(newProject: Project) {
+        if (newProject == null && this.currentProject != null) {
+            return;
+        }
+
+        if (newProject == null || this.currentProject == null || newProject.path != this.currentProject.path) {
+            this.currentProject = newProject;
+            this.setPageTitle(newProject);
+
+            this.projectChangedEventEmitter.emit(newProject);
+        }
     }
 
     getProjectPath(): string {
