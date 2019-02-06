@@ -7,7 +7,7 @@ import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common_httpclient.HttpClientService
 import com.testerum.common_httpclient.util.MediaTypeUtils
-import com.testerum.common_json.util.JsonUtils
+import com.testerum.common_json.util.prettyPrintJson
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.ValidHttpResponse
 import http.request.transformer.HttpRequestTransformer
@@ -111,7 +111,7 @@ class HttpRequestSteps {
 
         return if (MediaTypeUtils.isJsonMediaType(mediaType)) {
             try {
-                val serializedBody = JsonUtils.prettyPrintJson(body)
+                val serializedBody = body.prettyPrintJson()
 
                 serializedBody.lines()
                         .joinToString(separator = "\n") {

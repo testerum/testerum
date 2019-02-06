@@ -3,19 +3,18 @@ package com.testerum.common_json.util
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 
-object JsonUtils {
+private val JSON_UTILS_OBJECT_MAPPER = jacksonObjectMapper().apply {
+    registerModule(AfterburnerModule())
+    enable(SerializationFeature.INDENT_OUTPUT)
+}
 
-    private val OBJECT_MAPPER = jacksonObjectMapper().apply {
-        registerModule(AfterburnerModule())
-        enable(SerializationFeature.INDENT_OUTPUT)
+fun String?.prettyPrintJson(): String {
+    if (this == null) {
+        return "null"
     }
 
-    fun prettyPrintJson(json: String): String {
-        val jsonObject = OBJECT_MAPPER.readValue<Any>(json)
+    val jsonTree = JSON_UTILS_OBJECT_MAPPER.readTree(this)
 
-        return OBJECT_MAPPER.writeValueAsString(jsonObject)
-    }
-
+    return JSON_UTILS_OBJECT_MAPPER.writeValueAsString(jsonTree)
 }

@@ -26,6 +26,24 @@
             <artifactId>step-transformer-utils</artifactId>
         </dependency>
 
+        <!-- common-json-diff -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-json-diff</artifactId>
+        </dependency>
+
+        <!-- common-json -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-json</artifactId>
+        </dependency>
+
+        <!-- common-di -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-di</artifactId>
+        </dependency>
+
 
         <!--==================== External Dependencies ====================-->
 

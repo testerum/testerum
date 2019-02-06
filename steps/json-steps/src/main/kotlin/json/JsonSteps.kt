@@ -2,15 +2,21 @@ package json
 
 import com.testerum.api.annotations.steps.Given
 import com.testerum.api.annotations.steps.Param
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum.api.annotations.steps.Then
 import com.testerum.api.test_context.test_vars.TestVariables
+import com.testerum.common.json_diff.JsonComparer
+import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
+import com.testerum.common_json.util.prettyPrintJson
 import json.model.JsJson
 import json.model.JsonResource
 import json.transformer.JsonTextTransformer
+import json_support.module_di.JsonStepsModuleServiceLocator
 
 class JsonSteps {
 
-    private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
+    private val variables: TestVariables = JsonStepsModuleServiceLocator.bootstrapper.jsonStepsModuleFactory.testVariables
+
+    private val jsonComparer: JsonComparer = JsonStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
 
     @Given(
             value = "the variable <<name>> with JSON value <<value>>",
@@ -44,6 +50,60 @@ class JsonSteps {
         variables[name] = jsonObject.overrideWith(overridesJsJson)
     }
 
+    @Then("the JSON <<actualValue>> is equal to <<expectedValue>>")
+    fun compareJsons(@Param(required = false) actualValue: Any?,
+                     @Param(required = false) expectedValue: Any?) {
+        val actual: String? = getJsonStringForComparison(actualValue, "actualValue")
+        val expected: String? = getJsonStringForComparison(expectedValue, "expectedValue")
+
+        if (actual == null) {
+            if (expected != null) {
+                throw differentJsonException(actual = actual, expected =  expected)
+            } else {
+                // both are null
+                return
+            }
+        } else {
+            if (expected == null) {
+                throw differentJsonException(actual = actual, expected =  expected)
+            }
+        }
+
+        val compareResult = jsonComparer.compare(expectedJson = expected, actualJson = actual)
+        if (compareResult is DifferentJsonCompareResult) {
+            throw differentJsonException(actual = actual, expected =  expected, compareResult = compareResult)
+        }
+    }
+
+    private fun differentJsonException(actual: String?,
+                                       expected: String?,
+                                       compareResult: DifferentJsonCompareResult? = null): AssertionError {
+        val prettyActual = actual.prettyPrintJson()
+                .lines()
+                .joinToString(separator = "\n") {
+                    "\t$it"
+                }
+        val expectedActual = expected.prettyPrintJson()
+                .lines()
+                .joinToString(separator = "\n") {
+                    "\t$it"
+                }
+
+        return AssertionError(
+                buildString {
+                    append("Expected\n")
+                    append("$expectedActual\n")
+                    append("but found\n")
+                    append("$prettyActual\n")
+
+                    if (compareResult != null) {
+                        append("Matching message: [${compareResult.message}]\n")
+                        append("Not matching element path: [${compareResult.jsonPath}]")
+                    }
+                }
+        )
+    }
+
     private fun getJsJsonVariable(name: String): JsJson {
         if (!variables.contains(name)) {
             throw IllegalArgumentException("the variable with name [$name] does not exist")
@@ -60,4 +120,18 @@ class JsonSteps {
 
         return variableValue
     }
+
+    private fun getJsonStringForComparison(value: Any?,
+                                           name: String): String? {
+        if (value == null) {
+            return null
+        }
+
+        return when (value) {
+            is String -> value
+            is JsJson -> value.toString()
+            else      -> throw IllegalArgumentException("invalid $name type: expected String or ${JsJson::class.simpleName}, but got ${value.javaClass.name}")
+        }
+    }
+
 }
