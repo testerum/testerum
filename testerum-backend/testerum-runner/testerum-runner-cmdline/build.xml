@@ -165,7 +165,7 @@
 
     <target name="copy-to-dev-package-dir.extracted-node">
         <mkdir dir="${package_dir_runner}/node/"/>
-        <copy todir="${package_dir_runner}/node/">
+        <copy todir="${package_dir_runner}/node/" overwrite="true" force="true">
             <fileset dir="${node_package_dir.current_os}">
                 <exclude name="node_modules/**"/>
             </fileset>
@@ -175,22 +175,39 @@
 
     <target name="copy-to-dev-package-dir.shell-scripts">
         <mkdir dir="${package_dir_runner}" />
-        <copy todir="${package_dir_runner}">
+        <copy todir="${package_dir_runner}" overwrite="true" force="true">
             <fileset dir="src/main/assembly/package" />
         </copy>
+
+        <!-- comment-out setting the JAVA_HOME to pick up the developer's JAVA home instead -->
+        <replaceregexp byline="true">
+            <regexp pattern="(.*\bJAVA_HOME=.*)"/>
+            <substitution expression="true; # \1"/>
+            <fileset dir="${package_dir_runner}/bin/">
+                <include name="*.sh"/>
+            </fileset>
+        </replaceregexp>
+        <replaceregexp byline="true">
+            <regexp pattern="(.*\bJAVA_HOME=.*)"/>
+            <substitution expression="REM \1"/>
+            <fileset dir="${package_dir_runner}/bin/">
+                <include name="*.bat"/>
+            </fileset>
+        </replaceregexp>
+
         <chmod dir="${package_dir_runner}/bin/" includes="**/*.sh" perm="ugo+rx" />
     </target>
 
     <target name="copy-to-dev-package-dir.pretty-generator">
         <mkdir dir="${package_dir_runner}/report_templates/pretty" />
-        <copy todir="${package_dir_runner}/report_templates/pretty">
+        <copy todir="${package_dir_runner}/report_templates/pretty" overwrite="true" force="true">
             <fileset dir="src/main/assembly/report_templates/templates/pretty/generator/dist" />
         </copy>
     </target>
 
     <target name="copy-to-dev-package-dir.stats-generator">
         <mkdir dir="${package_dir_runner}/report_templates/stats" />
-        <copy todir="${package_dir_runner}/report_templates/stats">
+        <copy todir="${package_dir_runner}/report_templates/stats" overwrite="true" force="true">
             <fileset dir="src/main/assembly/report_templates/templates/stats/generator/dist" />
         </copy>
     </target>
