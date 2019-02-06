@@ -102,7 +102,8 @@ data class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
             }
 
             if (steps.isEmpty()) {
-                executionStatus = ExecutionStatus.SKIPPED
+                executionStatus = ExecutionStatus.UNDEFINED
+                context.logMessage("marking test [${test.path}] as $executionStatus because it doesn't have any steps")
             } else {
                 for (step in steps) {
                     if (executionStatus == ExecutionStatus.PASSED) {
