@@ -11,7 +11,6 @@ import {TestsService} from "../../service/tests.service";
 import {TestEditorComponent} from "./test-editor/test-editor.component";
 import {StepsModule} from "../steps/steps.module";
 import {TestResolver} from "./test-editor/test.resolver";
-import {AngularSplitModule} from "angular-split-ng6";
 import {TestsRunnerComponent} from "./tests-runner/tests-runner.component";
 import {RunnerTreeService} from "./tests-runner/tests-runner-tree/runner-tree.service";
 import {RunnerTreeComponent} from "./tests-runner/tests-runner-tree/runner-tree.component";
@@ -39,6 +38,7 @@ import {TestsRunnerTreeToolbarComponent} from './tests-runner/tests-runner-tree/
 import {TestsRunnerLogsToolbarComponent} from "./tests-runner/tests-runner-logs/tests-runner-logs-toolbar/tests-runner-logs-toolbar.component";
 import { LogLineCollapsableComponent } from './tests-runner/tests-runner-logs/log-line-collapsable/log-line-collapsable.component';
 import {TestsRunnerService} from "./tests-runner/tests-runner.service";
+import {AngularSplitModule} from "angular-split";
 
 @NgModule({
     imports: [
@@ -48,7 +48,7 @@ import {TestsRunnerService} from "./tests-runner/tests-runner.service";
         ModalModule.forRoot(),
         CollapseModule.forRoot(),
         DndModule.forRoot(),
-        AngularSplitModule,
+        AngularSplitModule.forRoot(),
 
         TooltipModule,
         ToolbarModule,

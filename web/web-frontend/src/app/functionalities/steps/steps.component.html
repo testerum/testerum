@@ -1,18 +1,18 @@
 <div class="main-container">
 
-    <split direction="horizontal">
-        <split-area [size]="40">
+    <as-split direction="horizontal">
+        <as-split-area [size]="40">
             <steps-tree-filter></steps-tree-filter>
 
             <steps-tree [treeModel]="stepsTreeService.treeModel"
                        [modelComponentMapping]="jsonModelComponentMapping">
             </steps-tree>
 
-        </split-area>
-        <split-area [size]="60">
+        </as-split-area>
+        <as-split-area [size]="60">
 
             <router-outlet></router-outlet>
 
-        </split-area>
-    </split>
+        </as-split-area>
+    </as-split>
 </div>

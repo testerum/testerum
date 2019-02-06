@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {ResourcesRoutingModule} from "./resources-routing.module";
 import {ResourcesComponent} from "./resources.component";
-import {AngularSplitModule} from "angular-split-ng6";
 import {DndModule} from "ng2-dnd";
 import {BsDropdownModule, ModalModule, TabsModule} from "ngx-bootstrap";
 import {FormsModule} from "@angular/forms";
@@ -61,6 +60,7 @@ import {BasicResourceComponent} from "./editors/basic/basic-resource.component";
 import {ResourcesTreeComponent} from "./tree/resources-tree.component";
 import {SchemaChooserModalService} from "./editors/database/connection/schema_chooser_modal/schema-chooser-modal.service";
 import {JsonResourceComponent} from "./editors/json/json_resource/json-resource.component";
+import {AngularSplitModule} from "angular-split";
 
 @NgModule({
     imports: [
@@ -72,7 +72,7 @@ import {JsonResourceComponent} from "./editors/json/json_resource/json-resource.
         TabsModule.forRoot(),
         BsDropdownModule.forRoot(),
         DndModule.forRoot(),
-        AngularSplitModule,
+        AngularSplitModule.forRoot(),
         AceEditorModule,
         CheckboxModule,
 

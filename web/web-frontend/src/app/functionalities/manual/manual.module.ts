@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {ManualRoutingModule} from "./manual-routing.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
-import {AngularSplitModule} from "angular-split-ng6";
 import {
     AutoCompleteModule,
     DropdownModule,
@@ -34,6 +33,7 @@ import {ManualRunnerComponent} from "./runner/manual-runner.component";
 import {ManualRunnerEditorComponent} from "./runner/editor/manual-runner-editor.component";
 import {ManualRunnerStepStatusComponent} from "./runner/editor/step_status/manual-runner-step-status.component";
 import {ManualTestPlansOverviewService} from "./plans/overview/manual-test-plans-overview.service";
+import {AngularSplitModule} from "angular-split";
 
 @NgModule({
     imports: [
@@ -42,7 +42,7 @@ import {ManualTestPlansOverviewService} from "./plans/overview/manual-test-plans
         ManualRoutingModule,
         ModalModule.forRoot(),
         CollapseModule.forRoot(),
-        AngularSplitModule,
+        AngularSplitModule.forRoot(),
 
         AutoCompleteModule,
         CardModule,
