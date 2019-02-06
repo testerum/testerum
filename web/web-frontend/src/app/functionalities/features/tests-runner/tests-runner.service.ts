@@ -23,13 +23,15 @@ export class TestsRunnerService {
         WEB_SOCKET_PATH           : "/rest/tests-ws",
     };
 
-    public isTestRunnerVisible:boolean = false;
+    isRunnerVisible:boolean = false;
+
     public areTestRunning: boolean = false;
     public lastRunPaths: Path[];
 
     private webSocket:$WebSocket = null;
     private executionId: number = null;
 
+    readonly runnerChangeEventEmitter: EventEmitter<void> = new EventEmitter<void>();
     readonly selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
 
     readonly startTestExecutionObservable: EventEmitter<RunnerRootNode> = new EventEmitter<RunnerRootNode>();
@@ -40,13 +42,13 @@ export class TestsRunnerService {
     constructor(private http: HttpClient,
                 private contextService: ContextService) {
         contextService.projectChangedEventEmitter.subscribe((project: Project) => {
-            this.isTestRunnerVisible = false
+            this.isRunnerVisible = false;
         });
     }
 
     runTests(pathsToExecute: Path[]) {
         this.lastRunPaths = pathsToExecute;
-        this.isTestRunnerVisible = true;
+        this.isRunnerVisible = true;
 
         let pathsAsString = pathsToExecute.map(it => {return it.toString()});
         this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, pathsAsString)
@@ -64,6 +66,7 @@ export class TestsRunnerService {
         this.areTestRunning = true;
         this.executionId = testExecutionResponse.executionId;
 
+        this.runnerChangeEventEmitter.emit();
         this.startTestExecutionObservable.emit(testExecutionResponse.runnerRootNode);
 
         let payload = `EXECUTE-TESTS:${this.executionId}`;
@@ -116,6 +119,7 @@ export class TestsRunnerService {
 
         // console.log(runnerEvent);
         this.runnerEventObservable.emit(runnerEvent);
+        this.runnerChangeEventEmitter.emit();
     }
 
     private sendMessage(payload: string) {
@@ -140,5 +144,6 @@ export class TestsRunnerService {
 
     public setSelectedNode(selectedRunnerTreeNode: RunnerTreeNodeModel) {
         this.selectedRunnerTreeNodeObserver.emit(selectedRunnerTreeNode);
+        this.runnerChangeEventEmitter.emit();
     }
 }

@@ -4,7 +4,7 @@
          [class.horizontal-scroll]="!shouldWrapLogs">
         <table class="table table-hover table-condensed">
             <tbody #logsContainer>
-            <tr *ngFor="let log of logsToDisplay">
+            <tr *ngFor="let log of logsToDisplay; trackBy: trackByLogKey">
                 <!--<td class="date-column">{{log.time | date:"HH:mm:ss"}}</td>-->
                 <td class="text-column">
                     <ng-container *ngFor="let textLine of log.textLines">
@@ -29,6 +29,5 @@
 
     <tests-runner-logs-toolbar [(shouldWrapLogs)]="shouldWrapLogs"
                                [minLogLevelToShow]="minLogLevelToShow"
-                               (minLogLevelToShowChange)="onLogLevelChange($event)"
-                               [reportMode]="reportMode"></tests-runner-logs-toolbar>
+                               (minLogLevelToShowChange)="onLogLevelChange($event)"></tests-runner-logs-toolbar>
 </div>
