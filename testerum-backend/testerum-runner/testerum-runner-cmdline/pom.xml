@@ -412,68 +412,6 @@
                            </execution>
                        </executions>
                     </plugin>
-
-                    <!-- copy shell scripts & compiled report templates to package directory  -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <!-- copy-shell-scripts-to-package-dir -->
-                            <execution>
-                                <id>copy-shell-scripts-to-package-dir</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${packageDir}/runner</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/src/main/assembly/package</directory>
-                                            <filtering>false</filtering>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-
-                            <!-- copy-compiled-report-templates-to-package-dir: pretty -->
-                            <execution>
-                                <id>copy-compiled-report-templates-to-package-dir--pretty</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${packageDir}/runner/report_templates/pretty</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</directory>
-                                            <filtering>false</filtering>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-
-                            <!-- copy-compiled-report-templates-to-package-dir: stats -->
-                            <execution>
-                                <id>copy-compiled-report-templates-to-package-dir--stats</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${packageDir}/runner/report_templates/stats</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator/dist</directory>
-                                            <filtering>false</filtering>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                 </plugins>
             </build>
         </profile>
