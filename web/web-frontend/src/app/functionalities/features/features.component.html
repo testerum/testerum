@@ -16,7 +16,7 @@
                 </as-split-area>
             </as-split>
         </as-split-area>
-        <as-split-area [size]="50" [visible]="isTestRunnerVisible()">
+        <as-split-area [size]="50" *ngIf="isTestRunnerVisible()">
             <tests-runner></tests-runner>
         </as-split-area>
     </as-split>

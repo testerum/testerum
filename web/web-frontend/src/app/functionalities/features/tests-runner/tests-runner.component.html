@@ -1,8 +1,8 @@
-<as-split direction="horizontal" style="position: relative" *ngIf="isTestRunnerVisible()">
-    <as-split-area [size]="40">
+<as-split direction="horizontal">
+    <as-split-area size="40">
         <runner-tree></runner-tree>
     </as-split-area>
-    <as-split-area [size]="60" class="logs-split-area horizontal-scroll">
+    <as-split-area size="60">
         <tests-runner-logs></tests-runner-logs>
     </as-split-area>
 </as-split>
