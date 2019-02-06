@@ -80,8 +80,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
             }
         );
 
-        //TODO: just for test
-        this.testRunnerService.runnerChangeEventEmitter.subscribe(() => {
+        this.testRunnerService.runnerVisibleEventEmitter.subscribe(() => {
             this.refresh()
         })
     }

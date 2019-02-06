@@ -23,7 +23,8 @@ export class TestsRunnerService {
         WEB_SOCKET_PATH           : "/rest/tests-ws",
     };
 
-    isRunnerVisible:boolean = false;
+    private _isRunnerVisible:boolean = false;
+    readonly runnerVisibleEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     public areTestRunning: boolean = false;
     public lastRunPaths: Path[];
@@ -31,7 +32,6 @@ export class TestsRunnerService {
     private webSocket:$WebSocket = null;
     private executionId: number = null;
 
-    readonly runnerChangeEventEmitter: EventEmitter<void> = new EventEmitter<void>();
     readonly selectedRunnerTreeNodeObserver: EventEmitter<RunnerTreeNodeModel> = new EventEmitter<RunnerTreeNodeModel>();
 
     readonly startTestExecutionObservable: EventEmitter<RunnerRootNode> = new EventEmitter<RunnerRootNode>();
@@ -42,13 +42,13 @@ export class TestsRunnerService {
     constructor(private http: HttpClient,
                 private contextService: ContextService) {
         contextService.projectChangedEventEmitter.subscribe((project: Project) => {
-            this.isRunnerVisible = false;
+            this.setRunnerVisibility(false);
         });
     }
 
     runTests(pathsToExecute: Path[]) {
         this.lastRunPaths = pathsToExecute;
-        this.isRunnerVisible = true;
+        this.setRunnerVisibility(true);
 
         let pathsAsString = pathsToExecute.map(it => {return it.toString()});
         this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, pathsAsString)
@@ -62,11 +62,19 @@ export class TestsRunnerService {
         this.runTests(this.lastRunPaths)
     }
 
+    isRunnerVisible(): boolean {
+        return this._isRunnerVisible;
+    }
+
+    setRunnerVisibility(isVisible: boolean) {
+        this._isRunnerVisible = isVisible;
+        this.runnerVisibleEventEmitter.emit(isVisible);
+    }
+
     private startExecution(testExecutionResponse: TestExecutionResponse) {
         this.areTestRunning = true;
         this.executionId = testExecutionResponse.executionId;
 
-        this.runnerChangeEventEmitter.emit();
         this.startTestExecutionObservable.emit(testExecutionResponse.runnerRootNode);
 
         let payload = `EXECUTE-TESTS:${this.executionId}`;
@@ -119,7 +127,6 @@ export class TestsRunnerService {
 
         // console.log(runnerEvent);
         this.runnerEventObservable.emit(runnerEvent);
-        this.runnerChangeEventEmitter.emit();
     }
 
     private sendMessage(payload: string) {
@@ -144,6 +151,5 @@ export class TestsRunnerService {
 
     public setSelectedNode(selectedRunnerTreeNode: RunnerTreeNodeModel) {
         this.selectedRunnerTreeNodeObserver.emit(selectedRunnerTreeNode);
-        this.runnerChangeEventEmitter.emit();
     }
 }

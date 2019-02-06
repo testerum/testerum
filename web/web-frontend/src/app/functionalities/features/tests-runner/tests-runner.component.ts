@@ -15,10 +15,9 @@ export class TestsRunnerComponent implements OnInit, OnDestroy {
                 private testsRunnerService: TestsRunnerService) { }
 
     ngOnInit(): void {
-        this.runnerChangeSubscription = this.testsRunnerService.runnerChangeEventEmitter.subscribe(() => {
+        this.runnerChangeSubscription = this.testsRunnerService.runnerVisibleEventEmitter.subscribe(() => {
             this.refresh();
         });
-        this.refresh();
     }
 
     ngOnDestroy(): void {
@@ -26,7 +25,7 @@ export class TestsRunnerComponent implements OnInit, OnDestroy {
     }
 
     isTestRunnerVisible(): boolean {
-        return this.testsRunnerService.isRunnerVisible;
+        return this.testsRunnerService.isRunnerVisible();
     }
 
     refresh() {

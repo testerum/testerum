@@ -19,7 +19,7 @@ export class TestsRunnerLogsToolbarComponent {
     }
 
     onCloseTestSuite() {
-        this.testsRunnerService.isRunnerVisible = false;
+        this.testsRunnerService.setRunnerVisibility(false);
         this.testsRunnerService.stopExecution();
     }
 
