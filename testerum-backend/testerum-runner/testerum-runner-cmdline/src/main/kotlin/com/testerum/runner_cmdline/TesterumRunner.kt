@@ -16,9 +16,7 @@ import com.testerum.runner_cmdline.events.execution_listeners.utils.console_outp
 import com.testerum.runner_cmdline.module_di.RunnerModuleBootstrapper
 import com.testerum.runner_cmdline.module_di.TesterumRunnerLoggingConfigurator
 import com.testerum.runner_cmdline.version.RunnerVersionInfoService
-import org.fusesource.jansi.Ansi
-import org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD
-import org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD_OFF
+import org.fusesource.jansi.Ansi.ansi
 import org.fusesource.jansi.AnsiConsole
 import java.time.LocalDateTime
 
@@ -94,12 +92,12 @@ object TesterumRunner {
             Exiter.exit(ExitCode.OK)
         } catch (e: CmdlineParamsParserParsingException) {
             println(
-                    "${Ansi.ansi().fgBrightRed()}${Ansi.ansi().a(INTENSITY_BOLD)}" +
-                    "ERROR: ${e.errorMessage}" +
-                    "${Ansi.ansi().a(INTENSITY_BOLD_OFF)}${Ansi.ansi().fgDefault()}" +
-                    "\n"
+                    """
+                        ${ansi().fgBrightRed()}${ansi().bold()}ERROR: ${e.errorMessage}${ansi().boldOff()}${ansi().fgDefault()}
+
+                        To see the available options, use ${ansi().bold()}testerum-runner${ansi().boldOff()} ${ansi().fgYellow()}--help${ansi().fgDefault()}
+                    """.trimIndent()
             )
-            println(e.usageHelp)
 
             Exiter.exit(ExitCode.RUNNER_FAILED)
         }
