@@ -1,5 +1,5 @@
 import {
-    AfterViewChecked,
+    AfterViewChecked, AfterViewInit,
     ChangeDetectionStrategy, ChangeDetectorRef,
     Component,
     ElementRef,
@@ -11,10 +11,11 @@ import {TestsRunnerLogModel} from "./model/tests-runner-log.model";
 import {LogLineTypeEnum} from "./model/log-line-type.enum";
 import {RunnerTreeNodeModel} from "../tests-runner-tree/model/runner-tree-node.model";
 import {TestsRunnerLogsService} from "./tests-runner-logs.service";
-import {Subscription} from "rxjs";
+import {interval, merge, Subscription} from "rxjs";
 import {TestsRunnerService} from "../tests-runner.service";
 import {RunnerRootTreeNodeModel} from "../tests-runner-tree/model/runner-root-tree-node.model";
 import {LogLevel} from "../../../../model/test/event/enums/log-level.enum";
+import {buffer, bufferTime, map} from "rxjs/operators";
 
 @Component({
     moduleId: module.id,
@@ -23,11 +24,12 @@ import {LogLevel} from "../../../../model/test/event/enums/log-level.enum";
     styleUrls: ["tests-runner-logs.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDestroy {
+export class TestsRunnerLogsComponent implements AfterViewInit, OnInit, OnDestroy {
 
     showLastLogWhenChanged = true;
 
-    @ViewChild('logsFooter') scrollContainer: ElementRef;
+    @ViewChild('logsContainer') logsContainer: ElementRef;
+    @ViewChild('logsFooter') scrollFooter: ElementRef;
 
     logsToDisplay: Array<TestsRunnerLogModel> = [];
     selectedRunnerTreeNode: RunnerTreeNodeModel;
@@ -35,6 +37,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
     minLogLevelToShow: LogLevel = LogLevel.INFO;
 
     private lastLogsCount: number = 0;
+    private lastLogScrollOffset: number = 0;
 
     LogLineTypeEnum = LogLineTypeEnum;
     LogLevel = LogLevel;
@@ -64,14 +67,18 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
             this.refresh();
         });
 
-        this.logAddedEventEmitterSubscription = this.testsRunnerLogsService.logAddedEventEmitter.subscribe(
-            (logModel:TestsRunnerLogModel) => {
-                if(this.selectedRunnerTreeNode == null || this.isLogBelogingToRunnerTreeNode(logModel.eventKey, this.selectedRunnerTreeNode)) {
-                    this.logsToDisplay.push(logModel);
-                    this.refresh();
+        this.logAddedEventEmitterSubscription = this.testsRunnerLogsService.logAddedEventEmitter.asObservable()
+            .pipe(bufferTime(500))
+            .subscribe((logs:TestsRunnerLogModel[]) => {
+                for (const log of logs) {
+                    if(this.selectedRunnerTreeNode == null || this.isLogBelongingToRunnerTreeNode(log.eventKey, this.selectedRunnerTreeNode)) {
+                        this.logsToDisplay.push(log);
+                    }
                 }
-            }
-        );
+                this.refresh();
+            });
+
+
         this.emptyLogsEventEmitterSubscription = this.testsRunnerLogsService.emptyLogsEventEmitter.subscribe(
             event => {
                 this.logsToDisplay.length = 0;
@@ -97,11 +104,36 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
         }
     }
 
-    ngAfterViewChecked(): void {
-        if (this.lastLogsCount != this.testsRunnerLogsService.logsByEventKey.size && this.showLastLogWhenChanged) {
-            this.lastLogsCount = this.testsRunnerLogsService.logsByEventKey.size;
-            this.scrollContainer.nativeElement.scrollIntoView();
+    ngAfterViewInit(): void {
+
+        let changes = new MutationObserver((mutations: MutationRecord[]) => {
+            if (!this.selectedRunnerTreeNode && this.showLastLogWhenChanged) {
+                this.lastLogsCount = this.testsRunnerLogsService.logsByEventKey.size;
+                this.scrollFooter.nativeElement.scrollIntoView();
+            }
+        });
+
+        changes.observe(this.logsContainer.nativeElement, {
+            attributes: false,
+            childList: true,
+            characterData: false
+        });
+    }
+
+    onLogScrollEvent(event) {
+        var container = event.target;
+        var contHeight = container.clientHeight;
+        var scrollTop = container.scrollTop;
+        var scrollHeight  = container.scrollHeight ;
+
+        if (this.showLastLogWhenChanged && this.lastLogScrollOffset > scrollTop) {
+            this.showLastLogWhenChanged = false;
         }
+
+        if (!this.showLastLogWhenChanged && contHeight == scrollHeight - scrollTop) {
+            this.showLastLogWhenChanged = true;
+        }
+        this.lastLogScrollOffset = scrollTop;
     }
 
     trackByLogKey(index: number, log: TestsRunnerLogModel): string {
@@ -116,7 +148,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
     private refreshLogs() {
         this.logsToDisplay.length = 0;
         this.testsRunnerLogsService.logsByEventKey.forEach((logs: Array<TestsRunnerLogModel>, key: string) => {
-            if (this.selectedRunnerTreeNode && !this.isLogBelogingToRunnerTreeNode(key, this.selectedRunnerTreeNode)) {
+            if (this.selectedRunnerTreeNode && !this.isLogBelongingToRunnerTreeNode(key, this.selectedRunnerTreeNode)) {
                 return;
             }
             for (const log of logs) {
@@ -128,7 +160,7 @@ export class TestsRunnerLogsComponent implements AfterViewChecked, OnInit, OnDes
         });
     }
 
-    private isLogBelogingToRunnerTreeNode(logEventKeyAsString: string, runnerTreeNode: RunnerTreeNodeModel): boolean {
+    private isLogBelongingToRunnerTreeNode(logEventKeyAsString: string, runnerTreeNode: RunnerTreeNodeModel): boolean {
         if (runnerTreeNode instanceof RunnerRootTreeNodeModel) {
             return true;
         }

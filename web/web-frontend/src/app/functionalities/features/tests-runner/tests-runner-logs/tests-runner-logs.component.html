@@ -1,5 +1,6 @@
 <div class="logs-panel">
     <div class="logs-container"
+         (scroll)="onLogScrollEvent($event)"
          [class.horizontal-wrap]="shouldWrapLogs"
          [class.horizontal-scroll]="!shouldWrapLogs">
         <table class="table table-hover table-condensed">
