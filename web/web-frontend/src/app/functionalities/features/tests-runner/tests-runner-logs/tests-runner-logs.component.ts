@@ -1,6 +1,7 @@
 import {
-    AfterViewChecked, AfterViewInit,
-    ChangeDetectionStrategy, ChangeDetectorRef,
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     OnDestroy,
@@ -11,11 +12,12 @@ import {TestsRunnerLogModel} from "./model/tests-runner-log.model";
 import {LogLineTypeEnum} from "./model/log-line-type.enum";
 import {RunnerTreeNodeModel} from "../tests-runner-tree/model/runner-tree-node.model";
 import {TestsRunnerLogsService} from "./tests-runner-logs.service";
-import {interval, merge, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {TestsRunnerService} from "../tests-runner.service";
 import {RunnerRootTreeNodeModel} from "../tests-runner-tree/model/runner-root-tree-node.model";
 import {LogLevel} from "../../../../model/test/event/enums/log-level.enum";
-import {buffer, bufferTime, map} from "rxjs/operators";
+import {bufferTime} from "rxjs/operators";
+import {ExecutionStatusEnum} from "../../../../model/test/event/enums/execution-status.enum";
 
 @Component({
     moduleId: module.id,
@@ -26,7 +28,6 @@ import {buffer, bufferTime, map} from "rxjs/operators";
 })
 export class TestsRunnerLogsComponent implements AfterViewInit, OnInit, OnDestroy {
 
-    showLastLogWhenChanged = true;
 
     @ViewChild('logsContainer') logsContainer: ElementRef;
     @ViewChild('logsFooter') scrollFooter: ElementRef;
@@ -37,6 +38,7 @@ export class TestsRunnerLogsComponent implements AfterViewInit, OnInit, OnDestro
     minLogLevelToShow: LogLevel = LogLevel.INFO;
 
     private lastLogsCount: number = 0;
+    private showLastLogWhenChanged: boolean = true;
     private lastLogScrollOffset: number = 0;
 
     LogLineTypeEnum = LogLineTypeEnum;
@@ -105,9 +107,11 @@ export class TestsRunnerLogsComponent implements AfterViewInit, OnInit, OnDestro
     }
 
     ngAfterViewInit(): void {
+        this.showLastLogWhenChanged = true;
+        this.lastLogScrollOffset = 0;
 
         let changes = new MutationObserver((mutations: MutationRecord[]) => {
-            if (!this.selectedRunnerTreeNode && this.showLastLogWhenChanged) {
+            if (!this.selectedNodeIsFinishedExecuting() && this.showLastLogWhenChanged) {
                 this.lastLogsCount = this.testsRunnerLogsService.logsByEventKey.size;
                 this.scrollFooter.nativeElement.scrollIntoView();
             }
@@ -142,6 +146,10 @@ export class TestsRunnerLogsComponent implements AfterViewInit, OnInit, OnDestro
 
     private onRunnerTreeNodeSelected(runnerTreeNode: RunnerTreeNodeModel): void {
         this.selectedRunnerTreeNode = runnerTreeNode;
+        if (!this.selectedNodeIsFinishedExecuting()) {
+            this.lastLogScrollOffset = 0;
+            this.showLastLogWhenChanged = true;
+        }
         this.refreshLogs();
     }
 
@@ -169,6 +177,16 @@ export class TestsRunnerLogsComponent implements AfterViewInit, OnInit, OnDestro
             return false;
         }
         return logEventKeyAsString.startsWith(runnerTreeNode.eventKey.eventKeyAsString)
+    }
+
+    private selectedNodeIsFinishedExecuting(): boolean {
+        if(!this.selectedRunnerTreeNode ||
+            this.selectedRunnerTreeNode.state == ExecutionStatusEnum.EXECUTING ||
+            this.selectedRunnerTreeNode.state == ExecutionStatusEnum.WAITING) {
+            return false;
+        }
+
+        return true;
     }
 
     onLogLevelChange(event: LogLevel) {
