@@ -2,8 +2,8 @@ package json.model
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import jdk.nashorn.api.scripting.AbstractJSObject
-import json.utils.JSON_STEPS_OBJECT_MAPPER
-import json.utils.MapMerger
+import json_support.utils.JSON_STEPS_OBJECT_MAPPER
+import json_support.utils.MapMerger
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.write
 

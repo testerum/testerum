@@ -1,6 +1,6 @@
-package json.utils
+package json_support.utils
 
-import json.utils.map_dsl.createMap
+import json_support.utils.map_dsl.createMap
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test

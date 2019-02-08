@@ -1,7 +1,5 @@
 package http.response.verify
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then
 import com.testerum.api.services.TesterumServiceLocator
@@ -9,6 +7,7 @@ import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
 import com.testerum.common.json_diff.impl.node_comparer.JsonCompareResult
+import com.testerum.common_json.util.prettyPrintJson
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.HttpResponseHeader
 import com.testerum.model.resources.http.response.ValidHttpResponse
@@ -26,10 +25,6 @@ class HttpResponseVerifySteps {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
-
-        private val OBJECT_MAPPER = ObjectMapper().apply {
-            enable(SerializationFeature.INDENT_OUTPUT)
-        }
     }
 
     private val jsonComparer: JsonComparer = HttpStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
@@ -100,9 +95,9 @@ class HttpResponseVerifySteps {
                             "$prettyExpectedBody\n" +
                             "\tbut found\n" +
                             "$prettyActualBody\n" +
-                            "\t Matching message: [${compareResult.message}] \n" +
-                            "\t Not matching element path: [${compareResult.jsonPath}] \n" +
-                            "\t Comparison Mode: [$compareMode] \n" +
+                            "\tMatching message: [${compareResult.message}] \n" +
+                            "\tNot matching element path: [${compareResult.jsonPath}] \n" +
+                            "\tComparison Mode: [$compareMode] \n" +
                             getContextInfoForLogging(httpRequest, httpResponse)
             )
         }
@@ -383,13 +378,4 @@ class HttpResponseVerifySteps {
         return compareMode
     }
 
-    private fun String?.prettyPrintJson(): String {
-        if (this == null) {
-            return "null-value"
-        }
-
-        val jsonTree = OBJECT_MAPPER.readTree(this)
-
-        return OBJECT_MAPPER.writeValueAsString(jsonTree)
-    }
 }

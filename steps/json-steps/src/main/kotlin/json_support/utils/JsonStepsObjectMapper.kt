@@ -1,4 +1,4 @@
-package json.utils
+package json_support.utils
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
