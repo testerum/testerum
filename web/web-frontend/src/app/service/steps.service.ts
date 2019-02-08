@@ -2,8 +2,6 @@ import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {BasicStepDef} from "../model/basic-step-def.model";
 import {Observable} from 'rxjs';
-
-
 import {ComposedStepDef} from "../model/composed-step-def.model";
 import {RenamePath} from "../model/infrastructure/path/rename-path.model";
 import {Path} from "../model/infrastructure/path/path.model";
@@ -228,4 +226,27 @@ export class StepsService {
             map(StepsService.extractComposedStepDef));
     }
 
+    copy(sourcePath: Path, destinationPath: Path):  Observable<Path> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('sourcePath', sourcePath.toString())
+                .append('destinationPath', destinationPath.toString())
+        };
+
+        return this.http
+            .post<Path>(this.COMPOSED_STEPS_URL+"/copy", null, httpOptions).pipe(
+                map(res => Path.deserialize(res)));
+    }
+
+    move(sourcePath: Path, destinationPath: Path): Observable<Path> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('sourcePath', sourcePath.toString())
+                .append('destinationPath', destinationPath.toString())
+        };
+
+        return this.http
+            .post<Path>(this.COMPOSED_STEPS_URL+"/move", null, httpOptions).pipe(
+                map(res => Path.deserialize(res)));
+    }
 }

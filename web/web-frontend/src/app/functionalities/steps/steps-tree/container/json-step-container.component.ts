@@ -157,4 +157,42 @@ export class JsonStepContainerComponent {
             }
         )
     }
+
+    onPaste() {
+        let destinationPath = this.model.path;
+        if (this.stepsTreeService.pathToCopy) {
+            let sourcePath = this.stepsTreeService.pathToCopy;
+            this.jsonTreeService.triggerCopyAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
+                    this.stepsService.copy(sourcePath, destinationPath).subscribe( (resultPath: Path) => {
+                        this.afterPasteOperation(resultPath);
+                    });
+                }
+            )
+        }
+        if (this.stepsTreeService.pathToCut) {
+            let sourcePath = this.stepsTreeService.pathToCut;
+            this.jsonTreeService.triggerMoveAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
+                    this.stepsService.move(sourcePath, destinationPath).subscribe( (resultPath: Path) => {
+                        this.afterPasteOperation(resultPath);
+                    });
+                }
+            )
+        }
+    }
+
+    private afterPasteOperation(resultPath: Path) {
+        this.stepsTreeService.pathToCut = null;
+        this.stepsTreeService.pathToCopy = null;
+
+        this.stepsTreeService.initializeStepsTreeFromServer(resultPath);
+        this.urlService.navigateToComposedStep(resultPath);
+    }
+
+    canPaste(): boolean {
+        return this.stepsTreeService.canPaste(this.model.path);
+    }
+
+    isPasteATest(): boolean {
+        return this.stepsTreeService.isPasteAStep();
+    }
 }

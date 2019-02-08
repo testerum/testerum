@@ -20,6 +20,9 @@ export class StepsTreeService {
 
     treeFilter: StepsTreeFilter = StepsTreeFilter.createEmptyFilter();
 
+    pathToCut: Path = null;
+    pathToCopy: Path = null;
+
     constructor(private stepsService: StepsService,
                 private jsonTreeService: JsonTreeService,){
     }
@@ -79,5 +82,26 @@ export class StepsTreeService {
             let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(this.treeModel, path);
             this.jsonTreeService.setSelectedNode(selectedNode);
         }
+    }
+
+    setPathToCut(path: Path) {
+        this.pathToCopy = null;
+        this.pathToCut = path;
+    }
+
+    setPathToCopy(path: Path) {
+        this.pathToCopy = path;
+        this.pathToCut = null;
+    }
+
+    canPaste(path: Path): boolean {
+        return (this.pathToCopy != null && !this.pathToCopy.equals(path))
+            || (this.pathToCut != null && !this.pathToCut.equals(path));
+    }
+
+    isPasteAStep(): boolean {
+        if(this.pathToCopy && this.pathToCopy.isFile()) return true;
+        if(this.pathToCut && this.pathToCut.isFile()) return true;
+        return false;
     }
 }

@@ -193,4 +193,8 @@ export class FeatureContainerComponent implements OnInit, OnDestroy {
     canPaste(): boolean {
         return this.featuresTreeService.canPaste(this.model.path);
     }
+
+    isPasteATest(): boolean {
+        return this.featuresTreeService.isPasteATest();
+    }
 }

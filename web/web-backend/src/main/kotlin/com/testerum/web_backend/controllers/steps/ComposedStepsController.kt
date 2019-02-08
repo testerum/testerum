@@ -9,12 +9,7 @@ import com.testerum.model.step.operation.response.CheckComposedStepDefUpdateComp
 import com.testerum.model.step.tree.ComposedContainerStepNode
 import com.testerum.web_backend.services.steps.ComposedStepsFrontendService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/steps/composed")
@@ -89,4 +84,25 @@ class ComposedStepsController(private val composedStepsFrontendService: Composed
         return composedStepsFrontendService.getWarnings(composedStep)
     }
 
+    @RequestMapping(method = [RequestMethod.POST], path = ["/copy"])
+    @ResponseBody
+    fun copy(@RequestParam("sourcePath") sourcePath: String,
+             @RequestParam("destinationPath") destinationPath: String): Path {
+
+        return composedStepsFrontendService.copyComposedStep(
+                Path.createInstance(sourcePath),
+                Path.createInstance(destinationPath)
+        );
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/move"])
+    @ResponseBody
+    fun move(@RequestParam("sourcePath") sourcePath: String,
+             @RequestParam("destinationPath") destinationPath: String): Path {
+
+        return composedStepsFrontendService.moveComposedStep(
+                Path.createInstance(sourcePath),
+                Path.createInstance(destinationPath)
+        );
+    }
 }
