@@ -31,7 +31,7 @@ import {StepChooserService} from "../../../step-chooser/step-chooser.service";
 import {StepCallTreeComponentService} from "../../step-call-tree.component-service";
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {merge} from "rxjs";
-import {ArrayUtil} from "../../../../../utils/array.util";
+import {StepCallContainerModel} from "../../model/step-call-container.model";
 
 @Component({
     selector: 'step-call-editor-container',
@@ -174,19 +174,20 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         }
 
         if ((queryStepPhase != null && StepPhaseEnum.AND != queryStepPhase) || (StepPhaseEnum.AND == queryStepPhase && this.findStepIndex() > 0)) {
+            let previewsStepDef: StepDef = this.getPreviousStepDef();
             newSuggestions.unshift(
-                this.createUndefinedStepCallSuggestion(queryStepPhase, queryStepTextWithoutPhase,"Create Step -> ")
+                this.createUndefinedStepCallSuggestion(previewsStepDef.phase, queryStepTextWithoutPhase,"Create Step -> ", true)
             );
         } else {
             let hasGetPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("Given " + query);
             let hasWhenPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("When " + query);
             let hasThenPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("Then " + query);
 
-            if(hasThenPhasePerfectMatch.length == 0)
+            if(hasThenPhasePerfectMatch.length == 0){}
                 newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.THEN, queryStepTextWithoutPhase, "Create Step -> "));
-            if(hasWhenPhasePerfectMatch.length == 0)
+            if(hasWhenPhasePerfectMatch.length == 0){}
                 newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.WHEN, queryStepTextWithoutPhase, "Create Step -> "));
-            if(hasGetPhasePerfectMatch.length == 0)
+            if(hasGetPhasePerfectMatch.length == 0){}
                 newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.GIVEN, queryStepTextWithoutPhase, "Create Step -> "));
         }
 
@@ -197,13 +198,18 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         return this.model.parentContainer.getChildren().indexOf(this.model);
     }
 
+    private getPreviousStepDef(): StepDef {
+        let previewsStepIndex = this.model.parentContainer.getChildren().indexOf(this.model) - 1;
+        return (this.model.parentContainer.getChildren()[previewsStepIndex] as StepCallContainerModel).stepCall.stepDef;
+    }
+
     onKeyUp(event: KeyboardEvent) {
         if (event.code == 'Escape') {
             this.removeThisEditorFromTree()
         }
     }
 
-    createUndefinedStepCallSuggestion(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string, actionText: string): StepCallSuggestion {
+    createUndefinedStepCallSuggestion(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string, actionText: string, userAndAsTextPhase: boolean = false): StepCallSuggestion {
 
         let stepDef = new UndefinedStepDef();
         stepDef.path = this.stepCallTreeComponentService.containerPath;
@@ -212,7 +218,8 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         stepDef.stepPattern = new StepPattern();
         stepDef.stepPattern.setPatternText(stepTextWithoutPhase);
 
-        let stepText =  StepPhaseUtil.toCamelCaseString(stepPhase) + " " + stepTextWithoutPhase;
+        let stepPhaseForText = StepPhaseUtil.toCamelCaseString(userAndAsTextPhase ? StepPhaseEnum.AND : stepPhase);
+        let stepText =  stepPhaseForText + " " + stepTextWithoutPhase;
 
         return new StepCallSuggestion(stepText, stepDef, actionText);
     }
