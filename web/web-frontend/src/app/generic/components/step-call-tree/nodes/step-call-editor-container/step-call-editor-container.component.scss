@@ -21,6 +21,10 @@
     padding-top: 0;
     padding-bottom: 0;
 }
+.step-suggestion .ui-autocomplete .ui-autocomplete-panel{
+    width: 600px;
+    left: 0;
+}
 .step-suggestion .ui-autocomplete-list-item.ui-state-highlight .step-call-action-text{
     color: #A9EB9F;
 }
