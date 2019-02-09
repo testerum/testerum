@@ -53,6 +53,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
 
     hasMouseOver: boolean = false;
     fuseSearch: Fuse<StepCallSuggestion, Fuse.FuseOptions<StepCallSuggestion>>;
+    fuseSearchWithPerfercMatch: Fuse<StepCallSuggestion, Fuse.FuseOptions<StepCallSuggestion>>;
 
     @ViewChild("autoCompleteComponent") autocompleteComponent: AutoComplete;
 
@@ -72,6 +73,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
                 let stepCallSuggestion = new StepCallSuggestion(stepDefText, stepDef);
                 this.allPossibleSuggestions.push(stepCallSuggestion);
             }
+
             this.fuseSearch = new Fuse<StepCallSuggestion, any>(
                 this.allPossibleSuggestions,
         {
@@ -83,6 +85,19 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
                     matchAllTokens: false,
                     findAllMatches: false,
                     threshold: 0.6,
+                }
+            );
+
+            this.fuseSearchWithPerfercMatch = new Fuse<StepCallSuggestion, any>(
+                this.allPossibleSuggestions,
+        {
+                    keys: ["stepCallText"],
+                    shouldSort: false,
+                    includeScore: true,
+                    includeMatches: true,
+                    threshold: 0.0,
+                    location: 1000,
+                    distance: 0,
                 }
             )
         });
@@ -163,11 +178,16 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
                 this.createUndefinedStepCallSuggestion(queryStepPhase, queryStepTextWithoutPhase,"Create Step -> ")
             );
         } else {
-            newSuggestions.unshift(
-                this.createUndefinedStepCallSuggestion(StepPhaseEnum.GIVEN, queryStepTextWithoutPhase, "Create Step -> "),
-                this.createUndefinedStepCallSuggestion(StepPhaseEnum.WHEN, queryStepTextWithoutPhase, "Create Step -> "),
-                this.createUndefinedStepCallSuggestion(StepPhaseEnum.THEN, queryStepTextWithoutPhase, "Create Step -> "),
-            );
+            let hasGetPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("Given " + query);
+            let hasWhenPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("When " + query);
+            let hasThenPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("Then " + query);
+
+            if(hasThenPhasePerfectMatch.length == 0)
+                newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.THEN, queryStepTextWithoutPhase, "Create Step -> "));
+            if(hasWhenPhasePerfectMatch.length == 0)
+                newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.WHEN, queryStepTextWithoutPhase, "Create Step -> "));
+            if(hasGetPhasePerfectMatch.length == 0)
+                newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.GIVEN, queryStepTextWithoutPhase, "Create Step -> "));
         }
 
         this.suggestions = newSuggestions;
