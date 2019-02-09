@@ -54,7 +54,7 @@ import {HttpMockProxyResponseComponent} from "./editors/http/mock/stub/response/
 import {HttpMockRequestScenarioService} from "./editors/http/mock/stub/request/request-scenario/http-mock-request-scenario.service";
 import {HttpMockRequestScenarioComponent} from "./editors/http/mock/stub/request/request-scenario/http-mock-request-scenario.component";
 import {HttpMockServerComponent} from "./editors/http/mock/server/http-mock-server.component";
-import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alown-resource-panel.component";
+import {StandAloneResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alone-resource-panel.component";
 import {ResourceResolver} from "./editors/resource.resolver";
 import {BasicResourceComponent} from "./editors/basic/basic-resource.component";
 import {ResourcesTreeComponent} from "./tree/resources-tree.component";
@@ -122,7 +122,7 @@ import {AngularSplitModule} from "angular-split";
         ResourcesContainerComponent,
         ResourceNodeComponent,
 
-        StandAlownResourcePanelComponent,
+        StandAloneResourcePanelComponent,
 
         RdbmsConnectionConfigComponent,
         SchemaChooserModalComponent,

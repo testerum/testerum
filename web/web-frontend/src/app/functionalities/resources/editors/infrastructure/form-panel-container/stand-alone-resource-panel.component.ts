@@ -26,11 +26,11 @@ import {AbstractComponentCanDeactivate} from "../../../../../generic/interfaces/
 @Component({
     moduleId: module.id,
     selector: 'stand-alown-resource-panel',
-    templateUrl: 'stand-alown-resource-panel.component.html',
-    styleUrls: ['stand-alown-resource-panel.component.scss']
+    templateUrl: 'stand-alone-resource-panel.component.html',
+    styleUrls: ['stand-alone-resource-panel.component.scss']
 })
 
-export class StandAlownResourcePanelComponent extends AbstractComponentCanDeactivate implements OnInit, OnDestroy {
+export class StandAloneResourcePanelComponent extends AbstractComponentCanDeactivate implements OnInit, OnDestroy {
 
     @ViewChild('panelBody', {read: ViewContainerRef}) bodyElement:ViewContainerRef;
 

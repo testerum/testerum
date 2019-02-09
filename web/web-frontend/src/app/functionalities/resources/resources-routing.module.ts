@@ -3,7 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {ResourcesComponent} from "./resources.component";
 import {LicenseGuard} from "../../service/guards/license.guard";
 import {ResourceResolver} from "./editors/resource.resolver";
-import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alown-resource-panel.component";
+import {StandAloneResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alone-resource-panel.component";
 import {UnsavedChangesGuard} from "../../service/guards/unsaved-changes.guard";
 import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
@@ -13,11 +13,11 @@ const resourcesRoutes: Routes = [
         children: [
             {
                 path: 'create',
-                component: StandAlownResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [UnsavedChangesGuard]
+                component: StandAloneResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [UnsavedChangesGuard]
             },
             {
                 path: 'show',
-                component: StandAlownResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [UnsavedChangesGuard]
+                component: StandAloneResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [UnsavedChangesGuard]
             }
         ]
     },
