@@ -166,29 +166,39 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         }
 
         let queryStepPhase = StepTextUtil.getStepPhaseFromStepText(query);
-        let queryStepTextWithoutPhase = StepTextUtil.getStepTextWithoutStepPhase(query);
+        let queryStepTextWithoutPhase = StepTextUtil.getStepTextWithoutStepPhase(query).trim();
 
         if (fuseSearchResult.length > 0 && fuseSearchResult[0].score == 0) {
             this.suggestions = newSuggestions;
             return;
         }
 
-        if ((queryStepPhase != null && StepPhaseEnum.AND != queryStepPhase) || (StepPhaseEnum.AND == queryStepPhase && this.findStepIndex() > 0)) {
-            let previewsStepDef: StepDef = this.getPreviousStepDef();
-            newSuggestions.unshift(
-                this.createUndefinedStepCallSuggestion(previewsStepDef.phase, queryStepTextWithoutPhase,"Create Step -> ", true)
-            );
-        } else {
-            let hasGetPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("Given " + query);
-            let hasWhenPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("When " + query);
-            let hasThenPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("Then " + query);
+        let hasGetPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("Given " + queryStepTextWithoutPhase).length != 0;
+        let hasWhenPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("When " + queryStepTextWithoutPhase).length != 0;
+        let hasThenPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("Then " + queryStepTextWithoutPhase).length != 0;
+        let hasAndPhasePerfectMatch = false;
+        let previewsStepDef: StepDef = null;
 
-            if(hasThenPhasePerfectMatch.length == 0){}
+        if (StepPhaseEnum.AND == queryStepPhase && this.findStepIndex() > 0) {
+            previewsStepDef = this.getPreviousStepDef();
+            let previewsStepPhaseAsString = StepPhaseUtil.toCamelCaseString(previewsStepDef.phase);
+            hasAndPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search(previewsStepPhaseAsString + " " + query).length != 0;
+        }
+
+        if(!hasGetPhasePerfectMatch && !hasWhenPhasePerfectMatch && !hasThenPhasePerfectMatch && !hasAndPhasePerfectMatch) {
+            if(queryStepPhase == null || queryStepPhase == StepPhaseEnum.THEN)
                 newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.THEN, queryStepTextWithoutPhase, "Create Step -> "));
-            if(hasWhenPhasePerfectMatch.length == 0){}
+            if(queryStepPhase == null || queryStepPhase == StepPhaseEnum.WHEN)
                 newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.WHEN, queryStepTextWithoutPhase, "Create Step -> "));
-            if(hasGetPhasePerfectMatch.length == 0){}
+            if(queryStepPhase == null || queryStepPhase == StepPhaseEnum.GIVEN)
                 newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.GIVEN, queryStepTextWithoutPhase, "Create Step -> "));
+
+            if (StepPhaseEnum.AND == queryStepPhase && previewsStepDef != null) {
+                if(queryStepPhase == null || queryStepPhase == StepPhaseEnum.AND)
+                    newSuggestions.unshift(
+                    this.createUndefinedStepCallSuggestion(previewsStepDef.phase, queryStepTextWithoutPhase,"Create Step -> ", true)
+                );
+            }
         }
 
         this.suggestions = newSuggestions;
