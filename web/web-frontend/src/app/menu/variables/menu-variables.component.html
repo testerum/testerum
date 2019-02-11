@@ -1,0 +1,6 @@
+<select class="form-control"
+        [(ngModel)]="selectedEnvironment">
+    <option *ngFor="let availableEnvironment of availableEnvironments" [value]="availableEnvironment">
+        {{availableEnvironment}}
+    </option>
+</select>

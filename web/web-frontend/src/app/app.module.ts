@@ -49,6 +49,7 @@ import {UtilService} from "./service/util.service";
 import {ProjectService} from "./service/project.service";
 import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.interceptor";
 import {CurrentProjectGuard} from "./service/guards/current-project.guard";
+import { MenuVariablesComponent } from './menu/variables/menu-variables.component';
 
 @NgModule({
     imports: [
@@ -79,7 +80,8 @@ import {CurrentProjectGuard} from "./service/guards/current-project.guard";
         VariablesComponent,
         LicenseComponent,
         SettingsComponent,
-        ArgValueValidatorDirective
+        ArgValueValidatorDirective,
+        MenuVariablesComponent
     ],
     exports: [
         VariablesComponent,

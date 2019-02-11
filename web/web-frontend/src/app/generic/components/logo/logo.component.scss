@@ -5,7 +5,9 @@
     color: black;
 
     position: relative;
-    top: -0.125em
+    top: -0.05em;
+    vertical-align: middle;
+
 }
 
 .white-color {
@@ -18,4 +20,7 @@
     font-size: 4em;
     font-weight: bold;
     color: #ff9800;
+    position: relative;
+    top: -.1em;
+    vertical-align: middle;
 }

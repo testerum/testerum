@@ -9,6 +9,9 @@ import {ProjectVariables} from "../functionalities/variables/model/project-varia
 @Injectable()
 export class VariablesService {
 
+    public static DEFAULT_ENVIRONMENT_NAME = "default environment";
+    public static LOCAL_ENVIRONMENT_NAME = "local environment";
+
     private VARIABLES_URL = "/rest/variables";
 
     constructor(private http: HttpClient) {}

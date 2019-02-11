@@ -1,39 +1,48 @@
 <nav class="menu navbar navbar-inverse" *ngIf="shouldDisplay && isProjectSelected()">
-    <ul *ngIf="isProjectSelected()" class="nav navbar-nav testerum-logo">
-        <li>
-            <a [routerLink]="['/']" routerLinkActive="active">
-                <logo [whiteColor]="true"></logo>
-            </a>
-        </li>
-    </ul>
+    <div class="menu-left">
+        <ul *ngIf="isProjectSelected()" class="nav navbar-nav testerum-logo">
+            <li>
+                <a [routerLink]="['/']" routerLinkActive="active">
+                    <logo [whiteColor]="true"></logo>
+                </a>
+            </li>
+        </ul>
 
-    <ul *ngIf="isProjectSelected()" class="nav navbar-nav">
-        <li>
-            <a [routerLink]="['/'+getProjectName()+'/features']" routerLinkActive="active">Features</a>
-        </li>
-        <li>
-            <a [routerLink]="['/'+getProjectName()+'/steps']" routerLinkActive="active">Steps</a>
-        </li>
-        <li>
-            <a [routerLink]="['/'+getProjectName()+'/resources']" routerLinkActive="active">Resources</a>
-        </li>
-        <li>
-            <a [routerLink]="['/'+getProjectName()+'/automated/results']" routerLinkActive="active">Automated Tests Results</a>
-        </li>
-        <li>
-            <a [routerLink]="['/'+getProjectName()+'/manual/plans']" routerLinkActive="active">Manual Test Execution</a>
-        </li>
-    </ul>
-
-    <ul class="nav navbar-nav navbar-right">
-        <li *ngIf="isProjectSelected()">
-            <a href="" (click)="showVariables(); false;">Variables</a>
-            <variables></variables>
-        </li>
-        <li *ngIf="isProjectSelected()">
-            <a [routerLink]="['/'+getProjectName()+'/settings']" routerLinkActive="active" class="sttings-icon-menu-item">
-                <i  class="fas fa-cogs" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
+        <ul *ngIf="isProjectSelected()" class="nav navbar-nav">
+            <li>
+                <a [routerLink]="['/'+getProjectName()+'/features']" routerLinkActive="active">Features</a>
+            </li>
+            <li>
+                <a [routerLink]="['/'+getProjectName()+'/steps']" routerLinkActive="active">Steps</a>
+            </li>
+            <li>
+                <a [routerLink]="['/'+getProjectName()+'/resources']" routerLinkActive="active">Resources</a>
+            </li>
+            <li>
+                <a [routerLink]="['/'+getProjectName()+'/automated/results']" routerLinkActive="active">Automated Tests Results</a>
+            </li>
+            <li>
+                <a [routerLink]="['/'+getProjectName()+'/manual/plans']" routerLinkActive="active">Manual Test Execution</a>
+            </li>
+        </ul>
+    </div>
+    <div class="menu-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li *ngIf="isProjectSelected()" class="menu-variables">
+                <menu-variables></menu-variables>
+                <a href="" (click)="showVariables(); $event.stopPropagation();"
+                   title="View & Edit variables">
+                    <i class="icon-menu-item far fa-eye"></i>
+                </a>
+                <variables></variables>
+            </li>
+            <li *ngIf="isProjectSelected()">
+                <a [routerLink]="['/'+getProjectName()+'/settings']"
+                    routerLinkActive="active"
+                    title="Settings">
+                    <i  class="icon-menu-item fas fa-cogs" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
 </nav>

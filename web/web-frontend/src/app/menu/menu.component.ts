@@ -42,10 +42,6 @@ export class MenuComponent {
                         this.shouldDisplay = false;
                         break;
                     }
-                    case "/setup": {
-                        this.shouldDisplay = false;
-                        break;
-                    }
                     default: {
                         this.shouldDisplay = true;
                     }
