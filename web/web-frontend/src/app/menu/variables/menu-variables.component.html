@@ -1,4 +1,5 @@
-<select class="form-control"
+<select *ngIf="shouldDisplayEnvironmentChooser"
+        class="form-control"
         [(ngModel)]="selectedEnvironment">
     <option *ngFor="let availableEnvironment of availableEnvironments" [value]="availableEnvironment">
         {{availableEnvironment}}
