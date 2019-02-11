@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {Variable} from "../../model/variable/variable.model";
+import {Variable} from "./model/variable.model";
 import {StringUtils} from "../../utils/string-utils.util";
 import {ArrayUtil} from "../../utils/array.util";
 import {VariablesService} from "../../service/variables.service";
+import {ProjectVariables} from "./model/project-variables.model";
 
 @Component({
     moduleId: module.id,
@@ -28,12 +29,9 @@ export class VariablesComponent implements OnInit {
 
     private loadVariablesFromServer() {
         this.variablesService.getVariables().subscribe(
-            (serverVariables: Array<Variable>) => {
+            (projectVariables: ProjectVariables) => {
                 this.variables.length = 0;
 
-                for (let serverVariable of serverVariables) {
-                    this.variables.push(serverVariable)
-                }
             }
         );
     }
@@ -80,11 +78,11 @@ export class VariablesComponent implements OnInit {
 
     save(): void {
         let variablesToSave = this.variables.filter(variable => !variable.isEmpty());
-        this.variablesService.save(variablesToSave).subscribe(
-            result => {
-                this.editMode = false;
-            }
-        )
+        // this.variablesService.save(variablesToSave).subscribe(
+        //     result => {
+        //         this.editMode = false;
+        //     }
+        // )
     }
 
     cancel(): void {

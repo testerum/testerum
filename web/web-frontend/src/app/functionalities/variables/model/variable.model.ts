@@ -1,5 +1,5 @@
-import {JsonUtil} from "../../utils/json.util";
-import {Serializable} from "../infrastructure/serializable.model";
+import {JsonUtil} from "../../../utils/json.util";
+import {Serializable} from "../../../model/infrastructure/serializable.model";
 
 export class Variable implements Serializable<Variable> {
     key: string;
