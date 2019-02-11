@@ -8,26 +8,26 @@ import com.testerum.api.transformer.Transformer
 import com.testerum.common_json.ObjectMapperFactory
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 import database.relational.connection_manager.RdbmsConnectionManager
-import database.relational.connection_manager.model.RdbmsClient
+import database.relational.connection_manager.model.RdbmsConnection
 import database.relational.module_di.RdbmsStepsModuleServiceLocator
 
-class RdbmsConnectionTransformer: Transformer<RdbmsClient> {
+class RdbmsConnectionTransformer: Transformer<RdbmsConnection> {
 
     private val rdbmsConnectionManager: RdbmsConnectionManager = RdbmsStepsModuleServiceLocator.bootstrapper.rdbmsStepsModuleFactory.rdbmsConnectionManager
     private val objectMapper: ObjectMapper = ObjectMapperFactory.RESOURCE_OBJECT_MAPPER
     private val jsonVariableReplacer = RdbmsStepsModuleServiceLocator.bootstrapper.rdbmsStepsModuleFactory.jsonVariableReplacer
 
     override fun canTransform(paramInfo: ParameterInfo): Boolean
-            = (paramInfo.type == RdbmsClient::class.java)
+            = (paramInfo.type == RdbmsConnection::class.java)
 
-    override fun transform(toTransform: String, paramInfo: ParameterInfo): RdbmsClient {
+    override fun transform(toTransform: String, paramInfo: ParameterInfo): RdbmsConnection {
         val rootNode: JsonNode = objectMapper.readTree(toTransform)
 
         jsonVariableReplacer.replaceVariables(rootNode)
 
         val connectionConfig: RdbmsConnectionConfig = objectMapper.treeToValue(rootNode)
 
-        return rdbmsConnectionManager.getRdbmsClient(connectionConfig)
+        return rdbmsConnectionManager.getRdbmsConnection(connectionConfig)
     }
 
 }

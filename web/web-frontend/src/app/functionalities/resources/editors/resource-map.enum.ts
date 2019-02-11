@@ -78,9 +78,9 @@ export class ResourceMapEnum {
         (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static RDBMS_CONNECTION: ResourceMapEnum = new ResourceMapEnum(
-        "database.relational.connection_manager.model.RdbmsClient",
-        "database.relational.connection_manager.model.RdbmsClient",
-        "RdbmsClient",
+        "database.relational.connection_manager.model.RdbmsConnection",
+        "database.relational.connection_manager.model.RdbmsConnection",
+        "RdbmsConnection",
         "rdbms.connection.yaml",
         RdbmsConnectionConfigComponent,
         () => {return new RdbmsConnectionConfig()},

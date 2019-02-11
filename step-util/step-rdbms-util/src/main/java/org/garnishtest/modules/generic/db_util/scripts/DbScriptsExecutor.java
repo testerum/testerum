@@ -52,31 +52,33 @@ public class DbScriptsExecutor {
 
     public void executeScripts(@NonNull final VariablesResolver variablesResolver,
                                @NonNull final String sqlScript) throws DbScriptsExecutorException {
-        try {
-            this.transactionTemplate.executeInTransaction(new DatabaseAction() {
-                @Override
-                public void doInTransaction(final Connection connection) {
-                    DbScriptsExecutor.this.executeScripts(connection, variablesResolver, sqlScript);
-                }
-            });
-        } catch (final Exception e) {
-            throw new DbScriptsExecutorException(
-                    "failed to execute SQL scripts",
-                    e
-            );
-        }
+        this.transactionTemplate.executeInTransaction(new DatabaseAction() {
+            @Override
+            public void doInTransaction(final Connection connection) {
+                DbScriptsExecutor.this.executeScripts(connection, variablesResolver, sqlScript);
+            }
+        });
     }
 
     private void executeScripts(@NonNull final Connection connection,
                                 @NonNull final VariablesResolver variablesResolver,
                                 @NonNull final String sqlScriptAsString) {
-        final DbSupport dbSupport = createDbSupport(connection);
+        String scriptContentWithVariablesReplaced = null;
+        try {
+            final DbSupport dbSupport = createDbSupport(connection);
 
-        final String scriptContentWithVariablesReplaced = variablesResolver.resolveVariablesInText(sqlScriptAsString, ValueEscapers.none());
+            scriptContentWithVariablesReplaced = variablesResolver.resolveVariablesInText(sqlScriptAsString, ValueEscapers.none());
 
-        final SqlScript sqlScript = new SqlScript(scriptContentWithVariablesReplaced, dbSupport);
+            final SqlScript sqlScript = new SqlScript(scriptContentWithVariablesReplaced, dbSupport);
 
-        sqlScript.execute(new JdbcTemplate(connection, Types.NULL));
+            sqlScript.execute(new JdbcTemplate(connection, Types.NULL));
+        } catch (final Exception e) {
+            String scriptContent = (scriptContentWithVariablesReplaced != null) ? scriptContentWithVariablesReplaced : "";
+            throw new DbScriptsExecutorException(
+                    "failed to execute SQL script" + scriptContent,
+                    e
+            );
+        }
     }
 
     private void executeScripts(@NonNull final Connection connection,
@@ -99,13 +101,22 @@ public class DbScriptsExecutor {
                                @NonNull final Resource sqlScriptResource,
                                @NonNull final DbSupport dbSupport,
                                @NonNull final Connection connection) {
-        final String scriptContent = loadScriptContent(sqlScriptResource);
+        String scriptContentWithVariablesReplaced = null;
+        try {
+            final String scriptContent = loadScriptContent(sqlScriptResource);
 
-        final String scriptContentWithVariablesReplaced = variablesResolver.resolveVariablesInText(scriptContent, ValueEscapers.none());
+            scriptContentWithVariablesReplaced = variablesResolver.resolveVariablesInText(scriptContent, ValueEscapers.none());
 
-        final SqlScript sqlScript = new SqlScript(scriptContentWithVariablesReplaced, dbSupport);
+            final SqlScript sqlScript = new SqlScript(scriptContentWithVariablesReplaced, dbSupport);
 
-        sqlScript.execute(new JdbcTemplate(connection, Types.NULL));
+            sqlScript.execute(new JdbcTemplate(connection, Types.NULL));
+        } catch (final Exception e) {
+            String scriptContent = (scriptContentWithVariablesReplaced != null) ? scriptContentWithVariablesReplaced : "";
+            throw new DbScriptsExecutorException(
+                    "failed to execute SQL script" + scriptContent,
+                    e
+            );
+        }
     }
 
     private String loadScriptContent(@NonNull final Resource sqlScriptResource) throws DbScriptsExecutorException {
@@ -117,10 +128,6 @@ public class DbScriptsExecutor {
                     "failed to open stream to read content of resource [" + sqlScriptResource + "]",
                     e
             );
-        }
-
-        if (inputStream == null) {
-            throw new DbScriptsExecutorException("resource [" + sqlScriptResource + "] cannot be found");
         }
 
         final AutoCloseInputStream autoCloseInputStream = new AutoCloseInputStream(inputStream);

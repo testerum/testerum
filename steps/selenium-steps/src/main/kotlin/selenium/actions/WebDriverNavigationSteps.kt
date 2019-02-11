@@ -20,8 +20,7 @@ class WebDriverNavigationSteps {
     }
 
     @When(
-            value = "I navigate to url <<url>>",
-            description = "Navigates to the given URL."
+            value = "I navigate to url <<url>>"
     )
     fun whenINavigateToUrl(url: String) {
         webDriverManager.executeWebDriverStep { driver ->

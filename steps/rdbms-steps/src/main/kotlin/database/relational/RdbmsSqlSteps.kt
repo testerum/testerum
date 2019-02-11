@@ -3,7 +3,7 @@ package database.relational
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
 import com.testerum.api.services.TesterumServiceLocator
-import database.relational.connection_manager.model.RdbmsClient
+import database.relational.connection_manager.model.RdbmsConnection
 import database.relational.model.RdbmsSql
 import database.relational.transformer.RdbmsConnectionTransformer
 import database.relational.transformer.RdbmsSqlTransformer
@@ -13,7 +13,7 @@ class RdbmsSqlSteps {
     private val testerumLogger = TesterumServiceLocator.getTesterumLogger()
 
     @When(
-            value = "writing <<sql>> in <<dbConnection>> database",
+            value = "executing the SQL <<sql>> on the database <<dbConnection>>",
             description = "Executes the given SQL using the given relational database connection."
     )
     fun executeSql(
@@ -27,7 +27,7 @@ class RdbmsSqlSteps {
                     transformer = RdbmsConnectionTransformer::class,
                     description = RdbmsSharedDescriptions.CONNECTION
             )
-            dbConnection: RdbmsClient
+            dbConnection: RdbmsConnection
     ) {
         testerumLogger.debug(
                 "SQL to execute\n"

@@ -26,7 +26,7 @@ export class ServerToUiTypeMapperUtil {
         ['boolean'          , 'BOOLEAN'],
         ['java.lang.Boolean', 'BOOLEAN'],
 
-        ['database.relational.connection_manager.model.RdbmsClient', 'database.relational.connection_manager.model.RdbmsClient'],
+        ['database.relational.connection_manager.model.RdbmsConnection', 'database.relational.connection_manager.model.RdbmsConnection'],
 
         ['database.relational.model.RdbmsSql', 'database.relational.model.RdbmsSql'],
 

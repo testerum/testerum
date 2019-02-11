@@ -20,8 +20,7 @@ class JsonSteps {
 
     @Given(
             value = "the variable <<name>> with JSON value <<value>>",
-            description = "Sets the value of a variable to the given JSON.\n" +
-                          "If the variable doesn't exist yet, it will be first created."
+            description = "Sets the value of a variable to the given JSON."
     )
     fun declareJsonVariable(name: String,
 

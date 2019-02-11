@@ -8,8 +8,8 @@ import java.sql.Connection
 import java.sql.Driver
 import java.util.*
 
-class RdbmsClient constructor(val rdbmsConnectionConfig: RdbmsConnectionConfig,
-                              private val driver: Driver) {
+class RdbmsConnection constructor(val rdbmsConnectionConfig: RdbmsConnectionConfig,
+                                  private val driver: Driver) {
 
     fun openJdbcConnection() : Connection {
         val properties = Properties().apply {
