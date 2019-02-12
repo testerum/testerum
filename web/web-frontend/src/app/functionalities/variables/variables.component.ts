@@ -1,10 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Variable} from "./model/variable.model";
 import {StringUtils} from "../../utils/string-utils.util";
 import {ArrayUtil} from "../../utils/array.util";
 import {VariablesService} from "../../service/variables.service";
 import {ProjectVariables} from "./model/project-variables.model";
+import {Subscription} from "rxjs";
+import {EnvironmentEditModalComponent} from "./environment-edit-modal/environment-edit-modal.component";
 
 @Component({
     moduleId: module.id,
@@ -12,28 +14,56 @@ import {ProjectVariables} from "./model/project-variables.model";
     templateUrl: 'variables.component.html',
     styleUrls: ['variables.component.scss']
 })
+export class VariablesComponent implements OnInit, OnDestroy {
 
-export class VariablesComponent implements OnInit {
+    @ViewChild("modal") modal: ModalDirective;
+    @ViewChild(EnvironmentEditModalComponent) environmentEditModalComponent: EnvironmentEditModalComponent;
 
-    @ViewChild("infoModal") infoModal:ModalDirective;
+    projectVariables: ProjectVariables;
 
+    disableModal: boolean = false;
+    hasChanges: boolean = false;
+    selectedEnvironment: string;
+    availableEnvironments: string[] = [];
     variables: Array<Variable> = [];
-    editMode: boolean = false;
 
+    private getVariablesSubscription: Subscription;
     constructor(private variablesService: VariablesService) {
     }
 
     ngOnInit() {
-        this.loadVariablesFromServer();
+        this.getVariablesSubscription = this.variablesService.getVariables().subscribe((projectVariables: ProjectVariables) => {
+            this.initState(projectVariables);
+        });
     }
 
-    private loadVariablesFromServer() {
-        this.variablesService.getVariables().subscribe(
-            (projectVariables: ProjectVariables) => {
-                this.variables.length = 0;
+    private initState(projectVariables: ProjectVariables) {
+        this.projectVariables = projectVariables;
 
-            }
-        );
+        this.selectedEnvironment = projectVariables.currentEnvironment ? projectVariables.currentEnvironment : ProjectVariables.DEFAULT_ENVIRONMENT_NAME;
+        this.availableEnvironments = projectVariables.getAllAvailableEnvironments();
+    }
+
+    ngOnDestroy(): void {
+        if(this.getVariablesSubscription) this.getVariablesSubscription.unsubscribe();
+    }
+
+    editEnvironment(): void {
+        this.disableModal = true;
+        this.environmentEditModalComponent.editEnvironmentName(this.selectedEnvironment, this.projectVariables).subscribe( (selectedEnvironment: string) => {
+            this.initState(this.projectVariables);
+            this.selectedEnvironment = selectedEnvironment;
+            this.disableModal = false;
+        });
+    }
+
+    addEnvironment(): void {
+        this.disableModal = true;
+        this.environmentEditModalComponent.addEnvironment(this.projectVariables).subscribe( (selectedEnvironment: string) => {
+            this.initState(this.projectVariables);
+            this.selectedEnvironment = selectedEnvironment;
+            this.disableModal = false;
+        });
     }
 
     onNewKeyChange(value: Event) {
@@ -56,24 +86,21 @@ export class VariablesComponent implements OnInit {
         }
     }
 
-    enableEditMode() {
-        this.editMode = true;
-    }
-
     deleteVariable(variable: Variable) {
         ArrayUtil.removeElementFromArray(this.variables, variable);
     }
 
-    isEditMode(): boolean {
-        return this.editMode
-    }
-
     show(): void {
-        this.infoModal.show();
+        this.modal.show();
     }
 
     close(): void {
-        this.infoModal.hide();
+        this.modal.hide();
+    }
+
+    isEditableEnvironment(): boolean {
+        return this.selectedEnvironment != ProjectVariables.DEFAULT_ENVIRONMENT_NAME &&
+            this.selectedEnvironment != ProjectVariables.LOCAL_ENVIRONMENT_NAME;
     }
 
     save(): void {
@@ -86,7 +113,6 @@ export class VariablesComponent implements OnInit {
     }
 
     cancel(): void {
-        this.editMode = false;
-        this.loadVariablesFromServer();
+        // this.loadVariablesFromServer();
     }
 }

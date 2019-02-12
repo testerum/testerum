@@ -1,4 +1,6 @@
-<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+<div bsModal #modal="bs-modal"
+     [class.disabled]="disableModal"
+     class="variables modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,44 +10,64 @@
                 </h4>
             </div>
             <div class="modal-body">
+                <div class="my-line">
+                    <label class="my-label label-size">Environment:</label>
+
+                    <div class="my-value">
+                        <select class="form-control"
+                                [(ngModel)]="selectedEnvironment">
+                            <option *ngFor="let availableEnvironment of availableEnvironments" [value]="availableEnvironment">
+                                {{availableEnvironment}}
+                            </option>
+                        </select>
+
+                        <div class="action-panel inline btn-group">
+                            <div *ngIf="isEditableEnvironment()"
+                                 title="Edit Environment Name" class="btn btn-default btn-xs btn-group"
+                                 (click)="editEnvironment(); $event.stopPropagation()">
+                                <i class="fa_my-edit" aria-hidden="true"></i>
+                            </div>
+                            <div title="Add Environment" class="btn btn-default btn-xs btn-group"
+                                 (click)="addEnvironment(); $event.stopPropagation()">
+                                <i class="fa_my-plus" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <table class="table table-hover">
                     <colgroup>
                         <col span="1" style="width: 31%;">
                         <col span="1" style="width: 65%;">
-                        <col *ngIf="isEditMode()" span="1" style="width: 4%;">
+                        <col span="1" style="width: 4%;">
                     </colgroup>
 
                     <tr>
                         <th>Name</th>
                         <th>Value</th>
-                        <th *ngIf="isEditMode()"></th>
+                        <th></th>
                     </tr>
 
                     <tr *ngFor="let variable of variables; let last = last">
 
                         <!-- KEY -->
-                        <td *ngIf="!variable.isEmpty() || isEditMode()">
-                            <span *ngIf="!isEditMode()">{{variable.key}}</span>
-                            <input *ngIf="isEditMode()"
-                                   (change)="onNewKeyChange($event)"
+                        <td *ngIf="!variable.isEmpty()">
+                            <input (change)="onNewKeyChange($event)"
                                    [(ngModel)]="variable.key"
                                    type="text" pInputText  class="form-control full-width">
                         </td>
 
                         <!-- VALUE -->
-                        <td *ngIf="!variable.isEmpty() || isEditMode()">
-                            <span *ngIf="!isEditMode()">{{variable.value}}</span>
-                            <input *ngIf="isEditMode()"
-                                   (change)="onNewValueChange($event)"
+                        <td *ngIf="!variable.isEmpty()">
+                            <input (change)="onNewValueChange($event)"
                                    [(ngModel)]="variable.value"
                                    type="text" pInputText  class="form-control full-width">
                         </td>
 
                         <!-- DELETE -->
-                        <td *ngIf="!variable.isEmpty() && isEditMode()">
+                        <td *ngIf="!variable.isEmpty()">
                             <a href (click)="deleteVariable(variable);false;"
-                               class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
+                               class="btn btn-danger" aria-label="Delete">
                                 <i  class="far fa-trash-alt" aria-hidden="true"></i>
                             </a>
                         </td>
@@ -55,11 +77,10 @@
 
             <!-- BUTTONS -->
             <div class="modal-footer">
-                <ng-container *ngIf="!isEditMode()">
-                    <button (click)="enableEditMode();" class="btn btn-primary">Edit</button>
+                <ng-container *ngIf="!hasChanges">
                     <button (click)="close()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </ng-container>
-                <ng-container *ngIf="isEditMode()">
+                <ng-container *ngIf="hasChanges">
                     <button (click)="cancel();" type="button" class="btn btn-default">Cancel</button>
                     <button (click)="save()" class="btn btn-primary">Save</button>
                 </ng-container>
@@ -67,3 +88,4 @@
         </div>
     </div>
 </div>
+<environment-edit-modal #environmentEditModal></environment-edit-modal>

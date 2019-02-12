@@ -50,6 +50,7 @@ import {ProjectService} from "./service/project.service";
 import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.interceptor";
 import {CurrentProjectGuard} from "./service/guards/current-project.guard";
 import { MenuVariablesComponent } from './menu/variables/menu-variables.component';
+import { EnvironmentEditModalComponent } from './functionalities/variables/environment-edit-modal/environment-edit-modal.component';
 
 @NgModule({
     imports: [
@@ -81,7 +82,8 @@ import { MenuVariablesComponent } from './menu/variables/menu-variables.componen
         LicenseComponent,
         SettingsComponent,
         ArgValueValidatorDirective,
-        MenuVariablesComponent
+        MenuVariablesComponent,
+        EnvironmentEditModalComponent
     ],
     exports: [
         VariablesComponent,

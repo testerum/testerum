@@ -20,10 +20,10 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.getVariablesSubscription = this.variablesService.getVariables().subscribe((projectVariables: ProjectVariables) => {
-            this.selectedEnvironment = projectVariables.currentEnvironment ? projectVariables.currentEnvironment : VariablesService.DEFAULT_ENVIRONMENT_NAME;
-            this.availableEnvironments.push(VariablesService.DEFAULT_ENVIRONMENT_NAME);
+            this.selectedEnvironment = projectVariables.currentEnvironment ? projectVariables.currentEnvironment : ProjectVariables.DEFAULT_ENVIRONMENT_NAME;
+            this.availableEnvironments.push(ProjectVariables.DEFAULT_ENVIRONMENT_NAME);
             if (projectVariables.localVariables.length > 0) {
-                this.availableEnvironments.push(VariablesService.LOCAL_ENVIRONMENT_NAME);
+                this.availableEnvironments.push(ProjectVariables.LOCAL_ENVIRONMENT_NAME);
             }
 
             for (const environment of projectVariables.environments) {
