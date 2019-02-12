@@ -69,4 +69,19 @@ export class ProjectVariables implements Serializable<ProjectVariables> {
     sortEnvironmentVariablesByName() {
         this.environments.sort((a,b) => a.name > b.name ? 1 : -1);
     }
+
+    getVariablesByEnvironmentName(selectedEnvironmentName: string): Variable[] {
+        if (selectedEnvironmentName == ProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
+            return this.defaultVariables;
+        }
+        if (selectedEnvironmentName == ProjectVariables.LOCAL_ENVIRONMENT_NAME) {
+            return this.localVariables;
+        }
+        for (const environment of this.environments) {
+            if (environment.name == selectedEnvironmentName) {
+                return environment.variables;
+            }
+        }
+        return null
+    }
 }

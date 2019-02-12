@@ -15,7 +15,7 @@
 
                     <div class="my-value">
                         <select class="form-control"
-                                [(ngModel)]="selectedEnvironment">
+                                [(ngModel)]="selectedEnvironmentName">
                             <option *ngFor="let availableEnvironment of availableEnvironments" [value]="availableEnvironment">
                                 {{availableEnvironment}}
                             </option>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-                <table class="table table-hover">
+                <table class="variables table table-hover">
                     <colgroup>
                         <col span="1" style="width: 31%;">
                         <col span="1" style="width: 65%;">
@@ -51,21 +51,21 @@
                     <tr *ngFor="let variable of variables; let last = last">
 
                         <!-- KEY -->
-                        <td *ngIf="!variable.isEmpty()">
+                        <td class="variable-key">
                             <input (change)="onNewKeyChange($event)"
                                    [(ngModel)]="variable.key"
                                    type="text" pInputText  class="form-control full-width">
                         </td>
 
                         <!-- VALUE -->
-                        <td *ngIf="!variable.isEmpty()">
+                        <td class="variable-value">
                             <input (change)="onNewValueChange($event)"
                                    [(ngModel)]="variable.value"
                                    type="text" pInputText  class="form-control full-width">
                         </td>
 
                         <!-- DELETE -->
-                        <td *ngIf="!variable.isEmpty()">
+                        <td class="variable-action">
                             <a href (click)="deleteVariable(variable);false;"
                                class="btn btn-danger" aria-label="Delete">
                                 <i  class="far fa-trash-alt" aria-hidden="true"></i>

@@ -23,7 +23,7 @@ export class VariablesComponent implements OnInit, OnDestroy {
 
     disableModal: boolean = false;
     hasChanges: boolean = false;
-    selectedEnvironment: string;
+    selectedEnvironmentName: string;
     availableEnvironments: string[] = [];
     variables: Array<Variable> = [];
 
@@ -40,8 +40,15 @@ export class VariablesComponent implements OnInit, OnDestroy {
     private initState(projectVariables: ProjectVariables) {
         this.projectVariables = projectVariables;
 
-        this.selectedEnvironment = projectVariables.currentEnvironment ? projectVariables.currentEnvironment : ProjectVariables.DEFAULT_ENVIRONMENT_NAME;
+        this.selectedEnvironmentName = projectVariables.currentEnvironment ? projectVariables.currentEnvironment : ProjectVariables.DEFAULT_ENVIRONMENT_NAME;
         this.availableEnvironments = projectVariables.getAllAvailableEnvironments();
+        let selectedEnvironmentVariables: Variable[] = this.projectVariables.getVariablesByEnvironmentName(this.selectedEnvironmentName);
+        if (selectedEnvironmentVariables == null) {
+            this.selectedEnvironmentName = ProjectVariables.DEFAULT_ENVIRONMENT_NAME;
+            selectedEnvironmentVariables = projectVariables.defaultVariables
+        }
+        this.variables = selectedEnvironmentVariables;
+        this.addEmptyVariableIfRequired();
     }
 
     ngOnDestroy(): void {
@@ -50,9 +57,9 @@ export class VariablesComponent implements OnInit, OnDestroy {
 
     editEnvironment(): void {
         this.disableModal = true;
-        this.environmentEditModalComponent.editEnvironmentName(this.selectedEnvironment, this.projectVariables).subscribe( (selectedEnvironment: string) => {
+        this.environmentEditModalComponent.editEnvironmentName(this.selectedEnvironmentName, this.projectVariables).subscribe( (selectedEnvironment: string) => {
             this.initState(this.projectVariables);
-            this.selectedEnvironment = selectedEnvironment;
+            this.selectedEnvironmentName = selectedEnvironment;
             this.disableModal = false;
         });
     }
@@ -61,29 +68,40 @@ export class VariablesComponent implements OnInit, OnDestroy {
         this.disableModal = true;
         this.environmentEditModalComponent.addEnvironment(this.projectVariables).subscribe( (selectedEnvironment: string) => {
             this.initState(this.projectVariables);
-            this.selectedEnvironment = selectedEnvironment;
+            this.selectedEnvironmentName = selectedEnvironment;
             this.disableModal = false;
         });
     }
 
     onNewKeyChange(value: Event) {
-        this.checkNewKeyValueComplitness();
+        this.addEmptyVariableIfRequired();
     }
 
     onNewValueChange(value: Event) {
-        this.checkNewKeyValueComplitness();
+        this.addEmptyVariableIfRequired();
     }
 
-    private checkNewKeyValueComplitness() {
+    private addEmptyVariableIfRequired() {
+        if(this.variables == null) this.variables = [];
+
+        if(this.variables.length == 0) {
+            this.addEmptyVariable();
+            return
+        }
+
         let lastKeyValue = this.variables[this.variables.length - 1];
         let lastKey = lastKeyValue.key;
         let lastValue = lastKeyValue.value;
 
         if (StringUtils.isNotEmpty(lastKey) || StringUtils.isNotEmpty(lastValue)) {
-            this.variables.push(
-                new Variable()
-            );
+            this.addEmptyVariable()
         }
+    }
+
+    private addEmptyVariable() {
+        this.variables.push(
+            new Variable()
+        );
     }
 
     deleteVariable(variable: Variable) {
@@ -99,8 +117,8 @@ export class VariablesComponent implements OnInit, OnDestroy {
     }
 
     isEditableEnvironment(): boolean {
-        return this.selectedEnvironment != ProjectVariables.DEFAULT_ENVIRONMENT_NAME &&
-            this.selectedEnvironment != ProjectVariables.LOCAL_ENVIRONMENT_NAME;
+        return this.selectedEnvironmentName != ProjectVariables.DEFAULT_ENVIRONMENT_NAME &&
+            this.selectedEnvironmentName != ProjectVariables.LOCAL_ENVIRONMENT_NAME;
     }
 
     save(): void {
