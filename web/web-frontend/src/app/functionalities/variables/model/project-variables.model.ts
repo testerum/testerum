@@ -2,11 +2,10 @@ import {VariablesEnvironment} from "./variables-environment.model";
 import {Serializable} from "../../../model/infrastructure/serializable.model";
 import {JsonUtil} from "../../../utils/json.util";
 import {Variable} from "./variable.model";
-import {VariablesService} from "../../../service/variables.service";
 
 export class ProjectVariables implements Serializable<ProjectVariables> {
-    public static DEFAULT_ENVIRONMENT_NAME = "default environment";
-    public static LOCAL_ENVIRONMENT_NAME = "local environment";
+    public static DEFAULT_ENVIRONMENT_NAME = "Default";
+    public static LOCAL_ENVIRONMENT_NAME = "Local";
 
     currentEnvironment: string;
     defaultVariables: Variable[] = [];

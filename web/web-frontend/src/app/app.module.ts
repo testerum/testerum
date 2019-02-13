@@ -40,7 +40,7 @@ import {ManualModule} from "./functionalities/manual/manual.module";
 import {UnsavedChangesGuard} from "./service/guards/unsaved-changes.guard";
 import {LicenseService} from "./functionalities/config/license/license.service";
 import {LicenseComponent} from "./functionalities/config/license/license.component";
-import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
+import {DropdownModule, FileUploadModule, RadioButtonModule, TooltipModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
 import {MultiProjectHttpInterceptor} from "./service/interceptors/multi-prject.http-interceptor";
 import {HomeModule} from "./functionalities/home/home.module";
@@ -63,6 +63,8 @@ import { EnvironmentEditModalComponent } from './functionalities/variables/envir
 
         RadioButtonModule,
         FileUploadModule,
+        TooltipModule,
+        DropdownModule,
 
         HomeModule,
         FeaturesModule,

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Variable} from "./model/variable.model";
 import {StringUtils} from "../../utils/string-utils.util";
@@ -7,12 +7,15 @@ import {VariablesService} from "../../service/variables.service";
 import {ProjectVariables} from "./model/project-variables.model";
 import {Subscription} from "rxjs";
 import {EnvironmentEditModalComponent} from "./environment-edit-modal/environment-edit-modal.component";
+import {SelectItem} from "primeng/api";
+import {StringSelectItem} from "../../model/prime-ng/StringSelectItem";
 
 @Component({
     moduleId: module.id,
     selector: 'variables',
     templateUrl: 'variables.component.html',
-    styleUrls: ['variables.component.scss']
+    styleUrls: ['variables.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class VariablesComponent implements OnInit, OnDestroy {
 
@@ -24,7 +27,7 @@ export class VariablesComponent implements OnInit, OnDestroy {
     disableModal: boolean = false;
     hasChanges: boolean = false;
     selectedEnvironmentName: string;
-    availableEnvironments: string[] = [];
+    availableEnvironmentsAsSelectedItems: SelectItem [] = [];
     variables: Array<Variable> = [];
 
     private getVariablesSubscription: Subscription;
@@ -41,7 +44,11 @@ export class VariablesComponent implements OnInit, OnDestroy {
         this.projectVariables = projectVariables;
 
         this.selectedEnvironmentName = projectVariables.currentEnvironment ? projectVariables.currentEnvironment : ProjectVariables.DEFAULT_ENVIRONMENT_NAME;
-        this.availableEnvironments = projectVariables.getAllAvailableEnvironments();
+        let availableEnvironments = projectVariables.getAllAvailableEnvironments();
+        for (const availableEnvironment of availableEnvironments) {
+            this.availableEnvironmentsAsSelectedItems.push(new StringSelectItem (availableEnvironment))
+        }
+
         let selectedEnvironmentVariables: Variable[] = this.projectVariables.getVariablesByEnvironmentName(this.selectedEnvironmentName);
         if (selectedEnvironmentVariables == null) {
             this.selectedEnvironmentName = ProjectVariables.DEFAULT_ENVIRONMENT_NAME;
@@ -132,5 +139,22 @@ export class VariablesComponent implements OnInit, OnDestroy {
 
     cancel(): void {
         // this.loadVariablesFromServer();
+    }
+
+    isDefaultOrLocalEnvironment(value: string): boolean {
+        return value == ProjectVariables.DEFAULT_ENVIRONMENT_NAME || value == ProjectVariables.LOCAL_ENVIRONMENT_NAME;
+    }
+
+    getEnvironmentInfoMessage(value: string): string {
+        if (value == ProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
+            return "Variables declared in this environment will be inherited in all the other environments"
+        }
+        if (value == ProjectVariables.LOCAL_ENVIRONMENT_NAME) {
+            return "Variables declared in this environment will are not saved inside the project and they will not going to be commited with your tests. <br/>" +
+                   "<br/>" +
+                   "In this way, you can have your own private variables for your Testerum instance."
+        }
+
+        return null;
     }
 }

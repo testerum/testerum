@@ -10,6 +10,8 @@
     <ng-template #popTemplate >
         <div [style.max-width]="maxWidth"
              [style.max-height]="maxHeight"
+             [style.width]="width"
+             [style.height]="height"
              style="overflow: auto"
              [innerHtml]="message | markdown"></div>
     </ng-template>

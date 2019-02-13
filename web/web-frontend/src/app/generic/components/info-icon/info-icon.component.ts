@@ -12,6 +12,8 @@ export class InfoIconComponent implements OnInit {
     @Input() position: string = 'auto';
     @Input() maxWidth: string = '400px';
     @Input() maxHeight: string = '400px';
+    @Input() width: string;
+    @Input() height: string;
 
     ngOnInit() {
     }

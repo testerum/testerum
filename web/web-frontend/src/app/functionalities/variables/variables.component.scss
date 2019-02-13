@@ -16,12 +16,28 @@
                 .action-panel {
                     margin-left: 10px;
                 }
+                .ui-dropdown {
+                    .ui-dropdown-label {
+                        padding: 0 .25em 0 0.5em;
+                        line-height: 1.7em;
+                    }
+                }
+                .my-dropdown-option {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                }
+                .my-dropdown-selected-item-info {
+                    margin-right: 1.5em;
+                }
 
                 .variables {
-                    tr td {
-                        //display: flex;
-                        //align-items: center;
+                    input {
+                        border: 0;
+                        border-radius: 0;
+                        box-shadow: none;
                     }
+
                     .variable-key {
 
                     }
@@ -29,7 +45,10 @@
 
                     }
                     .variable-action {
-
+                        vertical-align: middle;
+                        .btn {
+                            font-size: 0.7em;
+                        }
                     }
                 }
             }
