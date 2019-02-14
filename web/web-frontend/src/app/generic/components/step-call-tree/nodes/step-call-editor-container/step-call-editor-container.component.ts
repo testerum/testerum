@@ -271,8 +271,6 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
             warning.type = WarningType.UNDEFINED_STEP_CALL;
             warning.message = this.messageService.getMessage(MessageKey.WARNING_UNDEFINED_STEP_CALL);
             newStepCall.addWarning(warning);
-
-            this.addEmptyArgsToStepCall(newStepCall);
         }
         this.addNewStepCallToTree(newStepCall);
     }
