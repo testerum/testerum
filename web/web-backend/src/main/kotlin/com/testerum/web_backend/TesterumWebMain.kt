@@ -151,6 +151,7 @@ object TesterumWebMain {
 
                     initParameters["resourceBase"] = this.javaClass.getResource("/frontend")?.toString()
                     initParameters["dirAllowed"] = "true"
+                    initParameters["cacheControl"] = "must-revalidate"
                 },
                 "/"
         )
