@@ -61,7 +61,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
 
     private initPropertiesThatDependsOnStepOrder() {
         let indexInParent = this.findStepIndex();
-        if (indexInParent == 0) {
+        if (indexInParent <= 0) { // is less then 0 in case of the parent node is a shared node in the tree, first child node is removed for the other branch
             this.stepTextComponent.showPhaseAsAnd = false;
             return;
         }
