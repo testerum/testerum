@@ -37,6 +37,7 @@ export class StandAloneResourcePanelComponent extends AbstractComponentCanDeacti
     resource: ResourceContext<any>;
     resourceFileExtension:string;
     isEditMode: boolean;
+    isCreateAction: boolean = false;
 
     resourceComponentRef: ComponentRef<ResourceComponent<any>>;
     routeSubscription: Subscription;
@@ -54,8 +55,9 @@ export class StandAloneResourcePanelComponent extends AbstractComponentCanDeacti
     ngOnInit(): void {
         this.routeSubscription= this.route.data.subscribe(data => {
             this.resource = data['resource'];
+            this.isCreateAction = this.resource.isCreateNewResource();
 
-            if (this.resource.isCreateNewResource()) {
+            if (this.isCreateAction) {
                 this.routeParamSubscription = this.route.params.subscribe(
                     params => {
                         this.resourceFileExtension = params["resourceExt"];
@@ -112,7 +114,7 @@ export class StandAloneResourcePanelComponent extends AbstractComponentCanDeacti
     deleteAction(): void {
         this.areYouSureModalService.showAreYouSureModal(
             "Delete",
-            "Are you sure you want to delete this step?"
+            "Are you sure you want to delete this resource?"
         ).subscribe((action: AreYouSureModalEnum) => {
             if (action == AreYouSureModalEnum.OK) {
                 this.deleteActionAfterConfirmation();
