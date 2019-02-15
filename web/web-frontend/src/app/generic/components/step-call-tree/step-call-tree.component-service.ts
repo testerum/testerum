@@ -11,6 +11,7 @@ import {ArrayUtil} from "../../../utils/array.util";
 import {StepCallContainerComponent} from "./nodes/step-call-container/step-call-container.component";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {UndefinedStepDef} from "../../../model/undefined-step-def.model";
+import {StepPhaseEnum, StepPhaseUtil} from "../../../model/enums/step-phase.enum";
 
 @Injectable()
 export class StepCallTreeComponentService {
@@ -182,5 +183,10 @@ export class StepCallTreeComponentService {
     }
     getSelectedNode(): StepCallContainerComponent {
         return this.selectedStep;
+    }
+
+    generateStepDefPath(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string): Path {
+        let stepFileName = StepPhaseUtil.toCamelCaseString(stepPhase) + " " + stepTextWithoutPhase;
+        return new Path(this.containerPath.directories, stepFileName, "step");
     }
 }

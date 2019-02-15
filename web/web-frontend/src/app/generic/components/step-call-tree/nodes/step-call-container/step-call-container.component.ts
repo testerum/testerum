@@ -119,7 +119,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
             stepToEdit,
             stepContext
         ).subscribe((newStepDef: ComposedStepDef) => {
-            let hasDifferentPath = !newStepDef.path.equals(this.stepCallTreeComponentService.containerPath);
+            let hasDifferentPath = !newStepDef.path.getParentPath().equals(this.stepCallTreeComponentService.containerPath);
             let hasSubSteps = newStepDef.stepCalls.length > 0;
             let isUndefinedStep = this.isUndefinedStep();
             if (hasDifferentPath || hasSubSteps || !isUndefinedStep) {
@@ -128,7 +128,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
                 let newUndefinedStep = new UndefinedStepDef();
                 newUndefinedStep.phase = newStepDef.phase;
                 newUndefinedStep.stepPattern = newStepDef.stepPattern;
-                newUndefinedStep.path = this.stepCallTreeComponentService.containerPath;
+                newUndefinedStep.path = this.stepCallTreeComponentService.generateStepDefPath(newStepDef.phase, newStepDef.stepPattern.getPatternText());
                 this.model.stepCall.stepDef = newUndefinedStep;
             }
 

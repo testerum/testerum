@@ -252,7 +252,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     createUndefinedStepCallSuggestion(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string, actionText: string, userAndAsTextPhase: boolean = false): StepCallSuggestion {
 
         let stepDef = new UndefinedStepDef();
-        stepDef.path = this.stepCallTreeComponentService.containerPath;
+        stepDef.path = this.stepCallTreeComponentService.generateStepDefPath(stepPhase, stepTextWithoutPhase);
         stepDef.phase = stepPhase;
 
         stepDef.stepPattern = new StepPattern();
