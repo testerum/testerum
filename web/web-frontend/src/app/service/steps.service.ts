@@ -12,6 +12,7 @@ import {UrlService} from "./url.service";
 import {StepsTreeFilter} from "../model/step/filter/steps-tree-filter.model";
 import {RootStepNode} from "../model/step/tree/root-step-node.model";
 import {ComposedContainerStepNode} from "../model/step/tree/composed-container-step-node.model";
+import {ModelRepairerService} from "./model-repairer/model-repairer.service";
 
 @Injectable()
 export class StepsService {
@@ -22,7 +23,8 @@ export class StepsService {
     private STEPS_TREE_URL = "/rest/steps/tree";
 
     constructor(private http: HttpClient,
-                private urlService: UrlService) {}
+                private urlService: UrlService,
+                private modelRepairer: ModelRepairerService) {}
 
     getComposedStepDef(pathAsString: string): Observable<ComposedStepDef> {
         const httpOptions = {
@@ -32,7 +34,8 @@ export class StepsService {
 
         return this.http
             .get<ComposedStepDef>(this.COMPOSED_STEPS_URL, httpOptions).pipe(
-            map(StepsService.extractComposedStepDef));
+            map(StepsService.extractComposedStepDef),
+            map(el => this.modelRepairer.repairStepDef(el, el.path) as ComposedStepDef));
     }
 
     getComposedStepDefs(stepTreeFilter: StepsTreeFilter = new StepsTreeFilter()): Observable<Array<ComposedStepDef>> {
@@ -45,7 +48,16 @@ export class StepsService {
 
         return this.http
             .post<Array<ComposedStepDef>>(this.COMPOSED_STEPS_URL, body, httpOptions).pipe(
-            map(StepsService.extractComposedStepDefs));
+            map(StepsService.extractComposedStepDefs),
+            map(it => {return this.repairComposedStepDefs(it)}));
+    }
+
+    private repairComposedStepDefs(composedStepDefs: Array<ComposedStepDef>): Array<ComposedStepDef> {
+        var result: Array<ComposedStepDef> = [];
+        for (const item of composedStepDefs) {
+            result.push(this.modelRepairer.repairStepDef(item, item.path) as ComposedStepDef)
+        }
+        return result;
     }
 
     deleteComposedStepsDef(model: ComposedStepDef): Observable<void> {
@@ -81,7 +93,8 @@ export class StepsService {
 
         return this.http
             .post<ComposedStepDef>(this.COMPOSED_STEPS_URL + "/save", body, httpOptions).pipe(
-            map(StepsService.extractComposedStepDef));
+            map(StepsService.extractComposedStepDef),
+            map(el => this.modelRepairer.repairStepDef(el, el.path) as ComposedStepDef));
     }
 
     getBasicSteps(stepTreeFilter: StepsTreeFilter = new StepsTreeFilter()): Observable<Array<BasicStepDef>> {
@@ -223,7 +236,8 @@ export class StepsService {
 
         return this.http
             .post<ComposedStepDef>(this.COMPOSED_STEPS_URL + "/warnings", body, httpOptions).pipe(
-            map(StepsService.extractComposedStepDef));
+            map(StepsService.extractComposedStepDef),
+            map(el => this.modelRepairer.repairStepDef(el, el.path) as ComposedStepDef));
     }
 
     copy(sourcePath: Path, destinationPath: Path):  Observable<Path> {

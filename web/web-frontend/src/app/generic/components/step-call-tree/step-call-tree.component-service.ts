@@ -184,9 +184,4 @@ export class StepCallTreeComponentService {
     getSelectedNode(): StepCallContainerComponent {
         return this.selectedStep;
     }
-
-    generateStepDefPath(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string): Path {
-        let stepFileName = StepPhaseUtil.toCamelCaseString(stepPhase) + " " + stepTextWithoutPhase;
-        return new Path(this.containerPath.directories, stepFileName, "step");
-    }
 }

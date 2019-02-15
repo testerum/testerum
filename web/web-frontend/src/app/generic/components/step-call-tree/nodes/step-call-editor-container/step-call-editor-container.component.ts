@@ -33,6 +33,7 @@ import {ModelComponentMapping} from "../../../../../model/infrastructure/model-c
 import {merge} from "rxjs";
 import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {ArrayUtil} from "../../../../../utils/array.util";
+import {PathUtil} from "../../../../../utils/path.util";
 
 @Component({
     selector: 'step-call-editor-container',
@@ -252,7 +253,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     createUndefinedStepCallSuggestion(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string, actionText: string, userAndAsTextPhase: boolean = false): StepCallSuggestion {
 
         let stepDef = new UndefinedStepDef();
-        stepDef.path = this.stepCallTreeComponentService.generateStepDefPath(stepPhase, stepTextWithoutPhase);
+        stepDef.path = PathUtil.generateStepDefPath(this.stepCallTreeComponentService.containerPath, stepPhase, stepTextWithoutPhase);
         stepDef.phase = stepPhase;
 
         stepDef.stepPattern = new StepPattern();

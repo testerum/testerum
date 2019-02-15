@@ -17,6 +17,7 @@ import {StepCallTreeUtil} from "../../util/step-call-tree.util";
 import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
 import {ContextService} from "../../../../../service/context.service";
 import {StepContext} from "../../../../../model/step/context/step-context.model";
+import {PathUtil} from "../../../../../utils/path.util";
 
 @Component({
     selector: 'step-call-container',
@@ -128,7 +129,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
                 let newUndefinedStep = new UndefinedStepDef();
                 newUndefinedStep.phase = newStepDef.phase;
                 newUndefinedStep.stepPattern = newStepDef.stepPattern;
-                newUndefinedStep.path = this.stepCallTreeComponentService.generateStepDefPath(newStepDef.phase, newStepDef.stepPattern.getPatternText());
+                newUndefinedStep.path = PathUtil.generateStepDefPath(this.stepCallTreeComponentService.containerPath, newStepDef.phase, newStepDef.stepPattern.getPatternText());
                 this.model.stepCall.stepDef = newUndefinedStep;
             }
 

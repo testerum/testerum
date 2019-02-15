@@ -49,6 +49,7 @@ import {UtilService} from "./service/util.service";
 import {ProjectService} from "./service/project.service";
 import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.interceptor";
 import {CurrentProjectGuard} from "./service/guards/current-project.guard";
+import {ModelRepairerService} from "./service/model-repairer/model-repairer.service";
 
 @NgModule({
     imports: [
@@ -108,6 +109,7 @@ import {CurrentProjectGuard} from "./service/guards/current-project.guard";
 
         UrlService,
         UtilService,
+        ModelRepairerService,
 
         ErrorHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useExisting: ErrorHttpInterceptor,  multi: true },
