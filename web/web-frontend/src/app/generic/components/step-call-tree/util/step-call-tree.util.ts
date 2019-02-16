@@ -9,6 +9,7 @@ import {ArgNodeModel} from "../model/arg-node.model";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
 import {StepDef} from "../../../../model/step-def.model";
 import {UndefinedStepDef} from "../../../../model/undefined-step-def.model";
+import {BasicStepDef} from "../../../../model/basic-step-def.model";
 
 export class StepCallTreeUtil {
 
@@ -59,6 +60,7 @@ export class StepCallTreeUtil {
     }
 
     public static createSubStepsContainerWithChildren(stepDef: StepDef, mappedStepCallContainer: Map<string, SubStepsContainerModel>): SubStepsContainerModel {
+        if (stepDef instanceof BasicStepDef) { return null;}
 
         let subStepsContainer = new SubStepsContainerModel(null);
 
