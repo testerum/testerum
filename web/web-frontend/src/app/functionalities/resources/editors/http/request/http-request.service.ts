@@ -55,6 +55,7 @@ export class HttpRequestService {
 
     setHttpRequestResource(httpRequest: HttpRequest) {
         this.httpRequest = httpRequest;
+        this.changesMadeEventEmitter.emit();
     }
 
     empty() {
