@@ -78,13 +78,13 @@
         </div>
         <input (click)="showHideParams()"
                [class.active]="httpParams.shouldShow"
-               class="params-btn btn btn-default"
+               class="form-control params-btn btn btn-default"
                pTooltip="Edit URL Parameters"
                type="button" value="Params">
 
         <a href (click)="executeRequest();false;"
            pTooltip="Edit URL parameters"
-           class="exe-http-req-btn-edit btn btn-success" aria-label="Execute Request">
+           class="form-control exe-http-req-btn-edit btn btn-success" aria-label="Execute Request">
             <i class="fa_my-run" aria-hidden="true"></i>
         </a>
     </div>
