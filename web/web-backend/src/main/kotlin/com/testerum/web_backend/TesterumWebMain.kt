@@ -7,13 +7,19 @@ import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.eclipse.jetty.security.SecurityHandler
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.HandlerContainer
+import org.eclipse.jetty.server.HttpConnectionFactory
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.ServerConnector
 import org.eclipse.jetty.server.handler.ErrorHandler
 import org.eclipse.jetty.server.handler.HandlerList
 import org.eclipse.jetty.server.handler.StatisticsHandler
 import org.eclipse.jetty.server.session.SessionHandler
-import org.eclipse.jetty.servlet.*
+import org.eclipse.jetty.servlet.DefaultServlet
+import org.eclipse.jetty.servlet.ErrorPageErrorHandler
+import org.eclipse.jetty.servlet.FilterHolder
+import org.eclipse.jetty.servlet.ServletContextHandler
+import org.eclipse.jetty.servlet.ServletHandler
+import org.eclipse.jetty.servlet.ServletHolder
 import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer
 import org.fusesource.jansi.Ansi
@@ -57,7 +63,7 @@ object TesterumWebMain {
         val syspropValue: String = System.getProperty(PORT_SYSTEM_PROPERTY) ?: "9999"
 
         return syspropValue.toIntOrNull()
-                ?:throw IllegalArgumentException("port [$syspropValue] is not a valid number (given as system property [$PORT_SYSTEM_PROPERTY])")
+                ?: throw IllegalArgumentException("port [$syspropValue] is not a valid number (given as system property [$PORT_SYSTEM_PROPERTY])")
     }
 
     private fun createServer(port: Int): Server {
@@ -69,6 +75,8 @@ object TesterumWebMain {
         server.addBean(ScheduledExecutorScheduler())
 
         server.handler = createHandler(server)
+
+        doNotReturnSensitiveHeaders(server)
 
         return server
     }
@@ -143,6 +151,7 @@ object TesterumWebMain {
 
                     initParameters["resourceBase"] = this.javaClass.getResource("/frontend")?.toString()
                     initParameters["dirAllowed"] = "true"
+                    initParameters["cacheControl"] = "must-revalidate"
                 },
                 "/"
         )
@@ -173,6 +182,18 @@ object TesterumWebMain {
 
         return ServletContextHandler(parent, contextPath, sessionHandler, securityHandler, servletHandler, errorHandler, options).apply {
             this.server = server
+        }
+    }
+
+    private fun doNotReturnSensitiveHeaders(server: Server) {
+        // improve security: make sure we are not sending the "Server" and "X-Powered-By" response headers
+        for (connector in server.connectors) {
+            for (connectionFactory in connector.connectionFactories) {
+                if (connectionFactory is HttpConnectionFactory) {
+                    connectionFactory.httpConfiguration.sendServerVersion = false
+                    connectionFactory.httpConfiguration.sendXPoweredBy = false
+                }
+            }
         }
     }
 

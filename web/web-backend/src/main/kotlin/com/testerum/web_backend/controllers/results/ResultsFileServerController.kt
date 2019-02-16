@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.Resource
+import org.springframework.http.CacheControl
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler
 import org.springframework.web.servlet.resource.ResourceResolver
 import org.springframework.web.servlet.resource.ResourceResolverChain
@@ -18,6 +19,9 @@ class ResultsFileServerController(private val frontendDirs: FrontendDirs) : Reso
     // the URL path at which this controller is available is configured in "spring_web.xml" (look for the SimpleUrlHandlerMapping bean)
 
     init {
+        cacheControl = CacheControl.empty()
+                .mustRevalidate()
+
         resourceResolvers = listOf(
                 object: ResourceResolver {
                     override fun resolveUrlPath(resourcePath: String, locations: MutableList<out Resource>, chain: ResourceResolverChain): String? {
