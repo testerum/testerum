@@ -10,7 +10,7 @@ class WebDriverNavigationSteps {
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
     @Given(
-            value = "the page at url <<url>> is opened",
+            value = "the page at url <<url>> is open",
             description = "Navigates to the given URL."
     )
     fun givenThePageAtUrlIsOpen(url: String) {
