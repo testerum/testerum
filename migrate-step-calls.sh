@@ -24,14 +24,15 @@ s/Then verify database <<([^>]*)>> state is like in <<([^>]*)>> file/Then the st
 s/When I submit the form containing the field identified by the element locator <<([^>]*)>>/When I submit the form containing the field <<\1>>/g
 s/Given the page at url <<([^>]*)>> is opened/Given the page at url <<\1>> is open/g"
 
-while IFS= read -r line; do
+IFS=$'\n'
+for line in $(echo "$REPLACEMENTS"); do
     echo "Executing replacement [${line}]"
     echo ""
 
     find "$REPO_ROOT_DIR" \
         \( -iname '*.test' -or -iname '*.step' \) \
-        -exec echo "processing ["{}"]" \; -exec sed -i -E "${line}" {} \;
+        -exec echo "processing ["{}"]" \; -exec perl -p -i -e "${line}" {} \;
 
     echo "------------------------------------------------------------------------------------------------------------"
     echo ""
-done <<< ${REPLACEMENTS}
+done
