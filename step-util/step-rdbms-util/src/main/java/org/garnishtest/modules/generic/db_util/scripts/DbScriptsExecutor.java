@@ -74,10 +74,7 @@ public class DbScriptsExecutor {
             sqlScript.execute(new JdbcTemplate(connection, Types.NULL));
         } catch (final Exception e) {
             String scriptContent = (scriptContentWithVariablesReplaced != null) ? scriptContentWithVariablesReplaced : "";
-            throw new DbScriptsExecutorException(
-                    "failed to execute SQL script" + scriptContent,
-                    e
-            );
+            throw new DbScriptsExecutorException("failed to execute SQL script [" + scriptContent + "]", e);
         }
     }
 
@@ -112,10 +109,7 @@ public class DbScriptsExecutor {
             sqlScript.execute(new JdbcTemplate(connection, Types.NULL));
         } catch (final Exception e) {
             String scriptContent = (scriptContentWithVariablesReplaced != null) ? scriptContentWithVariablesReplaced : "";
-            throw new DbScriptsExecutorException(
-                    "failed to execute SQL script" + scriptContent,
-                    e
-            );
+            throw new DbScriptsExecutorException("failed to execute SQL script [" + scriptContent + "]", e);
         }
     }
 
