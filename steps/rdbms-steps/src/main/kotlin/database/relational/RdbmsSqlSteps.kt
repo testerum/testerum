@@ -13,7 +13,7 @@ class RdbmsSqlSteps {
     private val testerumLogger = TesterumServiceLocator.getTesterumLogger()
 
     @When(
-            value = "executing the SQL <<sql>> on the database <<dbConnection>>",
+            value = "I execute the SQL <<sql>> on the database <<dbConnection>>",
             description = "Executes the given SQL using the given relational database connection."
     )
     fun executeSql(
