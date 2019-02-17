@@ -103,11 +103,11 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
     }
 
     fun save(composedStep: ComposedStepDef, composedStepsDir: JavaPath): ComposedStepDef {
-        val oldEscapedPath = composedStep.oldPath?.escape()
+        val oldPath = composedStep.oldPath
         val newEscapedPath = composedStep.getNewPath().escape()
 
-        val oldStepFile: JavaPath? = oldEscapedPath?.let {
-            composedStepsDir.resolve(oldEscapedPath.toString())
+        val oldStepFile: JavaPath? = oldPath?.let {
+            composedStepsDir.resolve(oldPath.toString())
         }
         val newStepFile: JavaPath = composedStepsDir.resolve(newEscapedPath.toString())
 

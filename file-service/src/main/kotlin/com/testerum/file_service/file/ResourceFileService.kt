@@ -103,11 +103,11 @@ class ResourceFileService {
                 body = FileArgTransformer.jsonToFileFormat(resourceContext.body, resourceType.javaType)
         )
 
-        val oldEscapedPath = resourceWithTransformedBody.oldPath?.escape()
+        val oldPath = resourceWithTransformedBody.oldPath
         val newEscapedPath = resourceWithTransformedBody.path.escape()
 
-        val oldResourceFile: JavaPath? = oldEscapedPath?.let {
-            getJavaPath(oldEscapedPath, resourceType, resourcesDir)
+        val oldResourceFile: JavaPath? = oldPath?.let {
+            getJavaPath(oldPath, resourceType, resourcesDir)
         }
         val newResourceFile = getJavaPath(newEscapedPath, resourceType, resourcesDir)
 

@@ -97,11 +97,11 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
     }
 
     fun save(test: TestModel, testsDir: JavaPath): TestModel {
-        val oldEscapedPath = test.oldPath?.escape()
+        val oldPath = test.oldPath
         val newEscapedPath = test.getNewPath().escape()
 
-        val oldTestFile: JavaPath? = oldEscapedPath?.let {
-            testsDir.resolve(oldEscapedPath.toString())
+        val oldTestFile: JavaPath? = oldPath?.let {
+            testsDir.resolve(oldPath.toString())
         }
         val newTestFile: JavaPath = testsDir.resolve(newEscapedPath.toString())
 
