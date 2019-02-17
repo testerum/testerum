@@ -35,7 +35,7 @@ class RdbmsConnection constructor(val rdbmsConnectionConfig: RdbmsConnectionConf
         val dbScriptsExecutor = DbScriptsExecutor(dataSource)
         val mapBasedVariablesResolver = MapBasedVariablesResolver("\${", "}")
 
-        dbScriptsExecutor.executeScripts(mapBasedVariablesResolver, sqlScript)
+        dbScriptsExecutor.executeScript(mapBasedVariablesResolver, sqlScript)
     }
 
 }
