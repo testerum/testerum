@@ -189,7 +189,12 @@ export class JsonStepContainerComponent {
     }
 
     canPaste(): boolean {
-        return this.stepsTreeService.canPaste(this.model.path);
+        let hasSomeStepToPaste = this.stepsTreeService.canPaste(this.model.path);
+        if (hasSomeStepToPaste == null) {
+            return false;
+        }
+        return this.stepsTreeService.isCopyOrPasteAComposedStep;
+
     }
 
     isPasteATest(): boolean {

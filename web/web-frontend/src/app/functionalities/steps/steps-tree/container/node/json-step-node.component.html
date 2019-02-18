@@ -14,7 +14,8 @@
     <div class="button-panel btn-group my-button-panel"
          [class.hidden]="!hasMouseOver">
 
-        <div title="Cut Step Definition" class="btn btn-default btn-xs btn-group"
+        <div *ngIf="model.isComposedStep"
+             title="Cut Step Definition" class="btn btn-default btn-xs btn-group"
              (click)="onCutStepDef(); $event.stopPropagation()">
             <i class="fa_my-cut" aria-hidden="true"></i>
         </div>
