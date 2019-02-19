@@ -196,8 +196,4 @@ export class JsonStepContainerComponent {
         return this.stepsTreeService.isCopyOrPasteAComposedStep;
 
     }
-
-    isPasteATest(): boolean {
-        return this.stepsTreeService.isPasteAStep();
-    }
 }

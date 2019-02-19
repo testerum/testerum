@@ -102,10 +102,4 @@ export class StepsTreeService {
         return (this.pathToCopy != null && !this.pathToCopy.equals(path))
             || (this.pathToCut != null && !this.pathToCut.equals(path));
     }
-
-    isPasteAStep(): boolean {
-        if(this.pathToCopy && this.pathToCopy.isFile()) return true;
-        if(this.pathToCut && this.pathToCut.isFile()) return true;
-        return false;
-    }
 }
