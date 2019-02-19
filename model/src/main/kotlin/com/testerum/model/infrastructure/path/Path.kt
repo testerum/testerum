@@ -126,6 +126,7 @@ data class Path @JsonCreator constructor(
         )
     }
 
+    fun withoutDirectories(): Path = this.copy(directories = emptyList())
 
     fun withoutFile(): Path = this.copy(fileName = null, fileExtension = null)
 

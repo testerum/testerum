@@ -206,14 +206,18 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
     }
 
     fun copyFeatureOrTest(sourcePath: Path, destinationPath: Path): Path {
-        val resultPath = webProjectManager.getProjectServices().getTestsCache().copyFeatureOrFile(sourcePath, destinationPath)
+        val resultPath = webProjectManager.getProjectServices().getTestsCache()
+                .copyFeatureOrFile(sourcePath, destinationPath)
         webProjectManager.getProjectServices().reinitializeFeatureCache()
+
         return resultPath
     }
 
     fun moveFeatureOrTest(sourcePath: Path, destinationPath: Path): Path {
-        val moveFeatureOrFile = webProjectManager.getProjectServices().getTestsCache().moveFeatureOrFile(sourcePath, destinationPath)
+        val moveFeatureOrFile = webProjectManager.getProjectServices().getTestsCache()
+                .moveFeatureOrFile(sourcePath, destinationPath)
         webProjectManager.getProjectServices().reinitializeFeatureCache()
+
         return moveFeatureOrFile
     }
 }

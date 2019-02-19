@@ -83,7 +83,7 @@ class FeatureController(private val featuresFrontendService: FeaturesFrontendSer
         return featuresFrontendService.copyFeatureOrTest(
                 Path.createInstance(sourcePath),
                 Path.createInstance(destinationPath)
-        );
+        )
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/move"])
@@ -94,6 +94,6 @@ class FeatureController(private val featuresFrontendService: FeaturesFrontendSer
         return featuresFrontendService.moveFeatureOrTest(
                 Path.createInstance(sourcePath),
                 Path.createInstance(destinationPath)
-        );
+        )
     }
 }

@@ -207,10 +207,10 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
             )
         }
 
-        val sourceJavaFile = composedStepsDir.resolve(
+        val sourceJavaFile: JavaPath = composedStepsDir.resolve(
                 escapedSourceFile.toString()
         )
-        val destinationJavaFile = composedStepsDir.resolve(
+        val destinationJavaFile: JavaPath = composedStepsDir.resolve(
                 escapedDestinationFile.toString()
         )
 

@@ -78,13 +78,14 @@ class ComposedStepsFrontendService(private val webProjectManager: WebProjectMana
         webProjectManager.getProjectServices().reinitializeTestsCache()
     }
 
-    fun copyComposedStep(sourcePath: Path, destinationPath: Path): Path {
-        // TODO CRISTI: implement this
-        return sourcePath;
+    fun copyComposedStep(sourcePath: Path, destinationDirPath: Path): Path {
+        return webProjectManager.getProjectServices().getStepsCache()
+                .copyComposedStep(sourcePath, destinationDirPath)
     }
 
-    fun moveComposedStep(sourcePath: Path, destinationPath: Path): Path {
-        // TODO CRISTI: implement this
-        return sourcePath;
+    fun moveComposedStep(sourcePath: Path, destinationDirPath: Path): Path {
+        return webProjectManager.getProjectServices().getStepsCache()
+                .moveComposedStep(sourcePath, destinationDirPath)
     }
+
 }
