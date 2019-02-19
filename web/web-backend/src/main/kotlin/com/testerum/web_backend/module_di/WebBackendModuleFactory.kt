@@ -13,6 +13,7 @@ import com.testerum.common_crypto.pem.PemMarshaller
 import com.testerum.common_crypto.string_obfuscator.StringObfuscator
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
+import com.testerum.common_httpclient.TesterumHttpClientFactory
 import com.testerum.common_httpclient.HttpClientService
 import com.testerum.common_rdbms.JdbcDriversCache
 import com.testerum.common_rdbms.RdbmsConnectionCache
@@ -90,7 +91,6 @@ import com.testerum.web_backend.services.variables.VariablesFrontendService
 import com.testerum.web_backend.services.variables.VariablesResolverService
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.apache.http.client.HttpClient
-import org.apache.http.impl.client.HttpClients
 import java.security.PublicKey
 
 class WebBackendModuleFactory(context: ModuleFactoryContext,
@@ -211,7 +211,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val variablesResolverService = VariablesResolverService()
 
-    private val httpClient: HttpClient = HttpClients.createDefault().also {
+    private val httpClient: HttpClient = TesterumHttpClientFactory.createHttpClient().also {
         context.registerShutdownHook {
             it.close()
         }
