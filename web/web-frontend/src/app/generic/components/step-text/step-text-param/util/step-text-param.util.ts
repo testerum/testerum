@@ -41,6 +41,10 @@ export class StepTextParamUtil {
                     return arg.path.fileName;
                 }
 
+                if (!StringUtils.isEmpty(arg.name) && arg.name != arg.paramName) {
+                    return arg.name;
+                }
+
                 if (!arg.content.isSmallText()) {
                     let fullValue = arg.content.content as string;
                     let result = fullValue.split('\n')[0];
