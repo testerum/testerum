@@ -29,7 +29,6 @@ import {AbstractComponentCanDeactivate} from "../../../../../generic/interfaces/
     templateUrl: 'stand-alone-resource-panel.component.html',
     styleUrls: ['stand-alone-resource-panel.component.scss']
 })
-
 export class StandAloneResourcePanelComponent extends AbstractComponentCanDeactivate implements OnInit, OnDestroy {
 
     @ViewChild('panelBody', {read: ViewContainerRef}) bodyElement:ViewContainerRef;
@@ -200,5 +199,4 @@ export class StandAloneResourcePanelComponent extends AbstractComponentCanDeacti
         }
         return pathForTitle;
     }
-
 }
