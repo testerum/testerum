@@ -6,7 +6,6 @@ import com.testerum.launcher.config.ConfigManager;
 import com.testerum.launcher.config.model.Config;
 import com.testerum.launcher.runner.TesterumExecuter;
 import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -92,6 +91,7 @@ public class MainFrame extends JFrame {
         statusLabel.setText("Testerum Server Started");
         portErrorMessage.setVisible(false);
         openInBrowserButton.setEnabled(true);
+        saveAndRestartApplicationButton.setEnabled(true);
     }
 
     private void setServerAsLoading() {
@@ -107,7 +107,7 @@ public class MainFrame extends JFrame {
         statusLabel.setIcon(new ImageIcon(getClass().getResource("/attention.gif")));
         statusLabel.setText(" Selected port is not available!");
         portErrorMessage.setVisible(true);
-        openInBrowserButton.setEnabled(false);
+        openInBrowserButton.setEnabled(true);
     }
 
     @SuppressWarnings("unused")
