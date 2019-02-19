@@ -1,17 +1,26 @@
 package com.testerum.file_service.caches.warnings
 
+import com.testerum.model.arg.Arg
+import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.step.StepDef
 import com.testerum.model.step.UndefinedStepDef
 import com.testerum.model.test.TestModel
 import com.testerum.model.warning.Warning
+import org.slf4j.LoggerFactory
 
 class WarningService {
 
+    companion object {
+        private val LOG = LoggerFactory.getLogger(WarningService::class.java)
+    }
+
     fun testWithWarnings(test: TestModel): TestModel {
         if (test.properties.isManual) {
-            return test
+            // some steps may have warnings on them (taken like this from the cache),
+            // and we don't want this for manual tests
+            return removeWarningsFromTest(test)
         }
 
         // fill-in own warnings
@@ -33,6 +42,47 @@ class WarningService {
                 stepCalls = stepCallsWithWarnings,
                 warnings = warnings
         )
+    }
+
+    private fun removeWarningsFromTest(test: TestModel): TestModel {
+        return test.copy(
+                warnings = emptyList(),
+                stepCalls = test.stepCalls.map {
+                    removeWarningsFromStepCall(it)
+                }
+        )
+    }
+
+    private fun removeWarningsFromStepCall(stepCall: StepCall): StepCall {
+        return stepCall.copy(
+                warnings = emptyList(),
+                stepDef = removeWarningsFromStepDef(stepCall.stepDef),
+                args = stepCall.args.map {
+                    removeWarningsFromStepCallArg(it)
+                }
+        )
+    }
+
+    private fun removeWarningsFromStepDef(stepDef: StepDef): StepDef {
+        return when (stepDef) {
+            is UndefinedStepDef -> stepDef // undefined step defs don't have warnings (only step calls do)
+            is BasicStepDef -> stepDef.copy(warnings = emptyList())
+            is ComposedStepDef -> stepDef.copy(
+                    warnings = emptyList(),
+                    stepCalls = stepDef.stepCalls.map {
+                        removeWarningsFromStepCall(it)
+                    }
+            )
+            else -> {
+                LOG.warn("could not remove warnings from step def, because it has an unknown type [${stepDef.javaClass.name}]")
+
+                stepDef
+            }
+        }
+    }
+
+    private fun removeWarningsFromStepCallArg(arg: Arg): Arg {
+        return arg.copy(warnings = emptyList())
     }
 
     private fun stepCallWithWarnings(stepCall: StepCall): StepCall {

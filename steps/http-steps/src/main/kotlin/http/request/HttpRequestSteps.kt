@@ -29,7 +29,7 @@ class HttpRequestSteps {
     @When(
             value = "I execute the HTTP request <<httpRequest>>",
             description =
-                    "Makes an HTTP request, saving the response as a test variable with the name ``httpResponse``.\n" +
+            "Makes an HTTP request, saving the response as a test variable with the name ``httpResponse``.\n" +
                     "The request is also available in the variable ``httpRequest``.\n" +
                     "\n" +
                     "### Response\n" +
@@ -125,7 +125,7 @@ class HttpRequestSteps {
         }
 
         if (body?.content?.isNotEmpty() == true) {
-            response +=  "\n"
+            response += "\n"
             response += formatHttpBody(
                     body = body.content,
                     contentType = getContentTypeHeaderValue().orEmpty(),
@@ -153,7 +153,7 @@ class HttpRequestSteps {
                 ?.firstOrNull()
                 .orEmpty()
         if (body.isNotEmpty()) {
-            response +=  "\n"
+            response += "\n"
             response += formatHttpBody(
                     body = bodyAsUtf8String,
                     contentType = contentType,
@@ -186,7 +186,10 @@ class HttpRequestSteps {
                 body
             }
         } else {
-            body
+            body.lines()
+                    .joinToString(separator = "\n") {
+                        "\t" + it
+                    }
         }
     }
 
