@@ -133,6 +133,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
                 this.model.stepCall.stepDef = newUndefinedStep;
             }
 
+            // this.recreateStepCallArgs(newStepDef);
+
             let subStepContainer: SubStepsContainerModel = StepCallTreeUtil.createSubStepsContainerWithChildren(this.model.stepCall.stepDef, new Map());
             if(subStepContainer != null) {
                 this.model.removeSubStepsContainerModel();
@@ -172,6 +174,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
 
             this.model.stepCall.args.push(newArg);
         }
+
+        StepCallTreeUtil.createParamContainerWithChildren(this.model.stepCall, this.model);
     }
 
     private getArgFromListByParamNameAndType(args: Array<Arg>, paramName: string, uiType: string): Arg {
@@ -310,5 +314,4 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     isSelectedForCopyOrCut(): boolean {
         return this.stepCallTreeComponentService.getSelectedNode() == this;
     }
-
 }

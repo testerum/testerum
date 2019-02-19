@@ -10,6 +10,7 @@ import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-patt
 import {StepDef} from "../../../../model/step-def.model";
 import {UndefinedStepDef} from "../../../../model/undefined-step-def.model";
 import {BasicStepDef} from "../../../../model/basic-step-def.model";
+import {ArrayUtil} from "../../../../utils/array.util";
 
 export class StepCallTreeUtil {
 
@@ -33,20 +34,7 @@ export class StepCallTreeUtil {
 
     public static createStepCallContainerWithChildren(stepCall: StepCall, parentNode: JsonTreeContainer, mappedStepCallContainer: Map<string, SubStepsContainerModel>): StepCallContainerModel {
         let childStepCallContainerModel = StepCallTreeUtil.createStepCallContainer(stepCall, parentNode, parentNode.getChildren().length);
-
-        if (stepCall.args.length > 0) {
-            let paramsContainer = new ParamsContainerModel(childStepCallContainerModel);
-            paramsContainer.jsonTreeNodeState.showChildren = true;
-            childStepCallContainerModel.children.push(
-                paramsContainer
-            );
-
-            stepCall.args.forEach((arg, index) => {
-                let stepPatternParam: ParamStepPatternPart = stepCall.getStepPatternParamByIndex(index);
-                let argNode = new ArgNodeModel(paramsContainer, arg, stepPatternParam);
-                paramsContainer.children.push(argNode)
-            });
-        }
+        this.createParamContainerWithChildren(stepCall, childStepCallContainerModel);
 
         let subStepContainer = StepCallTreeUtil.createSubStepsContainerWithChildren(stepCall.stepDef, mappedStepCallContainer);
         if(subStepContainer != null) {
@@ -57,6 +45,30 @@ export class StepCallTreeUtil {
         }
 
         return childStepCallContainerModel;
+    }
+
+    public static createParamContainerWithChildren(stepCall: StepCall, stepCallContainerModel: StepCallContainerModel) {
+        let existingParamContainerModel: ParamsContainerModel = stepCallContainerModel.children.find(it => { return it instanceof ParamsContainerModel}) as ParamsContainerModel;
+
+        if (stepCall.args.length > 0) {
+            let paramsContainer = existingParamContainerModel;
+            if (paramsContainer == null) {
+                paramsContainer = new ParamsContainerModel(stepCallContainerModel);
+                paramsContainer.jsonTreeNodeState.showChildren = true;
+                stepCallContainerModel.children.push(
+                    paramsContainer
+                );
+            }
+
+            paramsContainer.children.length = 0;
+            stepCall.args.forEach((arg, index) => {
+                let stepPatternParam: ParamStepPatternPart = stepCall.getStepPatternParamByIndex(index);
+                let argNode = new ArgNodeModel(paramsContainer, arg, stepPatternParam);
+                paramsContainer.children.push(argNode)
+            });
+        } else {
+            ArrayUtil.removeElementFromArray(stepCallContainerModel.children, existingParamContainerModel);
+        }
     }
 
     public static createSubStepsContainerWithChildren(stepDef: StepDef, mappedStepCallContainer: Map<string, SubStepsContainerModel>): SubStepsContainerModel {
