@@ -55,7 +55,7 @@ export class StepCallTreeUtil {
             if (paramsContainer == null) {
                 paramsContainer = new ParamsContainerModel(stepCallContainerModel);
                 paramsContainer.jsonTreeNodeState.showChildren = true;
-                stepCallContainerModel.children.push(
+                stepCallContainerModel.children.unshift(
                     paramsContainer
                 );
             }

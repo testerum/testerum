@@ -20,9 +20,7 @@ export class ModelRepairerService {
 
     repairStepDef(stepDef: StepDef, contextPath: Path): StepDef {
         if (stepDef instanceof UndefinedStepDef) {
-            if (stepDef.path == null || stepDef.path.isEmpty()) {
-                stepDef.path = PathUtil.generateStepDefPath(contextPath, stepDef.phase, stepDef.stepPattern.getPatternText());
-            }
+            stepDef.path = PathUtil.generateStepDefPath(contextPath, stepDef.phase, stepDef.stepPattern.getPatternText());
         }
 
         if (stepDef instanceof ComposedStepDef) {
