@@ -1,6 +1,7 @@
 package database.relational.connection_manager.serializer
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import database.relational.connection_manager.model.RdbmsConnection
 import database.relational.connection_manager.serializer.model.RdbmsDataField
 import database.relational.connection_manager.serializer.model.RdbmsDataSchema
@@ -12,7 +13,9 @@ import java.sql.Statement
 
 object RdbmsToJsonSerializer {
 
-     private val OBJECT_MAPPER = ObjectMapper()
+     private val OBJECT_MAPPER = ObjectMapper().apply {
+         enable(SerializationFeature.INDENT_OUTPUT)
+     }
 
     fun serializeSchemaAsJsonString(rdbmsConnection: RdbmsConnection): String {
         val rdbmsDataSchema = getRdbmsDataSchema(rdbmsConnection)
