@@ -7,6 +7,7 @@ import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.request.HttpRequestBody
 import com.testerum.model.resources.http.response.HttpResponse
 import com.testerum.model.resources.http.response.InvalidHttpResponse
+import com.testerum.model.variable.ReservedVariableEnvironmentNames
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.variables.VariablesResolverService
 import org.slf4j.LoggerFactory
@@ -20,7 +21,7 @@ class HttpFrontendService(private val webProjectManager: WebProjectManager,
         private val LOG = LoggerFactory.getLogger(HttpFrontendService::class.java)
     }
 
-    private fun getVariablesDir() = webProjectManager.getProjectServices().dirs().getVariablesDir()
+    private fun getProjectVariablesDir() = webProjectManager.getProjectServices().dirs().getVariablesDir()
 
     fun executeHttpRequest(request: HttpRequest): HttpResponse {
         return try {
@@ -35,8 +36,10 @@ class HttpFrontendService(private val webProjectManager: WebProjectManager,
     }
 
     private fun resolveVariables(request: HttpRequest): HttpRequest {
-        val variablesMap = variablesFileService.getVariablesAsMap(
-                getVariablesDir()
+        val variablesMap = variablesFileService.getMergedVariables(
+                projectVariablesDir = getProjectVariablesDir(),
+                currentEnvironment = ReservedVariableEnvironmentNames.DEFAULT, // todo: pass from UI
+                variableOverrides = emptyMap()
         )
 
         return resolveVariablesInRequest(request, variablesMap)

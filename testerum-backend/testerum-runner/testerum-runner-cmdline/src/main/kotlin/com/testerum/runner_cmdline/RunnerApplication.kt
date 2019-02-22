@@ -100,8 +100,10 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
 
         // setup variables
         val globalVars = GlobalVariablesContext.from(
-                variablesFileService.getVariablesAsMap(
-                        getVariablesDir()
+                variablesFileService.getMergedVariables(
+                        projectVariablesDir = getProjectVariablesDir(),
+                        currentEnvironment = cmdlineParams.variablesEnvironment,
+                        variableOverrides = cmdlineParams.variableOverrides
                 )
         )
 
@@ -140,7 +142,7 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         return userHomeDir.resolve(".testerum/cache/basic-steps-cache.json")
     }
 
-    private fun getVariablesDir(): JavaPath = runnerProjectManager.getProjectServices().dirs().getVariablesDir()
+    private fun getProjectVariablesDir(): JavaPath = runnerProjectManager.getProjectServices().dirs().getVariablesDir()
 
     private fun getStepLibraryJarFiles(basicStepsDir: JavaPath): List<JavaPath> {
         return basicStepsDir.walkAndCollect {

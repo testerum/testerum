@@ -11,6 +11,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.model.variable.ProjectVariables
+import com.testerum.model.variable.ReservedVariableEnvironmentNames
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 import java.nio.file.Path as JavaPath
@@ -18,9 +19,6 @@ import java.nio.file.Path as JavaPath
 class VariablesFileService {
 
     companion object {
-        const val DEFAULT_ENVIRONMENT_NAME = "Default"
-        const val LOCAL_ENVIRONMENT_NAME = "Local"
-
         private const val VARIABLES_FILENAME = "variables.json"
 
         private val OBJECT_MAPPER = ObjectMapper().apply {
@@ -39,8 +37,8 @@ class VariablesFileService {
     }
 
     fun saveProjectVariables(projectVariables: ProjectVariables,
-                             variablesDir: JavaPath): ProjectVariables {
-        val variablesFile = variablesDir.resolve(VARIABLES_FILENAME)
+                             projectVariablesDir: JavaPath): ProjectVariables {
+        val variablesFile = projectVariablesDir.resolve(VARIABLES_FILENAME)
 
         val variablesFileContent = OBJECT_MAPPER.writeValueAsBytes(projectVariables)
 
@@ -57,8 +55,8 @@ class VariablesFileService {
         return projectVariables
     }
 
-    fun getProjectVariables(variablesDir: JavaPath): ProjectVariables {
-        val variablesFile = variablesDir.resolve(VARIABLES_FILENAME)
+    fun getProjectVariables(projectVariablesDir: JavaPath): ProjectVariables {
+        val variablesFile = projectVariablesDir.resolve(VARIABLES_FILENAME)
 
         if (variablesFile.doesNotExist) {
             return ProjectVariables.EMPTY
@@ -67,15 +65,31 @@ class VariablesFileService {
         return OBJECT_MAPPER.readValue(variablesFile.toFile())
     }
 
-    fun getVariablesAsMap(variablesDir: JavaPath): Map<String, String> {
-        // todo: remove this method and fix usages
-        val variablesFile = variablesDir.resolve(VARIABLES_FILENAME)
+    fun getMergedVariables(projectVariablesDir: JavaPath,
+                           currentEnvironment: String?,
+                           variableOverrides: Map<String, String>): Map<String, String> {
+        val result = HashMap<String, String>()
 
-        if (variablesFile.doesNotExist) {
-            return emptyMap()
+        val projectVariables = getProjectVariables(projectVariablesDir)
+
+        // 1. default environment
+        result.putAll(projectVariables.defaultVariables)
+
+        // 2. current environment (from project or local)
+        if ((currentEnvironment != null) && (currentEnvironment != ReservedVariableEnvironmentNames.DEFAULT)) {
+            if (currentEnvironment == ReservedVariableEnvironmentNames.LOCAL) {
+                throw IllegalArgumentException("NOT YET IMPLEMENTED: local environment")
+            } else {
+                val environment = projectVariables.environments[currentEnvironment]
+                        ?: throw IllegalArgumentException("the environment [$currentEnvironment] does not exist in this project")
+
+                result.putAll(environment)
+            }
         }
 
-        return OBJECT_MAPPER.readValue(variablesFile.toFile())
-    }
+        // 3. variable overrides
+        result.putAll(variableOverrides)
 
+        return result
+    }
 }

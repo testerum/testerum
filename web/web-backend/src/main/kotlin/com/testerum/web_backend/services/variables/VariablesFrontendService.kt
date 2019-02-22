@@ -3,6 +3,7 @@ package com.testerum.web_backend.services.variables
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.model.variable.AllProjectVariables
 import com.testerum.model.variable.ProjectVariables
+import com.testerum.model.variable.ReservedVariableEnvironmentNames
 import com.testerum.model.variable.Variable
 import com.testerum.model.variable.VariablesEnvironment
 import com.testerum.web_backend.services.project.WebProjectManager
@@ -48,7 +49,7 @@ class VariablesFrontendService(private val webProjectManager: WebProjectManager,
             )
         }
 
-        val currentEnvironment = VariablesFileService.DEFAULT_ENVIRONMENT_NAME // todo
+        val currentEnvironment = ReservedVariableEnvironmentNames.DEFAULT // todo
         val localVariables = emptyList<Variable>() // todo
 
         return AllProjectVariables(
