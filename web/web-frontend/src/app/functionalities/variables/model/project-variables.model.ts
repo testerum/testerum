@@ -3,7 +3,7 @@ import {Serializable} from "../../../model/infrastructure/serializable.model";
 import {JsonUtil} from "../../../utils/json.util";
 import {Variable} from "./variable.model";
 
-export class ProjectVariables implements Serializable<ProjectVariables> {
+export class AllProjectVariables implements Serializable<AllProjectVariables> {
     public static DEFAULT_ENVIRONMENT_NAME = "Default";
     public static LOCAL_ENVIRONMENT_NAME = "Local";
 
@@ -14,9 +14,9 @@ export class ProjectVariables implements Serializable<ProjectVariables> {
 
     getAllAvailableEnvironments(): string[] {
         var availableEnvironments: string[] = [];
-        availableEnvironments.push(ProjectVariables.DEFAULT_ENVIRONMENT_NAME);
+        availableEnvironments.push(AllProjectVariables.DEFAULT_ENVIRONMENT_NAME);
         if (this.localVariables.length > 0) {
-            availableEnvironments.push(ProjectVariables.LOCAL_ENVIRONMENT_NAME);
+            availableEnvironments.push(AllProjectVariables.LOCAL_ENVIRONMENT_NAME);
         }
 
         for (const environment of this.environments) {
@@ -25,7 +25,7 @@ export class ProjectVariables implements Serializable<ProjectVariables> {
         return availableEnvironments;
     }
 
-    deserialize(input: Object): ProjectVariables {
+    deserialize(input: Object): AllProjectVariables {
         this.currentEnvironment = input["currentEnvironment"];
 
         this.defaultVariables = [];
@@ -70,10 +70,10 @@ export class ProjectVariables implements Serializable<ProjectVariables> {
     }
 
     getVariablesByEnvironmentName(selectedEnvironmentName: string): Variable[] {
-        if (selectedEnvironmentName == ProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
+        if (selectedEnvironmentName == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
             return this.defaultVariables;
         }
-        if (selectedEnvironmentName == ProjectVariables.LOCAL_ENVIRONMENT_NAME) {
+        if (selectedEnvironmentName == AllProjectVariables.LOCAL_ENVIRONMENT_NAME) {
             return this.localVariables;
         }
         for (const environment of this.environments) {

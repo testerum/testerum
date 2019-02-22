@@ -4,7 +4,7 @@ import {Variable} from "./model/variable.model";
 import {StringUtils} from "../../utils/string-utils.util";
 import {ArrayUtil} from "../../utils/array.util";
 import {VariablesService} from "../../service/variables.service";
-import {ProjectVariables} from "./model/project-variables.model";
+import {AllProjectVariables} from "./model/project-variables.model";
 import {Subscription} from "rxjs";
 import {EnvironmentEditModalComponent} from "./environment-edit-modal/environment-edit-modal.component";
 import {SelectItem} from "primeng/api";
@@ -22,7 +22,7 @@ export class VariablesComponent implements OnInit, OnDestroy {
     @ViewChild("modal") modal: ModalDirective;
     @ViewChild(EnvironmentEditModalComponent) environmentEditModalComponent: EnvironmentEditModalComponent;
 
-    projectVariables: ProjectVariables;
+    projectVariables: AllProjectVariables;
 
     disableModal: boolean = false;
     hasChanges: boolean = false;
@@ -40,7 +40,7 @@ export class VariablesComponent implements OnInit, OnDestroy {
     show(selectedEnvironment: string): void {
         this.selectedEnvironmentName = selectedEnvironment;
 
-        this.getVariablesSubscription = this.variablesService.getVariables().subscribe((projectVariables: ProjectVariables) => {
+        this.getVariablesSubscription = this.variablesService.getVariables().subscribe((projectVariables: AllProjectVariables) => {
             this.initState(projectVariables);
         });
         this.modal.show();
@@ -50,7 +50,7 @@ export class VariablesComponent implements OnInit, OnDestroy {
         this.modal.hide();
     }
 
-    private initState(projectVariables: ProjectVariables) {
+    private initState(projectVariables: AllProjectVariables) {
         this.hasChanges = false;
         this.projectVariables = projectVariables;
 
@@ -61,7 +61,7 @@ export class VariablesComponent implements OnInit, OnDestroy {
 
         let selectedEnvironmentVariables: Variable[] = this.projectVariables.getVariablesByEnvironmentName(this.selectedEnvironmentName);
         if (selectedEnvironmentVariables == null) {
-            this.selectedEnvironmentName = ProjectVariables.DEFAULT_ENVIRONMENT_NAME;
+            this.selectedEnvironmentName = AllProjectVariables.DEFAULT_ENVIRONMENT_NAME;
             selectedEnvironmentVariables = projectVariables.defaultVariables
         }
         this.variables = selectedEnvironmentVariables;
@@ -128,8 +128,8 @@ export class VariablesComponent implements OnInit, OnDestroy {
     }
 
     isEditableEnvironment(): boolean {
-        return this.selectedEnvironmentName != ProjectVariables.DEFAULT_ENVIRONMENT_NAME &&
-            this.selectedEnvironmentName != ProjectVariables.LOCAL_ENVIRONMENT_NAME;
+        return this.selectedEnvironmentName != AllProjectVariables.DEFAULT_ENVIRONMENT_NAME &&
+            this.selectedEnvironmentName != AllProjectVariables.LOCAL_ENVIRONMENT_NAME;
     }
 
     save(): void {
@@ -146,14 +146,14 @@ export class VariablesComponent implements OnInit, OnDestroy {
     }
 
     isDefaultOrLocalEnvironment(value: string): boolean {
-        return value == ProjectVariables.DEFAULT_ENVIRONMENT_NAME || value == ProjectVariables.LOCAL_ENVIRONMENT_NAME;
+        return value == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME || value == AllProjectVariables.LOCAL_ENVIRONMENT_NAME;
     }
 
     getEnvironmentInfoMessage(value: string): string {
-        if (value == ProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
+        if (value == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
             return "Variables declared in this environment will be inherited in all the other environments"
         }
-        if (value == ProjectVariables.LOCAL_ENVIRONMENT_NAME) {
+        if (value == AllProjectVariables.LOCAL_ENVIRONMENT_NAME) {
             return "Variables declared in this environment will are not saved inside the project and they will not going to be commited with your tests. <br/>" +
                    "<br/>" +
                    "In this way, you can have your own private variables for your Testerum instance."

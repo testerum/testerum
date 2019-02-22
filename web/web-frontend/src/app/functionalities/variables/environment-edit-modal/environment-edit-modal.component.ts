@@ -4,7 +4,7 @@ import {Observable, Subject} from "rxjs";
 import {NgForm} from "@angular/forms";
 import {FormUtil} from "../../../utils/form.util";
 import {ArrayUtil} from "../../../utils/array.util";
-import {ProjectVariables} from "../model/project-variables.model";
+import {AllProjectVariables} from "../model/project-variables.model";
 import {VariablesEnvironment} from "../model/variables-environment.model";
 
 @Component({
@@ -20,7 +20,7 @@ export class EnvironmentEditModalComponent implements OnDestroy {
 
     newEnvironmentName: string;
     environmentNameToEdit: string;
-    projectVariables: ProjectVariables;
+    projectVariables: AllProjectVariables;
 
     selectedEnvironmentResponseSubject: Subject<string> = new Subject<string>();
 
@@ -28,7 +28,7 @@ export class EnvironmentEditModalComponent implements OnDestroy {
         this.selectedEnvironmentResponseSubject.complete();
     }
 
-    addEnvironment(projectVariables: ProjectVariables): Observable<string> {
+    addEnvironment(projectVariables: AllProjectVariables): Observable<string> {
         this.environmentNameToEdit = null;
         this.projectVariables = projectVariables;
         this.newEnvironmentName = null;
@@ -38,7 +38,7 @@ export class EnvironmentEditModalComponent implements OnDestroy {
         return this.selectedEnvironmentResponseSubject;
     }
 
-    editEnvironmentName(environmentNameToEdit: string, projectVariables: ProjectVariables): Observable<string> {
+    editEnvironmentName(environmentNameToEdit: string, projectVariables: AllProjectVariables): Observable<string> {
         this.environmentNameToEdit = environmentNameToEdit;
         this.projectVariables = projectVariables;
         this.newEnvironmentName = environmentNameToEdit;
@@ -90,7 +90,7 @@ export class EnvironmentEditModalComponent implements OnDestroy {
         let environmentToDelete = this.projectVariables.getEnvironmentByName(this.environmentNameToEdit);
         ArrayUtil.removeElementFromArray(this.projectVariables.environments, environmentToDelete);
 
-        this.selectedEnvironmentResponseSubject.next(ProjectVariables.DEFAULT_ENVIRONMENT_NAME);
+        this.selectedEnvironmentResponseSubject.next(AllProjectVariables.DEFAULT_ENVIRONMENT_NAME);
         this.modal.hide();
     }
 }
