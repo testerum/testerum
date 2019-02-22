@@ -34,10 +34,10 @@ class ManualTestPlanFileService(private val businessToFileManualTestPlanMapper: 
 
     fun save(plan: ManualTestPlan,
              manualTestsDir: JavaPath): ManualTestPlan {
-        val oldEscapedPath = plan.oldPath?.escape()
+        val oldPath = plan.oldPath
         val newEscapedPath = plan.getNewPath().escape()
 
-        val oldPlanDir: JavaPath? = oldEscapedPath?.let {
+        val oldPlanDir: JavaPath? = oldPath?.let {
             manualTestsDir.resolve(
                     it.directories.joinToString(separator = "/")
             ).toAbsolutePath().normalize()

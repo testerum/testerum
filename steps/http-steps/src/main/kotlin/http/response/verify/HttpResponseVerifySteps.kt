@@ -31,7 +31,7 @@ class HttpResponseVerifySteps {
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
 
     @Then(
-            value = "I expect <<httpResponseVerify>> HTTP Response",
+            value = "the HTTP response should be <<httpResponseVerify>>",
             description = "Checks if the response from the previous HTTP request is according to the given criteria."
     )
     fun verifyHttpResponse(

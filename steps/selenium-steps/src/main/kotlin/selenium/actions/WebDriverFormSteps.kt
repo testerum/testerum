@@ -40,7 +40,7 @@ class WebDriverFormSteps {
     }
 
     @When(
-            value = "I submit the form containing the field identified by the element locator <<elementLocator>>",
+            value = "I submit the form containing the field <<elementLocator>>",
             description = "Finds the nearest ``form`` ancestor of the given element and submits it."
     )
     fun submitTheForm(

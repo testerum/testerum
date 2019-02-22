@@ -1,4 +1,7 @@
-//.http-response-verify-body {
+.http-response-verify-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
 
     .phase-input {
         width: auto;
@@ -23,5 +26,5 @@
         top: 0;
         bottom: 0;
     }
-//}
+}
 

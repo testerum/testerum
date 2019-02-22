@@ -95,10 +95,10 @@ class FeatureFileService(private val featureMapper: FileToBusinessFeatureMapper,
     }
 
     fun save(feature: Feature, featuresDir: JavaPath): Feature {
-        val oldEscapedPath = feature.oldPath?.escape()
+        val oldPath = feature.oldPath
         val newEscapedPath = feature.getNewPath().escape()
 
-        val oldFeatureDir: JavaPath? = oldEscapedPath?.let {
+        val oldFeatureDir: JavaPath? = oldPath?.let {
             featuresDir.resolve(
                     it.directories.joinToString(separator = "/")
             ).toAbsolutePath().normalize()

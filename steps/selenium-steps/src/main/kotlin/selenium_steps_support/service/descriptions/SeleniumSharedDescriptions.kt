@@ -31,13 +31,13 @@ object SeleniumSharedDescriptions {
             "    expressionType=matchValue\n" +
             "```\n" +
             "where ``expressionType`` can be one of:\n" +
-            "  - ``exact``                  , used to match text exactly as is. For example, ``exact=some text`` will only match ``some text``.\n" +
+            "  - ``exact``                  , used to match text exactly as-is. For example, ``exact=some text`` will only match ``some text``.\n" +
             "  - ``caseInsensitive``        , like ``exact``, but ignoring character case. For example, ``caseInsensitive=some text`` will match ``some text``, but also ``sOMe TeXT``.\n" +
             "  - ``contains``               , used to match match parts of the text. For example, ``contains=e big`` will match ``some big text``.\n" +
             "  - ``containsCaseInsensitive``, like ``contains``, but ignoring character case. For example, ``containsCaseInsensitive=e big`` will match ``some big text``, but also ``somE BiG text``\n" +
-            "  - ``regex``                  , used to match text agains a [Java regular expression](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).\n" +
+            "  - ``regex``                  , used to match text against a [Java regular expression](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).\n" +
             "\n" +
-            "Not that the part ``expressionType=`` is optional.\n" +
+            "Note that the part ``expressionType=`` is optional.\n" +
             "If it's missing, the expression type will be ``exact``. For example ``some text`` will only match ``some text``.\n"
 
 }

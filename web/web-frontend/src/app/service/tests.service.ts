@@ -6,6 +6,7 @@ import {Path} from "../model/infrastructure/path/path.model";
 import {CopyPath} from "../model/infrastructure/path/copy-path.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
+import {ModelRepairerService} from "./model-repairer/model-repairer.service";
 
 
 @Injectable()
@@ -14,7 +15,8 @@ export class TestsService {
     private TESTS_URL = "/rest/tests";
 
     constructor(private http: HttpClient,
-                private urlService: UrlService) {}
+                private urlService: UrlService,
+                private modelRepairer: ModelRepairerService) {}
 
     delete(testModel:TestModel): Observable<void> {
         const httpOptions = {
@@ -36,7 +38,8 @@ export class TestsService {
 
         return this.http
             .post<TestModel>(this.TESTS_URL + "/save", body, httpOptions).pipe(
-            map(TestsService.extractTestModel));
+            map(TestsService.extractTestModel),
+            map(it => this.modelRepairer.repairTestModel(it)));
     }
 
     private static extractTestsModel(res: Array<TestModel>):Array<TestModel> {
@@ -58,7 +61,8 @@ export class TestsService {
 
         return this.http
             .get<TestModel>(this.TESTS_URL, httpOptions).pipe(
-            map(TestsService.extractTestModel));
+            map(TestsService.extractTestModel),
+            map(it => this.modelRepairer.repairTestModel(it)));
     }
 
     private static extractTestModel(res: TestModel):TestModel {
@@ -79,7 +83,7 @@ export class TestsService {
 
         return this.http
             .post<TestModel>(this.TESTS_URL + "/warnings", body, httpOptions).pipe(
-            map(TestsService.extractTestModel));
+            map(TestsService.extractTestModel),
+            map(it => this.modelRepairer.repairTestModel(it)));
     }
-
 }

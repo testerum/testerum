@@ -56,10 +56,12 @@ export class StatsModelExtractor {
 
         this.stats.perDay.forEach((value: StatsAll, key: Date) => {
             let tagStats = value.status.perTagAvg.get(tag);
-            let amount = tagStats.getCount(status);
-            amount = amount? amount: 0;
-            let dataPoint = new DataPointModel(key, amount);
-            result.push(dataPoint);
+            if (tagStats) {
+                let amount = tagStats.getCount(status);
+                amount = amount? amount: 0;
+                let dataPoint = new DataPointModel(key, amount);
+                result.push(dataPoint);
+            }
         });
 
         return result;

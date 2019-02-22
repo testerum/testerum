@@ -49,6 +49,7 @@ import {UtilService} from "./service/util.service";
 import {ProjectService} from "./service/project.service";
 import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.interceptor";
 import {CurrentProjectGuard} from "./service/guards/current-project.guard";
+import {ModelRepairerService} from "./service/model-repairer/model-repairer.service";
 import { MenuVariablesComponent } from './menu/variables/menu-variables.component';
 import { EnvironmentEditModalComponent } from './functionalities/variables/environment-edit-modal/environment-edit-modal.component';
 
@@ -114,6 +115,7 @@ import { EnvironmentEditModalComponent } from './functionalities/variables/envir
 
         UrlService,
         UtilService,
+        ModelRepairerService,
 
         ErrorHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useExisting: ErrorHttpInterceptor,  multi: true },

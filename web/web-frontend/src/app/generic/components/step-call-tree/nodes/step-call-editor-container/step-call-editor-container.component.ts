@@ -32,6 +32,8 @@ import {StepCallTreeComponentService} from "../../step-call-tree.component-servi
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {merge} from "rxjs";
 import {StepCallContainerModel} from "../../model/step-call-container.model";
+import {ArrayUtil} from "../../../../../utils/array.util";
+import {PathUtil} from "../../../../../utils/path.util";
 
 @Component({
     selector: 'step-call-editor-container',
@@ -44,6 +46,8 @@ import {StepCallContainerModel} from "../../model/step-call-container.model";
     encapsulation: ViewEncapsulation.None
 })
 export class StepCallEditorContainerComponent implements OnInit, OnDestroy, AfterViewChecked {
+
+    private MAX_SUGGESTION_NUMBER = 10;
 
     @Input() model: StepCallEditorContainerModel;
     @Input() modelComponentMapping: ModelComponentMapping;
@@ -80,11 +84,14 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
                     keys: ["stepCallText"],
                     shouldSort: true,
                     includeScore: true,
-                    includeMatches: true,
+                    includeMatches: false,
                     tokenize: false,
                     matchAllTokens: false,
                     findAllMatches: false,
-                    threshold: 0.6,
+                    threshold: 0.5,
+                    location: 0,
+                    distance: 50,
+                    maxPatternLength: 32,
                 }
             );
 
@@ -94,10 +101,11 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
                     keys: ["stepCallText"],
                     shouldSort: false,
                     includeScore: true,
-                    includeMatches: true,
+                    includeMatches: false,
                     threshold: 0.0,
-                    location: 1000,
+                    location: 0,
                     distance: 0,
+                    maxPatternLength: 500,
                 }
             )
         });
@@ -158,8 +166,8 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         let query: string = event.query;
         let newSuggestions = [];
 
-        // @ts-ignore
-        let fuseSearchResult: Fuse.FuseResult<StepCallSuggestion>[] = this.fuseSearch.search(query) as Fuse.FuseResult<StepCallSuggestion>[];
+
+        let fuseSearchResult: Fuse.FuseResult<StepCallSuggestion>[] = this.searchMatchingSteps(query);
 
         for (const fuseSearchResultElement of fuseSearchResult) {
             newSuggestions.push(fuseSearchResultElement.item);
@@ -173,16 +181,16 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
             return;
         }
 
-        let hasGetPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("Given " + queryStepTextWithoutPhase).length != 0;
-        let hasWhenPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("When " + queryStepTextWithoutPhase).length != 0;
-        let hasThenPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search("Then " + queryStepTextWithoutPhase).length != 0;
+        let hasGetPhasePerfectMatch = this.isAnyPerfectMatchForStepText("Given " + queryStepTextWithoutPhase);
+        let hasWhenPhasePerfectMatch = this.isAnyPerfectMatchForStepText("When " + queryStepTextWithoutPhase);
+        let hasThenPhasePerfectMatch = this.isAnyPerfectMatchForStepText("Then " + queryStepTextWithoutPhase);
         let hasAndPhasePerfectMatch = false;
         let previewsStepDef: StepDef = null;
 
         if (StepPhaseEnum.AND == queryStepPhase && this.findStepIndex() > 0) {
             previewsStepDef = this.getPreviousStepDef();
             let previewsStepPhaseAsString = StepPhaseUtil.toCamelCaseString(previewsStepDef.phase);
-            hasAndPhasePerfectMatch = this.fuseSearchWithPerfercMatch.search(previewsStepPhaseAsString + " " + query).length != 0;
+            hasAndPhasePerfectMatch = this.isAnyPerfectMatchForStepText(previewsStepPhaseAsString + " " + query);
         }
 
         if(!hasGetPhasePerfectMatch && !hasWhenPhasePerfectMatch && !hasThenPhasePerfectMatch && !hasAndPhasePerfectMatch) {
@@ -204,6 +212,29 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         this.suggestions = newSuggestions;
     }
 
+    private searchMatchingSteps(query: string): Fuse.FuseResult<StepCallSuggestion>[] {
+        // @ts-ignore
+        let fuseSearchResult: Fuse.FuseResult<StepCallSuggestion>[] = this.fuseSearch.search(query) as Fuse.FuseResult<StepCallSuggestion>[];
+
+        //this fixes a bug in FuseJs. If the search query is long, at a moment is going to retrun all the steps
+        if (fuseSearchResult.length == this.allPossibleSuggestions.length && fuseSearchResult.length > this.MAX_SUGGESTION_NUMBER) {
+            return [];
+        }
+
+        return fuseSearchResult.slice(0, this.MAX_SUGGESTION_NUMBER);
+
+    }
+
+    private isAnyPerfectMatchForStepText(query: string): boolean {
+        let searchResults = this.fuseSearchWithPerfercMatch.search(query);
+        if (searchResults.length == 0) return false;
+        for (const searchResult of searchResults) {
+            if(searchResult.score != 0) return false;
+        }
+
+        return true;
+    }
+
     private findStepIndex(): number {
         return this.model.parentContainer.getChildren().indexOf(this.model);
     }
@@ -222,7 +253,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     createUndefinedStepCallSuggestion(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string, actionText: string, userAndAsTextPhase: boolean = false): StepCallSuggestion {
 
         let stepDef = new UndefinedStepDef();
-        stepDef.path = this.stepCallTreeComponentService.containerPath;
+        stepDef.path = PathUtil.generateStepDefPath(this.stepCallTreeComponentService.containerPath, stepPhase, stepTextWithoutPhase);
         stepDef.phase = stepPhase;
 
         stepDef.stepPattern = new StepPattern();
@@ -241,8 +272,6 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
             warning.type = WarningType.UNDEFINED_STEP_CALL;
             warning.message = this.messageService.getMessage(MessageKey.WARNING_UNDEFINED_STEP_CALL);
             newStepCall.addWarning(warning);
-
-            this.addEmptyArgsToStepCall(newStepCall);
         }
         this.addNewStepCallToTree(newStepCall);
     }
@@ -291,4 +320,6 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     private removeThisEditorFromTree() {
         this.stepCallTreeComponentService.removeStepCallEditorIfExist();
     }
+
+
 }

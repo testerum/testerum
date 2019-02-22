@@ -31,11 +31,11 @@ export class JsonStepNodeComponent {
 
     onCutStepDef() {
         this.setSelected();
-        this.stepsTreeService.setPathToCut(this.model.path);
+        this.stepsTreeService.setPathToCut(this.model.path, this.model.isComposedStep);
     }
 
     onCopyStepDef() {
         this.setSelected();
-        this.stepsTreeService.setPathToCopy(this.model.path);
+        this.stepsTreeService.setPathToCopy(this.model.path, this.model.isComposedStep);
     }
 }

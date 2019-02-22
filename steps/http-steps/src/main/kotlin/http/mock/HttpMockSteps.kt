@@ -20,8 +20,8 @@ class HttpMockSteps {
     }
 
     @Given(
-            value = "the HTTP Mock Server <<httpMockServer>> with the Mock Request <<httpMock>>",
-            description = "Sets up a mock HTTP server with the given parameters."
+            value = "the HTTP mock server <<httpMockServer>> with the mock request <<httpMock>>",
+            description = "Sets up an HTTP server that will return the configured response when the configured request matches."
     )
     fun setupMockServer(
             @Param(

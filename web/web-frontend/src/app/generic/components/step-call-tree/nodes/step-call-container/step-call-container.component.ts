@@ -17,6 +17,7 @@ import {StepCallTreeUtil} from "../../util/step-call-tree.util";
 import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
 import {ContextService} from "../../../../../service/context.service";
 import {StepContext} from "../../../../../model/step/context/step-context.model";
+import {PathUtil} from "../../../../../utils/path.util";
 
 @Component({
     selector: 'step-call-container',
@@ -60,7 +61,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
 
     private initPropertiesThatDependsOnStepOrder() {
         let indexInParent = this.findStepIndex();
-        if (indexInParent == 0) {
+        if (indexInParent <= 0) { // is less then 0 in case of the parent node is a shared node in the tree, first child node is removed for the other branch
             this.stepTextComponent.showPhaseAsAnd = false;
             return;
         }
@@ -119,7 +120,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
             stepToEdit,
             stepContext
         ).subscribe((newStepDef: ComposedStepDef) => {
-            let hasDifferentPath = !newStepDef.path.equals(this.stepCallTreeComponentService.containerPath);
+            let hasDifferentPath = !newStepDef.path.getParentPath().equals(this.stepCallTreeComponentService.containerPath);
             let hasSubSteps = newStepDef.stepCalls.length > 0;
             let isUndefinedStep = this.isUndefinedStep();
             if (hasDifferentPath || hasSubSteps || !isUndefinedStep) {
@@ -128,7 +129,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
                 let newUndefinedStep = new UndefinedStepDef();
                 newUndefinedStep.phase = newStepDef.phase;
                 newUndefinedStep.stepPattern = newStepDef.stepPattern;
-                newUndefinedStep.path = this.stepCallTreeComponentService.containerPath;
+                newUndefinedStep.path = PathUtil.generateStepDefPath(this.stepCallTreeComponentService.containerPath, newStepDef.phase, newStepDef.stepPattern.getPatternText());
                 this.model.stepCall.stepDef = newUndefinedStep;
             }
 
@@ -171,6 +172,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
 
             this.model.stepCall.args.push(newArg);
         }
+
+        StepCallTreeUtil.createParamContainerWithChildren(this.model.stepCall, this.model);
     }
 
     private getArgFromListByParamNameAndType(args: Array<Arg>, paramName: string, uiType: string): Arg {
@@ -309,5 +312,4 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     isSelectedForCopyOrCut(): boolean {
         return this.stepCallTreeComponentService.getSelectedNode() == this;
     }
-
 }

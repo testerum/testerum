@@ -1,7 +1,6 @@
 package json.transformer
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.testerum.api.transformer.ParameterInfo
 import com.testerum.api.transformer.Transformer
 import com.testerum.step_transformer_utils.JsonVariableReplacer
@@ -21,7 +20,9 @@ class JsonTextTransformer: Transformer<JsonResource> {
 
         jsonVariableReplacer.replaceVariables(rootNode)
 
-        return JSON_STEPS_OBJECT_MAPPER.treeToValue(rootNode)
+        val serializedJson: String = JSON_STEPS_OBJECT_MAPPER.writeValueAsString(rootNode)
+
+        return JsonResource(serializedJson)
     }
 
 }

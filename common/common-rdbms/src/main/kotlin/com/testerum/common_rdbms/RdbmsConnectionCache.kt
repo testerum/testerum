@@ -13,7 +13,12 @@ import com.testerum.model.resources.rdbms.schema.RdbmsField
 import com.testerum.model.resources.rdbms.schema.RdbmsSchema
 import com.testerum.model.resources.rdbms.schema.RdbmsTable
 import java.net.URLClassLoader
-import java.sql.*
+import java.sql.Connection
+import java.sql.DatabaseMetaData
+import java.sql.Driver
+import java.sql.ResultSet
+import java.sql.Statement
+import java.sql.Types
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -51,7 +56,11 @@ class RdbmsConnectionCache(private val jdbcDriversCache: JdbcDriversCache) {
             throw ValidationException(
                 ValidationModel(
                     globalMessage = "The database connection couldn't be established using the provided details",
-                    globalMessageDetails = "RDBMS Connection Config = [\n\t$rdbmsConnectionConfig\n]"
+                    globalMessageDetails = "RDBMS Connection Config\n" +
+                                           "\t$rdbmsConnectionConfig\n" +
+                                           "\n" +
+                                           "Exception:\n" +
+                                           e.toStringWithStacktrace()
                 )
             )
         }
@@ -119,14 +128,14 @@ class RdbmsConnectionCache(private val jdbcDriversCache: JdbcDriversCache) {
         try {
             connection = getConnection(rdbmsConnectionConfig)
         } catch (e: Exception) {
-            var configAsString = rdbmsConnectionConfig.toString()
-            configAsString = configAsString.replace(", ", "\n\t")
-            configAsString = configAsString.substringAfter("(").substringBefore(")")
-
             throw ValidationException(
                     ValidationModel(
                             globalMessage = "The database connection couldn't be established using the provided details",
-                            globalMessageDetails = "RDBMS Connection Config = [\n\t$configAsString\n]"
+                            globalMessageDetails = "RDBMS Connection Config\n" +
+                                    "\t$rdbmsConnectionConfig\n" +
+                                    "\n" +
+                                    "Exception:\n" +
+                                    e.toStringWithStacktrace()
                     )
             )
         }

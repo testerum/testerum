@@ -3,6 +3,7 @@ package com.testerum.file_service.file
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.deleteIfExists
+import com.testerum.common_kotlin.doesNotExist
 import com.testerum.common_kotlin.exists
 import com.testerum.common_kotlin.getContent
 import com.testerum.common_kotlin.hasExtension
@@ -97,11 +98,11 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
     }
 
     fun save(test: TestModel, testsDir: JavaPath): TestModel {
-        val oldEscapedPath = test.oldPath?.escape()
+        val oldPath = test.oldPath
         val newEscapedPath = test.getNewPath().escape()
 
-        val oldTestFile: JavaPath? = oldEscapedPath?.let {
-            testsDir.resolve(oldEscapedPath.toString())
+        val oldTestFile: JavaPath? = oldPath?.let {
+            testsDir.resolve(oldPath.toString())
         }
         val newTestFile: JavaPath = testsDir.resolve(newEscapedPath.toString())
 
@@ -220,7 +221,6 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
             return escapedDestinationFile
 
         } else {
-
             val destinationFileSuffixIfIsNotUnique: String = getDestinationFileSuffixToBeUnique(escapedDestinationFile, testsDir)
             val escapedDestinationPathWithSuffix: Path = appendSuffixToPath(escapedDestinationFile, destinationFileSuffixIfIsNotUnique)
 
@@ -261,7 +261,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
 
     private fun getDestinationFileSuffixToBeUnique(escapedDestinationPath: Path, testsDir: JavaPath): String {
         val destinationFullJavaPath = testsDir.resolve(escapedDestinationPath.toString())
-        if (!destinationFullJavaPath.exists) {
+        if (destinationFullJavaPath.doesNotExist) {
             return ""
         }
 
@@ -271,7 +271,7 @@ class TestFileService(private val fileToBusinessTestMapper: FileToBusinessTestMa
         var destinationUniqueSuffix: String
 
         do {
-            destinationUniqueSuffix = destinationFileSuffix + (if (destinationFileSuffixCount != 0) "_$destinationFileSuffixCount" else "")
+            destinationUniqueSuffix = destinationFileSuffix + (if (destinationFileSuffixCount != 0) " $destinationFileSuffixCount" else "")
             destinationFileSuffixCount++
 
             var destinationPath = escapedDestinationPath

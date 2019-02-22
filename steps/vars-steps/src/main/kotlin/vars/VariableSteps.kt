@@ -11,8 +11,7 @@ class VariableSteps {
 
     @Given(
             value = "the variable <<name>> with value <<value>>",
-            description = "Sets the value of a variable.\n" +
-                          "If the variable doesn't exist yet, it will be first created."
+            description = "Sets the value of a variable."
     )
     fun declareTextVariable(name: String,
                         @Param(required = false) value: Any?) {

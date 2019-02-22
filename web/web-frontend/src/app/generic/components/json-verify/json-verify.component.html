@@ -1,7 +1,7 @@
 <div class="my-json-verify-root" >
     <p-toolbar>
         <div class="my-toolbar-container">
-            <div title="Compare Mode" class="my-compare-mode-container">
+            <div class="my-compare-mode-container">
                 Compare Mode:
 
                 <select class="form-control my-compare-mode-select" name="compareMode"
@@ -13,7 +13,8 @@
                     </option>
                 </select>
 
-                <div pTooltip="Set compare mode on current element"
+                <div pTooltip="In order to change the Compare Mode set the cursor inside the JSON element and press Insert button."
+                     [escape]="false"
                      tooltipPosition="bottom"
                      (click)="onSetCompareModeEvent()"
                      [class.disabled]="!canAddCompareMode()"

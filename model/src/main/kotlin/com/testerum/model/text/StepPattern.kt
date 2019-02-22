@@ -7,11 +7,42 @@ import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
 
-data class StepPattern  @JsonCreator constructor(
+data class StepPattern @JsonCreator constructor(
         @JsonProperty("patternParts") val patternParts: List<StepPatternPart>
 ) {
+
+    fun appendPart(partToAppend: StepPatternPart): StepPattern {
+        val lastPatternPart = patternParts.lastOrNull()
+
+        val shouldMergeIntoTheLastPart = lastPatternPart != null
+                && lastPatternPart is TextStepPatternPart
+                && partToAppend is TextStepPatternPart
+
+        val newPatternParts = ArrayList<StepPatternPart>()
+        if (shouldMergeIntoTheLastPart) {
+            for ((i, patternPart) in patternParts.withIndex()) {
+                val isLastPart = (i == (patternParts.size - 1))
+
+                if (isLastPart) {
+                    newPatternParts.add(
+                            TextStepPatternPart(
+                                    (patternPart as TextStepPatternPart).text + (partToAppend as TextStepPatternPart).text
+                            )
+                    )
+                } else {
+                    newPatternParts.add(patternPart)
+                }
+            }
+        } else {
+            newPatternParts.addAll(this.patternParts)
+            newPatternParts.add(partToAppend)
+        }
+
+        return this.copy(patternParts = newPatternParts)
+    }
+
     @JsonIgnore
-    fun getAsText():String {
+    fun getAsText(): String {
         var result = ""
         var isFirstPart = true
         for (patternPart in patternParts) {
@@ -25,7 +56,7 @@ data class StepPattern  @JsonCreator constructor(
             }
 
             if (patternPart is ParamStepPatternPart) {
-                result += "["+ patternPart.name + "]"
+                result += "[" + patternPart.name + "]"
             }
 
             isFirstPart = false

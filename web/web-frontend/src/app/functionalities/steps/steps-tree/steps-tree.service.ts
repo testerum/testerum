@@ -22,6 +22,7 @@ export class StepsTreeService {
 
     pathToCut: Path = null;
     pathToCopy: Path = null;
+    isCopyOrPasteAComposedStep: boolean = false;
 
     constructor(private stepsService: StepsService,
                 private jsonTreeService: JsonTreeService,){
@@ -84,24 +85,21 @@ export class StepsTreeService {
         }
     }
 
-    setPathToCut(path: Path) {
+    setPathToCut(path: Path, isComposedStep: boolean) {
         this.pathToCopy = null;
         this.pathToCut = path;
+        this.isCopyOrPasteAComposedStep = isComposedStep;
+
     }
 
-    setPathToCopy(path: Path) {
+    setPathToCopy(path: Path, isComposedStep: boolean) {
         this.pathToCopy = path;
         this.pathToCut = null;
+        this.isCopyOrPasteAComposedStep = isComposedStep;
     }
 
     canPaste(path: Path): boolean {
         return (this.pathToCopy != null && !this.pathToCopy.equals(path))
             || (this.pathToCut != null && !this.pathToCut.equals(path));
-    }
-
-    isPasteAStep(): boolean {
-        if(this.pathToCopy && this.pathToCopy.isFile()) return true;
-        if(this.pathToCut && this.pathToCut.isFile()) return true;
-        return false;
     }
 }

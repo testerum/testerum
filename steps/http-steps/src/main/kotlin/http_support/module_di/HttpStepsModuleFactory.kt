@@ -4,11 +4,11 @@ import com.testerum.api.services.TesterumServiceLocator
 import com.testerum.common.json_diff.module_di.JsonDiffModuleFactory
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
+import com.testerum.common_httpclient.TesterumHttpClientFactory
 import com.testerum.common_httpclient.HttpClientService
 import com.testerum.step_transformer_utils.JsonVariableReplacer
 import http_support.HttpMockService
 import org.apache.http.client.HttpClient
-import org.apache.http.impl.client.HttpClients
 
 class HttpStepsModuleFactory(context: ModuleFactoryContext,
                              jsonDiffModuleFactory: JsonDiffModuleFactory) : BaseModuleFactory(context) {
@@ -17,7 +17,7 @@ class HttpStepsModuleFactory(context: ModuleFactoryContext,
             jsonComparer = jsonDiffModuleFactory.jsonComparer
     )
 
-    private val httpClient: HttpClient = HttpClients.createDefault().also {
+    private val httpClient: HttpClient = TesterumHttpClientFactory.createHttpClient().also {
         context.registerShutdownHook {
             it.close()
         }

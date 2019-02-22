@@ -69,10 +69,6 @@ export class SchemaVerify extends JsonTreeContainerAbstract implements Resource<
     }
 
     serialize(): string {
-        if (this.isEmpty()) {
-            return null;
-        }
-
         let result = "" +
             '{' +
             '"' + CompareMode.PROPERTY_NAME_IN_JSON + '":' + JsonUtil.stringify(this.compareMode.getText());

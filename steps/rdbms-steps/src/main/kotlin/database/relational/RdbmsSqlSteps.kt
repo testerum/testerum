@@ -2,38 +2,42 @@ package database.relational
 
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
-import database.relational.connection_manager.model.RdbmsClient
+import com.testerum.api.services.TesterumServiceLocator
+import database.relational.connection_manager.model.RdbmsConnection
 import database.relational.model.RdbmsSql
 import database.relational.transformer.RdbmsConnectionTransformer
 import database.relational.transformer.RdbmsSqlTransformer
-import org.slf4j.LoggerFactory
 
 class RdbmsSqlSteps {
 
-    companion object {
-        private val LOG = LoggerFactory.getLogger(RdbmsSqlSteps::class.java)
-    }
+    private val testerumLogger = TesterumServiceLocator.getTesterumLogger()
 
     @When(
-            value = "writing <<SQL>> in <<relationalDatabaseClient>> database",
+            value = "I execute the SQL <<sql>> on the database <<dbConnection>>",
             description = "Executes the given SQL using the given relational database connection."
     )
-    fun writingSqlInSpecifiedDb(
+    fun executeSql(
             @Param(
                     transformer = RdbmsSqlTransformer::class,
                     description = "The SQL to be executed."
             )
-            rdbmsSql: RdbmsSql,
+            sql: RdbmsSql,
 
             @Param(
                     transformer = RdbmsConnectionTransformer::class,
                     description = RdbmsSharedDescriptions.CONNECTION
             )
-            rdbmsClient: RdbmsClient
+            dbConnection: RdbmsConnection
     ) {
+        testerumLogger.debug(
+                "SQL to execute\n"
+                + sql.sql.lines()
+                         .joinToString(separator = "\n") {
+                             "\t" + it
+                         }
 
-        rdbmsClient.executeSqlScript(rdbmsSql.sql)
-        LOG.debug("SQL Script executed successfully")
+        )
+        dbConnection.executeSqlScript(sql.sql)
     }
 
 }
