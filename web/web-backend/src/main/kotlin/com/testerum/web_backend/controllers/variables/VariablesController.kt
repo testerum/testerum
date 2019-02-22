@@ -1,8 +1,6 @@
 package com.testerum.web_backend.controllers.variables
 
 import com.testerum.model.variable.AllProjectVariables
-import com.testerum.model.variable.Variable
-import com.testerum.model.variable.VariablesEnvironment
 import com.testerum.web_backend.services.variables.VariablesFrontendService
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,9 +20,8 @@ class VariablesController(private val variablesFrontendService: VariablesFronten
 
     @RequestMapping (method = [RequestMethod.POST], path = [""])
     @ResponseBody
-    fun save(@RequestBody allProjectVariables: AllProjectVariables): AllProjectVariables {
-//        return variablesFrontendService.save(variables)
-        return allProjectVariables
+    fun saveAllProjectVariables(@RequestBody allProjectVariables: AllProjectVariables): AllProjectVariables {
+        return variablesFrontendService.saveAllProjectVariables(allProjectVariables)
     }
 
     @RequestMapping (method = [RequestMethod.PUT], path = ["/environment"])
