@@ -25,6 +25,8 @@ import java.nio.file.Path as JavaPath
 class TesterumProjectFileService {
 
     companion object {
+        const val TESTERUM_PROJECT_DIR = ".testerum"
+
         private val LOG = LoggerFactory.getLogger(TesterumProjectFileService::class.java)
 
         private val OBJECT_MAPPER: ObjectMapper = ObjectMapper().apply {
@@ -95,7 +97,7 @@ class TesterumProjectFileService {
     }
 
     private fun projectFilePath(directory: JavaPath): JavaPath {
-        return directory.resolve(".testerum/project.json")
+        return directory.resolve(TESTERUM_PROJECT_DIR).resolve("project.json")
     }
 
 }

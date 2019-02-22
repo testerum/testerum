@@ -10,7 +10,7 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.doesNotExist
-import com.testerum.model.variable.Variable
+import com.testerum.model.variable.ProjectVariables
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 import java.nio.file.Path as JavaPath
@@ -18,6 +18,9 @@ import java.nio.file.Path as JavaPath
 class VariablesFileService {
 
     companion object {
+        const val DEFAULT_ENVIRONMENT_NAME = "Default"
+        const val LOCAL_ENVIRONMENT_NAME = "Local"
+
         private const val VARIABLES_FILENAME = "variables.json"
 
         private val OBJECT_MAPPER = ObjectMapper().apply {
@@ -25,7 +28,7 @@ class VariablesFileService {
             registerModule(JavaTimeModule())
             registerModule(GuavaModule())
 
-            disable(SerializationFeature.INDENT_OUTPUT)
+            enable(SerializationFeature.INDENT_OUTPUT)
             setSerializationInclusion(JsonInclude.Include.NON_NULL)
             disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
             enable(SerializationFeature.WRITE_DATES_WITH_ZONE_ID)
@@ -35,14 +38,11 @@ class VariablesFileService {
         }
     }
 
-    fun save(variables: List<Variable>,
-             variablesDir: JavaPath): List<Variable> {
+    fun saveProjectVariables(projectVariables: ProjectVariables,
+                             variablesDir: JavaPath): ProjectVariables {
         val variablesFile = variablesDir.resolve(VARIABLES_FILENAME)
 
-        val variablesMap = variables.associateBy({ it.key }, { it.value })
-        val variablesFileContent = OBJECT_MAPPER.writeValueAsBytes(variablesMap)
-
-        // todo: we should't write all variables at once, to minimize conflicts with other users
+        val variablesFileContent = OBJECT_MAPPER.writeValueAsBytes(projectVariables)
 
         variablesFile.parent?.createDirectories()
 
@@ -54,18 +54,21 @@ class VariablesFileService {
                 StandardOpenOption.TRUNCATE_EXISTING
         )
 
-        return variables
+        return projectVariables
     }
 
-    fun getVariables(variablesDir: JavaPath): List<Variable> {
-        val variablesAsMap = getVariablesAsMap(variablesDir)
+    fun getProjectVariables(variablesDir: JavaPath): ProjectVariables {
+        val variablesFile = variablesDir.resolve(VARIABLES_FILENAME)
 
-        return variablesAsMap.map {
-            Variable(it.key, it.value)
+        if (variablesFile.doesNotExist) {
+            return ProjectVariables.EMPTY
         }
+
+        return OBJECT_MAPPER.readValue(variablesFile.toFile())
     }
 
     fun getVariablesAsMap(variablesDir: JavaPath): Map<String, String> {
+        // todo: remove this method and fix usages
         val variablesFile = variablesDir.resolve(VARIABLES_FILENAME)
 
         if (variablesFile.doesNotExist) {
@@ -74,6 +77,5 @@ class VariablesFileService {
 
         return OBJECT_MAPPER.readValue(variablesFile.toFile())
     }
-
 
 }

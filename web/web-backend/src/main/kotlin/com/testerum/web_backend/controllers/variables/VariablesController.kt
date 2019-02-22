@@ -16,35 +16,8 @@ class VariablesController(private val variablesFrontendService: VariablesFronten
 
     @RequestMapping (method = [RequestMethod.GET], path = [""])
     @ResponseBody
-    fun getProjectVariables(): AllProjectVariables {
-//        return variablesFrontendService.getVariables()
-        return AllProjectVariables(
-                "staging",
-                listOf(
-                        Variable("URL", "http://localhost:8080"),
-                        Variable("PATH", "/test/v1/rest")
-                ),
-                listOf(
-                        Variable("URL", "http://262.212.212.23"),
-                        Variable("PATH", "/local/v1/rest")
-                ),
-                listOf(
-                        VariablesEnvironment("" +
-                                "development",
-                                listOf(
-                                        Variable("URL", "http://developmentTesterum.org"),
-                                        Variable("PATH", "/dev/v1/rest")
-                                )
-                        ),
-                        VariablesEnvironment("" +
-                                "staging",
-                                listOf(
-                                        Variable("URL", "http://stagingTesterum.org"),
-                                        Variable("PATH", "/staging/v1/rest")
-                                )
-                        )
-                )
-        )
+    fun getAllProjectVariables(): AllProjectVariables {
+        return variablesFrontendService.getAllProjectVariables()
     }
 
     @RequestMapping (method = [RequestMethod.POST], path = [""])
