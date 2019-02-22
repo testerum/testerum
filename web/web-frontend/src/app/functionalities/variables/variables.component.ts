@@ -151,7 +151,7 @@ export class VariablesComponent implements OnInit, OnDestroy {
 
     getEnvironmentInfoMessage(value: string): string {
         if (value == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
-            return "Variables declared in this environment will be inherited in all the other environments"
+            return "Variables declared in this environment will be inherited by all the other environments"
         }
         if (value == AllProjectVariables.LOCAL_ENVIRONMENT_NAME) {
             return "Variables declared in this environment will are not saved inside the project and they will not going to be commited with your tests. <br/>" +
