@@ -30,11 +30,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li *ngIf="isProjectSelected()" class="menu-variables">
                 <menu-variables></menu-variables>
-                <a href="" (click)="showVariables(); false;"
-                   title="View & Edit variables">
-                    <i class="icon-menu-item far fa-eye"></i>
-                </a>
-                <variables></variables>
+
             </li>
             <li *ngIf="isProjectSelected()">
                 <a [routerLink]="['/'+getProjectName()+'/settings']"

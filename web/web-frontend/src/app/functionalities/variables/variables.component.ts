@@ -35,15 +35,25 @@ export class VariablesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+    }
+
+    show(selectedEnvironment: string): void {
+        this.selectedEnvironmentName = selectedEnvironment;
+
         this.getVariablesSubscription = this.variablesService.getVariables().subscribe((projectVariables: ProjectVariables) => {
             this.initState(projectVariables);
         });
+        this.modal.show();
+    }
+
+    close(): void {
+        this.modal.hide();
     }
 
     private initState(projectVariables: ProjectVariables) {
+        this.hasChanges = false;
         this.projectVariables = projectVariables;
 
-        this.selectedEnvironmentName = projectVariables.currentEnvironment ? projectVariables.currentEnvironment : ProjectVariables.DEFAULT_ENVIRONMENT_NAME;
         let availableEnvironments = projectVariables.getAllAvailableEnvironments();
         for (const availableEnvironment of availableEnvironments) {
             this.availableEnvironmentsAsSelectedItems.push(new StringSelectItem (availableEnvironment))
@@ -81,10 +91,12 @@ export class VariablesComponent implements OnInit, OnDestroy {
     }
 
     onNewKeyChange(value: Event) {
+        this.hasChanges = true;
         this.addEmptyVariableIfRequired();
     }
 
     onNewValueChange(value: Event) {
+        this.hasChanges = true;
         this.addEmptyVariableIfRequired();
     }
 
@@ -115,14 +127,6 @@ export class VariablesComponent implements OnInit, OnDestroy {
         ArrayUtil.removeElementFromArray(this.variables, variable);
     }
 
-    show(): void {
-        this.modal.show();
-    }
-
-    close(): void {
-        this.modal.hide();
-    }
-
     isEditableEnvironment(): boolean {
         return this.selectedEnvironmentName != ProjectVariables.DEFAULT_ENVIRONMENT_NAME &&
             this.selectedEnvironmentName != ProjectVariables.LOCAL_ENVIRONMENT_NAME;
@@ -130,15 +134,15 @@ export class VariablesComponent implements OnInit, OnDestroy {
 
     save(): void {
         let variablesToSave = this.variables.filter(variable => !variable.isEmpty());
-        // this.variablesService.save(variablesToSave).subscribe(
-        //     result => {
-        //         this.editMode = false;
-        //     }
-        // )
+        this.variablesService.save(this.projectVariables).subscribe (
+            result => {
+                this.hasChanges = false;
+            }
+        )
     }
 
     cancel(): void {
-        // this.loadVariablesFromServer();
+        this.close();
     }
 
     isDefaultOrLocalEnvironment(value: string): boolean {

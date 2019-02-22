@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {VariablesService} from "../../service/variables.service";
 import {ProjectVariables} from "../../functionalities/variables/model/project-variables.model";
 import {Subscription} from "rxjs";
+import {VariablesComponent} from "../../functionalities/variables/variables.component";
 
 @Component({
     selector: 'menu-variables',
@@ -9,6 +10,8 @@ import {Subscription} from "rxjs";
     styleUrls: ['./menu-variables.component.scss']
 })
 export class MenuVariablesComponent implements OnInit, OnDestroy {
+
+    @ViewChild(VariablesComponent) variablesComponent: VariablesComponent;
 
     shouldDisplayEnvironmentChooser: boolean = false;
     selectedEnvironment: string;
@@ -38,5 +41,9 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if(this.getVariablesSubscription) this.getVariablesSubscription.unsubscribe();
+    }
+
+    showVariables() {
+        this.variablesComponent.show(this.selectedEnvironment)
     }
 }

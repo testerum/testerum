@@ -50,4 +50,10 @@ class VariablesController(private val variablesFrontendService: VariablesFronten
 //        return variablesFrontendService.save(variables)
         return projectVariables;
     }
+
+    @RequestMapping (method = [RequestMethod.PUT], path = ["/environment"])
+    @ResponseBody
+    fun save(@RequestBody currentEnvironment: String): String {
+        return currentEnvironment;
+    }
 }
