@@ -19,7 +19,9 @@ import com.testerum.common_kotlin.isNotADirectory
 import com.testerum.common_kotlin.writeText
 import com.testerum.model.exception.ValidationException
 import com.testerum.model.project.FileProject
+import com.testerum.model.project.FileProjectV1
 import org.slf4j.LoggerFactory
+import java.util.*
 import java.nio.file.Path as JavaPath
 
 class TesterumProjectFileService {
@@ -74,13 +76,43 @@ class TesterumProjectFileService {
         try {
             val projectFile = projectFilePath(directory)
 
-            return OBJECT_MAPPER.readValue(projectFile.toFile())
+            // first try to load the current version
+            val fileProject = loadFileProjectCurrentVersionSafely(projectFile)
+            if (fileProject != null) {
+                return fileProject
+            }
+
+            // failed to load current version, try to load old version of the project and convert
+            val fileProjectV1 = loadFileProjectV1(projectFile)
+            val convertedFileProject = convertOldToNewFileProjectFormat(fileProjectV1)
+            save(convertedFileProject, directory)
+
+            return convertedFileProject
         } catch (e: Exception) {
             val errorMessage = "Failed to load [${directory.toAbsolutePath().normalize()}] as a Testerum project"
             LOG.error(errorMessage, e)
 
             throw ValidationException(errorMessage)
         }
+    }
+
+    private fun loadFileProjectCurrentVersionSafely(projectFile: JavaPath): FileProject? {
+        return try {
+            OBJECT_MAPPER.readValue(projectFile.toFile())
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun loadFileProjectV1(projectFile: JavaPath): FileProjectV1 {
+        return OBJECT_MAPPER.readValue(projectFile.toFile())
+    }
+
+    private fun convertOldToNewFileProjectFormat(fileProjectV1: FileProjectV1): FileProject {
+        return FileProject(
+                name = fileProjectV1.name,
+                id = generateProjectId()
+        )
     }
 
     fun isTesterumProject(directory: JavaPath): Boolean {
@@ -99,5 +131,7 @@ class TesterumProjectFileService {
     private fun projectFilePath(directory: JavaPath): JavaPath {
         return directory.resolve(TESTERUM_PROJECT_DIR).resolve("project.json")
     }
+
+    fun generateProjectId(): String = UUID.randomUUID().toString()
 
 }
