@@ -41,6 +41,6 @@ export class VariablesService {
         };
 
         return this.http
-            .post<string>(this.VARIABLES_URL+"/environment?currentEnvironment=" + encodeURIComponent(currentEnvironmentName), body, httpOptions);
+            .put<string>(this.VARIABLES_URL+"/environment?currentEnvironment=" + encodeURIComponent(currentEnvironmentName), body, httpOptions);
     }
 }
