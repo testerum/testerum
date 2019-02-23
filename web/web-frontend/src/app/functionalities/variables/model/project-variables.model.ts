@@ -16,9 +16,7 @@ export class AllProjectVariables implements Serializable<AllProjectVariables> {
     getAllAvailableEnvironments(): string[] {
         var availableEnvironments: string[] = [];
         availableEnvironments.push(AllProjectVariables.DEFAULT_ENVIRONMENT_NAME);
-        if (this.localVariables.length > 0) {
-            availableEnvironments.push(AllProjectVariables.LOCAL_ENVIRONMENT_NAME);
-        }
+        availableEnvironments.push(AllProjectVariables.LOCAL_ENVIRONMENT_NAME);
 
         for (const environment of this.environments) {
             availableEnvironments.push(environment.name);
