@@ -293,7 +293,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val variablesFrontendService = VariablesFrontendService(
             webProjectManager = webProjectManager,
-            variablesFileService = fileServiceModuleFactory.variablesFileService
+            frontendDirs = frontendDirs,
+            variablesFileService = fileServiceModuleFactory.variablesFileService,
+            localVariablesFileService = fileServiceModuleFactory.localVariablesFileService
     )
 
     private val messageFrontendService = MessageFrontendService()

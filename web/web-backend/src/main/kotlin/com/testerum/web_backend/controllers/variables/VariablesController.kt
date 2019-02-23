@@ -28,7 +28,7 @@ class VariablesController(private val variablesFrontendService: VariablesFronten
     @RequestMapping (method = [RequestMethod.PUT], path = ["/environment"], params = ["currentEnvironment"])
     @ResponseBody
     fun saveCurrentEnvironment(@RequestParam(value = "currentEnvironment") currentEnvironment: String): String {
-        //TODO Cristi: implement this
-        return currentEnvironment
+        return variablesFrontendService.saveCurrentEnvironment(currentEnvironment)
     }
+
 }

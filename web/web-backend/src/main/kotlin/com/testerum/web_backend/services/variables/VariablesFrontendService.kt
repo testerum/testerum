@@ -1,23 +1,35 @@
 package com.testerum.web_backend.services.variables
 
+import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.model.variable.AllProjectVariables
+import com.testerum.model.variable.FileLocalVariables
+import com.testerum.model.variable.FileProjectLocalVariables
 import com.testerum.model.variable.ProjectVariables
 import com.testerum.model.variable.ReservedVariableEnvironmentNames
 import com.testerum.model.variable.Variable
 import com.testerum.model.variable.VariablesEnvironment
+import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.project.WebProjectManager
 import java.util.*
 
 class VariablesFrontendService(private val webProjectManager: WebProjectManager,
-                               private val variablesFileService: VariablesFileService) {
+                               private val frontendDirs: FrontendDirs,
+                               private val variablesFileService: VariablesFileService,
+                               private val localVariablesFileService: LocalVariablesFileService) {
 
     private fun getVariablesDir() = webProjectManager.getProjectServices().dirs().getVariablesDir()
+    private fun getFileLocalVariablesFile() = frontendDirs.getFileLocalVariablesFile()
 
     fun getAllProjectVariables(): AllProjectVariables {
         val projectVariables = variablesFileService.getProjectVariables(getVariablesDir())
+        val fileLocalVariables = localVariablesFileService.load(
+                getFileLocalVariablesFile()
+        )
 
-        return mapProjectVariablesToAllProjectVariables(projectVariables)
+        val projectId = webProjectManager.getProjectServices().project.id
+
+        return mapProjectVariablesToAllProjectVariables(projectId, projectVariables, fileLocalVariables)
     }
 
     fun saveAllProjectVariables(allProjectVariables: AllProjectVariables): AllProjectVariables {
@@ -29,12 +41,32 @@ class VariablesFrontendService(private val webProjectManager: WebProjectManager,
                 environments = environments
         )
 
+        val projectId = webProjectManager.getProjectServices().project.id
+
         val savedProjectVariables = variablesFileService.saveProjectVariables(projectVariables, getVariablesDir())
 
-        return mapProjectVariablesToAllProjectVariables(savedProjectVariables)
+        val fileLocalVariables = localVariablesFileService.load(
+                getFileLocalVariablesFile()
+        )
+
+        val projectLocalVariables = TreeMap<String, FileProjectLocalVariables>()
+        projectLocalVariables.putAll(fileLocalVariables.projectLocalVariables)
+        projectLocalVariables[projectId] = FileProjectLocalVariables(
+                currentEnvironment = allProjectVariables.currentEnvironment,
+                localVariables = mapListOfVarsToMap(allProjectVariables.localVariables)
+        )
+
+        val savedFileLocalVariables = localVariablesFileService.save(
+                FileLocalVariables(projectLocalVariables),
+                getFileLocalVariablesFile()
+        )
+
+        return mapProjectVariablesToAllProjectVariables(projectId, savedProjectVariables, savedFileLocalVariables)
     }
 
-    private fun mapProjectVariablesToAllProjectVariables(projectVariables: ProjectVariables): AllProjectVariables {
+    private fun mapProjectVariablesToAllProjectVariables(projectId: String,
+                                                         projectVariables: ProjectVariables,
+                                                         fileLocalVariables: FileLocalVariables): AllProjectVariables {
         val defaultVariables = projectVariables.defaultVariables.map {
             Variable(it.key, it.value)
         }
@@ -49,8 +81,16 @@ class VariablesFrontendService(private val webProjectManager: WebProjectManager,
             )
         }
 
-        val currentEnvironment = ReservedVariableEnvironmentNames.DEFAULT // todo
-        val localVariables = emptyList<Variable>() // todo
+        val fileProjectLocalVariables = fileLocalVariables.getFileProjectLocalVariables(projectId)
+
+        val currentEnvironment = fileProjectLocalVariables?.currentEnvironment ?: ReservedVariableEnvironmentNames.DEFAULT
+        val localVariables = if (fileProjectLocalVariables != null) {
+            fileProjectLocalVariables.localVariables.map {
+                Variable(it.key, it.value)
+            }
+        } else {
+            emptyList()
+        }
 
         return AllProjectVariables(
                 currentEnvironment = currentEnvironment,
@@ -80,6 +120,28 @@ class VariablesFrontendService(private val webProjectManager: WebProjectManager,
         }
 
         return result
+    }
+
+    fun saveCurrentEnvironment(currentEnvironment: String): String {
+        val projectId = webProjectManager.getProjectServices().project.id
+
+        val fileLocalVariables = localVariablesFileService.load(
+                getFileLocalVariablesFile()
+        )
+
+        val projectLocalVariables = TreeMap<String, FileProjectLocalVariables>()
+        projectLocalVariables.putAll(fileLocalVariables.projectLocalVariables)
+        projectLocalVariables[projectId] = FileProjectLocalVariables(
+                currentEnvironment = currentEnvironment,
+                localVariables = projectLocalVariables[projectId]?.localVariables ?: TreeMap()
+        )
+
+        val savedFileLocalVariables = localVariablesFileService.save(
+                FileLocalVariables(projectLocalVariables),
+                getFileLocalVariablesFile()
+        )
+
+        return savedFileLocalVariables.projectLocalVariables[projectId]?.currentEnvironment ?: ReservedVariableEnvironmentNames.DEFAULT
     }
 
 }
