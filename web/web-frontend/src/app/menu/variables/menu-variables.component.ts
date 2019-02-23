@@ -22,8 +22,14 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.init();
+    }
+
+    private init() {
         this.getVariablesSubscription = this.variablesService.getVariables().subscribe((projectVariables: AllProjectVariables) => {
             this.selectedEnvironment = projectVariables.currentEnvironment ? projectVariables.currentEnvironment : AllProjectVariables.DEFAULT_ENVIRONMENT_NAME;
+
+            this.availableEnvironments.length = 0;
             this.availableEnvironments.push(AllProjectVariables.DEFAULT_ENVIRONMENT_NAME);
             if (projectVariables.localVariables.length > 0) {
                 this.availableEnvironments.push(AllProjectVariables.LOCAL_ENVIRONMENT_NAME);
@@ -44,6 +50,12 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
     }
 
     showVariables() {
-        this.variablesComponent.show(this.selectedEnvironment)
+        this.variablesComponent.show(this.selectedEnvironment).subscribe(it => {
+            this.init();
+        });
+    }
+
+    onEnvironmentChange(event: any) {
+        this.variablesService.saveCurrentEnvironment(this.selectedEnvironment)
     }
 }

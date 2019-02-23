@@ -13,8 +13,8 @@
                 <div class="my-line">
                     <label class="my-label label-size">Environment:</label>
 
-                    <div class="my-value">
-                        <p-dropdown [options]="availableEnvironmentsAsSelectedItems" [(ngModel)]="selectedEnvironmentName">
+                    <div class="environment my-value">
+                        <p-dropdown [options]="availableEnvironmentsAsSelectedItems" [ngModel]="selectedEnvironmentName" (onChange)="onEnvironmentChange($event)">
                             <ng-template let-item pTemplate="selectedItem">
                                 <div class="my-dropdown-option">
                                     <div>{{item.label}}</div>
@@ -35,7 +35,6 @@
                                 </div>
                             </ng-template>
                         </p-dropdown>
-
 
                         <div class="action-panel inline btn-group">
                             <div *ngIf="isEditableEnvironment()"
@@ -76,13 +75,16 @@
                         <!-- VALUE -->
                         <td class="variable-value">
                             <input (change)="onNewValueChange($event)"
+                                   (keydown)="onNewValueKeyDown($event, variable)"
                                    [(ngModel)]="variable.value"
+                                   [class.inherited-variable-value]="variable.isVariableFromDefaultEnvironment"
                                    type="text" pInputText  class="form-control full-width">
                         </td>
 
                         <!-- DELETE -->
-                        <td class="variable-action">
-                            <a href (click)="deleteVariable(variable);false;"
+                        <td  class="variable-action">
+                            <a *ngIf="!last"
+                               href (click)="deleteVariable(variable);false;"
                                class="btn btn-danger" aria-label="Delete">
                                 <i  class="far fa-trash-alt" aria-hidden="true"></i>
                             </a>

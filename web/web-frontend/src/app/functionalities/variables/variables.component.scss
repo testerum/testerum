@@ -8,7 +8,7 @@
             width: 90%;
 
             .modal-body {
-                .my-value {
+                .environment {
                     display: flex;
                     align-items: center;
                 }
@@ -49,6 +49,9 @@
                         .btn {
                             font-size: 0.7em;
                         }
+                    }
+                    .inherited-variable-value {
+                        color: #bbbbbb;
                     }
                 }
             }

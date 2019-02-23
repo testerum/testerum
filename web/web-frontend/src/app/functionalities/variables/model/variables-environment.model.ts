@@ -19,7 +19,7 @@ export class VariablesEnvironment implements Serializable<VariablesEnvironment> 
         return "" +
             '{' +
             ' "name":' + JsonUtil.stringify(this.name) +
-            ',"variables":' + JsonUtil.serializeArrayOfSerializable(this.variables) +
+            ',"variables":' + JsonUtil.serializeArrayOfSerializable(this.variables.filter(it => {return !it.isEmpty()})) +
             '}'
     }
 }

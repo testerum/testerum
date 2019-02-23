@@ -31,4 +31,16 @@ export class VariablesService {
             .post<AllProjectVariables>(this.VARIABLES_URL, body, httpOptions).pipe(
             map(res => new AllProjectVariables().deserialize(res)));
     }
+
+    saveCurrentEnvironment(currentEnvironmentName: string): Observable<string> {
+        let body = "";
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json'
+            })
+        };
+
+        return this.http
+            .post<string>(this.VARIABLES_URL+"/environment?currentEnvironment=" + encodeURIComponent(currentEnvironmentName), body, httpOptions);
+    }
 }

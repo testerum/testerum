@@ -1,7 +1,8 @@
 <div class="menu-variables">
     <select *ngIf="shouldDisplayEnvironmentChooser"
             class="form-control"
-            [(ngModel)]="selectedEnvironment">
+            [(ngModel)]="selectedEnvironment"
+            (change)="onEnvironmentChange($event)">
         <option *ngFor="let availableEnvironment of availableEnvironments" [value]="availableEnvironment">
             {{availableEnvironment}}
         </option>

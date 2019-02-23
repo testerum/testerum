@@ -2,11 +2,7 @@ package com.testerum.web_backend.controllers.variables
 
 import com.testerum.model.variable.AllProjectVariables
 import com.testerum.web_backend.services.variables.VariablesFrontendService
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/variables")
@@ -24,10 +20,10 @@ class VariablesController(private val variablesFrontendService: VariablesFronten
         return variablesFrontendService.saveAllProjectVariables(allProjectVariables)
     }
 
-    @RequestMapping (method = [RequestMethod.PUT], path = ["/environment"])
+    @RequestMapping (method = [RequestMethod.PUT], path = ["/environment"], params = ["currentEnvironment"])
     @ResponseBody
-    fun saveCurrentEnvironment(@RequestBody currentEnvironment: String): String {
+    fun saveCurrentEnvironment(@RequestParam(value = "currentEnvironment") currentEnvironment: String): String {
+        //TODO Cristi: implement this
         return currentEnvironment
     }
-
 }
