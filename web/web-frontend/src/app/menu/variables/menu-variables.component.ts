@@ -56,6 +56,6 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
     }
 
     onEnvironmentChange(event: any) {
-        this.variablesService.saveCurrentEnvironment(this.selectedEnvironment)
+        this.variablesService.saveCurrentEnvironment(this.selectedEnvironment).subscribe(() => {});
     }
 }

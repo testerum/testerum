@@ -189,7 +189,7 @@ export class VariablesComponent implements OnInit, OnDestroy {
 
         this.selectedEnvironmentName = event.value;
         this.projectVariables.currentEnvironment = this.selectedEnvironmentName;
-        this.variablesService.saveCurrentEnvironment(this.selectedEnvironmentName);
+        this.variablesService.saveCurrentEnvironment(this.selectedEnvironmentName).subscribe(() => {});
         this.initVariablesBasedOnEnvironment();
     }
 
