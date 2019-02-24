@@ -15,7 +15,6 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
 
     @ViewChild(VariablesComponent) variablesComponent: VariablesComponent;
 
-    shouldDisplayEnvironmentChooser: boolean = false;
     selectedEnvironment: string;
     availableEnvironments: string[] = [];
 
@@ -28,7 +27,9 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.init();
         this.projectChangedEventSubscription = this.contextService.projectChangedEventEmitter.subscribe( (project: Project) => {
-            this.init();
+            if (project) {
+                this.init();
+            }
         })
     }
 
@@ -44,10 +45,6 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
 
             for (const environment of projectVariables.environments) {
                 this.availableEnvironments.push(environment.name);
-            }
-
-            if (this.availableEnvironments.length > 1) {
-                this.shouldDisplayEnvironmentChooser = true
             }
         });
     }

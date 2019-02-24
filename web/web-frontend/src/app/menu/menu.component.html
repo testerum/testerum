@@ -30,7 +30,6 @@
         <ul class="nav navbar-nav navbar-right">
             <li *ngIf="isProjectSelected()" class="menu-variables">
                 <menu-variables></menu-variables>
-
             </li>
             <li *ngIf="isProjectSelected()">
                 <a [routerLink]="['/'+getProjectName()+'/settings']"
