@@ -14,7 +14,7 @@
                     #bodyVerifyMatchingTypeNgModel="ngModel"
                     [(ngModel)]="getModel().httpBodyVerifyMatchingType" name="bodyMatchintType">
 
-                <option [value]="null"></option>
+                <option [value]=""></option>
                 <option *ngFor="let bodyVerifyMatchingTypes of getHttpBodyVerifyMatchingTypes(); let i = index"
                         [ngValue]="bodyVerifyMatchingTypes">
                     {{bodyVerifyMatchingTypes?bodyVerifyMatchingTypes.toString():""}}

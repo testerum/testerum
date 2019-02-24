@@ -47,28 +47,19 @@ export class HttpResponseBodyVerify implements Serializable<HttpResponseBodyVeri
     }
 
     serialize(): string {
-        let hasSavedFields = false;
+        if (!this.httpBodyVerifyMatchingType) {
+            return "";
+        }
 
         let result = '{';
-        if (this.httpBodyVerifyMatchingType) {
-            hasSavedFields = true;
             result += '"httpBodyVerifyMatchingType":' + JsonUtil.stringify(this.httpBodyVerifyMatchingType.asSerialized);
-        }
 
         if (this.httpBodyType) {
-            hasSavedFields = true;
-            if(hasSavedFields) {
-                result += ',';
-            }
-            result += '"httpBodyType":' + JsonUtil.stringify(this.httpBodyType.asSerialized);
+            result += ',"httpBodyType":' + JsonUtil.stringify(this.httpBodyType.asSerialized);
         }
 
-        if (this.bodyVerify) {
-            hasSavedFields = true;
-            if(hasSavedFields) {
-                result += ',';
-            }
-            result += '"bodyVerify":' + JsonUtil.stringify(this.bodyVerify);
+        if (this.httpBodyType && this.bodyVerify) {
+            result += ',"bodyVerify":' + JsonUtil.stringify(this.bodyVerify);
         }
 
         result += '}';
@@ -77,6 +68,6 @@ export class HttpResponseBodyVerify implements Serializable<HttpResponseBodyVeri
     }
 
     isEmpty(): boolean {
-        return this.bodyVerify == null
+        return !this.httpBodyVerifyMatchingType
     }
 }
