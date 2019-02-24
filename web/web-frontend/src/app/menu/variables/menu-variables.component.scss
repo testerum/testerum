@@ -1,0 +1,19 @@
+.menu-variables {
+    display: flex;
+    flex-direction: row;
+
+    a {
+        color: #9d9d9d;
+        &:hover {
+            color: #fff;
+            background-color: #525252;
+        }
+
+        .icon-menu-item {
+            font-size: 1.6em;
+            vertical-align: middle;
+            padding: 0 0.75em;
+            margin: 0;
+        }
+    }
+}

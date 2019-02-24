@@ -5,6 +5,8 @@ import java.nio.file.Path as JavaPath
 data class CmdlineParams(val verbose: Boolean,
                          val repositoryDirectory: JavaPath,
                          val basicStepsDirectory: JavaPath,
+                         val variablesEnvironment: String?,
+                         val variableOverrides: Map<String, String>,
                          val settingsFile: JavaPath?,
                          val settingOverrides: Map<String, String>,
                          val testFilesOrDirectories: List<JavaPath>,

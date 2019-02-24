@@ -111,6 +111,41 @@ object CmdlineParamsParser {
         var basicStepsDirectory: JavaPath? = null
 
         @CommandLine.Option(
+                names = ["--var"],
+                description = [
+                    "override Testerum variables",
+                    "",
+                    "This argument takes precedence over variables from",
+                    "--var-env, if the same key is found in both.",
+                    "",
+                    "Example:",
+                    "    --var URL=http://localhost:4200",
+                    "",
+                    "See also:",
+                    "    --var-env",
+                    ""
+                ],
+                showDefaultValue = CommandLine.Help.Visibility.NEVER
+        )
+        var variableOverrides: Map<String, String> = linkedMapOf()
+
+        @CommandLine.Option(
+                names = ["--var-env"],
+                required = false,
+                description = [
+                    "the variables environment to use",
+                    "",
+                    "Example:",
+                    "    --var-env dev",
+                    "",
+                    "See also:",
+                    "    --var",
+                    ""
+                ]
+        )
+        var variablesEnvironment: String? = null
+
+        @CommandLine.Option(
                 names = ["--setting"],
                 description = [
                     "override Testerum settings",
@@ -307,6 +342,8 @@ object CmdlineParamsParser {
                     verbose = verbose,
                     repositoryDirectory = getValidatedRepositoryDirectory(),
                     basicStepsDirectory = getValidatedBasicStepsDirectory(),
+                    variablesEnvironment = variablesEnvironment,
+                    variableOverrides = variableOverrides,
                     settingsFile = getValidatedSettingsFile(),
                     settingOverrides = settingOverrides,
                     testFilesOrDirectories = getValidatedTestFilesOrDirectories(),

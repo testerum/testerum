@@ -16,6 +16,8 @@ class FrontendDirs(private val testerumDirs: TesterumDirs) {
 
     fun getRecentProjectsFile(): JavaPath = getSettingsDir().resolve("recent-projects.json")
 
+    fun getFileLocalVariablesFile(): JavaPath = getSettingsDir().resolve("variables.json")
+
     fun getCacheDir(): JavaPath = getTesterumDir().resolve("cache")
     fun getLicensesDir(): JavaPath = getTesterumDir().resolve("licenses")
 

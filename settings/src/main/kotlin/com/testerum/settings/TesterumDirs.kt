@@ -15,6 +15,11 @@ class TesterumDirs {
 
     fun getRunnerDir(): JavaPath = getInstallDir().resolve("runner")
 
+    fun getTesterumDir(): JavaPath = Paths.get(System.getProperty("user.home")).resolve(".testerum")
+
+    fun getSettingsDir(): JavaPath = getTesterumDir().resolve("conf")
+    fun getFileLocalVariablesFile(): JavaPath = getSettingsDir().resolve("variables.json")
+
     fun getBasicStepsDir(): JavaPath = getInstallDir().resolve("basic_steps")
     fun getJdbcDriversDir(): JavaPath = getInstallDir().resolve("relational_database_drivers")
 

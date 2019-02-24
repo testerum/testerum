@@ -1,0 +1,17 @@
+<div class="menu-variables">
+    <select *ngIf="shouldDisplayEnvironmentChooser"
+            class="form-control"
+            [(ngModel)]="selectedEnvironment"
+            (change)="onEnvironmentChange($event)">
+        <option *ngFor="let availableEnvironment of availableEnvironments" [value]="availableEnvironment">
+            {{availableEnvironment}}
+        </option>
+    </select>
+
+    <a href="" (click)="showVariables(); false;"
+       title="View & Edit variables">
+        <i class="icon-menu-item far fa-eye"></i>
+    </a>
+
+    <variables></variables>
+</div>
