@@ -21,7 +21,7 @@ class ValidHttpResponse @JsonCreator constructor(
 ) : HttpResponse {
 
     companion object {
-        private val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper().apply {
+        val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper().apply {
             registerModule(AfterburnerModule())
             registerModule(JavaTimeModule())
             registerModule(GuavaModule())
