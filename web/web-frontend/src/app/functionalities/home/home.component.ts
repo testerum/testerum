@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.testerumVersion = home.testerumVersion;
             ArrayUtil.replaceElementsInArray(this.recentProjects, home.recentProjects);
         });
+        this.contextService.setCurrentProject(null);
     }
 
     ngOnDestroy(): void {

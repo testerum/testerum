@@ -3,6 +3,8 @@ import {VariablesService} from "../../service/variables.service";
 import {AllProjectVariables} from "../../functionalities/variables/model/project-variables.model";
 import {Subscription} from "rxjs";
 import {VariablesComponent} from "../../functionalities/variables/variables.component";
+import {ContextService} from "../../service/context.service";
+import {Project} from "../../model/home/project.model";
 
 @Component({
     selector: 'menu-variables',
@@ -18,11 +20,16 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
     availableEnvironments: string[] = [];
 
     private getVariablesSubscription: Subscription;
-    constructor(private variablesService: VariablesService) {
+    private projectChangedEventSubscription: Subscription;
+    constructor(private variablesService: VariablesService,
+                private contextService: ContextService) {
     }
 
     ngOnInit() {
         this.init();
+        this.projectChangedEventSubscription = this.contextService.projectChangedEventEmitter.subscribe( (project: Project) => {
+            this.init();
+        })
     }
 
     private init() {
@@ -47,6 +54,7 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if(this.getVariablesSubscription) this.getVariablesSubscription.unsubscribe();
+        if(this.projectChangedEventSubscription) this.projectChangedEventSubscription.unsubscribe();
     }
 
     showVariables() {

@@ -26,16 +26,13 @@ export class ContextService {
     }
 
     setCurrentProject(newProject: Project) {
-        if (newProject == null && this.currentProject != null) {
-            return;
-        }
+        if(newProject == null && this.currentProject == null) return;
+        if(newProject != null && this.currentProject != null && newProject.path == this.currentProject.path) return;
 
-        if (newProject == null || this.currentProject == null || newProject.path != this.currentProject.path) {
-            this.currentProject = newProject;
-            this.setPageTitle(newProject);
+        this.currentProject = newProject;
+        this.setPageTitle(newProject);
 
-            this.projectChangedEventEmitter.emit(newProject);
-        }
+        this.projectChangedEventEmitter.emit(newProject);
     }
 
     getProjectPath(): string {
