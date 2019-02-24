@@ -1,9 +1,10 @@
 import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs';
-import {Variable} from "../model/variable/variable.model";
+import {Variable} from "../functionalities/variables/model/variable.model";
 import {JsonUtil} from "../utils/json.util";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {AllProjectVariables} from "../functionalities/variables/model/project-variables.model";
 
 @Injectable()
 export class VariablesService {
@@ -12,15 +13,14 @@ export class VariablesService {
 
     constructor(private http: HttpClient) {}
 
-
-    getVariables(): Observable<Array<Variable>> {
+    getVariables(): Observable<AllProjectVariables> {
         return this.http
-            .get<Array<Variable>>(this.VARIABLES_URL).pipe(
-            map(VariablesService.extractVariablesModel));
+            .get<AllProjectVariables>(this.VARIABLES_URL).pipe(
+            map(res => new AllProjectVariables().deserialize(res)));
     }
 
-    save(model: Array<Variable>): Observable<Array<Variable>> {
-        let body = JsonUtil.serializeArray(model);
+    save(model: AllProjectVariables): Observable<AllProjectVariables> {
+        let body = model.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type':  'application/json'
@@ -28,18 +28,19 @@ export class VariablesService {
         };
 
         return this.http
-            .post<Array<Variable>>(this.VARIABLES_URL, body, httpOptions).pipe(
-            map(VariablesService.extractVariablesModel));
+            .post<AllProjectVariables>(this.VARIABLES_URL, body, httpOptions).pipe(
+            map(res => new AllProjectVariables().deserialize(res)));
     }
 
-    private static extractVariablesModel(res: Array<Variable>):Array<Variable> {
-        let response:Array<Variable> = [];
-        for(let variableAsJson of res) {
-            let testsModel = new Variable().deserialize(variableAsJson);
-            response.push(testsModel)
-        }
-        response.push(new Variable());
+    saveCurrentEnvironment(currentEnvironmentName: string): Observable<string> {
+        let body = "";
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json'
+            })
+        };
 
-        return response;
+        return this.http
+            .put<string>(this.VARIABLES_URL+"/environment?currentEnvironment=" + encodeURIComponent(currentEnvironmentName), body, httpOptions);
     }
 }

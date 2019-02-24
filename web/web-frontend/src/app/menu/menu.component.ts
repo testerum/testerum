@@ -27,8 +27,6 @@ import {UrlService} from "../service/url.service";
 })
 export class MenuComponent {
 
-    @ViewChild(VariablesComponent) variablesComponent: VariablesComponent;
-
     shouldDisplay = false;
 
     constructor(private router:Router,
@@ -39,10 +37,6 @@ export class MenuComponent {
             if (event instanceof NavigationEnd) {
                 switch(event.url) {
                     case "/license": {
-                        this.shouldDisplay = false;
-                        break;
-                    }
-                    case "/setup": {
                         this.shouldDisplay = false;
                         break;
                     }
@@ -63,10 +57,6 @@ export class MenuComponent {
             return true
         }
         return false;
-    }
-
-    showVariables() {
-        this.variablesComponent.show()
     }
 
     isProjectSelected(): boolean {

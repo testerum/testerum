@@ -111,7 +111,10 @@ class RecentProjectsCache(private val recentProjectsFileService: RecentProjectsF
             }
 
             val savedFileProject = testerumProjectFileService.save(
-                    fileProject = FileProject(name = projectName),
+                    fileProject = FileProject(
+                            name = projectName,
+                            id = testerumProjectFileService.generateProjectId()
+                    ),
                     directory = absoluteProjectRootDir
             )
 

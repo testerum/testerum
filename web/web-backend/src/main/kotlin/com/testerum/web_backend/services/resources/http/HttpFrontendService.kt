@@ -2,25 +2,27 @@ package com.testerum.web_backend.services.resources.http
 
 import com.testerum.common_httpclient.HttpClientService
 import com.testerum.common_kotlin.rootCause
+import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.request.HttpRequestBody
 import com.testerum.model.resources.http.response.HttpResponse
 import com.testerum.model.resources.http.response.InvalidHttpResponse
+import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.variables.VariablesResolverService
 import org.slf4j.LoggerFactory
 
 class HttpFrontendService(private val webProjectManager: WebProjectManager,
+                          private val frontendDirs: FrontendDirs,
                           private val httpClientService: HttpClientService,
                           private val variablesFileService: VariablesFileService,
+                          private val localVariablesFileService: LocalVariablesFileService,
                           private val variablesResolverService: VariablesResolverService) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(HttpFrontendService::class.java)
     }
-
-    private fun getVariablesDir() = webProjectManager.getProjectServices().dirs().getVariablesDir()
 
     fun executeHttpRequest(request: HttpRequest): HttpResponse {
         return try {
@@ -35,8 +37,18 @@ class HttpFrontendService(private val webProjectManager: WebProjectManager,
     }
 
     private fun resolveVariables(request: HttpRequest): HttpRequest {
-        val variablesMap = variablesFileService.getVariablesAsMap(
-                getVariablesDir()
+        val projectId = webProjectManager.getProjectServices().project.id
+        val currentEnvironment = localVariablesFileService.getCurrentEnvironment(
+                fileLocalVariablesFile = frontendDirs.getFileLocalVariablesFile(),
+                projectId = projectId
+        )
+
+        val variablesMap = variablesFileService.getMergedVariables(
+                projectVariablesDir = webProjectManager.getProjectServices().dirs().getVariablesDir(),
+                fileLocalVariablesFile = frontendDirs.getFileLocalVariablesFile(),
+                projectId = projectId,
+                currentEnvironment = currentEnvironment,
+                variableOverrides = emptyMap()
         )
 
         return resolveVariablesInRequest(request, variablesMap)

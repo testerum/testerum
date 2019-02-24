@@ -10,12 +10,13 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.doesNotExist
-import com.testerum.model.variable.Variable
+import com.testerum.model.variable.ProjectVariables
+import com.testerum.model.variable.ReservedVariableEnvironmentNames
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 import java.nio.file.Path as JavaPath
 
-class VariablesFileService {
+class VariablesFileService (private val localVariablesFileService: LocalVariablesFileService) { // todo: we need this dependency only for "getMergedVariables" - maybe we should move that method to a different class
 
     companion object {
         private const val VARIABLES_FILENAME = "variables.json"
@@ -25,7 +26,7 @@ class VariablesFileService {
             registerModule(JavaTimeModule())
             registerModule(GuavaModule())
 
-            disable(SerializationFeature.INDENT_OUTPUT)
+            enable(SerializationFeature.INDENT_OUTPUT)
             setSerializationInclusion(JsonInclude.Include.NON_NULL)
             disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
             enable(SerializationFeature.WRITE_DATES_WITH_ZONE_ID)
@@ -35,14 +36,11 @@ class VariablesFileService {
         }
     }
 
-    fun save(variables: List<Variable>,
-             variablesDir: JavaPath): List<Variable> {
-        val variablesFile = variablesDir.resolve(VARIABLES_FILENAME)
+    fun saveProjectVariables(projectVariables: ProjectVariables,
+                             projectVariablesDir: JavaPath): ProjectVariables {
+        val variablesFile = projectVariablesDir.resolve(VARIABLES_FILENAME)
 
-        val variablesMap = variables.associateBy({ it.key }, { it.value })
-        val variablesFileContent = OBJECT_MAPPER.writeValueAsBytes(variablesMap)
-
-        // todo: we should't write all variables at once, to minimize conflicts with other users
+        val variablesFileContent = OBJECT_MAPPER.writeValueAsBytes(projectVariables)
 
         variablesFile.parent?.createDirectories()
 
@@ -54,26 +52,52 @@ class VariablesFileService {
                 StandardOpenOption.TRUNCATE_EXISTING
         )
 
-        return variables
+        return projectVariables
     }
 
-    fun getVariables(variablesDir: JavaPath): List<Variable> {
-        val variablesAsMap = getVariablesAsMap(variablesDir)
-
-        return variablesAsMap.map {
-            Variable(it.key, it.value)
-        }
-    }
-
-    fun getVariablesAsMap(variablesDir: JavaPath): Map<String, String> {
-        val variablesFile = variablesDir.resolve(VARIABLES_FILENAME)
+    fun getProjectVariables(projectVariablesDir: JavaPath): ProjectVariables {
+        val variablesFile = projectVariablesDir.resolve(VARIABLES_FILENAME)
 
         if (variablesFile.doesNotExist) {
-            return emptyMap()
+            return ProjectVariables.EMPTY
         }
 
         return OBJECT_MAPPER.readValue(variablesFile.toFile())
     }
 
+    fun getMergedVariables(projectVariablesDir: JavaPath,
+                           fileLocalVariablesFile: JavaPath,
+                           projectId: String,
+                           currentEnvironment: String?,
+                           variableOverrides: Map<String, String>): Map<String, String> {
+        val result = HashMap<String, String>()
 
+        val projectVariables = getProjectVariables(projectVariablesDir)
+
+        // 1. default environment
+        result.putAll(projectVariables.defaultVariables)
+
+        // 2. current environment (from project or local)
+        if ((currentEnvironment != null) && (currentEnvironment != ReservedVariableEnvironmentNames.DEFAULT)) {
+            if (currentEnvironment == ReservedVariableEnvironmentNames.LOCAL) {
+                val localVariables = localVariablesFileService.load(fileLocalVariablesFile)
+                val projectLocalVariables = localVariables.projectLocalVariables[projectId]
+                if (projectLocalVariables != null) {
+                    result.putAll(
+                            projectLocalVariables.localVariables
+                    )
+                }
+            } else {
+                val environment = projectVariables.environments[currentEnvironment]
+                        ?: throw IllegalArgumentException("the environment [$currentEnvironment] does not exist in this project")
+
+                result.putAll(environment)
+            }
+        }
+
+        // 3. variable overrides
+        result.putAll(variableOverrides)
+
+        return result
+    }
 }

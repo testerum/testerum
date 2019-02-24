@@ -10,6 +10,7 @@ import com.testerum.file_service.caches.resolved.resolvers.TestResolver
 import com.testerum.file_service.caches.warnings.WarningService
 import com.testerum.file_service.file.ComposedStepFileService
 import com.testerum.file_service.file.FeatureFileService
+import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.file_service.file.ManualTestFileService
 import com.testerum.file_service.file.ManualTestPlanFileService
 import com.testerum.file_service.file.RecentProjectsFileService
@@ -153,7 +154,11 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
             testerumProjectFileService = testerumProjectFileService
     )
 
-    val variablesFileService = VariablesFileService()
+    val localVariablesFileService = LocalVariablesFileService()
+
+    val variablesFileService = VariablesFileService(
+            localVariablesFileService = localVariablesFileService
+    )
 
     val settingsFileService = SettingsFileService()
 
