@@ -154,9 +154,11 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
             testerumProjectFileService = testerumProjectFileService
     )
 
-    val variablesFileService = VariablesFileService()
-
     val localVariablesFileService = LocalVariablesFileService()
+
+    val variablesFileService = VariablesFileService(
+            localVariablesFileService = localVariablesFileService
+    )
 
     val settingsFileService = SettingsFileService()
 

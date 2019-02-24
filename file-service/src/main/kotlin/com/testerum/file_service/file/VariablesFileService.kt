@@ -16,7 +16,7 @@ import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 import java.nio.file.Path as JavaPath
 
-class VariablesFileService {
+class VariablesFileService (private val localVariablesFileService: LocalVariablesFileService) { // todo: we need this dependency only for "getMergedVariables" - maybe we should move that method to a different class
 
     companion object {
         private const val VARIABLES_FILENAME = "variables.json"
@@ -66,6 +66,8 @@ class VariablesFileService {
     }
 
     fun getMergedVariables(projectVariablesDir: JavaPath,
+                           fileLocalVariablesFile: JavaPath,
+                           projectId: String,
                            currentEnvironment: String?,
                            variableOverrides: Map<String, String>): Map<String, String> {
         val result = HashMap<String, String>()
@@ -78,7 +80,13 @@ class VariablesFileService {
         // 2. current environment (from project or local)
         if ((currentEnvironment != null) && (currentEnvironment != ReservedVariableEnvironmentNames.DEFAULT)) {
             if (currentEnvironment == ReservedVariableEnvironmentNames.LOCAL) {
-                throw IllegalArgumentException("NOT YET IMPLEMENTED: local environment")
+                val localVariables = localVariablesFileService.load(fileLocalVariablesFile)
+                val projectLocalVariables = localVariables.projectLocalVariables[projectId]
+                if (projectLocalVariables != null) {
+                    result.putAll(
+                            projectLocalVariables.localVariables
+                    )
+                }
             } else {
                 val environment = projectVariables.environments[currentEnvironment]
                         ?: throw IllegalArgumentException("the environment [$currentEnvironment] does not exist in this project")

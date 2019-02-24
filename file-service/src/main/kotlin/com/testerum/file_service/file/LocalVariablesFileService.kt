@@ -13,6 +13,7 @@ import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.model.variable.FileLocalVariables
 import com.testerum.model.variable.FileProjectLocalVariables
+import com.testerum.model.variable.ReservedVariableEnvironmentNames
 import java.util.*
 import java.nio.file.Path as JavaPath
 
@@ -57,6 +58,16 @@ class LocalVariablesFileService {
         )
 
         return FileLocalVariables(projectLocalVariables)
+    }
+
+    fun getCurrentEnvironment(fileLocalVariablesFile: JavaPath,
+                              projectId: String): String {
+        val localVariables = load(fileLocalVariablesFile)
+
+        val projectLocalVariables = localVariables.projectLocalVariables[projectId]
+
+        return projectLocalVariables?.currentEnvironment
+                ?: ReservedVariableEnvironmentNames.DEFAULT
     }
 
 }

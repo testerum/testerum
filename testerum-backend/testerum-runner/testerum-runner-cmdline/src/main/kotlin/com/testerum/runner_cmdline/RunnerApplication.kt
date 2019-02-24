@@ -14,6 +14,7 @@ import com.testerum.common_kotlin.isRegularFile
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
 import com.testerum.common_kotlin.walkAndCollect
 import com.testerum.file_service.caches.resolved.BasicStepsCache
+import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
@@ -43,6 +44,7 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
                         private val basicStepsCache: BasicStepsCache,
                         private val runnerExecutionTreeBuilder: RunnerExecutionTreeBuilder,
                         private val variablesFileService: VariablesFileService,
+                        private val localVariablesFileService: LocalVariablesFileService,
                         private val testVariables: TestVariablesImpl,
                         private val executionListenerFinder: ExecutionListenerFinder,
                         private val globalTransformers: List<Transformer<*>>,
@@ -99,10 +101,17 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         suite.addClassesToGlueObjectFactory(runnerContext)
 
         // setup variables
+        val projectId = runnerProjectManager.getProjectServices().project.id
+        val currentEnvironment = localVariablesFileService.getCurrentEnvironment(
+                fileLocalVariablesFile = testerumDirs.getFileLocalVariablesFile(),
+                projectId = projectId
+        )
         val globalVars = GlobalVariablesContext.from(
                 variablesFileService.getMergedVariables(
                         projectVariablesDir = getProjectVariablesDir(),
-                        currentEnvironment = cmdlineParams.variablesEnvironment,
+                        fileLocalVariablesFile = testerumDirs.getFileLocalVariablesFile(),
+                        projectId = projectId,
+                        currentEnvironment = /*cmdlineParams.variablesEnvironment*/ currentEnvironment, // todo: replace this HACK! The UI should send the environment
                         variableOverrides = cmdlineParams.variableOverrides
                 )
         )

@@ -13,8 +13,8 @@ import com.testerum.common_crypto.pem.PemMarshaller
 import com.testerum.common_crypto.string_obfuscator.StringObfuscator
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
-import com.testerum.common_httpclient.TesterumHttpClientFactory
 import com.testerum.common_httpclient.HttpClientService
+import com.testerum.common_httpclient.TesterumHttpClientFactory
 import com.testerum.common_rdbms.JdbcDriversCache
 import com.testerum.common_rdbms.RdbmsConnectionCache
 import com.testerum.file_service.module_di.FileServiceModuleFactory
@@ -330,8 +330,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val httpFrontendService = HttpFrontendService(
             webProjectManager = webProjectManager,
+            frontendDirs = frontendDirs,
             httpClientService = httpClientService,
             variablesFileService = fileServiceModuleFactory.variablesFileService,
+            localVariablesFileService = fileServiceModuleFactory.localVariablesFileService,
             variablesResolverService = variablesResolverService
     )
 
