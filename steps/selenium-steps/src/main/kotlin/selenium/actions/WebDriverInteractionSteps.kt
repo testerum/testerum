@@ -3,6 +3,7 @@ package selenium.actions
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.interactions.Actions
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
@@ -28,6 +29,29 @@ class WebDriverInteractionSteps {
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
             element.click()
+        }
+    }
+
+    @When(
+            value = "I double-click the element <<elementLocator>>",
+            description = "Simulates a mouse double-click on the given element."
+    )
+    fun doubleClick(
+            @Param(
+                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            )
+            elementLocator: String
+    ) {
+        webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.executeWebDriverStep { driver ->
+            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
+                    ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+
+            Actions(driver)
+                    .moveToElement(element)
+                    .doubleClick()
+                    .build()
+                    .perform()
         }
     }
 

@@ -1,32 +1,33 @@
 import {NgModule} from '@angular/core';
 
 import {RouterModule, Routes} from "@angular/router";
-import {SetupGuard} from "../../service/guards/setup.guard";
+import {LicenseGuard} from "../../service/guards/license.guard";
 import {ManualTestPlansComponent} from "./plans/manual-test-plans.component";
 import {ManualTestPlanEditorComponent} from "./plans/editor/manual-test-plan-editor.component";
 import {ManualTestPlanEditorResolver} from "./plans/editor/manual-test-plan-editor-resolver.service";
 import {ManualRunnerComponent} from "./runner/manual-runner.component";
-import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
+import {UnsavedChangesGuard} from "../../service/guards/unsaved-changes.guard";
+import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
 const manualRoutes: Routes = [
     {
-        path: "manual/plans/runner",
+        path: ":project/manual/plans/runner",
         component: ManualRunnerComponent,
-        canActivate: [SetupGuard],
-        canActivateChild: [SetupGuard],
-        canDeactivate: [CanDeactivateGuard]
+        canActivate: [LicenseGuard, CurrentProjectGuard],
+        canActivateChild: [LicenseGuard],
+        canDeactivate: [UnsavedChangesGuard]
     },
     {
-        path: "manual/plans",
+        path: ":project/manual/plans",
         component: ManualTestPlansComponent,
-        canActivate: [SetupGuard],
-        canActivateChild: [SetupGuard],
+        canActivate: [LicenseGuard, CurrentProjectGuard],
+        canActivateChild: [LicenseGuard],
         children: [
             {
                 path: ':action',
                 component: ManualTestPlanEditorComponent,
                 resolve: {manualExecPlan: ManualTestPlanEditorResolver},
-                canDeactivate: [CanDeactivateGuard]
+                canDeactivate: [UnsavedChangesGuard]
             }
         ]
     },

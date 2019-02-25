@@ -1,60 +1,58 @@
-<nav class="menu navbar navbar-inverse" *ngIf="shouldDisplay">
-    <ul class="nav navbar-nav testerum-logo">
-        <li>
-            <a [routerLink]="['/features']" routerLinkActive="active">
-                <logo [whiteColor]="true"></logo>
-            </a>
-        </li>
-    </ul>
+<nav class="menu navbar navbar-inverse" *ngIf="shouldDisplay && isProjectSelected()">
+    <div class="menu-left">
+        <ul *ngIf="isProjectSelected()" class="nav navbar-nav testerum-logo">
+            <li>
+                <a [routerLink]="['/']" routerLinkActive="active">
+                    <logo [whiteColor]="true"></logo>
+                </a>
+            </li>
+        </ul>
 
-    <ul class="nav navbar-nav">
-        <li>
-            <a [routerLink]="['/features']" routerLinkActive="active">Features</a>
-        </li>
-        <li>
-            <a [routerLink]="['/steps']" routerLinkActive="active">Steps</a>
-        </li>
-        <li>
-            <a [routerLink]="['/resources']" routerLinkActive="active">Resources</a>
-        </li>
-        <li>
-            <a [routerLink]="['/automated/results']" routerLinkActive="active">Automated Tests Results</a>
-        </li>
-        <li>
-            <a [routerLink]="['/manual/plans']" routerLinkActive="active">Manual Test Execution</a>
-        </li>
-        <!--<li>-->
-            <!--<a [routerLink]="['/manual/tests']" routerLinkActive="active">OLD Manual Tests</a>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a [routerLink]="['/manual/runner']" routerLinkActive="active">OLD Manual Runner</a>-->
-        <!--</li>-->
-    </ul>
-
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            <a href="" (click)="showVariables(); false;">Variables</a>
-        </li>
-        <li>
-            <a [routerLink]="['/settings']" class="sttings-icon-menu-item">
-                <i  class="fas fa-cogs" aria-hidden="true"></i>
-            </a>
-        </li>
-        <li dropdown>
-            <a dropdownToggle
-               aria-controls="dropdown-basic"
-               routerLinkActive="active">
-                <i class="fas fa-user"></i>
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-                <li><a href="" (click)="showUserProfile(); false;">User profile</a></li>
-                <li><a hr   ef="" (click)="showFeedback(); false;">Feedback</a></li>
-                <li class="divider dropdown-divider"></li>
-                <li role="menuitem"><a class="dropdown-item" href="#">Logout</a>
-                </li>
-            </ul>
-        </li>
-    </ul>
+        <ul *ngIf="isProjectSelected()" class="nav navbar-nav">
+            <li>
+                <a [routerLink]="['/'+getProjectName()+'/features']" routerLinkActive="active">Features</a>
+            </li>
+            <li>
+                <a [routerLink]="['/'+getProjectName()+'/steps']" routerLinkActive="active">Steps</a>
+            </li>
+            <li>
+                <a [routerLink]="['/'+getProjectName()+'/resources']" routerLinkActive="active">Resources</a>
+            </li>
+            <li>
+                <a [routerLink]="['/'+getProjectName()+'/automated/results']" routerLinkActive="active">Automated Tests Results</a>
+            </li>
+            <li>
+                <a [routerLink]="['/'+getProjectName()+'/manual/plans']" routerLinkActive="active">Manual Test Execution</a>
+            </li>
+        </ul>
+    </div>
+    <div class="menu-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li *ngIf="isProjectSelected()" class="menu-variables">
+                <menu-variables></menu-variables>
+            </li>
+            <li *ngIf="isProjectSelected()">
+                <a [routerLink]="['/'+getProjectName()+'/settings']"
+                    routerLinkActive="active"
+                    title="Settings">
+                    <i  class="icon-menu-item fas fa-cogs" aria-hidden="true"></i>
+                </a>
+            </li>
+            <li dropdown>
+                <a dropdownToggle
+                   aria-controls="dropdown-basic"
+                   routerLinkActive="active">
+                    <i class="fas fa-user"></i>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                    <li><a href="" (click)="showUserProfile(); false;">User profile</a></li>
+                    <li><a hr   ef="" (click)="showFeedback(); false;">Feedback</a></li>
+                    <li class="divider dropdown-divider"></li>
+                    <li role="menuitem"><a class="dropdown-item" href="#">Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 </nav>
-<variables></variables>

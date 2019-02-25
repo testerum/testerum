@@ -1,7 +1,8 @@
 package database.relational.connection_manager.serializer
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import database.relational.connection_manager.model.RdbmsClient
+import com.fasterxml.jackson.databind.SerializationFeature
+import database.relational.connection_manager.model.RdbmsConnection
 import database.relational.connection_manager.serializer.model.RdbmsDataField
 import database.relational.connection_manager.serializer.model.RdbmsDataSchema
 import database.relational.connection_manager.serializer.model.RdbmsDataTable
@@ -12,10 +13,12 @@ import java.sql.Statement
 
 object RdbmsToJsonSerializer {
 
-     private val OBJECT_MAPPER = ObjectMapper()
+     private val OBJECT_MAPPER = ObjectMapper().apply {
+         enable(SerializationFeature.INDENT_OUTPUT)
+     }
 
-    fun serializeSchemaAsJsonString(rdbmsClient: RdbmsClient): String {
-        val rdbmsDataSchema = getRdbmsDataSchema(rdbmsClient)
+    fun serializeSchemaAsJsonString(rdbmsConnection: RdbmsConnection): String {
+        val rdbmsDataSchema = getRdbmsDataSchema(rdbmsConnection)
 
         val mappedModel = mapSchema(rdbmsDataSchema)
 
@@ -53,12 +56,12 @@ object RdbmsToJsonSerializer {
         return mappedRow
     }
 
-    private fun getRdbmsDataSchema(rdbmsClient: RdbmsClient): RdbmsDataSchema {
-        val openJdbcConnection = rdbmsClient.openJdbcConnection()
+    private fun getRdbmsDataSchema(rdbmsConnection: RdbmsConnection): RdbmsDataSchema {
+        val openJdbcConnection = rdbmsConnection.openJdbcConnection()
 
         val tables: MutableList<RdbmsDataTable>
         try {
-            tables = getRdbmsDataTables(openJdbcConnection, rdbmsClient)
+            tables = getRdbmsDataTables(openJdbcConnection, rdbmsConnection)
         } finally {
             openJdbcConnection.close()
         }
@@ -66,12 +69,12 @@ object RdbmsToJsonSerializer {
         return RdbmsDataSchema(tables)
     }
 
-    private fun getRdbmsDataTables(jdbcConnection: Connection, rdbmsClient: RdbmsClient): MutableList<RdbmsDataTable> {
+    private fun getRdbmsDataTables(jdbcConnection: Connection, rdbmsConnection: RdbmsConnection): MutableList<RdbmsDataTable> {
         val tablesName: MutableList<String> = mutableListOf()
 
         val tablesResultSet: ResultSet = jdbcConnection.metaData.getTables(
-                rdbmsClient.rdbmsConnectionConfig.database,
-                rdbmsClient.rdbmsConnectionConfig.database,
+                rdbmsConnection.rdbmsConnectionConfig.database,
+                rdbmsConnection.rdbmsConnectionConfig.database,
                 null,
                 arrayOf("TABLE", "VIEW"))
 

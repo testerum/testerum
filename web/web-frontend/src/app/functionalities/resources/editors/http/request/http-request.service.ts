@@ -10,14 +10,32 @@ import {InvalidHttpResponse} from "../../../../../model/resource/http/http-respo
 @Injectable()
 export class HttpRequestService {
 
-    httpRequest: HttpRequest;
+    httpRequest: HttpRequest = new HttpRequest();
     httpRequestForResponse: HttpRequest; // additional request to use to display an invalidHttpResponse, in such a way that changing the URL on the form doesn't change the error message
+
+    shouldDisplayHttpResponseTab: boolean = false;
     validHttpResponse: ValidHttpResponse;
     invalidHttpResponse: InvalidHttpResponse;
+
     editMode: boolean;
     editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+    changesMadeEventEmitter: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(private httpService:HttpService) {
+    }
+
+    executeRequest() {
+        this.setHttpResponse(null);
+        this.shouldDisplayHttpResponseTab = true;
+
+        this.httpService.executeRequest(this.httpRequest).subscribe((response: HttpResponse)=> {
+            this.setHttpResponse(response);
+        })
+    }
+
+    isHttpResponseNull(): boolean {
+        return (this.validHttpResponse == null)
+            && (this.invalidHttpResponse == null);
     }
 
     setHttpResponse(response: HttpResponse) {
@@ -31,21 +49,13 @@ export class HttpRequestService {
         if (response instanceof InvalidHttpResponse) {
             this.invalidHttpResponse = response;
         }
-    }
 
-    isHttpResponseNull(): boolean {
-        return (this.validHttpResponse == null)
-            && (this.invalidHttpResponse == null);
-    }
-
-    executeRequest() {
-        this.httpService.executeRequest(this.httpRequest).subscribe((response: HttpResponse)=> {
-            this.setHttpResponse(response);
-        })
+        this.changesMadeEventEmitter.emit();
     }
 
     setHttpRequestResource(httpRequest: HttpRequest) {
         this.httpRequest = httpRequest;
+        this.changesMadeEventEmitter.emit();
     }
 
     empty() {
@@ -81,7 +91,7 @@ export class HttpRequestService {
         if(contentTypeHeader == null) {
             contentTypeHeader = new HttpRequestHeader();
             contentTypeHeader.key = HttpContentType.CONTENT_TYPE_HEADER_KEY;
-            this.httpRequest.headers.push(contentTypeHeader)
+            this.httpRequest.headers.splice(this.httpRequest.headers.length - 1, 0, contentTypeHeader)
         }
 
         contentTypeHeader.value = httpContentType.contentType;
@@ -92,7 +102,7 @@ export class HttpRequestService {
         if(contentTypeHeader == null) {
             contentTypeHeader = new HttpRequestHeader();
             contentTypeHeader.key = HttpContentType.CONTENT_TYPE_HEADER_KEY;
-            this.httpRequest.headers.push(contentTypeHeader)
+            this.httpRequest.headers.splice(this.httpRequest.headers.length - 1, 0,contentTypeHeader)
         }
 
         contentTypeHeader.value = contentTypeHeaderValue;

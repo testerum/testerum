@@ -1,8 +1,65 @@
-.modal {
-    max-height: calc(100% - 20px);
-    overflow-y: auto;
+.variables {
+    &.modal {
+        max-height: calc(100% - 20px);
+        overflow-y: auto;
+
+        .modal-dialog {
+            max-width: 1200px;
+            width: 90%;
+
+            .modal-body {
+                .environment {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .action-panel {
+                    margin-left: 10px;
+                }
+                .ui-dropdown {
+                    .ui-dropdown-label {
+                        padding: 0 .25em 0 0.5em;
+                        line-height: 1.7em;
+                    }
+                }
+                .my-dropdown-option {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                }
+                .my-dropdown-selected-item-info {
+                    margin-right: 1.5em;
+                }
+
+                .variables {
+                    input {
+                        border: 0;
+                        border-radius: 0;
+                        box-shadow: none;
+                    }
+
+                    .variable-key {
+
+                    }
+                    .variable-value {
+
+                    }
+                    .variable-action {
+                        vertical-align: middle;
+                        .btn {
+                            font-size: 0.7em;
+                        }
+                    }
+                    .inherited-variable-value {
+                        color: #bbbbbb;
+                    }
+                }
+            }
+        }
+    }
 }
 
-.modal-dialog {
-    width: 1200px;
+.disabled {
+    z-index: 1000;
 }
+

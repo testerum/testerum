@@ -26,6 +26,11 @@
             <artifactId>testerum-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-stats</artifactId>
+        </dependency>
+
 
         <!--==================== External Dependencies ====================-->
 

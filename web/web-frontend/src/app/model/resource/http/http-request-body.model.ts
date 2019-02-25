@@ -22,7 +22,7 @@ export class HttpRequestBody implements Serializable<HttpRequestBody> {
 
     isEmpty(): boolean {
         if(this.bodyType == HttpRequestBodyType.RAW) {
-            return this.content == null;
+            return StringUtils.isEmpty(this.content);
         } else {
             return this.contentAsForm.length == 0;
         }

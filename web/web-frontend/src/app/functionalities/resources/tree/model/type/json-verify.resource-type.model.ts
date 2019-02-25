@@ -4,13 +4,13 @@ import {Path} from "../../../../../model/infrastructure/path/path.model";
 
 export class JsonVerifyResourceType implements ResourceType {
 
-    readonly rootFilePath: Path = Path.createInstance("resources/JSON Verify");
+    readonly rootFilePath: Path = Path.createInstance("resources/JSON/JSON Verify");
     readonly fileExtension: string = "verify.json";
 
     name:string = this.rootFilePath.getLastPathPart();
     iconClass: string = "nf nf-mdi-json";
-    resourceUrl: string = "/resources/json_verify/";
-    createSubResourceUrl:any[] = ["/resources/json_verify/create", {"path": this.rootFilePath}];
+    resourceUrl: string = "/resources/json/json_verify/";
+    createSubResourceUrl:any[] = ["/resources/json/json_verify/create", {"path": this.rootFilePath}];
 
     canHaveChildrenContainers: boolean = true;
     canBeDeleted: boolean = true;

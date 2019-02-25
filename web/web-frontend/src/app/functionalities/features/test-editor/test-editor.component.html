@@ -1,4 +1,4 @@
-<split-panel-container>
+<div>
     <h1>
         <span *ngIf="isEditMode && isCreateAction">Create</span>
         <span *ngIf="isEditMode && !isCreateAction">Update</span>
@@ -24,12 +24,13 @@
                         {{testModel.name || ""}}
                     </div>
                     <div class="my-value" *ngIf="isEditMode">
-                        <input required
+                        <input required isNotBlankValidator
                                #testName="ngModel" [(ngModel)]="testModel.name"
-                               type="text" class="form-control" name="testName">
+                               type="text" class="form-control" name="testName"
+                               (keydown.enter)="$event.preventDefault()">
                         <input-error [model]="testName"
                                      [errorMessages]="{
-                                        required: 'A name for this test is required'
+                                        required: 'The name is required'
                                      }"></input-error>
                     </div>
                 </div>
@@ -76,7 +77,7 @@
                 </div>
                 <div class="my-line" *ngIf="isEditMode">
                     <label class="my-label label-size">Tags</label>
-                    <div class="my-value">
+                    <div class="my-value my-default-line-height">
                         <p-autoComplete #tagsElement
                                         [(ngModel)]="testModel.tags"
                                         [suggestions]="tagsToShow"
@@ -92,7 +93,7 @@
 
                 <div class="my-line" *ngIf="testModel.description || isEditMode">
                     <label class="my-label label-size">Description</label>
-                    <div class="my-value">
+                    <div class="my-value my-default-line-height">
                         <markdown-editor #descriptionMarkdownEditor
                                          [options]="markdownEditorOptions"
                                          class="markdown-editor-dynamic-size"></markdown-editor>
@@ -127,6 +128,7 @@
                 </div>
 
                 <step-call-tree [stepCalls]="testModel.stepCalls"
+                                [containerPath]="testModel.path.getParentPath()"
                                 [isEditMode]="isEditMode"
                                 [areManualSteps]="testModel.properties.isManual"></step-call-tree>
 
@@ -145,4 +147,4 @@
         </div>
     </div>
 
-</split-panel-container>
+</div>

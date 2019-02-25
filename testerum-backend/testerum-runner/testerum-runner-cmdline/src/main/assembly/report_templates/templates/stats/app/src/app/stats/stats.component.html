@@ -1,0 +1,87 @@
+
+<div class="my-stats">
+
+    <div class="header">
+        <div class="config">
+            <div class="config-line">
+
+                <div class="date-input">
+                    <label class="date-label">Start Date:</label>
+                    <div class="date-value">
+                        <p-calendar [(ngModel)]="startDate"
+                                    [minDate]="firstAbsoluteDate"
+                                    [maxDate]="lastAbsoluteDate"
+                                    [readonlyInput]="true"
+                                    [monthNavigator]="true"
+                                    [yearNavigator]="true"
+                                    [yearRange]="getYearRange()"
+                                    dateFormat="dd.MM.yy"
+                                    pTooltip="Start Date"></p-calendar>
+                    </div>
+                </div>
+
+                <div class="date-input">
+                    <label class="date-label">End Date:</label>
+                    <div class="date-value">
+                        <p-calendar [ngModel]="endDate"
+                                    (onSelect)="onEndDateSelect($event)"
+                                    [minDate]="firstAbsoluteDate"
+                                    [maxDate]="lastAbsoluteDate"
+                                    [readonlyInput]="true"
+                                    [monthNavigator]="true"
+                                    [yearNavigator]="true"
+                                    [yearRange]="getYearRange()"
+                                    dateFormat="dd.MM.yy"
+                                    pTooltip="End Date"></p-calendar>
+                    </div>
+                </div>
+            </div>
+
+            <div class="config-line">
+                <div class="show-details">
+                    <p-checkbox [(ngModel)]="showDetails" binary="true" label="Show Details"></p-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="title">
+            Statistics
+        </h1>
+    </div>
+
+    <div class="components">
+        <line-stats [title]="'Tests Overview'"
+                    [statsType]="StatsType.TESTS_RESULTS"
+                    [startDate]="startDate"
+                    [endDate]="endDate"
+                    [showDetails]="showDetails"></line-stats>
+
+        <line-stats [title]="'Executions Overview'"
+                    [statsType]="StatsType.SUITES_RESULTS"
+                    [startDate]="startDate"
+                    [endDate]="endDate"
+                    [showDetails]="showDetails"></line-stats>
+    </div>
+
+    <div class="header" *ngIf="hasTags()">
+        <h1 class="title">
+            Tags Statistics
+        </h1>
+    </div>
+
+    <div class="components" *ngIf="hasTags()">
+        <tag-uptime [widthInPercentage]="33"
+                    [startDate]="startDate"
+                    [endDate]="endDate"></tag-uptime>
+
+        <ng-container *ngFor="let tag of getTags()">
+            <line-stats [title]="tag"
+                        [statsType]="StatsType.TAG_RESULTS"
+                        [tag]="tag"
+                        [widthInPercentage]="33"
+                        [startDate]="startDate"
+                        [endDate]="endDate"
+                        [showDetails]="showDetails"></line-stats>
+        </ng-container>
+    </div>
+</div>

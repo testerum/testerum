@@ -1,8 +1,6 @@
 package com.testerum.runner_cmdline.runner_tree.builder
 
-import com.testerum.file_service.caches.resolved.FeaturesCache
-import com.testerum.file_service.caches.resolved.StepsCache
-import com.testerum.file_service.caches.resolved.TestsCache
+import com.testerum.file_service.caches.resolved.BasicStepsCache
 import com.testerum.model.feature.Feature
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.BasicStepDef
@@ -13,6 +11,7 @@ import com.testerum.model.test.TestModel
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
+import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
@@ -27,10 +26,9 @@ import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import java.nio.file.Path as JavaPath
 
-class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinder,
-                                 private val featuresCache: FeaturesCache,
-                                 private val testsCache: TestsCache,
-                                 private val stepsCache: StepsCache,
+class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProjectManager,
+                                 private val runnerTestsFinder: RunnerTestsFinder,
+                                 private val basicStepsCache: BasicStepsCache,
                                  private val executionName: String?) {
 
     //
@@ -42,7 +40,7 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
     fun createTree(cmdlineParams: CmdlineParams,
                    testsDir: JavaPath): RunnerSuite {
         // get hooks
-        val hooks: Collection<HookDef> = stepsCache.getHooks()
+        val hooks: Collection<HookDef> = basicStepsCache.getHooks()
 
         val testsDirectoryRoot = testsDir.toAbsolutePath()
         val pathsToTestsToExecute: List<JavaPath> = runnerTestsFinder.findPathsToTestsToExecute(cmdlineParams, testsDir)
@@ -63,7 +61,7 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
 
         val possibleFeaturePaths = getPossibleFeaturePaths(testJavaPaths, testsDirectoryRoot)
         for (possibleFeaturePath in possibleFeaturePaths) {
-            val feature = featuresCache.getFeatureAtPath(possibleFeaturePath)
+            val feature = runnerProjectManager.getProjectServices().getFeatureCache().getFeatureAtPath(possibleFeaturePath)
                     ?: continue
 
             result += feature
@@ -114,7 +112,7 @@ class RunnerExecutionTreeBuilder(private val runnerTestsFinder: RunnerTestsFinde
             val relativeTestPath = testsDirectoryRoot.relativize(testPath)
             val testerumPath = Path.createInstance(relativeTestPath.toString())
 
-            val test = testsCache.getTestAtPath(testerumPath)
+            val test = runnerProjectManager.getProjectServices().getTestsCache().getTestAtPath(testerumPath)
                     ?: throw RuntimeException("could not find test at [${testPath.toAbsolutePath().normalize()}]")
 
             return TestWithFilePath(test, testPath)

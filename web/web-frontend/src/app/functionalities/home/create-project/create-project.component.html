@@ -1,0 +1,59 @@
+<div bsModal #modal="bs-modal" class="my_create-project-modal modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <button (click)="onCancelAction()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    Create Project
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <form #form="ngForm">
+
+
+                    <div class="my-line">
+                        <label class="my-label label-size">Project Name</label>
+
+                        <div class="my-value">
+                            <input name="name"
+                                   required isNotBlankValidator urlNameValidator
+                                   #nameNgModel="ngModel" [(ngModel)]="name"
+                                   type="text" class="form-control" >
+                            <input-error [model]="nameNgModel"
+                                         [errorMessages]="{
+                                        required: 'A name for the new project is required',
+                                        a_project_with_the_same_name_already_exist: 'A project with the same name already exists',
+                                        access_denied: 'Couldn\'t create this project. File access is denied',
+                                        invalidUrlName: 'Project Name can contain only the following characters (space is not allowed): 0-9 a-z A-Z $-_.,\'()'
+                                     }"></input-error>
+                        </div>
+                    </div>
+
+                    <div class="my-line">
+                        <label class="my-label label-size">Parent Directory</label>
+
+                        <div class="my-value">
+                            <file-dir-chooser name="repositoryPath" required isNotBlankValidator
+                                              [(ngModel)]="path"
+                                              #repositoryPath="ngModel" class="file-dir-chooser"></file-dir-chooser>
+                            <input-error [model]="repositoryPath"
+                                         [errorMessages]="{
+                                            required: 'A path to your workspace is required'
+                                     }"></input-error>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <!-- FOOTER Buttons-->
+            <div class="modal-footer">
+                <button (click)="onCancelAction()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button (click)="onCreateProjectAction()" [disabled]="!form.form.valid" type="button" class="btn btn-primary">Create Project</button>
+            </div>
+        </div>
+    </div>
+</div>

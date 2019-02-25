@@ -1,0 +1,15 @@
+<span class="file-dir-chooser input-group">
+    <input [value]="value"
+           [disabled]="disabled"
+           (change)="onChangeEvent($event)"
+           (keyup)="onChangeEvent($event)"
+           type="text" class="form-control full-width" name="directoryChooser">
+
+    <span class="input-group-btn">
+        <button class="btn btn-default btn-input" type="button" aria-label="Directory chooser"
+                [class.disabled]="disabled"
+                (click)="showDirectoryChooserModal()">
+            <i class="fa_my-folder-opened text-info"></i>
+        </button>
+    </span>
+</span>

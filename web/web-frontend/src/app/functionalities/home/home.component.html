@@ -1,0 +1,62 @@
+<div class="my_home-page">
+
+    <div class="header">
+        <div class="header-content">
+            <div class="logo-version-container">
+                <logo class="logo"></logo>
+                <div class="version">{{testerumVersion}}</div>
+            </div>
+            <div class="quote">
+                <div class="quote-sign">“</div>{{quote}}<div class="quote-sign">”</div>
+                <div *ngIf="author" class="author">- {{author}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <div class="recent-project-panel">
+            <div class="panel panel-info">
+                <div class="panel-heading">Recent Projects</div>
+                <div class="recent-projects panel-body">
+                    <ul>
+                        <li *ngFor="let recentProject of recentProjects"
+                            class="recent-project"
+                            (click)="navigateToProject(recentProject)">
+                            <div class="project-name">{{recentProject.name}}</div>
+                            <div class="project-path">{{recentProject.path.toString(true)}}</div>
+                            <div class="button-panel btn-group my-project-button-panel">
+                                <div title="Remove project from list" class="btn btn-default btn-xs btn-group"
+                                     (click)="removeProject(recentProject);$event.stopPropagation();">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-start-panel">
+            <div class="panel panel-info">
+                <div class="panel-heading">Quick Start</div>
+                <div class="quick-start panel-body">
+                    <ul>
+                        <li (click)="onCreateNewProject()">
+                            <i class="fas fa-star"></i>
+                            Create New Project
+                        </li>
+                        <li (click)="onOpenProject()">
+                            <i class="fas fa-folder-open"></i>
+                            Open Project
+                        </li>
+                        <!--<li>--> <!-- TODO: uncomment when we will integrate GIT -->
+                            <!--<i class="fab fa-git-square"></i>-->
+                            <!--Check out from GIT-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

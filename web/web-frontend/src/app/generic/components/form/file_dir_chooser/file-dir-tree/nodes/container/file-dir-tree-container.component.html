@@ -1,0 +1,33 @@
+<div class="node">
+
+    <div class="full-line"
+         [class.is-project-dir]="model.isProject"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
+         (click)="setSelected()"
+         (dblclick)="collapseNode()"
+         [class.tree-node-selected]="isSelected()">
+
+        <span class="fa-stack">
+            <i *ngIf="!model.isProject" aria-hidden="true"
+               [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
+               [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
+            <i class="fas fa-lock fa-stack-1x fa-inverse" *ngIf="!model.canCreateChild && !isTesterumProjectChooser()"></i>
+
+            <div class="testerum-icon" *ngIf="model.isProject">
+                <i class="fas fa-angle-double-left"></i>
+                <i class="fas fa-angle-double-right"></i>
+            </div>
+
+        </span>
+
+        {{model.name}}
+
+    </div>
+
+    <json-children [jsonTreeNodeState]="jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

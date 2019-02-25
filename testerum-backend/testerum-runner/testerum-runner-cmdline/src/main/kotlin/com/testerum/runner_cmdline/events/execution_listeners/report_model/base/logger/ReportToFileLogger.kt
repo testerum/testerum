@@ -2,7 +2,7 @@ package com.testerum.runner_cmdline.events.execution_listeners.report_model.base
 
 import com.testerum.common_kotlin.createDirectories
 import com.testerum.runner.report_model.ReportLog
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.BaseReportModelExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.time.format.DateTimeFormatter
@@ -56,7 +56,7 @@ class ReportToFileLogger(val textFilePath: JavaPath,
     }
 
     private fun logToModelFile(logEvent: ReportLog) {
-        modelFile.write(BaseReportModelExecutionListener.OBJECT_MAPPER.writeValueAsString(logEvent))
+        modelFile.write(EXECUTION_LISTENERS_OBJECT_MAPPER.writeValueAsString(logEvent))
         modelFile.write(MODEL_FILE_SEPARATOR)
     }
 

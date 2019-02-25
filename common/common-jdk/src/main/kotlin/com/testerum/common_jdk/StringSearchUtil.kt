@@ -6,10 +6,10 @@ fun String?.containsSearchStringParts(searchedString: String?): Boolean {
     if(this.isNullOrBlank()) return false
     if(searchedString.isNullOrBlank()) return true
 
-    val lowerMainText = this!!.toLowerCase()
+    val lowerMainText = this.toLowerCase()
     val mainTextTokens = lowerMainText.split(*TOKEN_SEPARATORS)
 
-    val lowerSearchedString = searchedString!!.toLowerCase()
+    val lowerSearchedString = searchedString.toLowerCase()
     val stringParts = lowerSearchedString.split(*TOKEN_SEPARATORS)
 
     var isEverySearchedPartFound = true

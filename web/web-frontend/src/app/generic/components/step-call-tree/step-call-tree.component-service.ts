@@ -9,12 +9,16 @@ import {SubStepsContainerModel} from "./model/sub-steps-container.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
 import {ArrayUtil} from "../../../utils/array.util";
 import {StepCallContainerComponent} from "./nodes/step-call-container/step-call-container.component";
+import {Path} from "../../../model/infrastructure/path/path.model";
+import {UndefinedStepDef} from "../../../model/undefined-step-def.model";
+import {StepPhaseEnum, StepPhaseUtil} from "../../../model/enums/step-phase.enum";
 
 @Injectable()
 export class StepCallTreeComponentService {
     jsonTreeModel: JsonTreeModel;
     stepCalls: Array<StepCall> = [];
 
+    containerPath: Path;
     isEditMode: boolean;
     areManualSteps: boolean;
     isManualExecutionMode: boolean;
@@ -90,6 +94,19 @@ export class StepCallTreeComponentService {
     }
 
     addStepCallToParentContainer(stepCall: StepCall, parentContainer: JsonTreeContainer) {
+
+        if (parentContainer instanceof SubStepsContainerModel) {
+            let parentStepCallContainerModel = parentContainer.parentContainer as StepCallContainerModel;
+            if (parentStepCallContainerModel.stepCall.stepDef instanceof UndefinedStepDef) {
+                let undefinedStepDef: UndefinedStepDef = parentStepCallContainerModel.stepCall.stepDef;
+                let newStepDef = new ComposedStepDef();
+                newStepDef.phase = undefinedStepDef.phase;
+                newStepDef.stepPattern = undefinedStepDef.stepPattern;
+                newStepDef.path = undefinedStepDef.path;
+                parentStepCallContainerModel.stepCall.stepDef = newStepDef;
+            }
+        }
+
         let stepCallContainerModel = StepCallTreeUtil.createStepCallContainerWithChildren(stepCall, parentContainer, new Map());
 
         parentContainer.getChildren().push(
@@ -107,8 +124,10 @@ export class StepCallTreeComponentService {
                 stepCall
             )
         }
+
         this.triggerWarningRecalculationChangesEvent();
     }
+
 
     moveStep(stepCallContainerModel: StepCallContainerModel, newParentContainer: JsonTreeContainer) {
         ArrayUtil.removeElementFromArray(stepCallContainerModel.parentContainer.getChildren(), stepCallContainerModel);

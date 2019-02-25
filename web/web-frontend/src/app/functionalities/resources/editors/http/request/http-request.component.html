@@ -22,7 +22,7 @@
             {{name}}
         </div>
         <div class="my-value" *ngIf="isEditMode() && !isSharedResource">
-            <input required
+            <input required isNotBlankValidator
                    #nameNgModel="ngModel" [(ngModel)]="name"
                    type="text" class="form-control" name="name">
             <input-error [model]="nameNgModel"
@@ -46,10 +46,12 @@
                    [class.active]="httpParams.shouldShow"
                    [class.hidden]="httpParams.isEmpty()"
                    class="params-btn btn btn-default"
+                   pTooltip="Edit URL Parameters"
                    type="button" value="Params">
 
             <a href (click)="executeRequest();false;"
-               class="exe-http-req-btn btn btn-success" aria-label="Execute Request">
+               pTooltip="Execute Request"
+               class="exe-http-req-btn btn btn-success">
                 <i class="fa_my-run" aria-hidden="true"></i>
             </a>
         </span>
@@ -65,7 +67,7 @@
             </option>
         </select>
         <div class="full-width">
-            <input required
+            <input required isNotBlankValidator
                    #urlNgModel="ngModel" [(ngModel)]="getModel().url" (ngModelChange)="urlChanged()"
                    type="text" class="form-control" name="url" placeholder="URL">
             <input-error [model]="urlNgModel"
@@ -76,11 +78,13 @@
         </div>
         <input (click)="showHideParams()"
                [class.active]="httpParams.shouldShow"
-               class="params-btn btn btn-default"
+               class="form-control params-btn btn btn-default"
+               pTooltip="Edit URL Parameters"
                type="button" value="Params">
 
         <a href (click)="executeRequest();false;"
-           class="exe-http-req-btn-edit btn btn-success" aria-label="Execute Request">
+           pTooltip="Edit URL parameters"
+           class="form-control exe-http-req-btn-edit btn btn-success" aria-label="Execute Request">
             <i class="fa_my-run" aria-hidden="true"></i>
         </a>
     </div>
@@ -113,7 +117,7 @@
             class="tab"
             (click)="display(HttpPart.RESPONSE);$event.stopPropagation();"
             [class.active]="partToDisplay == HttpPart.RESPONSE"
-            [class.hidden]="hasResponseToDisplay()">
+            [class.hidden]="!shouldDisplayResponseTab()">
 
             <a>
                 Response

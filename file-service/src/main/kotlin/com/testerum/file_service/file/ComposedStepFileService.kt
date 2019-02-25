@@ -103,11 +103,11 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
     }
 
     fun save(composedStep: ComposedStepDef, composedStepsDir: JavaPath): ComposedStepDef {
-        val oldEscapedPath = composedStep.oldPath?.escape()
+        val oldPath = composedStep.oldPath
         val newEscapedPath = composedStep.getNewPath().escape()
 
-        val oldStepFile: JavaPath? = oldEscapedPath?.let {
-            composedStepsDir.resolve(oldEscapedPath.toString())
+        val oldStepFile: JavaPath? = oldPath?.let {
+            composedStepsDir.resolve(oldPath.toString())
         }
         val newStepFile: JavaPath = composedStepsDir.resolve(newEscapedPath.toString())
 
@@ -115,7 +115,10 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
         oldStepFile?.smartMoveTo(
                 newStepFile,
                 createDestinationExistsException = {
-                    ValidationException("the step at path [$newEscapedPath] already exists")
+                    ValidationException(
+                            globalMessage = "The step at path [$newEscapedPath] already exists",
+                            globalHtmlMessage = "The step at path<br/><code>$newEscapedPath</code><br/>already exists"
+                    )
                 }
         )
 
@@ -127,7 +130,10 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
 
         val validationException = COMPOSED_STEP_PARSER.validate(serializedFileComposedStep)
         if (validationException != null) {
-            throw ValidationException("Invalid step definition: ${validationException.message}")
+            throw ValidationException(
+                    globalMessage = "Invalid step definition: [${validationException.message}]",
+                    globalHtmlMessage = "Invalid step definition:<br/><code>${validationException.message}</code>"
+            )
         }
 
         newStepFile.parent?.createDirectories()
@@ -157,7 +163,7 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
         if (newJavaDir.exists) {
             throw ValidationException(
                     ValidationModel(
-                            globalValidationMessage = "the directory at path [$newRelativePath] already exists"
+                            globalMessage = "the directory at path [$newRelativePath] already exists"
                     )
             )
         }
@@ -201,17 +207,19 @@ class ComposedStepFileService(private val fileToBusinessStepMapper: FileToBusine
             )
         }
 
-        val sourceJavaFile = composedStepsDir.resolve(
+        val sourceJavaFile: JavaPath = composedStepsDir.resolve(
                 escapedSourceFile.toString()
         )
-        val destinationJavaFile = composedStepsDir.resolve(
+        val destinationJavaFile: JavaPath = composedStepsDir.resolve(
                 escapedDestinationFile.toString()
         )
 
         sourceJavaFile.smartMoveTo(
                 destinationJavaFile,
                 createDestinationExistsException = {
-                    ValidationException("the file at path [$escapedDestinationFile] already exists")
+                    ValidationException(
+                            globalMessage = "The file at path [$escapedDestinationFile] already exists",
+                            globalHtmlMessage = "The file at path<br/><code>$escapedDestinationFile</code><br/>already exists")
                 }
         )
 

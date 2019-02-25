@@ -1,4 +1,6 @@
-<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+<div bsModal #modal="bs-modal"
+     [class.disabled]="disableModal"
+     class="variables modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,44 +10,82 @@
                 </h4>
             </div>
             <div class="modal-body">
+                <div class="my-line">
+                    <label class="my-label label-size">Environment:</label>
 
-                <table class="table table-hover">
+                    <div class="environment my-value">
+                        <p-dropdown [options]="availableEnvironmentsAsSelectedItems" [ngModel]="selectedEnvironmentName" (onChange)="onEnvironmentChange($event)">
+                            <ng-template let-item pTemplate="selectedItem">
+                                <div class="my-dropdown-option">
+                                    <div>{{item.label}}</div>
+                                    <info-icon *ngIf="isDefaultOrLocalEnvironment(item.value)"
+                                               position="top"
+                                               [width]="'300px'"
+                                               [message]="getEnvironmentInfoMessage(item.value)"
+                                               class="my-dropdown-selected-item-info"></info-icon>
+                                </div>
+                            </ng-template>
+                            <ng-template let-environment pTemplate="item">
+                                <div class="my-dropdown-option">
+                                    <div>{{environment.label}}</div>
+                                    <info-icon *ngIf="isDefaultOrLocalEnvironment(environment.value)"
+                                               position="right"
+                                               [width]="'300px'"
+                                               [message]="getEnvironmentInfoMessage(environment.value)" ></info-icon>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+
+                        <div class="action-panel inline btn-group">
+                            <div *ngIf="isEditableEnvironment()"
+                                 title="Edit Environment Name" class="btn btn-default btn-xs btn-group"
+                                 (click)="editEnvironment(); $event.stopPropagation()">
+                                <i class="fa_my-edit" aria-hidden="true"></i>
+                            </div>
+                            <div title="Add Environment" class="btn btn-default btn-xs btn-group"
+                                 (click)="addEnvironment(); $event.stopPropagation()">
+                                <i class="fa_my-plus" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="variables table table-hover">
                     <colgroup>
                         <col span="1" style="width: 31%;">
                         <col span="1" style="width: 65%;">
-                        <col *ngIf="isEditMode()" span="1" style="width: 4%;">
+                        <col span="1" style="width: 4%;">
                     </colgroup>
 
                     <tr>
                         <th>Name</th>
                         <th>Value</th>
-                        <th *ngIf="isEditMode()"></th>
+                        <th></th>
                     </tr>
 
                     <tr *ngFor="let variable of variables; let last = last">
 
                         <!-- KEY -->
-                        <td *ngIf="!variable.isEmpty() || isEditMode()">
-                            <span *ngIf="!isEditMode()">{{variable.key}}</span>
-                            <input *ngIf="isEditMode()"
-                                   (change)="onNewKeyChange($event)"
+                        <td class="variable-key">
+                            <input (change)="onNewKeyChange($event)"
                                    [(ngModel)]="variable.key"
                                    type="text" pInputText  class="form-control full-width">
                         </td>
 
                         <!-- VALUE -->
-                        <td *ngIf="!variable.isEmpty() || isEditMode()">
-                            <span *ngIf="!isEditMode()">{{variable.value}}</span>
-                            <input *ngIf="isEditMode()"
-                                   (change)="onNewValueChange($event)"
+                        <td class="variable-value">
+                            <input (change)="onNewValueChange($event)"
+                                   (keydown)="onNewValueKeyDown($event, variable)"
                                    [(ngModel)]="variable.value"
+                                   [class.inherited-variable-value]="variable.isVariableFromDefaultEnvironment"
                                    type="text" pInputText  class="form-control full-width">
                         </td>
 
                         <!-- DELETE -->
-                        <td *ngIf="!variable.isEmpty() && isEditMode()">
-                            <a href (click)="deleteVariable(variable);false;"
-                               class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
+                        <td  class="variable-action">
+                            <a *ngIf="!last"
+                               href (click)="deleteVariable(variable);false;"
+                               class="btn btn-danger" aria-label="Delete">
                                 <i  class="far fa-trash-alt" aria-hidden="true"></i>
                             </a>
                         </td>
@@ -55,11 +95,10 @@
 
             <!-- BUTTONS -->
             <div class="modal-footer">
-                <ng-container *ngIf="!isEditMode()">
-                    <button (click)="enableEditMode();" class="btn btn-primary">Edit</button>
+                <ng-container *ngIf="!hasChanges">
                     <button (click)="close()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </ng-container>
-                <ng-container *ngIf="isEditMode()">
+                <ng-container *ngIf="hasChanges">
                     <button (click)="cancel();" type="button" class="btn btn-default">Cancel</button>
                     <button (click)="save()" class="btn btn-primary">Save</button>
                 </ng-container>
@@ -67,3 +106,4 @@
         </div>
     </div>
 </div>
+<environment-edit-modal #environmentEditModal></environment-edit-modal>

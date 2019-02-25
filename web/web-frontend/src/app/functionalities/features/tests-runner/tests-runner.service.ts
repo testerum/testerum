@@ -11,6 +11,8 @@ import {SuiteEndEvent} from "../../../model/test/event/suite-end.event";
 import {RunnerErrorEvent} from "../../../model/test/event/runner-error.event";
 import {RunnerTreeFilterModel} from "./tests-runner-tree/model/filter/runner-tree-filter.model";
 import {RunnerEventMarshaller} from '../../../model/test/event/marshaller/runner-event-marshaller';
+import {ContextService} from "../../../service/context.service";
+import {Project} from "../../../model/home/project.model";
 
 @Injectable()
 export class TestsRunnerService {
@@ -21,7 +23,9 @@ export class TestsRunnerService {
         WEB_SOCKET_PATH           : "/rest/tests-ws",
     };
 
-    public isTestRunnerVisible:boolean = false;
+    private _isRunnerVisible:boolean = false;
+    readonly runnerVisibleEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+
     public areTestRunning: boolean = false;
     public lastRunPaths: Path[];
 
@@ -35,11 +39,16 @@ export class TestsRunnerService {
     readonly showTestFoldersEventObservable: EventEmitter<boolean> = new EventEmitter<boolean>();
     readonly treeFilterObservable: EventEmitter<RunnerTreeFilterModel> = new EventEmitter<RunnerTreeFilterModel>();
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                private contextService: ContextService) {
+        contextService.projectChangedEventEmitter.subscribe((project: Project) => {
+            this.setRunnerVisibility(false);
+        });
+    }
 
     runTests(pathsToExecute: Path[]) {
         this.lastRunPaths = pathsToExecute;
-        this.isTestRunnerVisible = true;
+        this.setRunnerVisibility(true);
 
         let pathsAsString = pathsToExecute.map(it => {return it.toString()});
         this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, pathsAsString)
@@ -51,6 +60,15 @@ export class TestsRunnerService {
 
     reRunTests() {
         this.runTests(this.lastRunPaths)
+    }
+
+    isRunnerVisible(): boolean {
+        return this._isRunnerVisible;
+    }
+
+    setRunnerVisibility(isVisible: boolean) {
+        this._isRunnerVisible = isVisible;
+        this.runnerVisibleEventEmitter.emit(isVisible);
     }
 
     private startExecution(testExecutionResponse: TestExecutionResponse) {

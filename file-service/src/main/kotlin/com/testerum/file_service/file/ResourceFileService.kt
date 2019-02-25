@@ -62,7 +62,10 @@ class ResourceFileService {
 
         val escapedPath = path.escape()
         val fileContent = resourceJavaPath.getContentOrNull()
-            ?: return null
+        if (fileContent == null) {
+            println("cannot find resource <<<<$resourceJavaPath>>>> / <<<<${resourceJavaPath.toAbsolutePath().normalize()}>>>>")
+            return null
+        }
 
         return ResourceContext(
                 path = escapedPath,
@@ -100,11 +103,11 @@ class ResourceFileService {
                 body = FileArgTransformer.jsonToFileFormat(resourceContext.body, resourceType.javaType)
         )
 
-        val oldEscapedPath = resourceWithTransformedBody.oldPath?.escape()
+        val oldPath = resourceWithTransformedBody.oldPath
         val newEscapedPath = resourceWithTransformedBody.path.escape()
 
-        val oldResourceFile: JavaPath? = oldEscapedPath?.let {
-            getJavaPath(oldEscapedPath, resourceType, resourcesDir)
+        val oldResourceFile: JavaPath? = oldPath?.let {
+            getJavaPath(oldPath, resourceType, resourcesDir)
         }
         val newResourceFile = getJavaPath(newEscapedPath, resourceType, resourcesDir)
 
@@ -112,7 +115,10 @@ class ResourceFileService {
         oldResourceFile?.smartMoveTo(
                 newResourceFile,
                 createDestinationExistsException = {
-                    ValidationException("the test at path [$newEscapedPath] already exists")
+                    ValidationException(
+                            globalMessage = "The test at path [$newEscapedPath] already exists",
+                            globalHtmlMessage = "The test at path<br/><code>$newEscapedPath</code><br/>already exists"
+                    )
                 }
         )
 
@@ -162,7 +168,10 @@ class ResourceFileService {
         try {
             OBJECT_MAPPER.readValue<RdbmsConnectionConfig>(resourceContext.body)
         } catch (e: Exception) {
-            throw ValidationException("The following text is not a valid Rdbms Connection Config Json: [${resourceContext.body}].")
+            throw ValidationException(
+                    globalMessage = "The following text is not a valid Rdbms Connection Config Json: ${resourceContext.body}",
+                    globalHtmlMessage = "The following text is not a valid Rdbms Connection Config Json:<br/><code>${resourceContext.body}</code>"
+            )
         }
     }
 
@@ -221,7 +230,10 @@ class ResourceFileService {
         javaPathToRename.smartMoveTo(
                 javaNewPath,
                 createDestinationExistsException = {
-                    ValidationException("the directory at path [${javaNewPath.toAbsolutePath().normalize()}] already exists")
+                    ValidationException(
+                            globalMessage = "The directory at path [${javaNewPath.toAbsolutePath().normalize()}] already exists",
+                            globalHtmlMessage = "The directory at path<br/><code>${javaNewPath.toAbsolutePath().normalize()}</code><br/>already exists"
+                    )
                 }
         )
 
@@ -270,7 +282,10 @@ class ResourceFileService {
         sourceJavaFile.smartMoveTo(
                 destinationJavaFile,
                 createDestinationExistsException = {
-                    ValidationException("the file at path [$escapedDestinationFile] already exists")
+                    ValidationException(
+                            globalMessage = "The file at path [$escapedDestinationFile] already exists",
+                            globalHtmlMessage = "The file at path<br/><code>$escapedDestinationFile</code><br/>already exists"
+                    )
                 }
         )
 

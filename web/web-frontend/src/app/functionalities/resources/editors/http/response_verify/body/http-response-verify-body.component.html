@@ -1,64 +1,65 @@
+<div class="http-response-verify-body">
+    <div class="my-line">
 
-<div class="my-line">
-
-    <!-- BODY MATCHING -->
-    <label class="my-label label-size">Body Matching:</label>
-    <div class="my-value" *ngIf="!isEditMode()">
-        {{getModel().httpBodyVerifyMatchingType?.toString()}}
-    </div>
-
-    <div class="my-value" style="width: max-content"
-         *ngIf="isEditMode()">
-        <select class="form-control phase-input"
-                (change)="bodyVerifyMatchingTypeChange(bodyVerifyMatchingTypeNgModel.value)"
-                #bodyVerifyMatchingTypeNgModel="ngModel"
-                [(ngModel)]="getModel().httpBodyVerifyMatchingType" name="bodyMatchintType">
-
-            <option [value]="null"></option>
-            <option *ngFor="let bodyVerifyMatchingTypes of getHttpBodyVerifyMatchingTypes(); let i = index"
-                    [ngValue]="bodyVerifyMatchingTypes">
-                {{bodyVerifyMatchingTypes?bodyVerifyMatchingTypes.toString():""}}
-            </option>
-        </select>
-    </div>
-
-    <!-- BODY TYPE -->
-    <ng-container *ngIf="shouldDisplayBodyTypeChooser()">
-        <label class="my-label label-size" style="margin-left: 60px">Body Type:</label>
+        <!-- BODY MATCHING -->
+        <label class="my-label label-size">Body Matching:</label>
         <div class="my-value" *ngIf="!isEditMode()">
-            {{getModel().httpBodyType?.toString()}}
+            {{getModel().httpBodyVerifyMatchingType?.toString()}}
         </div>
 
-        <div class="my-value" style="width: max-content" *ngIf="isEditMode()">
+        <div class="my-value" style="width: max-content"
+             *ngIf="isEditMode()">
             <select class="form-control phase-input"
-                    [(ngModel)]="getModel().httpBodyType" name="bodyType">
+                    (change)="bodyVerifyMatchingTypeChange(bodyVerifyMatchingTypeNgModel.value)"
+                    #bodyVerifyMatchingTypeNgModel="ngModel"
+                    [(ngModel)]="getModel().httpBodyVerifyMatchingType" name="bodyMatchintType">
 
-                <option *ngFor="let bodyVerifyTypes of getHttpBodyVerifyTypes(); let i = index"
-                        [ngValue]="bodyVerifyTypes">
-                    {{bodyVerifyTypes.toString()}}
+                <option [value]=""></option>
+                <option *ngFor="let bodyVerifyMatchingTypes of getHttpBodyVerifyMatchingTypes(); let i = index"
+                        [ngValue]="bodyVerifyMatchingTypes">
+                    {{bodyVerifyMatchingTypes?bodyVerifyMatchingTypes.toString():""}}
                 </option>
             </select>
         </div>
-    </ng-container>
-</div>
 
-<!-- BODY TYPE JSON VERIFY-->
-<div *ngIf="getModel().httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY"
-      class="json-verify-container">
-    <json-verify [(model)]="expectedBody.bodyVerify" [editMode]="isEditMode()"></json-verify>
-</div>
+        <!-- BODY TYPE -->
+        <ng-container *ngIf="shouldDisplayBodyTypeChooser()">
+            <label class="my-label label-size" style="margin-left: 60px">Body Type:</label>
+            <div class="my-value" *ngIf="!isEditMode()">
+                {{getModel().httpBodyType?.toString()}}
+            </div>
 
-<!-- BODY TYPE JSON VERIFY-->
-<div *ngIf="shouldDisplayAceEditor()"
-     class="full-size-flex-element ace-editor-container">
-    <ace-editor
-        #editor
-        [(text)]="getModel().bodyVerify"
-        [mode]="getModel().httpBodyType.editorMode"
-        [theme]="'eclipse'"
-        [options]="options"
-        [readOnly]="!isEditMode()"
-        [autoUpdateContent]="false"
-        [durationBeforeCallback]="1000"
-        class="ace-editor"></ace-editor>
+            <div class="my-value" style="width: max-content" *ngIf="isEditMode()">
+                <select class="form-control phase-input"
+                        [(ngModel)]="getModel().httpBodyType" name="bodyType">
+
+                    <option *ngFor="let bodyVerifyTypes of getHttpBodyVerifyTypes(); let i = index"
+                            [ngValue]="bodyVerifyTypes">
+                        {{bodyVerifyTypes.toString()}}
+                    </option>
+                </select>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- BODY TYPE JSON VERIFY-->
+    <div *ngIf="getModel().httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY"
+          class="json-verify-container">
+        <json-verify [(model)]="expectedBody.bodyVerify" [editMode]="isEditMode()"></json-verify>
+    </div>
+
+    <!-- BODY TYPE JSON VERIFY-->
+    <div *ngIf="shouldDisplayAceEditor()"
+         class="full-size-flex-element ace-editor-container">
+        <ace-editor
+            #editor
+            [(text)]="getModel().bodyVerify"
+            [mode]="getModel().httpBodyType.editorMode"
+            [theme]="'eclipse'"
+            [options]="options"
+            [readOnly]="!isEditMode()"
+            [autoUpdateContent]="false"
+            [durationBeforeCallback]="1000"
+            class="ace-editor"></ace-editor>
+    </div>
 </div>

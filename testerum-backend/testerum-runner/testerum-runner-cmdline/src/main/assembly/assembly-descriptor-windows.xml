@@ -14,7 +14,7 @@
 
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/repo</outputDirectory>
+            <outputDirectory>/lib</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
             <unpack>false</unpack>
             <scope>runtime</scope>
@@ -38,12 +38,23 @@
             <directory>${project.basedir}/src/main/assembly/node/windows</directory>
             <outputDirectory>/node</outputDirectory>
             <useDefaultExcludes>false</useDefaultExcludes>
+
+            <excludes>
+                <exclude>node_modules/</exclude>
+            </excludes>
         </fileSet>
 
         <!-- compiled report templates: pretty -->
         <fileSet>
             <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</directory>
             <outputDirectory>report_templates/pretty</outputDirectory>
+            <useDefaultExcludes>false</useDefaultExcludes>
+        </fileSet>
+
+        <!-- compiled report templates: stats -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator/dist</directory>
+            <outputDirectory>report_templates/stats</outputDirectory>
             <useDefaultExcludes>false</useDefaultExcludes>
         </fileSet>
     </fileSets>

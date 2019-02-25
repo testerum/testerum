@@ -1,6 +1,6 @@
 <div class="main-container">
-    <split direction="horizontal">
-        <split-area [size]="30">
+    <as-split direction="horizontal">
+        <as-split-area [size]="30">
             <div style="margin: 5px 0 5px 0;">
                 <manual-test-plan-overview
                     [model]="manualExecPlan"
@@ -10,11 +10,11 @@
 
             <manual-tests-status-tree [isNavigationTree]="true" #tree></manual-tests-status-tree>
 
-        </split-area>
-        <split-area [size]="70">
+        </as-split-area>
+        <as-split-area [size]="70">
 
             <manual-runner-editor [tree]="tree"></manual-runner-editor>
 
-        </split-area>
-    </split>
+        </as-split-area>
+    </as-split>
 </div>

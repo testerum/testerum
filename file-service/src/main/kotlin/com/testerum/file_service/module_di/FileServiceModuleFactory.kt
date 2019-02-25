@@ -2,21 +2,23 @@ package com.testerum.file_service.module_di
 
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
-import com.testerum.file_service.caches.resolved.FeaturesCache
-import com.testerum.file_service.caches.resolved.StepsCache
-import com.testerum.file_service.caches.resolved.TestsCache
+import com.testerum.file_service.caches.RecentProjectsCache
+import com.testerum.file_service.caches.resolved.BasicStepsCache
 import com.testerum.file_service.caches.resolved.resolvers.ArgsResolver
 import com.testerum.file_service.caches.resolved.resolvers.StepsResolver
 import com.testerum.file_service.caches.resolved.resolvers.TestResolver
 import com.testerum.file_service.caches.warnings.WarningService
 import com.testerum.file_service.file.ComposedStepFileService
 import com.testerum.file_service.file.FeatureFileService
+import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.file_service.file.ManualTestFileService
 import com.testerum.file_service.file.ManualTestPlanFileService
+import com.testerum.file_service.file.RecentProjectsFileService
 import com.testerum.file_service.file.ResourceFileService
 import com.testerum.file_service.file.ResultsFileService
 import com.testerum.file_service.file.SettingsFileService
 import com.testerum.file_service.file.TestFileService
+import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileFeatureMapper
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileStepMapper
@@ -121,12 +123,12 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
 
     val resourceFileService = ResourceFileService()
 
-    private val composedStepFileService = ComposedStepFileService(
+    val composedStepFileService = ComposedStepFileService(
             fileToBusinessStepMapper = fileToBusinessStepMapper,
             businessToFileStepMapper = businessToFileStepMapper
     )
 
-    private val testsFileService = TestFileService(
+    val testsFileService = TestFileService(
             fileToBusinessTestMapper = fileToBusinessTestMapper,
             businessToFileTestMapper = businessToFileTestMapper
     )
@@ -146,7 +148,17 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
             fileToBusinessManualTestMapper = fileToBusinessManualTestMapper
     )
 
-    val variablesFileService = VariablesFileService()
+    val testerumProjectFileService = TesterumProjectFileService()
+
+    val recentProjectsFileService = RecentProjectsFileService(
+            testerumProjectFileService = testerumProjectFileService
+    )
+
+    val localVariablesFileService = LocalVariablesFileService()
+
+    val variablesFileService = VariablesFileService(
+            localVariablesFileService = localVariablesFileService
+    )
 
     val settingsFileService = SettingsFileService()
 
@@ -161,31 +173,22 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
             resourceFileService = resourceFileService
     )
 
-    private val stepsResolver = StepsResolver(
+    val stepsResolver = StepsResolver(
             argsResolver = argsResolver
     )
 
-    val stepsCache = StepsCache(
+    val basicStepsCache = BasicStepsCache(
             persistentCacheManger = scannerModuleFactory.stepLibraryPersistentCacheManger,
-            settingsManager = settingsModuleFactory.settingsManager,
-            composedStepFileService = composedStepFileService,
-            stepsResolver = stepsResolver,
-            warningService = warningService
+            settingsManager = settingsModuleFactory.settingsManager
     )
 
     val testResolver = TestResolver(
-            stepsCache = stepsCache,
             argsResolver = argsResolver
     )
 
-    val testsCache = TestsCache(
-            testFileService = testsFileService,
-            testResolver = testResolver,
-            warningService = warningService
-    )
-
-    val featuresCache = FeaturesCache(
-            featureFileService = featuresFileService
+    val recentProjectsCache = RecentProjectsCache(
+            recentProjectsFileService = recentProjectsFileService,
+            testerumProjectFileService = testerumProjectFileService
     )
 
 }

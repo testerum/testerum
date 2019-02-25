@@ -29,7 +29,7 @@
         </div>
 
         <!-- BUTTONS -->
-        <div *ngIf="isUndefinedStep() && isEditMode()"
+        <div *ngIf="isUndefinedStep() && isEditMode() && !isManualStep()"
              class="step-button-panel-hide-on-hover btn-group">
             <div *ngIf="!model.jsonTreeNodeState.showChildren"
                  title="Define Step" class="btn btn-default btn-xs btn-group"

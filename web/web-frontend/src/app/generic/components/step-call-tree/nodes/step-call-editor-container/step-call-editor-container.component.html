@@ -32,7 +32,7 @@
             <ng-template let-stepCallSuggestion pTemplate="item">
                 <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
                     <span *ngIf="stepCallSuggestion.actionText" class="step-call-action-text">{{stepCallSuggestion.actionText}}</span>
-                    <span>{{stepCallSuggestion.getPhaseAsString()}} {{stepCallSuggestion.stepCallText}}</span>
+                    <span>{{stepCallSuggestion.stepCallText}}</span>
                 </div>
             </ng-template>
         </p-autoComplete>

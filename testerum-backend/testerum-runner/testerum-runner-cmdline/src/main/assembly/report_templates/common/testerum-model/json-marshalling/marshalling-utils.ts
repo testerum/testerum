@@ -4,6 +4,10 @@ export class MarshallingUtils {
         return new Date(input);
     }
 
+    static parseLocalDate(input: string): Date {
+        return new Date(input);
+    }
+
     static parseEnum<E>(enumText: string, enumClass: { [p: number]: string }): keyof E {
         return enumClass[enumText];
     }
@@ -90,6 +94,25 @@ export class MarshallingUtils {
 
             result.set(key, this.parsePolymorphically(value, typeMap));
         }
+        return result;
+    }
+
+    static parseMap<K, V>(input: Object,
+                          parseKey: (Object) => K,
+                          parseValue: (Object) => V): Map<K, V> {
+        const result = new Map<K, V>();
+
+        for (const key in input) {
+            if (!input.hasOwnProperty(key)) {
+                continue;
+            }
+
+            const parsedKey = parseKey(key);
+            const parsedValue = parseValue(input[key]);
+
+            result.set(parsedKey, parsedValue);
+        }
+
         return result;
     }
 

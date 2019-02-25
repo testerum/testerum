@@ -1,9 +1,29 @@
-<div class="node-text"
+<div class="steps-tree_step-node node-text"
+     (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+     (mouseleave)="hasMouseOver=false"
      dnd-draggable [dragEnabled]="true" [dragData]="model">
 
     <div (click)="setSelected();$event.stopPropagation();"
+         class="step-node-text"
          [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
          [class.tree-leaf-selected]="model.isSelected()">
         <step-text [stepDef]="model.stepDef"></step-text>
+    </div>
+
+    <!-- BUTTONS RENDERING -->
+    <div class="button-panel btn-group my-button-panel"
+         [class.hidden]="!hasMouseOver">
+
+        <div *ngIf="model.isComposedStep"
+             title="Cut Step Definition" class="btn btn-default btn-xs btn-group"
+             (click)="onCutStepDef(); $event.stopPropagation()">
+            <i class="fa_my-cut" aria-hidden="true"></i>
+        </div>
+
+        <div *ngIf="model.isComposedStep"
+             title="Copy Step Definition" class="btn btn-default btn-xs btn-group"
+             (click)="onCopyStepDef(); $event.stopPropagation()">
+            <i class="fa_my-copy" aria-hidden="true"></i>
+        </div>
     </div>
 </div>

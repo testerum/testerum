@@ -1,10 +1,27 @@
 <div class="feature-editor">
-    <h1 *ngIf="isRootFeature()">Features</h1>
+    <h1 *ngIf="isRootFeature()">Project {{projectName}}</h1>
     <h1 *ngIf="!isRootFeature() && isCreateAction">Create SubFeature in <span class="path">{{pathForTitle}}</span></h1>
     <h1 *ngIf="!isRootFeature() && !isCreateAction">Feature <span class="path">{{pathForTitle}}</span></h1>
 
     <div class="page-body">
         <form #form="ngForm" class="form-horizontal">
+
+            <div class="my-line" *ngIf="isRootFeature() && isEditMode">
+                <label class="my-label label-size">Project Name</label>
+
+                <div class="my-value" *ngIf="isEditMode">
+                    <input name="name"
+                           required
+                           isNotBlankValidator
+                           #nameNgModel="ngModel" [ngModel]="projectName"
+                           type="text" class="form-control"
+                           (keydown.enter)="$event.preventDefault()">
+                    <input-error [model]="nameNgModel"
+                                 [errorMessages]="{
+                                        required: 'A project name is required'
+                                 }"></input-error>
+                </div>
+            </div>
 
             <div class="my-line" *ngIf="!isRootFeature()">
                 <label class="my-label label-size">Name</label>
@@ -15,8 +32,10 @@
                 <div class="my-value" *ngIf="isEditMode">
                     <input name="name"
                            required
+                           isNotBlankValidator
                            #nameNgModel="ngModel" [(ngModel)]="model.name"
-                           type="text" class="form-control" >
+                           type="text" class="form-control"
+                           (keydown.enter)="$event.preventDefault()">
                     <input-error [model]="nameNgModel"
                                  [errorMessages]="{
                                         required: 'A name for this feature is required',
@@ -37,7 +56,7 @@
             </div>
             <div class="my-line" *ngIf="!isRootFeature() && isEditMode">
                 <label class="my-label label-size">Tags</label>
-                <div class="my-value">
+                <div class="my-value my-default-line-height">
                     <p-autoComplete #tagsElement
                                     [(ngModel)]="model.tags"
                                     [suggestions]="tagsToShow"
@@ -55,7 +74,7 @@
             <div class="my-line">
                 <label class="my-label-top label-size">Description</label>
 
-                <div class="my-value">
+                <div class="my-value my-default-line-height">
                     <markdown-editor #markdownEditor
                                      [options]="markdownEditorOptions"></markdown-editor>
                 </div>
@@ -65,7 +84,7 @@
             <div class="my-line" *ngIf="isEditMode || model.attachments.length > 0">
                 <label class="my-label-top label-size">Attachments</label>
 
-                <div class="my-value">
+                <div class="my-value my-default-line-height">
                     <attachments-component [attachments]="model.attachments"
                                            [editMode]="isEditMode"
                                            [fileAttachmentsAdded]="fileAttachmentsAdded"
@@ -75,7 +94,7 @@
 
             <div class="panel-footer-button">
                 <ng-container *ngIf="!isEditMode">
-                    <button (click)="enableEditTestMode();" class="btn btn-primary">Edit</button>
+                    <button (click)="enableEditMode();" class="btn btn-primary">Edit</button>
                 </ng-container>
                 <ng-container *ngIf="isEditMode">
                     <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>

@@ -1,7 +1,9 @@
 package com.testerum.common.expression_evaluator
 
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.DataGeneratorScriptingHelper
 import com.testerum.common.expression_evaluator.helpers.impl.DateScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.GenerateStringByRegexScriptingHelper
 import com.testerum.common.expression_evaluator.helpers.impl.UuidScriptingHelper
 import delight.nashornsandbox.NashornSandbox
 import delight.nashornsandbox.NashornSandboxes
@@ -12,7 +14,9 @@ object ExpressionEvaluator {
     // todo: make these configurable
     private val helpers = listOf<ScriptingHelper>(
             UuidScriptingHelper,
-            DateScriptingHelper
+            DateScriptingHelper,
+            DataGeneratorScriptingHelper,
+            GenerateStringByRegexScriptingHelper
     )
 
     private val sandbox: NashornSandbox = NashornSandboxes.create().apply {
@@ -31,14 +35,24 @@ object ExpressionEvaluator {
                  context: Map<String, Any?>): Any? {
         val bindings: Bindings = sandbox.createBindings().apply {
             putAll(context)
+            put("vars", context)
         }
 
+        var enhancedExpression: String? = null
         try {
-            val enhancedExpression = enhanceExpression(expression)
+            enhancedExpression = enhanceExpression(expression)
 
             return sandbox.eval(enhancedExpression, bindings)
         } catch (e: Exception) {
-            throw e
+            val errorMessage = buildString {
+                append("failed to evaluate expression [").append(expression).append("]")
+
+                if (enhancedExpression != null) {
+                    append(", enhancedExpression=[").append(enhancedExpression).append("]")
+                }
+            }
+
+            throw RuntimeException(errorMessage, e)
         }
     }
 
@@ -48,8 +62,9 @@ object ExpressionEvaluator {
             append("\n")
             append("\n")
 
-            append(expression)
         }
+
+        append(expression)
     }
 
 }

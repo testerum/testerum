@@ -1,9 +1,8 @@
-import {AbstractControl, NG_VALIDATORS, Validator, ValidatorFn} from "@angular/forms";
+import {AbstractControl, NG_VALIDATORS, Validator} from "@angular/forms";
 import {Directive, Input} from "@angular/core";
 import {ParamPatternParser} from "../../model/text/parser/param-pattern-parser";
 import {StepPatternPart} from "../../model/text/parts/step-pattern-part.model";
 import {TextStepPatternPart} from "../../model/text/parts/text-step-pattern-part.model";
-import {StringUtils} from "../../utils/string-utils.util";
 import {ObjectUtil} from "../../utils/object.util";
 
 @Directive({

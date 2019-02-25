@@ -29,6 +29,7 @@ import {StepsService} from "../../../../service/steps.service";
 import {MarkdownEditorComponent} from "../../markdown-editor/markdown-editor.component";
 import {StepCallWarningUtil} from "../../step-call-tree/util/step-call-warning.util";
 import {ContextService} from "../../../../service/context.service";
+import {StepContext} from "../../../../model/step/context/step-context.model";
 
 @Component({
     selector: 'composed-step-view',
@@ -41,13 +42,14 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     @Input() model: ComposedStepDef;
     @Input() isEditMode: boolean;
     @Input() isCreateAction: boolean = false;
+    @Input() stepContext: StepContext = new StepContext();
 
     @ViewChild(NgForm) form: NgForm;
     StepPhaseEnum = StepPhaseEnum;
 
     oldModel: ComposedStepDef;
     pattern: string;
-    hasPathDefined = true;
+    allowPathEdit = false;
 
     warnings: Message[] = [];
     areChildComponentsValid: boolean = true;
@@ -76,16 +78,24 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     ngOnInit(): void {
-        if (this.model.path == null) {
-            this.hasPathDefined = false
+        if (this.stepContext.isPartOfManualTest) {
+            if (this.model.path) {
+                this.allowPathEdit = true;
+            }
+        } else {
+            this.allowPathEdit = true;
+        }
+
+        if (!this.isCreateAction) {
+            this.recalculateWarnings();
         }
 
         if (this.isEditMode) {
             this.loadAllTags();
         }
         this.descriptionMarkdownEditor.changeEventEmitter.subscribe((description: string) => {
-            this.validate();
             this.model.description = description;
+            this.validate();
         });
         this.refreshDescription();
 
@@ -97,15 +107,23 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         );
 
         this.warningRecalculationChangesSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
-            let model = this.getModelForWarningRecalculation();
-
-            this.stepsService.getWarnings(model).subscribe((newModel: ComposedStepDef) => {
-                StepCallWarningUtil.copyWarningState(this.model.stepCalls, newModel.stepCalls);
-
-                ArrayUtil.replaceElementsInArray(this.model.warnings, newModel.warnings);
-                this.refreshWarnings();
-            });
+            this.recalculateWarnings();
         })
+    }
+
+    private recalculateWarnings() {
+        if (this.stepContext.isPartOfManualTest) {
+            return;
+        }
+
+        let model = this.getModelForWarningRecalculation();
+
+        this.stepsService.getWarnings(model).subscribe((newModel: ComposedStepDef) => {
+            StepCallWarningUtil.copyWarningState(this.model.stepCalls, newModel.stepCalls);
+
+            ArrayUtil.replaceElementsInArray(this.model.warnings, newModel.warnings);
+            this.refreshWarnings();
+        });
     }
 
     private getModelForWarningRecalculation() {
@@ -156,15 +174,19 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         if (this.descriptionMarkdownEditor) {
             this.descriptionMarkdownEditor.setEditMode(this.isEditMode);
             this.descriptionMarkdownEditor.setValue(this.model.description);
+            this.validate();
         }
     }
 
     private refreshWarnings() {
         this.warnings = [];
+        if (this.stepContext.isPartOfManualTest) {
+            return
+        }
         for (const warning of this.model.warnings) {
             this.warnings.push(
                 {severity: 'error', summary: warning.message}
-            )
+            );
         }
     }
 
@@ -231,6 +253,8 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
 
     onTagSelect(event) {
         this.currentTagSearch = null;
+
+        this.validate();
     }
 
     getPhaseEnumValues(): Array<StepPhaseEnum> {
@@ -266,10 +290,16 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
 
     isValid(): boolean {
         let control = this.form.control;
+
+        //reset state
         if (control.get("pathInput")) {
             control.get("pathInput").setErrors(null);
         }
+        if (this.stepContext.isPartOfManualTest && this.model.path == null) {
+            this.allowPathEdit = false;
+        }
 
+        //validate
         if (this.model.stepCalls.length > 0) {
             if(!this.model.path) {
                 this.addPathRequiredValidationError(control);
@@ -297,6 +327,8 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         control.markAsDirty();
 
         control.get("pathInput").setErrors(validationError);
+
+        this.allowPathEdit = true;
     }
 
     onBeforeSave() {

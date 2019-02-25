@@ -44,7 +44,6 @@ export class ArgNodeComponent implements OnInit {
 
     collapsed: boolean = false;
     animationState: string = 'open';
-    isEditMode: boolean;
 
     @Input('collapsed')
     set setCollapsed(value: boolean) {
@@ -57,18 +56,12 @@ export class ArgNodeComponent implements OnInit {
     private resourceComponentRef: ComponentRef<ResourceComponent<any>>;
     @ViewChild('resourceContainer', {read: ViewContainerRef}) content:ViewContainerRef;
 
-    editModeSubscription: Subscription;
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
                 private stepCallTreeComponentService: StepCallTreeComponentService,
                 private argModalService: ArgModalService){
     }
 
     ngOnInit(): void {
-        this.isEditMode = this.stepCallTreeComponentService.isEditMode;
-        this.editModeSubscription = this.stepCallTreeComponentService.editModeEventEmitter.subscribe(
-            (editMode: boolean) => {this.isEditMode = editMode}
-        );
-
         let paramRendererContainer: Type<any> = this.getResourceRenderer();
         const factory: ComponentFactory<any> = this.componentFactoryResolver.resolveComponentFactory(paramRendererContainer);
         this.resourceComponentRef = this.content.createComponent(factory);
@@ -84,10 +77,6 @@ export class ArgNodeComponent implements OnInit {
         this.resourceComponentRef.instance.editMode = false;
     }
 
-    ngOnDestroy(): void {
-        this.editModeSubscription.unsubscribe();
-    }
-
     private getResourceRenderer():Type<any>  {
         let paramTypeEnumByType = ResourceMapEnum.getResourceMapEnumByUiType(this.model.arg.uiType);
         if(paramTypeEnumByType) {
@@ -98,8 +87,8 @@ export class ArgNodeComponent implements OnInit {
     }
 
     editOrViewResourceInModal() {
-        if (!this.isEditMode) {
-            this.stepCallTreeComponentService.editModeEventEmitter.emit(true);
+        if (!this.stepCallTreeComponentService.isEditMode) {
+            this.stepCallTreeComponentService.setEditMode(true);
         }
 
         this.argModalService.showAreYouSureModal(this.model.arg, this.model.stepPatternParam).subscribe( (event:ArgModalEnum) => {

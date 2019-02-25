@@ -1,22 +1,23 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {ResourcesComponent} from "./resources.component";
-import {SetupGuard} from "../../service/guards/setup.guard";
+import {LicenseGuard} from "../../service/guards/license.guard";
 import {ResourceResolver} from "./editors/resource.resolver";
-import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alown-resource-panel.component";
-import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
+import {StandAloneResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alone-resource-panel.component";
+import {UnsavedChangesGuard} from "../../service/guards/unsaved-changes.guard";
+import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
 const resourcesRoutes: Routes = [
     {
-        path: "resources", component: ResourcesComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
+        path: ":project/resources", component: ResourcesComponent, canActivate: [LicenseGuard, CurrentProjectGuard], canActivateChild: [LicenseGuard],
         children: [
             {
                 path: 'create',
-                component: StandAlownResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [CanDeactivateGuard]
+                component: StandAloneResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [UnsavedChangesGuard]
             },
             {
                 path: 'show',
-                component: StandAlownResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [CanDeactivateGuard]
+                component: StandAloneResourcePanelComponent, resolve: {resource: ResourceResolver }, canDeactivate: [UnsavedChangesGuard]
             }
         ]
     },

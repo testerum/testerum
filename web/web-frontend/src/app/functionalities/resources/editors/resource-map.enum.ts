@@ -26,9 +26,11 @@ import {RdbmsVerifyResourceType} from "../tree/model/type/rdbms-verify.resource-
 import {BasicResourceComponent} from "./basic/basic-resource.component";
 import {JsonVerifyResourceType} from "../tree/model/type/json-verify.resource-type.model";
 import {BasicResourceType} from "../tree/model/type/basic.resource-type.model";
-import {JsonVerifyResourceComponent} from "./json_verify/json-verify-resource.component";
+import {JsonVerifyResourceComponent} from "./json/json_verify/json-verify-resource.component";
 import {JsonVerify} from "../../../generic/components/json-verify/model/json-verify.model";
 import {JsonUtil} from "../../../utils/json.util";
+import {JsonResourceComponent} from "./json/json_resource/json-resource.component";
+import {JsonResourceType} from "../tree/model/type/json.resource-type.model";
 
 export class ResourceMapEnum {
     public static TEXT: ResourceMapEnum = new ResourceMapEnum(
@@ -76,9 +78,9 @@ export class ResourceMapEnum {
         (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static RDBMS_CONNECTION: ResourceMapEnum = new ResourceMapEnum(
-        "database.relational.connection_manager.model.RdbmsClient",
-        "database.relational.connection_manager.model.RdbmsClient",
-        "RdbmsClient",
+        "database.relational.connection_manager.model.RdbmsConnection",
+        "database.relational.connection_manager.model.RdbmsConnection",
+        "RdbmsConnection",
         "rdbms.connection.yaml",
         RdbmsConnectionConfigComponent,
         () => {return new RdbmsConnectionConfig()},
@@ -163,6 +165,17 @@ export class ResourceMapEnum {
         () => {return JsonVerifyResourceType.getInstanceForChildren()},
         (input:string) => {return new JsonVerify().deserialize(input)}
     );
+    public static JSON: ResourceMapEnum = new ResourceMapEnum(
+        "json.model.JsonResource",
+        "json.model.JsonResource",
+        "JSON",
+        "json",
+        JsonResourceComponent,
+        () => {return new BasicResource()},
+        () => {return JsonResourceType.getInstanceForRoot()},
+        () => {return JsonResourceType.getInstanceForChildren()},
+        (input:string) => {return new BasicResource().deserialize(input)}
+    );
     public static ALL_PARAM_TYPES: Array<ResourceMapEnum> = [
         ResourceMapEnum.TEXT,
         ResourceMapEnum.NUMBER,
@@ -176,6 +189,7 @@ export class ResourceMapEnum {
         ResourceMapEnum.HTTP_MOCK_SERVER_VERIFY,
         ResourceMapEnum.HTTP_MOCK_STUB_VERIFY,
         ResourceMapEnum.JSON_VERIFY,
+        ResourceMapEnum.JSON,
     ];
 
     static getResourceMapEnumByServerType(serverType: string): ResourceMapEnum {

@@ -1,14 +1,14 @@
-import {ReportSuite} from "../../../common/testerum-model/model/report/report-suite";
+import {ReportSuite} from "../../../common/testerum-model/report-model/model/report/report-suite";
 import {FsUtils} from "../../../common/util/FsUtils";
-import {ReportTest} from "../../../common/testerum-model/model/report/report-test";
-import {RunnerReportNode} from "../../../common/testerum-model/model/report/runner-report-node";
-import {ReportFeature} from "../../../common/testerum-model/model/report/report-feature";
+import {ReportTest} from "../../../common/testerum-model/report-model/model/report/report-test";
+import {RunnerReportNode} from "../../../common/testerum-model/report-model/model/report/runner-report-node";
+import {ReportFeature} from "../../../common/testerum-model/report-model/model/report/report-feature";
 import * as path from "path";
-import {ReportComposedStepDef} from "../../../common/testerum-model/model/step/def/report-composed-step-def";
-import {ReportBasicStepDef} from "../../../common/testerum-model/model/step/def/report-basic-step-def";
-import {ReportUndefinedStepDef} from "../../../common/testerum-model/model/step/def/report-undefined-step-def";
+import {ReportComposedStepDef} from "../../../common/testerum-model/report-model/model/step/def/report-composed-step-def";
+import {ReportBasicStepDef} from "../../../common/testerum-model/report-model/model/step/def/report-basic-step-def";
+import {ReportUndefinedStepDef} from "../../../common/testerum-model/report-model/model/step/def/report-undefined-step-def";
 import {Templates} from "./templates/Templates";
-import {ExecutionStatus} from "../../../common/testerum-model/model/report/execution-status";
+import {ExecutionStatus} from "../../../common/testerum-model/report-model/model/report/execution-status";
 import {RunnerPropertiesParser} from "../../../common/util/RunnerPropertiesParser";
 
 class Application {

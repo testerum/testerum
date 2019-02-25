@@ -1,1 +1,21 @@
-<H1>PAGE NOT FOUND</H1>
+
+<div class="my-page-not-found">
+    <div class="content">
+        <h1 class="title">OOPS! PAGE NOT FOUND</h1>
+
+        <div class="error-code">404</div>
+
+        <div class="suggestions">
+            <div class="suggestions-title">Suggestions:</div>
+            <div class="suggestions-message" *ngIf="projectName">
+                The project <b>{{projectName}}</b> was never opened by your Testerum instance. Please first open this project and then retry this URL.
+            </div>
+            <div class="suggestions-message" *ngIf="!projectName">Testerum doesn't know about this page. Maybe it no longer exists or its name was changed.</div>
+        </div>
+
+
+        <div class="return-to-home">
+            <button type="button" class="btn btn-default" (click)="onReturnToHome()">Return to homepage</button>
+        </div>
+    </div>
+</div>

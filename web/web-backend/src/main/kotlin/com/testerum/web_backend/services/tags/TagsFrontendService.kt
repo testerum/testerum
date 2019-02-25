@@ -1,14 +1,10 @@
 package com.testerum.web_backend.services.tags
 
-import com.testerum.file_service.caches.resolved.FeaturesCache
-import com.testerum.file_service.caches.resolved.StepsCache
-import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
+import com.testerum.web_backend.services.project.WebProjectManager
 
-class TagsFrontendService(private val featuresCache: FeaturesCache,
-                          private val testsCache: TestsCache,
-                          private val stepsCache: StepsCache) {
+class TagsFrontendService(private val webProjectManager: WebProjectManager) {
 
     fun getAllTags(): List<String> {
         val result = mutableListOf<String>().apply {
@@ -24,14 +20,14 @@ class TagsFrontendService(private val featuresCache: FeaturesCache,
     }
 
     fun getManualTestsTags(): List<String> {
-        return testsCache.getAllTests()
+        return webProjectManager.getProjectServices().getTestsCache().getAllTests()
                 .filter { it.properties.isManual }
                 .flatMap { it.tags }
     }
 
-    private fun getFeatureTags(): List<String> = featuresCache.getAllFeatures().flatMap { it.tags }
-    private fun getTestTags(): List<String> = testsCache.getAllTests().flatMap { it.tags }
-    private fun getStepTags(): List<String> = stepsCache.getAllSteps().flatMap {
+    private fun getFeatureTags(): List<String> = webProjectManager.getProjectServices().getFeatureCache().getAllFeatures().flatMap { it.tags }
+    private fun getTestTags(): List<String> = webProjectManager.getProjectServices().getTestsCache().getAllTests().flatMap { it.tags }
+    private fun getStepTags(): List<String> = webProjectManager.getProjectServices().getStepsCache().getAllSteps().flatMap {
         when (it) {
             is BasicStepDef    -> it.tags
             is ComposedStepDef -> it.tags

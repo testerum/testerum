@@ -1,10 +1,8 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
-import {JsonTreeNodeEventModel} from "../../../../../generic/components/json-tree/event/selected-json-tree-node-event.model";
-import {JsonTreeService} from "../../../../../generic/components/json-tree/json-tree.service";
 import {StepTreeNodeModel} from "../../model/step-tree-node.model";
 import {UrlService} from "../../../../../service/url.service";
-import {Subscription} from "rxjs";
+import {StepsTreeService} from "../../steps-tree.service";
 
 @Component({
     moduleId: module.id,
@@ -16,8 +14,11 @@ export class JsonStepNodeComponent {
 
     @Input() model:StepTreeNodeModel;
 
+    hasMouseOver: boolean = false;
+
     constructor(private router: Router,
-                private urlService: UrlService) {
+                private urlService: UrlService,
+                private stepsTreeService: StepsTreeService) {
     }
 
     setSelected() {
@@ -26,5 +27,15 @@ export class JsonStepNodeComponent {
         } else {
             this.urlService.navigateToBasicStep(this.model.path)
         }
+    }
+
+    onCutStepDef() {
+        this.setSelected();
+        this.stepsTreeService.setPathToCut(this.model.path, this.model.isComposedStep);
+    }
+
+    onCopyStepDef() {
+        this.setSelected();
+        this.stepsTreeService.setPathToCopy(this.model.path, this.model.isComposedStep);
     }
 }

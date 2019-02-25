@@ -1,0 +1,51 @@
+.file-dir-chooser-modal {
+    &.modal {
+        .modal-dialog {
+            max-height: calc(100% - 60px);
+            height: 100%;
+            overflow-x: hidden;
+            /* margin: 0px; */
+            padding: 0;
+
+            .modal-content {
+                height: 100%;
+                overflow: hidden;
+
+                .modal-body {
+                    position: relative;
+                    max-height: calc(100% - 120px);
+                    height: 100%;
+                    overflow-x: hidden;
+                    padding: 0;
+
+                    .file-chooser {
+                        overflow: auto;
+                    }
+                }
+
+                .modal-footer {
+                    padding-top: 5px;
+                    border-top: 1px solid #e5e5e5;
+                    display: flex;
+                    justify-content: flex-end;
+                    flex-flow: column;
+
+                    .selected-path-container {
+                        text-align: left;
+                        margin-bottom: 5px;
+
+                        .selected-path-label {
+                            font-weight: bold;
+                            margin-right: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+

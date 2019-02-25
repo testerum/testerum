@@ -1,6 +1,5 @@
 package com.testerum.web_backend.services.manual
 
-import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.file_service.caches.resolved.resolvers.TestResolver
 import com.testerum.file_service.file.ManualTestFileService
 import com.testerum.file_service.file.ManualTestPlanFileService
@@ -15,15 +14,14 @@ import com.testerum.model.manual.status_tree.ManualTestsStatusTreeRoot
 import com.testerum.model.manual.status_tree.builder.ManualTestsTreeBuilder
 import com.testerum.model.manual.status_tree.filter.ManualTreeStatusFilter
 import com.testerum.test_file_format.manual_test_plan.FileManualTestPlan
-import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.manual.filterer.ManualTestsTreeFilterer
+import com.testerum.web_backend.services.project.WebProjectManager
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 import java.nio.file.Path as JavaPath
 
-class ManualTestPlansFrontendService(private val testsCache: TestsCache,
+class ManualTestPlansFrontendService(private val webProjectManager: WebProjectManager,
                                      private val automatedToManualTestMapper: AutomatedToManualTestMapper,
-                                     private val frontendDirs: FrontendDirs,
                                      private val manualTestPlanFileService: ManualTestPlanFileService,
                                      private val manualTestFileService: ManualTestFileService,
                                      private val testResolver: TestResolver) {
@@ -32,8 +30,12 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
         private val LOG = LoggerFactory.getLogger(ManualTestPlansFrontendService::class.java)
     }
 
+    private fun getManualTestsDir() = webProjectManager.getProjectServices().dirs().getManualTestsDir()
+
+    private fun getResourcesDir() = webProjectManager.getProjectServices().dirs().getResourcesDir()
+
     fun savePlan(plan: ManualTestPlan): ManualTestPlan {
-        val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
+        val manualTestsDir = getManualTestsDir()
 
         val planToSave: ManualTestPlan
 
@@ -67,7 +69,7 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
         val pathsToSave = planToSave.manualTreeTests.map { it.path }
 
         for (pathToSave in pathsToSave) {
-            val test = testsCache.getTestAtPath(pathToSave)
+            val test = webProjectManager.getProjectServices().getTestsCache().getTestAtPath(pathToSave)
 
             if (test == null) {
                 LOG.warn("path [$pathToSave] will not be part of the new test plan, because there is no test at that path")
@@ -87,8 +89,8 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
     }
 
     fun getPlans(): ManualTestPlans {
-        val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
-        val resourcesDir = frontendDirs.getRequiredResourcesDir()
+        val manualTestsDir = getManualTestsDir()
+        val resourcesDir = getResourcesDir()
 
         val plans = manualTestPlanFileService.getPlans(manualTestsDir)
 
@@ -102,8 +104,8 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
     }
 
     fun getPlanAtPath(planPath: Path): ManualTestPlan? {
-        val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
-        val resourcesDir = frontendDirs.getRequiredResourcesDir()
+        val manualTestsDir = getManualTestsDir()
+        val resourcesDir = getResourcesDir()
 
         val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
                 ?: return null
@@ -115,7 +117,7 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
                               manualTestsDir: JavaPath,
                               resourcesDir: JavaPath): ManualTestPlan {
         val tests = manualTestFileService.getTestsAtPlanPath(plan.path, manualTestsDir)
-        val resolvedTests = tests.map { testResolver.resolveManualStepDefs(it, resourcesDir) }
+        val resolvedTests = tests.map { testResolver.resolveManualStepDefs({webProjectManager.getProjectServices().getStepsCache()}, it, resourcesDir) }
         val testsWithFinalizedFlag = resolvedTests.map { it.copy(isFinalized = plan.isFinalized) }
 
         val manualTreeTests = testsWithFinalizedFlag.map {
@@ -142,21 +144,21 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
     }
 
     fun deletePlanAtPath(planPath: Path) {
-        val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
+        val manualTestsDir = getManualTestsDir()
 
         manualTestPlanFileService.deleteAtPath(planPath, manualTestsDir)
     }
 
     fun getTestsTreeAtPlanPath(planPath: Path,
                                filter: ManualTreeStatusFilter): ManualTestsStatusTreeRoot {
-        val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
-        val resourcesDir = frontendDirs.getRequiredResourcesDir()
+        val manualTestsDir = getManualTestsDir()
+        val resourcesDir = getResourcesDir()
 
         val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
                 ?: return ManualTestsStatusTreeRoot.EMPTY
 
         val tests = manualTestFileService.getTestsAtPlanPath(plan.path, manualTestsDir)
-        val resolvedTests = tests.map { testResolver.resolveManualStepDefs(it, resourcesDir) }
+        val resolvedTests = tests.map { testResolver.resolveManualStepDefs({webProjectManager.getProjectServices().getStepsCache()}, it, resourcesDir) }
         val testsWithFinalizedFlag = resolvedTests.map { it.copy(isFinalized = plan.isFinalized) }
 
         val treeBuilder = ManualTestsTreeBuilder(testPlanName = plan.name)
@@ -172,12 +174,12 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
 
     fun getTestAtPath(planPath: Path,
                       testPath: Path): ManualTest? {
-        val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
-        val resourcesDir = frontendDirs.getRequiredResourcesDir()
+        val manualTestsDir = getManualTestsDir()
+        val resourcesDir = getResourcesDir()
 
         val test: ManualTest = manualTestFileService.getTestAtPath(planPath, testPath, manualTestsDir)
                 ?: return null
-        val resolvedTest = testResolver.resolveManualStepDefs(test, resourcesDir)
+        val resolvedTest = testResolver.resolveManualStepDefs({webProjectManager.getProjectServices().getStepsCache()}, test, resourcesDir)
 
         val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
         val isFinalized = plan?.isFinalized ?: FileManualTestPlan.IS_FINALIZED_DEFAULT
@@ -186,10 +188,13 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
     }
 
     fun finalizePlan(planPath: Path): ManualTestPlan {
-        val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
+        val manualTestsDir = getManualTestsDir()
 
         val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
-                ?: throw ValidationException("The test plan at path [$planPath] does not exist")
+                ?: throw ValidationException(
+                        globalMessage = "The test plan at path [$planPath] does not exist",
+                        globalHtmlMessage = "The test plan at path<br/><code>$planPath</code><br/>does not exist"
+                )
 
         val finalizedPlan = plan.copy(
                 isFinalized = true,
@@ -202,10 +207,13 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
     }
 
     fun makePlanActive(planPath: Path): ManualTestPlan {
-        val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
+        val manualTestsDir = getManualTestsDir()
 
         val plan = manualTestPlanFileService.getPlanAtPath(planPath, manualTestsDir)
-                ?: throw ValidationException("The test plan at path [$planPath] does not exist")
+                ?: throw ValidationException(
+                        globalMessage = "The test plan at path [$planPath] does not exist",
+                        globalHtmlMessage = "The test plan at path<br/><code>$planPath</code><br/>does not exist"
+                )
 
         val activePlan = plan.copy(
                 isFinalized = false,
@@ -218,7 +226,7 @@ class ManualTestPlansFrontendService(private val testsCache: TestsCache,
     }
 
     fun updateTest(planPath: Path, test: ManualTest): ManualTest {
-        val manualTestsDir = frontendDirs.getRequiredManualTestsDir()
+        val manualTestsDir = getManualTestsDir()
 
         return manualTestFileService.save(test, planPath, manualTestsDir)
     }

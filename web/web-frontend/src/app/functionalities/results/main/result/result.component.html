@@ -1,4 +1,4 @@
 <div class="result">
-    <iframe [src]="url | safeUrl"></iframe>
+    <iframe *ngIf="url" [src]="url | safeUrl"></iframe>
 </div>
 

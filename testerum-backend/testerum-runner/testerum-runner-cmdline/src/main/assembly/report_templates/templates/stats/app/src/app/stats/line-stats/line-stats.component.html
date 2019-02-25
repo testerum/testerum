@@ -1,0 +1,21 @@
+<div class="my-tests-stats">
+    <div class="header">
+
+        <div class="title">{{title}}</div>
+
+        <div class="button-panel btn-group my-button-panel">
+            <div title="{{fullWidth?'Minimize': 'Maximize'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 (click)="onMaxMinClick();$event.stopPropagation();">
+                <i class="fas"
+                [class.fa-expand-arrows-alt]="!fullWidth"
+                [class.fa-compress-arrows-alt]="fullWidth"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        <p-chart *ngIf="!shouldDisplayBarGrid()" type="line" [data]="data" [options]="lineChatOptions"></p-chart>
+        <p-chart *ngIf="shouldDisplayBarGrid()" type="bar" [data]="data" [options]="barChatOptions"></p-chart>
+    </div>
+</div>

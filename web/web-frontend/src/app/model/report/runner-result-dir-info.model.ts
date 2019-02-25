@@ -9,13 +9,16 @@ export class RunnerResultDirInfo implements Serializable<RunnerResultDirInfo> {
     deserialize(input: Object): RunnerResultDirInfo {
         this.directoryName = input["directoryName"];
 
+        const runnerResultFilesInfo = [];
         for (let runnerResultFileInfo of input["runnerResultFilesInfo"] || []) {
-            this.runnerResultFilesInfo.push(new RunnerResultFileInfo().deserialize(runnerResultFileInfo));
+            runnerResultFilesInfo.push(new RunnerResultFileInfo().deserialize(runnerResultFileInfo));
         }
+        this.runnerResultFilesInfo = runnerResultFilesInfo;
+
         return this;
     }
 
     serialize(): string {
-        return null;
+        throw Error("serialize is not implemented")
     }
 }

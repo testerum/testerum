@@ -7,12 +7,14 @@ object FileArgPartSerializer : BaseSerializer<FileArgPart>() {
 
     override fun serialize(source: FileArgPart, destination: Writer, indentLevel: Int) {
         when (source) {
-            is FileTextArgPart -> destination.write(source.text)
+            is FileTextArgPart -> destination.write(
+                    source.text
+                            .replace("{{", "\\{{")
+            )
             is FileExpressionArgPart -> {
                 destination.write("{{")
                 destination.write(
                         source.text
-                              .replace("\\", "\\\\")
                               .replace("}}", "\\}}")
                 )
                 destination.write("}}")

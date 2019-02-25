@@ -1,23 +1,23 @@
 <div class="main-container">
     <!-- BASIC STEPS -->
-    <split direction="vertical">
-        <split-area [size]="50">
-            <split direction="horizontal">
-                <split-area [size]="20">
+    <as-split direction="vertical">
+        <as-split-area [size]="50">
+            <as-split direction="horizontal">
+                <as-split-area [size]="33">
                     <features-tree-filter [treeModel]="featuresTreeService.treeModel"></features-tree-filter>
 
                     <features-tree></features-tree>
 
-                </split-area>
-                <split-area [size]="80">
+                </as-split-area>
+                <as-split-area [size]="67">
 
                     <router-outlet></router-outlet>
 
-                </split-area>
-            </split>
-        </split-area>
-        <split-area [size]="50" [visible]="isTestRunnerVisible()">
-            <tests-runner #runner ></tests-runner>
-        </split-area>
-    </split>
+                </as-split-area>
+            </as-split>
+        </as-split-area>
+        <as-split-area [size]="50" *ngIf="isTestRunnerVisible()">
+            <tests-runner></tests-runner>
+        </as-split-area>
+    </as-split>
 </div>

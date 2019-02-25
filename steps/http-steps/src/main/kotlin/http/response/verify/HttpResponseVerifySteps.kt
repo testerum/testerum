@@ -7,13 +7,12 @@ import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
 import com.testerum.common.json_diff.impl.node_comparer.JsonCompareResult
+import com.testerum.common_json.util.prettyPrintJson
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.HttpResponseHeader
 import com.testerum.model.resources.http.response.ValidHttpResponse
 import http.response.verify.model.HttpBodyVerifyMatchingType
-import http.response.verify.model.HttpBodyVerifyMatchingType.EXACT_MATCH
-import http.response.verify.model.HttpBodyVerifyMatchingType.IS_EMPTY
-import http.response.verify.model.HttpBodyVerifyMatchingType.JSON_VERIFY
+import http.response.verify.model.HttpBodyVerifyMatchingType.*
 import http.response.verify.model.HttpResponseHeaderVerify
 import http.response.verify.model.HttpResponseVerify
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode
@@ -32,7 +31,7 @@ class HttpResponseVerifySteps {
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
 
     @Then(
-            value = "I expect <<httpResponseVerify>> HTTP Response",
+            value = "the HTTP response should be <<httpResponseVerify>>",
             description = "Checks if the response from the previous HTTP request is according to the given criteria."
     )
     fun verifyHttpResponse(
@@ -45,7 +44,7 @@ class HttpResponseVerifySteps {
         val httpRequest: HttpRequest = variables["httpRequest"] as HttpRequest
         val httpResponse: ValidHttpResponse = variables["httpResponse"] as ValidHttpResponse
 
-        LOG.debug("Verifying HTTP Response [\n$httpResponse\n]")
+        LOG.debug("Verifying HTTP Response\n$httpResponse\n")
 
         verifyExpectedCode(httpResponseVerify, httpResponse, httpRequest)
         verifyExpectedHeaders(httpResponseVerify, httpResponse, httpRequest)
@@ -80,11 +79,25 @@ class HttpResponseVerifySteps {
         if (compareResult is DifferentJsonCompareResult) {
             LOG.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
 
+            val prettyExpectedBody = expectedBody.prettyPrintJson()
+                    .lines()
+                    .joinToString(separator = "\n") {
+                        "\t\t$it"
+                    }
+            val prettyActualBody = actualBody.prettyPrintJson()
+                    .lines()
+                    .joinToString(separator = "\n") {
+                        "\t\t$it"
+                    }
+
             throw AssertionError(
-                    "Expected Response Body to match [$expectedBody] but [$actualBody] found. \n" +
-                            "\t Matching message: [${compareResult.message}] \n" +
-                            "\t Not matching element path: [${compareResult.jsonPath}] \n" +
-                            "\t Comparison Mode: [$compareMode] \n" +
+                    "Expected Response Body to match\n" +
+                            "$prettyExpectedBody\n" +
+                            "\tbut found\n" +
+                            "$prettyActualBody\n" +
+                            "\tMatching message: [${compareResult.message}] \n" +
+                            "\tNot matching element path: [${compareResult.jsonPath}] \n" +
+                            "\tComparison Mode: [$compareMode] \n" +
                             getContextInfoForLogging(httpRequest, httpResponse)
             )
         }
@@ -137,8 +150,21 @@ class HttpResponseVerifySteps {
             compareMode: HttpBodyVerifyMatchingType,
             contextInfo: String) {
 
+        val prettyExpectedBody = expectedBody.orEmpty()
+                .lines()
+                .joinToString(separator = "\n") {
+                    "\t\t$it"
+                }
+        val prettyActualBody = actualBody.orEmpty()
+                .lines()
+                .joinToString(separator = "\n") {
+                    "\t\t$it"
+                }
         throw AssertionError(
-                "Expected Response Body [$expectedBody] but [$actualBody] found. \n" +
+                "Expected Response Body\n" +
+                        "$prettyExpectedBody\n" +
+                        "\tbut found\n" +
+                        "$prettyActualBody\n" +
                         "\tComparison Mode: [$compareMode]\n" +
                         contextInfo
         )
@@ -301,7 +327,7 @@ class HttpResponseVerifySteps {
 
     private fun getContextInfoForLogging(httpRequest: HttpRequest, httpResponse: ValidHttpResponse): String {
         var response =
-                "\t Http Request: [\n" +
+                "\t Http Request: \n" +
                         "\t \t ${httpRequest.method} ${httpRequest.url} HTTP/1.1 \n"
 
         for (header in httpRequest.headers) {
@@ -312,13 +338,11 @@ class HttpResponseVerifySteps {
             response +=
                     "\n" +
                     "\t \t ${httpRequest.body!!.content} \n"
-        response +=
-                "\t ]\n" +
-                "\n"
+        response +="\n"
 
 
         response +=
-                "\t Http Response: [\n" +
+                "\t Http Response: \n" +
                 "\t \t HTTP/1.1 ${httpResponse.statusCode} \n"
 
         for (header in httpResponse.headers) {
@@ -329,8 +353,6 @@ class HttpResponseVerifySteps {
         response +=
                 "\n"
         "\t \t ${String(httpResponse.body)} \n"
-        response +=
-                "\t ]"
 
         return response
     }
@@ -355,4 +377,5 @@ class HttpResponseVerifySteps {
 
         return compareMode
     }
+
 }

@@ -2,6 +2,7 @@ package com.testerum.runner_cmdline.runner_tree.nodes.step.impl
 
 import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.common_kotlin.indent
+import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
@@ -30,6 +31,13 @@ class RunnerComposedStep(stepCall: StepCall,
     }
 
     override fun doRun(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
+        if (steps.isEmpty()) {
+            val executionStatus = ExecutionStatus.UNDEFINED
+            context.logMessage("marking composed step [${(stepCall.stepDef as ComposedStepDef).path}] as $executionStatus because it doesn't have any child steps")
+
+            return executionStatus
+        }
+
         var executionStatus: ExecutionStatus = ExecutionStatus.PASSED
 
         val subVars = vars.forStep(stepCall)

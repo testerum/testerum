@@ -10,6 +10,7 @@
         <module>common</module>
         <module>model</module>
         <module>file-service</module>
+        <module>project-manager</module>
         <module>cloud-client</module>
         <module>test-file-format</module>
         <module>testerum-backend</module>
@@ -51,9 +52,9 @@
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
         <!-- Kotlin settings -->
-        <kotlin.version>1.2.70</kotlin.version>
-        <kotlin.apiVersion>1.2</kotlin.apiVersion>
-        <kotlin.languageVersion>1.2</kotlin.languageVersion>
+        <kotlin.version>1.3.21</kotlin.version>
+        <kotlin.apiVersion>1.3</kotlin.apiVersion>
+        <kotlin.languageVersion>1.3</kotlin.languageVersion>
         <kotlin.jvmTarget>${maven.compiler.target}</kotlin.jvmTarget>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 
@@ -168,7 +169,19 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
+                <artifactId>common-stats</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
                 <artifactId>settings</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>project-manager</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -613,6 +626,25 @@
                 <version>1.60</version>
             </dependency>
 
+            <!-- JavaFaker - lib to generate fake data -->
+            <dependency>
+                <groupId>com.github.javafaker</groupId>
+                <artifactId>javafaker</artifactId>
+                <version>0.16</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.yaml</groupId>
+                        <artifactId>snakeyaml</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- generex - library to generate strings based on a regex expresion-->
+            <dependency>
+                <groupId>com.github.mifmif</groupId>
+                <artifactId>generex</artifactId>
+                <version>1.0.2</version>
+            </dependency>
 
             <!--==================== Apache Commons ====================-->
             <dependency>
@@ -709,7 +741,7 @@
             <dependency>
                 <groupId>org.javadelight</groupId>
                 <artifactId>delight-nashorn-sandbox</artifactId>
-                <version>0.1.16</version>
+                <version>0.1.19</version>
             </dependency>
 
             <!--==================== ZERO TURN AROUND ====================-->

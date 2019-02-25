@@ -1,0 +1,124 @@
+@import "../../../resources/css/testerum-variables.scss";
+
+.my_home-page {
+    max-width: 1200px;
+    margin: auto;
+
+    .header {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+
+            .logo-version-container {
+                display: block;
+                margin: auto;
+
+                .logo {
+                    font-size: 3rem;
+                    width: 13.5em;
+                    align-self: center;
+                }
+
+                .version {
+                    margin-top: -2em;
+                    margin-right: 5.4em;
+                    text-align: right;
+                }
+            }
+
+            .quote {
+                align-self: center;
+                margin-top: 0.5em;
+                margin-bottom: 2em;
+                font-size: 1.5em;
+                text-align: center;
+                width: 35em;
+
+                .quote-sign {
+                    display: inline-block;
+                    font-size: 1.2em;
+                    font-weight: bold;
+                }
+
+                .author {
+                    text-align: right;
+                    font-style: italic;
+                    font-size: 0.8em;
+                    color: #b1b1b1;
+                }
+            }
+        }
+    }
+
+    .body {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        div {
+            max-width: 450px;
+        }
+
+        .recent-project-panel {
+            width: 45%;
+            margin-right: 1em;
+
+            .recent-projects {
+                .recent-project {
+                    position: relative;
+
+                    &:hover .my-project-button-panel {
+                        display: block;
+                    }
+
+                    .project-name {
+                        font-size: 1.5em;
+                    }
+
+                    .project-path {
+                        color: #9d9d9d;
+                    }
+
+                    .my-project-button-panel {
+                        position: absolute;
+                        top: .4em;
+                        right: .4em;
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        .quick-start-panel {
+            width: 45%;
+            margin-left: 1em;
+
+            .quick-start {
+                font-size: 1.5em;
+            }
+        }
+
+        .panel-body {
+            max-height: 30em;
+            overflow: auto;
+            padding: 1em 0;
+
+            ul {
+                list-style: none;
+
+                li {
+                    padding: 0.5em 1em;
+                    cursor: pointer;
+                }
+
+                :hover {
+                    background-color: $hover-color;
+                }
+            }
+        }
+    }
+}

@@ -1,8 +1,6 @@
 package com.testerum.web_backend.services.features
 
 import com.testerum.common_jdk.resizeImage
-import com.testerum.file_service.caches.resolved.FeaturesCache
-import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.file_service.file.FeatureFileService
 import com.testerum.model.feature.Feature
 import com.testerum.model.feature.filter.FeaturesTreeFilter
@@ -12,30 +10,26 @@ import com.testerum.model.file.Attachment
 import com.testerum.model.file.FileToUpload
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.test.TestModel
-import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.features.filterer.FeaturesTreeFilterer
-import com.testerum.web_backend.services.initializers.caches.impl.FeaturesCacheInitializer
+import com.testerum.web_backend.services.project.WebProjectManager
 import org.apache.commons.io.IOUtils
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletResponse
 import java.nio.file.Path as JavaPath
 
-class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
-                              private val featuresCache: FeaturesCache,
-                              private val testsCache: TestsCache,
-                              private val featureFileService: FeatureFileService,
-                              private val featuresCacheInitializer: FeaturesCacheInitializer) {
+class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
+                              private val featureFileService: FeatureFileService) {
 
     companion object {
-        private val ATTACHMENT_THUMBNAIL_WIDTH = 200
-        private val ATTACHMENT_THUMBNAIL_HEIGHT = 150
+        private const val ATTACHMENT_THUMBNAIL_WIDTH = 200
+        private const val ATTACHMENT_THUMBNAIL_HEIGHT = 150
     }
 
     /**
      * @return all the features known to the system, without attachments.
      */
     fun getAllFeatures(): Collection<Feature> {
-        return featuresCache.getAllFeatures()
+        return webProjectManager.getProjectServices().getFeatureCache().getAllFeatures()
                 .sortedBy { it.path.toString() }
     }
 
@@ -43,7 +37,9 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
      * @return the features tree, containing features and test information, filtered with the given filter
      */
     fun getFeaturesTree(filter: FeaturesTreeFilter): RootFeatureNode {
-        val rootNodeBuilder = FeatureTreeBuilder()
+        val rootNodeBuilder = FeatureTreeBuilder(
+                rootLabel = webProjectManager.getProjectServices().project.name
+        )
 
         // features
         val features: Collection<Feature> = getAllFeatures()
@@ -53,7 +49,7 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
         }
 
         // tests
-        val tests: Collection<TestModel> = testsCache.getAllTests()
+        val tests: Collection<TestModel> = webProjectManager.getProjectServices().getTestsCache().getAllTests()
         val filteredTests: List<TestModel> = FeaturesTreeFilterer.filterTests(tests, filter)
         filteredTests.forEach {
             rootNodeBuilder.addTest(it)
@@ -69,9 +65,9 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
      * @return the feature at the given path, including attachments.
      */
     fun getFeatureAtPath(path: Path): Feature? {
-        val featuresDir = frontendDirs.getRequiredFeaturesDir()
+        val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
 
-        val feature = featuresCache.getFeatureAtPath(path)
+        val feature = webProjectManager.getProjectServices().getFeatureCache().getFeatureAtPath(path)
                 ?: featureFileService.createVirtualFeature(path)
 
         val attachments = featureFileService.getAttachmentsAtPath(path, featuresDir)
@@ -104,22 +100,22 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
     }
 
     private fun saveFeature(feature: Feature): Feature {
-        val featuresDir = frontendDirs.getRequiredFeaturesDir()
+        val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
 
-        val savedFeature = featuresCache.save(feature, featuresDir)
+        val savedFeature = webProjectManager.getProjectServices().getFeatureCache().save(feature, featuresDir)
 
         // if the feature was renamed, notify tests cache
         val oldPath = feature.oldPath
         val newPath = savedFeature.path
         if (oldPath != null && newPath != oldPath) {
-            testsCache.directoryWasRenamed(oldPath, newPath)
+            webProjectManager.getProjectServices().getTestsCache().directoryWasRenamed(oldPath, newPath)
         }
 
         return savedFeature
     }
 
     private fun deleteFeatureAttachments(attachmentsPathsToDelete: List<Path>) {
-        val featuresDir = frontendDirs.getRequiredFeaturesDir()
+        val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
 
         for (path in attachmentsPathsToDelete) {
             featureFileService.deleteAttachment(path, featuresDir)
@@ -127,7 +123,7 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
     }
 
     private fun uploadFeatureAttachments(featurePath: Path, filesToUpload: List<FileToUpload>) {
-        val featuresDir = frontendDirs.getRequiredFeaturesDir()
+        val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
 
         for (fileToUpload in filesToUpload) {
             featureFileService.uploadAttachment(featurePath, fileToUpload, featuresDir)
@@ -143,17 +139,17 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
      * - the feature's sub-features and tests, recursively
      */
     fun delete(path: Path) {
-        val featuresDir = frontendDirs.getRequiredFeaturesDir()
+        val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
 
-        featuresCache.deleteFeatureAndAttachments(path, featuresDir)
-        testsCache.featureWasDeleted()
+        webProjectManager.getProjectServices().getFeatureCache().deleteFeatureAndAttachments(path, featuresDir)
+        webProjectManager.getProjectServices().getTestsCache().featureWasDeleted()
     }
 
 
     fun writeAttachmentFileContentToResponse(attachmentFilePath: Path,
                                              thumbnail: Boolean,
                                              response: HttpServletResponse) {
-        val featuresDir = frontendDirs.getRequiredFeaturesDir()
+        val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
 
         val attachment = featureFileService.getAttachmentAtPath(attachmentFilePath, featuresDir)
                 ?: return
@@ -210,14 +206,18 @@ class FeaturesFrontendService(private val frontendDirs: FrontendDirs,
     }
 
     fun copyFeatureOrTest(sourcePath: Path, destinationPath: Path): Path {
-        val resultPath = testsCache.copyFeatureOrFile(sourcePath, destinationPath)
-        featuresCacheInitializer.initialize()
+        val resultPath = webProjectManager.getProjectServices().getTestsCache()
+                .copyFeatureOrFile(sourcePath, destinationPath)
+        webProjectManager.getProjectServices().reinitializeFeatureCache()
+
         return resultPath
     }
 
     fun moveFeatureOrTest(sourcePath: Path, destinationPath: Path): Path {
-        val moveFeatureOrFile = testsCache.moveFeatureOrFile(sourcePath, destinationPath)
-        featuresCacheInitializer.initialize()
+        val moveFeatureOrFile = webProjectManager.getProjectServices().getTestsCache()
+                .moveFeatureOrFile(sourcePath, destinationPath)
+        webProjectManager.getProjectServices().reinitializeFeatureCache()
+
         return moveFeatureOrFile
     }
 }

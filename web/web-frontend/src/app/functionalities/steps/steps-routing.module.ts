@@ -1,21 +1,21 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import {Routes, RouterModule} from "@angular/router";
+import {RouterModule, Routes} from "@angular/router";
 import {StepsComponent} from "./steps.component";
-import {TestResolver} from "../features/test-editor/test.resolver";
 import {ComposedStepEditorComponent} from "./composed-step-editor/composed-step-editor.component";
 import {ComposedStepEditorResolver} from "./composed-step-editor/composed-step-editor.resolver";
-import {SetupGuard} from "../../service/guards/setup.guard";
+import {LicenseGuard} from "../../service/guards/license.guard";
 import {BasicStepEditorComponent} from "./basic-step-editor/basic-step-editor.component";
 import {BasicStepEditorResolver} from "./basic-step-editor/basic-step-editor.resolver";
-import {CanDeactivateGuard} from "../../service/guards/CanDeactivateGuard";
+import {UnsavedChangesGuard} from "../../service/guards/unsaved-changes.guard";
+import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
 const stepsRoutes: Routes = [
     {
-        path:"steps", component:StepsComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
+        path:":project/steps", component:StepsComponent, canActivate: [LicenseGuard, CurrentProjectGuard], canActivateChild: [LicenseGuard],
         children: [
             {
-                path: 'composed', component: ComposedStepEditorComponent, resolve: {composedStepDef: ComposedStepEditorResolver}, canDeactivate: [CanDeactivateGuard]
+                path: 'composed', component: ComposedStepEditorComponent, resolve: {composedStepDef: ComposedStepEditorResolver}, canDeactivate: [UnsavedChangesGuard]
             },
             {
                 path: 'composed/:action', component: ComposedStepEditorComponent, resolve: {composedStepDef: ComposedStepEditorResolver}

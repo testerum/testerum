@@ -1,0 +1,50 @@
+@import "../../../../../../../../resources/css/testerum-variables.scss";
+
+.is-project-dir {
+    font-weight: bold;
+}
+
+.flip {
+    -moz-transform: scale(1, -1);
+    -webkit-transform: scale(1, -1);
+    -o-transform: scale(1, -1);
+    -ms-transform: scale(1, -1);
+    transform: scale(1, -1);
+}
+
+.tree-node-selected {
+    background-color: whitesmoke;
+}
+
+.fa-stack {
+    display: inline-block;
+    height: 15px;
+    line-height: 15px;
+    position: relative;
+    vertical-align: middle;
+    width: 15px;
+}
+
+.fa-stack-1x {
+     line-height: inherit;
+     font-size: 9px;
+     color: #ff6161 !important;
+ }
+
+
+.testerum-icon {
+
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    color: $testerum-color;
+    left: -3px;
+    top: -1px;
+
+    .fa-angle-double-left {
+    }
+    .fa-angle-double-right {
+        position: absolute;
+        left: 7px;
+    }
+}

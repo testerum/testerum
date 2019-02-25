@@ -2,7 +2,7 @@ import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs';
 import {Path} from "../model/infrastructure/path/path.model";
-import {FileDirectoryChooserContainerModel} from "../generic/components/form/file_dir_chooser/model/file-directory-chooser-container.model";
+import {FileDirTreeContainerModel} from "../generic/components/form/file_dir_chooser/file-dir-tree/model/file-dir-tree-container.model";
 import {FileSystemDirectory} from "../model/file/file-system-directory.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {CreateFileSystemDirectoryRequest} from "../model/file/create-file-system-directory-request.model";
@@ -15,28 +15,29 @@ export class FileSystemService {
     constructor(private http: HttpClient) {
     }
 
-    getDirectoryTree(absoluteJavaPathAsString: string): Observable<FileDirectoryChooserContainerModel> {
+    getDirectoryTree(absoluteJavaPathAsString: string): Observable<FileDirTreeContainerModel> {
         const httpOptions = {
             params: new HttpParams()
                 .append('path', absoluteJavaPathAsString)
         };
 
         return this.http
-            .get<FileDirectoryChooserContainerModel>(this.BASE_URL + "/directory_tree", httpOptions).pipe(
+            .get<FileDirTreeContainerModel>(this.BASE_URL + "/directory_tree", httpOptions).pipe(
             map(FileSystemService.extractFileDirectory));
     }
 
-    private static extractFileDirectory(res: FileDirectoryChooserContainerModel): FileDirectoryChooserContainerModel {
+    private static extractFileDirectory(res: FileDirTreeContainerModel): FileDirTreeContainerModel {
         let fileSystemDirectory = new FileSystemDirectory().deserialize(res);
 
         return FileSystemService.mapFileDirectoryToChooserModel(fileSystemDirectory, null);
     }
 
-    private static mapFileDirectoryToChooserModel(fileSystemDirectory: FileSystemDirectory, parent: FileDirectoryChooserContainerModel): FileDirectoryChooserContainerModel {
-        let result = new FileDirectoryChooserContainerModel(
+    private static mapFileDirectoryToChooserModel(fileSystemDirectory: FileSystemDirectory, parent: FileDirTreeContainerModel): FileDirTreeContainerModel {
+        let result = new FileDirTreeContainerModel(
             parent,
             fileSystemDirectory.name,
             fileSystemDirectory.absoluteJavaPath,
+            fileSystemDirectory.isProject,
             fileSystemDirectory.canCreateChild,
             fileSystemDirectory.hasChildrenDirectories
         );
@@ -46,13 +47,14 @@ export class FileSystemService {
         return result;
     }
 
-    private static mapChildrenFileDirectoryToChooserModel(childrenDirectoryToMap: Array<FileSystemDirectory>, parent: FileDirectoryChooserContainerModel) {
+    private static mapChildrenFileDirectoryToChooserModel(childrenDirectoryToMap: Array<FileSystemDirectory>, parent: FileDirTreeContainerModel) {
 
         for (let childDirectory of childrenDirectoryToMap) {
-            let fileDirectoryChooserContainerModel = new FileDirectoryChooserContainerModel(
+            let fileDirectoryChooserContainerModel = new FileDirTreeContainerModel(
                 parent,
                 childDirectory.name,
                 childDirectory.absoluteJavaPath,
+                childDirectory.isProject,
                 childDirectory.canCreateChild,
                 childDirectory.hasChildrenDirectories
             );

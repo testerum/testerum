@@ -17,4 +17,10 @@ class ResultsController(private val resultsFrontendService: ResultsFrontendServi
         return resultsFrontendService.getResults()
     }
 
+    @RequestMapping(method = [RequestMethod.GET], path = ["statistics-url"])
+    @ResponseBody
+    fun getStatisticsUrl(): String? {
+        return resultsFrontendService.getStatisticsUrl()
+    }
+
 }

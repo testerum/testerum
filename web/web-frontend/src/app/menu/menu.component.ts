@@ -2,6 +2,8 @@ import {Component, ViewChild} from "@angular/core";
 import {VariablesComponent} from "../functionalities/variables/variables.component";
 import {NavigationEnd, Router} from "@angular/router";
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {ContextService} from "../service/context.service";
+import {UrlService} from "../service/url.service";
 import {FeedbackModalService} from "../functionalities/user/feedback/feedback-modal.service";
 import {UserProfileModalService} from "../functionalities/user/user-profile/user-profile-modal.service";
 
@@ -27,11 +29,11 @@ import {UserProfileModalService} from "../functionalities/user/user-profile/user
 })
 export class MenuComponent {
 
-    @ViewChild(VariablesComponent) variablesComponent: VariablesComponent;
-
     shouldDisplay = false;
 
-    constructor(private router: Router,
+    constructor(private router:Router,
+                private contextService: ContextService,
+                public urlService: UrlService,
                 private userProfileModalService: UserProfileModalService,
                 private feedbackModalService: FeedbackModalService) {
         router.events.subscribe(event => {
@@ -39,10 +41,6 @@ export class MenuComponent {
             if (event instanceof NavigationEnd) {
                 switch(event.url) {
                     case "/license": {
-                        this.shouldDisplay = false;
-                        break;
-                    }
-                    case "/setup": {
                         this.shouldDisplay = false;
                         break;
                     }
@@ -65,8 +63,12 @@ export class MenuComponent {
         return false;
     }
 
-    showVariables() {
-        this.variablesComponent.show()
+    isProjectSelected(): boolean {
+        return this.contextService.isProjectSelected();
+    }
+
+    getProjectName(): string {
+        return this.contextService.getProjectName();
     }
 
     showFeedback() {

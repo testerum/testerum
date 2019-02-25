@@ -15,6 +15,10 @@ import {TagsService} from "../../../service/tags.service";
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
+import {ExceptionDetail} from "../../../model/test/event/fields/exception-detail.model";
+import {ContextService} from "../../../service/context.service";
+import {ProjectService} from "../../../service/project.service";
+import {Project} from "../../../model/home/project.model";
 
 @Component({
     moduleId: module.id,
@@ -31,6 +35,8 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     model: Feature = new Feature();
     fileAttachmentsAdded: File[] = [];
     attachmentsPathsToDelete: Path[] = [];
+
+    projectName: string;
 
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
@@ -54,13 +60,17 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
                 private featureService: FeatureService,
                 private featuresTreeService: FeaturesTreeService,
                 private tagsService: TagsService,
+                private contextService: ContextService,
+                private projectService: ProjectService,
                 private areYouSureModalService: AreYouSureModalService,
                 ) { super(); }
 
     ngOnInit(): void {
+        this.projectName = this.contextService.getProjectName();
+
         this.routeSubscription = this.route.data.subscribe(data => {
             this.model = data['featureModel'];
-            if (this.descriptionMarkdownEditor) {
+            if (this.descriptionMarkdownEditor && this.model.description) {
                 this.descriptionMarkdownEditor.setValue(this.model.description);
             }
 
@@ -101,7 +111,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
         }
     }
 
-    enableEditTestMode(): void {
+    enableEditMode(): void {
         this.setEditMode(true);
     }
 
@@ -157,6 +167,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
 
     private cancelActionAfterConfirmation(): void {
         if (this.isCreateAction) {
+            this.setEditMode(false); //this is required for CanDeactivate
             this.urlService.navigateToFeatures()
         } else {
             this.featureService.getFeature(this.model.path).subscribe(
@@ -185,7 +196,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
 
     private deleteActionAfterConfirmation(): void {
         this.featureService.delete(this.model.path).subscribe(result => {
-            this.isEditMode = false; // to not show CanDeactivateGuard
+            this.isEditMode = false; // to not show UnsavedChangesGuard
             this.featuresTreeService.initializeTestsTreeFromServer(this.model.path.getParentPath());
             this.urlService.navigateToFeature(this.model.path.getParentPath());
         });
@@ -198,6 +209,23 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
             this.model.path.directories.push(this.model.name);
         }
 
+        if (this.isRootFeature() && this.projectName != this.contextService.getProjectName()) {
+            let projectPath = this.contextService.getProjectPath();
+            let renameProject = new Project(this.projectName, projectPath);
+
+            this.projectService.renameProject(renameProject).subscribe(
+                (renameProject: Project) => {
+                    this.contextService.setCurrentProject(renameProject);
+                    this.saveFeature()
+                },
+                error => FormUtil.setErrorsToForm(this.form, error)
+            );
+        } else {
+            this.saveFeature()
+        }
+    }
+
+    private saveFeature() {
         this.featureService
             .save(this.model, this.fileAttachmentsAdded, this.attachmentsPathsToDelete)
             .subscribe(

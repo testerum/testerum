@@ -50,16 +50,14 @@
             <div class="my-value" *ngIf="!isEditMode()">
                 {{getModel().delay || ""}}
             </div>
-            <div class="my-value" *ngIf="isEditMode()">
+            <div class="my-value response-delay" *ngIf="isEditMode()">
                 <input isNumberValidator
                        #delay="ngModel" [(ngModel)]="getModel().delay"
                        type="text" class="form-control input-delay" name="delay">
-                <div *ngIf="delay.errors && (delay.dirty || delay.touched)"
-                     class="alert alert-danger">
-                    <div [hidden]="!delay.errors.isNumberValidator">
-                        This input requires a valid number
-                    </div>
-                </div>
+                <input-error [model]="delay"
+                             [errorMessages]="{
+                                isNumberValidator: 'This input requires a valid number'
+                             }"></input-error>
             </div>
         </div>
     </div>

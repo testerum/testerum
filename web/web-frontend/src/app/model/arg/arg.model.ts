@@ -21,6 +21,8 @@ export class Arg implements Serializable<Arg> {
     warnings: Array<Warning> = [];
     descendantsHaveWarnings: boolean = false;
 
+    paramName: string; //this param should not be serialized
+
     get hasOwnOrDescendantWarnings(): boolean {
         return this.warnings.length > 0 || this.descendantsHaveWarnings;
     }
@@ -61,15 +63,9 @@ export class Arg implements Serializable<Arg> {
             content = JsonUtil.stringify(content);
         }
 
-        let name = this.name;
-        let resourceMapEnumByServerType = ResourceMapEnum.getResourceMapEnumByServerType(this.serverType);
-        if (resourceMapEnumByServerType && resourceMapEnumByServerType.resourceComponent == BasicResourceComponent) {
-            name = null;
-        }
-
         return ""+
             '{' +
-            '"name":' + JsonUtil.stringify(name) +
+            '"name":' + JsonUtil.stringify(this.name) +
             ',"type":' + JsonUtil.stringify(this.uiType) +
             ',"path":' + JsonUtil.stringify(this.path) +
             ',"oldPath":' + JsonUtil.stringify(this.oldPath) +

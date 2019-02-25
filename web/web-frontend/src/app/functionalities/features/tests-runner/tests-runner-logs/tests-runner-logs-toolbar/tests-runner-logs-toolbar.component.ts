@@ -9,7 +9,6 @@ import {LogLevel} from "../../../../../model/test/event/enums/log-level.enum";
 })
 export class TestsRunnerLogsToolbarComponent {
 
-    @Input() reportMode: boolean = false;
     @Input() shouldWrapLogs: boolean = false;
     @Output() shouldWrapLogsChange = new EventEmitter<boolean>();
     @Input() minLogLevelToShow: LogLevel = LogLevel.INFO;
@@ -20,7 +19,7 @@ export class TestsRunnerLogsToolbarComponent {
     }
 
     onCloseTestSuite() {
-        this.testsRunnerService.isTestRunnerVisible = false;
+        this.testsRunnerService.setRunnerVisibility(false);
         this.testsRunnerService.stopExecution();
     }
 

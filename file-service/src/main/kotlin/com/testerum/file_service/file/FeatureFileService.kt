@@ -2,7 +2,16 @@ package com.testerum.file_service.file
 
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common.serializing.Serializer
-import com.testerum.common_kotlin.*
+import com.testerum.common_kotlin.createDirectories
+import com.testerum.common_kotlin.deleteIfExists
+import com.testerum.common_kotlin.deleteRecursivelyIfExists
+import com.testerum.common_kotlin.doesNotExist
+import com.testerum.common_kotlin.getBasicFileAttributes
+import com.testerum.common_kotlin.getContent
+import com.testerum.common_kotlin.isRegularFile
+import com.testerum.common_kotlin.smartMoveTo
+import com.testerum.common_kotlin.walk
+import com.testerum.common_kotlin.walkAndCollect
 import com.testerum.file_service.file.util.escape
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileFeatureMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessFeatureMapper
@@ -86,10 +95,10 @@ class FeatureFileService(private val featureMapper: FileToBusinessFeatureMapper,
     }
 
     fun save(feature: Feature, featuresDir: JavaPath): Feature {
-        val oldEscapedPath = feature.oldPath?.escape()
+        val oldPath = feature.oldPath
         val newEscapedPath = feature.getNewPath().escape()
 
-        val oldFeatureDir: JavaPath? = oldEscapedPath?.let {
+        val oldFeatureDir: JavaPath? = oldPath?.let {
             featuresDir.resolve(
                     it.directories.joinToString(separator = "/")
             ).toAbsolutePath().normalize()
@@ -104,7 +113,10 @@ class FeatureFileService(private val featureMapper: FileToBusinessFeatureMapper,
                 createDestinationExistsException = {
                     val featureDirPath = newEscapedPath.copy(fileName = null, fileExtension = null)
 
-                    ValidationException("the feature at path [$featureDirPath] already exists")
+                    ValidationException(
+                            globalMessage = "The feature at path [$featureDirPath] already exists",
+                            globalHtmlMessage = "The feature at path<br/><code>$featureDirPath</code><br/>already exists"
+                    )
                 }
         )
 
@@ -130,7 +142,10 @@ class FeatureFileService(private val featureMapper: FileToBusinessFeatureMapper,
                 featuresDir.relativize(newFeatureDir).toString()
         ).escape()
 
+        val name = featuresDir.relativize(newFeatureDir)?.fileName?.toString().orEmpty()
+
         return feature.copy(
+                name = name,
                 path = newPath,
                 oldPath = newPath
         )

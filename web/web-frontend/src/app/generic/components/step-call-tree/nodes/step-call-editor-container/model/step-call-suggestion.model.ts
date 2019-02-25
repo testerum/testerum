@@ -1,19 +1,14 @@
-import {StepPhaseEnum, StepPhaseUtil} from "../../../../../../model/enums/step-phase.enum";
+import {StepDef} from "../../../../../../model/step-def.model";
 
 export class StepCallSuggestion {
-    phase: StepPhaseEnum;
     stepCallText: string;
+    stepDef: StepDef;
     actionText: string;
-    matchingPercentage: number;
+    score: number;
 
-    constructor(phase: StepPhaseEnum, stepCallText: string,  matchingPercentage: number = 0, actionText: string = null ) {
-        this.phase = phase;
+    constructor(stepCallText: string,  stepDef: StepDef, actionText: string = null ) {
         this.stepCallText = stepCallText;
-        this.matchingPercentage = matchingPercentage;
+        this.stepDef = stepDef;
         this.actionText = actionText;
-    }
-
-    getPhaseAsString(): string {
-        return StepPhaseUtil.toCamelCaseString(this.phase);
     }
 }

@@ -14,6 +14,7 @@ import com.testerum.common_crypto.string_obfuscator.StringObfuscator
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import com.testerum.common_httpclient.HttpClientService
+import com.testerum.common_httpclient.TesterumHttpClientFactory
 import com.testerum.common_rdbms.JdbcDriversCache
 import com.testerum.common_rdbms.RdbmsConnectionCache
 import com.testerum.file_service.module_di.FileServiceModuleFactory
@@ -24,6 +25,7 @@ import com.testerum.licenses.file.LicenseFileService
 import com.testerum.licenses.parser.SignedUserParser
 import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.exception.ValidationException
+import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
 import com.testerum.settings.module_di.SettingsModuleFactory
 import com.testerum.web_backend.controllers.error.ErrorController
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_exception.CloudErrorResponsePreparer
@@ -32,18 +34,19 @@ import com.testerum.web_backend.controllers.error.model.response_preparers.illeg
 import com.testerum.web_backend.controllers.error.model.response_preparers.validation.ValidationErrorResponsePreparer
 import com.testerum.web_backend.controllers.features.FeatureController
 import com.testerum.web_backend.controllers.filesystem.FileSystemController
+import com.testerum.web_backend.controllers.home.HomeController
 import com.testerum.web_backend.controllers.license.LicenseController
 import com.testerum.web_backend.controllers.manual.ManualTestPlansController
 import com.testerum.web_backend.controllers.message.MessageController
+import com.testerum.web_backend.controllers.project.ProjectController
 import com.testerum.web_backend.controllers.resources.ResourcesController
 import com.testerum.web_backend.controllers.resources.http.HttpController
 import com.testerum.web_backend.controllers.resources.rdbms.RdbmsController
-import com.testerum.web_backend.controllers.runner.execution.TestExecutionController
-import com.testerum.web_backend.controllers.runner.execution.TestsWebSocketController
 import com.testerum.web_backend.controllers.results.ResultsController
 import com.testerum.web_backend.controllers.results.ResultsFileServerController
+import com.testerum.web_backend.controllers.runner.execution.TestExecutionController
+import com.testerum.web_backend.controllers.runner.execution.TestsWebSocketController
 import com.testerum.web_backend.controllers.settings.SettingsController
-import com.testerum.web_backend.controllers.setup.SetupController
 import com.testerum.web_backend.controllers.steps.BasicStepController
 import com.testerum.web_backend.controllers.steps.ComposedStepsController
 import com.testerum.web_backend.controllers.steps.StepsTreeController
@@ -55,19 +58,22 @@ import com.testerum.web_backend.controllers.version_info.VersionController
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.features.FeaturesFrontendService
 import com.testerum.web_backend.services.filesystem.FileSystemFrontendService
+import com.testerum.web_backend.services.home.HomeFrontendService
+import com.testerum.web_backend.services.home.QuotesService
 import com.testerum.web_backend.services.initializers.WebBackendInitializer
 import com.testerum.web_backend.services.initializers.caches.CachesInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.FeaturesCacheInitializer
+import com.testerum.web_backend.services.initializers.caches.impl.BasicStepsCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.JdbcDriversCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.LicenseCacheInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.StepsCacheInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.TestsCacheInitializer
+import com.testerum.web_backend.services.initializers.caches.impl.RecentProjectsCacheInitializer
 import com.testerum.web_backend.services.initializers.info_logging.InfoLoggerInitializer
 import com.testerum.web_backend.services.initializers.settings.SettingsManagerInitializer
 import com.testerum.web_backend.services.license.LicenseFrontendService
 import com.testerum.web_backend.services.manual.AutomatedToManualTestMapper
 import com.testerum.web_backend.services.manual.ManualTestPlansFrontendService
 import com.testerum.web_backend.services.message.MessageFrontendService
+import com.testerum.web_backend.services.project.ProjectFrontendService
+import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.resources.NetworkService
 import com.testerum.web_backend.services.resources.ResourcesFrontendService
 import com.testerum.web_backend.services.resources.http.HttpFrontendService
@@ -76,7 +82,6 @@ import com.testerum.web_backend.services.runner.execution.TestsExecutionFrontend
 import com.testerum.web_backend.services.runner.result.ResultsFrontendService
 import com.testerum.web_backend.services.save.SaveFrontendService
 import com.testerum.web_backend.services.settings.SettingsFrontendService
-import com.testerum.web_backend.services.setup.SetupFrontendService
 import com.testerum.web_backend.services.steps.BasicStepsFrontendService
 import com.testerum.web_backend.services.steps.ComposedStepUpdateCompatibilityFrontendService
 import com.testerum.web_backend.services.steps.ComposedStepsFrontendService
@@ -87,17 +92,17 @@ import com.testerum.web_backend.services.variables.VariablesFrontendService
 import com.testerum.web_backend.services.variables.VariablesResolverService
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.apache.http.client.HttpClient
-import org.apache.http.impl.client.HttpClients
 import java.security.PublicKey
 
 class WebBackendModuleFactory(context: ModuleFactoryContext,
                               settingsModuleFactory: SettingsModuleFactory,
-                              fileServiceModuleFactory: FileServiceModuleFactory) : BaseModuleFactory(context) {
+                              fileServiceModuleFactory: FileServiceModuleFactory,
+                              projectManagerModuleFactory: ProjectManagerModuleFactory) : BaseModuleFactory(context) {
 
     //---------------------------------------- misc ----------------------------------------//
 
     val frontendDirs = FrontendDirs(
-            settingsManager = settingsModuleFactory.settingsManager
+            testerumDirs = settingsModuleFactory.testerumDirs
     )
 
     private val rdbmsDriverConfigCache = JdbcDriversCache()
@@ -122,28 +127,23 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val settingsManagerInitializer = SettingsManagerInitializer(
             settingsFileService = fileServiceModuleFactory.settingsFileService,
-            settingsDir = frontendDirs.getSettingsDir(),
-            settingsManager = settingsModuleFactory.settingsManager
+            settingsManager = settingsModuleFactory.settingsManager,
+            settingsDir = frontendDirs.getSettingsDir()
     )
 
-    private val stepCachesInitializer = StepsCacheInitializer(
+    private val stepCachesInitializer = BasicStepsCacheInitializer(
             frontendDirs = frontendDirs,
-            stepsCache = fileServiceModuleFactory.stepsCache
-    )
-
-    private val testsCacheInitializer = TestsCacheInitializer(
-            frontendDirs = frontendDirs,
-            testsCache = fileServiceModuleFactory.testsCache
-    )
-
-    private val featuresCacheInitializer = FeaturesCacheInitializer(
-            frontendDirs = frontendDirs,
-            featuresCache = fileServiceModuleFactory.featuresCache
+            basicStepsCache = fileServiceModuleFactory.basicStepsCache
     )
 
     private val jdbcDriversCacheInitializer = JdbcDriversCacheInitializer(
             frontendDirs = frontendDirs,
             jdbcDriversCache = rdbmsDriverConfigCache
+    )
+
+    private val recentProjectsCacheInitializer = RecentProjectsCacheInitializer(
+            frontendDirs = frontendDirs,
+            recentProjectsCache = fileServiceModuleFactory.recentProjectsCache
     )
 
     private val licensePublicKeyForVerification: PublicKey = PemMarshaller.parsePublicKey(
@@ -184,9 +184,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val cachesInitializer = CachesInitializer(
-            stepsCacheInitializer = stepCachesInitializer,
-            testsCacheInitializer = testsCacheInitializer,
-            featuresCacheInitializer = featuresCacheInitializer,
+            basicStepsCacheInitializer = stepCachesInitializer,
+            recentProjectsCacheInitializer = recentProjectsCacheInitializer,
             jdbcDriversCacheInitializer = jdbcDriversCacheInitializer,
             licenseCacheInitializer = licenseCacheInitializer
     )
@@ -205,11 +204,15 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     //---------------------------------------- services ----------------------------------------//
 
+    private val webProjectManager = WebProjectManager(
+            projectManager = projectManagerModuleFactory.projectManager
+    )
+
     private val versionInfoFrontendService = VersionInfoFrontendService()
 
     private val variablesResolverService = VariablesResolverService()
 
-    private val httpClient: HttpClient = HttpClients.createDefault().also {
+    private val httpClient: HttpClient = TesterumHttpClientFactory.createHttpClient().also {
         context.registerShutdownHook {
             it.close()
         }
@@ -245,76 +248,58 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val featuresFrontendService = FeaturesFrontendService(
-            frontendDirs = frontendDirs,
-            featuresCache = fileServiceModuleFactory.featuresCache,
-            testsCache = fileServiceModuleFactory.testsCache,
-            featureFileService = fileServiceModuleFactory.featuresFileService,
-            featuresCacheInitializer = featuresCacheInitializer
+            webProjectManager = webProjectManager,
+            featureFileService = fileServiceModuleFactory.featuresFileService
     )
 
     private val tagsFrontendService = TagsFrontendService(
-            featuresCache = fileServiceModuleFactory.featuresCache,
-            testsCache = fileServiceModuleFactory.testsCache,
-            stepsCache = fileServiceModuleFactory.stepsCache
+            webProjectManager = webProjectManager
     )
 
     private val saveFrontendService = SaveFrontendService(
-            frontendDirs = frontendDirs,
-            stepsCache = fileServiceModuleFactory.stepsCache,
-            stepsCacheInitializer = stepCachesInitializer,
-            testsCache = fileServiceModuleFactory.testsCache,
-            testsCacheInitializer = testsCacheInitializer,
+            webProjectManager = webProjectManager,
             resourceFileService = fileServiceModuleFactory.resourceFileService
     )
 
     private val testsFrontendService = TestsFrontendService(
-            testsCache = fileServiceModuleFactory.testsCache,
+            webProjectManager = webProjectManager,
             warningService = fileServiceModuleFactory.warningService,
             saveFrontendService = saveFrontendService
     )
 
     private val basicStepsFrontendService = BasicStepsFrontendService(
-            stepsCache = fileServiceModuleFactory.stepsCache
+            basicStepsCache = fileServiceModuleFactory.basicStepsCache
     )
 
     private val stepsTreeFrontendService = StepsTreeFrontendService(
-            stepsCache = fileServiceModuleFactory.stepsCache
+            webProjectManager = webProjectManager
     )
 
     private val composedStepUpdateCompatibilityFrontendService = ComposedStepUpdateCompatibilityFrontendService(
-            stepsCache = fileServiceModuleFactory.stepsCache,
-            testsCache = fileServiceModuleFactory.testsCache
+            webProjectManager = webProjectManager
     )
 
     private val composedStepsFrontendService = ComposedStepsFrontendService(
-            stepsCache = fileServiceModuleFactory.stepsCache,
+            webProjectManager = webProjectManager,
             composedStepUpdateCompatibilityFrontendService = composedStepUpdateCompatibilityFrontendService,
             warningService = fileServiceModuleFactory.warningService,
             saveFrontendService = saveFrontendService,
-            stepsCacheInitializer = stepCachesInitializer,
-            testsCacheInitializer = testsCacheInitializer
+            basicStepsCacheInitializer = stepCachesInitializer
     )
 
     private val resourcesFrontendService = ResourcesFrontendService(
-            frontendDirs = frontendDirs,
-            resourceFileService = fileServiceModuleFactory.resourceFileService,
-            stepsCacheInitializer = stepCachesInitializer,
-            testsCacheInitializer = testsCacheInitializer
+            webProjectManager = webProjectManager,
+            resourceFileService = fileServiceModuleFactory.resourceFileService
     )
 
     private val variablesFrontendService = VariablesFrontendService(
+            webProjectManager = webProjectManager,
             frontendDirs = frontendDirs,
-            variablesFileService = fileServiceModuleFactory.variablesFileService
+            variablesFileService = fileServiceModuleFactory.variablesFileService,
+            localVariablesFileService = fileServiceModuleFactory.localVariablesFileService
     )
 
     private val messageFrontendService = MessageFrontendService()
-
-    private val setupFrontendService = SetupFrontendService(
-            frontendDirs = frontendDirs,
-            settingsManager = settingsModuleFactory.settingsManager,
-            settingsFileService = fileServiceModuleFactory.settingsFileService,
-            webBackendInitializer = webBackendInitializer
-    )
 
     private val settingsFrontendService = SettingsFrontendService(
             frontendDirs = frontendDirs,
@@ -324,10 +309,11 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val testsExecutionFrontendService = TestsExecutionFrontendService(
-            testsCache = fileServiceModuleFactory.testsCache,
+            webProjectManager = webProjectManager,
+            testerumDirs = settingsModuleFactory.testerumDirs,
+            frontendDirs = frontendDirs,
             settingsManager = settingsModuleFactory.settingsManager,
-            jsonObjectMapper = testsRunnerJsonObjectMapper,
-            frontendDirs = frontendDirs
+            jsonObjectMapper = testsRunnerJsonObjectMapper
     )
 
     private val runnerResultFrontendService = ResultsFrontendService(
@@ -337,14 +323,18 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val networkService = NetworkService()
 
-    private val fileSystemFrontendService = FileSystemFrontendService()
+    private val fileSystemFrontendService = FileSystemFrontendService(
+            testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService
+    )
 
     private val httpClientService = HttpClientService(httpClient)
 
     private val httpFrontendService = HttpFrontendService(
-            httpClientService = httpClientService,
+            webProjectManager = webProjectManager,
             frontendDirs = frontendDirs,
+            httpClientService = httpClientService,
             variablesFileService = fileServiceModuleFactory.variablesFileService,
+            localVariablesFileService = fileServiceModuleFactory.localVariablesFileService,
             variablesResolverService = variablesResolverService
     )
 
@@ -358,12 +348,23 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val automatedToManualTestMapper = AutomatedToManualTestMapper()
 
     private val manualTestPlansFrontendService = ManualTestPlansFrontendService(
-            testsCache = fileServiceModuleFactory.testsCache,
+            webProjectManager = webProjectManager,
             automatedToManualTestMapper = automatedToManualTestMapper,
-            frontendDirs = frontendDirs,
             manualTestPlanFileService = fileServiceModuleFactory.manualTestPlanFileService,
             manualTestFileService = fileServiceModuleFactory.manualTestFileService,
             testResolver = fileServiceModuleFactory.testResolver
+    )
+
+    private val projectFrontendService = ProjectFrontendService(
+            recentProjectsCache = fileServiceModuleFactory.recentProjectsCache
+    )
+
+    private val quotesService = QuotesService()
+
+    private val homeFrontendService = HomeFrontendService(
+            quotesService = quotesService,
+            versionInfoFrontendService = versionInfoFrontendService,
+            projectFrontendService = projectFrontendService
     )
 
 
@@ -382,8 +383,12 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             versionInfoFrontendService = versionInfoFrontendService
     )
 
-    private val setupController = SetupController(
-            setupFrontendService = setupFrontendService
+    private val homeController = HomeController(
+            homeFrontendService = homeFrontendService
+    )
+
+    private val projectController = ProjectController(
+            projectFrontendService = projectFrontendService
     )
 
     private val licenseController = LicenseController(
@@ -468,7 +473,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     val webControllers: List<Any> = listOf(
             errorController,
             versionController,
-            setupController,
+            homeController,
+            projectController,
             licenseController,
             settingsController,
             messageController,

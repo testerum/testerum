@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod",
-    "maven-build": "node --max_old_space_size=2048 maven-build.js",
+    "maven-build": "node --max_old_space_size=4096 maven-build.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,10 +23,11 @@
     "@angular/platform-browser": "7.0.4",
     "@angular/platform-browser-dynamic": "7.0.4",
     "@angular/router": "7.0.4",
-    "angular-split-ng6": "1.0.0-rc.5",
+    "angular-split": "2.0.1",
     "angular2-websocket": "0.9.7",
     "chart.js": "2.7.2",
     "core-js": "2.4.1",
+    "fuse.js": "3.4.2",
     "jquery": "3.1.1",
     "ng2-ace-editor": "0.3.8",
     "ng2-dnd": "5.0.2",
@@ -34,9 +35,9 @@
     "ngx-markdown": "6.2.0",
     "primeicons": "1.0.0-beta.10",
     "primeng": "6.1.4",
+    "prismjs": "1.15.0",
     "rxjs": "6.3.3",
     "simplemde": "1.11.2",
-    "string-similarity": "1.2.0",
     "zone.js": "0.8.26"
   },
   "devDependencies": {

@@ -9,8 +9,8 @@
         <!-- STEP PHASE -->
         <span *ngIf="isEditMode">
             <select class="form-control"
-                    #testPhase="ngModel" [(ngModel)]="model.phase" name="testPhase"
-                    required>
+                    required
+                    #testPhase="ngModel" [(ngModel)]="model.phase" name="testPhase">
                 <option *ngFor="let enumName of getPhaseEnumValues()" [value]="enumName">
                     {{StepPhaseEnum[enumName]}}
                 </option>
@@ -29,7 +29,7 @@
             </div>
 
             <span *ngIf="isEditMode">
-                <input required
+                <input required isNotBlankValidator
                        #stepPattern="ngModel" [(ngModel)]="pattern"
                        (ngModelChange)="onPatternChanged()"
                        type="text" class="form-control full-width" name="stepPattern"
@@ -47,17 +47,17 @@
     </div>
 
     <!-- PATH -->
-    <div class="my-line">
+    <div class="my-line" [class.hidden]="!allowPathEdit && !model.path">
         <label class="my-label label-size">Path</label>
-        <span class="my-value" *ngIf="hasPathDefined">
-            {{model.path?.toString() || ""}}
+        <span class="my-value" *ngIf="!allowPathEdit">
+            {{model.path?.toDirectoryString() || ""}}
         </span>
-        <div class="my-value input-group" *ngIf="!hasPathDefined">
+        <div class="my-value input-group"
+             [class.hidden]="!allowPathEdit">
             <div>
-            <input [ngModel]="model.path?.toString()"
+            <input [ngModel]="model.path?.toDirectoryString()"
                    #pathInput="ngModel"
                    readonly
-                   required
                    type="text"
                    class="path-input form-control"
                    name="pathInput">
@@ -89,7 +89,7 @@
     </div>
     <div class="my-line" *ngIf="isEditMode">
         <label class="my-label label-size">Tags</label>
-        <div class="my-value">
+        <div class="my-value my-default-line-height">
             <p-autoComplete #tagsElement
                             [(ngModel)]="model.tags"
                             [suggestions]="tagsToShow"
@@ -107,7 +107,7 @@
     <!-- DESCRIPTION -->
     <div class="my-line" [hidden]="model.description || isEditMode">
         <label class="my-label label-size">Description</label>
-        <div class="my-value">
+        <div class="my-value my-default-line-height">
             <markdown-editor #descriptionMarkdownEditor
                              [options]="markdownEditorOptions"
                              class="markdown-editor-dynamic-size"></markdown-editor>
@@ -137,5 +137,8 @@
         </div>
     </div>
 
-    <step-call-tree [stepCalls]="model.stepCalls" [isEditMode]="isEditMode" (change)="onStepCallTreeChange()"></step-call-tree>
+    <step-call-tree [stepCalls]="model.stepCalls"
+                    [containerPath]="model.path.getParentPath()"
+                    [isEditMode]="isEditMode"
+                    (change)="onStepCallTreeChange()"></step-call-tree>
 </form>

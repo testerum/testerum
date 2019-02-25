@@ -37,11 +37,11 @@ export class ResultsTreeComponent implements OnInit {
         let path: Path = pathAsString !=null ? Path.createInstance(pathAsString) : null;
 
         this.resultService.getRunnerReportDirInfo().subscribe(
-            (results: Array<RunnerResultDirInfo>) => {
+            (dirs: Array<RunnerResultDirInfo>) => {
                 this.directoryTreeModel.children.length = 0;
-                for (let result of results) {
+                for (let dir of dirs) {
                     this.directoryTreeModel.children.push(
-                        ResultsTreeComponent.mapToTreeModel(result, this.directoryTreeModel)
+                        ResultsTreeComponent.mapToTreeModel(dir, this.directoryTreeModel)
                     )
                 }
                 this.directoryTreeModel.children.sort((a,b) => (a as ResultsTreeContainerModel).name > (b as ResultsTreeContainerModel).name ? -1 : 1);

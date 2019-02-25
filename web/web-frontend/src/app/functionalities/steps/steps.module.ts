@@ -9,7 +9,6 @@ import {FormsModule} from "@angular/forms";
 import {DndModule} from "ng2-dnd";
 import {ComposedStepEditorComponent} from "./composed-step-editor/composed-step-editor.component";
 import {ComposedStepEditorResolver} from "./composed-step-editor/composed-step-editor.resolver";
-import {AngularSplitModule} from "angular-split-ng6";
 import {ResourcesModule} from "../resources/resources.module";
 import {JsonStepContainerComponent} from "./steps-tree/container/json-step-container.component";
 import {JsonStepNodeComponent} from "./steps-tree/container/node/json-step-node.component";
@@ -29,6 +28,7 @@ import {
 import {StepsTreeFilterComponent} from "./steps-tree/steps-tree-filter/steps-tree-filter.component";
 import {ComposedStepViewComponent} from "../../generic/components/step/composed-step-view/composed-step-view.component";
 import {MarkdownModule} from 'ngx-markdown'
+import {AngularSplitModule} from "angular-split";
 
 @NgModule({
     imports: [
@@ -39,7 +39,7 @@ import {MarkdownModule} from 'ngx-markdown'
         CollapseModule.forRoot(),
         DndModule.forRoot(),
         PopoverModule.forRoot(),
-        AngularSplitModule,
+        AngularSplitModule.forRoot(),
         MarkdownModule.forRoot(),
 
         TooltipModule,

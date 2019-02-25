@@ -15,10 +15,35 @@
         overflow-x: hidden;
 
         pre {
-            text-align: center;
+            line-height: 1.4em;
+            padding: 0;
+            margin: 0;
             border: 0;
             background-color: inherit;
             color: inherit;
+            font-family: inherit;
+        }
+
+        .info-text {
+            text-align: center;
+            font-size: 1.3em;
+            margin-bottom: 2em;
+        }
+
+        .suggestions {
+            margin-bottom: 1em;
+
+            .suggestions-title {
+                font-size: 1.2em;
+                font-weight: bold;
+                margin-bottom: 0.5em;
+            }
+            .suggestions-messages {
+                margin-left: 2em;
+
+                .suggestions-message {
+                }
+            }
         }
     }
 }

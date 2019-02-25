@@ -35,10 +35,10 @@ import {TestNodeComponent} from "../functionalities/features/features-tree/conta
 import {CollapsablePanelComponent} from "./components/panels/collapsable-panel/collapsable-panel.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {IsNumberValidatorDirective} from "./validators/is-number-validator.directive";
-import {FileDirectoryChooserService} from "./components/form/file_dir_chooser/file-directory-chooser.service";
-import {FileDirectoryChooserContainerComponent} from "./components/form/file_dir_chooser/container/file-directory-chooser-container.component";
-import {FileDirChooserComponent} from "./components/form/file_dir_chooser/file-dir-chooser.component";
-import {DirectoryChooserDialogComponent} from "./components/form/file_dir_chooser/dialog/directory-chooser-dialog.component";
+import {FileDirChooserService} from "./components/form/file_dir_chooser/file-dir-chooser.service";
+import {FileDirTreeContainerComponent} from "./components/form/file_dir_chooser/file-dir-tree/nodes/container/file-dir-tree-container.component";
+import {FileDirChooserInputComponent} from "./components/form/file_dir_chooser/file-dir-chooser-input.component";
+import {FileDirChooserModalComponent} from "./components/form/file_dir_chooser/dialog/file-dir-chooser-modal.component";
 import {SafeHtmlPipe} from "./pipes/safe-html.pipe";
 import {ChartModule} from "primeng/chart";
 import {ExecutionPieComponent} from "./components/charts/execution-pie/execution-pie.component";
@@ -94,8 +94,14 @@ import {LogoComponent} from './components/logo/logo.component';
 import {InfoModalService} from "./components/info_modal/info-modal.service";
 import {InfoIconComponent} from './components/info-icon/info-icon.component';
 import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
+import {FileDirChooserModalService} from "./components/form/file_dir_chooser/dialog/file-dir-chooser-modal.service";
+import {UrlNameValidatorDirective} from "./validators/url-name-validator.directive";
+import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-dir-tree/file-dir-tree.component';
 import {MarkdownModule} from 'ngx-markdown';
-import { SafeUrlPipe } from './pipes/safe-url.pipe'
+import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { ServerNotAvailableModalComponent } from './error/server-not-available/server-not-available-modal.component'
+import {ServerNotAvailableModalService} from "./error/server-not-available/server-not-available-modal.service";
+import {IsNotBlankValidatorDirective} from "./validators/is_not_blank-validator.directive";
 
 @NgModule({
     imports: [
@@ -155,8 +161,10 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe'
 
         PortValidatorDirective,
         IsNumberValidatorDirective,
+        UrlNameValidatorDirective,
+        IsNotBlankValidatorDirective,
 
-        FileDirChooserComponent,
+        FileDirChooserInputComponent,
 
         ExecutionPieComponent,
 
@@ -208,10 +216,12 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe'
 
         PortValidatorDirective,
         IsNumberValidatorDirective,
+        UrlNameValidatorDirective,
+        IsNotBlankValidatorDirective,
 
-        FileDirChooserComponent,
-        FileDirectoryChooserContainerComponent,
-        DirectoryChooserDialogComponent,
+        FileDirChooserInputComponent,
+        FileDirTreeContainerComponent,
+        FileDirChooserModalComponent,
 
         ExecutionPieComponent,
 
@@ -249,12 +259,15 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe'
         JsonEmptyVerifyNodeComponent,
         LogoComponent,
         InfoIconComponent,
+        FileDirTreeComponent,
+        ServerNotAvailableModalComponent,
     ],
     providers: [
         TreeService,
         JsonTreeService,
         StepChooserService,
-        FileDirectoryChooserService,
+        FileDirChooserService,
+        FileDirChooserModalService,
         ExecutionPieService,
         PathChooserService,
         StepModalService,
@@ -265,6 +278,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe'
         AreYouSureModalService,
         InfoModalService,
         ArgModalService,
+        ServerNotAvailableModalService,
     ],
     entryComponents: [
         FeatureContainerComponent,
@@ -280,6 +294,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe'
         ArgNodeComponent,
         PathChooserContainerComponent,
         PathChooserNodeComponent,
+        FileDirChooserModalComponent,
 
         JsonContainerNodeComponent,
         JsonLeafNodeComponent,
@@ -304,6 +319,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe'
         AreYouSureModalComponent,
         InfoModalComponent,
         ArgModalComponent,
+        ServerNotAvailableModalComponent,
     ]
 })
 export class GenericModule { }

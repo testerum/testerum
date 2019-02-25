@@ -1,0 +1,23 @@
+<div class="stand-alone-resource-panel">
+
+    <h1>{{getResourceName()}} <span class="path">{{getPathForTitle()}}</span></h1>
+
+    <div class="page-body">
+        <div #panelBody></div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="panel-footer-button">
+        <ng-container *ngIf="!isEditMode">
+            <button (click)="setEditMode()" class="btn btn-primary">Edit</button>
+        </ng-container>
+        <ng-container *ngIf="isEditMode">
+            <button (click)="cancelAction()" type="button" class="btn btn-default">Cancel</button>
+            <button (click)="deleteAction()" *ngIf="!isCreateAction" type="button" class="btn btn-danger">Delete</button>
+            <button [disabled]="!isEditedResourceValid()" (click)="saveAction()" class="btn btn-primary">
+                Save
+            </button>
+        </ng-container>
+    </div>
+</div>
+

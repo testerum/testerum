@@ -20,6 +20,8 @@ import {HttpMockServerResourceType} from "./model/type/http-mock-server.resource
 import {HttpMockResourceType} from "./model/type/http-mock.resource-type.model";
 import {JsonTreeExpandUtil} from "../../../generic/components/json-tree/util/json-tree-expand.util";
 import {JsonTreeService} from "../../../generic/components/json-tree/json-tree.service";
+import {JsonResourceType} from "./model/type/json.resource-type.model";
+import {JsonRootResourceType} from "./model/type/json-root.resource-type.model";
 
 @Injectable()
 export class ResourcesTreeService {
@@ -32,6 +34,7 @@ export class ResourcesTreeService {
         new ResourcesTreeContainer(null, HttpResponseVerifyResourceType.getInstanceForRoot()),
         new ResourcesTreeContainer(null, HttpMockServerResourceType.getInstanceForRoot()),
         new ResourcesTreeContainer(null, HttpMockStubResourceType.getInstanceForRoot()),
+        new ResourcesTreeContainer(null, JsonResourceType.getInstanceForRoot()),
         new ResourcesTreeContainer(null, JsonVerifyResourceType.getInstanceForRoot()),
         new ResourcesTreeContainer(null, RdbmsConnectionResourceType.getInstanceForRoot()),
         new ResourcesTreeContainer(null, RdbmsSqlResourceType.getInstanceForRoot()),
@@ -48,7 +51,7 @@ export class ResourcesTreeService {
 
         this.root.children.push(
             this.getHttpResourcesRoot(),
-            this.getJsonVerifyResourcesRoot(),
+            this.getJsonResourcesRoot(),
             this.getRdbmsResourcesRoot()
         );
         this.fixTreeAfterNodesLoad();
@@ -88,9 +91,18 @@ export class ResourcesTreeService {
         return httpMockResource;
     }
 
-    private getJsonVerifyResourcesRoot(): ResourcesTreeContainer {
+    private getJsonResourcesRoot(): ResourcesTreeContainer {
+        this.initializeResources(JsonResourceType.getInstanceForRoot(), JsonResourceType.getInstanceForChildren());
         this.initializeResources(JsonVerifyResourceType.getInstanceForRoot(), JsonVerifyResourceType.getInstanceForChildren());
-        return this.getResourceContainerByResourceType(JsonVerifyResourceType.getInstanceForRoot());
+
+        let jsonRoot = new ResourcesTreeContainer(null, JsonRootResourceType.getInstanceForRoot());
+        jsonRoot.jsonTreeNodeState.showChildren = true;
+
+        jsonRoot.children.push(
+            this.getResourceContainerByResourceType(JsonResourceType.getInstanceForRoot()),
+            this.getResourceContainerByResourceType(JsonVerifyResourceType.getInstanceForRoot()),
+        );
+        return jsonRoot;
     }
 
     private getRdbmsResourcesRoot(): ResourcesTreeContainer {

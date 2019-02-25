@@ -24,7 +24,7 @@ export class Application {
     private copyTemplateFiles() {
         const templatesSrcDir = path.resolve(__dirname, "report-template");
 
-        console.log(`copying templates from [${templatesSrcDir}] to ${this.destinationDirectory}`);
+        console.log(`[app/generator] copying templates from [${templatesSrcDir}] to ${this.destinationDirectory}`);
 
         fse.copySync(templatesSrcDir, this.destinationDirectory);
     }
@@ -33,7 +33,7 @@ export class Application {
         const indexFilePath = path.resolve(this.destinationDirectory, "index.html");
         const modelPath = path.resolve(this.modelDirectory, "model.json");
 
-        console.log(`replacing model in [${indexFilePath}] with the content of [${modelPath}]`);
+        console.log(`[app/generator] replacing model in [${indexFilePath}] with the content of [${modelPath}]`);
 
         const originalContent = FsUtils.readFile(indexFilePath);
         const modelFileContent = FsUtils.readFile(modelPath);
@@ -49,7 +49,7 @@ export class Application {
         const logsSrcDir = path.resolve(this.modelDirectory, "logs");
         const logsDestDir = path.resolve(this.destinationDirectory, "logs");
 
-        console.log(`copying log files from [${logsSrcDir}] to [${logsDestDir}]`);
+        console.log(`[app/generator] copying log files from [${logsSrcDir}] to [${logsDestDir}]`);
 
         FsUtils.createDirectories(logsDestDir);
         fse.copySync(logsSrcDir, logsDestDir);

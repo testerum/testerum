@@ -13,7 +13,7 @@ interface TesterumLogger : TesterumService {
     fun info(message: String) = info(message, null)
     fun info(message: String, exception: Throwable?)
 
-    fun debug(message: String) = info(message, null)
+    fun debug(message: String) = debug(message, null)
     fun debug(message: String, exception: Throwable?)
 
 }

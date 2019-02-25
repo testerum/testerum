@@ -1,15 +1,15 @@
 <div class="main-container">
 
-    <split direction="horizontal">
-        <split-area [size]="15">
+    <as-split direction="horizontal">
+        <as-split-area [size]="15">
 
             <results-tree></results-tree>
 
-        </split-area>
-        <split-area [size]="85" [visible]="isItemSelected">
+        </as-split-area>
+        <as-split-area [size]="85">
 
-            <router-outlet></router-outlet>
+            <runner-result-tabs></runner-result-tabs>
 
-        </split-area>
-    </split>
+        </as-split-area>
+    </as-split>
 </div>

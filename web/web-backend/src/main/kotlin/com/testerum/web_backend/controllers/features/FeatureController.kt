@@ -9,7 +9,12 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.web_backend.services.features.FeaturesFrontendService
 import com.testerum.web_backend.util.toFilesToUpload
 import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import javax.servlet.http.HttpServletResponse
 
@@ -78,7 +83,7 @@ class FeatureController(private val featuresFrontendService: FeaturesFrontendSer
         return featuresFrontendService.copyFeatureOrTest(
                 Path.createInstance(sourcePath),
                 Path.createInstance(destinationPath)
-        );
+        )
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/move"])
@@ -89,6 +94,6 @@ class FeatureController(private val featuresFrontendService: FeaturesFrontendSer
         return featuresFrontendService.moveFeatureOrTest(
                 Path.createInstance(sourcePath),
                 Path.createInstance(destinationPath)
-        );
+        )
     }
 }

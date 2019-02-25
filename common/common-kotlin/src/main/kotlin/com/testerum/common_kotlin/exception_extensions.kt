@@ -1,8 +1,5 @@
 package com.testerum.common_kotlin
 
-import java.io.PrintWriter
-import java.io.StringWriter
-
 val Throwable.rootCause: Throwable
     get() {
         var root: Throwable = this
@@ -16,12 +13,3 @@ val Throwable.rootCause: Throwable
         return root
     }
 
-fun Throwable.printStackTraceToString(): String {
-    val result = StringWriter()
-
-    this.printStackTrace(
-            PrintWriter(result)
-    )
-
-    return result.toString()
-}

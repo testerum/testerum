@@ -138,18 +138,10 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
             .showSchemasChooser(this.model)
             .subscribe(
                 dbSchema => {
-                    if (dbSchema.errorMessage) {
-                        this.infoModalService.showInfoModal (
-                            "Database Results",
-                            dbSchema.errorMessage
-                        )
-                    } else {
-                        this.schemaChooserModalService.showSchemaChooserModal(
-                            dbSchema.schemas,
-                            this
-                        )
-                    }
-
+                    this.schemaChooserModalService.showSchemaChooserModal(
+                        dbSchema.schemas,
+                        this
+                    )
                 }
             )
     }

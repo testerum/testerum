@@ -20,7 +20,7 @@
                     <div class="my-line">
                         <label class="my-label label-size">Name</label>
                         <div class="my-value">
-                            <input required
+                            <input required isNotBlankValidator
                                    #nameNgModel="ngModel" [(ngModel)]="name"
                                    type="text" class="form-control" name="name">
                             <input-error [model]="nameNgModel"

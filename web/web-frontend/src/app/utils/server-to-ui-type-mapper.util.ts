@@ -26,7 +26,7 @@ export class ServerToUiTypeMapperUtil {
         ['boolean'          , 'BOOLEAN'],
         ['java.lang.Boolean', 'BOOLEAN'],
 
-        ['database.relational.connection_manager.model.RdbmsClient', 'database.relational.connection_manager.model.RdbmsClient'],
+        ['database.relational.connection_manager.model.RdbmsConnection', 'database.relational.connection_manager.model.RdbmsConnection'],
 
         ['database.relational.model.RdbmsSql', 'database.relational.model.RdbmsSql'],
 
@@ -39,6 +39,8 @@ export class ServerToUiTypeMapperUtil {
         ['com.testerum.model.resources.http.mock.server.HttpMockServer', 'com.testerum.model.resources.http.mock.server.HttpMockServer'],
 
         ['com.testerum.model.resources.http.mock.stub.HttpMock', 'com.testerum.model.resources.http.mock.stub.HttpMock'],
+
+        ['json.model.JsonResource', 'json.model.JsonResource'],
     ]);
 
     private constructor() {}

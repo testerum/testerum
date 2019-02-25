@@ -1,5 +1,4 @@
 import {Resource} from "../resource.model";
-import {JsonUtil} from "../../../utils/json.util";
 import {StringUtils} from "../../../utils/string-utils.util";
 
 export class BasicResource implements Resource<BasicResource> {

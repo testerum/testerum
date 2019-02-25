@@ -4,9 +4,7 @@ import com.testerum.common_jdk.asMap
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.settings.SettingsManager
 import com.testerum.settings.getResolvedSettingValues
-import com.testerum.settings.keys.SystemSettingKeys
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.*
 
 class RunnerSettingsInitializer(private val cmdlineParams: CmdlineParams) {
@@ -24,7 +22,6 @@ class RunnerSettingsInitializer(private val cmdlineParams: CmdlineParams) {
     private fun settingsFromCommandLine(): Map<String, String> {
         val result = mutableMapOf<String, String>()
 
-        result.putAll(systemSettings())
         result.putAll(loadSettingsFromFile())
         result.putAll(cmdlineParams.settingOverrides)
 
@@ -46,21 +43,6 @@ class RunnerSettingsInitializer(private val cmdlineParams: CmdlineParams) {
         }
 
         return properties.asMap()
-    }
-
-    private fun systemSettings(): Map<String, String> {
-        val result = mutableMapOf<String, String>()
-
-        val testerumInstallDir = System.getProperty(SystemSettingKeys.TESTERUM_INSTALL_DIR)
-                ?.let { Paths.get(it).toAbsolutePath().normalize() }
-                ?: throw RuntimeException("the system property ${SystemSettingKeys.TESTERUM_INSTALL_DIR} is missing")
-
-        result[SystemSettingKeys.TESTERUM_INSTALL_DIR] = testerumInstallDir.toString()
-        result[SystemSettingKeys.REPOSITORY_DIR] = cmdlineParams.repositoryDirectory.toAbsolutePath().normalize().toString()
-        result[SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR] = cmdlineParams.basicStepsDirectory.toAbsolutePath().normalize().toString()
-        result[SystemSettingKeys.JDBC_DRIVERS_DIR] = testerumInstallDir.resolve("relational_database_drivers").toString()
-
-        return result
     }
 
     private fun logSettings(settingsManager: SettingsManager) {

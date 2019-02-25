@@ -1,39 +1,68 @@
-.navbar-nav>li>a {
-    padding: 0.5em 0.75em;
-    margin: 0;
-
-    &:hover {
-        background-color: #525252;
-    }
-}
-
-.active {
-    color: #fff !important;
-    background-color: transparent;
-}
-
 .menu {
-    margin-bottom: 0;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    padding: 0.3em 0;
 
     &.navbar {
         min-height: initial;
+        margin-bottom: 0;
+
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
     }
-}
 
-.navbar-right {
-    margin-right: 0;
-}
+    .menu-left {
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
 
+        .testerum-logo {
+            font-size: 1rem;
 
-.settings-icon-menu-item {
-    font-size: 2rem;
-}
+            li a {
+                padding: 0 0.5em;
+            }
+        }
+    }
 
-.testerum-logo {
-    font-size: 1rem;
+    .menu-right {
+        display: flex;
+        align-items: center;
 
-    li a {
-        padding: 0.25em 0.5em 0.25em 0.5em;
+        .menu-variables {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+
+    .nav {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+    }
+    .navbar-nav>li>a {
+        padding: 0 0.75em;
+        margin: 0;
+
+        &:hover {
+            background-color: #525252;
+        }
+    }
+
+    .active {
+        color: #fff !important;
+        background-color: transparent;
+    }
+
+    .navbar-right {
+        margin-right: 0;
+    }
+
+    .icon-menu-item {
+        font-size: 1.6em;
+        vertical-align: middle;
     }
 }
 

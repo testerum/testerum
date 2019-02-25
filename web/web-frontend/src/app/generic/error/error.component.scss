@@ -1,22 +1,45 @@
 .error-dialog {
     z-index: 9999;
+
+    .modal-dialog {
+        width: 800px;
+    }
+
+    .error-message {
+        text-align: center;
+        background-color: inherit;
+        border-color: inherit;
+        color: #ff6161;
+        font-size: 1.5em;
+        font-weight: bold;
+        line-height: 1.1em;
+    }
+
+    .excuse-messages {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: .9em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1.4;
+    }
+
+    .error-detail-toggle {
+        cursor: pointer;
+        margin-bottom: 0.5em;
+    }
+
+    .stack-trace-panel {
+        overflow: auto;
+        height: 500px;
+        width: 100%;
+        white-space: pre;
+        font-family: "Hack Regular Nerd Font Complete", monospace;
+        font-size: 12px;
+        border: 1px solid #908f8f;
+        padding: 0.5em;
+        background-color: #eee;
+    }
 }
 
-.error-message {
-    text-align: center;
-    font-size: large;
-    background-color: inherit;
-    border-color: inherit;
-    color: #ff0500;
-}
-
-.error-detail-toggle {
-    cursor: pointer;
-}
-
-.stack-trace-panel {
-    overflow: scroll;
-    height: 500px;
-    width: 100%;
-    white-space: pre;
-}

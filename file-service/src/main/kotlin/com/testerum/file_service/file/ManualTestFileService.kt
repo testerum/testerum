@@ -33,13 +33,13 @@ class ManualTestFileService(private val businessToFileManualTestMapper: Business
     fun save(test: ManualTest,
              planPath: Path,
              manualTestsDir: JavaPath): ManualTest {
-        val oldEscapedPath = test.oldPath?.escape()
+        val oldPath = test.oldPath
         val newEscapedPath = test.getNewPath().escape()
 
         val planDir = manualTestsDir.resolve(planPath.toString())
 
-        val oldTestFile: JavaPath? = oldEscapedPath?.let {
-            planDir.resolve(oldEscapedPath.toString())
+        val oldTestFile: JavaPath? = oldPath?.let {
+            planDir.resolve(oldPath.toString())
         }
         val newTestFile: JavaPath = planDir.resolve(newEscapedPath.toString())
 
@@ -47,7 +47,10 @@ class ManualTestFileService(private val businessToFileManualTestMapper: Business
         oldTestFile?.smartMoveTo(
                 newTestFile,
                 createDestinationExistsException = {
-                    ValidationException("the manual test at path [$newEscapedPath] already exists")
+                    ValidationException(
+                            globalMessage = "The manual test at path [$newEscapedPath] already exists",
+                            globalHtmlMessage = "The manual test at path<br/><code>$newEscapedPath</code><br/>already exists"
+                    )
                 }
         )
 

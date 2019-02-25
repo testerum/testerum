@@ -57,7 +57,7 @@ object CmdlineParamsParser {
         var usageHelpRequested: Boolean = false
 
         @CommandLine.Option(
-                names = ["-V", "--version"],
+                names = ["--version"],
                 versionHelp = true,
                 description = [
                     "displays program version information and exits",
@@ -67,7 +67,7 @@ object CmdlineParamsParser {
         var versionHelpRequested: Boolean = false
 
         @CommandLine.Option(
-                names = ["-v", "--verbose"],
+                names = ["--verbose"],
                 description = [
                     "log extra information",
                     ""
@@ -101,7 +101,7 @@ object CmdlineParamsParser {
                     "If  missing,   the  path  will  be   the  \"basic_steps\"",
                     "directory in the Testerum installation directory.",
                     "",
-                    "You will very rarely need to use this parameter.",
+                    "You will very rarely need to use this argument.",
                     "",
                     "Example:",
                     "    --basic-steps-directory /testerum/basic_steps",
@@ -111,12 +111,47 @@ object CmdlineParamsParser {
         var basicStepsDirectory: JavaPath? = null
 
         @CommandLine.Option(
+                names = ["--var"],
+                description = [
+                    "override Testerum variables",
+                    "",
+                    "This argument takes precedence over variables from",
+                    "--var-env, if the same key is found in both.",
+                    "",
+                    "Example:",
+                    "    --var URL=http://localhost:4200",
+                    "",
+                    "See also:",
+                    "    --var-env",
+                    ""
+                ],
+                showDefaultValue = CommandLine.Help.Visibility.NEVER
+        )
+        var variableOverrides: Map<String, String> = linkedMapOf()
+
+        @CommandLine.Option(
+                names = ["--var-env"],
+                required = false,
+                description = [
+                    "the variables environment to use",
+                    "",
+                    "Example:",
+                    "    --var-env dev",
+                    "",
+                    "See also:",
+                    "    --var",
+                    ""
+                ]
+        )
+        var variablesEnvironment: String? = null
+
+        @CommandLine.Option(
                 names = ["--setting"],
                 description = [
-                    "override default settings",
+                    "override Testerum settings",
                     "",
-                    "Also overrides the settings  from the settings file, if",
-                    "one is specified.",
+                    "This argument takes precedence over --settings-file, if",
+                    "the same key is found in both.",
                     "",
                     "Example:",
                     "    --setting testerum.selenium.afterStepDelayMillis=0",
@@ -132,11 +167,11 @@ object CmdlineParamsParser {
         @CommandLine.Option(
                 names = ["--settings-file"],
                 description = [
-                    "path to the settings file",
+                    "path to a settings file",
                     "",
-                    "The  settings   in  this  file  override   the  default",
-                    "settings.",
-                    "The file must be in the standard Java .properties format.",
+                    "The settings  in this file override Testerum  settings.",
+                    "The  file  must be  in  the  standard Java  .properties",
+                    "format.",
                     "",
                     "Example:",
                     "    --settings-file /path/to/file.properties",
@@ -175,7 +210,7 @@ object CmdlineParamsParser {
                 description = [
                     "what report(s) to produce",
                     "",
-                    "The value  of this parameter has  the following generic",
+                    "The value  of this argument has  the following generic",
                     "syntax:",
                     "    <reportType>[:prop1=val1,prop2=val2,...]",
                     "",
@@ -205,7 +240,7 @@ object CmdlineParamsParser {
                     "This report  shows the test execution  progress and the",
                     "results to the console.",
                     "",
-                    "Logs are only shown when a test failed.",
+                    "Logs are only shown for failed tests.",
                     "",
                     "This report type doesn't have any properties.",
                     "",
@@ -235,10 +270,11 @@ object CmdlineParamsParser {
                     "Example:",
                     "    --report PRETTY:destinationDirectory=/some/path",
                     "",
-                    "If the path doesn't exist yet, it will be created.",
+                    "If the destination directory doesn't exist yet, it will",
+                    "be created.",
                     "",
                     "",
-                    "Multiple report types can be specified at the same time:",
+                    "Multiple reports can be specified at the same time:",
                     "--report CONSOLE --report PRETTY:destinationDirectory=/p",
                     "",
                     "Do  not  specify multiple  report  types  that use  the",
@@ -285,7 +321,7 @@ object CmdlineParamsParser {
                 names = ["--execution-name"],
                 description = [
                     "human-readable title of this execution,",
-                    "used in the reports",
+                    "displayed in the reports",
                     ""
                 ]
         )
@@ -306,6 +342,8 @@ object CmdlineParamsParser {
                     verbose = verbose,
                     repositoryDirectory = getValidatedRepositoryDirectory(),
                     basicStepsDirectory = getValidatedBasicStepsDirectory(),
+                    variablesEnvironment = variablesEnvironment,
+                    variableOverrides = variableOverrides,
                     settingsFile = getValidatedSettingsFile(),
                     settingOverrides = settingOverrides,
                     testFilesOrDirectories = getValidatedTestFilesOrDirectories(),

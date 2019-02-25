@@ -66,4 +66,7 @@ export class StringUtils {
         return mainString.substring(0, index);
     }
 
+    static isString(value: any): boolean {
+        return typeof value === 'string' || value instanceof String;
+    }
 }

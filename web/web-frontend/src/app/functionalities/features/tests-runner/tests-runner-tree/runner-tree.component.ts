@@ -66,7 +66,10 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
             this.runnerTreeService.showTestFolders(showTestFolders);
             this.refresh();
         });
-        this.refresh();
+
+        this.testsRunnerService.runnerVisibleEventEmitter.subscribe(() => {
+            this.refresh()
+        });
     }
 
     ngOnDestroy(): void {

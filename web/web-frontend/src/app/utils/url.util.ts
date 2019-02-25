@@ -15,4 +15,13 @@ export class UrlUtil {
 
         return activatedRoute.firstChild ? activatedRoute.firstChild.snapshot.params[paramName] : null;
     }
+
+    public static getProjectNameFromActivatedRoute(activatedRoute: ActivatedRoute): string {
+        return activatedRoute.snapshot.url.length ? activatedRoute.snapshot.url[0].path : null;
+    }
+
+    public static getProjectNameFromUrl(url: string): string {
+        let urlParts = url.split("/").filter(value => value.length > 0);
+        return urlParts.length > 0 ? urlParts[0] : null;
+    }
 }

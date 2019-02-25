@@ -1,4 +1,5 @@
-<div bsModal #infoModal="bs-modal" class="modal fade my_info-modal" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+<div bsModal #infoModal="bs-modal" class="modal fade my_info-modal" tabindex="-1" role="dialog" [config]="{backdrop: 'static', keyboard: false}"
+    (keydown)="onKeyDown($event)">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,7 +9,16 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <pre [innerHTML]="text"></pre>
+                <pre class="info-text" [innerHTML]="text"></pre>
+
+                <div *ngIf="suggestions.length > 0" class="suggestions">
+                    <div class="suggestions-title">Suggestions:</div>
+                    <ul class="suggestions-messages">
+                        <li *ngFor="let suggestion of suggestions">
+                            <pre class="suggestions-message" [innerHTML]="suggestion"></pre>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="modal-footer">
                 <button (click)="close()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>

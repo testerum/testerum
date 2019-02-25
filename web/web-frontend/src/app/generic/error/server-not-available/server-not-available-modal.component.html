@@ -1,0 +1,23 @@
+<div bsModal #serverNotAvailableModal="bs-modal" class="modal fade server-not-available-modal" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Connection problem
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="main-message">Testerum Server is not available</div>
+                <div class="action-message">
+                    <ul>
+                        <li>Make sure the Testerum Server is started.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="auto-retry">Auto Retry in: {{retryIn}}</div>
+                <button (click)="retry()" type="button" class="btn btn-warning" data-dismiss="modal">Manual Retry</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,7 +2,7 @@ import {ComponentFactoryResolver, Injectable} from "@angular/core";
 import {Observable, Subject} from "rxjs";
 import {LogsModalComponent} from "./logs-modal.component";
 import {AppComponent} from "../../../app.component";
-import {ReportLog} from "../../../../../../../../common/testerum-model/model/report/report-log";
+import {ReportLog} from "../../../../../../../../common/testerum-model/report-model/model/report/report-log";
 
 @Injectable()
 export class LogsModalService {

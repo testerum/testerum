@@ -1,4 +1,6 @@
 import {StringUtils} from "./string-utils.util";
+import {StepPhaseEnum, StepPhaseUtil} from "../model/enums/step-phase.enum";
+import {Path} from "../model/infrastructure/path/path.model";
 
 export class PathUtil {
 
@@ -51,5 +53,10 @@ export class PathUtil {
         return pathPart.toLowerCase().replace(/_(.)/g, function(match, group1) {
             return group1.toUpperCase();
         });
+    }
+
+    static generateStepDefPath(containerPath: Path, stepPhase: StepPhaseEnum, stepTextWithoutPhase: string): Path {
+        let stepFileName = StepPhaseUtil.toCamelCaseString(stepPhase) + " " + stepTextWithoutPhase;
+        return new Path(containerPath.directories, stepFileName, "step");
     }
 }

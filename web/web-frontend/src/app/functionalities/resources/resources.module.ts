@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {ResourcesRoutingModule} from "./resources-routing.module";
 import {ResourcesComponent} from "./resources.component";
-import {AngularSplitModule} from "angular-split-ng6";
 import {DndModule} from "ng2-dnd";
 import {BsDropdownModule, ModalModule, TabsModule} from "ngx-bootstrap";
 import {FormsModule} from "@angular/forms";
@@ -22,14 +21,20 @@ import {RdbmsVerifyTableNodeComponent} from "./editors/database/verify/rdbms-ver
 import {RdbmsVerifyTableRowNodeComponent} from "./editors/database/verify/rdbms-verify-tree/schema-node/table-node/table-row/rdbms-verify-table-row-node.component";
 import {RdbmsVerifyFieldNodeComponent} from "./editors/database/verify/rdbms-verify-tree/schema-node/table-node/table-row/field/rdbms-verify-field-node.component";
 import {RdbmsVerifyTreeService} from "./editors/database/verify/rdbms-verify-tree/rdbms-verify-tree.service";
-import {JsonVerifyResourceComponent} from "./editors/json_verify/json-verify-resource.component";
-import {HttpRequestService} from "./editors/http/request/http-request.service";
+import {JsonVerifyResourceComponent} from "./editors/json/json_verify/json-verify-resource.component";
 import {HttpRequestComponent} from "./editors/http/request/http-request.component";
 import {HttpHeaderComponent} from "./editors/http/request/header/http-header.component";
 import {HttpBodyComponent} from "./editors/http/request/body/http-body.component";
 import {HttpBodyTypeFormComponent} from "./editors/http/request/body-type-form/http-body-type-form.component";
 import {HttpParamsComponent} from "./editors/http/request/params/http-params.component";
-import {AutoCompleteModule, CheckboxModule, DropdownModule, ToggleButtonModule, ToolbarModule} from "primeng/primeng";
+import {
+    AutoCompleteModule,
+    CheckboxModule,
+    DropdownModule,
+    ToggleButtonModule,
+    ToolbarModule,
+    TooltipModule
+} from "primeng/primeng";
 import {HttpResponseComponent} from "./editors/http/request/response/http-request-response.component";
 import {HttpResponseVerifyComponent} from "./editors/http/response_verify/http-response-verify.component";
 import {HttpResponseVerifyService} from "./editors/http/response_verify/http-response-verify.service";
@@ -49,11 +54,13 @@ import {HttpMockProxyResponseComponent} from "./editors/http/mock/stub/response/
 import {HttpMockRequestScenarioService} from "./editors/http/mock/stub/request/request-scenario/http-mock-request-scenario.service";
 import {HttpMockRequestScenarioComponent} from "./editors/http/mock/stub/request/request-scenario/http-mock-request-scenario.component";
 import {HttpMockServerComponent} from "./editors/http/mock/server/http-mock-server.component";
-import {StandAlownResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alown-resource-panel.component";
+import {StandAloneResourcePanelComponent} from "./editors/infrastructure/form-panel-container/stand-alone-resource-panel.component";
 import {ResourceResolver} from "./editors/resource.resolver";
 import {BasicResourceComponent} from "./editors/basic/basic-resource.component";
 import {ResourcesTreeComponent} from "./tree/resources-tree.component";
 import {SchemaChooserModalService} from "./editors/database/connection/schema_chooser_modal/schema-chooser-modal.service";
+import {JsonResourceComponent} from "./editors/json/json_resource/json-resource.component";
+import {AngularSplitModule} from "angular-split";
 
 @NgModule({
     imports: [
@@ -65,7 +72,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
         TabsModule.forRoot(),
         BsDropdownModule.forRoot(),
         DndModule.forRoot(),
-        AngularSplitModule,
+        AngularSplitModule.forRoot(),
         AceEditorModule,
         CheckboxModule,
 
@@ -73,6 +80,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
         ToggleButtonModule,
         ToolbarModule,
         DropdownModule,
+        TooltipModule,
 
         GenericModule,
     ],
@@ -90,6 +98,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
         RdbmsVerifyComponent,
         BasicResourceComponent,
         JsonVerifyResourceComponent,
+        JsonResourceComponent,
 
         SchemaChooserModalComponent,
     ],
@@ -100,6 +109,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
 
         BasicResourceComponent,
         JsonVerifyResourceComponent,
+        JsonResourceComponent,
         HttpRequestComponent,
         HttpResponseVerifyComponent,
         HttpMockComponent,
@@ -112,7 +122,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
         ResourcesContainerComponent,
         ResourceNodeComponent,
 
-        StandAlownResourcePanelComponent,
+        StandAloneResourcePanelComponent,
 
         RdbmsConnectionConfigComponent,
         SchemaChooserModalComponent,
@@ -128,6 +138,7 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
         RdbmsVerifyFieldNodeComponent,
 
         JsonVerifyResourceComponent,
+        JsonResourceComponent,
 
         HttpRequestComponent,
         HttpHeaderComponent,
@@ -160,7 +171,6 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
         ResourcesTreeService,
         RdbmsVerifyTreeService,
         SchemaChooserModalService,
-        HttpRequestService,
         HttpResponseVerifyService,
         HttpMockService,
 

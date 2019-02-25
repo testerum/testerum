@@ -34,10 +34,10 @@ class ManualTestPlanFileService(private val businessToFileManualTestPlanMapper: 
 
     fun save(plan: ManualTestPlan,
              manualTestsDir: JavaPath): ManualTestPlan {
-        val oldEscapedPath = plan.oldPath?.escape()
+        val oldPath = plan.oldPath
         val newEscapedPath = plan.getNewPath().escape()
 
-        val oldPlanDir: JavaPath? = oldEscapedPath?.let {
+        val oldPlanDir: JavaPath? = oldPath?.let {
             manualTestsDir.resolve(
                     it.directories.joinToString(separator = "/")
             ).toAbsolutePath().normalize()
@@ -52,7 +52,10 @@ class ManualTestPlanFileService(private val businessToFileManualTestPlanMapper: 
                 createDestinationExistsException = {
                     val planDirPath = newEscapedPath.copy(fileName = null, fileExtension = null)
 
-                    ValidationException("the plan at path [$planDirPath] already exists")
+                    ValidationException(
+                            globalMessage = "The plan at path [$planDirPath] already exists",
+                            globalHtmlMessage = "The plan at path<br/><code>$planDirPath</code><br/>already exists"
+                    )
                 }
         )
 

@@ -16,67 +16,85 @@
     <properties>
         <mainClass>com.testerum.runner_cmdline.TesterumRunner</mainClass>
 
-        <reportTemplatesNodePath>${project.basedir}/src/main/assembly/report_templates</reportTemplatesNodePath>
+        <packageDir>${project.basedir}/../../../package</packageDir>
     </properties>
 
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
+        <!-- common-di -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-di</artifactId>
         </dependency>
 
+        <!-- common-kotlin -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-kotlin</artifactId>
         </dependency>
 
+        <!-- common-cmdline -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-cmdline</artifactId>
         </dependency>
 
+        <!-- common-expression-evaluator -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-expression-evaluator</artifactId>
         </dependency>
 
+        <!-- common-rdbms -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-rdbms</artifactId>
         </dependency>
 
+        <!-- testerum-runner-api -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>testerum-runner-api</artifactId>
         </dependency>
 
+        <!-- model -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>model</artifactId>
         </dependency>
 
+        <!-- settings -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>settings</artifactId>
         </dependency>
 
+        <!-- testerum-scanner -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>testerum-scanner</artifactId>
         </dependency>
 
+        <!-- file-service -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>file-service</artifactId>
         </dependency>
 
+        <!-- project-manager -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>project-manager</artifactId>
+        </dependency>
+
+        <!-- common-json -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-json</artifactId>
         </dependency>
 
+        <!-- common-jdk -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-jdk</artifactId>
@@ -209,90 +227,6 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
             </plugin>
-
-            <!-- compile report templates  -->
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-
-                <configuration>
-                    <installDirectory>${reportTemplatesNodePath}</installDirectory>
-                </configuration>
-
-                <executions>
-                    <!-- install-node-and-npm -->
-                    <execution>
-                        <id>compile-report-templates--install-node-and-npm</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                    </execution>
-
-                    <!-- pretty / app -->
-                    <execution>
-                        <id>compile-report-templates--npm-install--pretty-app</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/app</workingDirectory>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>compile-report-templates--npm-build--pretty-app</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run build-prod</arguments>
-                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/app</workingDirectory>
-                        </configuration>
-                    </execution>
-
-                    <!-- pretty / generator -->
-                    <execution>
-                        <id>compile-report-templates--npm-install--pretty-generator</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator</workingDirectory>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>compile-report-templates--npm-build--pretty-generator</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run build-prod</arguments>
-                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator</workingDirectory>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>compile-report-templates--npm-install-dependencies-in-dist-dir--pretty-generator</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install --only=production</arguments>
-                            <workingDirectory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</workingDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 
@@ -311,15 +245,50 @@
 
             <build>
                 <plugins>
-                    <!-- download nodejs -->
+                    <!-- delete dist/ nodejs directories to make sure we rebuild -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+
+                        <configuration>
+                            <filesets>
+                                <!-- extracted node -->
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/assembly/node/windows/</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/assembly/node/mac/</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/assembly/node/linux/</directory>
+                                </fileset>
+
+                                <!-- dist/ app directories-->
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/app/dist/</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist/</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/assembly/report_templates/templates/stats/app/dist/</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator/dist/</directory>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+
+                    <!-- download nodejs & compile report apps -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
 
                         <executions>
-                            <!-- download-node -->
+                            <!-- ant-main-prod -->
                             <execution>
-                                <id>download-node</id>
+                                <id>ant-main-prod</id>
                                 <phase>prepare-package</phase>
                                 <configuration>
                                     <target>
@@ -411,40 +380,26 @@
 
             <build>
                 <plugins>
-                    <!-- copy dependencies to "package/basic_steps" directory -->
+                    <!-- copy dependencies to "package/runner/lib" directory -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-dependency-plugin</artifactId>
 
                         <configuration>
-                            <outputDirectory>${project.basedir}/../../../package/runner/repo</outputDirectory>
+                            <outputDirectory>${packageDir}/runner/lib</outputDirectory>
                             <includeScope>runtime</includeScope>
                         </configuration>
                     </plugin>
 
-                    <!-- download nodejs & copy to package directory -->
+                    <!-- download nodejs, compile report apps, copy to package directory; make runner shell script executable -->
                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
 
                        <executions>
-                           <!-- delete-node-download -->
+                           <!-- ant-main-dev -->
                            <execution>
-                               <id>delete-node-download</id>
-                               <phase>clean</phase>
-                               <configuration>
-                                   <target>
-                                       <ant antfile="build.xml" target="clean" />
-                                   </target>
-                               </configuration>
-                               <goals>
-                                   <goal>run</goal>
-                               </goals>
-                           </execution>
-
-                           <!-- download-node -->
-                           <execution>
-                               <id>download-node</id>
+                               <id>ant-main-dev</id>
                                <phase>prepare-package</phase>
                                <configuration>
                                    <target>
@@ -455,71 +410,8 @@
                                    <goal>run</goal>
                                </goals>
                            </execution>
-
-                           <!-- set executable bit on linux/mac shell script -->
-                           <execution>
-                               <id>make-runner-shell-script-executable</id>
-                               <phase>package</phase>
-                               <configuration>
-                                   <target>
-                                       <chmod perm="ugo+x">
-                                           <fileset dir="${project.basedir}/../../../package/runner/bin">
-                                               <include name="**/*.sh" />
-                                           </fileset>
-                                       </chmod>
-                                   </target>
-                               </configuration>
-                               <goals>
-                                   <goal>run</goal>
-                               </goals>
-                           </execution>
-
                        </executions>
                     </plugin>
-
-                    <!-- copy shell scripts & compiled report templates to package directory  -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <!-- copy-shell-scripts-to-package-dir -->
-                            <execution>
-                                <id>copy-shell-scripts-to-package-dir</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${project.basedir}/../../../package/runner</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/src/main/assembly/package</directory>
-                                            <filtering>false</filtering>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-
-                            <!-- copy-compiled-report-templates-to-package-dir: pretty -->
-                            <execution>
-                                <id>copy-compiled-report-templates-to-package-dir--pretty</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${project.basedir}/../../../package/runner/report_templates/pretty</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist</directory>
-                                            <filtering>false</filtering>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                 </plugins>
             </build>
         </profile>

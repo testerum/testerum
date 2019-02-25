@@ -16,6 +16,14 @@
     <property name="dest.node_package_dir.mac"     location="${node_dir}/mac" />
     <property name="dest.node_package_dir.linux"   location="${node_dir}/linux" />
 
+    <property name="package_dir_runner"      location="../../../package/runner/" />
+
+    <property name="app_dirs.pretty_app"       location="src/main/assembly/report_templates/templates/pretty/app/" />
+    <property name="app_dirs.pretty_generator" location="src/main/assembly/report_templates/templates/pretty/generator/" />
+    <property name="app_dirs.stats_app"        location="src/main/assembly/report_templates/templates/stats/app/" />
+    <property name="app_dirs.stats_generator"  location="src/main/assembly/report_templates/templates/stats/generator/" />
+
+    <!-- node_package_dir.current_os -->
     <condition property="node_package_dir.current_os" value="${dest.node_package_dir.windows}">
         <os family="windows" />
     </condition>
@@ -28,18 +36,64 @@
         <os family="unix" />
     </condition>
 
-    <property name="runner.package_dir_node" location="../../../package/runner/node" />
+    <!-- node binary -->
+    <condition property="node_binary.current_os" value="${dest.node_package_dir.windows}/node.exe">
+        <os family="windows" />
+    </condition>
+
+    <condition property="node_binary.current_os" value="${dest.node_package_dir.mac}/node">
+        <os family="mac" />
+    </condition>
+
+    <condition property="node_binary.current_os" value="${dest.node_package_dir.linux}/node">
+        <os family="unix" />
+    </condition>
+
+    <!-- npm-cli.js -->
+    <condition property="npm_cli_js.current_os" value="${dest.node_package_dir.windows}/node_modules/npm/bin/npm-cli.js">
+        <os family="windows" />
+    </condition>
+
+    <condition property="npm_cli_js.current_os" value="${dest.node_package_dir.mac}/node_modules/npm/bin/npm-cli.js">
+        <os family="mac" />
+    </condition>
+
+    <condition property="npm_cli_js.current_os" value="${dest.node_package_dir.linux}/node_modules/npm/bin/npm-cli.js">
+        <os family="unix" />
+    </condition>
+
+    <!-- conditions to build or not the node apps -->
+    <condition property="pretty-app.should_not_build">
+        <available file="${app_dirs.pretty_app}/dist/" type="dir" />
+    </condition>
+    <condition property="pretty-generator.should_not_build">
+        <available file="${app_dirs.pretty_generator}/dist/" type="dir" />
+    </condition>
+    <condition property="stats-app.should_not_build">
+        <available file="${app_dirs.stats_app}/dist/" type="dir" />
+    </condition>
+    <condition property="stats-generator.should_not_build">
+        <available file="${app_dirs.stats_generator}/dist/" type="dir" />
+    </condition>
+
+    <!-- conditions to extract downloaded node -->
+    <condition property="extract-node-windows.should_not_build">
+        <available file="${dest.node_package_dir.windows}/node.exe" type="file" />
+    </condition>
+    <condition property="extract-node-mac.should_not_build">
+        <available file="${dest.node_package_dir.mac}/node" type="file" />
+    </condition>
+    <condition property="extract-node-linux.should_not_build">
+        <available file="${dest.node_package_dir.linux}/node" type="file" />
+    </condition>
+
 
 
     <!--======================================== targets ========================================-->
 
-    <target name="main-dev" depends="download-node, extract-node, copy-extracted-node-to-dev-package-dir" />
+    <target name="main-dev"  depends="main-prod, copy-to-dev-package-dir" />
 
-    <target name="main-prod" depends="download-node, extract-node" />
-
-    <target name="clean">
-        <delete dir="${runner.package_dir_node}"/>
-    </target>
+    <target name="main-prod" depends="download-node, extract-node, build-runner-reports" />
 
     <target name="download-node">
         <mkdir dir="${dest.download_dir}" />
@@ -49,53 +103,198 @@
     </target>
 
     <target name="extract-node">
-        <!-- windows -->
+        <antcall target="extract-node-windows" />
+        <antcall target="extract-node-mac" />
+        <antcall target="extract-node-linux" />
+    </target>
+
+    <target name="extract-node-windows" unless="extract-node-windows.should_not_build">
         <mkdir dir="${dest.node_package_dir.windows}" />
         <unzip src="${dest.download_dir}/${src.filename_without_extension.windows}.zip" dest="${dest.node_package_dir.windows}">
             <patternset>
                 <include name="${src.filename_without_extension.windows}/node.exe" />
+                <include name="${src.filename_without_extension.windows}/node_modules/**/*" />
                 <include name="${src.filename_without_extension.windows}/LICENSE" />
             </patternset>
             <mapper>
                 <globmapper from="${src.filename_without_extension.windows}/*" to="*"/>
             </mapper>
         </unzip>
+    </target>
 
-        <!-- mac -->
+    <target name="extract-node-mac" unless="extract-node-mac.should_not_build">
         <mkdir dir="${dest.node_package_dir.mac}" />
         <untar src="${dest.download_dir}/${src.filename_without_extension.mac}.tar.gz" compression="gzip" dest="${dest.node_package_dir.mac}">
             <patternset>
                 <include name="${src.filename_without_extension.mac}/bin/node" />
+                <include name="${src.filename_without_extension.mac}/lib/node_modules/**/*" />
                 <include name="${src.filename_without_extension.mac}/LICENSE" />
             </patternset>
             <mapper>
                 <globmapper from="${src.filename_without_extension.mac}/bin/*" to="*"/>
+                <globmapper from="${src.filename_without_extension.mac}/lib/*" to="*"/>
                 <globmapper from="${src.filename_without_extension.mac}/*" to="*"/>
             </mapper>
         </untar>
         <chmod file="${dest.node_package_dir.mac}/node" perm="ugo+rx"/>
+    </target>
 
-        <!-- linux -->
+    <target name="extract-node-linux" unless="extract-node-linux.should_not_build">
         <mkdir dir="${dest.node_package_dir.linux}" />
         <untar src="${dest.download_dir}/${src.filename_without_extension.linux}.tar.gz" compression="gzip" dest="${dest.node_package_dir.linux}">
             <patternset>
                 <include name="${src.filename_without_extension.linux}/bin/node" />
+                <include name="${src.filename_without_extension.linux}/lib/node_modules/**/*" />
                 <include name="${src.filename_without_extension.linux}/LICENSE" />
             </patternset>
             <mapper>
                 <globmapper from="${src.filename_without_extension.linux}/bin/*" to="*"/>
+                <globmapper from="${src.filename_without_extension.linux}/lib/*" to="*"/>
                 <globmapper from="${src.filename_without_extension.linux}/*" to="*"/>
             </mapper>
         </untar>
         <chmod file="${dest.node_package_dir.linux}/node" perm="ugo+rx"/>
     </target>
 
-    <target name="copy-extracted-node-to-dev-package-dir">
-        <mkdir  dir="${runner.package_dir_node}" />
-        <copy todir="${runner.package_dir_node}">
-            <fileset dir="${node_package_dir.current_os}"/>
+    <target name="copy-to-dev-package-dir">
+        <antcall target="copy-to-dev-package-dir.extracted-node" />
+        <antcall target="copy-to-dev-package-dir.shell-scripts" />
+        <antcall target="copy-to-dev-package-dir.pretty-generator" />
+        <antcall target="copy-to-dev-package-dir.stats-generator" />
+    </target>
+
+    <target name="copy-to-dev-package-dir.extracted-node">
+        <mkdir dir="${package_dir_runner}/node/"/>
+        <copy todir="${package_dir_runner}/node/" overwrite="true" force="true">
+            <fileset dir="${node_package_dir.current_os}">
+                <exclude name="node_modules/**"/>
+            </fileset>
         </copy>
-        <chmod file="${runner.package_dir_node}/node" perm="ugo+rx" />
+        <chmod file="${package_dir_runner}/node/node" perm="ugo+rx" />
+    </target>
+
+    <target name="copy-to-dev-package-dir.shell-scripts">
+        <mkdir dir="${package_dir_runner}" />
+        <copy todir="${package_dir_runner}" overwrite="true" force="true">
+            <fileset dir="src/main/assembly/package" />
+        </copy>
+
+        <!-- comment-out setting the JAVA_HOME to pick up the developer's JAVA home instead -->
+        <replaceregexp byline="true">
+            <regexp pattern="(.*\bJAVA_HOME=.*)"/>
+            <substitution expression="true; # \1"/>
+            <fileset dir="${package_dir_runner}/bin/">
+                <include name="*.sh"/>
+            </fileset>
+        </replaceregexp>
+        <replaceregexp byline="true">
+            <regexp pattern="(.*\bJAVA_HOME=.*)"/>
+            <substitution expression="REM \1"/>
+            <fileset dir="${package_dir_runner}/bin/">
+                <include name="*.bat"/>
+            </fileset>
+        </replaceregexp>
+
+        <chmod dir="${package_dir_runner}/bin/" includes="**/*.sh" perm="ugo+rx" />
+    </target>
+
+    <target name="copy-to-dev-package-dir.pretty-generator">
+        <mkdir dir="${package_dir_runner}/report_templates/pretty" />
+        <copy todir="${package_dir_runner}/report_templates/pretty" overwrite="true" force="true">
+            <fileset dir="src/main/assembly/report_templates/templates/pretty/generator/dist" />
+        </copy>
+    </target>
+
+    <target name="copy-to-dev-package-dir.stats-generator">
+        <mkdir dir="${package_dir_runner}/report_templates/stats" />
+        <copy todir="${package_dir_runner}/report_templates/stats" overwrite="true" force="true">
+            <fileset dir="src/main/assembly/report_templates/templates/stats/generator/dist" />
+        </copy>
+    </target>
+
+    <target name="build-runner-reports">
+        <antcall target="build-runner-pretty-app" />
+        <antcall target="build-runner-pretty-generator" />
+        <antcall target="build-runner-stats-app" />
+        <antcall target="build-runner-stats-generator" />
+    </target>
+
+    <target name="build-runner-pretty-app" unless="pretty-app.should_not_build">
+        <local name="current_dir"/>
+        <property name="current_dir" value="${app_dirs.pretty_app}"/>
+
+        <antcall target="npm">
+            <param name="args"        value="install" />
+            <param name="current_dir" value="${current_dir}" />
+        </antcall>
+        <antcall target="npm">
+            <param name="args"        value="run build-prod" />
+            <param name="current_dir" value="${current_dir}" />
+        </antcall>
+    </target>
+
+    <target name="build-runner-pretty-generator" unless="pretty-generator.should_not_build">
+        <local name="current_dir"/>
+        <property name="current_dir" value="${app_dirs.pretty_generator}"/>
+
+        <antcall target="npm">
+            <param name="args"        value="install" />
+            <param name="current_dir" value="${current_dir}" />
+        </antcall>
+        <antcall target="npm">
+            <param name="args"        value="run build-prod" />
+            <param name="current_dir" value="${current_dir}" />
+        </antcall>
+        <antcall target="npm">
+            <param name="args"        value="install --only=production" />
+            <param name="current_dir" value="${app_dirs.pretty_generator}/dist/" />
+        </antcall>
+    </target>
+
+    <target name="build-runner-stats-app" unless="stats-app.should_not_build">
+        <local name="current_dir"/>
+        <property name="current_dir" value="${app_dirs.stats_app}"/>
+
+        <antcall target="npm">
+            <param name="args"        value="install" />
+            <param name="current_dir" value="${current_dir}" />
+        </antcall>
+        <antcall target="npm">
+            <param name="args"        value="run build-prod" />
+            <param name="current_dir" value="${current_dir}" />
+        </antcall>
+    </target>
+
+    <target name="build-runner-stats-generator" unless="stats-generator.should_not_build">
+        <local name="current_dir"/>
+        <property name="current_dir" value="${app_dirs.stats_generator}"/>
+
+        <antcall target="npm">
+            <param name="args"        value="install" />
+            <param name="current_dir" value="${current_dir}" />
+        </antcall>
+        <antcall target="npm">
+            <param name="args"        value="run build-prod" />
+            <param name="current_dir" value="${current_dir}" />
+        </antcall>
+        <antcall target="npm">
+            <param name="args"        value="install --only=production" />
+            <param name="current_dir" value="${app_dirs.stats_generator}/dist/" />
+        </antcall>
+    </target>
+
+    <!--
+        npm
+
+        required params:
+        - args
+        - current_dir
+    -->
+    <target name="npm">
+        <echo message="running [npm ${args}] in [${current_dir}]"/>
+        <exec executable="${node_binary.current_os}" dir="${current_dir}">
+            <arg line='"${npm_cli_js.current_os}" --scripts-prepend-node-path=true ${args}'/>
+        </exec>
     </target>
 
 </project>

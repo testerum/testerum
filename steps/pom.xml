@@ -15,7 +15,7 @@
 
     <modules>
         <module>assertion-steps</module>
-        <module>dummy-steps</module>
+        <module>json-steps</module>
         <module>rdbms-steps</module>
         <module>http-steps</module>
         <module>selenium-steps</module>

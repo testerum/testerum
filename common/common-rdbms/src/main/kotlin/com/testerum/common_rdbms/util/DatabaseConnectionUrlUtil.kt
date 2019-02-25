@@ -3,6 +3,11 @@ package com.testerum.common_rdbms.util
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 
 fun RdbmsConnectionConfig.resolveConnectionUrl(): String {
+    val customUrl = customUrl
+    if (customUrl != null) {
+        return customUrl
+    }
+
     var result = driverUrlPattern
 
     result = replaceOptional(result, "HOST", host)

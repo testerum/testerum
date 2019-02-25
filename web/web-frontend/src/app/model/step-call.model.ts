@@ -79,13 +79,11 @@ export class StepCall implements Serializable<StepCall> {
         this.args = [];
         for (let i = 0; i <(input["args"] || []).length; i++) {
             let argJson = (input["args"] || [])[i];
-            let paramParts = this.stepDef.stepPattern.getParamParts();
-            let paramPart = paramParts[i];
-
             let arg = new Arg().deserialize(argJson);
-            if (!arg.name) {
-                arg.name = paramPart.name;
-            }
+
+            let paramPart = this.stepDef.stepPattern.getParamParts()[i];
+            arg.paramName = paramPart.name;
+
             this.args.push(arg);
         }
 

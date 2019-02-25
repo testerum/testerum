@@ -11,11 +11,10 @@ class VariableSteps {
 
     @Given(
             value = "the variable <<name>> with value <<value>>",
-            description = "Sets the value of a test context variable.\n" +
-                          "If the variable doesn't exist yet, it will be first created."
+            description = "Sets the value of a variable."
     )
-    fun declareVariable(name: String,
-                        @Param(required = false) value: String?) {
+    fun declareTextVariable(name: String,
+                        @Param(required = false) value: Any?) {
         variables[name] = value
     }
 

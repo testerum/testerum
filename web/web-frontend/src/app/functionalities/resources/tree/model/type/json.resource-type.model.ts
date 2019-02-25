@@ -1,16 +1,15 @@
 import {ResourceType} from "./resource-type.model";
-import {PathUtil} from "../../../../../utils/path.util";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 
 export class JsonResourceType implements ResourceType {
 
-    readonly rootFilePath: Path = Path.createInstance("resources/JSON");
+    readonly rootFilePath: Path = Path.createInstance("resources/JSON/JSON Resource");
     readonly fileExtension: string = "json";
 
     name: string = this.rootFilePath.getLastPathPart();
-    iconClass: string = null;
-    resourceUrl: string = "/resources/json";
-    createSubResourceUrl: any[] = ["/resources/json/create", {"path": this.rootFilePath}];
+    iconClass: string = "nf nf-mdi-json";
+    resourceUrl: string = "/resources/json/json_resource";
+    createSubResourceUrl: any[] = ["/resources/json/json_resource/create", {"path": this.rootFilePath}];
 
     canHaveChildrenContainers: boolean = true;
     canBeDeleted: boolean = true;

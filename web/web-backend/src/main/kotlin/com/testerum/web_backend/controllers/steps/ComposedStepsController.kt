@@ -89,4 +89,25 @@ class ComposedStepsController(private val composedStepsFrontendService: Composed
         return composedStepsFrontendService.getWarnings(composedStep)
     }
 
+    @RequestMapping(method = [RequestMethod.POST], path = ["/copy"])
+    @ResponseBody
+    fun copy(@RequestParam("sourcePath") sourcePath: String,
+             @RequestParam("destinationPath") destinationDirPath: String): Path {
+
+        return composedStepsFrontendService.copyComposedStep(
+                Path.createInstance(sourcePath),
+                Path.createInstance(destinationDirPath)
+        );
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/move"])
+    @ResponseBody
+    fun move(@RequestParam("sourcePath") sourcePath: String,
+             @RequestParam("destinationPath") destinationDirPath: String): Path {
+
+        return composedStepsFrontendService.moveComposedStep(
+                Path.createInstance(sourcePath),
+                Path.createInstance(destinationDirPath)
+        );
+    }
 }

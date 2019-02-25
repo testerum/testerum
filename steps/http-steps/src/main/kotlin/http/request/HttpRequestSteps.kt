@@ -7,12 +7,14 @@ import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common_httpclient.HttpClientService
 import com.testerum.common_httpclient.util.MediaTypeUtils
-import com.testerum.common_json.util.JsonUtils
+import com.testerum.common_json.util.prettyPrintJson
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.ValidHttpResponse
 import http.request.transformer.HttpRequestTransformer
 import http_support.module_di.HttpStepsModuleServiceLocator
+import org.apache.http.impl.EnglishReasonPhraseCatalog
 import org.slf4j.LoggerFactory
+import java.util.*
 
 class HttpRequestSteps {
 
@@ -25,9 +27,72 @@ class HttpRequestSteps {
     private val logger: TesterumLogger = TesterumServiceLocator.getTesterumLogger()
 
     @When(
-            value = "I execute <<httpRequest>> HTTP Request",
-            description = "Makes an HTTP request, saving the response as a test variable with the name ``httpResponse``.\n" +
-                          "The request is also available in the variable ``httpRequest``"
+            value = "I execute the HTTP request <<httpRequest>>",
+            description =
+            "Makes an HTTP request, saving the response as a test variable with the name ``httpResponse``.\n" +
+                    "The request is also available in the variable ``httpRequest``.\n" +
+                    "\n" +
+                    "### Response\n" +
+                    "\n" +
+                    "```\n" +
+                    "protocol         : String,  // HTTP/1.1\n" +
+                    "statusCode       : int,     // 200\n" +
+                    "headers          : List<HttpResponseHeader>,\n" +
+                    "body             : byte[],  // body, exactly as received\n" +
+                    "bodyAsUtf8String : String,\n" +
+                    "jsonBody         : Map<String, String | int | boolean | null | Map}> // httpResponse.jsonBody.person.name\n" +
+                    "```\n" +
+                    "\n" +
+                    "### HttpResponseHeader\n" +
+                    "\n" +
+                    "```\n" +
+                    "key    : String,      // Content-Type\n" +
+                    "values : List<String> // we use a list to capture all values (HTTP allows a header to be specified multiple times)\n" +
+                    "```\n" +
+                    "\n" +
+                    "### Request\n" +
+                    "\n" +
+                    "```\n" +
+                    "method          : HttpRequestMethod,\n" +
+                    "url             : String\n" +
+                    "headers         : Map<String, String>,\n" +
+                    "body            : HttpRequestBody | null,\n" +
+                    "followRedirects : boolean\n" +
+                    "```\n" +
+                    "\n" +
+                    "### HttpRequestMethod\n" +
+                    "\n" +
+                    "```\n" +
+                    "enum {\n" +
+                    "    GET,\n" +
+                    "    POST,\n" +
+                    "    PUT,\n" +
+                    "    DELETE,\n" +
+                    "    HEAD,\n" +
+                    "    OPTIONS,\n" +
+                    "    TRACE,\n" +
+                    "    PATCH\n" +
+                    "}\n" +
+                    "```\n" +
+                    "\n" +
+                    "### HttpRequestBody\n" +
+                    "\n" +
+                    "```\n" +
+                    "bodyType : HttpRequestBodyType\n" +
+                    "content  : String\n" +
+                    "```\n" +
+                    "\n" +
+                    "### HttpRequestBodyType\n" +
+                    "\n" +
+                    "```\n" +
+                    "enum {\n" +
+                    "    RAW,\n" +
+                    "    FORM_DATA,\n" +
+                    "    X-WWW-FORM-URLENCODED,\n" +
+                    "    BINARY\n" +
+                    "}\n" +
+                    "```\n" +
+                    "\n"
     )
     fun testConnectionDetails(
             @Param(
@@ -36,9 +101,9 @@ class HttpRequestSteps {
             )
             httpRequest: HttpRequest
     ) {
-        logger.info("HTTP Request [\n${httpRequest.prettyPrint()}\n]")
+        logger.info("HTTP Request\n${httpRequest.prettyPrint()}\n")
         val httpResponse: ValidHttpResponse = httpClientService.executeHttpRequest(httpRequest)
-        logger.info("HTTP Response [\n${httpResponse.prettyPrint()}\n]")
+        logger.info("HTTP Response\n${httpResponse.prettyPrint()}\n")
 
         variables["httpRequest"] = httpRequest
         variables["httpResponse"] = httpResponse
@@ -47,20 +112,20 @@ class HttpRequestSteps {
     }
 
     private fun HttpRequest.prettyPrint(): String {
-        var response = "$method $url\n"
+        var response = "\t$method $url\n"
 
         for ((headerName, headerValue) in headers) {
-            response += "$headerName: $headerValue\n"
+            response += "\t$headerName: $headerValue\n"
         }
 
         val body = this.body
         if (body?.bodyType != null) {
             response += "\n"
-            response += "Body type: ${body.bodyType}\n"
+            response += "\tBody type: ${body.bodyType}\n"
         }
 
         if (body?.content?.isNotEmpty() == true) {
-            response +=  "\n"
+            response += "\n"
             response += formatHttpBody(
                     body = body.content,
                     contentType = getContentTypeHeaderValue().orEmpty(),
@@ -72,10 +137,10 @@ class HttpRequestSteps {
     }
 
     private fun ValidHttpResponse.prettyPrint(): String {
-        var response = "$protocol $statusCode\n"
+        var response = "\t$protocol $statusCode ${EnglishReasonPhraseCatalog.INSTANCE.getReason(statusCode, Locale.ENGLISH)}\n"
         for (header in headers) {
             for (value in header.values) {
-                response += "${header.key}: $value\n"
+                response += "\t${header.key}: $value\n"
             }
         }
 
@@ -88,7 +153,7 @@ class HttpRequestSteps {
                 ?.firstOrNull()
                 .orEmpty()
         if (body.isNotEmpty()) {
-            response +=  "\n"
+            response += "\n"
             response += formatHttpBody(
                     body = bodyAsUtf8String,
                     contentType = contentType,
@@ -109,14 +174,22 @@ class HttpRequestSteps {
 
         return if (MediaTypeUtils.isJsonMediaType(mediaType)) {
             try {
-                JsonUtils.prettyPrintJson(body)
+                val serializedBody = body.prettyPrintJson()
+
+                serializedBody.lines()
+                        .joinToString(separator = "\n") {
+                            "\t" + it
+                        }
             } catch (e: Exception) {
                 LOG.warn("failed to format $bodyDescription as JSON: it's not valid JSON; contentType=[$contentType])")
 
                 body
             }
         } else {
-            body
+            body.lines()
+                    .joinToString(separator = "\n") {
+                        "\t" + it
+                    }
         }
     }
 

@@ -1,10 +1,8 @@
 package com.testerum.web_backend.services.runner.execution
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.testerum.api.test_context.settings.model.resolvedValueAsPath
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
-import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
@@ -14,10 +12,10 @@ import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.RunnerStoppedEvent
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.settings.SettingsManager
-import com.testerum.settings.getRequiredSetting
-import com.testerum.settings.getValue
-import com.testerum.settings.keys.SystemSettingKeys
+import com.testerum.settings.TesterumDirs
+import com.testerum.web_backend.filter.project.ProjectDirHolder
 import com.testerum.web_backend.services.dirs.FrontendDirs
+import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.runner.execution.model.RunningTestExecution
 import com.testerum.web_backend.services.runner.execution.model.TestExecution
 import com.testerum.web_backend.services.runner.execution.model.TestExecutionResponse
@@ -29,13 +27,13 @@ import org.zeroturnaround.exec.ProcessResult
 import org.zeroturnaround.exec.listener.ProcessListener
 import org.zeroturnaround.exec.stream.LogOutputStream
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import java.nio.file.Path as JavaPath
 
-class TestsExecutionFrontendService(private val testsCache: TestsCache,
+class TestsExecutionFrontendService(private val webProjectManager: WebProjectManager,
+                                    private val testerumDirs: TesterumDirs,
                                     private val frontendDirs: FrontendDirs,
                                     private val settingsManager: SettingsManager,
                                     private val jsonObjectMapper: ObjectMapper) {
@@ -56,7 +54,12 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
     fun createExecution(testOrDirectoryPaths: List<Path>): TestExecutionResponse {
         val executionId = testExecutionIdGenerator.nextId()
-        testExecutionsById[executionId] = TestExecution(executionId, testOrDirectoryPaths)
+        val projectRootDir = ProjectDirHolder.get().toAbsolutePath().normalize()
+        testExecutionsById[executionId] = TestExecution(
+                executionId = executionId,
+                testOrDirectoryPathsToRun = testOrDirectoryPaths,
+                projectRootDir = projectRootDir
+        )
 
         val runnerRootNode = getRunnerRootNode(testOrDirectoryPaths)
 
@@ -67,7 +70,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     }
 
     private fun getRunnerRootNode(testOrDirectoryPaths: List<Path>): RunnerRootNode {
-        val tests = testsCache.getTestsForPaths(testOrDirectoryPaths)
+        val tests = webProjectManager.getProjectServices().getTestsCache().getTestsForPaths(testOrDirectoryPaths)
 
         val builder = RunnerTreeBuilder()
         tests.forEach { builder.addTest(it) }
@@ -102,6 +105,7 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
             LOG.warn("trying to start an execution that is already started")
             return
         }
+        ProjectDirHolder.set(execution.projectRootDir, null)
 
         LOG.debug("==========================================[ start test execution {} ]=========================================", executionId)
 
@@ -185,10 +189,12 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
         commandLine += OsUtils.getJavaBinaryPath().toString()
 
-        commandLine += "-classpath"
-        commandLine += "${getRunnerRepoPath()}/*"
+        commandLine += "-Dfile.encoding=UTF-8"
 
-        commandLine += "-Dtesterum.packageDirectory=${getPackageDir()}"
+        commandLine += "-classpath"
+        commandLine += "${getRunnerLibPath()}/*"
+
+        commandLine += "-Dtesterum.packageDirectory=${testerumDirs.getInstallDir()}"
         commandLine += "-XX:-OmitStackTraceInFastThrow"
 //        commandLine += "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000" // todo: make this an option to allow people to do remote debugging
 
@@ -200,26 +206,16 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
         return commandLine
     }
 
-    private fun getRunnerRepoPath(): JavaPath {
-        val packageDir: JavaPath = getPackageDir()
+    private fun getRunnerLibPath(): JavaPath {
+        val runnerDir: JavaPath = testerumDirs.getRunnerDir()
 
-        return packageDir.resolve("runner/repo")
-                         .toAbsolutePath()
-                         .normalize()
-    }
-
-    private fun getPackageDir(): JavaPath {
-        val packageDirKey = SystemSettingKeys.TESTERUM_INSTALL_DIR
-        val packageDirSettingValue = settingsManager.getValue(packageDirKey)!!
-
-        return Paths.get(packageDirSettingValue)
-                    .toAbsolutePath()
-                    .normalize()
+        return runnerDir.resolve("lib")
+                .toAbsolutePath()
+                .normalize()
     }
 
     private fun getBuiltInBasicStepsDirectory(): JavaPath {
-        val builtInBasicStepsDir = settingsManager.getRequiredSetting(SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR)
-                .resolvedValueAsPath
+        val builtInBasicStepsDir = testerumDirs.getBasicStepsDir()
 
         return builtInBasicStepsDir.toAbsolutePath().normalize()
     }
@@ -236,9 +232,10 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     private fun createArgs(testsPathsToRun: List<Path>): List<String> {
         val args = mutableListOf<String>()
 
+        val projectDirs = webProjectManager.getProjectServices().dirs()
+
         // repository directory
-        val repositoryDir: JavaPath = frontendDirs.getRepositoryDir()
-                ?: throw IllegalArgumentException("cannot run tests because the repositoryDir is not set")
+        val repositoryDir: JavaPath = projectDirs.projectRootDir
 
         args += "--repository-directory"
         args += "${repositoryDir.escape()}"
@@ -259,27 +256,19 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
 
         // tests
         for (testPathToRun in testsPathsToRun) {
-            val path: JavaPath = frontendDirs.getTestsDir(repositoryDir)
-                                                        .resolve(testPathToRun.toString())
-                                                        .toAbsolutePath()
-                                                        .normalize()
+            val path: JavaPath = projectDirs.getTestsDir()
+                    .resolve(testPathToRun.toString())
+                    .toAbsolutePath()
+                    .normalize()
 
             args.add("--test-path")
             args.add("${path.escape()}")
         }
 
         // settings
-        val keysOfSettingsToExclude = setOf(
-                SystemSettingKeys.TESTERUM_INSTALL_DIR,
-                SystemSettingKeys.REPOSITORY_DIR,
-                SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR
-        )
         val settings: Map<String, String?> = settingsManager.getSettings()
                 .associateBy({ it.definition.key }, { it.resolvedValue })
         for (setting in settings) {
-            if (setting.key in keysOfSettingsToExclude) {
-                continue
-            }
             if (setting.value == null) {
                 continue
             }
@@ -304,8 +293,8 @@ class TestsExecutionFrontendService(private val testsCache: TestsCache,
     }
 
     private fun Any?.escape(): String? = this?.toString()
-                                             ?.replace("\\", "\\\\")
-                                             ?.replace("\"", "\\\"")
-                                             ?.replace("'", "\\'")
+            ?.replace("\\", "\\\\")
+            ?.replace("\"", "\\\"")
+            ?.replace("'", "\\'")
 
 }

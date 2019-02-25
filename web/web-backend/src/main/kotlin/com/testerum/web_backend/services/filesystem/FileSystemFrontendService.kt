@@ -5,6 +5,7 @@ import com.testerum.common_kotlin.canCreateChild
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.common_kotlin.hasSubDirectories
 import com.testerum.common_kotlin.isDirectory
+import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.model.config.dir_tree.CreateFileSystemDirectoryRequest
 import com.testerum.model.config.dir_tree.FileSystemDirectory
 import com.testerum.model.exception.ValidationException
@@ -17,7 +18,7 @@ import java.nio.file.Paths
 import java.util.stream.Stream
 import java.nio.file.Path as JavaPath
 
-class FileSystemFrontendService {
+class FileSystemFrontendService(private val testerumProjectFileService: TesterumProjectFileService) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(FileSystemFrontendService::class.java)
@@ -43,15 +44,15 @@ class FileSystemFrontendService {
             } catch (e: AccessDeniedException) {
                 throw ValidationException(
                         ValidationModel(
-                                globalValidationMessage = "Got access denied while creating directory [${directoryToCreate.toAbsolutePath().normalize()}].",
-                                globalValidationMessageDetails = e.toStringWithStacktrace()
+                                globalMessage = "Got access denied while creating directory [${directoryToCreate.toAbsolutePath().normalize()}].",
+                                globalMessageDetails = e.toStringWithStacktrace()
                         )
                 )
             } catch (e: Exception) {
                 throw ValidationException(
                         ValidationModel(
-                                globalValidationMessage = "Failed to create directory [${directoryToCreate.toAbsolutePath().normalize()}].",
-                                globalValidationMessageDetails = e.toStringWithStacktrace()
+                                globalMessage = "Failed to create directory [${directoryToCreate.toAbsolutePath().normalize()}].",
+                                globalMessageDetails = e.toStringWithStacktrace()
                         )
                 )
             }
@@ -60,6 +61,7 @@ class FileSystemFrontendService {
         return FileSystemDirectory(
                 name = directoryToCreate.fileName.toString(),
                 absoluteJavaPath = directoryToCreate.toAbsolutePath().normalize().toString(),
+                isProject = testerumProjectFileService.isTesterumProject(directoryToCreate),
                 canCreateChild = directoryToCreate.canCreateChild,
                 hasChildrenDirectories = directoryToCreate.hasSubDirectories
         )
@@ -71,6 +73,7 @@ class FileSystemFrontendService {
         return FileSystemDirectory(
                 name = "",
                 absoluteJavaPath = "",
+                isProject = false,
                 canCreateChild = false,
                 hasChildrenDirectories = rootDirectories.isNotEmpty(),
                 childrenDirectories = rootDirectories
@@ -87,6 +90,7 @@ class FileSystemFrontendService {
         return FileSystemDirectory(
                 name = dir.fileName?.toString() ?: dir.toString(),
                 absoluteJavaPath = dir.toAbsolutePath().normalize().toString(),
+                isProject = testerumProjectFileService.isTesterumProject(dir),
                 canCreateChild = dir.canCreateChild,
                 hasChildrenDirectories = childrenDirectories.isNotEmpty(),
                 childrenDirectories = childrenDirectories
@@ -102,6 +106,7 @@ class FileSystemFrontendService {
                     result += FileSystemDirectory(
                             name = path.fileName.toString(),
                             absoluteJavaPath = path.toAbsolutePath().normalize().toString(),
+                            isProject = testerumProjectFileService.isTesterumProject(path),
                             canCreateChild = path.canCreateChild,
                             hasChildrenDirectories = path.hasSubDirectories
                     )

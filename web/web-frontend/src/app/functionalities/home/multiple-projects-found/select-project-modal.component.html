@@ -1,0 +1,27 @@
+<div bsModal #selectProjectModal="bs-modal" class="modal fade server-not-available-modal" tabindex="-1" role="dialog" [config]="{backdrop: 'static', keyboard: false}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Select Project
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="main-messages">
+                    <div class="main-message">You have two projects with the same name.</div>
+                    <div class="main-message">Please select the one you want to use.</div>
+                </div>
+                <div class="projects">
+                    <div class="projects-title">Projects</div>
+                    <ul>
+                        <li *ngFor="let project of projects" class="project"
+                            (click)="onProjectSelected(project)">
+                            <div class="project-name">{{project.name}}</div>
+                            <div class="project-path">{{project.path}}</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

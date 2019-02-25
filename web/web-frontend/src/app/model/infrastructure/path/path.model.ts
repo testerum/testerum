@@ -133,10 +133,10 @@ export class Path implements Serializable<Path> {
             '}'
     }
 
-    toDirectoryString(): string {
+    toDirectoryString(absolutePath: boolean = false): string {
         let result: string = this.directories.join('/');
 
-        if (!result.startsWith('/')) {
+        if (!result.startsWith('/') && !absolutePath) {
             result = '/' + result;
         }
         if (!result.endsWith('/')) {
@@ -171,8 +171,8 @@ export class Path implements Serializable<Path> {
         return new Path(this.directories, this.fileName, null);
     }
 
-    toString(): string {
-        let result = this.toDirectoryString();
+    toString(absolutePath: boolean = false): string {
+        let result = this.toDirectoryString(absolutePath);
 
         if (this.fileName) {
             result += this.fileName

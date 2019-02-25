@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -16,19 +16,17 @@ import {ResourcesModule} from "./functionalities/resources/resources.module";
 import {RdbmsService} from "./service/resources/rdbms/rdbms.service";
 import {ResourceService} from "./service/resources/resource.service";
 import {HttpService} from "./service/resources/http/http.service";
-import {ErrorService} from "./service/error.service";
+import {ErrorHttpInterceptor} from "./service/interceptors/error.http-interceptor";
 import {ApplicationEventBus} from "./event-bus/application.eventbus";
 import {VariablesComponent} from "./functionalities/variables/variables.component";
 import {ModalModule} from "ngx-bootstrap/modal";
 import {VariablesService} from "./service/variables.service";
-import {SetupComponent} from "./functionalities/config/setup/setup.component";
-import {SetupService} from "./service/setup.service";
 import {FileSystemService} from "./service/file-system.service";
-import {SetupGuard} from "./service/guards/setup.guard";
+import {LicenseGuard} from "./service/guards/license.guard";
 import {SettingsComponent} from "./functionalities/config/settings/settings.component";
 import {SettingsService} from "./service/settings.service";
-import {FileDirChooserComponent} from "./generic/components/form/file_dir_chooser/file-dir-chooser.component";
-import {FileDirectoryChooserContainerComponent} from "./generic/components/form/file_dir_chooser/container/file-directory-chooser-container.component";
+import {FileDirChooserInputComponent} from "./generic/components/form/file_dir_chooser/file-dir-chooser-input.component";
+import {FileDirTreeContainerComponent} from "./generic/components/form/file_dir_chooser/file-dir-tree/nodes/container/file-dir-tree-container.component";
 import {ResultsModule} from "./functionalities/results/results.module";
 import {ResultService} from "./service/report/result.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -39,15 +37,24 @@ import {UrlService} from "./service/url.service";
 import {TagsService} from "./service/tags.service";
 import {MessageService} from "./service/message.service";
 import {ManualModule} from "./functionalities/manual/manual.module";
-import {CanDeactivateGuard} from "./service/guards/CanDeactivateGuard";
+import {UnsavedChangesGuard} from "./service/guards/unsaved-changes.guard";
 import {LicenseService} from "./functionalities/config/license/license.service";
 import {LicenseComponent} from "./functionalities/config/license/license.component";
-import {FileUploadModule, RadioButtonModule} from "primeng/primeng";
+import {DropdownModule, FileUploadModule, RadioButtonModule, TooltipModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
+import {MultiProjectHttpInterceptor} from "./service/interceptors/multi-prject.http-interceptor";
+import {HomeModule} from "./functionalities/home/home.module";
+import {HomeService} from "./service/home.service";
+import {UtilService} from "./service/util.service";
+import {ProjectService} from "./service/project.service";
+import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.interceptor";
+import {CurrentProjectGuard} from "./service/guards/current-project.guard";
+import {ModelRepairerService} from "./service/model-repairer/model-repairer.service";
+import { MenuVariablesComponent } from './menu/variables/menu-variables.component';
+import { EnvironmentEditModalComponent } from './functionalities/variables/environment-edit-modal/environment-edit-modal.component';
 import {UserModule} from "./functionalities/user/user.module";
 import {BsDropdownModule} from "ngx-bootstrap";
 import {UserProfileService} from "./service/user-profile.service";
-
 
 @NgModule({
     imports: [
@@ -61,7 +68,10 @@ import {UserProfileService} from "./service/user-profile.service";
 
         RadioButtonModule,
         FileUploadModule,
+        TooltipModule,
+        DropdownModule,
 
+        HomeModule,
         FeaturesModule,
         ResultsModule,
         StepsModule,
@@ -77,26 +87,28 @@ import {UserProfileService} from "./service/user-profile.service";
         MenuComponent,
         PageNotFoundComponent,
         VariablesComponent,
-        SetupComponent,
         LicenseComponent,
         SettingsComponent,
         ArgValueValidatorDirective,
+        MenuVariablesComponent,
+        EnvironmentEditModalComponent
     ],
     exports: [
         VariablesComponent,
     ],
     providers: [
-        SetupGuard,
-        CanDeactivateGuard,
+        LicenseGuard,
+        UnsavedChangesGuard,
+        CurrentProjectGuard,
 
         ApplicationEventBus,
 
-        ContextService,
         StepsService,
         TestsService,
         VariablesService,
-        SetupService,
         SettingsService,
+        HomeService,
+        ProjectService,
         FileSystemService,
         ResultService,
         FeatureService,
@@ -108,26 +120,27 @@ import {UserProfileService} from "./service/user-profile.service";
         HttpService,
 
         UrlService,
-        ErrorService,
-        { provide: HTTP_INTERCEPTORS, useExisting: ErrorService,  multi: true },
+        UtilService,
+        ModelRepairerService,
 
+        ErrorHttpInterceptor,
+        { provide: HTTP_INTERCEPTORS, useExisting: ErrorHttpInterceptor,  multi: true },
+
+        MultiProjectHttpInterceptor,
+        { provide: HTTP_INTERCEPTORS, useClass: MultiProjectHttpInterceptor, multi: true },
+
+        ErrorsHandlerInterceptor,
+        { provide: ErrorHandler, useClass: ErrorsHandlerInterceptor},
+
+        ContextService,
         MessageService,
-        { provide: APP_INITIALIZER, useFactory: initMessages, deps: [MessageService], multi: true },
-
         LicenseService,
     ],
     entryComponents: [
-        FileDirChooserComponent,
-        FileDirectoryChooserContainerComponent,
+        FileDirChooserInputComponent,
+        FileDirTreeContainerComponent,
     ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
-}
-
-
-export function initMessages(messageService: MessageService){
-    // Do initing of services that is required before app loads
-    // NOTE: this factory needs to return a function (that then returns a promise)
-    return () => messageService.init();
 }

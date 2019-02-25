@@ -1,17 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
-import {SetupGuard} from "../../service/guards/setup.guard";
+import {LicenseGuard} from "../../service/guards/license.guard";
 import {ResultsComponent} from "./results.component";
-import {RunnerResultTabsComponent} from "./main/runner-result-tabs.component";
+import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
 const testsRoutes: Routes = [
     {
-        path: "automated/results", component: ResultsComponent, canActivate: [SetupGuard], canActivateChild: [SetupGuard],
-        children: [
-            {
-                path: ':action', component: RunnerResultTabsComponent
-            }
-        ]
+        path: ":project/automated/results", component: ResultsComponent, canActivate: [LicenseGuard, CurrentProjectGuard], canActivateChild: [LicenseGuard],
     },
 ];
 @NgModule({

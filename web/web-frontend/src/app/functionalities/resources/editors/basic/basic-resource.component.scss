@@ -1,4 +1,39 @@
+.basic-resource {
+    height: 100%;
 
-.label-size {
-    width: auto;
+    .condensed-view-container {
+        white-space: pre-wrap;
+    }
+
+    .label-size {
+        width: 3em;
+    }
+
+    .my-button-panel {
+        margin-left: 5px;
+    }
+
+    form{
+        height: 100%;
+        .multiline-text-line {
+            height: 100%;
+            .multiline-text {
+                height: 100%;
+                .input-container {
+                    height: 100%;
+                    textarea {
+                        width: 100%;
+                        height: 100%;
+                        padding: 5px 8px;
+                    }
+                }
+            }
+        }
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }
 }

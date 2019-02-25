@@ -5,7 +5,7 @@ import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.api.test_context.TestContext
 import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.settings.RunnerSettingsManager
-import com.testerum.api.test_context.settings.model.resolvedValueAsPath
+import com.testerum.api.test_context.settings.RunnerTesterumDirs
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.api.transformer.Transformer
 import com.testerum.common_jdk.stopwatch.StopWatch
@@ -13,9 +13,8 @@ import com.testerum.common_kotlin.hasExtension
 import com.testerum.common_kotlin.isRegularFile
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
 import com.testerum.common_kotlin.walkAndCollect
-import com.testerum.file_service.caches.resolved.FeaturesCache
-import com.testerum.file_service.caches.resolved.StepsCache
-import com.testerum.file_service.caches.resolved.TestsCache
+import com.testerum.file_service.caches.resolved.BasicStepsCache
+import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
@@ -24,29 +23,28 @@ import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.runner_cmdline.events.EventsService
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
 import com.testerum.runner_cmdline.object_factory.GlueObjectFactoryFinder
+import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
 import com.testerum.runner_cmdline.runner_tree.builder.RunnerExecutionTreeBuilder
 import com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
-import com.testerum.runner_cmdline.settings.RunnerSettingsManagerImpl
 import com.testerum.runner_cmdline.test_context.TestContextImpl
 import com.testerum.runner_cmdline.transformer.TransformerFactory
-import com.testerum.settings.SettingsManager
-import com.testerum.settings.hasValue
-import com.testerum.settings.keys.SystemSettingKeys
+import com.testerum.settings.TesterumDirs
 import java.nio.file.Paths
 import java.nio.file.Path as JavaPath
 
-class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderFactory,
-                        private val runnerSettingsManager: RunnerSettingsManagerImpl,
-                        private val settingsManager: SettingsManager,
+class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
+                        private val runnerClassloaderFactory: RunnerClassloaderFactory,
+                        private val runnerSettingsManager: RunnerSettingsManager,
+                        private val runnerTesterumDirs: RunnerTesterumDirs,
+                        private val testerumDirs: TesterumDirs,
                         private val eventsService: EventsService,
-                        private val stepsCache: StepsCache,
-                        private val testsCache: TestsCache,
-                        private val featuresCache: FeaturesCache,
+                        private val basicStepsCache: BasicStepsCache,
                         private val runnerExecutionTreeBuilder: RunnerExecutionTreeBuilder,
                         private val variablesFileService: VariablesFileService,
+                        private val localVariablesFileService: LocalVariablesFileService,
                         private val testVariables: TestVariablesImpl,
                         private val executionListenerFinder: ExecutionListenerFinder,
                         private val globalTransformers: List<Transformer<*>>,
@@ -70,7 +68,8 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         initialize(cmdlineParams)
 
         // create execution tree
-        val suite: RunnerSuite = runnerExecutionTreeBuilder.createTree(cmdlineParams, getTestsDir(getRepositoryDir()))
+        val testsDir = runnerProjectManager.getProjectServices().dirs().getTestsDir()
+        val suite: RunnerSuite = runnerExecutionTreeBuilder.createTree(cmdlineParams, testsDir)
         logRunnerSuite(suite)
 
 
@@ -81,6 +80,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         run {
             TesterumServiceLocator.registerService(TestVariables::class.java, testVariables)
             TesterumServiceLocator.registerService(RunnerSettingsManager::class.java, runnerSettingsManager)
+            TesterumServiceLocator.registerService(RunnerTesterumDirs::class.java, runnerTesterumDirs)
             TesterumServiceLocator.registerService(TesterumLogger::class.java, testerumLogger)
             TesterumServiceLocator.registerService(TestContext::class.java, testContext)
         }
@@ -101,11 +101,18 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         suite.addClassesToGlueObjectFactory(runnerContext)
 
         // setup variables
+        val projectId = runnerProjectManager.getProjectServices().project.id
+        val currentEnvironment = localVariablesFileService.getCurrentEnvironment(
+                fileLocalVariablesFile = testerumDirs.getFileLocalVariablesFile(),
+                projectId = projectId
+        )
         val globalVars = GlobalVariablesContext.from(
-                variablesFileService.getVariablesAsMap(
-                        getVariablesDir(
-                                getRepositoryDir()
-                        )
+                variablesFileService.getMergedVariables(
+                        projectVariablesDir = getProjectVariablesDir(),
+                        fileLocalVariablesFile = testerumDirs.getFileLocalVariablesFile(),
+                        projectId = projectId,
+                        currentEnvironment = /*cmdlineParams.variablesEnvironment*/ currentEnvironment, // todo: replace this HACK! The UI should send the environment
+                        variableOverrides = cmdlineParams.variableOverrides
                 )
         )
 
@@ -127,33 +134,12 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
     private fun initialize(cmdlineParams: CmdlineParams) {
         executionListenerFinder.setReports(cmdlineParams.reportsWithProperties, cmdlineParams.managedReportsDir)
 
-        val repositoryDir = getRepositoryDir()
-        val basicStepsDir = getBasicStepsDir()
-        val composedStepsDir = getComposedStepsDir(repositoryDir)
-        val resourcesDir = getResourcesDir(repositoryDir)
-        val testsDir = getTestsDir(repositoryDir)
-        val featuresDir = getFeaturesDir(repositoryDir)
+        val basicStepsDir = testerumDirs.getBasicStepsDir()
 
-        stepsCache.initialize(
+        basicStepsCache.initialize(
                 stepLibraryJarFiles = getStepLibraryJarFiles(basicStepsDir),
-                persistentCacheFile = getPersistentCacheFile(),
-                composedStepsDir = composedStepsDir,
-                resourcesDir = resourcesDir
+                persistentCacheFile = getPersistentCacheFile()
         )
-
-        testsCache.initialize(
-                testsDir = testsDir,
-                resourcesDir = resourcesDir
-        )
-
-        featuresCache.initialize(
-                featuresDir = featuresDir
-        )
-    }
-
-    private fun getBasicStepsDir(): JavaPath {
-        return runnerSettingsManager.getSetting(SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR)?.resolvedValueAsPath
-                ?: throw IllegalStateException("the setting [${SystemSettingKeys.BUILT_IN_BASIC_STEPS_DIR}] is required")
     }
 
     private fun getPersistentCacheFile(): JavaPath {
@@ -165,23 +151,7 @@ class RunnerApplication(private val runnerClassloaderFactory: RunnerClassloaderF
         return userHomeDir.resolve(".testerum/cache/basic-steps-cache.json")
     }
 
-    private fun getComposedStepsDir(repositoryDir: JavaPath): JavaPath = repositoryDir.resolve("composed_steps")
-
-    private fun getResourcesDir(repositoryDir: JavaPath): JavaPath = repositoryDir.resolve("resources")
-
-    private fun getFeaturesDir(repositoryDir: JavaPath): JavaPath = repositoryDir.resolve("features")
-
-    private fun getTestsDir(repositoryDir: JavaPath): JavaPath = getFeaturesDir(repositoryDir)
-
-    private fun getVariablesDir(repositoryDir: JavaPath): JavaPath = repositoryDir.resolve("variables")
-
-    private fun getRepositoryDir(): JavaPath {
-        if (!settingsManager.hasValue(SystemSettingKeys.REPOSITORY_DIR)) {
-            throw IllegalStateException("the setting [${SystemSettingKeys.REPOSITORY_DIR}] is required")
-        }
-
-        return settingsManager.getSetting(SystemSettingKeys.REPOSITORY_DIR)!!.resolvedValueAsPath
-    }
+    private fun getProjectVariablesDir(): JavaPath = runnerProjectManager.getProjectServices().dirs().getVariablesDir()
 
     private fun getStepLibraryJarFiles(basicStepsDir: JavaPath): List<JavaPath> {
         return basicStepsDir.walkAndCollect {

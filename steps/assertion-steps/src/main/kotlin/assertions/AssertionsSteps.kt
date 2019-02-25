@@ -8,16 +8,70 @@ class AssertionsSteps {
     @Then("<<actualValue>> is equal to <<expectedValue>>")
     fun assertEqualValues(@Param(required = false) actualValue: Any?,
                           @Param(required = false) expectedValue: Any?) {
-        if (actualValue != expectedValue) {
-            throw AssertionError("expected [$actualValue] to be equal to [$expectedValue], but was not")
+        var actual: Any? = actualValue
+        var expected: Any? = expectedValue
+
+        if (actualValue is String) {
+            if (expectedValue !is String) {
+                expected = expectedValue.toString()
+            }
+        } else {
+            if (expectedValue is String) {
+                actual = actualValue.toString()
+            }
+        }
+
+        if (actual != expected) {
+            val errorMessage = buildString {
+                append("expected ")
+                append(" actualValue=[").append(actual).append("]")
+                if (actual !== actualValue) {
+                    append(" (from toString())")
+                }
+                append(" to be equal to ")
+                append(" expectedValue=[").append(expected).append("]")
+                if (expected !== expectedValue) {
+                    append(" (from toString())")
+                }
+                append(", but they are different")
+            }
+
+            throw AssertionError(errorMessage)
         }
     }
 
     @Then("<<actualValue>> is not equal to <<expectedValue>>")
     fun assertDifferentValues(@Param(required = false) actualValue: Any?,
                               @Param(required = false) expectedValue: Any?) {
-        if (actualValue == expectedValue) {
-            throw AssertionError("expected [$actualValue] to different from [$expectedValue], but they are equal")
+        var actual: Any? = actualValue
+        var expected: Any? = expectedValue
+
+        if (actualValue is String) {
+            if (expectedValue !is String) {
+                expected = expectedValue.toString()
+            }
+        } else {
+            if (expectedValue is String) {
+                actual = actualValue.toString()
+            }
+        }
+
+        if (actual == expected) {
+            val errorMessage = buildString {
+                append("expected ")
+                append(" actualValue=[").append(actual).append("]")
+                if (actual !== actualValue) {
+                    append(" (from toString())")
+                }
+                append(" to be different from ")
+                append(" expectedValue=[").append(expected).append("]")
+                if (expected !== expectedValue) {
+                    append(" (from toString())")
+                }
+                append(", but they are equal")
+            }
+
+            throw AssertionError(errorMessage)
         }
     }
 

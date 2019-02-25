@@ -51,6 +51,7 @@ class ArgsResolver(private val resourceFileService: ResourceFileService) {
                         val resource: ResourceContext? = resourceFileService.getResourceByPathAndType(path, resourceType, resourcesDir)
                         if (resource == null) {
                             warnings += Warning.externalResourceNotFound("${resourceType.relativeRootDir}/$pathAsString")
+                            println("=====================> cannot find resource [$pathAsString]")
 
                             null
                         } else {

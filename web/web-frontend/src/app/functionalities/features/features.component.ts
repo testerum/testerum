@@ -15,6 +15,6 @@ export class FeaturesComponent {
     }
 
     isTestRunnerVisible(): boolean {
-        return this.testsRunnerService.isTestRunnerVisible;
+        return this.testsRunnerService.isRunnerVisible();
     }
 }
