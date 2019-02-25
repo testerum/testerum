@@ -3,7 +3,7 @@ import {Serializable} from "../../infrastructure/serializable.model";
 
 export class HttpRequestHeader implements Serializable<HttpRequestHeader> {
     key: string;
-    value: string;
+    value: string = "";
 
     deserialize(input: Object): HttpRequestHeader {
         throw new Error("this should not be used")
@@ -15,7 +15,7 @@ export class HttpRequestHeader implements Serializable<HttpRequestHeader> {
         }
 
         return ''+
-            JsonUtil.stringify(this.key) + ':' + JsonUtil.stringify(this.value);
+            JsonUtil.stringify(this.key) + ':' + (this.value ? JsonUtil.stringify(this.value) : JsonUtil.stringify(""));
     }
 
     isEmpty(): boolean {
