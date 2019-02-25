@@ -25,7 +25,7 @@ export class Variable implements Serializable<Variable> {
 
         let response = '{';
         response += '"key":' + JsonUtil.stringify(this.key);
-        response += ',"value":' + JsonUtil.stringify(this.value);
+        response += ',"value":' + (this.value ? JsonUtil.stringify(this.value) : JsonUtil.stringify(""));
         response += '}';
         return response;
     }
