@@ -39,15 +39,13 @@
                 </a>
             </li>
             <li dropdown>
-                <a dropdownToggle
-                   aria-controls="dropdown-basic"
-                   routerLinkActive="active">
-                    <i class="fas fa-user"></i>
+                <a dropdownToggle aria-controls="dropdown-basic" routerLinkActive="active">
+                    <i class="fas fa-user icon-menu-item"></i>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="button-basic">
                     <li><a href="" (click)="showUserProfile(); false;">User profile</a></li>
-                    <li><a hr   ef="" (click)="showFeedback(); false;">Feedback</a></li>
+                    <li><a href="" (click)="showFeedback(); false;">Feedback</a>
                     <li class="divider dropdown-divider"></li>
                     <li role="menuitem"><a class="dropdown-item" href="#">Logout</a>
                     </li>
