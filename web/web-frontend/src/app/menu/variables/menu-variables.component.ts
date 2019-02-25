@@ -39,9 +39,7 @@ export class MenuVariablesComponent implements OnInit, OnDestroy {
 
             this.availableEnvironments.length = 0;
             this.availableEnvironments.push(AllProjectVariables.DEFAULT_ENVIRONMENT_NAME);
-            if (projectVariables.localVariables.length > 0) {
-                this.availableEnvironments.push(AllProjectVariables.LOCAL_ENVIRONMENT_NAME);
-            }
+            this.availableEnvironments.push(AllProjectVariables.LOCAL_ENVIRONMENT_NAME);
 
             for (const environment of projectVariables.environments) {
                 this.availableEnvironments.push(environment.name);
