@@ -1,8 +1,6 @@
 import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs';
-import {Variable} from "../functionalities/variables/model/variable.model";
-import {JsonUtil} from "../utils/json.util";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AllProjectVariables} from "../functionalities/variables/model/project-variables.model";
 
