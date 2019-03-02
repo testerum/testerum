@@ -42,18 +42,10 @@
                         </div>
                     </div>
 
-                    <div>
-                        <div class="error-detail-toggle" *ngIf="model.errorStacktrace">
-                            <div *ngIf="!shouldShowDetails">
-                                <a (click)="toggleShowDetails()">Show error details</a>
-                            </div>
-                            <div *ngIf="shouldShowDetails">
-                                <a (click)="toggleShowDetails()">Hide error details</a>
-                            </div>
-                        </div>
+                    <div class="my-form-input-as-column">
+                        <label class="my-label">Exception Details:</label>
 
                         <div class="stack-trace-panel"
-                             [class.hidden]="!shouldShowDetails"
                              [innerHTML]="getErrorMessageAndStackTrace()">
                         </div>
                     </div>

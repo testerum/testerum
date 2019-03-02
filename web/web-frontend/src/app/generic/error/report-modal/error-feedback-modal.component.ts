@@ -32,8 +32,6 @@ export class ErrorFeedbackModalComponent implements AfterViewInit {
 
     model: ErrorFeedback = new ErrorFeedback();
 
-    shouldShowDetails: boolean = true;
-
     constructor(private cd: ChangeDetectorRef,
                 private feedbackService: FeedbackService) {
     }
@@ -55,7 +53,6 @@ export class ErrorFeedbackModalComponent implements AfterViewInit {
 
     init() {
         this.model = new ErrorFeedback();
-        this.shouldShowDetails = true;
 
         if(this.error instanceof FullLogErrorResponse) {
             this.model.errorMessage = this.error.uiMessage;
@@ -84,10 +81,6 @@ export class ErrorFeedbackModalComponent implements AfterViewInit {
             result += this.model.errorStacktrace;
         }
         return result;
-    }
-
-    toggleShowDetails(): void {
-        this.shouldShowDetails = !this.shouldShowDetails;
     }
 
     close(): void {
