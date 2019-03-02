@@ -62,4 +62,12 @@ export class ContextService {
 
         document.title = currentProject.name + " - Testerum" ;
     }
+
+    refreshPage() {
+        if (this.isProjectSelected()) {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/" + this.getProjectName() + "/" ;
+        } else {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/";
+        }
+    }
 }

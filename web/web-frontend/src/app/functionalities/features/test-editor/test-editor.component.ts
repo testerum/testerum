@@ -174,6 +174,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
     enableEditTestMode(): void {
         this.setEditMode(true);
+        throw new Error("Just for development reasons!");
     }
 
     onSearchTag(event) {

@@ -33,6 +33,7 @@ import com.testerum.web_backend.controllers.error.model.response_preparers.gener
 import com.testerum.web_backend.controllers.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.validation.ValidationErrorResponsePreparer
 import com.testerum.web_backend.controllers.features.FeatureController
+import com.testerum.web_backend.controllers.feedback.FeedbackController
 import com.testerum.web_backend.controllers.filesystem.FileSystemController
 import com.testerum.web_backend.controllers.home.HomeController
 import com.testerum.web_backend.controllers.license.LicenseController
@@ -390,6 +391,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             projectFrontendService = projectFrontendService
     )
 
+    private val feedbackController = FeedbackController(
+    )
+
     private val licenseController = LicenseController(
             licenseFrontendService = licenseFrontendService
     )
@@ -471,6 +475,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             versionController,
             homeController,
             projectController,
+            feedbackController,
             licenseController,
             settingsController,
             messageController,

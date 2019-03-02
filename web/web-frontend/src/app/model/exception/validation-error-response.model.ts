@@ -3,7 +3,7 @@ import {ErrorCode} from "./enums/error-code.enum";
 import {ValidationModel} from "./validation.model";
 import {Serializable} from "../infrastructure/serializable.model";
 
-export class ValidationErrorResponse implements MyError, Serializable<ValidationErrorResponse> {
+export class ValidationErrorResponse extends MyError implements Serializable<ValidationErrorResponse> {
 
     errorCode: ErrorCode;
     validationModel: ValidationModel;

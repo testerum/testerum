@@ -1,38 +1,31 @@
-<div bsModal #errorModal="bs-modal" class="modal fade error-dialog" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button (click)="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-                    {{title}}
-                </h4>
-            </div>
-            <div class="modal-body">
-                <p class="error-message" [innerHTML]="message"></p>
 
-                <div *ngIf="isOurBug" class="excuse-messages">
-                    <div>We are making mistakes too!</div>
-                    <div>We are very sorry for any inconvenience we may have caused.</div>
-                    <div>Please report this issue to us and we will fix it as soon as possible.</div>
-                </div>
-
-                <div class="error-detail-toggle" *ngIf="details">
-                    <div *ngIf="!shouldShowDetails">
-                        <a (click)="toggleShowDetails()">Show error details</a>
-                    </div>
-                    <div *ngIf="shouldShowDetails">
-                        <a (click)="toggleShowDetails()">Hide error details</a>
-                    </div>
-                </div>
-
-                <div class="stack-trace-panel"
-                     [class.hidden]="!shouldShowDetails"
-                     [innerHTML]="details">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button (click)="close()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+<!-- EXCEPTION VIEW -->
+<p-toast class="error-toast my-toast" key="error" position="bottom-right" [baseZIndex]="5000">
+    <ng-template let-message pTemplate="message">
+        <div style="text-align: center">
+            <i class="alert-image pi pi-exclamation-triangle" style="font-size: 3em"></i>
+            <h3 class="title">{{message.summary}}</h3>
+            <p class="message-details">{{message.detail}}</p>
         </div>
-    </div>
-</div>
+        <div class="buttons">
+            <button *ngIf="!message.data.isErrorReported" (click)="report(message.data);$event.stopPropagation();" type="button" class="btn btn-default">Report</button>
+            <button (click)="refresh();$event.stopPropagation();" type="button" class="btn btn-default">Refresh Page</button>
+            <button (click)="close(message.key);$event.stopPropagation();" type="button" class="btn btn-default">Close</button>
+        </div>
+    </ng-template>
+</p-toast>
+
+
+<!-- VALIDATION EXCEPTION VIEW-->
+<p-toast class="validation-exception-toast my-toast" key="validationException" position="top-center" [baseZIndex]="5000">
+    <ng-template let-message pTemplate="message">
+        <div style="text-align: center">
+            <i class="alert-image pi pi-exclamation-triangle" style="font-size: 3em"></i>
+            <h3 class="title" [innerHTML]="message.summary"></h3>
+            <p class="message-details" [innerHTML]="message.detail"></p>
+        </div>
+        <div class="buttons">
+            <button (click)="close(message.key);$event.stopPropagation();" type="button" class="btn btn-default">Close</button>
+        </div>
+    </ng-template>
+</p-toast>
