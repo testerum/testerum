@@ -17,7 +17,7 @@
 
 
 <!-- VALIDATION EXCEPTION VIEW-->
-<p-toast class="validation-exception-toast my-toast" key="validationException" position="top-center" [baseZIndex]="5000">
+<p-toast class="validation-exception-toast my-toast" key="validationException" position="top-center" [modal]="true" [baseZIndex]="5000">
     <ng-template let-message pTemplate="message">
         <div style="text-align: center">
             <i class="alert-image pi pi-exclamation-triangle" style="font-size: 3em"></i>

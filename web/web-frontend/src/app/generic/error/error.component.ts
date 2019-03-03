@@ -42,7 +42,7 @@ export class ErrorComponent implements OnInit {
 
                 if(error instanceof ValidationErrorResponse) {
                     this.messageService.add({
-                        summary: "Validation Exception",
+                        summary: "Operation Not Allowed",
                         detail: error.validationModel.globalHtmlMessage ? error.validationModel.globalHtmlMessage : error.validationModel.globalMessage,
                         data: error,
                         key: "validationException",
