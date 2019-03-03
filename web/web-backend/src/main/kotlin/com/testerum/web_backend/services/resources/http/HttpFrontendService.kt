@@ -37,6 +37,7 @@ class HttpFrontendService(private val webProjectManager: WebProjectManager,
     }
 
     private fun resolveVariables(request: HttpRequest): HttpRequest {
+        // todo: remove this workaround: the UI should send the environment in the request
         val projectId = webProjectManager.getProjectServices().project.id
         val currentEnvironment = localVariablesFileService.getCurrentEnvironment(
                 fileLocalVariablesFile = frontendDirs.getFileLocalVariablesFile(),
