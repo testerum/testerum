@@ -65,7 +65,6 @@ import com.testerum.web_backend.services.initializers.caches.CachesInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.BasicStepsCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.JdbcDriversCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.LicenseCacheInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.RecentProjectsCacheInitializer
 import com.testerum.web_backend.services.initializers.info_logging.InfoLoggerInitializer
 import com.testerum.web_backend.services.initializers.settings.SettingsManagerInitializer
 import com.testerum.web_backend.services.license.LicenseFrontendService
@@ -141,11 +140,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             jdbcDriversCache = rdbmsDriverConfigCache
     )
 
-    private val recentProjectsCacheInitializer = RecentProjectsCacheInitializer(
-            frontendDirs = frontendDirs,
-            recentProjectsCache = fileServiceModuleFactory.recentProjectsCache
-    )
-
     private val licensePublicKeyForVerification: PublicKey = PemMarshaller.parsePublicKey(
             StringObfuscator.deobfuscate(
                     "rSVJ6P64sg4d6DvbvqjX0Q==.Zn2o9B/zBEF4To/YtBuWTAhwzpxrnGwrHC2lxagQmUwhEcubVdowblp" +
@@ -185,7 +179,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val cachesInitializer = CachesInitializer(
             basicStepsCacheInitializer = stepCachesInitializer,
-            recentProjectsCacheInitializer = recentProjectsCacheInitializer,
             jdbcDriversCacheInitializer = jdbcDriversCacheInitializer,
             licenseCacheInitializer = licenseCacheInitializer
     )
@@ -357,7 +350,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val projectFrontendService = ProjectFrontendService(
-            recentProjectsCache = fileServiceModuleFactory.recentProjectsCache
+            frontendDirs = frontendDirs,
+            recentProjectsFileService = fileServiceModuleFactory.recentProjectsFileService,
+            testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService
     )
 
     private val quotesService = QuotesService()
