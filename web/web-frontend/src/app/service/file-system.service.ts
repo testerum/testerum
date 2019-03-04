@@ -6,6 +6,7 @@ import {FileDirTreeContainerModel} from "../generic/components/form/file_dir_cho
 import {FileSystemDirectory} from "../model/file/file-system-directory.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {CreateFileSystemDirectoryRequest} from "../model/file/create-file-system-directory-request.model";
+import {PathInfo} from "../model/infrastructure/path/path-info.model";
 
 @Injectable()
 export class FileSystemService {
@@ -78,5 +79,16 @@ export class FileSystemService {
 
         return this.http
             .post<FileSystemDirectory>(this.BASE_URL + '/create_directory', body, httpOptions);
+    }
+
+    getPathInfo(pathAsString: string): Observable<PathInfo> {
+        const httpOptions = {
+            params: new HttpParams()
+                .append('path', pathAsString)
+        };
+
+        return this.http
+            .get<PathInfo>(this.BASE_URL + "/path/info", httpOptions)
+            .pipe(map( it => new PathInfo().deserialize(it)));
     }
 }
