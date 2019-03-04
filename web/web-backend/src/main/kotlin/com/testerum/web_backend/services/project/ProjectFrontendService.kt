@@ -2,11 +2,14 @@ package com.testerum.web_backend.services.project
 
 import com.testerum.file_service.file.RecentProjectsFileService
 import com.testerum.file_service.file.TesterumProjectFileService
+import com.testerum.model.exception.ValidationException
 import com.testerum.model.home.Project
 import com.testerum.model.project.FileProject
 import com.testerum.model.project.RecentProject
 import com.testerum.web_backend.controllers.project.model.ProjectRequest
 import com.testerum.web_backend.services.dirs.FrontendDirs
+import org.slf4j.LoggerFactory
+import java.nio.file.AccessDeniedException
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.nio.file.Path as JavaPath
@@ -14,6 +17,10 @@ import java.nio.file.Path as JavaPath
 class ProjectFrontendService(private val frontendDirs: FrontendDirs,
                              private val recentProjectsFileService: RecentProjectsFileService,
                              private val testerumProjectFileService: TesterumProjectFileService) {
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(ProjectFrontendService::class.java)
+    }
 
     fun getProjects(): List<Project> {
         val recentProjectsFile = frontendDirs.getRecentProjectsFile()
@@ -63,13 +70,21 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
         val absoluteProjectRootDir: JavaPath = projectRootDir.toAbsolutePath().normalize()
 
         // create project file & directory
-        val savedFileProject = testerumProjectFileService.save(
-                fileProject = FileProject(
-                        name = createProjectRequest.projectName,
-                        id = testerumProjectFileService.generateProjectId()
-                ),
-                directory = absoluteProjectRootDir
-        )
+        val savedFileProject: FileProject = try {
+            testerumProjectFileService.save(
+                           fileProject = FileProject(
+                                   name = createProjectRequest.projectName,
+                                   id = testerumProjectFileService.generateProjectId()
+                           ),
+                           directory = absoluteProjectRootDir
+                   )
+        } catch (e: AccessDeniedException) {
+            LOG.warn("filesystem permissions do not allow to create a project; createProjectRequest=$createProjectRequest", e)
+
+            throw ValidationException(
+                    globalMessage = "File system permissions do not allow creation of a Testerum project in the directory [$absoluteProjectRootDir].",
+                    globalHtmlMessage = "File system permissions do not allow creation of a Testerum project in the directory <br/><code>$absoluteProjectRootDir</code><br/>.")
+        }
 
         val recentProject = RecentProject(
                 path = absoluteProjectRootDir,
