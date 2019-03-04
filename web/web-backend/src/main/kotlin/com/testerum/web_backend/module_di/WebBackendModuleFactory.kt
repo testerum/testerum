@@ -313,6 +313,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             testerumDirs = settingsModuleFactory.testerumDirs,
             frontendDirs = frontendDirs,
             settingsManager = settingsModuleFactory.settingsManager,
+            localVariablesFileService = fileServiceModuleFactory.localVariablesFileService,
             jsonObjectMapper = testsRunnerJsonObjectMapper
     )
 
