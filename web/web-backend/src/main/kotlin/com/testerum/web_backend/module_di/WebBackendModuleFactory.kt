@@ -18,11 +18,11 @@ import com.testerum.common_httpclient.TesterumHttpClientFactory
 import com.testerum.common_rdbms.JdbcDriversCache
 import com.testerum.common_rdbms.RdbmsConnectionCache
 import com.testerum.file_service.module_di.FileServiceModuleFactory
-import com.testerum.licenses.cache.LicensesCache
-import com.testerum.licenses.cloud_client.CloudClient
-import com.testerum.licenses.cloud_client.CloudClientErrorResponseException
-import com.testerum.licenses.file.LicenseFileService
-import com.testerum.licenses.parser.SignedUserParser
+import com.testerum.cloud_client.licenses.cache.LicensesCache
+import com.testerum.cloud_client.licenses.LicenseCloudClient
+import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
+import com.testerum.cloud_client.licenses.file.LicenseFileService
+import com.testerum.cloud_client.licenses.parser.SignedUserParser
 import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.exception.ValidationException
 import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
@@ -211,14 +211,14 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
         }
     }
 
-    private val licensesCloudClient = CloudClient(
+    private val licensesCloudClient = LicenseCloudClient(
             httpClient = httpClient,
             baseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net", // todo: make this configurable
             objectMapper = restApiObjectMapper
     )
 
     private val licenseFrontendService = LicenseFrontendService(
-            cloudClient = licensesCloudClient,
+            licenseCloudClient = licensesCloudClient,
             licensesCache = licensesCache
     )
 

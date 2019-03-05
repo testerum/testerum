@@ -187,99 +187,46 @@ public class MainFrame extends JFrame {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
-        rootPanel = new JPanel();
+        rootPanel = new javax.swing.JPanel();
         rootPanel.setLayout(new FormLayout("fill:d:noGrow,fill:d:grow", "center:60dlu:noGrow,top:4dlu:grow(1.1),center:d:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,fill:d:grow(3.9),bottom:d:noGrow,top:10dlu:noGrow,center:max(d;4px):noGrow"));
-        final JPanel panel1 = new JPanel();
+        final javax.swing.JPanel panel1 = new javax.swing.JPanel();
         panel1.setLayout(new FormLayout("fill:d:grow", "center:d:grow"));
         CellConstraints cc = new CellConstraints();
         rootPanel.add(panel1, cc.xyw(1, 1, 2, CellConstraints.DEFAULT, CellConstraints.FILL));
-        final JLabel label1 = new JLabel();
-        label1.setHorizontalAlignment(0);
-        label1.setIcon(new ImageIcon(getClass().getResource("/logo.png")));
-        label1.setText("");
+        final javax.swing.JLabel label1 = new javax.swing.JLabel();
         panel1.add(label1, cc.xy(1, 1));
-        final JPanel panel2 = new JPanel();
+        final javax.swing.JPanel panel2 = new javax.swing.JPanel();
         panel2.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,fill:202px:grow,left:4dlu:noGrow,fill:90dlu:noGrow,right:10dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:4dlu:noGrow,center:max(d;4px):noGrow,top:4dlu:noGrow,center:50px:noGrow"));
-        panel2.setMaximumSize(new Dimension(509, 104));
         rootPanel.add(panel2, cc.xyw(1, 3, 2, CellConstraints.DEFAULT, CellConstraints.CENTER));
-        copyUrlToClipboardButton = new JButton();
-        copyUrlToClipboardButton.setEnabled(true);
-        copyUrlToClipboardButton.setHorizontalTextPosition(0);
-        copyUrlToClipboardButton.setText("Copy URL to clipboard");
+        copyUrlToClipboardButton = new javax.swing.JButton();
         panel2.add(copyUrlToClipboardButton, cc.xy(7, 1));
-        openInBrowserButton = new JButton();
-        openInBrowserButton.setEnabled(false);
-        openInBrowserButton.setText("Open in browser");
+        openInBrowserButton = new javax.swing.JButton();
         panel2.add(openInBrowserButton, cc.xy(5, 3, CellConstraints.CENTER, CellConstraints.DEFAULT));
-        final JLabel label2 = new JLabel();
-        label2.setHorizontalAlignment(2);
-        label2.setHorizontalTextPosition(2);
-        label2.setText("Application URL:");
+        final javax.swing.JLabel label2 = new javax.swing.JLabel();
         panel2.add(label2, cc.xy(3, 1, CellConstraints.CENTER, CellConstraints.DEFAULT));
-        urlTextFiled = new JTextField();
-        urlTextFiled.setColumns(1000);
-        urlTextFiled.setEditable(false);
-        urlTextFiled.setEnabled(true);
+        urlTextFiled = new javax.swing.JTextField();
         panel2.add(urlTextFiled, cc.xy(5, 1, CellConstraints.FILL, CellConstraints.CENTER));
-        arrowImage = new JLabel();
-        arrowImage.setIcon(new ImageIcon(getClass().getResource("/arrowUpSmall.png")));
-        arrowImage.setText("");
-        arrowImage.putClientProperty("html.disable", Boolean.FALSE);
+        arrowImage = new javax.swing.JLabel();
         panel2.add(arrowImage, cc.xy(5, 5, CellConstraints.CENTER, CellConstraints.DEFAULT));
-        final JPanel panel3 = new JPanel();
+        final javax.swing.JPanel panel3 = new javax.swing.JPanel();
         panel3.setLayout(new FormLayout("fill:max(d;10dlu):noGrow,left:4dlu:noGrow,fill:d:noGrow,left:4dlu:noGrow,center:d:noGrow,left:4dlu:noGrow,left:d:grow,left:4dlu:noGrow,fill:max(d;4px):noGrow,left:m:noGrow,right:d:noGrow,left:10dlu:noGrow,fill:max(d;4px):noGrow", "center:30px:grow"));
         rootPanel.add(panel3, cc.xy(2, 7, CellConstraints.FILL, CellConstraints.BOTTOM));
-        final JLabel label3 = new JLabel();
-        label3.setText("Application Port:");
+        final javax.swing.JLabel label3 = new javax.swing.JLabel();
         panel3.add(label3, cc.xy(3, 1));
-        saveAndRestartApplicationButton = new JButton();
-        saveAndRestartApplicationButton.setEnabled(true);
-        saveAndRestartApplicationButton.setText("Save and Restart Application");
-        saveAndRestartApplicationButton.putClientProperty("html.disable", Boolean.TRUE);
+        saveAndRestartApplicationButton = new javax.swing.JButton();
         panel3.add(saveAndRestartApplicationButton, cc.xy(11, 1, CellConstraints.RIGHT, CellConstraints.DEFAULT));
-        portInputField = new JTextField();
-        portInputField.setColumns(5);
-        portInputField.setHorizontalAlignment(2);
-        portInputField.setToolTipText("Port number range between 1023 and 65535");
+        portInputField = new javax.swing.JTextField();
         panel3.add(portInputField, cc.xy(5, 1, CellConstraints.LEFT, CellConstraints.DEFAULT));
-        portErrorMessage = new JLabel();
-        portErrorMessage.setForeground(new Color(-65529));
-        portErrorMessage.setHorizontalAlignment(2);
-        portErrorMessage.setHorizontalTextPosition(2);
-        portErrorMessage.setText("Choose a different port and save the change");
-        portErrorMessage.setVisible(true);
+        portErrorMessage = new javax.swing.JLabel();
         panel3.add(portErrorMessage, cc.xy(7, 1, CellConstraints.LEFT, CellConstraints.DEFAULT));
-        statusLabel = new JLabel();
-        Font statusLabelFont = this.$$$getFont$$$("SansSerif", Font.BOLD, 28, statusLabel.getFont());
-        if (statusLabelFont != null) statusLabel.setFont(statusLabelFont);
-        statusLabel.setIcon(new ImageIcon(getClass().getResource("/loading.gif")));
-        statusLabel.setText(" Starting Testerum Server");
+        statusLabel = new javax.swing.JLabel();
         rootPanel.add(statusLabel, cc.xy(2, 6, CellConstraints.CENTER, CellConstraints.TOP));
     }
 
     /**
      * @noinspection ALL
      */
-    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
-        if (currentFont == null) return null;
-        String resultName;
-        if (fontName == null) {
-            resultName = currentFont.getName();
-        } else {
-            Font testFont = new Font(fontName, Font.PLAIN, 10);
-            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
-                resultName = fontName;
-            } else {
-                resultName = currentFont.getName();
-            }
-        }
-        return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
-    }
-
-    /**
-     * @noinspection ALL
-     */
-    public JComponent $$$getRootComponent$$$() {
+    public javax.swing.JComponent $$$getRootComponent$$$() {
         return rootPanel;
     }
 

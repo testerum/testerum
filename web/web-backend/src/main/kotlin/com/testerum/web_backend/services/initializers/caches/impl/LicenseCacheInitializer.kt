@@ -1,6 +1,6 @@
 package com.testerum.web_backend.services.initializers.caches.impl
 
-import com.testerum.licenses.cache.LicensesCache
+import com.testerum.cloud_client.licenses.cache.LicensesCache
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import org.slf4j.LoggerFactory
 
