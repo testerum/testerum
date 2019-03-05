@@ -9,6 +9,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.testerum.cloud_client.error_feedback.ErrorFeedbackCloudClient
+import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
+import com.testerum.cloud_client.licenses.LicenseCloudClient
+import com.testerum.cloud_client.licenses.cache.LicensesCache
+import com.testerum.cloud_client.licenses.file.LicenseFileService
+import com.testerum.cloud_client.licenses.parser.SignedUserParser
 import com.testerum.common_crypto.pem.PemMarshaller
 import com.testerum.common_crypto.string_obfuscator.StringObfuscator
 import com.testerum.common_di.BaseModuleFactory
@@ -18,11 +24,6 @@ import com.testerum.common_httpclient.TesterumHttpClientFactory
 import com.testerum.common_rdbms.JdbcDriversCache
 import com.testerum.common_rdbms.RdbmsConnectionCache
 import com.testerum.file_service.module_di.FileServiceModuleFactory
-import com.testerum.cloud_client.licenses.cache.LicensesCache
-import com.testerum.cloud_client.licenses.LicenseCloudClient
-import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
-import com.testerum.cloud_client.licenses.file.LicenseFileService
-import com.testerum.cloud_client.licenses.parser.SignedUserParser
 import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.exception.ValidationException
 import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
@@ -57,6 +58,7 @@ import com.testerum.web_backend.controllers.variables.VariablesController
 import com.testerum.web_backend.controllers.version_info.VersionController
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.features.FeaturesFrontendService
+import com.testerum.web_backend.services.feedback.FeedbackFrontendService
 import com.testerum.web_backend.services.filesystem.FileSystemFrontendService
 import com.testerum.web_backend.services.home.HomeFrontendService
 import com.testerum.web_backend.services.home.QuotesService
@@ -210,6 +212,16 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             it.close()
         }
     }
+
+    private val errorFeedbackCloudClient = ErrorFeedbackCloudClient (
+            httpClient = httpClient,
+            baseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net", // todo: make this configurable
+            objectMapper = restApiObjectMapper
+    )
+
+    private val feedbackFrontendService = FeedbackFrontendService (
+            errorFeedbackCloudClient = errorFeedbackCloudClient
+    )
 
     private val licensesCloudClient = LicenseCloudClient(
             httpClient = httpClient,
@@ -388,6 +400,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val feedbackController = FeedbackController(
+            feedbackFrontendService = feedbackFrontendService
     )
 
     private val licenseController = LicenseController(

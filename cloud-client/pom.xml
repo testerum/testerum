@@ -12,6 +12,12 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
+        <!-- model -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>model</artifactId>
+        </dependency>
+
         <!-- common-crypto -->
         <dependency>
             <groupId>com.testerum</groupId>
