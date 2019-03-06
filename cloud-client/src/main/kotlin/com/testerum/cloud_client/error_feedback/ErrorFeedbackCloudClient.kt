@@ -19,7 +19,7 @@ class ErrorFeedbackCloudClient(private val httpClient: HttpClient,
     }
 
     fun sendErrorFeedback(errorFeedback: ErrorFeedback): ErrorFeedback {
-        val httpPost = HttpPost("$baseUrl/error_feedback")
+        val httpPost = HttpPost("$baseUrl/feedback_error")
 
         val requestBodyAsString = objectMapper.writeValueAsString(errorFeedback)
         val requestEntity = StringEntity(

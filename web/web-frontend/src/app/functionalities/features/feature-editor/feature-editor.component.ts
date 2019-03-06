@@ -113,6 +113,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
 
     enableEditMode(): void {
         this.setEditMode(true);
+        throw new Error("Just for testing")
     }
 
     onSearchTag(event) {
