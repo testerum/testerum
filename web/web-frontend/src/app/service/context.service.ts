@@ -27,7 +27,10 @@ export class ContextService {
 
     setCurrentProject(newProject: Project) {
         if(newProject == null && this.currentProject == null) return;
-        if(newProject != null && this.currentProject != null && newProject.path == this.currentProject.path) return;
+        if(newProject != null
+            && this.currentProject != null
+            && newProject.path == this.currentProject.path
+            && newProject.name == this.currentProject.name) return;
 
         this.currentProject = newProject;
         this.setPageTitle(newProject);
