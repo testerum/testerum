@@ -6,6 +6,7 @@ import com.testerum.model.exception.ValidationException
 import com.testerum.model.home.Project
 import com.testerum.model.project.FileProject
 import com.testerum.model.project.RecentProject
+import com.testerum.project_manager.ProjectManager
 import com.testerum.web_backend.controllers.project.model.CreateProjectRequest
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import org.slf4j.LoggerFactory
@@ -16,7 +17,8 @@ import java.nio.file.Path as JavaPath
 
 class ProjectFrontendService(private val frontendDirs: FrontendDirs,
                              private val recentProjectsFileService: RecentProjectsFileService,
-                             private val testerumProjectFileService: TesterumProjectFileService) {
+                             private val testerumProjectFileService: TesterumProjectFileService,
+                             private val projectManager: ProjectManager) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ProjectFrontendService::class.java)
@@ -142,6 +144,9 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
 
         // load recent project
         val recentProject = recentProjectsFileService.getByPathOrAdd(projectRootDir, recentProjectsFile)
+
+        // re-load project cache, because the name is cached
+        projectManager.closeProject(projectRootDir)
 
         return mapToProject(savedFileProject, recentProject)
     }

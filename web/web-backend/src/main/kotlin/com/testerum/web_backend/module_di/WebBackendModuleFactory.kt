@@ -364,7 +364,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val projectFrontendService = ProjectFrontendService(
             frontendDirs = frontendDirs,
             recentProjectsFileService = fileServiceModuleFactory.recentProjectsFileService,
-            testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService
+            testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService,
+            projectManager = projectManagerModuleFactory.projectManager
     )
 
     private val quotesService = QuotesService()
