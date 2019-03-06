@@ -49,7 +49,13 @@ class ProjectManager(private val testerumProjectFileService: TesterumProjectFile
         thread.start()
     }
 
-    fun getProjectServices(projectRootDir: JavaPath): ProjectServices = openProjectsCache[projectRootDir]
+    fun getProjectServices(projectRootDir: JavaPath): ProjectServices = openProjectsCache[canonicalKey(projectRootDir)]
+
+    fun closeProject(projectRootDir: JavaPath) {
+        openProjectsCache.invalidate(
+                canonicalKey(projectRootDir)
+        )
+    }
 
     private fun openProject(projectRootDir: JavaPath): ProjectServices {
         val absoluteProjectRootDir = projectRootDir.toAbsolutePath().normalize()
@@ -71,4 +77,5 @@ class ProjectManager(private val testerumProjectFileService: TesterumProjectFile
         LOG.info("closed project at path [$projectRootDir] (cause: ${notification.cause})")
     }
 
+    private fun canonicalKey(projectRootDir: JavaPath): JavaPath = projectRootDir.toAbsolutePath().normalize()
 }

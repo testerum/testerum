@@ -6,6 +6,7 @@ import com.testerum.model.exception.ValidationException
 import com.testerum.model.home.Project
 import com.testerum.model.project.FileProject
 import com.testerum.model.project.RecentProject
+import com.testerum.project_manager.ProjectManager
 import com.testerum.web_backend.controllers.project.model.CreateProjectRequest
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import org.slf4j.LoggerFactory
@@ -16,7 +17,8 @@ import java.nio.file.Path as JavaPath
 
 class ProjectFrontendService(private val frontendDirs: FrontendDirs,
                              private val recentProjectsFileService: RecentProjectsFileService,
-                             private val testerumProjectFileService: TesterumProjectFileService) {
+                             private val testerumProjectFileService: TesterumProjectFileService,
+                             private val projectManager: ProjectManager) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ProjectFrontendService::class.java)
@@ -68,6 +70,13 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
                 createProjectRequest.projectName
         )
         val absoluteProjectRootDir: JavaPath = projectRootDir.toAbsolutePath().normalize()
+
+        // validate
+        if (testerumProjectFileService.isTesterumProject(absoluteProjectRootDir)) {
+            throw ValidationException(
+                    globalMessage = "The directory [$absoluteProjectRootDir] is already a Testerum project.",
+                    globalHtmlMessage = "The directory <br/><code>$absoluteProjectRootDir</code><br/>is already a Testerum project.")
+        }
 
         // create project file & directory
         val savedFileProject: FileProject = try {
@@ -135,6 +144,9 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
 
         // load recent project
         val recentProject = recentProjectsFileService.getByPathOrAdd(projectRootDir, recentProjectsFile)
+
+        // re-load project cache, because the name is cached
+        projectManager.closeProject(projectRootDir)
 
         return mapToProject(savedFileProject, recentProject)
     }
