@@ -11,6 +11,7 @@ import com.testerum.common_json.util.prettyPrintJson
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.ValidHttpResponse
 import http.request.transformer.HttpRequestTransformer
+import http_support.HttpStepsSettingsManager
 import http_support.module_di.HttpStepsModuleServiceLocator
 import org.apache.http.impl.EnglishReasonPhraseCatalog
 import org.slf4j.LoggerFactory
@@ -23,6 +24,7 @@ class HttpRequestSteps {
     }
 
     private val httpClientService: HttpClientService = HttpStepsModuleServiceLocator.bootstrapper.httpStepsModuleFactory.httpClientService
+    private val httpStepsSettingsManager: HttpStepsSettingsManager = HttpStepsModuleServiceLocator.bootstrapper.httpStepsModuleFactory.httpStepsSettingsManager
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
     private val logger: TesterumLogger = TesterumServiceLocator.getTesterumLogger()
 
@@ -102,7 +104,11 @@ class HttpRequestSteps {
             httpRequest: HttpRequest
     ) {
         logger.info("HTTP Request\n${httpRequest.prettyPrint()}\n")
-        val httpResponse: ValidHttpResponse = httpClientService.executeHttpRequest(httpRequest)
+        val httpResponse: ValidHttpResponse = httpClientService.executeHttpRequest(
+                request = httpRequest,
+                connectionTimeoutMillis = httpStepsSettingsManager.getConnectionTimeoutMillis(),
+                socketTimeoutMillis = httpStepsSettingsManager.getSocketTimeoutMillis()
+        )
         logger.info("HTTP Response\n${httpResponse.prettyPrint()}\n")
 
         variables["httpRequest"] = httpRequest

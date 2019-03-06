@@ -26,7 +26,18 @@ import java.net.URI
 
 class HttpClientService(private val httpClient: HttpClient) {
 
-    fun executeHttpRequest(request: HttpRequest): ValidHttpResponse {
+    /**
+     * @param connectionTimeoutMillis
+     *      The timeout in milliseconds until a connection is established.
+     *      A timeout value of zero is interpreted as an infinite timeout.
+     * @param socketTimeoutMillis
+     *      The timeout in milliseconds for waiting for data, or, put differently
+     *      the maximum period of inactivity between two consecutive data packets.
+     *      A timeout value of zero is interpreted as an infinite timeout.
+     */
+    fun executeHttpRequest(request: HttpRequest,
+                           connectionTimeoutMillis: Int = 0,
+                           socketTimeoutMillis: Int = 0): ValidHttpResponse {
         // method
         val httpRequest: HttpRequestBase = when (request.method) {
             HttpRequestMethod.GET     -> HttpGet()
@@ -40,7 +51,7 @@ class HttpClientService(private val httpClient: HttpClient) {
             else                      -> throw RuntimeException("Unrecognized request method [${request.method}]")
         }
 
-        // follow redirects
+        // request configuration
         val requestConfig = if (httpRequest.config == null) {
             RequestConfig.DEFAULT
         } else {
@@ -48,6 +59,8 @@ class HttpClientService(private val httpClient: HttpClient) {
         }
         httpRequest.config = RequestConfig.copy(requestConfig)
                 .setRedirectsEnabled(request.followRedirects)
+                .setConnectTimeout(connectionTimeoutMillis)
+                .setSocketTimeout(socketTimeoutMillis)
                 .build()
 
         // URI

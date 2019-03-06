@@ -28,34 +28,34 @@ import java.nio.file.Path as JavaPath
 
 @ThreadSafe
 @DeclareSettings([
-    (DeclareSetting(
+    DeclareSetting(
             key = SETTING_KEY_WAIT_TIMEOUT_MILLIS,
             type = SettingType.NUMBER,
             defaultValue = "5000",
             description = "Maximum time duration in milliseconds for wait steps (e.g. wait until an element is present on the page).",
             category = SETTINGS_CATEGORY
-    )),
-    (DeclareSetting(
+    ),
+    DeclareSetting(
             key = SETTING_KEY_AFTER_STEP_DELAY_MILLIS,
             type = SettingType.NUMBER,
             defaultValue = "0",
             description = "Delay in milliseconds after a Selenium Step",
             category = SETTINGS_CATEGORY
-    )),
-    (DeclareSetting(
+    ),
+    DeclareSetting(
             key = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST,
             type = SettingType.TEXT,
             defaultValue = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT,
             description = """Leave browser open after a Selenium test. Possible values: "true", "false", "onFailure"""",
             category = SETTINGS_CATEGORY
-    )),
-    (DeclareSetting(
+    ),
+    DeclareSetting(
             key = SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP,
             type = SettingType.TEXT,
             defaultValue = "false",
             description = """Should take a screenshot after each Selenium Test. Possible values: "true", "false"""",
             category = SETTINGS_CATEGORY
-    ))
+    )
 ])
 class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager) {
 
