@@ -56,14 +56,6 @@ class TesterumProjectFileService {
     }
 
     fun save(fileProject: FileProject, directory: JavaPath): FileProject {
-        val absoluteProjectRootDir: JavaPath = directory.toAbsolutePath().normalize()
-
-        if (isTesterumProject(absoluteProjectRootDir)) {
-            throw ValidationException(
-                    globalMessage = "The directory [$absoluteProjectRootDir] is already a Testerum project.",
-                    globalHtmlMessage = "The directory <br/><code>$absoluteProjectRootDir</code><br/>is already a Testerum project.")
-        }
-
         val serializedProject = OBJECT_MAPPER.writeValueAsString(fileProject)
 
         val projectFile = projectFilePath(directory)

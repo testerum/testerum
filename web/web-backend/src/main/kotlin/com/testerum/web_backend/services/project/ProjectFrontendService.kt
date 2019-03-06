@@ -69,6 +69,13 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
         )
         val absoluteProjectRootDir: JavaPath = projectRootDir.toAbsolutePath().normalize()
 
+        // validate
+        if (testerumProjectFileService.isTesterumProject(absoluteProjectRootDir)) {
+            throw ValidationException(
+                    globalMessage = "The directory [$absoluteProjectRootDir] is already a Testerum project.",
+                    globalHtmlMessage = "The directory <br/><code>$absoluteProjectRootDir</code><br/>is already a Testerum project.")
+        }
+
         // create project file & directory
         val savedFileProject: FileProject = try {
             testerumProjectFileService.save(
