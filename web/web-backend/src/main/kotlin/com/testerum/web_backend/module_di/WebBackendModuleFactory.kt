@@ -362,7 +362,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             testResolver = fileServiceModuleFactory.testResolver
     )
 
-    private val projectFrontendService = ProjectFrontendService(
+    val projectFrontendService = ProjectFrontendService(
             frontendDirs = frontendDirs,
             recentProjectsFileService = fileServiceModuleFactory.recentProjectsFileService,
             testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService,
