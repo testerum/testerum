@@ -6,7 +6,7 @@ import com.testerum.model.exception.ValidationException
 import com.testerum.model.home.Project
 import com.testerum.model.project.FileProject
 import com.testerum.model.project.RecentProject
-import com.testerum.web_backend.controllers.project.model.ProjectRequest
+import com.testerum.web_backend.controllers.project.model.CreateProjectRequest
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import org.slf4j.LoggerFactory
 import java.nio.file.AccessDeniedException
@@ -63,7 +63,7 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
         }
     }
 
-    fun createProject(createProjectRequest: ProjectRequest): Project {
+    fun createProject(createProjectRequest: CreateProjectRequest): Project {
         val projectRootDir: JavaPath = Paths.get(createProjectRequest.projectParentDir).resolve(
                 createProjectRequest.projectName
         )
@@ -121,14 +121,14 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
         recentProjectsFileService.delete(projectRootDir, recentProjectsFile)
     }
 
-    fun renameProject(renameProjectRequest: ProjectRequest): Project {
-        val projectRootDir: JavaPath = Paths.get(renameProjectRequest.projectParentDir)
+    fun renameProject(project: Project): Project {
+        val projectRootDir: JavaPath = Paths.get(project.path)
         val recentProjectsFile = frontendDirs.getRecentProjectsFile()
 
         // update project file
         val existingFileProject: FileProject = testerumProjectFileService.load(projectRootDir)
         val newFileProject = existingFileProject.copy(
-                name = renameProjectRequest.projectName
+                name = project.name
         )
 
         val savedFileProject = testerumProjectFileService.save(newFileProject, projectRootDir)

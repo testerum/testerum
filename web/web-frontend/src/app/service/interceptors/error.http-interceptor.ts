@@ -60,6 +60,8 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
                                 }
                             });
                             return EMPTY;
+                        } else {
+                            this.handleHttpResponseException(httpErrorResponse);
                         }
                     }
                 }
@@ -68,7 +70,6 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
             }
         ));
     }
-
 
     handleHttpResponseException(httpErrorResponse: HttpErrorResponse | any) {
         if (httpErrorResponse.status >= 400) {

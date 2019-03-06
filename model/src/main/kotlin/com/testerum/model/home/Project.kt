@@ -6,4 +6,4 @@ import java.time.LocalDateTime
 
 data class Project @JsonCreator constructor(@JsonProperty("name") val name: String,
                                             @JsonProperty("path") val path: String,
-                                            @JsonProperty("lastOpened") val lastOpened: LocalDateTime)
+                                            @JsonProperty("lastOpened") val lastOpened: LocalDateTime?)

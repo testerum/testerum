@@ -13,7 +13,7 @@
                     <input name="name"
                            required
                            isNotBlankValidator
-                           #nameNgModel="ngModel" [ngModel]="projectName"
+                           #nameNgModel="ngModel" [(ngModel)]="projectName"
                            type="text" class="form-control"
                            (keydown.enter)="$event.preventDefault()">
                     <input-error [model]="nameNgModel"
