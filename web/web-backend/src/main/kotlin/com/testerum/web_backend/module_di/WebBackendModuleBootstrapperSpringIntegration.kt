@@ -11,7 +11,7 @@ import java.util.*
 
 class WebBackendModuleBootstrapperSpringIntegration : ApplicationContextAware, BeanFactoryPostProcessor, DisposableBean {
 
-    private val bootstrapper = WebBackendModuleBootstrapper()
+    private val bootstrapper = WebBackendModuleServiceLocator.bootstrapper
 
     private lateinit var applicationContext: ApplicationContext
 
