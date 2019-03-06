@@ -324,7 +324,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val runnerResultFrontendService = ResultsFrontendService(
             frontendDirs = frontendDirs,
-            resultsFileService = fileServiceModuleFactory.runnerResultFileService
+            resultsFileService = fileServiceModuleFactory.runnerResultFileService,
+            webProjectManager = webProjectManager
     )
 
     private val networkService = NetworkService()

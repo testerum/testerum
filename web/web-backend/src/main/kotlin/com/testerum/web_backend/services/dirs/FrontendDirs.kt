@@ -21,7 +21,7 @@ class FrontendDirs(private val testerumDirs: TesterumDirs) {
     fun getCacheDir(): JavaPath = getTesterumDir().resolve("cache")
     fun getLicensesDir(): JavaPath = getTesterumDir().resolve("licenses")
 
-    fun getReportsDir(): JavaPath = getTesterumDir().resolve("reports")
-    fun getAggregatedStatisticsDir(): JavaPath = getReportsDir().resolve("statistics")
+    fun getReportsDir(projectId: String): JavaPath = getTesterumDir().resolve("reports").resolve(projectId)
+    fun getAggregatedStatisticsDir(projectId: String): JavaPath = getReportsDir(projectId).resolve("statistics")
 
 }

@@ -263,7 +263,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         }
 
         args += "--managed-reports-directory"
-        args += frontendDirs.getReportsDir().toAbsolutePath().normalize().toString()
+        args += frontendDirs.getReportsDir(webProjectManager.getProjectServices().project.id).toAbsolutePath().normalize().toString()
 
         // tests
         for (testPathToRun in execution.testOrDirectoryPathsToRun) {
