@@ -11,15 +11,17 @@
 
                 <div class="my-value" *ngIf="isEditMode">
                     <input name="name"
-                           required
-                           isNotBlankValidator
+                           required isNotBlankValidator urlNameValidator
                            #nameNgModel="ngModel" [(ngModel)]="projectName"
                            type="text" class="form-control"
                            (keydown.enter)="$event.preventDefault()">
                     <input-error [model]="nameNgModel"
                                  [errorMessages]="{
-                                        required: 'A project name is required'
-                                 }"></input-error>
+                                        required: 'A name for the new project is required',
+                                        a_project_with_the_same_name_already_exist: 'A project with the same name already exists',
+                                        access_denied: 'Couldn\'t create this project. File access is denied',
+                                        invalidUrlName: 'Project Name can contain only the following characters (space is not allowed): 0-9 a-z A-Z $-_.,\'()'
+                                     }"></input-error>
                 </div>
             </div>
 
