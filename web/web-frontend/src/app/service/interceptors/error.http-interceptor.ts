@@ -60,8 +60,6 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
                                 }
                             });
                             return EMPTY;
-                        } else {
-                            this.handleHttpResponseException(httpErrorResponse);
                         }
                     }
                 }

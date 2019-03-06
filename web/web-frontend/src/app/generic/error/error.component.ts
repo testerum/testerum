@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ErrorHttpInterceptor} from "../../service/interceptors/error.http-interceptor";
 import {MyError} from "../../model/exception/my-error.model";
 import {MessageService} from "primeng/api";
@@ -16,7 +16,8 @@ import {ErrorFeedbackModalService} from "./report-modal/error-feedback-modal.ser
 })
 export class ErrorComponent implements OnInit {
 
-    constructor(private errorService: ErrorHttpInterceptor,
+    constructor(private cd: ChangeDetectorRef,
+                private errorService: ErrorHttpInterceptor,
                 private contextService: ContextService,
                 private messageService: MessageService, //this service is from PrimeNG
                 private errorReportModalService: ErrorFeedbackModalService) {
@@ -50,6 +51,8 @@ export class ErrorComponent implements OnInit {
                         severity: "error"
                     });
                 }
+
+                this.refresh();
             }
         )
     }
@@ -62,9 +65,16 @@ export class ErrorComponent implements OnInit {
 
     close(messageKey: string) {
         this.messageService.clear(messageKey);
+        this.refresh();
     }
 
     refresh() {
+        if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
+        }
+    }
+
+    refreshPage() {
         this.contextService.refreshPage();
     }
 }

@@ -9,7 +9,7 @@
         </div>
         <div class="buttons">
             <button *ngIf="!message.data.isErrorReported" (click)="report(message.data);$event.stopPropagation();" type="button" class="btn btn-default">Report</button>
-            <button (click)="refresh();$event.stopPropagation();" type="button" class="btn btn-default">Refresh Page</button>
+            <button (click)="refreshPage();$event.stopPropagation();" type="button" class="btn btn-default">Refresh Page</button>
             <button (click)="close(message.key);$event.stopPropagation();" type="button" class="btn btn-default">Close</button>
         </div>
     </ng-template>
