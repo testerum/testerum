@@ -175,7 +175,12 @@ export class ArgModalComponent {
                         (resource: ResourceContext<any>) => {
                             this.setResourceComponentInBody(resource.body, selectedPath.fileName);
                             this.argPath = selectedPath;
-                            this.initializeIsSharedResource()
+                            this.initializeIsSharedResource();
+
+                            if (this.resourceComponentRef.instance.refresh) {
+                                this.resourceComponentRef.instance.refresh()
+                            }
+                            this.refresh();
                         }
                     )
                 }
