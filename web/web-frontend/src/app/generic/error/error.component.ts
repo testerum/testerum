@@ -60,6 +60,7 @@ export class ErrorComponent implements OnInit {
     report(error: MyError) {
         this.errorReportModalService.showInfoModal(error).subscribe((isReportSubmitted: boolean) => {
             error.isErrorReported = isReportSubmitted;
+            this.refresh();
         });
     }
 

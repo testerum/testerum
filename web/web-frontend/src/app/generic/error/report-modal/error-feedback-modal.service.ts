@@ -1,4 +1,4 @@
-import {ComponentFactoryResolver, Injectable} from "@angular/core";
+import {ChangeDetectorRef, ComponentFactoryResolver, Injectable} from "@angular/core";
 import {Observable, Subject} from "rxjs";
 import {AppComponent} from "../../../app.component";
 import {ErrorFeedbackModalComponent} from "./error-feedback-modal.component";
@@ -21,6 +21,8 @@ export class ErrorFeedbackModalService {
 
         modalInstance.modalComponentRef = modalComponentRef;
         modalInstance.modalSubject = modalSubject;
+
+        modalComponentRef.changeDetectorRef.detectChanges();
 
         return modalSubject.asObservable();
     }
