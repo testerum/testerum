@@ -199,8 +199,17 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     //---------------------------------------- services ----------------------------------------//
 
+    private val projectManager = projectManagerModuleFactory.projectManager.apply {
+        registerOpenListener { projectRootDir, _ ->
+            fileServiceModuleFactory.recentProjectsFileService.updateLastOpened(
+                    projectRootDir = projectRootDir,
+                    recentProjectsFile = frontendDirs.getRecentProjectsFile()
+            )
+        }
+    }
+
     private val webProjectManager = WebProjectManager(
-            projectManager = projectManagerModuleFactory.projectManager
+            projectManager = projectManager
     )
 
     private val versionInfoFrontendService = VersionInfoFrontendService()
@@ -366,7 +375,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             frontendDirs = frontendDirs,
             recentProjectsFileService = fileServiceModuleFactory.recentProjectsFileService,
             testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService,
-            projectManager = projectManagerModuleFactory.projectManager
+            projectManager = projectManager
     )
 
     private val quotesService = QuotesService()

@@ -65,6 +65,18 @@ class RecentProjectsFileService {
         save(distinctRecentProjects, recentProjectsFile)
     }
 
+    fun updateLastOpened(projectRootDir: JavaPath,
+                         recentProjectsFile: JavaPath): RecentProject {
+        val recentProject = getByPathOrAdd(projectRootDir, recentProjectsFile)
+        val recentProjectToSave = recentProject.copy(
+                lastOpened = LocalDateTime.now()
+        )
+
+        add(recentProjectToSave, recentProjectsFile)
+
+        return recentProject
+    }
+
     fun getByPathOrAdd(projectRootDir: JavaPath,
                        recentProjectsFile: JavaPath): RecentProject {
         val existingRecentProjects = load(recentProjectsFile)

@@ -114,11 +114,7 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
         val fileProject = testerumProjectFileService.load(projectRootDir)
 
         // load recent project
-        val recentProject = recentProjectsFileService.getByPathOrAdd(projectRootDir, recentProjectsFile)
-        val recentProjectToSave = recentProject.copy(
-                lastOpened = LocalDateTime.now()
-        )
-        recentProjectsFileService.add(recentProjectToSave, recentProjectsFile)
+        val recentProject = recentProjectsFileService.updateLastOpened(projectRootDir, recentProjectsFile)
 
         return mapToProject(fileProject, recentProject)
     }

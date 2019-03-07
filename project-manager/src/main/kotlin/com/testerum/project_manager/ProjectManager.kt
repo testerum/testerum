@@ -8,10 +8,13 @@ import com.testerum.file_service.caches.resolved.FeaturesCache
 import com.testerum.file_service.caches.resolved.StepsCache
 import com.testerum.file_service.caches.resolved.TestsCache
 import com.testerum.file_service.file.TesterumProjectFileService
+import com.testerum.model.project.FileProject
 import org.slf4j.LoggerFactory
 import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit
 import java.nio.file.Path as JavaPath
+
+typealias OpenListener = (projectRootDir: JavaPath, fileProject: FileProject) -> Unit
 
 class ProjectManager(private val testerumProjectFileService: TesterumProjectFileService,
                      private val createFeaturesCache: (ProjectServices) -> FeaturesCache,
@@ -28,6 +31,8 @@ class ProjectManager(private val testerumProjectFileService: TesterumProjectFile
             .build(object : CacheLoader<JavaPath, ProjectServices>() {
                 override fun load(projectRootDir: JavaPath): ProjectServices = openProject(projectRootDir)
             })
+
+    private val openListeners = ArrayList<OpenListener>()
 
     init {
         startCacheCleanupThread()
@@ -49,6 +54,10 @@ class ProjectManager(private val testerumProjectFileService: TesterumProjectFile
         thread.start()
     }
 
+    fun registerOpenListener(openListener: OpenListener) {
+        openListeners += openListener
+    }
+
     fun getProjectServices(projectRootDir: JavaPath): ProjectServices = openProjectsCache[canonicalKey(projectRootDir)]
 
     fun closeProject(projectRootDir: JavaPath) {
@@ -63,12 +72,25 @@ class ProjectManager(private val testerumProjectFileService: TesterumProjectFile
         LOG.info("opening project at path [$absoluteProjectRootDir]...")
         val startTimeMillis = System.currentTimeMillis()
 
-        val project = testerumProjectFileService.load(projectRootDir)
-        val projectServices = ProjectServices(projectRootDir, project, createFeaturesCache, createTestsCache, createStepsCache)
+        val fileProject = testerumProjectFileService.load(projectRootDir)
+        val projectServices = ProjectServices(projectRootDir, fileProject, createFeaturesCache, createTestsCache, createStepsCache)
         val endTimeInitMillis = System.currentTimeMillis()
         LOG.info("...done opening project at path [$absoluteProjectRootDir] (took ${endTimeInitMillis - startTimeMillis} ms)")
 
+        notifyOpenListeners(projectRootDir, fileProject)
+
         return projectServices
+    }
+
+    private fun notifyOpenListeners(projectRootDir: JavaPath,
+                                    fileProject: FileProject) {
+        for (openListener in openListeners) {
+            try {
+                openListener.invoke(projectRootDir, fileProject)
+            } catch (e: Exception) {
+                LOG.warn("project open ($fileProject): failed to notify open listener $openListener", e)
+            }
+        }
     }
 
     private fun onProjectClosed(notification: RemovalNotification<JavaPath, ProjectServices>) {
