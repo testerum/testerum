@@ -1,6 +1,5 @@
 package com.testerum.web_backend.filter.project
 
-import com.testerum.web_backend.module_di.WebBackendModuleServiceLocator
 import java.nio.file.Paths
 import javax.servlet.Filter
 import javax.servlet.FilterChain
@@ -16,8 +15,6 @@ class ProjectFilter : Filter {
     companion object {
         const val PROJECT_PATH_HEADER_NAME = "X-Testerum-Project"
         const val PROJECT_PATH_QUERY_PARAM_NAME = PROJECT_PATH_HEADER_NAME
-
-        private val projectFrontendService = WebBackendModuleServiceLocator.bootstrapper.webBackendModuleFactory.projectFrontendService
     }
 
     override fun init(filterConfig: FilterConfig?) { }
@@ -39,11 +36,8 @@ class ProjectFilter : Filter {
                              chain: FilterChain) {
         try {
             val projectPath: JavaPath? = getProjectPath(request)
-            ProjectDirHolder.set(projectPath, request.getFullRequestUrl())
 
-            if (projectPath != null) {
-                projectFrontendService.openProject(projectPath.toString())
-            }
+            ProjectDirHolder.set(projectPath, request.getFullRequestUrl())
 
             chain.doFilter(request, response)
         } finally {
