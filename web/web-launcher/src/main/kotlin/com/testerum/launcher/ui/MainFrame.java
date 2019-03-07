@@ -108,6 +108,7 @@ public class MainFrame extends JFrame {
         statusLabel.setText(" Selected port is not available!");
         portErrorMessage.setVisible(true);
         openInBrowserButton.setEnabled(true);
+        saveAndRestartApplicationButton.setEnabled(true);
     }
 
     @SuppressWarnings("unused")
