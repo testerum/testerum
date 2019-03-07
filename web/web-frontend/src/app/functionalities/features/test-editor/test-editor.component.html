@@ -84,6 +84,7 @@
                                         (completeMethod)="onSearchTag($event)"
                                         (onSelect)="onTagSelect($event)"
                                         (onKeyUp)="onTagsKeyUp($event);"
+                                        (onBlur)="addCurrentTagToTags()"
                                         [delay]="0"
                                         [multiple]="true"
                                         [dropdown]="true"

@@ -238,16 +238,19 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         this.tagsToShow = newTagsToShow
     }
 
-    onTagsKeyUp(event) {
-        if(event.key =="Enter") {
-            if (this.currentTagSearch) {
-                this.model.tags.push(this.currentTagSearch);
-                this.currentTagSearch = null;
-                this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
-                event.preventDefault();
+    onTagsKeyUp(event: KeyboardEvent) {
+        event.preventDefault();
 
-                this.validate();
-            }
+        if (event.key == "Enter") {
+            this.addCurrentTagToTags();
+        }
+    }
+
+    addCurrentTagToTags() {
+        if (this.currentTagSearch) {
+            this.model.tags.push(this.currentTagSearch);
+            this.currentTagSearch = null;
+            this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
         }
     }
 

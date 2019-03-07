@@ -189,18 +189,20 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
         this.tagsToShow = newTagsToShow
     }
 
-    onTagsKeyUp(event: KeyboardEvent): boolean {
+    onTagsKeyUp(event: KeyboardEvent) {
         event.preventDefault();
 
         if (event.key == "Enter") {
-            if (this.currentTagSearch) {
-                this.testModel.tags.push(this.currentTagSearch);
-                this.currentTagSearch = null;
-                this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
-                event.preventDefault();
-            }
+            this.addCurrentTagToTags();
         }
-        return false;
+    }
+
+    addCurrentTagToTags() {
+        if (this.currentTagSearch) {
+            this.testModel.tags.push(this.currentTagSearch);
+            this.currentTagSearch = null;
+            this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
+        }
     }
 
     onTagSelect(event) {
