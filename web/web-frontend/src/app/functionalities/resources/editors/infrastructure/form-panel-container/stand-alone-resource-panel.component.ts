@@ -175,6 +175,7 @@ export class StandAloneResourcePanelComponent extends AbstractComponentCanDeacti
                 }
 
                 FormUtil.setErrorsToForm(form, error);
+                this.resourceComponentRef.instance.refresh();
             }
         );
     }
