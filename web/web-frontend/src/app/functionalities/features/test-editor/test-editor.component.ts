@@ -189,8 +189,10 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
         this.tagsToShow = newTagsToShow
     }
 
-    onTagsKeyUp(event) {
-        if(event.key =="Enter") {
+    onTagsKeyUp(event: KeyboardEvent): boolean {
+        event.preventDefault();
+
+        if (event.key == "Enter") {
             if (this.currentTagSearch) {
                 this.testModel.tags.push(this.currentTagSearch);
                 this.currentTagSearch = null;
@@ -198,6 +200,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
                 event.preventDefault();
             }
         }
+        return false;
     }
 
     onTagSelect(event) {

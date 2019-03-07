@@ -7,7 +7,7 @@
 
     <div>
         <div class="page-body">
-            <form #stepForm="ngForm" class="form-horizontal">
+            <form #stepForm="ngForm" class="form-horizontal" (keydown.enter)="$event.preventDefault()">
 
                 <div class="my-line">
                     <label class="my-label label-size">Path</label>
@@ -83,7 +83,7 @@
                                         [suggestions]="tagsToShow"
                                         (completeMethod)="onSearchTag($event)"
                                         (onSelect)="onTagSelect($event)"
-                                        (keypress)="onTagsKeyUp($event);"
+                                        (onKeyUp)="onTagsKeyUp($event);"
                                         [delay]="0"
                                         [multiple]="true"
                                         [dropdown]="true"
