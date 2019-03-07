@@ -101,7 +101,7 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
         )
 
         // add to recent projects list
-        recentProjectsFileService.add(recentProject, absoluteProjectRootDir)
+        recentProjectsFileService.add(recentProject, frontendDirs.getRecentProjectsFile())
 
         return mapToProject(savedFileProject, recentProject)
     }
