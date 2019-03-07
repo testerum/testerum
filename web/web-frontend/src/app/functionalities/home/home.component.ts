@@ -50,8 +50,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     navigateToProject(project: Project) {
-        this.contextService.setCurrentProject(project);
-        this.urlService.navigateToFeatures()
+        this.projectService.openProject(project.path).subscribe((project: Project) => { //we call open project just to register the open date
+            this.contextService.setCurrentProject(project);
+            this.urlService.navigateToFeatures();
+        });
     }
 
     onCreateNewProject() {
