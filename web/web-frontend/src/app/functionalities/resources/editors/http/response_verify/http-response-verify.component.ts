@@ -67,7 +67,7 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
     }
 
     isFormValid(): boolean {
-        return this.form.valid;
+        return this.form.valid && !this.model.isEmpty();
     }
 
     getForm(): NgForm {
