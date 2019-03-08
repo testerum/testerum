@@ -2,3 +2,7 @@
 .ui-dialog-mask {
     z-index: 1;
 }
+
+.ui-tooltip {
+    z-index: 10000 !important;
+}
