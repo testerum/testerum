@@ -148,6 +148,7 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
 
     schemaChooserEventListener(chosenSchema: string): void {
         this.model.database = chosenSchema;
+        this.refresh();
     }
 
     useCustomUrl(value: boolean): void {
