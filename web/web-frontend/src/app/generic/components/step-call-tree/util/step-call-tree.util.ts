@@ -14,29 +14,29 @@ import {ArrayUtil} from "../../../../utils/array.util";
 
 export class StepCallTreeUtil {
 
-    static mapStepCallsToJsonTreeModel(stepCalls: Array<StepCall>, treeModel:JsonTreeModel): JsonTreeModel {
+    static mapStepCallsToJsonTreeModel(stepCalls: Array<StepCall>, treeModel:JsonTreeModel, isManualExecutionMode: boolean = false): JsonTreeModel {
 
         let mappedStepCallContainer = new Map<string, SubStepsContainerModel>();
-        treeModel.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCalls, treeModel, mappedStepCallContainer);
+        treeModel.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCalls, treeModel, mappedStepCallContainer, isManualExecutionMode);
 
         return treeModel;
     }
 
-    private static mapChildrenStepCallsToJsonTreeModel(stepCalls: Array<StepCall>, parentNode: JsonTreeContainer, mappedStepCallContainer: Map<string, SubStepsContainerModel>): Array<StepCallContainerModel> {
+    private static mapChildrenStepCallsToJsonTreeModel(stepCalls: Array<StepCall>, parentNode: JsonTreeContainer, mappedStepCallContainer: Map<string, SubStepsContainerModel>, isManualExecutionMode: boolean = false): Array<StepCallContainerModel> {
 
         let children: Array<StepCallContainerModel> = [];
         for (const stepCall of stepCalls) {
-            let childStepCallContainerModel = this.createStepCallContainerWithChildren(stepCall, parentNode, mappedStepCallContainer);
+            let childStepCallContainerModel = this.createStepCallContainerWithChildren(stepCall, parentNode, mappedStepCallContainer, isManualExecutionMode);
             children.push(childStepCallContainerModel);
         }
         return children;
     }
 
-    public static createStepCallContainerWithChildren(stepCall: StepCall, parentNode: JsonTreeContainer, mappedStepCallContainer: Map<string, SubStepsContainerModel>): StepCallContainerModel {
+    public static createStepCallContainerWithChildren(stepCall: StepCall, parentNode: JsonTreeContainer, mappedStepCallContainer: Map<string, SubStepsContainerModel>, isManualExecutionMode: boolean = false): StepCallContainerModel {
         let childStepCallContainerModel = StepCallTreeUtil.createStepCallContainer(stepCall, parentNode, parentNode.getChildren().length);
         this.createParamContainerWithChildren(stepCall, childStepCallContainerModel);
 
-        let subStepContainer = StepCallTreeUtil.createSubStepsContainerWithChildren(stepCall.stepDef, mappedStepCallContainer);
+        let subStepContainer = StepCallTreeUtil.createSubStepsContainerWithChildren(stepCall.stepDef, mappedStepCallContainer, isManualExecutionMode);
         if(subStepContainer != null) {
             subStepContainer.parentContainer = childStepCallContainerModel;
             childStepCallContainerModel.children.push(
@@ -62,7 +62,7 @@ export class StepCallTreeUtil {
 
             paramsContainer.children.length = 0;
             stepCall.args.forEach((arg, index) => {
-                let stepPatternParam: ParamStepPatternPart = stepCall.getStepPatternParamByIndex(index);
+                let stepPatternParam: ParamStepPatternPart = stepCall.getStepPatternParamByIndex(index);TM-723 [ui/manual-test-exec] should not show "Sub-Steps" if there are none
                 let argNode = new ArgNodeModel(paramsContainer, arg, stepPatternParam);
                 paramsContainer.children.push(argNode)
             });
@@ -71,8 +71,13 @@ export class StepCallTreeUtil {
         }
     }
 
-    public static createSubStepsContainerWithChildren(stepDef: StepDef, mappedStepCallContainer: Map<string, SubStepsContainerModel>): SubStepsContainerModel {
-        if (stepDef instanceof BasicStepDef) { return null;}
+    public static createSubStepsContainerWithChildren(stepDef: StepDef, mappedStepCallContainer: Map<string, SubStepsContainerModel>, isManualExecutionMode: boolean = false): SubStepsContainerModel {
+        if (stepDef instanceof BasicStepDef) { return null; }
+
+        if(isManualExecutionMode) {
+            if (stepDef instanceof UndefinedStepDef) { return null; }
+            if (stepDef instanceof ComposedStepDef && stepDef.stepCalls.length == 0) { return null; }
+        }
 
         let subStepsContainer = new SubStepsContainerModel(null);
 
