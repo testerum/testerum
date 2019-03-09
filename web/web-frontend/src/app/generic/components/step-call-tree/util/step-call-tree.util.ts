@@ -62,7 +62,7 @@ export class StepCallTreeUtil {
 
             paramsContainer.children.length = 0;
             stepCall.args.forEach((arg, index) => {
-                let stepPatternParam: ParamStepPatternPart = stepCall.getStepPatternParamByIndex(index);TM-723 [ui/manual-test-exec] should not show "Sub-Steps" if there are none
+                let stepPatternParam: ParamStepPatternPart = stepCall.getStepPatternParamByIndex(index);
                 let argNode = new ArgNodeModel(paramsContainer, arg, stepPatternParam);
                 paramsContainer.children.push(argNode)
             });
