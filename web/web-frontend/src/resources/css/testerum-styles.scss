@@ -102,7 +102,7 @@ body {
 .fa_my-disabled-test {
     @extend .fas;
     @extend .fa-ban;
-    color: $error-color;
+    color: $disabled-color;
 }
 
 .fa_my-expand {
@@ -162,7 +162,7 @@ body {
 .fa_my-runner-disabled-colored {
     @extend .fas;
     @extend .fa-ban;
-    color: $error-color;
+    color: $disabled-color;
 }
 .fa_my-runner-undefined {
     @extend .fas;

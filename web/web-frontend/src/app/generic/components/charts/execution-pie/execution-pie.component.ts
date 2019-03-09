@@ -46,6 +46,7 @@ export class ExecutionPieComponent implements OnInit {
                 'Waiting to execute',
                 'Passed',
                 'Failed',
+                'Disabled',
                 'Undefined steps',
                 'Skipped'
                 ],
@@ -54,11 +55,12 @@ export class ExecutionPieComponent implements OnInit {
                     model.waitingToExecute,
                     model.passed,
                     model.failed,
+                    model.disabled,
                     model.undefined,
                     model.skipped
                 ],
-                backgroundColor: ["#c0bebc", "#5cb85c", "#FF6384", "#FFCE56", "#aae8ff"],
-                hoverBackgroundColor: ["#c0bebc", "#5cb85c", "#FF6384", "#FFCE56", "#aae8ff"]
+                backgroundColor: ["#c0bebc", "#5cb85c", "#EF0000", "#ff8f1b", "#FFCE56", "#aae8ff"],
+                hoverBackgroundColor: ["#c0bebc", "#5cb85c", "#EF0000", "#ff8f1b", "#FFCE56", "#aae8ff"]
             }]
         };
     }

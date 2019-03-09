@@ -5,6 +5,12 @@ $warning-color: #f0ad4e;
 $primary-color: #337ab7;
 $gray-color: #c0bebc;
 
+$passed-color: #5cb85c;
+$failed-color: #EF0000;
+$disabled-color: #FF7800;
+$undefined-color: #FFCE56;
+$skipped-color: #aae8ff;
+
 $log-type-debug-color: #000000;
 $log-type-info-color: #000000;
 $log-type-warning-color: #e05500;
@@ -24,6 +30,7 @@ $hover-color: #eee;
 .error_color {color: $error-color;}
 .success-color {color: $success-color;}
 .info-color {color: $info-color;}
+.disabled-color {color: $disabled-color;}
 .warning-color {color: $warning-color;}
 .primary-color {color: $primary-color;}
 .gray-color {color: $gray-color;}

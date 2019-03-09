@@ -57,8 +57,8 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
                         manualTestsRunner.notApplicableTests,
                         manualTestsRunner.notExecutedOrInProgressTests
                     ],
-                    backgroundColor: ["#5cb85c", "#FF6384", "#FFCE56", "#36A2EB", "#c0bebc"],
-                    hoverBackgroundColor: ["#5cb85c", "#FF6384", "#FFCE56", "#36A2EB", "#c0bebc"]
+                    backgroundColor: ["#5cb85c", "#EF0000", "#FFCE56", "#36A2EB", "#c0bebc"],
+                    hoverBackgroundColor: ["#5cb85c", "#EF0000", "#FFCE56", "#36A2EB", "#c0bebc"]
                 }]
             };
 
