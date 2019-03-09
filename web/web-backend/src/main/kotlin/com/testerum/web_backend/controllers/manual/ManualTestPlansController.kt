@@ -7,12 +7,7 @@ import com.testerum.model.manual.ManualTestPlans
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeRoot
 import com.testerum.model.manual.status_tree.filter.ManualTreeStatusFilter
 import com.testerum.web_backend.services.manual.ManualTestPlansFrontendService
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/manual")
@@ -91,13 +86,13 @@ class ManualTestPlansController(private val manualTestPlansFrontendService: Manu
         )
     }
 
-    @RequestMapping(method = [RequestMethod.GET], path = ["/plans/runner/next"], params = ["planPath", "currentTestPath"])
+    @RequestMapping(method = [RequestMethod.GET], path = ["/plans/runner/next"], params = ["planPath"])
     @ResponseBody
     fun getNextTestToExecute(@RequestParam(value = "planPath") planPath: String,
-                              @RequestParam(value = "currentTestPath") currentTestPath: String): Path? {
+                              @RequestParam(value = "currentTestPath", required = false) currentTestPath: String?): Path? {
         return manualTestPlansFrontendService.getNextTestToExecute(
                 Path.createInstance(planPath),
-                Path.createInstance(currentTestPath)
+                if(currentTestPath != null) Path.createInstance(currentTestPath) else null
         )
     }
 }

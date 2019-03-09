@@ -50,6 +50,10 @@ export class ManualTestPlanOverviewComponent implements OnInit {
     }
 
     navigateToManualExecPlanRunner() {
-        this.urlService.navigateToManualExecPlanRunner(this.model.path);
+        this.manualExecPlansService
+            .getPathOfUnExecutedTest(this.model.path, null)
+            .subscribe((nextPath: Path) => {
+                this.urlService.navigateToManualExecPlanTestRunner(this.model.path, nextPath)
+            });
     }
 }
