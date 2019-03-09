@@ -13,6 +13,7 @@ import {ManualTestsStatusTreeComponent} from "../../common/manual-tests-status-t
 import {ManualStepCall} from "../../plans/model/manual-step-call.model";
 import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalService} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
+import {ManualTestPlanOverviewComponent} from "../../plans/overview/item/manual-test-plan-overview.component";
 
 @Component({
     selector: 'manual-runner-editor',
@@ -22,6 +23,7 @@ import {AreYouSureModalService} from "../../../../generic/components/are_you_sur
 export class ManualRunnerEditorComponent implements OnInit {
 
     @Input() tree: ManualTestsStatusTreeComponent;
+    @Input() overview: ManualTestPlanOverviewComponent;
 
     ManualTestStatus = ManualTestStatus;
     StepPhaseEnum = StepPhaseEnum;
@@ -193,6 +195,7 @@ export class ManualRunnerEditorComponent implements OnInit {
             .subscribe((manualTest: ManualTest) => {
                 this.init(this.activatedRoute.snapshot.params);
                 this.tree.ngOnInit();
+                this.overview.ngOnInit();
             });
     }
 

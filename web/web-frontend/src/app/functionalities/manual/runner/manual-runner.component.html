@@ -3,7 +3,8 @@
         <as-split-area [size]="30">
             <div style="margin: 5px 0 5px 0;">
                 <manual-test-plan-overview
-                    [model]="manualExecPlan"
+                    #overview
+                    [planPath]="planPath"
                     [executionMode]="true">
                 </manual-test-plan-overview>
             </div>
@@ -13,7 +14,7 @@
         </as-split-area>
         <as-split-area [size]="70">
 
-            <manual-runner-editor [tree]="tree"></manual-runner-editor>
+            <manual-runner-editor [tree]="tree" [overview]="overview"></manual-runner-editor>
 
         </as-split-area>
     </as-split>
