@@ -7,6 +7,7 @@ import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tre
 import {Subscription} from "rxjs";
 import {FileSystemService} from "../../../../../service/file-system.service";
 import {PathInfo} from "../../../../../model/infrastructure/path/path-info.model";
+import {FileDirTreeContainerModel} from "../file-dir-tree/model/file-dir-tree-container.model";
 
 @Component({
     moduleId: module.id,
@@ -27,13 +28,14 @@ export class FileDirChooserModalComponent implements OnInit, AfterViewInit, OnDe
     isValidSelectedPath: boolean = false;
 
     private jsonTreeSelectedNodeSubscription: Subscription;
+    private createDirectorySubscription: Subscription;
     constructor(private jsonTreeService: JsonTreeService,
                 private fileSystemService: FileSystemService) {
     }
 
     ngOnInit(): void {
         this.jsonTreeSelectedNodeSubscription = this.jsonTreeService.selectedNodeEmitter.subscribe( (selectedNodeEvent: JsonTreeNodeEventModel) => {
-            this.selectedPathAsString = this.fileDirTreeComponent.getSelectedPathAsString();
+            this.selectedPathAsString = (selectedNodeEvent.treeNode as FileDirTreeContainerModel).absoluteJavaPath;
             this.checkIfSelectedPathIsValid();
         })
     }
@@ -47,6 +49,7 @@ export class FileDirChooserModalComponent implements OnInit, AfterViewInit, OnDe
 
     ngOnDestroy(): void {
         if (this.jsonTreeSelectedNodeSubscription != null) this.jsonTreeSelectedNodeSubscription.unsubscribe();
+        if (this.createDirectorySubscription != null) this.createDirectorySubscription.unsubscribe();
     }
 
     onCancelAction() {
@@ -59,7 +62,10 @@ export class FileDirChooserModalComponent implements OnInit, AfterViewInit, OnDe
     }
 
     createDirectory(): void {
-        this.fileDirTreeComponent.createDirectory()
+        if (this.createDirectorySubscription != null) this.createDirectorySubscription.unsubscribe();
+        this.createDirectorySubscription = this.fileDirTreeComponent.createDirectory().subscribe( (createdDirectory: FileDirTreeContainerModel) => {
+            this.fileDirTreeComponent.setSelectedDirectory(createdDirectory);
+        });
     }
 
     onSelectedPathChanges($event: Event) {
