@@ -4,7 +4,7 @@
     <h1 *ngIf="!isRootFeature() && !isCreateAction">Feature <span class="path">{{pathForTitle}}</span></h1>
 
     <div class="page-body">
-        <form #form="ngForm" class="form-horizontal">
+        <form #form="ngForm" class="form-horizontal" (keydown.enter)="$event.preventDefault()">
 
             <div class="my-line" *ngIf="isRootFeature() && isEditMode">
                 <label class="my-label label-size">Project Name</label>
