@@ -27,7 +27,7 @@ export class ReportTagPieComponent implements OnInit {
 
     private getPieDataFromModel(model: ReportPieModel): any {
         let passedColor = "#5cb85c";
-        let failedColor = "#EF0000";
+        let failedColor = "#E6302C";
         let disabledColor = "#FF7800";
         let undefinedColor = "#FFCE56";
         let skippedColor = "#aae8ff";

@@ -232,8 +232,8 @@ export class LineStatsComponent implements OnInit, OnChanges {
                     label: 'Failed',
                     data: this.failedData,
                     fill: true,
-                    borderColor: "#EF0000",
-                    backgroundColor: "#EF0000"
+                    borderColor: "#E6302C",
+                    backgroundColor: "#E6302C"
                 }
             );
         }
