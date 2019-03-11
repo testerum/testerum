@@ -47,4 +47,16 @@ export class JsonVerifyComponent {
     canAddCompareMode(): boolean {
         return this.isValidJson && this.selectedJsonCompareMode != null && this.editMode;
     }
+
+    getCompareModeTooltip(): string {
+        if (!this.isValidJson) {
+            return "To insert a Compare Mode you need to have a valid JSON"
+        }
+
+        if (!this.canAddCompareMode()) {
+            return "In order to insert a Compare Mode, please select one, set the cursor inside a JSON element and press Insert button"
+        }
+
+        return "Insert compare mode";
+    }
 }
