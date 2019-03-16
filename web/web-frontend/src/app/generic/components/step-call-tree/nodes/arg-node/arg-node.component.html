@@ -17,12 +17,11 @@
         <!-- WARNING ICON -->
         <i *ngIf="hasOwnWarnings()" class="fas fa-exclamation-triangle error_color" aria-hidden="true"
            [popover]="warningPopTemplate" containerClass="popover-warning" triggers="" container="body" #pop="bs-popover"
-           (mouseenter)="pop.show()"
-           (mouseleave)="pop.hide()">
+           (mouseenter)="pop.show()">
         </i>
 
         <ng-template #warningPopTemplate>
-            <i class="fas fa-exclamation-triangle error_color" aria-hidden="true"></i>
+            <i class="warning-icon-in-tooltip fas fa-exclamation-triangle error_color" aria-hidden="true"></i>
             <div *ngFor="let warning of model.arg.warnings">
                 <div>{{warning.message}}</div>
             </div>
