@@ -19,7 +19,6 @@
                                 <div class="my-dropdown-option">
                                     <div>{{item.label}}</div>
                                     <info-icon *ngIf="isDefaultOrLocalEnvironment(item.value)"
-                                               position="bottom"
                                                [width]="'300px'"
                                                [message]="getEnvironmentInfoMessage(item.value)"
                                                class="my-dropdown-selected-item-info"></info-icon>
@@ -29,8 +28,7 @@
                                 <div class="my-dropdown-option">
                                     <div>{{environment.label}}</div>
                                     <info-icon *ngIf="isDefaultOrLocalEnvironment(environment.value)"
-                                               position="right" style="color: black"
-                                               [width]="'300px'"
+                                               style="color: black"
                                                [message]="getEnvironmentInfoMessage(environment.value)" ></info-icon>
                                 </div>
                             </ng-template>

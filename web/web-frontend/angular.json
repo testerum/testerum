@@ -48,7 +48,7 @@
             ],
             "styles": [
               "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/themes/nova-light/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/ng2-dnd/bundles/style.css",
               "node_modules/simplemde/dist/simplemde.min.css",
@@ -112,45 +112,6 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "Testerum:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [
-              "node_modules/simplemde/dist/simplemde.min.js",
-              "node_modules/chart.js/dist/Chart.js"
-            ],
-            "styles": [
-              "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/ng2-dnd/bundles/style.css",
-              "node_modules/simplemde/dist/simplemde.min.css",
-              "src/resources/css/bootstrap.min.css",
-              "src/resources/css/bootstrap-theme.min.css",
-              "src/resources/css/testerum-styles.scss"
-            ],
-            "assets": [
-              "src/assets",
-              "src/favicon.png"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }

@@ -30,7 +30,6 @@
 
         <info-icon *ngIf="model.stepPatternParam.description"
                    [message]="model.stepPatternParam.description"
-                   [position]="'top'"
                    class="param-info-icon"></info-icon>
         <div *ngIf="!isManualExecutionMode()"
              [attr.title]="model.arg.content?'Edit':'Add'"

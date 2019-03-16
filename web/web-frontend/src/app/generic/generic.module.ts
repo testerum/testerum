@@ -66,6 +66,7 @@ import {
     ToolbarModule,
     TooltipModule
 } from "primeng/primeng";
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {MarkdownEditorComponent} from "./components/markdown-editor/markdown-editor.component";
 import {AttachmentsComponent} from "./components/form/attachments/attachments.component";
 import {StepCallEditorContainerComponent} from "./components/step-call-tree/nodes/step-call-editor-container/step-call-editor-container.component";
@@ -128,7 +129,8 @@ import {ErrorFeedbackModalService} from "./error/report-modal/error-feedback-mod
         AutoCompleteModule,
         ToggleButtonModule,
         ToolbarModule,
-        ToastModule
+        ToastModule,
+        OverlayPanelModule,
     ],
     exports: [
         SafeHtmlPipe,

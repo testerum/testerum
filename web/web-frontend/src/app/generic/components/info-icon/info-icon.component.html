@@ -1,18 +1,21 @@
 <div class="info-icon"
-     (mouseenter)="pop.show()"
-     (mouseleave)="pop.hide()">
+     (mouseenter)="show($event);"
+     (mouseleave)="waitAndHide($event);">
 
-    <i class="fa_my-info-colored" aria-hidden="true"
-       #pop="bs-popover"
-       [popover]="popTemplate"
-       [placement]="position"></i>
+    <i class="fa_my-info-colored" aria-hidden="true" #actualTarget></i>
 
-    <ng-template #popTemplate >
-        <div [style.max-width]="maxWidth"
+    <p-overlayPanel #op
+                    appendTo="body"
+                    baseZIndex="9999"
+                    autoZIndex="false">
+        <div class="content"
+             [style.max-width]="maxWidth"
              [style.max-height]="maxHeight"
              [style.width]="width"
              [style.height]="height"
              style="overflow: auto"
-             [innerHtml]="message | markdown"></div>
-    </ng-template>
+             [innerHtml]="message | markdown"
+             (mouseenter)="show($event);"
+             (mouseleave)="waitAndHide($event);"></div>
+    </p-overlayPanel>
 </div>
