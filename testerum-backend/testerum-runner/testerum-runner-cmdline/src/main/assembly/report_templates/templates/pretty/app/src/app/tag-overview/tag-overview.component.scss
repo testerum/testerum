@@ -24,6 +24,7 @@
     .tag-status-container {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: center;
         margin-top: 40px;
 
@@ -32,6 +33,7 @@
             font-weight: bold;
             color: #3c3b3b
         }
+
         .tag-status {
             width: 10em;
             height: 5em;
