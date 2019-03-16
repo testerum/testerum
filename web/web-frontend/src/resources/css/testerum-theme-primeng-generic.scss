@@ -6,3 +6,8 @@
 .ui-tooltip {
     z-index: 10000 !important;
 }
+
+//P-TABLE
+body .ui-table .ui-table-tbody > tr > td {
+    padding: .25em .5em;
+}

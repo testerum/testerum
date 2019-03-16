@@ -24,9 +24,22 @@
 }
 
 .toggle-test-type {
-    width: 8em;
+    width: 9em;
     background-color: $success-color !important;
-    color: white !important;;
+    color: white !important;
+}
+
+.type-container p-toggleButton, .disabled-container p-toggleButton {
+    display: flex;
+    justify-content: center;
+    height: 25px;
+    font-size: 16px !important;
+    .ui-button-text {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        line-height: 1.6em;
+        font-size: 14px;
+    }
 }
 
 .toggle-test-type.ui-state-active {
