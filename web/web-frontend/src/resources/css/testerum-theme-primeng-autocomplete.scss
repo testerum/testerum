@@ -1,12 +1,20 @@
 .ui-autocomplete {
     display: flex;
     height: 25px;
+    align-items: center;
+
+    .ui-autocomplete-multiple-container {
+        height: 25px;
+        padding: 0 0.4em !important;
+        font-size: 12px;
+    }
+
+    .ui-autocomplete-dropdown {
+        height: 25px;
+    }
+
+    .autocomplete-full-width input {
+        width: 100%;
+    }
 }
 
-.ui-autocomplete .ui-autocomplete-dropdown {
-    height: 25px;
-}
-
-.autocomplete-full-width input {
-    width: 100%;
-}
