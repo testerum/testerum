@@ -4,29 +4,35 @@
     /* STYLE FOR TAB COMPONENT */
     .ui-tabview {
         height: 100%;
-    }
 
-    .ui-tabview-panels {
-        height: calc(100% - 35px);
-        border: 1px solid #bebebe;
-        border-top: 0;
-        margin-left: 2px;
-        border-right: 2px solid #bebebe;
-    }
+        .ui-tabview-nav {
+            border: 0;
+            border-bottom: 1px solid #bebebe;
 
-    .ui-tabview-panel {
-        height: 100%;
-        padding: 0 !important;
-    }
+            .ui-state-active {
+                background-color: #ffffff !important;
+                border: 1px solid #c8c8c8 !important;
+                border-bottom: 1px solid white !important;
+                margin-bottom: -1px !important;
 
-    .ui-tabview-nav {
-        border: 0;
-        border-bottom: 1px solid #bebebe;
-    }
+                &:focus {
+                    outline: none;
+                }
+                &:hover {
+                    border: 0;
+                }
+                a {
+                    color: #333333 !important;
+                }
+            }
+        }
 
-    .ui-tabview-selected {
-        background: white;
-        border-bottom: 1px solid white !important;
-        margin-bottom: -1px !important;
+        .ui-tabview-panels {
+            height: calc(100% - 35px);
+
+            .ui-tabview-panel {
+                height: 100%;
+            }
+        }
     }
 }
