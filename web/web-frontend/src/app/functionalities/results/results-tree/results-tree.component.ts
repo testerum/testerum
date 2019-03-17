@@ -33,7 +33,7 @@ export class ResultsTreeComponent implements OnInit {
     }
 
     ngOnInit() {
-        let pathAsString = this.activatedRoute.firstChild ? this.activatedRoute.firstChild.snapshot.params['path']: null;
+        let pathAsString = this.activatedRoute.snapshot.params['path'];
         let path: Path = pathAsString !=null ? Path.createInstance(pathAsString) : null;
 
         this.resultService.getRunnerReportDirInfo().subscribe(
