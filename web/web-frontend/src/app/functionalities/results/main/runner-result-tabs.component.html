@@ -1,7 +1,7 @@
 <div class="runner-results-tabs">
-    <p-tabView>
+    <p-tabView [(activeIndex)]="activeTabIndex">
 
-        <p-tabPanel header="Tests Results" *ngIf="testsResultUrl" [selected]="testsResultUrl">
+        <p-tabPanel header="Tests Results" *ngIf="testsResultUrl">
             <result [url]="testsResultUrl"></result>
         </p-tabPanel>
 
@@ -9,7 +9,7 @@
             <result [url]="tagsResultsUrl"></result>
         </p-tabPanel>
 
-        <p-tabPanel header="Statistics" [disabled]="!statisticsUrl" [selected]="!testsResultUrl && statisticsUrl">
+        <p-tabPanel header="Statistics" [disabled]="!statisticsUrl">
             <result [url]="statisticsUrl"></result>
         </p-tabPanel>
 

@@ -26,6 +26,8 @@ export class RunnerResultTabsComponent implements OnInit, OnDestroy {
     tagsResultsUrl;
     statisticsUrl;
 
+    private activeTabIndex: number = 0;
+
     routerEventsSubscription: Subscription;
 
     constructor(private cd: ChangeDetectorRef,
@@ -44,6 +46,9 @@ export class RunnerResultTabsComponent implements OnInit, OnDestroy {
                 return leafRoute.params
             }))
             .subscribe((params: Params) => {
+                    this.testsResultUrl = null;
+                    this.tagsResultsUrl = null;
+
                     this.setReportBaseUrl(params["url"]);
                 }
             );
@@ -51,6 +56,7 @@ export class RunnerResultTabsComponent implements OnInit, OnDestroy {
 
         this.resultService.getStatisticsUrl().subscribe((statisticsUrl: string) => {
             this.statisticsUrl = statisticsUrl;
+            this.activeTabIndex = 0;
             this.refresh()
         });
         this.refresh()
@@ -69,6 +75,8 @@ export class RunnerResultTabsComponent implements OnInit, OnDestroy {
     private setReportBaseUrl(baseUrl: string) {
         this.testsResultUrl = baseUrl ? baseUrl + this.testsResultsUrlSuffix : null;
         this.tagsResultsUrl = baseUrl ? baseUrl + this.tagsResultsUrlSuffix : null;
+        this.activeTabIndex = 0;
+
         this.refresh();
     }
 }
