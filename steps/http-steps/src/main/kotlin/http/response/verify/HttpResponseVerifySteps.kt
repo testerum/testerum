@@ -3,32 +3,32 @@ package http.response.verify
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then
 import com.testerum.api.services.TesterumServiceLocator
+import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
 import com.testerum.common.json_diff.impl.node_comparer.JsonCompareResult
 import com.testerum.common_json.util.prettyPrintJson
-import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.HttpResponseHeader
 import com.testerum.model.resources.http.response.ValidHttpResponse
 import http.response.verify.model.HttpBodyVerifyMatchingType
-import http.response.verify.model.HttpBodyVerifyMatchingType.*
+import http.response.verify.model.HttpBodyVerifyMatchingType.EXACT_MATCH
+import http.response.verify.model.HttpBodyVerifyMatchingType.IS_EMPTY
+import http.response.verify.model.HttpBodyVerifyMatchingType.JSON_VERIFY
 import http.response.verify.model.HttpResponseHeaderVerify
 import http.response.verify.model.HttpResponseVerify
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode.CONTAINS
 import http.response.verify.transformer.HttpResponseVerifyTransformer
+import http_support.logging.prettyPrint
+import http_support.logging.prettyPrintHttpStatusCode
 import http_support.module_di.HttpStepsModuleServiceLocator
-import org.slf4j.LoggerFactory
 
 class HttpResponseVerifySteps {
 
-    companion object {
-        private val LOG = LoggerFactory.getLogger(HttpResponseVerifySteps::class.java)
-    }
-
     private val jsonComparer: JsonComparer = HttpStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
+    private val logger: TesterumLogger = TesterumServiceLocator.getTesterumLogger()
 
     @Then(
             value = "the HTTP response should be <<httpResponseVerify>>",
@@ -41,43 +41,81 @@ class HttpResponseVerifySteps {
             )
             httpResponseVerify: HttpResponseVerify
     ) {
-        val httpRequest: HttpRequest = variables["httpRequest"] as HttpRequest
         val httpResponse: ValidHttpResponse = variables["httpResponse"] as ValidHttpResponse
 
-        LOG.debug("Verifying HTTP Response\n$httpResponse\n")
+        logger.info("Expected HTTP Response\n${httpResponseVerify.prettyPrint()}\n")
+        logger.info("Actual HTTP Response\n${httpResponse.prettyPrint()}\n")
 
-        verifyExpectedCode(httpResponseVerify, httpResponse, httpRequest)
-        verifyExpectedHeaders(httpResponseVerify, httpResponse, httpRequest)
-        verifyExpectedBody(httpResponseVerify, httpRequest, httpResponse)
-
-        LOG.debug("Http Request executed successfully")
+        verifyExpectedCode(httpResponseVerify, httpResponse)
+        verifyExpectedHeaders(httpResponseVerify, httpResponse)
+        verifyExpectedBody(httpResponseVerify, httpResponse)
     }
 
-    private fun verifyExpectedBody(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: ValidHttpResponse) {
+    private fun verifyExpectedCode(httpResponseVerify: HttpResponseVerify, httpResponse: ValidHttpResponse) {
+        if (httpResponseVerify.expectedStatusCode != null) {
+            if (httpResponseVerify.expectedStatusCode != httpResponse.statusCode) {
+                throw AssertionError("Expected Status Code [${httpResponseVerify.expectedStatusCode?.prettyPrintHttpStatusCode()}] but [${httpResponse.statusCode.prettyPrintHttpStatusCode()}] found")
+            } else {
+                "Status Code Found: expectedStatusCode = [${httpResponseVerify.expectedStatusCode?.prettyPrintHttpStatusCode()}]"
+            }
+        }
+    }
+
+    private fun verifyExpectedHeaders(httpResponseVerify: HttpResponseVerify, httpResponse: ValidHttpResponse) {
+        if (httpResponseVerify.expectedHeaders != null) {
+            for (expectedHeader in httpResponseVerify.expectedHeaders!!) {
+                val expectedHeaderKey = expectedHeader.key
+                        ?: continue
+
+                val compareMode = getCompareMode(expectedHeader)
+                val actualHeader = getActualHeader(httpResponse, expectedHeaderKey)
+                        ?: throw AssertionError("Expected Response Header: [${expectedHeader.key}] but no header with this key was found in the response.")
+
+                val expectedValue = expectedHeader.value
+                val actualValues = actualHeader.values
+                if (expectedValue == null && actualValues.isNotEmpty()) {
+                    assertFailMatchingHeaders(
+                            expectedHeader,
+                            expectedValue,
+                            actualValues[0],
+                            HttpResponseVerifyHeadersCompareMode.EXACT_MATCH
+                    )
+                }
+
+                when (compareMode) {
+                    HttpResponseVerifyHeadersCompareMode.EXACT_MATCH -> compareHeaderExactMode(expectedHeader, actualHeader)
+                    CONTAINS -> compareHeaderContainsMode(expectedHeader, actualHeader)
+                    HttpResponseVerifyHeadersCompareMode.REGEX_MATCH -> compareHeaderRegexMode(expectedHeader, actualHeader)
+                }
+            }
+        }
+    }
+
+    private fun verifyExpectedBody(httpResponseVerify: HttpResponseVerify, httpResponse: ValidHttpResponse) {
         val expectedBody = httpResponseVerify.expectedBody ?: return
 
         val matchingType: HttpBodyVerifyMatchingType = expectedBody.httpBodyVerifyMatchingType
         when (matchingType) {
-            IS_EMPTY -> verifyBodyIsEmpty(httpRequest, httpResponse)
-            JSON_VERIFY -> verifyBodyAsJsonVerify(httpResponseVerify, httpRequest, httpResponse)
-            HttpBodyVerifyMatchingType.CONTAINS, HttpBodyVerifyMatchingType.REGEX_MATCH, EXACT_MATCH -> verifyBodyAsText(httpResponseVerify, httpRequest, httpResponse)
+            IS_EMPTY -> verifyBodyIsEmpty(httpResponse)
+            JSON_VERIFY -> verifyBodyAsJsonVerify(httpResponseVerify, httpResponse)
+            HttpBodyVerifyMatchingType.CONTAINS, HttpBodyVerifyMatchingType.REGEX_MATCH, EXACT_MATCH -> verifyBodyAsText(httpResponseVerify, httpResponse)
         }
 
     }
 
-    private fun verifyBodyAsJsonVerify(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: ValidHttpResponse) {
+    private fun verifyBodyAsJsonVerify(httpResponseVerify: HttpResponseVerify, httpResponse: ValidHttpResponse) {
         val compareMode = httpResponseVerify.expectedBody?.httpBodyVerifyMatchingType ?: EXACT_MATCH
 
         val expectedBody = httpResponseVerify.expectedBody!!.bodyVerify
         val actualBody = String(httpResponse.body)
 
         if (expectedBody == null && expectedBody != actualBody) {
-            assertFailMatchingBody(expectedBody, actualBody, compareMode, getContextInfoForLogging(httpRequest, httpResponse))
+            assertFailMatchingBody(expectedBody, actualBody, compareMode)
         }
 
         val compareResult: JsonCompareResult = jsonComparer.compare(expectedBody!!, actualBody)
         if (compareResult is DifferentJsonCompareResult) {
-            LOG.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
+            logger.error("=====> Assertion; message=[${compareResult.message}], path=[${compareResult.jsonPath}]")
 
             val prettyExpectedBody = expectedBody.prettyPrintJson()
                     .lines()
@@ -97,13 +135,12 @@ class HttpResponseVerifySteps {
                             "$prettyActualBody\n" +
                             "\tMatching message: [${compareResult.message}] \n" +
                             "\tNot matching element path: [${compareResult.jsonPath}] \n" +
-                            "\tComparison Mode: [$compareMode] \n" +
-                            getContextInfoForLogging(httpRequest, httpResponse)
+                            "\tComparison Mode: [$compareMode] \n"
             )
         }
     }
 
-    private fun verifyBodyAsText(httpResponseVerify: HttpResponseVerify, httpRequest: HttpRequest, httpResponse: ValidHttpResponse) {
+    private fun verifyBodyAsText(httpResponseVerify: HttpResponseVerify, httpResponse: ValidHttpResponse) {
         val compareMode = httpResponseVerify.expectedBody?.httpBodyVerifyMatchingType ?: EXACT_MATCH
 
         val expectedBody = httpResponseVerify.expectedBody!!.bodyVerify
@@ -113,8 +150,7 @@ class HttpResponseVerifySteps {
             assertFailMatchingBody(
                     expectedBody,
                     actualBody,
-                    compareMode,
-                    getContextInfoForLogging(httpRequest, httpResponse)
+                    compareMode
             )
         }
 
@@ -123,8 +159,7 @@ class HttpResponseVerifySteps {
             assertFailMatchingBody(
                     expectedBody,
                     actualBody,
-                    compareMode,
-                    getContextInfoForLogging(httpRequest, httpResponse)
+                    compareMode
             )
         }
 
@@ -133,22 +168,14 @@ class HttpResponseVerifySteps {
             assertFailMatchingBody(
                     expectedBody,
                     actualBody,
-                    compareMode,
-                    getContextInfoForLogging(httpRequest, httpResponse)
+                    compareMode
             )
         }
-
-        LOG.debug(
-                "Response Body Match \n" +
-                        getContextInfoForLogging(httpRequest, httpResponse)
-        )
     }
 
-    private fun assertFailMatchingBody(
-            expectedBody: String?,
-            actualBody: String?,
-            compareMode: HttpBodyVerifyMatchingType,
-            contextInfo: String) {
+    private fun assertFailMatchingBody(expectedBody: String?,
+                                       actualBody: String?,
+                                       compareMode: HttpBodyVerifyMatchingType) {
 
         val prettyExpectedBody = expectedBody.orEmpty()
                 .lines()
@@ -165,78 +192,22 @@ class HttpResponseVerifySteps {
                         "$prettyExpectedBody\n" +
                         "\tbut found\n" +
                         "$prettyActualBody\n" +
-                        "\tComparison Mode: [$compareMode]\n" +
-                        contextInfo
+                        "\tComparison Mode: [$compareMode]\n"
         )
     }
 
-    private fun verifyBodyIsEmpty(httpRequest: HttpRequest, httpResponse: ValidHttpResponse) {
+    private fun verifyBodyIsEmpty(httpResponse: ValidHttpResponse) {
         val actualBody = httpResponse.body
         if (actualBody.isNotEmpty()) {
-            throw AssertionError(
-                    "Expected Http Response Body to be empty \n" +
-                            getContextInfoForLogging(httpRequest, httpResponse)
-            )
+            throw AssertionError("Expected Http Response Body to be empty")
         } else {
-            LOG.debug(
+            logger.debug(
                     "Response Body is valid: [$IS_EMPTY] as expected"
             )
         }
     }
 
-    private fun verifyExpectedHeaders(httpResponseVerify: HttpResponseVerify, httpResponse: ValidHttpResponse, httpRequest: HttpRequest) {
-        if (httpResponseVerify.expectedHeaders != null) {
-            for (expectedHeader in httpResponseVerify.expectedHeaders!!) {
-                val expectedHeaderKey = expectedHeader.key
-                        ?: continue
-
-                val compareMode = getCompareMode(expectedHeader)
-                val actualHeader = getActualHeader(httpResponse, expectedHeaderKey)
-
-                val contextInfo = getContextInfoForLogging(httpRequest, httpResponse)
-
-                if (actualHeader == null) {
-                    throw AssertionError(
-                            "Expected Response Header: [${expectedHeader.key}] but no header with this key was found in the response: \n" +
-                                    contextInfo
-                    )
-                }
-
-                val expectedValue = expectedHeader.value
-                val actualValues = actualHeader.values
-                if (expectedValue == null && actualValues.isNotEmpty()) {
-                    assertFailMatchingHeaders(
-                            expectedHeader,
-                            expectedValue,
-                            actualValues[0],
-                            HttpResponseVerifyHeadersCompareMode.EXACT_MATCH,
-                            contextInfo
-                    )
-                }
-
-                when (compareMode) {
-                    HttpResponseVerifyHeadersCompareMode.EXACT_MATCH -> compareHeaderExactMode(expectedHeader, actualHeader, contextInfo)
-                    CONTAINS -> compareHeaderContainsMode(expectedHeader, actualHeader, contextInfo)
-                    HttpResponseVerifyHeadersCompareMode.REGEX_MATCH -> compareHeaderRegexMode(expectedHeader, actualHeader, contextInfo)
-                }
-            }
-        }
-    }
-
-    private fun verifyExpectedCode(httpResponseVerify: HttpResponseVerify, httpResponse: ValidHttpResponse, httpRequest: HttpRequest) {
-        if (httpResponseVerify.expectedStatusCode != null) {
-            if (httpResponseVerify.expectedStatusCode != httpResponse.statusCode) {
-                throw AssertionError(
-                        "Expected Status Code [${httpResponseVerify.expectedStatusCode}] but [${httpResponse.statusCode}] found \n" +
-                                getContextInfoForLogging(httpRequest, httpResponse)
-                )
-            } else {
-                "Status Code Found: expectedStatusCode = [${httpResponseVerify.expectedStatusCode}]"
-            }
-        }
-    }
-
-    private fun compareHeaderExactMode(expectedHeader: HttpResponseHeaderVerify, actualHeader: HttpResponseHeader, contextInfo: String) {
+    private fun compareHeaderExactMode(expectedHeader: HttpResponseHeaderVerify, actualHeader: HttpResponseHeader) {
 
         val expectedValue = expectedHeader.value
         val actualValues = actualHeader.values
@@ -252,12 +223,11 @@ class HttpResponseVerifySteps {
                 expectedHeader,
                 expectedValue,
                 actualValues[0],
-                HttpResponseVerifyHeadersCompareMode.EXACT_MATCH,
-                contextInfo
+                HttpResponseVerifyHeadersCompareMode.EXACT_MATCH
         )
     }
 
-    private fun compareHeaderContainsMode(expectedHeader: HttpResponseHeaderVerify, actualHeader: HttpResponseHeader, contextInfo: String) {
+    private fun compareHeaderContainsMode(expectedHeader: HttpResponseHeaderVerify, actualHeader: HttpResponseHeader) {
         val expectedValue = expectedHeader.value
         val actualValues = actualHeader.values
 
@@ -273,12 +243,11 @@ class HttpResponseVerifySteps {
                 expectedHeader,
                 expectedValue,
                 actualValues[0],
-                HttpResponseVerifyHeadersCompareMode.EXACT_MATCH,
-                contextInfo
+                HttpResponseVerifyHeadersCompareMode.EXACT_MATCH
         )
     }
 
-    private fun compareHeaderRegexMode(expectedHeader: HttpResponseHeaderVerify, actualHeader: HttpResponseHeader, contextInfo: String) {
+    private fun compareHeaderRegexMode(expectedHeader: HttpResponseHeaderVerify, actualHeader: HttpResponseHeader) {
         val expectedValue = expectedHeader.value
         val actualValues = actualHeader.values
 
@@ -293,8 +262,7 @@ class HttpResponseVerifySteps {
                 expectedHeader,
                 expectedValue,
                 actualValues[0],
-                HttpResponseVerifyHeadersCompareMode.REGEX_MATCH,
-                contextInfo
+                HttpResponseVerifyHeadersCompareMode.REGEX_MATCH
         )
     }
 
@@ -302,7 +270,7 @@ class HttpResponseVerifySteps {
                                actualValue: String,
                                compareMode: HttpResponseVerifyHeadersCompareMode) {
 
-        LOG.debug("Header Found: \n" +
+        logger.debug("Header Found: \n" +
                 "\t key=[${expectedHeader.key}], \n" +
                 "\t expectedValue=[${expectedHeader.value}], \n" +
                 "\t comparisonMode=[$compareMode], \n" +
@@ -314,47 +282,13 @@ class HttpResponseVerifySteps {
             expectedHeader: HttpResponseHeaderVerify,
             expectedValue: String?,
             actualValue: String?,
-            compareMode: HttpResponseVerifyHeadersCompareMode,
-            contextInfo: String
+            compareMode: HttpResponseVerifyHeadersCompareMode
     ) {
 
         throw AssertionError(
-                "Expected Response Header [${expectedHeader.key}] with value [$expectedValue] but [$actualValue] found. \n" +
-                        "\tComparison Mode: $compareMode.\n" +
-                        contextInfo
+                "Expected Response Header [${expectedHeader.key}] with value [$expectedValue] but [$actualValue] found.\n" +
+                        "\tComparison Mode: $compareMode.\n"
         )
-    }
-
-    private fun getContextInfoForLogging(httpRequest: HttpRequest, httpResponse: ValidHttpResponse): String {
-        var response =
-                "\t Http Request: \n" +
-                        "\t \t ${httpRequest.method} ${httpRequest.url} HTTP/1.1 \n"
-
-        for (header in httpRequest.headers) {
-            response +=
-                    "\t \t ${header.key}: ${header.value} \n"
-        }
-        if (httpRequest.body != null)
-            response +=
-                    "\n" +
-                    "\t \t ${httpRequest.body!!.content} \n"
-        response +="\n"
-
-
-        response +=
-                "\t Http Response: \n" +
-                "\t \t HTTP/1.1 ${httpResponse.statusCode} \n"
-
-        for (header in httpResponse.headers) {
-            response +=
-                    "\t \t ${header.key}: ${header.values.joinToString(",")} \n"
-        }
-
-        response +=
-                "\n"
-        "\t \t ${String(httpResponse.body)} \n"
-
-        return response
     }
 
     private fun getActualHeader(httpResponse: ValidHttpResponse, expectedHeaderKey: String): HttpResponseHeader? {
