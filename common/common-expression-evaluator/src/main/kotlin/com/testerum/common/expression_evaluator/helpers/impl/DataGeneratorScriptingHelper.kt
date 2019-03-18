@@ -2,7 +2,8 @@ package com.testerum.common.expression_evaluator.helpers.impl
 
 import com.github.javafaker.Faker
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
-import org.intellij.lang.annotations.Language
+import com.testerum.common.expression_evaluator.helpers.util.JsFunction
+import com.testerum.common.expression_evaluator.helpers.util.ScriptingArgs
 
 /**
  * DataGenerator based on @see <a href="https://github.com/DiUS/java-faker">https://github.com/DiUS/java-faker</a>
@@ -11,15 +12,14 @@ import org.intellij.lang.annotations.Language
  */
 object DataGeneratorScriptingHelper : ScriptingHelper {
 
-    override val allowedClasses: List<Class<*>> = listOf(
-            Faker::class.java
-    )
-    @Language("JavaScript")
-    override val script: String = """
-        var Faker = Java.type('${Faker::class.java.name}');
+    private val dataGenerator = object : JsFunction(functionName = "dataGenerator") {
+        override fun call(thiz: Any?, args: ScriptingArgs): Any? {
+            return Faker()
+        }
+    }
 
-        var dataGenerator = function() {
-            return new Faker();
-        };
-    """.trimIndent()
+    override val globalVariables: Map<String, Any?> = mapOf(
+            dataGenerator.functionName to dataGenerator
+    )
+
 }
