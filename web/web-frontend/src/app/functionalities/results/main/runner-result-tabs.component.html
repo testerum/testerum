@@ -1,11 +1,11 @@
 <div class="runner-results-tabs">
     <p-tabView [(activeIndex)]="activeTabIndex">
 
-        <p-tabPanel header="Tests Results" *ngIf="testsResultUrl">
+        <p-tabPanel header="Tests Results" [headerStyleClass]="!tagsResultsUrl ? 'hidden' : ''">
             <result [url]="testsResultUrl"></result>
         </p-tabPanel>
 
-        <p-tabPanel header="Tags Results" *ngIf="tagsResultsUrl">
+        <p-tabPanel header="Tags Results" [headerStyleClass]="!tagsResultsUrl ? 'hidden' : ''">
             <result [url]="tagsResultsUrl"></result>
         </p-tabPanel>
 

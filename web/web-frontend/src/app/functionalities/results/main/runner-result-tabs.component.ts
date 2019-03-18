@@ -37,7 +37,6 @@ export class RunnerResultTabsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-
         this.routerEventsSubscription = this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(route => {
@@ -56,7 +55,6 @@ export class RunnerResultTabsComponent implements OnInit, OnDestroy {
 
         this.resultService.getStatisticsUrl().subscribe((statisticsUrl: string) => {
             this.statisticsUrl = statisticsUrl;
-            this.activeTabIndex = 0;
             this.refresh()
         });
         this.refresh()
@@ -75,7 +73,8 @@ export class RunnerResultTabsComponent implements OnInit, OnDestroy {
     private setReportBaseUrl(baseUrl: string) {
         this.testsResultUrl = baseUrl ? baseUrl + this.testsResultsUrlSuffix : null;
         this.tagsResultsUrl = baseUrl ? baseUrl + this.tagsResultsUrlSuffix : null;
-        this.activeTabIndex = 0;
+
+        this.activeTabIndex = baseUrl ? 0 : 2;
 
         this.refresh();
     }
