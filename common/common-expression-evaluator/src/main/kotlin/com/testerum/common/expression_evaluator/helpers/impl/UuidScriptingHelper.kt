@@ -1,21 +1,20 @@
 package com.testerum.common.expression_evaluator.helpers.impl
 
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
-import org.intellij.lang.annotations.Language
-import java.util.*
+import com.testerum.common.expression_evaluator.helpers.util.JsFunction
+import com.testerum.common.expression_evaluator.helpers.util.ScriptingArgs
+import java.util.UUID
 
 object UuidScriptingHelper : ScriptingHelper {
 
-    override val allowedClasses: List<Class<*>> = listOf(
-            UUID::class.java
-    )
+    private val uuid = object : JsFunction(functionName = "uuid") {
+        override fun call(thiz: Any?, args: ScriptingArgs): Any? {
+            return UUID.randomUUID().toString()
+        }
+    }
 
-    @Language("JavaScript")
-    override val script: String = """
-        var UUID = Java.type('${UUID::class.java.name}');
-        var uuid = function() {
-            return UUID.randomUUID().toString();
-        };
-    """.trimIndent()
+    override val globalVariables: Map<String, Any?> = mapOf(
+            uuid.functionName to uuid
+    )
 
 }

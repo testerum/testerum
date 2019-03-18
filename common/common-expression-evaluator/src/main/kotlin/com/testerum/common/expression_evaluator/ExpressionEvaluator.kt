@@ -16,7 +16,7 @@ object ExpressionEvaluator {
     private val LOG = LoggerFactory.getLogger(ExpressionEvaluator::class.java)
 
     // todo: make these configurable
-    private val helpers = listOf<ScriptingHelper>(
+    private val helpers: List<ScriptingHelper> = listOf(
             UuidScriptingHelper,
             DateScriptingHelper,
             DataGeneratorScriptingHelper,
@@ -29,8 +29,10 @@ object ExpressionEvaluator {
         disallowAllClasses()
 
         for (helper in helpers) {
-            for (allowedClass in helper.allowedClasses) {
-                allow(allowedClass)
+            val globalVariables = helper.globalVariables
+
+            for ((name, value) in globalVariables) {
+                inject(name, value)
             }
         }
     }
@@ -42,43 +44,18 @@ object ExpressionEvaluator {
             put("vars", context)
         }
 
-        var enhancedExpression: String? = null
         try {
-            // todo: use sandbox.inject() for helpers
-            enhancedExpression = enhanceExpression(expression)
-
-            return sandbox.eval(enhancedExpression, bindings)
+            return sandbox.eval(expression, bindings)
         } catch (e: Exception) {
             val ecmaException = e.selfOrCauseOfType<ECMAException>()
-            val errorMessage = if (ecmaException != null) {
+            val originalErrorMessage = if (ecmaException != null) {
                 ecmaException.message
             } else {
                 e.message
             }
 
-            LOG.info(
-                    buildString {
-                        append("failed to evaluate expression [").append(expression).append("]")
-
-                        if (enhancedExpression != null) {
-                            append(", enhancedExpression=[\n").append(enhancedExpression).append("\n]")
-                        }
-                    }
-            )
-
-            throw RuntimeException(errorMessage, e)
+            throw RuntimeException("failed to evaluate expression {{$expression}}\n$originalErrorMessage", e)
         }
-    }
-
-    private fun enhanceExpression(expression: String): String = buildString {
-        for (helper in helpers) {
-            append(helper.script)
-            append("\n")
-            append("\n")
-
-        }
-
-        append(expression)
     }
 
     private inline fun <reified T> Throwable.selfOrCauseOfType(): T? {
