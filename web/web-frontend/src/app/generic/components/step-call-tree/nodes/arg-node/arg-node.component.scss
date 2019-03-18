@@ -1,16 +1,16 @@
 .arg-node {
-    .empty-body-label {
-        color: #999;
-        display: flex;
-        justify-content: center;
-    }
-
-    .shell {
+    &.shell {
         border-radius: 3px;
         border: 1px solid #D5D5D5;
         color: #222222;
         cursor: default;
         width: fit-content;
+    }
+
+    .empty-body-label {
+        color: #999;
+        display: flex;
+        justify-content: center;
     }
 
     .header {
