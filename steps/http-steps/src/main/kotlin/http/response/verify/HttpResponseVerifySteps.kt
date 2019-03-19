@@ -55,8 +55,6 @@ class HttpResponseVerifySteps {
         if (httpResponseVerify.expectedStatusCode != null) {
             if (httpResponseVerify.expectedStatusCode != httpResponse.statusCode) {
                 throw AssertionError("Expected Status Code [${httpResponseVerify.expectedStatusCode?.prettyPrintHttpStatusCode()}] but [${httpResponse.statusCode.prettyPrintHttpStatusCode()}] found")
-            } else {
-                "Status Code Found: expectedStatusCode = [${httpResponseVerify.expectedStatusCode?.prettyPrintHttpStatusCode()}]"
             }
         }
     }
@@ -286,8 +284,8 @@ class HttpResponseVerifySteps {
     ) {
 
         throw AssertionError(
-                "Expected Response Header [${expectedHeader.key}] with value [$expectedValue] but [$actualValue] found.\n" +
-                        "\tComparison Mode: $compareMode.\n"
+                "Expected Response Header [${expectedHeader.key}] with value [$expectedValue] but [$actualValue] found" +
+                        "; comparison mode: $compareMode.\n"
         )
     }
 
