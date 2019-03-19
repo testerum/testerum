@@ -26,7 +26,7 @@ export class RunnerResultTabsComponent implements OnInit, OnDestroy {
     tagsResultsUrl;
     statisticsUrl;
 
-    private activeTabIndex: number = 0;
+    activeTabIndex: number = 0;
 
     routerEventsSubscription: Subscription;
 
