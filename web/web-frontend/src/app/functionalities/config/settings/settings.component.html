@@ -13,7 +13,7 @@
                 <div class="vertical-space"
                      *ngFor="let setting of settingsByCategory.get(settingCategory)">
                     <p><span class="text-info">Setting key: </span>{{setting.definition.key}}</p>
-                    <p><span class="text-info">Description: </span>{{setting.definition.description}}</p>
+                    <p *ngIf="setting.definition.description"><span class="text-info">Description: </span>{{setting.definition.description}}</p>
 
                     <div *ngIf="setting.definition.type == SettingTypeEnum.TEXT && !isReadOnlyProperty(setting.definition.key)">
                         <input [(ngModel)]="setting.unresolvedValue"
