@@ -11,13 +11,17 @@ import {StepDef} from "../../../../model/step-def.model";
 import {UndefinedStepDef} from "../../../../model/undefined-step-def.model";
 import {BasicStepDef} from "../../../../model/basic-step-def.model";
 import {ArrayUtil} from "../../../../utils/array.util";
+import {JsonTreeNode} from "../../json-tree/model/json-tree-node.model";
 
 export class StepCallTreeUtil {
 
     static mapStepCallsToJsonTreeModel(stepCalls: Array<StepCall>, treeModel:JsonTreeModel, isManualExecutionMode: boolean = false): JsonTreeModel {
 
         let mappedStepCallContainer = new Map<string, SubStepsContainerModel>();
-        treeModel.children = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCalls, treeModel, mappedStepCallContainer, isManualExecutionMode);
+        let newChildren = StepCallTreeUtil.mapChildrenStepCallsToJsonTreeModel(stepCalls, treeModel, mappedStepCallContainer, isManualExecutionMode);
+
+        this.copyChildrenStateFromOldToNew(treeModel.children, newChildren);
+        treeModel.children = newChildren;
 
         return treeModel;
     }
@@ -118,5 +122,24 @@ export class StepCallTreeUtil {
     private static createStepCallContainer(stepCall: StepCall, parentNode: JsonTreeContainer, indexInParent:number): StepCallContainerModel {
         let isRootNode = !(parentNode instanceof SubStepsContainerModel);
         return new StepCallContainerModel(parentNode, indexInParent, stepCall, isRootNode)
+    }
+
+    private static copyChildrenStateFromOldToNew(oldChildren: Array<JsonTreeNode>, newChildren: Array<JsonTreeNode>) {
+        if(oldChildren == null || oldChildren.length == 0 || newChildren == null || newChildren.length == 0) return;
+        if(oldChildren.length != newChildren.length) return;
+
+        for (let i = 0; i < oldChildren.length; i++) {
+            let oldChild = oldChildren[i];
+            let newChild = newChildren[i];
+
+            if (oldChild.isContainer() && newChild.isContainer()) {
+                this.copyTreeContainerStateFromOldToNew(oldChild as JsonTreeContainer, newChild as JsonTreeContainer);
+            }
+        }
+    }
+
+    private static copyTreeContainerStateFromOldToNew(oldChild: JsonTreeContainer, newChild: JsonTreeContainer) {
+        newChild.getNodeState().showChildren = oldChild.getNodeState().showChildren;
+        this.copyChildrenStateFromOldToNew(oldChild.getChildren(), newChild.getChildren());
     }
 }
