@@ -13,20 +13,36 @@
     width: 600px;
 }
 
-.step-suggestion .ui-autocomplete {
-    width: 600px;
-}
-.step-suggestion .ui-autocomplete .ui-autocomplete-input{
-    width: 600px;
-    padding-top: 0;
-    padding-bottom: 0;
-}
-.step-suggestion .ui-autocomplete .ui-autocomplete-panel{
-    width: 600px;
-    left: 0;
-}
-.step-suggestion .ui-autocomplete-list-item.ui-state-highlight .step-call-action-text{
-    color: #A9EB9F;
+.step-suggestion {
+
+    .ui-autocomplete {
+        width: 600px;
+
+        .ui-autocomplete-input{
+            width: 600px;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .ui-autocomplete-panel{
+            width: 600px;
+            left: 0;
+
+            .ui-autocomplete-items .ui-autocomplete-list-item {
+                padding: 0 0.857em;
+
+                .suggestion-line-container {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                }
+
+                &.ui-state-highlight .step-call-action-text{
+                    color: #A9EB9F;
+                }
+            }
+        }
+    }
 }
 
 .step-call-action-text {
