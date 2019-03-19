@@ -3,16 +3,20 @@ package http.mock
 import com.testerum.api.annotations.hooks.BeforeEachTest
 import com.testerum.api.annotations.steps.Given
 import com.testerum.api.annotations.steps.Param
+import com.testerum.api.services.TesterumServiceLocator
+import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.model.resources.http.mock.server.HttpMockServer
 import com.testerum.model.resources.http.mock.stub.HttpMock
 import http.mock.transformer.HttpMockServerTransformer
 import http.mock.transformer.HttpMockTransformer
 import http_support.HttpMockService
+import http_support.logging.prettyPrint
 import http_support.module_di.HttpStepsModuleServiceLocator
 
 class HttpMockSteps {
 
     private val httpMockService: HttpMockService = HttpStepsModuleServiceLocator.bootstrapper.httpStepsModuleFactory.httpMockService
+    private val logger: TesterumLogger = TesterumServiceLocator.getTesterumLogger()
 
     @BeforeEachTest
     fun beforeTest() {
@@ -36,6 +40,13 @@ class HttpMockSteps {
             )
             httpMock: HttpMock
     ) {
+        logger.info(
+                "HTTP Mock Server\n" +
+                "\n" +
+                "\tport: ${httpMockServer.port}\n" +
+                "\n" +
+                "${httpMock.prettyPrint()}\n"
+        )
         httpMockService.addHttpStub(httpMockServer, httpMock)
     }
 }
