@@ -3,6 +3,8 @@ package json
 import com.testerum.api.annotations.steps.Given
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then
+import com.testerum.api.services.TesterumServiceLocator
+import com.testerum.api.test_context.logger.TesterumLogger
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
@@ -15,6 +17,7 @@ import json_support.module_di.JsonStepsModuleServiceLocator
 class JsonSteps {
 
     private val variables: TestVariables = JsonStepsModuleServiceLocator.bootstrapper.jsonStepsModuleFactory.testVariables
+    private val logger: TesterumLogger = TesterumServiceLocator.getTesterumLogger()
 
     private val jsonComparer: JsonComparer = JsonStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
 
@@ -28,11 +31,19 @@ class JsonSteps {
                                     transformer = JsonTextTransformer::class
                             )
                             value: JsonResource) {
-        variables[name] = JsJson(value.text)
+        val jsonValue = JsJson(value.text)
+
+        val jsonValueForLogging = jsonValue.toPrettyString()
+        logger.info(
+                "Declaring JSON variable $name:\n" +
+                "$jsonValueForLogging\n"
+        )
+
+        variables[name] = jsonValue
     }
 
     @Given(
-            value = "the variable <<name>> has the JSON changes <<overrides>>",
+            value = "the variable <<name>> has the JSON changes <<changes>>",
             description = "Changes a JSON variable."
     )
     fun changeJson(name: String,
@@ -40,13 +51,35 @@ class JsonSteps {
                    @Param(
                            transformer = JsonTextTransformer::class
                    )
-                   overrides: JsonResource) {
+                   changes: JsonResource) {
 
 
         val jsonObject = getJsJsonVariable(name)
-        val overridesJsJson = JsJson(overrides.text)
+        val changesJsJson = JsJson(changes.text)
+        val resultObject = jsonObject.overrideWith(changesJsJson)
 
-        variables[name] = jsonObject.overrideWith(overridesJsJson)
+        val jsonObjectForLogging = jsonObject.toPrettyString()
+        val jsonChangesForLogging = changesJsJson.toPrettyString()
+        val resultObjectForLogging = resultObject.toPrettyString()
+
+        logger.info(
+                "Changing JSON variable $name\n" +
+                "\n" +
+                "JSON object to change\n" +
+                "---------------------\n" +
+                "$jsonObjectForLogging\n" +
+                "\n" +
+                "JSON changes\n" +
+                "------------\n" +
+                "$jsonChangesForLogging\n" +
+                "\n" +
+                "Result (after change)\n" +
+                "---------------------\n" +
+                "$resultObjectForLogging\n" +
+                "\n"
+        )
+
+        variables[name] = resultObject
     }
 
     @Then("the JSON <<actualValue>> is equal to <<expectedValue>>")

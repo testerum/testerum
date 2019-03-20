@@ -9,6 +9,10 @@ import kotlin.concurrent.write
 
 class JsJson : AbstractJSObject {
 
+    companion object {
+        private val PRETTY_PRINTING_JSON_WRITER = JSON_STEPS_OBJECT_MAPPER.writerWithDefaultPrettyPrinter()
+    }
+
     private val lock = ReentrantReadWriteLock()
 
     @Suppress("MemberVisibilityCanBePrivate")
@@ -51,6 +55,8 @@ class JsJson : AbstractJSObject {
             return serialized!!
         }
     }
+
+    fun toPrettyString(): String = PRETTY_PRINTING_JSON_WRITER.writeValueAsString(this.data)
 
     fun overrideWith(overrides: JsJson): JsJson {
         return JsJson(
