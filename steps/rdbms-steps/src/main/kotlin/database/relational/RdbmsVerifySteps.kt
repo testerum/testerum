@@ -12,13 +12,12 @@ import database.relational.model.RdbmsVerify
 import database.relational.module_di.RdbmsStepsModuleServiceLocator
 import database.relational.transformer.RdbmsConnectionTransformer
 import database.relational.transformer.RdbmsVerifyTransformer
+import database.relational.util.JsonFormatter
+import database.relational.util.prettyPrint
 
 class RdbmsVerifySteps {
 
-    companion object {
-        private val TESTERUM_LOGGER = TesterumServiceLocator.getTesterumLogger()
-    }
-
+    private val logger = TesterumServiceLocator.getTesterumLogger()
     private val jsonComparer: JsonComparer = RdbmsStepsModuleServiceLocator.bootstrapper.jsonDiffModuleFactory.jsonComparer
 
     @Then(
@@ -38,13 +37,22 @@ class RdbmsVerifySteps {
             )
             dbVerify: RdbmsVerify
     ) {
+        val formattedExpectedDatabaseState = JsonFormatter.formatJsonSafely(dbVerify.verifyJsonAsString)
+
+        logger.info(
+                "Connection config\n" +
+                "-----------------\n" +
+                "${dbConnection.rdbmsConnectionConfig.prettyPrint()}\n" +
+                "Expected database state\n" +
+                "-----------------------\n" +
+                "$formattedExpectedDatabaseState\n"
+        )
 
         val serializedSchemaAsJsonString = RdbmsToJsonSerializer.serializeSchemaAsJsonString(dbConnection)
 
         val compareResult: JsonCompareResult = jsonComparer.compare(dbVerify.verifyJsonAsString, serializedSchemaAsJsonString)
         if (compareResult is DifferentJsonCompareResult) {
-
-            TESTERUM_LOGGER.debug(
+            logger.debug(
                 "serialized DB as JSON\n" +
                 serializedSchemaAsJsonString
                         .lines()

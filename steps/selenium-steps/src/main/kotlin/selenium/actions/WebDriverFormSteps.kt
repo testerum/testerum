@@ -2,6 +2,7 @@ package selenium.actions
 
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
+import com.testerum.api.services.TesterumServiceLocator
 import org.openqa.selenium.WebElement
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.elem_locators.ElementLocatorService
@@ -9,6 +10,8 @@ import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
 class WebDriverFormSteps {
+
+    private val logger = TesterumServiceLocator.getTesterumLogger()
 
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
@@ -27,6 +30,14 @@ class WebDriverFormSteps {
             )
             elementLocator: String
     ) {
+        logger.info(
+                "sending keys\n" +
+                "------------\n" +
+                "text           : $text\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
+        )
+
         webDriverManager.waitForElementPresent(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val field: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
@@ -49,6 +60,13 @@ class WebDriverFormSteps {
             )
             elementLocator: String
     ) {
+        logger.info(
+                "submitting the form containing element\n" +
+                "--------------------------------------\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
+        )
+
         webDriverManager.waitForElementPresent(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val field: WebElement = ElementLocatorService.locateElement(driver, elementLocator)

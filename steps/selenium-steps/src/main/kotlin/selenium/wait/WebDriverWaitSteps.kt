@@ -2,6 +2,7 @@ package selenium.wait
 
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
+import com.testerum.api.services.TesterumServiceLocator
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
@@ -9,6 +10,8 @@ import selenium_steps_support.service.text_match.TextMatcherService
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
 class WebDriverWaitSteps {
+
+    private val logger = TesterumServiceLocator.getTesterumLogger()
 
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
@@ -22,6 +25,13 @@ class WebDriverWaitSteps {
             )
             textMatchExpression: String
     ) {
+        logger.info(
+                "waiting for the title of the current page to be\n" +
+                "-----------------------------------------------\n" +
+                "textMatchExpression : $textMatchExpression\n" +
+                "\n"
+        )
+
         webDriverManager.waitUntil { driver ->
             TextMatcherService.matches(textMatchExpression, driver.title)
         }
@@ -37,6 +47,13 @@ class WebDriverWaitSteps {
             )
             textMatchExpression: String
     ) {
+        logger.info(
+                "waiting for the title of the current page to NOT be\n" +
+                "---------------------------------------------------\n" +
+                "textMatchExpression : $textMatchExpression\n" +
+                "\n"
+        )
+
         webDriverManager.waitUntil { driver ->
             TextMatcherService.doesNotMatch(textMatchExpression, driver.title)
         }
@@ -52,6 +69,13 @@ class WebDriverWaitSteps {
             )
             elementLocator: String
     ) {
+        logger.info(
+                "waiting for an element to be present\n" +
+                "------------------------------------\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
+        )
+
         webDriverManager.waitForElementPresent(elementLocator)
     }
 
@@ -65,6 +89,13 @@ class WebDriverWaitSteps {
             )
             elementLocator: String
     ) {
+        logger.info(
+                "waiting for an element to NOT be present\n" +
+                "----------------------------------------\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
+        )
+
         webDriverManager.waitUntil { driver ->
             ElementLocatorService.locateElement(driver, elementLocator) == null
         }
