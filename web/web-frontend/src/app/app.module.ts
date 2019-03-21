@@ -53,6 +53,8 @@ import {ModelRepairerService} from "./service/model-repairer/model-repairer.serv
 import { MenuVariablesComponent } from './menu/variables/menu-variables.component';
 import { EnvironmentEditModalComponent } from './functionalities/variables/environment-edit-modal/environment-edit-modal.component';
 import {FeedbackService} from "./service/feedback.service";
+import { NotFundComponent } from './functionalities/others/not-fund/not-fund.component';
+import {NotFoundHttpInterceptor} from "./service/interceptors/not-found.http-interceptor";
 
 @NgModule({
     imports: [
@@ -87,7 +89,8 @@ import {FeedbackService} from "./service/feedback.service";
         SettingsComponent,
         ArgValueValidatorDirective,
         MenuVariablesComponent,
-        EnvironmentEditModalComponent
+        EnvironmentEditModalComponent,
+        NotFundComponent
     ],
     exports: [
         VariablesComponent,
@@ -121,6 +124,9 @@ import {FeedbackService} from "./service/feedback.service";
 
         ErrorHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useExisting: ErrorHttpInterceptor,  multi: true },
+
+        NotFoundHttpInterceptor,
+        { provide: HTTP_INTERCEPTORS, useExisting: NotFoundHttpInterceptor,  multi: true },
 
         MultiProjectHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useClass: MultiProjectHttpInterceptor, multi: true },

@@ -120,6 +120,14 @@ export class UrlService {
         this.navigateToProjectPath(["/automated/results", {path : path.toString(), url: url} ])
     }
 
+    public navigateToNotFoundPage(url: string, resourceId: string, resourceType: string) {
+        if (this.contextService.isProjectSelected()) {
+            this.navigateToProjectPath(["/not-found", {url: url, resourceId: resourceId, resourceType: resourceType}]);
+        } else {
+            this.navigate(["/not-found", {url: url, resourceId: resourceId, resourceType: resourceType}]);
+        }
+    }
+
     private navigate(commands: any[], extras?: NavigationExtras): Promise<boolean> {
         return this.router.navigate(commands, extras);
     }

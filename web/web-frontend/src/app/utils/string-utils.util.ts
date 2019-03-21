@@ -37,7 +37,7 @@ export class StringUtils {
     }
 
     static substringAfter(mainString: string, searchedPart: string): string {
-        let index = mainString.lastIndexOf(searchedPart);
+        let index = mainString.indexOf(searchedPart);
         if(index < 0) {
             return null;
         }

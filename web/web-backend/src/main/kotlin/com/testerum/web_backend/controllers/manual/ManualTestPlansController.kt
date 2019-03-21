@@ -7,6 +7,7 @@ import com.testerum.model.manual.ManualTestPlans
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeRoot
 import com.testerum.model.manual.status_tree.filter.ManualTreeStatusFilter
 import com.testerum.web_backend.services.manual.ManualTestPlansFrontendService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -27,10 +28,16 @@ class ManualTestPlansController(private val manualTestPlansFrontendService: Manu
 
     @RequestMapping(method = [RequestMethod.GET], path = ["plans"], params = ["planPath"])
     @ResponseBody
-    fun getPlanAtPath(@RequestParam(value = "planPath") planPath: String): ManualTestPlan? {
-        return manualTestPlansFrontendService.getPlanAtPath(
+    fun getPlanAtPath(@RequestParam(value = "planPath") planPath: String): ResponseEntity<ManualTestPlan> {
+        val planAtPath = manualTestPlansFrontendService.getPlanAtPath(
                 Path.createInstance(planPath)
         )
+
+        return if (planAtPath == null) {
+            ResponseEntity.notFound().build()
+        } else {
+            ResponseEntity.ok(planAtPath)
+        }
     }
 
     @RequestMapping(method = [RequestMethod.GET], path = ["plans/finalize"], params = ["planPath"])
@@ -69,11 +76,17 @@ class ManualTestPlansController(private val manualTestPlansFrontendService: Manu
     @RequestMapping(method = [RequestMethod.GET], path = ["/plans/runner"], params = ["planPath", "testPath"])
     @ResponseBody
     fun getTestAtPath(@RequestParam(value = "planPath") planPath: String,
-                      @RequestParam(value = "testPath") testPath: String): ManualTest? {
-        return manualTestPlansFrontendService.getTestAtPath(
+                      @RequestParam(value = "testPath") testPath: String): ResponseEntity<ManualTest> {
+        val testAtPath = manualTestPlansFrontendService.getTestAtPath(
                 Path.createInstance(planPath),
                 Path.createInstance(testPath)
-        ) 
+        )
+
+        return if (testAtPath == null) {
+            ResponseEntity.notFound().build()
+        } else {
+            ResponseEntity.ok(testAtPath)
+        }
     }
 
     @RequestMapping(method = [RequestMethod.PUT], path = ["/plans/runner"], params = ["planPath"])

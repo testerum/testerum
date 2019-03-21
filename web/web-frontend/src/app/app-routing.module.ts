@@ -5,10 +5,13 @@ import {SettingsComponent} from "./functionalities/config/settings/settings.comp
 import {LicenseGuard} from "./service/guards/license.guard";
 import {LicenseComponent} from "./functionalities/config/license/license.component";
 import {CurrentProjectGuard} from "./service/guards/current-project.guard";
+import {NotFundComponent} from "./functionalities/others/not-fund/not-fund.component";
 
 const appRoutes: Routes = [
 
     { path: "license", component: LicenseComponent},
+    { path: ":project/not-found", component: NotFundComponent},
+    { path: "not-found", component: NotFundComponent},
     { path: ":project/settings", component: SettingsComponent, canActivate: [LicenseGuard, CurrentProjectGuard]},
     { path: ":project", redirectTo: ":project/features"},
     { path: '**', component: PageNotFoundComponent }

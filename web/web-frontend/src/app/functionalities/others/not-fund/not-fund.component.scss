@@ -1,0 +1,72 @@
+.my_not-found {
+    max-width: 1200px;
+    margin: auto;
+
+    .header {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        .logo-version-container {
+            display: block;
+            margin: auto;
+
+            .logo {
+                font-size: 3rem;
+                width: 13.5em;
+                align-self: center;
+            }
+
+            .version {
+                margin-top: -2em;
+                margin-right: 5.4em;
+                text-align: right;
+            }
+        }
+    }
+
+    .body {
+        display: table;
+        margin: auto;
+
+        .message {
+            font-size: 1.5em;
+            margin-top: 5em;
+            text-align: center;
+            line-height: 1.3em;
+        }
+
+        .reason {
+            display: flex;
+            flex-direction: column;
+            align-self: center;
+            margin-top: 2em;
+            font-size: 1.3em;
+
+            ul {
+                margin-left: 3em;
+                margin-top: 0.5em;
+            }
+        }
+
+        .resource-url {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            font-size: 1em;
+            margin-top: 2em;
+        }
+
+        .resource-id {
+            color: #2b669a;
+        }
+    }
+
+    .footer {
+        display: flex;
+        justify-content: center;
+        margin-top: 5em;
+    }
+}
