@@ -23,7 +23,9 @@ class JsonComparerImpl(private val jsonNodeComparer: JsonNodeComparer) : JsonCom
 
     override fun compare(expectedJson: String, actualJson: String): JsonCompareResult {
         val expectedRoot: JsonNode = OBJECT_MAPPER.readTree(expectedJson)
+                ?: throw IllegalArgumentException("invalid expected JSON: empty text")
         val actualRoot: JsonNode = OBJECT_MAPPER.readTree(actualJson)
+                ?: throw IllegalArgumentException("invalid actual JSON: empty text")
 
         val context = JsonComparerContext.EMPTY
                 .pushNonArrayItem(parent = null, fieldName = "", fieldValue = expectedRoot)

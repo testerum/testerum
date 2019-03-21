@@ -7,10 +7,11 @@ import database.relational.connection_manager.model.RdbmsConnection
 import database.relational.model.RdbmsSql
 import database.relational.transformer.RdbmsConnectionTransformer
 import database.relational.transformer.RdbmsSqlTransformer
+import database.relational.util.prettyPrint
 
 class RdbmsSqlSteps {
 
-    private val testerumLogger = TesterumServiceLocator.getTesterumLogger()
+    private val logger = TesterumServiceLocator.getTesterumLogger()
 
     @When(
             value = "I execute the SQL <<sql>> on the database <<dbConnection>>",
@@ -29,14 +30,15 @@ class RdbmsSqlSteps {
             )
             dbConnection: RdbmsConnection
     ) {
-        testerumLogger.debug(
-                "SQL to execute\n"
-                + sql.sql.lines()
-                         .joinToString(separator = "\n") {
-                             "\t" + it
-                         }
-
+        logger.info(
+                "Connection config\n" +
+                "-----------------\n" +
+                "${dbConnection.rdbmsConnectionConfig.prettyPrint()}\n" +
+                "SQL to execute\n" +
+                "--------------\n" +
+                "${sql.sql}\n"
         )
+
         dbConnection.executeSqlScript(sql.sql)
     }
 

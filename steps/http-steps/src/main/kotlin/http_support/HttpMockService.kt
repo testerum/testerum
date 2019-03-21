@@ -135,7 +135,7 @@ class HttpMockService(val jsonComparer: JsonComparer) {
                 HttpMockRequestBodyMatchingType.IS_EMPTY -> pattern = absent()
                 HttpMockRequestBodyMatchingType.JSON_VERIFY -> pattern = object : StringValuePattern(body.content) {
                     override fun match(value: String?): MatchResult {
-                        if (value == null) {
+                        if (value == null || value.isEmpty()) {
                             return MatchResult.noMatch()
                         }
                         val jsonCompareResult = jsonComparer.compare(expected, value)
