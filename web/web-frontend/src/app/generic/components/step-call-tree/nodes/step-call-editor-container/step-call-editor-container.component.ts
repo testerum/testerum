@@ -116,7 +116,11 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
                 return;
             }
 
-            this.stepCallTreeComponentService.removeStepCallEditorIfExist();
+            if (this.suggestions.length == 0) {
+                this.stepCallTreeComponentService.removeStepCallEditorIfExist();
+            } else {
+                this.onSuggestionSelected(this.suggestions[0]);
+            }
         };
         document.addEventListener('click', this.onDocumentClick, true);
 
@@ -250,7 +254,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         }
     }
 
-    createUndefinedStepCallSuggestion(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string, actionText: string, userAndAsTextPhase: boolean = false): StepCallSuggestion {
+    private createUndefinedStepCallSuggestion(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string, actionText: string, userAndAsTextPhase: boolean = false): StepCallSuggestion {
 
         let stepDef = new UndefinedStepDef();
         stepDef.path = PathUtil.generateStepDefPath(this.stepCallTreeComponentService.containerPath, stepPhase, stepTextWithoutPhase);
@@ -274,6 +278,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
             newStepCall.addWarning(warning);
         }
         this.addNewStepCallToTree(newStepCall);
+        this.suggestions = [];
     }
 
     private addNewStepCallToTree(newStepCall: StepCall) {
@@ -320,6 +325,4 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     private removeThisEditorFromTree() {
         this.stepCallTreeComponentService.removeStepCallEditorIfExist();
     }
-
-
 }
