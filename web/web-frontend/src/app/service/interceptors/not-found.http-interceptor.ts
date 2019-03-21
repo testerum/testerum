@@ -13,12 +13,10 @@ export class NotFoundHttpInterceptor implements HttpInterceptor {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log(request);
         return next.handle(request).pipe(tap(
             (event: HttpEvent<any>) => {},
             (err: any) => {
 
-                console.log(err);
                 if (err instanceof HttpErrorResponse) {
                     let httpErrorResponse: HttpErrorResponse = err;
                     if (httpErrorResponse.status == 404) {
