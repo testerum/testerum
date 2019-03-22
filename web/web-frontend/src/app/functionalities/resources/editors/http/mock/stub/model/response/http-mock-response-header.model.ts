@@ -15,8 +15,9 @@ export class HttpMockResponseHeader implements Serializable<HttpMockResponseHead
             return "";
         }
 
+        let serializedHeaderKey = this.key ? JsonUtil.stringify(this.key): JsonUtil.stringify("");
         return ''+
-            JsonUtil.stringify(this.key) + ':' + JsonUtil.stringify(this.value);
+            serializedHeaderKey + ':' + JsonUtil.stringify(this.value);
     }
 
     isEmpty(): boolean {

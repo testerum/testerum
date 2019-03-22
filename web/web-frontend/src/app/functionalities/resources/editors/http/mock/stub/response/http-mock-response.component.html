@@ -31,7 +31,7 @@
             <div class="my-value" *ngIf="!isEditMode()">
                 {{getModel().statusCode}} {{getStatusCodeText()?" - " + getStatusCodeText():""}}
             </div>
-            <div class="my-value" *ngIf="isEditMode()">
+            <div class="my-status-code-container my-value" *ngIf="isEditMode()">
                 <input #statusCodeNgModel="ngModel" [(ngModel)]="getModel().statusCode"
                        type="number" min="1" max="600" class="form-control input-3-letters" name="statusCode">
                 <span *ngIf="getStatusCodeText()" class="status-code-text">{{" - " + getStatusCodeText()}}</span>

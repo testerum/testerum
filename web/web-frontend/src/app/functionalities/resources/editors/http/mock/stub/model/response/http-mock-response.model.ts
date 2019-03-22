@@ -43,6 +43,8 @@ export class HttpMockResponse implements Serializable<HttpMockResponse> {
         this.statusCode = input["statusCode"];
 
         if(input['headers']) {
+            this.headers.length = 0;
+
             let headersObj = input['headers'];
             for (let headerProp in headersObj) {
                 if (input["headers"].hasOwnProperty(headerProp)) {
@@ -57,6 +59,7 @@ export class HttpMockResponse implements Serializable<HttpMockResponse> {
                     )
                 }
             }
+            this.headers.push(new HttpMockResponseHeader());
         }
 
         if (input['body']) {
