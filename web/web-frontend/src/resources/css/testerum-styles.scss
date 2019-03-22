@@ -132,11 +132,11 @@ body {
 }
 .fa_my-runner-waiting-colored {
     @extend .fa_my-runner-waiting;
-    color: $success-color;
+    color: $waiting-color;
 }
 .fa_my-runner-executing-colored {
     @extend .fa_my-runner-waiting;
-    color: #c0bebc;
+    color: $waiting-color;
 }
 .fa_my-runner-passed {
     @extend .fas;
