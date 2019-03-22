@@ -5,12 +5,12 @@
          [class.tree-node-line]="model.getOptions().displayLines"
          [class.tree-node-last]="isLastNode">
 
-        <div [class.last-horizontal-line]="isLastNode" class="horizontal-line-distance-from-top">
+        <div [class.last-horizontal-line]="isLastNode" class="horizontal-line-distance-from-top"
+             (click)="toggleShowHideChildren();$event.stopPropagation();">
             <i class="toggle-icon"
                [class.fa_my-tree-node-open]="model.getNodeState().showChildren && hasChildren()"
                [class.fa_my-tree-node-close]="!model.getNodeState().showChildren && hasChildren()"
-               [class.fa_my-tree-node-empty]="!hasChildren()"
-               (click)="toggleShowHideChildren();$event.stopPropagation();"></i>
+               [class.fa_my-tree-node-empty]="!hasChildren()"></i>
             <div class="horizontal-line"></div>
         </div>
 
