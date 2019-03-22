@@ -46,6 +46,11 @@
                     }
                     .variable-action {
                         vertical-align: middle;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+
                         .btn {
                             font-size: 0.7em;
                         }
