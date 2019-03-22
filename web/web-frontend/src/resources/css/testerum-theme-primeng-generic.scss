@@ -16,3 +16,17 @@ body .ui-table .ui-table-tbody > tr > td {
 .ui-toolbar {
     padding: .25em .5em !important;
 }
+
+//P-MESSAGES
+.ui-messages.ui-messages-error {
+    color: $alert-text-color !important;
+    background-color: $alert-background-color !important;
+
+    .ui-messages-icon {
+        color: $alert-color !important;
+    }
+
+    .ui-messages-close {
+        color: $alert-text-color !important;
+    }
+}
