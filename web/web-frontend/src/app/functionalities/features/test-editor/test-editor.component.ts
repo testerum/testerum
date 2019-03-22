@@ -154,6 +154,10 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     }
 
     addStep() {
+        if (!this.isEditMode) {
+            this.setEditMode(true);
+        }
+
         this.stepCallTreeComponent.stepCallTreeComponentService.addStepCallEditor(this.stepCallTreeComponent.jsonTreeModel);
     }
 

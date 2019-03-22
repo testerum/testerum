@@ -9,14 +9,14 @@
         <span [class.error_squiggly]="model.descendantsHaveWarnings">Sub-Steps</span>
 
         <!-- BUTTONS -->
-        <div *ngIf="isEditMode()" class="sub-steps-button-panel btn-group ">
+        <div class="sub-steps-button-panel btn-group ">
 
             <div title="Add Sub Step" class="btn btn-default btn-xs btn-group"
                  (click)="addSubStep(); $event.stopPropagation()">
                 <i class="fa_my-plus" aria-hidden="true"></i>
             </div>
 
-            <div *ngIf="canPaste()"
+            <div *ngIf="canPaste() && isEditMode()"
                  title="Paste Step" class="btn btn-default btn-xs btn-group"
                  (click)="onPasteStep(); $event.stopPropagation()">
                 <i class="fa_my-paste" aria-hidden="true"></i>
