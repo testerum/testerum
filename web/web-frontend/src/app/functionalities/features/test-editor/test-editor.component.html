@@ -1,4 +1,4 @@
-<div>
+<div class="test-editor" #rootContainer>
     <h1>
         <span *ngIf="isEditMode && isCreateAction">Create</span>
         <span *ngIf="isEditMode && !isCreateAction">Update</span>
@@ -15,7 +15,6 @@
                         {{getPathWithoutTestName()}}
                     </div>
                 </div>
-
 
                 <div class="my-line">
                     <label class="my-label label-size">Name</label>
@@ -132,16 +131,17 @@
                                 [isEditMode]="isEditMode"
                                 [areManualSteps]="testModel.properties.isManual"></step-call-tree>
 
-                <div class="panel-footer-button">
-                    <ng-container *ngIf="!isEditMode">
-                        <button (click)="enableEditTestMode();" class="btn btn-primary">Edit</button>
-                    </ng-container>
-                    <ng-container *ngIf="isEditMode">
-                        <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
-                        <button *ngIf="!isCreateAction" (click)="deleteAction();;$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
-                        <button [disabled]="!stepForm.form.valid" (click)="saveAction();$event.stopPropagation();" class="btn btn-primary">Save</button>
-                    </ng-container>
-
+                <div class="panel-footer-sticky-buttons">
+                    <div class="button-wrapper">
+                        <ng-container *ngIf="!isEditMode">
+                            <button (click)="enableEditTestMode();" class="btn btn-primary">Edit</button>
+                        </ng-container>
+                        <ng-container *ngIf="isEditMode">
+                            <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
+                            <button *ngIf="!isCreateAction" (click)="deleteAction();;$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
+                            <button [disabled]="!stepForm.form.valid" (click)="saveAction();$event.stopPropagation();" class="btn btn-primary">Save</button>
+                        </ng-container>
+                    </div>
                 </div>
             </form>
         </div>

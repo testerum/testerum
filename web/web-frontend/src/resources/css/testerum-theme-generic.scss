@@ -1,72 +1,104 @@
-.smaller-input {
-    height: 21px;
-    padding: 0 12px;
-}
 
-.panel-footer-button {
-    margin-top: 10px;
-    padding: 15px;
-    text-align: right;
-    border-top: 1px solid #e5e5e5;
-}
+.test-editor {
+    overflow-y: auto;
+    height: 100%;
 
-.panel-footer-button .btn {
-    margin-left: 5px;
-}
+    .smaller-input {
+        height: 21px;
+        padding: 0 12px;
+    }
 
-.page-body {
-    padding: 0 10px;
-}
+    .panel-footer-buttons {
+        margin-top: 10px;
+        padding: 15px;
+        text-align: right;
+        border-top: 1px solid #e5e5e5;
 
-.glyphicon {
-    position: relative;
-    top: 2px;
-    display: inline-block;
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
+        .btn {
+            margin-left: 5px;
+        }
+    }
 
-.hidden {
-    display: none;
-}
+    .panel-footer-sticky-buttons {
+        margin-top: 10px;
+        text-align: right;
+        border-bottom: 1px solid #e5e5e5;
 
-.flex-panel {
-    display: flex;
-    flex-flow: column;
-    min-height: 100%;
-}
+        position: sticky;
+        bottom: 0;
 
-.full-size-flex-element {
-    flex: 1 1 auto;
-}
+        .button-wrapper {
+            display: inline-block;
+            padding: 7px 65px 7px 60px;
+            border-top: 1px solid #e5e5e5;
+            border-left: 1px solid #e5e5e5;
+            border-right: 1px solid #e5e5e5;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            background-color: #fafafa;
 
-.gray {
-    color: darkgray;
-}
+            .btn {
+                margin-left: 5px;
+            }
+        }
+    }
 
-.clickable {
-    cursor: pointer;
-}
+    .page-body {
+        padding: 0 10px;
+    }
 
-h1 {
-    border-bottom: 1px solid #ccc;
-    margin: 0 35px;
+    .glyphicon {
+        position: relative;
+        top: 2px;
+        display: inline-block;
+        font-family: 'Glyphicons Halflings';
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
 
-    font-family: "Times New Roman", Times, serif;
-    font-style: normal;
-    font-weight: 700;
-    white-space: pre;
-}
+    .hidden {
+        display: none;
+    }
 
-h1 .path {
-    color: darkgrey;
-    font-size: 0.7em;
+    .flex-panel {
+        display: flex;
+        flex-flow: column;
+        min-height: 100%;
+    }
+
+    .full-size-flex-element {
+        flex: 1 1 auto;
+    }
+
+    .gray {
+        color: darkgray;
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+    h1 {
+        border-bottom: 1px solid #ccc;
+        margin: 0 35px;
+
+        font-family: "Times New Roman", Times, serif;
+        font-style: normal;
+        font-weight: 700;
+        white-space: pre;
+    }
+
+    h1 .path {
+        color: darkgrey;
+        font-size: 0.7em;
+    }
 }
 
 .main-container {
     height: calc(100% - 36px);
+    overflow: hidden;
 }
+
