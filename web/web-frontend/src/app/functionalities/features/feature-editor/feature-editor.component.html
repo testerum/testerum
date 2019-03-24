@@ -95,15 +95,17 @@
                 </div>
             </div>
 
-            <div class="panel-footer-button">
-                <ng-container *ngIf="!isEditMode">
-                    <button (click)="enableEditMode();" class="btn btn-primary">Edit</button>
-                </ng-container>
-                <ng-container *ngIf="isEditMode">
-                    <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
-                    <button *ngIf="!isRootFeature() && !isCreateAction" (click)="deleteAction();$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
-                    <button [disabled]="!form.form.valid" (click)="saveAction();$event.stopPropagation();" class="btn btn-primary">Save</button>
-                </ng-container>
+            <div class="panel-footer-sticky-buttons">
+                <div class="button-wrapper">
+                    <ng-container *ngIf="!isEditMode">
+                        <button (click)="enableEditMode();" class="btn btn-primary">Edit</button>
+                    </ng-container>
+                    <ng-container *ngIf="isEditMode">
+                        <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
+                        <button *ngIf="!isRootFeature() && !isCreateAction" (click)="deleteAction();$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
+                        <button [disabled]="!form.form.valid" (click)="saveAction();$event.stopPropagation();" class="btn btn-primary">Save</button>
+                    </ng-container>
+                </div>
             </div>
         </form>
     </div>
