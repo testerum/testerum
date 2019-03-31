@@ -175,6 +175,12 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
+                <artifactId>common-fsnotifier</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
                 <artifactId>settings</artifactId>
                 <version>${project.version}</version>
             </dependency>

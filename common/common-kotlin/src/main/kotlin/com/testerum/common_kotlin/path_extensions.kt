@@ -15,7 +15,7 @@ import java.nio.file.attribute.BasicFileAttributeView
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileAttribute
 import java.nio.file.attribute.FileAttributeView
-import java.util.*
+import java.util.UUID
 import java.util.stream.Collectors
 import java.nio.file.Path as JavaPath
 
@@ -306,3 +306,5 @@ inline fun JavaPath.walkAndCollect(crossinline shouldUse: (JavaPath) -> Boolean)
 }
 
 fun JavaPath.deleteOnExit() = this.toFile().deleteOnExit()
+
+fun JavaPath.canonicalize(): JavaPath = toAbsolutePath().normalize()

@@ -2,7 +2,6 @@ package com.testerum.web_backend.controllers.runner.execution
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.web_backend.services.runner.execution.TestsExecutionFrontendService
-import com.testerum.web_backend.services.runner.result.ResultsFrontendService
 import org.slf4j.LoggerFactory
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketMessage
@@ -10,8 +9,7 @@ import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.handler.TextWebSocketHandler
 
 class TestsWebSocketController(private val testsExecutionFrontendService: TestsExecutionFrontendService,
-                               private val objectMapper: ObjectMapper,
-                               private val resultsFrontendService: ResultsFrontendService) : TextWebSocketHandler() {
+                               private val objectMapper: ObjectMapper) : TextWebSocketHandler() {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(TestsWebSocketController::class.java)

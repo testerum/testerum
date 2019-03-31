@@ -3,6 +3,7 @@ package com.testerum.web_backend
 import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.web_backend.filter.angular_forwarder.AngularForwarderFilter
 import com.testerum.web_backend.filter.project.ProjectFilter
+import com.testerum.web_backend.filter.project_fswatcher_pause.ProjectFsWatcherPauseFilter
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.eclipse.jetty.security.SecurityHandler
 import org.eclipse.jetty.server.Handler
@@ -28,7 +29,7 @@ import org.fusesource.jansi.AnsiConsole
 import org.slf4j.LoggerFactory
 import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.web.servlet.DispatcherServlet
-import java.util.*
+import java.util.EnumSet
 import javax.servlet.DispatcherType
 
 object TesterumWebMain {
@@ -113,6 +114,16 @@ object TesterumWebMain {
                 FilterHolder().apply {
                     filter = ProjectFilter()
                     name = ProjectFilter::class.java.simpleName.decapitalize()
+                },
+                "/*",
+                EnumSet.of(DispatcherType.REQUEST)
+        )
+
+        // add ProjectFsWatcherPauseFilter
+        webAppContext.addFilter(
+                FilterHolder().apply {
+                    filter = ProjectFsWatcherPauseFilter()
+                    name = ProjectFsWatcherPauseFilter::class.java.simpleName.decapitalize()
                 },
                 "/*",
                 EnumSet.of(DispatcherType.REQUEST)

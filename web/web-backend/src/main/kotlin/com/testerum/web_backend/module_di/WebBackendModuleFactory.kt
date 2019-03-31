@@ -41,6 +41,7 @@ import com.testerum.web_backend.controllers.license.LicenseController
 import com.testerum.web_backend.controllers.manual.ManualTestPlansController
 import com.testerum.web_backend.controllers.message.MessageController
 import com.testerum.web_backend.controllers.project.ProjectController
+import com.testerum.web_backend.controllers.project.ProjectReloadWebSocketController
 import com.testerum.web_backend.controllers.resources.ResourcesController
 import com.testerum.web_backend.controllers.resources.http.HttpController
 import com.testerum.web_backend.controllers.resources.rdbms.RdbmsController
@@ -73,6 +74,7 @@ import com.testerum.web_backend.services.license.LicenseFrontendService
 import com.testerum.web_backend.services.manual.AutomatedToManualTestMapper
 import com.testerum.web_backend.services.manual.ManualTestPlansFrontendService
 import com.testerum.web_backend.services.message.MessageFrontendService
+import com.testerum.web_backend.services.project.ProjectFileSystemWatcher
 import com.testerum.web_backend.services.project.ProjectFrontendService
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.resources.NetworkService
@@ -205,6 +207,17 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
                     projectRootDir = projectRootDir,
                     recentProjectsFile = frontendDirs.getRecentProjectsFile()
             )
+        }
+    }
+
+    val projectFileSystemWatcher = ProjectFileSystemWatcher(
+            fsNotifierBinariesDir = frontendDirs.getFsNotifierBinariesDir(),
+            projectManager = projectManager
+    ).apply {
+        start()
+
+        context.registerShutdownHook {
+            shutdown()
         }
     }
 
@@ -521,8 +534,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     val testsWebSocketController = TestsWebSocketController(
             testsExecutionFrontendService = testsExecutionFrontendService,
-            objectMapper = testsRunnerJsonObjectMapper,
-            resultsFrontendService = runnerResultFrontendService
+            objectMapper = testsRunnerJsonObjectMapper
     )
 
+    val projectReloadWebSocketController = ProjectReloadWebSocketController(
+            projectFileSystemWatcher = projectFileSystemWatcher
+    )
 }

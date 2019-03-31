@@ -55,6 +55,7 @@ import { EnvironmentEditModalComponent } from './functionalities/variables/envir
 import {FeedbackService} from "./service/feedback.service";
 import { NotFundComponent } from './functionalities/others/not-fund/not-fund.component';
 import {NotFoundHttpInterceptor} from "./service/interceptors/not-found.http-interceptor";
+import {ProjectReloadWsService} from "./service/project-reload-ws.service";
 
 @NgModule({
     imports: [
@@ -108,6 +109,7 @@ import {NotFoundHttpInterceptor} from "./service/interceptors/not-found.http-int
         SettingsService,
         HomeService,
         ProjectService,
+        ProjectReloadWsService,
         FileSystemService,
         ResultService,
         FeatureService,

@@ -134,7 +134,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
                     .addListener(object : ProcessListener() {
                         override fun afterStart(process: Process, executor: ProcessExecutor) {
                             testExecutionsById[executionId] = execution.toRunning(
-                                    stopper = ProcessKillerTestExecutionStopper(executionId, process, eventProcessor)
+                                    stopper = ProcessKillerTestExecutionStopper(executionId, process)
                             )
                         }
 

@@ -13,6 +13,8 @@ class TesterumDirs {
                 ?: throw RuntimeException("the system property $systemPropertyName is missing")
     }
 
+    fun getFsNotifierBinariesDir(): JavaPath = getInstallDir().resolve("fsnotifier")
+
     fun getRunnerDir(): JavaPath = getInstallDir().resolve("runner")
 
     fun getTesterumDir(): JavaPath = Paths.get(System.getProperty("user.home")).resolve(".testerum")

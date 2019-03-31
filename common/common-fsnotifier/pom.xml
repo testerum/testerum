@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>common</artifactId>
+        <groupId>com.testerum</groupId>
+        <version>develop-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>common-fsnotifier</artifactId>
+
+    <dependencies>
+        <!--==================== Internal Dependencies ====================-->
+
+        <!-- common-jdk -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-jdk</artifactId>
+        </dependency>
+
+        <!-- common-kotlin -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-kotlin</artifactId>
+        </dependency>
+
+
+        <!--==================== External Dependencies ====================-->
+        <!-- Kotlin -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+        </dependency>
+
+        <!-- slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- zt-exec -->
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-exec</artifactId>
+        </dependency>
+
+        <!-- zt-process-killer -->
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-process-killer</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+
+        <plugins>
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <!--========== Profiles =========================================================================================-->
+    <profiles>
+
+        <!-- development -->
+        <profile>
+            <id>development</id>
+
+            <!--
+                Activated by the lack of the "production" system property.
+                This means a developer doesn't have to do anything to activate the development profile.
+                On the Jenkins server, adding "-Dproduction" parameter to the build is a one-time job.
+            -->
+            <activation>
+                <property>
+                    <name>!production</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <!-- copy fsnotifier native binaries to the package directory -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+
+                        <executions>
+                            <!-- ant-main-prod -->
+                            <execution>
+                                <id>ant-main-prod</id>
+                                <phase>prepare-package</phase>
+                                <configuration>
+                                    <target>
+                                        <sync todir="${project.basedir}/../../package/fsnotifier">
+                                            <fileset dir="${project.basedir}/src/main/assembly/package" />
+                                        </sync>
+                                        <chmod dir="${project.basedir}/../../package/fsnotifier/linux" type="file" perm="ugo+x" includes="*" />
+                                        <chmod dir="${project.basedir}/../../package/fsnotifier/mac"   type="file" perm="ugo+x" includes="*" />
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- production -->
+        <profile>
+            <id>production</id>
+
+            <!-- activated by the presence of the "production" system property -->
+            <activation>
+                <property>
+                    <name>production</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <!-- maven-assembly-plugin (create native binaries artifact) -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+
+                        <configuration>
+                            <appendAssemblyId>true</appendAssemblyId>
+                            <attach>true</attach>
+                        </configuration>
+
+                        <executions>
+                            <!-- assemble-native-binaries -->
+                            <execution>
+                                <id>assemble-native-binaries</id>
+                                <phase>package</phase>
+
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/assembly-descriptor.xml</descriptor>
+                                    </descriptors>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

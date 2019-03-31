@@ -17,6 +17,7 @@
         <module>common-cmdline</module>
         <module>common-crypto</module>
         <module>common-expression-evaluator</module>
+        <module>common-fsnotifier</module>
         <module>common-httpclient</module>
         <module>common-rdbms</module>
         <module>common-di</module>

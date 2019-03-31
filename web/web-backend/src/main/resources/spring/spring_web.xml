@@ -49,6 +49,7 @@
     <!--====== WEB SOCKET CONFIGURATION ======-->
     <websocket:handlers allowed-origins="*">
         <websocket:mapping path="/tests-ws" handler="testsWebSocketController"/>
+        <websocket:mapping path="/project-reloaded-ws" handler="projectReloadWebSocketController"/>
     </websocket:handlers>
 
     <bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
