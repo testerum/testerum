@@ -8,12 +8,9 @@ import com.testerum.common.expression_evaluator.helpers.impl.UuidScriptingHelper
 import delight.nashornsandbox.NashornSandbox
 import delight.nashornsandbox.NashornSandboxes
 import jdk.nashorn.internal.runtime.ECMAException
-import org.slf4j.LoggerFactory
 import javax.script.Bindings
 
 object ExpressionEvaluator {
-
-    private val LOG = LoggerFactory.getLogger(ExpressionEvaluator::class.java)
 
     // todo: make these configurable
     private val helpers: List<ScriptingHelper> = listOf(
