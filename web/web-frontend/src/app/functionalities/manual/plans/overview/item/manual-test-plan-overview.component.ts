@@ -53,7 +53,11 @@ export class ManualTestPlanOverviewComponent implements OnInit {
         this.manualExecPlansService
             .getPathOfUnExecutedTest(this.model.path, null)
             .subscribe((nextPath: Path) => {
-                this.urlService.navigateToManualExecPlanTestRunner(this.model.path, nextPath)
+                if (nextPath) {
+                    this.urlService.navigateToManualExecPlanTestRunner(this.model.path, nextPath);
+                } else {
+                    this.urlService.navigateToManualExecPlanRunner(this.model.path)
+                }
             });
     }
 }
