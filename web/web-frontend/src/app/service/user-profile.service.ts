@@ -3,12 +3,13 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Feedback} from "../functionalities/user/feedback/model/feedback.model";
 import {map} from "rxjs/operators";
-import {UserProfile} from "../functionalities/user/user-profile/model/user-profile.model";
+import {UserProfile} from "../model/license/profile/user-profile.model";
+import {UserProfileMarshaller} from "../model/license/profile/user-profile-marshaller";
 
 @Injectable()
 export class UserProfileService {
 
-    private USER_PROFILE_URL = "/rest/userProfile";
+    private USER_PROFILE_URL = "/rest/user-profile";
 
     constructor(private http: HttpClient) {
     }
@@ -26,20 +27,10 @@ export class UserProfileService {
             .pipe(map(res => new Feedback().deserialize(res)));
     }
 
-    getUserProfileDetails(): Observable<UserProfile[] > {
+    getCurrentUserProfile(): Observable<UserProfile > {
         return this.http
-            .get<UserProfile[] >(this.USER_PROFILE_URL + "/about")
-            .pipe(map(UserProfileService.extractUserProfile));
+            .get<UserProfile >(this.USER_PROFILE_URL)
+            .pipe(map(it => UserProfileMarshaller.deserialize(it)));
     }
 
-    private static extractUserProfile(res:  UserProfile[]): UserProfile[] {
-        const response: UserProfile[] = [];
-
-        for ( let aboutAsJson of res) {
-            let about = new UserProfile().deserialize(aboutAsJson);
-            response.push(about)
-        }
-
-        return response;
-    }
 }

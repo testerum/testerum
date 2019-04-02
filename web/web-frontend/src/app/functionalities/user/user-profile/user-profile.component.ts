@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ComponentRef, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {UserProfile} from "./model/user-profile.model";
+import {UserProfileService} from "../../../service/user-profile.service";
+import {UserProfile} from "../../../model/license/profile/user-profile.model";
 
 @Component({
   selector: 'user-profile.component',
@@ -14,15 +15,12 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     @ViewChild("userProfileModal") modal:ModalDirective;
     modalComponentRef: ComponentRef<UserProfileComponent>;
 
-    constructor() { }
+    constructor(private userProfileService: UserProfileService) { }
 
     ngOnInit(): void {
-        let userProfile = new UserProfile(); //Must be replaced later
-        userProfile.name = "marius.gradinaru";
-        userProfile.license = "{SDFHJB-4J4K-3KCZ-ADFBK8}";
-        userProfile.version = "1.01.19.111";
-        userProfile.expirationDate = new Date();
-        this.model = userProfile;
+        this.userProfileService.getCurrentUserProfile().subscribe((userProfile) => {
+            this.model = userProfile;
+        });
     }
 
     ngAfterViewInit(): void {
