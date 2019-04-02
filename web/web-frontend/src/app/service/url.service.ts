@@ -10,6 +10,10 @@ export class UrlService {
                 private contextService: ContextService) {
     }
 
+    public refreshPage() {
+        window.location.reload();
+    }
+
     public navigateToRoot() {
         this.navigate(['']);
     }
