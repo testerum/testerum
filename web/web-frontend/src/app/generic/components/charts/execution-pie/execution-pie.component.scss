@@ -1,34 +1,57 @@
+@import "../../../../../resources/css/testerum-variables.scss";
 
-.legend {
-    height: 10px;
-    width: 10px;
-    margin-right: 4px;
-    margin-left: 10px;
+.pie {
+    display: flex;
+    flex-direction: row;
+
+    .legend-container {
+        display: flex;
+        align-items: center;
+
+        table {
+            tr {
+                td {
+                    padding-top: 2px;
+                    padding-bottom: 2px;
+                }
+            }
+        }
+
+        .legend {
+            height: 10px;
+            width: 10px;
+            margin-right: 4px;
+            margin-left: 10px;
+        }
+
+        .total_tests_label {
+            font-weight: bold;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .legend_label {
+            padding-right: 10px;
+        }
+    }
+
+    .fa {
+        margin-right: 5px;
+    }
+
+    .waiting { background-color: $gray-color;}
+    .icon-waiting { color: $gray-color;}
+    .passed { background-color: $success-color;}
+    .icon-passed { color: $success-color;}
+    .failed { background-color: $failed-color;}
+    .icon-failed { color: $failed-color;}
+    .disabled { background-color: $disabled-color;}
+    .icon-disabled { color: $disabled-color;}
+    .error { background-color: $log-type-exception-color;}
+    .icon-error { color: $log-type-exception-color;}
+    .undefined { background-color: $undefined-color;}
+    .icon-undefined { color: $undefined-color;}
+    .skipped { background-color: $skipped-color;}
+    .icon-skipped { color: $skipped-color;}
 }
 
-.total_tests_label {
-    font-weight: bold;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.legend_label {
-    padding-right: 10px;
-}
-
-.fa {
-    margin-right: 5px;
-}
-
-.waiting { background-color: #c0bebc;}
-.icon-waiting { color: #c0bebc;}
-.passed { background-color: #5cb85c;}
-.icon-passed { color: #5cb85c;}
-.failed { background-color: #FF6384;}
-.icon-failed { color: #FF6384;}
-.error { background-color: #ff0000;}
-.icon-error { color: #ff0000;}
-.undefined { background-color: #FFCE56;}
-.icon-undefined { color: #FFCE56;}
-.skipped { background-color: #aae8ff;}
-.icon-skipped { color: #aae8ff;}

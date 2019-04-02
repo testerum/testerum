@@ -232,17 +232,26 @@ class ManualTestPlansFrontendService(private val webProjectManager: WebProjectMa
     }
 
     fun getNextTestToExecute(planPath: Path,
-                             currentTestPath: Path): Path? {
+                             currentTestPath: Path?): Path? {
         val plan: ManualTestPlan = getPlanAtPath(planPath)
                 ?: return null
 
-        val testPaths = plan.manualTreeTests.map { it.path }
+        val testPaths:List<Path> = plan.manualTreeTests.map { it.path }
         if (testPaths.isEmpty()) {
             return null
         }
 
-        val indexOfCurrentTestPath = testPaths.indexOf(currentTestPath)
+        val indexOfCurrentTestPath: Int = if (currentTestPath != null) testPaths.indexOf(currentTestPath) else -1
+
         if (indexOfCurrentTestPath == -1) {
+            val manualTestsDir = getManualTestsDir()
+            val tests = manualTestFileService.getTestsAtPlanPath(plan.path, manualTestsDir);
+            val notExecutedTests = tests.find { it.status == ManualTestStatus.NOT_EXECUTED }
+            if (notExecutedTests != null) {
+                val indexOfUneExecutedTest = testPaths.indexOf(notExecutedTests.path)
+                return testPaths[indexOfUneExecutedTest]
+            }
+
             return testPaths[0]
         } else if (indexOfCurrentTestPath == testPaths.size - 1) {
             return testPaths[0]

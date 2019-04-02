@@ -1,0 +1,45 @@
+.error-dialog {
+
+    .modal-dialog {
+        width: 800px;
+    }
+
+    .my-form-input-as-column {
+        display: flex;
+        min-height: 25px;
+        flex-direction: column;
+        align-items: center;
+        margin: 15px 0;
+
+        .my-label {
+            line-height: 15px;
+        }
+
+        .my-value {
+            width: 100%;
+            margin: 0;
+
+            .description {
+                height: 150px;
+            }
+        }
+    }
+
+    .error-detail-toggle {
+        cursor: pointer;
+        margin-bottom: 0.5em;
+    }
+
+    .stack-trace-panel {
+        overflow: auto;
+        height: 500px;
+        width: 100%;
+        white-space: pre;
+        font-family: "Hack Regular Nerd Font Complete", monospace;
+        font-size: 12px;
+        border: 1px solid #908f8f;
+        padding: 0.5em;
+        background-color: #eee;
+    }
+}
+

@@ -1,45 +1,81 @@
-.error-dialog {
-    z-index: 9999;
+@import "../../../resources/css/testerum-variables";
 
-    .modal-dialog {
-        width: 800px;
-    }
+.my-toast {
 
-    .error-message {
-        text-align: center;
-        background-color: inherit;
-        border-color: inherit;
-        color: #ff6161;
-        font-size: 1.5em;
+    .title {
         font-weight: bold;
-        line-height: 1.1em;
+        margin-top: 0;
     }
 
-    .excuse-messages {
-        margin-top: 10px;
-        margin-bottom: 20px;
-        font-size: .9em;
+    .message-details {
+        white-space: pre-wrap;
+    }
+
+    .buttons {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        line-height: 1.4;
+        flex-direction: row;
+        justify-content: space-around;
+
+        .btn {
+            padding: 3px 12px;
+            width: 10em;
+        }
     }
 
-    .error-detail-toggle {
-        cursor: pointer;
-        margin-bottom: 0.5em;
-    }
+    .ui-toast {
+        width: 35em;
 
-    .stack-trace-panel {
-        overflow: auto;
-        height: 500px;
-        width: 100%;
-        white-space: pre;
-        font-family: "Hack Regular Nerd Font Complete", monospace;
-        font-size: 12px;
-        border: 1px solid #908f8f;
-        padding: 0.5em;
-        background-color: #eee;
+        .ui-toast-message-error {
+            border:0;
+
+            .ui-toast-close-icon {
+                font-size: 1.5em;
+                &:hover {
+                    text-shadow: 0 1px 0 #fff;
+                    background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
+                    background-repeat: repeat-x;
+                    border-color: #ccc;
+                    text-decoration: none;
+                }
+            }
+        }
     }
 }
 
+.error-toast {
+    .alert-image {
+        color: #c12e2a;
+    }
+
+    .ui-toast {
+        .ui-toast-message-error {
+            color: $alert-text-color;
+            background-color: $alert-background-color;
+
+            .ui-toast-close-icon {
+                color: #721c24;
+            }
+        }
+    }
+}
+
+.validation-exception-toast {
+    .message-details {
+        line-height: 1.5em;
+    }
+
+    .alert-image {
+        color: #c12e2a;
+    }
+
+    .ui-toast {
+        .ui-toast-message-error {
+            color: $alert-text-color;
+            background-color: $alert-background-color;
+
+            .ui-toast-close-icon {
+                color: #721c24;
+            }
+        }
+    }
+}

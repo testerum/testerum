@@ -1,0 +1,39 @@
+<div class="my_not-found">
+
+    <div class="header">
+        <div class="logo-version-container">
+            <logo class="logo"></logo>
+        </div>
+    </div>
+
+    <div class="body">
+        <div *ngIf="isAKnownResource(); else notAKnownResource" class="message">
+            <div>The <b>{{getResourceTypeForUI()}}</b> at <span class="resource-id">{{resourceId}}</span> couldn't be found</div>
+        </div>
+
+        <ng-template #notAKnownResource class="message">
+            <div class="message">
+                <div>The resource at URL:</div>
+                <a href="{{url}}">{{url}}</a>
+                <div>couldn't be found</div>
+            </div>
+        </ng-template>
+
+        <div class="reason">
+            The reason for this could be:
+            <ul>
+                <li>the resource has been renamed</li>
+                <li>the resource has been moved</li>
+                <li>the resource has been deleted</li>
+            </ul>
+        </div>
+
+        <div *ngIf="isAKnownResource()" class="resource-url">
+            <div>Resource URL: <a href="{{url}}">{{url}}</a></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <button (click)="goToHomePage()" type="button" class="btn btn-default" data-dismiss="modal">Go to Home Page</button>
+    </div>
+</div>

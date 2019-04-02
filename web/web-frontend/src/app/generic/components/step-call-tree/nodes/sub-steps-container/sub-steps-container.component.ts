@@ -38,6 +38,10 @@ export class SubStepsContainerComponent {
     }
 
     addSubStep() {
+        if (!this.stepCallTreeComponentService.isEditMode) {
+            this.stepCallTreeComponentService.setEditMode(true);
+        }
+
         this.stepCallTreeComponentService.addStepCallEditor(this.model);
         this.showChildren = true;
         this.model.jsonTreeNodeState.showChildren = true;

@@ -50,4 +50,22 @@
 </my-app>
 
 </body>
+
+<!-- Script to show that Internet Explorer is not supported -->
+<script type="text/javascript">
+    if (navigator.appName == 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/))) {
+        var html = '' +
+            '<div style="width:100%;height:100%;text-align:center;">' +
+            '   <div style="margin-top: 6em; margin-bottom: 6em">' +
+            '       <span style="font-size: 10em; font-weight: bold; color: #ff9800; position: relative; top: -.1em; vertical-align: middle;">&laquo;</span>\n' +
+            '       <span style="font-size: 6em; font-weight: bold; color: black; position: relative; top: -0.05em; vertical-align: middle;">Testerum</span>\n' +
+            '       <span style="font-size: 10em; font-weight: bold; color: #ff9800; position: relative; top: -.1em; vertical-align: middle;">&raquo;</span>' +
+            '   </div>' +
+            '   <p style="font-size: 4em; font-weight: bold;">Sorry, Internet Explorer is not supported.<p>' +
+            '   <p style="font-size: 2em; color: #000000; margin-top: 2em;">Please use <a href="https://www.google.nl/chrome/index.html">Chrome</a>, <a href="http://firefox.com">Firefox</a>, <a href="https://support.apple.com/downloads/safari-browser">Safari</a> or Edge instead.</p>' +
+            '</div>';
+        document.getElementsByTagName('body')[0].innerHTML = html;
+    }
+</script>
+
 </html>

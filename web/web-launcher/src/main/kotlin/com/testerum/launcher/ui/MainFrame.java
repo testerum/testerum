@@ -107,7 +107,8 @@ public class MainFrame extends JFrame {
         statusLabel.setIcon(new ImageIcon(getClass().getResource("/attention.gif")));
         statusLabel.setText(" Selected port is not available!");
         portErrorMessage.setVisible(true);
-        openInBrowserButton.setEnabled(true);
+        openInBrowserButton.setEnabled(false);
+        saveAndRestartApplicationButton.setEnabled(true);
     }
 
     @SuppressWarnings("unused")

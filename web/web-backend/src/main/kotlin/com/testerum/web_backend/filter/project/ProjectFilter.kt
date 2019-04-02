@@ -36,6 +36,7 @@ class ProjectFilter : Filter {
                              chain: FilterChain) {
         try {
             val projectPath: JavaPath? = getProjectPath(request)
+
             ProjectDirHolder.set(projectPath, request.getFullRequestUrl())
 
             chain.doFilter(request, response)

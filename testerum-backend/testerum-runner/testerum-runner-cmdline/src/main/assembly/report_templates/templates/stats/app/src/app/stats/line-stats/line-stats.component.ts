@@ -188,8 +188,8 @@ export class LineStatsComponent implements OnInit, OnChanges {
                     label: 'Disabled',
                     data: this.disabledData,
                     fill: true,
-                    borderColor: "#c0bebc",
-                    backgroundColor: "#c0bebc"
+                    borderColor: "#FF7800",
+                    backgroundColor: "#FF7800"
                 }
             )
         }
@@ -232,8 +232,8 @@ export class LineStatsComponent implements OnInit, OnChanges {
                     label: 'Failed',
                     data: this.failedData,
                     fill: true,
-                    borderColor: "#FF6384",
-                    backgroundColor: "#ff6384"
+                    borderColor: "#E6302C",
+                    backgroundColor: "#E6302C"
                 }
             );
         }

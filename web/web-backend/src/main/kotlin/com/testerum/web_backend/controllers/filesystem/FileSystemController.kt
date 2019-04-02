@@ -2,6 +2,7 @@ package com.testerum.web_backend.controllers.filesystem
 
 import com.testerum.model.config.dir_tree.CreateFileSystemDirectoryRequest
 import com.testerum.model.config.dir_tree.FileSystemDirectory
+import com.testerum.model.infrastructure.path.PathInfo
 import com.testerum.web_backend.services.filesystem.FileSystemFrontendService
 import org.springframework.web.bind.annotation.*
 
@@ -21,4 +22,9 @@ class FileSystemController(private val fileSystemFrontendService: FileSystemFron
         return fileSystemFrontendService.createDirectory(createRequest)
     }
 
+    @RequestMapping(method = [RequestMethod.GET], path = ["/path/info"])
+    @ResponseBody
+    fun getPathInfo(@RequestParam(value = "path") pathAsString:String): PathInfo {
+        return fileSystemFrontendService.getPathInfo(pathAsString)
+    }
 }

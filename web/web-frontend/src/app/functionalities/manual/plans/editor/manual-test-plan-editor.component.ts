@@ -9,6 +9,7 @@ import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_m
 import {AbstractComponentCanDeactivate} from "../../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 import {ManualSelectTestsTreeComponent} from "./manual-select-tests-tree/manual-select-tests-tree.component";
 import {ManualTestPlansOverviewService} from "../overview/manual-test-plans-overview.service";
+import {Path} from "../../../../model/infrastructure/path/path.model";
 
 @Component({
     selector: 'manual-test-plan-editor',
@@ -57,8 +58,8 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
                         manualTestsRunner.notApplicableTests,
                         manualTestsRunner.notExecutedOrInProgressTests
                     ],
-                    backgroundColor: ["#5cb85c", "#FF6384", "#FFCE56", "#36A2EB", "#c0bebc"],
-                    hoverBackgroundColor: ["#5cb85c", "#FF6384", "#FFCE56", "#36A2EB", "#c0bebc"]
+                    backgroundColor: ["#5cb85c", "#E6302C", "#FFCE56", "#36A2EB", "#c0bebc"],
+                    hoverBackgroundColor: ["#5cb85c", "#E6302C", "#FFCE56", "#36A2EB", "#c0bebc"]
                 }]
             };
 
@@ -103,7 +104,11 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
     }
 
     navigateToExecutorMode() {
-        this.urlService.navigateToManualExecPlanRunner(this.model.path);
+        this.manualExecPlansService
+            .getPathOfUnExecutedTest(this.model.path, null)
+            .subscribe((nextPath: Path) => {
+                this.urlService.navigateToManualExecPlanTestRunner(this.model.path, nextPath)
+            });
     }
 
     cancelAction(): void {

@@ -24,6 +24,12 @@ export class FormUtil {
             if (errorResponse.errorCode.toString() == ErrorCode.VALIDATION.enumAsString) {
                 let validationException: ValidationErrorResponse = new ValidationErrorResponse().deserialize(errorResponse);
                 formValidationModel = validationException.validationModel;
+
+                if (formValidationModel.globalMessage) {
+                    throw error; //to be handled as a Generic Validation Exception by the error handler;
+                }
+            } else {
+                throw error;
             }
         }
 

@@ -128,14 +128,19 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
         this.tagsToShow = newTagsToShow
     }
 
-    onTagsKeyUp(event) {
-        if(event.key =="Enter") {
-            if (this.currentTagSearch) {
-                this.model.tags.push(this.currentTagSearch);
-                this.currentTagSearch = null;
-                this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
-                event.preventDefault();
-            }
+    onTagsKeyUp(event: KeyboardEvent) {
+        event.preventDefault();
+
+        if (event.key == "Enter") {
+            this.addCurrentTagToTags();
+        }
+    }
+
+    addCurrentTagToTags() {
+        if (this.currentTagSearch) {
+            this.model.tags.push(this.currentTagSearch);
+            this.currentTagSearch = null;
+            this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
         }
     }
 
@@ -214,8 +219,8 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
             let renameProject = new Project(this.projectName, projectPath);
 
             this.projectService.renameProject(renameProject).subscribe(
-                (renameProject: Project) => {
-                    this.contextService.setCurrentProject(renameProject);
+                (renamedProject: Project) => {
+                    this.contextService.setCurrentProject(renamedProject);
                     this.saveFeature()
                 },
                 error => FormUtil.setErrorsToForm(this.form, error)
@@ -226,13 +231,13 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     }
 
     private saveFeature() {
-        this.featureService
-            .save(this.model, this.fileAttachmentsAdded, this.attachmentsPathsToDelete)
-            .subscribe(
-                savedModel => this.afterSaveHandler(savedModel),
-                error => FormUtil.setErrorsToForm(this.form, error)
-            );
-    }
+            this.featureService
+                .save(this.model, this.fileAttachmentsAdded, this.attachmentsPathsToDelete)
+                .subscribe(
+                    savedModel => this.afterSaveHandler(savedModel),
+                    error => FormUtil.setErrorsToForm(this.form, error)
+                );
+        }
 
     private setDescription() {
         this.model.description = this.descriptionMarkdownEditor.getValue();

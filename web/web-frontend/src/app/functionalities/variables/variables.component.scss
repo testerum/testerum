@@ -28,7 +28,7 @@
                     justify-content: space-between;
                 }
                 .my-dropdown-selected-item-info {
-                    margin-right: 1.5em;
+                    margin-right: 1.8em;
                 }
 
                 .variables {
@@ -46,6 +46,11 @@
                     }
                     .variable-action {
                         vertical-align: middle;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+
                         .btn {
                             font-size: 0.7em;
                         }

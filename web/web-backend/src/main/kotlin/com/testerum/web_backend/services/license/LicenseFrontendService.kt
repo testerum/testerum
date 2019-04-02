@@ -1,27 +1,27 @@
 package com.testerum.web_backend.services.license
 
 import com.testerum.common_crypto.password_hasher.PasswordHasher
-import com.testerum.licenses.cache.LicensesCache
-import com.testerum.licenses.cloud_client.CloudClient
-import com.testerum.licenses.cloud_client.CloudClientErrorResponseException
-import com.testerum.licenses.cloud_client.CloudError
-import com.testerum.licenses.cloud_client.ErrorCloudResponse
-import com.testerum.licenses.cloud_client.create_trial_account.CreateTrialAccountCloudRequest
-import com.testerum.licenses.cloud_client.login.FoundLoginCloudResponse
-import com.testerum.licenses.cloud_client.login.LoginCloudRequest
-import com.testerum.licenses.cloud_client.login.NotFoundLoginCloudResponse
-import com.testerum.licenses.model.user.User
+import com.testerum.cloud_client.licenses.cache.LicensesCache
+import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
+import com.testerum.cloud_client.infrastructure.CloudError
+import com.testerum.cloud_client.infrastructure.ErrorCloudResponse
+import com.testerum.cloud_client.licenses.LicenseCloudClient
+import com.testerum.cloud_client.licenses.create_trial_account.CreateTrialAccountCloudRequest
+import com.testerum.cloud_client.licenses.login.FoundLoginCloudResponse
+import com.testerum.cloud_client.licenses.login.LoginCloudRequest
+import com.testerum.cloud_client.licenses.login.NotFoundLoginCloudResponse
+import com.testerum.cloud_client.licenses.model.user.User
 import com.testerum.model.file.FileToUpload
 import com.testerum.model.license.AuthRequest
 import com.testerum.model.license.AuthResponse
 import org.apache.commons.io.IOUtils
 import org.apache.http.HttpStatus
 
-class LicenseFrontendService(private val cloudClient: CloudClient,
+class LicenseFrontendService(private val licenseCloudClient: LicenseCloudClient,
                              private val licensesCache: LicensesCache) {
 
     fun createTrialAccount(authRequest: AuthRequest): AuthResponse {
-        val response = cloudClient.createTrialAccount(
+        val response = licenseCloudClient.createTrialAccount(
                 CreateTrialAccountCloudRequest(
                         email = authRequest.email,
                         password = authRequest.password
@@ -43,7 +43,7 @@ class LicenseFrontendService(private val cloudClient: CloudClient,
         }
 
         // if local login failed (user not present locally, or incorrect password), then attempt remote login
-        val response = cloudClient.login(
+        val response = licenseCloudClient.login(
                 LoginCloudRequest(
                         email = authRequest.email,
                         password = authRequest.password

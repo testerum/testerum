@@ -108,6 +108,7 @@ export class StepCallTreeComponentService {
         }
 
         let stepCallContainerModel = StepCallTreeUtil.createStepCallContainerWithChildren(stepCall, parentContainer, new Map());
+        this.expandParameters(stepCallContainerModel);
 
         parentContainer.getChildren().push(
             stepCallContainerModel
@@ -128,6 +129,11 @@ export class StepCallTreeComponentService {
         this.triggerWarningRecalculationChangesEvent();
     }
 
+    private expandParameters(stepCallContainerModel: StepCallContainerModel) {
+        if (stepCallContainerModel.stepCall.args.length > 0) {
+            stepCallContainerModel.jsonTreeNodeState.showChildren = true;
+        }
+    }
 
     moveStep(stepCallContainerModel: StepCallContainerModel, newParentContainer: JsonTreeContainer) {
         ArrayUtil.removeElementFromArray(stepCallContainerModel.parentContainer.getChildren(), stepCallContainerModel);

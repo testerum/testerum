@@ -2,6 +2,7 @@ package selenium.actions
 
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
+import com.testerum.api.services.TesterumServiceLocator
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.interactions.Actions
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
@@ -10,6 +11,8 @@ import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
 class WebDriverInteractionSteps {
+
+    private val logger = TesterumServiceLocator.getTesterumLogger()
 
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
@@ -23,6 +26,13 @@ class WebDriverInteractionSteps {
             )
             elementLocator: String
     ) {
+        logger.info(
+                "clicking\n" +
+                "--------\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
+        )
+
         webDriverManager.waitForElementPresent(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
@@ -42,6 +52,13 @@ class WebDriverInteractionSteps {
             )
             elementLocator: String
     ) {
+        logger.info(
+                "double clicking\n" +
+                "---------------\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
+        )
+
         webDriverManager.waitForElementPresent(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)

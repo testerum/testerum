@@ -1,15 +1,10 @@
 package com.testerum.web_backend.controllers.tests
 
-import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.test.TestModel
 import com.testerum.web_backend.services.tests.TestsFrontendService
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/tests")
@@ -17,10 +12,16 @@ class TestsController(private val testsFrontendService: TestsFrontendService) {
 
     @RequestMapping(method = [RequestMethod.GET], path = [""], params = ["path"])
     @ResponseBody
-    fun getTestAtPath(@RequestParam(value = "path") path: String): TestModel? {
-        return testsFrontendService.getTestAtPath(
+    fun getTestAtPath(@RequestParam(value = "path") path: String): ResponseEntity<TestModel> {
+        val testAtPath = testsFrontendService.getTestAtPath(
                 Path.createInstance(path)
         )
+
+        return if (testAtPath == null) {
+            ResponseEntity.notFound().build()
+        } else {
+            ResponseEntity.ok(testAtPath)
+        }
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/warnings"])

@@ -17,7 +17,7 @@ class WarningService {
     }
 
     fun testWithWarnings(test: TestModel): TestModel {
-        if (test.properties.isManual) {
+        if (test.properties.isManual || test.properties.isDisabled) {
             // some steps may have warnings on them (taken like this from the cache),
             // and we don't want this for manual tests
             return removeWarningsFromTest(test)

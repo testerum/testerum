@@ -55,6 +55,8 @@ export class TestsRunnerLogsComponent implements AfterViewInit, OnInit, OnDestro
 
     ngOnInit(): void {
 
+        this.selectedRunnerTreeNode = this.testRunnerService.getSelectedNode();
+
         this.lastLogsCount = this.testsRunnerLogsService.logsByEventKey.size;
 
         this.logsToDisplay.length = 0;
@@ -91,7 +93,9 @@ export class TestsRunnerLogsComponent implements AfterViewInit, OnInit, OnDestro
 
         this.testRunnerService.runnerVisibleEventEmitter.subscribe(() => {
             this.refresh()
-        })
+        });
+
+        this.refreshLogs();
     }
 
     ngOnDestroy(): void {

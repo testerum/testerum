@@ -3,7 +3,7 @@ import {FileDirTreeComponentService} from "./file-dir-tree.component-service";
 import {FileDirTreeContainerModel} from "./model/file-dir-tree-container.model";
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {FileDirTreeContainerComponent} from "./nodes/container/file-dir-tree-container.component";
-import {Subscription} from "rxjs";
+import {Observable, Subject, Subscription} from "rxjs";
 import {FileDirChooserService} from "../file-dir-chooser.service";
 import {FileSystemService} from "../../../../../service/file-system.service";
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
@@ -34,7 +34,6 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
                 private jsonTreeService: JsonTreeService,
                 private errorService: ErrorHttpInterceptor) {
     }
-
 
     ngOnInit() {
         this.fileDirTreeComponentService.isTesterumProjectChooser = this.isTesterumProjectChooser;
@@ -69,9 +68,10 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
         return this.fileDirTreeComponentService.selectedNode;
     }
 
-    createDirectory(): void {
+    createDirectory(): Observable<FileDirTreeContainerModel> {
+        let subject = new Subject<FileDirTreeContainerModel>();
         if (!this.getSelectedNode()) {
-            return
+            return subject;
         }
 
         let childrenContainersName = this.getChildrenContanersName();
@@ -91,13 +91,24 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
                         );
                         this.getSelectedNode().getChildren().push(newContainer);
                         this.getSelectedNode().sort();
+
+                        subject.next(newContainer);
+                        subject.complete();
                     },
                     (error: HttpErrorResponse) => {
-                        this.errorService.handleHttpResponseException(error)
+                        this.errorService.handleHttpResponseException(error);
+                        subject.complete();
                     }
                 );
             }
-        )
+        );
+
+        return subject;
+    }
+
+    setSelectedDirectory(newSelectedDirectory: FileDirTreeContainerModel) {
+        this.fileDirTreeComponentService.selectedNode = newSelectedDirectory;
+        this.jsonTreeService.setSelectedNode(newSelectedDirectory);
     }
 
     private getChildrenContanersName(): Array<string> {

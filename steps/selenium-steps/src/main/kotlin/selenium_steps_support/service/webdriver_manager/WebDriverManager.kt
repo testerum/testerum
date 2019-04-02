@@ -4,6 +4,7 @@ import com.testerum.api.annotations.settings.DeclareSetting
 import com.testerum.api.annotations.settings.DeclareSettings
 import com.testerum.api.test_context.settings.RunnerSettingsManager
 import com.testerum.api.test_context.settings.model.SettingType
+import com.testerum.common_jdk.OsUtils
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.WebDriver
@@ -12,7 +13,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.webdriver_factory.chrome.ChromeWebDriverFactory
-import selenium_steps_support.service.webdriver_factory.util.OsUtils
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTINGS_CATEGORY
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_AFTER_STEP_DELAY_MILLIS
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
@@ -28,34 +28,34 @@ import java.nio.file.Path as JavaPath
 
 @ThreadSafe
 @DeclareSettings([
-    (DeclareSetting(
+    DeclareSetting(
             key = SETTING_KEY_WAIT_TIMEOUT_MILLIS,
             type = SettingType.NUMBER,
             defaultValue = "5000",
             description = "Maximum time duration in milliseconds for wait steps (e.g. wait until an element is present on the page).",
             category = SETTINGS_CATEGORY
-    )),
-    (DeclareSetting(
+    ),
+    DeclareSetting(
             key = SETTING_KEY_AFTER_STEP_DELAY_MILLIS,
             type = SettingType.NUMBER,
             defaultValue = "0",
             description = "Delay in milliseconds after a Selenium Step",
             category = SETTINGS_CATEGORY
-    )),
-    (DeclareSetting(
+    ),
+    DeclareSetting(
             key = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST,
             type = SettingType.TEXT,
             defaultValue = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT,
             description = """Leave browser open after a Selenium test. Possible values: "true", "false", "onFailure"""",
             category = SETTINGS_CATEGORY
-    )),
-    (DeclareSetting(
+    ),
+    DeclareSetting(
             key = SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP,
             type = SettingType.TEXT,
             defaultValue = "false",
             description = """Should take a screenshot after each Selenium Test. Possible values: "true", "false"""",
             category = SETTINGS_CATEGORY
-    ))
+    )
 ])
 class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager) {
 
@@ -84,7 +84,7 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager)
             if (_webDriver == null) {
                 _webDriver = ChromeWebDriverFactory.createWebDriver().apply {
                     // not maximizing on Mac because it makes WebDriver throw an exception for Chrome on Mac: "failed to change window state to normal, current state is maximized"
-                    if (!OsUtils.isMac) {
+                    if (!OsUtils.IS_MAC) {
                         manage().window().maximize() // todo: make this configurable
                     }
                 }

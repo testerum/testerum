@@ -24,9 +24,13 @@
 .input-delay {
     width: 90px;
 }
-
-.status-code-text {
+.my-status-code-container {
     display: flex;
-    align-items: center;
-    margin-left: 10px;
+    flex-direction: row;
+
+    .status-code-text {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+    }
 }

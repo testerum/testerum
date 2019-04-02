@@ -154,6 +154,10 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     }
 
     addStep() {
+        if (!this.isEditMode) {
+            this.setEditMode(true);
+        }
+
         this.stepCallTreeComponent.stepCallTreeComponentService.addStepCallEditor(this.stepCallTreeComponent.jsonTreeModel);
     }
 
@@ -189,14 +193,19 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
         this.tagsToShow = newTagsToShow
     }
 
-    onTagsKeyUp(event) {
-        if(event.key =="Enter") {
-            if (this.currentTagSearch) {
-                this.testModel.tags.push(this.currentTagSearch);
-                this.currentTagSearch = null;
-                this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
-                event.preventDefault();
-            }
+    onTagsKeyUp(event: KeyboardEvent) {
+        event.preventDefault();
+
+        if (event.key == "Enter") {
+            this.addCurrentTagToTags();
+        }
+    }
+
+    addCurrentTagToTags() {
+        if (this.currentTagSearch) {
+            this.testModel.tags.push(this.currentTagSearch);
+            this.currentTagSearch = null;
+            this.tagsAutoComplete.multiInputEL.nativeElement.value = null;
         }
     }
 

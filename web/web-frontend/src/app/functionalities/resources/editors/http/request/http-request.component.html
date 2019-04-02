@@ -46,11 +46,11 @@
                    [class.active]="httpParams.shouldShow"
                    [class.hidden]="httpParams.isEmpty()"
                    class="params-btn btn btn-default"
-                   pTooltip="Edit URL Parameters"
+                   title="Edit URL Parameters"
                    type="button" value="Params">
 
             <a href (click)="executeRequest();false;"
-               pTooltip="Execute Request"
+               title="Execute Request"
                class="exe-http-req-btn btn btn-success">
                 <i class="fa_my-run" aria-hidden="true"></i>
             </a>
@@ -79,11 +79,11 @@
         <input (click)="showHideParams()"
                [class.active]="httpParams.shouldShow"
                class="form-control params-btn btn btn-default"
-               pTooltip="Edit URL Parameters"
+               title="Edit URL Parameters"
                type="button" value="Params">
 
         <a href (click)="executeRequest();false;"
-           pTooltip="Edit URL parameters"
+           title="Execute Request"
            class="form-control exe-http-req-btn-edit btn btn-success" aria-label="Execute Request">
             <i class="fa_my-run" aria-hidden="true"></i>
         </a>
@@ -139,7 +139,7 @@
     </div>
 
     <div *ngIf="partToDisplay == HttpPart.RESPONSE" class="panel panel-default full-size-flex-element flex-panel">
-        <div class="panel-body full-size-flex-element flex-panel">
+        <div class="http-response-body panel-body full-size-flex-element flex-panel">
             <http-request-response></http-request-response>
         </div>
     </div>

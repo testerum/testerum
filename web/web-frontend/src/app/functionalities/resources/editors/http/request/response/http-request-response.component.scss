@@ -1,7 +1,9 @@
 .http-request-response-valid-root {
     white-space: pre;
-    font-family: "Hack Regular Nerd Font Complete", monospace;
-    font-size: 1.2rem;
+    font-size: 13px;
+
+    .response-body {
+    }
 }
 
 $marginBetweenSuggestions: 1.5em;

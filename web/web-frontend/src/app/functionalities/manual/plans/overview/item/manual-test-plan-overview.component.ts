@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ManualTestPlan} from "../../model/manual-test-plan.model";
 import {UrlService} from "../../../../../service/url.service";
+import {Path} from "../../../../../model/infrastructure/path/path.model";
+import {ManualTestPlansService} from "../../../service/manual-test-plans.service";
 
 @Component({
     selector: 'manual-test-plan-overview',
@@ -10,12 +12,19 @@ import {UrlService} from "../../../../../service/url.service";
 export class ManualTestPlanOverviewComponent implements OnInit {
 
     @Input() model: ManualTestPlan;
+    @Input() planPath: Path;
     @Input() executionMode: boolean = false;
 
-    constructor(private urlService: UrlService) {
+    constructor(private urlService: UrlService,
+                private manualExecPlansService: ManualTestPlansService) {
     }
 
     ngOnInit() {
+        if (this.planPath) {
+            this.manualExecPlansService.getManualExecPlan(this.planPath).subscribe((manualExecPlan: ManualTestPlan) => {
+                this.model = manualExecPlan;
+            });
+        }
     }
 
     percentageFromTotalTest(amount: number): number {
@@ -41,6 +50,14 @@ export class ManualTestPlanOverviewComponent implements OnInit {
     }
 
     navigateToManualExecPlanRunner() {
-        this.urlService.navigateToManualExecPlanRunner(this.model.path);
+        this.manualExecPlansService
+            .getPathOfUnExecutedTest(this.model.path, null)
+            .subscribe((nextPath: Path) => {
+                if (nextPath) {
+                    this.urlService.navigateToManualExecPlanTestRunner(this.model.path, nextPath);
+                } else {
+                    this.urlService.navigateToManualExecPlanRunner(this.model.path)
+                }
+            });
     }
 }

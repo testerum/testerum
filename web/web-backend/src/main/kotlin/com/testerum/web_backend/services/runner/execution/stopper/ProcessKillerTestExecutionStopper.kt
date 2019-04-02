@@ -1,6 +1,5 @@
 package com.testerum.web_backend.services.runner.execution.stopper
 
-import com.testerum.runner.events.model.RunnerEvent
 import org.slf4j.LoggerFactory
 import org.zeroturnaround.process.ProcessUtil
 import org.zeroturnaround.process.Processes
@@ -8,8 +7,7 @@ import org.zeroturnaround.process.SystemProcess
 import java.util.concurrent.TimeUnit
 
 class ProcessKillerTestExecutionStopper(private val executionId: Long,
-                                        process: Process,
-                                        private val eventProcessor: (event: RunnerEvent) -> Unit) : TestExecutionStopper {
+                                        process: Process) : TestExecutionStopper {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ProcessKillerTestExecutionStopper::class.java)

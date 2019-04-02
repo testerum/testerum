@@ -16,10 +16,16 @@ class ResourcesController(private val resourcesFrontendService: ResourcesFronten
 
     @RequestMapping(method = [RequestMethod.GET], path = [""])
     @ResponseBody
-    fun getResourceAtPath(@RequestParam("path") path: String): ResourceContext? {
-        return resourcesFrontendService.getResourceAtPath(
+    fun getResourceAtPath(@RequestParam("path") path: String): ResponseEntity<ResourceContext> {
+        val resourceAtPath = resourcesFrontendService.getResourceAtPath(
                 Path.createInstance(path)
         )
+
+        return if (resourceAtPath == null) {
+            ResponseEntity.notFound().build()
+        } else {
+            ResponseEntity.ok(resourceAtPath)
+        }
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = [""])

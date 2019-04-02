@@ -1,0 +1,61 @@
+<div bsModal #errorModal="bs-modal" class="modal fade error-dialog" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    Report Exception
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <form #form="ngForm" class="form-horizontal">
+
+                    <div class="my-form-input-as-column">
+                        <label class="my-label">Name (optional)</label>
+
+                        <div class="my-value">
+                            <input name="name"
+                                   [(ngModel)]="model.contactName"
+                                   type="text" class="form-control"
+                                   (keydown.enter)="$event.preventDefault()">
+                        </div>
+                    </div>
+
+                    <div class="my-form-input-as-column">
+                        <label class="my-label">Email (optional)</label>
+
+                        <div class="my-value">
+                            <input name="email"
+                                   [(ngModel)]="model.contactEmail"
+                                   type="text" class="form-control"
+                                   (keydown.enter)="$event.preventDefault()">
+                        </div>
+                    </div>
+
+                    <div class="my-form-input-as-column">
+                        <label class="my-label">Description & Steps to reproduce (optional)</label>
+
+                        <div class="my-value">
+                            <textarea [(ngModel)]="model.stepsToReproduce"
+                                      type="text" class="description form-control" name="stepsToReproduce"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="my-form-input-as-column">
+                        <label class="my-label">Exception Details:</label>
+
+                        <div class="stack-trace-panel"
+                             [innerHTML]="getErrorMessageAndStackTrace()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button (click)="close()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button (click)="save()" type="button" class="btn btn-primary" data-dismiss="modal">Send</button>
+            </div>
+        </div>
+    </div>
+</div>

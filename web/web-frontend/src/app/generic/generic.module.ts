@@ -27,7 +27,7 @@ import {JsonContainerNodeComponent} from "./components/json-tree/tree-node/conta
 import {JsonLeafNodeComponent} from "./components/json-tree/tree-node/leaf/json-leaf-node.component";
 import {JsonTreeService} from "./components/json-tree/json-tree.service";
 import {JsonTreeContainerEditor} from "./components/json-tree/container-editor/json-tree-container-editor.component";
-import {ErrorComponent} from "./error/error.component";
+import {ErrorFeedbackModalComponent} from "./error/report-modal/error-feedback-modal.component";
 import {StepChooserContainerComponent} from "./components/step-chooser/step-chooser-container/step-chooser-container.component";
 import {StepChooserNodeComponent} from "./components/step-chooser/step-chooser-container/step-chooser-node/step-chooser-node.component";
 import {FeatureContainerComponent} from "../functionalities/features/features-tree/container/feature-container.component";
@@ -66,6 +66,7 @@ import {
     ToolbarModule,
     TooltipModule
 } from "primeng/primeng";
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {MarkdownEditorComponent} from "./components/markdown-editor/markdown-editor.component";
 import {AttachmentsComponent} from "./components/form/attachments/attachments.component";
 import {StepCallEditorContainerComponent} from "./components/step-call-tree/nodes/step-call-editor-container/step-call-editor-container.component";
@@ -102,6 +103,9 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { ServerNotAvailableModalComponent } from './error/server-not-available/server-not-available-modal.component'
 import {ServerNotAvailableModalService} from "./error/server-not-available/server-not-available-modal.service";
 import {IsNotBlankValidatorDirective} from "./validators/is_not_blank-validator.directive";
+import { ErrorComponent } from './error/error.component';
+import {ToastModule} from "primeng/toast";
+import {ErrorFeedbackModalService} from "./error/report-modal/error-feedback-modal.service";
 
 @NgModule({
     imports: [
@@ -125,6 +129,8 @@ import {IsNotBlankValidatorDirective} from "./validators/is_not_blank-validator.
         AutoCompleteModule,
         ToggleButtonModule,
         ToolbarModule,
+        ToastModule,
+        OverlayPanelModule,
     ],
     exports: [
         SafeHtmlPipe,
@@ -132,6 +138,7 @@ import {IsNotBlankValidatorDirective} from "./validators/is_not_blank-validator.
 
         FocusDirective,
 
+        ErrorFeedbackModalComponent,
         ErrorComponent,
 
         AreYouSureModalComponent,
@@ -186,6 +193,7 @@ import {IsNotBlankValidatorDirective} from "./validators/is_not_blank-validator.
 
         FocusDirective,
 
+        ErrorFeedbackModalComponent,
         ErrorComponent,
 
         AreYouSureModalComponent,
@@ -273,6 +281,7 @@ import {IsNotBlankValidatorDirective} from "./validators/is_not_blank-validator.
         StepModalService,
         StepPathModalService,
         MessageService,
+        ErrorFeedbackModalService,
         JsonVerifyTreeService,
 
         AreYouSureModalService,
@@ -320,6 +329,7 @@ import {IsNotBlankValidatorDirective} from "./validators/is_not_blank-validator.
         InfoModalComponent,
         ArgModalComponent,
         ServerNotAvailableModalComponent,
+        ErrorFeedbackModalComponent,
     ]
 })
 export class GenericModule { }

@@ -23,6 +23,8 @@ export class TestsRunnerService {
         WEB_SOCKET_PATH           : "/rest/tests-ws",
     };
 
+    private selectedNode: RunnerTreeNodeModel;
+
     private _isRunnerVisible:boolean = false;
     readonly runnerVisibleEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -150,6 +152,11 @@ export class TestsRunnerService {
     }
 
     public setSelectedNode(selectedRunnerTreeNode: RunnerTreeNodeModel) {
+        this.selectedNode = selectedRunnerTreeNode;
         this.selectedRunnerTreeNodeObserver.emit(selectedRunnerTreeNode);
+    }
+
+    public getSelectedNode(): RunnerTreeNodeModel {
+        return this.selectedNode;
     }
 }

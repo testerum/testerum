@@ -3,10 +3,10 @@ import {Serializable} from "../../../model/infrastructure/serializable.model";
 
 export class Variable implements Serializable<Variable> {
     key: string;
-    value: string;
+    value: string = "";
     isVariableFromDefaultEnvironment: boolean = false;
 
-    constructor(key: string = null, value: string = null, isVariableFromDefaultEnvironment: boolean = false) {
+    constructor(key: string = null, value: string = "", isVariableFromDefaultEnvironment: boolean = false) {
         this.key = key;
         this.value = value;
         this.isVariableFromDefaultEnvironment = isVariableFromDefaultEnvironment;
@@ -25,7 +25,7 @@ export class Variable implements Serializable<Variable> {
 
         let response = '{';
         response += '"key":' + JsonUtil.stringify(this.key);
-        response += ',"value":' + JsonUtil.stringify(this.value);
+        response += ',"value":' + (this.value ? JsonUtil.stringify(this.value) : JsonUtil.stringify(""));
         response += '}';
         return response;
     }

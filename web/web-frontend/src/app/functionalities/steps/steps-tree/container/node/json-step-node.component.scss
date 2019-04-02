@@ -1,5 +1,8 @@
 .steps-tree_step-node {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 
     .step-node-text {
         display: inline-block;

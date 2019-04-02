@@ -12,16 +12,14 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.model.project.RecentProject
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 import java.nio.file.Path as JavaPath
 
-class RecentProjectsFileService(private val testerumProjectFileService: TesterumProjectFileService) {
+class RecentProjectsFileService {
 
     companion object {
-        private val NO_RECENT_PROJECTS = RecentProjectsLoadResult(
-                validProjects = emptyList(),
-                invalidProjects = emptyList()
-        )
-
         private val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper().apply {
             registerModule(AfterburnerModule())
             registerModule(JavaTimeModule())
@@ -37,40 +35,103 @@ class RecentProjectsFileService(private val testerumProjectFileService: Testerum
         }
     }
 
-    data class RecentProjectsLoadResult(val validProjects: List<RecentProject>,
-                                        val invalidProjects: List<RecentProject>)
-
     fun save(recentProjects: List<RecentProject>,
              recentProjectsFile: JavaPath) {
+        val sortedRecentProjects = recentProjects.sortedByDescending { it.lastOpened }
+
         recentProjectsFile.parent?.createDirectories()
-        OBJECT_MAPPER.writeValue(recentProjectsFile.toFile(), recentProjects)
+        OBJECT_MAPPER.writeValue(recentProjectsFile.toFile(), sortedRecentProjects)
     }
 
-    fun load(recentProjectsFile: JavaPath): RecentProjectsLoadResult {
+    fun load(recentProjectsFile: JavaPath): List<RecentProject> {
         if (recentProjectsFile.doesNotExist) {
-            return NO_RECENT_PROJECTS
+            return emptyList()
         }
 
-        val validProjects = ArrayList<RecentProject>()
-        val invalidProjects = ArrayList<RecentProject>()
-
         val recentProjects: List<RecentProject> = OBJECT_MAPPER.readValue(recentProjectsFile.toFile())
-        for (recentProject in recentProjects) {
-            if (recentProject.isValid()) {
-                validProjects += recentProject
-            } else {
-                invalidProjects += recentProject
+
+        return recentProjects.sortedByDescending { it.lastOpened }
+    }
+
+    fun add(recentProject: RecentProject,
+            recentProjectsFile: JavaPath) {
+        val recentProjects = ArrayList<RecentProject>()
+
+        recentProjects += load(recentProjectsFile)
+        recentProjects += recentProject
+
+        val distinctRecentProjects = recentProjects.withoutDuplicates()
+
+        save(distinctRecentProjects, recentProjectsFile)
+    }
+
+    fun updateLastOpened(projectRootDir: JavaPath,
+                         recentProjectsFile: JavaPath): RecentProject {
+        val recentProject = getByPathOrAdd(projectRootDir, recentProjectsFile)
+        val recentProjectToSave = recentProject.copy(
+                lastOpened = LocalDateTime.now()
+        )
+
+        add(recentProjectToSave, recentProjectsFile)
+
+        return recentProject
+    }
+
+    fun getByPathOrAdd(projectRootDir: JavaPath,
+                       recentProjectsFile: JavaPath): RecentProject {
+        val existingRecentProjects = load(recentProjectsFile)
+
+        val normalizedPath = projectRootDir.toAbsolutePath().normalize()
+
+        val existingProject = existingRecentProjects.find {
+            it.path.toAbsolutePath().normalize() == normalizedPath
+        }
+        if (existingProject != null) {
+            return existingProject
+        }
+
+        val newRecentProject = RecentProject(
+                path = normalizedPath,
+                lastOpened = LocalDateTime.now()
+        )
+
+        add(newRecentProject, recentProjectsFile)
+
+        return newRecentProject
+    }
+
+    fun delete(projectRootDir: JavaPath,
+               recentProjectsFile: JavaPath) {
+        val recentProjects = ArrayList<RecentProject>()
+        recentProjects += load(recentProjectsFile)
+
+        val normalizedPath = projectRootDir.toAbsolutePath().normalize()
+
+        recentProjects.removeIf {
+            it.path.toAbsolutePath().normalize() == normalizedPath
+        }
+
+        save(recentProjects, recentProjectsFile)
+    }
+
+    private fun MutableList<RecentProject>.withoutDuplicates(): List<RecentProject> {
+        // not using "distinctBy()" because we want to keep a particular item: the one with the highest "lastOpened"
+        val result = TreeMap<JavaPath, RecentProject>()
+
+        for (recentProject in this) {
+            val normalizedPath = recentProject.path.toAbsolutePath().normalize()
+
+            val existingRecentProject = result[normalizedPath]
+
+            val shouldAdd = (existingRecentProject == null)
+                    || (recentProject.lastOpened > existingRecentProject.lastOpened)
+
+            if (shouldAdd) {
+                result[normalizedPath] = recentProject
             }
         }
 
-        return RecentProjectsLoadResult(
-                validProjects = validProjects,
-                invalidProjects = invalidProjects
-        )
-    }
-
-    private fun RecentProject.isValid(): Boolean {
-        return testerumProjectFileService.isTesterumProject(path)
+        return result.values.toList()
     }
 
 }

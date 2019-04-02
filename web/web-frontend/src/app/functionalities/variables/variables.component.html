@@ -14,12 +14,12 @@
                     <label class="my-label label-size">Environment:</label>
 
                     <div class="environment my-value">
-                        <p-dropdown [options]="availableEnvironmentsAsSelectedItems" [ngModel]="selectedEnvironmentName" (onChange)="onEnvironmentChange($event)">
+                        <p-dropdown [options]="availableEnvironmentsAsSelectedItems" [ngModel]="selectedEnvironmentName" (onChange)="onEnvironmentChange($event)"
+                                    [style]="{'width':'7.8em'}">
                             <ng-template let-item pTemplate="selectedItem">
                                 <div class="my-dropdown-option">
                                     <div>{{item.label}}</div>
                                     <info-icon *ngIf="isDefaultOrLocalEnvironment(item.value)"
-                                               position="top"
                                                [width]="'300px'"
                                                [message]="getEnvironmentInfoMessage(item.value)"
                                                class="my-dropdown-selected-item-info"></info-icon>
@@ -29,8 +29,7 @@
                                 <div class="my-dropdown-option">
                                     <div>{{environment.label}}</div>
                                     <info-icon *ngIf="isDefaultOrLocalEnvironment(environment.value)"
-                                               position="right"
-                                               [width]="'300px'"
+                                               style="color: black"
                                                [message]="getEnvironmentInfoMessage(environment.value)" ></info-icon>
                                 </div>
                             </ng-template>

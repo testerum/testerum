@@ -27,7 +27,10 @@ export class ContextService {
 
     setCurrentProject(newProject: Project) {
         if(newProject == null && this.currentProject == null) return;
-        if(newProject != null && this.currentProject != null && newProject.path == this.currentProject.path) return;
+        if(newProject != null
+            && this.currentProject != null
+            && newProject.path == this.currentProject.path
+            && newProject.name == this.currentProject.name) return;
 
         this.currentProject = newProject;
         this.setPageTitle(newProject);
@@ -61,5 +64,13 @@ export class ContextService {
         }
 
         document.title = currentProject.name + " - Testerum" ;
+    }
+
+    refreshPage() {
+        if (this.isProjectSelected()) {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/" + this.getProjectName() + "/" ;
+        } else {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/";
+        }
     }
 }

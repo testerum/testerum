@@ -15,6 +15,13 @@
     <!--========== Reflections ==========-->
     <logger name="org.reflections.Reflections" level="ERROR" />
 
+    <!-- project FS watching -->
+    <!--
+    <logger name="com.testerum.common_fsnotifier.native_fs_notifier.NativeFsNotifier                   level="DEBUG" />
+    <logger name="com.testerum.common_fsnotifier.dirty_dirs_tracker.DirtyDirsTracker"                  level="DEBUG" />
+    <logger name="com.testerum.web_backend.services.project.ProjectFileSystemWatcher"                  level="DEBUG" />
+    <logger name="com.testerum.web_backend.filter.project_fswatcher_pause.ProjectFsWatcherPauseFilter" level="DEBUG" />
+    -->
 
     <root>
         <level value="INFO" />

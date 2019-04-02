@@ -3,6 +3,7 @@ package com.testerum.web_backend.services.runner.execution
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
+import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
@@ -36,6 +37,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
                                     private val testerumDirs: TesterumDirs,
                                     private val frontendDirs: FrontendDirs,
                                     private val settingsManager: SettingsManager,
+                                    private val localVariablesFileService: LocalVariablesFileService,
                                     private val jsonObjectMapper: ObjectMapper) {
 
     companion object {
@@ -55,10 +57,19 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
     fun createExecution(testOrDirectoryPaths: List<Path>): TestExecutionResponse {
         val executionId = testExecutionIdGenerator.nextId()
         val projectRootDir = ProjectDirHolder.get().toAbsolutePath().normalize()
+
+        // todo: remove this workaround: the UI should send the environment in the request
+        val projectId = webProjectManager.getProjectServices().project.id
+        val currentEnvironment = localVariablesFileService.getCurrentEnvironment(
+                fileLocalVariablesFile = frontendDirs.getFileLocalVariablesFile(),
+                projectId = projectId
+        )
+
         testExecutionsById[executionId] = TestExecution(
                 executionId = executionId,
                 testOrDirectoryPathsToRun = testOrDirectoryPaths,
-                projectRootDir = projectRootDir
+                projectRootDir = projectRootDir,
+                variablesEnvironment = currentEnvironment
         )
 
         val runnerRootNode = getRunnerRootNode(testOrDirectoryPaths)
@@ -109,7 +120,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
         LOG.debug("==========================================[ start test execution {} ]=========================================", executionId)
 
-        val args = createArgs(execution.testOrDirectoryPathsToRun)
+        val args = createArgs(execution)
         val argsFile: JavaPath = createArgsFile(args)
         val commandLine: List<String> = createCommandLine(argsFile)
 
@@ -123,7 +134,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
                     .addListener(object : ProcessListener() {
                         override fun afterStart(process: Process, executor: ProcessExecutor) {
                             testExecutionsById[executionId] = execution.toRunning(
-                                    stopper = ProcessKillerTestExecutionStopper(executionId, process, eventProcessor)
+                                    stopper = ProcessKillerTestExecutionStopper(executionId, process)
                             )
                         }
 
@@ -229,7 +240,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         return argsFile
     }
 
-    private fun createArgs(testsPathsToRun: List<Path>): List<String> {
+    private fun createArgs(execution: TestExecution): List<String> {
         val args = mutableListOf<String>()
 
         val projectDirs = webProjectManager.getProjectServices().dirs()
@@ -252,17 +263,24 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         }
 
         args += "--managed-reports-directory"
-        args += frontendDirs.getReportsDir().toAbsolutePath().normalize().toString()
+        args += frontendDirs.getReportsDir(webProjectManager.getProjectServices().project.id).toAbsolutePath().normalize().toString()
 
         // tests
-        for (testPathToRun in testsPathsToRun) {
+        for (testPathToRun in execution.testOrDirectoryPathsToRun) {
             val path: JavaPath = projectDirs.getTestsDir()
                     .resolve(testPathToRun.toString())
                     .toAbsolutePath()
                     .normalize()
 
-            args.add("--test-path")
-            args.add("${path.escape()}")
+            args += "--test-path"
+            args += "${path.escape()}"
+        }
+
+        // variables
+        val variablesEnvironment = execution.variablesEnvironment
+        if (variablesEnvironment != null) {
+            args += "--var-env"
+            args += variablesEnvironment
         }
 
         // settings

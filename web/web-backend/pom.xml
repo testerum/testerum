@@ -88,6 +88,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- common-fsnotifier -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-fsnotifier</artifactId>
+        </dependency>
+
 
         <!--==================== 3rd party dependencies ====================-->
 

@@ -52,7 +52,7 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
     }
 
     initTree() {
-        StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel);
+        StepCallTreeUtil.mapStepCallsToJsonTreeModel(this.stepCalls, this.jsonTreeModel, this.isManualExecutionMode);
         this.stepCallTreeComponentService.stepCalls = this.stepCalls
     }
 

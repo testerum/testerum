@@ -1,9 +1,9 @@
 package com.testerum.common.expression_evaluator.helpers.impl
 
-import com.github.javafaker.Faker
 import com.mifmif.common.regex.Generex
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
-import org.intellij.lang.annotations.Language
+import com.testerum.common.expression_evaluator.helpers.util.JsFunction
+import com.testerum.common.expression_evaluator.helpers.util.ScriptingArgs
 
 /**
  * String generator based on a regex expression.
@@ -11,15 +11,17 @@ import org.intellij.lang.annotations.Language
  */
 object GenerateStringByRegexScriptingHelper : ScriptingHelper {
 
-    override val allowedClasses: List<Class<*>> = listOf(
-            Generex::class.java
-    )
-    @Language("JavaScript")
-    override val script: String = """
-        var Generex = Java.type('${Generex::class.java.name}');
+    private val generateStringByRegex = object : JsFunction(functionName = "generateStringByRegex") {
+        override fun call(thiz: Any?, args: ScriptingArgs): Any? {
+            args.requireMinimumLength(minLength = 1)
+            val regex: String = args[0]
 
-        var generateStringByRegex = function(regex) {
-            return new Generex(regex).random();
-        };
-    """.trimIndent()
+            return Generex(regex).random()
+        }
+    }
+
+    override val globalVariables: Map<String, Any?> = mapOf(
+            generateStringByRegex.functionName to generateStringByRegex
+    )
+
 }

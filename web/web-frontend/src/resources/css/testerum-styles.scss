@@ -102,7 +102,7 @@ body {
 .fa_my-disabled-test {
     @extend .fas;
     @extend .fa-ban;
-    color: $error-color;
+    color: $disabled-color;
 }
 
 .fa_my-expand {
@@ -132,11 +132,11 @@ body {
 }
 .fa_my-runner-waiting-colored {
     @extend .fa_my-runner-waiting;
-    color: $success-color;
+    color: $waiting-color;
 }
 .fa_my-runner-executing-colored {
     @extend .fa_my-runner-waiting;
-    color: #c0bebc;
+    color: $waiting-color;
 }
 .fa_my-runner-passed {
     @extend .fas;
@@ -162,7 +162,7 @@ body {
 .fa_my-runner-disabled-colored {
     @extend .fas;
     @extend .fa-ban;
-    color: $error-color;
+    color: $disabled-color;
 }
 .fa_my-runner-undefined {
     @extend .fas;

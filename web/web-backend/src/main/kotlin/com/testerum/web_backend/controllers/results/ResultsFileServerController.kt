@@ -1,6 +1,7 @@
 package com.testerum.web_backend.controllers.results
 
 import com.testerum.web_backend.services.dirs.FrontendDirs
+import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.FileSystemResource
@@ -29,8 +30,10 @@ class ResultsFileServerController(private val frontendDirs: FrontendDirs) : Reso
                     }
 
                     override fun resolveResource(request: HttpServletRequest?, requestPath: String, locations: MutableList<out Resource>, chain: ResourceResolverChain): Resource? {
-                        val reportsDir: JavaPath = frontendDirs.getReportsDir()
-                        val filePath: JavaPath = reportsDir.resolve(requestPath)
+                        val (projectId, path) = parseRequestPath(requestPath)
+
+                        val reportsDir: JavaPath = frontendDirs.getReportsDir(projectId)
+                        val filePath: JavaPath = reportsDir.resolve(path)
 
                         // security check: only allow to serve files inside the reports directory
                         if (isInvalidRequest(reportsDir, filePath)) {
@@ -47,6 +50,19 @@ class ResultsFileServerController(private val frontendDirs: FrontendDirs) : Reso
         locations = listOf(
                 ClassPathResource("/path-to-a-classpath-resource-that-doesn't exist-${UUID.randomUUID()}")
         )
+    }
+
+    private fun parseRequestPath(requestPath: String): Pair<String, String> {
+        val indexOfFirstSlash = requestPath.indexOf('/')
+
+        if (indexOfFirstSlash == -1) {
+            throw IllegalArgumentException("invalid request path [$requestPath]: missing project id")
+        }
+
+        val projectId = StringUtils.substring(requestPath, 0, indexOfFirstSlash)
+        val path = StringUtils.substring(requestPath, indexOfFirstSlash + 1)
+
+        return Pair(projectId, path)
     }
 
     private fun isInvalidRequest(reportsDir: JavaPath, filePath: JavaPath): Boolean = !isValidRequest(reportsDir, filePath)

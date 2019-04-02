@@ -9,6 +9,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.testerum.cloud_client.error_feedback.ErrorFeedbackCloudClient
+import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
+import com.testerum.cloud_client.licenses.LicenseCloudClient
+import com.testerum.cloud_client.licenses.cache.LicensesCache
+import com.testerum.cloud_client.licenses.file.LicenseFileService
+import com.testerum.cloud_client.licenses.parser.SignedUserParser
 import com.testerum.common_crypto.pem.PemMarshaller
 import com.testerum.common_crypto.string_obfuscator.StringObfuscator
 import com.testerum.common_di.BaseModuleFactory
@@ -18,11 +24,6 @@ import com.testerum.common_httpclient.TesterumHttpClientFactory
 import com.testerum.common_rdbms.JdbcDriversCache
 import com.testerum.common_rdbms.RdbmsConnectionCache
 import com.testerum.file_service.module_di.FileServiceModuleFactory
-import com.testerum.licenses.cache.LicensesCache
-import com.testerum.licenses.cloud_client.CloudClient
-import com.testerum.licenses.cloud_client.CloudClientErrorResponseException
-import com.testerum.licenses.file.LicenseFileService
-import com.testerum.licenses.parser.SignedUserParser
 import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.exception.ValidationException
 import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
@@ -33,12 +34,14 @@ import com.testerum.web_backend.controllers.error.model.response_preparers.gener
 import com.testerum.web_backend.controllers.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.validation.ValidationErrorResponsePreparer
 import com.testerum.web_backend.controllers.features.FeatureController
+import com.testerum.web_backend.controllers.feedback.FeedbackController
 import com.testerum.web_backend.controllers.filesystem.FileSystemController
 import com.testerum.web_backend.controllers.home.HomeController
 import com.testerum.web_backend.controllers.license.LicenseController
 import com.testerum.web_backend.controllers.manual.ManualTestPlansController
 import com.testerum.web_backend.controllers.message.MessageController
 import com.testerum.web_backend.controllers.project.ProjectController
+import com.testerum.web_backend.controllers.project.ProjectReloadWebSocketController
 import com.testerum.web_backend.controllers.resources.ResourcesController
 import com.testerum.web_backend.controllers.resources.http.HttpController
 import com.testerum.web_backend.controllers.resources.rdbms.RdbmsController
@@ -57,6 +60,7 @@ import com.testerum.web_backend.controllers.variables.VariablesController
 import com.testerum.web_backend.controllers.version_info.VersionController
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.features.FeaturesFrontendService
+import com.testerum.web_backend.services.feedback.FeedbackFrontendService
 import com.testerum.web_backend.services.filesystem.FileSystemFrontendService
 import com.testerum.web_backend.services.home.HomeFrontendService
 import com.testerum.web_backend.services.home.QuotesService
@@ -65,13 +69,13 @@ import com.testerum.web_backend.services.initializers.caches.CachesInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.BasicStepsCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.JdbcDriversCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.LicenseCacheInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.RecentProjectsCacheInitializer
 import com.testerum.web_backend.services.initializers.info_logging.InfoLoggerInitializer
 import com.testerum.web_backend.services.initializers.settings.SettingsManagerInitializer
 import com.testerum.web_backend.services.license.LicenseFrontendService
 import com.testerum.web_backend.services.manual.AutomatedToManualTestMapper
 import com.testerum.web_backend.services.manual.ManualTestPlansFrontendService
 import com.testerum.web_backend.services.message.MessageFrontendService
+import com.testerum.web_backend.services.project.ProjectFileSystemWatcher
 import com.testerum.web_backend.services.project.ProjectFrontendService
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.resources.NetworkService
@@ -141,11 +145,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             jdbcDriversCache = rdbmsDriverConfigCache
     )
 
-    private val recentProjectsCacheInitializer = RecentProjectsCacheInitializer(
-            frontendDirs = frontendDirs,
-            recentProjectsCache = fileServiceModuleFactory.recentProjectsCache
-    )
-
     private val licensePublicKeyForVerification: PublicKey = PemMarshaller.parsePublicKey(
             StringObfuscator.deobfuscate(
                     "rSVJ6P64sg4d6DvbvqjX0Q==.Zn2o9B/zBEF4To/YtBuWTAhwzpxrnGwrHC2lxagQmUwhEcubVdowblp" +
@@ -185,7 +184,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val cachesInitializer = CachesInitializer(
             basicStepsCacheInitializer = stepCachesInitializer,
-            recentProjectsCacheInitializer = recentProjectsCacheInitializer,
             jdbcDriversCacheInitializer = jdbcDriversCacheInitializer,
             licenseCacheInitializer = licenseCacheInitializer
     )
@@ -204,8 +202,28 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     //---------------------------------------- services ----------------------------------------//
 
+    private val projectManager = projectManagerModuleFactory.projectManager.apply {
+        registerOpenListener { projectRootDir, _ ->
+            fileServiceModuleFactory.recentProjectsFileService.updateLastOpened(
+                    projectRootDir = projectRootDir,
+                    recentProjectsFile = frontendDirs.getRecentProjectsFile()
+            )
+        }
+    }
+
+    val projectFileSystemWatcher = ProjectFileSystemWatcher(
+            fsNotifierBinariesDir = frontendDirs.getFsNotifierBinariesDir(),
+            projectManager = projectManager
+    ).apply {
+        start()
+
+        context.registerShutdownHook {
+            shutdown()
+        }
+    }
+
     private val webProjectManager = WebProjectManager(
-            projectManager = projectManagerModuleFactory.projectManager
+            projectManager = projectManager
     )
 
     private val versionInfoFrontendService = VersionInfoFrontendService()
@@ -218,14 +236,24 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
         }
     }
 
-    private val licensesCloudClient = CloudClient(
+    private val errorFeedbackCloudClient = ErrorFeedbackCloudClient (
+            httpClient = httpClient,
+            baseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net", // todo: make this configurable
+            objectMapper = restApiObjectMapper
+    )
+
+    private val feedbackFrontendService = FeedbackFrontendService (
+            errorFeedbackCloudClient = errorFeedbackCloudClient
+    )
+
+    private val licensesCloudClient = LicenseCloudClient(
             httpClient = httpClient,
             baseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net", // todo: make this configurable
             objectMapper = restApiObjectMapper
     )
 
     private val licenseFrontendService = LicenseFrontendService(
-            cloudClient = licensesCloudClient,
+            licenseCloudClient = licensesCloudClient,
             licensesCache = licensesCache
     )
 
@@ -313,12 +341,14 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             testerumDirs = settingsModuleFactory.testerumDirs,
             frontendDirs = frontendDirs,
             settingsManager = settingsModuleFactory.settingsManager,
+            localVariablesFileService = fileServiceModuleFactory.localVariablesFileService,
             jsonObjectMapper = testsRunnerJsonObjectMapper
     )
 
     private val runnerResultFrontendService = ResultsFrontendService(
             frontendDirs = frontendDirs,
-            resultsFileService = fileServiceModuleFactory.runnerResultFileService
+            resultsFileService = fileServiceModuleFactory.runnerResultFileService,
+            webProjectManager = webProjectManager
     )
 
     private val networkService = NetworkService()
@@ -355,8 +385,11 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             testResolver = fileServiceModuleFactory.testResolver
     )
 
-    private val projectFrontendService = ProjectFrontendService(
-            recentProjectsCache = fileServiceModuleFactory.recentProjectsCache
+    val projectFrontendService = ProjectFrontendService(
+            frontendDirs = frontendDirs,
+            recentProjectsFileService = fileServiceModuleFactory.recentProjectsFileService,
+            testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService,
+            projectManager = projectManager
     )
 
     private val quotesService = QuotesService()
@@ -389,6 +422,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val projectController = ProjectController(
             projectFrontendService = projectFrontendService
+    )
+
+    private val feedbackController = FeedbackController(
+            feedbackFrontendService = feedbackFrontendService
     )
 
     private val licenseController = LicenseController(
@@ -475,6 +512,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             versionController,
             homeController,
             projectController,
+            feedbackController,
             licenseController,
             settingsController,
             messageController,
@@ -501,8 +539,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     val testsWebSocketController = TestsWebSocketController(
             testsExecutionFrontendService = testsExecutionFrontendService,
-            objectMapper = testsRunnerJsonObjectMapper,
-            resultsFrontendService = runnerResultFrontendService
+            objectMapper = testsRunnerJsonObjectMapper
     )
 
+    val projectReloadWebSocketController = ProjectReloadWebSocketController(
+            projectFileSystemWatcher = projectFileSystemWatcher
+    )
 }

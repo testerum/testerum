@@ -69,7 +69,6 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
         ));
     }
 
-
     handleHttpResponseException(httpErrorResponse: HttpErrorResponse | any) {
         if (httpErrorResponse.status >= 400) {
             let contentTypeHeader = httpErrorResponse.headers.get('content-type');

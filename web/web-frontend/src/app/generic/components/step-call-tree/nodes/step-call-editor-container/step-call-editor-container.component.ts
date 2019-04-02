@@ -116,7 +116,11 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
                 return;
             }
 
-            this.stepCallTreeComponentService.removeStepCallEditorIfExist();
+            if (this.suggestions.length == 0) {
+                this.stepCallTreeComponentService.removeStepCallEditorIfExist();
+            } else {
+                this.onSuggestionSelected(this.suggestions[0]);
+            }
         };
         document.addEventListener('click', this.onDocumentClick, true);
 
@@ -195,16 +199,16 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
 
         if(!hasGetPhasePerfectMatch && !hasWhenPhasePerfectMatch && !hasThenPhasePerfectMatch && !hasAndPhasePerfectMatch) {
             if(queryStepPhase == null || queryStepPhase == StepPhaseEnum.THEN)
-                newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.THEN, queryStepTextWithoutPhase, "Create Step -> "));
+                newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.THEN, queryStepTextWithoutPhase, "Create Step &rarr;&nbsp;"));
             if(queryStepPhase == null || queryStepPhase == StepPhaseEnum.WHEN)
-                newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.WHEN, queryStepTextWithoutPhase, "Create Step -> "));
+                newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.WHEN, queryStepTextWithoutPhase, "Create Step &rarr;&nbsp;"));
             if(queryStepPhase == null || queryStepPhase == StepPhaseEnum.GIVEN)
-                newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.GIVEN, queryStepTextWithoutPhase, "Create Step -> "));
+                newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.GIVEN, queryStepTextWithoutPhase, "Create Step &rarr;&nbsp;"));
 
             if (StepPhaseEnum.AND == queryStepPhase && previewsStepDef != null) {
                 if(queryStepPhase == null || queryStepPhase == StepPhaseEnum.AND)
                     newSuggestions.unshift(
-                    this.createUndefinedStepCallSuggestion(previewsStepDef.phase, queryStepTextWithoutPhase,"Create Step -> ", true)
+                    this.createUndefinedStepCallSuggestion(previewsStepDef.phase, queryStepTextWithoutPhase,"Create Step &rarr;&nbsp;", true)
                 );
             }
         }
@@ -250,7 +254,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         }
     }
 
-    createUndefinedStepCallSuggestion(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string, actionText: string, userAndAsTextPhase: boolean = false): StepCallSuggestion {
+    private createUndefinedStepCallSuggestion(stepPhase: StepPhaseEnum, stepTextWithoutPhase: string, actionText: string, userAndAsTextPhase: boolean = false): StepCallSuggestion {
 
         let stepDef = new UndefinedStepDef();
         stepDef.path = PathUtil.generateStepDefPath(this.stepCallTreeComponentService.containerPath, stepPhase, stepTextWithoutPhase);
@@ -274,6 +278,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
             newStepCall.addWarning(warning);
         }
         this.addNewStepCallToTree(newStepCall);
+        this.suggestions = [];
     }
 
     private addNewStepCallToTree(newStepCall: StepCall) {
@@ -320,6 +325,4 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     private removeThisEditorFromTree() {
         this.stepCallTreeComponentService.removeStepCallEditorIfExist();
     }
-
-
 }

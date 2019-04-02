@@ -1,9 +1,14 @@
 package com.testerum.web_backend.controllers.project
 
 import com.testerum.model.home.Project
-import com.testerum.web_backend.controllers.project.model.ProjectRequest
+import com.testerum.web_backend.controllers.project.model.CreateProjectRequest
 import com.testerum.web_backend.services.project.ProjectFrontendService
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/projects")
@@ -17,7 +22,7 @@ open class ProjectController(private val projectFrontendService: ProjectFrontend
 
     @RequestMapping (method = [RequestMethod.POST])
     @ResponseBody
-    fun createProject(@RequestBody createProjectRequest: ProjectRequest): Project {
+    fun createProject(@RequestBody createProjectRequest: CreateProjectRequest): Project {
         return projectFrontendService.createProject(createProjectRequest)
     }
 
@@ -25,6 +30,12 @@ open class ProjectController(private val projectFrontendService: ProjectFrontend
     @ResponseBody
     fun openProject(@RequestParam(value = "path") path: String): Project {
         return projectFrontendService.openProject(path)
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/reload"], params = ["path"])
+    @ResponseBody
+    fun reloadProject(@RequestParam(value = "path") path: String) {
+        projectFrontendService.reloadProject(path)
     }
 
     @RequestMapping (method = [RequestMethod.DELETE], path = ["/recent"], params = ["path"])
@@ -36,7 +47,7 @@ open class ProjectController(private val projectFrontendService: ProjectFrontend
 
     @RequestMapping (method = [RequestMethod.PUT], path = ["/rename"])
     @ResponseBody
-    fun renameProject(@RequestBody renameProjectRequest: ProjectRequest): Project {
-        return projectFrontendService.renameProject(renameProjectRequest)
+    fun renameProject(@RequestBody project: Project): Project {
+        return projectFrontendService.renameProject(project)
     }
 }

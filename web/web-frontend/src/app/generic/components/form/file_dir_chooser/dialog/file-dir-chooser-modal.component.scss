@@ -18,27 +18,37 @@
                     overflow-x: hidden;
                     padding: 0;
 
+                    .selected-path-container {
+                        text-align: left;
+                        top: 0;
+                        position: sticky;
+                        background: white;
+                        z-index: 1000;
+                        padding-top: 10px;
+
+                        .selected-path-label {
+                            font-weight: bold;
+                            margin-right: 5px;
+                            margin-left: 3px;
+                        }
+
+                        input {
+                            width: 100%;
+                            margin-top: 2px;
+                            margin-left: 3px;
+                        }
+                    }
+
                     .file-chooser {
                         overflow: auto;
                     }
                 }
 
                 .modal-footer {
-                    padding-top: 5px;
                     border-top: 1px solid #e5e5e5;
                     display: flex;
                     justify-content: flex-end;
                     flex-flow: column;
-
-                    .selected-path-container {
-                        text-align: left;
-                        margin-bottom: 5px;
-
-                        .selected-path-label {
-                            font-weight: bold;
-                            margin-right: 5px;
-                        }
-                    }
                 }
             }
         }

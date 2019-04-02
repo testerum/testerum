@@ -7,11 +7,11 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
-import java.util.*
+import java.util.UUID
 
 class WebBackendModuleBootstrapperSpringIntegration : ApplicationContextAware, BeanFactoryPostProcessor, DisposableBean {
 
-    private val bootstrapper = WebBackendModuleBootstrapper()
+    private val bootstrapper = WebBackendModuleServiceLocator.bootstrapper
 
     private lateinit var applicationContext: ApplicationContext
 
@@ -21,7 +21,7 @@ class WebBackendModuleBootstrapperSpringIntegration : ApplicationContextAware, B
 
     override fun postProcessBeanFactory(beanFactory: ConfigurableListableBeanFactory) {
         registerWebControllers(beanFactory)
-        registerWebSocketController(beanFactory)
+        registerWebSocketControllers(beanFactory)
         registerJsonObjectMapper(beanFactory)
     }
 
@@ -48,8 +48,9 @@ class WebBackendModuleBootstrapperSpringIntegration : ApplicationContextAware, B
         }
     }
 
-    private fun registerWebSocketController(beanFactory: ConfigurableListableBeanFactory) {
+    private fun registerWebSocketControllers(beanFactory: ConfigurableListableBeanFactory) {
         beanFactory.registerSingleton("testsWebSocketController", bootstrapper.webBackendModuleFactory.testsWebSocketController)
+        beanFactory.registerSingleton("projectReloadWebSocketController", bootstrapper.webBackendModuleFactory.projectReloadWebSocketController)
     }
 
     private fun registerJsonObjectMapper(beanFactory: ConfigurableListableBeanFactory) {

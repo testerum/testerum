@@ -8,10 +8,28 @@
     padding: 15px;
     text-align: right;
     border-top: 1px solid #e5e5e5;
+
+    .btn {
+        margin-left: 5px;
+    }
 }
 
-.panel-footer-button .btn {
-    margin-left: 5px;
+.panel-footer-sticky-buttons {
+    margin-top: 10px;
+    text-align: right;
+    border-bottom: 1px solid #e5e5e5;
+
+    position: sticky;
+    bottom: 0;
+
+    .button-wrapper {
+        display: inline-block;
+        padding: 7px 5px 7px 0;
+
+        .btn {
+            margin-left: 5px;
+        }
+    }
 }
 
 .page-body {
@@ -70,3 +88,4 @@ h1 .path {
 .main-container {
     height: calc(100% - 36px);
 }
+

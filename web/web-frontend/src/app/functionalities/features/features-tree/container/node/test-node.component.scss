@@ -1,5 +1,8 @@
 .feature-tree_test-node {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 
     .test-node-text {
         display: inline-block;

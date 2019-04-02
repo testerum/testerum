@@ -1,12 +1,26 @@
 .info-icon {
-    .popover {
-        max-width: inherit;
-        max-height: inherit;
-    }
+}
 
-    .popover-content {
+body .ui-overlaypanel:after, .ui-overlaypanel:before {
+    left: 0.9em;
+}
+
+body .ui-overlaypanel .ui-overlaypanel-content {
+    padding: 0;
+
+    .content {
+        white-space: normal;
+        padding: 0.571em 1em;
+
         ul {
             padding-left: 1.3em;
+            li {
+                margin-bottom: 5px;
+            }
+        }
+
+        p {
+            margin-bottom: 10px;
         }
     }
 }

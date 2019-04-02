@@ -1,7 +1,9 @@
 <div *ngIf="condensedViewMode" class="condensed-view-container">
     <div *ngIf="model.expectedStatusCode" class="area">
         <span class="condensed-view-label">Expected Status Code:</span>
-        <span class="condensed-view-value">{{model.expectedStatusCode}}</span>
+        <span class="condensed-view-value">{{model.expectedStatusCode}}
+            <div class="view-status-code-text">{{getStatusCodeText()?" - " + getStatusCodeText():""}}</div>
+        </span>
     </div>
 
     <div *ngIf="model.getHeadersWithValue().length != 0" class="area">
@@ -48,7 +50,7 @@
 
     <!-- STATUS CODE -->
     <div class="my-line status-code">
-        <label class="my-label label-size">Expected Status Code</label>
+        <label class="my-label label-size expected-status-code-label">Expected Status Code</label>
         <div class="my-value" *ngIf="!editMode">
             {{model.expectedStatusCode}} {{getStatusCodeText()?" - " + getStatusCodeText():""}}
         </div>

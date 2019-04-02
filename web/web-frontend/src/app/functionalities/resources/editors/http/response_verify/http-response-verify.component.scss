@@ -1,5 +1,10 @@
 .label-size {
-    width: 8em;
+    width: 6em;
+}
+
+.expected-status-code-label {
+    line-height: 15px;
+    text-align: right;
 }
 
 .status-code .my-value {
@@ -9,6 +14,11 @@
 
 .input-3-letters {
     width: 70px;
+}
+
+.view-status-code-text {
+    color: darkgray;
+    display: inline-block;
 }
 
 .status-code-text {

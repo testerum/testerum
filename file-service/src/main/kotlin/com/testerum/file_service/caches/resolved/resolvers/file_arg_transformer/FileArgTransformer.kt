@@ -57,7 +57,7 @@ object FileArgTransformer {
             return text
         }
 
-        val jsonTree: JsonNode = JSON_MAPPER.readTree(text)
+        val jsonTree: JsonNode? = JSON_MAPPER.readTree(text)
 
         return YAML_MAPPER.writeValueAsString(jsonTree)
     }

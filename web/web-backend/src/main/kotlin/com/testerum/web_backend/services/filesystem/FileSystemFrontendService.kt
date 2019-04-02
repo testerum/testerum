@@ -1,15 +1,13 @@
 package com.testerum.web_backend.services.filesystem
 
 import com.testerum.common_jdk.toStringWithStacktrace
-import com.testerum.common_kotlin.canCreateChild
-import com.testerum.common_kotlin.doesNotExist
-import com.testerum.common_kotlin.hasSubDirectories
-import com.testerum.common_kotlin.isDirectory
+import com.testerum.common_kotlin.*
 import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.model.config.dir_tree.CreateFileSystemDirectoryRequest
 import com.testerum.model.config.dir_tree.FileSystemDirectory
 import com.testerum.model.exception.ValidationException
 import com.testerum.model.exception.model.ValidationModel
+import com.testerum.model.infrastructure.path.PathInfo
 import org.slf4j.LoggerFactory
 import java.nio.file.AccessDeniedException
 import java.nio.file.FileSystems
@@ -126,4 +124,37 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
         }
     }
 
+    fun getPathInfo(pathAsString: String): PathInfo {
+        val path: java.nio.file.Path?
+        try {
+            path = Paths.get(pathAsString)
+        } catch (e: Exception) {
+            return PathInfo(
+                    pathAsString,
+                    isValidPath = false,
+                    isExistingPath = false,
+                    isProjectDirectory = false,
+                    canCreateChild = false
+            )
+        }
+
+        val pathExists = path.exists;
+        if (!pathExists) {
+            return PathInfo(
+                    pathAsString,
+                    isValidPath = true,
+                    isExistingPath = false,
+                    isProjectDirectory = false,
+                    canCreateChild = path.canCreateChild
+            )
+        }
+
+        return PathInfo(
+                pathAsString,
+                isValidPath = true,
+                isExistingPath = true,
+                isProjectDirectory = testerumProjectFileService.isTesterumProject(path),
+                canCreateChild = path.canCreateChild
+        )
+    }
 }

@@ -67,7 +67,7 @@ export class HttpMockComponent extends ResourceComponent<HttpMock> implements On
     }
 
     isFormValid(): boolean {
-        return this.form.valid;
+        return this.form.valid && !this.model.isEmpty();
     }
 
     getForm(): NgForm {

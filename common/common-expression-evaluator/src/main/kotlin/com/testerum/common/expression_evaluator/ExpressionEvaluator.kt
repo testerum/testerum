@@ -7,12 +7,13 @@ import com.testerum.common.expression_evaluator.helpers.impl.GenerateStringByReg
 import com.testerum.common.expression_evaluator.helpers.impl.UuidScriptingHelper
 import delight.nashornsandbox.NashornSandbox
 import delight.nashornsandbox.NashornSandboxes
+import jdk.nashorn.internal.runtime.ECMAException
 import javax.script.Bindings
 
 object ExpressionEvaluator {
 
     // todo: make these configurable
-    private val helpers = listOf<ScriptingHelper>(
+    private val helpers: List<ScriptingHelper> = listOf(
             UuidScriptingHelper,
             DateScriptingHelper,
             DataGeneratorScriptingHelper,
@@ -25,8 +26,10 @@ object ExpressionEvaluator {
         disallowAllClasses()
 
         for (helper in helpers) {
-            for (allowedClass in helper.allowedClasses) {
-                allow(allowedClass)
+            val globalVariables = helper.globalVariables
+
+            for ((name, value) in globalVariables) {
+                inject(name, value)
             }
         }
     }
@@ -38,33 +41,31 @@ object ExpressionEvaluator {
             put("vars", context)
         }
 
-        var enhancedExpression: String? = null
         try {
-            enhancedExpression = enhanceExpression(expression)
-
-            return sandbox.eval(enhancedExpression, bindings)
+            return sandbox.eval(expression, bindings)
         } catch (e: Exception) {
-            val errorMessage = buildString {
-                append("failed to evaluate expression [").append(expression).append("]")
-
-                if (enhancedExpression != null) {
-                    append(", enhancedExpression=[").append(enhancedExpression).append("]")
-                }
+            val ecmaException = e.selfOrCauseOfType<ECMAException>()
+            val originalErrorMessage = if (ecmaException != null) {
+                ecmaException.message
+            } else {
+                e.message
             }
 
-            throw RuntimeException(errorMessage, e)
+            throw RuntimeException("failed to evaluate expression {{$expression}}\n$originalErrorMessage", e)
         }
     }
 
-    private fun enhanceExpression(expression: String): String = buildString {
-        for (helper in helpers) {
-            append(helper.script)
-            append("\n")
-            append("\n")
+    private inline fun <reified T> Throwable.selfOrCauseOfType(): T? {
+        var exception: Throwable? = this
 
-        }
+        do {
+            if (exception is T) {
+                return exception
+            }
 
-        append(expression)
+            exception = exception?.cause
+        } while (exception != null)
+
+        return null
     }
-
 }

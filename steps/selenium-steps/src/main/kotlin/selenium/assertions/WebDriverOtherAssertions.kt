@@ -2,12 +2,15 @@ package selenium.assertions
 
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then
+import com.testerum.api.services.TesterumServiceLocator
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.text_match.TextMatcherService
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
 class WebDriverOtherAssertions {
+
+    private val logger = TesterumServiceLocator.getTesterumLogger()
 
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
@@ -21,6 +24,13 @@ class WebDriverOtherAssertions {
             )
             textMatchExpression: String
     ) {
+        logger.info(
+                "the title of the current page should be\n" +
+                "---------------------------------------\n" +
+                "textMatchExpression : $textMatchExpression\n" +
+                "\n"
+        )
+
         webDriverManager.executeWebDriverStep { driver ->
             val actualText: String = driver.title
 
@@ -40,6 +50,13 @@ class WebDriverOtherAssertions {
             )
             textMatchExpression: String
     ) {
+        logger.info(
+                "the title of the current page should NOT be\n" +
+                "-------------------------------------------\n" +
+                "textMatchExpression : $textMatchExpression\n" +
+                "\n"
+        )
+
         webDriverManager.executeWebDriverStep { driver ->
             val actualText: String = driver.title
 
@@ -59,6 +76,13 @@ class WebDriverOtherAssertions {
             )
             textMatchExpression: String
     ) {
+        logger.info(
+                "the current url should be\n" +
+                "-------------------------\n" +
+                "textMatchExpression : $textMatchExpression\n" +
+                "\n"
+        )
+
         webDriverManager.executeWebDriverStep { driver ->
             val actualText: String = driver.currentUrl
 
@@ -78,6 +102,13 @@ class WebDriverOtherAssertions {
             )
             textMatchExpression: String
     ) {
+        logger.info(
+                "the current url should NOT be\n" +
+                "-----------------------------\n" +
+                "textMatchExpression : $textMatchExpression\n" +
+                "\n"
+        )
+
         webDriverManager.executeWebDriverStep { driver ->
             val actualText: String = driver.currentUrl
 

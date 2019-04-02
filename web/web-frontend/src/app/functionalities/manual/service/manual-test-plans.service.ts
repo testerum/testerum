@@ -135,10 +135,15 @@ export class ManualTestPlansService {
 
     getPathOfUnExecutedTest(planPath: Path, currentTestPath: Path): Observable<Path> {
 
+        let httpParams = new HttpParams()
+            .append('planPath', planPath.toString());
+
+        if (currentTestPath) {
+            httpParams.append('currentTestPath', currentTestPath.toString())
+        }
+
         const httpOptions = {
-            params: new HttpParams()
-                .append('planPath', planPath.toString())
-                .append('currentTestPath', currentTestPath.toString())
+            params: httpParams
         };
 
         return this.http

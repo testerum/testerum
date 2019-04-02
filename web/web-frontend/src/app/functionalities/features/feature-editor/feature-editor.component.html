@@ -4,22 +4,24 @@
     <h1 *ngIf="!isRootFeature() && !isCreateAction">Feature <span class="path">{{pathForTitle}}</span></h1>
 
     <div class="page-body">
-        <form #form="ngForm" class="form-horizontal">
+        <form #form="ngForm" class="form-horizontal" (keydown.enter)="$event.preventDefault()">
 
             <div class="my-line" *ngIf="isRootFeature() && isEditMode">
                 <label class="my-label label-size">Project Name</label>
 
                 <div class="my-value" *ngIf="isEditMode">
                     <input name="name"
-                           required
-                           isNotBlankValidator
-                           #nameNgModel="ngModel" [ngModel]="projectName"
+                           required isNotBlankValidator urlNameValidator
+                           #nameNgModel="ngModel" [(ngModel)]="projectName"
                            type="text" class="form-control"
                            (keydown.enter)="$event.preventDefault()">
                     <input-error [model]="nameNgModel"
                                  [errorMessages]="{
-                                        required: 'A project name is required'
-                                 }"></input-error>
+                                        required: 'A name for the new project is required',
+                                        a_project_with_the_same_name_already_exist: 'A project with the same name already exists',
+                                        access_denied: 'Couldn\'t create this project. File access is denied',
+                                        invalidUrlName: 'Project Name can contain only the following characters (space is not allowed): 0-9 a-z A-Z $-_.,\'()'
+                                     }"></input-error>
                 </div>
             </div>
 
@@ -62,7 +64,8 @@
                                     [suggestions]="tagsToShow"
                                     (completeMethod)="onSearchTag($event)"
                                     (onSelect)="onTagSelect($event)"
-                                    (keypress)="onTagsKeyUp($event);"
+                                    (onKeyUp)="onTagsKeyUp($event);"
+                                    (onBlur)="addCurrentTagToTags()"
                                     [delay]="0"
                                     [multiple]="true"
                                     [dropdown]="true"
@@ -92,15 +95,17 @@
                 </div>
             </div>
 
-            <div class="panel-footer-button">
-                <ng-container *ngIf="!isEditMode">
-                    <button (click)="enableEditMode();" class="btn btn-primary">Edit</button>
-                </ng-container>
-                <ng-container *ngIf="isEditMode">
-                    <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
-                    <button *ngIf="!isRootFeature() && !isCreateAction" (click)="deleteAction();$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
-                    <button [disabled]="!form.form.valid" (click)="saveAction();$event.stopPropagation();" class="btn btn-primary">Save</button>
-                </ng-container>
+            <div class="panel-footer-sticky-buttons">
+                <div class="button-wrapper">
+                    <ng-container *ngIf="!isEditMode">
+                        <button (click)="enableEditMode();" class="btn btn-primary">Edit</button>
+                    </ng-container>
+                    <ng-container *ngIf="isEditMode">
+                        <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
+                        <button *ngIf="!isRootFeature() && !isCreateAction" (click)="deleteAction();$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
+                        <button [disabled]="!form.form.valid" (click)="saveAction();$event.stopPropagation();" class="btn btn-primary">Save</button>
+                    </ng-container>
+                </div>
             </div>
         </form>
     </div>

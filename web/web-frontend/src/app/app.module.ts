@@ -52,6 +52,10 @@ import {CurrentProjectGuard} from "./service/guards/current-project.guard";
 import {ModelRepairerService} from "./service/model-repairer/model-repairer.service";
 import { MenuVariablesComponent } from './menu/variables/menu-variables.component';
 import { EnvironmentEditModalComponent } from './functionalities/variables/environment-edit-modal/environment-edit-modal.component';
+import {FeedbackService} from "./service/feedback.service";
+import { NotFundComponent } from './functionalities/others/not-fund/not-fund.component';
+import {NotFoundHttpInterceptor} from "./service/interceptors/not-found.http-interceptor";
+import {ProjectReloadWsService} from "./service/project-reload-ws.service";
 import {UserModule} from "./functionalities/user/user.module";
 import {BsDropdownModule} from "ngx-bootstrap";
 import {UserProfileService} from "./service/user-profile.service";
@@ -91,7 +95,8 @@ import {UserProfileService} from "./service/user-profile.service";
         SettingsComponent,
         ArgValueValidatorDirective,
         MenuVariablesComponent,
-        EnvironmentEditModalComponent
+        EnvironmentEditModalComponent,
+        NotFundComponent
     ],
     exports: [
         VariablesComponent,
@@ -109,11 +114,14 @@ import {UserProfileService} from "./service/user-profile.service";
         SettingsService,
         HomeService,
         ProjectService,
+        ProjectReloadWsService,
         FileSystemService,
         ResultService,
         FeatureService,
         TagsService,
+        FeedbackService,
         UserProfileService,
+
 
         ResourceService,
         RdbmsService,
@@ -125,6 +133,9 @@ import {UserProfileService} from "./service/user-profile.service";
 
         ErrorHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useExisting: ErrorHttpInterceptor,  multi: true },
+
+        NotFoundHttpInterceptor,
+        { provide: HTTP_INTERCEPTORS, useExisting: NotFoundHttpInterceptor,  multi: true },
 
         MultiProjectHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useClass: MultiProjectHttpInterceptor, multi: true },

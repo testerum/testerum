@@ -9,25 +9,32 @@
             </div>
             <div class="modal-body">
 
+                <div class="selected-path-container">
+                    <span class="selected-path-label">{{isTesterumProjectChooser? "Selected project path:" : "Selected path:"}}</span>
+                    <input name="name"
+                           [(ngModel)]="selectedPathAsString"
+                           (ngModelChange)="onSelectedPathChanges($event)"
+                           type="text" class="form-control"
+                           (keydown.enter)="$event.preventDefault()">
+                </div>
+
                 <div class="file-chooser">
                     <file-dir-tree [isTesterumProjectChooser]="isTesterumProjectChooser"></file-dir-tree>
                 </div>
+
             </div>
 
             <!-- BUTTONS -->
             <div class="modal-footer">
-                <div class="selected-path-container">
-                    <span class="selected-path-label">{{isTesterumProjectChooser? "Selected project path:" : "Selected path:"}}</span> {{getSelectedPathAsString()}}
-                </div>
                 <div class="button-container">
                     <button *ngIf="!isTesterumProjectChooser"
                             (click)="createDirectory()" type="button" class="btn btn-default pull-left"
-                            [disabled]="!getSelectedNode() || !getSelectedNode().canCreateChild">
+                            [disabled]="!isValidSelectedPath">
                         Create Directory
                     </button>
                     <button (click)="onCancelAction();" type="button" class="btn btn-default">Cancel</button>
                     <button (click)="onDirectoryChooseAction()" class="btn btn-primary"
-                            [disabled]="!getSelectedNode() || !getSelectedNode().canCreateChild">Select</button>
+                            [disabled]="!isValidSelectedPath">Select</button>
                 </div>
             </div>
         </div>
