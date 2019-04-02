@@ -73,8 +73,10 @@ class ProjectManager(private val testerumProjectFileService: TesterumProjectFile
     }
 
     fun reloadProject(projectRootDir: JavaPath) {
+        LOG.info("reloading project at path [$projectRootDir]...")
         closeProject(projectRootDir)
         getProjectServices(projectRootDir) // to re-open the project
+        LOG.info("...done reloading project at path [$projectRootDir]")
     }
 
     private fun openProject(projectRootDir: JavaPath): ProjectServices {

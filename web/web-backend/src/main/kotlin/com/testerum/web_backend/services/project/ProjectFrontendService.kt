@@ -119,6 +119,12 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
         return mapToProject(fileProject, recentProject)
     }
 
+    fun reloadProject(path: String) {
+        val projectRootDir: JavaPath = Paths.get(path)
+
+        projectManager.reloadProject(projectRootDir)
+    }
+
     fun deleteRecentProject(path: String) {
         val projectRootDir: JavaPath = Paths.get(path)
         val recentProjectsFile = frontendDirs.getRecentProjectsFile()
@@ -155,4 +161,5 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
                 lastOpened = recentProject.lastOpened
         )
     }
+
 }
