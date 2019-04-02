@@ -1,4 +1,4 @@
-package com.testerum.model.license
+package com.testerum.model.license.auth
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty

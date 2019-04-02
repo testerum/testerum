@@ -1,7 +1,7 @@
 package com.testerum.web_backend.controllers.license
 
-import com.testerum.model.license.AuthRequest
-import com.testerum.model.license.AuthResponse
+import com.testerum.model.license.auth.AuthRequest
+import com.testerum.model.license.auth.AuthResponse
 import com.testerum.web_backend.services.license.LicenseFrontendService
 import com.testerum.web_backend.util.toFileToUpload
 import org.springframework.http.MediaType

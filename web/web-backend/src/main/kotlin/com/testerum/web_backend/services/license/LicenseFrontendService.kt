@@ -12,8 +12,8 @@ import com.testerum.cloud_client.licenses.login.LoginCloudRequest
 import com.testerum.cloud_client.licenses.login.NotFoundLoginCloudResponse
 import com.testerum.cloud_client.licenses.model.user.User
 import com.testerum.model.file.FileToUpload
-import com.testerum.model.license.AuthRequest
-import com.testerum.model.license.AuthResponse
+import com.testerum.model.license.auth.AuthRequest
+import com.testerum.model.license.auth.AuthResponse
 import org.apache.commons.io.IOUtils
 import org.apache.http.HttpStatus
 
