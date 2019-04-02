@@ -5,7 +5,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ContextService} from "../service/context.service";
 import {UrlService} from "../service/url.service";
 import {FeedbackModalService} from "../functionalities/user/feedback/feedback-modal.service";
-import {UserProfileModalService} from "../functionalities/user/user-profile/user-profile-modal.service";
+import {LicenseModalService} from "../functionalities/user/license/license-modal.service";
 
 @Component({
     moduleId: module.id,
@@ -34,7 +34,7 @@ export class MenuComponent {
     constructor(private router:Router,
                 private contextService: ContextService,
                 public urlService: UrlService,
-                private userProfileModalService: UserProfileModalService,
+                private userProfileModalService: LicenseModalService,
                 private feedbackModalService: FeedbackModalService) {
         router.events.subscribe(event => {
 

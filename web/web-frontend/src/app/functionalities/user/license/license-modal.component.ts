@@ -2,25 +2,24 @@ import {AfterViewInit, Component, ComponentRef, OnInit, ViewChild} from '@angula
 import {ModalDirective} from "ngx-bootstrap";
 import {UserProfileService} from "../../../service/user-profile.service";
 import {UserProfile} from "../../../model/license/profile/user-profile.model";
+import {DateUtil} from "../../../utils/date.util";
 
 @Component({
-  selector: 'user-profile.component',
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  selector: 'license-component',
+  templateUrl: './license-modal.component.html',
+  styleUrls: ['./license-modal.component.scss']
 })
-export class UserProfileComponent implements OnInit, AfterViewInit {
+export class LicenseModalComponent implements OnInit, AfterViewInit {
 
     model: UserProfile;
 
     @ViewChild("userProfileModal") modal:ModalDirective;
-    modalComponentRef: ComponentRef<UserProfileComponent>;
+    modalComponentRef: ComponentRef<LicenseModalComponent>;
 
-    constructor(private userProfileService: UserProfileService) { }
+    constructor() { }
 
     ngOnInit(): void {
-        this.userProfileService.getCurrentUserProfile().subscribe((userProfile) => {
-            this.model = userProfile;
-        });
+
     }
 
     ngAfterViewInit(): void {
@@ -42,4 +41,10 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
         this.modal.hide();
     }
 
+    getDateAsString(date: Date): string {
+        if (!date) {
+            return "";
+        }
+        return DateUtil.dateToShortString(date);
+    }
 }

@@ -1,0 +1,38 @@
+<p-tabView class="authentication">
+    <p-tabPanel class="login-tab" header="Log in">
+        <div class="login-inputs">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-4">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+                        <input size="35" type="text" pInputText placeholder=" Username/Email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-4">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="fas fa-lock"></i></span>
+                        <input type="password" pInputText placeholder=" Password">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox name="groupname" value="val1" label=" Remember me" [(ngModel)]="selectedValues"></p-checkbox>
+        </div>
+        <div class="login-button">
+            <button type="button" class="btn btn-primary login-button" (click)="login()">LOGIN</button>
+        </div>
+
+
+    </p-tabPanel>
+
+    <p-tabPanel class="upload-file-tab" header="Upload License File">
+        <p-fileUpload name="myfile[]" url="./upload.php" multiple="multiple"
+                      accept="image/*" auto="auto"></p-fileUpload>
+    </p-tabPanel>
+
+
+</p-tabView>

@@ -11,18 +11,22 @@
 
             <div class="modal-body">
                 <div class="vertical-space">
-                    <p><span class="text-info">Start date: </span>{{model.startDate}}</p>
+                    <p><span class="text-info">Start date: </span>{{getDateAsString(model.startDate)}}</p>
+                    <p><span class="text-info">End date: </span>{{getDateAsString(model.endDate)}}</p>
 
 
-<!--
-                    <p><span class="text-info">User name: </span>{{model.name}}</p>
-                    <p><span class="text-info">Version: </span>{{model.version}}</p>
-                    <p><span class="text-info">License: </span>{{model.license}}</p>
-                    <p><span class="text-info">Expiration date: </span>{{model.expirationDate}}</p>
--->
+
+                    <!--
+                                        <p><span class="text-info">User name: </span>{{model.name}}</p>
+                                        <p><span class="text-info">Version: </span>{{model.version}}</p>
+                                        <p><span class="text-info">License: </span>{{model.license}}</p>
+                                        <p><span class="text-info">Expiration date: </span>{{model.expirationDate}}</p>
+                    -->
                 </div>
 
-                </div>
+            </div>
+
+            <authentication></authentication>
             <div class="modal-footer">
                 <button (click)="ok()" type="button" class="btn btn-warning" data-dismiss="modal">Ok</button>
             </div>
