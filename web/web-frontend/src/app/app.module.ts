@@ -56,6 +56,8 @@ import {FeedbackService} from "./service/feedback.service";
 import { NotFundComponent } from './functionalities/others/not-fund/not-fund.component';
 import {NotFoundHttpInterceptor} from "./service/interceptors/not-found.http-interceptor";
 import {ProjectReloadWsService} from "./service/project-reload-ws.service";
+import {ProjectReloadModalService} from "./functionalities/others/project_reload_modal/project-reload-modal.service";
+import {ProjectReloadModalComponent} from "./functionalities/others/project_reload_modal/project-reload-modal.component";
 
 @NgModule({
     imports: [
@@ -91,7 +93,8 @@ import {ProjectReloadWsService} from "./service/project-reload-ws.service";
         ArgValueValidatorDirective,
         MenuVariablesComponent,
         EnvironmentEditModalComponent,
-        NotFundComponent
+        NotFundComponent,
+        ProjectReloadModalComponent,
     ],
     exports: [
         VariablesComponent,
@@ -102,6 +105,8 @@ import {ProjectReloadWsService} from "./service/project-reload-ws.service";
         CurrentProjectGuard,
 
         ApplicationEventBus,
+
+        ProjectReloadModalService,
 
         StepsService,
         TestsService,
@@ -143,6 +148,7 @@ import {ProjectReloadWsService} from "./service/project-reload-ws.service";
     entryComponents: [
         FileDirChooserInputComponent,
         FileDirTreeContainerComponent,
+        ProjectReloadModalComponent,
     ],
     bootstrap: [AppComponent]
 })
