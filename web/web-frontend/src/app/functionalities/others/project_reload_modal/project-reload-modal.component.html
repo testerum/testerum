@@ -1,0 +1,22 @@
+<div bsModal #projectReloadModal="bs-modal" class="modal fade project-reload-modal" tabindex="-1" role="dialog" [config]="{backdrop: 'static', keyboard: false}"
+     (keydown)="onKeyDown($event)">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="continue()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    Project Files Changed
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="main-text-info">We have detected some external changes to your project files.</div>
+                <div class="main-text-info">Would you like to reload the project or continue your work?</div>
+                <div class="extra-text-info">* Continuing without reloading might have unexpected behavior</div>
+            </div>
+            <div class="modal-footer">
+                <button (click)="continue()" type="button" class="btn btn-warning">Continue</button>
+                <button (click)="reload()" type="button" class="btn btn-primary" data-dismiss="modal">Reload</button>
+            </div>
+        </div>
+    </div>
+</div>

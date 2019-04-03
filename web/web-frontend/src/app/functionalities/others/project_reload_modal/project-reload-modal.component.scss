@@ -1,0 +1,22 @@
+.project-reload-modal {
+    .modal-dialog {
+        width: 700px;
+
+        .modal-body {
+            .main-text-info {
+                text-align: center;
+                border: 0;
+                background-color: inherit;
+                color: inherit;
+                font-size: 1.4em;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+                margin-top: 20px;
+            }
+
+            .extra-text-info {
+                margin-top: 60px;
+            }
+        }
+    }
+}

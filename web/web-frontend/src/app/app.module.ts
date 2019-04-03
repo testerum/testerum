@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -50,15 +50,17 @@ import {ProjectService} from "./service/project.service";
 import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.interceptor";
 import {CurrentProjectGuard} from "./service/guards/current-project.guard";
 import {ModelRepairerService} from "./service/model-repairer/model-repairer.service";
-import { MenuVariablesComponent } from './menu/variables/menu-variables.component';
-import { EnvironmentEditModalComponent } from './functionalities/variables/environment-edit-modal/environment-edit-modal.component';
+import {MenuVariablesComponent} from './menu/variables/menu-variables.component';
+import {EnvironmentEditModalComponent} from './functionalities/variables/environment-edit-modal/environment-edit-modal.component';
 import {FeedbackService} from "./service/feedback.service";
-import { NotFundComponent } from './functionalities/others/not-fund/not-fund.component';
+import {NotFundComponent} from './functionalities/others/not-fund/not-fund.component';
 import {NotFoundHttpInterceptor} from "./service/interceptors/not-found.http-interceptor";
 import {ProjectReloadWsService} from "./service/project-reload-ws.service";
 import {UserModule} from "./functionalities/user/user.module";
 import {BsDropdownModule} from "ngx-bootstrap";
 import {UserProfileService} from "./service/user-profile.service";
+import {ProjectReloadModalService} from "./functionalities/others/project_reload_modal/project-reload-modal.service";
+import {ProjectReloadModalComponent} from "./functionalities/others/project_reload_modal/project-reload-modal.component";
 
 @NgModule({
     imports: [
@@ -96,7 +98,8 @@ import {UserProfileService} from "./service/user-profile.service";
         ArgValueValidatorDirective,
         MenuVariablesComponent,
         EnvironmentEditModalComponent,
-        NotFundComponent
+        NotFundComponent,
+        ProjectReloadModalComponent,
     ],
     exports: [
         VariablesComponent,
@@ -107,6 +110,8 @@ import {UserProfileService} from "./service/user-profile.service";
         CurrentProjectGuard,
 
         ApplicationEventBus,
+
+        ProjectReloadModalService,
 
         StepsService,
         TestsService,
@@ -150,6 +155,7 @@ import {UserProfileService} from "./service/user-profile.service";
     entryComponents: [
         FileDirChooserInputComponent,
         FileDirTreeContainerComponent,
+        ProjectReloadModalComponent,
     ],
     bootstrap: [AppComponent]
 })

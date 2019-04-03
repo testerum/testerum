@@ -2,6 +2,8 @@ import {Component, ComponentFactoryResolver, ViewContainerRef} from '@angular/co
 import {MessageService} from "./service/message.service";
 import {setTheme} from "ngx-bootstrap";
 import {ProjectReloadWsService} from "./service/project-reload-ws.service";
+import {ProjectReloadModalService} from "./functionalities/others/project_reload_modal/project-reload-modal.service";
+import {Path} from "./model/infrastructure/path/path.model";
 
 @Component({
   moduleId:module.id,
@@ -15,7 +17,8 @@ export class AppComponent  {
     constructor(messageService: MessageService,
                 projectReloadWsService: ProjectReloadWsService,
                 private viewContainerRef: ViewContainerRef,
-                private componentFactoryResolver: ComponentFactoryResolver) {
+                private componentFactoryResolver: ComponentFactoryResolver,
+                private projectReloadModalService: ProjectReloadModalService) {
         setTheme('bs3');
 
         AppComponent.rootViewContainerRef = viewContainerRef;
@@ -23,7 +26,7 @@ export class AppComponent  {
         messageService.init();
 
         projectReloadWsService.projectReloadedEventEmitter.subscribe((projectRootDir: string) => {
-            console.log(`project at path [${projectRootDir}] was reloaded`);
+            projectReloadModalService.showProjectReloadModal(projectRootDir);
         });
         projectReloadWsService.start();
 
