@@ -1,16 +1,41 @@
-.authentication{
-    .ui-tabview {
-        background-color: #fcf9f4;
-    }
-    .login-tab {
+.authentication {
 
-        .checkbox-container{
-            margin-left: 0.5em;
-        }
+    .ui-tabview-panel {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-content: center;
+    }
+
+    .login-inputs {
+        margin-top: 1.2em;
+        width: 25em;
+    }
+
+    .ui-tabview {
+        background-color: #f4f4f4;
+    }
+
+    .checkbox-login-container {
+        margin-top: 0.8em;
+
         .login-button {
-            display: flex;
-            margin-left: 8.4em;
+            float: right;
+        }
+
+        .checkbox-name {
+            font-size: 0.85em;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+    }
+
+    .ui-inputgroup {
+        margin-top: 1em;
+    }
+
+    .choose-file {
+        .ui-fileupload {
+            width: 35em;
         }
     }
 }
-
