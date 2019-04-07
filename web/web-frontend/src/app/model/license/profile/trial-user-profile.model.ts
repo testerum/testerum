@@ -5,12 +5,12 @@ import {UserProfileTypes} from "./user-profile-types";
 
 export class TrialUserProfile implements UserProfile, Serializable<TrialUserProfile> {
 
-    startDate: Date;
-    endDate: Date;
+    startDateUtc: Date;
+    endDateUtc: Date;
 
     deserialize(input: Object): TrialUserProfile {
-        this.startDate = new Date(input["startDate"]);
-        this.endDate = new Date(input["endDate"]);
+        this.startDateUtc = new Date(input["startDateUtc"]);
+        this.endDateUtc = new Date(input["endDateUtc"]);
 
         return this;
     }
@@ -19,8 +19,8 @@ export class TrialUserProfile implements UserProfile, Serializable<TrialUserProf
         return "" +
             '{' +
             '"@type": "' + UserProfileTypes.TRIAL + '",' +
-            '"startDate":' + JsonUtil.serializeDateWithoutTime(this.startDate) + ',' +
-            '"endDate":' + JsonUtil.serializeDateWithoutTime(this.endDate) +
+            '"startDateUtc":' + JsonUtil.serializeDateWithoutTime(this.startDateUtc) + ',' +
+            '"endDateUtc":' + JsonUtil.serializeDateWithoutTime(this.endDateUtc) +
             '}';
     }
 
