@@ -103,6 +103,11 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
                               fileServiceModuleFactory: FileServiceModuleFactory,
                               projectManagerModuleFactory: ProjectManagerModuleFactory) : BaseModuleFactory(context) {
 
+    //---------------------------------------- config ----------------------------------------//
+
+    private val cloudFunctionsBaseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net" // todo: make this configurable
+
+
     //---------------------------------------- misc ----------------------------------------//
 
     val frontendDirs = FrontendDirs(
@@ -238,7 +243,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val errorFeedbackCloudClient = ErrorFeedbackCloudClient (
             httpClient = httpClient,
-            baseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net", // todo: make this configurable
+            baseUrl = cloudFunctionsBaseUrl,
             objectMapper = restApiObjectMapper
     )
 
@@ -248,7 +253,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val licensesCloudClient = LicenseCloudClient(
             httpClient = httpClient,
-            baseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net", // todo: make this configurable
+            baseUrl = cloudFunctionsBaseUrl,
             objectMapper = restApiObjectMapper
     )
 
