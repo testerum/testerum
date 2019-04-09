@@ -181,6 +181,12 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
+                <artifactId>common-encrypted-prefs</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
                 <artifactId>settings</artifactId>
                 <version>${project.version}</version>
             </dependency>
