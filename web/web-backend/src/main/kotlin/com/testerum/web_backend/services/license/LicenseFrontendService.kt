@@ -1,27 +1,44 @@
 package com.testerum.web_backend.services.license
 
-import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
-import com.testerum.cloud_client.infrastructure.CloudError
-import com.testerum.cloud_client.infrastructure.ErrorCloudResponse
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
-import com.testerum.cloud_client.licenses.login.FoundLoginCloudResponse
-import com.testerum.cloud_client.licenses.login.LoginCloudRequest
-import com.testerum.cloud_client.licenses.login.NotFoundLoginCloudResponse
-import com.testerum.cloud_client.licenses.model.user.User
+import com.testerum.cloud_client.licenses.model.auth.CloudAuthRequest
+import com.testerum.cloud_client.licenses.model.license.LicensedUserProfile
 import com.testerum.common_crypto.password_hasher.PasswordHasher
+import com.testerum.file_service.business.trial.TrialService
 import com.testerum.model.file.FileToUpload
 import com.testerum.model.license.auth.AuthRequest
 import com.testerum.model.license.auth.AuthResponse
+import com.testerum.model.license.info.LicenseInfo
+import com.testerum.model.license.info.UserLicenseInfo
 import org.apache.commons.io.IOUtils
-import org.apache.http.HttpStatus
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.UUID
 
 class LicenseFrontendService(private val licenseCloudClient: LicenseCloudClient,
-                             private val licensesCache: LicensesCache) {
+                             private val licensesCache: LicensesCache,
+                             private val trialService: TrialService) {
+
+    fun getLicenseInfo(): LicenseInfo {
+        return if (licensesCache.hasAtLeastOneLicense()) {
+            LicenseInfo(
+                    serverHasLicenses = true,
+                    currentUserLicense = null, // todo: implement this
+                    trialLicense = null
+            )
+        } else {
+            LicenseInfo(
+                    serverHasLicenses = false,
+                    currentUserLicense = null,
+                    trialLicense = trialService.getTrialInfo()
+            )
+        }
+    }
 
     fun loginWithCredentials(authRequest: AuthRequest): AuthResponse {
         // first attempt local login
-        val userFromFile = licensesCache.getUserByEmail(authRequest.email)
+        val userFromFile = licensesCache.getLicenseByEmail(authRequest.email)
         if (userFromFile != null) {
             if (PasswordHasher.isPasswordHashCorrect(authRequest.password, userFromFile.passwordHash)) {
                 return generateAuthResponse(userFromFile)
@@ -29,25 +46,32 @@ class LicenseFrontendService(private val licenseCloudClient: LicenseCloudClient,
         }
 
         // if local login failed (user not present locally, or incorrect password), then attempt remote login
-        val response = licenseCloudClient.login(
-                LoginCloudRequest(
+        val token = licenseCloudClient.auth(
+                CloudAuthRequest(
                         email = authRequest.email,
                         password = authRequest.password
                 )
         )
 
-        return when (response) {
-            is NotFoundLoginCloudResponse -> throw CloudClientErrorResponseException(
-                    ErrorCloudResponse(
-                            CloudError(HttpStatus.SC_BAD_REQUEST, "User [${authRequest.email}] was not found or the password was incorrect.")
-                    )
-            )
-            is FoundLoginCloudResponse -> {
-                val savedUser = licensesCache.save(response.signedUser)
+        val signedLicense = licenseCloudClient.getSignedLicense(token)
 
-                generateAuthResponse(savedUser)
-            }
-        }
+        val licensedUserProfile = licensesCache.save(signedLicense)
+
+        return generateAuthResponse(licensedUserProfile)
+//        return AuthResponse()
+
+//        return when (response) {
+//            is NotFoundLoginCloudResponse -> throw CloudClientErrorResponseException(
+//                    ErrorCloudResponse(
+//                            CloudError(HttpStatus.SC_BAD_REQUEST, "User [${authRequest.email}] was not found or the password was incorrect.")
+//                    )
+//            )
+//            is FoundLoginCloudResponse -> {
+//                val savedUser = licensesCache.save(response.signedLicensedUserProfile)
+//
+//                generateAuthResponse(savedUser)
+//            }
+//        }
     }
 
     fun loginWithLicenseFile(licenseFile: FileToUpload): AuthResponse {
@@ -61,14 +85,22 @@ class LicenseFrontendService(private val licenseCloudClient: LicenseCloudClient,
         return generateAuthResponse(user)
     }
 
-    private fun generateAuthResponse(user: User): AuthResponse {
-        // todo: what to return for authentication token?
+    private fun generateAuthResponse(license: LicensedUserProfile): AuthResponse {
+        val nowUtc = LocalDate.now(ZoneId.of("UTC"))
+        val expired = nowUtc.isBefore(license.creationDateUtc)
+                || nowUtc == license.expirationDateUtc
+                || nowUtc.isAfter(license.expirationDateUtc)
+
         return AuthResponse(
-                email = user.email,
-                name = user.name,
-                companyName = user.companyName,
-                licenseExpirationDate = user.assignedLicense.expirationDateUtc,
-                authToken = "blah"
+                authToken = UUID.randomUUID().toString(), // todo: implement this
+                currentUserLicense = UserLicenseInfo(
+                        email = license.assigneeEmail,
+                        firstName = license.assigneeFirstName,
+                        lastName = license.assigneeLastName,
+                        creationDate = license.creationDateUtc, // todo: convert to server timezone
+                        expirationDate = license.expirationDateUtc, // todo: convert to server timezone
+                        expired = expired
+                )
         )
     }
 

@@ -50,16 +50,18 @@ export class LicenseService {
     }
 
     loginWithCredentials(authModel: AuthRequest): Observable<AuthResponse> {
-        const body = authModel.serialize();
-        const httpOptions = {
-            headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-            })
-        };
+        throw new Error("please delete this method");
 
-        return this.http
-            .post<AuthResponse>(this.BASE_URL + "/login/credentials", body, httpOptions)
-            .pipe(map(res => new AuthResponse().deserialize(res)));
+        // const body = authModel.serialize();
+        // const httpOptions = {
+        //     headers: new HttpHeaders({
+        //         'Content-Type':  'application/json',
+        //     })
+        // };
+        //
+        // return this.http
+        //     .post<AuthResponse>(this.BASE_URL + "/login/credentials", body, httpOptions)
+        //     .pipe(map(res => new AuthResponse().deserialize(res)));
     }
 
     loginWithLicenseFile(file: File): Observable<AuthResponse> {

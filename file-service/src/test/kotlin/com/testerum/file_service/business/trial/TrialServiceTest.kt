@@ -24,7 +24,7 @@ class TrialServiceTest {
 
         val trialInfo = trialService.getTrialInfo()
 
-        assertThat(trialInfo.status, Is(equalTo(TrialStatus.IN_TRIAL)))
+        assertThat(trialInfo.expired, Is(equalTo(false)))
         assertThat(trialInfo.startDate, Is(equalTo(NOW)))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
@@ -38,9 +38,9 @@ class TrialServiceTest {
 
         val trialInfo = trialService.getTrialInfo()
 
-        assertThat(trialInfo.status, Is(equalTo(TrialStatus.TRIAL_EXPIRED)))
-        assertThat(trialInfo.startDate, Is(equalTo(trialInfo.endDate.minus(EXPIRATION_PERIOD))))
-        assertThat(trialInfo.endDate, Is(equalTo(NOW.plusDays(1))))
+        assertThat(trialInfo.expired, Is(equalTo(true)))
+        assertThat(trialInfo.startDate, Is(equalTo(NOW.plusDays(1).minus(EXPIRATION_PERIOD).minus(TRIAL_PERIOD))))
+        assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
         assertThat(fileService.getTrialStartDate(), Is(equalTo(NOW.plusDays(1))))
     }
@@ -52,7 +52,7 @@ class TrialServiceTest {
 
         val trialInfo = trialService.getTrialInfo()
 
-        assertThat(trialInfo.status, Is(equalTo(TrialStatus.IN_TRIAL)))
+        assertThat(trialInfo.expired, Is(equalTo(false)))
         assertThat(trialInfo.startDate, Is(equalTo(NOW.minusDays(1))))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
@@ -66,9 +66,9 @@ class TrialServiceTest {
 
         val trialInfo = trialService.getTrialInfo()
 
-        assertThat(trialInfo.status, Is(equalTo(TrialStatus.TRIAL_EXPIRED)))
-        assertThat(trialInfo.startDate, Is(equalTo(NOW)))
-        assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(EXPIRATION_PERIOD))))
+        assertThat(trialInfo.expired, Is(equalTo(true)))
+        assertThat(trialInfo.startDate, Is(equalTo(trialInfo.endDate.minus(TRIAL_PERIOD))))
+        assertThat(trialInfo.endDate, Is(equalTo(NOW)))
 
         assertThat(fileService.getTrialStartDate(), Is(equalTo(NOW.minus(TRIAL_PERIOD))))
     }
@@ -80,9 +80,9 @@ class TrialServiceTest {
 
         val trialInfo = trialService.getTrialInfo()
 
-        assertThat(trialInfo.status, Is(equalTo(TrialStatus.TRIAL_EXPIRED)))
-        assertThat(trialInfo.startDate, Is(equalTo(NOW.minusDays(1))))
-        assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(EXPIRATION_PERIOD))))
+        assertThat(trialInfo.expired, Is(equalTo(true)))
+        assertThat(trialInfo.startDate, Is(equalTo(NOW.minus(TRIAL_PERIOD).minusDays(1))))
+        assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
         assertThat(fileService.getTrialStartDate(), Is(equalTo(NOW.minus(TRIAL_PERIOD).minusDays(1))))
     }
@@ -94,7 +94,7 @@ class TrialServiceTest {
 
         val trialInfo = trialService.getTrialInfo()
 
-        assertThat(trialInfo.status, Is(equalTo(TrialStatus.IN_TRIAL)))
+        assertThat(trialInfo.expired, Is(equalTo(false)))
         assertThat(trialInfo.startDate, Is(equalTo(NOW)))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 

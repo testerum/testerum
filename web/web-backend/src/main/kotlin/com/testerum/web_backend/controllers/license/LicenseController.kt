@@ -2,6 +2,7 @@ package com.testerum.web_backend.controllers.license
 
 import com.testerum.model.license.auth.AuthRequest
 import com.testerum.model.license.auth.AuthResponse
+import com.testerum.model.license.info.LicenseInfo
 import com.testerum.web_backend.services.license.LicenseFrontendService
 import com.testerum.web_backend.util.toFileToUpload
 import org.springframework.http.MediaType
@@ -17,13 +18,19 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/license")
 open class LicenseController(private val licenseFrontendService: LicenseFrontendService) {
 
-    @RequestMapping (method = [RequestMethod.POST], path = ["/login/credentials"])
+    @RequestMapping(method = [RequestMethod.GET], path = ["/info"])
+    @ResponseBody
+    fun getLicenseInfo(): LicenseInfo {
+        return licenseFrontendService.getLicenseInfo()
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/login/credentials"])
     @ResponseBody
     fun loginWithCredentials(@RequestBody authRequest: AuthRequest): AuthResponse {
         return licenseFrontendService.loginWithCredentials(authRequest)
     }
 
-    @RequestMapping (method = [RequestMethod.POST], path = ["/login/file"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @RequestMapping(method = [RequestMethod.POST], path = ["/login/file"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @ResponseBody
     fun loginWithLicenseFile(@RequestParam("licenseFile") licenseFile: MultipartFile): AuthResponse {
         return licenseFrontendService.loginWithLicenseFile(

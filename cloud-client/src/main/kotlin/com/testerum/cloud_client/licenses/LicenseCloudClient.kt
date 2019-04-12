@@ -1,16 +1,24 @@
 package com.testerum.cloud_client.licenses
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.guava.GuavaModule
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
 import com.testerum.cloud_client.infrastructure.CloudError
 import com.testerum.cloud_client.infrastructure.ErrorCloudResponse
-import com.testerum.cloud_client.licenses.login.LoginCloudRequest
-import com.testerum.cloud_client.licenses.login.LoginCloudResponse
+import com.testerum.cloud_client.licenses.model.auth.CloudAuthRequest
+import com.testerum.cloud_client.licenses.model.auth.CloudAuthResponse
 import org.apache.http.HttpStatus
 import org.apache.http.client.HttpClient
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.HttpPost
+import org.apache.http.entity.StringEntity
 import org.apache.http.message.BasicNameValuePair
 import org.apache.http.util.EntityUtils
 
@@ -18,13 +26,49 @@ class LicenseCloudClient(private val httpClient: HttpClient,
                          private val baseUrl: String,
                          private val objectMapper: ObjectMapper) {
 
-    fun login(request: LoginCloudRequest): LoginCloudResponse {
-        val httpPost = HttpPost("$baseUrl/login")
+    companion object {
+        private val OBJECT_MAPPER = ObjectMapper().apply {
+            registerModule(AfterburnerModule())
+            registerModule(KotlinModule())
+            registerModule(JavaTimeModule())
+            registerModule(GuavaModule())
+
+            disable(SerializationFeature.INDENT_OUTPUT)
+            setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            enable(SerializationFeature.WRITE_DATES_WITH_ZONE_ID)
+
+            disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        }
+    }
+
+    fun auth(request: CloudAuthRequest): String {
+        val httpPost = HttpPost("$baseUrl/web_auth")
+
+        httpPost.entity = StringEntity(
+                OBJECT_MAPPER.writeValueAsString(request)
+        )
+        httpPost.addHeader("Content-Type", "application/json")
+
+        return httpClient.execute(httpPost) { response ->
+            val statusCode = response.statusLine.statusCode
+            val bodyAsString = EntityUtils.toString(response.entity, Charsets.UTF_8)
+
+            handleError(statusCode, bodyAsString)
+
+            val cloudAuthResponse: CloudAuthResponse = objectMapper.readValue(bodyAsString)
+
+            cloudAuthResponse.token
+        }
+    }
+
+    fun getSignedLicense(authToken: String): String {
+        val httpPost = HttpPost("$baseUrl/get_license")
 
         httpPost.entity = UrlEncodedFormEntity(
                 listOf(
-                        BasicNameValuePair("email", request.email),
-                        BasicNameValuePair("password", request.password)
+                        BasicNameValuePair("token", authToken)
                 )
         )
 
@@ -34,25 +78,28 @@ class LicenseCloudClient(private val httpClient: HttpClient,
 
             handleError(statusCode, bodyAsString)
 
-            objectMapper.readValue(bodyAsString)
+            bodyAsString
         }
     }
 
     private fun handleError(statusCode: Int, bodyAsString: String) {
-        if (statusCode != HttpStatus.SC_OK) {
-            val exceptionToThrow = try {
-                val errorCloudResponse = objectMapper.readValue<ErrorCloudResponse>(bodyAsString)
-
-                CloudClientErrorResponseException(errorCloudResponse)
-            } catch (e: Exception) {
-                CloudClientErrorResponseException(
-                        ErrorCloudResponse(
-                                CloudError(statusCode, bodyAsString)
-                        )
-                )
-            }
-
-            throw exceptionToThrow
+        if (statusCode == HttpStatus.SC_OK) {
+            return
         }
+
+        val exceptionToThrow = try {
+            val errorCloudResponse = objectMapper.readValue<ErrorCloudResponse>(bodyAsString)
+
+            CloudClientErrorResponseException(errorCloudResponse)
+        } catch (e: Exception) {
+            CloudClientErrorResponseException(
+                    ErrorCloudResponse(
+                            CloudError(statusCode, bodyAsString)
+                    )
+            )
+        }
+
+        throw exceptionToThrow
     }
+
 }

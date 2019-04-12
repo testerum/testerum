@@ -14,7 +14,7 @@ import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseExceptio
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
 import com.testerum.cloud_client.licenses.file.LicenseFileService
-import com.testerum.cloud_client.licenses.parser.SignedUserParser
+import com.testerum.cloud_client.licenses.parser.SignedLicensedUserProfileParser
 import com.testerum.common_crypto.pem.PemMarshaller
 import com.testerum.common_crypto.string_obfuscator.StringObfuscator
 import com.testerum.common_di.BaseModuleFactory
@@ -105,7 +105,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     //---------------------------------------- config ----------------------------------------//
 
-    private val cloudFunctionsBaseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net" // todo: make this configurable
+//    private val cloudFunctionsBaseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net" // todo: make this configurable
+    private val cloudFunctionsBaseUrl = "http://localhost:8010/testerum-prod/europe-west1"
 
 
     //---------------------------------------- misc ----------------------------------------//
@@ -169,13 +170,13 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             )
     )
 
-    private val signedUserParser = SignedUserParser(
+    private val signedLicensedUserProfileParser = SignedLicensedUserProfileParser(
             objectMapper = restApiObjectMapper,
             publicKeyForSignatureVerification = licensePublicKeyForVerification
     )
 
     private val licenseFileService = LicenseFileService(
-            signedUserParser = signedUserParser
+            signedLicensedUserProfileParser = signedLicensedUserProfileParser
     )
 
     private val licensesCache = LicensesCache(
@@ -259,7 +260,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val licenseFrontendService = LicenseFrontendService(
             licenseCloudClient = licensesCloudClient,
-            licensesCache = licensesCache
+            licensesCache = licensesCache,
+            trialService = fileServiceModuleFactory.trialService
     )
 
     private val testsRunnerJsonObjectMapper: ObjectMapper = jacksonObjectMapper().apply {
