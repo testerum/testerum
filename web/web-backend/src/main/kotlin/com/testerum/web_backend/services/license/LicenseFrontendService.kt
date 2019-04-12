@@ -1,16 +1,15 @@
 package com.testerum.web_backend.services.license
 
-import com.testerum.common_crypto.password_hasher.PasswordHasher
-import com.testerum.cloud_client.licenses.cache.LicensesCache
 import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
 import com.testerum.cloud_client.infrastructure.CloudError
 import com.testerum.cloud_client.infrastructure.ErrorCloudResponse
 import com.testerum.cloud_client.licenses.LicenseCloudClient
-import com.testerum.cloud_client.licenses.create_trial_account.CreateTrialAccountCloudRequest
+import com.testerum.cloud_client.licenses.cache.LicensesCache
 import com.testerum.cloud_client.licenses.login.FoundLoginCloudResponse
 import com.testerum.cloud_client.licenses.login.LoginCloudRequest
 import com.testerum.cloud_client.licenses.login.NotFoundLoginCloudResponse
 import com.testerum.cloud_client.licenses.model.user.User
+import com.testerum.common_crypto.password_hasher.PasswordHasher
 import com.testerum.model.file.FileToUpload
 import com.testerum.model.license.auth.AuthRequest
 import com.testerum.model.license.auth.AuthResponse
@@ -19,19 +18,6 @@ import org.apache.http.HttpStatus
 
 class LicenseFrontendService(private val licenseCloudClient: LicenseCloudClient,
                              private val licensesCache: LicensesCache) {
-
-    fun createTrialAccount(authRequest: AuthRequest): AuthResponse {
-        val response = licenseCloudClient.createTrialAccount(
-                CreateTrialAccountCloudRequest(
-                        email = authRequest.email,
-                        password = authRequest.password
-                )
-        )
-
-        val user = licensesCache.save(response.signedUser)
-
-        return generateAuthResponse(user)
-    }
 
     fun loginWithCredentials(authRequest: AuthRequest): AuthResponse {
         // first attempt local login
