@@ -9,6 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.testerum.cloud_client.CloudOfflineException
 import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
 import com.testerum.cloud_client.infrastructure.CloudError
 import com.testerum.cloud_client.infrastructure.ErrorCloudResponse
@@ -21,6 +22,8 @@ import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
 import org.apache.http.message.BasicNameValuePair
 import org.apache.http.util.EntityUtils
+import java.net.ConnectException
+import java.net.UnknownHostException
 
 class LicenseCloudClient(private val httpClient: HttpClient,
                          private val baseUrl: String,
@@ -44,42 +47,64 @@ class LicenseCloudClient(private val httpClient: HttpClient,
     }
 
     fun auth(request: CloudAuthRequest): String {
-        val httpPost = HttpPost("$baseUrl/web_auth")
+        val url = "$baseUrl/web_auth"
 
-        httpPost.entity = StringEntity(
-                OBJECT_MAPPER.writeValueAsString(request)
-        )
-        httpPost.addHeader("Content-Type", "application/json")
+        return handleOffline(url) {
+            val httpPost = HttpPost(url)
 
-        return httpClient.execute(httpPost) { response ->
-            val statusCode = response.statusLine.statusCode
-            val bodyAsString = EntityUtils.toString(response.entity, Charsets.UTF_8)
+            httpPost.entity = StringEntity(
+                    OBJECT_MAPPER.writeValueAsString(request)
+            )
+            httpPost.addHeader("Content-Type", "application/json")
 
-            handleError(statusCode, bodyAsString)
+            httpClient.execute(httpPost) { response ->
+                val statusCode = response.statusLine.statusCode
+                val bodyAsString = EntityUtils.toString(response.entity, Charsets.UTF_8)
 
-            val cloudAuthResponse: CloudAuthResponse = objectMapper.readValue(bodyAsString)
+                handleError(statusCode, bodyAsString)
 
-            cloudAuthResponse.token
+                val cloudAuthResponse: CloudAuthResponse = objectMapper.readValue(bodyAsString)
+
+                cloudAuthResponse.token
+            }
         }
+
     }
 
     fun getSignedLicense(authToken: String): String {
-        val httpPost = HttpPost("$baseUrl/get_license")
+        val url = "$baseUrl/get_license"
 
-        httpPost.entity = UrlEncodedFormEntity(
-                listOf(
-                        BasicNameValuePair("token", authToken)
-                )
-        )
+        return handleOffline(url) {
+            val httpPost = HttpPost(url)
 
-        return httpClient.execute(httpPost) { response ->
-            val statusCode = response.statusLine.statusCode
-            val bodyAsString = EntityUtils.toString(response.entity, Charsets.UTF_8)
+            httpPost.entity = UrlEncodedFormEntity(
+                    listOf(
+                            BasicNameValuePair("token", authToken)
+                    )
+            )
 
-            handleError(statusCode, bodyAsString)
+            httpClient.execute(httpPost) { response ->
+                val statusCode = response.statusLine.statusCode
+                val bodyAsString = EntityUtils.toString(response.entity, Charsets.UTF_8)
 
-            bodyAsString
+                handleError(statusCode, bodyAsString)
+
+                bodyAsString
+            }
         }
+    }
+
+    private fun <T> handleOffline(url: String, body: () -> T): T {
+        try {
+            return body()
+        } catch (e : Exception) {
+            when (e) {
+                is ConnectException,
+                is UnknownHostException -> throw CloudOfflineException("offline: could not reach [$url]", e)
+                else -> throw e
+            }
+        }
+
     }
 
     private fun handleError(statusCode: Int, bodyAsString: String) {

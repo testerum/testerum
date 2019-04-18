@@ -9,6 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.testerum.cloud_client.CloudOfflineException
 import com.testerum.cloud_client.error_feedback.ErrorFeedbackCloudClient
 import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
 import com.testerum.cloud_client.licenses.LicenseCloudClient
@@ -30,6 +31,7 @@ import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
 import com.testerum.settings.module_di.SettingsModuleFactory
 import com.testerum.web_backend.controllers.error.ErrorController
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_exception.CloudErrorResponsePreparer
+import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_offline_exception.CloudOfflineResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.generic.GenericErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.validation.ValidationErrorResponsePreparer
@@ -412,7 +414,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             errorResponsePreparerMap = mapOf(
                     IllegalFileOperationException::class.java to IllegalFileOperationPreparer(),
                     ValidationException::class.java to ValidationErrorResponsePreparer(),
-                    CloudClientErrorResponseException::class.java to CloudErrorResponsePreparer()
+                    CloudClientErrorResponseException::class.java to CloudErrorResponsePreparer(),
+                    CloudOfflineException::class.java to CloudOfflineResponsePreparer()
             ),
             genericErrorResponsePreparer = GenericErrorResponsePreparer()
     )
