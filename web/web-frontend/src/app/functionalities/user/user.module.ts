@@ -13,6 +13,7 @@ import {PasswordModule} from 'primeng/password';
 import {ButtonModule} from 'primeng/button';
 import {FileUploadModule} from 'primeng/fileupload';
 import {CheckboxModule} from 'primeng/checkbox';
+import {FeedbackService} from "./feedback/feedback.service";
 
 @NgModule({
     imports: [
@@ -43,6 +44,7 @@ import {CheckboxModule} from 'primeng/checkbox';
     providers: [
         FeedbackModalService,
         LicenseModalService,
+        FeedbackService,
     ]
 })
 export class UserModule { }

@@ -1,10 +1,10 @@
 import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs';
-import {Setting} from "../functionalities/config/settings/model/setting.model";
-import {JsonUtil} from "../utils/json.util";
+import {Setting} from "../../config/settings/model/setting.model";
+import {JsonUtil} from "../../../utils/json.util";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {ErrorFeedback} from "../generic/error/report-modal/model/error.feedback";
+import {ErrorFeedback} from "../../../generic/error/report-modal/model/error.feedback";
 
 @Injectable()
 export class FeedbackService {

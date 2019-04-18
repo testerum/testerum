@@ -12,7 +12,7 @@ import {FullLogErrorResponse} from "../../../model/exception/full-log-error-resp
 import {JavaScriptError} from "../../../model/exception/javascript-error.model";
 import {Subject} from "rxjs";
 import {ErrorFeedback} from "./model/error.feedback";
-import {FeedbackService} from "../../../service/feedback.service";
+import {FeedbackService} from "../../../functionalities/user/feedback/feedback.service";
 
 @Component({
     moduleId: module.id,

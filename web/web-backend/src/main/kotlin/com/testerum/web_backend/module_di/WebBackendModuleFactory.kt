@@ -37,7 +37,6 @@ import com.testerum.web_backend.controllers.features.FeatureController
 import com.testerum.web_backend.controllers.feedback.FeedbackController
 import com.testerum.web_backend.controllers.filesystem.FileSystemController
 import com.testerum.web_backend.controllers.home.HomeController
-import com.testerum.web_backend.controllers.license.LicenseController
 import com.testerum.web_backend.controllers.manual.ManualTestPlansController
 import com.testerum.web_backend.controllers.message.MessageController
 import com.testerum.web_backend.controllers.project.ProjectController
@@ -55,7 +54,7 @@ import com.testerum.web_backend.controllers.steps.ComposedStepsController
 import com.testerum.web_backend.controllers.steps.StepsTreeController
 import com.testerum.web_backend.controllers.tags.TagsController
 import com.testerum.web_backend.controllers.tests.TestsController
-import com.testerum.web_backend.controllers.user_profile.UserProfileController
+import com.testerum.web_backend.controllers.user.UserController
 import com.testerum.web_backend.controllers.variables.VariablesController
 import com.testerum.web_backend.controllers.version_info.VersionController
 import com.testerum.web_backend.services.dirs.FrontendDirs
@@ -71,7 +70,6 @@ import com.testerum.web_backend.services.initializers.caches.impl.JdbcDriversCac
 import com.testerum.web_backend.services.initializers.caches.impl.LicenseCacheInitializer
 import com.testerum.web_backend.services.initializers.info_logging.InfoLoggerInitializer
 import com.testerum.web_backend.services.initializers.settings.SettingsManagerInitializer
-import com.testerum.web_backend.services.license.LicenseFrontendService
 import com.testerum.web_backend.services.manual.AutomatedToManualTestMapper
 import com.testerum.web_backend.services.manual.ManualTestPlansFrontendService
 import com.testerum.web_backend.services.message.MessageFrontendService
@@ -92,6 +90,7 @@ import com.testerum.web_backend.services.steps.ComposedStepsFrontendService
 import com.testerum.web_backend.services.steps.StepsTreeFrontendService
 import com.testerum.web_backend.services.tags.TagsFrontendService
 import com.testerum.web_backend.services.tests.TestsFrontendService
+import com.testerum.web_backend.services.user.UserFrontendService
 import com.testerum.web_backend.services.variables.VariablesFrontendService
 import com.testerum.web_backend.services.variables.VariablesResolverService
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
@@ -258,12 +257,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             objectMapper = restApiObjectMapper
     )
 
-    private val licenseFrontendService = LicenseFrontendService(
-            licenseCloudClient = licensesCloudClient,
-            licensesCache = licensesCache,
-            trialService = fileServiceModuleFactory.trialService
-    )
-
     private val testsRunnerJsonObjectMapper: ObjectMapper = jacksonObjectMapper().apply {
         registerModule(AfterburnerModule())
         registerModule(JavaTimeModule())
@@ -407,6 +400,11 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             projectFrontendService = projectFrontendService
     )
 
+    private val userFrontendService = UserFrontendService(
+            licenseCloudClient = licensesCloudClient,
+            licensesCache = licensesCache,
+            trialService = fileServiceModuleFactory.trialService
+    )
 
     //---------------------------------------- web controllers ----------------------------------------//
 
@@ -433,10 +431,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val feedbackController = FeedbackController(
             feedbackFrontendService = feedbackFrontendService
-    )
-
-    private val licenseController = LicenseController(
-            licenseFrontendService = licenseFrontendService
     )
 
     private val settingsController = SettingsController(
@@ -508,7 +502,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             manualTestPlansFrontendService = manualTestPlansFrontendService
     )
 
-    private val userProfileController = UserProfileController(
+    private val userController = UserController(
+            userFrontendService = userFrontendService
     )
 
 
@@ -520,7 +515,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             homeController,
             projectController,
             feedbackController,
-            licenseController,
             settingsController,
             messageController,
             variablesController,
@@ -538,7 +532,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             rdbmsController,
             fileSystemController,
             manualExecPlansController,
-            userProfileController
+            userController
     )
 
 

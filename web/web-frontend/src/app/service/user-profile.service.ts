@@ -9,7 +9,7 @@ import {UserProfileMarshaller} from "../model/license/profile/user-profile-marsh
 @Injectable()
 export class UserProfileService {
 
-    private USER_PROFILE_URL = "/rest/user-profile";
+    private USER_PROFILE_URL = "/rest/user";
 
     constructor(private http: HttpClient) {
     }
@@ -28,9 +28,12 @@ export class UserProfileService {
     }
 
     getCurrentUserProfile(): Observable<UserProfile > {
-        return this.http
-            .get<UserProfile >(this.USER_PROFILE_URL)
-            .pipe(map(it => UserProfileMarshaller.deserialize(it)));
+        // todo: delete this method (the controller no longer exists)
+        throw new Error("delete this method");
+
+        // return this.http
+        //     .get<UserProfile >(this.USER_PROFILE_URL)
+        //     .pipe(map(it => UserProfileMarshaller.deserialize(it)));
     }
 
 }

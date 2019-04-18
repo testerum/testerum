@@ -52,7 +52,6 @@ import {CurrentProjectGuard} from "./service/guards/current-project.guard";
 import {ModelRepairerService} from "./service/model-repairer/model-repairer.service";
 import {MenuVariablesComponent} from './menu/variables/menu-variables.component';
 import {EnvironmentEditModalComponent} from './functionalities/variables/environment-edit-modal/environment-edit-modal.component';
-import {FeedbackService} from "./service/feedback.service";
 import {NotFundComponent} from './functionalities/others/not-fund/not-fund.component';
 import {NotFoundHttpInterceptor} from "./service/interceptors/not-found.http-interceptor";
 import {ProjectReloadWsService} from "./service/project-reload-ws.service";
@@ -124,7 +123,6 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
         ResultService,
         FeatureService,
         TagsService,
-        FeedbackService,
         UserProfileService,
 
 

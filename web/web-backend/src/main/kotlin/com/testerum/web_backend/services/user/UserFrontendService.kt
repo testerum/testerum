@@ -1,4 +1,4 @@
-package com.testerum.web_backend.services.license
+package com.testerum.web_backend.services.user
 
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
@@ -16,9 +16,9 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.UUID
 
-class LicenseFrontendService(private val licenseCloudClient: LicenseCloudClient,
-                             private val licensesCache: LicensesCache,
-                             private val trialService: TrialService) {
+class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
+                          private val licensesCache: LicensesCache,
+                          private val trialService: TrialService) {
 
     fun getLicenseInfo(): LicenseInfo {
         return if (licensesCache.hasAtLeastOneLicense()) {
@@ -103,5 +103,6 @@ class LicenseFrontendService(private val licenseCloudClient: LicenseCloudClient,
                 )
         )
     }
+
 
 }
