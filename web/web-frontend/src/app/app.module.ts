@@ -57,7 +57,7 @@ import {NotFoundHttpInterceptor} from "./service/interceptors/not-found.http-int
 import {ProjectReloadWsService} from "./service/project-reload-ws.service";
 import {UserModule} from "./functionalities/user/user.module";
 import {BsDropdownModule} from "ngx-bootstrap";
-import {UserProfileService} from "./service/user-profile.service";
+import {UserService} from "./service/user.service";
 import {ProjectReloadModalService} from "./functionalities/others/project_reload_modal/project-reload-modal.service";
 import {ProjectReloadModalComponent} from "./functionalities/others/project_reload_modal/project-reload-modal.component";
 
@@ -123,7 +123,7 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
         ResultService,
         FeatureService,
         TagsService,
-        UserProfileService,
+        UserService,
 
 
         ResourceService,

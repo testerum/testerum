@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ComponentRef, OnDestroy, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Feedback} from "./model/feedback.model";
-import {UserProfileService} from "../../../service/user-profile.service";
+import {UserService} from "../../../service/user.service";
 import {InfoModalService} from "../../../generic/components/info_modal/info-modal.service";
 import {Subscription} from "rxjs";
 
@@ -18,7 +18,7 @@ export class FeedbackComponent implements AfterViewInit, OnDestroy {
     modalComponentRef: ComponentRef<FeedbackComponent>;
 
     saveFeedbackSubscription: Subscription;
-    constructor(private userProfileService: UserProfileService,
+    constructor(private userProfileService: UserService,
                 private infoModalService: InfoModalService) {}
 
     ngAfterViewInit(): void {

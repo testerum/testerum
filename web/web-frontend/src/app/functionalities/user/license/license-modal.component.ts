@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ComponentRef, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {UserProfileService} from "../../../service/user-profile.service";
+import {UserService} from "../../../service/user.service";
 import {UserProfile} from "../../../model/license/profile/user-profile.model";
 import {DateUtil} from "../../../utils/date.util";
 

@@ -1,7 +1,7 @@
 package com.testerum.file_service.business.trial
 
 import com.testerum.file_service.file.trial.TrialFileService
-import com.testerum.model.license.info.TrialLicenceInfo
+import com.testerum.model.user.license.TrialLicenceInfo
 import java.time.Clock
 import java.time.LocalDate
 import java.time.Period

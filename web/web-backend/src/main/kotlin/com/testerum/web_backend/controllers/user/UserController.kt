@@ -1,17 +1,12 @@
 package com.testerum.web_backend.controllers.user
 
-import com.testerum.model.license.auth.AuthRequest
-import com.testerum.model.license.auth.AuthResponse
-import com.testerum.model.license.info.LicenseInfo
+import com.testerum.model.user.auth.AuthRequest
+import com.testerum.model.user.auth.AuthResponse
+import com.testerum.model.user.license.LicenseInfo
 import com.testerum.web_backend.services.user.UserFrontendService
 import com.testerum.web_backend.util.toFileToUpload
 import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController

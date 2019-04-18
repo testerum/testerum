@@ -7,7 +7,7 @@ import {UserProfile} from "../model/license/profile/user-profile.model";
 import {UserProfileMarshaller} from "../model/license/profile/user-profile-marshaller";
 
 @Injectable()
-export class UserProfileService {
+export class UserService {
 
     private USER_PROFILE_URL = "/rest/user";
 

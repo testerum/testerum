@@ -7,10 +7,10 @@ import com.testerum.cloud_client.licenses.model.license.LicensedUserProfile
 import com.testerum.common_crypto.password_hasher.PasswordHasher
 import com.testerum.file_service.business.trial.TrialService
 import com.testerum.model.file.FileToUpload
-import com.testerum.model.license.auth.AuthRequest
-import com.testerum.model.license.auth.AuthResponse
-import com.testerum.model.license.info.LicenseInfo
-import com.testerum.model.license.info.UserLicenseInfo
+import com.testerum.model.user.auth.AuthRequest
+import com.testerum.model.user.auth.AuthResponse
+import com.testerum.model.user.license.LicenseInfo
+import com.testerum.model.user.license.UserLicenseInfo
 import org.apache.commons.io.IOUtils
 import java.time.LocalDate
 import java.time.ZoneId
