@@ -92,6 +92,7 @@ import com.testerum.web_backend.services.steps.ComposedStepsFrontendService
 import com.testerum.web_backend.services.steps.StepsTreeFrontendService
 import com.testerum.web_backend.services.tags.TagsFrontendService
 import com.testerum.web_backend.services.tests.TestsFrontendService
+import com.testerum.web_backend.services.user.AuthTokenService
 import com.testerum.web_backend.services.user.UserFrontendService
 import com.testerum.web_backend.services.variables.VariablesFrontendService
 import com.testerum.web_backend.services.variables.VariablesResolverService
@@ -402,10 +403,13 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             projectFrontendService = projectFrontendService
     )
 
+    private val authTokenService = AuthTokenService()
+
     private val userFrontendService = UserFrontendService(
             licenseCloudClient = licensesCloudClient,
             licensesCache = licensesCache,
-            trialService = fileServiceModuleFactory.trialService
+            trialService = fileServiceModuleFactory.trialService,
+            authTokenService = authTokenService
     )
 
     //---------------------------------------- web controllers ----------------------------------------//

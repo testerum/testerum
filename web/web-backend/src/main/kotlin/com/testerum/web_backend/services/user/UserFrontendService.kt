@@ -5,6 +5,7 @@ import com.testerum.cloud_client.licenses.cache.LicensesCache
 import com.testerum.cloud_client.licenses.model.auth.CloudAuthRequest
 import com.testerum.cloud_client.licenses.model.license.LicensedUserProfile
 import com.testerum.common_crypto.password_hasher.PasswordHasher
+import com.testerum.common_kotlin.utcToLocalTimeZone
 import com.testerum.file_service.business.trial.TrialService
 import com.testerum.model.file.FileToUpload
 import com.testerum.model.user.auth.AuthRequest
@@ -14,11 +15,12 @@ import com.testerum.model.user.license.UserLicenseInfo
 import org.apache.commons.io.IOUtils
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.UUID
+import java.time.temporal.ChronoUnit
 
 class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
                           private val licensesCache: LicensesCache,
-                          private val trialService: TrialService) {
+                          private val trialService: TrialService,
+                          private val authTokenService: AuthTokenService) {
 
     fun getLicenseInfo(): LicenseInfo {
         return if (licensesCache.hasAtLeastOneLicense()) {
@@ -58,20 +60,6 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
         val licensedUserProfile = licensesCache.save(signedLicense)
 
         return generateAuthResponse(licensedUserProfile)
-//        return AuthResponse()
-
-//        return when (response) {
-//            is NotFoundLoginCloudResponse -> throw CloudClientErrorResponseException(
-//                    ErrorCloudResponse(
-//                            CloudError(HttpStatus.SC_BAD_REQUEST, "User [${authRequest.email}] was not found or the password was incorrect.")
-//                    )
-//            )
-//            is FoundLoginCloudResponse -> {
-//                val savedUser = licensesCache.save(response.signedLicensedUserProfile)
-//
-//                generateAuthResponse(savedUser)
-//            }
-//        }
     }
 
     fun loginWithLicenseFile(licenseFile: FileToUpload): AuthResponse {
@@ -85,24 +73,40 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
         return generateAuthResponse(user)
     }
 
-    private fun generateAuthResponse(license: LicensedUserProfile): AuthResponse {
+    private fun generateAuthResponse(licensedUserProfile: LicensedUserProfile): AuthResponse {
         val nowUtc = LocalDate.now(ZoneId.of("UTC"))
-        val expired = nowUtc.isBefore(license.creationDateUtc)
-                || nowUtc == license.expirationDateUtc
-                || nowUtc.isAfter(license.expirationDateUtc)
+        val expired = nowUtc.isBefore(licensedUserProfile.creationDateUtc)
+                || nowUtc == licensedUserProfile.expirationDateUtc
+                || nowUtc.isAfter(licensedUserProfile.expirationDateUtc)
+
+        val currentTimezoneCreationDate: LocalDate = licensedUserProfile.creationDateUtc
+                .atStartOfDay()
+                .utcToLocalTimeZone()
+                .toLocalDate()
+
+        val currentTimezoneExpirationDate: LocalDate = licensedUserProfile.expirationDateUtc
+                .plusDays(1)
+                .atStartOfDay()
+                .minus(1, ChronoUnit.NANOS)
+                .utcToLocalTimeZone()
+                .toLocalDate()
+
+        val authToken = authTokenService.newAuthToken(
+                email = licensedUserProfile.assigneeEmail,
+                passwordHash = licensedUserProfile.passwordHash
+        )
 
         return AuthResponse(
-                authToken = UUID.randomUUID().toString(), // todo: implement this
+                authToken = authToken,
                 currentUserLicense = UserLicenseInfo(
-                        email = license.assigneeEmail,
-                        firstName = license.assigneeFirstName,
-                        lastName = license.assigneeLastName,
-                        creationDate = license.creationDateUtc, // todo: convert to server timezone
-                        expirationDate = license.expirationDateUtc, // todo: convert to server timezone
+                        email = licensedUserProfile.assigneeEmail,
+                        firstName = licensedUserProfile.assigneeFirstName,
+                        lastName = licensedUserProfile.assigneeLastName,
+                        creationDate = currentTimezoneCreationDate,
+                        expirationDate = currentTimezoneExpirationDate,
                         expired = expired
                 )
         )
     }
-
 
 }
