@@ -2,7 +2,7 @@ import {ComponentFactoryResolver, Injectable} from "@angular/core";
 import {AppComponent} from "../../../app.component";
 import {LicenseModalComponent} from "./license-modal.component";
 import {UserService} from "../../../service/user.service";
-import {UserProfile} from "../../../model/license/profile/user-profile.model";
+import {LicenseInfo} from "../../../model/user/license/license-info.model";
 
 @Injectable()
 export class LicenseModalService {
@@ -12,12 +12,12 @@ export class LicenseModalService {
     }
 
     showUserProfileModal() {
-        this.userProfileService.getCurrentUserProfile().subscribe((userProfile: UserProfile) => {
+        this.userProfileService.getLicenseInfo().subscribe((licenseInfo: LicenseInfo) => {
             const factory = this.componentFactoryResolver.resolveComponentFactory(LicenseModalComponent);
             let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
             let modalInstance: LicenseModalComponent = modalComponentRef.instance;
 
-            modalInstance.model = userProfile;
+            modalInstance.model = licenseInfo;
             modalInstance.modalComponentRef = modalComponentRef;
         });
     }

@@ -4,6 +4,7 @@ import {Feedback} from "./model/feedback.model";
 import {UserService} from "../../../service/user.service";
 import {InfoModalService} from "../../../generic/components/info_modal/info-modal.service";
 import {Subscription} from "rxjs";
+import {FeedbackService} from "./feedback.service";
 
 @Component({
   selector: 'feedback.component',
@@ -18,7 +19,7 @@ export class FeedbackComponent implements AfterViewInit, OnDestroy {
     modalComponentRef: ComponentRef<FeedbackComponent>;
 
     saveFeedbackSubscription: Subscription;
-    constructor(private userProfileService: UserService,
+    constructor(private feedbackService: FeedbackService,
                 private infoModalService: InfoModalService) {}
 
     ngAfterViewInit(): void {
@@ -41,7 +42,7 @@ export class FeedbackComponent implements AfterViewInit, OnDestroy {
             return;
         }
 
-        this.saveFeedbackSubscription = this.userProfileService.saveFeedback(this.model).subscribe( (feedbackResponse: Feedback) => {
+        this.saveFeedbackSubscription = this.feedbackService.sendFeedback(this.model).subscribe( (feedbackResponse: Feedback) => {
             this.infoModalService.showInfoModal(
                 "Feedback",
                 "We really appreciate the time you took to help us improve Testerum!" +

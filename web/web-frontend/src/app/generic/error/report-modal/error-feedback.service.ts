@@ -1,20 +1,17 @@
 import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs';
-import {Setting} from "../../config/settings/model/setting.model";
-import {JsonUtil} from "../../../utils/json.util";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {ErrorFeedback} from "../../../generic/error/report-modal/model/error.feedback";
-import {Feedback} from "./model/feedback.model";
+import {ErrorFeedback} from "./model/error.feedback";
 
 @Injectable()
-export class FeedbackService {
+export class ErrorFeedbackService {
 
     private BASE_URL = "/rest/feedback";
 
     constructor(private http: HttpClient) {}
 
-    sendFeedback(errorReport: Feedback): Observable<Feedback> {
+    sendErrorFeedback(errorReport: ErrorFeedback): Observable<ErrorFeedback> {
         const body = errorReport.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
@@ -23,7 +20,7 @@ export class FeedbackService {
         };
 
         return this.http
-            .post<any>(this.BASE_URL, body, httpOptions)
-            .pipe(map(it => new Feedback().deserialize(it)));
+            .post<any>(this.BASE_URL+"/error", body, httpOptions)
+            .pipe(map(it => new ErrorFeedback().deserialize(it)));
     }
 }

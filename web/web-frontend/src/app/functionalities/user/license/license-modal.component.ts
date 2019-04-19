@@ -1,8 +1,7 @@
 import {AfterViewInit, Component, ComponentRef, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {UserService} from "../../../service/user.service";
-import {UserProfile} from "../../../model/license/profile/user-profile.model";
 import {DateUtil} from "../../../utils/date.util";
+import {LicenseInfo} from "../../../model/user/license/license-info.model";
 
 @Component({
   selector: 'license-component',
@@ -11,7 +10,7 @@ import {DateUtil} from "../../../utils/date.util";
 })
 export class LicenseModalComponent implements OnInit, AfterViewInit {
 
-    model: UserProfile;
+    model: LicenseInfo;
 
     @ViewChild("userProfileModal") modal:ModalDirective;
     modalComponentRef: ComponentRef<LicenseModalComponent>;
@@ -46,5 +45,19 @@ export class LicenseModalComponent implements OnInit, AfterViewInit {
             return "";
         }
         return DateUtil.dateToShortString(date);
+    }
+
+    isTrialLicense(): boolean {
+        return !!this.model.trialLicense;
+    }
+
+    getExpirationDateAsString(): string {
+        if (this.model.trialLicense) {
+            return this.getDateAsString(this.model.trialLicense.endDate)
+        }
+        if (this.model.currentUserLicense) {
+            return this.getDateAsString(this.model.currentUserLicense.expirationDate)
+        }
+        return "";
     }
 }

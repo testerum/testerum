@@ -12,7 +12,7 @@ import {FullLogErrorResponse} from "../../../model/exception/full-log-error-resp
 import {JavaScriptError} from "../../../model/exception/javascript-error.model";
 import {Subject} from "rxjs";
 import {ErrorFeedback} from "./model/error.feedback";
-import {FeedbackService} from "../../../functionalities/user/feedback/feedback.service";
+import {ErrorFeedbackService} from "./error-feedback.service";
 
 @Component({
     moduleId: module.id,
@@ -33,7 +33,7 @@ export class ErrorFeedbackModalComponent implements AfterViewInit {
     model: ErrorFeedback = new ErrorFeedback();
 
     constructor(private cd: ChangeDetectorRef,
-                private feedbackService: FeedbackService) {
+                private errorFeedbackService: ErrorFeedbackService) {
     }
 
     ngAfterViewInit(): void {
@@ -89,7 +89,7 @@ export class ErrorFeedbackModalComponent implements AfterViewInit {
     }
 
     save(): void {
-        this.feedbackService.sendErrorFeedback(this.model).subscribe(response => {});
+        this.errorFeedbackService.sendErrorFeedback(this.model).subscribe(response => {});
         this.modalSubject.next(true);
         this.modal.hide();
     }

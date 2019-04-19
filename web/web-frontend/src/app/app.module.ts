@@ -125,7 +125,6 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
         TagsService,
         UserService,
 
-
         ResourceService,
         RdbmsService,
         HttpService,

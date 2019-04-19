@@ -1,39 +1,44 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Feedback} from "../functionalities/user/feedback/model/feedback.model";
 import {map} from "rxjs/operators";
-import {UserProfile} from "../model/license/profile/user-profile.model";
-import {UserProfileMarshaller} from "../model/license/profile/user-profile-marshaller";
+import {LicenseInfo} from "../model/user/license/license-info.model";
+import {AuthRequest} from "../model/user/auth/auth-request.model";
+import {AuthResponse} from "../model/user/auth/auth-response.model";
 
 @Injectable()
 export class UserService {
 
-    private USER_PROFILE_URL = "/rest/user";
+    private USER_URL = "/rest/user";
 
     constructor(private http: HttpClient) {
     }
 
-    saveFeedback(feedback: Feedback): Observable<Feedback> {
-        let body = feedback.serialize();
+    getLicenseInfo(): Observable<LicenseInfo> {
+        return this.http
+            .get<LicenseInfo>(this.USER_URL + "/license-info")
+            .pipe(map(res => new LicenseInfo().deserialize(res)));
+    }
+
+    loginWithCredentials(authRequest: AuthRequest): Observable<AuthResponse> {
+        let body = authRequest.serialize();
         const httpOptions = {
             headers: new HttpHeaders({
-                'Content-Type': 'application/json',
+                'Content-Type':  'application/json',
             })
         };
 
         return this.http
-            .post<Feedback>(this.USER_PROFILE_URL + "/feedback", body, httpOptions)
-            .pipe(map(res => new Feedback().deserialize(res)));
+            .post<AuthResponse>(this.USER_URL + "/login/credentials", body, httpOptions)
+            .pipe(map(res => new AuthResponse().deserialize(res)));
     }
 
-    getCurrentUserProfile(): Observable<UserProfile > {
-        // todo: delete this method (the controller no longer exists)
-        throw new Error("delete this method");
+    loginWithLicenseFile(file: File): Observable<AuthResponse> {
+        const formData: FormData = new FormData();
+        formData.append("licenseFile", file);
 
-        // return this.http
-        //     .get<UserProfile >(this.USER_PROFILE_URL)
-        //     .pipe(map(it => UserProfileMarshaller.deserialize(it)));
+        return this.http
+            .post<AuthResponse>(this.USER_URL + "/login/file", formData)
+            .pipe(map(res => new AuthResponse().deserialize(res)));
     }
-
 }
