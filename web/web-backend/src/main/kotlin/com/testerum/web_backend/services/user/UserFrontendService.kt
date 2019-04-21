@@ -1,5 +1,6 @@
 package com.testerum.web_backend.services.user
 
+import com.testerum.cloud_client.licenses.CloudInvalidCredentialsException
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
 import com.testerum.cloud_client.licenses.model.auth.CloudAuthRequest
@@ -48,12 +49,12 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
         }
 
         // if local login failed (user not present locally, or incorrect password), then attempt remote login
-        val token = licenseCloudClient.auth(
-                CloudAuthRequest(
-                        email = authRequest.email,
-                        password = authRequest.password
-                )
+        val cloudAuthRequest = CloudAuthRequest(
+                email = authRequest.email,
+                password = authRequest.password
         )
+        val token = licenseCloudClient.auth(cloudAuthRequest)
+                ?: throw CloudInvalidCredentialsException("invalid credentials for email=[${authRequest.email}]")
 
         val signedLicense = licenseCloudClient.getSignedLicense(token)
 

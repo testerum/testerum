@@ -46,7 +46,7 @@ class LicenseCloudClient(private val httpClient: HttpClient,
         }
     }
 
-    fun auth(request: CloudAuthRequest): String {
+    fun auth(request: CloudAuthRequest): String? {
         val url = "$baseUrl/web_auth"
 
         return handleOffline(url) {
@@ -61,11 +61,15 @@ class LicenseCloudClient(private val httpClient: HttpClient,
                 val statusCode = response.statusLine.statusCode
                 val bodyAsString = EntityUtils.toString(response.entity, Charsets.UTF_8)
 
+                if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
+                    return@execute null
+                }
+
                 handleError(statusCode, bodyAsString)
 
                 val cloudAuthResponse: CloudAuthResponse = objectMapper.readValue(bodyAsString)
 
-                cloudAuthResponse.token
+                return@execute cloudAuthResponse.token
             }
         }
     }
