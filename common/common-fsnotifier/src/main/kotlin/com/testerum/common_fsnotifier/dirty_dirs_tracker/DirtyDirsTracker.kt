@@ -3,6 +3,7 @@ package com.testerum.common_fsnotifier.dirty_dirs_tracker
 import com.testerum.common_fsnotifier.native_fs_notifier.NativeFsNotifier
 import com.testerum.common_fsnotifier.native_fs_notifier.event_interpreter.FsNotifierEventListener
 import com.testerum.common_kotlin.canonicalize
+import com.testerum.common_kotlin.isDirectory
 import org.slf4j.LoggerFactory
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
@@ -11,7 +12,8 @@ import java.nio.file.Path as JavaPath
 
 typealias DirtyPathListener = (path: JavaPath) -> Unit
 
-class DirtyDirsTracker(fsNotifierBinariesDir: JavaPath) {
+class DirtyDirsTracker(fsNotifierBinariesDir: JavaPath,
+                       private val ignoredDirs: Set<String>) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(DirtyDirsTracker::class.java)
@@ -152,6 +154,9 @@ class DirtyDirsTracker(fsNotifierBinariesDir: JavaPath) {
 
     private fun notifyDirty(dirtyPath: JavaPath) {
         val canonicalDirtyPath = dirtyPath.canonicalize()
+        if (isIgnoredPath(canonicalDirtyPath)) {
+            return
+        }
 
         lock.read {
             if (paused) {
@@ -166,6 +171,22 @@ class DirtyDirsTracker(fsNotifierBinariesDir: JavaPath) {
                 }
             }
         }
+    }
+
+    private fun isIgnoredPath(path: JavaPath): Boolean {
+        for (pathSegment: JavaPath in path) {
+            if (!pathSegment.isDirectory) {
+                continue
+            }
+
+            for (ignoredDir in ignoredDirs) {
+                if (pathSegment.fileName?.toString() == ignoredDir) {
+                    return true
+                }
+            }
+        }
+
+        return false
     }
 
 }
