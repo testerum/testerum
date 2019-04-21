@@ -3,9 +3,11 @@ import {StepCallContainerComponent} from "../generic/components/step-call-tree/n
 import {StepCallContainerModel} from "../generic/components/step-call-tree/model/step-call-container.model";
 import {Project} from "../model/home/project.model";
 import {RunnerTreeNodeModel} from "../functionalities/features/tests-runner/tests-runner-tree/model/runner-tree-node.model";
+import {StringUtils} from "../utils/string-utils.util";
 
 @Injectable()
 export class ContextService {
+    private LOCAL_STORAGE_AUTH_TOKEN_KEY = "authToken";
 
     private currentProject: Project;
     projectChangedEventEmitter: EventEmitter<Project> = new EventEmitter<Project>();
@@ -40,6 +42,23 @@ export class ContextService {
 
     getProjectPath(): string {
         return this.currentProject ? this.currentProject.path: null;
+    }
+
+    isLoggedIn(): boolean {
+        let authToken = localStorage.getItem(this.LOCAL_STORAGE_AUTH_TOKEN_KEY);
+        return !StringUtils.isEmpty(authToken)
+    }
+
+    setAuthToken(authToken: string) {
+        localStorage.setItem(this.LOCAL_STORAGE_AUTH_TOKEN_KEY, authToken);
+    }
+
+    getAuthToken(): string {
+        return localStorage.getItem(this.LOCAL_STORAGE_AUTH_TOKEN_KEY);
+    }
+
+    logout() {
+        localStorage.removeItem(this.LOCAL_STORAGE_AUTH_TOKEN_KEY);
     }
 
     setPathToCut(stepCallContainerComponent: StepCallContainerComponent) {

@@ -1,28 +1,38 @@
-<p-tabView class="authentication">
+<p-tabView class="authentication" (onChange)="onTabChanged()">
     <p-tabPanel class="login-tab" header="Log in">
+        <div class="error-panel">{{errorMessage}}</div>
+
         <div class="login-inputs">
             <div class="ui-inputgroup">
                 <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-                <input type="text" pInputText placeholder=" Username/Email" style="width: 100%">
+                <input [(ngModel)]="email" type="text" pInputText placeholder="Email" style="width: 100%">
             </div>
 
             <div class="ui-inputgroup">
                 <span class="ui-inputgroup-addon"><i class="fas fa-lock"></i></span>
-                <input type="password" pInputText placeholder=" Password" style="width: 100%">
+                <input [(ngModel)]="password" type="password" pInputText placeholder="Password" style="width: 100%">
             </div>
 
             <div class="checkbox-login-container">
-                <p-checkbox name="groupname" class="checkbox-name" value="val1" label="  Remember me"
-                            [(ngModel)]="selectedValues"></p-checkbox>
-                <button type="button" class="btn btn-primary login-button" (click)="login()">LOGIN</button>
+                <button type="button" class="btn btn-primary login-button" (click)="onLogin()">LOGIN</button>
             </div>
         </div>
     </p-tabPanel>
 
     <p-tabPanel class="upload-file-tab" header="Upload License File">
+        <div class="error-panel">{{errorMessage}}</div>
+
         <div class="choose-file">
-            <p-fileUpload name="myfile[]" url="./upload.php" multiple="multiple"
-                          accept="image/*" auto="auto"></p-fileUpload>
+            <p-fileUpload #licenseFileUpload
+                          mode="basic"
+                          [multiple]="false"
+                          name="licenseFileUpload"
+                          [maxFileSize]="1000000"
+                          [customUpload]="true"
+                          [auto]="true"
+                          [chooseLabel] = "licenseFile? licenseFile.name: 'Upload license file'"
+                          (uploadHandler)="onLicenseKeyUpload($event)">
+            </p-fileUpload>
         </div>
     </p-tabPanel>
 

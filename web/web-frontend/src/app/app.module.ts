@@ -60,6 +60,7 @@ import {BsDropdownModule} from "ngx-bootstrap";
 import {UserService} from "./service/user.service";
 import {ProjectReloadModalService} from "./functionalities/others/project_reload_modal/project-reload-modal.service";
 import {ProjectReloadModalComponent} from "./functionalities/others/project_reload_modal/project-reload-modal.component";
+import {AuthenticationHttpInterceptor} from "./service/interceptors/authentication.http-interceptor";
 
 @NgModule({
     imports: [
@@ -141,6 +142,9 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
 
         MultiProjectHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useClass: MultiProjectHttpInterceptor, multi: true },
+
+        AuthenticationHttpInterceptor,
+        { provide: HTTP_INTERCEPTORS, useClass: AuthenticationHttpInterceptor, multi: true },
 
         ErrorsHandlerInterceptor,
         { provide: ErrorHandler, useClass: ErrorsHandlerInterceptor},

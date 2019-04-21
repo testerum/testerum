@@ -11,6 +11,8 @@ export class UserLicenseInfo implements Serializable<UserLicenseInfo>  {
     expired: boolean;
 
     deserialize(input: Object): UserLicenseInfo {
+        if(!input) return null;
+
         this.email = input['email'];
         this.firstName = input['firstName'];
         this.lastName = input['lastName'];

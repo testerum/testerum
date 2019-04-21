@@ -1,3 +1,4 @@
+@import "../../../../../resources/css/testerum-variables.scss";
 .authentication {
 
     .ui-tabview-panel {
@@ -5,11 +6,27 @@
         flex-wrap: wrap;
         flex-direction: column;
         align-content: center;
+        align-items: center;
     }
 
-    .login-inputs {
+    .error-panel {
+        text-align: center;
+        color: $error-color;
+        white-space: pre;
+        font-weight: bold;
         margin-top: 1.2em;
-        width: 25em;
+    }
+
+    .login-tab {
+        .login-inputs {
+            width: 25em;
+        }
+    }
+
+    .upload-file-tab {
+        .choose-file {
+            margin: 1em;
+        }
     }
 
     .ui-tabview {
@@ -31,6 +48,9 @@
 
     .ui-inputgroup {
         margin-top: 1em;
+        input {
+            padding-left: 5px;
+        }
     }
 
     .choose-file {

@@ -25,4 +25,10 @@ export class LicenseInfo implements Serializable<LicenseInfo>  {
             ',"trialLicense":' + JsonUtil.serializeSerializable(this.trialLicense) +
             '}'
     }
+
+    init(licenseInfo: LicenseInfo) {
+        this.serverHasLicenses = licenseInfo.serverHasLicenses;
+        this.currentUserLicense = licenseInfo.currentUserLicense;
+        this.trialLicense = licenseInfo.trialLicense;
+    }
 }

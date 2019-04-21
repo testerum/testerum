@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ComponentRef, OnInit, ViewChild} from '@angula
 import {ModalDirective} from "ngx-bootstrap";
 import {DateUtil} from "../../../utils/date.util";
 import {LicenseInfo} from "../../../model/user/license/license-info.model";
+import {UserService} from "../../../service/user.service";
 
 @Component({
   selector: 'license-component',
@@ -15,19 +16,16 @@ export class LicenseModalComponent implements OnInit, AfterViewInit {
     @ViewChild("userProfileModal") modal:ModalDirective;
     modalComponentRef: ComponentRef<LicenseModalComponent>;
 
-    constructor() { }
+    constructor(private userService: UserService) { }
 
     ngOnInit(): void {
 
     }
 
     ngAfterViewInit(): void {
-
         this.modal.show();
         this.modal.onHidden.subscribe(event => {
-
             this.modalComponentRef.destroy();
-
             this.modalComponentRef = null;
         })
     }
@@ -51,13 +49,28 @@ export class LicenseModalComponent implements OnInit, AfterViewInit {
         return !!this.model.trialLicense;
     }
 
-    getExpirationDateAsString(): string {
-        if (this.model.trialLicense) {
-            return this.getDateAsString(this.model.trialLicense.endDate)
-        }
-        if (this.model.currentUserLicense) {
-            return this.getDateAsString(this.model.currentUserLicense.expirationDate)
-        }
-        return "";
+    isUserAuthenticated(): boolean {
+        return !!this.model.currentUserLicense;
+    }
+    serverRequiresAuthentication(): boolean {
+        return this.model.serverHasLicenses && !this.model.currentUserLicense;
+    }
+
+    getTrialRemainingDays(): number {
+        return DateUtil.getDaysBetweenDates(new Date(), this.model.trialLicense.endDate)
+    }
+
+    isTrialLicenseExpired(): boolean {
+        return this.model.trialLicense.endDate < new Date();
+    }
+
+    isUserLicenseExpired(): boolean {
+        return this.model.currentUserLicense.expirationDate < new Date();
+    }
+
+    onAuthenticationChanged() {
+        this.userService.getLicenseInfo().subscribe((licenseInfo: LicenseInfo) => {
+            this.model.init(licenseInfo);
+        });
     }
 }

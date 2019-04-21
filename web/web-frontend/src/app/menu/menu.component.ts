@@ -34,7 +34,7 @@ export class MenuComponent {
     constructor(private router:Router,
                 private contextService: ContextService,
                 public urlService: UrlService,
-                private userProfileModalService: LicenseModalService,
+                private licenseModalService: LicenseModalService,
                 private feedbackModalService: FeedbackModalService) {
         router.events.subscribe(event => {
 
@@ -75,8 +75,8 @@ export class MenuComponent {
         this.feedbackModalService.showFeedbackModal();
     }
 
-    showUserProfile() {
-        this.userProfileModalService.showUserProfileModal();
+    showLicense() {
+        this.licenseModalService.showLicenseModal();
     }
 }
 

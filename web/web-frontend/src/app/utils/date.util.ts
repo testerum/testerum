@@ -61,4 +61,9 @@ export class DateUtil {
 
         return result + " " + suffix;
     }
+
+    static getDaysBetweenDates(startDate: Date, endDate: Date): number {
+        let oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+        return Math.round(Math.abs((endDate.getTime() - startDate.getTime())/(oneDay)));
+    }
 }

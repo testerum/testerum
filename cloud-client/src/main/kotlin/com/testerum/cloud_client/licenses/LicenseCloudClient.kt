@@ -68,7 +68,6 @@ class LicenseCloudClient(private val httpClient: HttpClient,
                 cloudAuthResponse.token
             }
         }
-
     }
 
     fun getSignedLicense(authToken: String): String {

@@ -8,6 +8,8 @@ export class TrialLicenseInfo implements Serializable<TrialLicenseInfo>  {
     expired: boolean;
 
     deserialize(input: Object): TrialLicenseInfo {
+        if(!input) return null;
+
         this.startDate = new Date(input['startDate']);
         this.endDate = new Date(input['endDate']);
         this.expired = input['expired'];

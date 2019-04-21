@@ -8,11 +8,11 @@ import {LicenseInfo} from "../../../model/user/license/license-info.model";
 export class LicenseModalService {
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
-                private userProfileService: UserService) {
+                private userService: UserService) {
     }
 
-    showUserProfileModal() {
-        this.userProfileService.getLicenseInfo().subscribe((licenseInfo: LicenseInfo) => {
+    showLicenseModal() {
+        this.userService.getLicenseInfo().subscribe((licenseInfo: LicenseInfo) => {
             const factory = this.componentFactoryResolver.resolveComponentFactory(LicenseModalComponent);
             let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
             let modalInstance: LicenseModalComponent = modalComponentRef.instance;
