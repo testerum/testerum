@@ -184,7 +184,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             signedLicensedUserProfileParser = signedLicensedUserProfileParser
     )
 
-    private val licensesCache = LicensesCache(
+    val licensesCache = LicensesCache(
             licenseFileService = licenseFileService
     )
 
