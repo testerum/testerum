@@ -410,7 +410,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             licensesCache = licensesCache
     )
 
-    private val authTokenService = AuthTokenService(
+    val authTokenService = AuthTokenService(
             testerumUserDao = testerumUserDao
     )
 

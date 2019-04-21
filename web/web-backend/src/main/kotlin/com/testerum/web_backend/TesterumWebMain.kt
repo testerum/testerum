@@ -4,6 +4,7 @@ import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.web_backend.filter.angular_forwarder.AngularForwarderFilter
 import com.testerum.web_backend.filter.project.ProjectFilter
 import com.testerum.web_backend.filter.project_fswatcher_pause.ProjectFsWatcherPauseFilter
+import com.testerum.web_backend.filter.security.CurrentUserFilter
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.eclipse.jetty.security.SecurityHandler
 import org.eclipse.jetty.server.Handler
@@ -104,6 +105,16 @@ object TesterumWebMain {
                     name = CharacterEncodingFilter::class.java.simpleName.decapitalize()
 
                     initParameters["encoding"] = "UTF-8"
+                },
+                "/*",
+                EnumSet.of(DispatcherType.REQUEST)
+        )
+
+        // add CurrentUserFilter
+        webAppContext.addFilter(
+                FilterHolder().apply {
+                    filter = CurrentUserFilter()
+                    name = CurrentUserFilter::class.java.simpleName.decapitalize()
                 },
                 "/*",
                 EnumSet.of(DispatcherType.REQUEST)

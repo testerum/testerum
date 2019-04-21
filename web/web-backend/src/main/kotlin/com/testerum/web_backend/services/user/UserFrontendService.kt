@@ -13,6 +13,7 @@ import com.testerum.model.user.auth.AuthRequest
 import com.testerum.model.user.auth.AuthResponse
 import com.testerum.model.user.license.LicenseInfo
 import com.testerum.model.user.license.UserLicenseInfo
+import com.testerum.web_backend.filter.security.CurrentUserHolder
 import com.testerum.web_backend.services.user.security.AuthTokenService
 import org.apache.commons.io.IOUtils
 import java.time.LocalDate
@@ -26,9 +27,11 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
 
     fun getLicenseInfo(): LicenseInfo {
         return if (licensesCache.hasAtLeastOneLicense()) {
+            val currentUser = CurrentUserHolder.get()
+
             LicenseInfo(
                     serverHasLicenses = true,
-                    currentUserLicense = null, // todo: implement this
+                    currentUserLicense = currentUser?.toUserLicenceInfo(),
                     trialLicense = null
             )
         } else {
@@ -84,37 +87,41 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
     }
 
     private fun generateAuthResponse(licensedUserProfile: LicensedUserProfile): AuthResponse {
-        val nowUtc = LocalDate.now(ZoneId.of("UTC"))
-        val expired = nowUtc.isBefore(licensedUserProfile.creationDateUtc)
-                || nowUtc == licensedUserProfile.expirationDateUtc
-                || nowUtc.isAfter(licensedUserProfile.expirationDateUtc)
-
-        val currentTimezoneCreationDate: LocalDate = licensedUserProfile.creationDateUtc
-                .atStartOfDay()
-                .utcToLocalTimeZone()
-                .toLocalDate()
-
-        val currentTimezoneExpirationDate: LocalDate = licensedUserProfile.expirationDateUtc
-                .plusDays(1)
-                .atStartOfDay()
-                .minus(1, ChronoUnit.NANOS)
-                .utcToLocalTimeZone()
-                .toLocalDate()
-
         val authToken = authTokenService.newAuthToken(
                 email = licensedUserProfile.assigneeEmail
         )
 
         return AuthResponse(
                 authToken = authToken,
-                currentUserLicense = UserLicenseInfo(
-                        email = licensedUserProfile.assigneeEmail,
-                        firstName = licensedUserProfile.assigneeFirstName,
-                        lastName = licensedUserProfile.assigneeLastName,
-                        creationDate = currentTimezoneCreationDate,
-                        expirationDate = currentTimezoneExpirationDate,
-                        expired = expired
-                )
+                currentUserLicense = licensedUserProfile.toUserLicenceInfo()
+        )
+    }
+
+    private fun LicensedUserProfile.toUserLicenceInfo(): UserLicenseInfo {
+        val nowUtc = LocalDate.now(ZoneId.of("UTC"))
+        val expired = nowUtc.isBefore(this.creationDateUtc)
+                || nowUtc == this.expirationDateUtc
+                || nowUtc.isAfter(this.expirationDateUtc)
+
+        val currentTimezoneCreationDate: LocalDate = this.creationDateUtc
+                .atStartOfDay()
+                .utcToLocalTimeZone()
+                .toLocalDate()
+
+        val currentTimezoneExpirationDate: LocalDate = this.expirationDateUtc
+                .plusDays(1)
+                .atStartOfDay()
+                .minus(1, ChronoUnit.NANOS)
+                .utcToLocalTimeZone()
+                .toLocalDate()
+
+        return UserLicenseInfo(
+                email = this.assigneeEmail,
+                firstName = this.assigneeFirstName,
+                lastName = this.assigneeLastName,
+                creationDate = currentTimezoneCreationDate,
+                expirationDate = currentTimezoneExpirationDate,
+                expired = expired
         )
     }
 

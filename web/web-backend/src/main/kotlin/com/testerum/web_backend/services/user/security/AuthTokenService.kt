@@ -1,10 +1,8 @@
 package com.testerum.web_backend.services.user.security
 
+import com.testerum.cloud_client.licenses.model.license.LicensedUserProfile
 import com.testerum.common_crypto.hmac.HmacService
 import com.testerum.web_backend.services.user.security.dao.TesterumUserDao
-import com.testerum.web_backend.services.user.security.model.AuthenticatedAuthenticationResult
-import com.testerum.web_backend.services.user.security.model.AuthenticationResult
-import com.testerum.web_backend.services.user.security.model.UnauthenticatedAuthenticationResult
 import java.util.Base64
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.math.absoluteValue
@@ -43,15 +41,15 @@ class AuthTokenService(private val testerumUserDao: TesterumUserDao) {
      * @return - the email associated with this token, if the token is valid
      *  - null, if the token is not valid
      */
-    fun authenticate(token: String): AuthenticationResult {
+    fun authenticate(token: String): LicensedUserProfile? {
         val indexOffFirstDot = token.indexOf('.')
         if (indexOffFirstDot == -1) {
-            return UnauthenticatedAuthenticationResult
+            return null
         }
 
         val indexOfSecondDot = token.indexOf('.', indexOffFirstDot + 1)
         if (indexOfSecondDot == -1) {
-            return UnauthenticatedAuthenticationResult
+            return null
         }
 
         val base64Hmac = token.substring(0, indexOffFirstDot)
@@ -63,7 +61,7 @@ class AuthTokenService(private val testerumUserDao: TesterumUserDao) {
                 Charsets.UTF_8
         )
         val testerumUser = testerumUserDao.getUserByEmail(email)
-                ?: return UnauthenticatedAuthenticationResult
+                ?: return null
 
         val actualHmac: ByteArray = BASE64_DECODER.decode(base64Hmac)
 
@@ -73,11 +71,9 @@ class AuthTokenService(private val testerumUserDao: TesterumUserDao) {
         )
 
         return if (actualHmac.contentEquals(hmac)) {
-            AuthenticatedAuthenticationResult(
-                    user = testerumUser
-            )
+            testerumUser
         } else {
-            UnauthenticatedAuthenticationResult
+            null
         }
     }
 }
