@@ -18,6 +18,6 @@ object ProjectDirHolder {
         currentRequestUri.remove()
     }
 
-    fun get(): JavaPath = projectRootDir.get() ?: throw MissingProjectHttpHeaderException("cannot lookup current project: missing HTTP request header [${ProjectFilter.PROJECT_PATH_HEADER_NAME}]; requestUri=[${currentRequestUri.get()}]")
+    fun get(): JavaPath = projectRootDir.get() ?: throw MissingProjectHttpHeaderException("cannot lookup current project: missing HTTP request header [${CurrentProjectFilter.PROJECT_PATH_HEADER_NAME}]; requestUri=[${currentRequestUri.get()}]")
 
 }

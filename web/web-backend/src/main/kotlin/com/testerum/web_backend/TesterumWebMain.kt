@@ -2,7 +2,7 @@ package com.testerum.web_backend
 
 import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.web_backend.filter.angular_forwarder.AngularForwarderFilter
-import com.testerum.web_backend.filter.project.ProjectFilter
+import com.testerum.web_backend.filter.project.CurrentProjectFilter
 import com.testerum.web_backend.filter.project_fswatcher_pause.ProjectFsWatcherPauseFilter
 import com.testerum.web_backend.filter.security.CurrentUserFilter
 import com.testerum.web_backend.filter.security.TesterumSecurityFilter
@@ -131,11 +131,11 @@ object TesterumWebMain {
                 EnumSet.of(DispatcherType.REQUEST)
         )
 
-        // add ProjectFilter
+        // add CurrentProjectFilter
         webAppContext.addFilter(
                 FilterHolder().apply {
-                    filter = ProjectFilter()
-                    name = ProjectFilter::class.java.simpleName.decapitalize()
+                    filter = CurrentProjectFilter()
+                    name = CurrentProjectFilter::class.java.simpleName.decapitalize()
                 },
                 "/*",
                 EnumSet.of(DispatcherType.REQUEST)

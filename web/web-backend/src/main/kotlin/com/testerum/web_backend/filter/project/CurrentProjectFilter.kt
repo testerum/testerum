@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import java.nio.file.Path as JavaPath
 
-class ProjectFilter : Filter {
+class CurrentProjectFilter : Filter {
 
     companion object {
         const val PROJECT_PATH_HEADER_NAME = "X-Testerum-Project"
