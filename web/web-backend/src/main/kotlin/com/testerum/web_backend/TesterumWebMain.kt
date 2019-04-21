@@ -48,13 +48,30 @@ object TesterumWebMain {
 
         val versionInfoFrontendService = VersionInfoFrontendService()
         val testerumVersion = versionInfoFrontendService.getVersionProperties()["projectVersion"] ?: ""
+        val testerumVersionGitRevision = versionInfoFrontendService.getVersionProperties()["gitRevision"] ?: ""
+        val testerumVersionTimestamp = versionInfoFrontendService.getVersionProperties()["buildTimestamp"] ?: ""
 
         val actualPort = (server.connectors[0] as ServerConnector).localPort
 
         TesterumBanner.BANNER.lines().forEach(LOG::info)
 
+        val versionInfo = if (testerumVersion == "develop-SNAPSHOT") {
+            buildString {
+                append(testerumVersion)
+
+                if (testerumVersionGitRevision.isNotBlank()) {
+                    append(", git $testerumVersionGitRevision")
+                }
+                if (testerumVersionTimestamp.isNotBlank()) {
+                    append(", built $testerumVersionTimestamp")
+                }
+            }
+        } else {
+            testerumVersion
+        }
+
         LOG.info("Testerum server started.")
-        LOG.info("Testerum (version $testerumVersion) is available at ${ansi().bg(Ansi.Color.BLACK).fgBrightGreen()}http://localhost:$actualPort/${ansi().bgDefault().fgDefault()}")
+        LOG.info("Testerum (version $versionInfo) is available at ${ansi().bg(Ansi.Color.BLACK).fgBrightGreen()}http://localhost:$actualPort/${ansi().bgDefault().fgDefault()}")
         LOG.info("Press Ctrl+C to stop.")
 
         server.join()
