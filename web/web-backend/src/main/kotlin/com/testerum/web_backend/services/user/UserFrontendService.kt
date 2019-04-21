@@ -13,6 +13,7 @@ import com.testerum.model.user.auth.AuthRequest
 import com.testerum.model.user.auth.AuthResponse
 import com.testerum.model.user.license.LicenseInfo
 import com.testerum.model.user.license.UserLicenseInfo
+import com.testerum.web_backend.services.user.security.AuthTokenService
 import org.apache.commons.io.IOUtils
 import java.time.LocalDate
 import java.time.ZoneId
@@ -58,18 +59,26 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
 
         val signedLicense = licenseCloudClient.getSignedLicense(token)
 
+        if (!licensesCache.isValidLicense(signedLicense)) {
+            throw CloudInvalidCredentialsException("got invalid license from the cloud")
+        }
+
         val licensedUserProfile = licensesCache.save(signedLicense)
 
         return generateAuthResponse(licensedUserProfile)
     }
 
     fun loginWithLicenseFile(licenseFile: FileToUpload): AuthResponse {
-        val signedUser = IOUtils.toString(
+        val signedLicensedUserProfile = IOUtils.toString(
                 licenseFile.inputStream,
                 Charsets.UTF_8
         )
 
-        val user = licensesCache.save(signedUser)
+        if (!licensesCache.isValidLicense(signedLicensedUserProfile)) {
+            throw CloudInvalidCredentialsException("invalid license file")
+        }
+
+        val user = licensesCache.save(signedLicensedUserProfile)
 
         return generateAuthResponse(user)
     }
@@ -93,8 +102,7 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
                 .toLocalDate()
 
         val authToken = authTokenService.newAuthToken(
-                email = licensedUserProfile.assigneeEmail,
-                passwordHash = licensedUserProfile.passwordHash
+                email = licensedUserProfile.assigneeEmail
         )
 
         return AuthResponse(

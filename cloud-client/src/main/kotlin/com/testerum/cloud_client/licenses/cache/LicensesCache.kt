@@ -25,12 +25,12 @@ class LicensesCache(private val licenseFileService: LicenseFileService) {
         }
     }
 
-    fun save(signedLicense: String): LicensedUserProfile {
+    fun save(signedLicensedUserProfile: String): LicensedUserProfile {
         lock.write {
             val licensesDir = this.licensesDir
                     ?: throw IllegalStateException("cannot license because the licensesDir is not set")
 
-            val license = licenseFileService.save(signedLicense, licensesDir)
+            val license = licenseFileService.save(signedLicensedUserProfile, licensesDir)
 
             initialize(licensesDir)
 
@@ -41,5 +41,9 @@ class LicensesCache(private val licenseFileService: LicenseFileService) {
     fun getLicenseByEmail(email: String): LicensedUserProfile? = lock.read { licensesByEmail[email] }
 
     fun hasAtLeastOneLicense(): Boolean = lock.read { licensesByEmail.isNotEmpty() }
+
+    fun isValidLicense(signedLicensedUserProfile: String): Boolean {
+        return licenseFileService.isValidLicense(signedLicensedUserProfile)
+    }
 
 }

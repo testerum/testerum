@@ -27,4 +27,14 @@ class SignedLicensedUserProfileParser(private val objectMapper: ObjectMapper,
         return objectMapper.readValue(jsonUser)
     }
 
+    fun isValidLicense(signedLicensedUserProfile: String): Boolean {
+        return try {
+            parse(signedLicensedUserProfile)
+
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
 }
