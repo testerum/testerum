@@ -14,16 +14,13 @@ export class AppComponent  {
 
     static rootViewContainerRef: ViewContainerRef;
     static componentFactoryResolver: ComponentFactoryResolver;
-    constructor(messageService: MessageService,
-                projectReloadWsService: ProjectReloadWsService,
+    constructor(projectReloadWsService: ProjectReloadWsService,
                 private viewContainerRef: ViewContainerRef,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private projectReloadModalService: ProjectReloadModalService) {
         setTheme('bs3');
 
         AppComponent.rootViewContainerRef = viewContainerRef;
-
-        messageService.init();
 
         projectReloadWsService.projectReloadedEventEmitter.subscribe((projectRootDir: string) => {
             projectReloadModalService.showProjectReloadModal(projectRootDir);

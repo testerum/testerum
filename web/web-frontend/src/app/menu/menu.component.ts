@@ -1,11 +1,10 @@
-import {Component, ViewChild} from "@angular/core";
-import {VariablesComponent} from "../functionalities/variables/variables.component";
+import {Component} from "@angular/core";
 import {NavigationEnd, Router} from "@angular/router";
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ContextService} from "../service/context.service";
 import {UrlService} from "../service/url.service";
 import {FeedbackModalService} from "../functionalities/user/feedback/feedback-modal.service";
-import {LicenseModalService} from "../functionalities/user/license/license-modal.service";
+import {LicenseModalService} from "../functionalities/user/license/modal/license-modal.service";
 
 @Component({
     moduleId: module.id,
@@ -77,6 +76,15 @@ export class MenuComponent {
 
     showLicense() {
         this.licenseModalService.showLicenseModal();
+    }
+
+    isUserAuthenticated(): boolean {
+        return this.contextService.license.isLoggedIn();
+    }
+
+    logout () {
+        this.contextService.license.logout();
+        this.urlService.navigateToLicense(window.location.href);
     }
 }
 

@@ -1,8 +1,8 @@
 import {ComponentFactoryResolver, Injectable} from "@angular/core";
-import {AppComponent} from "../../../app.component";
+import {AppComponent} from "../../../../app.component";
 import {LicenseModalComponent} from "./license-modal.component";
-import {UserService} from "../../../service/user.service";
-import {LicenseInfo} from "../../../model/user/license/license-info.model";
+import {UserService} from "../../../../service/user.service";
+import {LicenseInfo} from "../../../../model/user/license/license-info.model";
 
 @Injectable()
 export class LicenseModalService {

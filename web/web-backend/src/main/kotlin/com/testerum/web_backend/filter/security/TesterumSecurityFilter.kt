@@ -4,11 +4,7 @@ import com.testerum.model.exception.model.ValidationModel
 import com.testerum.web_backend.controllers.error.model.ErrorCode
 import com.testerum.web_backend.controllers.error.model.response_preparers.validation.ValidationErrorResponse
 import com.testerum.web_backend.module_di.WebBackendModuleServiceLocator
-import javax.servlet.Filter
-import javax.servlet.FilterChain
-import javax.servlet.FilterConfig
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
+import javax.servlet.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -18,7 +14,9 @@ class TesterumSecurityFilter : Filter {
         private val ignoredUrls: List<Regex> = listOf(
                 Regex("^/rest/user/license-info.*"),
                 Regex("^/rest/user/login/credentials.*"),
-                Regex("^/rest/user/login/file.*")
+                Regex("^/rest/user/login/file.*"),
+                Regex("^/rest/messages.*"),
+                Regex("^/rest/project-reloaded-ws.*")
         )
     }
 

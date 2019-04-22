@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from "@angular/router";
+import {RouterModule, Routes} from "@angular/router";
+import {LicensePageComponent} from "./license/page/license-page.component";
 
 const userRoutes: Routes = [
-    {},
 ];
 @NgModule({
     imports: [

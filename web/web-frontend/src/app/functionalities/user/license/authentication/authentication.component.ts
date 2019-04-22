@@ -49,7 +49,7 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
         authRequest.password = this.password ? this.password : "";
         this.userService.loginWithCredentials(authRequest).subscribe(
             (authResponse: AuthResponse) => {
-                this.contextService.setAuthToken(authResponse.authToken);
+                this.contextService.license.setAuthToken(authResponse.authToken, authResponse.currentUserLicense);
                 this.change.emit();
             },
             (error: HttpErrorResponse) => {
@@ -77,7 +77,7 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
 
         this.userService.loginWithLicenseFile(this.licenseFile).subscribe(
             (authResponse: AuthResponse) => {
-                this.contextService.setAuthToken(authResponse.authToken);
+                this.contextService.license.setAuthToken(authResponse.authToken, authResponse.currentUserLicense);
                 this.change.emit();
             },
             (error: HttpErrorResponse) => {

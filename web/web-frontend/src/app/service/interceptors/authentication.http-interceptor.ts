@@ -11,10 +11,10 @@ export class AuthenticationHttpInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        if (this.contextService.isLoggedIn()) {
+        if (this.contextService.license.getAuthToken()) {
             request = request.clone({
                 setHeaders: {
-                    'X-Testerum-Auth': this.contextService.getAuthToken()
+                    'X-Testerum-Auth': this.contextService.license.getAuthToken()
                 }
             });
         }

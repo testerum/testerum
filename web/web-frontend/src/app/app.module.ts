@@ -1,4 +1,4 @@
-import {ErrorHandler, NgModule} from '@angular/core';
+import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -38,8 +38,6 @@ import {TagsService} from "./service/tags.service";
 import {MessageService} from "./service/message.service";
 import {ManualModule} from "./functionalities/manual/manual.module";
 import {UnsavedChangesGuard} from "./service/guards/unsaved-changes.guard";
-import {LicenseService} from "./functionalities/config/license/license.service";
-import {LicenseComponent} from "./functionalities/config/license/license.component";
 import {DropdownModule, FileUploadModule, RadioButtonModule, TooltipModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
 import {MultiProjectHttpInterceptor} from "./service/interceptors/multi-prject.http-interceptor";
@@ -93,7 +91,6 @@ import {AuthenticationHttpInterceptor} from "./service/interceptors/authenticati
         MenuComponent,
         PageNotFoundComponent,
         VariablesComponent,
-        LicenseComponent,
         SettingsComponent,
         ArgValueValidatorDirective,
         MenuVariablesComponent,
@@ -134,6 +131,7 @@ import {AuthenticationHttpInterceptor} from "./service/interceptors/authenticati
         UtilService,
         ModelRepairerService,
 
+
         ErrorHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useExisting: ErrorHttpInterceptor,  multi: true },
 
@@ -150,8 +148,10 @@ import {AuthenticationHttpInterceptor} from "./service/interceptors/authenticati
         { provide: ErrorHandler, useClass: ErrorsHandlerInterceptor},
 
         ContextService,
+        { provide: APP_INITIALIZER, useFactory:  (service: ContextService) => function() {return service.init()}, deps: [ContextService], multi: true },
+
         MessageService,
-        LicenseService,
+        { provide: APP_INITIALIZER, useFactory:  (service: MessageService) => function() {return service.init()}, deps: [MessageService], multi: true },
     ],
     entryComponents: [
         FileDirChooserInputComponent,

@@ -37,7 +37,7 @@
                 <!-- AUTHENTICATED USER -->
                 <div *ngIf="isUserAuthenticated()" class="user-license">
 
-                    <div class="title">{{isUserLicenseExpired() ? 'Expired License' : 'License Details'}}</div>
+                    <div *ngIf="isUserLicenseExpired()" class="title">'Expired License'</div>
 
                     <div class="my-line">
                         <label class="my-label label-size">Name:</label>
@@ -57,7 +57,8 @@
             </div>
 
             <div class="modal-footer">
-                <button (click)="ok()" type="button" class="btn btn-warning" data-dismiss="modal">Ok</button>
+                <button *ngIf="isUserAuthenticated()" (click)="logout()" type="button" class="btn btn-warning" data-dismiss="modal">Logout</button>
+                <button (click)="ok()" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
             </div>
         </div>
     </div>
