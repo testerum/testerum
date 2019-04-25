@@ -8,6 +8,8 @@ import { Location } from "@angular/common";
 @Injectable()
 export class LicenseGuard implements CanActivate, CanActivateChild {
 
+    public static isLicenseExpiredAlertModalShown: boolean = false;
+
     constructor(
         private contextService: ContextService,
         private urlService: UrlService,
@@ -31,6 +33,10 @@ export class LicenseGuard implements CanActivate, CanActivateChild {
     private startConfigCanActivate() {
         if (!this.contextService.license.isLoggedIn()) {
             this.urlService.navigateToLicense(this.location.path());
+        }
+
+        if (LicenseGuard.isLicenseExpiredAlertModalShown) {
+            return false;
         }
 
         return true;

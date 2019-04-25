@@ -7,6 +7,7 @@ import {StringUtils} from "../utils/string-utils.util";
 import {LicenseInfo} from "../model/user/license/license-info.model";
 import {UserService} from "./user.service";
 import {UserLicenseInfo} from "../model/user/license/user-license-info.model";
+import {LicenseAlertModalService} from "../functionalities/user/license/alert/license-alert-modal.service";
 
 @Injectable()
 export class ContextService {
@@ -19,12 +20,12 @@ export class ContextService {
     stepToCut: StepCallContainerComponent = null;
     stepToCopy: StepCallContainerComponent = null;
 
-    init(): Promise<any> {
-        return this.license.init();
-    }
-
     constructor(private userService: UserService) {
         this.license = new LicenseContext(userService);
+    }
+
+    init(): Promise<any> {
+        return this.license.init();
     }
 
     isProjectSelected(): boolean {
@@ -101,7 +102,7 @@ class LicenseContext {
         return this.userService.getLicenseInfo()
             .toPromise()
             .then( (licenseInfo: LicenseInfo) => {
-            this.licenseInfo = licenseInfo
+                this.licenseInfo = licenseInfo;
         });
     }
 
@@ -127,5 +128,9 @@ class LicenseContext {
     logout() {
         localStorage.removeItem(this.LOCAL_STORAGE_AUTH_TOKEN_KEY);
         this.licenseInfo = null;
+    }
+
+    getLicenseInfo(): LicenseInfo {
+        return this.licenseInfo;
     }
 }

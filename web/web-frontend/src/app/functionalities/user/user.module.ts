@@ -16,6 +16,8 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {FeedbackService} from "./feedback/feedback.service";
 import {LicensePageComponent} from './license/page/license-page.component';
 import {GenericModule} from "../../generic/generic.module";
+import {LicenseAlertModalComponent} from "./license/alert/license-alert-modal.component";
+import {LicenseAlertModalService} from "./license/alert/license-alert-modal.service";
 
 @NgModule({
     imports: [
@@ -40,14 +42,17 @@ import {GenericModule} from "../../generic/generic.module";
         LicenseModalComponent,
         AuthenticationComponent,
         LicensePageComponent,
+        LicenseAlertModalComponent,
     ],
     entryComponents: [
         FeedbackComponent,
         LicenseModalComponent,
+        LicenseAlertModalComponent
     ],
     providers: [
         FeedbackModalService,
         LicenseModalService,
+        LicenseAlertModalService,
         FeedbackService,
     ]
 })

@@ -1,9 +1,8 @@
 import {Component, ComponentFactoryResolver, ViewContainerRef} from '@angular/core';
-import {MessageService} from "./service/message.service";
 import {setTheme} from "ngx-bootstrap";
 import {ProjectReloadWsService} from "./service/project-reload-ws.service";
 import {ProjectReloadModalService} from "./functionalities/others/project_reload_modal/project-reload-modal.service";
-import {Path} from "./model/infrastructure/path/path.model";
+import {LicenseAlertModalService} from "./functionalities/user/license/alert/license-alert-modal.service";
 
 @Component({
   moduleId:module.id,
@@ -17,10 +16,13 @@ export class AppComponent  {
     constructor(projectReloadWsService: ProjectReloadWsService,
                 private viewContainerRef: ViewContainerRef,
                 private componentFactoryResolver: ComponentFactoryResolver,
-                private projectReloadModalService: ProjectReloadModalService) {
+                private projectReloadModalService: ProjectReloadModalService,
+                private licenseAlertModalService: LicenseAlertModalService) {
         setTheme('bs3');
 
         AppComponent.rootViewContainerRef = viewContainerRef;
+
+        this.licenseAlertModalService.onApplicationInitialize();
 
         projectReloadWsService.projectReloadedEventEmitter.subscribe((projectRootDir: string) => {
             projectReloadModalService.showProjectReloadModal(projectRootDir);
