@@ -32,7 +32,6 @@ export class LicenseAlertModalComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-
     }
 
     ngAfterViewInit(): void {

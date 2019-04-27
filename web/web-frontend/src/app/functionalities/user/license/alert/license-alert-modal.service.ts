@@ -15,7 +15,7 @@ export class LicenseAlertModalService {
                 private contextService: ContextService) {
     }
 
-    showAlertLicenseModal(isTrialLicense: boolean) {
+    private showAlertLicenseModal(isTrialLicense: boolean) {
         const factory = this.componentFactoryResolver.resolveComponentFactory(LicenseAlertModalComponent);
         let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
         let modalInstance: LicenseAlertModalComponent = modalComponentRef.instance;
@@ -28,19 +28,25 @@ export class LicenseAlertModalService {
         this.licenseAlertModalInstance = modalInstance;
     }
 
-    onApplicationInitialize() {
+    public onApplicationInitialize() {
         let licenseInfo = this.contextService.license.getLicenseInfo();
+        if (!licenseInfo.trialLicense && !licenseInfo.currentUserLicense && licenseInfo.serverHasLicenses) {
+            return;
+        }
+        this.isTrialLicense = false;
+
+        if (licenseInfo.currentUserLicense &&
+            !licenseInfo.currentUserLicense.expired) {
+                return
+        }
         if (licenseInfo.trialLicense) {
             if (!licenseInfo.trialLicense.expired) {
-                this.isTrialLicense = false;
+                return;
             }
+            this.isTrialLicense = true;
         }
-        if (licenseInfo.currentUserLicense) {
-            if (!licenseInfo.currentUserLicense.expired) {
-                this.isTrialLicense = false;
-            }
-        }
-        this.startAlertLicenseModalCountdown();
+
+        this.showAlertLicenseModal(this.isTrialLicense);
     }
 
     public startAlertLicenseModalCountdown() {

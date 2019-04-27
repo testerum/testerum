@@ -31,4 +31,15 @@ export class LicenseInfo implements Serializable<LicenseInfo>  {
         this.currentUserLicense = licenseInfo.currentUserLicense;
         this.trialLicense = licenseInfo.trialLicense;
     }
+
+    getExpirationDate(): Date | null {
+        if (this.trialLicense) {
+            return this.trialLicense.endDate;
+        }
+        if (this.currentUserLicense) {
+            return this.currentUserLicense.expirationDate;
+        }
+
+        return null;
+    }
 }

@@ -13,9 +13,10 @@
             <div class="modal-body">
                 <div class="title">Your {{isTrialLicense?"Trial ":""}}License has expired.</div>
                 <div class="description">Please consider {{isTrialLicense?"buying a":"renewing your"}} license</div>
-                <div class="resume-evaluation-container">
+                <div [class.hidden]="counter == 0" class="resume-evaluation-container">
                     <div class="resume-evaluation-text">You can resume your work in:</div>
                     <div class="resume-evaluation-countdown">{{counter}}</div>
+                    <div class="resume-evaluation-seconds">seconds</div>
                 </div>
             </div>
 

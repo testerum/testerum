@@ -1,0 +1,37 @@
+@import "../../../../../resources/css/testerum-variables";
+
+.licenseAboutToExpire-modal {
+
+    .modal-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .title {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 1.5em;
+        }
+        .remaining-days {
+            font-size: 2em;
+            color: $failed-color;
+        }
+        .remaining-days-label {
+            font-size: 1.5em;
+            margin-bottom: 1.5em;
+            color: $failed-color;
+        }
+
+        .buy {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .buy-label {
+                font-size: 1.2em;
+                margin-bottom: 0.5em;
+            }
+        }
+    }
+}

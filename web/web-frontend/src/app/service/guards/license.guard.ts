@@ -9,6 +9,7 @@ import { Location } from "@angular/common";
 export class LicenseGuard implements CanActivate, CanActivateChild {
 
     public static isLicenseExpiredAlertModalShown: boolean = false;
+    public static isFirstCall: boolean = true; // allow navigation on app start
 
     constructor(
         private contextService: ContextService,
@@ -35,9 +36,11 @@ export class LicenseGuard implements CanActivate, CanActivateChild {
             this.urlService.navigateToLicense(this.location.path());
         }
 
-        if (LicenseGuard.isLicenseExpiredAlertModalShown) {
+        if (LicenseGuard.isLicenseExpiredAlertModalShown && !LicenseGuard.isFirstCall) {
             return false;
         }
+
+        LicenseGuard.isFirstCall = false;
 
         return true;
     }

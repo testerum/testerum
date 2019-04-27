@@ -18,10 +18,13 @@ import {LicensePageComponent} from './license/page/license-page.component';
 import {GenericModule} from "../../generic/generic.module";
 import {LicenseAlertModalComponent} from "./license/alert/license-alert-modal.component";
 import {LicenseAlertModalService} from "./license/alert/license-alert-modal.service";
+import {LicenseAboutToExpireModalService} from "./license/about-to-expire/license-about-to-expire-modal.service";
+import {LicenseAboutToExpireModalComponent} from "./license/about-to-expire/license-about-to-expire-modal.component";
+import {UserRoutingModule} from "./user-routing.module";
 
 @NgModule({
     imports: [
-        // UserRoutingModule,
+        UserRoutingModule,
 
         BrowserModule,
         FormsModule,
@@ -43,16 +46,19 @@ import {LicenseAlertModalService} from "./license/alert/license-alert-modal.serv
         AuthenticationComponent,
         LicensePageComponent,
         LicenseAlertModalComponent,
+        LicenseAboutToExpireModalComponent
     ],
     entryComponents: [
         FeedbackComponent,
         LicenseModalComponent,
-        LicenseAlertModalComponent
+        LicenseAlertModalComponent,
+        LicenseAboutToExpireModalComponent
     ],
     providers: [
         FeedbackModalService,
         LicenseModalService,
         LicenseAlertModalService,
+        LicenseAboutToExpireModalService,
         FeedbackService,
     ]
 })
