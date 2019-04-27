@@ -31,7 +31,7 @@ export class LicenseAboutToExpireModalService {
         if (nextAlertDaysRemaining >= 0 && daysUntilExpiration >=0 &&
             daysUntilExpiration <= nextAlertDaysRemaining) {
 
-            this.saveLastUsedOfRemainingDaysLicenseAlert(nextAlertDaysRemaining);
+            this.saveLastUsedOfRemainingDaysLicenseAlert(daysUntilExpiration);
 
             const factory = this.componentFactoryResolver.resolveComponentFactory(LicenseAboutToExpireModalComponent);
             let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
