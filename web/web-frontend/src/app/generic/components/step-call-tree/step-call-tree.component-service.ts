@@ -11,7 +11,6 @@ import {ArrayUtil} from "../../../utils/array.util";
 import {StepCallContainerComponent} from "./nodes/step-call-container/step-call-container.component";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {UndefinedStepDef} from "../../../model/undefined-step-def.model";
-import {StepPhaseEnum, StepPhaseUtil} from "../../../model/enums/step-phase.enum";
 
 @Injectable()
 export class StepCallTreeComponentService {

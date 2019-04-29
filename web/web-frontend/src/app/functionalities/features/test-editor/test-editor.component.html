@@ -45,7 +45,8 @@
                         <div *ngIf="isEditMode" class="type-container">
                             <p-toggleButton onLabel="Manual" offLabel="Automated"
                                             onIcon="fa_my-manual-test_white" offIcon="fa_my-automated-test_white"
-                                            [(ngModel)]="testModel.properties.isManual"
+                                            [ngModel]="testModel.properties.isManual"
+                                            (onChange)="onManualAutomatedTestToggle()"
                                             styleClass="toggle-test-type"
                                             name="testTypeSwitch"></p-toggleButton>
                         </div>

@@ -56,6 +56,10 @@ export class StepCallTreeComponent implements OnInit, OnChanges {
         this.stepCallTreeComponentService.stepCalls = this.stepCalls
     }
 
+    triggerWarningRecalculation() {
+        this.stepCallTreeComponentService.triggerWarningRecalculationChangesEvent();
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (this.stepCalls != this.stepCallTreeComponentService.stepCalls) {
             this.initTree();

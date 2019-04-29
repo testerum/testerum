@@ -19,6 +19,7 @@ import {AreYouSureModalService} from "../../../generic/components/are_you_sure_m
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 import {StepCallWarningUtil} from "../../../generic/components/step-call-tree/util/step-call-warning.util";
 import {ContextService} from "../../../service/context.service";
+import {StepCallTreeComponentService} from "../../../generic/components/step-call-tree/step-call-tree.component-service";
 
 @Component({
     moduleId: module.id,
@@ -151,6 +152,13 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
     canDeactivate(): boolean {
         return !this.isEditMode;
+    }
+
+    onManualAutomatedTestToggle() {
+        this.testModel.properties.isManual = !this.testModel.properties.isManual;
+        if(!this.testModel.properties.isManual) {
+            this.stepCallTreeComponent.triggerWarningRecalculation();
+        }
     }
 
     addStep() {
