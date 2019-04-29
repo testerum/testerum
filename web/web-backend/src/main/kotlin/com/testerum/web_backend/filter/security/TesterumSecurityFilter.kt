@@ -16,6 +16,8 @@ class TesterumSecurityFilter : Filter {
                 Regex("^/rest/user/login/credentials.*"),
                 Regex("^/rest/user/login/file.*"),
                 Regex("^/rest/messages.*"),
+                Regex("^/rest/report-results.*"),
+                Regex("^/rest/features/attachments.*"),
                 Regex("^/rest/project-reloaded-ws.*"),
                 Regex("^/rest/tests-ws.*")
         )
