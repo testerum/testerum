@@ -1,6 +1,6 @@
 package com.testerum.common_fsnotifier.native_fs_notifier
 
-import com.testerum.common_fsnotifier.native_fs_notifier.command_sender.FsNotifierCommandSender
+import com.testerum.common_fsnotifier.native_fs_notifier.command_sender.CommandSenderThread
 import com.testerum.common_fsnotifier.native_fs_notifier.event_interpreter.FsNotifierEventInterpreter
 import com.testerum.common_fsnotifier.native_fs_notifier.event_interpreter.FsNotifierEventListener
 import com.testerum.common_jdk.OsUtils
@@ -13,7 +13,6 @@ import org.zeroturnaround.process.ProcessUtil
 import org.zeroturnaround.process.Processes
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
-import java.nio.file.Paths
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantReadWriteLock
@@ -27,6 +26,7 @@ class NativeFsNotifier(fsNotifierBinariesDir: JavaPath) {
         private val LOG = LoggerFactory.getLogger(NativeFsNotifier::class.java)
 
         private const val MAX_TIME_TO_WAIT_FOR_PROCESS_TO_START_IN_SECONDS = 30L
+        private const val MAX_TIME_TO_WAIT_FOR_COMMAND_SENDER_THREAD_TO_START_IN_SECONDS = 30L
     }
 
     private val fsNotifierBinariesDir: JavaPath = fsNotifierBinariesDir.toAbsolutePath().normalize()
@@ -34,10 +34,13 @@ class NativeFsNotifier(fsNotifierBinariesDir: JavaPath) {
     private val startLock = ReentrantReadWriteLock()
     private var started = false
 
+    private val processStartCountDownLatch = CountDownLatch(1)
+    private val commandSenderThreadStartCountDownLatch = CountDownLatch(1)
+
     private val eventInterpreter = FsNotifierEventInterpreter()
     private val pipedOutputStream = PipedOutputStream()
     private val inputStream = PipedInputStream(pipedOutputStream)
-    private val commandSender = FsNotifierCommandSender(pipedOutputStream)
+    private val commandSenderThread = CommandSenderThread(pipedOutputStream, commandSenderThreadStartCountDownLatch)
 
     private val processLock = ReentrantReadWriteLock()
     private var process: Process? = null
@@ -59,7 +62,9 @@ class NativeFsNotifier(fsNotifierBinariesDir: JavaPath) {
             val absoluteFlatRoots = flatRoots.map { it.toAbsolutePath().normalize() }
 
             LOG.debug("watching recursiveRoots=$absoluteRecursiveRoots, flatRoots=$absoluteFlatRoots")
-            commandSender.setRoots(absoluteRecursiveRoots, absoluteFlatRoots)
+            commandSenderThread.addAction { commandSender ->
+                commandSender.setRoots(absoluteRecursiveRoots, absoluteFlatRoots)
+            }
 
             eventInterpreter.setRoots(absoluteRecursiveRoots, absoluteFlatRoots)
         }
@@ -79,44 +84,10 @@ class NativeFsNotifier(fsNotifierBinariesDir: JavaPath) {
 
             LOG.info("starting fsnotifier...")
 
-            val countDownLatch = CountDownLatch(1)
-
-            val currentWorkingDirectory: JavaPath = Paths.get(".").toAbsolutePath().normalize()
-
+            // start fsnotifier process in it's own thread (because "processExecutor.execute()" blocks until the process ends)
             var processStartException: Exception? = null
-
             Thread(Runnable {
-                val processExecutor: ProcessExecutor = ProcessExecutor()
-                        .command(listOf(
-                                binaryFile.toString()
-                        ))
-                        .directory(currentWorkingDirectory.toFile())
-                        .redirectOutput(object : LogOutputStream() {
-                            override fun processLine(line: String) {
-                                LOG.debug("[fsnotifier-output] $line")
-
-                                eventInterpreter.onLineReceived(line)
-                            }
-                        })
-                        .redirectError(object : LogOutputStream() {
-                            override fun processLine(line: String) {
-                                LOG.warn("[fsnotifier] $line")
-                            }
-                        })
-                        .redirectInput(inputStream)
-                        .listener(object : ProcessListener() {
-                            override fun afterStart(process: Process, executor: ProcessExecutor) {
-                                processLock.write {
-                                    this@NativeFsNotifier.process = process
-                                }
-
-                                countDownLatch.countDown()
-                            }
-
-                            override fun afterStop(process: Process?) {
-                                countDownLatch.countDown()
-                            }
-                        })
+                val processExecutor: ProcessExecutor = createProcessExecutor(binaryFile)
 
                 try {
                     processExecutor.execute()
@@ -124,26 +95,85 @@ class NativeFsNotifier(fsNotifierBinariesDir: JavaPath) {
                     processStartException = e
                 } finally {
                     // make sure we can proceed, even if we can't start the process
-                    countDownLatch.countDown()
+                    processStartCountDownLatch.countDown()
                 }
             }).start()
 
-            val startedInTime = countDownLatch.await(MAX_TIME_TO_WAIT_FOR_PROCESS_TO_START_IN_SECONDS, TimeUnit.SECONDS)
-            if (startedInTime) {
-                if (processStartException == null) {
-                    started = true
+            // start command sender thread
+            var commandSenderThreadStartException: Exception? = null
+            try {
+                commandSenderThread.start()
+            } catch (e: Exception) {
+                commandSenderThreadStartException = e
+            } finally {
+                // make sure we can proceed, even if we can't start the thread
+                commandSenderThreadStartCountDownLatch.countDown()
+            }
 
-                    LOG.info("...fsnotifier started")
-                } else {
+            // wait for the command sender thread to start
+            val commandSenderThreadStartedInTime = commandSenderThreadStartCountDownLatch.await(MAX_TIME_TO_WAIT_FOR_COMMAND_SENDER_THREAD_TO_START_IN_SECONDS, TimeUnit.SECONDS)
+            if (commandSenderThreadStartedInTime) {
+                if (commandSenderThreadStartException != null) {
+                    LOG.error("command sender thread failed to start; Testerum will not notice file changes", commandSenderThread)
+                }
+            } else {
+                LOG.error("command sender thread failed to start in $MAX_TIME_TO_WAIT_FOR_COMMAND_SENDER_THREAD_TO_START_IN_SECONDS seconds; giving up")
+                killProcess()
+            }
+
+            // wait for the fsnotifier process to start
+            val processStartedInTime = processStartCountDownLatch.await(MAX_TIME_TO_WAIT_FOR_PROCESS_TO_START_IN_SECONDS, TimeUnit.SECONDS)
+            if (processStartedInTime) {
+                if (processStartException != null) {
                     LOG.error("...fsnotifier failed to start; Testerum will not notice file changes", processStartException)
+                } else {
+                    LOG.info("...fsnotifier started")
                 }
             } else {
                 LOG.error("native fsnotifier process failed to start in $MAX_TIME_TO_WAIT_FOR_PROCESS_TO_START_IN_SECONDS seconds; giving up")
                 killProcess()
             }
 
+            if (commandSenderThreadStartException == null && processStartException == null) {
+                started = true
+            }
+
             failedToStart = !started
         }
+    }
+
+    private fun createProcessExecutor(binaryFile: java.nio.file.Path): ProcessExecutor {
+        return ProcessExecutor()
+                .command(listOf(
+                        binaryFile.toString()
+                ))
+                .redirectOutput(object : LogOutputStream() {
+                    override fun processLine(line: String) {
+                        LOG.debug("[fsnotifier-output] $line")
+
+                        eventInterpreter.onLineReceived(line)
+                    }
+                })
+                .redirectError(object : LogOutputStream() {
+                    override fun processLine(line: String) {
+                        LOG.warn("[fsnotifier] $line")
+                    }
+                })
+                .redirectInput(inputStream)
+                .listener(object : ProcessListener() {
+                    override fun afterStart(process: Process, executor: ProcessExecutor) {
+                        processLock.write {
+                            this@NativeFsNotifier.process = process
+                        }
+
+                        processStartCountDownLatch.countDown()
+                    }
+
+                    override fun afterStop(process: Process) {
+                        // make sure we don't get locked if the process starts and then dies
+                        processStartCountDownLatch.countDown()
+                    }
+                })
     }
 
     fun shutdown() {
@@ -154,7 +184,8 @@ class NativeFsNotifier(fsNotifierBinariesDir: JavaPath) {
 
             LOG.info("shutting down...")
 
-            commandSender.exit()
+            // send a command to the process to stop
+            commandSenderThread.shutdown()
 
             // kill process if it doesn't stop in time
             Thread.sleep(2000)
@@ -178,14 +209,14 @@ class NativeFsNotifier(fsNotifierBinariesDir: JavaPath) {
 
     private fun getBinaryFile(): JavaPath {
         if (!OsUtils.IS_64BIT_ARCHITECTURE) {
-            throw IllegalArgumentException("Only 64bit is supported, but the architecture of this system is [${OsUtils.OS_ARCHITECTURE}]")
+            throw IllegalArgumentException("only 64bit is supported, but the architecture of this system is [${OsUtils.OS_ARCHITECTURE}]")
         }
 
         val binaryFile = when {
             OsUtils.IS_WINDOWS -> fsNotifierBinariesDir.resolve("windows").resolve("fsnotifier64.exe")
             OsUtils.IS_MAC     -> fsNotifierBinariesDir.resolve("mac").resolve("fsnotifier")
             OsUtils.IS_LINUX   -> fsNotifierBinariesDir.resolve("linux").resolve("fsnotifier64")
-            else               -> throw IllegalArgumentException("Only Windows, Mac, and Linux (all 64bit) are supported, but the current OS is [${OsUtils.OS_NAME}]")
+            else               -> throw IllegalArgumentException("only Windows, Mac, and Linux (all only 64bit) are supported, but the current OS is [${OsUtils.OS_NAME}]")
         }
 
         return binaryFile.toAbsolutePath().normalize()

@@ -22,7 +22,15 @@ class ProjectFileSystemWatcher(fsNotifierBinariesDir: JavaPath,
         private const val RELOAD_MINIMUM_MILLIS_SINCE_LAST_CHANGE = 1000
     }
 
-    private val dirtyDirsTracker = DirtyDirsTracker(fsNotifierBinariesDir)
+    private val dirtyDirsTracker = DirtyDirsTracker(
+            fsNotifierBinariesDir = fsNotifierBinariesDir,
+            ignoredDirs = setOf(
+                    ".git",
+                    ".svn",
+                    ".hg",
+                    ".bzr"
+            )
+    )
     private val timer = Timer()
 
     private val lock = ReentrantReadWriteLock()

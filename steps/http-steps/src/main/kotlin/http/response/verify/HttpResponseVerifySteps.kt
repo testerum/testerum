@@ -18,7 +18,6 @@ import http.response.verify.model.HttpBodyVerifyMatchingType.JSON_VERIFY
 import http.response.verify.model.HttpResponseHeaderVerify
 import http.response.verify.model.HttpResponseVerify
 import http.response.verify.model.HttpResponseVerifyHeadersCompareMode
-import http.response.verify.model.HttpResponseVerifyHeadersCompareMode.CONTAINS
 import http.response.verify.transformer.HttpResponseVerifyTransformer
 import http_support.logging.prettyPrint
 import http_support.logging.prettyPrintHttpStatusCode
@@ -76,13 +75,13 @@ class HttpResponseVerifySteps {
                             expectedHeader,
                             expectedValue,
                             actualValues[0],
-                            HttpResponseVerifyHeadersCompareMode.EXACT_MATCH
+                            compareMode
                     )
                 }
 
                 when (compareMode) {
                     HttpResponseVerifyHeadersCompareMode.EXACT_MATCH -> compareHeaderExactMode(expectedHeader, actualHeader)
-                    CONTAINS -> compareHeaderContainsMode(expectedHeader, actualHeader)
+                    HttpResponseVerifyHeadersCompareMode.CONTAINS -> compareHeaderContainsMode(expectedHeader, actualHeader)
                     HttpResponseVerifyHeadersCompareMode.REGEX_MATCH -> compareHeaderRegexMode(expectedHeader, actualHeader)
                 }
             }
@@ -226,12 +225,12 @@ class HttpResponseVerifySteps {
     }
 
     private fun compareHeaderContainsMode(expectedHeader: HttpResponseHeaderVerify, actualHeader: HttpResponseHeader) {
-        val expectedValue = expectedHeader.value
+        val expectedValue = expectedHeader.value.orEmpty()
         val actualValues = actualHeader.values
 
         for (actualValue in actualValues) {
-            if (expectedValue!!.contains(actualValue)) {
-                logHeaderFound(expectedHeader, actualValue, CONTAINS)
+            if (actualValue.contains(expectedValue)) {
+                logHeaderFound(expectedHeader, actualValue, HttpResponseVerifyHeadersCompareMode.CONTAINS)
 
                 return
             }
@@ -241,16 +240,16 @@ class HttpResponseVerifySteps {
                 expectedHeader,
                 expectedValue,
                 actualValues[0],
-                HttpResponseVerifyHeadersCompareMode.EXACT_MATCH
+                HttpResponseVerifyHeadersCompareMode.CONTAINS
         )
     }
 
     private fun compareHeaderRegexMode(expectedHeader: HttpResponseHeaderVerify, actualHeader: HttpResponseHeader) {
-        val expectedValue = expectedHeader.value
+        val expectedValue = expectedHeader.value.orEmpty()
         val actualValues = actualHeader.values
 
         for (actualValue in actualValues) {
-            if (expectedValue!!.contains(Regex(actualValue))) {
+            if (Regex(expectedValue).matches(actualValue)) {
                 logHeaderFound(expectedHeader, actualValue, HttpResponseVerifyHeadersCompareMode.REGEX_MATCH)
                 return
             }
