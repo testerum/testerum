@@ -107,7 +107,7 @@
                                             <fileset dir="${project.basedir}/src/main/assembly/package" />
                                         </sync>
                                         <chmod dir="${project.basedir}/../../package/fsnotifier/linux" type="file" perm="ugo+x" includes="*" />
-                                        <chmod dir="${project.basedir}/../../package/fsnotifier/mac"   type="file" perm="ugo+x" includes="*" />
+                                        <chmod dir="${project.basedir}/../../package/fsnotifier/mac" type="file" perm="ugo+x" includes="*" />
                                     </target>
                                 </configuration>
                                 <goals>
