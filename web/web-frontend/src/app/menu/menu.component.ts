@@ -5,6 +5,7 @@ import {ContextService} from "../service/context.service";
 import {UrlService} from "../service/url.service";
 import {FeedbackModalService} from "../functionalities/user/feedback/feedback-modal.service";
 import {LicenseModalService} from "../functionalities/user/license/modal/license-modal.service";
+import {SettingsModalService} from "../functionalities/config/settings/settings-modal.service";
 
 @Component({
     moduleId: module.id,
@@ -34,7 +35,8 @@ export class MenuComponent {
                 private contextService: ContextService,
                 public urlService: UrlService,
                 private licenseModalService: LicenseModalService,
-                private feedbackModalService: FeedbackModalService) {
+                private feedbackModalService: FeedbackModalService,
+                private settingsModalService: SettingsModalService) {
         router.events.subscribe(event => {
 
             if (event instanceof NavigationEnd) {
@@ -76,6 +78,10 @@ export class MenuComponent {
 
     showLicense() {
         this.licenseModalService.showLicenseModal();
+    }
+
+    showSettings() {
+        this.settingsModalService.showSettingsModal()
     }
 
     isUserAuthenticated(): boolean {

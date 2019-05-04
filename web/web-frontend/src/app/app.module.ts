@@ -23,7 +23,6 @@ import {ModalModule} from "ngx-bootstrap/modal";
 import {VariablesService} from "./service/variables.service";
 import {FileSystemService} from "./service/file-system.service";
 import {LicenseGuard} from "./service/guards/license.guard";
-import {SettingsComponent} from "./functionalities/config/settings/settings.component";
 import {SettingsService} from "./service/settings.service";
 import {FileDirChooserInputComponent} from "./generic/components/form/file_dir_chooser/file-dir-chooser-input.component";
 import {FileDirTreeContainerComponent} from "./generic/components/form/file_dir_chooser/file-dir-tree/nodes/container/file-dir-tree-container.component";
@@ -59,6 +58,7 @@ import {UserService} from "./service/user.service";
 import {ProjectReloadModalService} from "./functionalities/others/project_reload_modal/project-reload-modal.service";
 import {ProjectReloadModalComponent} from "./functionalities/others/project_reload_modal/project-reload-modal.component";
 import {AuthenticationHttpInterceptor} from "./service/interceptors/authentication.http-interceptor";
+import {ConfigModule} from "./functionalities/config/config.module";
 
 @NgModule({
     imports: [
@@ -83,6 +83,7 @@ import {AuthenticationHttpInterceptor} from "./service/interceptors/authenticati
         ManualModule,
         GenericModule,
         UserModule,
+        ConfigModule,
 
         AppRoutingModule
     ],
@@ -91,7 +92,6 @@ import {AuthenticationHttpInterceptor} from "./service/interceptors/authenticati
         MenuComponent,
         PageNotFoundComponent,
         VariablesComponent,
-        SettingsComponent,
         ArgValueValidatorDirective,
         MenuVariablesComponent,
         EnvironmentEditModalComponent,

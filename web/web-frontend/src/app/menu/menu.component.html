@@ -32,8 +32,7 @@
                 <menu-variables></menu-variables>
             </li>
             <li *ngIf="isProjectSelected()">
-                <a [routerLink]="['/'+getProjectName()+'/settings']"
-                    routerLinkActive="active"
+                <a  href="#" (click)="showSettings(); false;"
                     title="Settings">
                     <i  class="icon-menu-item fas fa-cogs" aria-hidden="true"></i>
                 </a>

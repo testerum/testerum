@@ -1,20 +1,26 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, OnInit, ViewChild} from '@angular/core';
 import {SettingsService} from "../../../service/settings.service";
 import {Setting} from "./model/setting.model";
 import {ArrayUtil} from "../../../utils/array.util";
 import {SettingType} from "./model/setting.type.enum";
+import {ModalDirective} from "ngx-bootstrap";
 
 
 @Component({
     selector: 'settings',
-    templateUrl: 'settings.component.html',
-    styleUrls: ['settings.component.scss'],
+    templateUrl: 'settings-modal.component.html',
+    styleUrls: ['settings-modal.component.scss'],
 })
 
-export class SettingsComponent implements OnInit {
+export class SettingsModalComponent implements AfterViewInit {
 
     PACKAGE_DIR_SETTING = "testerum.packageDirectory";
     BUILT_IN_BASIC_STEPS_DIRECTORY_SETTING = "testerum.builtInBasicStepsDirectory";
+
+    @ViewChild("settingsModal") modal: ModalDirective;
+    modalComponentRef: ComponentRef<SettingsModalComponent>;
+
+    selectedCategory: string;
 
     settings: Array<Setting> = [];
     settingsCategories: Array<string> = [];
@@ -23,15 +29,34 @@ export class SettingsComponent implements OnInit {
 
     SettingTypeEnum = SettingType;
 
-    constructor(private settingsService: SettingsService) {}
+    constructor(private cd: ChangeDetectorRef,
+                private settingsService: SettingsService) {}
 
-    ngOnInit() {
-        this.settingsService.getSettings().subscribe(
-            (settings: Array<Setting>) => {
-                this.updateCurrentSettings(settings);
-                this.setSettingsByCategory(settings);
-            }
-        );
+    public init(settings: Array<Setting>) {
+        this.updateCurrentSettings(settings);
+        this.setSettingsByCategory(settings);
+        if (this.settingsCategories.length > 0) {
+            this.selectedCategory = this.settingsCategories[0];
+        }
+    }
+
+    ngAfterViewInit(): void {
+        this.modal.show();
+        this.modal.onHidden.subscribe(event => {
+            this.modalComponentRef.destroy();
+            this.modalComponentRef = null;
+        });
+        this.refresh();
+    }
+
+    refresh() {
+        if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
+        }
+    }
+
+    cancel() {
+        this.modal.hide();
     }
 
     private setSettingsByCategory(settings: Array<Setting>) {
