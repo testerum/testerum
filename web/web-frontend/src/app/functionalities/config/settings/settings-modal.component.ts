@@ -119,14 +119,15 @@ export class SettingsModalComponent implements AfterViewInit {
         this.settingsService.save(this.settings).subscribe(
             (settings: Array<Setting>) => {
                 this.init(settings);
+                this.cancel();
             }
         );
     }
 
     resetToDefault(): void {
         this.settings.forEach((it: Setting) => {
-            it.unresolvedValue = null;
-            it.resolvedValue = null;
+            it.unresolvedValue = "";
+            it.resolvedValue = "";
         });
 
         this.saveAction();
