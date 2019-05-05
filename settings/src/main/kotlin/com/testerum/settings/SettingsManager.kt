@@ -115,5 +115,4 @@ class SettingsManager {
 
         return result
     }
-
 }

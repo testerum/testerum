@@ -59,7 +59,7 @@ import {SelectSharedResourceModalComponent} from "./components/step-call-tree/se
 import {
     AutoCompleteModule,
     FileUploadModule,
-    InputTextModule,
+    InputTextModule, KeyFilterModule,
     MessageService,
     SelectButtonModule,
     ToggleButtonModule,
@@ -107,6 +107,7 @@ import { ErrorComponent } from './error/error.component';
 import {ToastModule} from "primeng/toast";
 import {ErrorFeedbackModalService} from "./error/report-modal/error-feedback-modal.service";
 import {ErrorFeedbackService} from "./error/report-modal/error-feedback.service";
+import { DynamicInputComponent } from './components/form/dynamic-input/dynamic-input.component';
 
 @NgModule({
     imports: [
@@ -132,6 +133,7 @@ import {ErrorFeedbackService} from "./error/report-modal/error-feedback.service"
         ToolbarModule,
         ToastModule,
         OverlayPanelModule,
+        KeyFilterModule,
     ],
     exports: [
         SafeHtmlPipe,
@@ -187,6 +189,7 @@ import {ErrorFeedbackService} from "./error/report-modal/error-feedback.service"
         JsonVerifyComponent,
         LogoComponent,
         InfoIconComponent,
+        DynamicInputComponent,
     ],
     declarations: [
         SafeHtmlPipe,
@@ -270,6 +273,7 @@ import {ErrorFeedbackService} from "./error/report-modal/error-feedback.service"
         InfoIconComponent,
         FileDirTreeComponent,
         ServerNotAvailableModalComponent,
+        DynamicInputComponent,
     ],
     providers: [
         TreeService,

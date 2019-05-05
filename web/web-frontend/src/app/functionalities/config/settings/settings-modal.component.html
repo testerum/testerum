@@ -12,102 +12,45 @@
             <!-- TRIAL LICENSE -->
             <div class="modal-body">
 
-                <div class="my-vertical-tab-container">
-                    <div class="my-vertical-tab-menu">
+                <div class="settings-container">
+                    <div class="settings-menu">
                         <div class="list-group" *ngFor="let item of settingsCategories">
-                            <a href="#" class="list-group-item  text-center"
+                            <a href="#" (click)="onCategorySelected(item); false;" class="list-group-item text-center"
                                 [class.active]="item == selectedCategory">
-                                <i class="fas fa-globe-americas"></i><br/>{{item}}
+                                <div *ngIf="item == 'HTTP'"><i class="fas fa-globe-americas"></i></div>
+                                <div *ngIf="item == 'Selenium'"><i class="fab fa-internet-explorer" style="margin-right: 0.2em"></i><i class="fab fa-chrome"style="margin-right: 0.2em"></i><i class="fab fa-safari"></i></div>
+                                {{item}}
                             </a>
                         </div>
                     </div>
-                    <div class="my-vertical-tab">
-                        <!-- flight section -->
-                        <div class="my-vertical-tab-content active">
-                            <div>
-                                <h1 class="glyphicon glyphicon-plane" style="font-size:14em;color:#55518a"></h1>
-                                <h2 style="margin-top: 0;color:#55518a">Cooming Soon</h2>
-                                <h3 style="margin-top: 0;color:#55518a">Flight Reservation</h3>
-                            </div>
-                        </div>
-                        <!-- train section -->
-                        <div class="my-vertical-tab-content">
-                            <div>
-                                <h1 class="glyphicon glyphicon-road" style="font-size:12em;color:#55518a"></h1>
-                                <h2 style="margin-top: 0;color:#55518a">Cooming Soon</h2>
-                                <h3 style="margin-top: 0;color:#55518a">Train Reservation</h3>
-                            </div>
-                        </div>
+                    <div class="category-settings"
+                         [class.active]="selectedCategory == settingCategory"
+                         *ngFor="let settingCategory of settingsCategories"
+                         title="{{settingCategory}}">
 
-                        <!-- hotel search -->
-                        <div class="my-vertical-tab-content">
-                            <div>
-                                <h1 class="glyphicon glyphicon-home" style="font-size:12em;color:#55518a"></h1>
-                                <h2 style="margin-top: 0;color:#55518a">Cooming Soon</h2>
-                                <h3 style="margin-top: 0;color:#55518a">Hotel Directory</h3>
+                        <div class="setting vertical-space"
+                             *ngFor="let setting of settingsByCategory.get(settingCategory)">
+                            <div class="input-description-container">
+                                <div class="my-label">{{setting.definition.label? setting.definition.label : setting.definition.key}}</div>
+                                <info-icon [message]="setting.definition.description"></info-icon>
                             </div>
-                        </div>
-                        <div class="my-vertical-tab-content">
-                            <div>
-                                <h1 class="glyphicon glyphicon-cutlery" style="font-size:12em;color:#55518a"></h1>
-                                <h2 style="margin-top: 0;color:#55518a">Cooming Soon</h2>
-                                <h3 style="margin-top: 0;color:#55518a">Restaurant Diirectory</h3>
-                            </div>
-                        </div>
-                        <div class="my-vertical-tab-content">
-                            <div>
-                                <h1 class="glyphicon glyphicon-credit-card" style="font-size:12em;color:#55518a"></h1>
-                                <h2 style="margin-top: 0;color:#55518a">Cooming Soon</h2>
-                                <h3 style="margin-top: 0;color:#55518a">Credit Card</h3>
-                            </div>
+
+                            <dynamic-input [(value)]="setting.unresolvedValue" [inputType]="getDynamicInputType(setting.definition.type)"></dynamic-input>
+
+                            <div class="vertical-space"></div>
                         </div>
                     </div>
                 </div>
-
-
-                <collapsable-panel *ngFor="let settingCategory of settingsCategories"
-                                   title="{{settingCategory}}" [collapsed]="false">
-
-                    <div class="vertical-space"
-                         *ngFor="let setting of settingsByCategory.get(settingCategory)">
-                        <p><span class="text-info">Setting key: </span>{{setting.definition.key}}</p>
-                        <p *ngIf="setting.definition.description"><span class="text-info">Description: </span>{{setting.definition.description}}</p>
-
-                        <div *ngIf="setting.definition.type == SettingTypeEnum.TEXT && !isReadOnlyProperty(setting.definition.key)">
-                            <input [(ngModel)]="setting.unresolvedValue"
-                                   [disabled]="!isEditMode"
-                                   type="text" class="form-control full-width">
-                        </div>
-
-                        <div *ngIf="setting.definition.type == SettingTypeEnum.NUMBER && !isReadOnlyProperty(setting.definition.key)">
-                            <input [(ngModel)]="setting.unresolvedValue"
-                                   [disabled]="!isEditMode"
-                                   type="number" class="form-control full-width">
-                        </div>
-
-                        <div *ngIf="isReadOnlyProperty(setting.definition.key)">
-                            <input [(ngModel)]="setting.unresolvedValue"
-                                   disabled
-                                   type="text" class="form-control full-width">
-                        </div>
-
-                        <div *ngIf="setting.definition.type == SettingTypeEnum.FILESYSTEM_DIRECTORY && !isReadOnlyProperty(setting.definition.key)">
-                                        <span class="full-width input-group">
-                                            <file-dir-chooser [(ngModel)]="setting.unresolvedValue"
-                                                              [disabled]="!isEditMode"
-                                                              #repositoryPath="ngModel"></file-dir-chooser>
-                                        </span>
-                        </div>
-
-                        <div class="vertical-space"></div>
-                    </div>
-
-                </collapsable-panel>
             </div>
 
             <div class="modal-footer">
-                <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
-                <button (click)="saveAction()" class="btn btn-primary">Save</button>
+                <div class="buttons-left">
+                    <button (click)="resetToDefault();" type="button" class="btn btn-warning">Reset</button>
+                </div>
+                <div class="buttons-right">
+                    <button (click)="cancel();" type="button" class="btn btn-default">Cancel</button>
+                    <button (click)="saveAction()" class="btn btn-primary">Save</button>
+                </div>
             </div>
         </div>
     </div>

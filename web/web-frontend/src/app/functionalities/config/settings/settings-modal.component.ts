@@ -1,21 +1,17 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ViewChild} from '@angular/core';
 import {SettingsService} from "../../../service/settings.service";
 import {Setting} from "./model/setting.model";
 import {ArrayUtil} from "../../../utils/array.util";
 import {SettingType} from "./model/setting.type.enum";
 import {ModalDirective} from "ngx-bootstrap";
-
+import {InputTypeEnum} from "../../../generic/components/form/dynamic-input/model/input-type.enum";
 
 @Component({
     selector: 'settings',
     templateUrl: 'settings-modal.component.html',
     styleUrls: ['settings-modal.component.scss'],
 })
-
 export class SettingsModalComponent implements AfterViewInit {
-
-    PACKAGE_DIR_SETTING = "testerum.packageDirectory";
-    BUILT_IN_BASIC_STEPS_DIRECTORY_SETTING = "testerum.builtInBasicStepsDirectory";
 
     @ViewChild("settingsModal") modal: ModalDirective;
     modalComponentRef: ComponentRef<SettingsModalComponent>;
@@ -25,9 +21,6 @@ export class SettingsModalComponent implements AfterViewInit {
     settings: Array<Setting> = [];
     settingsCategories: Array<string> = [];
     settingsByCategory: Map<string, Array<Setting>> = new Map<string, Array<Setting>>();
-    isEditMode = false;
-
-    SettingTypeEnum = SettingType;
 
     constructor(private cd: ChangeDetectorRef,
                 private settingsService: SettingsService) {}
@@ -55,6 +48,19 @@ export class SettingsModalComponent implements AfterViewInit {
         }
     }
 
+    onCategorySelected(selectedCategory) {
+        this.selectedCategory = selectedCategory;
+        this.refresh();
+    }
+
+    getDynamicInputType(settingType: SettingType): InputTypeEnum {
+        switch (settingType) {
+            case SettingType.TEXT: return InputTypeEnum.TEXT;
+            case SettingType.NUMBER: return InputTypeEnum.POSITIVE_INTEGER;
+            case SettingType.FILESYSTEM_DIRECTORY: return InputTypeEnum.FILESYSTEM_DIRECTORY;
+        }
+    }
+
     cancel() {
         this.modal.hide();
     }
@@ -71,11 +77,6 @@ export class SettingsModalComponent implements AfterViewInit {
             }
             settingMapValue.push(setting);
             settingMapValue.sort((left, right) => {
-                if (left.definition.key == this.PACKAGE_DIR_SETTING) return -1;
-                if (right.definition.key == this.PACKAGE_DIR_SETTING) return 1;
-                if (left.definition.key == this.BUILT_IN_BASIC_STEPS_DIRECTORY_SETTING) return -1;
-                if (right.definition.key == this.BUILT_IN_BASIC_STEPS_DIRECTORY_SETTING) return 1;
-
                 return left.definition.key > right.definition.key ? 1 : -1
             });
 
@@ -114,33 +115,10 @@ export class SettingsModalComponent implements AfterViewInit {
         return null;
     }
 
-    isReadOnlyProperty(settingKey: string): boolean {
-        if(settingKey == this.PACKAGE_DIR_SETTING) return true;
-        if(settingKey == this.BUILT_IN_BASIC_STEPS_DIRECTORY_SETTING) return true;
-
-        return false;
-    }
-
-    enableEditTestMode(): void {
-        this.isEditMode = true;
-    }
-
-    cancelAction(): void {
-        this.settingsService.getSettings().subscribe(
-            (settings: Array<Setting>) => {
-                this.updateCurrentSettings(settings);
-                this.setSettingsByCategory(settings);
-                this.isEditMode = false;
-            }
-        )
-    }
-
     saveAction(): void {
         this.settingsService.save(this.settings).subscribe(
             (settings: Array<Setting>) => {
-                this.updateCurrentSettings(settings);
-                this.setSettingsByCategory(settings);
-                this.isEditMode = false;
+                this.init(settings);
             }
         );
     }

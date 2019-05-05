@@ -7,6 +7,7 @@ import {ConfigRoutingModule} from "./config-routing.module";
 import {SettingsModalComponent} from "./settings/settings-modal.component";
 import {SettingsModalService} from "./settings/settings-modal.service";
 import {ListboxModule} from "primeng/listbox";
+import {KeyFilterModule} from "primeng/primeng";
 
 @NgModule({
     imports: [
@@ -14,6 +15,7 @@ import {ListboxModule} from "primeng/listbox";
 
         BrowserModule,
         FormsModule,
+
         ModalModule.forRoot(),
         ListboxModule,
 
