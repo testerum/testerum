@@ -8,6 +8,8 @@ import {SettingsModalComponent} from "./settings/settings-modal.component";
 import {SettingsModalService} from "./settings/settings-modal.service";
 import {ListboxModule} from "primeng/listbox";
 import {KeyFilterModule} from "primeng/primeng";
+import { RunnerModalComponent } from './runner/runner-modal.component';
+import {RunnerModalService} from "./runner/runner-modal.service";
 
 @NgModule({
     imports: [
@@ -25,12 +27,15 @@ import {KeyFilterModule} from "primeng/primeng";
     ],
     declarations: [
         SettingsModalComponent,
+        RunnerModalComponent,
     ],
     entryComponents: [
         SettingsModalComponent,
+        RunnerModalComponent,
     ],
     providers: [
         SettingsModalService,
+        RunnerModalService
     ],
 })
 export class ConfigModule { }

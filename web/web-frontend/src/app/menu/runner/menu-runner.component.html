@@ -1,0 +1,27 @@
+<div class="menu-runner">
+    <p-dropdown
+        [options]="runnersSelectItems"
+        [(ngModel)]="selectedItem"
+        (onClick)="onRunnersDropDownClick()"
+        (onChange)="onRunnerItemSelection()"
+        placeholder="{{hasNoRunnerConfig() ? 'Add Runner Configuration' : 'Select Runner Configuration'}}">
+
+        <ng-template let-item pTemplate="selectedItem">
+            <div class="item">
+                <i class="{{item.icon}}"></i>
+                <span class="item-label">{{item.label}}</span>
+            </div>
+        </ng-template>
+        <ng-template let-item pTemplate="item">
+            <div class="item">
+                <i class="{{item.icon}}"></i>
+                <span class="item-label">{{item.label}}</span>
+            </div>
+        </ng-template>
+    </p-dropdown>
+
+
+    <i class="run-button fas fa-play"
+       [class.run-button-disabled]="!isRunnableConfigSelected()"></i>
+</div>
+

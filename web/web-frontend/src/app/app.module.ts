@@ -59,6 +59,8 @@ import {ProjectReloadModalService} from "./functionalities/others/project_reload
 import {ProjectReloadModalComponent} from "./functionalities/others/project_reload_modal/project-reload-modal.component";
 import {AuthenticationHttpInterceptor} from "./service/interceptors/authentication.http-interceptor";
 import {ConfigModule} from "./functionalities/config/config.module";
+import {RunnerService} from "./service/runner.service";
+import { MenuRunnerComponent } from './menu/runner/menu-runner.component';
 
 @NgModule({
     imports: [
@@ -97,6 +99,7 @@ import {ConfigModule} from "./functionalities/config/config.module";
         EnvironmentEditModalComponent,
         NotFundComponent,
         ProjectReloadModalComponent,
+        MenuRunnerComponent,
     ],
     exports: [
         VariablesComponent,
@@ -122,6 +125,7 @@ import {ConfigModule} from "./functionalities/config/config.module";
         FeatureService,
         TagsService,
         UserService,
+        RunnerService,
 
         ResourceService,
         RdbmsService,

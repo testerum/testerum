@@ -26,9 +26,16 @@
         }
     }
 
+    .menu-center {
+        display: flex;
+        align-items: center;
+    }
+
     .menu-right {
         display: flex;
         align-items: center;
+        flex-grow: 1;
+        justify-content: flex-end;
 
         .menu-variables {
             display: flex;

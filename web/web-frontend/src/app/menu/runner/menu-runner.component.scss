@@ -1,0 +1,33 @@
+@import "../../../resources/css/testerum-variables";
+
+.menu-runner {
+    display: flex;
+    align-items: center;
+
+    .ui-dropdown {
+        .ui-placeholder {
+            color: #A9A9A9;
+        }
+
+        .item {
+            white-space: nowrap;
+            i {
+                margin-right: 0.5em;
+                text-align: center;
+                width: 1em;
+            }
+            .item-label {
+                white-space: nowrap
+            }
+        }
+    }
+
+    .run-button {
+        color: $success-color;
+        margin-left: 0.5em;
+        font-size: 1.5em;
+        &.run-button-disabled {
+            color: $gray-color;
+        }
+    }
+}
