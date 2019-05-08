@@ -1,0 +1,3 @@
+test-def: null
+
+    step: Then <<{{escapeXml(null)}}>> is equal to <<{{null}}>>

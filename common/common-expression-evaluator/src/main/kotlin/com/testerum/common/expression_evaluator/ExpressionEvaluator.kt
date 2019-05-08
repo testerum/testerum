@@ -3,6 +3,7 @@ package com.testerum.common.expression_evaluator
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
 import com.testerum.common.expression_evaluator.helpers.impl.DataGeneratorScriptingHelper
 import com.testerum.common.expression_evaluator.helpers.impl.DateScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.EscapeHelper
 import com.testerum.common.expression_evaluator.helpers.impl.GenerateStringByRegexScriptingHelper
 import com.testerum.common.expression_evaluator.helpers.impl.UuidScriptingHelper
 import delight.nashornsandbox.NashornSandbox
@@ -17,7 +18,8 @@ object ExpressionEvaluator {
             UuidScriptingHelper,
             DateScriptingHelper,
             DataGeneratorScriptingHelper,
-            GenerateStringByRegexScriptingHelper
+            GenerateStringByRegexScriptingHelper,
+            EscapeHelper
     )
 
     private val sandbox: NashornSandbox = NashornSandboxes.create().apply {

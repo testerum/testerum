@@ -13,7 +13,7 @@ object GenerateStringByRegexScriptingHelper : ScriptingHelper {
 
     private val generateStringByRegex = object : JsFunction(functionName = "generateStringByRegex") {
         override fun call(thiz: Any?, args: ScriptingArgs): Any? {
-            args.requireMinimumLength(minLength = 1)
+            args.requireLength(1)
             val regex: String = args[0]
 
             return Generex(regex).random()

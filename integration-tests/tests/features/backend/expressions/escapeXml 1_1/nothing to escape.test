@@ -1,0 +1,3 @@
+test-def: nothing to escape
+
+    step: Then <<{{escapeXml11("nothing to escape")}}>> is equal to <<nothing to escape>>

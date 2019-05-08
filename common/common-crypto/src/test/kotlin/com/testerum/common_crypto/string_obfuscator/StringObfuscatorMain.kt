@@ -1,8 +1,8 @@
 package com.testerum.common_crypto.string_obfuscator
 
-import org.apache.commons.lang3.StringEscapeUtils
+import org.apache.commons.text.StringEscapeUtils
 
-fun main(args: Array<String>) {
+fun main() {
     val textToObfuscate = "text to obfuscate"
 
     val obfuscatedText = StringObfuscator.obfuscate(textToObfuscate)

@@ -1,0 +1,3 @@
+test-def: null
+
+    step: Then <<{{escapeJson(null)}}>> is equal to <<{{null}}>>

@@ -1,0 +1,3 @@
+test-def: nothing to escape
+
+    step: Then <<{{escapeJson("nothing to escape")}}>> is equal to <<nothing to escape>>

@@ -1,0 +1,9 @@
+test-def: to escape
+
+    step: Given the variable <<var_escaped>> with value <<first line\nsecond \"line\"\nlast line>>
+    step: Then <<{{unescapeJavaScript(var_escaped)}}>> is equal to <<{{expectedValue}}>>
+        var expectedValue = <<
+            first line
+            second "line"
+            last line
+        >>
