@@ -2,6 +2,7 @@ package com.testerum.web_backend
 
 import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.web_backend.filter.angular_forwarder.AngularForwarderFilter
+import com.testerum.web_backend.filter.cache.DisableCacheFilter
 import com.testerum.web_backend.filter.project.ProjectFilter
 import com.testerum.web_backend.filter.project_fswatcher_pause.ProjectFsWatcherPauseFilter
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
@@ -126,6 +127,16 @@ object TesterumWebMain {
                 EnumSet.of(DispatcherType.REQUEST)
         )
 
+        // add DisableCacheFilter
+        webAppContext.addFilter(
+                FilterHolder().apply {
+                    filter = DisableCacheFilter()
+                    name = DisableCacheFilter::class.java.simpleName.decapitalize()
+                },
+                "/*",
+                EnumSet.of(DispatcherType.REQUEST)
+        )
+
         // add ProjectFilter
         webAppContext.addFilter(
                 FilterHolder().apply {
@@ -179,7 +190,6 @@ object TesterumWebMain {
 
                     initParameters["resourceBase"] = this.javaClass.getResource("/frontend")?.toString()
                     initParameters["dirAllowed"] = "true"
-                    initParameters["cacheControl"] = "must-revalidate"
                 },
                 "/"
         )
