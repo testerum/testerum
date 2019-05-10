@@ -15,7 +15,7 @@
         height: 100%;
 
         form {
-            height: calc(100% - 40px);
+            height: 100%;
         }
 
         .my-line {
@@ -31,13 +31,26 @@
         }
 
         .ui-tabview {
-            height: 100%;
+            height: calc(100% - 40px);
+            padding: 0 0.5em;
 
             .ui-tabview-panels {
-                height: calc(100% - 35px);
+                height: calc(100% - 49px);
 
                 .ui-tabview-panel {
                     height: 100%;
+
+                    .setting {
+                        .input-description-container {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+
+                            .my-label {
+                                margin-right: 7px;
+                            }
+                        }
+                    }
                 }
             }
         }

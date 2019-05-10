@@ -13,6 +13,9 @@ import {RunnerConfig} from "../model/runner-config.model";
 import {FormUtil} from "../../../../utils/form.util";
 import {NgForm} from "@angular/forms";
 import {SettingsUtil} from "../../settings/util/settings.util";
+import {Setting} from "../../settings/model/setting.model";
+import {SettingType} from "../../settings/model/setting.type.enum";
+import {InputTypeEnum} from "../../../../generic/components/form/dynamic-input/model/input-type.enum";
 
 @Component({
     selector: 'runner-config-editor',
@@ -29,6 +32,7 @@ export class RunnerConfigEditorComponent implements OnInit, OnDestroy {
 
     activeTabIndex: number = 0;
     settingsCategories: Array<string> = [];
+    settingsByCategory: Map<string, Array<Setting>> = new Map<string, Array<Setting>>();
 
     private selectedRunnerSubscription: Subscription;
 
@@ -42,7 +46,8 @@ export class RunnerConfigEditorComponent implements OnInit, OnDestroy {
                 this.runnerConfig = null;
             } else {
                 this.runnerConfig = runnerConfigs[0];
-                // SettingsUtil.populateSettingsByCategoryMap(this.runnerConfig.settings, this.settingsCategories);
+                SettingsUtil.populateSettingsCategoriesNames(this.runnerConfigService.settings, this.settingsCategories);
+                SettingsUtil.populateSettingsByCategoryMap(this.runnerConfigService.settings, this.settingsByCategory)
             }
 
             this.refresh();
@@ -72,5 +77,14 @@ export class RunnerConfigEditorComponent implements OnInit, OnDestroy {
         }
         this.refresh();
         this.runnerConfigService.refreshConfigListEventEmitter.emit();
+    }
+
+    getDynamicInputType(settingType: SettingType): InputTypeEnum {
+        return SettingsUtil.getDynamicInputType(settingType);
+    }
+
+    onSettingChange(settingValue: string, setting: Setting) {
+        console.log("settingValue", settingValue);
+        console.log("setting", setting);
     }
 }

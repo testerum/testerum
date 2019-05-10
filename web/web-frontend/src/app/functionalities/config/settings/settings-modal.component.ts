@@ -55,11 +55,7 @@ export class SettingsModalComponent implements AfterViewInit {
     }
 
     getDynamicInputType(settingType: SettingType): InputTypeEnum {
-        switch (settingType) {
-            case SettingType.TEXT: return InputTypeEnum.TEXT;
-            case SettingType.NUMBER: return InputTypeEnum.POSITIVE_INTEGER;
-            case SettingType.FILESYSTEM_DIRECTORY: return InputTypeEnum.FILESYSTEM_DIRECTORY;
-        }
+        return SettingsUtil.getDynamicInputType(settingType);
     }
 
     cancel() {

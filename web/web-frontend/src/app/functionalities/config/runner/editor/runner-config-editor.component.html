@@ -31,14 +31,22 @@
                     tab 1
                 </p-tabPanel>
 
-                <p-tabPanel header="Selenium">
-                    tab 2
-                </p-tabPanel>
+                <p-tabPanel *ngFor="let settingCategory of settingsCategories" header="{{settingCategory}}">
 
-                <p-tabPanel header="HTTP">
-                    tab 3
-                </p-tabPanel>
+                    <div class="setting vertical-space"
+                         *ngFor="let setting of settingsByCategory.get(settingCategory)">
+                        <div class="input-description-container">
+                            <div class="my-label">{{setting.definition.label? setting.definition.label : setting.definition.key}}</div>
+                            <info-icon [message]="setting.definition.description"></info-icon>
+                        </div>
 
+                        <dynamic-input [value]="setting.unresolvedValue"
+                                       [inputType]="getDynamicInputType(setting.definition.type)"
+                                       (change)="onSettingChange($event, setting)"></dynamic-input>
+
+                        <div class="vertical-space"></div>
+                    </div>
+                </p-tabPanel>
             </p-tabView>
         </form>
     </div>

@@ -2,19 +2,19 @@
 
     <div *ngIf="inputType == InputTypeEnum.TEXT">
         <input [(ngModel)]="value"
-               (change)="onValueChange($event)"
+               (ngModelChange)="onValueChange($event)"
                type="text" class="form-control full-width">
     </div>
 
     <div *ngIf="inputType == InputTypeEnum.POSITIVE_INTEGER">
         <input [(ngModel)]="value"
-               (change)="onValueChange($event)"
+               (ngModelChange)="onValueChange($event)"
                pKeyFilter="pint"
                type="text" class="form-control full-width">
     </div>
     <div *ngIf="inputType == InputTypeEnum.NUMBER">
         <input [(ngModel)]="value"
-               (change)="onValueChange($event)"
+               (ngModelChange)="onValueChange($event)"
                pKeyFilter="num"
                type="text" class="form-control full-width">
     </div>

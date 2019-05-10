@@ -1,5 +1,7 @@
 import {Setting} from "../model/setting.model";
 import {ArrayUtil} from "../../../../utils/array.util";
+import {SettingType} from "../model/setting.type.enum";
+import {InputTypeEnum} from "../../../../generic/components/form/dynamic-input/model/input-type.enum";
 
 export class SettingsUtil {
 
@@ -40,5 +42,13 @@ export class SettingsUtil {
         }
 
         return settingsByCategory;
+    }
+
+    static getDynamicInputType(settingType: SettingType): InputTypeEnum {
+        switch (settingType) {
+            case SettingType.TEXT: return InputTypeEnum.TEXT;
+            case SettingType.NUMBER: return InputTypeEnum.POSITIVE_INTEGER;
+            case SettingType.FILESYSTEM_DIRECTORY: return InputTypeEnum.FILESYSTEM_DIRECTORY;
+        }
     }
 }
