@@ -7,9 +7,14 @@ import {ConfigRoutingModule} from "./config-routing.module";
 import {SettingsModalComponent} from "./settings/settings-modal.component";
 import {SettingsModalService} from "./settings/settings-modal.service";
 import {ListboxModule} from "primeng/listbox";
-import {KeyFilterModule} from "primeng/primeng";
+import {KeyFilterModule, OrderListModule, TabViewModule, ToolbarModule, TooltipModule} from "primeng/primeng";
 import { RunnerModalComponent } from './runner/runner-modal.component';
 import {RunnerModalService} from "./runner/runner-modal.service";
+import {AngularSplitModule} from "angular-split";
+import { RunnersConfigListComponent } from './runner/list/runners-config-list.component';
+import {RunnerConfigService} from "./runner/runner-config.service";
+import { RunnersConfigToobarComponent } from './runner/list/runners-config-toobar/runners-config-toobar.component';
+import { RunnerConfigEditorComponent } from './runner/editor/runner-config-editor.component';
 
 @NgModule({
     imports: [
@@ -18,8 +23,13 @@ import {RunnerModalService} from "./runner/runner-modal.service";
         BrowserModule,
         FormsModule,
 
+        AngularSplitModule.forRoot(),
         ModalModule.forRoot(),
         ListboxModule,
+        OrderListModule,
+        ToolbarModule,
+        TooltipModule,
+        TabViewModule,
 
         GenericModule,
     ],
@@ -28,6 +38,9 @@ import {RunnerModalService} from "./runner/runner-modal.service";
     declarations: [
         SettingsModalComponent,
         RunnerModalComponent,
+        RunnersConfigListComponent,
+        RunnersConfigToobarComponent,
+        RunnerConfigEditorComponent,
     ],
     entryComponents: [
         SettingsModalComponent,
@@ -35,7 +48,8 @@ import {RunnerModalService} from "./runner/runner-modal.service";
     ],
     providers: [
         SettingsModalService,
-        RunnerModalService
+        RunnerModalService,
+        RunnerConfigService
     ],
 })
 export class ConfigModule { }

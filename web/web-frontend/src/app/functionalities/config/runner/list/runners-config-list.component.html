@@ -1,0 +1,18 @@
+<div class="runners-config-list">
+    <runners-config-toobar></runners-config-toobar>
+
+    <div class="runners-container">
+        <p-orderList [value]="runners"
+                     [selection]="selectedRunners"
+                     (onSelectionChange)="onOrderItemsSelected($event)"
+                     metaKeySelection="false">
+            <ng-template let-runner pTemplate="item">
+                <div class="runner-item">
+                    <i class="fas fa-bolt"></i>
+                    <span class="item-label">{{runner.name}}</span>
+                </div>
+            </ng-template>
+        </p-orderList>
+    </div>
+
+</div>

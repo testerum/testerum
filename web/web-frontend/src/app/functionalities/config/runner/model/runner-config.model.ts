@@ -38,4 +38,8 @@ export class RunnerConfig implements Serializable<RunnerConfig> {
             ',"selectedPaths":' + JsonUtil.serializeArrayOfSerializable(this.selectedPaths) +
             '}'
     }
+
+     clone(): RunnerConfig {
+        return new RunnerConfig().deserialize(JSON.parse(this.serialize()));
+    }
 }

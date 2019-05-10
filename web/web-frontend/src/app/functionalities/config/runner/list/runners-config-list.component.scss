@@ -1,0 +1,39 @@
+.runners-config-list {
+    height: 100%;
+
+    .runners-container {
+        height: calc(100% - 28px);
+        .ui-orderlist {
+            height: 100%;
+
+            .ui-orderlist-controls {
+                display: none;
+            }
+
+            .ui-orderlist-list-container {
+                width: 100%;
+                height: 100%;
+
+                .ui-orderlist-list {
+                    border: 0;
+                    height: 100%;
+
+                    .ui-orderlist-item {
+                        font-size: 1.5em;
+
+                        .runner-item {
+                            i {
+                                margin-right: 0.5em;
+                            }
+
+                            .item-label {
+                                vertical-align: text-top;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}

@@ -1,11 +1,20 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ViewChild} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ComponentRef,
+    EventEmitter,
+    ViewChild
+} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {RunnerConfig} from "./model/runner-config.model";
 
 @Component({
-  selector: 'runner-modal',
-  templateUrl: './runner-modal.component.html',
-  styleUrls: ['./runner-modal.component.scss']
+    selector: 'runner-modal',
+    templateUrl: './runner-modal.component.html',
+    styleUrls: ['./runner-modal.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RunnerModalComponent implements AfterViewInit {
 
@@ -13,11 +22,9 @@ export class RunnerModalComponent implements AfterViewInit {
     modalComponentRef: ComponentRef<RunnerModalComponent>;
 
     selectedCategory: string;
+    runnerConfigSelectedEventEmitter: EventEmitter<RunnerConfig> = new EventEmitter<RunnerConfig>();
 
-    constructor(private cd: ChangeDetectorRef) {}
-
-    public init(runners: Array<RunnerConfig>) {
-
+    constructor(private cd: ChangeDetectorRef) {
     }
 
     ngAfterViewInit(): void {
@@ -41,6 +48,8 @@ export class RunnerModalComponent implements AfterViewInit {
     }
 
     cancel() {
+        this.runnerConfigSelectedEventEmitter.complete();
         this.modal.hide();
+        this.refresh();
     }
 }

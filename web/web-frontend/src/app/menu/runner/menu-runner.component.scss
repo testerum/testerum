@@ -26,8 +26,11 @@
         color: $success-color;
         margin-left: 0.5em;
         font-size: 1.5em;
+        cursor: pointer;
+
         &.run-button-disabled {
             color: $gray-color;
+            cursor: default;
         }
     }
 }

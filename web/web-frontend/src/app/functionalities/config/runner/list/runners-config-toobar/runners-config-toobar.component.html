@@ -1,0 +1,42 @@
+<div class="runners-config-toolbar">
+    <p-toolbar>
+        <div class="ui-toolbar-group-left">
+            <div class="btn-group" role="group">
+                <div pTooltip="Add New Configuration"
+                     tooltipPosition="bottom"
+                     (click)="onAddNewConfiguration()"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div pTooltip="Remove Configuration"
+                     tooltipPosition="bottom"
+                     (click)="onRemoveConfiguration()"
+                     [class.disabled]="!isRunnersConfigSelected()"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fas fa-minus"></i>
+                </div>
+                <div pTooltip="Copy Configuration"
+                     tooltipPosition="bottom"
+                     (click)="onCopyConfiguration()"
+                     [class.disabled]="!isOnlyOneRunnerConfigSelected()"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fas fa-copy"></i>
+                </div>
+                <div pTooltip="Move Up"
+                     tooltipPosition="bottom"
+                     (click)="onMoveUp()"
+                     [class.disabled]="!isRunnerConfigSelectedAndNotTheFirstItem()"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fas fa-caret-up"></i>
+                </div>
+                <div pTooltip="Move Down"
+                     tooltipPosition="bottom"
+                     (click)="onMoveDown()"
+                     [class.disabled]="!isRunnerConfigSelectedAndNotTheLastItem()"
+                     class="btn btn-default btn-xs btn-group">
+                    <i class="fas fa-caret-down"></i>
+                </div>
+            </div>
+        </div>
+    </p-toolbar>
+</div>

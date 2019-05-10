@@ -27,22 +27,22 @@ export class MenuRunnerComponent implements OnInit {
             this.runners = runners;
 
             let runnersSelectItems = [];
-            // if (runners.length > 0) {
-            //     runnersSelectItems.push(
-            //         new StringSelectItem("Edit Configurations...", MenuRunnerComponent.EDIT_CONFIG_KEY, false, "fas fa-pencil-alt")
-            //     );
-            // }
-            //
-            // for (const runner of runners) {
-            //     runnersSelectItems.push(
-            //         new StringSelectItem(
-            //             runner.name,
-            //             runner.name,
-            //             false,
-            //             "fas fa-bolt"
-            //         )
-            //     )
-            // }
+            if (runners.length > 0) {
+                runnersSelectItems.push(
+                    new StringSelectItem("Edit Configurations...", MenuRunnerComponent.EDIT_CONFIG_KEY, false, "fas fa-pencil-alt")
+                );
+            }
+
+            for (const runner of runners) {
+                runnersSelectItems.push(
+                    new StringSelectItem(
+                        runner.name,
+                        runner.name,
+                        false,
+                        "fas fa-bolt"
+                    )
+                )
+            }
             this.runnersSelectItems = runnersSelectItems;
         });
     }
@@ -60,7 +60,7 @@ export class MenuRunnerComponent implements OnInit {
 
     onRunnerItemSelection() {
         if (this.selectedItem == MenuRunnerComponent.EDIT_CONFIG_KEY) {
-
+            this.runnerModalService.showRunnersModal(this.runners);
         }
     }
 

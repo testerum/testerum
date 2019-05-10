@@ -1,0 +1,45 @@
+<div class="runner-config-editor">
+    <div *ngIf="runnerConfig == null" class="no-runner-config-selected">
+        Click the + button to create a new configuration
+        <div *ngIf="hasRunnerConfigs()">or select an existing configuration to edit</div>
+    </div>
+
+    <div *ngIf="runnerConfig != null" class="runner-config-container">
+        <form class="form-horizontal">
+            <div class="my-line">
+                <label class="my-label label-size">Name</label>
+
+                <div class="my-value">
+                    <div class="my-value">
+                        <input required isNotBlankValidator
+                               #nameNgModel="ngModel" [(ngModel)]="runnerConfig.name"
+                               (ngModelChange)="onNameChange($event)"
+                               type="text" class="form-control" name="name"
+                               (keydown.enter)="$event.preventDefault()">
+                        <input-error [model]="nameNgModel"
+                                     [errorMessages]="{
+                                            required: 'A name for this runner configuration is required',
+                                            a_resource_with_the_same_name_already_exist: 'A running configuration with the same name already exists'
+                                         }"></input-error>
+                    </div>
+                </div>
+            </div>
+
+            <p-tabView [(activeIndex)]="activeTabIndex">
+
+                <p-tabPanel header="Tests to execute">
+                    tab 1
+                </p-tabPanel>
+
+                <p-tabPanel header="Selenium">
+                    tab 2
+                </p-tabPanel>
+
+                <p-tabPanel header="HTTP">
+                    tab 3
+                </p-tabPanel>
+
+            </p-tabView>
+        </form>
+    </div>
+</div>

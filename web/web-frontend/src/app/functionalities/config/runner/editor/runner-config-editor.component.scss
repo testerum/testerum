@@ -1,0 +1,45 @@
+.runner-config-editor {
+    height: 100%;
+
+    .no-runner-config-selected {
+        text-align: center;
+        margin-top: 2em;
+        font-size: 1.5em;
+
+        div {
+            margin-top: 0.3em;
+        }
+    }
+
+    .runner-config-container {
+        height: 100%;
+
+        form {
+            height: calc(100% - 40px);
+        }
+
+        .my-line {
+            margin: 0;
+            padding: 0.5em 0.5em;
+
+            .label-size {
+                width: 3em;
+            }
+            .my-value {
+                margin-left: 0.5em;
+            }
+        }
+
+        .ui-tabview {
+            height: 100%;
+
+            .ui-tabview-panels {
+                height: calc(100% - 35px);
+
+                .ui-tabview-panel {
+                    height: 100%;
+                }
+            }
+        }
+    }
+}

@@ -1,4 +1,4 @@
-<div bsModal #runnerModal="bs-modal" class="modal fade settings-modal" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+<div bsModal #runnerModal="bs-modal" class="modal fade runner-modal" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,7 +11,14 @@
 
             <!-- TRIAL LICENSE -->
             <div class="modal-body">
-
+                <as-split direction="horizontal">
+                    <as-split-area [size]="33">
+                        <runners-config-list></runners-config-list>
+                    </as-split-area>
+                    <as-split-area [size]="67">
+                        <runner-config-editor></runner-config-editor>
+                    </as-split-area>
+                </as-split>
             </div>
 
             <div class="modal-footer">
