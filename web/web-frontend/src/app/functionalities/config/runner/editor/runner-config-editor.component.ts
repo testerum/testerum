@@ -12,6 +12,7 @@ import {Subscription} from "rxjs";
 import {RunnerConfig} from "../model/runner-config.model";
 import {FormUtil} from "../../../../utils/form.util";
 import {NgForm} from "@angular/forms";
+import {SettingsUtil} from "../../settings/util/settings.util";
 
 @Component({
     selector: 'runner-config-editor',
@@ -27,6 +28,7 @@ export class RunnerConfigEditorComponent implements OnInit, OnDestroy {
     runnerConfig: RunnerConfig|null;
 
     activeTabIndex: number = 0;
+    settingsCategories: Array<string> = [];
 
     private selectedRunnerSubscription: Subscription;
 
@@ -39,7 +41,8 @@ export class RunnerConfigEditorComponent implements OnInit, OnDestroy {
             if(runnerConfigs.length == 0 || runnerConfigs.length > 1) {
                 this.runnerConfig = null;
             } else {
-                this.runnerConfig = runnerConfigs[0]
+                this.runnerConfig = runnerConfigs[0];
+                // SettingsUtil.populateSettingsByCategoryMap(this.runnerConfig.settings, this.settingsCategories);
             }
 
             this.refresh();

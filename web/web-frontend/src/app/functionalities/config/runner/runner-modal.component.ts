@@ -22,7 +22,6 @@ export class RunnerModalComponent implements AfterViewInit {
     modalComponentRef: ComponentRef<RunnerModalComponent>;
 
     selectedCategory: string;
-    runnerConfigSelectedEventEmitter: EventEmitter<RunnerConfig> = new EventEmitter<RunnerConfig>();
 
     constructor(private cd: ChangeDetectorRef) {
     }
@@ -48,7 +47,6 @@ export class RunnerModalComponent implements AfterViewInit {
     }
 
     cancel() {
-        this.runnerConfigSelectedEventEmitter.complete();
         this.modal.hide();
         this.refresh();
     }

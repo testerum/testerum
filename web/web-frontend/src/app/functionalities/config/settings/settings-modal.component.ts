@@ -1,10 +1,10 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ViewChild} from '@angular/core';
 import {SettingsService} from "../../../service/settings.service";
 import {Setting} from "./model/setting.model";
-import {ArrayUtil} from "../../../utils/array.util";
 import {SettingType} from "./model/setting.type.enum";
 import {ModalDirective} from "ngx-bootstrap";
 import {InputTypeEnum} from "../../../generic/components/form/dynamic-input/model/input-type.enum";
+import {SettingsUtil} from "./util/settings.util";
 
 @Component({
     selector: 'settings',
@@ -27,7 +27,8 @@ export class SettingsModalComponent implements AfterViewInit {
 
     public init(settings: Array<Setting>) {
         this.updateCurrentSettings(settings);
-        this.setSettingsByCategory(settings);
+        SettingsUtil.populateSettingsCategoriesNames(settings, this.settingsCategories);
+        SettingsUtil.populateSettingsByCategoryMap(settings, this.settingsByCategory);
         if (this.settingsCategories.length > 0) {
             this.selectedCategory = this.settingsCategories[0];
         }
@@ -63,40 +64,6 @@ export class SettingsModalComponent implements AfterViewInit {
 
     cancel() {
         this.modal.hide();
-    }
-
-    private setSettingsByCategory(settings: Array<Setting>) {
-        this.settingsCategories.length = 0;
-        this.settingsByCategory.forEach((value, key) => {value.length = 0} );
-
-        for (let setting of settings) {
-            let settingCategory = setting.definition.category ? setting.definition.category : "Unknown";
-            let settingMapValue = this.settingsByCategory.get(settingCategory);
-            if (!settingMapValue) {
-                settingMapValue = [];
-            }
-            settingMapValue.push(setting);
-            settingMapValue.sort((left, right) => {
-                return left.definition.key > right.definition.key ? 1 : -1
-            });
-
-            this.settingsByCategory.set(settingCategory, settingMapValue);
-
-            if (!ArrayUtil.containsElement(this.settingsCategories, settingCategory)) {
-                this.settingsCategories.push(settingCategory)
-            }
-        }
-
-        ArrayUtil.sort(this.settingsCategories);
-        if (ArrayUtil.containsElement(this.settingsCategories, "Unknown")) {
-            ArrayUtil.removeElementFromArray(this.settingsCategories, "Unknown");
-            this.settingsCategories.push("Unknown")
-        }
-
-        if (ArrayUtil.containsElement(this.settingsCategories, "Application")) {
-            ArrayUtil.removeElementFromArray(this.settingsCategories, "Application");
-            this.settingsCategories.splice(0, 0, "Application");
-        }
     }
 
     private updateCurrentSettings(settings: Array<Setting>) {

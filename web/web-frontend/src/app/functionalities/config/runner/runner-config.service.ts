@@ -2,12 +2,14 @@ import {EventEmitter, Injectable} from "@angular/core";
 import {RunnerConfig} from "./model/runner-config.model";
 import {RunnerService} from "../../../service/runner.service";
 import {ArrayUtil} from "../../../utils/array.util";
+import {Setting} from "../settings/model/setting.model";
 
 @Injectable()
 export class RunnerConfigService {
 
     selectedRunners: Array<RunnerConfig> = [];
     runners: Array<RunnerConfig> = [];
+    settings: Array<Setting> = [];
 
     selectedRunnerEventEmitter: EventEmitter<Array<RunnerConfig>> = new EventEmitter<Array<RunnerConfig>>();
     refreshConfigListEventEmitter: EventEmitter<void> = new EventEmitter<void>();

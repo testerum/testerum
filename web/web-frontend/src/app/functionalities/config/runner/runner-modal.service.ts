@@ -1,11 +1,10 @@
-import {ComponentFactoryResolver, EventEmitter, Injectable} from "@angular/core";
+import {ComponentFactoryResolver, Injectable} from "@angular/core";
 import {AppComponent} from "../../../app.component";
 import {RunnerModalComponent} from "./runner-modal.component";
 import {RunnerConfig} from "./model/runner-config.model";
-import {Project} from "../../../model/home/project.model";
-import {Observable} from "rxjs";
 import {RunnerConfigService} from "./runner-config.service";
-import {ArrayUtil} from "../../../utils/array.util";
+import {Setting} from "../settings/model/setting.model";
+import {SettingsService} from "../../../service/settings.service";
 
 @Injectable()
 export class RunnerModalService {
@@ -14,22 +13,25 @@ export class RunnerModalService {
 
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
-                private runnerConfigService: RunnerConfigService) {
+                private runnerConfigService: RunnerConfigService,
+                private settingsService: SettingsService) {
     }
 
-    showRunnersModal(runners: Array<RunnerConfig>): Observable<RunnerConfig> | null {
+    showRunnersModal(runners: Array<RunnerConfig>) {
         if (this.instance && this.instance.modal.isShown) {
             return null;
         }
+        this.settingsService.getSettings().subscribe(
+            (settings: Array<Setting>) => {
+                this.runnerConfigService.setRunners(runners);
+                this.runnerConfigService.settings = settings;
 
-        this.runnerConfigService.setRunners(runners);
+                const factory = this.componentFactoryResolver.resolveComponentFactory(RunnerModalComponent);
+                let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
+                this.instance = modalComponentRef.instance;
 
-        const factory = this.componentFactoryResolver.resolveComponentFactory(RunnerModalComponent);
-        let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
-        this.instance = modalComponentRef.instance;
-
-        this.instance.modalComponentRef = modalComponentRef;
-
-        return this.instance.runnerConfigSelectedEventEmitter;
+                this.instance.modalComponentRef = modalComponentRef;
+            }
+        );
     }
 }
