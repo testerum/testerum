@@ -3,18 +3,21 @@
     <div *ngIf="inputType == InputTypeEnum.TEXT">
         <input [(ngModel)]="value"
                (ngModelChange)="onValueChange($event)"
+               placeholder="{{defaultValue}}"
                type="text" class="form-control full-width">
     </div>
 
     <div *ngIf="inputType == InputTypeEnum.POSITIVE_INTEGER">
         <input [(ngModel)]="value"
                (ngModelChange)="onValueChange($event)"
+               placeholder="{{defaultValue}}"
                pKeyFilter="pint"
                type="text" class="form-control full-width">
     </div>
     <div *ngIf="inputType == InputTypeEnum.NUMBER">
         <input [(ngModel)]="value"
                (ngModelChange)="onValueChange($event)"
+               placeholder="{{defaultValue}}"
                pKeyFilter="num"
                type="text" class="form-control full-width">
     </div>
@@ -22,7 +25,7 @@
     <div *ngIf="inputType == InputTypeEnum.FILESYSTEM_DIRECTORY">
         <span class="full-width input-group">
             <file-dir-chooser [(ngModel)]="value"
-                              #repositoryPath="ngModel"></file-dir-chooser>
+                              #2repositoryPath="ngModel"></file-dir-chooser>
         </span>
     </div>
 

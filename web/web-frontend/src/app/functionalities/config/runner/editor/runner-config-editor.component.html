@@ -40,9 +40,10 @@
                             <info-icon [message]="setting.definition.description"></info-icon>
                         </div>
 
-                        <dynamic-input [value]="setting.unresolvedValue"
+                        <dynamic-input [defaultValue]="setting.unresolvedValue"
+                                       [value]="getValueForSetting(setting)"
                                        [inputType]="getDynamicInputType(setting.definition.type)"
-                                       (change)="onSettingChange($event, setting)"></dynamic-input>
+                                       (valueChange)="onSettingChange($event, setting)"></dynamic-input>
 
                         <div class="vertical-space"></div>
                     </div>

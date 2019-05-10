@@ -84,7 +84,18 @@ export class RunnerConfigEditorComponent implements OnInit, OnDestroy {
     }
 
     onSettingChange(settingValue: string, setting: Setting) {
+        if (settingValue == null) {
+            this.runnerConfig.settings.delete(setting.definition.key);
+            return
+        }
         console.log("settingValue", settingValue);
-        console.log("setting", setting);
+
+        this.runnerConfig.settings.set(setting.definition.key, settingValue);
+    }
+
+    getValueForSetting(setting: Setting): string {
+        let settingValue = this.runnerConfig.settings.get(setting.definition.key);
+
+        return settingValue
     }
 }

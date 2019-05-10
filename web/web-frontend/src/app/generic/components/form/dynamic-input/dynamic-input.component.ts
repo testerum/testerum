@@ -10,6 +10,7 @@ import {CompareMode} from "../../../../model/enums/compare-mode.enum";
 export class DynamicInputComponent implements OnInit {
 
     @Input() inputType: InputTypeEnum;
+    @Input() defaultValue: string;
     @Input() value: string;
     @Output() valueChange = new EventEmitter();
     @Output() change: EventEmitter<string> = new EventEmitter<string>();
