@@ -89,7 +89,7 @@ class FileManualCommentsSerializerTest {
         testRunner.execute(
                 original = """2 > 1""",
                 indentLevel = 0,
-                expected = """|comments = <<2 > 1>>
+                expected = """|comments = <<2 \> 1>>
                               |""".trimMargin()
         )
     }
@@ -99,7 +99,7 @@ class FileManualCommentsSerializerTest {
         testRunner.execute(
                 original = """2 >> 1""",
                 indentLevel = 0,
-                expected = """|comments = <<2 \>> 1>>
+                expected = """|comments = <<2 \>\> 1>>
                               |""".trimMargin()
         )
     }
@@ -109,7 +109,7 @@ class FileManualCommentsSerializerTest {
         testRunner.execute(
                 original = """2 \>> 1""",
                 indentLevel = 0,
-                expected = """|comments = <<2 \\>> 1>>
+                expected = """|comments = <<2 \\>\> 1>>
                               |""".trimMargin()
         )
     }
@@ -119,7 +119,7 @@ class FileManualCommentsSerializerTest {
         testRunner.execute(
                 original = """5000 >> 200 >> 1""",
                 indentLevel = 0,
-                expected = """|comments = <<5000 \>> 200 \>> 1>>
+                expected = """|comments = <<5000 \>\> 200 \>\> 1>>
                               |""".trimMargin()
         )
     }
@@ -150,7 +150,7 @@ class FileManualCommentsSerializerTest {
                 indentLevel = 0,
                 expected = """ |comments = <<
                                |    First line
-                               |    2 > 1
+                               |    2 \> 1
                                |    Another line
                                |>>
                                |""".trimMargin()
@@ -167,7 +167,7 @@ class FileManualCommentsSerializerTest {
                 indentLevel = 0,
                 expected = """ |comments = <<
                                |    First line
-                               |    2 \>> 1
+                               |    2 \>\> 1
                                |    Another line
                                |>>
                                |""".trimMargin()
@@ -184,7 +184,7 @@ class FileManualCommentsSerializerTest {
                 indentLevel = 0,
                 expected = """ |comments = <<
                                |    First line
-                               |    2 \\>> 1
+                               |    2 \\>\> 1
                                |    Another line
                                |>>
                                |""".trimMargin()
@@ -202,8 +202,8 @@ class FileManualCommentsSerializerTest {
                 indentLevel = 0,
                 expected = """ |comments = <<
                                |    First line
-                               |    5000 \>> 200
-                               |    200 \>> 1
+                               |    5000 \>\> 200
+                               |    200 \>\> 1
                                |    Another line
                                |>>
                                |""".trimMargin()
