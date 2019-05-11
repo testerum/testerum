@@ -7,7 +7,14 @@ import {ConfigRoutingModule} from "./config-routing.module";
 import {SettingsModalComponent} from "./settings/settings-modal.component";
 import {SettingsModalService} from "./settings/settings-modal.service";
 import {ListboxModule} from "primeng/listbox";
-import {KeyFilterModule, OrderListModule, TabViewModule, ToolbarModule, TooltipModule} from "primeng/primeng";
+import {
+    AutoCompleteModule,
+    KeyFilterModule,
+    OrderListModule,
+    TabViewModule,
+    ToolbarModule,
+    TooltipModule
+} from "primeng/primeng";
 import { RunnerModalComponent } from './runner/runner-modal.component';
 import {RunnerModalService} from "./runner/runner-modal.service";
 import {AngularSplitModule} from "angular-split";
@@ -15,6 +22,7 @@ import { RunnersConfigListComponent } from './runner/list/runners-config-list.co
 import {RunnerConfigService} from "./runner/runner-config.service";
 import { RunnersConfigToobarComponent } from './runner/list/runners-config-toobar/runners-config-toobar.component';
 import { RunnerConfigEditorComponent } from './runner/editor/runner-config-editor.component';
+import { RunnerConfigTestsToExecuteComponent } from './runner/editor/runner-config-tests-to-execute/runner-config-tests-to-execute.component';
 
 @NgModule({
     imports: [
@@ -30,6 +38,7 @@ import { RunnerConfigEditorComponent } from './runner/editor/runner-config-edito
         ToolbarModule,
         TooltipModule,
         TabViewModule,
+        AutoCompleteModule,
 
         GenericModule,
     ],
@@ -41,6 +50,7 @@ import { RunnerConfigEditorComponent } from './runner/editor/runner-config-edito
         RunnersConfigListComponent,
         RunnersConfigToobarComponent,
         RunnerConfigEditorComponent,
+        RunnerConfigTestsToExecuteComponent,
     ],
     entryComponents: [
         SettingsModalComponent,

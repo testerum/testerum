@@ -1,0 +1,32 @@
+<div class="runner-config-tests-to-execute">
+    <div class="my-line">
+        <label class="my-label label-size">Tags to execute:</label>
+        <div class="my-value my-default-line-height">
+            <p-autoComplete #tagsToExecuteElement
+                            [(ngModel)]="runnerConfig.tagsToExecute"
+                            [suggestions]="tagsToExecuteToShow"
+                            (completeMethod)="onSearchTagToExecute($event)"
+                            (onSelect)="onTagToExecuteSelect($event)"
+                            (onKeyUp)="onTagsToExecuteKeyUp($event);"
+                            [delay]="0"
+                            [multiple]="true"
+                            [dropdown]="true"
+                            name="tags"></p-autoComplete>
+        </div>
+    </div>
+    <div class="my-line">
+        <label class="my-label label-size">Tags to exclude:</label>
+        <div class="my-value my-default-line-height">
+            <p-autoComplete #tagsToExcludeElement
+                            [(ngModel)]="runnerConfig.tagsToExclude"
+                            [suggestions]="tagsToExcludeToShow"
+                            (completeMethod)="onSearchTagToExclude($event)"
+                            (onSelect)="onTagToExcludeSelect($event)"
+                            (onKeyUp)="onTagsToExcludeKeyUp($event);"
+                            [delay]="0"
+                            [multiple]="true"
+                            [dropdown]="true"
+                            name="tags"></p-autoComplete>
+        </div>
+    </div>
+</div>

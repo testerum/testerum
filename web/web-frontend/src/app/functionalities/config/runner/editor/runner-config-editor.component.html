@@ -28,7 +28,7 @@
             <p-tabView [(activeIndex)]="activeTabIndex">
 
                 <p-tabPanel header="Tests to execute">
-                    tab 1
+                    <runner-config-tests-to-execute [runnerConfig]="runnerConfig"></runner-config-tests-to-execute>
                 </p-tabPanel>
 
                 <p-tabPanel *ngFor="let settingCategory of settingsCategories" header="{{settingCategory}}">

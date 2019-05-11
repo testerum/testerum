@@ -46,6 +46,7 @@ export class RunnerConfigEditorComponent implements OnInit, OnDestroy {
                 this.runnerConfig = null;
             } else {
                 this.runnerConfig = runnerConfigs[0];
+                this.activeTabIndex = 0;
                 SettingsUtil.populateSettingsCategoriesNames(this.runnerConfigService.settings, this.settingsCategories);
                 SettingsUtil.populateSettingsByCategoryMap(this.runnerConfigService.settings, this.settingsByCategory)
             }
