@@ -23,6 +23,10 @@ import {RunnerConfigService} from "./runner/runner-config.service";
 import { RunnersConfigToobarComponent } from './runner/list/runners-config-toobar/runners-config-toobar.component';
 import { RunnerConfigEditorComponent } from './runner/editor/runner-config-editor.component';
 import { RunnerConfigTestsToExecuteComponent } from './runner/editor/runner-config-tests-to-execute/runner-config-tests-to-execute.component';
+import {RunnerConfigTestTreeService} from "./runner/editor/runner-config-tests-to-execute/runner-config-test-tree/runner-config-test-tree.service";
+import {RunnerConfigTestTreeComponent} from "./runner/editor/runner-config-tests-to-execute/runner-config-test-tree/runner-config-test-tree.component";
+import {RunnerConfigTestTreeToolbarComponent} from "./runner/editor/runner-config-tests-to-execute/runner-config-test-tree/toolbar/runner-config-test-tree-toolbar.component";
+import {RunnerConfigTestTreeNodeComponent} from "./runner/editor/runner-config-tests-to-execute/runner-config-test-tree/nodes/runner-tree-node/runner-config-test-tree-node.component";
 
 @NgModule({
     imports: [
@@ -51,15 +55,20 @@ import { RunnerConfigTestsToExecuteComponent } from './runner/editor/runner-conf
         RunnersConfigToobarComponent,
         RunnerConfigEditorComponent,
         RunnerConfigTestsToExecuteComponent,
+        RunnerConfigTestTreeComponent,
+        RunnerConfigTestTreeToolbarComponent,
+        RunnerConfigTestTreeNodeComponent,
     ],
     entryComponents: [
         SettingsModalComponent,
         RunnerModalComponent,
+        RunnerConfigTestTreeNodeComponent,
     ],
     providers: [
         SettingsModalService,
         RunnerModalService,
-        RunnerConfigService
+        RunnerConfigService,
+        RunnerConfigTestTreeService,
     ],
 })
 export class ConfigModule { }
