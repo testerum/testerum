@@ -8,6 +8,9 @@ import {RunnerConfigTestTreeContainerModel} from "../../model/runner-config-test
 import {ModelComponentMapping} from "../../../../../../../../model/infrastructure/model-component-mapping.model";
 import {UrlService} from "../../../../../../../../service/url.service";
 import {ManualTestStatus} from "../../../../../../../manual/plans/model/enums/manual-test-status.enum";
+import {RunnerConfigTestTreeNodeStatusEnum} from "../../model/enum/runner-config-test-tree-node-status.enum";
+import {SelectionStateEnum} from "../../../../../../../manual/plans/editor/manual-select-tests-tree/model/enum/selection-state.enum";
+import {ManualSelectTestsTreeContainerModel} from "../../../../../../../manual/plans/editor/manual-select-tests-tree/model/manual-select-tests-tree-container.model";
 
 @Component({
     moduleId: module.id,
@@ -23,7 +26,7 @@ export class RunnerConfigTestTreeNodeComponent implements OnDestroy {
     @Input() model: RunnerConfigTestTreeBaseModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
-    ManualTestStatus = ManualTestStatus;
+    RunnerConfigTestTreeNodeStatusEnum = RunnerConfigTestTreeNodeStatusEnum;
 
     constructor(private treeComponentService: RunnerConfigTestTreeComponentService,
                 private manualTestsStatusTreeService: RunnerConfigTestTreeService,
@@ -51,12 +54,9 @@ export class RunnerConfigTestTreeNodeComponent implements OnDestroy {
 
     getStatusTooltip(): string {
         switch (this.model.status) {
-            case ManualTestStatus.NOT_EXECUTED: return "Not Executed";
-            case ManualTestStatus.IN_PROGRESS: return "In Progress";
-            case ManualTestStatus.PASSED: return "Passed";
-            case ManualTestStatus.FAILED: return "Failed";
-            case ManualTestStatus.BLOCKED: return "Blocked";
-            case ManualTestStatus.NOT_APPLICABLE: return "Not Applicable";
+            case RunnerConfigTestTreeNodeStatusEnum.SELECTED: return "Not Selected";
+            case RunnerConfigTestTreeNodeStatusEnum.PARTIAL_SELECTED: return "Partially selected";
+            case RunnerConfigTestTreeNodeStatusEnum.NOT_SELECTED: return "Not selected";
 
             default: return "";
         }
@@ -66,6 +66,31 @@ export class RunnerConfigTestTreeNodeComponent implements OnDestroy {
         this.model.jsonTreeNodeState.showChildren = !this.model.jsonTreeNodeState.showChildren
     }
 
-    setSelected() {
+    selectOrNot() {
+        this.model.setSelected(!this.model.isSelected());
+        this.model.status = this.model.status != RunnerConfigTestTreeNodeStatusEnum.SELECTED ? RunnerConfigTestTreeNodeStatusEnum.SELECTED : RunnerConfigTestTreeNodeStatusEnum.NOT_SELECTED ;
+
+        if(this.model.parentContainer instanceof RunnerConfigTestTreeContainerModel) {
+            this.model.parentContainer.calculateCheckState();
+        }
+
+        this.selectOrNotChildren(this.model);
+    }
+
+    private selectOrNotChildren(node: RunnerConfigTestTreeBaseModel) {
+        if (!(node instanceof RunnerConfigTestTreeContainerModel)) { return; }
+
+        let container: RunnerConfigTestTreeContainerModel = node as RunnerConfigTestTreeContainerModel;
+        container.status = this.model.status;
+        this.model.setSelected(!this.model.isSelected());
+
+        for (let child of container.children) {
+            if (child.isContainer()) {
+                this.selectOrNotChildren(child as RunnerConfigTestTreeBaseModel)
+            } else {
+                child.setSelected(this.model.status == RunnerConfigTestTreeNodeStatusEnum.SELECTED);
+                child.status = this.model.status;
+            }
+        }
     }
 }

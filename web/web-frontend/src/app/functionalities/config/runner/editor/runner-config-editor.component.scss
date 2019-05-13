@@ -13,6 +13,7 @@
 
     .runner-config-container {
         height: 100%;
+        overflow: hidden;
 
         form {
             height: 100%;
@@ -32,13 +33,35 @@
 
         .ui-tabview {
             height: calc(100% - 40px);
-            padding: 0 0.5em;
+            padding: 0 0.25em;
+
+            .ui-tabview-nav {
+                .ui-state-active {
+                    &:hover {
+                        .ui-tabview-left-icon {
+                            color: black;
+                        }
+                    }
+                    .ui-tabview-left-icon {
+                        margin-right: 0.3em;
+                    }
+                }
+                li {
+                    a {
+                        padding: 0.3em .5em;
+                    }
+                }
+            }
 
             .ui-tabview-panels {
-                height: calc(100% - 49px);
+                height: calc(100% - 39px);
+                width: 100%;
+                padding: 0;
 
                 .ui-tabview-panel {
                     height: 100%;
+                    overflow: auto;
+                    padding: 0.571em 1em;
 
                     .setting {
                         .input-description-container {

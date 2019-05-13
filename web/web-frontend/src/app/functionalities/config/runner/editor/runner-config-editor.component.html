@@ -27,11 +27,11 @@
 
             <p-tabView [(activeIndex)]="activeTabIndex">
 
-                <p-tabPanel header="Tests to execute">
+                <p-tabPanel header="Tests to execute" leftIcon="fas fa-bolt">
                     <runner-config-tests-to-execute [runnerConfig]="runnerConfig"></runner-config-tests-to-execute>
                 </p-tabPanel>
 
-                <p-tabPanel *ngFor="let settingCategory of settingsCategories" header="{{settingCategory}}">
+                <p-tabPanel *ngFor="let settingCategory of settingsCategories" header="{{settingCategory}}" leftIcon="fas fa-cogs">
 
                     <div class="setting vertical-space"
                          *ngFor="let setting of settingsByCategory.get(settingCategory)">

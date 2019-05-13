@@ -10,6 +10,7 @@ import {ManualTestStatus} from "../../../../../../manual/plans/model/enums/manua
 import {RunnerConfigTestTreeNodeModel} from "../model/runner-config-test-tree-node.model";
 import {RunnerConfigTestTreeRootModel} from "../model/runner-config-test-tree-root.model";
 import {JsonTreeNode} from "../../../../../../../generic/components/json-tree/model/json-tree-node.model";
+import {RunnerConfigTestTreeNodeStatusEnum} from "../model/enum/runner-config-test-tree-node-status.enum";
 
 export class RunnerConfigTestTreeUtil {
 
@@ -21,7 +22,7 @@ export class RunnerConfigTestTreeUtil {
             treeModel,
             serverRootNode.path,
             serverRootNode.name,
-            ManualTestStatus.NOT_EXECUTED
+            RunnerConfigTestTreeNodeStatusEnum.NOT_SELECTED
         );
 
         RunnerConfigTestTreeUtil.mapServerNodeChildrenToTreeNode(serverRootNode, rootPackage);
@@ -38,13 +39,13 @@ export class RunnerConfigTestTreeUtil {
         for (const serverNode of serverContainerNode.children) {
 
             if (serverNode instanceof FeatureFeatureNode) {
-                let uiFeatureNode = new RunnerConfigTestTreeContainerModel(uiContainerNode, serverNode.path, serverNode.name, ManualTestStatus.NOT_EXECUTED);
+                let uiFeatureNode = new RunnerConfigTestTreeContainerModel(uiContainerNode, serverNode.path, serverNode.name, RunnerConfigTestTreeNodeStatusEnum.NOT_SELECTED);
                 RunnerConfigTestTreeUtil.mapServerNodeChildrenToTreeNode(serverNode, uiFeatureNode);
                 uiContainerNode.children.push(uiFeatureNode);
             }
 
             if (serverNode instanceof TestFeatureNode) {
-                let uiTestNode = new RunnerConfigTestTreeNodeModel(uiContainerNode, serverNode.path, serverNode.name, ManualTestStatus.NOT_EXECUTED);
+                let uiTestNode = new RunnerConfigTestTreeNodeModel(uiContainerNode, serverNode.path, serverNode.name, RunnerConfigTestTreeNodeStatusEnum.NOT_SELECTED);
                 uiContainerNode.children.push(uiTestNode)
             }
         }

@@ -1,14 +1,5 @@
 <div class="tree" style="position: relative; height: 100%; width: 100%;">
-    <div style="width: 100%">
-        <manual-tests-status-tree-toolbar
-            [treeModel]="runnerConfigTestTreeService.treeModel"
-            [planPath]="planPath">
-        </manual-tests-status-tree-toolbar>
-    </div>
-
-    <div style="">
-        <json-tree [treeModel]="runnerConfigTestTreeService.treeModel"
-                   [modelComponentMapping]="modelComponentMapping">
-        </json-tree>
-    </div>
+    <json-tree [treeModel]="runnerConfigTestTreeService.treeModel"
+               [modelComponentMapping]="modelComponentMapping">
+    </json-tree>
 </div>

@@ -1,24 +1,21 @@
-<div class="node">
+<div class="node runner-config-test-tree-node">
 
     <div class="full-line"
-         (click)="setSelected();$event.stopPropagation();"
+         (click)="selectOrNot();$event.stopPropagation();"
          (dblclick)="collapseNode()"
          title="{{getStatusTooltip()}}">
 
         <i aria-hidden="true"
-           [class.fa_my-runner-waiting-colored]="model.status == ManualTestStatus.NOT_EXECUTED"
-           [class.fa_my-runner-executing-colored]="model.status == ManualTestStatus.IN_PROGRESS"
-           [class.fa_my-runner-passed-colored]="model.status == ManualTestStatus.PASSED"
-           [class.fa_my-runner-failed-colored]="model.status == ManualTestStatus.FAILED"
-           [class.fa_my-runner-disabled]="model.status == ManualTestStatus.BLOCKED"
-           [class.fa_my-runner-attention-colored]="model.status == ManualTestStatus.NOT_APPLICABLE"></i>
+           [class.fa_my-runner-config-test-selected]="model.status == RunnerConfigTestTreeNodeStatusEnum.SELECTED"
+           [class.fa_my-runner-config-test-partial-selected]="model.status == RunnerConfigTestTreeNodeStatusEnum.PARTIAL_SELECTED"
+           [class.fa_my-runner-config-test-not-selected]="model.status == RunnerConfigTestTreeNodeStatusEnum.NOT_SELECTED"></i>
 
         <i *ngIf="isFeatureNode()"
            aria-hidden="true"
            [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
            [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
 
-        <i *ngIf="isTestNode()" class="fa_my-manual-test" aria-hidden="true"></i>
+        <i *ngIf="isTestNode()" class="fa_my-automated-test" aria-hidden="true"></i>
 
         <span class="node-text"
               [class.tree-leaf-selected]="model.isSelected()">{{model.name}}</span>

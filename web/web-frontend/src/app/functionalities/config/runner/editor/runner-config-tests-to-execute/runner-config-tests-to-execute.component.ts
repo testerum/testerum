@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {RunnerConfig} from "../../model/runner-config.model";
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../../utils/array.util";

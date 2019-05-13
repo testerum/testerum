@@ -1,15 +1,41 @@
 @import "../../../../../../../../../resources/css/testerum-variables";
-i {
-    margin-right: 3px;
-    margin-top: 5px;
+$fa-font-path: '../../../../../../../../../../node_modules/@fortawesome/fontawesome-free/webfonts';
+@import '../../../../../../../../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
+@import '../../../../../../../../../../node_modules/@fortawesome/fontawesome-free/scss/regular';
+@import '../../../../../../../../../../node_modules/@fortawesome/fontawesome-free/scss/solid';
+
+.runner-config-test-tree-node {
+    i {
+        margin-right: 3px;
+        margin-top: 5px;
+    }
+
+    .full-line {
+        display: flex;
+        align-items: flex-start;
+
+        .tree-leaf-selected {
+            background-color: inherit;
+            border-radius: 0;
+            padding: 0;
+        }
+    }
+
+    .fa_my-runner-config-test-selected {
+        @extend .far;
+        @extend .fa-check-square;
+        width: 13px;
+    }
+    .fa_my-runner-config-test-partial-selected {
+        @extend .far;
+        @extend .fa-minus-square;
+        width: 13px;
+    }
+    .fa_my-runner-config-test-not-selected {
+        @extend .far;
+        @extend .fa-square;
+        width: 13px;
+    }
 }
 
-.full-line {
-    display: flex;
-    align-items: flex-start;
-}
-
-.my-node-executing-color {
-    color: $success-color;
-}
 
