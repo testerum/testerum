@@ -3,13 +3,13 @@ import {PageNotFoundComponent} from "./generic/components/page_not_found/page-no
 import {NgModule} from "@angular/core";
 import {SettingsComponent} from "./functionalities/config/settings/settings.component";
 import {LicenseGuard} from "./service/guards/license.guard";
-import {LicenseComponent} from "./functionalities/config/license/license.component";
 import {CurrentProjectGuard} from "./service/guards/current-project.guard";
 import {NotFundComponent} from "./functionalities/others/not-fund/not-fund.component";
+import {LicensePageComponent} from "./functionalities/user/license/page/license-page.component";
 
 const appRoutes: Routes = [
 
-    { path: "license", component: LicenseComponent},
+    { path: "license", component: LicensePageComponent},
     { path: ":project/not-found", component: NotFundComponent},
     { path: "not-found", component: NotFundComponent},
     { path: ":project/settings", component: SettingsComponent, canActivate: [LicenseGuard, CurrentProjectGuard]},

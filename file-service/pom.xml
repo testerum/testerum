@@ -26,6 +26,12 @@
             <artifactId>common-json</artifactId>
         </dependency>
 
+        <!-- common-encrypted-prefs -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-encrypted-prefs</artifactId>
+        </dependency>
+
         <!-- test-file-format -->
         <dependency>
             <groupId>com.testerum</groupId>

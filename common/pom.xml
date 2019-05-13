@@ -28,6 +28,7 @@
         <module>common-json</module>
         <module>common-jdk</module>
         <module>common-stats</module>
+        <module>common-encrypted-prefs</module>
     </modules>
 
 </project>

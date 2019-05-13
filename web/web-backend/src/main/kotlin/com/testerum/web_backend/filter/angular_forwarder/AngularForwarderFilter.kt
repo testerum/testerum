@@ -31,9 +31,9 @@ class AngularForwarderFilter : Filter {
     private fun doHttpFilter(request: HttpServletRequest,
                              response: HttpServletResponse,
                              chain: FilterChain) {
-        val requestURI = request.requestURI
+        val requestUri = request.requestURI
 
-        if (AngularForwardingSelector.shouldForward(requestURI)) {
+        if (AngularForwardingSelector.shouldForward(requestUri)) {
             val requestDispatcher = request.getRequestDispatcher(forwardToUrl)
             requestDispatcher.forward(request, response)
         } else {

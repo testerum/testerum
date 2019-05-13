@@ -1,0 +1,65 @@
+<div bsModal #userProfileModal="bs-modal" class="modal fade userProfile-modal" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="cancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    <i class="fas fa-user"></i>
+                    License Details
+                </h4>
+            </div>
+
+            <!-- TRIAL LICENSE -->
+            <div class="modal-body">
+                <div *ngIf="isTrialLicense() || serverRequiresAuthentication()" class="not-licensed-panel">
+
+                    <div *ngIf="isTrialLicense()" class="trial-license-panel">
+                        <div class="title">{{isTrialLicenseExpired() ? 'Trial Period Expired' : 'Trial License'}}</div>
+
+                        <div class="my-line">
+                            <label class="my-label label-size">End date:</label>
+                            <div class="my-value">{{getDateAsString(model.trialLicense.endDate)}} </div>
+                        </div>
+
+                        <div *ngIf="!this.model.trialLicense.expired" class="my-line">
+                            <label class="my-label label-size">Remaining days:</label>
+                            <div class="my-value">{{getTrialRemainingDays()}} </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="!isTrialLicense()" class="license-required-panel">
+                        <div class="title">Authentication Required</div>
+                    </div>
+
+                    <authentication (authChange)="onAuthenticationChanged()"></authentication>
+                </div>
+
+                <!-- AUTHENTICATED USER -->
+                <div *ngIf="isUserAuthenticated()" class="user-license">
+
+                    <div *ngIf="isUserLicenseExpired()" class="title">'Expired License'</div>
+
+                    <div class="my-line">
+                        <label class="my-label label-size">Name:</label>
+                        <div class="my-value">{{model.currentUserLicense.firstName}} {{model.currentUserLicense.lastName}}</div>
+                    </div>
+
+                    <div class="my-line">
+                        <label class="my-label label-size">Email:</label>
+                        <div class="my-value">{{model.currentUserLicense.email}}</div>
+                    </div>
+
+                    <div class="my-line">
+                        <label class="my-label label-size">End date:</label>
+                        <div class="my-value">{{getDateAsString(model.currentUserLicense.expirationDate)}} </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button *ngIf="isUserAuthenticated()" (click)="logout()" type="button" class="btn btn-warning" data-dismiss="modal">Logout</button>
+                <button (click)="ok()" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,9 +1,10 @@
-import {Component, ViewChild} from "@angular/core";
-import {VariablesComponent} from "../functionalities/variables/variables.component";
+import {Component} from "@angular/core";
 import {NavigationEnd, Router} from "@angular/router";
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ContextService} from "../service/context.service";
 import {UrlService} from "../service/url.service";
+import {FeedbackModalService} from "../functionalities/user/feedback/feedback-modal.service";
+import {LicenseModalService} from "../functionalities/user/license/modal/license-modal.service";
 
 @Component({
     moduleId: module.id,
@@ -31,7 +32,9 @@ export class MenuComponent {
 
     constructor(private router:Router,
                 private contextService: ContextService,
-                public urlService: UrlService) {
+                public urlService: UrlService,
+                private licenseModalService: LicenseModalService,
+                private feedbackModalService: FeedbackModalService) {
         router.events.subscribe(event => {
 
             if (event instanceof NavigationEnd) {
@@ -65,6 +68,23 @@ export class MenuComponent {
 
     getProjectName(): string {
         return this.contextService.getProjectName();
+    }
+
+    showFeedback() {
+        this.feedbackModalService.showFeedbackModal();
+    }
+
+    showLicense() {
+        this.licenseModalService.showLicenseModal();
+    }
+
+    isUserAuthenticated(): boolean {
+        return this.contextService.license.isLoggedIn();
+    }
+
+    logout () {
+        this.contextService.license.logout();
+        this.urlService.navigateToLicense(window.location.href);
     }
 }
 

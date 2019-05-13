@@ -2,6 +2,19 @@ import {Serializable} from "../model/infrastructure/serializable.model";
 
 export class JsonUtil {
 
+    public static serializeDateWithoutTime(date: Date): string {
+        if (date) {
+            // format is "2019-04-02T15:19:21.995Z"
+            // we are keeping only the date part
+            const dateTimeAsString = date.toJSON();
+            const dateAsString = dateTimeAsString.substring(0, 10);
+
+            return JSON.stringify(dateAsString);
+        } else {
+            return "null";
+        }
+    }
+
     public static serializeSerializable(serializable: Serializable<any>): string {
         return serializable ? serializable.serialize() : "null";
     }

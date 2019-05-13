@@ -13,6 +13,11 @@ export class UrlUtil {
             return null;
         }
 
+        let param = activatedRoute.snapshot.params[paramName];
+        if (param) {
+            return param
+        }
+
         return activatedRoute.firstChild ? activatedRoute.firstChild.snapshot.params[paramName] : null;
     }
 

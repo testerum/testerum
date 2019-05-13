@@ -1,0 +1,26 @@
+.feedback-modal {
+
+    .error-message {
+        padding: inherit;
+        margin-bottom: 1em;
+        border-radius: 0.3em;
+        text-align: center;
+
+        .fa-exclamation-triangle {
+            margin-right: 0.3em;
+        }
+    }
+
+    .label-size {
+        width: 7em;
+    }
+
+    textarea.description {
+        width: 100%;
+        resize: vertical;
+    }
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

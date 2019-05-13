@@ -42,16 +42,6 @@ export class TestsService {
             map(it => this.modelRepairer.repairTestModel(it)));
     }
 
-    private static extractTestsModel(res: Array<TestModel>):Array<TestModel> {
-        let response:Array<TestModel> = [];
-        for(let testsModelAsJson of res) {
-            let testsModel = new TestModel().deserialize(testsModelAsJson);
-            response.push(testsModel)
-        }
-
-        return response;
-    }
-
     getTest(pathAsString: string): Observable<TestModel> {
 
         const httpOptions = {

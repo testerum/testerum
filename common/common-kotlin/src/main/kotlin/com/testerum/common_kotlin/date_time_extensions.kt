@@ -5,7 +5,7 @@ import java.time.ZoneId
 
 val UTC_TIMEZONE = ZoneId.of("UTC")
 
-fun utcLocalDateTime(): LocalDateTime = LocalDateTime.now(UTC_TIMEZONE)
+fun utcCurrentLocalDateTime(): LocalDateTime = LocalDateTime.now(UTC_TIMEZONE)
 
 fun LocalDateTime.localToUtcTimeZone(): LocalDateTime = atZone(ZoneId.systemDefault()).withZoneSameInstant(UTC_TIMEZONE).toLocalDateTime()
 

@@ -1,21 +1,21 @@
 package com.testerum.cloud_client.licenses.file
 
+import com.testerum.cloud_client.licenses.model.license.LicensedUserProfile
+import com.testerum.cloud_client.licenses.parser.SignedLicensedUserProfileParser
 import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.walkAndCollect
-import com.testerum.cloud_client.licenses.model.user.User
-import com.testerum.cloud_client.licenses.parser.SignedUserParser
 import java.net.URLEncoder
 import java.nio.file.Files
 import java.nio.file.Path as JavaPath
 
-class LicenseFileService(private val signedUserParser: SignedUserParser) {
+class LicenseFileService(private val signedLicensedUserProfileParser: SignedLicensedUserProfileParser) {
 
-    fun save(signedUser: String,
-             licensesDir: JavaPath): User {
-        val user = signedUserParser.parse(signedUser)
+    fun save(signedLicensedUserProfile: String,
+             licensesDir: JavaPath): LicensedUserProfile {
+        val licensedUserProfile = signedLicensedUserProfileParser.parse(signedLicensedUserProfile)
 
         val fileName = URLEncoder.encode(
-                user.email,
+                licensedUserProfile.assigneeEmail,
                 Charsets.UTF_8.name()
         )
 
@@ -25,30 +25,34 @@ class LicenseFileService(private val signedUserParser: SignedUserParser) {
 
         Files.write(
                 filePath,
-                signedUser.toByteArray(Charsets.UTF_8)
+                signedLicensedUserProfile.toByteArray(Charsets.UTF_8)
         )
 
-        return user
+        return licensedUserProfile
     }
 
-    fun getUsers(licensesDir: JavaPath): List<User> {
-        val result = mutableListOf<User>()
+    fun getLicenses(licensesDir: JavaPath): List<LicensedUserProfile> {
+        val result = mutableListOf<LicensedUserProfile>()
 
         val licenseFiles: List<JavaPath> = licensesDir.walkAndCollect { true }
         for (licenseFile in licenseFiles) {
             try {
-                val signedUser = String(
+                val signedLicensedUserProfile = String(
                         Files.readAllBytes(licenseFile),
                         Charsets.UTF_8
                 )
 
-                result += signedUserParser.parse(signedUser)
+                result += signedLicensedUserProfileParser.parse(signedLicensedUserProfile)
             } catch (ignored: Exception) {
                 // ignore invalid license files
             }
         }
 
         return result
+    }
+
+    fun isValidLicense(signedLicensedUserProfile: String): Boolean {
+        return signedLicensedUserProfileParser.isValidLicense(signedLicensedUserProfile)
     }
 
 }

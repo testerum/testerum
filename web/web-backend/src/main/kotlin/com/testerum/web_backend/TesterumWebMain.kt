@@ -3,8 +3,10 @@ package com.testerum.web_backend
 import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.web_backend.filter.angular_forwarder.AngularForwarderFilter
 import com.testerum.web_backend.filter.cache.DisableCacheFilter
-import com.testerum.web_backend.filter.project.ProjectFilter
+import com.testerum.web_backend.filter.project.CurrentProjectFilter
 import com.testerum.web_backend.filter.project_fswatcher_pause.ProjectFsWatcherPauseFilter
+import com.testerum.web_backend.filter.security.CurrentUserFilter
+import com.testerum.web_backend.filter.security.TesterumSecurityFilter
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.eclipse.jetty.security.SecurityHandler
 import org.eclipse.jetty.server.Handler
@@ -36,7 +38,8 @@ import javax.servlet.DispatcherType
 object TesterumWebMain {
 
     private val LOG = LoggerFactory.getLogger(TesterumWebMain::class.java)
-    private val PORT_SYSTEM_PROPERTY = "testerum.web.httpPort"
+
+    private const val PORT_SYSTEM_PROPERTY = "testerum.web.httpPort"
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -137,11 +140,31 @@ object TesterumWebMain {
                 EnumSet.of(DispatcherType.REQUEST)
         )
 
-        // add ProjectFilter
+        // add CurrentUserFilter
         webAppContext.addFilter(
                 FilterHolder().apply {
-                    filter = ProjectFilter()
-                    name = ProjectFilter::class.java.simpleName.decapitalize()
+                    filter = CurrentUserFilter()
+                    name = CurrentUserFilter::class.java.simpleName.decapitalize()
+                },
+                "/*",
+                EnumSet.of(DispatcherType.REQUEST)
+        )
+
+        // add TesterumSecurityFilter
+        webAppContext.addFilter(
+                FilterHolder().apply {
+                    filter = TesterumSecurityFilter()
+                    name = TesterumSecurityFilter::class.java.simpleName.decapitalize()
+                },
+                "/*",
+                EnumSet.of(DispatcherType.REQUEST)
+        )
+
+        // add CurrentProjectFilter
+        webAppContext.addFilter(
+                FilterHolder().apply {
+                    filter = CurrentProjectFilter()
+                    name = CurrentProjectFilter::class.java.simpleName.decapitalize()
                 },
                 "/*",
                 EnumSet.of(DispatcherType.REQUEST)

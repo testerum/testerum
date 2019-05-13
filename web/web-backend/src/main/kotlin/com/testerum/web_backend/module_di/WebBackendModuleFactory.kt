@@ -9,12 +9,14 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.testerum.cloud_client.CloudOfflineException
 import com.testerum.cloud_client.error_feedback.ErrorFeedbackCloudClient
 import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
+import com.testerum.cloud_client.licenses.CloudInvalidCredentialsException
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
 import com.testerum.cloud_client.licenses.file.LicenseFileService
-import com.testerum.cloud_client.licenses.parser.SignedUserParser
+import com.testerum.cloud_client.licenses.parser.SignedLicensedUserProfileParser
 import com.testerum.common_crypto.pem.PemMarshaller
 import com.testerum.common_crypto.string_obfuscator.StringObfuscator
 import com.testerum.common_di.BaseModuleFactory
@@ -30,6 +32,8 @@ import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
 import com.testerum.settings.module_di.SettingsModuleFactory
 import com.testerum.web_backend.controllers.error.ErrorController
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_exception.CloudErrorResponsePreparer
+import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_invalid_credentials.CloudInvalidCredentialsResponsePreparer
+import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_offline_exception.CloudOfflineResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.generic.GenericErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.validation.ValidationErrorResponsePreparer
@@ -37,7 +41,6 @@ import com.testerum.web_backend.controllers.features.FeatureController
 import com.testerum.web_backend.controllers.feedback.FeedbackController
 import com.testerum.web_backend.controllers.filesystem.FileSystemController
 import com.testerum.web_backend.controllers.home.HomeController
-import com.testerum.web_backend.controllers.license.LicenseController
 import com.testerum.web_backend.controllers.manual.ManualTestPlansController
 import com.testerum.web_backend.controllers.message.MessageController
 import com.testerum.web_backend.controllers.project.ProjectController
@@ -55,6 +58,7 @@ import com.testerum.web_backend.controllers.steps.ComposedStepsController
 import com.testerum.web_backend.controllers.steps.StepsTreeController
 import com.testerum.web_backend.controllers.tags.TagsController
 import com.testerum.web_backend.controllers.tests.TestsController
+import com.testerum.web_backend.controllers.user.UserController
 import com.testerum.web_backend.controllers.variables.VariablesController
 import com.testerum.web_backend.controllers.version_info.VersionController
 import com.testerum.web_backend.services.dirs.FrontendDirs
@@ -70,7 +74,6 @@ import com.testerum.web_backend.services.initializers.caches.impl.JdbcDriversCac
 import com.testerum.web_backend.services.initializers.caches.impl.LicenseCacheInitializer
 import com.testerum.web_backend.services.initializers.info_logging.InfoLoggerInitializer
 import com.testerum.web_backend.services.initializers.settings.SettingsManagerInitializer
-import com.testerum.web_backend.services.license.LicenseFrontendService
 import com.testerum.web_backend.services.manual.AutomatedToManualTestMapper
 import com.testerum.web_backend.services.manual.ManualTestPlansFrontendService
 import com.testerum.web_backend.services.message.MessageFrontendService
@@ -91,6 +94,9 @@ import com.testerum.web_backend.services.steps.ComposedStepsFrontendService
 import com.testerum.web_backend.services.steps.StepsTreeFrontendService
 import com.testerum.web_backend.services.tags.TagsFrontendService
 import com.testerum.web_backend.services.tests.TestsFrontendService
+import com.testerum.web_backend.services.user.UserFrontendService
+import com.testerum.web_backend.services.user.security.AuthTokenService
+import com.testerum.web_backend.services.user.security.dao.LicenseCacheTesterumUserDao
 import com.testerum.web_backend.services.variables.VariablesFrontendService
 import com.testerum.web_backend.services.variables.VariablesResolverService
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
@@ -101,6 +107,12 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
                               settingsModuleFactory: SettingsModuleFactory,
                               fileServiceModuleFactory: FileServiceModuleFactory,
                               projectManagerModuleFactory: ProjectManagerModuleFactory) : BaseModuleFactory(context) {
+
+    //---------------------------------------- config ----------------------------------------//
+
+//    private val cloudFunctionsBaseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net" // todo: make this configurable
+    private val cloudFunctionsBaseUrl = "http://localhost:8010/testerum-prod/europe-west1"
+
 
     //---------------------------------------- misc ----------------------------------------//
 
@@ -163,16 +175,16 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             )
     )
 
-    private val signedUserParser = SignedUserParser(
+    private val signedLicensedUserProfileParser = SignedLicensedUserProfileParser(
             objectMapper = restApiObjectMapper,
             publicKeyForSignatureVerification = licensePublicKeyForVerification
     )
 
     private val licenseFileService = LicenseFileService(
-            signedUserParser = signedUserParser
+            signedLicensedUserProfileParser = signedLicensedUserProfileParser
     )
 
-    private val licensesCache = LicensesCache(
+    val licensesCache = LicensesCache(
             licenseFileService = licenseFileService
     )
 
@@ -237,7 +249,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val errorFeedbackCloudClient = ErrorFeedbackCloudClient (
             httpClient = httpClient,
-            baseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net", // todo: make this configurable
+            baseUrl = cloudFunctionsBaseUrl,
             objectMapper = restApiObjectMapper
     )
 
@@ -247,13 +259,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val licensesCloudClient = LicenseCloudClient(
             httpClient = httpClient,
-            baseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net", // todo: make this configurable
+            baseUrl = cloudFunctionsBaseUrl,
             objectMapper = restApiObjectMapper
-    )
-
-    private val licenseFrontendService = LicenseFrontendService(
-            licenseCloudClient = licensesCloudClient,
-            licensesCache = licensesCache
     )
 
     private val testsRunnerJsonObjectMapper: ObjectMapper = jacksonObjectMapper().apply {
@@ -399,14 +406,30 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             projectFrontendService = projectFrontendService
     )
 
+    private val testerumUserDao = LicenseCacheTesterumUserDao(
+            licensesCache = licensesCache
+    )
+
+    val authTokenService = AuthTokenService(
+            testerumUserDao = testerumUserDao
+    )
+
+    private val userFrontendService = UserFrontendService(
+            licenseCloudClient = licensesCloudClient,
+            licensesCache = licensesCache,
+            trialService = fileServiceModuleFactory.trialService,
+            authTokenService = authTokenService
+    )
 
     //---------------------------------------- web controllers ----------------------------------------//
 
     private val errorController = ErrorController(
             errorResponsePreparerMap = mapOf(
-                    IllegalFileOperationException::class.java to IllegalFileOperationPreparer(),
-                    ValidationException::class.java to ValidationErrorResponsePreparer(),
-                    CloudClientErrorResponseException::class.java to CloudErrorResponsePreparer()
+                    IllegalFileOperationException::class.java     to IllegalFileOperationPreparer(),
+                    ValidationException::class.java               to ValidationErrorResponsePreparer(),
+                    CloudClientErrorResponseException::class.java to CloudErrorResponsePreparer(),
+                    CloudOfflineException::class.java             to CloudOfflineResponsePreparer(),
+                    CloudInvalidCredentialsException::class.java  to CloudInvalidCredentialsResponsePreparer()
             ),
             genericErrorResponsePreparer = GenericErrorResponsePreparer()
     )
@@ -425,10 +448,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val feedbackController = FeedbackController(
             feedbackFrontendService = feedbackFrontendService
-    )
-
-    private val licenseController = LicenseController(
-            licenseFrontendService = licenseFrontendService
     )
 
     private val settingsController = SettingsController(
@@ -500,6 +519,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             manualTestPlansFrontendService = manualTestPlansFrontendService
     )
 
+    private val userController = UserController(
+            userFrontendService = userFrontendService
+    )
+
 
     //---------------------------------------- list of web controllers ----------------------------------------//
 
@@ -509,7 +532,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             homeController,
             projectController,
             feedbackController,
-            licenseController,
             settingsController,
             messageController,
             variablesController,
@@ -526,7 +548,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             httpController,
             rdbmsController,
             fileSystemController,
-            manualExecPlansController
+            manualExecPlansController,
+            userController
     )
 
 

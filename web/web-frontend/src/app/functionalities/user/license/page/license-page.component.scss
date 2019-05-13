@@ -1,0 +1,32 @@
+.license-page {
+    max-width: 1200px;
+    margin: auto;
+    height: 100%;
+
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+
+    .header {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 5em;
+
+        .logo {
+            font-size: 5rem;
+            align-self: center;
+        }
+    }
+
+    .body {
+        width: 50em;
+
+        .description {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 1em;
+        }
+    }
+}

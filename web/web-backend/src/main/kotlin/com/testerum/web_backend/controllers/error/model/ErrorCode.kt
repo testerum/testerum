@@ -5,5 +5,7 @@ enum class ErrorCode {
     VALIDATION,
     ILLEGAL_FILE_OPERATION,
     CLOUD_ERROR,
+    CLOUD_OFFLINE,
+    INVALID_CREDENTIALS, // invalid username/password combination, or invalid licence file
     ;
 }

@@ -22,8 +22,9 @@ export class UrlService {
         this.navigate(["/"]);
     }
 
-    public navigateToLicense() {
-        this.navigate(["/license"]);
+    public navigateToLicense(url: string) {
+        this.contextService.setCurrentProject(null);
+        this.navigate(["/license", {url: url}]);
     }
 
     public navigateToLicenseBuy() {

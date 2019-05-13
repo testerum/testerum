@@ -1,0 +1,29 @@
+<div bsModal #userProfileModal="bs-modal" class="modal fade license-alert-modal" tabindex="-1" role="dialog"
+     [config]="{backdrop: 'static', keyboard: false}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fas fa-user"></i>
+                    License Expired
+                </h4>
+            </div>
+
+            <!-- TRIAL LICENSE -->
+            <div class="modal-body">
+                <div class="title">Your {{isTrialLicense?"Trial ":""}}License has expired.</div>
+                <div class="description">Please consider {{isTrialLicense?"buying a":"renewing your"}} license</div>
+                <div [class.hidden]="counter == 0" class="resume-evaluation-container">
+                    <div class="resume-evaluation-text">You can resume your work in:</div>
+                    <div class="resume-evaluation-countdown">{{counter}}</div>
+                    <div class="resume-evaluation-seconds">seconds</div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button (click)="openBuyPage()" type="button" class="btn btn-warning">{{isTrialLicense?"Buy license":"Renew license"}}</button>
+                <button *ngIf="counter == 0" (click)="onContinueEvaluating()" type="button" class="btn btn-primary" data-dismiss="modal">Continue Evaluating</button>
+            </div>
+        </div>
+    </div>
+</div>

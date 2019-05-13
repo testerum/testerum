@@ -106,6 +106,7 @@ import {IsNotBlankValidatorDirective} from "./validators/is_not_blank-validator.
 import { ErrorComponent } from './error/error.component';
 import {ToastModule} from "primeng/toast";
 import {ErrorFeedbackModalService} from "./error/report-modal/error-feedback-modal.service";
+import {ErrorFeedbackService} from "./error/report-modal/error-feedback.service";
 
 @NgModule({
     imports: [
@@ -282,6 +283,7 @@ import {ErrorFeedbackModalService} from "./error/report-modal/error-feedback-mod
         StepPathModalService,
         MessageService,
         ErrorFeedbackModalService,
+        ErrorFeedbackService,
         JsonVerifyTreeService,
 
         AreYouSureModalService,

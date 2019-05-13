@@ -1,0 +1,61 @@
+@import "../../../../../resources/css/testerum-variables.scss";
+.authentication {
+
+    .ui-tabview-panel {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+    }
+
+    .error-panel {
+        text-align: center;
+        color: $error-color;
+        white-space: pre;
+        font-weight: bold;
+        margin-top: 1.2em;
+    }
+
+    .login-tab {
+        .login-inputs {
+            width: 25em;
+        }
+    }
+
+    .upload-file-tab {
+        .choose-file {
+            margin: 1em;
+        }
+    }
+
+    .ui-tabview {
+        background-color: #f4f4f4;
+    }
+
+    .checkbox-login-container {
+        margin-top: 0.8em;
+
+        .login-button {
+            float: right;
+        }
+
+        .checkbox-name {
+            font-size: 0.85em;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+    }
+
+    .ui-inputgroup {
+        margin-top: 1em;
+        input {
+            padding-left: 5px;
+        }
+    }
+
+    .choose-file {
+        .ui-fileupload {
+            width: 35em;
+        }
+    }
+}

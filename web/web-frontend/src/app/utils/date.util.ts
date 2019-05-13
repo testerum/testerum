@@ -1,6 +1,18 @@
 
 export class DateUtil {
 
+    static dateToShortString(date: Date): string {
+        let year = date.getFullYear(),
+            month = date.getMonth() + 1, // months are zero indexed
+            day = date.getDate();
+
+        return DateUtil.twoDigitToString(day)
+            + "-"
+            + DateUtil.twoDigitToString(month)
+            + "-"
+            + DateUtil.twoDigitToString(year);
+    }
+
     static dateTimeToShortString(date: Date): string {
         let year = date.getFullYear(),
             month = date.getMonth() + 1, // months are zero indexed
@@ -9,9 +21,9 @@ export class DateUtil {
             minute = date.getMinutes();
 
         return DateUtil.twoDigitToString(day)
-            + "/"
+            + "-"
             + DateUtil.twoDigitToString(month)
-            + "/"
+            + "-"
             + DateUtil.twoDigitToString(year)
             + " "
             + DateUtil.twoDigitToString(hour)
@@ -48,5 +60,10 @@ export class DateUtil {
         }
 
         return result + " " + suffix;
+    }
+
+    static getDaysBetweenDates(startDate: Date, endDate: Date): number {
+        let oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+        return Math.round(Math.abs((endDate.getTime() - startDate.getTime())/(oneDay)));
     }
 }

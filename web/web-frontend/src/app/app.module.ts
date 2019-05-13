@@ -38,8 +38,6 @@ import {TagsService} from "./service/tags.service";
 import {MessageService} from "./service/message.service";
 import {ManualModule} from "./functionalities/manual/manual.module";
 import {UnsavedChangesGuard} from "./service/guards/unsaved-changes.guard";
-import {LicenseService} from "./functionalities/config/license/license.service";
-import {LicenseComponent} from "./functionalities/config/license/license.component";
 import {DropdownModule, FileUploadModule, RadioButtonModule, TooltipModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
 import {MultiProjectHttpInterceptor} from "./service/interceptors/multi-prject.http-interceptor";
@@ -50,14 +48,17 @@ import {ProjectService} from "./service/project.service";
 import {ErrorsHandlerInterceptor} from "./service/interceptors/error-handler.interceptor";
 import {CurrentProjectGuard} from "./service/guards/current-project.guard";
 import {ModelRepairerService} from "./service/model-repairer/model-repairer.service";
-import { MenuVariablesComponent } from './menu/variables/menu-variables.component';
-import { EnvironmentEditModalComponent } from './functionalities/variables/environment-edit-modal/environment-edit-modal.component';
-import {FeedbackService} from "./service/feedback.service";
-import { NotFundComponent } from './functionalities/others/not-fund/not-fund.component';
+import {MenuVariablesComponent} from './menu/variables/menu-variables.component';
+import {EnvironmentEditModalComponent} from './functionalities/variables/environment-edit-modal/environment-edit-modal.component';
+import {NotFundComponent} from './functionalities/others/not-fund/not-fund.component';
 import {NotFoundHttpInterceptor} from "./service/interceptors/not-found.http-interceptor";
 import {ProjectReloadWsService} from "./service/project-reload-ws.service";
+import {UserModule} from "./functionalities/user/user.module";
+import {BsDropdownModule} from "ngx-bootstrap";
+import {UserService} from "./service/user.service";
 import {ProjectReloadModalService} from "./functionalities/others/project_reload_modal/project-reload-modal.service";
 import {ProjectReloadModalComponent} from "./functionalities/others/project_reload_modal/project-reload-modal.component";
+import {AuthenticationHttpInterceptor} from "./service/interceptors/authentication.http-interceptor";
 
 @NgModule({
     imports: [
@@ -67,6 +68,7 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
         HttpClientModule,
         FormsModule,
         ModalModule.forRoot(),
+        BsDropdownModule.forRoot(),
 
         RadioButtonModule,
         FileUploadModule,
@@ -80,6 +82,7 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
         ResourcesModule,
         ManualModule,
         GenericModule,
+        UserModule,
 
         AppRoutingModule
     ],
@@ -88,7 +91,6 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
         MenuComponent,
         PageNotFoundComponent,
         VariablesComponent,
-        LicenseComponent,
         SettingsComponent,
         ArgValueValidatorDirective,
         MenuVariablesComponent,
@@ -119,7 +121,7 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
         ResultService,
         FeatureService,
         TagsService,
-        FeedbackService,
+        UserService,
 
         ResourceService,
         RdbmsService,
@@ -128,6 +130,7 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
         UrlService,
         UtilService,
         ModelRepairerService,
+
 
         ErrorHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useExisting: ErrorHttpInterceptor,  multi: true },
@@ -138,12 +141,17 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
         MultiProjectHttpInterceptor,
         { provide: HTTP_INTERCEPTORS, useClass: MultiProjectHttpInterceptor, multi: true },
 
+        AuthenticationHttpInterceptor,
+        { provide: HTTP_INTERCEPTORS, useClass: AuthenticationHttpInterceptor, multi: true },
+
         ErrorsHandlerInterceptor,
         { provide: ErrorHandler, useClass: ErrorsHandlerInterceptor},
 
         ContextService,
+        { provide: APP_INITIALIZER, useFactory:  (service: ContextService) => function() {return service.init()}, deps: [ContextService], multi: true },
+
         MessageService,
-        LicenseService,
+        { provide: APP_INITIALIZER, useFactory:  (service: MessageService) => function() {return service.init()}, deps: [MessageService], multi: true },
     ],
     entryComponents: [
         FileDirChooserInputComponent,

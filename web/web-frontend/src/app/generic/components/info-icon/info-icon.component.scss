@@ -1,9 +1,16 @@
 .info-icon {
 }
 
-body .ui-overlaypanel:after, .ui-overlaypanel:before {
-    left: 0.9em;
+body .ui-overlaypanel:before {
+    left: 1.05em;
+    margin-left: -10px;
 }
+
+body .ui-overlaypanel:after {
+    left: 1.05em;
+    margin-left:  -8px;
+}
+
 
 body .ui-overlaypanel .ui-overlaypanel-content {
     padding: 0;

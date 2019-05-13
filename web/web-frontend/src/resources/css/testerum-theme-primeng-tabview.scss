@@ -1,0 +1,24 @@
+.ui-tabview {
+
+    .ui-tabview-nav {
+        border: 0;
+        border-bottom: 1px solid #bebebe;
+
+        .ui-state-active {
+            background-color: #ffffff !important;
+            border: 1px solid #c8c8c8 !important;
+            border-bottom: 1px solid white !important;
+            margin-bottom: -1px !important;
+
+            &:focus {
+                outline: none;
+            }
+            &:hover {
+                border: 0;
+            }
+            a {
+                color: #333333 !important;
+            }
+        }
+    }
+}
