@@ -1,12 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    OnDestroy,
-    OnInit,
-    ViewChild,
-    ViewEncapsulation
-} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {RunnerConfigService} from "../runner-config.service";
 import {Subscription} from "rxjs";
 import {RunnerConfig} from "../model/runner-config.model";
@@ -21,8 +13,7 @@ import {InputTypeEnum} from "../../../../generic/components/form/dynamic-input/m
     selector: 'runner-config-editor',
     templateUrl: './runner-config-editor.component.html',
     styleUrls: ['./runner-config-editor.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    encapsulation: ViewEncapsulation.None
 })
 export class RunnerConfigEditorComponent implements OnInit, OnDestroy {
 
@@ -50,21 +41,11 @@ export class RunnerConfigEditorComponent implements OnInit, OnDestroy {
                 SettingsUtil.populateSettingsCategoriesNames(this.runnerConfigService.settings, this.settingsCategories);
                 SettingsUtil.populateSettingsByCategoryMap(this.runnerConfigService.settings, this.settingsByCategory)
             }
-
-            this.refresh();
         });
-
-        this.refresh();
     }
 
     ngOnDestroy(): void {
         if (this.selectedRunnerSubscription) this.selectedRunnerSubscription.unsubscribe();
-    }
-
-    refresh() {
-        if (!this.cd['destroyed']) {
-            this.cd.detectChanges();
-        }
     }
 
     hasRunnerConfigs(): boolean {
@@ -76,7 +57,6 @@ export class RunnerConfigEditorComponent implements OnInit, OnDestroy {
         if (runnerConfigByName != this.runnerConfig) {
             FormUtil.addErrorToForm(this.form, "name", "a_resource_with_the_same_name_already_exist");
         }
-        this.refresh();
         this.runnerConfigService.refreshConfigListEventEmitter.emit();
     }
 

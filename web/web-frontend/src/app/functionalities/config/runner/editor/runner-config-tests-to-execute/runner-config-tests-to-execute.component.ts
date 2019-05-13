@@ -1,12 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    Input,
-    OnInit,
-    ViewChild,
-    ViewEncapsulation
-} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {RunnerConfig} from "../../model/runner-config.model";
 import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../../utils/array.util";
@@ -16,7 +8,6 @@ import {TagsService} from "../../../../../service/tags.service";
     selector: 'runner-config-tests-to-execute',
     templateUrl: './runner-config-tests-to-execute.component.html',
     styleUrls: ['./runner-config-tests-to-execute.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RunnerConfigTestsToExecuteComponent implements OnInit {
 
@@ -30,6 +21,7 @@ export class RunnerConfigTestsToExecuteComponent implements OnInit {
     tagsToExcludeToShow:string[] = [];
     currentToExcludeTagSearch:string;
 
+
     constructor(private cd: ChangeDetectorRef,
                 private tagsService: TagsService) {
     }
@@ -37,15 +29,7 @@ export class RunnerConfigTestsToExecuteComponent implements OnInit {
     ngOnInit() {
         this.tagsService.getTags().subscribe(tags => {
             ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
-            this.refresh();
         });
-        this.refresh();
-    }
-
-    refresh() {
-        if (!this.cd['destroyed']) {
-            this.cd.detectChanges();
-        }
     }
 
     //start methods for TAGS TO EXECUTE

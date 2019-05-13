@@ -1,6 +1,5 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import {RunnerConfig} from "./model/runner-config.model";
-import {RunnerService} from "../../../service/runner.service";
 import {ArrayUtil} from "../../../utils/array.util";
 import {Setting} from "../settings/model/setting.model";
 

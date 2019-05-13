@@ -4,11 +4,13 @@ import {
     ChangeDetectorRef,
     Component,
     ComponentRef,
-    EventEmitter,
+    EventEmitter, OnDestroy,
     ViewChild
 } from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {RunnerConfig} from "./model/runner-config.model";
+import {Subscription} from "rxjs";
+import {RunnerConfigService} from "./runner-config.service";
 
 @Component({
     selector: 'runner-modal',
@@ -16,17 +18,27 @@ import {RunnerConfig} from "./model/runner-config.model";
     styleUrls: ['./runner-modal.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RunnerModalComponent implements AfterViewInit {
+export class RunnerModalComponent implements AfterViewInit, OnDestroy {
 
     @ViewChild("runnerModal") modal: ModalDirective;
     modalComponentRef: ComponentRef<RunnerModalComponent>;
 
     selectedCategory: string;
 
-    constructor(private cd: ChangeDetectorRef) {
+    private selectedRunnerSubscription: Subscription;
+    constructor(private cd: ChangeDetectorRef,
+                private runnerConfigService: RunnerConfigService) {
+    }
+
+    ngOnDestroy(): void {
+        if (this.selectedRunnerSubscription) this.selectedRunnerSubscription.unsubscribe();
     }
 
     ngAfterViewInit(): void {
+        this.selectedRunnerSubscription = this.runnerConfigService.selectedRunnerEventEmitter.subscribe((runnerConfigs: Array<RunnerConfig>) =>{
+            this.refresh();
+        });
+
         this.modal.show();
         this.modal.onHidden.subscribe(event => {
             this.modalComponentRef.destroy();
