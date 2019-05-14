@@ -156,7 +156,7 @@ object TesterumWebMain {
                     filter = TesterumSecurityFilter()
                     name = TesterumSecurityFilter::class.java.simpleName.decapitalize()
                 },
-                "/*",
+                "/rest/*",
                 EnumSet.of(DispatcherType.REQUEST)
         )
 

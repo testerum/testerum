@@ -30,6 +30,8 @@ import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.exception.ValidationException
 import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
 import com.testerum.settings.module_di.SettingsModuleFactory
+import com.testerum.web_backend.config.TesterumWebBackendConfig
+import com.testerum.web_backend.config.TesterumWebBackendConfigFactory
 import com.testerum.web_backend.controllers.error.ErrorController
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_exception.CloudErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_invalid_credentials.CloudInvalidCredentialsResponsePreparer
@@ -110,9 +112,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     //---------------------------------------- config ----------------------------------------//
 
-//    private val cloudFunctionsBaseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net" // todo: make this configurable
-    private val cloudFunctionsBaseUrl = "http://localhost:8010/testerum-prod/europe-west1"
-
+    private val testerumWebBackendConfig: TesterumWebBackendConfig = TesterumWebBackendConfigFactory.createTesterumWebBackendConfig()
 
     //---------------------------------------- misc ----------------------------------------//
 
@@ -249,7 +249,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val errorFeedbackCloudClient = ErrorFeedbackCloudClient (
             httpClient = httpClient,
-            baseUrl = cloudFunctionsBaseUrl,
+            baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
             objectMapper = restApiObjectMapper
     )
 
@@ -259,7 +259,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val licensesCloudClient = LicenseCloudClient(
             httpClient = httpClient,
-            baseUrl = cloudFunctionsBaseUrl,
+            baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
             objectMapper = restApiObjectMapper
     )
 
@@ -391,7 +391,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             testResolver = fileServiceModuleFactory.testResolver
     )
 
-    val projectFrontendService = ProjectFrontendService(
+    private val projectFrontendService = ProjectFrontendService(
             frontendDirs = frontendDirs,
             recentProjectsFileService = fileServiceModuleFactory.recentProjectsFileService,
             testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService,
