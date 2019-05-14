@@ -112,9 +112,11 @@ export class AuthenticationComponent implements OnDestroy {
 
                 if (validationErrorResponse.errorCode == ErrorCode.INVALID_CREDENTIALS) {
                     this.errorMessage = "Invalid license file";
+                    this.refresh();
                     return;
                 }
                 this.errorMessage = "Authentication not available";
+                this.refresh();
                 return;
             }
         );
