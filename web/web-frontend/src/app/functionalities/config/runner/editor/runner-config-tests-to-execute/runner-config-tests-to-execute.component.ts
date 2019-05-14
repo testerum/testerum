@@ -22,8 +22,7 @@ export class RunnerConfigTestsToExecuteComponent implements OnInit {
     currentToExcludeTagSearch:string;
 
 
-    constructor(private cd: ChangeDetectorRef,
-                private tagsService: TagsService) {
+    constructor(private tagsService: TagsService) {
     }
 
     ngOnInit() {

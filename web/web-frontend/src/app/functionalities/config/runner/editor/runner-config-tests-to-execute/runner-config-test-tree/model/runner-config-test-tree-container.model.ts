@@ -63,14 +63,6 @@ export class RunnerConfigTestTreeContainerModel extends RunnerConfigTestTreeBase
         return this.getChildren().every(it => {return it.hidden})
     }
 
-    isSelected(): boolean {
-        return this.selected;
-    }
-
-    setSelected(isSelected: boolean) {
-        this.selected = isSelected;
-    }
-
     calculateCheckState() {
         let allChildrenAreChecked: boolean = true;
 
@@ -99,7 +91,7 @@ export class RunnerConfigTestTreeContainerModel extends RunnerConfigTestTreeBase
         }
         this.status = newState;
 
-        if (this.parentContainer instanceof RunnerConfigTestTreeContainerModel) {
+        if (this.parentContainer && this.parentContainer instanceof RunnerConfigTestTreeContainerModel) {
             this.parentContainer.calculateCheckState();
         }
     }

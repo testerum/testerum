@@ -3,6 +3,7 @@ import {Path} from "../../../../../../../model/infrastructure/path/path.model";
 import {JsonTreeNodeState} from "../../../../../../../generic/components/json-tree/model/json-tree-node-state.model";
 import {JsonTreeContainer} from "../../../../../../../generic/components/json-tree/model/json-tree-container.model";
 import {RunnerConfigTestTreeNodeStatusEnum} from "./enum/runner-config-test-tree-node-status.enum";
+import {RunnerConfigTestTreeContainerModel} from "./runner-config-test-tree-container.model";
 
 export abstract class RunnerConfigTestTreeBaseModel extends JsonTreeNodeAbstract {
 
@@ -21,7 +22,6 @@ export abstract class RunnerConfigTestTreeBaseModel extends JsonTreeNodeAbstract
         this.status = status;
     }
 
-
     isSelectedNode(): boolean {
         return this.status == RunnerConfigTestTreeNodeStatusEnum.SELECTED
     }
@@ -32,5 +32,33 @@ export abstract class RunnerConfigTestTreeBaseModel extends JsonTreeNodeAbstract
 
     isNotSelectedNode(): boolean {
         return this.status == RunnerConfigTestTreeNodeStatusEnum.NOT_SELECTED
+    }
+
+    setSelected(isSelected: boolean) {
+        this.selected = isSelected;
+        this.status = this.status != RunnerConfigTestTreeNodeStatusEnum.SELECTED ? RunnerConfigTestTreeNodeStatusEnum.SELECTED : RunnerConfigTestTreeNodeStatusEnum.NOT_SELECTED ;
+
+        if(this.parentContainer instanceof RunnerConfigTestTreeContainerModel) {
+            this.parentContainer.calculateCheckState();
+        }
+
+        this.selectOrNotChildren(this);
+    }
+
+    private selectOrNotChildren(node: RunnerConfigTestTreeBaseModel) {
+        if (!(node instanceof RunnerConfigTestTreeContainerModel)) { return; }
+
+        let container: RunnerConfigTestTreeContainerModel = node as RunnerConfigTestTreeContainerModel;
+        container.status = this.status;
+        this.selected = !this.isSelected();
+
+        for (let child of container.children) {
+            if (child.isContainer()) {
+                this.selectOrNotChildren(child as RunnerConfigTestTreeBaseModel)
+            } else {
+                child.selected = this.status == RunnerConfigTestTreeNodeStatusEnum.SELECTED;
+                child.status = this.status;
+            }
+        }
     }
 }
