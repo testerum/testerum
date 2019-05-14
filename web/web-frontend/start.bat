@@ -1,1 +1,1 @@
-ng serve
+npx ng serve
