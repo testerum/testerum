@@ -110,8 +110,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     //---------------------------------------- config ----------------------------------------//
 
-//    private val cloudFunctionsBaseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net" // todo: make this configurable
-    private val cloudFunctionsBaseUrl = "http://localhost:8010/testerum-prod/europe-west1"
+    private val cloudFunctionsBaseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net" // todo: make this configurable
+//    private val cloudFunctionsBaseUrl = "http://localhost:8010/testerum-prod/europe-west1"
 
 
     //---------------------------------------- misc ----------------------------------------//
