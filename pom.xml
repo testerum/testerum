@@ -136,6 +136,12 @@
                 <artifactId>common-parsing</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>common-profiles</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.testerum</groupId>
