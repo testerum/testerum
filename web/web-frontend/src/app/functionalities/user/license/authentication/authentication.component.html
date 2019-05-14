@@ -14,7 +14,10 @@
             </div>
 
             <div class="checkbox-login-container">
-                <button type="button" class="btn btn-primary login-button" (click)="onLogin()">LOGIN</button>
+                <button type="button"
+                        class="btn btn-primary login-button"
+                        [class.disabled]="!isLoginValid()"
+                        (click)="onLogin()">LOGIN</button>
             </div>
         </div>
     </p-tabPanel>
