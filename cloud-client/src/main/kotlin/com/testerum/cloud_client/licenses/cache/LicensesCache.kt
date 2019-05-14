@@ -42,8 +42,8 @@ class LicensesCache(private val licenseFileService: LicenseFileService) {
 
     fun hasAtLeastOneLicense(): Boolean = lock.read { licensesByEmail.isNotEmpty() }
 
-    fun isValidLicense(signedLicensedUserProfile: String): Boolean {
-        return licenseFileService.isValidLicense(signedLicensedUserProfile)
+    fun isLicenseValid(signedLicensedUserProfile: String): Boolean {
+        return licenseFileService.isLicenseValid(signedLicensedUserProfile)
     }
 
 }

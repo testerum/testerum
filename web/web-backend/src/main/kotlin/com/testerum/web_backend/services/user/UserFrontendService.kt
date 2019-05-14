@@ -1,5 +1,6 @@
 package com.testerum.web_backend.services.user
 
+import com.testerum.cloud_client.CloudOfflineException
 import com.testerum.cloud_client.licenses.CloudInvalidCredentialsException
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
@@ -60,7 +61,7 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
 
         val signedLicense = licenseCloudClient.getSignedLicense(token)
 
-        if (!licensesCache.isValidLicense(signedLicense)) {
+        if (!licensesCache.isLicenseValid(signedLicense)) {
             throw CloudInvalidCredentialsException("got invalid license from the cloud")
         }
 
@@ -75,8 +76,17 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
                 Charsets.UTF_8
         )
 
-        if (!licensesCache.isValidLicense(signedLicensedUserProfile)) {
+        if (!licensesCache.isLicenseValid(signedLicensedUserProfile)) {
             throw CloudInvalidCredentialsException("invalid license file")
+        }
+
+        try {
+            if (!licenseCloudClient.isLicenseValid(signedLicensedUserProfile)) {
+                throw CloudInvalidCredentialsException("this license file is invalid")
+            }
+        } catch (ignore: CloudOfflineException) {
+            // If the cloud is offline, allow to use this license file.
+            // This is the original purpose of license files: to be able to use Testerum without internet access.
         }
 
         val user = licensesCache.save(signedLicensedUserProfile)
