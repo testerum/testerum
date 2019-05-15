@@ -10,7 +10,7 @@ import {
 import {ModalDirective} from "ngx-bootstrap";
 
 @Component({
-    selector: 'license-component',
+    selector: 'license-about-to-expire-modal',
     templateUrl: './license-about-to-expire-modal.component.html',
     styleUrls: ['./license-about-to-expire-modal.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
