@@ -2,6 +2,7 @@ package com.testerum.web_backend.services.user
 
 import com.testerum.cloud_client.CloudOfflineException
 import com.testerum.cloud_client.licenses.CloudInvalidCredentialsException
+import com.testerum.cloud_client.licenses.CloudNoValidLicenseException
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
 import com.testerum.cloud_client.licenses.model.auth.CloudAuthRequest
@@ -82,7 +83,7 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
 
         try {
             if (!licenseCloudClient.isLicenseValid(signedLicensedUserProfile)) {
-                throw CloudInvalidCredentialsException("this license file is invalid")
+                throw CloudNoValidLicenseException("this license file is invalid")
             }
         } catch (ignore: CloudOfflineException) {
             // If the cloud is offline, allow to use this license file.
