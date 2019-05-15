@@ -46,7 +46,7 @@
                 <ul class="dropdown-menu" role="menu" aria-labelledby="button-basic">
                     <li><a href="#" (click)="showLicense(); false;">License</a></li>
                     <li><a href="#" (click)="showFeedback(); false;">Feedback</a>
-                    <li class="divider dropdown-divider"></li>
+                    <li *ngIf="isUserAuthenticated()" class="divider dropdown-divider"></li>
                     <li *ngIf="isUserAuthenticated()" role="menuitem">
                         <a (click)="logout(); false;" class="dropdown-item" href="#">Logout</a>
                     </li>
