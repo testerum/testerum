@@ -13,6 +13,7 @@ import com.testerum.cloud_client.CloudOfflineException
 import com.testerum.cloud_client.error_feedback.ErrorFeedbackCloudClient
 import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
 import com.testerum.cloud_client.licenses.CloudInvalidCredentialsException
+import com.testerum.cloud_client.licenses.CloudNoValidLicenseException
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
 import com.testerum.cloud_client.licenses.file.LicenseFileService
@@ -35,6 +36,7 @@ import com.testerum.web_backend.config.TesterumWebBackendConfigFactory
 import com.testerum.web_backend.controllers.error.ErrorController
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_exception.CloudErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_invalid_credentials.CloudInvalidCredentialsResponsePreparer
+import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_invalid_credentials.CloudNoValidLicenseResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_offline_exception.CloudOfflineResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.generic.GenericErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer
@@ -429,7 +431,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
                     ValidationException::class.java               to ValidationErrorResponsePreparer(),
                     CloudClientErrorResponseException::class.java to CloudErrorResponsePreparer(),
                     CloudOfflineException::class.java             to CloudOfflineResponsePreparer(),
-                    CloudInvalidCredentialsException::class.java  to CloudInvalidCredentialsResponsePreparer()
+                    CloudInvalidCredentialsException::class.java  to CloudInvalidCredentialsResponsePreparer(),
+                    CloudNoValidLicenseException::class.java      to CloudNoValidLicenseResponsePreparer()
             ),
             genericErrorResponsePreparer = GenericErrorResponsePreparer()
     )

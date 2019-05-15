@@ -91,11 +91,14 @@ class LicenseCloudClient(private val httpClient: HttpClient,
                 val bodyAsString = EntityUtils.toString(response.entity, Charsets.UTF_8)
 
 
-                if (statusCode == HttpStatus.SC_FORBIDDEN) {
-                    // can be one of the following:
-                    // * the authToken is invalid
-                    // * the user doesn't have any assigned license
+                if (statusCode == HttpStatus.SC_BAD_REQUEST) {
+                    // the authToken is invalid
                     throw CloudInvalidCredentialsException(bodyAsString)
+                }
+
+                if (statusCode == HttpStatus.SC_FORBIDDEN) {
+                    // the user doesn't have any assigned license
+                    throw CloudNoValidLicenseException(bodyAsString)
                 }
 
                 handleError(statusCode, bodyAsString)
