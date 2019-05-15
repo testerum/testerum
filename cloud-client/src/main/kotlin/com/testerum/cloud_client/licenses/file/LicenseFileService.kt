@@ -51,8 +51,8 @@ class LicenseFileService(private val signedLicensedUserProfileParser: SignedLice
         return result
     }
 
-    fun isValidLicense(signedLicensedUserProfile: String): Boolean {
-        return signedLicensedUserProfileParser.isValidLicense(signedLicensedUserProfile)
+    fun isLicenseValid(signedLicensedUserProfile: String): Boolean {
+        return signedLicensedUserProfileParser.isLicenseValid(signedLicensedUserProfile)
     }
 
 }

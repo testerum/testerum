@@ -97,6 +97,25 @@ class LicenseCloudClient(private val httpClient: HttpClient,
         }
     }
 
+    fun isLicenseValid(signedUserProfile: String): Boolean {
+        val url = "$baseUrl/is_license_valid"
+
+        return handleOffline(url) {
+            val httpPost = HttpPost(url)
+
+            httpPost.entity = StringEntity(signedUserProfile)
+
+            httpClient.execute(httpPost) { response ->
+                val statusCode = response.statusLine.statusCode
+                val bodyAsString: String = EntityUtils.toString(response.entity, Charsets.UTF_8)
+
+                handleError(statusCode, bodyAsString)
+
+                bodyAsString.toBoolean()
+            }
+        }
+    }
+
     private fun <T> handleOffline(url: String, body: () -> T): T {
         try {
             return body()
