@@ -24,6 +24,6 @@ export class LicensePageComponent implements OnInit {
 
     onAuthentication() {
         let urlParam = UrlUtil.getParamFromUrl(this.activatedRoute, "url");
-        window.location.href = urlParam;
+        window.location.href = urlParam ? urlParam : "/";
     }
 }
