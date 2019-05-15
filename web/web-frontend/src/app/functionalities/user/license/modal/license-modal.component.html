@@ -43,7 +43,7 @@
 
                     <div class="my-line">
                         <label class="my-label label-size">Name:</label>
-                        <div class="my-value">{{model.currentUserLicense.firstName}} {{model.currentUserLicense.lastName}}</div>
+                        <div class="my-value">{{model.currentUserLicense.firstName ? model.currentUserLicense.firstName : ""}} {{model.currentUserLicense.lastName ? model.currentUserLicense.lastName : ""}}</div>
                     </div>
 
                     <div class="my-line">
