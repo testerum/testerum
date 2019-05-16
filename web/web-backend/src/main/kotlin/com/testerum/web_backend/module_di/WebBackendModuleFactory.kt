@@ -16,6 +16,7 @@ import com.testerum.cloud_client.licenses.CloudInvalidCredentialsException
 import com.testerum.cloud_client.licenses.CloudNoValidLicenseException
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
+import com.testerum.cloud_client.licenses.cache.validator.LicenseCachePeriodicValidator
 import com.testerum.cloud_client.licenses.file.LicenseFileService
 import com.testerum.cloud_client.licenses.parser.SignedLicensedUserProfileParser
 import com.testerum.common_crypto.pem.PemMarshaller
@@ -116,6 +117,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val testerumWebBackendConfig: TesterumWebBackendConfig = TesterumWebBackendConfigFactory.createTesterumWebBackendConfig()
 
+
     //---------------------------------------- misc ----------------------------------------//
 
     val frontendDirs = FrontendDirs(
@@ -137,6 +139,13 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
         disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
         disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    }
+
+
+    private val httpClient: HttpClient = TesterumHttpClientFactory.createHttpClient().also {
+        context.registerShutdownHook {
+            it.close()
+        }
     }
 
 
@@ -186,13 +195,36 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             signedLicensedUserProfileParser = signedLicensedUserProfileParser
     )
 
-    val licensesCache = LicensesCache(
-            licenseFileService = licenseFileService
+    private val errorFeedbackCloudClient = ErrorFeedbackCloudClient (
+            httpClient = httpClient,
+            baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
+            objectMapper = restApiObjectMapper
     )
+
+    private val licensesCloudClient = LicenseCloudClient(
+            httpClient = httpClient,
+            baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
+            objectMapper = restApiObjectMapper
+    )
+
+    val licensesCache = LicensesCache(
+            licenseFileService = licenseFileService,
+            licenseCloudClient = licensesCloudClient
+    )
+
+    private val licenseCachePeriodicValidator = LicenseCachePeriodicValidator(
+            cronExpression =  "0 0 0 * * ? *", // every day at midnight
+            licensesCache = licensesCache
+    ).apply {
+        context.registerShutdownHook {
+            shutdown()
+        }
+    }
 
     private val licenseCacheInitializer = LicenseCacheInitializer(
             frontendDirs = frontendDirs,
-            licensesCache = licensesCache
+            licensesCache = licensesCache,
+            licenseCachePeriodicValidator = licenseCachePeriodicValidator
     )
 
     private val cachesInitializer = CachesInitializer(
@@ -243,26 +275,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val variablesResolverService = VariablesResolverService()
 
-    private val httpClient: HttpClient = TesterumHttpClientFactory.createHttpClient().also {
-        context.registerShutdownHook {
-            it.close()
-        }
-    }
-
-    private val errorFeedbackCloudClient = ErrorFeedbackCloudClient (
-            httpClient = httpClient,
-            baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
-            objectMapper = restApiObjectMapper
-    )
-
     private val feedbackFrontendService = FeedbackFrontendService (
             errorFeedbackCloudClient = errorFeedbackCloudClient
-    )
-
-    private val licensesCloudClient = LicenseCloudClient(
-            httpClient = httpClient,
-            baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
-            objectMapper = restApiObjectMapper
     )
 
     private val testsRunnerJsonObjectMapper: ObjectMapper = jacksonObjectMapper().apply {
