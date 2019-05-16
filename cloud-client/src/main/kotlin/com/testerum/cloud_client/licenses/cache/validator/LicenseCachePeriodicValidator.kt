@@ -19,19 +19,29 @@ class LicenseCachePeriodicValidator(private val licensesCache: LicensesCache,
                 LicenseCacheValidatorJobFactory(licensesCache)
         )
 
-        val jobDetail: JobDetail = JobBuilder.newJob(LicenseCacheValidatorJob::class.java)
-                .withIdentity("licenseCacheValidatorJob")
+        val immediateJobDetail: JobDetail = JobBuilder.newJob(LicenseCacheValidatorJob::class.java)
+                .withIdentity("licenseCacheValidatorImmediateJob")
                 .build()
 
-        val trigger: Trigger = TriggerBuilder.newTrigger()
-                .withIdentity("licenseCacheValidatorTrigger")
+        val immediateTrigger = TriggerBuilder.newTrigger()
+                .withIdentity("licenseCacheValidatorImmediateTrigger")
+                .startNow()
+                .build()
+
+        val cronJobDetail: JobDetail = JobBuilder.newJob(LicenseCacheValidatorJob::class.java)
+                .withIdentity("licenseCacheValidatorCronJob")
+                .build()
+
+        val cronTrigger: Trigger = TriggerBuilder.newTrigger()
+                .withIdentity("licenseCacheValidatorCronTrigger")
                 .withSchedule(
                         CronScheduleBuilder.cronSchedule(cronExpression)
                                 .withMisfireHandlingInstructionDoNothing()
                 )
                 .build()
 
-        this.quartzScheduler.scheduleJob(jobDetail, trigger)
+        this.quartzScheduler.scheduleJob(immediateJobDetail, immediateTrigger)
+        this.quartzScheduler.scheduleJob(cronJobDetail, cronTrigger)
 
         this.quartzScheduler.start()
     }
