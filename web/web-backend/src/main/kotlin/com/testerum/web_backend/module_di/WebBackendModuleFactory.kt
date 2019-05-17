@@ -10,7 +10,7 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.testerum.cloud_client.CloudOfflineException
-import com.testerum.cloud_client.error_feedback.ErrorFeedbackCloudClient
+import com.testerum.cloud_client.error_feedback.FeedbackCloudClient
 import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
 import com.testerum.cloud_client.licenses.CloudInvalidCredentialsException
 import com.testerum.cloud_client.licenses.CloudNoValidLicenseException
@@ -195,7 +195,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             signedLicensedUserProfileParser = signedLicensedUserProfileParser
     )
 
-    private val errorFeedbackCloudClient = ErrorFeedbackCloudClient (
+    private val feedbackCloudClient = FeedbackCloudClient (
             httpClient = httpClient,
             baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
             objectMapper = restApiObjectMapper
@@ -276,7 +276,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val variablesResolverService = VariablesResolverService()
 
     private val feedbackFrontendService = FeedbackFrontendService (
-            errorFeedbackCloudClient = errorFeedbackCloudClient
+            feedbackCloudClient = feedbackCloudClient
     )
 
     private val testsRunnerJsonObjectMapper: ObjectMapper = jacksonObjectMapper().apply {

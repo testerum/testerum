@@ -12,8 +12,7 @@ open class FeedbackController(private val feedbackFrontendService: FeedbackFront
     @RequestMapping (method = [RequestMethod.POST])
     @ResponseBody
     fun sendFeedback(@RequestBody feedback: Feedback): Feedback {
-//  TODO Cristi: implement this
-        throw UnsupportedOperationException()
+        return feedbackFrontendService.sendFeedback(feedback);
     }
 
     @RequestMapping (method = [RequestMethod.POST],  path = ["error"])
