@@ -88,6 +88,11 @@ export class AuthenticationComponent implements OnDestroy {
                     this.refresh();
                     return;
                 }
+                if (validationErrorResponse.errorCode == ErrorCode.NO_VALID_LICENSE) {
+                    this.errorMessage = "This user doesn't have any valid license.";
+                    this.refresh();
+                    return;
+                }
                 this.errorMessage = "Authentication not available";
                 this.refresh();
                 return;
@@ -110,7 +115,7 @@ export class AuthenticationComponent implements OnDestroy {
             (error: HttpErrorResponse) => {
                 let validationErrorResponse: ValidationErrorResponse = error.error as ValidationErrorResponse;
 
-                if (validationErrorResponse.errorCode == ErrorCode.INVALID_CREDENTIALS) {
+                if (validationErrorResponse.errorCode == ErrorCode.INVALID_CREDENTIALS || validationErrorResponse.errorCode == ErrorCode.NO_VALID_LICENSE) {
                     this.errorMessage = "Invalid license file";
                     this.refresh();
                     return;
