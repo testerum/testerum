@@ -6,7 +6,10 @@ import com.testerum.cloud_client.licenses.CloudNoValidLicenseException
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
 import com.testerum.cloud_client.licenses.model.auth.CloudAuthRequest
+import com.testerum.cloud_client.licenses.model.get_updated_licenses.GetUpdatedLicenseStatus
+import com.testerum.cloud_client.licenses.model.get_updated_licenses.GetUpdatedLicensesRequestItem
 import com.testerum.cloud_client.licenses.model.license.LicensedUserProfile
+import com.testerum.cloud_client.licenses.parser.SignedLicensedUserProfileParser
 import com.testerum.common_crypto.password_hasher.PasswordHasher
 import com.testerum.file_service.business.trial.TrialService
 import com.testerum.model.file.FileToUpload
@@ -22,6 +25,7 @@ import java.time.ZoneId
 
 class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
                           private val licensesCache: LicensesCache,
+                          private val signedLicensedUserProfileParser: SignedLicensedUserProfileParser,
                           private val trialService: TrialService,
                           private val authTokenService: AuthTokenService) {
 
@@ -72,7 +76,7 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
     }
 
     fun loginWithLicenseFile(licenseFile: FileToUpload): AuthResponse {
-        val signedLicensedUserProfile = IOUtils.toString(
+        val signedLicensedUserProfile: String = IOUtils.toString(
                 licenseFile.inputStream,
                 Charsets.UTF_8
         )
@@ -82,7 +86,7 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
         }
 
         try {
-            if (!licenseCloudClient.isLicenseValid(signedLicensedUserProfile)) {
+            if (!isLicenseValid(signedLicensedUserProfile)) {
                 throw CloudNoValidLicenseException("this license file is invalid")
             }
         } catch (ignore: CloudOfflineException) {
@@ -93,6 +97,34 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
         val user = licensesCache.save(signedLicensedUserProfile)
 
         return generateAuthResponse(user)
+    }
+
+    private fun isLicenseValid(signedLicensedUserProfile: String): Boolean {
+        val licensedUserProfile: LicensedUserProfile = try {
+            signedLicensedUserProfileParser.parse(signedLicensedUserProfile)
+        } catch (e: Exception) {
+            // don't allow license that don't have the correct format
+            // or the signature doesn't validate
+            return false
+        }
+
+        val updatedLicenses = try {
+            licenseCloudClient.getUpdatedLicenses(
+                    listOf(
+                            GetUpdatedLicensesRequestItem(
+                                    email = licensedUserProfile.assigneeEmail,
+                                    passwordHash = licensedUserProfile.passwordHash,
+                                    existingLicenseId = licensedUserProfile.licenseId
+                            )
+                    )
+            )
+        } catch (e: Exception) {
+            // if there was any error in contacting the cloud, consider the license valid
+            return true
+        }
+
+        // only consider the license invalid if the could explicitly told us so (e.g. if the license was reassigned)
+        return updatedLicenses[0].status != GetUpdatedLicenseStatus.NO_VALID_LICENSE
     }
 
     private fun generateAuthResponse(licensedUserProfile: LicensedUserProfile): AuthResponse {

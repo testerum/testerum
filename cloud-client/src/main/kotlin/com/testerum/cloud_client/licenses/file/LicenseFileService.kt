@@ -1,6 +1,6 @@
 package com.testerum.cloud_client.licenses.file
 
-import com.testerum.cloud_client.licenses.cache.validator.LicensesCacheEntry
+import com.testerum.cloud_client.licenses.cache.updater.LicensesCacheEntry
 import com.testerum.cloud_client.licenses.model.license.LicensedUserProfile
 import com.testerum.cloud_client.licenses.parser.SignedLicensedUserProfileParser
 import com.testerum.common_kotlin.createDirectories

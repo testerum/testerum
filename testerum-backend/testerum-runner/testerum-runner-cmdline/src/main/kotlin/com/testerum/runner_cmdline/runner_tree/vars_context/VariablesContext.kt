@@ -12,7 +12,7 @@ import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
-import org.apache.commons.lang3.StringEscapeUtils
+import org.apache.commons.text.StringEscapeUtils
 
 class VariablesContext private constructor(private val argsVars: Map<String, Any?>,
                                            private val dynamicVars: DynamicVariablesContext,

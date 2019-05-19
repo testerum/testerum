@@ -1,4 +1,4 @@
-package com.testerum.cloud_client.licenses.cache.validator
+package com.testerum.cloud_client.licenses.cache.updater
 
 import com.testerum.cloud_client.licenses.cache.LicensesCache
 import org.quartz.CronScheduleBuilder
@@ -9,8 +9,8 @@ import org.quartz.Trigger
 import org.quartz.TriggerBuilder
 import org.quartz.impl.StdSchedulerFactory
 
-class LicenseCachePeriodicValidator(private val licensesCache: LicensesCache,
-                                    private val cronExpression: String) {
+class LicenseCachePeriodicUpdater(private val licensesCache: LicensesCache,
+                                  private val cronExpression: String) {
 
     private var initialized: Boolean = false
     private val initializedLock = Object()
@@ -27,10 +27,10 @@ class LicenseCachePeriodicValidator(private val licensesCache: LicensesCache,
         }
 
         this.quartzScheduler.setJobFactory(
-                LicenseCacheValidatorJobFactory(licensesCache)
+                LicenseCacheUpdaterJobFactory(licensesCache)
         )
 
-        val immediateJobDetail: JobDetail = JobBuilder.newJob(LicenseCacheValidatorJob::class.java)
+        val immediateJobDetail: JobDetail = JobBuilder.newJob(LicenseCacheUpdaterJob::class.java)
                 .withIdentity("licenseCacheValidatorImmediateJob")
                 .build()
 
@@ -39,7 +39,7 @@ class LicenseCachePeriodicValidator(private val licensesCache: LicensesCache,
                 .startNow()
                 .build()
 
-        val cronJobDetail: JobDetail = JobBuilder.newJob(LicenseCacheValidatorJob::class.java)
+        val cronJobDetail: JobDetail = JobBuilder.newJob(LicenseCacheUpdaterJob::class.java)
                 .withIdentity("licenseCacheValidatorCronJob")
                 .build()
 

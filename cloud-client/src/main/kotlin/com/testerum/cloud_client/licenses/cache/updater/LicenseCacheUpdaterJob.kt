@@ -1,4 +1,4 @@
-package com.testerum.cloud_client.licenses.cache.validator
+package com.testerum.cloud_client.licenses.cache.updater
 
 import com.testerum.cloud_client.licenses.cache.LicensesCache
 import org.quartz.DisallowConcurrentExecution
@@ -6,10 +6,10 @@ import org.quartz.Job
 import org.quartz.JobExecutionContext
 
 @DisallowConcurrentExecution
-class LicenseCacheValidatorJob(private val licensesCache: LicensesCache) : Job {
+class LicenseCacheUpdaterJob(private val licensesCache: LicensesCache) : Job {
 
     override fun execute(context: JobExecutionContext?) {
-        licensesCache.validate()
+        licensesCache.updateFromCloud()
     }
 
 }
