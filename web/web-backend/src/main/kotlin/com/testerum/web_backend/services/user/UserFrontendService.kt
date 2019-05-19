@@ -108,8 +108,7 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
 
     private fun LicensedUserProfile.toUserLicenceInfo(): UserLicenseInfo {
         val nowUtc = LocalDate.now(ZoneId.of("UTC"))
-        val expired = nowUtc.isBefore(this.creationDateUtc)
-                || nowUtc.isAfter(this.expirationDateUtc)
+        val expired = nowUtc.isAfter(this.expirationDateUtc)
 
         return UserLicenseInfo(
                 email = this.assigneeEmail,
