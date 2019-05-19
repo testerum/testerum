@@ -16,7 +16,7 @@ import com.testerum.cloud_client.licenses.CloudInvalidCredentialsException
 import com.testerum.cloud_client.licenses.CloudNoValidLicenseException
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
-import com.testerum.cloud_client.licenses.cache.validator.LicenseCachePeriodicValidator
+import com.testerum.cloud_client.licenses.cache.updater.LicenseCachePeriodicUpdater
 import com.testerum.cloud_client.licenses.file.LicenseFileService
 import com.testerum.cloud_client.licenses.parser.SignedLicensedUserProfileParser
 import com.testerum.common_crypto.pem.PemMarshaller
@@ -212,8 +212,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             licenseCloudClient = licensesCloudClient
     )
 
-    private val licenseCachePeriodicValidator = LicenseCachePeriodicValidator(
-            cronExpression =  "0 0 0 * * ? *", // every day at midnight
+    private val licenseCachePeriodicValidator = LicenseCachePeriodicUpdater(
+            cronExpression = "0 0 0 * * ? *", // every day at midnight
             licensesCache = licensesCache
     ).apply {
         context.registerShutdownHook {
@@ -224,7 +224,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val licenseCacheInitializer = LicenseCacheInitializer(
             frontendDirs = frontendDirs,
             licensesCache = licensesCache,
-            licenseCachePeriodicValidator = licenseCachePeriodicValidator
+            licenseCachePeriodicUpdater = licenseCachePeriodicValidator
     )
 
     private val cachesInitializer = CachesInitializer(
@@ -433,6 +433,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val userFrontendService = UserFrontendService(
             licenseCloudClient = licensesCloudClient,
             licensesCache = licensesCache,
+            signedLicensedUserProfileParser = signedLicensedUserProfileParser,
             trialService = fileServiceModuleFactory.trialService,
             authTokenService = authTokenService
     )

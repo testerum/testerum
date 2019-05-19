@@ -1,4 +1,4 @@
-package com.testerum.cloud_client.licenses.cache.validator
+package com.testerum.cloud_client.licenses.cache.updater
 
 import com.testerum.cloud_client.licenses.model.license.LicensedUserProfile
 import java.nio.file.Path as JavaPath

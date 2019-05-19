@@ -1,13 +1,6 @@
 package com.testerum.cloud_client.licenses
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.guava.GuavaModule
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.cloud_client.CloudOfflineException
 import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
@@ -15,6 +8,8 @@ import com.testerum.cloud_client.infrastructure.CloudError
 import com.testerum.cloud_client.infrastructure.ErrorCloudResponse
 import com.testerum.cloud_client.licenses.model.auth.CloudAuthRequest
 import com.testerum.cloud_client.licenses.model.auth.CloudAuthResponse
+import com.testerum.cloud_client.licenses.model.get_updated_licenses.GetUpdatedLicensesRequestItem
+import com.testerum.cloud_client.licenses.model.get_updated_licenses.GetUpdatedLicensesResponseItem
 import org.apache.http.HttpStatus
 import org.apache.http.client.HttpClient
 import org.apache.http.client.entity.UrlEncodedFormEntity
@@ -29,23 +24,6 @@ class LicenseCloudClient(private val httpClient: HttpClient,
                          private val baseUrl: String,
                          private val objectMapper: ObjectMapper) {
 
-    companion object {
-        private val OBJECT_MAPPER = ObjectMapper().apply {
-            registerModule(AfterburnerModule())
-            registerModule(KotlinModule())
-            registerModule(JavaTimeModule())
-            registerModule(GuavaModule())
-
-            disable(SerializationFeature.INDENT_OUTPUT)
-            setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            enable(SerializationFeature.WRITE_DATES_WITH_ZONE_ID)
-
-            disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
-            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-        }
-    }
-
     fun auth(request: CloudAuthRequest): String? {
         val url = "$baseUrl/web_auth"
 
@@ -53,7 +31,7 @@ class LicenseCloudClient(private val httpClient: HttpClient,
             val httpPost = HttpPost(url)
 
             httpPost.entity = StringEntity(
-                    OBJECT_MAPPER.writeValueAsString(request)
+                    objectMapper.writeValueAsString(request)
             )
             httpPost.addHeader("Content-Type", "application/json")
 
@@ -108,13 +86,16 @@ class LicenseCloudClient(private val httpClient: HttpClient,
         }
     }
 
-    fun isLicenseValid(signedUserProfile: String): Boolean {
-        val url = "$baseUrl/is_license_valid"
+    fun getUpdatedLicenses(requestItems: List<GetUpdatedLicensesRequestItem>): List<GetUpdatedLicensesResponseItem> {
+        val url = "$baseUrl/get_updated_licenses"
 
         return handleOffline(url) {
             val httpPost = HttpPost(url)
 
-            httpPost.entity = StringEntity(signedUserProfile)
+            httpPost.entity = StringEntity(
+                    objectMapper.writeValueAsString(requestItems)
+            )
+            httpPost.addHeader("Content-Type", "application/json")
 
             httpClient.execute(httpPost) { response ->
                 val statusCode = response.statusLine.statusCode
@@ -122,7 +103,9 @@ class LicenseCloudClient(private val httpClient: HttpClient,
 
                 handleError(statusCode, bodyAsString)
 
-                bodyAsString.toBoolean()
+                val responseItems: List<GetUpdatedLicensesResponseItem> = objectMapper.readValue(bodyAsString)
+
+                return@execute responseItems
             }
         }
     }
