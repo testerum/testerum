@@ -31,10 +31,9 @@
 
     .checkbox-login-container {
         margin-top: 0.8em;
-
-        .login-button {
-            float: right;
-        }
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
         .checkbox-name {
             font-size: 0.85em;
