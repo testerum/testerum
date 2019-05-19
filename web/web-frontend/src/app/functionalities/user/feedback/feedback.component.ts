@@ -4,6 +4,7 @@ import {Feedback} from "./model/feedback.model";
 import {InfoModalService} from "../../../generic/components/info_modal/info-modal.service";
 import {Subscription} from "rxjs";
 import {FeedbackService} from "./feedback.service";
+import {ValidationUtil} from "../../../utils/validation.util";
 
 @Component({
   selector: 'feedback.component',
@@ -38,6 +39,11 @@ export class FeedbackComponent implements AfterViewInit, OnDestroy {
     ok() {
         if (!this.hasMessage()) {
             this.errorMessage = "A message is required";
+            return;
+        }
+
+        if (this.model.email && !ValidationUtil.isValidEmail(this.model.email)) {
+            this.errorMessage = "Please provide an valid email address";
             return;
         }
 
