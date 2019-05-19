@@ -12,9 +12,20 @@ import org.quartz.impl.StdSchedulerFactory
 class LicenseCachePeriodicValidator(private val licensesCache: LicensesCache,
                                     private val cronExpression: String) {
 
+    private var initialized: Boolean = false
+    private val initializedLock = Object()
+
     private val quartzScheduler: Scheduler = StdSchedulerFactory().scheduler
 
     fun initialize() {
+        synchronized(initializedLock) {
+            if (initialized) {
+                return
+            }
+
+            initialized = true
+        }
+
         this.quartzScheduler.setJobFactory(
                 LicenseCacheValidatorJobFactory(licensesCache)
         )
