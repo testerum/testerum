@@ -1,6 +1,7 @@
 package com.testerum.cloud_client.error_feedback
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.testerum.common_kotlin.emptyToNull
 import com.testerum.model.feedback.ErrorFeedback
 import com.testerum.model.feedback.Feedback
 import org.apache.http.NameValuePair
@@ -12,7 +13,7 @@ import org.apache.http.entity.StringEntity
 import org.apache.http.message.BasicNameValuePair
 import org.apache.http.util.EntityUtils
 import org.slf4j.LoggerFactory
-import java.util.*
+import java.util.ArrayList
 
 class FeedbackCloudClient(private val httpClient: HttpClient,
                           private val baseUrl: String,
@@ -26,7 +27,11 @@ class FeedbackCloudClient(private val httpClient: HttpClient,
     fun sendErrorFeedback(errorFeedback: ErrorFeedback): ErrorFeedback {
         val httpPost = HttpPost("$baseUrl/feedback_error")
 
-        val requestBodyAsString = objectMapper.writeValueAsString(errorFeedback)
+        val bodyToSendJson = errorFeedback.copy(
+                contactEmail = errorFeedback.contactEmail?.emptyToNull() ?: "email-not-provided@testerum.com"
+        )
+
+        val requestBodyAsString = objectMapper.writeValueAsString(bodyToSendJson)
         val requestEntity = StringEntity(
                 requestBodyAsString,
                 ContentType.APPLICATION_JSON)
@@ -60,7 +65,7 @@ class FeedbackCloudClient(private val httpClient: HttpClient,
         val postParameters = ArrayList<NameValuePair>()
         postParameters.add(BasicNameValuePair("g-recaptcha-response", "TesterumApp-MIIJKAIBAAKCA"))
         postParameters.add(BasicNameValuePair("name", feedback.name))
-        postParameters.add(BasicNameValuePair("email", feedback.email))
+        postParameters.add(BasicNameValuePair("email", feedback.email?.emptyToNull() ?: "email-not-provided@testerum.com"))
         postParameters.add(BasicNameValuePair("message", feedback.message))
 
         httpPost.entity = UrlEncodedFormEntity(postParameters, "UTF-8")
