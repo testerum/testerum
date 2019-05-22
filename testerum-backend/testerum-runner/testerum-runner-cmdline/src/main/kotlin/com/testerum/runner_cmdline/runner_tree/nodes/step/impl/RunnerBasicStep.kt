@@ -20,6 +20,23 @@ import java.lang.reflect.Parameter
 class RunnerBasicStep(stepCall: StepCall,
                       indexInParent: Int) : RunnerStep(stepCall, indexInParent) {
 
+    companion object {
+        private val PRIMITIVE_TYPES_BY_NAME: Map<String, Class<*>> = run {
+            val primitiveTypes = listOf<Class<*>>(
+                    Byte::class.java,
+                    Char::class.java,
+                    Short::class.java,
+                    Int::class.java,
+                    Long::class.java,
+                    Float::class.java,
+                    Double::class.java,
+                    Boolean::class.java
+            )
+
+            primitiveTypes.associateBy { it.name }
+        }
+    }
+
     private val stepDef: BasicStepDef = stepCall.stepDef as? BasicStepDef
             ?: throw IllegalArgumentException("this step call is not a basic step")
 
@@ -66,7 +83,8 @@ class RunnerBasicStep(stepCall: StepCall,
                 continue
             }
 
-            val paramClass: Class<*> = stepsClassLoader.loadClass(patternPart.type)
+            val paramClass: Class<*> = PRIMITIVE_TYPES_BY_NAME[patternPart.type]
+                    ?: stepsClassLoader.loadClass(patternPart.type)
 
             result += paramClass
         }

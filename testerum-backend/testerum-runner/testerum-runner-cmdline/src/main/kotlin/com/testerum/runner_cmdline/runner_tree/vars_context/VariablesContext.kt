@@ -25,6 +25,12 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
                 = VariablesContext(emptyMap(), dynamicVars, globalVars)
     }
 
+    fun getArgsVars(): Map<String, Any?> = argsVars
+
+    fun getDynamicVars(): Map<String, Any?> = dynamicVars.toMap()
+
+    fun getGlobalVars(): Map<String, Any?> = globalVars.toMap()
+
     fun forStep(stepCall: StepCall): VariablesContext {
         val argsVars = mutableMapOf<String, Any?>()
 

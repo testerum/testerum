@@ -4,6 +4,12 @@ import com.testerum.api.services.TesterumService
 
 interface TestVariables : TesterumService {
 
+    fun getArgsVars(): Map<String, Any?>
+
+    fun getDynamicVars(): Map<String, Any?>
+
+    fun getGlobalVars(): Map<String, Any?>
+
     fun contains(name: String): Boolean
 
     /**

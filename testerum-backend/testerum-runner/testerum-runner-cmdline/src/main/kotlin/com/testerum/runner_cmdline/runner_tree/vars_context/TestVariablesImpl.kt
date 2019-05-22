@@ -12,6 +12,12 @@ object TestVariablesImpl : TestVariables {
         TestVariablesImpl.variablesContext = variablesContext
     }
 
+    override fun getArgsVars(): Map<String, Any?> = variablesContext.getArgsVars()
+
+    override fun getDynamicVars(): Map<String, Any?> = variablesContext.getDynamicVars()
+
+    override fun getGlobalVars(): Map<String, Any?> = variablesContext.getGlobalVars()
+
     override fun contains(name: String): Boolean
             = variablesContext.contains(name)
 
