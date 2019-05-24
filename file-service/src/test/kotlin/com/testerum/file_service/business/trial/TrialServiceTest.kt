@@ -13,101 +13,158 @@ import org.hamcrest.Matchers.`is` as Is
 
 class TrialServiceTest {
 
-    companion object {
-        private val NOW: LocalDate = LocalDate.of(2019, 4, 11)
-    }
-
     @Test
     fun `trial period not yet started - the trial period will begin`() {
-        val fileService = InMemoryTrialFileService(trialStartDate = null)
-        val trialService = trialService(fileService)
+        val startDate: LocalDate? = null
+        val now: LocalDate = LocalDate.of(2019, 6, 1)
+
+        val fileService = InMemoryTrialFileService(trialStartDate = startDate)
+        val trialService = trialService(fileService, now)
 
         val trialInfo = trialService.getTrialInfo()
 
         assertThat(trialInfo.expired, Is(equalTo(false)))
-        assertThat(trialInfo.startDate, Is(equalTo(NOW)))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(TRIAL_PERIOD.days)))
+        assertThat(trialInfo.startDate, Is(equalTo(now)))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
-        assertThat(fileService.getTrialStartDate(), Is(equalTo(NOW)))
+        assertThat(fileService.getTrialStartDate(), Is(equalTo(now)))
     }
 
     @Test
     fun `now before trial started - in expired period`() {
-        val fileService = InMemoryTrialFileService(trialStartDate = NOW.plusDays(1))
-        val trialService = trialService(fileService)
+        val startDate: LocalDate = LocalDate.of(2019, 6, 1)
+        val now: LocalDate = startDate.minusDays(1)
+
+        val fileService = InMemoryTrialFileService(trialStartDate = startDate)
+        val trialService = trialService(fileService, now)
 
         val trialInfo = trialService.getTrialInfo()
 
         assertThat(trialInfo.expired, Is(equalTo(true)))
-        assertThat(trialInfo.startDate, Is(equalTo(NOW.plusDays(1).minus(EXPIRATION_PERIOD).minus(TRIAL_PERIOD))))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(-1)))
+        assertThat(trialInfo.startDate, Is(equalTo(startDate.minus(EXPIRATION_PERIOD))))
+        assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(EXPIRATION_PERIOD))))
+
+        assertThat(fileService.getTrialStartDate(), Is(equalTo(startDate)))
+    }
+
+    @Test
+    fun `now at the first day of the trial period`() {
+        val startDate: LocalDate = LocalDate.of(2019, 6, 1)
+        val now: LocalDate = startDate
+
+        val fileService = InMemoryTrialFileService(trialStartDate = startDate)
+        val trialService = trialService(fileService, now)
+
+        val trialInfo = trialService.getTrialInfo()
+
+        assertThat(trialInfo.expired, Is(equalTo(false)))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(now.until(startDate.plus(TRIAL_PERIOD)).days)))
+        assertThat(trialInfo.startDate, Is(equalTo(startDate)))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
-        assertThat(fileService.getTrialStartDate(), Is(equalTo(NOW.plusDays(1))))
+        assertThat(fileService.getTrialStartDate(), Is(equalTo(startDate)))
     }
 
     @Test
     fun `now within the trial period`() {
-        val fileService = InMemoryTrialFileService(trialStartDate = NOW.minusDays(1))
-        val trialService = trialService(fileService)
+        val startDate: LocalDate = LocalDate.of(2019, 6, 1)
+        val now: LocalDate = startDate.plusDays(1)
+
+        val fileService = InMemoryTrialFileService(trialStartDate = startDate)
+        val trialService = trialService(fileService, now)
 
         val trialInfo = trialService.getTrialInfo()
 
         assertThat(trialInfo.expired, Is(equalTo(false)))
-        assertThat(trialInfo.startDate, Is(equalTo(NOW.minusDays(1))))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(now.until(startDate.plus(TRIAL_PERIOD)).days)))
+        assertThat(trialInfo.startDate, Is(equalTo(startDate)))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
-        assertThat(fileService.getTrialStartDate(), Is(equalTo(NOW.minusDays(1))))
+        assertThat(fileService.getTrialStartDate(), Is(equalTo(startDate)))
     }
 
     @Test
     fun `now at the last day of the trial period`() {
-        val fileService = InMemoryTrialFileService(trialStartDate = NOW.minus(TRIAL_PERIOD))
-        val trialService = trialService(fileService)
+        val startDate: LocalDate = LocalDate.of(2019, 6, 1)
+        val now: LocalDate = startDate.plus(TRIAL_PERIOD).minusDays(1)
 
-        val trialInfo = trialService.getTrialInfo()
-
-        assertThat(trialInfo.expired, Is(equalTo(true)))
-        assertThat(trialInfo.startDate, Is(equalTo(trialInfo.endDate.minus(TRIAL_PERIOD))))
-        assertThat(trialInfo.endDate, Is(equalTo(NOW)))
-
-        assertThat(fileService.getTrialStartDate(), Is(equalTo(NOW.minus(TRIAL_PERIOD))))
-    }
-
-    @Test
-    fun `now within the first expired period`() {
-        val fileService = InMemoryTrialFileService(trialStartDate = NOW.minus(TRIAL_PERIOD).minusDays(1))
-        val trialService = trialService(fileService)
-
-        val trialInfo = trialService.getTrialInfo()
-
-        assertThat(trialInfo.expired, Is(equalTo(true)))
-        assertThat(trialInfo.startDate, Is(equalTo(NOW.minus(TRIAL_PERIOD).minusDays(1))))
-        assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
-
-        assertThat(fileService.getTrialStartDate(), Is(equalTo(NOW.minus(TRIAL_PERIOD).minusDays(1))))
-    }
-
-    @Test
-    fun `now at the first day of the second trial period`() {
-        val fileService = InMemoryTrialFileService(trialStartDate = NOW.minus(TRIAL_PERIOD).minus(EXPIRATION_PERIOD))
-        val trialService = trialService(fileService)
+        val fileService = InMemoryTrialFileService(trialStartDate = startDate)
+        val trialService = trialService(fileService, now)
 
         val trialInfo = trialService.getTrialInfo()
 
         assertThat(trialInfo.expired, Is(equalTo(false)))
-        assertThat(trialInfo.startDate, Is(equalTo(NOW)))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(now.until(startDate.plus(TRIAL_PERIOD)).days)))
+        assertThat(trialInfo.startDate, Is(equalTo(startDate)))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
-        assertThat(fileService.getTrialStartDate(), Is(equalTo(NOW)))
+        assertThat(fileService.getTrialStartDate(), Is(equalTo(startDate)))
     }
 
-    private fun trialService(fileService: TrialFileService): TrialService {
+    @Test
+    fun `now at the first day of the first expired period`() {
+        val startDate: LocalDate = LocalDate.of(2019, 6, 1)
+        val now: LocalDate = startDate.plus(TRIAL_PERIOD)
+
+        val fileService = InMemoryTrialFileService(trialStartDate = startDate)
+        val trialService = trialService(fileService, now)
+
+        val trialInfo = trialService.getTrialInfo()
+
+        assertThat(trialInfo.expired, Is(equalTo(true)))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(-1)))
+        assertThat(trialInfo.startDate, Is(equalTo(startDate.plus(TRIAL_PERIOD))))
+        assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(EXPIRATION_PERIOD))))
+
+        assertThat(fileService.getTrialStartDate(), Is(equalTo(startDate)))
+    }
+
+    @Test
+    fun `now within the first expired period`() {
+        val startDate: LocalDate = LocalDate.of(2019, 6, 1)
+        val now: LocalDate = startDate.plus(TRIAL_PERIOD).plusDays(1)
+
+        val fileService = InMemoryTrialFileService(trialStartDate = startDate)
+        val trialService = trialService(fileService, now)
+
+        val trialInfo = trialService.getTrialInfo()
+
+        assertThat(trialInfo.expired, Is(equalTo(true)))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(-1)))
+        assertThat(trialInfo.startDate, Is(equalTo(startDate.plus(TRIAL_PERIOD))))
+        assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(EXPIRATION_PERIOD))))
+
+        assertThat(fileService.getTrialStartDate(), Is(equalTo(startDate)))
+    }
+
+    @Test
+    fun `now at the first day of the second trial period`() {
+        val startDate: LocalDate = LocalDate.of(2019, 6, 1)
+        val now: LocalDate = startDate.plus(TRIAL_PERIOD).plus(EXPIRATION_PERIOD)
+
+        val fileService = InMemoryTrialFileService(trialStartDate = startDate)
+        val trialService = trialService(fileService, now)
+
+        val trialInfo = trialService.getTrialInfo()
+
+        assertThat(trialInfo.expired, Is(equalTo(false)))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(now.until(startDate.plus(TRIAL_PERIOD).plus(EXPIRATION_PERIOD).plus(TRIAL_PERIOD)).days)))
+        assertThat(trialInfo.startDate, Is(equalTo(startDate.plus(TRIAL_PERIOD).plus(EXPIRATION_PERIOD))))
+        assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
+
+        assertThat(fileService.getTrialStartDate(), Is(equalTo(startDate.plus(TRIAL_PERIOD).plus(EXPIRATION_PERIOD))))
+    }
+
+    private fun trialService(fileService: TrialFileService,
+                             now: LocalDate): TrialService {
         val zoneOffset = ZoneOffset.UTC
 
         return TrialService(
                 trialFileService = fileService,
                 clock = Clock.fixed(
-                        NOW.atStartOfDay().toInstant(zoneOffset),
+                        now.atStartOfDay().toInstant(zoneOffset),
                         zoneOffset
                 )
         )

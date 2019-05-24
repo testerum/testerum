@@ -39,10 +39,23 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
                     trialLicense = null
             )
         } else {
+            val trialInfo = trialService.getTrialInfo()
+
+            // daysUntilExpiration takes into consideration the current day,
+            // but we want to show in the UI without the current day
+
+            val trialInfoForUi = trialInfo.copy(
+                    daysUntilExpiration = if (trialInfo.daysUntilExpiration == -1) {
+                        -1
+                    } else {
+                        trialInfo.daysUntilExpiration - 1
+                    }
+            )
+
             LicenseInfo(
                     serverHasLicenses = false,
                     currentUserLicense = null,
-                    trialLicense = trialService.getTrialInfo()
+                    trialLicense = trialInfoForUi
             )
         }
     }
@@ -142,12 +155,21 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
         val nowUtc = LocalDate.now(ZoneId.of("UTC"))
         val expired = nowUtc.isAfter(this.expirationDateUtc)
 
+        val daysUntilExpiration = if (expired) {
+            -1
+        } else {
+            // we subtract 1 because in the UI we want to show the number
+            // without taking the current day into consideration
+            nowUtc.until(this.expirationDateUtc).minusDays(1).days
+        }
+
         return UserLicenseInfo(
                 email = this.assigneeEmail,
                 firstName = this.assigneeFirstName,
                 lastName = this.assigneeLastName,
                 creationDate = this.creationDateUtc,
                 expirationDate = this.expirationDateUtc,
+                daysUntilExpiration = daysUntilExpiration,
                 expired = expired
         )
     }

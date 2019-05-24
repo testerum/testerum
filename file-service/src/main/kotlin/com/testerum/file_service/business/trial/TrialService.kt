@@ -29,8 +29,9 @@ class TrialService(private val trialFileService: TrialFileService,
 
             if (now < trialStartDate) {
                 return TrialLicenceInfo(
-                        startDate = trialStartDate.minus(EXPIRATION_PERIOD).minus(TRIAL_PERIOD),
-                        endDate = trialStartDate.minus(EXPIRATION_PERIOD),
+                        startDate = trialStartDate.minus(EXPIRATION_PERIOD),
+                        endDate = trialStartDate,
+                        daysUntilExpiration = -1,
                         expired = true
                 )
             }
@@ -39,6 +40,7 @@ class TrialService(private val trialFileService: TrialFileService,
             var trialInfo = TrialLicenceInfo(
                     startDate = trialStartDate,
                     endDate = trialStartDate.plus(TRIAL_PERIOD),
+                    daysUntilExpiration = now.until(trialStartDate.plus(TRIAL_PERIOD)).days,
                     expired = false
             )
 
@@ -56,13 +58,7 @@ class TrialService(private val trialFileService: TrialFileService,
                 trialFileService.setTrialStartDate(newTrialStartDate)
             }
 
-            return if (!trialInfo.expired) {
-                trialInfo
-            } else {
-                // when expired, return the last trial period (for start/end date)
-                trialInfo.previous()
-                        .copy(expired = trialInfo.expired)
-            }
+            return trialInfo
         }
     }
 
@@ -71,12 +67,14 @@ class TrialService(private val trialFileService: TrialFileService,
             TrialLicenceInfo(
                     startDate = endDate,
                     endDate = endDate.plus(TRIAL_PERIOD),
+                    daysUntilExpiration = TRIAL_PERIOD.days,
                     expired = false
             )
         } else {
             TrialLicenceInfo(
                     startDate = endDate,
                     endDate = endDate.plus(EXPIRATION_PERIOD),
+                    daysUntilExpiration = -1,
                     expired = true
             )
         }
@@ -87,12 +85,14 @@ class TrialService(private val trialFileService: TrialFileService,
             TrialLicenceInfo(
                     startDate = startDate.minus(TRIAL_PERIOD),
                     endDate = startDate,
+                    daysUntilExpiration = TRIAL_PERIOD.days,
                     expired = false
             )
         } else {
             TrialLicenceInfo(
                     startDate = startDate.minus(EXPIRATION_PERIOD),
                     endDate = startDate,
+                    daysUntilExpiration = -1,
                     expired = true
             )
         }
