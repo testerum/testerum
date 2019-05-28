@@ -5,6 +5,7 @@ import com.testerum.model.user.license.TrialLicenceInfo
 import java.time.Clock
 import java.time.LocalDate
 import java.time.Period
+import java.time.temporal.ChronoUnit.DAYS
 
 class TrialService(private val trialFileService: TrialFileService,
                    private val clock: Clock) {
@@ -40,7 +41,7 @@ class TrialService(private val trialFileService: TrialFileService,
             var trialInfo = TrialLicenceInfo(
                     startDate = trialStartDate,
                     endDate = trialStartDate.plus(TRIAL_PERIOD),
-                    daysUntilExpiration = now.until(trialStartDate.plus(TRIAL_PERIOD)).days,
+                    daysUntilExpiration = DAYS.between(now, trialStartDate.plus(TRIAL_PERIOD)).toInt(),
                     expired = false
             )
 

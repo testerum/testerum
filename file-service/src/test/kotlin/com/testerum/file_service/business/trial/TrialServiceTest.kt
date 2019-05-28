@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import java.time.Clock
 import java.time.LocalDate
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit.DAYS
 import org.hamcrest.Matchers.`is` as Is
 
 class TrialServiceTest {
@@ -60,7 +61,9 @@ class TrialServiceTest {
         val trialInfo = trialService.getTrialInfo()
 
         assertThat(trialInfo.expired, Is(equalTo(false)))
-        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(now.until(startDate.plus(TRIAL_PERIOD)).days)))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(
+                DAYS.between(now, startDate.plus(TRIAL_PERIOD)).toInt()
+        )))
         assertThat(trialInfo.startDate, Is(equalTo(startDate)))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
@@ -78,7 +81,9 @@ class TrialServiceTest {
         val trialInfo = trialService.getTrialInfo()
 
         assertThat(trialInfo.expired, Is(equalTo(false)))
-        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(now.until(startDate.plus(TRIAL_PERIOD)).days)))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(
+                DAYS.between(now, startDate.plus(TRIAL_PERIOD)).toInt()
+        )))
         assertThat(trialInfo.startDate, Is(equalTo(startDate)))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
@@ -96,7 +101,9 @@ class TrialServiceTest {
         val trialInfo = trialService.getTrialInfo()
 
         assertThat(trialInfo.expired, Is(equalTo(false)))
-        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(now.until(startDate.plus(TRIAL_PERIOD)).days)))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(
+                DAYS.between(now, startDate.plus(TRIAL_PERIOD)).toInt()
+        )))
         assertThat(trialInfo.startDate, Is(equalTo(startDate)))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
@@ -150,7 +157,11 @@ class TrialServiceTest {
         val trialInfo = trialService.getTrialInfo()
 
         assertThat(trialInfo.expired, Is(equalTo(false)))
-        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(now.until(startDate.plus(TRIAL_PERIOD).plus(EXPIRATION_PERIOD).plus(TRIAL_PERIOD)).days)))
+        assertThat(trialInfo.daysUntilExpiration, Is(equalTo(
+                DAYS.between(
+                        now,
+                        startDate.plus(TRIAL_PERIOD).plus(EXPIRATION_PERIOD).plus(TRIAL_PERIOD)).toInt()
+        )))
         assertThat(trialInfo.startDate, Is(equalTo(startDate.plus(TRIAL_PERIOD).plus(EXPIRATION_PERIOD))))
         assertThat(trialInfo.endDate, Is(equalTo(trialInfo.startDate.plus(TRIAL_PERIOD))))
 
