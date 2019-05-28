@@ -10,18 +10,20 @@ import http_support.HttpStepsSettingsManager.Companion.SETTINGS_KEY_SOCKET_TIMEO
 
 @DeclareSettings([
     DeclareSetting(
-            category = SETTINGS_CATEGORY,
             key = SETTINGS_KEY_CONNECTION_TIMEOUT_MILLIS,
+            label = "Connection timeout (millis)",
             type = SettingType.NUMBER,
             defaultValue = "0",
-            description = "The timeout in milliseconds until a connection is established. A timeout value of zero is interpreted as an infinite timeout."
+            description = "The timeout in milliseconds until a connection is established. A timeout value of zero is interpreted as an infinite timeout.",
+            category = SETTINGS_CATEGORY
     ),
     DeclareSetting(
-            category = SETTINGS_CATEGORY,
             key = SETTINGS_KEY_SOCKET_TIMEOUT_MILLIS,
+            label = "Socket timeout (millis)",
             type = SettingType.NUMBER,
             defaultValue = "0",
-            description = "The timeout in milliseconds for waiting for data, or, put differently the maximum period of inactivity between two consecutive data packets. A timeout value of zero is interpreted as an infinite timeout."
+            description = "The timeout in milliseconds for waiting for data, or, put differently the maximum period of inactivity between two consecutive data packets. A timeout value of zero is interpreted as an infinite timeout.",
+            category = SETTINGS_CATEGORY
     )
 ])
 class HttpStepsSettingsManager(private val runnerSettingsManager: RunnerSettingsManager) {

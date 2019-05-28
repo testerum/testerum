@@ -13,7 +13,9 @@ import com.testerum.scanner.step_lib_scanner.model.StepLibrariesScanResult
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasSize
+import org.hamcrest.Matchers.matchesPattern
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -552,6 +554,7 @@ class StepLibraryPersistentCacheMangerTest {
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib1.other",
+                                    label = "1-Other",
                                     type = SettingType.TEXT,
                                     defaultValue = "yep",
                                     description = "other description",
@@ -564,6 +567,7 @@ class StepLibraryPersistentCacheMangerTest {
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib1.param1",
+                                    label = "1-Param 1",
                                     type = SettingType.NUMBER,
                                     defaultValue = "10",
                                     description = "param1 description",
@@ -576,6 +580,7 @@ class StepLibraryPersistentCacheMangerTest {
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib1.param2",
+                                    label = "1-Param 2",
                                     type = SettingType.TEXT,
                                     defaultValue = "some text",
                                     description = "param2 description",
@@ -588,6 +593,7 @@ class StepLibraryPersistentCacheMangerTest {
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib1.param3",
+                                    label = "1-Param 3",
                                     type = SettingType.FILESYSTEM_DIRECTORY,
                                     defaultValue = "/some/path",
                                     description = "param3 description",
@@ -692,6 +698,7 @@ class StepLibraryPersistentCacheMangerTest {
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib3Java.param1",
+                                    label = "3-Param 1",
                                     type = SettingType.NUMBER,
                                     defaultValue = "10",
                                     description = "param1 description",
@@ -704,6 +711,7 @@ class StepLibraryPersistentCacheMangerTest {
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib3Java.param2",
+                                    label = "3-Param 2",
                                     type = SettingType.TEXT,
                                     defaultValue = "defVal",
                                     description = "param2 description",
@@ -716,6 +724,7 @@ class StepLibraryPersistentCacheMangerTest {
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib3Java.param3",
+                                    label = "3-Param 3",
                                     type = SettingType.NUMBER,
                                     defaultValue = "13",
                                     description = "param3 description",
@@ -728,6 +737,7 @@ class StepLibraryPersistentCacheMangerTest {
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib3Java.param4",
+                                    label = "3-Param 4",
                                     type = SettingType.TEXT,
                                     defaultValue = "aa",
                                     description = "param4 description",

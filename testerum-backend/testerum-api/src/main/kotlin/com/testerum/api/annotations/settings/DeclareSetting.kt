@@ -11,6 +11,8 @@ annotation class DeclareSetting(
 
         val key: String,
 
+        val label: String,
+
         val type: SettingType = SettingType.TEXT,
 
         val defaultValue: String = "",

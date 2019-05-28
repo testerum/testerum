@@ -7,8 +7,22 @@ import com.testerum.api.test_context.settings.model.SettingType;
 import com.testerum.api.annotations.steps.Given;
 
 @DeclareSettings({
-        @DeclareSetting(key = "stepLib3Java.param1", type = SettingType.NUMBER, defaultValue = "10"    , description = "param1 description", category = "param1 category"),
-        @DeclareSetting(key = "stepLib3Java.param2", type = SettingType.TEXT  , defaultValue = "defVal", description = "param2 description", category = "param2 category")
+        @DeclareSetting(
+                key = "stepLib3Java.param1",
+                label = "3-Param 1",
+                type = SettingType.NUMBER,
+                defaultValue = "10",
+                description = "param1 description",
+                category = "param1 category"
+        ),
+        @DeclareSetting(
+                key = "stepLib3Java.param2",
+                label = "3-Param 2",
+                type = SettingType.TEXT,
+                defaultValue = "defVal",
+                description = "param2 description",
+                category = "param2 category"
+        )
 })
 public final class StepLib3JavaSteps {
 

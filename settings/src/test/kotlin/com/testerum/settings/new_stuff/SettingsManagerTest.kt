@@ -24,6 +24,7 @@ class SettingsManagerTest {
             registerDefinition(
                     SettingDefinition(
                             key = "testerum.one",
+                            label = "Testerum One",
                             type = SettingType.FILESYSTEM_DIRECTORY,
                             defaultValue = "/"
                     )
@@ -37,6 +38,7 @@ class SettingsManagerTest {
                                 Setting(
                                         definition = SettingDefinition(
                                                 key = "testerum.one",
+                                                label = "Testerum One",
                                                 type = SettingType.FILESYSTEM_DIRECTORY,
                                                 defaultValue = "/"
                                         ),
@@ -61,6 +63,7 @@ class SettingsManagerTest {
                                 Setting(
                                         definition = SettingDefinition(
                                                 key = "testerum.ref",
+                                                label = "testerum.ref",
                                                 type = SettingType.TEXT,
                                                 defaultValue = "",
                                                 defined = false
@@ -79,6 +82,7 @@ class SettingsManagerTest {
             registerDefinition(
                     SettingDefinition(
                             key = "testerum.one",
+                            label = "Testerum One",
                             type = SettingType.FILESYSTEM_DIRECTORY,
                             defaultValue = "/"
                     )
@@ -95,6 +99,7 @@ class SettingsManagerTest {
                                 Setting(
                                         definition = SettingDefinition(
                                                 key = "testerum.one",
+                                                label = "Testerum One",
                                                 type = SettingType.FILESYSTEM_DIRECTORY,
                                                 defaultValue = "/"
                                         ),
@@ -104,6 +109,7 @@ class SettingsManagerTest {
                                 Setting(
                                         definition = SettingDefinition(
                                                 key = "testerum.ref",
+                                                label = "testerum.ref",
                                                 type = SettingType.TEXT,
                                                 defaultValue = "",
                                                 defined = false

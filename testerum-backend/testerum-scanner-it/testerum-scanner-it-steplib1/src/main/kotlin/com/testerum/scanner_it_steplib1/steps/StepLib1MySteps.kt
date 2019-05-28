@@ -16,9 +16,30 @@ import com.testerum.api.test_context.settings.model.SettingType
 import java.util.concurrent.TimeUnit
 
 @DeclareSettings([
-    (DeclareSetting(key = "stepLib1.param1", type = SettingType.NUMBER, defaultValue = "10", description = "param1 description", category = "param1 category")),
-    (DeclareSetting(key = "stepLib1.param2", type = SettingType.TEXT, defaultValue = "some text", description = "param2 description", category = "param2 category")),
-    (DeclareSetting(key = "stepLib1.param3", type = SettingType.FILESYSTEM_DIRECTORY, defaultValue = "/some/path", description = "param3 description", category = "param3 category"))
+    DeclareSetting(
+            key = "stepLib1.param1",
+            label = "1-Param 1",
+            type = SettingType.NUMBER,
+            defaultValue = "10",
+            description = "param1 description",
+            category = "param1 category"
+    ),
+    DeclareSetting(
+            key = "stepLib1.param2",
+            label = "1-Param 2",
+            type = SettingType.TEXT,
+            defaultValue = "some text",
+            description = "param2 description",
+            category = "param2 category"
+    ),
+    DeclareSetting(
+            key = "stepLib1.param3",
+            label = "1-Param 3",
+            type = SettingType.FILESYSTEM_DIRECTORY,
+            defaultValue = "/some/path",
+            description = "param3 description",
+            category = "param3 category"
+    )
 ])
 class StepLib1MySteps {
 

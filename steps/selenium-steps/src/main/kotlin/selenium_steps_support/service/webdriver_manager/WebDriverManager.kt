@@ -30,6 +30,7 @@ import java.nio.file.Path as JavaPath
 @DeclareSettings([
     DeclareSetting(
             key = SETTING_KEY_WAIT_TIMEOUT_MILLIS,
+            label = "Wait timeout (millis)",
             type = SettingType.NUMBER,
             defaultValue = "5000",
             description = "Maximum time duration in milliseconds for wait steps (e.g. wait until an element is present on the page).",
@@ -37,6 +38,7 @@ import java.nio.file.Path as JavaPath
     ),
     DeclareSetting(
             key = SETTING_KEY_AFTER_STEP_DELAY_MILLIS,
+            label = "After step delay (millis)",
             type = SettingType.NUMBER,
             defaultValue = "0",
             description = "Delay in milliseconds after a Selenium Step",
@@ -44,6 +46,7 @@ import java.nio.file.Path as JavaPath
     ),
     DeclareSetting(
             key = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST,
+            label = "Leave browser open after test",
             type = SettingType.TEXT,
             defaultValue = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT,
             description = """Leave browser open after a Selenium test. Possible values: "true", "false", "onFailure"""",
@@ -51,6 +54,7 @@ import java.nio.file.Path as JavaPath
     ),
     DeclareSetting(
             key = SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP,
+            label = "Take screenshot after each step",
             type = SettingType.TEXT,
             defaultValue = "false",
             description = """Should take a screenshot after each Selenium Test. Possible values: "true", "false"""",

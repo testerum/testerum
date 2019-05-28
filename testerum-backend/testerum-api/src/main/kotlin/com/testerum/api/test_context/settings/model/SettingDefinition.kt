@@ -1,6 +1,7 @@
 package com.testerum.api.test_context.settings.model
 
 data class SettingDefinition(val key: String,
+                             val label: String,
                              val type: SettingType,
                              val defaultValue: String,
                              val description: String? = null,
@@ -9,6 +10,7 @@ data class SettingDefinition(val key: String,
     companion object {
         fun undefined(key: String) = SettingDefinition(
                 key = key,
+                label = key,
                 type = SettingType.TEXT,
                 defaultValue = "",
                 description = null,
