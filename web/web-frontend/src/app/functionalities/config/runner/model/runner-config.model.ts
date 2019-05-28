@@ -5,7 +5,7 @@ import {JsonUtil} from "../../../../utils/json.util";
 export class RunnerConfig implements Serializable<RunnerConfig> {
     name: string;
     settings: Map<string, string> = new Map<string, string>();
-    tagsToExecute: Array<string> = [];
+    tagsToInclude: Array<string> = [];
     tagsToExclude: Array<string> = [];
     selectedPaths: Array<Path> = [];
 
@@ -18,7 +18,7 @@ export class RunnerConfig implements Serializable<RunnerConfig> {
             let value = settingsJson[key];
             this.settings.set(key, value);
         });
-        this.tagsToExecute = input['tagsToExecute'] || [];
+        this.tagsToInclude = input['tagsToInclude'] || [];
         this.tagsToExclude = input['tagsToExclude'] || [];
         this.selectedPaths = [];
         for (let selectedPathJson of (input['selectedPaths']) || []) {
@@ -33,7 +33,7 @@ export class RunnerConfig implements Serializable<RunnerConfig> {
             '{' +
             '"name":' + JsonUtil.stringify(this.name) +
             ',"settings":' + JsonUtil.stringify(this.settings) +
-            ',"tagsToExecute":' + JsonUtil.stringify(this.tagsToExecute) +
+            ',"tagsToInclude":' + JsonUtil.stringify(this.tagsToInclude) +
             ',"tagsToExclude":' + JsonUtil.stringify(this.tagsToExclude) +
             ',"selectedPaths":' + JsonUtil.serializeArrayOfSerializable(this.selectedPaths) +
             '}'

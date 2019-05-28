@@ -1,13 +1,13 @@
 <div class="runner-config-tests-to-execute">
     <div class="my-line">
-        <label class="my-label label-size">Tags to execute:</label>
+        <label class="my-label label-size">Tags to include:</label>
         <div class="my-value my-default-line-height">
-            <p-autoComplete #tagsToExecuteElement
-                            [(ngModel)]="runnerConfig.tagsToExecute"
-                            [suggestions]="tagsToExecuteToShow"
-                            (completeMethod)="onSearchTagToExecute($event)"
-                            (onSelect)="onTagToExecuteSelect($event)"
-                            (onKeyUp)="onTagsToExecuteKeyUp($event);"
+            <p-autoComplete #tagsToIncludeElement
+                            [(ngModel)]="runnerConfig.tagsToInclude"
+                            [suggestions]="tagsToIncludeToShow"
+                            (completeMethod)="onSearchTagsToInclude($event)"
+                            (onSelect)="onTagsToIncludeSelect($event)"
+                            (onKeyUp)="onTagsToIncludeKeyUp($event);"
                             [delay]="0"
                             [multiple]="true"
                             [dropdown]="true"

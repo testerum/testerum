@@ -14,8 +14,8 @@ export class RunnerConfigTestsToExecuteComponent implements OnInit {
     @Input() runnerConfig: RunnerConfig;
 
     allKnownTags: Array<string> = [];
-    @ViewChild("tagsToExecuteElement") tagsExecuteAutoComplete: AutoComplete;
-    tagsToExecuteToShow:string[] = [];
+    @ViewChild("tagsToIncludeElement") tagsExecuteAutoComplete: AutoComplete;
+    tagsToIncludeToShow:string[] = [];
     currentToExecuteTagSearch:string;
     @ViewChild("tagsToExcludeElement") tagsExcludeAutoComplete: AutoComplete;
     tagsToExcludeToShow:string[] = [];
@@ -32,39 +32,39 @@ export class RunnerConfigTestsToExecuteComponent implements OnInit {
     }
 
     //start methods for TAGS TO EXECUTE
-    onSearchTagToExecute(event) {
+    onSearchTagsToInclude(event) {
         this.currentToExecuteTagSearch = event.query;
 
         let newTagsToShow = ArrayUtil.filterArray(
             this.allKnownTags,
             event.query
         );
-        for (let currentTag of this.runnerConfig.tagsToExecute) {
+        for (let currentTag of this.runnerConfig.tagsToInclude) {
             ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
         }
         for (let currentTag of this.runnerConfig.tagsToExclude) {
             ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
         }
-        this.tagsToExecuteToShow = newTagsToShow
+        this.tagsToIncludeToShow = newTagsToShow
     }
 
-    onTagsToExecuteKeyUp(event: KeyboardEvent) {
+    onTagsToIncludeKeyUp(event: KeyboardEvent) {
         event.preventDefault();
 
         if (event.key == "Enter") {
-            this.addCurrentTagToTagsToExecute();
+            this.addCurrentTagToTagsToInclude();
         }
     }
 
-    addCurrentTagToTagsToExecute() {
+    addCurrentTagToTagsToInclude() {
         if (this.currentToExecuteTagSearch) {
-            this.runnerConfig.tagsToExecute.push(this.currentToExecuteTagSearch);
+            this.runnerConfig.tagsToInclude.push(this.currentToExecuteTagSearch);
             this.currentToExecuteTagSearch = null;
             this.tagsExecuteAutoComplete.multiInputEL.nativeElement.value = null;
         }
     }
 
-    onTagToExecuteSelect(event) {
+    onTagsToIncludeSelect(event) {
         this.currentToExecuteTagSearch = null;
     }
     //end methods for TAGS TO EXECUTE
@@ -80,7 +80,7 @@ export class RunnerConfigTestsToExecuteComponent implements OnInit {
         for (let currentTag of this.runnerConfig.tagsToExclude) {
             ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
         }
-        for (let currentTag of this.runnerConfig.tagsToExecute) {
+        for (let currentTag of this.runnerConfig.tagsToInclude) {
             ArrayUtil.removeElementFromArray(newTagsToShow, currentTag)
         }
         this.tagsToExcludeToShow = newTagsToShow
