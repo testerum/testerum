@@ -82,15 +82,15 @@ export class LicenseModalComponent implements AfterViewInit {
     }
 
     getTrialRemainingDays(): number {
-        return DateUtil.getDaysBetweenDates(new Date(), this.model.trialLicense.endDate)
+        return this.model.trialLicense.daysUntilExpiration;
     }
 
     isTrialLicenseExpired(): boolean {
-        return this.model.trialLicense.endDate < new Date();
+        return this.model.trialLicense.expired;
     }
 
     isUserLicenseExpired(): boolean {
-        return this.model.currentUserLicense.expirationDate < new Date();
+        return this.model.currentUserLicense.expired;
     }
 
     onAuthenticationChanged() {
