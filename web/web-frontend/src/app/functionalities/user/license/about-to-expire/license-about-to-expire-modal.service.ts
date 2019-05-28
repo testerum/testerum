@@ -8,8 +8,6 @@ import {Config} from "../../../../config";
 @Injectable()
 export class LicenseAboutToExpireModalService {
 
-    LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT = "LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT";
-
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
                 private contextService: ContextService) {
     }
@@ -17,21 +15,21 @@ export class LicenseAboutToExpireModalService {
     showLicenseAboutToExpireModalIfIsTheCase() {
         let isTrialLicense = !!this.contextService.license.getLicenseInfo().trialLicense;
 
-        let daysUntilExpiration: number = this.getDaysUntilLicenseExpires();
-        let lastUsedOfRemainingDaysLicenseAlert: number = this.getLastUsedOfRemainingDaysLicenseAlert();
+        let daysUntilExpiration: number = this.getDaysUntilExpiration();
+        let lastUsedOfRemainingDaysLicenseAlert: number = this.contextService.license.getLastUsedOfRemainingDaysLicenseAlert();
         let nextAlertDaysRemaining: number = this.getNextToBeUsedOfRemainingDaysLicenseAlert(lastUsedOfRemainingDaysLicenseAlert, isTrialLicense);
 
         if(lastUsedOfRemainingDaysLicenseAlert > 0 &&
             daysUntilExpiration > lastUsedOfRemainingDaysLicenseAlert) {
 
-            this.deleteLastUsedOfRemainingDaysLicenseAlert();
+            this.contextService.license.deleteLastUsedOfRemainingDaysLicenseAlert();
             return;
         }
 
         if (nextAlertDaysRemaining >= 0 && daysUntilExpiration >=0 &&
             daysUntilExpiration <= nextAlertDaysRemaining) {
 
-            this.saveLastUsedOfRemainingDaysLicenseAlert(daysUntilExpiration);
+            this.contextService.license.saveLastUsedOfRemainingDaysLicenseAlert(daysUntilExpiration);
 
             const factory = this.componentFactoryResolver.resolveComponentFactory(LicenseAboutToExpireModalComponent);
             let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
@@ -44,25 +42,15 @@ export class LicenseAboutToExpireModalService {
         }
     }
 
-    private getDaysUntilLicenseExpires(): number {
-        let expirationDate: Date | null = this.contextService.license.getLicenseInfo().getExpirationDate();
-        if (!expirationDate) {
-            return -1;
+    private getDaysUntilExpiration() {
+        if (this.contextService.license.getLicenseInfo().trialLicense) {
+            return this.contextService.license.getLicenseInfo().trialLicense.daysUntilExpiration;
         }
 
-        let nowMidnight = new Date();
-        nowMidnight.setHours(0);
-        nowMidnight.setMinutes(0);
-        nowMidnight.setSeconds(0);
-        nowMidnight.setMilliseconds(0);
-        
-        return DateUtil.getDaysBetweenDates(nowMidnight, expirationDate);
-    }
-
-    private getLastUsedOfRemainingDaysLicenseAlert(): number {
-        let lastUsedOfRemainingDaysLicenseAlert = localStorage.getItem(this.LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT);
-        //if is not initialized, set the initial value as an big number
-        return lastUsedOfRemainingDaysLicenseAlert ? +lastUsedOfRemainingDaysLicenseAlert : 99999;
+        if (this.contextService.license.getLicenseInfo().currentUserLicense) {
+            return this.contextService.license.getLicenseInfo().currentUserLicense.daysUntilExpiration;
+        }
+        return -1;
     }
 
     private getNextToBeUsedOfRemainingDaysLicenseAlert(lastUsedOfRemainingDaysLicenseAlert: number,
@@ -79,13 +67,5 @@ export class LicenseAboutToExpireModalService {
             return alertDay;
         }
         return -1;
-    }
-
-    private deleteLastUsedOfRemainingDaysLicenseAlert() {
-        localStorage.removeItem(this.LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT);
-    }
-
-    private saveLastUsedOfRemainingDaysLicenseAlert(nextAlertDaysRemaining: number) {
-        localStorage.setItem(this.LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT, ""+nextAlertDaysRemaining);
     }
 }

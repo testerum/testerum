@@ -20,7 +20,7 @@ import {UrlService} from "../../../../service/url.service";
     styleUrls: ['./license-modal.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
 })
-export class LicenseModalComponent implements OnInit, AfterViewInit {
+export class LicenseModalComponent implements AfterViewInit {
 
     model: LicenseInfo;
 
@@ -31,10 +31,6 @@ export class LicenseModalComponent implements OnInit, AfterViewInit {
                 private userService: UserService,
                 private contextService: ContextService,
                 private urlService: UrlService) {
-    }
-
-    ngOnInit(): void {
-
     }
 
     ngAfterViewInit(): void {
@@ -86,15 +82,15 @@ export class LicenseModalComponent implements OnInit, AfterViewInit {
     }
 
     getTrialRemainingDays(): number {
-        return DateUtil.getDaysBetweenDates(new Date(), this.model.trialLicense.endDate)
+        return this.model.trialLicense.daysUntilExpiration;
     }
 
     isTrialLicenseExpired(): boolean {
-        return this.model.trialLicense.endDate < new Date();
+        return this.model.trialLicense.expired;
     }
 
     isUserLicenseExpired(): boolean {
-        return this.model.currentUserLicense.expirationDate < new Date();
+        return this.model.currentUserLicense.expired;
     }
 
     onAuthenticationChanged() {
