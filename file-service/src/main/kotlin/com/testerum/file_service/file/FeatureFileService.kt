@@ -12,7 +12,6 @@ import com.testerum.common_kotlin.isRegularFile
 import com.testerum.common_kotlin.smartMoveTo
 import com.testerum.common_kotlin.walk
 import com.testerum.common_kotlin.walkAndCollect
-import com.testerum.file_service.file.util.escape
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileFeatureMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessFeatureMapper
 import com.testerum.model.exception.ValidationException
@@ -20,6 +19,7 @@ import com.testerum.model.feature.Feature
 import com.testerum.model.file.Attachment
 import com.testerum.model.file.FileToUpload
 import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.util.escape
 import com.testerum.test_file_format.feature.FileFeature
 import com.testerum.test_file_format.feature.FileFeatureParserFactory
 import com.testerum.test_file_format.feature.FileFeatureSerializer
@@ -30,7 +30,7 @@ import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.*
+import java.util.UUID
 import java.nio.file.Path as JavaPath
 
 class FeatureFileService(private val featureMapper: FileToBusinessFeatureMapper,
@@ -55,7 +55,7 @@ class FeatureFileService(private val featureMapper: FileToBusinessFeatureMapper,
                 val fileFeature = parseFeatureFile(path)
 
                 if (fileFeature != null) {
-                    val relativePath = absoluteFeaturesDir.relativize(path)
+                    val relativePath: JavaPath = absoluteFeaturesDir.relativize(path)
                     val feature = featureMapper.mapFeature(fileFeature, relativePath)
 
                     features += feature

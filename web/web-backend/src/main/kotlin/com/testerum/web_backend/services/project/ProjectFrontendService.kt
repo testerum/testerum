@@ -85,7 +85,7 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
                                    name = createProjectRequest.projectName,
                                    id = testerumProjectFileService.generateProjectId()
                            ),
-                           directory = absoluteProjectRootDir
+                           projectRootDir = absoluteProjectRootDir
                    )
         } catch (e: AccessDeniedException) {
             LOG.warn("filesystem permissions do not allow to create a project; createProjectRequest=$createProjectRequest", e)

@@ -25,7 +25,7 @@ import {Subscription} from "rxjs";
 })
 export class RunnerConfigTestTreeComponent implements OnInit, OnChanges, OnDestroy {
 
-    @Input() selectedPaths: Array<Path>;
+    @Input() paths: Array<Path>;
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(RunnerConfigTestTreeRootModel, RunnerConfigTestTreeNodeComponent)
         .addPair(RunnerConfigTestTreeContainerModel, RunnerConfigTestTreeNodeComponent)
@@ -60,6 +60,6 @@ export class RunnerConfigTestTreeComponent implements OnInit, OnChanges, OnDestr
 
     private initTree(){
         this.runnerConfigTestTreeService.treeFilter = FeaturesTreeFilter.createEmptyFilter();
-        this.runnerConfigTestTreeService.initializeTreeFromServer(this.selectedPaths);
+        this.runnerConfigTestTreeService.initializeTreeFromServer(this.paths);
     }
 }

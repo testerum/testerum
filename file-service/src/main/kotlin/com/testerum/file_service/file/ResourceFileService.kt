@@ -19,8 +19,6 @@ import com.testerum.common_kotlin.isRegularFile
 import com.testerum.common_kotlin.smartMoveTo
 import com.testerum.common_kotlin.walkAndCollect
 import com.testerum.file_service.caches.resolved.resolvers.file_arg_transformer.FileArgTransformer
-import com.testerum.file_service.file.util.escape
-import com.testerum.file_service.file.util.escapeFileOrDirectoryName
 import com.testerum.file_service.file.util.isCreateResource
 import com.testerum.file_service.file.util.isRelocateResource
 import com.testerum.model.exception.ValidationException
@@ -30,6 +28,8 @@ import com.testerum.model.infrastructure.path.RenamePath
 import com.testerum.model.resources.ResourceContext
 import com.testerum.model.resources.ResourceType
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
+import com.testerum.model.util.escape
+import com.testerum.model.util.escapeFileOrDirectoryName
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption

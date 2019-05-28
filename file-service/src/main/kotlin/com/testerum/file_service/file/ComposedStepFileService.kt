@@ -10,7 +10,7 @@ import com.testerum.common_kotlin.hasExtension
 import com.testerum.common_kotlin.isRegularFile
 import com.testerum.common_kotlin.smartMoveTo
 import com.testerum.common_kotlin.walk
-import com.testerum.file_service.file.util.escape
+import com.testerum.model.util.escape
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileStepMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessStepMapper
 import com.testerum.model.exception.ValidationException

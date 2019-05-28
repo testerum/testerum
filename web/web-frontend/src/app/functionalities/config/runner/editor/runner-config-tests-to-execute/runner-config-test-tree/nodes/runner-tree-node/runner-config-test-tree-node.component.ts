@@ -53,6 +53,6 @@ export class RunnerConfigTestTreeNodeComponent {
 
     selectOrNot() {
         this.model.setSelected(!this.model.isSelected());
-        this.runnerConfigTestTreeService.recalculateSelectedPathsFromTreeModel();
+        this.runnerConfigTestTreeService.recalculatePathsFromTreeModel();
     }
 }

@@ -8,7 +8,7 @@ import com.testerum.common_kotlin.doesNotExist
 import com.testerum.common_kotlin.getContent
 import com.testerum.common_kotlin.list
 import com.testerum.common_kotlin.smartMoveTo
-import com.testerum.file_service.file.util.escape
+import com.testerum.model.util.escape
 import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileManualTestPlanMapper
 import com.testerum.file_service.mapper.file_to_business.manual.FileToBusinessManualTestPlanMapper
 import com.testerum.model.exception.ValidationException

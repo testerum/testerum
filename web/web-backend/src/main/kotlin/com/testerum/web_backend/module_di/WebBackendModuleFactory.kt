@@ -55,7 +55,7 @@ import com.testerum.web_backend.controllers.resources.http.HttpController
 import com.testerum.web_backend.controllers.resources.rdbms.RdbmsController
 import com.testerum.web_backend.controllers.results.ResultsController
 import com.testerum.web_backend.controllers.results.ResultsFileServerController
-import com.testerum.web_backend.controllers.runner.RunnerController
+import com.testerum.web_backend.controllers.runner.config.RunnerController
 import com.testerum.web_backend.controllers.runner.execution.TestExecutionController
 import com.testerum.web_backend.controllers.runner.execution.TestsWebSocketController
 import com.testerum.web_backend.controllers.settings.SettingsController
@@ -90,6 +90,7 @@ import com.testerum.web_backend.services.resources.NetworkService
 import com.testerum.web_backend.services.resources.ResourcesFrontendService
 import com.testerum.web_backend.services.resources.http.HttpFrontendService
 import com.testerum.web_backend.services.resources.rdbms.RdbmsFrontendService
+import com.testerum.web_backend.services.runner.config.RunnerConfigFrontendService
 import com.testerum.web_backend.services.runner.execution.TestsExecutionFrontendService
 import com.testerum.web_backend.services.runner.result.ResultsFrontendService
 import com.testerum.web_backend.services.save.SaveFrontendService
@@ -374,6 +375,11 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             webProjectManager = webProjectManager
     )
 
+    private val runnerConfigFrontendService = RunnerConfigFrontendService(
+            webProjectManager = webProjectManager,
+            runConfigFileService = fileServiceModuleFactory.runConfigFileService
+    )
+
     private val networkService = NetworkService()
 
     private val fileSystemFrontendService = FileSystemFrontendService(
@@ -474,6 +480,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val runnerController = RunnerController(
+            runnerConfigFrontendService = runnerConfigFrontendService
     )
 
     private val messageController = MessageController(

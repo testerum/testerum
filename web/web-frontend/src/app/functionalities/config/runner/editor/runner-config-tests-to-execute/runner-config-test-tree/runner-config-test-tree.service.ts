@@ -15,7 +15,7 @@ export class RunnerConfigTestTreeService {
 
     treeModel: JsonTreeModel = new JsonTreeModel();
     treeFilter: FeaturesTreeFilter = FeaturesTreeFilter.createEmptyFilter();
-    selectedPaths: Array<Path> = [];
+    paths: Array<Path> = [];
 
     refreshTreeEventEmitter: EventEmitter<void> = new EventEmitter<void>();
 
@@ -23,8 +23,8 @@ export class RunnerConfigTestTreeService {
                 private featureService: FeatureService) {
     }
 
-    initializeTreeFromServer(selectedPaths: Array<Path>, expandToLevel: number = 2) {
-        this.selectedPaths = selectedPaths;
+    initializeTreeFromServer(paths: Array<Path>, expandToLevel: number = 2) {
+        this.paths = paths;
 
         this.featureService.getFeatureTree(this.treeFilter).subscribe(
             (rootNode: RootFeatureNode) => {
@@ -33,7 +33,7 @@ export class RunnerConfigTestTreeService {
                 JsonTreeExpandUtil.expandTreeToLevel(this.treeModel, expandToLevel);
 
                 let allTreeNodes: RunnerConfigTestTreeBaseModel[] = this.treeModel.getAllTreeNodes<RunnerConfigTestTreeBaseModel>();
-                for (const selectedPath of this.selectedPaths) {
+                for (const selectedPath of this.paths) {
                     let nodeToSelect = this.getNodeByPath(allTreeNodes, selectedPath);
                     if (nodeToSelect != null) {
                         nodeToSelect.setSelected(true);
@@ -54,22 +54,22 @@ export class RunnerConfigTestTreeService {
         return null;
     }
 
-    recalculateSelectedPathsFromTreeModel() {
-        this.selectedPaths.length = 0;
+    recalculatePathsFromTreeModel() {
+        this.paths.length = 0;
         for (const rootNodes of this.treeModel.children) {
-            this.addSelectedPathsOfNode(rootNodes as RunnerConfigTestTreeBaseModel);
+            this.addPathsOfNode(rootNodes as RunnerConfigTestTreeBaseModel);
         }
     }
 
-    private addSelectedPathsOfNode(treeNode: RunnerConfigTestTreeBaseModel) {
+    private addPathsOfNode(treeNode: RunnerConfigTestTreeBaseModel) {
         if(treeNode.isSelectedNode()) {
-            this.selectedPaths.push(treeNode.path);
+            this.paths.push(treeNode.path);
             return;
         }
 
         if (treeNode instanceof RunnerConfigTestTreeContainerModel) {
             for (const child of treeNode.children) {
-                this.addSelectedPathsOfNode(child);
+                this.addPathsOfNode(child);
             }
         }
     }
