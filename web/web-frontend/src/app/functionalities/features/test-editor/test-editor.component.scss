@@ -1,65 +1,72 @@
 @import "../../../../resources/css/testerum-variables.scss";
 
+
 .test-editor {
     overflow-y: auto;
     height: 100%;
-}
 
-.inline {
-    display: inline-block;
-}
-
-.label-size {
-    width: 6em;
-}
-
-.type-value-container {
-    display: flex !important;
-}
-
-.step-action-panel {
-    margin-left: 10px;
-}
-
-.disabled-container {
-    margin-left: 10px;
-}
-
-.type-and-disabled-values {
-    display: flex;
-}
-
-.toggle-test-type {
-    width: 9em;
-    background-color: $success-color !important;
-    color: white !important;
-}
-
-.type-container p-toggleButton, .disabled-container p-toggleButton {
-    display: flex;
-    justify-content: center;
-    height: 25px;
-    font-size: 16px !important;
-    .ui-button-text {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        line-height: 1.6em;
-        font-size: 14px;
+    .page-body {
+        form {
+            border-bottom: 1px solid #e5e5e5;
+        }
     }
-}
 
-.toggle-test-type.ui-state-active {
-    background-color: $warning-color !important;
-    color: white !important;
-}
+    .inline {
+        display: inline-block;
+    }
 
-.toggle-test-state {
-    width: 8em;
-    background-color: $success-color !important;
-    color: white !important;
-}
+    .label-size {
+        width: 6em;
+    }
 
-.toggle-test-state.ui-state-active {
-    background-color: $error-color !important;
-    color: white !important;
+    .type-value-container {
+        display: flex !important;
+    }
+
+    .step-action-panel {
+        margin-left: 10px;
+    }
+
+    .disabled-container {
+        margin-left: 10px;
+    }
+
+    .type-and-disabled-values {
+        display: flex;
+    }
+
+    .toggle-test-type {
+        width: 9em;
+        background-color: $success-color !important;
+        color: white !important;
+    }
+
+    .type-container p-toggleButton, .disabled-container p-toggleButton {
+        display: flex;
+        justify-content: center;
+        height: 25px;
+        font-size: 16px !important;
+        .ui-button-text {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            line-height: 1.6em;
+            font-size: 14px;
+        }
+    }
+
+    .toggle-test-type.ui-state-active {
+        background-color: $warning-color !important;
+        color: white !important;
+    }
+
+    .toggle-test-state {
+        width: 8em;
+        background-color: $success-color !important;
+        color: white !important;
+    }
+
+    .toggle-test-state.ui-state-active {
+        background-color: $error-color !important;
+        color: white !important;
+    }
 }

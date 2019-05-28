@@ -32,7 +32,7 @@ export class LicenseGuard implements CanActivate, CanActivateChild {
     }
 
     private startConfigCanActivate() {
-        if (!this.contextService.license.isLoggedIn()) {
+        if (!this.contextService.license.hasValidLicenseOrValidTrial()) {
             this.urlService.navigateToLicense(this.location.path());
         }
 

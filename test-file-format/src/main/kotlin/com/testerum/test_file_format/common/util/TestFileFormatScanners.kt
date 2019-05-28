@@ -35,7 +35,7 @@ object TestFileFormatScanners {
                 verbatim(),
                 string("<<"),
                 or(
-                        escapeSequence(">>"),
+                        escapeSequence(">"),
                         notClosingAngleBrackets()
                 ).many(),
                 string(">>")

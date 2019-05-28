@@ -127,6 +127,10 @@ class DirtyDirsTracker(fsNotifierBinariesDir: JavaPath,
 
     fun pause() {
         lock.write {
+            if (this.paused) {
+                return
+            }
+
             fsNotifier.setRoots(
                     recursiveRoots = emptyList(),
                     flatRoots = emptyList()

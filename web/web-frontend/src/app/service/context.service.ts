@@ -109,7 +109,21 @@ class LicenseContext {
     isLoggedIn(): boolean {
         if (!this.licenseInfo) return false;
 
-        return !!this.licenseInfo.trialLicense || !!this.licenseInfo.currentUserLicense;
+        return !!this.licenseInfo.currentUserLicense;
+    }
+
+    hasValidLicenseOrValidTrial(): boolean {
+        if (!this.licenseInfo) return false;
+
+        if (this.licenseInfo.trialLicense && this.licenseInfo.trialLicense.expired == false) {
+            return true;
+        }
+
+        if (this.licenseInfo.currentUserLicense && this.licenseInfo.currentUserLicense.expired == false) {
+            return true;
+        }
+
+        return false;
     }
 
     setAuthToken(authToken: string, userLicenseInfo: UserLicenseInfo) {

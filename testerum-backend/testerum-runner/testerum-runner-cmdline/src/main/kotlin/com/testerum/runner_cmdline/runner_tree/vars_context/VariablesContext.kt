@@ -12,7 +12,7 @@ import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
-import org.apache.commons.lang3.StringEscapeUtils
+import org.apache.commons.text.StringEscapeUtils
 
 class VariablesContext private constructor(private val argsVars: Map<String, Any?>,
                                            private val dynamicVars: DynamicVariablesContext,
@@ -24,6 +24,12 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
         fun forTest(dynamicVars: DynamicVariablesContext, globalVars: GlobalVariablesContext)
                 = VariablesContext(emptyMap(), dynamicVars, globalVars)
     }
+
+    fun getArgsVars(): Map<String, Any?> = argsVars
+
+    fun getDynamicVars(): Map<String, Any?> = dynamicVars.toMap()
+
+    fun getGlobalVars(): Map<String, Any?> = globalVars.toMap()
 
     fun forStep(stepCall: StepCall): VariablesContext {
         val argsVars = mutableMapOf<String, Any?>()

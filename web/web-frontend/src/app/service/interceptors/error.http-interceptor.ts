@@ -37,6 +37,10 @@ export class ErrorHttpInterceptor implements HttpInterceptor {
                     let httpErrorResponse: HttpErrorResponse = err;
                     if (httpErrorResponse.status >= 400 || httpErrorResponse.status == 0) {
 
+                        if (err.status == 401 && !err.url.includes("/rest/user")) {
+                            window.location.href = "/license;url="+encodeURIComponent(window.location.href);
+                        }
+
                         if (err.status == 504 || err.status == 0) {
                             if (!ErrorHttpInterceptor.isServerAvailable) {
                                 return EMPTY;

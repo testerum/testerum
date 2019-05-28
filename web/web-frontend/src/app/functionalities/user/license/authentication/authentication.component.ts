@@ -1,4 +1,13 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    EventEmitter,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {UserService} from "../../../../service/user.service";
 import {AuthRequest} from "../../../../model/user/auth/auth-request.model";
 import {AuthResponse} from "../../../../model/user/auth/auth-response.model";
@@ -14,7 +23,7 @@ import {FileUpload} from "primeng/primeng";
     styleUrls: ['./authentication.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class AuthenticationComponent implements OnInit, OnDestroy {
+export class AuthenticationComponent implements OnDestroy {
 
     @Output("authChange") change = new EventEmitter<void>();
 
@@ -26,22 +35,37 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
     @ViewChild("licenseFileUpload") licenseFileUpload: FileUpload;
     licenseFile: File;
 
-    constructor(private userService: UserService,
+    constructor(private cd: ChangeDetectorRef,
+                private userService: UserService,
                 private contextService: ContextService) {
-    }
-
-    ngOnInit() {
     }
 
     ngOnDestroy(): void {
         this.change.complete()
     }
 
+    refresh() {
+        if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
+            this.cd.detectChanges();
+        }
+    }
+
     onTabChanged() {
         this.errorMessage = "";
     }
 
+    isLoginValid(): boolean {
+        if (this.email && this.password) {
+            return true;
+        }
+        return false;
+    }
+
     onLogin() {
+        if (!this.isLoginValid()) {
+            return;
+        }
+
         this.errorMessage = "";
 
         let authRequest = new AuthRequest();
@@ -56,13 +80,21 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
                 let validationErrorResponse: ValidationErrorResponse = error.error as ValidationErrorResponse;
                 if (validationErrorResponse.errorCode == ErrorCode.CLOUD_OFFLINE || validationErrorResponse.errorCode == ErrorCode.CLOUD_ERROR) {
                     this.errorMessage = "Your application can't reach Testerum server for authentication.\nPlease upload your license file";
+                    this.refresh();
                     return;
                 }
                 if (validationErrorResponse.errorCode == ErrorCode.INVALID_CREDENTIALS) {
                     this.errorMessage = "Invalid username or password";
+                    this.refresh();
+                    return;
+                }
+                if (validationErrorResponse.errorCode == ErrorCode.NO_VALID_LICENSE) {
+                    this.errorMessage = "This user doesn't have any valid license.";
+                    this.refresh();
                     return;
                 }
                 this.errorMessage = "Authentication not available";
+                this.refresh();
                 return;
             }
         );
@@ -83,11 +115,13 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
             (error: HttpErrorResponse) => {
                 let validationErrorResponse: ValidationErrorResponse = error.error as ValidationErrorResponse;
 
-                if (validationErrorResponse.errorCode == ErrorCode.INVALID_CREDENTIALS) {
+                if (validationErrorResponse.errorCode == ErrorCode.INVALID_CREDENTIALS || validationErrorResponse.errorCode == ErrorCode.NO_VALID_LICENSE) {
                     this.errorMessage = "Invalid license file";
+                    this.refresh();
                     return;
                 }
                 this.errorMessage = "Authentication not available";
+                this.refresh();
                 return;
             }
         );

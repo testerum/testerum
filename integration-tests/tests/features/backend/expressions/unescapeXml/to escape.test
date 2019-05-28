@@ -1,0 +1,14 @@
+test-def: to escape
+
+    step: Given the variable <<var_escaped>> with value <<{{value}}>>
+        var value = <<
+            &lt;a href=&quot;https://www.example.com/&quot;&gt;
+                example website
+            &lt;/a&gt;
+        >>
+    step: Then <<{{unescapeXml(var_escaped)}}>> is equal to <<{{expectedValue}}>>
+        var expectedValue = <<
+            <a href="https://www.example.com/">
+                example website
+            </a>
+        >>

@@ -57,4 +57,31 @@ class FileStepCallSerializerTest {
         )
     }
 
+    @Test
+    fun `should keep trailing newline`() {
+        testRunner.execute(
+                original = FileStepCall(
+                        phase = FileStepPhase.WHEN,
+                        parts = listOf(
+                                FileTextStepCallPart("I say "),
+                                FileArgStepCallPart("{{message}}")
+                        ),
+                        vars = listOf(
+                                FileStepVar(
+                                        name = "message",
+                                        value = "line 1\nline 2\n"
+                                )
+                        )
+                ),
+                indentLevel = 0,
+                expected = """|step: When I say <<{{message}}>>
+                              |    var message = <<
+                              |        line 1
+                              |        line 2
+                              |        
+                              |    >>
+                              |""".trimMargin()
+        )
+    }
+
 }

@@ -17,13 +17,13 @@ export class LicensePageComponent implements OnInit {
 
     ngOnInit() {
         let urlParam = UrlUtil.getParamFromUrl(this.activatedRoute, "url");
-        if (this.contextService.license.isLoggedIn()) {
+        if (this.contextService.license.hasValidLicenseOrValidTrial()) {
             window.location.href = urlParam
         }
     }
 
     onAuthentication() {
         let urlParam = UrlUtil.getParamFromUrl(this.activatedRoute, "url");
-        window.location.href = urlParam;
+        window.location.href = urlParam ? urlParam : "/";
     }
 }

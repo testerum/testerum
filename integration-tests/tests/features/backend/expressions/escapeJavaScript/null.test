@@ -1,0 +1,3 @@
+test-def: null
+
+    step: Then <<{{escapeJavaScript(null)}}>> is equal to <<{{null}}>>

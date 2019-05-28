@@ -10,11 +10,13 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.testerum.cloud_client.CloudOfflineException
-import com.testerum.cloud_client.error_feedback.ErrorFeedbackCloudClient
+import com.testerum.cloud_client.error_feedback.FeedbackCloudClient
 import com.testerum.cloud_client.infrastructure.CloudClientErrorResponseException
 import com.testerum.cloud_client.licenses.CloudInvalidCredentialsException
+import com.testerum.cloud_client.licenses.CloudNoValidLicenseException
 import com.testerum.cloud_client.licenses.LicenseCloudClient
 import com.testerum.cloud_client.licenses.cache.LicensesCache
+import com.testerum.cloud_client.licenses.cache.updater.LicenseCachePeriodicUpdater
 import com.testerum.cloud_client.licenses.file.LicenseFileService
 import com.testerum.cloud_client.licenses.parser.SignedLicensedUserProfileParser
 import com.testerum.common_crypto.pem.PemMarshaller
@@ -30,9 +32,12 @@ import com.testerum.model.exception.IllegalFileOperationException
 import com.testerum.model.exception.ValidationException
 import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
 import com.testerum.settings.module_di.SettingsModuleFactory
+import com.testerum.web_backend.config.TesterumWebBackendConfig
+import com.testerum.web_backend.config.TesterumWebBackendConfigFactory
 import com.testerum.web_backend.controllers.error.ErrorController
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_exception.CloudErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_invalid_credentials.CloudInvalidCredentialsResponsePreparer
+import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_invalid_credentials.CloudNoValidLicenseResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_offline_exception.CloudOfflineResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.generic.GenericErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.illegal_file_opperation.IllegalFileOperationPreparer
@@ -111,8 +116,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     //---------------------------------------- config ----------------------------------------//
 
-//    private val cloudFunctionsBaseUrl = "https://europe-west1-testerum-prod.cloudfunctions.net" // todo: make this configurable
-    private val cloudFunctionsBaseUrl = "http://localhost:8010/testerum-prod/europe-west1"
+    private val testerumWebBackendConfig: TesterumWebBackendConfig = TesterumWebBackendConfigFactory.createTesterumWebBackendConfig()
 
 
     //---------------------------------------- misc ----------------------------------------//
@@ -136,6 +140,13 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
         disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
         disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    }
+
+
+    private val httpClient: HttpClient = TesterumHttpClientFactory.createHttpClient().also {
+        context.registerShutdownHook {
+            it.close()
+        }
     }
 
 
@@ -185,13 +196,36 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             signedLicensedUserProfileParser = signedLicensedUserProfileParser
     )
 
-    val licensesCache = LicensesCache(
-            licenseFileService = licenseFileService
+    private val feedbackCloudClient = FeedbackCloudClient (
+            httpClient = httpClient,
+            baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
+            objectMapper = restApiObjectMapper
     )
+
+    private val licensesCloudClient = LicenseCloudClient(
+            httpClient = httpClient,
+            baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
+            objectMapper = restApiObjectMapper
+    )
+
+    val licensesCache = LicensesCache(
+            licenseFileService = licenseFileService,
+            licenseCloudClient = licensesCloudClient
+    )
+
+    private val licenseCachePeriodicValidator = LicenseCachePeriodicUpdater(
+            cronExpression = "0 0 0 * * ? *", // every day at midnight
+            licensesCache = licensesCache
+    ).apply {
+        context.registerShutdownHook {
+            shutdown()
+        }
+    }
 
     private val licenseCacheInitializer = LicenseCacheInitializer(
             frontendDirs = frontendDirs,
-            licensesCache = licensesCache
+            licensesCache = licensesCache,
+            licenseCachePeriodicUpdater = licenseCachePeriodicValidator
     )
 
     private val cachesInitializer = CachesInitializer(
@@ -242,26 +276,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     private val variablesResolverService = VariablesResolverService()
 
-    private val httpClient: HttpClient = TesterumHttpClientFactory.createHttpClient().also {
-        context.registerShutdownHook {
-            it.close()
-        }
-    }
-
-    private val errorFeedbackCloudClient = ErrorFeedbackCloudClient (
-            httpClient = httpClient,
-            baseUrl = cloudFunctionsBaseUrl,
-            objectMapper = restApiObjectMapper
-    )
-
     private val feedbackFrontendService = FeedbackFrontendService (
-            errorFeedbackCloudClient = errorFeedbackCloudClient
-    )
-
-    private val licensesCloudClient = LicenseCloudClient(
-            httpClient = httpClient,
-            baseUrl = cloudFunctionsBaseUrl,
-            objectMapper = restApiObjectMapper
+            feedbackCloudClient = feedbackCloudClient
     )
 
     private val testsRunnerJsonObjectMapper: ObjectMapper = jacksonObjectMapper().apply {
@@ -392,7 +408,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             testResolver = fileServiceModuleFactory.testResolver
     )
 
-    val projectFrontendService = ProjectFrontendService(
+    private val projectFrontendService = ProjectFrontendService(
             frontendDirs = frontendDirs,
             recentProjectsFileService = fileServiceModuleFactory.recentProjectsFileService,
             testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService,
@@ -418,6 +434,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val userFrontendService = UserFrontendService(
             licenseCloudClient = licensesCloudClient,
             licensesCache = licensesCache,
+            signedLicensedUserProfileParser = signedLicensedUserProfileParser,
             trialService = fileServiceModuleFactory.trialService,
             authTokenService = authTokenService
     )
@@ -430,7 +447,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
                     ValidationException::class.java               to ValidationErrorResponsePreparer(),
                     CloudClientErrorResponseException::class.java to CloudErrorResponsePreparer(),
                     CloudOfflineException::class.java             to CloudOfflineResponsePreparer(),
-                    CloudInvalidCredentialsException::class.java  to CloudInvalidCredentialsResponsePreparer()
+                    CloudInvalidCredentialsException::class.java  to CloudInvalidCredentialsResponsePreparer(),
+                    CloudNoValidLicenseException::class.java      to CloudNoValidLicenseResponsePreparer()
             ),
             genericErrorResponsePreparer = GenericErrorResponsePreparer()
     )

@@ -57,7 +57,7 @@ class FileStepCallSerializerTest {
                 )
                 ,
                 indentLevel = 0,
-                expected = """|step: Given <<left \>> right>>
+                expected = """|step: Given <<left \>\> right>>
                               |""".trimMargin()
         )
     }
@@ -98,5 +98,19 @@ class FileStepCallSerializerTest {
         )
     }
 
+    @Test
+    fun `argument value ends with greater-than sign`() {
+        testRunner.execute(
+                original = FileStepCall(
+                        phase = FileStepPhase.WHEN,
+                        parts = listOf(
+                                FileTextStepCallPart("I say "),
+                                FileArgStepCallPart("greater than >")
+                        )
+                ),
+                indentLevel = 0,
+                expected = "step: When I say <<greater than \\>>>\n"
+        )
+    }
 
 }

@@ -1,0 +1,11 @@
+test-def: to escape
+
+    step: Given the variable <<var_escaped>> with value <<{{value}}>>
+        var value = <<<script type=\"text\/javascript\">\n    alert(\"works!\");\n<\/script>\nyes, it does!!!>>
+    step: Then <<{{unescapeJson(var_escaped)}}>> is equal to <<{{expectedValue}}>>
+        var expectedValue = <<
+            <script type="text/javascript">
+                alert("works!");
+            </script>
+            yes, it does!!!
+        >>

@@ -15,7 +15,7 @@ import {ContextService} from "../../../../service/context.service";
 import {UrlService} from "../../../../service/url.service";
 
 @Component({
-    selector: 'license-component',
+    selector: 'license-modal',
     templateUrl: './license-modal.component.html',
     styleUrls: ['./license-modal.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix

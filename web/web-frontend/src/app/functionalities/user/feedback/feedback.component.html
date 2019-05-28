@@ -15,6 +15,16 @@
                 <form #feedbackForm="ngForm" class="form-horizontal">
 
                     <div class="my-line">
+                        <label class="my-label label-size">Name</label>
+
+                        <div class="my-value">
+                            <input name="subject"
+                                   [(ngModel)]="model.name"
+                                   type="text" class="form-control" >
+                        </div>
+                    </div>
+
+                    <div class="my-line">
                         <label class="my-label label-size">Email</label>
 
                         <div class="my-value">
@@ -25,21 +35,11 @@
                     </div>
 
                     <div class="my-line">
-                        <label class="my-label label-size">Subject</label>
-
-                        <div class="my-value">
-                            <input name="subject"
-                                  [(ngModel)]="model.subject"
-                                   type="text" class="form-control" >
-                        </div>
-                    </div>
-
-                    <div class="my-line">
-                        <label class="my-label label-size">Description</label>
+                        <label class="my-label label-size">Message</label>
 
                         <div class="my-value">
                             <textarea name="description"
-                                      [(ngModel)]="model.description"
+                                      [(ngModel)]="model.message"
                                       class="form-control description" rows="11"></textarea>
                         </div>
                     </div>

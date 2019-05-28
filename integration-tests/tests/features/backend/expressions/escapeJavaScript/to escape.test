@@ -1,0 +1,9 @@
+test-def: to escape
+
+    step: Given the variable <<variable>> with value <<{{value}}>>
+        var value = <<
+            first line
+            second "line"
+            last line
+        >>
+    step: Then <<{{escapeJavaScript(variable)}}>> is equal to <<first line\nsecond \"line\"\nlast line>>

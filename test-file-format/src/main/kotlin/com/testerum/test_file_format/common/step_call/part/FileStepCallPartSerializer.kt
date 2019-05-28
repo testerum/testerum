@@ -13,12 +13,13 @@ object FileStepCallPartSerializer : BaseSerializer<FileStepCallPart>() {
             )
             is FileArgStepCallPart -> {
                 destination.write("<<")
-                destination.write(
-                        source.text
-                              .replace(">>", "\\>>")
-                )
+
+                var escaped = source.text
+                escaped = escaped.replace(">", "\\>")
+                destination.write(escaped)
                 destination.write(">>")
             }
         }
     }
+
 }

@@ -32,6 +32,12 @@
             <artifactId>bcpkix-jdk15on</artifactId>
         </dependency>
 
+        <!-- commons-text -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+        </dependency>
+
 
         <!--==================== test dependencies ====================-->
 

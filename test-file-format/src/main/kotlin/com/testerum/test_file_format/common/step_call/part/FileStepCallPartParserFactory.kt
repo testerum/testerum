@@ -32,7 +32,7 @@ object FileStepCallPartParserFactory : ParserFactory<FileStepCallPart> {
         return sequence(
                 Scanners.string("<<"),
                 or(
-                        escapeSequence(">>"),
+                        escapeSequence(">"),
                         notEndOfArgStepCallPart()
                 ).many(),
                 Scanners.string(">>")

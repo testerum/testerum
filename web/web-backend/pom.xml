@@ -94,6 +94,12 @@
             <artifactId>common-fsnotifier</artifactId>
         </dependency>
 
+        <!-- common-profiles -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-profiles</artifactId>
+        </dependency>
+
 
         <!--==================== 3rd party dependencies ====================-->
 

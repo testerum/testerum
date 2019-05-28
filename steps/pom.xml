@@ -15,6 +15,7 @@
 
     <modules>
         <module>assertion-steps</module>
+        <module>debug-steps</module>
         <module>json-steps</module>
         <module>rdbms-steps</module>
         <module>http-steps</module>

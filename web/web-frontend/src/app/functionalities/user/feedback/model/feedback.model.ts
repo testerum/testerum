@@ -2,32 +2,27 @@ import {Serializable} from "../../../../model/infrastructure/serializable.model"
 import {JsonUtil} from "../../../../utils/json.util";
 
 export class Feedback implements Serializable<Feedback> {
+    name: string;
     email: string;
-    subject: string;
-    description: string;
+    message: string;
 
     deserialize(input: Object): Feedback {
+        this.name = input["name"];
         this.email = input["email"];
-        this.subject = input["subject"];
-        this.description = input["description"];
+        this.message = input["message"];
         return this;
     }
 
     serialize(): string {
-        if(!this.email && !this.subject && !this.description) {
-            return "";
-        }
-
-        let response = '{';
-        response += '"email":' + JsonUtil.stringify(this.email);
-        response += ',"subject":' + JsonUtil.stringify(this.subject);
-        response += ',"description":' + JsonUtil.stringify(this.description);
-
-        response += '}';
-        return response;
+        return "" +
+            '{' +
+            '"name":' + JsonUtil.stringify(this.name) +
+            ',"email":' + JsonUtil.stringify(this.email) +
+            ',"message":' + JsonUtil.stringify(this.message) +
+            '}'
     }
 
     isEmpty(): boolean {
-        return !(this.subject || this.description);
+        return !(this.email || this.message);
     }
 }

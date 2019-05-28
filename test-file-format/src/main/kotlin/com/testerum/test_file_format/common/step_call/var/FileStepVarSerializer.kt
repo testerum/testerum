@@ -6,17 +6,25 @@ import java.io.Writer
 
 object FileStepVarSerializer : BaseSerializer<FileStepVar>() {
 
-    // todo: make sure we preserver white
-
     override fun serialize(source: FileStepVar, destination: Writer, indentLevel: Int) {
         val valueLines = source.value
-                .trimIndent()
                 .lines()
 
+        val minCommonIndent = valueLines
+                .filter(String::isNotBlank)
+                .map { indentWidth(it) }
+                .min() ?: 0
+
+        val lines = valueLines.map {
+            it.drop(minCommonIndent)
+        }
+
+
+
         if (valueLines.size == 1) {
-            serializeSingleLine(destination, indentLevel, source.name, valueLines)
+            serializeSingleLine(destination, indentLevel, source.name, lines)
         } else {
-            serializeMultiLine(destination, indentLevel, source.name, valueLines)
+            serializeMultiLine(destination, indentLevel, source.name, lines)
         }
     }
 
@@ -46,5 +54,7 @@ object FileStepVarSerializer : BaseSerializer<FileStepVar>() {
         indent(destination, indentLevel)
         destination.write(">>")
     }
+
+    private fun indentWidth(line: String): Int = line.indexOfFirst { !it.isWhitespace() }.let { if (it == -1) line.length else it }
 
 }

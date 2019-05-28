@@ -1,1 +1,1 @@
-ng serve --proxy-config proxy-conf.json
+npx ng serve --proxy-config proxy-conf.json

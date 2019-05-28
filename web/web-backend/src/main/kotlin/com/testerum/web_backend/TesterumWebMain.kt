@@ -2,6 +2,7 @@ package com.testerum.web_backend
 
 import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.web_backend.filter.angular_forwarder.AngularForwarderFilter
+import com.testerum.web_backend.filter.cache.DisableCacheFilter
 import com.testerum.web_backend.filter.project.CurrentProjectFilter
 import com.testerum.web_backend.filter.project_fswatcher_pause.ProjectFsWatcherPauseFilter
 import com.testerum.web_backend.filter.security.CurrentUserFilter
@@ -37,7 +38,8 @@ import javax.servlet.DispatcherType
 object TesterumWebMain {
 
     private val LOG = LoggerFactory.getLogger(TesterumWebMain::class.java)
-    private val PORT_SYSTEM_PROPERTY = "testerum.web.httpPort"
+
+    private const val PORT_SYSTEM_PROPERTY = "testerum.web.httpPort"
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -128,6 +130,16 @@ object TesterumWebMain {
                 EnumSet.of(DispatcherType.REQUEST)
         )
 
+        // add DisableCacheFilter
+        webAppContext.addFilter(
+                FilterHolder().apply {
+                    filter = DisableCacheFilter()
+                    name = DisableCacheFilter::class.java.simpleName.decapitalize()
+                },
+                "/*",
+                EnumSet.of(DispatcherType.REQUEST)
+        )
+
         // add CurrentUserFilter
         webAppContext.addFilter(
                 FilterHolder().apply {
@@ -144,7 +156,7 @@ object TesterumWebMain {
                     filter = TesterumSecurityFilter()
                     name = TesterumSecurityFilter::class.java.simpleName.decapitalize()
                 },
-                "/*",
+                "/rest/*",
                 EnumSet.of(DispatcherType.REQUEST)
         )
 
@@ -201,7 +213,6 @@ object TesterumWebMain {
 
                     initParameters["resourceBase"] = this.javaClass.getResource("/frontend")?.toString()
                     initParameters["dirAllowed"] = "true"
-                    initParameters["cacheControl"] = "must-revalidate"
                 },
                 "/"
         )

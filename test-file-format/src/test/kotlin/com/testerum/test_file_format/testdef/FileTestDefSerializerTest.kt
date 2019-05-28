@@ -54,7 +54,7 @@ class FileTestDefSerializerTest {
                               |        This is a wonderful test.
                               |        It tests many cools things.
                               |        Just read it and you'll see what I mean.
-                              |        Escaped \>> multiline end.
+                              |        Escaped \>\> multiline end.
                               |    >>
                               |
                               |    tags = <<one, two, three, four>>

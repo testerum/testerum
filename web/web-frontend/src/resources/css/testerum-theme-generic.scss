@@ -17,10 +17,11 @@
 .panel-footer-sticky-buttons {
     margin-top: 10px;
     text-align: right;
-    border-bottom: 1px solid #e5e5e5;
 
     position: sticky;
     bottom: 0;
+    width: 220px;
+    margin-left: calc(100% - 220px);
 
     .button-wrapper {
         display: inline-block;

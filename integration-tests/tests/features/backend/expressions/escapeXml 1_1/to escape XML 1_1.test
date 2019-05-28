@@ -1,0 +1,5 @@
+test-def: to escape XML 1.1
+
+    description = <<a particular case where escaping is different on XML 1.0 from XML 1.1>>
+
+    step: Then <<{{escapeXml11("\u000c")}}>> is equal to <<&#12;>>

@@ -38,7 +38,7 @@ class FileStepCallPartParserTest {
                 equalTo(
                         "failed to parse:\n" +
                         "<<arg value\n" +
-                        "           ^--- ERROR at line 1, column 12: [\\>>, (not newline or >>) or >>] expected, [EOF] encountered"
+                        "           ^--- ERROR at line 1, column 12: [\\>, (not newline or >>) or >>] expected, [EOF] encountered"
                 )
         )
     }

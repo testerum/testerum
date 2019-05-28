@@ -1,5 +1,6 @@
 package com.testerum.cloud_client.licenses.file
 
+import com.testerum.cloud_client.licenses.cache.updater.LicensesCacheEntry
 import com.testerum.cloud_client.licenses.model.license.LicensedUserProfile
 import com.testerum.cloud_client.licenses.parser.SignedLicensedUserProfileParser
 import com.testerum.common_kotlin.createDirectories
@@ -31,8 +32,8 @@ class LicenseFileService(private val signedLicensedUserProfileParser: SignedLice
         return licensedUserProfile
     }
 
-    fun getLicenses(licensesDir: JavaPath): List<LicensedUserProfile> {
-        val result = mutableListOf<LicensedUserProfile>()
+    fun getLicenses(licensesDir: JavaPath): List<LicensesCacheEntry> {
+        val result = mutableListOf<LicensesCacheEntry>()
 
         val licenseFiles: List<JavaPath> = licensesDir.walkAndCollect { true }
         for (licenseFile in licenseFiles) {
@@ -42,7 +43,13 @@ class LicenseFileService(private val signedLicensedUserProfileParser: SignedLice
                         Charsets.UTF_8
                 )
 
-                result += signedLicensedUserProfileParser.parse(signedLicensedUserProfile)
+                val licensedUserProfile = signedLicensedUserProfileParser.parse(signedLicensedUserProfile)
+
+                result += LicensesCacheEntry(
+                        licenseFile = licenseFile,
+                        licenseFileContent = signedLicensedUserProfile,
+                        licensedUserProfile = licensedUserProfile
+                )
             } catch (ignored: Exception) {
                 // ignore invalid license files
             }
@@ -51,8 +58,8 @@ class LicenseFileService(private val signedLicensedUserProfileParser: SignedLice
         return result
     }
 
-    fun isValidLicense(signedLicensedUserProfile: String): Boolean {
-        return signedLicensedUserProfileParser.isValidLicense(signedLicensedUserProfile)
+    fun isLicenseValid(signedLicensedUserProfile: String): Boolean {
+        return signedLicensedUserProfileParser.isLicenseValid(signedLicensedUserProfile)
     }
 
 }

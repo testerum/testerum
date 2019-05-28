@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, ComponentRef, OnDestroy, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Feedback} from "./model/feedback.model";
-import {UserService} from "../../../service/user.service";
 import {InfoModalService} from "../../../generic/components/info_modal/info-modal.service";
 import {Subscription} from "rxjs";
 import {FeedbackService} from "./feedback.service";
+import {ValidationUtil} from "../../../utils/validation.util";
 
 @Component({
   selector: 'feedback.component',
@@ -37,8 +37,13 @@ export class FeedbackComponent implements AfterViewInit, OnDestroy {
     }
 
     ok() {
-        if (!this.hasSubjectOrDescription()) {
-            this.errorMessage = "A subject or a description is required";
+        if (!this.hasMessage()) {
+            this.errorMessage = "A message is required";
+            return;
+        }
+
+        if (this.model.email && !ValidationUtil.isValidEmail(this.model.email)) {
+            this.errorMessage = "Please provide an valid email address";
             return;
         }
 
@@ -56,11 +61,8 @@ export class FeedbackComponent implements AfterViewInit, OnDestroy {
         this.modal.hide();
     }
 
-    private hasSubjectOrDescription(): boolean {
-        if (this.model.description != null) {
-            return true;
-        }
-        if (this.model.subject != null) {
+    private hasMessage(): boolean {
+        if (this.model.message != null) {
             return true;
         }
         return false;

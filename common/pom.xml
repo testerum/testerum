@@ -25,6 +25,7 @@
         <module>common-json-diff-util</module>
         <module>common-kotlin</module>
         <module>common-parsing</module>
+        <module>common-profiles</module>
         <module>common-json</module>
         <module>common-jdk</module>
         <module>common-stats</module>

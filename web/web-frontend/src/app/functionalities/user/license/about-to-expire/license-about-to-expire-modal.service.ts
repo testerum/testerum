@@ -49,7 +49,14 @@ export class LicenseAboutToExpireModalService {
         if (!expirationDate) {
             return -1;
         }
-        return DateUtil.getDaysBetweenDates(new Date(), expirationDate);
+
+        let nowMidnight = new Date();
+        nowMidnight.setHours(0);
+        nowMidnight.setMinutes(0);
+        nowMidnight.setSeconds(0);
+        nowMidnight.setMilliseconds(0);
+        
+        return DateUtil.getDaysBetweenDates(nowMidnight, expirationDate);
     }
 
     private getLastUsedOfRemainingDaysLicenseAlert(): number {

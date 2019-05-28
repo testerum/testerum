@@ -8,6 +8,7 @@ export class UserLicenseInfo implements Serializable<UserLicenseInfo>  {
     lastName: string;
     creationDate: Date;
     expirationDate: Date;
+    daysUntilExpiration: number;
     expired: boolean;
 
     deserialize(input: Object): UserLicenseInfo {
@@ -18,6 +19,7 @@ export class UserLicenseInfo implements Serializable<UserLicenseInfo>  {
         this.lastName = input['lastName'];
         this.creationDate = new Date(input['creationDate']);
         this.expirationDate = new Date(input['expirationDate']);
+        this.daysUntilExpiration = input['daysUntilExpiration'];
         this.expired = input['expired'];
 
         return this;
@@ -31,6 +33,7 @@ export class UserLicenseInfo implements Serializable<UserLicenseInfo>  {
             ',"lastName":' + JsonUtil.stringify(this.lastName) +
             ',"creationDate":' + JsonUtil.stringify(this.creationDate ? this.creationDate.toJSON() : null) +
             ',"expirationDate":' + JsonUtil.stringify(this.expirationDate ? this.expirationDate.toJSON() : null) +
+            ',"daysUntilExpiration":' + JsonUtil.stringify(this.daysUntilExpiration) +
             ',"expired":' + JsonUtil.stringify(this.expired) +
             '}'
     }

@@ -3,7 +3,6 @@ package com.testerum.file_service.file.trial
 import com.testerum.common_encrypted_prefs.EncryptedPrefs
 import com.testerum.common_encrypted_prefs.getLocalDate
 import com.testerum.common_encrypted_prefs.setLocalDate
-import com.testerum.file_service.business.trial.TrialService
 import java.time.LocalDate
 import java.util.Base64
 
