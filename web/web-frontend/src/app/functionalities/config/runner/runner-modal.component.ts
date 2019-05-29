@@ -11,6 +11,7 @@ import {ModalDirective} from "ngx-bootstrap";
 import {RunnerConfig} from "./model/runner-config.model";
 import {Subscription} from "rxjs";
 import {RunnerConfigService} from "./runner-config.service";
+import {RunnerService} from "../../../service/runner.service";
 
 @Component({
     selector: 'runner-modal',
@@ -27,6 +28,7 @@ export class RunnerModalComponent implements AfterViewInit, OnDestroy {
 
     private selectedRunnerSubscription: Subscription;
     constructor(private cd: ChangeDetectorRef,
+                private runnerService: RunnerService,
                 private runnerConfigService: RunnerConfigService) {
     }
 
@@ -61,5 +63,11 @@ export class RunnerModalComponent implements AfterViewInit, OnDestroy {
     cancel() {
         this.modal.hide();
         this.refresh();
+    }
+
+    saveAction() {
+        this.runnerService.saveRunnerConfig(this.runnerConfigService.runners).subscribe((runnerConfigs: Array<RunnerConfig>)=> {
+
+        });
     }
 }

@@ -27,8 +27,8 @@ open class RunnerController() {
 
     @RequestMapping(method = [RequestMethod.POST], path = [""])
     @ResponseBody
-    fun addRunnerConfig(@RequestBody runnerConfig: RunnerConfig): RunnerConfig {
+    fun addRunnerConfigs(@RequestBody runnerConfig: List<RunnerConfig>): List<RunnerConfig> {
+        println("runnerConfig = ${runnerConfig}")
         return runnerConfig;
     }
-
 }
