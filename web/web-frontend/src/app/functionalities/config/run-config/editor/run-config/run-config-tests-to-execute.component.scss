@@ -1,0 +1,25 @@
+.run-config-tests-to-execute {
+    .my-line {
+        padding: 0.2em 0;
+
+        .label-size {
+            width: 8em !important;
+            font-weight: normal;
+            text-align: left;
+        }
+        .my-value {
+            margin-left: 0;
+        }
+    }
+    .test-tree-container {
+        display: block;
+    }
+    //
+    //.ui-autocomplete.ui-autocomplete-multiple {
+    //    .ui-autocomplete-multiple-container {
+    //        .ui-autocomplete-input-token {
+    //            padding: 2px 0;
+    //        }
+    //    }
+    //}
+}

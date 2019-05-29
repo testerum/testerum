@@ -8,17 +8,17 @@ import {SettingsModalComponent} from "./settings/settings-modal.component";
 import {SettingsModalService} from "./settings/settings-modal.service";
 import {ListboxModule} from "primeng/listbox";
 import {AutoCompleteModule, OrderListModule, TabViewModule, ToolbarModule, TooltipModule} from "primeng/primeng";
-import {RunnerModalComponent} from './runner/runner-modal.component';
-import {RunnerModalService} from "./runner/runner-modal.service";
+import {RunConfigModalComponent} from './run-config/run-config-modal.component';
+import {RunConfigModalService} from "./run-config/run-config-modal.service";
 import {AngularSplitModule} from "angular-split";
-import {RunnersConfigListComponent} from './runner/list/runners-config-list.component';
-import {RunnerConfigService} from "./runner/runner-config.service";
-import {RunnersConfigToobarComponent} from './runner/list/runners-config-toobar/runners-config-toobar.component';
-import {RunnerConfigEditorComponent} from './runner/editor/runner-config-editor.component';
-import {RunnerConfigTestsToExecuteComponent} from './runner/editor/runner-config-tests-to-execute/runner-config-tests-to-execute.component';
-import {RunnerConfigTestTreeService} from "./runner/editor/runner-config-tests-to-execute/runner-config-test-tree/runner-config-test-tree.service";
-import {RunnerConfigTestTreeComponent} from "./runner/editor/runner-config-tests-to-execute/runner-config-test-tree/runner-config-test-tree.component";
-import {RunnerConfigTestTreeNodeComponent} from "./runner/editor/runner-config-tests-to-execute/runner-config-test-tree/nodes/runner-tree-node/runner-config-test-tree-node.component";
+import {RunnersConfigListComponent} from './run-config/list/runners-config-list.component';
+import {RunConfigService} from "./run-config/run-config.service";
+import {RunnersConfigToobarComponent} from './run-config/list/runners-config-toobar/runners-config-toobar.component';
+import {RunConfigEditorComponent} from './run-config/editor/run-config-editor.component';
+import {RunConfigTestsToExecuteComponent} from './run-config/editor/run-config/run-config-tests-to-execute.component';
+import {RunConfigTestTreeService} from "./run-config/editor/run-config/run-config-test-tree/run-config-test-tree.service";
+import {RunConfigTestTreeComponent} from "./run-config/editor/run-config/run-config-test-tree/run-config-test-tree.component";
+import {RunConfigTestTreeNodeComponent} from "./run-config/editor/run-config/run-config-test-tree/nodes/run-tree-node/run-config-test-tree-node.component";
 
 @NgModule({
     imports: [
@@ -42,24 +42,24 @@ import {RunnerConfigTestTreeNodeComponent} from "./runner/editor/runner-config-t
     ],
     declarations: [
         SettingsModalComponent,
-        RunnerModalComponent,
+        RunConfigModalComponent,
         RunnersConfigListComponent,
         RunnersConfigToobarComponent,
-        RunnerConfigEditorComponent,
-        RunnerConfigTestsToExecuteComponent,
-        RunnerConfigTestTreeComponent,
-        RunnerConfigTestTreeNodeComponent,
+        RunConfigEditorComponent,
+        RunConfigTestsToExecuteComponent,
+        RunConfigTestTreeComponent,
+        RunConfigTestTreeNodeComponent,
     ],
     entryComponents: [
         SettingsModalComponent,
-        RunnerModalComponent,
-        RunnerConfigTestTreeNodeComponent,
+        RunConfigModalComponent,
+        RunConfigTestTreeNodeComponent,
     ],
     providers: [
         SettingsModalService,
-        RunnerModalService,
-        RunnerConfigService,
-        RunnerConfigTestTreeService,
+        RunConfigModalService,
+        RunConfigService,
+        RunConfigTestTreeService,
     ],
 })
 export class ConfigModule { }

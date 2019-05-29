@@ -1,0 +1,54 @@
+<div class="run-config-editor">
+    <div *ngIf="runnerConfig == null" class="no-runner-config-selected">
+        Click the + button to create a new configuration
+        <div *ngIf="hasRunnerConfigs()">or select an existing configuration to edit</div>
+    </div>
+
+    <div *ngIf="runnerConfig != null" class="runner-config-container">
+        <form class="form-horizontal">
+            <div class="my-line">
+                <label class="my-label label-size">Name</label>
+
+                <div class="my-value">
+                    <div class="my-value">
+                        <input required isNotBlankValidator
+                               #nameNgModel="ngModel" [(ngModel)]="runnerConfig.name"
+                               (ngModelChange)="onNameChange($event)"
+                               type="text" class="form-control" name="name"
+                               (keydown.enter)="$event.preventDefault()">
+                        <input-error [model]="nameNgModel"
+                                     [errorMessages]="{
+                                            required: 'A name for this runner configuration is required',
+                                            a_resource_with_the_same_name_already_exist: 'A running configuration with the same name already exists'
+                                         }"></input-error>
+                    </div>
+                </div>
+            </div>
+
+            <p-tabView [(activeIndex)]="activeTabIndex">
+
+                <p-tabPanel header="Tests to execute" leftIcon="fas fa-bolt">
+                    <run-config-tests-to-execute [runnerConfig]="runnerConfig"></run-config-tests-to-execute>
+                </p-tabPanel>
+
+                <p-tabPanel *ngFor="let settingCategory of settingsCategories" header="{{settingCategory}}" leftIcon="fas fa-cogs">
+
+                    <div class="setting vertical-space"
+                         *ngFor="let setting of settingsByCategory.get(settingCategory)">
+                        <div class="input-description-container">
+                            <div class="my-label">{{setting.definition.label? setting.definition.label : setting.definition.key}}</div>
+                            <info-icon [message]="setting.definition.description"></info-icon>
+                        </div>
+
+                        <dynamic-input [defaultValue]="setting.unresolvedValue"
+                                       [value]="getValueForSetting(setting)"
+                                       [inputType]="getDynamicInputType(setting.definition.type)"
+                                       (valueChange)="onSettingChange($event, setting)"></dynamic-input>
+
+                        <div class="vertical-space"></div>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
+        </form>
+    </div>
+</div>

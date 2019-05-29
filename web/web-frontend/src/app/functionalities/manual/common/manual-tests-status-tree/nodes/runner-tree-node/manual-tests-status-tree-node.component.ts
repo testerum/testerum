@@ -11,7 +11,7 @@ import {UrlService} from "../../../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
-    selector: 'runner-tree-node',
+    selector: 'run-tree-node',
     templateUrl: 'manual-tests-status-tree-node.component.html',
     styleUrls:[
         'manual-tests-status-tree-node.component.scss',

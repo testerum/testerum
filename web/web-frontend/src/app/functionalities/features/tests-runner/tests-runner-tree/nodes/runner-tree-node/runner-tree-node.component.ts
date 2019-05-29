@@ -13,7 +13,7 @@ import {RunnerTreeFilterModel} from "../../model/filter/runner-tree-filter.model
 
 @Component({
     moduleId: module.id,
-    selector: 'runner-tree-node',
+    selector: 'run-tree-node',
     templateUrl: 'runner-tree-node.component.html',
     styleUrls:[
         'runner-tree-node.component.scss',

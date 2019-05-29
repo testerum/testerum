@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {RunnerService} from "../../service/runner.service";
-import {RunnerConfig} from "../../functionalities/config/runner/model/runner-config.model";
+import {RunConfig} from "../../functionalities/config/run-config/model/runner-config.model";
 import {StringSelectItem} from "../../model/prime-ng/StringSelectItem";
-import {RunnerModalService} from "../../functionalities/config/runner/runner-modal.service";
-import {RunnerConfigService} from "../../functionalities/config/runner/runner-config.service";
+import {RunConfigModalService} from "../../functionalities/config/run-config/run-config-modal.service";
+import {RunConfigService} from "../../functionalities/config/run-config/run-config.service";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -16,19 +16,19 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
 
     private static EDIT_CONFIG_KEY = "editConfig";
 
-    runners: Array<RunnerConfig> = [];
+    runners: Array<RunConfig> = [];
     runnersSelectItems: StringSelectItem[] = [];
     selectedItem: string;
 
     private runnerConfigSubscription: Subscription;
     private selectedRunnerSubscription: Subscription;
     constructor(private runnerService: RunnerService,
-                private runnerConfigService: RunnerConfigService,
-                private runnerModalService: RunnerModalService) {
+                private runnerConfigService: RunConfigService,
+                private runnerModalService: RunConfigModalService) {
     }
 
     ngOnInit() {
-        this.runnerConfigSubscription = this.runnerService.getRunnerConfig().subscribe((runners: Array<RunnerConfig>) => {
+        this.runnerConfigSubscription = this.runnerService.getRunnerConfig().subscribe((runners: Array<RunConfig>) => {
             this.runners = runners;
 
             let runnersSelectItems = [];
@@ -51,7 +51,7 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
             this.runnersSelectItems = runnersSelectItems;
         });
 
-        this.selectedRunnerSubscription = this.runnerConfigService.selectedRunnerEventEmitter.subscribe( (selectedRunnerConfigs: Array<RunnerConfig>) => {
+        this.selectedRunnerSubscription = this.runnerConfigService.selectedRunnerEventEmitter.subscribe( (selectedRunnerConfigs: Array<RunConfig>) => {
             if(selectedRunnerConfigs.length == 0 || selectedRunnerConfigs.length > 1) {
                 this.selectedItem = null;
                 return;
