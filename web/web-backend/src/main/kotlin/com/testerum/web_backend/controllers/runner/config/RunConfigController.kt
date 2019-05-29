@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/runner")
-open class RunnerController(private val runnerConfigFrontendService: RunnerConfigFrontendService) {
+open class RunConfigController(private val runnerConfigFrontendService: RunnerConfigFrontendService) {
 
     @RequestMapping(method = [RequestMethod.GET], path = [""])
     @ResponseBody
-    fun getRunnerConfigs(): List<RunnerConfig> {
-        return runnerConfigFrontendService.getRunnerConfigs()
+    fun getRunConfigs(): List<RunnerConfig> {
+        return runnerConfigFrontendService.getRunConfigs()
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = [""])
     @ResponseBody
-    fun saveRunnerConfig(@RequestBody runnerConfig: RunnerConfig): RunnerConfig {
-        return runnerConfigFrontendService.saveRunnerConfig(runnerConfig)
+    fun saveRunnerConfig(@RequestBody runnerConfigs: List<RunnerConfig>): List<RunnerConfig> {
+        return runnerConfigFrontendService.saveRunnerConfig(runnerConfigs)
     }
 
 }

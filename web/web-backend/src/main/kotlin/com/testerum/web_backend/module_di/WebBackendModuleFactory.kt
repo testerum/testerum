@@ -55,7 +55,7 @@ import com.testerum.web_backend.controllers.resources.http.HttpController
 import com.testerum.web_backend.controllers.resources.rdbms.RdbmsController
 import com.testerum.web_backend.controllers.results.ResultsController
 import com.testerum.web_backend.controllers.results.ResultsFileServerController
-import com.testerum.web_backend.controllers.runner.config.RunnerController
+import com.testerum.web_backend.controllers.runner.config.RunConfigController
 import com.testerum.web_backend.controllers.runner.execution.TestExecutionController
 import com.testerum.web_backend.controllers.runner.execution.TestsWebSocketController
 import com.testerum.web_backend.controllers.settings.SettingsController
@@ -479,7 +479,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             settingsFrontendService = settingsFrontendService
     )
 
-    private val runnerController = RunnerController(
+    private val runnerController = RunConfigController(
             runnerConfigFrontendService = runnerConfigFrontendService
     )
 
