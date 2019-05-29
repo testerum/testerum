@@ -59,7 +59,7 @@ import {ProjectReloadModalService} from "./functionalities/others/project_reload
 import {ProjectReloadModalComponent} from "./functionalities/others/project_reload_modal/project-reload-modal.component";
 import {AuthenticationHttpInterceptor} from "./service/interceptors/authentication.http-interceptor";
 import {ConfigModule} from "./functionalities/config/config.module";
-import {RunnerService} from "./service/runner.service";
+import {RunConfigService} from "./service/run-config.service";
 import { MenuRunnerComponent } from './menu/runner/menu-runner.component';
 
 @NgModule({
@@ -125,7 +125,7 @@ import { MenuRunnerComponent } from './menu/runner/menu-runner.component';
         FeatureService,
         TagsService,
         UserService,
-        RunnerService,
+        RunConfigService,
 
         ResourceService,
         RdbmsService,

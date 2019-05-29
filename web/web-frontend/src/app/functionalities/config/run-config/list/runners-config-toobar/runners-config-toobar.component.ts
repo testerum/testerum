@@ -6,7 +6,7 @@ import {
     OnInit,
     ViewEncapsulation
 } from '@angular/core';
-import {RunConfigService} from "../../run-config.service";
+import {RunConfigComponentService} from "../../run-config-component.service";
 import {RunConfig} from "../../model/runner-config.model";
 import {Subscription} from "rxjs";
 
@@ -21,7 +21,7 @@ export class RunnersConfigToobarComponent implements OnInit, OnDestroy {
 
     selectedRunnerSubscription: Subscription;
     constructor(private cd: ChangeDetectorRef,
-                private runnerConfigService: RunConfigService) {
+                private runnerConfigService: RunConfigComponentService) {
     }
 
     ngOnInit() {

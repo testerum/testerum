@@ -4,7 +4,7 @@ import {ArrayUtil} from "../../../utils/array.util";
 import {Setting} from "../settings/model/setting.model";
 
 @Injectable()
-export class RunConfigService {
+export class RunConfigComponentService {
 
     selectedRunners: Array<RunConfig> = [];
     runners: Array<RunConfig> = [];
@@ -12,6 +12,7 @@ export class RunConfigService {
 
     selectedRunnerEventEmitter: EventEmitter<Array<RunConfig>> = new EventEmitter<Array<RunConfig>>();
     refreshConfigListEventEmitter: EventEmitter<void> = new EventEmitter<void>();
+    savedRunConfigsEventEmitter: EventEmitter<Array<RunConfig>>;
 
     setRunners(runners: Array<RunConfig>) {
         this.runners.length = 0;

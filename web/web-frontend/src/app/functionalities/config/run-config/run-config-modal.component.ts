@@ -10,8 +10,8 @@ import {
 import {ModalDirective} from "ngx-bootstrap";
 import {RunConfig} from "./model/runner-config.model";
 import {Subscription} from "rxjs";
-import {RunConfigService} from "./run-config.service";
-import {RunnerService} from "../../../service/runner.service";
+import {RunConfigComponentService} from "./run-config-component.service";
+import {RunConfigService} from "../../../service/run-config.service";
 
 @Component({
     selector: 'run-config-modal',
@@ -28,8 +28,8 @@ export class RunConfigModalComponent implements AfterViewInit, OnDestroy {
 
     private selectedRunnerSubscription: Subscription;
     constructor(private cd: ChangeDetectorRef,
-                private runnerService: RunnerService,
-                private runnerConfigService: RunConfigService) {
+                private runConfigService: RunConfigService,
+                private runConfigComponentService: RunConfigComponentService) {
     }
 
     ngOnDestroy(): void {
@@ -37,7 +37,7 @@ export class RunConfigModalComponent implements AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.selectedRunnerSubscription = this.runnerConfigService.selectedRunnerEventEmitter.subscribe((runConfigs: Array<RunConfig>) =>{
+        this.selectedRunnerSubscription = this.runConfigComponentService.selectedRunnerEventEmitter.subscribe((runConfigs: Array<RunConfig>) =>{
             this.refresh();
         });
 
@@ -61,13 +61,15 @@ export class RunConfigModalComponent implements AfterViewInit, OnDestroy {
     }
 
     cancel() {
+        this.runConfigComponentService.savedRunConfigsEventEmitter.complete();
         this.modal.hide();
         this.refresh();
     }
 
     saveAction() {
-        this.runnerService.saveRunnerConfig(this.runnerConfigService.runners).subscribe((runnerConfigs: Array<RunConfig>)=> {
-
+        this.runConfigService.saveRunnerConfig(this.runConfigComponentService.runners).subscribe((runConfigs: Array<RunConfig>)=> {
+            this.runConfigComponentService.savedRunConfigsEventEmitter.emit(runConfigs);
+            this.cancel();
         });
     }
 }

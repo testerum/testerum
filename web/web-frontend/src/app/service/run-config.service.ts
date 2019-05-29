@@ -6,7 +6,7 @@ import {map} from "rxjs/operators";
 import {JsonUtil} from "../utils/json.util";
 
 @Injectable()
-export class RunnerService {
+export class RunConfigService {
 
     private BASE_URL = "/rest/runner";
 
@@ -15,7 +15,7 @@ export class RunnerService {
     getRunnerConfig(): Observable<RunConfig[]> {
         return this.http
             .get<RunConfig[]>(this.BASE_URL)
-            .pipe(map(RunnerService.extractSettings));
+            .pipe(map(RunConfigService.extractSettings));
     }
 
     private static extractSettings(res:  RunConfig[]): RunConfig[] {
@@ -39,6 +39,6 @@ export class RunnerService {
 
         return this.http
             .post<any>(this.BASE_URL, body, httpOptions).pipe(
-                map(RunnerService.extractSettings));
+                map(RunConfigService.extractSettings));
     }
 }

@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {RunnerService} from "../../service/runner.service";
+import {RunConfigService} from "../../service/run-config.service";
 import {RunConfig} from "../../functionalities/config/run-config/model/runner-config.model";
 import {StringSelectItem} from "../../model/prime-ng/StringSelectItem";
 import {RunConfigModalService} from "../../functionalities/config/run-config/run-config-modal.service";
-import {RunConfigService} from "../../functionalities/config/run-config/run-config.service";
+import {RunConfigComponentService} from "../../functionalities/config/run-config/run-config-component.service";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -22,42 +22,46 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
 
     private runnerConfigSubscription: Subscription;
     private selectedRunnerSubscription: Subscription;
-    constructor(private runnerService: RunnerService,
-                private runnerConfigService: RunConfigService,
-                private runnerModalService: RunConfigModalService) {
+    constructor(private runConfigService: RunConfigService,
+                private runConfigComponentService: RunConfigComponentService,
+                private runConfigModalService: RunConfigModalService) {
     }
 
     ngOnInit() {
-        this.runnerConfigSubscription = this.runnerService.getRunnerConfig().subscribe((runners: Array<RunConfig>) => {
-            this.runners = runners;
-
-            let runnersSelectItems = [];
-            if (runners.length > 0) {
-                runnersSelectItems.push(
-                    new StringSelectItem("Edit Configurations...", MenuRunnerComponent.EDIT_CONFIG_KEY, false, "fas fa-pencil-alt")
-                );
-            }
-
-            for (const runner of runners) {
-                runnersSelectItems.push(
-                    new StringSelectItem(
-                        runner.name,
-                        runner.name,
-                        false,
-                        "fas fa-bolt"
-                    )
-                )
-            }
-            this.runnersSelectItems = runnersSelectItems;
+        this.runnerConfigSubscription = this.runConfigService.getRunnerConfig().subscribe((runners: Array<RunConfig>) => {
+            this.initRunners(runners);
         });
 
-        this.selectedRunnerSubscription = this.runnerConfigService.selectedRunnerEventEmitter.subscribe( (selectedRunnerConfigs: Array<RunConfig>) => {
+        this.selectedRunnerSubscription = this.runConfigComponentService.selectedRunnerEventEmitter.subscribe( (selectedRunnerConfigs: Array<RunConfig>) => {
             if(selectedRunnerConfigs.length == 0 || selectedRunnerConfigs.length > 1) {
                 this.selectedItem = null;
                 return;
             }
             this.selectedItem = selectedRunnerConfigs[0].name;
         });
+    }
+
+    private initRunners(runners: Array<RunConfig>) {
+        this.runners = runners;
+
+        let runnersSelectItems = [];
+        if (runners.length > 0) {
+            runnersSelectItems.push(
+                new StringSelectItem("Edit Configurations...", MenuRunnerComponent.EDIT_CONFIG_KEY, false, "fas fa-pencil-alt")
+            );
+        }
+
+        for (const runner of runners) {
+            runnersSelectItems.push(
+                new StringSelectItem(
+                    runner.name,
+                    runner.name,
+                    false,
+                    "fas fa-bolt"
+                )
+            )
+        }
+        this.runnersSelectItems = runnersSelectItems;
     }
 
     ngOnDestroy(): void {
@@ -78,13 +82,17 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
 
     onRunnerItemSelection() {
         if (this.selectedItem == MenuRunnerComponent.EDIT_CONFIG_KEY) {
-            this.runnerModalService.showRunnersModal(this.runners);
+            this.runConfigModalService.showRunnersModal(this.runners).subscribe( (savedRunner: RunConfig[]) => {
+                this.initRunners(savedRunner);
+            });
         }
     }
 
     onRunnersDropDownClick() {
         if (this.hasNoRunnerConfig()) {
-            this.runnerModalService.showRunnersModal(this.runners);
+            this.runConfigModalService.showRunnersModal(this.runners).subscribe( (savedRunner: RunConfig[]) => {
+                this.initRunners(savedRunner);
+            });
         }
     }
 }

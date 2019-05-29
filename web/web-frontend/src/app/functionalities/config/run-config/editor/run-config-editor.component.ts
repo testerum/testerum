@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {RunConfigService} from "../run-config.service";
+import {RunConfigComponentService} from "../run-config-component.service";
 import {Subscription} from "rxjs";
 import {RunConfig} from "../model/runner-config.model";
 import {FormUtil} from "../../../../utils/form.util";
@@ -28,18 +28,18 @@ export class RunConfigEditorComponent implements OnInit, OnDestroy {
     private selectedRunnerSubscription: Subscription;
 
     constructor(private cd: ChangeDetectorRef,
-                private runnerConfigService: RunConfigService) {
+                private runConfigComponentService: RunConfigComponentService) {
     }
 
     ngOnInit() {
-        this.selectedRunnerSubscription = this.runnerConfigService.selectedRunnerEventEmitter.subscribe((runnerConfigs: Array<RunConfig>) =>{
+        this.selectedRunnerSubscription = this.runConfigComponentService.selectedRunnerEventEmitter.subscribe((runnerConfigs: Array<RunConfig>) =>{
             if(runnerConfigs.length == 0 || runnerConfigs.length > 1) {
                 this.runnerConfig = null;
             } else {
                 this.runnerConfig = runnerConfigs[0];
                 this.activeTabIndex = 0;
-                SettingsUtil.populateSettingsCategoriesNames(this.runnerConfigService.settings, this.settingsCategories);
-                SettingsUtil.populateSettingsByCategoryMap(this.runnerConfigService.settings, this.settingsByCategory)
+                SettingsUtil.populateSettingsCategoriesNames(this.runConfigComponentService.settings, this.settingsCategories);
+                SettingsUtil.populateSettingsByCategoryMap(this.runConfigComponentService.settings, this.settingsByCategory)
             }
         });
     }
@@ -49,15 +49,16 @@ export class RunConfigEditorComponent implements OnInit, OnDestroy {
     }
 
     hasRunnerConfigs(): boolean {
-        return this.runnerConfigService.runners.length > 0
+        return this.runConfigComponentService.runners.length > 0
     }
 
     onNameChange(event: any): void {
-        let runnerConfigByName = this.runnerConfigService.getRunnerConfigByName(this.runnerConfig.name);
+        let runnerConfigByName = this.runConfigComponentService.getRunnerConfigByName(this.runnerConfig.name);
         if (runnerConfigByName != this.runnerConfig) {
             FormUtil.addErrorToForm(this.form, "name", "a_resource_with_the_same_name_already_exist");
         }
-        this.runnerConfigService.refreshConfigListEventEmitter.emit();
+        this.runConfigComponentService.refreshConfigListEventEmitter.emit();
+        this.runConfigComponentService.selectedRunnerEventEmitter.emit([this.runnerConfig]);
     }
 
     getDynamicInputType(settingType: SettingType): InputTypeEnum {

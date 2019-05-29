@@ -12,7 +12,7 @@ import {RunConfigModalComponent} from './run-config/run-config-modal.component';
 import {RunConfigModalService} from "./run-config/run-config-modal.service";
 import {AngularSplitModule} from "angular-split";
 import {RunnersConfigListComponent} from './run-config/list/runners-config-list.component';
-import {RunConfigService} from "./run-config/run-config.service";
+import {RunConfigComponentService} from "./run-config/run-config-component.service";
 import {RunnersConfigToobarComponent} from './run-config/list/runners-config-toobar/runners-config-toobar.component';
 import {RunConfigEditorComponent} from './run-config/editor/run-config-editor.component';
 import {RunConfigTestsToExecuteComponent} from './run-config/editor/run-config/run-config-tests-to-execute.component';
@@ -58,7 +58,7 @@ import {RunConfigTestTreeNodeComponent} from "./run-config/editor/run-config/run
     providers: [
         SettingsModalService,
         RunConfigModalService,
-        RunConfigService,
+        RunConfigComponentService,
         RunConfigTestTreeService,
     ],
 })
