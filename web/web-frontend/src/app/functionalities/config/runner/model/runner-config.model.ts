@@ -4,7 +4,7 @@ import {JsonUtil} from "../../../../utils/json.util";
 
 export class RunnerConfig implements Serializable<RunnerConfig> {
     name: string;
-    path: Path;
+    path: Path = Path.createInstanceOfEmptyPath();
     oldPath: Path;
     settings: Map<string, string> = new Map<string, string>();
     tagsToInclude: Array<string> = [];
