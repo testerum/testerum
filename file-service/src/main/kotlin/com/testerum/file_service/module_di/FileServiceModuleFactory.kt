@@ -16,6 +16,7 @@ import com.testerum.file_service.file.ManualTestPlanFileService
 import com.testerum.file_service.file.RecentProjectsFileService
 import com.testerum.file_service.file.ResourceFileService
 import com.testerum.file_service.file.ResultsFileService
+import com.testerum.file_service.file.RunConfigFileService
 import com.testerum.file_service.file.SettingsFileService
 import com.testerum.file_service.file.TestFileService
 import com.testerum.file_service.file.TesterumProjectFileService
@@ -23,6 +24,7 @@ import com.testerum.file_service.file.VariablesFileService
 import com.testerum.file_service.file.trial.JavaPreferencesTrialFileService
 import com.testerum.file_service.file.trial.TrialFileService
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileFeatureMapper
+import com.testerum.file_service.mapper.business_to_file.BusinessToFileRunConfigMapper
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileStepMapper
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileTestMapper
 import com.testerum.file_service.mapper.business_to_file.common.BusinessToFilePhaseMapper
@@ -33,6 +35,7 @@ import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileMa
 import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileManualTestPlanMapper
 import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileManualTestStatusMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessFeatureMapper
+import com.testerum.file_service.mapper.file_to_business.FileToBusinessRunConfigMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessStepMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessTestMapper
 import com.testerum.file_service.mapper.file_to_business.common.FileToBusinessPhaseMapper
@@ -84,6 +87,10 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
             testStatusMapper = fileToBusinessManualTestStatusMapper,
             stepCallMapper = fileToBusinessManualStepCallMapper
     )
+
+    private val businessToFileRunConfigMapper = BusinessToFileRunConfigMapper()
+
+    private val fileToBusinessRunConfigMapper = FileToBusinessRunConfigMapper()
 
 
     //---------------------------------------- mapper: business -> file ----------------------------------------------//
@@ -139,6 +146,11 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
     val featuresFileService = FeatureFileService(
             featureMapper = fileToBusinessFeatureMapper,
             businessToFileFeatureMapper = businessToFileFeatureMapper
+    )
+
+    val runConfigFileService = RunConfigFileService(
+            fileToBusinessMapper = fileToBusinessRunConfigMapper,
+            businessToFileMapper = businessToFileRunConfigMapper
     )
 
     val manualTestPlanFileService = ManualTestPlanFileService(

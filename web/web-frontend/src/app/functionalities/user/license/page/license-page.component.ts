@@ -17,7 +17,7 @@ export class LicensePageComponent implements OnInit {
 
     ngOnInit() {
         let urlParam = UrlUtil.getParamFromUrl(this.activatedRoute, "url");
-        if (this.contextService.license.hasValidLicenseOrValidTrial()) {
+        if (this.contextService.license.hasValidLicenseOrTrialValidOrExpired()) {
             window.location.href = urlParam
         }
     }

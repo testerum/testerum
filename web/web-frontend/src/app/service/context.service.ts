@@ -92,6 +92,7 @@ export class ContextService {
 
 class LicenseContext {
     private LOCAL_STORAGE_AUTH_TOKEN_KEY = "authToken";
+    private LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT = "LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT";
 
     private licenseInfo: LicenseInfo;
 
@@ -112,14 +113,14 @@ class LicenseContext {
         return !!this.licenseInfo.currentUserLicense;
     }
 
-    hasValidLicenseOrValidTrial(): boolean {
+    hasValidLicenseOrTrialValidOrExpired(): boolean {
         if (!this.licenseInfo) return false;
 
-        if (this.licenseInfo.trialLicense && this.licenseInfo.trialLicense.expired == false) {
+        if (this.licenseInfo.currentUserLicense && this.licenseInfo.currentUserLicense.expired == false) {
             return true;
         }
 
-        if (this.licenseInfo.currentUserLicense && this.licenseInfo.currentUserLicense.expired == false) {
+        if (this.licenseInfo.trialLicense) {
             return true;
         }
 
@@ -133,6 +134,8 @@ class LicenseContext {
 
         this.licenseInfo = licenseInfo;
         localStorage.setItem(this.LOCAL_STORAGE_AUTH_TOKEN_KEY, authToken);
+
+        this.deleteLastUsedOfRemainingDaysLicenseAlert();
     }
 
     getAuthToken(): string {
@@ -146,5 +149,19 @@ class LicenseContext {
 
     getLicenseInfo(): LicenseInfo {
         return this.licenseInfo;
+    }
+
+    getLastUsedOfRemainingDaysLicenseAlert(): number {
+        let lastUsedOfRemainingDaysLicenseAlert = localStorage.getItem(this.LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT);
+        //if is not initialized, set the initial value as an big number
+        return lastUsedOfRemainingDaysLicenseAlert ? +lastUsedOfRemainingDaysLicenseAlert : 99999;
+    }
+
+    deleteLastUsedOfRemainingDaysLicenseAlert() {
+        localStorage.removeItem(this.LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT);
+    }
+
+    saveLastUsedOfRemainingDaysLicenseAlert(nextAlertDaysRemaining: number) {
+        localStorage.setItem(this.LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT, ""+nextAlertDaysRemaining);
     }
 }

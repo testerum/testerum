@@ -21,7 +21,7 @@ import com.testerum.model.exception.ValidationException
 import com.testerum.model.project.FileProject
 import com.testerum.model.project.FileProjectV1
 import org.slf4j.LoggerFactory
-import java.util.*
+import java.util.UUID
 import java.nio.file.Path as JavaPath
 
 class TesterumProjectFileService {
@@ -55,26 +55,26 @@ class TesterumProjectFileService {
         }
     }
 
-    fun save(fileProject: FileProject, directory: JavaPath): FileProject {
+    fun save(fileProject: FileProject, projectRootDir: JavaPath): FileProject {
         val serializedProject = OBJECT_MAPPER.writeValueAsString(fileProject)
 
-        val projectFile = projectFilePath(directory)
+        val projectFile = projectFilePath(projectRootDir)
         projectFile.parent?.createDirectories()
         projectFile.writeText(serializedProject)
 
         return fileProject
     }
 
-    fun load(directory: JavaPath): FileProject {
-        if (!isTesterumProject(directory)) {
+    fun load(projectRootDir: JavaPath): FileProject {
+        if (!isTesterumProject(projectRootDir)) {
             throw ValidationException(
-                    globalMessage = "The directory [${directory.toAbsolutePath().normalize()}] is not a Testerum project.",
-                    globalHtmlMessage = "The directory<br/><code>${directory.toAbsolutePath().normalize()}</code><br/>is not a Testerum project."
+                    globalMessage = "The directory [${projectRootDir.toAbsolutePath().normalize()}] is not a Testerum project.",
+                    globalHtmlMessage = "The directory<br/><code>${projectRootDir.toAbsolutePath().normalize()}</code><br/>is not a Testerum project."
             )
         }
 
         try {
-            val projectFile = projectFilePath(directory)
+            val projectFile = projectFilePath(projectRootDir)
 
             // first try to load the current version
             val fileProject = loadFileProjectCurrentVersionSafely(projectFile)
@@ -85,11 +85,11 @@ class TesterumProjectFileService {
             // failed to load current version, try to load old version of the project and convert
             val fileProjectV1 = loadFileProjectV1(projectFile)
             val convertedFileProject = convertOldToNewFileProjectFormat(fileProjectV1)
-            save(convertedFileProject, directory)
+            save(convertedFileProject, projectRootDir)
 
             return convertedFileProject
         } catch (e: Exception) {
-            val errorMessage = "Failed to load [${directory.toAbsolutePath().normalize()}] as a Testerum project"
+            val errorMessage = "Failed to load [${projectRootDir.toAbsolutePath().normalize()}] as a Testerum project"
             LOG.error(errorMessage, e)
 
             throw ValidationException(errorMessage)
@@ -115,21 +115,21 @@ class TesterumProjectFileService {
         )
     }
 
-    fun isTesterumProject(directory: JavaPath): Boolean {
-        if (directory.doesNotExist) {
+    fun isTesterumProject(projectRootDir: JavaPath): Boolean {
+        if (projectRootDir.doesNotExist) {
             return false
         }
-        if (directory.isNotADirectory) {
+        if (projectRootDir.isNotADirectory) {
             return false
         }
 
-        val projectFile = projectFilePath(directory)
+        val projectFile = projectFilePath(projectRootDir)
 
         return projectFile.exists
     }
 
-    private fun projectFilePath(directory: JavaPath): JavaPath {
-        return directory.resolve(TESTERUM_PROJECT_DIR).resolve("project.json")
+    private fun projectFilePath(projectRootDir: JavaPath): JavaPath {
+        return projectRootDir.resolve(TESTERUM_PROJECT_DIR).resolve("project.json")
     }
 
     fun generateProjectId(): String = UUID.randomUUID().toString()

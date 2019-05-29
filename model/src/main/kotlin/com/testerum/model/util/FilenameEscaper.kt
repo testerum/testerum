@@ -1,4 +1,4 @@
-package com.testerum.file_service.file.util
+package com.testerum.model.util
 
 import com.testerum.model.infrastructure.path.Path
 import org.apache.commons.lang3.StringUtils

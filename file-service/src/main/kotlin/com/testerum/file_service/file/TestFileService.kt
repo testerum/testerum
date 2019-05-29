@@ -11,7 +11,7 @@ import com.testerum.common_kotlin.isRegularFile
 import com.testerum.common_kotlin.smartCopyTo
 import com.testerum.common_kotlin.smartMoveTo
 import com.testerum.common_kotlin.walk
-import com.testerum.file_service.file.util.escape
+import com.testerum.model.util.escape
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileTestMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessTestMapper
 import com.testerum.model.exception.ValidationException

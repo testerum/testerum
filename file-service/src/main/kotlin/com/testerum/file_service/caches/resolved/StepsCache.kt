@@ -4,7 +4,7 @@ import com.testerum.common_kotlin.walk
 import com.testerum.file_service.caches.resolved.resolvers.StepsResolver
 import com.testerum.file_service.caches.warnings.WarningService
 import com.testerum.file_service.file.ComposedStepFileService
-import com.testerum.file_service.file.util.escape
+import com.testerum.model.util.escape
 import com.testerum.file_service.util.isChangedRequiringSave
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.exception.ValidationException

@@ -22,6 +22,7 @@ import com.testerum.web_backend.services.user.security.AuthTokenService
 import org.apache.commons.io.IOUtils
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 
 class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
                           private val licensesCache: LicensesCache,
@@ -160,7 +161,7 @@ class UserFrontendService(private val licenseCloudClient: LicenseCloudClient,
         } else {
             // we subtract 1 because in the UI we want to show the number
             // without taking the current day into consideration
-            nowUtc.until(this.expirationDateUtc).minusDays(1).days
+            ChronoUnit.DAYS.between(nowUtc, this.expirationDateUtc).toInt() - 1
         }
 
         return UserLicenseInfo(
