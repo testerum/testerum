@@ -8,6 +8,8 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.config.RunConfig
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
+import com.testerum.model.test.TestModel
+import com.testerum.model.tests_finder.TestsFinder
 import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
@@ -58,7 +60,25 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
     fun createExecution(runConfig: RunConfig): TestExecutionResponse {
         // todo: use all the information in the runConfig, not only the paths
 
-        val testOrDirectoryPaths = runConfig.pathsToInclude
+        val testsDirectoryRoot = webProjectManager.getProjectServices().dirs().getTestsDir()
+        val testFilesOrDirectories = runConfig.pathsToInclude.map {
+            testsDirectoryRoot.resolve(it.toString())
+        }
+
+        val testsMap = TestsFinder.loadTestsToRun(
+                testFilesOrDirectories = testFilesOrDirectories,
+                tagsToInclude = runConfig.tagsToInclude,
+                tagsToExclude = runConfig.tagsToExclude,
+                testsDirectoryRoot = testsDirectoryRoot,
+                loadTestAtPath = { webProjectManager.getProjectServices().getTestsCache().getTestAtPath(it) }
+        )
+        val testOrDirectoryPaths = testsMap.keys
+                .toList()
+                .map {
+                    Path.createInstance(
+                            testsDirectoryRoot.relativize(it).toString()
+                    )
+                }
 
         val executionId = testExecutionIdGenerator.nextId()
         val projectRootDir = ProjectDirHolder.get().toAbsolutePath().normalize()
@@ -77,7 +97,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
                 variablesEnvironment = currentEnvironment
         )
 
-        val runnerRootNode = getRunnerRootNode(testOrDirectoryPaths)
+        val runnerRootNode = getRunnerRootNode(testsMap.values.toList())
 
         return TestExecutionResponse(
                 executionId = executionId,
@@ -85,9 +105,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         )
     }
 
-    private fun getRunnerRootNode(testOrDirectoryPaths: List<Path>): RunnerRootNode {
-        val tests = webProjectManager.getProjectServices().getTestsCache().getTestsForPaths(testOrDirectoryPaths)
-
+    private fun getRunnerRootNode(tests: List<TestModel>): RunnerRootNode {
         val builder = RunnerTreeBuilder()
         tests.forEach { builder.addTest(it) }
 

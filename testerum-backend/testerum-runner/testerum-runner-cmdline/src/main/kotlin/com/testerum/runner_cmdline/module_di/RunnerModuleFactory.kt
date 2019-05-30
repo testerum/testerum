@@ -17,7 +17,7 @@ import com.testerum.runner_cmdline.runner_tree.builder.RunnerExecutionTreeBuilde
 import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.settings.RunnerSettingsManagerImpl
 import com.testerum.runner_cmdline.settings.RunnerTesterumDirsImpl
-import com.testerum.runner_cmdline.tests_finder.RunnerTestsFinder
+import com.testerum.model.tests_finder.TestsFinder
 import com.testerum.settings.module_di.SettingsModuleFactory
 
 class RunnerModuleFactory(context: ModuleFactoryContext,
@@ -51,11 +51,8 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
             testerumDirs = settingsModuleFactory.testerumDirs
     )
 
-    private val runnerTestsFinder = RunnerTestsFinder()
-
     private val runnerExecutionTreeBuilder = RunnerExecutionTreeBuilder(
             runnerProjectManager = runnerProjectManager,
-            runnerTestsFinder = runnerTestsFinder,
             basicStepsCache = fileServiceModuleFactory.basicStepsCache,
             executionName = cmdlineParams.executionName
     )

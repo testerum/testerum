@@ -198,11 +198,81 @@ object CmdlineParamsParser {
                     "    --test-path \"/path/to/some feature/\"",
                     "    --test-path \"/path/to/another-feature/File 1.test\"",
                     "    --test-path \"another-feature/File 2.test\"",
+                    "",
+                    "See also:",
+                    "    --include-tag",
+                    "    --exclude-tag",
                     ""
                 ],
                 showDefaultValue = CommandLine.Help.Visibility.NEVER
         )
         var testFilesOrDirectories: List<JavaPath> = arrayListOf()
+
+        @CommandLine.Option(
+                names = ["--include-tag"],
+                paramLabel = "includeTag",
+                description = [
+                    "test or feature tag used to select what tests will run",
+                    "",
+                    "If no tag will be specified, the other options",
+                    "will be used to determine what to run (e.g. --test-path)",
+                    "",
+                    "If a test has one of these tags, the test will be",
+                    "executed.",
+                    "",
+                    "If a feature has one of these tags, all tests inside it",
+                    "(recursively) will be executed.",
+                    "",
+                    "Exclude tags have priority over include tags,",
+                    "i.e. if a feature or a test have both an include tag",
+                    "and an exclude tag, the feature or test will NOT be",
+                    "executed.",
+                    "",
+                    "Example:",
+                    "    --include-tag web",
+                    "    --include-tag a_tag --include-tag a_second_tag",
+                    "    --include-tag \"tag with spaces\"",
+                    "",
+                    "See also:",
+                    "    --exclude-tag",
+                    "    --test-path",
+                    ""
+                ],
+                showDefaultValue = CommandLine.Help.Visibility.NEVER
+        )
+        var tagsToInclude: List<String> = arrayListOf()
+
+        @CommandLine.Option(
+                names = ["--exclude-tag"],
+                paramLabel = "excludeTag",
+                description = [
+                    "test or feature tag used to select what tests",
+                    "will NOT run",
+                    "",
+                    "If a test has one of these tags, the test will NOT be",
+                    "executed.",
+                    "",
+                    "If a feature has one of these tags, all tests inside it",
+                    "(recursively) will NOT be executed.",
+                    "",
+                    "Exclude tags have priority over include tags,",
+                    "i.e. if a feature or a test have both an include tag",
+                    "and an exclude tag, the feature or test will NOT be",
+                    "executed.",
+                    "",
+                    "Example:",
+                    "    --exclude-tag web",
+                    "    --exclude-tag a_tag --exclude-tag a_second_tag",
+                    "    --exclude-tag \"tag with spaces\"",
+                    "",
+                    "See also:",
+                    "    --include-tag",
+                    "    --test-path",
+                    ""
+                ],
+                showDefaultValue = CommandLine.Help.Visibility.NEVER
+        )
+        var tagsToExclude: List<String> = arrayListOf()
 
         @CommandLine.Option(
                 names = ["--report"],
@@ -347,6 +417,8 @@ object CmdlineParamsParser {
                     settingsFile = getValidatedSettingsFile(),
                     settingOverrides = settingOverrides,
                     testFilesOrDirectories = getValidatedTestFilesOrDirectories(),
+                    tagsToInclude = tagsToInclude,
+                    tagsToExclude = tagsToExclude,
                     reportsWithProperties = reports,
                     managedReportsDir = managedReportsDir,
                     executionName = executionName

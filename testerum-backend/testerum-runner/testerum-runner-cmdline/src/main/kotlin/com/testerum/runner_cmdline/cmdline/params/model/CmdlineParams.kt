@@ -10,6 +10,8 @@ data class CmdlineParams(val verbose: Boolean,
                          val settingsFile: JavaPath?,
                          val settingOverrides: Map<String, String>,
                          val testFilesOrDirectories: List<JavaPath>,
+                         val tagsToInclude: List<String>,
+                         val tagsToExclude: List<String>,
                          val reportsWithProperties: List<String>,
                          val managedReportsDir: JavaPath?,
                          val executionName: String?)

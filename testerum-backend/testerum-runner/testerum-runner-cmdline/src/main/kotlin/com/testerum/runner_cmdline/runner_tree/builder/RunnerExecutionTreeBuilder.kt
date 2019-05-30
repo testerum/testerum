@@ -8,6 +8,7 @@ import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.step.UndefinedStepDef
 import com.testerum.model.test.TestModel
+import com.testerum.model.tests_finder.TestsFinder
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
@@ -21,21 +22,13 @@ import com.testerum.runner_cmdline.runner_tree.nodes.step.impl.RunnerComposedSte
 import com.testerum.runner_cmdline.runner_tree.nodes.step.impl.RunnerUndefinedStep
 import com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite
 import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest
-import com.testerum.runner_cmdline.tests_finder.RunnerTestsFinder
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import java.nio.file.Path as JavaPath
 
 class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProjectManager,
-                                 private val runnerTestsFinder: RunnerTestsFinder,
                                  private val basicStepsCache: BasicStepsCache,
                                  private val executionName: String?) {
-
-    //
-    // VERY IMPORTANT!!!
-    //
-    // Changes to this class needs to be kept in sync with "com.testerum.model.runner.tree.builder.RunnerTreeBuilder"
-    //
 
     fun createTree(cmdlineParams: CmdlineParams,
                    testsDir: JavaPath): RunnerSuite {
@@ -43,8 +36,14 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
         val hooks: Collection<HookDef> = basicStepsCache.getHooks()
 
         val testsDirectoryRoot = testsDir.toAbsolutePath()
-        val pathsToTestsToExecute: List<JavaPath> = runnerTestsFinder.findPathsToTestsToExecute(cmdlineParams, testsDir)
-        val tests = loadTests(pathsToTestsToExecute, testsDirectoryRoot)
+        val testsMap = TestsFinder.loadTestsToRun(
+                testFilesOrDirectories = cmdlineParams.testFilesOrDirectories,
+                tagsToInclude = cmdlineParams.tagsToInclude,
+                tagsToExclude = cmdlineParams.tagsToExclude,
+                testsDirectoryRoot = testsDirectoryRoot,
+                loadTestAtPath = { runnerProjectManager.getProjectServices().getTestsCache().getTestAtPath(it) }
+        )
+        val tests = testsMap.map { (path, test) -> TestWithFilePath(test, path) }
         val features = loadFeatures(tests.map { it.filePath }, testsDirectoryRoot)
 
         val builder = TreeBuilder(
@@ -86,38 +85,6 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
 
         return result.map {
             Path.createInstance(it)
-        }
-    }
-
-    private fun loadTests(testJavaPaths: List<JavaPath>, testsDirectoryRoot: JavaPath): List<TestWithFilePath> {
-        val result = arrayListOf<TestWithFilePath>()
-
-        for (testPath in testJavaPaths) {
-            val testWithFilePath: TestWithFilePath = loadTest(testPath, testsDirectoryRoot)
-
-            // ignore manual tests
-            if (testWithFilePath.test.properties.isManual) {
-                continue
-            }
-
-            result += testWithFilePath
-        }
-
-        return result
-    }
-
-    private fun loadTest(testPath: JavaPath,
-                         testsDirectoryRoot: JavaPath): TestWithFilePath {
-        try {
-            val relativeTestPath = testsDirectoryRoot.relativize(testPath)
-            val testerumPath = Path.createInstance(relativeTestPath.toString())
-
-            val test = runnerProjectManager.getProjectServices().getTestsCache().getTestAtPath(testerumPath)
-                    ?: throw RuntimeException("could not find test at [${testPath.toAbsolutePath().normalize()}]")
-
-            return TestWithFilePath(test, testPath)
-        } catch (e: Exception) {
-            throw RuntimeException("failed to load test at [${testPath.toAbsolutePath().normalize()}]", e)
         }
     }
 
