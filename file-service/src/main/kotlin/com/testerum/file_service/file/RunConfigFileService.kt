@@ -19,8 +19,8 @@ import com.testerum.file_service.mapper.business_to_file.BusinessToFileRunConfig
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessRunConfigMapper
 import com.testerum.model.exception.ValidationException
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.runner.config.FileRunnerConfig
-import com.testerum.model.runner.config.RunnerConfig
+import com.testerum.model.runner.config.FileRunConfig
+import com.testerum.model.runner.config.RunConfig
 import com.testerum.model.util.escape
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
@@ -57,8 +57,8 @@ class RunConfigFileService(private val fileToBusinessMapper: FileToBusinessRunCo
         }
     }
 
-    fun getAllRunConfigs(projectRootDir: JavaPath): List<RunnerConfig> {
-        val runConfigs = mutableListOf<RunnerConfig>()
+    fun getAllRunConfigs(projectRootDir: JavaPath): List<RunConfig> {
+        val runConfigs = mutableListOf<RunConfig>()
 
         val runConfigsDir = runConfigsDir(projectRootDir).toAbsolutePath().normalize()
         runConfigsDir.walk { path ->
@@ -75,7 +75,7 @@ class RunConfigFileService(private val fileToBusinessMapper: FileToBusinessRunCo
         return runConfigs
     }
 
-    private fun parseRunConfigFile(runConfigFile: JavaPath): FileRunnerConfig? {
+    private fun parseRunConfigFile(runConfigFile: JavaPath): FileRunConfig? {
         return try {
             OBJECT_MAPPER.readValue(runConfigFile.toFile())
         } catch (e: Exception) {
@@ -85,7 +85,7 @@ class RunConfigFileService(private val fileToBusinessMapper: FileToBusinessRunCo
         }
     }
 
-    fun save(config: RunnerConfig, projectRootDir: JavaPath): RunnerConfig {
+    fun save(config: RunConfig, projectRootDir: JavaPath): RunConfig {
         val oldPath: Path? = config.oldPath
         val newEscapedPath: Path = config.getNewPath().escape()
 

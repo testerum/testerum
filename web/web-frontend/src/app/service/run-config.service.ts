@@ -8,7 +8,7 @@ import {JsonUtil} from "../utils/json.util";
 @Injectable()
 export class RunConfigService {
 
-    private BASE_URL = "/rest/runner";
+    private BASE_URL = "/rest/run-configs";
 
     constructor(private http: HttpClient) {}
 
