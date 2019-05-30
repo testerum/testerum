@@ -5,6 +5,7 @@ import {StringSelectItem} from "../../model/prime-ng/StringSelectItem";
 import {RunConfigModalService} from "../../functionalities/config/run-config/run-config-modal.service";
 import {RunConfigComponentService} from "../../functionalities/config/run-config/run-config-component.service";
 import {Subscription} from "rxjs";
+import {ContextService} from "../../service/context.service";
 
 @Component({
     selector: 'menu-runner',
@@ -22,7 +23,8 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
 
     private runnerConfigSubscription: Subscription;
     private selectedRunnerSubscription: Subscription;
-    constructor(private runConfigService: RunConfigService,
+    constructor(private contextService: ContextService,
+                private runConfigService: RunConfigService,
                 private runConfigComponentService: RunConfigComponentService,
                 private runConfigModalService: RunConfigModalService) {
     }
@@ -30,14 +32,17 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.runnerConfigSubscription = this.runConfigService.getRunnerConfig().subscribe((runners: Array<RunConfig>) => {
             this.initRunners(runners);
+            this.selectedItem = this.contextService.runConfigContext.getSelectedRunConfig();
         });
 
         this.selectedRunnerSubscription = this.runConfigComponentService.selectedRunnerEventEmitter.subscribe( (selectedRunnerConfigs: Array<RunConfig>) => {
             if(selectedRunnerConfigs.length == 0 || selectedRunnerConfigs.length > 1) {
                 this.selectedItem = null;
+                this.contextService.runConfigContext.setSelectedRunConfig(null);
                 return;
             }
             this.selectedItem = selectedRunnerConfigs[0].name;
+            this.contextService.runConfigContext.setSelectedRunConfig(this.selectedItem);
         });
     }
 
@@ -82,9 +87,19 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
 
     onRunnerItemSelection() {
         if (this.selectedItem == MenuRunnerComponent.EDIT_CONFIG_KEY) {
-            this.runConfigModalService.showRunnersModal(this.runners).subscribe( (savedRunner: RunConfig[]) => {
+            this.runConfigModalService.showRunnersModal(this.runners).subscribe((savedRunner: RunConfig[]) => {
                 this.initRunners(savedRunner);
             });
+
+            //without the delay, setting "selectedItem" to null is not working
+            let that = this;
+            setTimeout(function() {
+                that.selectedItem = null;
+                that.contextService.runConfigContext.setSelectedRunConfig(null);
+            }, 100);
+
+        } else {
+            this.contextService.runConfigContext.setSelectedRunConfig(this.selectedItem);
         }
     }
 

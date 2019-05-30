@@ -2,12 +2,10 @@ import {EventEmitter, Injectable} from "@angular/core";
 import {StepCallContainerComponent} from "../generic/components/step-call-tree/nodes/step-call-container/step-call-container.component";
 import {StepCallContainerModel} from "../generic/components/step-call-tree/model/step-call-container.model";
 import {Project} from "../model/home/project.model";
-import {RunnerTreeNodeModel} from "../functionalities/features/tests-runner/tests-runner-tree/model/runner-tree-node.model";
-import {StringUtils} from "../utils/string-utils.util";
 import {LicenseInfo} from "../model/user/license/license-info.model";
 import {UserService} from "./user.service";
 import {UserLicenseInfo} from "../model/user/license/user-license-info.model";
-import {LicenseAlertModalService} from "../functionalities/user/license/alert/license-alert-modal.service";
+import {JsonUtil} from "../utils/json.util";
 
 @Injectable()
 export class ContextService {
@@ -16,12 +14,14 @@ export class ContextService {
     projectChangedEventEmitter: EventEmitter<Project> = new EventEmitter<Project>();
 
     license: LicenseContext;
+    runConfigContext: RunConfigContext;
 
     stepToCut: StepCallContainerComponent = null;
     stepToCopy: StepCallContainerComponent = null;
 
     constructor(private userService: UserService) {
         this.license = new LicenseContext(userService);
+        this.runConfigContext = new RunConfigContext(this);
     }
 
     init(): Promise<any> {
@@ -36,7 +36,7 @@ export class ContextService {
         return this.currentProject
     }
 
-    getProjectName(): string {
+    getProjectName(): string|null {
         return this.currentProject ? this.currentProject.name: null;
     }
 
@@ -163,5 +163,46 @@ class LicenseContext {
 
     saveLastUsedOfRemainingDaysLicenseAlert(nextAlertDaysRemaining: number) {
         localStorage.setItem(this.LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT, ""+nextAlertDaysRemaining);
+    }
+}
+
+class RunConfigContext {
+    private LOCAL_STORAGE_RUN_CONFIG_KEY = "RUN_CONFIG";
+
+    constructor(private contextService: ContextService) {
+    }
+
+    setSelectedRunConfig(selectedRunConfigName: string | null) {
+        let projectName = this.contextService.getProjectName();
+        if (!projectName) { return; }
+
+        let projectAndSelectedRunConfigMap = this.getProjectAndSelectedRunConfigMap();
+        projectAndSelectedRunConfigMap.set(projectName, selectedRunConfigName);
+        localStorage.setItem(this.LOCAL_STORAGE_RUN_CONFIG_KEY, JsonUtil.serializeMap(projectAndSelectedRunConfigMap))
+    }
+
+    getSelectedRunConfig(): string | null {
+        let projectName = this.contextService.getProjectName();
+        if (!projectName) { return null; }
+
+        let projectAndSelectedRunConfigMap = this.getProjectAndSelectedRunConfigMap();
+        return projectAndSelectedRunConfigMap.get(projectName);
+    }
+
+    private getProjectAndSelectedRunConfigMap(): Map<string, string> {
+        let projectSelectedRunConfigMapAsString = localStorage.getItem(this.LOCAL_STORAGE_RUN_CONFIG_KEY);
+
+        let response = new Map<string, string>();
+
+        let projectSelectedRunConfigMapAsJson = JSON.parse(projectSelectedRunConfigMapAsString);
+        if (!projectSelectedRunConfigMapAsJson) {
+            return response;
+        }
+
+        Object.keys(projectSelectedRunConfigMapAsJson).forEach( key => {
+            let value = projectSelectedRunConfigMapAsJson[key];
+            response.set(key, value);
+        });
+        return response;
     }
 }
