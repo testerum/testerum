@@ -13,6 +13,7 @@ import {RunnerTreeFilterModel} from "./tests-runner-tree/model/filter/runner-tre
 import {RunnerEventMarshaller} from '../../../model/test/event/marshaller/runner-event-marshaller';
 import {ContextService} from "../../../service/context.service";
 import {Project} from "../../../model/home/project.model";
+import {RunConfig} from "../../config/run-config/model/runner-config.model";
 
 @Injectable()
 export class TestsRunnerService {
@@ -52,8 +53,11 @@ export class TestsRunnerService {
         this.lastRunPaths = pathsToExecute;
         this.setRunnerVisibility(true);
 
-        let pathsAsString = pathsToExecute.map(it => {return it.toString()});
-        this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, pathsAsString)
+        const runConfig = new RunConfig();
+        runConfig.name = "temp run config";
+        runConfig.pathsToInclude = pathsToExecute;
+
+        this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, runConfig)
             .pipe(map(json => new TestExecutionResponse().deserialize(json)))
             .subscribe((testExecutionResponse: TestExecutionResponse) => {
                 this.startExecution(testExecutionResponse);
