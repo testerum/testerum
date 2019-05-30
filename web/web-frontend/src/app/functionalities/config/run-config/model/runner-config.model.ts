@@ -38,7 +38,7 @@ export class RunConfig implements Serializable<RunConfig> {
             '"name":' + JsonUtil.stringify(this.name) +
             ',"path":' + JsonUtil.serializeSerializable(this.path) +
             ',"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) +
-            ',"settings":' + JsonUtil.stringify(this.settings) +
+            ',"settings":' + JsonUtil.serializeMap(this.settings) +
             ',"tagsToInclude":' + JsonUtil.stringify(this.tagsToInclude) +
             ',"tagsToExclude":' + JsonUtil.stringify(this.tagsToExclude) +
             ',"paths":' + JsonUtil.serializeArrayOfSerializable(this.paths) +

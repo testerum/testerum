@@ -49,6 +49,20 @@ export class JsonUtil {
         )
     }
 
+    static serializeMap(map: Map<string, string>): string {
+        if (!map) {
+            return "null";
+        }
+        return JSON.stringify(JsonUtil.mapToObj(map));
+    }
+    private static mapToObj(map: Map<string, string>): object {
+        let obj = Object.create(null);
+        map.forEach((value, key) => {
+            obj[key] = value;
+        });
+        return obj;
+    }
+
     public static isJson(str: string) {
         try {
             JSON.parse(str);

@@ -75,7 +75,7 @@ export class RunConfigComponentService {
         return this.selectedRunners.length == 1;
     }
 
-    copyConfiguration() {
+    duplicateConfiguration() {
         if (!this.areRunnersSelected()) { return; }
 
         let selectedRunner = this.selectedRunners[0];

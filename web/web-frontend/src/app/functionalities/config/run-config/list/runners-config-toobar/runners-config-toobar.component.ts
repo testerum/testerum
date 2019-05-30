@@ -64,8 +64,8 @@ export class RunnersConfigToobarComponent implements OnInit, OnDestroy {
         this.runnerConfigService.removeSelectedRunnerConfig();
     }
 
-    onCopyConfiguration() {
-        this.runnerConfigService.copyConfiguration();
+    onDuplicateConfiguration() {
+        this.runnerConfigService.duplicateConfiguration();
     }
 
     onMoveUp() {
