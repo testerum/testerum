@@ -9,7 +9,7 @@ export class RunConfig implements Serializable<RunConfig> {
     settings: Map<string, string> = new Map<string, string>();
     tagsToInclude: Array<string> = [];
     tagsToExclude: Array<string> = [];
-    paths: Array<Path> = [];
+    pathsToInclude: Array<Path> = [];
 
     deserialize(input: Object): RunConfig {
 
@@ -24,9 +24,9 @@ export class RunConfig implements Serializable<RunConfig> {
         });
         this.tagsToInclude = input['tagsToInclude'] || [];
         this.tagsToExclude = input['tagsToExclude'] || [];
-        this.paths = [];
-        for (let selectedPathJson of (input['paths']) || []) {
-            this.paths.push(Path.deserialize(selectedPathJson));
+        this.pathsToInclude = [];
+        for (let selectedPathJson of (input['pathsToInclude']) || []) {
+            this.pathsToInclude.push(Path.deserialize(selectedPathJson));
         }
 
         return this;
@@ -41,7 +41,7 @@ export class RunConfig implements Serializable<RunConfig> {
             ',"settings":' + JsonUtil.serializeMap(this.settings) +
             ',"tagsToInclude":' + JsonUtil.stringify(this.tagsToInclude) +
             ',"tagsToExclude":' + JsonUtil.stringify(this.tagsToExclude) +
-            ',"paths":' + JsonUtil.serializeArrayOfSerializable(this.paths) +
+            ',"pathsToInclude":' + JsonUtil.serializeArrayOfSerializable(this.pathsToInclude) +
             '}'
     }
 

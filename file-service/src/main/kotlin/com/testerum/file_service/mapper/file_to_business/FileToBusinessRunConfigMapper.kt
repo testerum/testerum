@@ -18,7 +18,7 @@ class FileToBusinessRunConfigMapper {
                 settings = fileConfig.settings,
                 tagsToInclude = fileConfig.tagsToInclude,
                 tagsToExclude = fileConfig.tagsToExclude,
-                paths = fileConfig.paths.map {
+                pathsToInclude = fileConfig.pathsToInclude.map {
                     Path.createInstance(it)
                 }
         )

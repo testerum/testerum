@@ -11,7 +11,7 @@ class BusinessToFileRunConfigMapper {
                 settings = config.settings,
                 tagsToInclude = config.tagsToInclude,
                 tagsToExclude = config.tagsToExclude,
-                paths = config.paths.map {
+                pathsToInclude = config.pathsToInclude.map {
                     it.toString()
                 }
         )
