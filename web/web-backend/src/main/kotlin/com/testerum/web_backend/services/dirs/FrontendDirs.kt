@@ -11,6 +11,8 @@ class FrontendDirs(private val testerumDirs: TesterumDirs) {
 
     fun getTesterumDir(): JavaPath = testerumDirs.getTesterumDir()
 
+    fun getRunConfigsDir(): JavaPath = getTesterumDir().resolve("run-configs")
+
     fun getFsNotifierBinariesDir(): JavaPath = testerumDirs.getFsNotifierBinariesDir()
 
     fun getSettingsDir(): JavaPath = getTesterumDir().resolve("conf")

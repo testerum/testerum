@@ -13,15 +13,11 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.common_kotlin.createDirectories
-import com.testerum.common_kotlin.smartMoveTo
-import com.testerum.common_kotlin.walk
+import com.testerum.common_kotlin.doesNotExist
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileRunConfigMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessRunConfigMapper
-import com.testerum.model.exception.ValidationException
-import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.config.FileRunConfig
 import com.testerum.model.runner.config.RunConfig
-import com.testerum.model.util.escape
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
@@ -32,6 +28,8 @@ class RunConfigFileService(private val fileToBusinessMapper: FileToBusinessRunCo
 
     companion object {
         private val LOG = LoggerFactory.getLogger(RunConfigFileService::class.java)
+
+        private const val RUN_CONFIGS_FILENAME = "run-configurations.json"
 
         private val OBJECT_MAPPER: ObjectMapper = ObjectMapper().apply {
             setDefaultPrettyPrinter(
@@ -57,90 +55,42 @@ class RunConfigFileService(private val fileToBusinessMapper: FileToBusinessRunCo
         }
     }
 
-    fun getAllRunConfigs(projectRootDir: JavaPath): List<RunConfig> {
-        val runConfigs = mutableListOf<RunConfig>()
+    fun getRunConfigs(sourceDirectory: JavaPath): List<RunConfig> {
+        val file: JavaPath = sourceDirectory.resolve(RUN_CONFIGS_FILENAME)
 
-        val runConfigsDir = runConfigsDir(projectRootDir).toAbsolutePath().normalize()
-        runConfigsDir.walk { path ->
-            val fileRunConfig = parseRunConfigFile(path)
-
-            if (fileRunConfig != null) {
-                val relativePath: JavaPath = runConfigsDir.relativize(path)
-                val runConfig = fileToBusinessMapper.mapRunConfig(fileRunConfig, relativePath)
-
-                runConfigs += runConfig
-            }
+        if (file.doesNotExist) {
+            return emptyList()
         }
 
-        return runConfigs
-    }
-
-    private fun parseRunConfigFile(runConfigFile: JavaPath): FileRunConfig? {
         return try {
-            OBJECT_MAPPER.readValue(runConfigFile.toFile())
-        } catch (e: Exception) {
-            LOG.error("could not load run configuration at [${runConfigFile.toAbsolutePath().normalize()}]", e)
+            val fileRunConfigs = OBJECT_MAPPER.readValue<List<FileRunConfig>>(file.toFile())
 
-            null
+            fileRunConfigs.map { fileToBusinessMapper.map(it) }
+        } catch (e: Exception) {
+            LOG.error("could not load run configurations at [${file.toAbsolutePath().normalize()}]", e)
+
+            emptyList()
         }
     }
 
-    fun save(config: RunConfig, projectRootDir: JavaPath): RunConfig {
-        val oldPath: Path? = config.oldPath
-        val newEscapedPath: Path = config.getNewPath().escape()
+    fun save(configs: List<RunConfig>,
+             destinationDirectory: JavaPath): List<RunConfig> {
+        val fileRunConfigs = configs.map { businessToFileMapper.map(it) }
+        val serialized = OBJECT_MAPPER.writeValueAsString(fileRunConfigs)
 
-        val oldFile: JavaPath? = oldPath?.let {
-            runConfigsDir(projectRootDir)
-                    .resolve(it.toString())
-                    .toAbsolutePath()
-                    .normalize()
-        }
-        val newFile: JavaPath = runConfigsDir(projectRootDir)
-                .resolve(newEscapedPath.toString())
-                .toAbsolutePath()
-                .normalize()
+        val file: JavaPath = destinationDirectory.resolve(RUN_CONFIGS_FILENAME)
 
-        // handle rename
-        oldFile?.smartMoveTo(
-                newFile,
-                createDestinationExistsException = {
-                    val dirPath = newEscapedPath.copy(fileName = null, fileExtension = null)
+        file.parent?.createDirectories()
 
-                    ValidationException(
-                            globalMessage = "The run configuration at path [$dirPath] already exists",
-                            globalHtmlMessage = "The run configuration at path<br/><code>$dirPath</code><br/>already exists"
-                    )
-                }
-        )
-
-        // write the new file
-
-        val fileRunConfig = businessToFileMapper.mapRunConfig(config)
-        val serialized = OBJECT_MAPPER.writeValueAsString(fileRunConfig)
-
-        newFile.parent?.createDirectories()
         Files.write(
-                newFile,
+                file,
                 serialized.toByteArray(Charsets.UTF_8),
                 StandardOpenOption.WRITE,
                 StandardOpenOption.CREATE,
                 StandardOpenOption.TRUNCATE_EXISTING
         )
 
-        val newPath = Path.createInstance(
-                runConfigsDir(projectRootDir)
-                        .relativize(newFile)
-                        .toString()
-        )
-
-        return config.copy(
-                path = newPath,
-                oldPath = newPath
-        )
-    }
-
-    private fun runConfigsDir(projectRootDir: JavaPath): JavaPath {
-        return projectRootDir.resolve(TesterumProjectFileService.TESTERUM_PROJECT_DIR).resolve("run-configs")
+        return configs
     }
 
 }

@@ -376,6 +376,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val runConfigFrontendService = RunConfigFrontendService(
+            frontendDirs = frontendDirs,
             webProjectManager = webProjectManager,
             runConfigFileService = fileServiceModuleFactory.runConfigFileService
     )

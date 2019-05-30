@@ -5,7 +5,7 @@ import com.testerum.model.runner.config.RunConfig
 
 class BusinessToFileRunConfigMapper {
 
-    fun mapRunConfig(config: RunConfig): FileRunConfig {
+    fun map(config: RunConfig): FileRunConfig {
         return FileRunConfig(
                 name = config.name,
                 settings = config.settings,

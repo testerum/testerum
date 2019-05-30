@@ -7,14 +7,9 @@ import java.nio.file.Path as JavaPath
 
 class FileToBusinessRunConfigMapper {
 
-    fun mapRunConfig(fileConfig: FileRunConfig,
-                     relativeFilePath: JavaPath): RunConfig {
-        val path = Path.createInstance(relativeFilePath.toString())
-
+    fun map(fileConfig: FileRunConfig): RunConfig {
         return RunConfig(
                 name = fileConfig.name,
-                path = path,
-                oldPath = path,
                 settings = fileConfig.settings,
                 tagsToInclude = fileConfig.tagsToInclude,
                 tagsToExclude = fileConfig.tagsToExclude,
