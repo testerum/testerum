@@ -16,7 +16,7 @@
     </div>
     <div class="my-line">
         <label class="my-label label-size">Tags to exclude:</label>
-        <div class="my-value my-default-line-height">
+        <div class="tags-to-exclude-value my-value my-default-line-height">
             <p-autoComplete #tagsToExcludeElement
                             [(ngModel)]="runnerConfig.tagsToExclude"
                             [suggestions]="tagsToExcludeToShow"
@@ -27,6 +27,9 @@
                             [multiple]="true"
                             [dropdown]="true"
                             name="tags"></p-autoComplete>
+            <info-icon [message]="'<code>Tags to exclude</code> have priority over <code>Tags to include</code>. In other words, if a test has both a tag from the include list and a tag from the exclude list, that test will not be executed'"
+                       class="tags-to-exclude-info-icon"
+                        [maxWidth]="'400px'"></info-icon>
         </div>
     </div>
     <div class="my-line test-tree-container">

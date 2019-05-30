@@ -10,6 +10,15 @@
         .my-value {
             margin-left: 0;
         }
+
+        .tags-to-exclude-value {
+            display: flex;
+            align-items: center;
+
+            .tags-to-exclude-info-icon {
+                margin-left: 5px;
+            }
+        }
     }
     .test-tree-container {
         display: block;
