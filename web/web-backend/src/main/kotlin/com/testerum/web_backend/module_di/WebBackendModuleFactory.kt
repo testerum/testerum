@@ -90,7 +90,7 @@ import com.testerum.web_backend.services.resources.NetworkService
 import com.testerum.web_backend.services.resources.ResourcesFrontendService
 import com.testerum.web_backend.services.resources.http.HttpFrontendService
 import com.testerum.web_backend.services.resources.rdbms.RdbmsFrontendService
-import com.testerum.web_backend.services.runner.config.RunnerConfigFrontendService
+import com.testerum.web_backend.services.runner.config.RunConfigFrontendService
 import com.testerum.web_backend.services.runner.execution.TestsExecutionFrontendService
 import com.testerum.web_backend.services.runner.result.ResultsFrontendService
 import com.testerum.web_backend.services.save.SaveFrontendService
@@ -375,7 +375,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             webProjectManager = webProjectManager
     )
 
-    private val runnerConfigFrontendService = RunnerConfigFrontendService(
+    private val runConfigFrontendService = RunConfigFrontendService(
+            frontendDirs = frontendDirs,
             webProjectManager = webProjectManager,
             runConfigFileService = fileServiceModuleFactory.runConfigFileService
     )
@@ -480,7 +481,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val runnerController = RunConfigController(
-            runnerConfigFrontendService = runnerConfigFrontendService
+            runConfigFrontendService = runConfigFrontendService
     )
 
     private val messageController = MessageController(

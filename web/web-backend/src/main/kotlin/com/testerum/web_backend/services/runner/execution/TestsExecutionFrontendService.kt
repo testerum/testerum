@@ -5,6 +5,7 @@ import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.runner.config.RunConfig
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
 import com.testerum.runner.cmdline.report_type.RunnerReportType
@@ -54,7 +55,11 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
     private val testExecutionsById: MutableMap<Long, TestExecution> = ConcurrentHashMap()
 
-    fun createExecution(testOrDirectoryPaths: List<Path>): TestExecutionResponse {
+    fun createExecution(runConfig: RunConfig): TestExecutionResponse {
+        // todo: use all the information in the runConfig, not only the paths
+
+        val testOrDirectoryPaths = runConfig.pathsToInclude
+
         val executionId = testExecutionIdGenerator.nextId()
         val projectRootDir = ProjectDirHolder.get().toAbsolutePath().normalize()
 
