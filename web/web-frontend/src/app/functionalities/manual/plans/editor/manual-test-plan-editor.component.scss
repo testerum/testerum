@@ -1,16 +1,30 @@
-.label-size {
-    width: 11em;
+.manual-test-plan-editor {
+    .label-size {
+        width: 11em;
+    }
+
+    .display-row-container {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+    }
+
+    .pie-tree-overview-container {
+        display: flex;
+        flex-direction: row;
+
+        .tree-overview-container {
+            flex-grow: 2;
+        }
+    }
+
+    .CodeMirror {
+        min-height: 70px;
+    }
+    .CodeMirror-scroll {
+        min-height: 70px;
+    }
+
+
 }
 
-.display-row-container {
-    display: flex;
-    flex-direction: row;
-    position: relative;
-}
-
-.CodeMirror {
-    min-height: 70px;
-}
-.CodeMirror-scroll {
-    min-height: 70px;
-}
