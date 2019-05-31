@@ -20,10 +20,12 @@ export class DynamicInputComponent implements OnInit{
     InputTypeEnum = InputTypeEnum;
 
     ngOnInit(): void {
-        for (const possibleValue of this.possibleValues) {
-            this.possibleValuesAsSelectItems.push(
-                {label: possibleValue, value: possibleValue}
-            )
+        if (this.possibleValues) {
+            for (const possibleValue of this.possibleValues) {
+                this.possibleValuesAsSelectItems.push(
+                    {label: possibleValue, value: possibleValue}
+                )
+            }
         }
     }
 

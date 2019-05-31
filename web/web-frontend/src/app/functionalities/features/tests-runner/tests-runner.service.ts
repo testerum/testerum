@@ -30,7 +30,7 @@ export class TestsRunnerService {
     readonly runnerVisibleEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     public areTestRunning: boolean = false;
-    public lastRunPaths: Path[];
+    public lastRunConfig: RunConfig;
 
     private webSocket:$WebSocket = null;
     private executionId: number = null;
@@ -50,12 +50,16 @@ export class TestsRunnerService {
     }
 
     runTests(pathsToExecute: Path[]) {
-        this.lastRunPaths = pathsToExecute;
-        this.setRunnerVisibility(true);
-
         const runConfig = new RunConfig();
         runConfig.name = "temp run config";
         runConfig.pathsToInclude = pathsToExecute;
+
+        this.runRunConfig(runConfig);
+    }
+
+    runRunConfig(runConfig: RunConfig) {
+        this.lastRunConfig = runConfig;
+        this.setRunnerVisibility(true);
 
         this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, runConfig)
             .pipe(map(json => new TestExecutionResponse().deserialize(json)))
@@ -65,7 +69,7 @@ export class TestsRunnerService {
     }
 
     reRunTests() {
-        this.runTests(this.lastRunPaths)
+        this.runRunConfig(this.lastRunConfig)
     }
 
     isRunnerVisible(): boolean {

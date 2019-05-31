@@ -6,6 +6,7 @@ import {RunConfigModalService} from "../../functionalities/config/run-config/run
 import {RunConfigComponentService} from "../../functionalities/config/run-config/run-config-component.service";
 import {Subscription} from "rxjs";
 import {ContextService} from "../../service/context.service";
+import {TestsRunnerService} from "../../functionalities/features/tests-runner/tests-runner.service";
 
 @Component({
     selector: 'menu-runner',
@@ -26,13 +27,18 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
     constructor(private contextService: ContextService,
                 private runConfigService: RunConfigService,
                 private runConfigComponentService: RunConfigComponentService,
-                private runConfigModalService: RunConfigModalService) {
+                private runConfigModalService: RunConfigModalService,
+                private testsRunnerService: TestsRunnerService) {
     }
 
     ngOnInit() {
         this.runnerConfigSubscription = this.runConfigService.getRunnerConfig().subscribe((runners: Array<RunConfig>) => {
             this.initRunners(runners);
-            this.selectedItem = this.contextService.runConfigContext.getSelectedRunConfig();
+
+            let savedSelectedRunConfigName = this.contextService.runConfigContext.getSelectedRunConfig();
+            if (this.getSelectedRunner(savedSelectedRunConfigName)) {
+                this.selectedItem = savedSelectedRunConfigName;
+            }
         });
 
         this.selectedRunnerSubscription = this.runConfigComponentService.selectedRunnerEventEmitter.subscribe( (selectedRunnerConfigs: Array<RunConfig>) => {
@@ -109,5 +115,22 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
                 this.initRunners(savedRunner);
             });
         }
+    }
+
+    onExecuteRunConfig() {
+        let selectedRunner = this.getSelectedRunner(this.selectedItem);
+        if (selectedRunner != null) {
+            this.testsRunnerService.runRunConfig(selectedRunner);
+        }
+    }
+
+    private getSelectedRunner(selectedRunnerName: string): RunConfig | null {
+        for (const runner of this.runners) {
+            if (runner.name === selectedRunnerName) {
+                return runner
+            }
+        }
+
+        return null;
     }
 }

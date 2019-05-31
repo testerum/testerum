@@ -45,6 +45,8 @@ export class RunConfigTestTreeUtil {
             }
 
             if (serverNode instanceof TestFeatureNode) {
+                if(serverNode.properties.isManual) { continue; }
+
                 let uiTestNode = new RunConfigTestTreeNodeModel(uiContainerNode, serverNode.path, serverNode.name, RunConfigTestTreeNodeStatusEnum.NOT_SELECTED);
                 uiContainerNode.children.push(uiTestNode)
             }
