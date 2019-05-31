@@ -420,7 +420,7 @@ class StepLibraryPersistentCacheManger(private val threadPool: ExecutorService) 
         return result
     }
 
-    private fun DeclareSetting.toSetting() = SettingDefinition(key, label, type, defaultValue, description, category)
+    private fun DeclareSetting.toSetting() = SettingDefinition(key, label, type, defaultValue, enumValues.toList(), description, category)
 
     private class StepPhaseAnnotation(annotation: Annotation) {
         private val _phase: StepPhaseEnum = when (annotation) {

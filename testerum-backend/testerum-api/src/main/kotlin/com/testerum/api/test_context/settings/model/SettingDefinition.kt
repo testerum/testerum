@@ -4,6 +4,7 @@ data class SettingDefinition(val key: String,
                              val label: String,
                              val type: SettingType,
                              val defaultValue: String,
+                             val enumValues: List<String> = emptyList(),
                              val description: String? = null,
                              val category: String? = null,
                              val defined: Boolean = true) {

@@ -17,6 +17,8 @@ annotation class DeclareSetting(
 
         val defaultValue: String = "",
 
+        val enumValues: Array<String> = [],
+
         val description: String = "",
 
         val category: String = ""

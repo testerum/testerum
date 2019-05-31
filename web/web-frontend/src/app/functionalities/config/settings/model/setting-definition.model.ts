@@ -7,6 +7,7 @@ export class SettingDefinition implements Serializable<SettingDefinition>{
     type: SettingType;
     defaultValue: string;
     label: string;
+    enumValues: Array<String>;
     description: string;
     category: string;
     defined: boolean;
@@ -16,6 +17,12 @@ export class SettingDefinition implements Serializable<SettingDefinition>{
         this.type = SettingType[""+input["type"]];
         this.defaultValue = input["defaultValue"];
         this.label = input["label"];
+
+        this.enumValues = [];
+        for (let enumValue of (input["enumValues"] || [])) {
+            this.enumValues.push(enumValue);
+        }
+
         this.description = input["description"];
         this.category = input["category"];
         this.defined = input["defined"];

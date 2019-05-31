@@ -46,8 +46,10 @@ export class SettingsUtil {
 
     static getDynamicInputType(settingType: SettingType): InputTypeEnum {
         switch (settingType) {
+            case SettingType.BOOLEAN: return InputTypeEnum.BOOLEAN;
             case SettingType.TEXT: return InputTypeEnum.TEXT;
             case SettingType.NUMBER: return InputTypeEnum.POSITIVE_INTEGER;
+            case SettingType.ENUM: return InputTypeEnum.ENUM;
             case SettingType.FILESYSTEM_DIRECTORY: return InputTypeEnum.FILESYSTEM_DIRECTORY;
         }
     }

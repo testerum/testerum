@@ -47,15 +47,16 @@ import java.nio.file.Path as JavaPath
     DeclareSetting(
             key = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST,
             label = "Leave browser open after test",
-            type = SettingType.TEXT,
+            type = SettingType.ENUM,
             defaultValue = SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT,
+            enumValues = ["true", "false", "onFailure"],
             description = """Leave browser open after a Selenium test. Possible values: "true", "false", "onFailure"""",
             category = SETTINGS_CATEGORY
     ),
     DeclareSetting(
             key = SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP,
             label = "Take screenshot after each step",
-            type = SettingType.TEXT,
+            type = SettingType.BOOLEAN,
             defaultValue = "false",
             description = """Should take a screenshot after each Selenium Test. Possible values: "true", "false"""",
             category = SETTINGS_CATEGORY
