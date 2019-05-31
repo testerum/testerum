@@ -3,6 +3,7 @@ import {AppComponent} from "../../../../app.component";
 import {LicenseAlertModalComponent} from "./license-alert-modal.component";
 import {ContextService} from "../../../../service/context.service";
 import {Config} from "../../../../config";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class LicenseAlertModalService {
@@ -12,10 +13,16 @@ export class LicenseAlertModalService {
     private isTrialLicense: boolean;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
+                private router: Router,
                 private contextService: ContextService) {
     }
 
     private showAlertLicenseModal(isTrialLicense: boolean) {
+
+        if (window.location.pathname.startsWith("/license")) {
+            return;
+        }
+
         const factory = this.componentFactoryResolver.resolveComponentFactory(LicenseAlertModalComponent);
         let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
         let modalInstance: LicenseAlertModalComponent = modalComponentRef.instance;

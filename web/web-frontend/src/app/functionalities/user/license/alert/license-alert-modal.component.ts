@@ -11,6 +11,7 @@ import {ModalDirective} from "ngx-bootstrap";
 import {LicenseAlertModalService} from "./license-alert-modal.service";
 import {Config} from "../../../../config";
 import {LicenseGuard} from "../../../../service/guards/license.guard";
+import {UrlService} from "../../../../service/url.service";
 
 @Component({
     selector: 'license-alert-component',
@@ -28,7 +29,8 @@ export class LicenseAlertModalComponent implements OnInit, AfterViewInit {
     @ViewChild("userProfileModal") modal: ModalDirective;
     modalComponentRef: ComponentRef<LicenseAlertModalComponent>;
 
-    constructor(private cd: ChangeDetectorRef) {
+    constructor(private cd: ChangeDetectorRef,
+                private urlService: UrlService) {
     }
 
     ngOnInit(): void {
@@ -76,5 +78,11 @@ export class LicenseAlertModalComponent implements OnInit, AfterViewInit {
 
     openBuyPage() {
         window.open("https://testerum.com/pricing/", '_blank').focus();
+    }
+
+    onAuthenticate() {
+        LicenseGuard.isLicenseExpiredAlertModalShown = false;
+        this.modal.hide();
+        this.urlService.navigateToLicense("");
     }
 }

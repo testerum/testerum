@@ -18,11 +18,19 @@
                     <div class="resume-evaluation-countdown">{{counter}}</div>
                     <div class="resume-evaluation-seconds">seconds</div>
                 </div>
+                <div class="info-text">
+                    * If you already have a license assigned to you, please authenticate
+                </div>
             </div>
 
             <div class="modal-footer">
-                <button (click)="openBuyPage()" type="button" class="btn btn-warning">{{isTrialLicense?"Buy license":"Renew license"}}</button>
-                <button *ngIf="counter == 0" (click)="onContinueEvaluating()" type="button" class="btn btn-primary" data-dismiss="modal">Continue Evaluating</button>
+                <div class="footer-left-side">
+                    <button (click)="onAuthenticate()" type="button" class="btn btn-success">Authenticate</button>
+                </div>
+                <div class="footer-right-side">
+                    <button (click)="openBuyPage()" type="button" class="btn btn-warning">{{isTrialLicense?"Buy license":"Renew license"}}</button>
+                    <button *ngIf="counter == 0" (click)="onContinueEvaluating()" type="button" class="btn btn-primary" data-dismiss="modal">Continue Evaluating</button>
+                </div>
             </div>
         </div>
     </div>
