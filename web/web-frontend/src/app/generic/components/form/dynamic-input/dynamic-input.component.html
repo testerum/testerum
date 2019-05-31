@@ -1,25 +1,37 @@
 <div class="dynamic-input">
 
+    <div *ngIf="inputType == InputTypeEnum.BOOLEAN" class="boolean-container">
+        <p-inputSwitch [ngModel]="getValueAsBoolean()"
+                       (onChange)="onBooleanValueChange($event)"></p-inputSwitch>
+        <div class="boolean-value-as-string">{{getValueAsBoolean()}}</div>
+    </div>
+
     <div *ngIf="inputType == InputTypeEnum.TEXT">
         <input [(ngModel)]="value"
-               (ngModelChange)="onValueChange($event)"
+               (ngModelChange)="onValueChange()"
                placeholder="{{defaultValue}}"
                type="text" class="form-control full-width">
     </div>
 
     <div *ngIf="inputType == InputTypeEnum.POSITIVE_INTEGER">
         <input [(ngModel)]="value"
-               (ngModelChange)="onValueChange($event)"
+               (ngModelChange)="onValueChange()"
                placeholder="{{defaultValue}}"
                pKeyFilter="pint"
                type="text" class="form-control full-width">
     </div>
     <div *ngIf="inputType == InputTypeEnum.NUMBER">
         <input [(ngModel)]="value"
-               (ngModelChange)="onValueChange($event)"
+               (ngModelChange)="onValueChange()"
                placeholder="{{defaultValue}}"
                pKeyFilter="num"
                type="text" class="form-control full-width">
+    </div>
+
+    <div *ngIf="inputType == InputTypeEnum.ENUM">
+        <p-dropdown [options]="possibleValuesAsSelectItems"
+                    [(ngModel)]="value"
+                    (onChange)="onValueChange()"></p-dropdown>
     </div>
 
     <div *ngIf="inputType == InputTypeEnum.FILESYSTEM_DIRECTORY">

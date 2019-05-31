@@ -1,0 +1,12 @@
+.dynamic-input {
+    .boolean-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .boolean-value-as-string {
+            margin-left: .5em;
+            font-size: 1.2em;
+        }
+    }
+}

@@ -34,7 +34,9 @@
                                 <info-icon [message]="setting.definition.description"></info-icon>
                             </div>
 
-                            <dynamic-input [(value)]="setting.unresolvedValue" [inputType]="getDynamicInputType(setting.definition.type)"></dynamic-input>
+                            <dynamic-input [(value)]="setting.unresolvedValue"
+                                           [inputType]="getDynamicInputType(setting.definition.type)"
+                                           [possibleValues]="setting.definition.enumValues"></dynamic-input>
 
                             <div class="vertical-space"></div>
                         </div>

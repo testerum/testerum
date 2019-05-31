@@ -57,8 +57,8 @@ import {PathChooserNodeComponent} from "./components/path-chooser/container/node
 import {PathChooserService} from "./components/path-chooser/path-chooser.service";
 import {SelectSharedResourceModalComponent} from "./components/step-call-tree/select-shared-resource-modal/select-shared-resource-modal.component";
 import {
-    AutoCompleteModule,
-    FileUploadModule,
+    AutoCompleteModule, DropdownModule,
+    FileUploadModule, InputSwitchModule,
     InputTextModule, KeyFilterModule,
     MessageService,
     SelectButtonModule,
@@ -134,6 +134,8 @@ import { DynamicInputComponent } from './components/form/dynamic-input/dynamic-i
         ToastModule,
         OverlayPanelModule,
         KeyFilterModule,
+        InputSwitchModule,
+        DropdownModule,
     ],
     exports: [
         SafeHtmlPipe,
