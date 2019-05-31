@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.file_service.file.LocalVariablesFileService
-import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.config.RunConfig
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
@@ -58,8 +57,6 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
     private val testExecutionsById: MutableMap<Long, TestExecution> = ConcurrentHashMap()
 
     fun createExecution(runConfig: RunConfig): TestExecutionResponse {
-        // todo: use all the information in the runConfig, not only the paths
-
         val testsDirectoryRoot = webProjectManager.getProjectServices().dirs().getTestsDir()
         val testFilesOrDirectories = runConfig.pathsToInclude.map {
             testsDirectoryRoot.resolve(it.toString())
@@ -72,14 +69,6 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
                 testsDirectoryRoot = testsDirectoryRoot,
                 loadTestAtPath = { webProjectManager.getProjectServices().getTestsCache().getTestAtPath(it) }
         )
-        val testOrDirectoryPaths = testsMap.keys
-                .toList()
-                .map {
-                    Path.createInstance(
-                            testsDirectoryRoot.relativize(it).toString()
-                    )
-                }
-
         val executionId = testExecutionIdGenerator.nextId()
         val projectRootDir = ProjectDirHolder.get().toAbsolutePath().normalize()
 
@@ -92,7 +81,8 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
         testExecutionsById[executionId] = TestExecution(
                 executionId = executionId,
-                testOrDirectoryPathsToRun = testOrDirectoryPaths,
+                settings = runConfig.settings,
+                testOrDirectoryPathsToRun = runConfig.pathsToInclude,
                 projectRootDir = projectRootDir,
                 variablesEnvironment = currentEnvironment
         )
@@ -307,8 +297,18 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         }
 
         // settings
-        val settings: Map<String, String?> = settingsManager.getSettings()
+        val settings = mutableMapOf<String, String?>()
+
+        // add global settings
+        val defaultSettings = settingsManager.getSettings()
                 .associateBy({ it.definition.key }, { it.resolvedValue })
+        settings.putAll(defaultSettings)
+
+        // override settings from execution, if needed
+        for ((key, value) in execution.settings) {
+            settings[key] = value
+        }
+
         for (setting in settings) {
             if (setting.value == null) {
                 continue

@@ -6,9 +6,10 @@ import java.nio.file.Path as JavaPath
 
 open class TestExecution(val executionId: Long,
                          val testOrDirectoryPathsToRun: List<Path>,
+                         val settings: Map<String, String>,
                          val projectRootDir: JavaPath,
                          val variablesEnvironment: String?) {
 
-    fun toRunning(stopper: TestExecutionStopper) = RunningTestExecution(executionId, testOrDirectoryPathsToRun, projectRootDir, variablesEnvironment, stopper)
+    fun toRunning(stopper: TestExecutionStopper) = RunningTestExecution(executionId, testOrDirectoryPathsToRun, settings, projectRootDir, variablesEnvironment, stopper)
 
 }
