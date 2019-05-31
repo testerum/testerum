@@ -1,4 +1,4 @@
-<div>
+<div class="manual-runner-editor">
     <div *ngIf="model">
         <div class="page-body">
             <form #stepForm="ngForm" class="form-horizontal">
@@ -66,10 +66,11 @@
                             </td>
 
                             <!-- STATUS -->
-                            <td>
+                            <td class="step-status-cell">
                                 <manual-runner-step-status [(stepStatus)]="model.stepCalls[index].status"
                                                            [readonly]="isFinalized()"
-                                                           (stepStatusChange)="stepStatusChanged($event, index)"></manual-runner-step-status>
+                                                           (stepStatusChange)="stepStatusChanged($event, index)"
+                                                           class="step-status"></manual-runner-step-status>
                             </td>
                         </tr>
                     </ng-template>
