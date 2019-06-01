@@ -42,6 +42,7 @@
 
                         <dynamic-input [defaultValue]="setting.unresolvedValue"
                                        [value]="getValueForSetting(setting)"
+                                       [possibleValues]="setting.definition.enumValues"
                                        [inputType]="getDynamicInputType(setting.definition.type)"
                                        (valueChange)="onSettingChange($event, setting)"></dynamic-input>
 
