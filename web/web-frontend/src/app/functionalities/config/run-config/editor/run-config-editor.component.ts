@@ -70,7 +70,6 @@ export class RunConfigEditorComponent implements OnInit, OnDestroy {
             this.runnerConfig.settings.delete(setting.definition.key);
             return
         }
-        console.log("settingValue", settingValue);
 
         this.runnerConfig.settings.set(setting.definition.key, settingValue);
     }
