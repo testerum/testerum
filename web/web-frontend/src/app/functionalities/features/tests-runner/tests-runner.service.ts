@@ -1,7 +1,7 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {RunnerEvent} from "../../../model/test/event/runner.event";
 import {$WebSocket, WebSocketConfig, WebSocketSendMode} from "angular2-websocket/angular2-websocket";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {TestExecutionResponse} from "../../../model/runner/tree/test-execution-response.model";
 import {map} from "rxjs/operators";
 import {RunnerRootNode} from "../../../model/runner/tree/runner-root-node.model";
@@ -61,7 +61,14 @@ export class TestsRunnerService {
         this.lastRunConfig = runConfig;
         this.setRunnerVisibility(true);
 
-        this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, runConfig)
+        const bodyAsString = runConfig.serialize();
+
+        const headers = new HttpHeaders({
+            "Content-Type": "application/json",
+        });
+        const options = { headers: headers };
+
+        this.http.post(TestsRunnerService.URLS.REST_CREATE_TEST_EXECUTION, bodyAsString, options)
             .pipe(map(json => new TestExecutionResponse().deserialize(json)))
             .subscribe((testExecutionResponse: TestExecutionResponse) => {
                 this.startExecution(testExecutionResponse);
