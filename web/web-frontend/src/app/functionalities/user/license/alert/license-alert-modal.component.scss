@@ -28,5 +28,29 @@
                 font-weight: bold;
             }
         }
+
+        .info-text {
+            margin-top: 3em;
+            font-size: .9em;
+            text-align: left;
+        }
     }
+
+    .modal-footer {
+        display: grid;
+        grid-template-areas:
+            'footer-left-side footer-right-side';
+
+        .footer-left-side {
+            grid-area: footer-left-side;
+            justify-self: start;
+            align-self: center;
+        }
+
+        .footer-right-side {
+            grid-area: footer-right-side;
+        }
+    }
+
+
 }

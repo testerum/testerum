@@ -1,27 +1,38 @@
-.label-size {
-    width: 10em;
+.manual-runner-editor {
+    .label-size {
+        width: 10em;
+    }
+
+    .dropdown-item-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .dropdown-item-text {
+        margin-left: 5px;
+        font-weight: bold;
+    }
+
+    .steps-column-index {
+        width: 30px;
+    }
+
+    .steps-column-action {
+        width: 130px;
+    }
+
+    .steps-cell-input {
+        width: 100%;
+        align-self: center;
+    }
+
+    .step-status-cell {
+        padding: 0;
+
+        .step-status {
+            line-height: 30px;
+        }
+    }
 }
 
-.dropdown-item-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.dropdown-item-text {
-    margin-left: 5px;
-    font-weight: bold;
-}
-
-.steps-column-index {
-    width: 30px;
-}
-
-.steps-column-action {
-    width: 130px;
-}
-
-.steps-cell-input {
-    width: 100%;
-    align-self: center;
-}

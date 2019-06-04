@@ -14,6 +14,10 @@
         flex-direction: column;
         margin-top: 5em;
 
+        a:hover {
+            text-decoration: none;
+        }
+
         .logo {
             font-size: 5rem;
             align-self: center;
@@ -22,11 +26,19 @@
 
     .body {
         width: 50em;
+        text-align: center;
 
         .description {
             text-align: center;
             font-size: 2em;
             margin-bottom: 1em;
         }
+
+        .home-page-link-container {
+            margin-top: 2em;
+            .home-page-link {
+            }
+        }
+
     }
 }

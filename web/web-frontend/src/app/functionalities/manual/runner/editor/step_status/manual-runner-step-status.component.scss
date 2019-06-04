@@ -1,25 +1,28 @@
+.manual-runner-step-status {
+    .step-status {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        user-select: none;
+        cursor: pointer;
+        padding-left: .5em;
 
-.step-status {
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-    user-select: none;
-    cursor: pointer;
+        & > i {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+    }
+
+    .not-executed {
+        color: darkgrey;
+    }
+    .passed {
+        color: green;
+    }
+    .failed {
+        color: red;
+    }
 }
 
-.step-status > .fa {
-    font-size: 16px;
-    font-weight: bold;
-    margin-right: 5px;
-}
-
-.not-executed {
-    color: darkgrey;
-}
-.passed {
-    color: green;
-}
-.failed {
-    color: red;
-}
 

@@ -1,4 +1,4 @@
-<span (click)="changeStatus();$event.stopPropagation();">
+<span (click)="changeStatus();$event.stopPropagation();" class="manual-runner-step-status">
     <span *ngIf="stepStatus == ManualTestStepStatus.NOT_EXECUTED" class="step-status not-executed">
         <i class="fa_my-runner-executing-colored" aria-hidden="true"></i>
         <span>Not Executed</span>
