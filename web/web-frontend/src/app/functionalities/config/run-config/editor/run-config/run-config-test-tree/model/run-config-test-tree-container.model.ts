@@ -92,4 +92,32 @@ export class RunConfigTestTreeContainerModel extends RunConfigTestTreeBaseModel 
             this.parentContainer.calculateCheckState();
         }
     }
+
+    setSelected(isSelected: boolean) {
+        this.selected = isSelected;
+        this.status = this.status != RunConfigTestTreeNodeStatusEnum.SELECTED ? RunConfigTestTreeNodeStatusEnum.SELECTED : RunConfigTestTreeNodeStatusEnum.NOT_SELECTED ;
+
+        if(this.parentContainer instanceof RunConfigTestTreeContainerModel) {
+            this.parentContainer.calculateCheckState();
+        }
+
+        this.selectOrNotChildren(this);
+    }
+
+    private selectOrNotChildren(node: RunConfigTestTreeBaseModel) {
+        if (!(node instanceof RunConfigTestTreeContainerModel)) { return; }
+
+        let container: RunConfigTestTreeContainerModel = node as RunConfigTestTreeContainerModel;
+        container.status = this.status;
+        this.selected = !this.isSelected();
+
+        for (let child of container.children) {
+            if (child.isContainer()) {
+                this.selectOrNotChildren(child as RunConfigTestTreeBaseModel)
+            } else {
+                child.selected = this.status == RunConfigTestTreeNodeStatusEnum.SELECTED;
+                child.status = this.status;
+            }
+        }
+    }
 }
