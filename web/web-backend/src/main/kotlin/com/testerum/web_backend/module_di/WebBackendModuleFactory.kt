@@ -58,6 +58,7 @@ import com.testerum.web_backend.controllers.results.ResultsFileServerController
 import com.testerum.web_backend.controllers.runner.config.RunConfigController
 import com.testerum.web_backend.controllers.runner.execution.TestExecutionController
 import com.testerum.web_backend.controllers.runner.execution.TestsWebSocketController
+import com.testerum.web_backend.controllers.selenium_drivers.SeleniumDriversController
 import com.testerum.web_backend.controllers.settings.SettingsController
 import com.testerum.web_backend.controllers.steps.BasicStepController
 import com.testerum.web_backend.controllers.steps.ComposedStepsController
@@ -553,6 +554,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             userFrontendService = userFrontendService
     )
 
+    private val seleniumDriversController = SeleniumDriversController()
+
 
     //---------------------------------------- list of web controllers ----------------------------------------//
 
@@ -580,7 +583,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             rdbmsController,
             fileSystemController,
             manualExecPlansController,
-            userController
+            userController,
+            seleniumDriversController
     )
 
 

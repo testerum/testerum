@@ -7,6 +7,7 @@ enum class SettingType {
     TEXT,
     ENUM,
     FILESYSTEM_DIRECTORY,
+    SELENIUM_DRIVER
     ;
 
 }
