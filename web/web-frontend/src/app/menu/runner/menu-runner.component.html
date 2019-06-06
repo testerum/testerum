@@ -4,7 +4,7 @@
         [(ngModel)]="selectedItem"
         (onClick)="onRunnersDropDownClick()"
         (onChange)="onRunnerItemSelection()"
-        placeholder="{{hasNoRunnerConfig() ? 'Add Runner Configuration' : 'Select Runner Configuration'}}">
+        placeholder="{{hasNoRunnerConfig() ? 'Add Run Config' : 'Select Run Config'}}">
 
         <ng-template let-item pTemplate="selectedItem">
             <div class="item">
