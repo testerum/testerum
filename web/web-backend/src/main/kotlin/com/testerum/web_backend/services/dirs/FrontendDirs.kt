@@ -9,6 +9,8 @@ class FrontendDirs(private val testerumDirs: TesterumDirs) {
 
     fun getJdbcDriversDir(): JavaPath = testerumDirs.getJdbcDriversDir()
 
+    fun getSeleniumDriversDir(): JavaPath = testerumDirs.getSeleniumDriversDir()
+
     fun getTesterumDir(): JavaPath = testerumDirs.getTesterumDir()
 
     fun getRunConfigsDir(): JavaPath = getTesterumDir().resolve("run-configs")

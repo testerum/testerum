@@ -9,5 +9,15 @@ enum class SeleniumBrowserType {
     INTERNET_EXPLORER,
     SAFARI,
     REMOTE,
+    ;
 
+    companion object {
+        fun safeValueOf(name: String): SeleniumBrowserType? {
+            return try {
+                valueOf(name)
+            } catch (e: IllegalArgumentException) {
+                null
+            }
+        }
+    }
 }

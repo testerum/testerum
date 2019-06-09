@@ -17,6 +17,7 @@ import com.testerum.file_service.file.RecentProjectsFileService
 import com.testerum.file_service.file.ResourceFileService
 import com.testerum.file_service.file.ResultsFileService
 import com.testerum.file_service.file.RunConfigFileService
+import com.testerum.file_service.file.SeleniumDriversFileService
 import com.testerum.file_service.file.SettingsFileService
 import com.testerum.file_service.file.TestFileService
 import com.testerum.file_service.file.TesterumProjectFileService
@@ -180,6 +181,8 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
     val warningService = WarningService()
 
     private val trialFileService: TrialFileService = JavaPreferencesTrialFileService()
+
+    val seleniumDriversFileService = SeleniumDriversFileService()
 
 
     //---------------------------------------- business services -----------------------------------------------------//

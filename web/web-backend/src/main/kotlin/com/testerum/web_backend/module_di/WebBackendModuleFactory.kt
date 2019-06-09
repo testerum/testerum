@@ -448,7 +448,10 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             authTokenService = authTokenService
     )
 
-    private val seleniumDriversFrontendService = SeleniumDriversFrontendService()
+    private val seleniumDriversFrontendService = SeleniumDriversFrontendService(
+            seleniumDriversFileService = fileServiceModuleFactory.seleniumDriversFileService,
+            frontendDirs = frontendDirs
+    )
 
 
     //---------------------------------------- web controllers ----------------------------------------//

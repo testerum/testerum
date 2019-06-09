@@ -24,5 +24,6 @@ class TesterumDirs {
 
     fun getBasicStepsDir(): JavaPath = getInstallDir().resolve("basic_steps")
     fun getJdbcDriversDir(): JavaPath = getInstallDir().resolve("relational_database_drivers")
+    fun getSeleniumDriversDir(): JavaPath = getInstallDir().resolve("selenium-drivers")
 
 }
