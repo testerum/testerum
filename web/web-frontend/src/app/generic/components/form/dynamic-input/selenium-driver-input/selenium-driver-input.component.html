@@ -1,0 +1,25 @@
+<div class="selenium-driver-input">
+
+    <p-dropdown #connectionDropdown
+                [options]="browserSelectItems"
+                [(ngModel)]="selectedBrowser"
+                (onChange)="onSelectedBrowserChanged($event)"
+                class="browser-dropdown"
+                name="browser">
+
+        <ng-template let-item pTemplate="selectedItem">
+            <div class="item">
+                <i class="{{item.icon}}"></i>
+                <span class="item-label">{{item.label}}</span>
+            </div>
+        </ng-template>
+        <ng-template let-item pTemplate="item">
+            <div class="item">
+                <i class="{{item.icon}}"></i>
+                <span class="item-label">{{item.label}}</span>
+            </div>
+        </ng-template>
+
+    </p-dropdown>
+
+</div>

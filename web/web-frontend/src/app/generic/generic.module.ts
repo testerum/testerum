@@ -108,6 +108,8 @@ import {ToastModule} from "primeng/toast";
 import {ErrorFeedbackModalService} from "./error/report-modal/error-feedback-modal.service";
 import {ErrorFeedbackService} from "./error/report-modal/error-feedback.service";
 import { DynamicInputComponent } from './components/form/dynamic-input/dynamic-input.component';
+import { SeleniumDriverInputComponent } from './components/form/dynamic-input/selenium-driver-input/selenium-driver-input.component';
+import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-driver-input/selenium-drivers.service";
 
 @NgModule({
     imports: [
@@ -276,6 +278,7 @@ import { DynamicInputComponent } from './components/form/dynamic-input/dynamic-i
         FileDirTreeComponent,
         ServerNotAvailableModalComponent,
         DynamicInputComponent,
+        SeleniumDriverInputComponent,
     ],
     providers: [
         TreeService,
@@ -296,6 +299,7 @@ import { DynamicInputComponent } from './components/form/dynamic-input/dynamic-i
         InfoModalService,
         ArgModalService,
         ServerNotAvailableModalService,
+        SeleniumDriversService,
     ],
     entryComponents: [
         FeatureContainerComponent,

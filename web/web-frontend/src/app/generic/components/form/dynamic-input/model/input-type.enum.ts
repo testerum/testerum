@@ -8,4 +8,5 @@ export class InputTypeEnum {
     public static BOOLEAN: InputTypeEnum = new InputTypeEnum();
     public static ENUM: InputTypeEnum = new InputTypeEnum();
     public static FILESYSTEM_DIRECTORY: InputTypeEnum = new InputTypeEnum();
+    public static SELENIUM_DRIVER: InputTypeEnum = new InputTypeEnum();
 }

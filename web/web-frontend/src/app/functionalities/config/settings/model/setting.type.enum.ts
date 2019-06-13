@@ -6,5 +6,5 @@ export enum SettingType {
     TEXT,
     ENUM,
     FILESYSTEM_DIRECTORY,
-
+    SELENIUM_DRIVER,
 }

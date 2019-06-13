@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ViewChild, ViewEncapsulation} from '@angular/core';
 import {SettingsService} from "../../../service/settings.service";
 import {Setting} from "./model/setting.model";
 import {SettingType} from "./model/setting.type.enum";
@@ -10,6 +10,7 @@ import {SettingsUtil} from "./util/settings.util";
     selector: 'settings',
     templateUrl: 'settings-modal.component.html',
     styleUrls: ['settings-modal.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class SettingsModalComponent implements AfterViewInit {
 
@@ -94,5 +95,9 @@ export class SettingsModalComponent implements AfterViewInit {
         });
 
         this.saveAction();
+    }
+
+    isComposedSetting(settingType: SettingType): boolean {
+        return settingType == SettingType.SELENIUM_DRIVER;
     }
 }

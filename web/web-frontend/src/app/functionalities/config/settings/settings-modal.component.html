@@ -29,14 +29,32 @@
 
                         <div class="setting vertical-space"
                              *ngFor="let setting of settingsByCategory.get(settingCategory)">
-                            <div class="input-description-container">
-                                <div class="my-label">{{setting.definition.label? setting.definition.label : setting.definition.key}}</div>
-                                <info-icon [message]="setting.definition.description"></info-icon>
+
+                            <div *ngIf="!isComposedSetting(setting.definition.type)"
+                                 class="simple-setting">
+                                <div class="input-description-container">
+                                    <div class="my-label">{{setting.definition.label ? setting.definition.label : setting.definition.key}}</div>
+                                    <info-icon [message]="setting.definition.description"></info-icon>
+                                </div>
+
+                                <dynamic-input [(value)]="setting.unresolvedValue"
+                                               [inputType]="getDynamicInputType(setting.definition.type)"
+                                               [possibleValues]="setting.definition.enumValues"></dynamic-input>
                             </div>
 
-                            <dynamic-input [(value)]="setting.unresolvedValue"
-                                           [inputType]="getDynamicInputType(setting.definition.type)"
-                                           [possibleValues]="setting.definition.enumValues"></dynamic-input>
+                            <div *ngIf="isComposedSetting(setting.definition.type)"
+                                 class="composed-setting">
+
+                                <collapsable-panel [title]="setting.definition.label ? setting.definition.label : setting.definition.key"
+                                                   [heading]="2">
+
+                                    <dynamic-input [(value)]="setting.unresolvedValue"
+                                                   [inputType]="getDynamicInputType(setting.definition.type)"
+                                                   [possibleValues]="setting.definition.enumValues"></dynamic-input>
+
+                                </collapsable-panel>
+
+                            </div>
 
                             <div class="vertical-space"></div>
                         </div>

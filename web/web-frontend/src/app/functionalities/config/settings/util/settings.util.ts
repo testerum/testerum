@@ -51,6 +51,7 @@ export class SettingsUtil {
             case SettingType.NUMBER: return InputTypeEnum.POSITIVE_INTEGER;
             case SettingType.ENUM: return InputTypeEnum.ENUM;
             case SettingType.FILESYSTEM_DIRECTORY: return InputTypeEnum.FILESYSTEM_DIRECTORY;
+            case SettingType.SELENIUM_DRIVER: return InputTypeEnum.SELENIUM_DRIVER;
         }
     }
 }

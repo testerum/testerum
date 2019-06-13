@@ -41,4 +41,11 @@
         </span>
     </div>
 
+    <div *ngIf="inputType == InputTypeEnum.SELENIUM_DRIVER">
+        <selenium-driver-input [defaultValue]="defaultValue"
+                               [(value)]="value"
+                               (valueChange)="onValueChange()"
+        ></selenium-driver-input>
+    </div>
+
 </div>
