@@ -95,6 +95,7 @@ import com.testerum.web_backend.services.runner.config.RunConfigFrontendService
 import com.testerum.web_backend.services.runner.execution.TestsExecutionFrontendService
 import com.testerum.web_backend.services.runner.result.ResultsFrontendService
 import com.testerum.web_backend.services.save.SaveFrontendService
+import com.testerum.web_backend.services.selenium_drivers.SeleniumDriversFrontendService
 import com.testerum.web_backend.services.settings.SettingsFrontendService
 import com.testerum.web_backend.services.steps.BasicStepsFrontendService
 import com.testerum.web_backend.services.steps.ComposedStepUpdateCompatibilityFrontendService
@@ -447,6 +448,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             authTokenService = authTokenService
     )
 
+    private val seleniumDriversFrontendService = SeleniumDriversFrontendService()
+
+
     //---------------------------------------- web controllers ----------------------------------------//
 
     private val errorController = ErrorController(
@@ -554,7 +558,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             userFrontendService = userFrontendService
     )
 
-    private val seleniumDriversController = SeleniumDriversController()
+    private val seleniumDriversController = SeleniumDriversController(
+            seleniumDriversFrontendService = seleniumDriversFrontendService
+    )
 
 
     //---------------------------------------- list of web controllers ----------------------------------------//
