@@ -66,7 +66,7 @@ import java.nio.file.Path as JavaPath
             key = SETTING_KEY_DRIVER,
             label = "Browser",
             type = SettingType.SELENIUM_DRIVER,
-            defaultValue = """{"browserType": "CHROME", "driverExecutablePath": null, "headless": false, "driverVersion": "75.0.3770.8"}""",
+            defaultValue = """{"browserType": "CHROME", "browserExecutablePath": null, "headless": false, "driverVersion": "75.0.3770.8"}""",
             description = "The browser and selenium driver to use.",
             category = SETTINGS_CATEGORY
     )

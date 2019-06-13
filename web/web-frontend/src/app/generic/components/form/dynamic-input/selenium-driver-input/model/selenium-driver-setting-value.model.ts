@@ -4,13 +4,13 @@ import {JsonUtil} from "../../../../../../utils/json.util";
 
 export class SeleniumDriverSettingValue implements Serializable<SeleniumDriverSettingValue> {
     browserType: SeleniumBrowserType;
-    driverExecutablePath: string;
+    browserExecutablePath: string;
     headless: boolean;
     driverVersion: string;
 
     deserialize(input: Object): SeleniumDriverSettingValue {
         this.browserType = SeleniumBrowserType.fromSerialization(input["browserType"]);
-        this.driverExecutablePath = input["driverExecutablePath"];
+        this.browserExecutablePath = input["browserExecutablePath"];
         this.headless = input["headless"];
         this.driverVersion = input["driverVersion"];
 
@@ -21,7 +21,7 @@ export class SeleniumDriverSettingValue implements Serializable<SeleniumDriverSe
         return "" +
             '{' +
             '"browserType":' + this.browserType ? this.browserType.asSerialized : "null" +
-            ',"driverExecutablePath":' + JsonUtil.stringify(this.driverExecutablePath) +
+            ',"browserExecutablePath":' + JsonUtil.stringify(this.browserExecutablePath) +
             ',"headless":' + JsonUtil.stringify(this.headless) +
             ',"driverVersion":' + JsonUtil.stringify(this.driverVersion) +
             '}'
