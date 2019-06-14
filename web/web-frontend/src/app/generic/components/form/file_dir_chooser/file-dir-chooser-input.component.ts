@@ -19,7 +19,8 @@ export class FileDirChooserInputComponent implements ControlValueAccessor {
     validateFn:any = () => {};
 
     value: string;
-    @Input() disabled = false;
+    @Input() disabled: boolean = false;
+    @Input() showFiles: boolean = false;
     @ViewChild(FileDirChooserModalComponent) directoryChooserDialogComponent: FileDirChooserModalComponent;
 
     constructor(private directoryChooserDialogService: FileDirChooserModalService) {
@@ -52,7 +53,7 @@ export class FileDirChooserInputComponent implements ControlValueAccessor {
 
     public showDirectoryChooserModal() {
         if (!this.disabled) {
-            this.directoryChooserDialogService.showDirectoryChooserDialogModal().subscribe( (selectedPath: string) => {
+            this.directoryChooserDialogService.showDirectoryChooserDialogModal(this.showFiles).subscribe( (selectedPath: string) => {
                 this.value = selectedPath;
                 this.propagateChange(selectedPath);
             });

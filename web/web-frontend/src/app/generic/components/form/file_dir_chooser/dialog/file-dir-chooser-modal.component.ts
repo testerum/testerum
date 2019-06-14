@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {FileDirChooserModalService} from "./file-dir-chooser-modal.service";
 import {FileDirTreeComponent} from "../file-dir-tree/file-dir-tree.component";
@@ -16,6 +16,8 @@ import {FileDirTreeContainerModel} from "../file-dir-tree/model/file-dir-tree-co
     styleUrls: ['file-dir-chooser-modal.component.scss']
 })
 export class FileDirChooserModalComponent implements OnInit, AfterViewInit, OnDestroy {
+
+    @Input() showFiles: boolean;
 
     @ViewChild(FileDirTreeComponent) fileDirTreeComponent: FileDirTreeComponent;
 

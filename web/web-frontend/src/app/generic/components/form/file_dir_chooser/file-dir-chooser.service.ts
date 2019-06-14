@@ -9,6 +9,8 @@ import {Observable, Subject} from "rxjs";
 @Injectable()
 export class FileDirChooserService {
 
+    showFiles: boolean = false;
+
     constructor(private fileSystemService: FileSystemService,
                 private jsonTreeService: JsonTreeService){
         jsonTreeService.expendedNodeEmitter.subscribe(
@@ -18,10 +20,10 @@ export class FileDirChooserService {
         );
     }
 
-    public initializeDirectoryTreeFromServer(): Observable<JsonTreeModel> {
+    public initializeDirectoryTreeFromServer(showFiles: boolean): Observable<JsonTreeModel> {
         let responseSubject: Subject<JsonTreeModel> = new Subject<JsonTreeModel>();
 
-        this.fileSystemService.getDirectoryTree("").subscribe(
+        this.fileSystemService.getDirectoryTree("", showFiles).subscribe(
             (fileDirNode: FileDirTreeContainerModel) => {
 
                 let fileDirectoryChooserJsonTreeModel: JsonTreeModel = new JsonTreeModel();
@@ -49,7 +51,7 @@ export class FileDirChooserService {
     private onFileDirectoryChooserNodeExpanded(nodeEvent: JsonTreeNodeEventModel) {
         let fileDirectoryNode = nodeEvent.treeNode as FileDirTreeContainerModel;
         if(fileDirectoryNode.hasChildren() && fileDirectoryNode.getChildren().length == 0) {
-            this.fileSystemService.getDirectoryTree(fileDirectoryNode.absoluteJavaPath).subscribe(
+            this.fileSystemService.getDirectoryTree(fileDirectoryNode.absoluteJavaPath, this.showFiles).subscribe(
                 (fileDirNode: FileDirTreeContainerModel) => {
                     for (let child of fileDirNode.getChildren()) {
                         child.parent = fileDirectoryNode;

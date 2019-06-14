@@ -10,11 +10,13 @@ export class FileDirChooserModalService {
     private modalComponent: FileDirChooserModalComponent;
     private modalSubject: Subject<string>;
 
-    showDirectoryChooserDialogModal(): Observable<string> {
+    showDirectoryChooserDialogModal(showFiles: boolean = false): Observable<string> {
 
         const factory = AppComponent.componentFactoryResolver.resolveComponentFactory(FileDirChooserModalComponent);
         let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
         modalComponentRef.instance.directoryChooserDialogService = this;
+
+        modalComponentRef.instance.showFiles = showFiles;
 
         this.modalComponentRef = modalComponentRef;
         this.modalComponent = modalComponentRef.instance;

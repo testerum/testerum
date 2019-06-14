@@ -38,7 +38,7 @@
 
         <div [class.hidden]="!customInstallation" class="custom-installation-settings">
             <label class="installation-path-label">path:</label>
-            <file-dir-chooser [(ngModel)]="deserializedValue.browserExecutablePath"></file-dir-chooser>
+            <file-dir-chooser [(ngModel)]="deserializedValue.browserExecutablePath" [showFiles]="true"></file-dir-chooser>
         </div>
     </div>
 

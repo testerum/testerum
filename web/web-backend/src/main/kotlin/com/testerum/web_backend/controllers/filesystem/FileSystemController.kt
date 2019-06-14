@@ -12,7 +12,7 @@ class FileSystemController(private val fileSystemFrontendService: FileSystemFron
 
     @RequestMapping(method = [RequestMethod.GET], path = ["/directory_tree"])
     @ResponseBody
-    fun getDirectoryTree(@RequestParam(value = "path") pathAsString:String): FileSystemDirectory {
+    fun getDirectoryTree(@RequestParam(value = "path") pathAsString:String, @RequestParam(value = "showFiles") showFiles:Boolean): FileSystemDirectory {
         return fileSystemFrontendService.getDirectoryTree(pathAsString)
     }
 

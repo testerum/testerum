@@ -16,10 +16,11 @@ export class FileSystemService {
     constructor(private http: HttpClient) {
     }
 
-    getDirectoryTree(absoluteJavaPathAsString: string): Observable<FileDirTreeContainerModel> {
+    getDirectoryTree(absoluteJavaPathAsString: string, showFiles: boolean = false): Observable<FileDirTreeContainerModel> {
         const httpOptions = {
             params: new HttpParams()
                 .append('path', absoluteJavaPathAsString)
+                .append('showFiles', ""+showFiles)
         };
 
         return this.http
