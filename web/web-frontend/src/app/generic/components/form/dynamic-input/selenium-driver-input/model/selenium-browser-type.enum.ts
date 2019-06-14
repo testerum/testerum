@@ -39,6 +39,8 @@ export class SeleniumBrowserType extends Enum {
     }
 
     public static fromSerialization(asSerialized: string): SeleniumBrowserType {
+        if(!asSerialized) return null;
+
         for (let enumValue of SeleniumBrowserType.enums) {
             if(enumValue.asSerialized.toUpperCase() == asSerialized.toUpperCase()) {
                 return enumValue;

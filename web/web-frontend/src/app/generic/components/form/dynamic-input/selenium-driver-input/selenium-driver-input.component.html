@@ -1,25 +1,52 @@
 <div class="selenium-driver-input">
 
-    <p-dropdown #connectionDropdown
-                [options]="browserSelectItems"
-                [(ngModel)]="selectedBrowser"
-                (onChange)="onSelectedBrowserChanged($event)"
-                class="browser-dropdown"
-                name="browser">
+    <div class="my-selenium-driver-setting-line">
+        <p-dropdown [options]="browserSelectItems"
+                    [(ngModel)]="selectedBrowser"
+                    (onChange)="onSelectedBrowserChanged($event)"
+                    class="browser-dropdown"
+                    name="browser">
 
-        <ng-template let-item pTemplate="selectedItem">
-            <div class="item">
-                <i class="{{item.icon}}"></i>
-                <span class="item-label">{{item.label}}</span>
-            </div>
-        </ng-template>
-        <ng-template let-item pTemplate="item">
-            <div class="item">
-                <i class="{{item.icon}}"></i>
-                <span class="item-label">{{item.label}}</span>
-            </div>
-        </ng-template>
+            <ng-template let-item pTemplate="selectedItem">
+                <div class="item">
+                    <i class="{{item.icon}}"></i>
+                    <span class="item-label">{{item.label}}</span>
+                </div>
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+                <div class="item">
+                    <i class="{{item.icon}}"></i>
+                    <span class="item-label">{{item.label}}</span>
+                </div>
+            </ng-template>
+        </p-dropdown>
+    </div>
 
-    </p-dropdown>
+    <div class="my-selenium-driver-setting-line">
+        <label class="my-selenium-driver-setting-label">version:</label>
+        <div class="my-selenium-driver-setting-value">
+            <p-dropdown [options]="driverSelectItems"
+                        [(ngModel)]="selectedDriver"
+                        (onChange)="onSelectedBrowserVersionChanged($event)">
+            </p-dropdown>
+        </div>
+    </div>
 
+    <div class="my-selenium-driver-setting-line">
+        <p-inputSwitch [(ngModel)]="customInstallation"></p-inputSwitch>
+        <div class="installation-value">{{customInstallation ? "use custom installation" : "use system installation"}}</div>
+
+        <div [class.hidden]="!customInstallation" class="custom-installation-settings">
+            <label class="installation-path-label">path:</label>
+            <file-dir-chooser [(ngModel)]="deserializedValue.browserExecutablePath"></file-dir-chooser>
+        </div>
+    </div>
+
+    <div *ngIf="supportsHeadlessSetting()" class="my-selenium-driver-setting-line">
+        <label class="my-selenium-driver-setting-label">headless:</label>
+        <div class="my-selenium-driver-setting-value">
+            <p-inputSwitch [(ngModel)]="deserializedValue.headless"></p-inputSwitch>
+            <div class="headless-as-string">{{deserializedValue.headless}}</div>
+        </div>
+    </div>
 </div>

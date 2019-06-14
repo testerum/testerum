@@ -23,17 +23,23 @@ export class SeleniumDriverInputComponent implements OnInit {
 
     driversInfoMap: Map<SeleniumBrowserType, SeleniumDriverInfo[]> = new Map<SeleniumBrowserType, SeleniumDriverInfo[]>();
     browserSelectItems: SelectItem[] = [];
-    selectedBrowser: SelectItem;
+    selectedBrowser: string;
+
+    driverSelectItems: SelectItem[] = [];
+    selectedDriver: string;
+
+    customInstallation: boolean = false;
 
     constructor(private seleniumDriversService: SeleniumDriversService) {
     }
 
     ngOnInit() {
-        this.deserializedDefaultValue = this.defaultValue ? new SeleniumDriverSettingValue().deserialize(JSON.parse(this.defaultValue)) : null;
-        this.deserializedValue = this.value ? new SeleniumDriverSettingValue().deserialize(JSON.parse(this.value)) : null;
+        this.deserializedDefaultValue = this.defaultValue ? new SeleniumDriverSettingValue().deserialize(JSON.parse(this.defaultValue)) : new SeleniumDriverSettingValue();
+        this.deserializedValue = this.value ? new SeleniumDriverSettingValue().deserialize(JSON.parse(this.value)) : new SeleniumDriverSettingValue();
 
-        let selectedBrowserAsSerialized: string = this.deserializedValue ? this.deserializedValue.browserType.asSerialized : this.deserializedDefaultValue.browserType.asSerialized;
+        this.initInstallationSettings();
 
+        let selectedBrowserAsSerialized: string = this.deserializedValue.browserType ? this.deserializedValue.browserType.asSerialized : this.deserializedDefaultValue.browserType.asSerialized;
         this.seleniumDriversService.getDriversInfo().subscribe((driversInfoMap: Map<SeleniumBrowserType, SeleniumDriverInfo[]>) => {
             this.driversInfoMap = driversInfoMap;
 
@@ -51,13 +57,71 @@ export class SeleniumDriverInputComponent implements OnInit {
                 );
 
                 if (stringSelectItem.value == selectedBrowserAsSerialized) {
-                    this.selectedBrowser = stringSelectItem;
+                    this.selectedBrowser = stringSelectItem.value;
+                    this.initDriverSelectedItems(key);
                 }
             });
             this.browserSelectItems = browsersSelectedItems;
         });
     }
 
+    private initDriverSelectedItems(selectedSeleniumBrowserType: SeleniumBrowserType) {
+        let seleniumDriverInfos: SeleniumDriverInfo[] = this.driversInfoMap.get(selectedSeleniumBrowserType);
+
+        let selectedDriverVersion = this.deserializedValue.driverVersion ? this.deserializedValue.driverVersion : this.deserializedDefaultValue.driverVersion;
+
+        let driverSelectItems: SelectItem[] = [];
+        for (const seleniumDriverInfo of seleniumDriverInfos) {
+            let itemLabel = this.getSeleniumDriverLabel(seleniumDriverInfo);
+
+
+            let driverSelectItem = new StringSelectItem(
+                itemLabel,
+                seleniumDriverInfo.driverVersion
+            );
+
+            driverSelectItems.push(driverSelectItem);
+
+            if (selectedDriverVersion == seleniumDriverInfo.driverVersion) {
+                this.selectedDriver = driverSelectItem.value;
+            }
+        }
+        this.driverSelectItems = driverSelectItems;
+    }
+
+    private getSeleniumDriverLabel(seleniumDriverInfo: SeleniumDriverInfo): string {
+        let result = "[";
+        for (let i = 0; i < seleniumDriverInfo.browserVersions.length; i++) {
+            if(i > 0) {result += " ,"}
+            const browserVersion = seleniumDriverInfo.browserVersions[i];
+            result +=browserVersion;
+        }
+        result += "] - Selenium driver: " + seleniumDriverInfo.driverVersion;
+
+        return result;
+    }
+
+    private initInstallationSettings() {
+        let installationPath: string = this.deserializedValue.browserExecutablePath ? this.deserializedValue.browserExecutablePath : null;
+        this.customInstallation = installationPath != null;
+    }
+
     onSelectedBrowserChanged(seleniumBrowser: SelectItem) {
+        let seleniumBrowserType = SeleniumBrowserType.fromSerialization(seleniumBrowser.value);
+        this.initDriverSelectedItems(seleniumBrowserType);
+    }
+
+    onSelectedBrowserVersionChanged(selectedBrowserVersion: SelectItem) {
+
+    }
+
+    supportsHeadlessSetting(): boolean {
+        if(!this.selectedBrowser) return false;
+
+        let seleniumBrowserType = SeleniumBrowserType.fromSerialization(this.selectedBrowser);
+        if (seleniumBrowserType == SeleniumBrowserType.CHROME || seleniumBrowserType == SeleniumBrowserType.FIREFOX) {
+            return true;
+        }
+        return false;
     }
 }

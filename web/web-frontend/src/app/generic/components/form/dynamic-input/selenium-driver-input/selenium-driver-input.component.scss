@@ -6,4 +6,41 @@
             }
         }
     }
+
+    .my-selenium-driver-setting-line {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 10px 0;
+
+        .my-selenium-driver-setting-label {
+            margin-bottom: 0;
+            width: 5em;
+        }
+        .my-selenium-driver-setting-value {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .installation-value {
+            margin-left: .5em;
+            font-size: 1.2em;
+        }
+
+        .custom-installation-settings {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            .installation-path-label {
+                margin: 0 1em;
+            }
+        }
+
+        .headless-as-string {
+            margin-left: .5em;
+            font-size: 1.2em;
+        }
+    }
 }
