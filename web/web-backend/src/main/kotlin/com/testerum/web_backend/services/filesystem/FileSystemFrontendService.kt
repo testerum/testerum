@@ -1,10 +1,17 @@
 package com.testerum.web_backend.services.filesystem
 
 import com.testerum.common_jdk.toStringWithStacktrace
-import com.testerum.common_kotlin.*
+import com.testerum.common_kotlin.canCreateChild
+import com.testerum.common_kotlin.doesNotExist
+import com.testerum.common_kotlin.exists
+import com.testerum.common_kotlin.hasSubDirectories
+import com.testerum.common_kotlin.isDirectory
+import com.testerum.common_kotlin.isRegularFile
 import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.model.config.dir_tree.CreateFileSystemDirectoryRequest
 import com.testerum.model.config.dir_tree.FileSystemDirectory
+import com.testerum.model.config.dir_tree.FileSystemEntry
+import com.testerum.model.config.dir_tree.FileSystemFile
 import com.testerum.model.exception.ValidationException
 import com.testerum.model.exception.model.ValidationModel
 import com.testerum.model.infrastructure.path.PathInfo
@@ -20,14 +27,20 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
 
     companion object {
         private val LOG = LoggerFactory.getLogger(FileSystemFrontendService::class.java)
+
+        private val FS_ENTRIES_COMPARATOR: Comparator<FileSystemEntry> = compareBy<FileSystemEntry>(
+                { if (it is FileSystemDirectory) 0 else 1 }, // directories before files
+                { it.name.toLowerCase() }
+        )
     }
 
-    fun getDirectoryTree(pathAsString: String): FileSystemDirectory {
+    fun getDirectoryTree(pathAsString: String, showFiles:Boolean): FileSystemDirectory {
         return if (pathAsString == "") {
-            getRoot()
+            getRoot(showFiles)
         } else {
             getSub(
-                    Paths.get(pathAsString)
+                    Paths.get(pathAsString),
+                    showFiles
             )
         }
     }
@@ -65,8 +78,8 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
         )
     }
 
-    private fun getRoot() : FileSystemDirectory {
-        val rootDirectories = getRootDirectories().sortedBy { it.toString() }
+    private fun getRoot(showFiles:Boolean) : FileSystemDirectory {
+        val rootDirectories = getRootDirectories(showFiles).sortedBy { it.toString() }
 
         return FileSystemDirectory(
                 name = "",
@@ -78,12 +91,12 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
         )
     }
 
-    private fun getRootDirectories(): List<FileSystemDirectory> {
-        return FileSystems.getDefault().rootDirectories.map { getSub(it) }
+    private fun getRootDirectories(showFiles:Boolean): List<FileSystemDirectory> {
+        return FileSystems.getDefault().rootDirectories.map { getSub(it, showFiles) }
     }
 
-    private fun getSub(dir: JavaPath): FileSystemDirectory {
-        val childrenDirectories = getSubDirectories(dir).sortedBy { it.toString() }
+    private fun getSub(dir: JavaPath, showFiles:Boolean): FileSystemDirectory {
+        val childrenDirectories = getSubDirectoriesOrFiles(dir, showFiles).sortedWith(FS_ENTRIES_COMPARATOR)
 
         return FileSystemDirectory(
                 name = dir.fileName?.toString() ?: dir.toString(),
@@ -95,8 +108,8 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
         )
     }
 
-    private fun getSubDirectories(dir: JavaPath): List<FileSystemDirectory> {
-        val result = mutableListOf<FileSystemDirectory>()
+    private fun getSubDirectoriesOrFiles(dir: JavaPath, showFiles:Boolean): List<FileSystemEntry> {
+        val result = mutableListOf<FileSystemEntry>()
 
         dir.listSafely().use { pathStream ->
             pathStream.forEach { path ->
@@ -107,6 +120,11 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
                             isProject = testerumProjectFileService.isTesterumProject(path),
                             canCreateChild = path.canCreateChild,
                             hasChildrenDirectories = path.hasSubDirectories
+                    )
+                } else if (path.isRegularFile && showFiles) {
+                    result += FileSystemFile(
+                            name = path.fileName.toString(),
+                            absoluteJavaPath = path.toAbsolutePath().normalize().toString()
                     )
                 }
             }
@@ -138,8 +156,7 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
             )
         }
 
-        val pathExists = path.exists;
-        if (!pathExists) {
+        if (!path.exists) {
             return PathInfo(
                     pathAsString,
                     isValidPath = true,
