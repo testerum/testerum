@@ -15,7 +15,6 @@ import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.webdriver_factory.chrome.ChromeWebDriverFactory
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTINGS_CATEGORY
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_AFTER_STEP_DELAY_MILLIS
-import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_DRIVER
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP
@@ -29,6 +28,14 @@ import java.nio.file.Path as JavaPath
 
 @ThreadSafe
 @DeclareSettings([
+    DeclareSetting(
+            key = WebDriverManager.SETTING_KEY_DRIVER,
+            label = "Browser",
+            type = SettingType.SELENIUM_DRIVER,
+            defaultValue = """{"browserType": "CHROME", "browserExecutablePath": null, "headless": false, "driverVersion": "75.0.3770.8"}""",
+            description = "The browser and selenium driver to use.",
+            category = SETTINGS_CATEGORY
+    ),
     DeclareSetting(
             key = SETTING_KEY_WAIT_TIMEOUT_MILLIS,
             label = "Wait timeout (millis)",
@@ -60,14 +67,6 @@ import java.nio.file.Path as JavaPath
             type = SettingType.BOOLEAN,
             defaultValue = "false",
             description = """Should take a screenshot after each Selenium Test. Possible values: "true", "false"""",
-            category = SETTINGS_CATEGORY
-    ),
-    DeclareSetting(
-            key = SETTING_KEY_DRIVER,
-            label = "Browser",
-            type = SettingType.SELENIUM_DRIVER,
-            defaultValue = """{"browserType": "CHROME", "browserExecutablePath": null, "headless": false, "driverVersion": "75.0.3770.8"}""",
-            description = "The browser and selenium driver to use.",
             category = SETTINGS_CATEGORY
     )
 ])
