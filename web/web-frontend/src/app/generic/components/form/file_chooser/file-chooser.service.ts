@@ -1,13 +1,14 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {JsonTreeModel} from "../../json-tree/model/json-tree.model";
 import {FileSystemService} from "../../../../service/file-system.service";
-import {FileDirTreeContainerModel} from "./file-dir-tree/model/file-dir-tree-container.model";
+import {FileTreeContainer} from "./file-tree/model/file-tree.container";
 import {JsonTreeService} from "../../json-tree/json-tree.service";
 import {JsonTreeNodeEventModel} from "../../json-tree/event/selected-json-tree-node-event.model";
 import {Observable, Subject} from "rxjs";
+import {FileTreeNode} from "./file-tree/model/file-tree-node.model";
 
 @Injectable()
-export class FileDirChooserService {
+export class FileChooserService {
 
     showFiles: boolean = false;
 
@@ -24,20 +25,22 @@ export class FileDirChooserService {
         let responseSubject: Subject<JsonTreeModel> = new Subject<JsonTreeModel>();
 
         this.fileSystemService.getDirectoryTree("", showFiles).subscribe(
-            (fileDirNode: FileDirTreeContainerModel) => {
+            (fileDirNode: FileTreeContainer) => {
 
                 let fileDirectoryChooserJsonTreeModel: JsonTreeModel = new JsonTreeModel();
 
                 for (let child of fileDirNode.getChildren()) {
-                    child.parent = fileDirectoryChooserJsonTreeModel;
+                    child.parentContainer = fileDirectoryChooserJsonTreeModel;
 
                     fileDirectoryChooserJsonTreeModel.children.push(
                         child
                     )
                 }
 
-                fileDirectoryChooserJsonTreeModel.getChildren().forEach((child: FileDirTreeContainerModel) => {
-                    child.getNodeState().showChildren = true;
+                fileDirectoryChooserJsonTreeModel.getChildren().forEach((child: FileTreeNode) => {
+                    if (child instanceof FileTreeContainer) {
+                        child.getNodeState().showChildren = true;
+                    }
                 });
 
                 responseSubject.next(
@@ -49,12 +52,12 @@ export class FileDirChooserService {
     }
 
     private onFileDirectoryChooserNodeExpanded(nodeEvent: JsonTreeNodeEventModel) {
-        let fileDirectoryNode = nodeEvent.treeNode as FileDirTreeContainerModel;
+        let fileDirectoryNode = nodeEvent.treeNode as FileTreeContainer;
         if(fileDirectoryNode.hasChildren() && fileDirectoryNode.getChildren().length == 0) {
             this.fileSystemService.getDirectoryTree(fileDirectoryNode.absoluteJavaPath, this.showFiles).subscribe(
-                (fileDirNode: FileDirTreeContainerModel) => {
+                (fileDirNode: FileTreeContainer) => {
                     for (let child of fileDirNode.getChildren()) {
-                        child.parent = fileDirectoryNode;
+                        child.parentContainer = fileDirectoryNode;
                         fileDirectoryNode.getChildren().push(
                             child
                         )

@@ -6,7 +6,7 @@ import {ContextService} from "../../service/context.service";
 import {Home} from "../../model/home/home.model";
 import {ArrayUtil} from "../../utils/array.util";
 import {CreateProjectService} from "./create-project/create-project.service";
-import {FileDirChooserModalService} from "../../generic/components/form/file_dir_chooser/dialog/file-dir-chooser-modal.service";
+import {FileChooserModalService} from "../../generic/components/form/file_chooser/dialog/file-chooser-modal.service";
 import {ProjectService} from "../../service/project.service";
 import {UrlService} from "../../service/url.service";
 import {AreYouSureModalService} from "../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 private projectService: ProjectService,
                 private contextService: ContextService,
                 private createProjectService: CreateProjectService,
-                private fileDirChooserModalService: FileDirChooserModalService,
+                private fileDirChooserModalService: FileChooserModalService,
                 private areYouSureModalService: AreYouSureModalService,
                 private urlService: UrlService) {
     }

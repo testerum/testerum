@@ -35,10 +35,10 @@ import {TestNodeComponent} from "../functionalities/features/features-tree/conta
 import {CollapsablePanelComponent} from "./components/panels/collapsable-panel/collapsable-panel.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {IsNumberValidatorDirective} from "./validators/is-number-validator.directive";
-import {FileDirChooserService} from "./components/form/file_dir_chooser/file-dir-chooser.service";
-import {FileDirTreeContainerComponent} from "./components/form/file_dir_chooser/file-dir-tree/nodes/container/file-dir-tree-container.component";
-import {FileDirChooserInputComponent} from "./components/form/file_dir_chooser/file-dir-chooser-input.component";
-import {FileDirChooserModalComponent} from "./components/form/file_dir_chooser/dialog/file-dir-chooser-modal.component";
+import {FileChooserService} from "./components/form/file_chooser/file-chooser.service";
+import {FileTreeContainerComponent} from "./components/form/file_chooser/file-tree/nodes/container/file-tree-container.component";
+import {FileChooserInputComponent} from "./components/form/file_chooser/file-chooser-input.component";
+import {FileChooserModalComponent} from "./components/form/file_chooser/dialog/file-chooser-modal.component";
 import {SafeHtmlPipe} from "./pipes/safe-html.pipe";
 import {ChartModule} from "primeng/chart";
 import {ExecutionPieComponent} from "./components/charts/execution-pie/execution-pie.component";
@@ -95,9 +95,9 @@ import {LogoComponent} from './components/logo/logo.component';
 import {InfoModalService} from "./components/info_modal/info-modal.service";
 import {InfoIconComponent} from './components/info-icon/info-icon.component';
 import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
-import {FileDirChooserModalService} from "./components/form/file_dir_chooser/dialog/file-dir-chooser-modal.service";
+import {FileChooserModalService} from "./components/form/file_chooser/dialog/file-chooser-modal.service";
 import {UrlNameValidatorDirective} from "./validators/url-name-validator.directive";
-import { FileDirTreeComponent } from './components/form/file_dir_chooser/file-dir-tree/file-dir-tree.component';
+import { FileTreeComponent } from './components/form/file_chooser/file-tree/file-tree.component';
 import {MarkdownModule} from 'ngx-markdown';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { ServerNotAvailableModalComponent } from './error/server-not-available/server-not-available-modal.component'
@@ -110,6 +110,7 @@ import {ErrorFeedbackService} from "./error/report-modal/error-feedback.service"
 import { DynamicInputComponent } from './components/form/dynamic-input/dynamic-input.component';
 import { SeleniumDriverInputComponent } from './components/form/dynamic-input/selenium-driver-input/selenium-driver-input.component';
 import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-driver-input/selenium-drivers.service";
+import {FileTreeNodeComponent} from "./components/form/file_chooser/file-tree/nodes/node/file-tree-node.component";
 
 @NgModule({
     imports: [
@@ -178,7 +179,7 @@ import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-d
         UrlNameValidatorDirective,
         IsNotBlankValidatorDirective,
 
-        FileDirChooserInputComponent,
+        FileChooserInputComponent,
 
         ExecutionPieComponent,
 
@@ -235,9 +236,10 @@ import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-d
         UrlNameValidatorDirective,
         IsNotBlankValidatorDirective,
 
-        FileDirChooserInputComponent,
-        FileDirTreeContainerComponent,
-        FileDirChooserModalComponent,
+        FileChooserInputComponent,
+        FileTreeContainerComponent,
+        FileTreeNodeComponent,
+        FileChooserModalComponent,
 
         ExecutionPieComponent,
 
@@ -275,7 +277,7 @@ import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-d
         JsonEmptyVerifyNodeComponent,
         LogoComponent,
         InfoIconComponent,
-        FileDirTreeComponent,
+        FileTreeComponent,
         ServerNotAvailableModalComponent,
         DynamicInputComponent,
         SeleniumDriverInputComponent,
@@ -284,8 +286,8 @@ import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-d
         TreeService,
         JsonTreeService,
         StepChooserService,
-        FileDirChooserService,
-        FileDirChooserModalService,
+        FileChooserService,
+        FileChooserModalService,
         ExecutionPieService,
         PathChooserService,
         StepModalService,
@@ -315,7 +317,8 @@ import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-d
         ArgNodeComponent,
         PathChooserContainerComponent,
         PathChooserNodeComponent,
-        FileDirChooserModalComponent,
+        FileChooserModalComponent,
+        FileTreeNodeComponent,
 
         JsonContainerNodeComponent,
         JsonLeafNodeComponent,

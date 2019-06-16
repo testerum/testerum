@@ -1,18 +1,18 @@
 import {ComponentRef, Injectable} from "@angular/core";
 import {Observable, Subject} from "rxjs";
-import {FileDirChooserModalComponent} from "./file-dir-chooser-modal.component";
+import {FileChooserModalComponent} from "./file-chooser-modal.component";
 import {AppComponent} from "../../../../../app.component";
 
 @Injectable()
-export class FileDirChooserModalService {
+export class FileChooserModalService {
 
-    private modalComponentRef: ComponentRef<FileDirChooserModalComponent>;
-    private modalComponent: FileDirChooserModalComponent;
+    private modalComponentRef: ComponentRef<FileChooserModalComponent>;
+    private modalComponent: FileChooserModalComponent;
     private modalSubject: Subject<string>;
 
     showDirectoryChooserDialogModal(showFiles: boolean = false): Observable<string> {
 
-        const factory = AppComponent.componentFactoryResolver.resolveComponentFactory(FileDirChooserModalComponent);
+        const factory = AppComponent.componentFactoryResolver.resolveComponentFactory(FileChooserModalComponent);
         let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
         modalComponentRef.instance.directoryChooserDialogService = this;
 

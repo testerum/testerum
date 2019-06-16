@@ -1,28 +1,29 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {FileDirChooserModalService} from "./file-dir-chooser-modal.service";
-import {FileDirTreeComponent} from "../file-dir-tree/file-dir-tree.component";
+import {FileChooserModalService} from "./file-chooser-modal.service";
+import {FileTreeComponent} from "../file-tree/file-tree.component";
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
 import {JsonTreeNodeEventModel} from "../../../json-tree/event/selected-json-tree-node-event.model";
 import {Subscription} from "rxjs";
 import {FileSystemService} from "../../../../../service/file-system.service";
 import {PathInfo} from "../../../../../model/infrastructure/path/path-info.model";
-import {FileDirTreeContainerModel} from "../file-dir-tree/model/file-dir-tree-container.model";
+import {FileTreeContainer} from "../file-tree/model/file-tree.container";
+import {FileTreeComponentService} from "../file-tree/file-tree.component-service";
 
 @Component({
     moduleId: module.id,
     selector: 'file-dir-chooser-modal',
-    templateUrl: 'file-dir-chooser-modal.component.html',
-    styleUrls: ['file-dir-chooser-modal.component.scss']
+    templateUrl: 'file-chooser-modal.component.html',
+    styleUrls: ['file-chooser-modal.component.scss']
 })
-export class FileDirChooserModalComponent implements OnInit, AfterViewInit, OnDestroy {
+export class FileChooserModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @Input() showFiles: boolean;
 
-    @ViewChild(FileDirTreeComponent) fileDirTreeComponent: FileDirTreeComponent;
+    @ViewChild(FileTreeComponent) fileTreeComponent: FileTreeComponent;
 
     @ViewChild("infoModal") modal: ModalDirective;
-    directoryChooserDialogService: FileDirChooserModalService;
+    directoryChooserDialogService: FileChooserModalService;
 
     isTesterumProjectChooser: boolean = false;
 
@@ -37,7 +38,7 @@ export class FileDirChooserModalComponent implements OnInit, AfterViewInit, OnDe
 
     ngOnInit(): void {
         this.jsonTreeSelectedNodeSubscription = this.jsonTreeService.selectedNodeEmitter.subscribe( (selectedNodeEvent: JsonTreeNodeEventModel) => {
-            this.selectedPathAsString = (selectedNodeEvent.treeNode as FileDirTreeContainerModel).absoluteJavaPath;
+            this.selectedPathAsString = (selectedNodeEvent.treeNode as FileTreeContainer).absoluteJavaPath;
             this.checkIfSelectedPathIsValid();
         })
     }
@@ -65,8 +66,8 @@ export class FileDirChooserModalComponent implements OnInit, AfterViewInit, OnDe
 
     createDirectory(): void {
         if (this.createDirectorySubscription != null) this.createDirectorySubscription.unsubscribe();
-        this.createDirectorySubscription = this.fileDirTreeComponent.createDirectory().subscribe( (createdDirectory: FileDirTreeContainerModel) => {
-            this.fileDirTreeComponent.setSelectedDirectory(createdDirectory);
+        this.createDirectorySubscription = this.fileTreeComponent.createDirectory().subscribe( (createdDirectory: FileTreeContainer) => {
+            this.fileTreeComponent.setSelectedDirectory(createdDirectory);
         });
     }
 
@@ -86,7 +87,15 @@ export class FileDirChooserModalComponent implements OnInit, AfterViewInit, OnDe
                 return
             }
 
-            this.isValidSelectedPath = (pathInfo.isExistingPath && pathInfo.canCreateChild) || !pathInfo.isExistingPath;
+            if(this.showFiles) {
+                this.isValidSelectedPath = pathInfo.isExistingPath;
+            } else {
+                this.isValidSelectedPath = (pathInfo.isExistingPath && pathInfo.canCreateChild) || !pathInfo.isExistingPath;
+            }
         })
+    }
+
+    showCreateDirectoryButton(): boolean {
+        return this.isValidSelectedPath && this.fileTreeComponent.getSelectedDir() != null;
     }
 }

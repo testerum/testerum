@@ -1,18 +1,18 @@
 import {Component, forwardRef, Input, ViewChild} from '@angular/core';
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {FileDirChooserModalComponent} from "./dialog/file-dir-chooser-modal.component";
-import {FileDirChooserModalService} from "./dialog/file-dir-chooser-modal.service";
+import {FileChooserModalComponent} from "./dialog/file-chooser-modal.component";
+import {FileChooserModalService} from "./dialog/file-chooser-modal.service";
 
 @Component({
-    selector: 'file-dir-chooser',
-    templateUrl: 'file-dir-chooser-input.component.html',
-    styleUrls: ["file-dir-chooser-input.component.scss"],
+    selector: 'file-chooser',
+    templateUrl: 'file-chooser-input.component.html',
+    styleUrls: ["file-chooser-input.component.scss"],
     providers: [
-        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => FileDirChooserInputComponent), multi: true},
-        { provide: NG_VALIDATORS, useExisting: forwardRef(() => FileDirChooserInputComponent), multi: true }
+        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => FileChooserInputComponent), multi: true},
+        { provide: NG_VALIDATORS, useExisting: forwardRef(() => FileChooserInputComponent), multi: true }
     ]
 })
-export class FileDirChooserInputComponent implements ControlValueAccessor {
+export class FileChooserInputComponent implements ControlValueAccessor {
 
     // the method set in registerOnChange to emit changes back to the form
     private propagateChange = (_: any) => { };
@@ -21,9 +21,9 @@ export class FileDirChooserInputComponent implements ControlValueAccessor {
     value: string;
     @Input() disabled: boolean = false;
     @Input() showFiles: boolean = false;
-    @ViewChild(FileDirChooserModalComponent) directoryChooserDialogComponent: FileDirChooserModalComponent;
+    @ViewChild(FileChooserModalComponent) fileChooserModalComponent: FileChooserModalComponent;
 
-    constructor(private directoryChooserDialogService: FileDirChooserModalService) {
+    constructor(private fileChooserModalService: FileChooserModalService) {
     }
 
 // this is the initial value set to the component
@@ -53,7 +53,7 @@ export class FileDirChooserInputComponent implements ControlValueAccessor {
 
     public showDirectoryChooserModal() {
         if (!this.disabled) {
-            this.directoryChooserDialogService.showDirectoryChooserDialogModal(this.showFiles).subscribe( (selectedPath: string) => {
+            this.fileChooserModalService.showDirectoryChooserDialogModal(this.showFiles).subscribe( (selectedPath: string) => {
                 this.value = selectedPath;
                 this.propagateChange(selectedPath);
             });

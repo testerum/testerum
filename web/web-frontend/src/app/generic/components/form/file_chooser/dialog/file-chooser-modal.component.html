@@ -19,8 +19,8 @@
                 </div>
 
                 <div class="file-chooser">
-                    <file-dir-tree [isTesterumProjectChooser]="isTesterumProjectChooser"
-                                   [showFiles]="showFiles"></file-dir-tree>
+                    <file-tree [isTesterumProjectChooser]="isTesterumProjectChooser"
+                               [showFiles]="showFiles"></file-tree>
                 </div>
 
             </div>
@@ -30,7 +30,7 @@
                 <div class="button-container">
                     <button *ngIf="!isTesterumProjectChooser"
                             (click)="createDirectory()" type="button" class="btn btn-default pull-left"
-                            [disabled]="!isValidSelectedPath">
+                            [disabled]="!showCreateDirectoryButton()">
                         Create Directory
                     </button>
                     <button (click)="onCancelAction();" type="button" class="btn btn-default">Cancel</button>

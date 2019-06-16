@@ -24,8 +24,8 @@ import {VariablesService} from "./service/variables.service";
 import {FileSystemService} from "./service/file-system.service";
 import {LicenseGuard} from "./service/guards/license.guard";
 import {SettingsService} from "./service/settings.service";
-import {FileDirChooserInputComponent} from "./generic/components/form/file_dir_chooser/file-dir-chooser-input.component";
-import {FileDirTreeContainerComponent} from "./generic/components/form/file_dir_chooser/file-dir-tree/nodes/container/file-dir-tree-container.component";
+import {FileChooserInputComponent} from "./generic/components/form/file_chooser/file-chooser-input.component";
+import {FileTreeContainerComponent} from "./generic/components/form/file_chooser/file-tree/nodes/container/file-tree-container.component";
 import {ResultsModule} from "./functionalities/results/results.module";
 import {ResultService} from "./service/report/result.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -158,8 +158,8 @@ import { MenuRunnerComponent } from './menu/runner/menu-runner.component';
         { provide: APP_INITIALIZER, useFactory:  (service: MessageService) => function() {return service.init()}, deps: [MessageService], multi: true },
     ],
     entryComponents: [
-        FileDirChooserInputComponent,
-        FileDirTreeContainerComponent,
+        FileChooserInputComponent,
+        FileTreeContainerComponent,
         ProjectReloadModalComponent,
     ],
     bootstrap: [AppComponent]

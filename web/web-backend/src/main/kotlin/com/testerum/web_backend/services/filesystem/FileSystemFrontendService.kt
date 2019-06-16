@@ -1,12 +1,7 @@
 package com.testerum.web_backend.services.filesystem
 
 import com.testerum.common_jdk.toStringWithStacktrace
-import com.testerum.common_kotlin.canCreateChild
-import com.testerum.common_kotlin.doesNotExist
-import com.testerum.common_kotlin.exists
-import com.testerum.common_kotlin.hasSubDirectories
-import com.testerum.common_kotlin.isDirectory
-import com.testerum.common_kotlin.isRegularFile
+import com.testerum.common_kotlin.*
 import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.model.config.dir_tree.CreateFileSystemDirectoryRequest
 import com.testerum.model.config.dir_tree.FileSystemDirectory
@@ -74,7 +69,7 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
                 absoluteJavaPath = directoryToCreate.toAbsolutePath().normalize().toString(),
                 isProject = testerumProjectFileService.isTesterumProject(directoryToCreate),
                 canCreateChild = directoryToCreate.canCreateChild,
-                hasChildrenDirectories = directoryToCreate.hasSubDirectories
+                hasChildren = directoryToCreate.hasSubDirectories
         )
     }
 
@@ -86,8 +81,8 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
                 absoluteJavaPath = "",
                 isProject = false,
                 canCreateChild = false,
-                hasChildrenDirectories = rootDirectories.isNotEmpty(),
-                childrenDirectories = rootDirectories
+                hasChildren = rootDirectories.isNotEmpty(),
+                children = rootDirectories
         )
     }
 
@@ -103,8 +98,8 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
                 absoluteJavaPath = dir.toAbsolutePath().normalize().toString(),
                 isProject = testerumProjectFileService.isTesterumProject(dir),
                 canCreateChild = dir.canCreateChild,
-                hasChildrenDirectories = childrenDirectories.isNotEmpty(),
-                childrenDirectories = childrenDirectories
+                hasChildren = childrenDirectories.isNotEmpty(),
+                children = childrenDirectories
         )
     }
 
@@ -119,7 +114,7 @@ class FileSystemFrontendService(private val testerumProjectFileService: Testerum
                             absoluteJavaPath = path.toAbsolutePath().normalize().toString(),
                             isProject = testerumProjectFileService.isTesterumProject(path),
                             canCreateChild = path.canCreateChild,
-                            hasChildrenDirectories = path.hasSubDirectories
+                            hasChildren = path.hasSubDirectories
                     )
                 } else if (path.isRegularFile && showFiles) {
                     result += FileSystemFile(

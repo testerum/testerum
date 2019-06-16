@@ -1,10 +1,10 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {FileDirTreeComponentService} from "./file-dir-tree.component-service";
-import {FileDirTreeContainerModel} from "./model/file-dir-tree-container.model";
+import {FileTreeComponentService} from "./file-tree.component-service";
+import {FileTreeContainer} from "./model/file-tree.container";
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
-import {FileDirTreeContainerComponent} from "./nodes/container/file-dir-tree-container.component";
+import {FileTreeContainerComponent} from "./nodes/container/file-tree-container.component";
 import {Observable, Subject, Subscription} from "rxjs";
-import {FileDirChooserService} from "../file-dir-chooser.service";
+import {FileChooserService} from "../file-chooser.service";
 import {FileSystemService} from "../../../../../service/file-system.service";
 import {JsonTreeService} from "../../../json-tree/json-tree.service";
 import {ErrorHttpInterceptor} from "../../../../../service/interceptors/error.http-interceptor";
@@ -12,41 +12,44 @@ import {JsonTreeContainerEditorEvent} from "../../../json-tree/container-editor/
 import {FileSystemDirectory} from "../../../../../model/file/file-system-directory.model";
 import {HttpErrorResponse} from "@angular/common/http";
 import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
+import {FileTreeNode} from "./model/file-tree-node.model";
+import {FileTreeNodeComponent} from "./nodes/node/file-tree-node.component";
 
 @Component({
-    selector: 'file-dir-tree',
-    templateUrl: './file-dir-tree.component.html',
-    providers: [FileDirTreeComponentService]
+    selector: 'file-tree',
+    templateUrl: './file-tree.component.html',
+    providers: [FileTreeComponentService]
 })
-export class FileDirTreeComponent  implements OnInit, OnDestroy {
+export class FileTreeComponent  implements OnInit, OnDestroy {
 
     @Input() isTesterumProjectChooser: boolean = false;
     @Input() showFiles: boolean = false;
 
-    fileDirectoryChooserJsonTreeModel: JsonTreeModel = new JsonTreeModel();
+    fileChooserJsonTreeModel: JsonTreeModel = new JsonTreeModel();
 
     jsonModelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
-        .addPair(FileDirTreeContainerModel, FileDirTreeContainerComponent);
+        .addPair(FileTreeContainer, FileTreeContainerComponent)
+        .addPair(FileTreeNode, FileTreeNodeComponent);
 
-    private initializeDirectoryTreeFromServerSubscription: Subscription;
+    private initializeTreeFromServerSubscription: Subscription;
 
-    constructor(public fileDirectoryChooserService: FileDirChooserService,
-                private fileDirTreeComponentService: FileDirTreeComponentService,
+    constructor(public fileChooserService: FileChooserService,
+                private fileTreeComponentService: FileTreeComponentService,
                 private fileSystemService: FileSystemService,
                 private jsonTreeService: JsonTreeService,
                 private errorService: ErrorHttpInterceptor) {
     }
 
     ngOnInit() {
-        this.fileDirTreeComponentService.isTesterumProjectChooser = this.isTesterumProjectChooser;
+        this.fileTreeComponentService.isTesterumProjectChooser = this.isTesterumProjectChooser;
 
-        this.fileDirectoryChooserService.showFiles = this.showFiles;
-        this.initializeDirectoryTreeFromServerSubscription = this.fileDirectoryChooserService.initializeDirectoryTreeFromServer(this.showFiles).subscribe(
+        this.fileChooserService.showFiles = this.showFiles;
+        this.initializeTreeFromServerSubscription = this.fileChooserService.initializeDirectoryTreeFromServer(this.showFiles).subscribe(
             (dirTree: JsonTreeModel) => {
-                this.fileDirectoryChooserJsonTreeModel.children.length = 0;
+                this.fileChooserJsonTreeModel.children.length = 0;
 
                 for (let dirTreeChild of dirTree.children) {
-                    this.fileDirectoryChooserJsonTreeModel.children.push(
+                    this.fileChooserJsonTreeModel.children.push(
                         dirTreeChild
                     )
                 }
@@ -55,8 +58,8 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if (this.initializeDirectoryTreeFromServerSubscription) {
-            this.initializeDirectoryTreeFromServerSubscription.unsubscribe();
+        if (this.initializeTreeFromServerSubscription) {
+            this.initializeTreeFromServerSubscription.unsubscribe();
         }
     }
 
@@ -67,12 +70,19 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
         return this.getSelectedNode().absoluteJavaPath;
     }
 
-    getSelectedNode(): FileDirTreeContainerModel {
-        return this.fileDirTreeComponentService.selectedNode;
+    getSelectedNode(): FileTreeNode {
+        return this.fileTreeComponentService.selectedNode;
     }
 
-    createDirectory(): Observable<FileDirTreeContainerModel> {
-        let subject = new Subject<FileDirTreeContainerModel>();
+    getSelectedDir(): FileTreeContainer {
+        if (this.fileTreeComponentService.selectedNode instanceof FileTreeContainer) {
+            return this.fileTreeComponentService.selectedNode;
+        }
+        return null;
+    }
+
+    createDirectory(): Observable<FileTreeContainer> {
+        let subject = new Subject<FileTreeContainer>();
         if (!this.getSelectedNode()) {
             return subject;
         }
@@ -84,16 +94,16 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
 
                 this.fileSystemService.createFileSystemDirectory(this.getSelectedPathAsString(), createEvent.newName).subscribe(
                     (newFileSystemDirectory: FileSystemDirectory) => {
-                        let newContainer = new FileDirTreeContainerModel(
-                            this.getSelectedNode(),
+                        let newContainer = new FileTreeContainer(
+                            this.getSelectedDir(),
                             newFileSystemDirectory.name,
                             newFileSystemDirectory.absoluteJavaPath,
                             newFileSystemDirectory.isProject,
                             newFileSystemDirectory.canCreateChild,
                             false
                         );
-                        this.getSelectedNode().getChildren().push(newContainer);
-                        this.getSelectedNode().sort();
+                        this.getSelectedDir().getChildren().push(newContainer);
+                        this.getSelectedDir().sort();
 
                         subject.next(newContainer);
                         subject.complete();
@@ -109,14 +119,14 @@ export class FileDirTreeComponent  implements OnInit, OnDestroy {
         return subject;
     }
 
-    setSelectedDirectory(newSelectedDirectory: FileDirTreeContainerModel) {
-        this.fileDirTreeComponentService.selectedNode = newSelectedDirectory;
+    setSelectedDirectory(newSelectedDirectory: FileTreeContainer) {
+        this.fileTreeComponentService.selectedNode = newSelectedDirectory;
         this.jsonTreeService.setSelectedNode(newSelectedDirectory);
     }
 
     private getChildrenContanersName(): Array<string> {
         let childrenContainersName: Array<string> = [];
-        for (const child of this.getSelectedNode().getChildren()) {
+        for (const child of this.getSelectedDir().getChildren()) {
             if (child.isContainer()) {
                 childrenContainersName.push(child.name)
             }

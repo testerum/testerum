@@ -36,8 +36,8 @@
 
     <div *ngIf="inputType == InputTypeEnum.FILESYSTEM_DIRECTORY">
         <span class="full-width input-group">
-            <file-dir-chooser [(ngModel)]="value"
-                              #2repositoryPath="ngModel"></file-dir-chooser>
+            <file-chooser [(ngModel)]="value"
+                          #2repositoryPath="ngModel"></file-chooser>
         </span>
     </div>
 

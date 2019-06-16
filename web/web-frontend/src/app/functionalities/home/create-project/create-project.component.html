@@ -36,9 +36,9 @@
                         <label class="my-label label-size">Parent Directory</label>
 
                         <div class="my-value">
-                            <file-dir-chooser name="repositoryPath" required isNotBlankValidator
-                                              [(ngModel)]="path"
-                                              #repositoryPath="ngModel" class="file-dir-chooser"></file-dir-chooser>
+                            <file-chooser name="repositoryPath" required isNotBlankValidator
+                                          [(ngModel)]="path"
+                                          #repositoryPath="ngModel" class="file-dir-chooser"></file-chooser>
                             <input-error [model]="repositoryPath"
                                          [errorMessages]="{
                                             required: 'A path to your workspace is required'
