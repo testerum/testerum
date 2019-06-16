@@ -109,10 +109,12 @@ export class SeleniumDriverInputComponent implements OnInit {
     onSelectedBrowserChanged(seleniumBrowser: SelectItem) {
         let seleniumBrowserType = SeleniumBrowserType.fromSerialization(seleniumBrowser.value);
         this.initDriverSelectedItems(seleniumBrowserType);
+        this.triggerValueChanged();
     }
 
     onSelectedBrowserVersionChanged(selectedBrowserVersion: SelectItem) {
-
+        this.deserializedValue.driverVersion = this.selectedDriver;
+        this.triggerValueChanged();
     }
 
     supportsHeadlessSetting(): boolean {
@@ -123,5 +125,10 @@ export class SeleniumDriverInputComponent implements OnInit {
             return true;
         }
         return false;
+    }
+
+    private triggerValueChanged() {
+        let serializedValue = this.deserializedValue.serialize();
+        this.valueChange.emit(serializedValue);
     }
 }

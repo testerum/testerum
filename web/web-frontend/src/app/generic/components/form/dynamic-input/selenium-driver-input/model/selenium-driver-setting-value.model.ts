@@ -18,12 +18,12 @@ export class SeleniumDriverSettingValue implements Serializable<SeleniumDriverSe
     }
 
     serialize(): string {
-        return "" +
+        return '' +
             '{' +
-            '"browserType":' + this.browserType ? this.browserType.asSerialized : "null" +
+            '"browserType":' + (this.browserType ? JsonUtil.stringify(this.browserType.asSerialized) : JsonUtil.stringify(null)) +
             ',"browserExecutablePath":' + JsonUtil.stringify(this.browserExecutablePath) +
             ',"headless":' + JsonUtil.stringify(this.headless) +
             ',"driverVersion":' + JsonUtil.stringify(this.driverVersion) +
-            '}'
+            '}';
     }
 }
