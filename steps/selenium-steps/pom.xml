@@ -37,6 +37,18 @@
             <artifactId>testerum-api</artifactId>
         </dependency>
 
+        <!-- model -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>model</artifactId>
+        </dependency>
+
+        <!-- file-service -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>file-service</artifactId>
+        </dependency>
+
 
         <!--==================== External Dependencies ====================-->
 

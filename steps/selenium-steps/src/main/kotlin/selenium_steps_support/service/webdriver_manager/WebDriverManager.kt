@@ -1,10 +1,21 @@
 package selenium_steps_support.service.webdriver_manager
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.guava.GuavaModule
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.api.annotations.settings.DeclareSetting
 import com.testerum.api.annotations.settings.DeclareSettings
 import com.testerum.api.test_context.settings.RunnerSettingsManager
+import com.testerum.api.test_context.settings.model.SeleniumDriverSettingValue
 import com.testerum.api.test_context.settings.model.SettingType
 import com.testerum.common_jdk.OsUtils
+import com.testerum.file_service.file.SeleniumDriversFileService
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.WebDriver
@@ -12,13 +23,14 @@ import org.openqa.selenium.support.ui.WebDriverWait
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import selenium_steps_support.service.elem_locators.ElementLocatorService
-import selenium_steps_support.service.webdriver_factory.chrome.ChromeWebDriverFactory
+import selenium_steps_support.service.webdriver_factory.WebDriverFactories
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTINGS_CATEGORY
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_AFTER_STEP_DELAY_MILLIS
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_WAIT_TIMEOUT_MILLIS
+import selenium_steps_support.utils.SeleniumStepsDirs
 import java.nio.file.Files
 import java.time.Duration
 import java.util.concurrent.TimeUnit
@@ -70,7 +82,8 @@ import java.nio.file.Path as JavaPath
             category = SETTINGS_CATEGORY
     )
 ])
-class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager) {
+class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
+                       private val seleniumDriversFileService: SeleniumDriversFileService) {
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(WebDriverManager::class.java)
@@ -87,6 +100,20 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager)
         internal const val SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP = "testerum.selenium.takeScreenshotAfterEachStep"
 
         internal const val SETTING_KEY_DRIVER = "testerum.selenium.driver"
+
+        private val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper().apply {
+            registerModule(AfterburnerModule())
+            registerModule(JavaTimeModule())
+            registerModule(GuavaModule())
+
+            enable(SerializationFeature.INDENT_OUTPUT)
+            setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            enable(SerializationFeature.WRITE_DATES_WITH_ZONE_ID)
+
+            disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        }
     }
 
     private val lock = Object()
@@ -97,7 +124,13 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager)
     private val currentWebDriver: WebDriver
         get() = synchronized(lock) {
             if (_webDriver == null) {
-                _webDriver = ChromeWebDriverFactory.createWebDriver().apply {
+                val seleniumDriverSetting = getSeleniumDriverSetting()
+                val webDriverFactory = WebDriverFactories.getWebDriverFactory(seleniumDriverSetting.browserType)
+                val seleniumDriversByBrowser = seleniumDriversFileService.getDriversInfo(SeleniumStepsDirs.getSeleniumDriversDir())
+
+                val webDriver = webDriverFactory.createWebDriver(seleniumDriverSetting, seleniumDriversByBrowser)
+
+                _webDriver = webDriver.apply {
                     // not maximizing on Mac because it makes WebDriver throw an exception for Chrome on Mac: "failed to change window state to normal, current state is maximized"
                     if (!OsUtils.IS_MAC) {
                         manage().window().maximize() // todo: make this configurable
@@ -163,4 +196,11 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager)
             _webDriver = null
         }
     }
+
+    private fun getSeleniumDriverSetting(): SeleniumDriverSettingValue {
+        val unparsedDriver = runnerSettingsManager.getRequiredSetting(SETTING_KEY_DRIVER).resolvedValue
+
+        return OBJECT_MAPPER.readValue(unparsedDriver)
+    }
+
 }

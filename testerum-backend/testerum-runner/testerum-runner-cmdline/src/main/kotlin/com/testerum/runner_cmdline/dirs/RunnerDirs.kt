@@ -16,7 +16,7 @@ object RunnerDirs {
 
     private val EXECUTION_DIR_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH-mm-ss-SSS")
 
-    fun getPackageDir(): JavaPath = run {
+    private fun getInstallDir(): JavaPath = run {
         val packageDirectoryProperty = System.getProperty("testerum.packageDirectory")
                 ?: throw IllegalArgumentException("missing required [testerum.packageDirectory] system property")
 
@@ -33,9 +33,11 @@ object RunnerDirs {
         return@run absolutePath
     }
 
-    fun getDefaultBasicStepsDir(): JavaPath = getPackageDir().resolve("basic_steps")
+    fun getDefaultBasicStepsDir(): JavaPath = getInstallDir().resolve("basic_steps")
 
-    private fun getRunnerDir(): JavaPath = getPackageDir().resolve("runner")
+    fun getSeleniumDriversDir(): JavaPath = getInstallDir().resolve("selenium-drivers")
+
+    private fun getRunnerDir(): JavaPath = getInstallDir().resolve("runner")
 
     private fun getRunnerNodeDir(): JavaPath = getRunnerDir().resolve("node")
 
