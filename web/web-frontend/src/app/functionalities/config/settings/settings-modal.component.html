@@ -24,8 +24,7 @@
                     </div>
                     <div class="category-settings"
                          [class.active]="selectedCategory == settingCategory"
-                         *ngFor="let settingCategory of settingsCategories"
-                         title="{{settingCategory}}">
+                         *ngFor="let settingCategory of settingsCategories">
 
                         <div class="setting vertical-space"
                              *ngFor="let setting of settingsByCategory.get(settingCategory)">

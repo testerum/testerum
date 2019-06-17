@@ -108,6 +108,12 @@ export class SeleniumDriverInputComponent implements OnInit {
 
     onSelectedBrowserChanged(seleniumBrowser: SelectItem) {
         let seleniumBrowserType = SeleniumBrowserType.fromSerialization(seleniumBrowser.value);
+        this.deserializedValue.browserType = seleniumBrowserType;
+
+        this.selectedDriver = null;
+        this.deserializedValue.browserExecutablePath = null;
+        this.customInstallation = false;
+
         this.initDriverSelectedItems(seleniumBrowserType);
         this.triggerValueChanged();
     }

@@ -34,14 +34,26 @@
             display: flex;
             flex-direction: row;
             align-items: center;
+            flex-grow: 2;
 
             .installation-path-label {
                 margin: 0 1em;
+            }
+
+            file-chooser {
+                width: 100%;
+                max-width: 50em;
+
+                margin-right: .5em;
+
+                .file-dir-chooser {
+                }
             }
         }
 
         .headless-as-string {
             margin-left: .5em;
+            margin-right: .5em;
             font-size: 1.2em;
         }
     }

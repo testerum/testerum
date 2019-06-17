@@ -42,6 +42,7 @@
             <file-chooser [(ngModel)]="deserializedValue.browserExecutablePath"
                           [showFiles]="true"
                           (ngModelChange)="triggerValueChanged()"></file-chooser>
+            <info-icon [message]='"To use a <b>custom browser installation</b> please select your browser executable file"'></info-icon>
         </div>
     </div>
 
@@ -50,6 +51,7 @@
             <p-inputSwitch [(ngModel)]="deserializedValue.headless"
                            (onChange)="triggerValueChanged()"></p-inputSwitch>
             <div class="headless-as-string">{{deserializedValue.headless ? "headless" : "normal browser"}}</div>
+            <info-icon *ngIf="deserializedValue.headless" [message]='"A <b>headless browser</b> is a web browser without a graphical user interface."'></info-icon>
         </div>
     </div>
 </div>
