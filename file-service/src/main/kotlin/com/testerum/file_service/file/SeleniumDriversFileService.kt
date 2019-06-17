@@ -11,7 +11,6 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.api.test_context.settings.model.SeleniumBrowserType
 import com.testerum.common_jdk.ComparableVersion
-import com.testerum.common_jdk.OsUtils
 import com.testerum.common_kotlin.hasExtension
 import com.testerum.common_kotlin.list
 import com.testerum.model.selenium.FileSeleniumDriverInfo
@@ -86,10 +85,7 @@ class SeleniumDriversFileService {
                 continue
             }
 
-            var driverFileName = driverDescriptorFile.fileName.toString().removeSuffix(".json")
-            if (OsUtils.IS_WINDOWS) {
-                driverFileName = "$driverFileName.exe"
-            }
+            val driverFileName = fileSeleniumDriverInfo.driverFile
 
             val relativePath: JavaPath = seleniumDriversDir.toAbsolutePath().normalize()
                     .relativize(
