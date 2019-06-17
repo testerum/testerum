@@ -262,12 +262,12 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         val repositoryDir: JavaPath = projectDirs.projectRootDir
 
         args += "--repository-directory"
-        args += "${repositoryDir.escape()}"
+        args += "$repositoryDir"
 
         // built-in basic steps
         val builtInBasicStepsDir: JavaPath = getBuiltInBasicStepsDirectory()
         args += "--basic-steps-directory"
-        args += "${builtInBasicStepsDir.escape()}"
+        args += "$builtInBasicStepsDir"
 
         // output
         args += "--report"
@@ -286,7 +286,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
                     .normalize()
 
             args += "--test-path"
-            args += "${path.escape()}"
+            args += "$path"
         }
 
         // variables
@@ -315,7 +315,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
             }
 
             args.add("--setting")
-            args.add("${setting.key.escape()}=${setting.value.escape()}")
+            args.add("${setting.key}=${setting.value}")
         }
 
         LOG.debug("args = {}", args)
@@ -332,10 +332,5 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
                 )
         )
     }
-
-    private fun Any?.escape(): String? = this?.toString()
-            ?.replace("\\", "\\\\")
-            ?.replace("\"", "\\\"")
-            ?.replace("'", "\\'")
 
 }
