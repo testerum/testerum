@@ -133,7 +133,7 @@ export class SeleniumDriverInputComponent implements OnInit {
         return false;
     }
 
-    private triggerValueChanged() {
+    triggerValueChanged() {
         let serializedValue = this.deserializedValue.serialize();
         this.valueChange.emit(serializedValue);
     }
