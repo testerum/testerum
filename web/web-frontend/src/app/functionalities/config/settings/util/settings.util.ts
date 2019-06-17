@@ -34,9 +34,6 @@ export class SettingsUtil {
                 settingMapValue = [];
             }
             settingMapValue.push(setting);
-            settingMapValue.sort((left, right) => {
-                return left.definition.key > right.definition.key ? 1 : -1
-            });
 
             settingsByCategory.set(settingCategory, settingMapValue);
         }
