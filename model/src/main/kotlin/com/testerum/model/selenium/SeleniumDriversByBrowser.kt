@@ -33,11 +33,16 @@ class SeleniumDriversByBrowser(driversByBrowser: Map<SeleniumBrowserType, List<S
 
     @JsonIgnore
     fun getDriverInfoByBrowserAndDriverVersion(browserType: SeleniumBrowserType,
-                                               driverVersion: String): SeleniumDriverInfo? {
+                                               driverVersion: String?): SeleniumDriverInfo? {
         val drivers = driversByBrowser[browserType]
                 ?: return null
 
-        return drivers.find { it.driverVersion == driverVersion }
+        return if (driverVersion == null) {
+            // find the driver with the most recent version
+            drivers.maxBy { ComparableVersion(it.driverVersion) }
+        } else {
+            drivers.find { it.driverVersion == driverVersion }
+        }
     }
 
 }
