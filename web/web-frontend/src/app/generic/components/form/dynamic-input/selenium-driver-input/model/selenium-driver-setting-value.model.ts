@@ -7,12 +7,14 @@ export class SeleniumDriverSettingValue implements Serializable<SeleniumDriverSe
     browserExecutablePath: string;
     headless: boolean;
     driverVersion: string;
+    remoteUrl: string | null;
 
     deserialize(input: Object): SeleniumDriverSettingValue {
         this.browserType = SeleniumBrowserType.fromSerialization(input["browserType"]);
         this.browserExecutablePath = input["browserExecutablePath"];
         this.headless = input["headless"];
         this.driverVersion = input["driverVersion"];
+        this.remoteUrl = input["remoteUrl"];
 
         return this;
     }
@@ -24,6 +26,7 @@ export class SeleniumDriverSettingValue implements Serializable<SeleniumDriverSe
             ',"browserExecutablePath":' + JsonUtil.stringify(this.browserExecutablePath) +
             ',"headless":' + JsonUtil.stringify(this.headless) +
             ',"driverVersion":' + JsonUtil.stringify(this.driverVersion) +
+            ',"remoteUrl":' + (this.remoteUrl ? JsonUtil.stringify(this.remoteUrl) : JsonUtil.stringify(null)) +
             '}';
     }
 }
