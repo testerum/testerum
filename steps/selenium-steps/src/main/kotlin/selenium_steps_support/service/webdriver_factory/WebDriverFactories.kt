@@ -6,6 +6,7 @@ import selenium_steps_support.service.webdriver_factory.chrome.EdgeWebDriverFact
 import selenium_steps_support.service.webdriver_factory.chrome.FirefoxWebDriverFactory
 import selenium_steps_support.service.webdriver_factory.chrome.InternetExplorerWebDriverFactory
 import selenium_steps_support.service.webdriver_factory.chrome.OperaWebDriverFactory
+import selenium_steps_support.service.webdriver_factory.chrome.SafariWebDriverFactory
 
 object WebDriverFactories {
 
@@ -15,7 +16,8 @@ object WebDriverFactories {
         SeleniumBrowserType.OPERA              -> OperaWebDriverFactory
         SeleniumBrowserType.EDGE               -> EdgeWebDriverFactory
         SeleniumBrowserType.INTERNET_EXPLORER  -> InternetExplorerWebDriverFactory
-        else -> throw IllegalArgumentException("not yet implemented") // todo: implement for other browsers also}
+        SeleniumBrowserType.SAFARI             -> SafariWebDriverFactory
+        else -> throw IllegalArgumentException("not yet implemented") // todo: implement for other browsers also
     }
 
 }
