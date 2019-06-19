@@ -87,11 +87,15 @@ class SeleniumDriversFileService {
 
             val driverFileName = fileSeleniumDriverInfo.driverFile
 
-            val relativePath: JavaPath = seleniumDriversDir.toAbsolutePath().normalize()
-                    .relativize(
-                            browserPath.resolve(driverFileName)
-                                    .toAbsolutePath().normalize()
-                    )
+            val relativePath: JavaPath? = if (driverFileName == null) {
+                null
+            } else {
+                seleniumDriversDir.toAbsolutePath().normalize()
+                        .relativize(
+                                browserPath.resolve(driverFileName)
+                                        .toAbsolutePath().normalize()
+                        )
+            }
 
             val seleniumDriverInfo = SeleniumDriverInfo(
                     driverVersion = fileSeleniumDriverInfo.driverVersion,

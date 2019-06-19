@@ -22,15 +22,19 @@ object OperaWebDriverFactory : WebDriverFactory {
                 driverVersion = config.driverVersion
         ) ?: throw RuntimeException("could not find a Selenium driver for browserType=[${config.browserType}] and driverVersion=[${config.driverVersion}]")
 
-        val driverBinaryPath: JavaPath = SeleniumStepsDirs.getSeleniumDriversDir()
-                .resolve(driverInfo.relativePath)
-                .toAbsolutePath()
-                .normalize()
+        if (driverInfo.relativePath == null) {
+            LOG.info("using system Selenium driver")
+        } else {
+            val driverBinaryPath: JavaPath = SeleniumStepsDirs.getSeleniumDriversDir()
+                    .resolve(driverInfo.relativePath)
+                    .toAbsolutePath()
+                    .normalize()
 
-        LOG.info("using Selenium driver [$driverBinaryPath]")
+            LOG.info("using Selenium driver [$driverBinaryPath]")
 
-        // todo: this is nasty: it's a global variable preventing us from using different drivers (e.g. different Chrome versions) at the same time ==> find a better way)
-        System.setProperty("webdriver.opera.driver", driverBinaryPath.toAbsolutePath().toString())
+            // todo: this is nasty: it's a global variable preventing us from using different drivers (e.g. different Chrome versions) at the same time ==> find a better way)
+            System.setProperty("webdriver.opera.driver", driverBinaryPath.toAbsolutePath().toString())
+        }
 
         val options = OperaOptions()
         if (config.browserExecutablePath != null) {
