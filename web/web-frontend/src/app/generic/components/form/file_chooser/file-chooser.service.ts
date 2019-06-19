@@ -56,6 +56,7 @@ export class FileChooserService {
         if(fileDirectoryNode.hasChildren() && fileDirectoryNode.getChildren().length == 0) {
             this.fileSystemService.getDirectoryTree(fileDirectoryNode.absoluteJavaPath, this.showFiles).subscribe(
                 (fileDirNode: FileTreeContainer) => {
+                    fileDirectoryNode.getChildren().length = 0;
                     for (let child of fileDirNode.getChildren()) {
                         child.parentContainer = fileDirectoryNode;
                         fileDirectoryNode.getChildren().push(

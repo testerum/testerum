@@ -34,7 +34,7 @@
 
     <div class="my-selenium-driver-setting-line">
         <p-inputSwitch [(ngModel)]="customInstallation"
-                       (onChange)="triggerValueChanged()"></p-inputSwitch>
+                       (onChange)="onCustomInstallationSwitchChanged()"></p-inputSwitch>
         <div class="installation-value">{{customInstallation ? "custom browser installation" : "system browser installation"}}</div>
 
         <div [class.hidden]="!customInstallation" class="custom-installation-settings">

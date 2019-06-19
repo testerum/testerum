@@ -82,8 +82,10 @@ export class SeleniumDriverInputComponent implements OnInit {
 
             driverSelectItems.push(driverSelectItem);
 
-            if (selectedDriverVersion == seleniumDriverInfo.driverVersion) {
-                this.selectedDriver = driverSelectItem.value;
+            if (selectedDriverVersion == null || selectedDriverVersion == seleniumDriverInfo.driverVersion) {
+                selectedDriverVersion = seleniumDriverInfo.driverVersion;
+                this.deserializedValue.driverVersion = seleniumDriverInfo.driverVersion;
+                this.selectedDriver = seleniumDriverInfo.driverVersion;
             }
         }
         this.driverSelectItems = driverSelectItems;
@@ -110,6 +112,7 @@ export class SeleniumDriverInputComponent implements OnInit {
         let seleniumBrowserType = SeleniumBrowserType.fromSerialization(seleniumBrowser.value);
         this.deserializedValue.browserType = seleniumBrowserType;
 
+        this.deserializedValue.driverVersion = null;
         this.selectedDriver = null;
         this.deserializedValue.browserExecutablePath = null;
         this.customInstallation = false;
@@ -131,6 +134,13 @@ export class SeleniumDriverInputComponent implements OnInit {
             return true;
         }
         return false;
+    }
+
+    onCustomInstallationSwitchChanged() {
+        if (!this.customInstallation) {
+            this.deserializedValue.browserExecutablePath = null;
+            this.triggerValueChanged();
+        }
     }
 
     triggerValueChanged() {
