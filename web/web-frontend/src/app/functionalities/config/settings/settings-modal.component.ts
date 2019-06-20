@@ -90,8 +90,8 @@ export class SettingsModalComponent implements AfterViewInit {
 
     resetToDefault(): void {
         this.settings.forEach((it: Setting) => {
-            it.unresolvedValue = "";
-            it.resolvedValue = "";
+            it.unresolvedValue = it.definition.defaultValue;
+            it.resolvedValue = it.definition.defaultValue;
         });
 
         this.saveAction();

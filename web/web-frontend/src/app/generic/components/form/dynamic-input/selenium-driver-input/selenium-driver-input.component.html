@@ -20,9 +20,7 @@
                 </div>
             </ng-template>
         </p-dropdown>
-
     </div>
-
 
     <div class="my-selenium-driver-setting-line">
         <p-inputSwitch [(ngModel)]="customBrowserDriver"
@@ -39,7 +37,7 @@
         </div>
     </div>
 
-    <div class="my-selenium-driver-setting-line">
+    <div *ngIf="supportsCustomInstallation()" class="my-selenium-driver-setting-line">
         <p-inputSwitch [(ngModel)]="customInstallation"
                        (onChange)="onCustomInstallationSwitchChanged()"></p-inputSwitch>
         <div class="installation-value">{{customInstallation ? "custom browser installation" : "system browser installation"}}</div>

@@ -153,6 +153,18 @@ export class SeleniumDriverInputComponent implements OnInit {
         return false;
     }
 
+    supportsCustomInstallation(): boolean {
+        if(!this.selectedBrowser) return false;
+
+        let seleniumBrowserType = SeleniumBrowserType.fromSerialization(this.selectedBrowser);
+        if (seleniumBrowserType == SeleniumBrowserType.CHROME ||
+            seleniumBrowserType == SeleniumBrowserType.FIREFOX ||
+            seleniumBrowserType == SeleniumBrowserType.OPERA) {
+            return true;
+        }
+        return false;
+    }
+
     onCustomInstallationSwitchChanged() {
         if (!this.customInstallation) {
             this.deserializedValue.browserExecutablePath = null;
