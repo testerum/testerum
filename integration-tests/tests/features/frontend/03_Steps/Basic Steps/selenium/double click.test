@@ -1,33 +1,38 @@
 test-def: double click
 
     step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{httpMock}}>>
-        var httpMockServer = <<port: "12000">>
+        var httpMockServer = <<
+            port: "12000"
+            
+        >>
         var httpMock = <<
             expectedRequest:
               method: GET
               url: /
             mockResponse:
+              statusCode: 200
               headers:
                 Content-Type: text/html
               body:
                 bodyType: HTML
                 content: |-
-                  <!DOCTYPE html>
-                  <html>
-                  <body>
+                  <!DOCTYPE html\>
+                  <html\>
+                  <body\>
             
-                  <p class="test-dblclick-paragraph" ondblclick="myFunction()">Double-click this paragraph to trigger a function.</p>
+                  <p class="test-dblclick-paragraph" ondblclick="myFunction()"\>Double-click this paragraph to trigger a function.</p\>
             
-                  <p class="test-result-area" id="result-area"></p>
+                  <p class="test-result-area" id="result-area"\></p\>
             
-                  <script>
+                  <script\>
                   function myFunction() {
                     document.getElementById("result-area").innerHTML = "Double-click worked!";
                   }
-                  </script>
+                  </script\>
             
-                  </body>
-                  </html>
+                  </body\>
+                  </html\>
+            
         >>
     step: Given the page at url <<http://localhost:12000/>> is open
     step: When I double-click the element <<.test-dblclick-paragraph>>
