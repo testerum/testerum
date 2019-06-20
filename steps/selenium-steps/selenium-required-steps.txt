@@ -59,6 +59,10 @@ todo: work with all standard form elements
         * multi-selection
     * textarea
     * button
+hover
+scroll
+drag & drop
+step that executes JS in the test JVM (the runner JVM) and has WebDriver in the context; we should also be able to throw AssertionError()
 
 
 waits
