@@ -1,4 +1,5 @@
 import {
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -41,7 +42,8 @@ export class SeleniumDriverInputComponent implements OnInit, OnChanges {
     customBrowserDriver: boolean = false;
     customInstallation: boolean = false;
 
-    constructor(private seleniumDriversService: SeleniumDriversService) {
+    constructor(private cd: ChangeDetectorRef,
+                private seleniumDriversService: SeleniumDriversService) {
     }
 
     ngOnInit() {
@@ -74,12 +76,20 @@ export class SeleniumDriverInputComponent implements OnInit, OnChanges {
                 }
             });
             this.browserSelectItems = browsersSelectedItems;
+
+            this.refresh();
         });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['value']) {
             this.ngOnInit();
+        }
+    }
+
+    refresh() {
+        if (!this.cd['destroyed']) {
+            this.cd.detectChanges();
         }
     }
 
