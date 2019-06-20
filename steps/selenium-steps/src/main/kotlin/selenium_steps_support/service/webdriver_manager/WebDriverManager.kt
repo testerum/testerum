@@ -78,7 +78,7 @@ import java.nio.file.Path as JavaPath
             label = "Take screenshot after each step",
             type = SettingType.BOOLEAN,
             defaultValue = "false",
-            description = """Should take a screenshot after each Selenium Test. Possible values: "true", "false"""",
+            description = """Takes a screenshot after each Selenium Test. Possible values: "true", "false"""",
             category = SETTINGS_CATEGORY
     )
 ])

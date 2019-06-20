@@ -18,6 +18,11 @@ import com.testerum.model.selenium.SeleniumDriverInfo
 import com.testerum.model.selenium.SeleniumDriversByBrowser
 import org.slf4j.LoggerFactory
 import java.util.TreeMap
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.set
 import java.nio.file.Path as JavaPath
 
 class SeleniumDriversFileService {
@@ -66,6 +71,9 @@ class SeleniumDriversFileService {
                 }
             }
         }
+
+        // the remote browser doesn't need drivers but we add it to the map to see it in the UI
+        driversByBrowser[SeleniumBrowserType.REMOTE] = arrayListOf()
 
         val sortedDriversByBrowser = sortDriversByBrowserMap(driversByBrowser)
 

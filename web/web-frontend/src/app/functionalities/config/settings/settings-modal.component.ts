@@ -94,7 +94,6 @@ export class SettingsModalComponent implements AfterViewInit {
             it.resolvedValue = it.definition.defaultValue;
         });
 
-        this.saveAction();
     }
 
     isComposedSetting(settingType: SettingType): boolean {

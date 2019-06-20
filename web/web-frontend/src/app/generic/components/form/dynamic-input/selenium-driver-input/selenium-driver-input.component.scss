@@ -15,6 +15,14 @@
         align-items: center;
         margin: 10px 0;
 
+        .remote-url-label {
+            width: 11em;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+            margin-right: .5em;
+        }
+
         .my-selenium-driver-setting-value {
             display: flex;
             flex-direction: row;
@@ -35,6 +43,7 @@
 
             .installation-path-label {
                 margin-right: 1em;
+                margin-bottom: 0;
             }
 
             file-chooser {

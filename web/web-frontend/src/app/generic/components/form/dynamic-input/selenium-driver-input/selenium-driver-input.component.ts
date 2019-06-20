@@ -1,4 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewEncapsulation
+} from '@angular/core';
 import {SeleniumDriversService} from "./selenium-drivers.service";
 import {SeleniumBrowserType} from "./model/selenium-browser-type.enum";
 import {SeleniumDriverInfo} from "./model/selenium-driver-info.model";
@@ -12,7 +21,7 @@ import {SeleniumDriverSettingValue} from "./model/selenium-driver-setting-value.
     styleUrls: ['./selenium-driver-input.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class SeleniumDriverInputComponent implements OnInit {
+export class SeleniumDriverInputComponent implements OnInit, OnChanges {
 
     @Input() defaultValue: string;
     @Input() value: string;
@@ -27,6 +36,7 @@ export class SeleniumDriverInputComponent implements OnInit {
 
     driverSelectItems: SelectItem[] = [];
     selectedDriver: string;
+    remoteUrl: string;
 
     customBrowserDriver: boolean = false;
     customInstallation: boolean = false;
@@ -65,6 +75,12 @@ export class SeleniumDriverInputComponent implements OnInit {
             });
             this.browserSelectItems = browsersSelectedItems;
         });
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['value']) {
+            this.ngOnInit();
+        }
     }
 
     private initDriverSelectedItems(selectedSeleniumBrowserType: SeleniumBrowserType) {
@@ -122,6 +138,8 @@ export class SeleniumDriverInputComponent implements OnInit {
         this.selectedDriver = null;
         this.deserializedValue.browserExecutablePath = null;
         this.customInstallation = false;
+        this.remoteUrl = null;
+        this.deserializedValue.remoteUrl = null;
 
         this.initDriverSelectedItems(seleniumBrowserType);
         this.triggerValueChanged();
@@ -141,6 +159,31 @@ export class SeleniumDriverInputComponent implements OnInit {
     onSelectedBrowserVersionChanged(selectedBrowserVersion: SelectItem) {
         this.deserializedValue.driverVersion = this.selectedDriver;
         this.triggerValueChanged();
+    }
+
+    supportsCustomDriverVersion(): boolean {
+        if(!this.selectedBrowser) return false;
+
+        let seleniumBrowserType = SeleniumBrowserType.fromSerialization(this.selectedBrowser);
+        if (seleniumBrowserType == SeleniumBrowserType.CHROME ||
+            seleniumBrowserType == SeleniumBrowserType.FIREFOX ||
+            seleniumBrowserType == SeleniumBrowserType.OPERA ||
+            seleniumBrowserType == SeleniumBrowserType.EDGE ||
+            seleniumBrowserType == SeleniumBrowserType.INTERNET_EXPLORER ||
+            seleniumBrowserType == SeleniumBrowserType.SAFARI) {
+            return true;
+        }
+        return false;
+    }
+
+    supportsRemoteUrl(): boolean {
+        if(!this.selectedBrowser) return false;
+
+        let seleniumBrowserType = SeleniumBrowserType.fromSerialization(this.selectedBrowser);
+        if (seleniumBrowserType == SeleniumBrowserType.REMOTE) {
+            return true;
+        }
+        return false;
     }
 
     supportsHeadlessSetting(): boolean {

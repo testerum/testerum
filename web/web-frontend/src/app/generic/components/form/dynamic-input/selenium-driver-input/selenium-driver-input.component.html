@@ -22,7 +22,7 @@
         </p-dropdown>
     </div>
 
-    <div class="my-selenium-driver-setting-line">
+    <div *ngIf="supportsCustomDriverVersion()" class="my-selenium-driver-setting-line">
         <p-inputSwitch [(ngModel)]="customBrowserDriver"
                        (onChange)="onCustomBrowserDriverSwitchChanged()"></p-inputSwitch>
         <div class="installation-value">{{customBrowserDriver ? "custom browser version" : "latest browser version"}}</div>
@@ -35,6 +35,13 @@
                 </p-dropdown>
             </div>
         </div>
+    </div>
+
+    <div *ngIf="supportsRemoteUrl()" class="my-selenium-driver-setting-line">
+        <label class="remote-url-label">Remote driver URL:</label>
+        <input [(ngModel)]="deserializedValue.remoteUrl"
+               (ngModelChange)="triggerValueChanged()"
+               type="text" class="form-control full-width">
     </div>
 
     <div *ngIf="supportsCustomInstallation()" class="my-selenium-driver-setting-line">

@@ -25,7 +25,7 @@
                      (click)="onLogLevelChange(LogLevel.INFO)">
                     I
                 </div>
-                <div title="{{minLogLevelToShow <= LogLevel.WARNING? 'Hide Warning Logs':'Show Worning Logs'}}"
+                <div title="{{minLogLevelToShow <= LogLevel.WARNING? 'Hide Warning Logs':'Show Warning Logs'}}"
                      class="btn btn-default btn-xs btn-group"
                      [class.active]="minLogLevelToShow <= LogLevel.WARNING"
                      (click)="onLogLevelChange(LogLevel.WARNING)">
