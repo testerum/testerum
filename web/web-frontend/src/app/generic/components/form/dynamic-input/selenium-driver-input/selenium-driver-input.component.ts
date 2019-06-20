@@ -28,6 +28,7 @@ export class SeleniumDriverInputComponent implements OnInit {
     driverSelectItems: SelectItem[] = [];
     selectedDriver: string;
 
+    customBrowserDriver: boolean = false;
     customInstallation: boolean = false;
 
     constructor(private seleniumDriversService: SeleniumDriversService) {
@@ -37,6 +38,7 @@ export class SeleniumDriverInputComponent implements OnInit {
         this.deserializedDefaultValue = this.defaultValue ? new SeleniumDriverSettingValue().deserialize(JSON.parse(this.defaultValue)) : new SeleniumDriverSettingValue();
         this.deserializedValue = this.value ? new SeleniumDriverSettingValue().deserialize(JSON.parse(this.value)) : new SeleniumDriverSettingValue();
 
+        this.initBrowserDriver();
         this.initInstallationSettings();
 
         let selectedBrowserAsSerialized: string = this.deserializedValue.browserType ? this.deserializedValue.browserType.asSerialized : this.deserializedDefaultValue.browserType.asSerialized;
@@ -83,8 +85,6 @@ export class SeleniumDriverInputComponent implements OnInit {
             driverSelectItems.push(driverSelectItem);
 
             if (selectedDriverVersion == null || selectedDriverVersion == seleniumDriverInfo.driverVersion) {
-                selectedDriverVersion = seleniumDriverInfo.driverVersion;
-                this.deserializedValue.driverVersion = seleniumDriverInfo.driverVersion;
                 this.selectedDriver = seleniumDriverInfo.driverVersion;
             }
         }
@@ -103,6 +103,11 @@ export class SeleniumDriverInputComponent implements OnInit {
         return result;
     }
 
+    private initBrowserDriver() {
+        let browserDriver: string = this.deserializedValue.driverVersion ? this.deserializedValue.driverVersion : null;
+        this.customBrowserDriver = browserDriver != null;
+    }
+
     private initInstallationSettings() {
         let installationPath: string = this.deserializedValue.browserExecutablePath ? this.deserializedValue.browserExecutablePath : null;
         this.customInstallation = installationPath != null;
@@ -113,12 +118,24 @@ export class SeleniumDriverInputComponent implements OnInit {
         this.deserializedValue.browserType = seleniumBrowserType;
 
         this.deserializedValue.driverVersion = null;
+        this.customBrowserDriver = false;
         this.selectedDriver = null;
         this.deserializedValue.browserExecutablePath = null;
         this.customInstallation = false;
 
         this.initDriverSelectedItems(seleniumBrowserType);
         this.triggerValueChanged();
+    }
+
+    onCustomBrowserDriverSwitchChanged() {
+        if (!this.customBrowserDriver) {
+            this.deserializedValue.driverVersion = null;
+            this.triggerValueChanged();
+        } else {
+            this.selectedDriver = this.driverSelectItems ? this.driverSelectItems[0].value : null;
+            this.deserializedValue.driverVersion = this.selectedDriver;
+            this.triggerValueChanged();
+        }
     }
 
     onSelectedBrowserVersionChanged(selectedBrowserVersion: SelectItem) {

@@ -15,10 +15,6 @@
         align-items: center;
         margin: 10px 0;
 
-        .my-selenium-driver-setting-label {
-            margin-bottom: 0;
-            width: 5em;
-        }
         .my-selenium-driver-setting-value {
             display: flex;
             flex-direction: row;
@@ -30,14 +26,15 @@
             font-size: 1.2em;
         }
 
-        .custom-installation-settings {
+        .custom-setting {
             display: flex;
             flex-direction: row;
             align-items: center;
             flex-grow: 2;
+            margin-left: 1em;
 
             .installation-path-label {
-                margin: 0 1em;
+                margin-right: 1em;
             }
 
             file-chooser {

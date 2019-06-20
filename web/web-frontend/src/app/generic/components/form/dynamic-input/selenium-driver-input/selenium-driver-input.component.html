@@ -21,8 +21,15 @@
             </ng-template>
         </p-dropdown>
 
-        <div class="my-selenium-driver-setting-line">
-            <label class="my-selenium-driver-setting-label">version:</label>
+    </div>
+
+
+    <div class="my-selenium-driver-setting-line">
+        <p-inputSwitch [(ngModel)]="customBrowserDriver"
+                       (onChange)="onCustomBrowserDriverSwitchChanged()"></p-inputSwitch>
+        <div class="installation-value">{{customBrowserDriver ? "custom browser version" : "latest browser version"}}</div>
+
+        <div [class.hidden]="!customBrowserDriver" class="custom-setting">
             <div class="my-selenium-driver-setting-value">
                 <p-dropdown [options]="driverSelectItems"
                             [(ngModel)]="selectedDriver"
@@ -37,7 +44,7 @@
                        (onChange)="onCustomInstallationSwitchChanged()"></p-inputSwitch>
         <div class="installation-value">{{customInstallation ? "custom browser installation" : "system browser installation"}}</div>
 
-        <div [class.hidden]="!customInstallation" class="custom-installation-settings">
+        <div [class.hidden]="!customInstallation" class="custom-setting">
             <label class="installation-path-label">path:</label>
             <file-chooser [(ngModel)]="deserializedValue.browserExecutablePath"
                           [showFiles]="true"
