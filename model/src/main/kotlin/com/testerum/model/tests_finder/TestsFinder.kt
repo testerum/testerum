@@ -30,10 +30,14 @@ object TestsFinder {
         }
 
         // 1. add those specified in testFilesOrDirectories
-        val canonicalTestFileOrDirPaths = testFilesOrDirectories.map { it.canonicalize() }
-        for ((path, test) in allTests) {
-            if (path.hasAncestor(canonicalTestFileOrDirPaths)) {
-                result[path] = test
+        if (testFilesOrDirectories.isEmpty()) {
+            result.putAll(allTests)
+        } else {
+            val canonicalTestFileOrDirPaths = testFilesOrDirectories.map { it.canonicalize() }
+            for ((path, test) in allTests) {
+                if (path.hasAncestor(canonicalTestFileOrDirPaths)) {
+                    result[path] = test
+                }
             }
         }
 
