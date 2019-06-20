@@ -144,12 +144,13 @@ export class SeleniumDriverInputComponent implements OnInit, OnChanges {
         this.deserializedValue.browserType = seleniumBrowserType;
 
         this.deserializedValue.driverVersion = null;
-        this.customBrowserDriver = false;
-        this.selectedDriver = null;
         this.deserializedValue.browserExecutablePath = null;
-        this.customInstallation = false;
-        this.remoteUrl = null;
+        this.deserializedValue.headless = this.deserializedDefaultValue.headless;
         this.deserializedValue.remoteUrl = null;
+        this.customBrowserDriver = false;
+        this.customInstallation = false;
+        this.selectedDriver = null;
+        this.remoteUrl = null;
 
         this.initDriverSelectedItems(seleniumBrowserType);
         this.triggerValueChanged();

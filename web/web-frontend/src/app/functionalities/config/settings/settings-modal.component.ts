@@ -1,4 +1,12 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ComponentRef,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {SettingsService} from "../../../service/settings.service";
 import {Setting} from "./model/setting.model";
 import {SettingType} from "./model/setting.type.enum";
@@ -10,7 +18,8 @@ import {SettingsUtil} from "./util/settings.util";
     selector: 'settings',
     templateUrl: 'settings-modal.component.html',
     styleUrls: ['settings-modal.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsModalComponent implements AfterViewInit {
 
@@ -93,7 +102,7 @@ export class SettingsModalComponent implements AfterViewInit {
             it.unresolvedValue = it.definition.defaultValue;
             it.resolvedValue = it.definition.defaultValue;
         });
-
+        this.refresh();
     }
 
     isComposedSetting(settingType: SettingType): boolean {
