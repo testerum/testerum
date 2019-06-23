@@ -1,0 +1,4 @@
+test-def: Given the page at <<url>> is open
+
+    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/html-controles.html>> is open
+    step: Then the title of the current page should be <<HTML5 Test Page>>
