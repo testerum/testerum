@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frames check - child frame</title>
+</head>
+<body>
+
+<button id="frameNameSetter" onclick="window.parent.setFrameName('child frame');">Set child frame name</button>
+
+<iframe class="qa-grandchild-frame" src="grandchild-frame.html" style="width: 100%"></iframe>
+
+</body>
+
+</html>

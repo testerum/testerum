@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frames check - top frame</title>
+
+    <script type="application/javascript" src="../../assets/js/jquery-3.4.1.min.js"></script>
+
+    <script type="application/javascript">
+        function setFrameName(name) {
+            document.getElementById("frameName").innerText = name;
+        }
+    </script>
+</head>
+<body>
+
+<p>Frame name: <span id="frameName"></span></p>
+
+<button id="frameNameSetter" onclick="setFrameName('top frame');">Set top frame name</button>
+
+<iframe id="child-frame" src="child-frame.html" style="width: 100%"></iframe>
+
+</body>
+
+</html>
