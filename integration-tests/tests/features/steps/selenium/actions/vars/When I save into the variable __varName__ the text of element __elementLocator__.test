@@ -1,0 +1,5 @@
+test-def: When I save into the variable <<varName>> the text of element <<elementLocator>>
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I save into the variable <<CLICK_ELEMENT_TEXT>> the text of element <<#element_click>>
+    step: Then <<{{CLICK_ELEMENT_TEXT}}>> is equal to <<Clickable element>>
