@@ -1,0 +1,4 @@
+step-def: Then the browser width is <<browserWidth: TEXT>> and the height is <<browserHeight: TEXT>>
+
+    step: Then the text of element <<#displayBrowserWidth>> should be <<{{browserWidth}}>>
+    step: Then the text of element <<#displayBrowserHeight>> should be <<{{browserHeight}}>>

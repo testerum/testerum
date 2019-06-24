@@ -5,8 +5,8 @@ services:
     image: nginx:1.13.8-alpine
     volumes:
       - type      : bind
-        source    : ../static-web
-        target    : /project
+        source    : ../static-web/
+        target    : /project/
         read_only : true
       - type: bind
         source: ./conf/static-web-nginx.conf

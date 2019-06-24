@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+    <meta charset="UTF-8">
+    <title>Browser Size Page Check</title>
+
+    <script type="application/javascript" src="assets/js/jquery-3.4.1.min.js"></script>
+
+    <script type="application/javascript">
+        function displayBrowserWindowSize() {
+            $("#displayBrowserWidth").html(window.outerWidth);
+            $("#displayBrowserHeight").html(window.outerHeight);
+        }
+        $(window).resize(function() {
+            displayBrowserWindowSize();
+        });
+        $(window).ready(function() {
+            displayBrowserWindowSize();
+        })
+    </script>
+</head>
+<body style="display: flex;
+             justify-content: center;
+             align-items: center;
+             height: 100%;
+             font-size: 3em">
+
+    <div id="displayBrowserWidth" style="font-weight: bold"></div>
+    <div style="margin: 0 .4em;">x</div>
+    <div id="displayBrowserHeight" style="font-weight: bold"></div>
+</body>
+</html>
