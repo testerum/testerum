@@ -1,18 +1,18 @@
 test-def: frame switching
 
-    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/frames/iframe/index.html>> is open
+    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/actions/contexts/frames/iframe/index.html>> is open
     step: When I click the element <<id=frameNameSetter>>
     step: Then the text of element <<id=frameName>> should be <<top frame>>
-    step: When I switch to the frame <<id=child-frame>>
+    step: When I switch the context to the frame <<id=child-frame>>
     step: When I click the element <<id=frameNameSetter>>
-    step: When I switch to the top frame
+    step: When I switch the context to the top frame
     step: Then the text of element <<id=frameName>> should be <<child frame>>
-    step: When I switch to the frame <<{{frameLocator}}>>
+    step: When I switch the context to the frame <<{{frameLocator}}>>
         var frameLocator = <<
             id=child-frame
             css=.qa-grandchild-frame
             
         >>
     step: When I click the element <<id=frameNameSetter>>
-    step: When I switch to the top frame
+    step: When I switch the context to the top frame
     step: Then the text of element <<id=frameName>> should be <<grandchild frame>>
