@@ -18,7 +18,7 @@ object FrameSwitchers {
         var driver = topDriver
         for (frameLocatorPart in frameLocatorParts) {
             val element = ElementLocatorService.locateElement(driver, frameLocatorPart)
-                    ?: throw RuntimeException("failed to find element [$frameLocatorPart")
+                    ?: throw RuntimeException("failed to find element [$frameLocatorPart]")
             driver = driver.switchTo().frame(element)
         }
 
