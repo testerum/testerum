@@ -1,3 +1,0 @@
-step-def: Then the Control Text should be <<controlText: TEXT>>
-
-    step: Then the text of element <<#control-panel>> should be <<{{controlText}}>>
