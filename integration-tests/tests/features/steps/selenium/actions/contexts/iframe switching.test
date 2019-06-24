@@ -1,4 +1,4 @@
-test-def: frame switching
+test-def: iframe switching
 
     step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/actions/contexts/frames/iframe/index.html>> is open
     step: When I click the element <<id=frameNameSetter>>
