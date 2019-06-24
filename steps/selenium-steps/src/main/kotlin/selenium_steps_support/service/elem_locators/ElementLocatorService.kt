@@ -25,23 +25,6 @@ object ElementLocatorService {
     private val validLocatorTypes: Collection<String> = prefixToLocatorFactoryMap.keys
 
     /**
-     * @return the first matching element on the current page
-     * @throws ElementNotFoundException if no matching elements are found
-     * @throws ElementLocatorServiceException if an error occurred while trying to find the element
-     */
-    fun locateRequiredElement(driver: WebDriver, elementLocator: String): WebElement {
-        try {
-            val selector: By = getSelector(elementLocator, driver)
-
-            return driver.findElement(selector)
-        } catch (e: org.openqa.selenium.NoSuchElementException) {
-            throw ElementNotFoundException("could not find the element [$elementLocator]", e)
-        } catch (e: Exception) {
-            throw ElementLocatorServiceException("an error occurred while trying to find the element [$elementLocator]", e)
-        }
-    }
-
-    /**
      * @return the first matching element on the current page, or null if no element could be found
      * @throws ElementLocatorServiceException if an error occurred while trying to find the element
      */
@@ -50,6 +33,23 @@ object ElementLocatorService {
             return locateRequiredElement(driver, elementLocator)
         } catch (e: ElementNotFoundException) {
             return null
+        }
+    }
+
+    /**
+     * @return the first matching element on the current page
+     * @throws ElementNotFoundException if no matching elements are found
+     * @throws ElementLocatorServiceException if an error occurred while trying to find the element
+     */
+    private fun locateRequiredElement(driver: WebDriver, elementLocator: String): WebElement {
+        try {
+            val selector: By = getSelector(elementLocator, driver)
+
+            return driver.findElement(selector)
+        } catch (e: org.openqa.selenium.NoSuchElementException) {
+            throw ElementNotFoundException("could not find the element [$elementLocator]", e)
+        } catch (e: Exception) {
+            throw ElementLocatorServiceException("an error occurred while trying to find the element [$elementLocator]", e)
         }
     }
 

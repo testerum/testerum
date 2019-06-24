@@ -171,6 +171,15 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
         )
     }
 
+    fun switchCurrentWebDriver(block: (current: WebDriver) -> WebDriver) {
+        switchCurrentWebDriverToTop()
+        _webDriver = block(currentWebDriver)
+    }
+
+    fun switchCurrentWebDriverToTop() {
+        currentWebDriver.switchTo().defaultContent()
+    }
+
     fun waitUntil(block: (WebDriver) -> Boolean) {
         val waitTimeoutMillis = runnerSettingsManager.getRequiredSetting(SETTING_KEY_WAIT_TIMEOUT_MILLIS).resolvedValue.toLong()
 
