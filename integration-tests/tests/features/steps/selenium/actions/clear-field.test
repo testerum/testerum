@@ -1,0 +1,5 @@
+test-def: clear-field
+
+    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/actions/clear-field/index.html>> is open
+    step: When I clear the text from the field <<css=input>>
+    step: Then the element <<css=input>> should have the value <<{{''}}>>

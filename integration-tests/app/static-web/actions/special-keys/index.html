@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Typing as from the keyboard</title>
+
+    <script type="application/javascript" src="../../assets/js/jquery-3.4.1.min.js"></script>
+
+    <script type="text/javascript">
+        $(window).ready(function () {
+            $("input").keyup(function(event) {
+                if (event.keyCode === 13) {
+                    $("#result").text($("input").val());
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+
+<label>
+    Type stuff here, and then press Enter:
+    <input type="text" autofocus style="width: 50em;">
+
+    <br/>
+
+    Result: <span id="result"></span>
+</label>
+
+</body>
+
+</html>
