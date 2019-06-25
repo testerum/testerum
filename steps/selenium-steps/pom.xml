@@ -25,6 +25,12 @@
             <artifactId>common-parsing</artifactId>
         </dependency>
 
+        <!-- common-expression-evaluator -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-expression-evaluator</artifactId>
+        </dependency>
+
         <!-- settings -->
         <dependency>
             <groupId>com.testerum</groupId>

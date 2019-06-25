@@ -1,0 +1,7 @@
+test-def: When I execute the WebDriver JS script <<script>>
+
+    step: When I execute the WebDriver JS script <<{{script}}>>
+        var script = <<
+            webDriver.get("https://testerum.com")
+            failTest("test all the context stuff, look in to the test")
+        >>

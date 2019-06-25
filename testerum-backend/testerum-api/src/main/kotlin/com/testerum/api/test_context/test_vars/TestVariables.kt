@@ -10,6 +10,8 @@ interface TestVariables : TesterumService {
 
     fun getGlobalVars(): Map<String, Any?>
 
+    fun toMap(): Map<String, Any?>
+
     fun contains(name: String): Boolean
 
     /**

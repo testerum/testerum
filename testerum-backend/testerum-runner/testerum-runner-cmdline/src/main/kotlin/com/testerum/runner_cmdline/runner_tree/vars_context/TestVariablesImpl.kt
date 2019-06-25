@@ -18,6 +18,8 @@ object TestVariablesImpl : TestVariables {
 
     override fun getGlobalVars(): Map<String, Any?> = variablesContext.getGlobalVars()
 
+    override fun toMap(): Map<String, Any?> = variablesContext.toMap()
+
     override fun contains(name: String): Boolean
             = variablesContext.contains(name)
 

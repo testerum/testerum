@@ -67,7 +67,7 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
     fun setDynamicVariable(name: String, value: Any?): Any?
             = dynamicVars.set(name, value)
 
-    private fun toMap(): Map<String, Any?> {
+    fun toMap(): Map<String, Any?> {
         // todo: this looks slow...
         val result = LinkedHashMap<String, Any?>()
 
