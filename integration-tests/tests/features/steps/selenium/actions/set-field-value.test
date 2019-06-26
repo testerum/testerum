@@ -1,0 +1,5 @@
+test-def: set-field-value
+
+    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/actions/set-field-value/index.html>> is open
+    step: When I set <<new field value>> as the value of the field <<css=input>>
+    step: Then the element <<css=input>> should have the value <<new field value>>
