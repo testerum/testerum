@@ -1,0 +1,7 @@
+test-def: When I wait until the element <<elementLocator>> is visible
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I click the element <<#hide-element-button>>
+    step: When I click the element <<#show-in-3-sec-element-button>>
+    step: When I wait until the element <<#element_to_show_or_hide>> is visible
+    step: Then the text of element <<#element_to_show_or_hide>> should be <<Pickaboo Element>>

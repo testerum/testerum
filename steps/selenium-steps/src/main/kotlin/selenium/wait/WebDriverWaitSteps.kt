@@ -101,4 +101,49 @@ class WebDriverWaitSteps {
         }
     }
 
+    @When(
+            value = "I wait until the element <<elementLocator>> is visible",
+            description = "Wait until the given element is visible on the page, or the timeout is exceeded."
+    )
+    fun waitForElementVisibile(
+            @Param(
+                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            )
+            elementLocator: String
+    ) {
+        logger.info(
+                "waiting for an element to be visible\n" +
+                "----------------------------------------\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
+        )
+
+        webDriverManager.waitUntil { driver ->
+            val element = ElementLocatorService.locateElement(driver, elementLocator)
+            element != null && element.isDisplayed
+        }
+    }
+
+    @When(
+            value = "I wait until the element <<elementLocator>> is hidden",
+            description = "Wait until the given element is visible on the page, or the timeout is exceeded."
+    )
+    fun waitForElementHidden (
+            @Param(
+                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            )
+            elementLocator: String
+    ) {
+        logger.info(
+                "waiting for an element to be hidden\n" +
+                "----------------------------------------\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
+        )
+
+        webDriverManager.waitUntil { driver ->
+            val element = ElementLocatorService.locateElement(driver, elementLocator)
+            element != null && !element.isDisplayed
+        }
+    }
 }

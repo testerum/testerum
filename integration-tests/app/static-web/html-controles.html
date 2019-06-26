@@ -71,6 +71,21 @@
                     </p>
 
                 </fieldset>
+
+                <fieldset>
+                    <legend>Elements Visibility</legend>
+                    <div>
+                        <div id="element_to_show_or_hide"
+                             style="border: 1px black solid; width: 10em; text-align: center; padding: .2em; cursor: pointer;"
+                             onclick="setControlText(this.innerHTML)">Pickaboo Element</div>
+                        <button type="button" id="hide-element-button" onclick="$('#element_to_show_or_hide').hide()">Hide Pickaboo</button>
+                        <button type="button" id="hide-in-3-sec-element-button" onclick="setTimeout(function() {$('#element_to_show_or_hide').hide()}, 3000)">Hide Pickaboo in 3 sec</button>
+                        <button type="button" id="show-element-button" onclick="$('#element_to_show_or_hide').show() ">Show Pickaboo</button>
+                        <button type="button" id="show-in-3-sec-element-button" onclick="setTimeout(function() {$('#element_to_show_or_hide').show()}, 3000)">Show Pickaboo in 3 sec</button>
+                    </div>
+
+                </fieldset>
+
                 <fieldset id="forms__input">
                     <legend>Input fields</legend>
                     <p>
