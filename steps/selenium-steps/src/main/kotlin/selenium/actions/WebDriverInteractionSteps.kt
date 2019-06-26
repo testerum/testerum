@@ -3,12 +3,17 @@ package selenium.actions
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
 import com.testerum.api.services.TesterumServiceLocator
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.interactions.Actions
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
+
+
+
+
 
 class WebDriverInteractionSteps {
 
@@ -38,7 +43,11 @@ class WebDriverInteractionSteps {
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
-            element.click()
+            Actions(driver)
+                    .moveToElement(element)
+                    .click()
+                    .build()
+                    .perform()
         }
     }
 
@@ -72,4 +81,29 @@ class WebDriverInteractionSteps {
         }
     }
 
+    @When(
+            value = "I scroll element <<elementLocator>> into the view",
+            description = "Changes the scroll bar position to bring the element into the view port of the browser"
+    )
+
+    fun scrollToElement(
+            @Param(
+                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            )
+            elementLocator: String
+    ) {
+        logger.info(
+                "scrollToElement\n" +
+                "---------------\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
+        )
+
+        webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.executeWebDriverStep { driver ->
+            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
+                    ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+            (driver as JavascriptExecutor).executeScript("arguments[0].scrollIntoView(true);", element)
+        }
+    }
 }
