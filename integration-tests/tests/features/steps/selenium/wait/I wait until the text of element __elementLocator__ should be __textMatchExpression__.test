@@ -1,0 +1,5 @@
+test-def: I wait until the text of element <<elementLocator>> should be <<textMatchExpression>>
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I click the element <<#set-text-in-3-sec-button>>
+    step: When I wait until the text of element <<#control-panel>> should be <<Set Text with 3 seconds delay>>

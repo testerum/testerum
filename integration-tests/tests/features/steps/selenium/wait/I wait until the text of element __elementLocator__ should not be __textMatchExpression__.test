@@ -1,0 +1,6 @@
+test-def: I wait until the text of element <<elementLocator>> should not be <<textMatchExpression>>
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I click the element <<#set-text-button>>
+    step: When I click the element <<#set-text-in-3-sec-button>>
+    step: When I wait until the text of element <<#control-panel>> should not be <<Set Text Instantly>>
