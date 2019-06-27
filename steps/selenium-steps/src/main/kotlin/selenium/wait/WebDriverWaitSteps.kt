@@ -3,6 +3,7 @@ package selenium.wait
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
 import com.testerum.api.services.TesterumServiceLocator
+import org.openqa.selenium.WebElement
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
@@ -144,6 +145,72 @@ class WebDriverWaitSteps {
         webDriverManager.waitUntil { driver ->
             val element = ElementLocatorService.locateElement(driver, elementLocator)
             element != null && !element.isDisplayed
+        }
+    }
+
+    @When(
+            value = "I wait until the text of element <<elementLocator>> should be <<textMatchExpression>>",
+            description = "Wait until the given element text matches the provided expression, or the timeout is exceeded."
+    )
+    fun waitForTextMatch (
+            @Param(
+                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            )
+            elementLocator: String,
+
+            @Param(
+                    description = SeleniumSharedDescriptions.TEXT_MATCH_EXPRESSION_DESCRIPTION
+            )
+            textMatchExpression: String
+    ) {
+        logger.info(
+                "waiting for element text to match expression\n" +
+                "----------------------------------------\n" +
+                "elementLocator      : $elementLocator\n" +
+                "textMatchExpression : $textMatchExpression\n" +
+                "\n"
+        )
+
+        webDriverManager.waitUntil { driver ->
+            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
+                    ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+
+            val actualText: String = element.text
+
+            TextMatcherService.matches(textMatchExpression, actualText)
+        }
+    }
+
+    @When(
+            value = "I wait until the text of element <<elementLocator>> should not be <<textMatchExpression>>",
+            description = "Wait until the given element text doesn't match the provided expression, or the timeout is exceeded."
+    )
+    fun waitForTextToNotMatch (
+            @Param(
+                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            )
+            elementLocator: String,
+
+            @Param(
+                    description = SeleniumSharedDescriptions.TEXT_MATCH_EXPRESSION_DESCRIPTION
+            )
+            textMatchExpression: String
+    ) {
+        logger.info(
+                "waiting for element text to not match expression\n" +
+                "----------------------------------------\n" +
+                "elementLocator      : $elementLocator\n" +
+                "textMatchExpression : $textMatchExpression\n" +
+                "\n"
+        )
+
+        webDriverManager.waitUntil { driver ->
+            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
+                    ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+
+            val actualText: String = element.text
+
+            !TextMatcherService.matches(textMatchExpression, actualText)
         }
     }
 }

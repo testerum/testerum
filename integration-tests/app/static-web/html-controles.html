@@ -83,7 +83,14 @@
                         <button type="button" id="show-element-button" onclick="$('#element_to_show_or_hide').show() ">Show Pickaboo</button>
                         <button type="button" id="show-in-3-sec-element-button" onclick="setTimeout(function() {$('#element_to_show_or_hide').show()}, 3000)">Show Pickaboo in 3 sec</button>
                     </div>
+                </fieldset>
 
+                <fieldset>
+                    <legend>Text Changes</legend>
+                    <div>
+                        <button type="button" id="set-text-button" onclick="setControlText(this.innerHTML)">Set Text Instantly</button>
+                        <button type="button" id="set-text-in-3-sec-button" onclick="setTimeout(function() { setControlText($('#set-text-in-3-sec-button').text());}, 3000)">Set Text with 3 seconds delay</button>
+                    </div>
                 </fieldset>
 
                 <fieldset id="forms__input">
