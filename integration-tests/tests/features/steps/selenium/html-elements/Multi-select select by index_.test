@@ -1,0 +1,7 @@
+test-def: Multi-select select by index=
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I select <<index=0>> from the select element <<#multiselect>>
+    step: When I select <<index=3>> from the select element <<#multiselect>>
+    step: When I select <<index=5>> from the select element <<#multiselect>>
+    step: Then the Control Text should be <<Option One, Second Option One, Second Option Three>>

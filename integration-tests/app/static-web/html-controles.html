@@ -8,6 +8,18 @@
     <script type="application/javascript" src="assets/js/jquery-3.4.1.min.js"></script>
 
     <script type="application/javascript">
+
+        function setSelectedItemsToControlText(selectElement) {
+            let selectedItemsText = "";
+            for (let i = 0; i < selectElement.length; i++) {
+                if (selectElement.options[i].selected) {
+                    if( selectedItemsText ) { selectedItemsText += ", "; }
+                    selectedItemsText += selectElement.options[i].label;
+                }
+            }
+            $("#control-panel").html(selectedItemsText);
+        }
+
         function setControlText(text) {
             $("#control-panel").html(text);
         }
@@ -19,35 +31,7 @@
         <h1>HTML5 Test Page</h1>
         <p>This is a test page filled with common HTML elements to be used to provide visual feedback whilst building CSS systems and frameworks.</p>
     </header>
-    <nav role="navigation">
-        <ul>
-            <li>
-                <a href="#forms">Form elements</a>
-                <ul>
-                    <li><a href="#forms__input">Input fields</a></li>
-                    <li><a href="#forms__select">Select menus</a></li>
-                    <li><a href="#forms__checkbox">Checkboxes</a></li>
-                    <li><a href="#forms__radio">Radio buttons</a></li>
-                    <li><a href="#forms__textareas">Textareas</a></li>
-                    <li><a href="#forms__html5">HTML5 inputs</a></li>
-                    <li><a href="#forms__action">Action buttons</a></li>
-                </ul>
-            </li>
-        </ul>
-        <li>
-            <a href="#embedded">Embedded content</a>
-            <ul>
-                <li><a href="#embedded__images">Images</a></li>
-                <li><a href="#embedded__audio">Audio</a></li>
-                <li><a href="#embedded__video">Video</a></li>
-                <li><a href="#embedded__canvas">Canvas</a></li>
-                <li><a href="#embedded__meter">Meter</a></li>
-                <li><a href="#embedded__progress">Progress</a></li>
-                <li><a href="#embedded__svg">Inline SVG</a></li>
-                <li><a href="#embedded__iframe">IFrames</a></li>
-            </ul>
-        </li>
-    </nav>
+
     <main role="main">
 
         <fieldset>
@@ -132,21 +116,32 @@
                         <input id="input__text4" class="is-valid" type="text" placeholder="Text Input">
                     </p>
                 </fieldset>
-                <p><a href="#top">[Top]</a></p>
+
                 <fieldset id="forms__select">
                     <legend>Select menus</legend>
                     <p>
                         <label for="select">Select</label>
-                        <select id="select">
-                            <optgroup label="Option Group">
-                                <option>Option One</option>
-                                <option>Option Two</option>
-                                <option>Option Three</option>
+                        <select id="select" onchange="setSelectedItemsToControlText($('#select')[0])">
+                            <option value="option_one">Option One</option>
+                            <option value="option_two">Option Two</option>
+                            <option value="option_three">Option Three</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label for="multiselect">Multi Select</label>
+                        <select id="multiselect" multiple onchange="setSelectedItemsToControlText($('#multiselect')[0])">
+                            <option value="11">Option One</option>
+                            <option value="12">Option Two</option>
+                            <option value="13">Option Three</option>
+                            <optgroup label="Second Option Group">
+                                <option value="second_option_one">Second Option One</option>
+                                <option value="second_option_two">Second Option Two</option>
+                                <option value="second_option_three">Second Option Three</option>
                             </optgroup>
                         </select>
                     </p>
                 </fieldset>
-                <p><a href="#top">[Top]</a></p>
+
                 <fieldset id="forms__checkbox">
                     <legend>Checkboxes</legend>
                     <ul class="list list--bare">
@@ -155,7 +150,7 @@
                         <li><label for="checkbox3"><input id="checkbox3" name="checkbox" type="checkbox"> Choice C</label></li>
                     </ul>
                 </fieldset>
-                <p><a href="#top">[Top]</a></p>
+
                 <fieldset id="forms__radio">
                     <legend>Radio buttons</legend>
                     <ul class="list list--bare">
@@ -164,7 +159,7 @@
                         <li><label for="radio3"><input id="radio3" name="radio" type="radio" class="radio"> Option 3</label></li>
                     </ul>
                 </fieldset>
-                <p><a href="#top">[Top]</a></p>
+
                 <fieldset id="forms__textareas">
                     <legend>Textareas</legend>
                     <p>
@@ -172,7 +167,7 @@
                         <textarea id="textarea" rows="8" cols="48" placeholder="Enter your message here"></textarea>
                     </p>
                 </fieldset>
-                <p><a href="#top">[Top]</a></p>
+
                 <fieldset id="forms__html5">
                     <legend>HTML5 inputs</legend>
                     <p>
@@ -208,7 +203,7 @@
                         <input type="datetime-local" id="idtl" value="1970-01-01T00:00">
                     </p>
                 </fieldset>
-                <p><a href="#top">[Top]</a></p>
+
                 <fieldset id="forms__action">
                     <legend>Action buttons</legend>
                     <p>
@@ -224,7 +219,6 @@
                         <button type="button" disabled>&lt;button disabled&gt;</button>
                     </p>
                 </fieldset>
-                <p><a href="#top">[Top]</a></p>
             </form>
         </section>
 
@@ -243,42 +237,34 @@
                         <figcaption>Here is a caption for this image.</figcaption>
                     </figure>
                 </div>
-                <footer><p><a href="#top">[Top]</a></p></footer>
             </article>
             <article id="embedded__audio">
                 <header><h2>Audio</h2></header>
                 <div><audio controls="">audio</audio></div>
-                <footer><p><a href="#top">[Top]</a></p></footer>
             </article>
             <article id="embedded__video">
                 <header><h2>Video</h2></header>
                 <div><video controls="">video</video></div>
-                <footer><p><a href="#top">[Top]</a></p></footer>
             </article>
             <article id="embedded__canvas">
                 <header><h2>Canvas</h2></header>
                 <div><canvas>canvas</canvas></div>
-                <footer><p><a href="#top">[Top]</a></p></footer>
             </article>
             <article id="embedded__meter">
                 <header><h2>Meter</h2></header>
                 <div><meter value="2" min="0" max="10">2 out of 10</meter></div>
-                <footer><p><a href="#top">[Top]</a></p></footer>
             </article>
             <article id="embedded__progress">
                 <header><h2>Progress</h2></header>
                 <div><progress>progress</progress></div>
-                <footer><p><a href="#top">[Top]</a></p></footer>
             </article>
             <article id="embedded__svg">
                 <header><h2>Inline SVG</h2></header>
                 <div><svg width="100px" height="100px"><circle cx="100" cy="100" r="100" fill="#1fa3ec"></circle></svg></div>
-                <footer><p><a href="#top">[Top]</a></p></footer>
             </article>
             <article id="embedded__iframe">
                 <header><h2>IFrame</h2></header>
-                <div><iframe src="index.html" height="300"></iframe></div>
-                <footer><p><a href="#top">[Top]</a></p></footer>
+                <div><iframe src="browser-size.html" height="300"></iframe></div>
             </article>
         </section>
     </main>

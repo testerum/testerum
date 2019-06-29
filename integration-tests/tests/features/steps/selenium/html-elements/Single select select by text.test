@@ -1,0 +1,6 @@
+test-def: Single select select by text
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I select <<Option Two>> from the select element <<#select>>
+    step: When I select <<Option Three>> from the select element <<#select>>
+    step: Then the Control Text should be <<Option Three>>
