@@ -1,0 +1,6 @@
+test-def: Press OK button on the Alert popup
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I click the element <<#showAlert>>
+    step: When I press the OK button on the alert, confirm or prompt popup
+    step: Then an alert, confirm or prompt is not present
