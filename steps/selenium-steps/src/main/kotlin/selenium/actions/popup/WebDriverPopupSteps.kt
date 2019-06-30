@@ -1,5 +1,6 @@
 package selenium.actions.popup
 
+import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.When
 import com.testerum.api.services.TesterumServiceLocator
 import org.openqa.selenium.NoAlertPresentException
@@ -65,6 +66,36 @@ class WebDriverPopupSteps {
         webDriverManager.executeWebDriverStep { driver ->
             try {
                 driver.switchTo().alert().dismiss();
+            } catch (e: NoAlertPresentException) {
+                throw AssertionError("an alert, confirm or prompt should be present on the page, but is not")
+            }
+        }
+    }
+
+//======================================================================================================================
+    @When(
+        value = "I set <<text>> in prompt popup",
+        description = "Send the text to the prompt popup"
+    )
+    fun setTextInPromptPopup(
+        @Param(
+                required = false,
+                description = "The text to set in the prompt popup."
+        ) text: String?
+    ) {
+        logger.info(
+                "set text in the prompt popup\n" +
+                "-------------------\n" +
+                "text : $text\n"
+        )
+
+        webDriverManager.waitUntil { driver ->
+            isAlertPresent(driver)
+        }
+
+        webDriverManager.executeWebDriverStep { driver ->
+            try {
+                driver.switchTo().alert().sendKeys(text);
             } catch (e: NoAlertPresentException) {
                 throw AssertionError("an alert, confirm or prompt should be present on the page, but is not")
             }

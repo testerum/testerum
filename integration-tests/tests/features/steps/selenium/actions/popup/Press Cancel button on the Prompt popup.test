@@ -4,3 +4,4 @@ test-def: Press Cancel button on the Prompt popup
     step: When I click the element <<#showPrompt>>
     step: When I press the Cancel button on the confirm or prompt popup
     step: Then an alert, confirm or prompt is not present
+    step: Then the Control Text should be <<Confirm box was closed! 'null' was inserted.>>

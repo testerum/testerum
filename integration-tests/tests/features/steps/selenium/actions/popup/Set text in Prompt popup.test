@@ -1,4 +1,4 @@
-test-def: Press OK button on the Prompt popup
+test-def: Set text in Prompt popup
 
     step: Given I am at the "HTML 5 TEST PAGE"
     step: When I click the element <<#showPrompt>>
