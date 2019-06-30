@@ -1,9 +1,0 @@
-test-def: Multi-select deselect by value=
-
-    step: Given I am at the "HTML 5 TEST PAGE"
-    step: When I select <<value=11>> from the select element <<#multiselect>>
-    step: When I select <<value=second_option_one>> from the select element <<#multiselect>>
-    step: When I select <<value=second_option_three>> from the select element <<#multiselect>>
-    step: When I deselect <<value=second_option_one>> from the select element << #multiselect>>
-    step: When I deselect <<value=second_option_three>> from the select element << #multiselect>>
-    step: Then the Control Text should be <<Option One>>

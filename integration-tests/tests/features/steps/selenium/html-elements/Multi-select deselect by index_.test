@@ -1,9 +1,0 @@
-test-def: Multi-select deselect by index=
-
-    step: Given I am at the "HTML 5 TEST PAGE"
-    step: When I select <<index=0>> from the select element <<#multiselect>>
-    step: When I select <<index=3>> from the select element <<#multiselect>>
-    step: When I select <<index=5>> from the select element <<#multiselect>>
-    step: When I deselect <<index=3>> from the select element <<#multiselect>>
-    step: When I deselect <<index=5>> from the select element <<#multiselect>>
-    step: Then the Control Text should be <<Option One>>

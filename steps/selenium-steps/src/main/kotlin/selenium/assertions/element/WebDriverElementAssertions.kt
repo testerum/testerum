@@ -14,7 +14,6 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager
 class WebDriverElementAssertions {
 
     private val logger = TesterumServiceLocator.getTesterumLogger()
-
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
     @Then(
@@ -42,6 +41,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the element <<elementLocator>> should be absent",
             description = "Checks if the given element is not present on the page."
@@ -67,6 +67,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the element <<elementLocator>> should be displayed",
             description = "Checks if the given element is \"displayed\" on the page, for example by not having it's ``display`` CSS property set to ``none``."
@@ -89,6 +90,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     /**
      * check that an element is hidden (e.g. "display: none", or "visibility: hidden")
      */
@@ -119,6 +121,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the element <<elementLocator>> should be enabled",
             description = "Checks that the given element is enabled. This is generally true for everything except disabled input elements."
@@ -146,6 +149,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the element <<elementLocator>> should be disabled",
             description = "Checks that the given element is disabled. This is generally false for everything except disabled input elements."
@@ -173,6 +177,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the element <<elementLocator>> should have the value <<expectedValueExpression>>",
             description = "Checks that the given element has a ``value`` attribute matching the given expression."
@@ -209,6 +214,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the element <<elementLocator>> should have the attribute <<attributeName>> with a value of <<attributeValueTextMatchExpression>>",
             description = "Checks that the given element has an attribute with the given name whose value matches the given expression."
@@ -251,6 +257,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the element <<elementLocator>> should have the attribute <<attributeName>> with a value different from <<attributeValueTextMatchExpression>>",
             description = "Checks that the given element has an attribute with the given name whose value does not match the given expression."
@@ -293,6 +300,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the element <<elementLocator>> should have the CSS class <<cssClass>>",
             description = "Checks that the given element has the given class in its list of CSS classes." +
@@ -330,6 +338,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the element <<elementLocator>> should not have the CSS class <<cssClass>>",
             description = "Checks that the given element does not have the given class in its list of CSS classes."
@@ -366,6 +375,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the text of element <<elementLocator>> should be <<textMatchExpression>>",
             description = "Checks that the text of the given element and sub-elements match the given expression." +
@@ -402,6 +412,7 @@ class WebDriverElementAssertions {
         }
     }
 
+//======================================================================================================================
     @Then(
             value = "the text of element <<elementLocator>> should not be <<textMatchExpression>>",
             description = "Checks that the text of the given element and sub-elements does not match the given expression." +

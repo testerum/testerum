@@ -1,7 +1,0 @@
-test-def: Multi-select select by text
-
-    step: Given I am at the "HTML 5 TEST PAGE"
-    step: When I select <<Option One>> from the select element <<#multiselect>>
-    step: When I select <<Second Option One>> from the select element <<#multiselect>>
-    step: When I select <<Second Option Three>> from the select element <<#multiselect>>
-    step: Then the Control Text should be <<Option One, Second Option One, Second Option Three>>
