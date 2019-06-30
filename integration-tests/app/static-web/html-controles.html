@@ -8,7 +8,6 @@
     <script type="application/javascript" src="assets/js/jquery-3.4.1.min.js"></script>
 
     <script type="application/javascript">
-
         function setSelectedItemsToControlText(selectElement) {
             let selectedItemsText = "";
             for (let i = 0; i < selectElement.length; i++) {
@@ -22,6 +21,17 @@
 
         function setControlText(text) {
             $("#control-panel").html(text);
+        }
+
+        function showConfirmBox() {
+            const response = confirm("Hello! I am an confirm box!");
+            const responseText = response ? "OK" : "Cancel";
+            setControlText("Confirm box was closed! "+ responseText + " button was pressed.")
+        }
+
+        function showPromptBox() {
+            const responseText = prompt("Hello! I am an prompt box!");
+            setControlText("Confirm box was closed! '"+ responseText + "' was inserted.")
         }
     </script>
 </head>
@@ -220,6 +230,19 @@
                     </p>
                 </fieldset>
             </form>
+        </section>
+
+        <section id="ohter">
+            <header><h1>Other HTML elements</h1></header>
+
+            <fieldset id="popups">
+                <legend>Popups</legend>
+                <div style="display: flex">
+                    <button id="showAlert" onclick='alert("Hello! I am an alert box!"); setControlText("Alert box was closed!")'>Show Alert</button>
+                    <button id="showConfirm" onclick='showConfirmBox()'>Show Confirm</button>
+                    <button id="showPrompt" onclick='showPromptBox()'>Show Prompt</button>
+                </div>
+            </fieldset>
         </section>
 
         <section id="embedded">

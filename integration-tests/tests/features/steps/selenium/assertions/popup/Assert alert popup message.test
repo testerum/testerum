@@ -1,0 +1,5 @@
+test-def: Assert alert popup message
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I click the element <<#showAlert>>
+    step: Then the alert, confirm or prompt message should be <<Hello! I am an alert box!>>
