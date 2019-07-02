@@ -46,4 +46,16 @@ class ValidHttpResponse @JsonCreator constructor(
         OBJECT_MAPPER.readValue(bodyAsUtf8String, Object::class.java)
     }
 
+    fun getHeaderValue(key: String): String? {
+        for (header in headers) {
+            if (header.key.equals(key, true)) {
+                if( header.values.isNotEmpty() )return header.values[0];
+            }
+        }
+
+        return null;
+    }
+
+
+
 }
