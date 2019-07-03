@@ -49,13 +49,10 @@ class ValidHttpResponse @JsonCreator constructor(
     fun getHeaderValue(key: String): String? {
         for (header in headers) {
             if (header.key.equals(key, true)) {
-                if( header.values.isNotEmpty() )return header.values[0];
+                if( header.values.isNotEmpty() ) return header.values[0];
             }
         }
 
         return null;
     }
-
-
-
 }
