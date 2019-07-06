@@ -18,13 +18,13 @@ class WebDriverSelectFormSteps {
     @When(
             value = "I select <<optionLocator>> from the select element <<elementLocator>>",
             description = "Select an element from a drop-down or multi-select using an option locator.\n" +
-                          "Option locators provide different ways of specifying a select element (e.g., label=, value=, index=).\n" +
-                          "If no option locator prefix is provided, a match on the label will be attempted."
+                    "Option locators provide different ways of specifying a select element (e.g., label=, value=, index=).\n" +
+                    "If no option locator prefix is provided, a match on the label will be attempted."
     )
-    fun selectItem (
+    fun selectItem(
             @Param(
                     description = "This parameter provide different ways of specifying the element to select (e.g., label=, value=, index=).\n" +
-                                  "If no option locator prefix is provided, a match on the label will be attempted."
+                            "If no option locator prefix is provided, a match on the label will be attempted."
             )
             optionLocator: String,
             @Param(
@@ -70,16 +70,17 @@ class WebDriverSelectFormSteps {
         }
     }
 
+    //======================================================================================================================
     @When(
             value = "I deselect <<optionLocator>> from the select element <<elementLocator>>",
             description = "Deselect an element from a drop-down or multi-select using an option locator.\n" +
-                          "Option locators provide different ways of specifying a select element (e.g., label=, value=, index=).\n" +
-                          "If no option locator prefix is provided, a match on the label will be attempted."
+                    "Option locators provide different ways of specifying a select element (e.g., label=, value=, index=).\n" +
+                    "If no option locator prefix is provided, a match on the label will be attempted."
     )
-    fun deselectSelectItem (
+    fun deselectSelectItem(
             @Param(
                     description = "This parameter provide different ways of specifying the element to select (e.g., label=, value=, index=).\n" +
-                                  "If no option locator prefix is provided, a match on the label will be attempted."
+                            "If no option locator prefix is provided, a match on the label will be attempted."
             )
             optionLocator: String,
             @Param(
@@ -125,3 +126,4 @@ class WebDriverSelectFormSteps {
         }
     }
 }
+

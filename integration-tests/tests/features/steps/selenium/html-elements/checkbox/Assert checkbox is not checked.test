@@ -1,0 +1,6 @@
+test-def: Assert checkbox is not checked
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I click the element <<id=checkbox1>>
+    step: Then the element <<id=checkbox1>> is not checked
+    step: Then the element <<id=checkbox2>> is not checked
