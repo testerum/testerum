@@ -1,0 +1,13 @@
+test-def: Assert multi-select is selected by value=
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I select <<value=11>> from the select element <<#multiselect>>
+    step: When I select <<value=second_option_one>> from the select element <<#multiselect>>
+    step: When I select <<value=second_option_three>> from the select element <<#multiselect>>
+    step: Then the Control Text should be <<Option One, Second Option One, Second Option Three>>
+    step: Then the option <<value=11>> from the select element <<#multiselect>> should be selected
+    step: Then the option <<value=second_option_one>> from the select element <<#multiselect>> should be selected
+    step: Then the option <<value=second_option_three>> from the select element <<#multiselect>> should be selected
+    step: Then the option <<value=12>> from the select element <<#multiselect>> should not be selected
+    step: Then the option <<value=13>> from the select element <<#multiselect>> should not be selected
+    step: Then the option <<value=second_option_two>> from the select element <<#multiselect>> should not be selected

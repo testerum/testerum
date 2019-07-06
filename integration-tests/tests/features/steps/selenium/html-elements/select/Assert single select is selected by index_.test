@@ -1,0 +1,9 @@
+test-def: Assert single select is selected by index=
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I select <<index=1>> from the select element <<#select>>
+    step: When I select <<index=2>> from the select element <<#select>>
+    step: Then the Control Text should be <<Option Three>>
+    step: Then the option <<index=2>> from the select element <<#select>> should be selected
+    step: Then the option <<index=0>> from the select element <<#select>> should not be selected
+    step: Then the option <<index=1>> from the select element <<#select>> should not be selected

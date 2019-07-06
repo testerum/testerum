@@ -1,0 +1,7 @@
+test-def: Multi-select select by label=
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I select <<label=Option One>> from the select element <<#multiselect>>
+    step: When I select <<label=Second Option One>> from the select element <<#multiselect>>
+    step: When I select <<label=Second Option Three>> from the select element <<#multiselect>>
+    step: Then the Control Text should be <<Option One, Second Option One, Second Option Three>>

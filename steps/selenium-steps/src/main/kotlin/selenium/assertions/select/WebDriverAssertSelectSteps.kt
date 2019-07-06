@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.Select
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
-import selenium_steps_support.service.text_match.TextMatcherService
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
 class WebDriverAssertSelectSteps {
@@ -57,7 +56,11 @@ class WebDriverAssertSelectSteps {
                     throw AssertionError("the index value [$elementLocator] should be a number")
                 }
 
-                val indexText = select.allSelectedOptions[itemIndex].getAttribute("value");
+                if (itemIndex > select.options.size) {
+                    throw AssertionError("the index value [$elementLocator] is bigger then the number of select options")
+                }
+
+                val indexText = select.options[itemIndex].getAttribute("value");
                 val isItemWithTextSelected = isItemWithTextSelected(indexText, allSelectedOptions)
 
                 if (isItemWithTextSelected) {
@@ -71,7 +74,7 @@ class WebDriverAssertSelectSteps {
                 val actualLabel = selectedOption.getText()
                 if (optionLocator.startsWith("label=")) {
                     val expectedLabel = optionLocator.removePrefix("label=")
-                    if(TextMatcherService.matches(expectedLabel, actualLabel)) {
+                    if(expectedLabel == actualLabel) {
                         return@executeWebDriverStep;
                     }
                 }
@@ -79,13 +82,13 @@ class WebDriverAssertSelectSteps {
                 if (optionLocator.startsWith("value=")) {
                     val actualValue = selectedOption.getAttribute("value")
                     val expectedValue = optionLocator.removePrefix("value=")
-                    if(TextMatcherService.matches(expectedValue, actualValue)) {
+                    if(expectedValue == actualValue) {
                         return@executeWebDriverStep;
                     }
                 }
 
                 val expectedLabel = optionLocator
-                if(TextMatcherService.matches(expectedLabel, actualLabel)) {
+                if(expectedLabel == actualLabel) {
                     return@executeWebDriverStep;
                 }
             }
@@ -157,7 +160,7 @@ class WebDriverAssertSelectSteps {
                     throw AssertionError("the index value [$elementLocator] should be a number")
                 }
 
-                val indexText = select.allSelectedOptions[itemIndex].getAttribute("value");
+                val indexText = select.options[itemIndex].getAttribute("value");
                 val isItemWithTextSelected = isItemWithTextSelected(indexText, allSelectedOptions)
 
                 if (!isItemWithTextSelected) {
@@ -171,7 +174,7 @@ class WebDriverAssertSelectSteps {
                 val actualLabel = selectedOption.getText()
                 if (optionLocator.startsWith("label=")) {
                     val expectedLabel = optionLocator.removePrefix("label=")
-                    if(TextMatcherService.matches(expectedLabel, actualLabel)) {
+                    if(expectedLabel == actualLabel) {
                         throw AssertionError("the option with label [$expectedLabel] should be selected, but is not")
                     }
                 }
@@ -179,13 +182,13 @@ class WebDriverAssertSelectSteps {
                 if (optionLocator.startsWith("value=")) {
                     val actualValue = selectedOption.getAttribute("value")
                     val expectedValue = optionLocator.removePrefix("value=")
-                    if(TextMatcherService.matches(expectedValue, actualValue)) {
+                    if(expectedValue == actualValue) {
                         throw AssertionError("the option with value [$expectedValue] should be selected, but is not")
                     }
                 }
 
                 val expectedLabel = optionLocator
-                if(TextMatcherService.matches(expectedLabel, actualLabel)) {
+                if(expectedLabel == actualLabel) {
                     throw AssertionError("the option with label [$expectedLabel] should be selected, but is not")
                 }
             }
