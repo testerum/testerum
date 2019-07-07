@@ -1,11 +1,6 @@
 package selenium_steps_support.service.text_match
 
-import selenium_steps_support.service.text_match.matchers.CaseInsensitiveTextMatcher
-import selenium_steps_support.service.text_match.matchers.ContainsCaseInsensitiveTextMatcher
-import selenium_steps_support.service.text_match.matchers.ContainsCaseSensitiveTextMatcher
-import selenium_steps_support.service.text_match.matchers.ExactTextMatcher
-import selenium_steps_support.service.text_match.matchers.RegexTextMatcher
-import selenium_steps_support.service.text_match.matchers.TextMatcher
+import selenium_steps_support.service.text_match.matchers.*
 
 object TextMatcherService {
 
@@ -31,8 +26,11 @@ object TextMatcherService {
 
         val textMatcherType: String = expectedTextMatchExpression.substring(0, indexOfEquals)
 
-        val textMatcher = (prefixToTextMatcherMap[textMatcherType]
-                ?: throw IllegalArgumentException("invalid text match expression; it must start with one of ${validPrefixes}, but got $textMatcherType"))
+        val textMatcher = prefixToTextMatcherMap[textMatcherType]
+
+        if(textMatcher == null) {
+            return ContainsCaseSensitiveTextMatcher.matches(expectedTextMatchExpression, actualText)
+        }
 
         val expressionWithoutPrefix = if (indexOfEquals == expectedTextMatchExpression.length - 1) {
             ""

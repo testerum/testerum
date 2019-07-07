@@ -39,7 +39,15 @@
             var rect = e.target.getBoundingClientRect();
             var x = e.clientX - rect.left; //x position within the element.
             var y = e.clientY - rect.top;  //y position within the element.
-            setControlText(x+","+y);
+            setControlText("click="+x+","+y);
+        }
+
+        function showDoubleClickXY(e) {
+            // e = Mouse click event.
+            var rect = e.target.getBoundingClientRect();
+            var x = e.clientX - rect.left; //x position within the element.
+            var y = e.clientY - rect.top;  //y position within the element.
+            setControlText("double-click="+x+","+y);
         }
     </script>
 </head>
@@ -57,7 +65,7 @@
             <div id="control-panel"></div>
         </fieldset>
 
-        <section id="forms" onclick="showClickXY(event)">
+        <section id="forms" onclick="showClickXY(event)" ondblclick="showDoubleClickXY(event)">
             <header><h1>Form elements</h1></header>
             <form>
                 <fieldset>
