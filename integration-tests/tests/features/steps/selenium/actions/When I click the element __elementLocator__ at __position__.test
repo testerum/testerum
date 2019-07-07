@@ -1,0 +1,5 @@
+test-def: When I click the element <<elementLocator>> at <<position>>
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I click the element <<id=forms>> at <<50,55>>
+    step: Then the Control Text should be <<957,111.8125>>

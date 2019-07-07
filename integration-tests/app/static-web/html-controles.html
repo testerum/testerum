@@ -33,6 +33,14 @@
             const responseText = prompt("Hello! I am an prompt box!");
             setControlText("Confirm box was closed! '"+ responseText + "' was inserted.")
         }
+
+        function showClickXY(e) {
+            // e = Mouse click event.
+            var rect = e.target.getBoundingClientRect();
+            var x = e.clientX - rect.left; //x position within the element.
+            var y = e.clientY - rect.top;  //y position within the element.
+            setControlText(x+","+y);
+        }
     </script>
 </head>
 <body>
@@ -49,7 +57,7 @@
             <div id="control-panel"></div>
         </fieldset>
 
-        <section id="forms">
+        <section id="forms" onclick="showClickXY(event)">
             <header><h1>Form elements</h1></header>
             <form>
                 <fieldset>
@@ -164,9 +172,9 @@
                 <fieldset id="forms__radio">
                     <legend>Radio buttons</legend>
                     <ul class="list list--bare">
-                        <li><label for="radio1"><input id="radio1" name="radio" type="radio" class="radio" checked="checked"> Option 1</label></li>
-                        <li><label for="radio2"><input id="radio2" name="radio" type="radio" class="radio"> Option 2</label></li>
-                        <li><label for="radio3"><input id="radio3" name="radio" type="radio" class="radio"> Option 3</label></li>
+                        <li><label for="radio1"><input id="radio1" name="radio" type="radio" class="radio" checked="checked" onchange="this.checked ? setControlText('Radio Button Option 1'): null">Option 1</label></li>
+                        <li><label for="radio2"><input id="radio2" name="radio" type="radio" class="radio" onchange="this.checked ? setControlText('Radio Button Option 2'): null">Option 2</label></li>
+                        <li><label for="radio3"><input id="radio3" name="radio" type="radio" class="radio" onchange="this.checked ? setControlText('Radio Button Option 3'): null">Option 3</label></li>
                     </ul>
                 </fieldset>
 
@@ -251,7 +259,7 @@
                 <header><h2>Images</h2></header>
                 <div>
                     <h3>No <code>&lt;figure&gt;</code> element</h3>
-                    <p><img src="http://placekitten.com/480/480" alt="Image alt text"></p>
+                    <p><img id="simpleImage" src="http://placekitten.com/480/480" alt="Image alt text"></p>
                     <h3>Wrapped in a <code>&lt;figure&gt;</code> element, no <code>&lt;figcaption&gt;</code></h3>
                     <figure><img src="http://placekitten.com/420/420" alt="Image alt text"></figure>
                     <h3>Wrapped in a <code>&lt;figure&gt;</code> element, with a <code>&lt;figcaption&gt;</code></h3>
