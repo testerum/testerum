@@ -1,0 +1,5 @@
+step-def: When I delete the final dot and the last two words
+
+    step: When I press the special keys <<CONTROL+SHIFT+LEFT>> on the element <<css=input>>
+    step: When I press the special keys <<CONTROL+SHIFT+LEFT>> on the element <<css=input>>
+    step: When I press the special keys <<BACK_SPACE>> on the element <<css=input>>
