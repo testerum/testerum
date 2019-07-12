@@ -49,7 +49,7 @@
                 <!-- DESCRIPTION -->
                 <div class="my-line" *ngIf="model.description">
                     <label class="my-label label-size">Description</label>
-                    <div class="my-value" [innerHtml]="model.description | markdown"></div>
+                    <div class="my-value pre-formatted" [innerHtml]="model.description | markdown"></div>
                 </div>
 
             </form>

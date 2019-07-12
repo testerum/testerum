@@ -180,6 +180,10 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
         currentWebDriver.switchTo().defaultContent()
     }
 
+    fun closeWindow() {
+        currentWebDriver.close()
+    }
+
     fun waitUntil(block: (WebDriver) -> Boolean) {
         val waitTimeoutMillis = runnerSettingsManager.getRequiredSetting(SETTING_KEY_WAIT_TIMEOUT_MILLIS).resolvedValue.toLong()
 

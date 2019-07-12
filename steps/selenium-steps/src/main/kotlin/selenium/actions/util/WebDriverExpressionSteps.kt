@@ -31,9 +31,9 @@ class WebDriverExpressionSteps {
 
     @When(
             value = "I execute the WebDriver JS script <<script>>",
-            description = "Executes a custom JavaScript script that has access to the WebDriver and all the variables in the test scope.\n\n" +
-                    "This script is not executed in the browser context.\n\n" +
-                    "In this scritp context you have access to the following variables:\n\n" +
+            description = "Executes a custom JavaScript script that has access to the WebDriver and all the variables in the test scope.\n" +
+                    "This script is not executed in the browser context.\n" +
+                    "In this scritp context you have access to the following variables:\n" +
                     "  - ``webDriver`` - this is a WebDriver instance and allows you to execute any Selenium action you want (e.g. ``webDriver.findElement(By.id('submit').click();``).\n" +
                     "  - ``testVariables`` - this is a Map with all the variables defined in this test.\n"
     )

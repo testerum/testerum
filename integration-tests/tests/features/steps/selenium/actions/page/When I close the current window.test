@@ -1,0 +1,4 @@
+test-def: When I close the current window
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I close the current window

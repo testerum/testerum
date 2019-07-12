@@ -13,7 +13,7 @@
              [style.max-height]="maxHeight"
              [style.width]="width"
              [style.height]="height"
-             style="overflow: auto"
+             style="overflow: auto; white-space: nowrap;"
              [innerHtml]="message | markdown"
              (mouseenter)="show($event);"
              (mouseleave)="waitAndHide($event);"></div>

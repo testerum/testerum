@@ -22,12 +22,12 @@ body .ui-overlaypanel .ui-overlaypanel-content {
         ul {
             padding-left: 1.3em;
             li {
-                margin-bottom: 5px;
+                white-space: pre-wrap;
             }
         }
 
         p {
-            margin-bottom: 10px;
+            white-space: pre-wrap;
         }
     }
 }

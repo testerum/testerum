@@ -1,7 +1,8 @@
-package selenium.actions.util
+package selenium.actions.page
 
 import com.testerum.api.annotations.steps.Given
 import com.testerum.api.annotations.steps.Param
+import com.testerum.api.annotations.steps.When
 import com.testerum.api.services.TesterumServiceLocator
 import org.openqa.selenium.Dimension
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
@@ -9,7 +10,7 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
 
 
-class WebDriverBrowserSteps {
+class WebDriverPageSteps {
 
     private val logger = TesterumServiceLocator.getTesterumLogger()
 
@@ -36,7 +37,7 @@ class WebDriverBrowserSteps {
         val resolvedBrowserHeight = if(browserHeight != null && 0 < browserHeight) browserHeight else 1024;
         logger.info(
                 "resizing browser window\n" +
-                "--------\n" +
+                "-----------------------\n" +
                 "browserWidth : $resolvedBrowserWidth\n" +
                 "browserHeight : $resolvedBrowserHeight\n" +
                 "\n"
@@ -47,5 +48,18 @@ class WebDriverBrowserSteps {
         webDriverManager.executeWebDriverStep { driver ->
             driver.manage().window().setSize(browserDimension)
         }
+    }
+
+    @When(
+            value = "I close the current window",
+            description = "Close the current window, quitting the browser if it's the last window currently open.\n" +
+                    "There is no need to close the initial window, IDE will re-use it; closing it may cause a performance penalty on the test.\n"
+    )
+    fun closeWindow() {
+        logger.info(
+            "close current window\n"
+        )
+
+        webDriverManager.closeWindow()
     }
 }
