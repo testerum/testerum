@@ -1,0 +1,6 @@
+step-def: When I copy my name from the beginning and paste it at the end
+
+    step: When I press the special keys <<CONTROL+SHIFT+LEFT>> on the element <<css=input>>
+    step: When I press the special keys <<CONTROL+c>> on the element <<css=input>>
+    step: When I press the special keys <<END>> on the element <<css=input>>
+    step: When I press the special keys <<CONTROL+v>> on the element <<css=input>>

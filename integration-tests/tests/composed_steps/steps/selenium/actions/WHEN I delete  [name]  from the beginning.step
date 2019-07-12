@@ -1,0 +1,5 @@
+step-def: When I delete <<name: TEXT>> from the beginning
+
+    step: When I press the special keys <<HOME>> on the element <<css=input>>
+    step: When I press the special keys <<CONTROL+SHIFT+RIGHT>> on the element <<css=input>>
+    step: When I press the special keys <<BACK_SPACE>> on the element <<css=input>>

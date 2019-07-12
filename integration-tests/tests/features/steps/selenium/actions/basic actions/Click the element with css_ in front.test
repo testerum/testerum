@@ -1,0 +1,5 @@
+test-def: Click the element with css= in front
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I click the element <<css=#element_click>>
+    step: Then in the Control Panel Text should be the text <<Clickable element>>
