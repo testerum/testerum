@@ -28,12 +28,12 @@ class WebDriverPopupSteps {
 
 //======================================================================================================================
     @When(
-        value = "I press the OK button on the alert, confirm or prompt popup",
-        description = "Press the OK button on a native browser alert, confirm or prompt popup."
+        value = "I press OK button on the alert, confirm or prompt popup",
+        description = "Press OK button on a native browser alert, confirm or prompt popup."
     )
     fun pressOkButtonOnPopup() {
         logger.info(
-                "press the OK button on the alert, confirm or prompt\n"
+                "press OK button on the alert, confirm or prompt\n"
         )
 
         webDriverManager.waitUntil { driver ->
@@ -51,12 +51,12 @@ class WebDriverPopupSteps {
 
 //======================================================================================================================
     @When(
-        value = "I press the Cancel button on the confirm or prompt popup",
-        description = "Press the OK button on a native browser alert, confirm or prompt popup."
+        value = "I press Cancel button on the confirm or prompt popup",
+        description = "Press Cancel button on a native browser alert, confirm or prompt popup."
     )
     fun pressCancelButtonOnPopup() {
         logger.info(
-                "press the Cancel button on the alert, confirm or prompt\n"
+                "press Cancel button on the alert, confirm or prompt\n"
         )
 
         webDriverManager.waitUntil { driver ->
@@ -74,7 +74,7 @@ class WebDriverPopupSteps {
 
 //======================================================================================================================
     @When(
-        value = "I set <<text>> in prompt popup",
+        value = "I set <<text>> in the prompt popup",
         description = "Send the text to the prompt popup"
     )
     fun setTextInPromptPopup(

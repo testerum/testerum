@@ -18,7 +18,7 @@ class WebDriverVarsSteps {
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
     @When(
-            value = "I save into the variable <<varName>> the text of element <<elementLocator>>",
+            value = "I save into the variable <<varName>> the text of the element <<elementLocator>>",
             description = "This step extracts the inner text of the given element and saves it into a variable."
     )
     fun saveElementTextIntoVariable(
@@ -55,7 +55,7 @@ class WebDriverVarsSteps {
 
 
     @When(
-            value = "I save into the variable <<varName>> the value of element <<elementLocator>>",
+            value = "I save into the variable <<varName>> the value of the element <<elementLocator>>",
             description = "This step extracts the value of the given element and saves it into a variable."
     )
     fun saveElementValueIntoVariable(

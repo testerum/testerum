@@ -17,7 +17,7 @@ class WebDriverPageSteps {
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
     @Given(
-            value = "the browser width is <<browserWidth>> and height is <<browserHeight>>",
+            value = "the window width is <<browserWidth>> and height is <<browserHeight>>",
             description = "Resize the browser window to the specified width and height in pixels.\n" +
                     "If no values are provided, the default width is 1024px and default height is 700px."
     )
