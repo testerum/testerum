@@ -1,0 +1,3 @@
+step-def: When I navigate to special keys input page
+
+    step: Given the page at url <<http://localhost:10080/actions/special-keys/index.html>> is open

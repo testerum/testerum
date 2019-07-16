@@ -1,0 +1,3 @@
+test-def: Then the element <<elementLocator>> should have the value <<expectedValueExpression>>(need implementation)
+
+    test-properties = <<manual>>

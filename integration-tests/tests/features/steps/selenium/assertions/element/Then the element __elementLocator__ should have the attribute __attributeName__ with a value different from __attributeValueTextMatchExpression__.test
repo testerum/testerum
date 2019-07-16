@@ -1,0 +1,5 @@
+test-def: Then the element <<elementLocator>> should have the attribute <<attributeName>> with a value different from <<attributeValueTextMatchExpression>>
+
+    step: Given the page at url <<https://testerum.com/>> is open
+    step: When I navigate to url <<https://testerum.com/videos/>>
+    step: Then the element <<.play-icon-overlay>> should have the attribute <<class>> with a value different from <<play-icon-overlay-not-matching>>
