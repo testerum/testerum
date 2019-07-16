@@ -8,8 +8,6 @@ import org.openqa.selenium.Dimension
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
-
-
 class WebDriverPageSteps {
 
     private val logger = TesterumServiceLocator.getTesterumLogger()
@@ -17,7 +15,7 @@ class WebDriverPageSteps {
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
     @Given(
-            value = "the window width is <<browserWidth>> and height is <<browserHeight>>",
+            value = "the window width is <<windowWidth>> and height is <<windowHeight>>",
             description = "Resize the browser window to the specified width and height in pixels.\n" +
                     "If no values are provided, the default width is 1024px and default height is 700px."
     )
@@ -26,20 +24,20 @@ class WebDriverPageSteps {
                     description = "This parameter needs to be a number and represents the browser window width in pixels.\n" +
                             "The default value is 1024"
             )
-            browserWidth: Int?,
+            windowWidth: Int?,
             @Param(
                     description = "This parameter needs to be a number and represents the browser window height in pixels.\n" +
                             "The default value is 700"
             )
-            browserHeight: Int?
+            windowHeight: Int?
     ) {
-        val resolvedBrowserWidth = if(browserWidth != null && 0 < browserWidth) browserWidth else 1024;
-        val resolvedBrowserHeight = if(browserHeight != null && 0 < browserHeight) browserHeight else 1024;
+        val resolvedBrowserWidth = if(windowWidth != null && 0 < windowWidth) windowWidth else 1024;
+        val resolvedBrowserHeight = if(windowHeight != null && 0 < windowHeight) windowHeight else 1024;
         logger.info(
                 "resizing browser window\n" +
                 "-----------------------\n" +
-                "browserWidth : $resolvedBrowserWidth\n" +
-                "browserHeight : $resolvedBrowserHeight\n" +
+                "windowWidth : $resolvedBrowserWidth\n" +
+                "windowHeight : $resolvedBrowserHeight\n" +
                 "\n"
         )
 
