@@ -65,7 +65,7 @@
             <div id="control-panel"></div>
         </fieldset>
 
-        <section id="forms" onclick="showClickXY(event)" ondblclick="showDoubleClickXY(event)">
+        <section id="forms">
             <header><h1>Form elements</h1></header>
             <form>
                 <fieldset>
@@ -257,6 +257,11 @@
                     <button id="showAlert" onclick='alert("Hello! I am an alert box!"); setControlText("Alert box was closed!")'>Show Alert</button>
                     <button id="showConfirm" onclick='showConfirmBox()'>Show Confirm</button>
                     <button id="showPrompt" onclick='showPromptBox()'>Show Prompt</button>
+                </div>
+            </fieldset>
+            <fieldset id="click-area" onclick="showClickXY(event)" ondblclick="showDoubleClickXY(event)">
+                <legend>Click Area</legend>
+                <div style="height: 100px">
                 </div>
             </fieldset>
         </section>

@@ -23,7 +23,9 @@
 
 <label>
     Type stuff here, and then press Enter:
-    <input type="text" autofocus style="width: 50em;">
+    <form onsubmit='$("#result").text($("input").val()); return false;'>
+        <input type="text" autofocus style="width: 50em;">
+    </form>
 
     <br/>
 
