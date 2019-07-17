@@ -1,6 +1,9 @@
 test-def: When I navigate to the previous page
 
-    step: Given the page at url <<https://www.google.com/>> is open
-    step: Given the page at url <<https://www.facebook.com/>> is open
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I navigate to url <<{{HTML5_TEST_PAGE_URL}}/actions/special-keys/index.html>>
     step: When I navigate to the previous page
-    step: Then the url of the current page should be <<https://www.google.com/>>
+    step: When I navigate to the next page
+    step: When I navigate to the previous page
+    step: When I wait <<1000>> milliseconds
+    step: Then the element <<#element_click>> should be present

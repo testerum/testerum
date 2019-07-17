@@ -19,62 +19,14 @@ class WebDriverNavigationSteps {
     fun givenThePageAtUrlIsOpen(url: String) {
         logger.info(
                 "opening page\n" +
-                "------------\n" +
-                "url : $url\n" +
-                "\n"
+                        "------------\n" +
+                        "url : $url\n" +
+                        "\n"
         )
 
         webDriverManager.executeWebDriverStep { driver ->
             driver.navigate().to(url)
         }
     }
-
-    @When(
-            value = "I navigate to url <<url>>"
-    )
-    fun whenINavigateToUrl(url: String) {
-        logger.info(
-                "opening page\n" +
-                "------------\n" +
-                "url : $url\n" +
-                "\n"
-        )
-
-        webDriverManager.executeWebDriverStep { driver ->
-            driver.navigate().to(url)
-        }
-    }
-
-    @When(
-            value = "I navigate to the previous page",
-            description = "Goes backward in the browser's history."
-    )
-    fun navigateToThePreviousPage() {
-        logger.info("navigating to the previous page\n\n")
-
-        webDriverManager.executeWebDriverStep { driver ->
-            driver.navigate().back()
-        }
-    }
-
-    @When(
-            value = "I navigate to the next page",
-            description = "Goes forward in the browser's history."
-    )
-    fun navigateToTheNextPage() {
-        logger.info("navigating to the next page\n\n")
-
-        webDriverManager.executeWebDriverStep { driver ->
-            driver.navigate().forward()
-        }
-    }
-
-    @When("I refresh the current page")
-    fun refreshTheCurrentPage() {
-        logger.info("refreshing the current page\n\n")
-
-        webDriverManager.executeWebDriverStep { driver ->
-            driver.navigate().refresh()
-        }
-    }
+//----------------------------------------------------------------------------------------------------------------------
 }
