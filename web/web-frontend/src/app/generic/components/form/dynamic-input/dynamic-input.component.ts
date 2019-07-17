@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {InputTypeEnum} from "./model/input-type.enum";
 import {SelectItem} from "primeng/api";
+import {StringUtils} from "../../../../utils/string-utils.util";
 
 @Component({
     selector: 'dynamic-input',
@@ -32,6 +33,13 @@ export class DynamicInputComponent implements OnInit{
     onValueChange() {
         this.valueChange.emit(this.value);
         this.change.emit(this.value);
+    }
+
+    onNumberChange() {
+        if (StringUtils.isEmpty(this.value)) {
+            this.value = this.defaultValue;
+        }
+        this.onValueChange();
     }
 
     getValueAsBoolean(): boolean {
