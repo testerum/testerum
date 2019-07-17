@@ -1,6 +1,0 @@
-test-def: Navigate to the previous page
-
-    step: Given the page at url <<https://testerum.com/>> is open
-    step: When I click the element <<.nav-link>>
-    step: When I navigate to the previous page
-    step: Then the element <<.try-now-button>> should be enabled

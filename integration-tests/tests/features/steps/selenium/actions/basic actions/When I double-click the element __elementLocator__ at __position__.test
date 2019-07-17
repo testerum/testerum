@@ -1,0 +1,5 @@
+test-def: When I double-click the element <<elementLocator>> at <<position>>
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I double-click the element <<#click-area>> at <<50,60>>
+    step: Then the text of element <<#control-panel>> should be <<double-click=960,127.25>>

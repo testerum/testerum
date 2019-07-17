@@ -1,9 +1,0 @@
-test-def: window switching
-
-    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/actions/contexts/windows/index.html>> is open
-    step: Then the title of the current page should be <<Windows switch - main window>>
-    step: When I click the element <<id=open-popup>>
-    step: When I switch the context to the window with the title <<contains=popup>>
-    step: Then the title of the current page should be <<Windows switch - popup>>
-    step: When I switch the context to the window with the title <<contains=main>>
-    step: Then the title of the current page should be <<Windows switch - main window>>

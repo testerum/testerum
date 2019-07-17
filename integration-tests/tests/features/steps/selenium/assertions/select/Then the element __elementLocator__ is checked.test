@@ -1,0 +1,6 @@
+test-def: Then the element <<elementLocator>> is checked
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I click the element <<id=radio2>>
+    step: Then the Control Text should be <<Radio Button Option 2>>
+    step: Then the element <<id=radio2>> is checked

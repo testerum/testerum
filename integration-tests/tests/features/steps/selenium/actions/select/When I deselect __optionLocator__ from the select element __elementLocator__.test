@@ -1,0 +1,6 @@
+test-def: When I deselect <<optionLocator>> from the select element <<elementLocator>>
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I select <<value=11>> from the select element <<#multiselect>>
+    step: When I deselect <<value=11>> from the select element <<#multiselect>>
+    step: Then the Control Text should be <<{{""}}>>

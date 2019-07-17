@@ -1,6 +1,6 @@
 test-def: When I navigate to the previous page
 
-    step: Given the page at url <<https://testerum.com/>> is open
-    step: When I click the element <<.nav-link>>
+    step: Given the page at url <<https://www.google.com/>> is open
+    step: Given the page at url <<https://www.facebook.com/>> is open
     step: When I navigate to the previous page
-    step: Then the element <<.try-now-button>> should be enabled
+    step: Then the url of the current page should be <<https://www.google.com/>>

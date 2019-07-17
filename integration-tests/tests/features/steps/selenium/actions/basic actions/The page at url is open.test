@@ -1,4 +1,0 @@
-test-def: The page at url is open
-
-    step: Given I am at the "HTML 5 TEST PAGE"
-    step: Then the element <<#forms__input>> should be enabled

@@ -1,0 +1,3 @@
+test-def: Then the option <<optionLocator>> from the select element <<elementLocator>> should be selected
+
+    test-properties = <<manual>>
