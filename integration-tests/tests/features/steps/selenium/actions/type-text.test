@@ -1,6 +1,0 @@
-test-def: type-text
-
-    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/actions/type-text/index.html>> is open
-    step: When I type <<, world>> into the field <<input>>
-    step: When I type <<!>> into the field <<input>>
-    step: Then the element <<css=input>> should have the value <<Hello, world!>>

@@ -1,6 +1,0 @@
-test-def: Navigate to url
-
-    step: Given I am on google page
-    step: When I navigate to HTML TEST PAGE
-    step: Then the url of the current page should be <<{{HTML5_TEST_PAGE_URL}}/html-controles.html>>
-    step: Then the element <<#element_click>> should be enabled

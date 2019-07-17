@@ -1,7 +1,0 @@
-test-def: When I clear the text from the field
-
-    step: Given the page at url <<{{url}}>> is open
-        var url = <<https://www.google.com/search?safe=active&hl=ro&source=hp&ei=zBohXaW-Bs7QwALIvpvoDw&q=dacia+duster&oq=dacia+duster&gs_l=psy-ab.3..0i203l8j0j0i203.5967.13076..13164...4.0..0.76.751.16......0....1..gws-wiz.....10..35i39.gd3y6iZMBno>>
-    step: When I clear the text from the field <<.gLFyf>>
-    step: When I type <<testerum>> into the field <<.gLFyf>>
-    step: Then the element <<.LC20lb>> should be enabled

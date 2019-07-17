@@ -1,5 +1,0 @@
-test-def: Given the browser width is <<browserWidth>> and height is <<browserHeight>>
-
-    step: Given I am at the "Browser Size Test Page"
-    step: Given the window width is <<456>> and height is <<345>>
-    step: Then the browser width is <<456>> and the height is <<345>>

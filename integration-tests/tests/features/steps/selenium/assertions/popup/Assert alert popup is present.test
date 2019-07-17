@@ -1,5 +1,0 @@
-test-def: Assert alert popup is present
-
-    step: Given I am at the "HTML 5 TEST PAGE"
-    step: When I click the element <<#showAlert>>
-    step: Then an alert, confirm or prompt is present
