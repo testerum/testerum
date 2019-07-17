@@ -31,14 +31,14 @@ class WebDriverPageSteps {
             )
             windowHeight: Int?
     ) {
-        val resolvedBrowserWidth = if(windowWidth != null && 0 < windowWidth) windowWidth else 1024;
-        val resolvedBrowserHeight = if(windowHeight != null && 0 < windowHeight) windowHeight else 1024;
+        val resolvedBrowserWidth = if (windowWidth != null && 0 < windowWidth) windowWidth else 1024;
+        val resolvedBrowserHeight = if (windowHeight != null && 0 < windowHeight) windowHeight else 1024;
         logger.info(
                 "resizing browser window\n" +
-                "-----------------------\n" +
-                "windowWidth : $resolvedBrowserWidth\n" +
-                "windowHeight : $resolvedBrowserHeight\n" +
-                "\n"
+                        "-----------------------\n" +
+                        "windowWidth : $resolvedBrowserWidth\n" +
+                        "windowHeight : $resolvedBrowserHeight\n" +
+                        "\n"
         )
 
         val browserDimension = Dimension(resolvedBrowserWidth, resolvedBrowserHeight)
@@ -48,6 +48,7 @@ class WebDriverPageSteps {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I close the current window",
             description = "Close the current window, quitting the browser if it's the last window currently open.\n" +
@@ -55,9 +56,64 @@ class WebDriverPageSteps {
     )
     fun closeWindow() {
         logger.info(
-            "close current window\n"
+                "close current window\n"
         )
 
         webDriverManager.closeWindow()
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+    @When(
+            value = "I navigate to url <<url>>"
+    )
+    fun whenINavigateToUrl(url: String) {
+        logger.info(
+                "opening page\n" +
+                        "------------\n" +
+                        "url : $url\n" +
+                        "\n"
+        )
+
+        webDriverManager.executeWebDriverStep { driver ->
+            driver.navigate().to(url)
+        }
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    @When(
+            value = "I navigate to the previous page",
+            description = "Goes backward in the browser's history."
+    )
+    fun navigateToThePreviousPage() {
+        logger.info("navigating to the previous page\n\n")
+
+        webDriverManager.executeWebDriverStep { driver ->
+            driver.navigate().back()
+        }
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    @When("I refresh the current page")
+    fun refreshTheCurrentPage() {
+        logger.info("refreshing the current page\n\n")
+
+        webDriverManager.executeWebDriverStep { driver ->
+            driver.navigate().refresh()
+        }
+    }
+//----------------------------------------------------------------------------------------------------------------------
+    @When(
+            value = "I navigate to the next page",
+            description = "Goes forward in the browser's history."
+    )
+    fun navigateToTheNextPage() {
+        logger.info("navigating to the next page\n\n")
+
+        webDriverManager.executeWebDriverStep { driver ->
+            driver.navigate().forward()
+        }
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+
 }

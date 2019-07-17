@@ -1,4 +1,6 @@
-test-def: Then the element <<elementLocator>> should not have the CSS class <<cssClass>>
+test-def: Then the element <<elementLocator>> should not have the CSS class <<cssClass>>(need implementation)
+
+    test-properties = <<manual>>
 
     step: Given the page at url <<https://testerum.com/>> is open
     step: When I navigate to url <<https://testerum.com/videos/>>
