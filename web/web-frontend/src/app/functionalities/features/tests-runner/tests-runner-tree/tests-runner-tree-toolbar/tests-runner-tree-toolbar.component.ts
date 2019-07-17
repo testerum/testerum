@@ -5,6 +5,8 @@ import {JsonTreeExpandUtil} from "../../../../../generic/components/json-tree/ut
 import {JsonTreeModel} from "../../../../../generic/components/json-tree/model/json-tree.model";
 import {RunnerComposedStepTreeNodeModel} from "../model/runner-composed-step-tree-node.model";
 import {RunnerTestTreeNodeModel} from "../model/runner-test-tree-node.model";
+import {RunnerTreeService} from "../runner-tree.service";
+import {RunConfig} from "../../../../config/run-config/model/runner-config.model";
 
 @Component({
     selector: 'tests-runner-tree-toolbar',
@@ -20,7 +22,8 @@ export class TestsRunnerTreeToolbarComponent implements OnInit {
 
     model = new RunnerTreeFilterModel();
 
-    constructor(private testRunnerService: TestsRunnerService) {}
+    constructor(private testRunnerService: TestsRunnerService,
+                private runnerTreeService: RunnerTreeService) {}
 
     ngOnInit() {}
 
@@ -31,9 +34,21 @@ export class TestsRunnerTreeToolbarComponent implements OnInit {
             this.testRunnerService.reRunTests()
         }
     }
-
+    
+    onReRunFailedTests() {
+        let runConfig = new RunConfig();
+        runConfig.name = "Failed Tests Execution";
+        runConfig.settings = this.testRunnerService.lastRunConfig.settings;
+        runConfig.pathsToInclude = this.runnerTreeService.getFailedTestsPaths();
+        this.testRunnerService.runRunConfig(runConfig);
+    }
+    
     areTestRunning(): boolean {
         return this.testRunnerService.areTestRunning;
+    }
+
+    shouldShowRerunFailedTestButton(): boolean {
+        return !this.testRunnerService.areTestRunning && this.runnerTreeService.hasFailedTests;
     }
 
     onToggleFolders() {
@@ -81,7 +96,6 @@ export class TestsRunnerTreeToolbarComponent implements OnInit {
 
     onExpandToTests() {
         JsonTreeExpandUtil.expandTreeToNodeType(this.treeModel,  RunnerTestTreeNodeModel);
-
     }
 
     onExpandToSteps() {

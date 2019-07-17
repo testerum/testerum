@@ -11,6 +11,11 @@
                        [class.error_color]="areTestRunning()"
                        aria-hidden="true"></i>
                 </div>
+                <div *ngIf="shouldShowRerunFailedTestButton()" title="Rerun Failed Tests"
+                     class="btn btn-default btn-xs btn-group"
+                     (click)="onReRunFailedTests()">
+                    <i class="fa_my-run error_color" aria-hidden="true"></i>
+                </div>
             </div>
         </div>
 

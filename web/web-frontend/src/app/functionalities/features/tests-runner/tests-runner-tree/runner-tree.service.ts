@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Injectable} from "@angular/core";
+import {Injectable} from "@angular/core";
 import {RunnerTreeNodeModel} from "./model/runner-tree-node.model";
 import {RunnerEvent} from "../../../../model/test/event/runner.event";
 import {ExecutionStatusEnum} from "../../../../model/test/event/enums/execution-status.enum";
@@ -25,11 +25,14 @@ import {FeatureEndEvent} from "../../../../model/test/event/feature-end.event";
 import {RunnerTreeFilterModel} from "./model/filter/runner-tree-filter.model";
 import {RunnerStoppedEvent} from '../../../../model/test/event/runner-stopped.event';
 import {JsonTreeService} from "../../../../generic/components/json-tree/json-tree.service";
+import {Path} from "../../../../model/infrastructure/path/path.model";
 
 @Injectable()
 export class RunnerTreeService {
 
     treeModel: JsonTreeModel = new JsonTreeModel();
+    hasFailedTests: boolean = false;
+
     private treeRootNode: RunnerRootTreeNodeModel;
     private treeTestsNodes: RunnerTestTreeNodeModel[] = [];
     private treeTestsWithFoldersNodes: RunnerTestTreeNodeModel[] = [];
@@ -126,7 +129,7 @@ export class RunnerTreeService {
 
             switch (runnerEvent.status) {
                 case ExecutionStatusEnum.PASSED: this.executionPieService.pieModel.incrementPassed(); break;
-                case ExecutionStatusEnum.FAILED: this.executionPieService.pieModel.incrementFailed(); break;
+                case ExecutionStatusEnum.FAILED: this.executionPieService.pieModel.incrementFailed(); this.hasFailedTests = true; break;
                 case ExecutionStatusEnum.DISABLED: this.executionPieService.pieModel.incrementDisabled(); break;
                 case ExecutionStatusEnum.UNDEFINED: this.executionPieService.pieModel.incrementUndefined(); break;
                 case ExecutionStatusEnum.SKIPPED: this.executionPieService.pieModel.incrementSkipped(); break;
@@ -198,6 +201,7 @@ export class RunnerTreeService {
         this.allNodesMapByEventKey = RunnerTreeUtil.getAllNodesMapByEventKey(this.treeRootNode);
 
         this.restPieData(this.executionPieService.pieModel);
+        this.hasFailedTests = false;
     }
 
     private restPieData(pieModel: ExecutionPieModel) {
@@ -218,5 +222,17 @@ export class RunnerTreeService {
         } else {
             ArrayUtil.replaceElementsInArray(this.treeRootNode.children, this.treeTestsNodes);
         }
+    }
+
+    getFailedTestsPaths(): Path[] {
+        let failedTestsPath: Path[] = [];
+
+        this.allNodesMapByEventKey.forEach((value, key) => {
+            if (value instanceof RunnerTestTreeNodeModel && value.state == ExecutionStatusEnum.FAILED) {
+                failedTestsPath.push(value.path)
+            }
+        });
+
+        return failedTestsPath;
     }
 }
