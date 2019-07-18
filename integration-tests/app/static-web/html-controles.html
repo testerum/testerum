@@ -77,8 +77,8 @@
                     </p>
                     <div id="element_double_click"
                          style="border: 1px black solid; width: 10em; text-align: center; padding: .2em; cursor: pointer;"
-                         ondblclick="setControlText(this.innerHTML)">Double Clickable element</div>
-                    </p>
+                         ondblclick="setControlText(this.innerHTML)">Double Clickable element
+                    </div>
 
                 </fieldset>
 
@@ -259,12 +259,22 @@
                     <button id="showPrompt" onclick='showPromptBox()'>Show Prompt</button>
                 </div>
             </fieldset>
+
             <fieldset id="click-area" onclick="showClickXY(event)" ondblclick="showDoubleClickXY(event)">
                 <legend>Click Area</legend>
                 <div style="height: 100px">
                 </div>
             </fieldset>
+
+            <fieldset id="hover_action">
+                <legend><b>Hover Buttons</b></legend>
+                <div style="display: flex">
+                    <button id="showAlertWhenMouseOver" onmouseover='alert("Hello! I am an alert box only when the mouse is over!");
+                    setControlText("Alert box was closed")'>Show Alert</button>
+                </div>
+            </fieldset>
         </section>
+
 
         <section id="embedded">
             <header><h1>Embedded content</h1></header>
