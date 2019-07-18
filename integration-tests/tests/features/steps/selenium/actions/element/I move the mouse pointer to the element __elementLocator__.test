@@ -1,0 +1,5 @@
+test-def: I move the mouse pointer to the element <<elementLocator>>
+
+    step: Given the page at url <<https://www.pigandhen.nl/>> is open
+    step: When I move the mouse pointer to the element <<.wsubmenu>>
+    step: When I wait <<5000>> milliseconds
