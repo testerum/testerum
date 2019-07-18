@@ -13,9 +13,9 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager
 class WebDriverWaitSteps {
 
     private val logger = TesterumServiceLocator.getTesterumLogger()
-
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I wait until the page title matches <<textMatchExpression>>",
             description = "Wait until the title of the current page matches the given expression, or the timeout is exceeded."
@@ -38,6 +38,7 @@ class WebDriverWaitSteps {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I wait until the page title does not match <<textMatchExpression>>",
             description = "Wait until the title of the current page does not match the given expression, or the timeout is exceeded."
@@ -60,6 +61,7 @@ class WebDriverWaitSteps {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I wait until the element <<elementLocator>> is present",
             description = "Wait until the given element is present on the page, or the timeout is exceeded."
@@ -80,6 +82,7 @@ class WebDriverWaitSteps {
         webDriverManager.waitForElementPresent(elementLocator)
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I wait until the element <<elementLocator>> is not present",
             description = "Wait until the given element is not present on the page, or the timeout is exceeded."
@@ -102,6 +105,7 @@ class WebDriverWaitSteps {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I wait until the element <<elementLocator>> is visible",
             description = "Wait until the given element is visible on the page, or the timeout is exceeded."
@@ -125,6 +129,7 @@ class WebDriverWaitSteps {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I wait until the element <<elementLocator>> is hidden",
             description = "Wait until the given element is visible on the page, or the timeout is exceeded."
@@ -148,6 +153,7 @@ class WebDriverWaitSteps {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I wait until the text of element <<elementLocator>> should be <<textMatchExpression>>",
             description = "Wait until the given element text matches the provided expression, or the timeout is exceeded."
@@ -181,6 +187,7 @@ class WebDriverWaitSteps {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I wait until the text of element <<elementLocator>> should not be <<textMatchExpression>>",
             description = "Wait until the given element text doesn't match the provided expression, or the timeout is exceeded."

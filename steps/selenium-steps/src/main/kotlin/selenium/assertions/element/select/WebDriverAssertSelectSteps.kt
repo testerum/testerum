@@ -14,6 +14,7 @@ class WebDriverAssertSelectSteps {
     private val logger = TesterumServiceLocator.getTesterumLogger()
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
+//----------------------------------------------------------------------------------------------------------------------
     @Then (
             value = "the option <<optionLocator>> from the select element <<elementLocator>> should be selected",
             description = "Checks if an element from a drop-down or multi-select is selected based on an option locator.\n" +
@@ -116,7 +117,7 @@ class WebDriverAssertSelectSteps {
         return false;
     }
 
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @Then (
             value = "the option <<optionLocator>> from the select element <<elementLocator>> should not be selected",
             description = "Checks if an element from a drop-down or multi-select is NOT selected based on an option locator.\n" +
@@ -194,7 +195,7 @@ class WebDriverAssertSelectSteps {
         }
     }
 
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @Then(
             value = "the element <<elementLocator>> is checked",
             description = "Confirm that the target element has been checked. The test will stop if the assert fails."
@@ -223,7 +224,7 @@ class WebDriverAssertSelectSteps {
         }
     }
 
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @Then(
             value = "the element <<elementLocator>> is not checked",
             description = "Confirm that the target element is not checked. The test will stop if the assert fails."

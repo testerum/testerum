@@ -21,6 +21,7 @@ class WebDriverContextSwitchSteps {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I switch the context to the top frame"
     )
@@ -28,6 +29,7 @@ class WebDriverContextSwitchSteps {
         webDriverManager.switchCurrentWebDriverToTop()
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I switch the context to the window with the title <<textMatchExpression>>"
     )

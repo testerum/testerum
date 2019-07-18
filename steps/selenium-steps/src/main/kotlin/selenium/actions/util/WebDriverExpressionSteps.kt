@@ -29,6 +29,7 @@ class WebDriverExpressionSteps {
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I execute the WebDriver JS script <<script>>",
             description = "Executes a custom JavaScript script that has access to the WebDriver and all the variables in the test scope.\n" +
@@ -66,4 +67,6 @@ class WebDriverExpressionSteps {
             ExpressionEvaluator.evaluate(script, context)
         }
     }
+
+//----------------------------------------------------------------------------------------------------------------------
 }

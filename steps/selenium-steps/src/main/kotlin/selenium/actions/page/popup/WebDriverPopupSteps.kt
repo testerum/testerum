@@ -26,7 +26,7 @@ class WebDriverPopupSteps {
         }
     }
 
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @When(
         value = "I press OK button on the alert, confirm or prompt popup",
         description = "Press OK button on a native browser alert, confirm or prompt popup."
@@ -49,7 +49,7 @@ class WebDriverPopupSteps {
         }
     }
 
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @When(
         value = "I press Cancel button on the confirm or prompt popup",
         description = "Press Cancel button on a native browser alert, confirm or prompt popup."
@@ -72,7 +72,7 @@ class WebDriverPopupSteps {
         }
     }
 
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @When(
         value = "I set <<text>> in the prompt popup",
         description = "Send the text to the prompt popup"

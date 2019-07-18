@@ -11,9 +11,9 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager
 class WebDriverPageAssertions {
 
     private val logger = TesterumServiceLocator.getTesterumLogger()
-
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
+//----------------------------------------------------------------------------------------------------------------------
     @Then(
             value = "the title of the current page should be <<textMatchExpression>>",
             description = "Checks if the title of the current page matches the given expression."
@@ -40,6 +40,7 @@ class WebDriverPageAssertions {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @Then(
             value = "the title of the current page should not be <<textMatchExpression>>",
             description = "Checks that the title of the current page does not match the given expression."
@@ -66,6 +67,7 @@ class WebDriverPageAssertions {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @Then(
             value = "the url of the current page should be <<textMatchExpression>>",
             description = "Checks if the current page URL matches the given expression."
@@ -92,6 +94,7 @@ class WebDriverPageAssertions {
         }
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     @Then(
             value = "the url of the current page should not be <<textMatchExpression>>",
             description = "Checks that the current page URL does not match the given expression."
