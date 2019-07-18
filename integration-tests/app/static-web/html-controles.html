@@ -49,6 +49,21 @@
             var y = e.clientY - rect.top;  //y position within the element.
             setControlText("double-click="+x+","+y);
         }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+
     </script>
 </head>
 <body>
@@ -273,8 +288,15 @@
                     setControlText("Alert box was closed")'>Show Alert</button>
                 </div>
             </fieldset>
-        </section>
 
+            <fieldset id="drag_and_drop">
+                <legend>Drag and drop</legend>
+                <div id="div1" ondrop="drop(event); setControlText(this.innerHTML)" ondragover="allowDrop(event)"
+                     style="width: 200px; height: 200px; background-color: #a6e1ec"></div>
+
+                <div id="drag1" draggable="true" ondragstart="drag(event)" width="336" height="69">Drag this into the blue box</div>
+            </fieldset>
+        </section>
 
         <section id="embedded">
             <header><h1>Embedded content</h1></header>
