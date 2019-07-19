@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core';
 import {OverlayPanel} from "primeng/primeng";
 import {FlowUtil} from "../../../utils/flow.util";
 
@@ -8,7 +8,7 @@ import {FlowUtil} from "../../../utils/flow.util";
     styleUrls: ['./info-icon.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class InfoIconComponent implements OnInit {
+export class InfoIconComponent {
 
     @Input() message: string;
     @Input() position: string = 'auto';
@@ -21,8 +21,7 @@ export class InfoIconComponent implements OnInit {
     @ViewChild("actualTarget") actualTargetElement: ElementRef;
 
     private shouldShow: boolean;
-    ngOnInit() {
-    }
+    constructor(private cd: ChangeDetectorRef) {}
 
     show(event: any) {
         this.shouldShow = true;
@@ -35,8 +34,15 @@ export class InfoIconComponent implements OnInit {
         (async () => {
             await FlowUtil.delay(250);
             if (!this.shouldShow) {
-                this.overlayPanel.hide()
+                this.overlayPanel.hide();
+                this.refresh();
             }
         })();
+    }
+
+    refresh() {
+        if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
+            this.cd.detectChanges();
+        }
     }
 }

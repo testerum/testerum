@@ -11,6 +11,13 @@
 
     .my-button-panel {
         margin-left: 5px;
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+
+        .param-info-icon {
+            margin-left: 5px;
+        }
     }
 
     form{

@@ -20,6 +20,10 @@
                          (click)="onRemoveCustomName(); $event.stopPropagation()">
                         <i class="fa_my-delete" aria-hidden="true"></i>
                     </div>
+
+                    <info-icon *ngIf="stepParameter.description"
+                               [message]="stepParameter.description"
+                               class="param-info-icon"></info-icon>
                 </div>
             </div>
 
