@@ -289,14 +289,33 @@
                 </div>
             </fieldset>
 
-            <fieldset id="drag_and_drop">
-                <legend>Drag and drop</legend>
-                <div id="div1" ondrop="drop(event); setControlText(this.innerHTML)" ondragover="allowDrop(event)"
-                     style="width: 200px; height: 200px; background-color: #a6e1ec"></div>
+            <div class="iframe-box">
+                <header><h2>IFrame Drag and Drop</h2></header>
+                <div>
+                    <iframe src="iframe.html" class="demo-frame" width="500" height="400">
+                        <!doctype html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="utf-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1">
+                            <title>jQuery UI Droppable - Default functionality</title>
+                        </head>
+                        <body>
 
-                <div id="drag1" draggable="true" ondragstart="drag(event)" width="336" height="69">Drag this into the blue box</div>
-            </fieldset>
-        </section>
+                        <div id="draggable" class="ui-widget-content">
+                            <p>Drag me to my target</p>
+                        </div>
+
+                        <div id="droppable" class="ui-widget-header">
+                            <p>Drop here</p>
+                        </div>
+
+
+                        </body>
+                        </html>
+                    </iframe>
+                </div>
+            </div>
 
         <section id="embedded">
             <header><h1>Embedded content</h1></header>
