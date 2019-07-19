@@ -295,7 +295,13 @@ class WebDriverFormSteps {
     //    //----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I drag the element <<elementLocator>> on destination <<destinationLocator>>",
-            description = "Drag and drop of an element."
+            description =   "Drag and drop of an element.\n" +
+                            "*In order to use correctly this step, in some situations where\n" +
+                            "the dragged element is not the view, it should be scrolled into\n" +
+                            "the view(use our step 'When I scroll element into the view') and\n " +
+                            "is necessary to switch the context where are the dragged and\n" +
+                            "dropped elements present(use our step 'When I switch the context\n" +
+                            "to the frame.'"
     )
     fun dragAndDrop(
             @Param(
