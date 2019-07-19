@@ -50,9 +50,9 @@ class WebDriverFormSteps {
     ) {
         logger.info(
                 "clearing field value\n" +
-                "--------------------\n" +
-                "elementLocator : $elementLocator\n" +
-                "\n"
+                        "--------------------\n" +
+                        "elementLocator : $elementLocator\n" +
+                        "\n"
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
@@ -68,7 +68,8 @@ class WebDriverFormSteps {
             field.sendKeys(Keys.DELETE)
         }
     }
-//----------------------------------------------------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I set <<text>> as the value of the field <<elementLocator>>",
             description = "Sets the value of the given field, clearing any previous value if needed."
@@ -86,10 +87,10 @@ class WebDriverFormSteps {
     ) {
         logger.info(
                 "setting field value\n" +
-                "-------------------\n" +
-                "text           : $text\n" +
-                "elementLocator : $elementLocator\n" +
-                "\n"
+                        "-------------------\n" +
+                        "text           : $text\n" +
+                        "elementLocator : $elementLocator\n" +
+                        "\n"
         )
         webDriverManager.waitForElementPresent(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
@@ -108,7 +109,8 @@ class WebDriverFormSteps {
             }
         }
     }
-//----------------------------------------------------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I type <<text>> into the field <<elementLocator>>",
             description = "Simulates typing keys from the keyboard into the given field."
@@ -126,10 +128,10 @@ class WebDriverFormSteps {
     ) {
         logger.info(
                 "typing text into field\n" +
-                "----------------------\n" +
-                "text           : $text\n" +
-                "elementLocator : $elementLocator\n" +
-                "\n"
+                        "----------------------\n" +
+                        "text           : $text\n" +
+                        "elementLocator : $elementLocator\n" +
+                        "\n"
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
@@ -142,7 +144,8 @@ class WebDriverFormSteps {
             }
         }
     }
-//----------------------------------------------------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I press the special keys <<keysExpression>> on the element <<elementLocator>>",
             description = "Simulates pressing keys or key combinations from the keyboard when the given element is active."
@@ -158,10 +161,10 @@ class WebDriverFormSteps {
     ) {
         logger.info(
                 "sending the keys expression\n" +
-                "------------\n" +
-                "keysExpression : $keysExpression\n" +
-                "elementLocator : $elementLocator\n" +
-                "\n"
+                        "------------\n" +
+                        "keysExpression : $keysExpression\n" +
+                        "elementLocator : $elementLocator\n" +
+                        "\n"
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
@@ -176,7 +179,8 @@ class WebDriverFormSteps {
             field.sendKeys(*expressionKeys.toTypedArray())
         }
     }
-//----------------------------------------------------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I submit the form containing the field <<elementLocator>>",
             description = "Finds the nearest ``form`` ancestor of the given element and submits it."
@@ -189,9 +193,9 @@ class WebDriverFormSteps {
     ) {
         logger.info(
                 "submitting the form containing element\n" +
-                "--------------------------------------\n" +
-                "elementLocator : $elementLocator\n" +
-                "\n"
+                        "--------------------------------------\n" +
+                        "elementLocator : $elementLocator\n" +
+                        "\n"
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
@@ -202,33 +206,130 @@ class WebDriverFormSteps {
             field.submit()
         }
     }
-//----------------------------------------------------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I move the mouse pointer to the element <<elementLocator>>",
             description = "Finds the specified element and simulate mouse hover effect."
     )
     fun hoverOver(
-        @Param(
-                description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            @Param(
+                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            )
+            elementLocator: String
+    ) {
+        logger.info(
+                "moving the mouse pointer to the element\n" +
+                        "---------------------------------------\n" +
+                        "elementLocator : $elementLocator\n" +
+                        "\n"
         )
-        elementLocator: String
-) {
-    logger.info(
-            "moving the mouse pointer to the element\n" +
-            "---------------------------------------\n" +
-            "elementLocator : $elementLocator\n" +
-            "\n"
+
+        webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.executeWebDriverStep { driver ->
+            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
+                    ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+
+            Actions(driver)
+                    .moveToElement(element)
+                    .perform()
+        }
+    }
+
+    //    //----------------------------------------------------------------------------------------------------------------------
+//    @When(
+//            value = "I drag the element <<elementLocator>> on destination <<destinationLocator>> at position <<elementPosition>>",
+//            description = "Drag and drop of an element."
+//    )
+//    fun dragAndDrop(
+//            @Param(
+//                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+//            )
+//            elementLocator: String,
+//            @Param(
+//                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+//            )
+//            destinationLocator: String,
+//            @Param(
+//                    description = "Specifies the x,y position (i.e. - 10,20) where to drop the dragged element."
+//            )
+//            elementPosition: String
+//    ) {
+//        logger.info(
+//                "dragging an element on destination at position\n" +
+//                        "-----------------------------------------------\n" +
+//                        "elementLocator: $elementLocator\n" +
+//                        "destinationLocator: $destinationLocator\n" +
+//                        "elementPosition: $elementPosition\n" +
+//                        "\n"
+//        )
+//
+//        val split = elementPosition.split(",")
+//        if (split.size != 2) {
+//            throw AssertionError("the position parameter [$elementPosition] is not a valid. The parameter format should be two numbers separated by comma. (i.e. - 10,20)")
+//        }
+//
+//        val x = try {
+//            split[0].toInt()
+//        } catch (e: NumberFormatException) {
+//            throw AssertionError("the position parameter [$elementPosition] is not a valid. The parameter format should be two numbers separated by comma. (i.e. - 10,20)")
+//        }
+//        val y = try {
+//            split[1].toInt()
+//        } catch (e: NumberFormatException) {
+//            throw AssertionError("the position parameter [$elementPosition] is not a valid. The parameter format should be two numbers separated by comma. (i.e. - 10,20)")
+//        }
+//
+//        webDriverManager.waitForElementPresent(elementLocator)
+//        webDriverManager.executeWebDriverStep { driver ->
+//            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
+//                    ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+//
+//            Actions(driver)
+//                    .dragAndDropBy(element, x, y)
+//                    .build()
+//                    .perform()
+//        }
+//    }
+
+    //    //----------------------------------------------------------------------------------------------------------------------
+    @When(
+            value = "I drag the element <<elementLocator>> on destination <<destinationLocator>>",
+            description = "Drag and drop of an element."
     )
+    fun dragAndDrop(
+            @Param(
+                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            )
+            elementLocator: String,
+            @Param(
+                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            )
+            destinationLocator: String
 
-    webDriverManager.waitForElementPresent(elementLocator)
-    webDriverManager.executeWebDriverStep { driver ->
-        val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
-                ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+    ) {
+        logger.info(
+                "dragging an element on destination at position\n" +
+                        "-----------------------------------------------\n" +
+                        "elementLocator: $elementLocator\n" +
+                        "destinationLocator: $destinationLocator\n" +
+                        "\n"
+        )
 
-        Actions(driver)
-                .moveToElement(element)
+        webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.waitForElementPresent(destinationLocator)
+
+        webDriverManager.executeWebDriverStep { driver ->
+            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
+                    ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+
+            val destinationElement: WebElement = ElementLocatorService.locateElement(driver, destinationLocator)
+                    ?: throw AssertionError("the element [$destinationLocator] should be present on the page, but is not")
+
+            Actions(driver)
+                .dragAndDrop(element, destinationElement)
+                .build()
                 .perform()
         }
     }
 }
-
