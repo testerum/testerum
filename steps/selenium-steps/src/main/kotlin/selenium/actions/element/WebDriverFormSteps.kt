@@ -7,6 +7,7 @@ import com.testerum.api.services.TesterumServiceLocator
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.Keys
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.interactions.Actions
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.elem_locators.ElementLocatorService
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
@@ -67,7 +68,7 @@ class WebDriverFormSteps {
             field.sendKeys(Keys.DELETE)
         }
     }
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I set <<text>> as the value of the field <<elementLocator>>",
             description = "Sets the value of the given field, clearing any previous value if needed."
@@ -107,7 +108,7 @@ class WebDriverFormSteps {
             }
         }
     }
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I type <<text>> into the field <<elementLocator>>",
             description = "Simulates typing keys from the keyboard into the given field."
@@ -141,7 +142,7 @@ class WebDriverFormSteps {
             }
         }
     }
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I press the special keys <<keysExpression>> on the element <<elementLocator>>",
             description = "Simulates pressing keys or key combinations from the keyboard when the given element is active."
@@ -175,7 +176,7 @@ class WebDriverFormSteps {
             field.sendKeys(*expressionKeys.toTypedArray())
         }
     }
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I submit the form containing the field <<elementLocator>>",
             description = "Finds the nearest ``form`` ancestor of the given element and submits it."
@@ -201,5 +202,33 @@ class WebDriverFormSteps {
             field.submit()
         }
     }
+//----------------------------------------------------------------------------------------------------------------------
+    @When(
+            value = "I move the mouse pointer to the element <<elementLocator>>",
+            description = "Finds the specified element and simulate mouse hover effect."
+    )
+    fun hoverOver(
+        @Param(
+                description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+        )
+        elementLocator: String
+) {
+    logger.info(
+            "moving the mouse pointer to the element\n" +
+            "---------------------------------------\n" +
+            "elementLocator : $elementLocator\n" +
+            "\n"
+    )
 
+    webDriverManager.waitForElementPresent(elementLocator)
+    webDriverManager.executeWebDriverStep { driver ->
+        val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
+                ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+
+        Actions(driver)
+                .moveToElement(element)
+                .perform()
+        }
+    }
 }
+
