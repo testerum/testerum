@@ -15,7 +15,6 @@ import {StepDef} from "../../../../../model/step-def.model";
 import {BasicStepDef} from "../../../../../model/basic-step-def.model";
 import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
 import {StepPhaseEnum, StepPhaseUtil} from "../../../../../model/enums/step-phase.enum";
-import * as Fuse from 'fuse.js'
 import {StepCall} from "../../../../../model/step-call.model";
 import {StepTextUtil} from "./util/StepTextUtil";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
@@ -32,10 +31,8 @@ import {StepCallTreeComponentService} from "../../step-call-tree.component-servi
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
 import {merge} from "rxjs";
 import {StepCallContainerModel} from "../../model/step-call-container.model";
-import {ArrayUtil} from "../../../../../utils/array.util";
 import {PathUtil} from "../../../../../utils/path.util";
 import {StepSearch} from "../../../../../utils/step-search/step-search.class";
-import {StepSearchItem} from "../../../../../utils/step-search/model/step-search-item.model";
 
 @Component({
     selector: 'step-call-editor-container',
