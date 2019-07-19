@@ -1,0 +1,10 @@
+test-def: When I drag the element <<elementLocator>> on destination <<destinationLocator>>
+
+    description = <<Firefox browser works only when the element "demo-frame" is scrolled into view.>>
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I scroll element <<.demo-frame>> into the view
+    step: When I switch the context to the frame <<.demo-frame>>
+    step: When I drag the element <<#draggable>> on destination <<#droppable>>
+    step: When I wait <<2222>> milliseconds
+    step: Then the text of element <<#droppable>> should be <<Dropped!>>
