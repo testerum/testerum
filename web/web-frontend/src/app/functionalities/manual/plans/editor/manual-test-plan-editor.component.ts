@@ -30,11 +30,6 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
     @ViewChild(MarkdownEditorComponent) descriptionMarkdownEditor: MarkdownEditorComponent;
     @ViewChild(ManualSelectTestsTreeComponent) manualSelectTestsTreeComponent: ManualSelectTestsTreeComponent;
 
-    markdownEditorOptions = {
-        status: false,
-        spellChecker: false
-    };
-
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
                 private manualTestPlansOverviewService: ManualTestPlansOverviewService,

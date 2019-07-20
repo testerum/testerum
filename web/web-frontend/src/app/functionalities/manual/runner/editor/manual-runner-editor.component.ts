@@ -28,11 +28,6 @@ export class ManualRunnerEditorComponent implements OnInit {
     ManualTestStatus = ManualTestStatus;
     StepPhaseEnum = StepPhaseEnum;
 
-    markdownEditorOptions = {
-        status: false,
-        spellChecker: false
-    };
-
     model: ManualTest;
     planPath: Path;
     testPath: Path;

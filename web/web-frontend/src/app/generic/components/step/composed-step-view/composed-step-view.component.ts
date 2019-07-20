@@ -62,10 +62,6 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
     editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    markdownEditorOptions = {
-        status: false,
-        spellChecker: false
-    };
     @ViewChild("descriptionMarkdownEditor") descriptionMarkdownEditor: MarkdownEditorComponent;
 
     private editModeStepCallTreeSubscription: Subscription;
