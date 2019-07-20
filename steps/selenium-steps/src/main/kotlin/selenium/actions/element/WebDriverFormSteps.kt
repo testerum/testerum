@@ -161,10 +161,10 @@ class WebDriverFormSteps {
     ) {
         logger.info(
                 "sending the keys expression\n" +
-                        "------------\n" +
-                        "keysExpression : $keysExpression\n" +
-                        "elementLocator : $elementLocator\n" +
-                        "\n"
+                "------------\n" +
+                "keysExpression : $keysExpression\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
@@ -193,9 +193,9 @@ class WebDriverFormSteps {
     ) {
         logger.info(
                 "submitting the form containing element\n" +
-                        "--------------------------------------\n" +
-                        "elementLocator : $elementLocator\n" +
-                        "\n"
+                "--------------------------------------\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
@@ -207,7 +207,7 @@ class WebDriverFormSteps {
         }
     }
 
-    //----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I move the mouse pointer to the element <<elementLocator>>",
             description = "Finds the specified element and simulate mouse hover effect."
@@ -220,9 +220,9 @@ class WebDriverFormSteps {
     ) {
         logger.info(
                 "moving the mouse pointer to the element\n" +
-                        "---------------------------------------\n" +
-                        "elementLocator : $elementLocator\n" +
-                        "\n"
+                "---------------------------------------\n" +
+                "elementLocator : $elementLocator\n" +
+                "\n"
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
@@ -236,72 +236,64 @@ class WebDriverFormSteps {
         }
     }
 
-    //    //----------------------------------------------------------------------------------------------------------------------
-//    @When(
-//            value = "I drag the element <<elementLocator>> on destination <<destinationLocator>> at position <<elementPosition>>",
-//            description = "Drag and drop of an element."
-//    )
-//    fun dragAndDrop(
-//            @Param(
-//                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
-//            )
-//            elementLocator: String,
-//            @Param(
-//                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
-//            )
-//            destinationLocator: String,
-//            @Param(
-//                    description = "Specifies the x,y position (i.e. - 10,20) where to drop the dragged element."
-//            )
-//            elementPosition: String
-//    ) {
-//        logger.info(
-//                "dragging an element on destination at position\n" +
-//                        "-----------------------------------------------\n" +
-//                        "elementLocator: $elementLocator\n" +
-//                        "destinationLocator: $destinationLocator\n" +
-//                        "elementPosition: $elementPosition\n" +
-//                        "\n"
-//        )
-//
-//        val split = elementPosition.split(",")
-//        if (split.size != 2) {
-//            throw AssertionError("the position parameter [$elementPosition] is not a valid. The parameter format should be two numbers separated by comma. (i.e. - 10,20)")
-//        }
-//
-//        val x = try {
-//            split[0].toInt()
-//        } catch (e: NumberFormatException) {
-//            throw AssertionError("the position parameter [$elementPosition] is not a valid. The parameter format should be two numbers separated by comma. (i.e. - 10,20)")
-//        }
-//        val y = try {
-//            split[1].toInt()
-//        } catch (e: NumberFormatException) {
-//            throw AssertionError("the position parameter [$elementPosition] is not a valid. The parameter format should be two numbers separated by comma. (i.e. - 10,20)")
-//        }
-//
-//        webDriverManager.waitForElementPresent(elementLocator)
-//        webDriverManager.executeWebDriverStep { driver ->
-//            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
-//                    ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
-//
-//            Actions(driver)
-//                    .dragAndDropBy(element, x, y)
-//                    .build()
-//                    .perform()
-//        }
-//    }
-
-    //    //----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
     @When(
-            value = "I drag the element <<elementLocator>> on destination <<destinationLocator>>",
+            value = "I drag the element <<elementLocator>> at position <<elementPosition>>",
+            description = "Drag and drop of an element."
+    )
+    fun dragAndDropBy(
+            @Param(
+                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
+            )
+            elementLocator: String,
+            @Param(
+                    description = "Specifies the x,y position (i.e. - 10,20) where to drop the dragged element."
+            )
+            elementPosition: String
+    ) {
+        logger.info(
+                "dragging an element on destination at position\n" +
+                "----------------------------------------------\n" +
+                "elementLocator: $elementLocator\n" +
+                "elementPosition: $elementPosition\n" +
+                "\n"
+        )
+
+        val split = elementPosition.split(",")
+        if (split.size != 2) {
+            throw AssertionError("the position parameter [$elementPosition] is not a valid. The parameter format should be two numbers separated by comma. (i.e. - 10,20)")
+        }
+
+        val x = try {
+            split[0].toInt()
+        } catch (e: NumberFormatException) {
+            throw AssertionError("the position parameter [$elementPosition] is not a valid. The parameter format should be two numbers separated by comma. (i.e. - 10,20)")
+        }
+        val y = try {
+            split[1].toInt()
+        } catch (e: NumberFormatException) {
+            throw AssertionError("the position parameter [$elementPosition] is not a valid. The parameter format should be two numbers separated by comma. (i.e. - 10,20)")
+        }
+
+        webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.executeWebDriverStep { driver ->
+            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
+                    ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+
+            Actions(driver)
+                    .dragAndDropBy(element, x, y)
+                    .build()
+                    .perform()
+        }
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    @When(
+            value = "I drag the element <<elementLocator>> on destination <<destinationElementLocator>>",
             description =   "Drag and drop of an element.\n" +
-                            "*In order to use correctly this step, in some situations where\n" +
-                            "the dragged element is not the view, it should be scrolled into\n" +
-                            "the view(use our step 'When I scroll element into the view') and\n " +
-                            "is necessary to switch the context where are the dragged and\n" +
-                            "dropped elements present(use our step 'When I switch the context\n" +
-                            "to the frame.'"
+                            "*To ensure that this step is working properly, in some situations where the dragged element is not the view, it should be scrolled " +
+                            "into the view(use our step ``When I scroll element into the view``).\n" +
+                            "Also it is necessary to switch the context where are the dragged and dropped elements present(use our step ``When I switch the context to the frame.``)"
     )
     fun dragAndDrop(
             @Param(
@@ -311,31 +303,33 @@ class WebDriverFormSteps {
             @Param(
                     description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
             )
-            destinationLocator: String
+            destinationElementLocator: String
 
     ) {
         logger.info(
                 "dragging an element on destination at position\n" +
-                        "-----------------------------------------------\n" +
-                        "elementLocator: $elementLocator\n" +
-                        "destinationLocator: $destinationLocator\n" +
-                        "\n"
+                "----------------------------------------------\n" +
+                "elementLocator: $elementLocator\n" +
+                "destinationLocator: $destinationElementLocator\n" +
+                "\n"
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
-        webDriverManager.waitForElementPresent(destinationLocator)
+        webDriverManager.waitForElementPresent(destinationElementLocator)
 
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
-            val destinationElement: WebElement = ElementLocatorService.locateElement(driver, destinationLocator)
-                    ?: throw AssertionError("the element [$destinationLocator] should be present on the page, but is not")
+            val destinationElement: WebElement = ElementLocatorService.locateElement(driver, destinationElementLocator)
+                    ?: throw AssertionError("the element [$destinationElementLocator] should be present on the page, but is not")
+
+            (driver as JavascriptExecutor).executeScript("arguments[0].scrollIntoView(true);", element)
 
             Actions(driver)
-                .dragAndDrop(element, destinationElement)
-                .build()
-                .perform()
+                    .dragAndDrop(element, destinationElement)
+                    .build()
+                    .perform()
         }
     }
 }

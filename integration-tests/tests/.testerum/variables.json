@@ -1,6 +1,6 @@
 {
   "defaultVariables" : {
-    "HTML5_TEST_PAGE_URL" : "http://localhost:10080"
+    "URL" : "http://localhost:10080"
   },
   "environments" : { }
 }

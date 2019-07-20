@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Droppable - Default functionality</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <style>
+        #container
+        { display: flex; flex-direction: column}
+/*---------------------------------------------------------------------------------------------------------------------*/
+        #drag-drop-both-el-are-into-view
+        { position: relative; border-style: dashed}
+
+        #draggable-in-view
+        { width: 200px; height: 200px; padding: 0.5em; float: left; margin: 10px 10px 10px 0;
+            position: relative; background-color: #eea236; z-index: 900 }
+
+        #droppable-in-view
+        { width: 450px; height: 450px; padding: 0.5em; float: left; margin: 10px}
+/*---------------------------------------------------------------------------------------------------------------------*/
+
+        #drag-drop-bring-el-into-view
+        { position: relative; border-style: dashed}
+
+        #draggable-not-in-view
+        { width: 200px; height: 200px; padding: 0.5em; float: left; margin: 10px 10px 10px 0;
+            position: relative; background-color: #eea236; z-index: 900; top: 500px }
+
+        #droppable-brought-in-view
+        { width: 450px; height: 450px; padding: 0.5em; float: left; margin: 10px}
+
+        #medium-empty-space-onmiddle
+        {width: 700px; height: 1100px}
+/*---------------------------------------------------------------------------------------------------------------------*/
+
+        #draggable
+        { width: 200px; height: 200px; padding: 0.5em; float: left; margin: 10px 10px 10px 0;
+            position: relative; background-color: #eea236; z-index: 900 }
+
+        #droppable
+        { width: 450px; height: 450px; padding: 0.5em; float: left; margin: 10px; position: relative; top: 1300px; z-index: 100;}
+
+        #big-empty-space-ontop
+        {width: 1500px; height: 1500px}
+
+        #big-empty-space-onmiddle
+        {width: 1500px; height: 1800px;}
+
+        #drag-drop-not-into-view
+        {border-style: dashed; border-color: #0f0f0f; display: flex; flex-direction: column;}
+    </style>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "#draggable" ).draggable();
+            $( "#droppable" ).droppable({
+                drop: function( event, ui ) {
+                    $( this )
+                        .addClass( "ui-state-highlight" )
+                        .find( "p" )
+                        .html( "Dropped!" );
+                }
+            });
+            $( "#draggable-in-view" ).draggable();
+            $( "#droppable-in-view" ).droppable({
+                drop: function( event, ui ) {
+                    $( this )
+                        .addClass( "ui-state-highlight" )
+                        .find( "p" )
+                        .html( "Dropped!" );
+                }
+            });
+            $( "#draggable-not-in-view" ).draggable();
+            $( "#droppable-brought-in-view" ).droppable({
+                drop: function( event, ui ) {
+                    $( this )
+                        .addClass( "ui-state-highlight" )
+                        .find( "p" )
+                        .html( "Dropped!" );
+                }
+            });
+        } );
+    </script>
+</head>
+<body>
+
+<div id ="container">
+
+    <div id="drag-drop-both-el-are-into-view">
+        <p style="font-size: 50px"><b>Drag and Drop window.Both elements are into the view</b></p>
+        <div id="draggable-in-view" class="ui-widget-content">
+            <p>Drag me to my target</p>
+        </div>
+
+        <div>
+            <div id="droppable-in-view" class="ui-widget-header">
+                <p>Drop here</p>
+            </div>
+        </div>
+    </div><br>
+
+    <div id="drag-drop-bring-el-into-view">
+        <p style="font-size: 50px"><b>Drag and Drop window.First element is scrolled into the view
+            and also the second element is now in the view</b></p>
+        <div id="draggable-not-in-view" class="ui-widget-content">
+            <p>Drag me to my target</p>
+        </div>
+        <div id="medium-empty-space-onmiddle"></div>
+        <div>
+            <div id="droppable-brought-in-view" class="ui-widget-header">
+                <p>Drop here</p>
+            </div>
+        </div>
+    </div><br>
+
+    <div id="drag-drop-not-into-view">
+        <p style="font-size: 50px"><b>Drag and Drop window. Elements are not into the view</b></p>
+        <div id="big-empty-space-ontop"></div>
+            <div id="draggable" class="ui-widget-content">
+                <p>Drag me to my target</p>
+        </div>
+
+        <div id="big-empty-space-onmiddle">
+            <div id="droppable" class="ui-widget-header">
+                <p>Drop here</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

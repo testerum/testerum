@@ -1,3 +1,0 @@
-step-def: Given I am on google page
-
-    step: When I navigate to url <<https://www.google.com/>>
