@@ -239,7 +239,7 @@ class WebDriverFormSteps {
 //----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I drag the element <<elementLocator>> at position <<elementPosition>>",
-            description = "Drag and drop of an element."
+            description = "This step scrolls the draggable element in view, clicks, holds it and then releases it at the given position."
     )
     fun dragAndDropBy(
             @Param(
@@ -280,6 +280,8 @@ class WebDriverFormSteps {
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
 
+            (driver as JavascriptExecutor).executeScript("arguments[0].scrollIntoView(true);", element)
+
             Actions(driver)
                     .dragAndDropBy(element, x, y)
                     .build()
@@ -290,11 +292,7 @@ class WebDriverFormSteps {
 //----------------------------------------------------------------------------------------------------------------------
     @When(
             value = "I drag the element <<elementLocator>> on destination <<destinationElementLocator>>",
-            description = "This step implementation works on 3 different cases:\n" +
-                    "1. When draggable & droppable elements are both in the view.\n" +
-                    "2. When draggable & droppable elements are not in the view and the draggable element is scrolled into the view but droppable appears as well in the view\n" +
-                    "3. *Works only in Chrome browser”\n" +
-                    "    When draggable & droppable elements are not in the view, the draggable element is scrolled in the view while the droppable element it is still out of the view."
+            description = "This step scrolls the draggable element in view, clicks, holds it and then releases it on the droppable element."
     )
     fun dragAndDrop(
             @Param(
