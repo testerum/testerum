@@ -221,7 +221,7 @@
                     </p>
                     <p>
                         <label for="ir">Range input</label>
-                        <input type="range" id="ir" value="10">
+                        <input type="range" id="ir" value="10" onchange="setControlText(this.value)">
                     </p>
                     <p>
                         <label for="idd">Date input</label>
@@ -288,13 +288,6 @@
                     setControlText("Alert box was closed")'>Show Alert</button>
                 </div>
             </fieldset>
-
-            <div class="iframe-box">
-                <header><h2>IFrame Drag and Drop</h2></header>
-                <div>
-                    <iframe src="dragdrop.html" class="demo-frame" width="500" height="400"></iframe>
-                </div>
-            </div>
 
         <section id="embedded">
             <header><h1>Embedded content</h1></header>

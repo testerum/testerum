@@ -1,6 +1,6 @@
 test-def: When I switch the context to the top frame
 
-    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/actions/contexts/frames/iframe/index.html>> is open
+    step: Given the page at url <<{{URL}}/actions/contexts/frames/iframe/index.html>> is open
     step: When I click the element <<id=frameNameSetter>>
     step: Then the text of element <<id=frameName>> should be <<top frame>>
     step: When I switch the context to the frame <<id=child-frame>>

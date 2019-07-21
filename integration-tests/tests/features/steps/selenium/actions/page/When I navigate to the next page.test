@@ -1,7 +1,7 @@
 test-def: When I navigate to the next page
 
     step: Given I am at the "HTML 5 TEST PAGE"
-    step: When I navigate to url <<{{HTML5_TEST_PAGE_URL}}/actions/special-keys/index.html>>
+    step: When I navigate to url <<{{URL}}/actions/special-keys/index.html>>
     step: When I navigate to the previous page
     step: When I navigate to the next page
     step: When I wait <<1000>> milliseconds

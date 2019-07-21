@@ -1,6 +1,6 @@
 test-def: When I refresh the current page
 
-    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/actions/special-keys/index.html>> is open
+    step: Given the page at url <<{{URL}}/actions/special-keys/index.html>> is open
     step: When I type <<This is for testing purposes.>> into the field <<css=input>>
     step: When I press the special keys <<CONTROL+a>> on the element <<css=input>>
     step: When I press the special keys <<CONTROL+x>> on the element <<css=input>>
