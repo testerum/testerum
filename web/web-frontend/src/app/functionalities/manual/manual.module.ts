@@ -6,7 +6,7 @@ import {
     AutoCompleteModule,
     DropdownModule,
     EditorModule,
-    InputTextModule,
+    InputTextModule, MessageModule, MessagesModule,
     ToolbarModule,
     TooltipModule
 } from "primeng/primeng";
@@ -54,6 +54,8 @@ import {AngularSplitModule} from "angular-split";
         TooltipModule,
         ToolbarModule,
         TableModule,
+        MessagesModule,
+        MessageModule,
 
         GenericModule,
     ],
