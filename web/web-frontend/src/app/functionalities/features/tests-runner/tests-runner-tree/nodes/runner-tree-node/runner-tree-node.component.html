@@ -3,6 +3,8 @@
     <div class="full-line"
          (click)="setSelected()"
          (dblclick)="collapseNode()"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
          title="{{getStatusTooltip()}}">
 
         <i aria-hidden="true"
@@ -38,6 +40,17 @@
                        [showAsListItem]="true">
             </step-text>
         </span>
+
+
+        <!-- BUTTONS RENDERING -->
+        <div *ngIf="isTestNode()" class="button-panel btn-group my-button-panel"
+             [class.hidden]="!hasMouseOver">
+
+            <div title="Edit Test" class="btn btn-default btn-xs btn-group"
+                 (click)="onEditTest(); $event.stopPropagation()">
+                <i class="fa_my-edit" aria-hidden="true"></i>
+            </div>
+        </div>
     </div>
 
     <json-children *ngIf="model.isContainer()"

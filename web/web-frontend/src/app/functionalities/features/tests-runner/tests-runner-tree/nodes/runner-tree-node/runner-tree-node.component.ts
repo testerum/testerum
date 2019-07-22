@@ -10,6 +10,7 @@ import {Subscription} from "rxjs";
 import {RunnerTestTreeNodeModel} from "../../model/runner-test-tree-node.model";
 import {TestsRunnerService} from "../../../tests-runner.service";
 import {RunnerTreeFilterModel} from "../../model/filter/runner-tree-filter.model";
+import {UrlService} from "../../../../../../service/url.service";
 
 @Component({
     moduleId: module.id,
@@ -25,10 +26,13 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
     @Input() model:RunnerTreeNodeModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
+    hasMouseOver: boolean = false;
+
     RunnerTreeNodeStateEnum = ExecutionStatusEnum;
 
     constructor(private runnerTreeComponentService:RunnerTreeService,
-                private testsRunnerService: TestsRunnerService){}
+                private testsRunnerService: TestsRunnerService,
+                private urlService: UrlService){}
 
     runnerTreeFilterSubscription: Subscription;
     ngOnInit(): void {
@@ -77,5 +81,9 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
 
     setSelected() {
         this.runnerTreeComponentService.setNodeAsSelected(this.model);
+    }
+
+    onEditTest() {
+        this.urlService.navigateToTest(this.model.path);
     }
 }
