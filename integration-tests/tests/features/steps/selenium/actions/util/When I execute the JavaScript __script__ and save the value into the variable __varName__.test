@@ -1,0 +1,5 @@
+test-def: When I execute the JavaScript <<script>> and save the value into the variable <<varName>>
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I execute the JavaScript <<return document.getElementById("set-text-button").value>> and save the value into the variable <<setText>>
+    step: Then <<{{setText}}>> is equal to <<testJavaScript Variables>>
