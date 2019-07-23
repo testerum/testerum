@@ -92,7 +92,6 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
             }
         };
         document.addEventListener('click', this.onDocumentClick, true);
-
     }
 
     private isFocusSet = false;
@@ -120,7 +119,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     ngOnDestroy() {
-        document.removeEventListener('click', this.onDocumentClick);
+        document.removeEventListener('click', this.onDocumentClick, true);
     }
 
     collapseNode() {
@@ -143,7 +142,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         let queryStepPhase = StepTextUtil.getStepPhaseFromStepText(query);
         let queryStepTextWithoutPhase = StepTextUtil.getStepTextWithoutStepPhase(query).trim();
 
-        if(newSuggestions.length > 0 && !newSuggestions[0].isPerfectMatch) {
+        if((newSuggestions.length > 0 && !newSuggestions[0].isPerfectMatch) || newSuggestions.length == 0) {
             if(queryStepPhase == null || queryStepPhase == StepPhaseEnum.THEN)
                 newSuggestions.unshift(this.createUndefinedStepCallSuggestion(StepPhaseEnum.THEN, queryStepTextWithoutPhase, "Create Step &rarr;&nbsp;"));
             if(queryStepPhase == null || queryStepPhase == StepPhaseEnum.WHEN)
@@ -200,6 +199,8 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     onSuggestionSelected(event: StepCallSuggestion) {
+        this.suggestions = [];
+
         let newStepCall: StepCall = this.createStepCallFromExistingStepDef(event);
         if (event.actionText != null) {
             let warning = new Warning();
@@ -208,7 +209,6 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
             newStepCall.addWarning(warning);
         }
         this.addNewStepCallToTree(newStepCall);
-        this.suggestions = [];
     }
 
     private addNewStepCallToTree(newStepCall: StepCall) {
