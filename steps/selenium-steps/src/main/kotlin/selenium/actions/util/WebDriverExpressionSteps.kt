@@ -7,6 +7,7 @@ import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common.expression_evaluator.ExpressionEvaluator
 import com.testerum.common.expression_evaluator.helpers.util.JsFunction
 import com.testerum.common.expression_evaluator.helpers.util.ScriptingArgs
+import org.openqa.selenium.JavascriptExecutor
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
@@ -68,5 +69,60 @@ class WebDriverExpressionSteps {
         }
     }
 
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
+    @When(
+            value = "I execute the JavaScript script <<script>>",
+            description = "Executes JavaScript in the context of the currently selected frame or window. " +
+                    "The script fragment provided will be executed as the body of an anonymous function."
+    )
+    fun evaluateJavaScriptExpresion(
+            @Param(
+                    description = ""
+            )
+            script: String
+    ) {
+        logger.info(
+                "executing JavaScript script:\n" +
+                "----------------------------\n" +
+                "script : $script\n" +
+                "\n"
+        )
+
+        webDriverManager.executeWebDriverStep { driver ->
+            (driver as JavascriptExecutor).executeScript(script)
+        }
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------
+    @When(
+            value = "I execute the JavaScript <<script>> and save the value into the variable <<varName>>",
+            description = "Executes JavaScript in the context of the currently selected frame or window. The script " +
+                    "fragment provided will be executed as the body of an anonymous function." +
+                    "After execution, the value returned by this script will be stored in the specified variable."
+    )
+    fun saveValueFromJsIntoVariable(
+            @Param(
+                    description = ""
+            )
+            script: String,
+
+            @Param(
+                    required = false,
+                    description = "The name of the variable that will store the value."
+            ) varName: String
+    ) {
+        logger.info(
+                "executing JavaScript script which returns the value in the variable:\n" +
+                "--------------------------------------------------------------------\n" +
+                "script : $script\n" +
+                "varName: $varName\n" +
+                "\n"
+        )
+
+        webDriverManager.executeWebDriverStep { driver ->
+            val result = (driver as JavascriptExecutor).executeScript(script)
+            variables.set(varName, result)
+        }
+    }
+
 }
