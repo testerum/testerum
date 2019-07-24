@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, ViewChild} from '@angular/core';
 import {JsonTreeContainerEditorEvent} from "./model/json-tree-container-editor.event";
 import {JsonTreeContainerEditorEnum} from "./model/enums/json-tree-container-editor.enum";
 import {Path} from "../../../../model/infrastructure/path/path.model";
@@ -28,7 +28,8 @@ export class JsonTreeContainerEditor {
 
     JsonTreeContainerEditorEnum = JsonTreeContainerEditorEnum;
 
-    constructor(public bsModalRef: BsModalRef) {}
+    constructor(public bsModalRef: BsModalRef,
+                private cd: ChangeDetectorRef) {}
 
     showToUpdateContainerName(name: string, siblingsNodeNames: Array<string>): EventEmitter<JsonTreeContainerEditorEvent> {
         this.siblingsNodeNames = siblingsNodeNames;
@@ -93,6 +94,7 @@ export class JsonTreeContainerEditor {
         this.editorEventEmitter.emit(result);
         this.editorEventEmitter.complete();
 
+        this.refresh();
         this.hide();
     }
 
@@ -111,5 +113,11 @@ export class JsonTreeContainerEditor {
         }
 
         return true
+    }
+
+    refresh() {
+        if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
+            this.cd.detectChanges();
+        }
     }
 }
