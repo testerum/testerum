@@ -111,6 +111,7 @@ import { DynamicInputComponent } from './components/form/dynamic-input/dynamic-i
 import { SeleniumDriverInputComponent } from './components/form/dynamic-input/selenium-driver-input/selenium-driver-input.component';
 import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-driver-input/selenium-drivers.service";
 import {FileTreeNodeComponent} from "./components/form/file_chooser/file-tree/nodes/node/file-tree-node.component";
+import {MonacoEditorModule} from "@materia-ui/ngx-monaco-editor";
 
 @NgModule({
     imports: [
@@ -123,6 +124,7 @@ import {FileTreeNodeComponent} from "./components/form/file_chooser/file-tree/no
         FormsModule,
 
         AceEditorModule,
+        MonacoEditorModule,
 
         ChartModule,
         FileUploadModule,

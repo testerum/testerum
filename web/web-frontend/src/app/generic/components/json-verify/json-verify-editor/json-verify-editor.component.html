@@ -1,14 +1,5 @@
 
 <div class="ace-editor-container">
-    <ace-editor
-        #editor
-        [(text)]="model"
-        [mode]="'json'"
-        [theme]="'eclipse'"
-        [options]="options"
-        [readOnly]="!isEditMode"
-        [autoUpdateContent]="false"
-        [durationBeforeCallback]="0"
-        (textChanged)="onTextChange($event)"
-        class="ace-editor"></ace-editor>
+    <ngx-monaco-editor #monacoEditorComponent [options]="editorOptions" [ngModel]="model" style="height:100%"
+                       [ngModelOptions]='{name: "editor",standalone: true,updateOn: "submit"}'></ngx-monaco-editor>
 </div>

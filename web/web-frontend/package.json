@@ -23,6 +23,7 @@
     "@angular/platform-browser": "7.2.9",
     "@angular/platform-browser-dynamic": "7.2.9",
     "@angular/router": "7.2.9",
+    "@materia-ui/ngx-monaco-editor": "^2.0.6",
     "angular-split": "2.0.1",
     "angular2-websocket": "0.9.8",
     "chart.js": "2.8.0",
