@@ -3,18 +3,19 @@ import {
     ChangeDetectorRef,
     Component,
     EventEmitter,
-    Input,
+    Input, OnChanges,
     OnInit,
-    Output,
+    Output, SimpleChanges,
     ViewChild
 } from '@angular/core';
 import {JsonCompareModeEnum} from "../model/json-compare-mode.enum";
-import {MonacoEditorComponent, MonacoEditorLoaderService} from "@materia-ui/ngx-monaco-editor";
 import {filter, take} from "rxjs/operators";
 import {JsonTokens} from "../../monaco-editor/json-tokens/json-tokens.class";
 import {editor, Range} from 'monaco-editor';
 import {Token} from "../../monaco-editor/json-tokens/model/token.model";
 import {JsonTokenType} from "../../monaco-editor/json-tokens/model/json-token.type";
+import {MonacoEditorLoaderService} from "../../monaco-editor/services/monaco-editor-loader.service";
+import {MonacoEditorComponent} from "../../monaco-editor/components/monaco-editor/monaco-editor.component";
 
 @Component({
     selector: 'json-verify-editor',
@@ -22,26 +23,26 @@ import {JsonTokenType} from "../../monaco-editor/json-tokens/model/json-token.ty
     styleUrls: ['./json-verify-editor.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default
 })
-export class JsonVerifyEditorComponent implements OnInit {
+export class JsonVerifyEditorComponent implements OnInit, OnChanges {
     readonly COMPARE_MODE_NODE_KEY = "=compareMode";
 
     @Input() isEditMode: boolean = true;
     @Input() model: string;
-
     @Output() modelChange = new EventEmitter<string>();
 
     @Output() change = new EventEmitter<string>();
 
     @ViewChild("monacoEditorComponent") monacoEditorComponent: MonacoEditorComponent;
 
-    editorOptions = {
+    editorOptions: editor.IEditorConstructionOptions = {
         theme: 'vs',
         language: 'json',
         scrollBeyondLastLine: false,
-        readOnly: false,
+        readOnly: !this.isEditMode,
         minimap: {
             enabled: false,
         },
+        lineNumbersMinChars: 3
     };
     monaco: any;
 
@@ -51,6 +52,8 @@ export class JsonVerifyEditorComponent implements OnInit {
                 private monacoLoader: MonacoEditorLoaderService) {}
 
     ngOnInit(): void {
+        this.editorOptions.readOnly = !this.isEditMode;
+
         this.monacoLoader.isMonacoLoaded.pipe(
             filter(isLoaded => isLoaded),
             take(1)
@@ -59,15 +62,27 @@ export class JsonVerifyEditorComponent implements OnInit {
         });
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['isEditMode'] != null) {
+            this.editorOptions = Object.assign(
+                {},
+                this.editorOptions,
+                {
+                    readOnly: !this.isEditMode
+                }
+            );
+        }
+    }
+
     refresh() {
         if (!this.cd['destroyed']) {
             this.cd.detectChanges();
         }
     }
 
-    onTextChange() {
-        this.change.emit(this.model);
-        this.modelChange.emit(this.model);
+    onTextChange(value: string) {
+        this.change.emit(value);
+        this.modelChange.emit(value);
     }
 
     setCompareModeEvent(selectedJsonCompareMode: JsonCompareModeEnum) {
@@ -78,10 +93,6 @@ export class JsonVerifyEditorComponent implements OnInit {
         this.jsonTokens = new JsonTokens(tokens, monacoEditor);
 
         let tokenUnderCaret: Token = this.getTokenByPosition(line, column, this.jsonTokens);
-
-        console.log("position=" + line + "," + column);
-        console.log("jsonTokens", this.jsonTokens);
-        console.log("tokenUnderCaret", tokenUnderCaret);
 
         let compareTokenKey = this.getCompareTokenKey(tokenUnderCaret);
 

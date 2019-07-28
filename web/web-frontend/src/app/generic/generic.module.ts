@@ -111,10 +111,15 @@ import { DynamicInputComponent } from './components/form/dynamic-input/dynamic-i
 import { SeleniumDriverInputComponent } from './components/form/dynamic-input/selenium-driver-input/selenium-driver-input.component';
 import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-driver-input/selenium-drivers.service";
 import {FileTreeNodeComponent} from "./components/form/file_chooser/file-tree/nodes/node/file-tree-node.component";
-import {MonacoEditorModule} from "@materia-ui/ngx-monaco-editor";
+import {CommonModule} from "@angular/common";
+import {MonacoEditorLoaderDirective} from "./components/monaco-editor/directives/monaco-editor-loader.directive";
+import {MonacoEditorComponent} from "./components/monaco-editor/components/monaco-editor/monaco-editor.component";
+import {MonacoDiffEditorComponent} from "./components/monaco-editor/components/monaco-diff-editor/monaco-diff-editor.component";
+import {ResizedDirective} from "./components/monaco-editor/directives/resized-event.directive";
 
 @NgModule({
     imports: [
+        CommonModule,
         BrowserModule,
         BrowserAnimationsModule,
         ModalModule.forRoot(),
@@ -124,7 +129,6 @@ import {MonacoEditorModule} from "@materia-ui/ngx-monaco-editor";
         FormsModule,
 
         AceEditorModule,
-        MonacoEditorModule,
 
         ChartModule,
         FileUploadModule,
@@ -197,6 +201,11 @@ import {MonacoEditorModule} from "@materia-ui/ngx-monaco-editor";
         LogoComponent,
         InfoIconComponent,
         DynamicInputComponent,
+
+        MonacoEditorLoaderDirective,
+        MonacoEditorComponent,
+        MonacoDiffEditorComponent,
+        ResizedDirective
     ],
     declarations: [
         SafeHtmlPipe,
@@ -283,6 +292,11 @@ import {MonacoEditorModule} from "@materia-ui/ngx-monaco-editor";
         ServerNotAvailableModalComponent,
         DynamicInputComponent,
         SeleniumDriverInputComponent,
+
+        MonacoEditorLoaderDirective,
+        MonacoEditorComponent,
+        MonacoDiffEditorComponent,
+        ResizedDirective
     ],
     providers: [
         TreeService,
@@ -347,6 +361,9 @@ import {MonacoEditorModule} from "@materia-ui/ngx-monaco-editor";
         ArgModalComponent,
         ServerNotAvailableModalComponent,
         ErrorFeedbackModalComponent,
+
+        MonacoEditorComponent,
+        MonacoDiffEditorComponent,
     ]
 })
 export class GenericModule { }

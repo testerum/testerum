@@ -61,7 +61,6 @@ import {AuthenticationHttpInterceptor} from "./service/interceptors/authenticati
 import {ConfigModule} from "./functionalities/config/config.module";
 import {RunConfigService} from "./service/run-config.service";
 import { MenuRunnerComponent } from './menu/runner/menu-runner.component';
-import {MonacoEditorModule} from "@materia-ui/ngx-monaco-editor";
 
 @NgModule({
     imports: [
@@ -72,7 +71,6 @@ import {MonacoEditorModule} from "@materia-ui/ngx-monaco-editor";
         FormsModule,
         ModalModule.forRoot(),
         BsDropdownModule.forRoot(),
-        MonacoEditorModule,
 
         RadioButtonModule,
         FileUploadModule,

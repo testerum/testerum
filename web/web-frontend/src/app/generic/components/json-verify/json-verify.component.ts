@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {JsonVerify} from "./model/json-verify.model";
 import {JsonUtil} from '../../../utils/json.util';
 import {StringUtils} from '../../../utils/string-utils.util';

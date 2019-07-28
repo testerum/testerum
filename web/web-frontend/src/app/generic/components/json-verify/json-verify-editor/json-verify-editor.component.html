@@ -1,5 +1,4 @@
 
 <div class="ace-editor-container">
-    <ngx-monaco-editor #monacoEditorComponent [options]="editorOptions" [ngModel]="model" style="height:100%"
-                       [ngModelOptions]='{name: "editor",standalone: true,updateOn: "submit"}'></ngx-monaco-editor>
+    <monaco-editor #monacoEditorComponent [options]="editorOptions" [value]="model" (valueChange)="onTextChange($event)" style="height:100%"></monaco-editor>
 </div>
