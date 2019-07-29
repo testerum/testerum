@@ -1,6 +1,7 @@
 import {Serializable} from "../model/infrastructure/serializable.model";
 
 export class JsonUtil {
+    static readonly TESTERUM_EXPRESION_PATTERN = /{{(.*?)(?=}})}}/g;
 
     public static serializeDateWithoutTime(date: Date): string {
         if (date) {
@@ -64,8 +65,9 @@ export class JsonUtil {
     }
 
     public static isJson(str: string) {
+        let strWithoutTesterumExpressions = str ? str.replace(JsonUtil.TESTERUM_EXPRESION_PATTERN, "2") : str;
         try {
-            JSON.parse(str);
+            JSON.parse(strWithoutTesterumExpressions);
         } catch (e) {
             return false;
         }

@@ -43,7 +43,7 @@ export class JsonVerifyComponent {
     }
 
     canAddCompareMode(): boolean {
-        return this.isValidJson && this.selectedJsonCompareMode != null && this.editMode;
+        return this.selectedJsonCompareMode != null && this.editMode;
     }
 
     getCompareModeTooltip(): string {

@@ -30,7 +30,7 @@ export class JsonVerifyEditorComponent implements OnInit, OnChanges {
     @Input() model: string;
     @Output() modelChange = new EventEmitter<string>();
 
-    @Output() change = new EventEmitter<string>();
+    @Output() textChange = new EventEmitter<string>();
 
     @ViewChild("monacoEditorComponent") monacoEditorComponent: MonacoEditorComponent;
 
@@ -58,7 +58,7 @@ export class JsonVerifyEditorComponent implements OnInit, OnChanges {
             filter(isLoaded => isLoaded),
             take(1)
         ).subscribe(() => {
-            this.monaco = ((window as any).monaco)
+            this.monaco = ((window as any).monaco);
         });
     }
 
@@ -81,7 +81,7 @@ export class JsonVerifyEditorComponent implements OnInit, OnChanges {
     }
 
     onTextChange(value: string) {
-        this.change.emit(value);
+        this.textChange.emit(value);
         this.modelChange.emit(value);
     }
 

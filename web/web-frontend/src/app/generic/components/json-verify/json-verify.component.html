@@ -42,6 +42,6 @@
     </p-toolbar>
 
     <div class="my-json-editor-container">
-        <json-verify-editor [model]="model" [isEditMode]="editMode" (change)="onTextChange($event)"></json-verify-editor>
+        <json-verify-editor [model]="model" [isEditMode]="editMode" (textChange)="onTextChange($event)"></json-verify-editor>
     </div>
 </div>
