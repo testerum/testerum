@@ -44,7 +44,7 @@ export class JsonVerifyEditorComponent implements OnInit, OnChanges {
         },
         lineNumbersMinChars: 3
     };
-    monaco: any;
+    private monaco: any;
 
     private jsonTokens: JsonTokens;
 
@@ -105,14 +105,17 @@ export class JsonVerifyEditorComponent implements OnInit, OnChanges {
 
     private getTokenByPosition(line: number, column: number, jsonTokens: JsonTokens) {
         let biggerToken: Token;
-        for (const jsonToken of jsonTokens.tokensAsList) {
+        let biggerTokenIndex = null;
+        for (let i = 0; i < jsonTokens.tokensAsList.length; i++) {
+            let jsonToken = jsonTokens.tokensAsList[i];
             if (jsonToken.line > line ||
                 (jsonToken.line == line && jsonToken.column > column)) {
                 biggerToken = jsonToken;
+                biggerTokenIndex = i;
                 break;
             }
         }
-        let token = biggerToken.previousToken? biggerToken.previousToken : biggerToken;
+        let token = biggerTokenIndex ? jsonTokens.tokensAsList[biggerTokenIndex -1] : biggerToken;
         if (token.column + token.word.length == column) {
             return biggerToken;
         }
