@@ -1,17 +1,5 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnInit,
-    Output,
-    SimpleChanges,
-    ViewChild,
-    ViewEncapsulation
-} from '@angular/core';
-import {JsonVerify} from "./model/json-verify.model";
+import {Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {JsonUtil} from '../../../utils/json.util';
-import {StringUtils} from '../../../utils/string-utils.util';
 import {JsonCompareModeEnum} from "./model/json-compare-mode.enum";
 import {JsonVerifyEditorComponent} from "./json-verify-editor/json-verify-editor.component";
 
@@ -125,5 +113,13 @@ export class JsonVerifyComponent {
             "`[\"=compareMode: unorderedExact\"1, 2, 3]`\n" +
             "This will match."
 
+    }
+
+    onFormatJsonEvent() {
+        this.jsonVerifyEditorComponent.formatJson()
+    }
+
+    canFormatJson(): boolean {
+        return true;
     }
 }

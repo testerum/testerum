@@ -249,4 +249,12 @@ export class JsonVerifyEditorComponent implements OnInit, OnChanges {
             text: textToInsert
         }]);
     }
+
+    formatJson() {
+        let editor = this.monacoEditorComponent.editor;
+        setTimeout(function() {
+            editor.getAction('editor.action.formatDocument').run();
+        }, 300);
+
+    }
 }

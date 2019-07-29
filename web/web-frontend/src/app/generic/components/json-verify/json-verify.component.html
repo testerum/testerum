@@ -2,6 +2,9 @@
     <p-toolbar>
         <div class="my-toolbar-container">
             <div class="my-compare-mode-container">
+                <info-icon [message]="getJsonVerifyExplanation()"
+                           class="description-info-icon"></info-icon>
+
                 Compare Mode:
 
                 <select class="form-control my-compare-mode-select" name="compareMode"
@@ -22,8 +25,12 @@
                     Insert
                 </div>
 
-                <info-icon [message]="getJsonVerifyExplanation()"
-                           class="description-info-icon"></info-icon>
+
+                <div (click)="onFormatJsonEvent()"
+                     [class.disabled]="!editMode"
+                     class="btn btn-default btn-xxs btn-group format-json-button">
+                    Format JSON
+                </div>
             </div>
 
             <span class="label my-toolbar-label"
