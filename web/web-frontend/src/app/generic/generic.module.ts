@@ -205,7 +205,8 @@ import {ResizedDirective} from "./components/monaco-editor/directives/resized-ev
         MonacoEditorLoaderDirective,
         MonacoEditorComponent,
         MonacoDiffEditorComponent,
-        ResizedDirective
+        ResizedDirective,
+        JsonEditorComponent
     ],
     declarations: [
         SafeHtmlPipe,

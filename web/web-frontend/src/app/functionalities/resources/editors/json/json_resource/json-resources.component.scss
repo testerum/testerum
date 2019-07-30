@@ -25,13 +25,14 @@
         flex-grow: 2;
     }
 
-    .full-height-value {
+    .monaco-editor-container {
         align-self: stretch;
         position: relative;
 
-        .ace-editor {
-            height: 100%;
-        }
+        border: 1px solid #c8c8c8;
+        border-radius: 3px;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
 }
 

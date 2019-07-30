@@ -1,10 +1,75 @@
-.sql-editor {
-    border: 1px solid #ccc;
+.my-json-editor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
     width: 100%;
-    overflow: auto;
-    height: 15px;
+
+    .my-toolbar-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .my-btn-toolbar {
+            height: 20px;
+            padding: 0.25em 0.2em;
+        }
+
+        .my-compare-mode-container {
+            display: flex;
+            align-items: center;
+
+            .description-info-icon {
+                margin-left: 5px;
+                margin-right: 10px;
+            }
+
+            .my-compare-mode-select {
+                height: 20px;
+                font-size: 1em;
+                font-weight: bold;
+                padding: 0 8px;
+                margin-left: 5px;
+            }
+
+            .format-json-button {
+                margin-left: 25px;
+            }
+        }
+    }
+
+    .my-json-editor-container {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        top: 28px;
+        left: 0;
+
+        border: 1px solid #c8c8c8;
+        border-top: 0;
+        padding-top: 6px;
+        border-radius: 3px;
+    }
+
+    .btn-xxs {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1em;
+        padding: 0.1em 0.8em;
+    }
+
+    .column-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .center-text {
+        text-align: center;
+    }
+
+    .center {
+        align-self: center;
+    }
 }
 
-.expanded {
-    min-height: 300px;
-}

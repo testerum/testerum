@@ -29,16 +29,8 @@
         <!-- SQL EDITOR-->
         <div class="my-line full-height-line ">
             <label class="my-label label-size">JSON</label>
-            <div class="my-value full-height-value">
-                <ace-editor
-                    #editor
-                    [(text)]="model.content"
-                    [mode]="'json'"
-                    [theme]="'eclipse'"
-                    [options]="options"
-                    [autoUpdateContent]="true"
-                    [durationBeforeCallback]="1000"
-                    class="ace-editor"></ace-editor>
+            <div class="my-value monaco-editor-container">
+                <json-editor [jsonText]="model.content" [editMode]="editMode" (valueChange)="onChange($event)"></json-editor>
             </div>
         </div>
 
