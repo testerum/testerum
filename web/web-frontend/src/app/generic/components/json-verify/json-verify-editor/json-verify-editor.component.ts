@@ -35,14 +35,8 @@ export class JsonVerifyEditorComponent implements OnInit, OnChanges {
     @ViewChild("monacoEditorComponent") monacoEditorComponent: MonacoEditorComponent;
 
     editorOptions: editor.IEditorConstructionOptions = {
-        theme: 'vs',
         language: 'json',
-        scrollBeyondLastLine: false,
-        readOnly: !this.isEditMode,
-        minimap: {
-            enabled: false,
-        },
-        lineNumbersMinChars: 3
+        readOnly: !this.isEditMode
     };
     private monaco: any;
 

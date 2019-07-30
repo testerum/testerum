@@ -1,13 +1,3 @@
 <div class="full-size-flex-element ace-editor-container">
-    <ace-editor
-        #editor
-        [(text)]="sqlText"
-        [mode]="'sql'"
-        [theme]="'crimson_editor'"
-        [options]="options"
-        [readOnly]="!editMode"
-        [autoUpdateContent]="true"
-        [durationBeforeCallback]="1000"
-        (textChanged)="onChange($event)"
-        class="sql-editor"></ace-editor>
+    <monaco-editor #monacoEditorComponent [options]="editorOptions" [value]="sqlText" (valueChange)="onChange($event)" style="height:100%"></monaco-editor>
 </div>

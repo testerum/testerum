@@ -98,9 +98,15 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
         let opts: editor.IEditorConstructionOptions = {
             value: [this.value].join('\n'),
             language: 'text',
+            theme: 'vc',
             automaticLayout: true,
             scrollBeyondLastLine: false,
-            theme: 'vc'
+            minimap: {
+                enabled: false,
+            },
+            lineNumbersMinChars: 3,
+            fontFamily: "'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace",
+            fontSize: 12
         };
 
         if (this.options) {
