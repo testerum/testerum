@@ -4,6 +4,7 @@ import {HttpMethod} from "../../enums/http-method-enum";
 import {JsonUtil} from "../../../utils/json.util";
 import {Resource} from "../resource.model";
 import {StringUtils} from "../../../utils/string-utils.util";
+import {HttpContentType} from "./enum/http-content-type.enum";
 
 export class HttpRequest implements Resource<HttpRequest> {
 
@@ -125,5 +126,24 @@ export class HttpRequest implements Resource<HttpRequest> {
 
     createInstance(): HttpRequest {
         return new HttpRequest();
+    }
+
+    getContentType(): HttpContentType {
+        let contentTypeHeader = this.getContentTypeHeader();
+        if(!contentTypeHeader) {
+            return null;
+        }
+        return HttpContentType.fromContentType(contentTypeHeader.value);
+    }
+
+    getContentTypeHeader(): HttpRequestHeader {
+        let contentTypeKey = HttpContentType.CONTENT_TYPE_HEADER_KEY.toLowerCase();
+        for (let header of this.headers) {
+            if(header.key && header.key.toLowerCase() === contentTypeKey) {
+                return header;
+            }
+        }
+
+        return null;
     }
 }

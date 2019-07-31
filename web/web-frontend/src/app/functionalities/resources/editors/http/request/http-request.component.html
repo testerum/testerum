@@ -11,7 +11,11 @@
                 <span class="condensed-view-value">{{header.value}}</span>
             </div>
         </div>
-        <div *ngIf="model.body.content" class="space-on-top condensed-view-body">{{model.body.content}}</div>
+
+        <div *ngIf="model.body.content" class="space-on-top condensed-view-body">
+            <code *ngIf="isFormattedContent(); else nonFormattedContent" [innerHtml]="getHighlightedBody()"></code>
+            <ng-template #nonFormattedContent>{{this.model.body.content}}</ng-template>
+        </div>
     </div>
 
     <form *ngIf="!condensedViewMode" class="form">

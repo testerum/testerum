@@ -30,11 +30,11 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
     HttpBodyType = HttpRequestBodyType;
     HttpContentType = HttpContentType;
 
-    aceEditorMode = HttpContentType.TEXT.editorMode;
+    editorMode = HttpContentType.TEXT.editorMode;
     isValidJson: boolean = true;
 
     editorOptions: editor.IEditorConstructionOptions = {
-        language: this.aceEditorMode,
+        language: this.editorMode,
         readOnly: !this.httpRequestService.editMode
     };
 
@@ -50,7 +50,7 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
         this.httpRequestService.editModeEventEmitter.subscribe(editModeEvent => {
             this.refreshEditorOption();
         });
-        this.aceEditorMode = this.getContentType().editorMode;
+        this.editorMode = this.getContentType().editorMode;
 
         this.refresh();
     }
@@ -67,7 +67,7 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
 
     refreshEditorOption(): void {
 
-        if (this.aceEditorMode == HttpContentType.JSON.editorMode) {
+        if (this.editorMode == HttpContentType.JSON.editorMode) {
             this.isValidJson = JsonUtil.isJson(this.body.content);
         }
 
@@ -75,7 +75,7 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
             {},
             this.editorOptions,
             {
-                language: this.aceEditorMode,
+                language: this.editorMode,
                 readOnly: !this.httpRequestService.editMode
             }
         );
@@ -83,7 +83,7 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
 
     setContentType(contentType:HttpContentType) {
         this.httpRequestService.setContentType(contentType);
-        this.aceEditorMode = contentType.editorMode;
+        this.editorMode = contentType.editorMode;
         this.refreshEditorOption();
     }
 
@@ -102,13 +102,13 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
 
     onHeaderChange() {
         let contentType = this.getContentType();
-        this.aceEditorMode = contentType.editorMode;
+        this.editorMode = contentType.editorMode;
         this.refreshEditorOption();
     }
 
     onTextChange(text: string) {
         this.body.content = text;
-        if (this.aceEditorMode == HttpContentType.JSON.editorMode) {
+        if (this.editorMode == HttpContentType.JSON.editorMode) {
             this.isValidJson = JsonUtil.isJson(text);
         }
     }
@@ -121,12 +121,12 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
     }
 
     shouldDisplayFormatButton(): boolean {
-        return this.aceEditorMode != HttpContentType.TEXT.editorMode
-            && this.aceEditorMode != HttpContentType.XML.editorMode
-            && this.aceEditorMode != HttpContentType.XML_TEXT.editorMode;
+        return this.editorMode != HttpContentType.TEXT.editorMode
+            && this.editorMode != HttpContentType.XML.editorMode
+            && this.editorMode != HttpContentType.XML_TEXT.editorMode;
     }
 
     shouldDisplayJsonValidation(): boolean {
-        return this.aceEditorMode == HttpContentType.JSON.editorMode
+        return this.editorMode == HttpContentType.JSON.editorMode
     }
 }

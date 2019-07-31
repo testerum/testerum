@@ -114,7 +114,12 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.editor = monaco.editor.create(this.container, opts);
-
+        this.editor.getModel().updateOptions(
+            {
+                indentSize: 2,
+                insertSpaces: true,
+                tabSize: 2
+            });
         this.editor.layout();
 
         this.editor.onDidChangeModelContent(() => {

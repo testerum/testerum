@@ -11,6 +11,11 @@ import {NgForm} from "@angular/forms";
 import {ResourceComponent} from "../../resource-component.interface";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {Subscription} from "rxjs";
+import * as Prism from 'prismjs';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-http';
+import {HttpContentType} from "../../../../../model/resource/http/enum/http-content-type.enum";
 
 @Component({
     moduleId: module.id,
@@ -165,5 +170,43 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
 
     getForm(): NgForm {
         return this.form;
+    }
+
+    getHighlightedBody(): string {
+        let contentType = this.getContentType();
+
+        if (this.model.body.content != null) {
+            if (contentType == HttpContentType.JSON) {
+                return Prism.highlight(this.model.body.content, Prism.languages.json, 'json');
+            }
+            if (contentType == HttpContentType.XML || contentType == HttpContentType.XML_TEXT) {
+                return Prism.highlight(this.model.body.content, Prism.languages.xml, 'xml');
+            }
+            if (contentType == HttpContentType.JAVASCRIPT) {
+                return Prism.highlight(this.model.body.content, Prism.languages.javascript, 'javascript');
+            }
+            if (contentType == HttpContentType.HTML) {
+                return Prism.highlight(this.model.body.content, Prism.languages.html, 'html');
+            }
+        }
+
+        return this.model.body.content
+    }
+
+    isFormattedContent(): boolean {
+        let contentType = this.getContentType();
+        return contentType == HttpContentType.JSON
+            || contentType == HttpContentType.XML || contentType == HttpContentType.XML_TEXT
+            || contentType == HttpContentType.JAVASCRIPT
+            || contentType == HttpContentType.HTML;
+    }
+
+    private getContentType(): HttpContentType {
+        let contentType = this.model.getContentType();
+        if(!contentType) {
+            return HttpContentType.TEXT;
+        }
+
+        return contentType;
     }
 }
