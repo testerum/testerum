@@ -22,7 +22,10 @@
         </div>
         <div class="area">
             <div class="condensed-view-label">Expected Body:</div>
-            <div class="condensed-view-body tab">{{model.expectedBody.bodyVerify}}</div>
+            <div class="space-on-top condensed-view-body">
+                <code *ngIf="model.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY; else nonFormattedContent" [innerHtml]="getHighlightedBodyAsJson()"></code>
+                <ng-template #nonFormattedContent>{{model.expectedBody.bodyVerify}}</ng-template>
+            </div>
         </div>
     </div>
 </div>

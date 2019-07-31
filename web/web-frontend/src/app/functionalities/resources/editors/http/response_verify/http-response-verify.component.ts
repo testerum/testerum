@@ -9,6 +9,9 @@ import {ResourceComponent} from "../../resource-component.interface";
 import {NgForm} from "@angular/forms";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {HttpResponseVerifyBodyComponent} from "./body/http-response-verify-body.component";
+import {HttpBodyVerifyMatchingType} from "./model/enums/http-body-verify-matching-type.enum";
+import * as Prism from 'prismjs';
+import 'prismjs/components/prism-json';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -35,6 +38,8 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
 
     @ViewChild(NgForm) form: NgForm;
     @ViewChild(HttpResponseVerifyBodyComponent) httpResponseVerifyBodyComponent: HttpResponseVerifyBodyComponent;
+
+    HttpBodyVerifyMatchingType = HttpBodyVerifyMatchingType;
 
     constructor(private cd: ChangeDetectorRef,
                 private route: ActivatedRoute,
@@ -87,5 +92,12 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
 
     onBeforeSave(): void {
         this.httpResponseVerifyBodyComponent.onBeforeSave()
+    }
+
+    getHighlightedBodyAsJson(): string {
+        let verifyText = this.model.expectedBody.bodyVerify;
+        if(verifyText == null) return "";
+
+        return Prism.highlight(verifyText, Prism.languages.json, 'json');
     }
 }
