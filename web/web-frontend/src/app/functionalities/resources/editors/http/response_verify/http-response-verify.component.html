@@ -23,7 +23,7 @@
         <div class="area">
             <div class="condensed-view-label">Expected Body:</div>
             <div class="space-on-top condensed-view-body">
-                <code *ngIf="model.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY; else nonFormattedContent" [innerHtml]="getHighlightedBodyAsJson()"></code>
+                <code *ngIf="isFormattedContent(); else nonFormattedContent" [innerHtml]="getHighlightedBodyAsJson()"></code>
                 <ng-template #nonFormattedContent>{{model.expectedBody.bodyVerify}}</ng-template>
             </div>
         </div>
@@ -31,7 +31,7 @@
 </div>
 
 <!-- REGULAR RESPONSE -->
-<form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
+<form *ngIf="!condensedViewMode" class="form">
 
     <!-- NAME -->
     <div class="my-line">

@@ -1,11 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {HttpResponseVerifyService} from "../http-response-verify.service";
 import {HttpBodyVerifyMatchingType} from "../model/enums/http-body-verify-matching-type.enum";
 import {HttpBodyVerifyType} from "../model/enums/http-body-verify-type.enum";
 import {HttpResponseBodyVerify} from "../model/http-response-body-verify.model";
-import {JsonVerifyTreeService} from "../../../../../../generic/components/json-verify/json-verify-tree/json-verify-tree.service";
-import {SerializationUtil} from "../../../../../../generic/components/json-verify/json-verify-tree/model/util/serialization.util";
-import {JsonSchemaExtractor} from "../../../../../../generic/components/json-verify/json-schema/json-schema.extractor";
+import {editor} from "monaco-editor";
 
 @Component({
     moduleId: module.id,
@@ -15,30 +13,39 @@ import {JsonSchemaExtractor} from "../../../../../../generic/components/json-ver
         'http-response-verify-body.component.scss'
     ]
 })
-
 export class HttpResponseVerifyBodyComponent implements OnInit {
 
     @Input() expectedBody: HttpResponseBodyVerify;
 
-    sampleJsonText: string;
-
     aceEditorModeOptions: Array<string>=[];
-    options: any = {
-        printMargin: true,
-        highlightActiveLine: true,
-        useSoftTabs: true
+
+    editorOptions: editor.IEditorConstructionOptions = {
+        language: HttpBodyVerifyType.TEXT.editorMode,
     };
+
     HttpBodyVerifyMatchingType = HttpBodyVerifyMatchingType;
 
     constructor(private httpResponseVerifyService: HttpResponseVerifyService) {
     }
 
     ngOnInit() {
-        // if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
-            // let jsonVerifyAsJson = JSON.parse(this.expectedBody.bodyVerify);
-            // let jsonTreeNode = new SerializationUtil().deserialize(jsonVerifyAsJson);
-            // this.jsonVerifyTreeService.setJsonVerifyRootResource(jsonTreeNode);
-        // }
+        this.editorOptions = {
+            language: this.expectedBody.httpBodyType.editorMode
+        };
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        this.refreshEditorOptions();
+    }
+
+    refreshEditorOptions() {
+        this.editorOptions = Object.assign(
+            {},
+            this.editorOptions,
+            {
+                language: this.expectedBody.httpBodyType.editorMode
+            }
+        );
     }
 
     isEditMode(): boolean {
@@ -64,6 +71,7 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
             case HttpBodyVerifyMatchingType.EXACT_MATCH: this.aceEditorModeOptions = HttpBodyVerifyType.enums.map(it => it.toString()); break;
             case HttpBodyVerifyMatchingType.REGEX_MATCH: this.aceEditorModeOptions = [HttpBodyVerifyType.TEXT.toString()]; break;
         }
+        this.refreshEditorOptions();
     }
 
     shouldDisplayBodyTypeChooser() {
@@ -78,28 +86,16 @@ export class HttpResponseVerifyBodyComponent implements OnInit {
             bodyVerifyType == HttpBodyVerifyMatchingType.EXACT_MATCH ||
             bodyVerifyType == HttpBodyVerifyMatchingType.REGEX_MATCH;
     }
-    //
-    // onSampleJsonTextChange(json:string) {
-    //     this.sampleJsonText = json;
-    //     let jsonRootNode;
-    //     try {
-    //         jsonRootNode = JSON.parse(json);
-    //     } catch (e) {
-    //         //ignore exception, JSON is not valid
-    //         return;
-    //     }
-    //     let verifyJsonRoot = new SerializationUtil().deserialize(jsonRootNode);
-    //
-    //     let jsonSchema = new JsonSchemaExtractor().getJsonSchemaFromJson(
-    //         verifyJsonRoot
-    //     );
-    //
-    //     this.jsonVerifyTreeService.setJsonSchema(jsonSchema);
-    // }
-    //
+
     onBeforeSave(): void {
-        // if(this.expectedBody.httpBodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
-        //     this.expectedBody.bodyVerify = this.jsonVerifyTreeService.rootNode.children[0].serialize();
-        // }
+    }
+
+    onTextChange(text: string) {
+        this.getModel().bodyVerify = text;
+    }
+
+    onBodyTypeChange(bodyType: HttpBodyVerifyType) {
+        this.getModel().httpBodyType = bodyType;
+        this.refreshEditorOptions();
     }
 }

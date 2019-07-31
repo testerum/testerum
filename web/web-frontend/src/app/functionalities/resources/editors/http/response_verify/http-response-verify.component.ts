@@ -12,6 +12,7 @@ import {HttpResponseVerifyBodyComponent} from "./body/http-response-verify-body.
 import {HttpBodyVerifyMatchingType} from "./model/enums/http-body-verify-matching-type.enum";
 import * as Prism from 'prismjs';
 import 'prismjs/components/prism-json';
+import {HttpBodyVerifyType} from "./model/enums/http-body-verify-type.enum";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -98,6 +99,45 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
         let verifyText = this.model.expectedBody.bodyVerify;
         if(verifyText == null) return "";
 
-        return Prism.highlight(verifyText, Prism.languages.json, 'json');
+        let bodyVerifyMatchingType = this.model.expectedBody.httpBodyVerifyMatchingType;
+        if (bodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
+            return Prism.highlight(verifyText, Prism.languages.json, 'json');
+        }
+
+        if(bodyVerifyMatchingType == HttpBodyVerifyMatchingType.CONTAINS ||
+            bodyVerifyMatchingType == HttpBodyVerifyMatchingType.EXACT_MATCH) {
+
+            let httpBodyType = this.model.expectedBody.httpBodyType;
+            if (httpBodyType == HttpBodyVerifyType.HTML) {
+                return Prism.highlight(verifyText, Prism.languages.html, 'html');
+            }
+            if (httpBodyType == HttpBodyVerifyType.JSON) {
+                return Prism.highlight(verifyText, Prism.languages.json, 'json');
+            }
+            if (httpBodyType == HttpBodyVerifyType.XML) {
+                return Prism.highlight(verifyText, Prism.languages.xml, 'xml');
+            }
+        }
+
+        return verifyText;
+    }
+
+    isFormattedContent(): boolean {
+        let bodyVerifyMatchingType = this.model.expectedBody.httpBodyVerifyMatchingType;
+        if (bodyVerifyMatchingType == HttpBodyVerifyMatchingType.JSON_VERIFY) {
+            return true;
+        }
+        if(bodyVerifyMatchingType == HttpBodyVerifyMatchingType.CONTAINS ||
+            bodyVerifyMatchingType == HttpBodyVerifyMatchingType.EXACT_MATCH) {
+
+            let httpBodyType = this.model.expectedBody.httpBodyType;
+            if (httpBodyType == HttpBodyVerifyType.HTML ||
+                httpBodyType == HttpBodyVerifyType.JSON ||
+                httpBodyType == HttpBodyVerifyType.XML) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -1,3 +1,9 @@
+.form {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
 .label-size {
     width: 6em;
 }
