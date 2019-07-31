@@ -118,8 +118,4 @@ export class JsonVerifyComponent {
     onFormatJsonEvent() {
         this.jsonVerifyEditorComponent.formatJson()
     }
-
-    canFormatJson(): boolean {
-        return true;
-    }
 }

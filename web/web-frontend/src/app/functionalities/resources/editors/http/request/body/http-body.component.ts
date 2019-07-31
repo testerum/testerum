@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {HttpRequestService} from "../http-request.service";
 import {HttpRequestBody} from "../../../../../../model/resource/http/http-request-body.model";
 import {HttpRequestBodyType} from "../../../../../../model/resource/http/enum/http-request-body-type.enum";
@@ -9,6 +9,9 @@ import 'brace/mode/text';
 import 'brace/mode/xml';
 import 'brace/theme/eclipse';
 import {Subscription} from "rxjs";
+import {editor} from "monaco-editor";
+import {MonacoEditorComponent} from "../../../../../../generic/components/monaco-editor/components/monaco-editor/monaco-editor.component";
+import {JsonUtil} from "../../../../../../utils/json.util";
 
 @Component({
     moduleId: module.id,
@@ -22,33 +25,66 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
 
     @Input() body: HttpRequestBody;
 
+    @ViewChild("monacoEditorComponent") monacoEditorComponent: MonacoEditorComponent;
+
     HttpBodyType = HttpRequestBodyType;
     HttpContentType = HttpContentType;
 
     aceEditorMode = HttpContentType.TEXT.editorMode;
-    options: any = {
-        printMargin: true,
-        highlightActiveLine: true,
-        useSoftTabs: true
+    isValidJson: boolean = true;
+
+    editorOptions: editor.IEditorConstructionOptions = {
+        language: this.aceEditorMode,
+        readOnly: !this.httpRequestService.editMode
     };
 
     private changesMadeSubscription: Subscription;
-    constructor(public httpRequestService: HttpRequestService) {
+    constructor(private cd: ChangeDetectorRef,
+                public httpRequestService: HttpRequestService) {
     }
 
     ngOnInit(): void {
         this.changesMadeSubscription = this.httpRequestService.changesMadeEventEmitter.subscribe(it => {
             this.onHeaderChange();
         });
+        this.httpRequestService.editModeEventEmitter.subscribe(editModeEvent => {
+            this.refreshEditorOption();
+        });
+        this.aceEditorMode = this.getContentType().editorMode;
+
+        this.refresh();
     }
 
     ngOnDestroy(): void {
         if(this.changesMadeSubscription) this.changesMadeSubscription.unsubscribe();
     }
 
+    refresh() {
+        if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
+            this.cd.detectChanges();
+        }
+    }
+
+    refreshEditorOption(): void {
+
+        if (this.aceEditorMode == HttpContentType.JSON.editorMode) {
+            this.isValidJson = JsonUtil.isJson(this.body.content);
+        }
+
+        this.editorOptions = Object.assign(
+            {},
+            this.editorOptions,
+            {
+                language: this.aceEditorMode,
+                readOnly: !this.httpRequestService.editMode
+            }
+        );
+    }
+
     setContentType(contentType:HttpContentType) {
         this.httpRequestService.setContentType(contentType);
         this.aceEditorMode = contentType.editorMode;
+        this.refreshEditorOption();
     }
 
     getContentType(): HttpContentType {
@@ -67,5 +103,30 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
     onHeaderChange() {
         let contentType = this.getContentType();
         this.aceEditorMode = contentType.editorMode;
+        this.refreshEditorOption();
+    }
+
+    onTextChange(text: string) {
+        this.body.content = text;
+        if (this.aceEditorMode == HttpContentType.JSON.editorMode) {
+            this.isValidJson = JsonUtil.isJson(text);
+        }
+    }
+
+    onFormatJsonEvent() {
+        let editor = this.monacoEditorComponent.editor;
+        setTimeout(function() {
+            editor.getAction('editor.action.formatDocument').run();
+        }, 300);
+    }
+
+    shouldDisplayFormatButton(): boolean {
+        return this.aceEditorMode != HttpContentType.TEXT.editorMode
+            && this.aceEditorMode != HttpContentType.XML.editorMode
+            && this.aceEditorMode != HttpContentType.XML_TEXT.editorMode;
+    }
+
+    shouldDisplayJsonValidation(): boolean {
+        return this.aceEditorMode == HttpContentType.JSON.editorMode
     }
 }
