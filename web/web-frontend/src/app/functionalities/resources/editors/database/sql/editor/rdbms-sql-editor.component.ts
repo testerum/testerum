@@ -16,7 +16,7 @@ export class RdbmsSqlEditorComponent implements OnChanges {
 
     editorOptions: editor.IEditorConstructionOptions = {
         language: 'sql',
-        readOnly: !this.editMode,
+        readOnly: !this.editMode
     };
 
     onChange(code: string) {

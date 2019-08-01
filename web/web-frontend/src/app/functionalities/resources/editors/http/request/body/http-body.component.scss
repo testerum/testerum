@@ -1,6 +1,8 @@
 .http-body {
     .radio label {
         margin-right: 10px;
+        display: flex;
+        align-items: center;
     }
 
     .editor-container {
@@ -30,7 +32,7 @@
         .right-options {
             display: flex;
             align-items: center;
-            justify-content: end;
+            justify-content: flex-end;
 
             .format-button-container {
                 margin-right: 10px;
