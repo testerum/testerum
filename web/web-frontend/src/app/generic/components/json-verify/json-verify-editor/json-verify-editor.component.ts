@@ -1,7 +1,7 @@
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    Component,
+    Component, ElementRef,
     EventEmitter,
     Input, OnChanges,
     OnInit,
@@ -29,7 +29,6 @@ export class JsonVerifyEditorComponent implements OnInit, OnChanges {
     @Input() isEditMode: boolean = true;
     @Input() model: string;
     @Output() modelChange = new EventEmitter<string>();
-
     @Output() textChange = new EventEmitter<string>();
 
     @ViewChild("monacoEditorComponent") monacoEditorComponent: MonacoEditorComponent;

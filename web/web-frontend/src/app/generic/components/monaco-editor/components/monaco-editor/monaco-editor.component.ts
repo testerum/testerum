@@ -7,7 +7,7 @@ import {
     OnChanges,
     OnDestroy,
     OnInit,
-    Output,
+    Output, Renderer2,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
@@ -15,6 +15,8 @@ import {filter, take} from 'rxjs/operators';
 import {editor} from 'monaco-editor';
 
 import {MonacoEditorLoaderService} from '../../services/monaco-editor-loader.service';
+import IDimension = editor.IDimension;
+import ICursorPositionChangedEvent = editor.ICursorPositionChangedEvent;
 
 declare const monaco: any;
 
@@ -58,6 +60,9 @@ declare const monaco: any;
 export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
     @Input() options: editor.IEditorConstructionOptions;
     @Input() value: string;
+    @Input() parentElemntRef: HTMLElement;
+    @Input() autoSizing: boolean = true;
+    @Input() minHeight: number = 400;
     @Output() valueChange = new EventEmitter<string>();
 
     @ViewChild('editor') editorContent: ElementRef;
@@ -65,7 +70,8 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
     container: HTMLDivElement;
     editor: editor.IStandaloneCodeEditor;
 
-    constructor(private monacoLoader: MonacoEditorLoaderService) { }
+    constructor(private monacoLoader: MonacoEditorLoaderService,
+                private renderer: Renderer2) { }
 
     ngOnInit() {
         this.container = this.editorContent.nativeElement;
@@ -120,29 +126,108 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
                 insertSpaces: true,
                 tabSize: 2
             });
-        this.editor.layout();
+        // this.editor.layout();
 
         this.editor.onDidChangeModelContent(() => {
-            this.valueChange.emit(this.editor.getValue())
+            this.valueChange.emit(this.editor.getValue());
+            this.refresh();
         });
 
         this.editor.onDidBlurEditorText(() => {
-            this.valueChange.emit(this.editor.getValue())
+            this.valueChange.emit(this.editor.getValue());
+            this.refresh()
         });
+
+        this.editor.onDidChangeCursorPosition( e => {
+            setTimeout(this.scrollCursorInView,100, this.parentElemntRef);
+        });
+
+        this.refresh();
+    }
+
+    private scrollCursorInView(parentElement: HTMLElement) {
+        let element = parentElement.querySelector(".cursor");
+        element.scrollIntoView({block: "nearest", inline: "nearest"});
     }
 
     onResized(event) {
-        if (this.editor) {
-            this.editor.layout({
-                width: event.newWidth,
-                height: event.newHeight
-            });
-        }
+        // if (this.editor) {
+        //     this.editor.layout({
+        //         width: event.newWidth,
+        //         height: event.newHeight
+        //     });
+        // }
     }
 
     ngOnDestroy() {
         if (this.editor) {
             this.editor.dispose();
         }
+    }
+
+    refresh(): void {
+        this.autoresize();
+    }
+
+    resizeToFit(): void {
+        this.autoresize();
+    }
+
+    setSize(dimension: IDimension): void {
+        this.resize(dimension);
+    }
+
+    protected autoresize() {
+        if (this.autoSizing) {
+            this.resize(null);
+        }
+    }
+
+    protected resize(dimension: IDimension | null): void {
+        let elemToResize = this.parentElemntRef;
+        if (elemToResize) {
+            const layoutSize = this.computeLayoutSize(elemToResize , dimension);
+            this.parentElemntRef.style.height = ""+layoutSize.height+"px";
+            this.editor.layout();
+        }
+    }
+
+    protected computeLayoutSize(hostNode: HTMLElement, dimension: IDimension | null): IDimension {
+        if (dimension && dimension.width >= 0 && dimension.height >= 0) {
+            return dimension;
+        }
+        const width = (!dimension || dimension.width < 0) ?
+            this.getWidth(hostNode) :
+            dimension.width;
+
+        const height = (!dimension || dimension.height < 0) ?
+            this.getHeight(hostNode) :
+            dimension.height;
+
+        return { width: width, height: height };
+    }
+
+    protected getWidth(hostNode: HTMLElement): number {
+        return hostNode.offsetWidth;
+    }
+
+    protected getHeight(hostNode: HTMLElement): number {
+        if (!this.autoSizing) {
+            return hostNode.offsetHeight;
+        }
+        const configuration = this.editor.getConfiguration();
+
+        const lineHeight = configuration.lineHeight;
+        const lineCount = this.editor.getModel().getLineCount();
+        const contentHeight = lineHeight * lineCount;
+
+        const horizontalScrollbarHeight = configuration.layoutInfo.horizontalScrollbarHeight;
+
+        const editorHeight = contentHeight + horizontalScrollbarHeight;
+        if (this.minHeight < 0) {
+            return editorHeight;
+        }
+        const defaultHeight = this.minHeight + horizontalScrollbarHeight;
+        return Math.max(defaultHeight, editorHeight);
     }
 }

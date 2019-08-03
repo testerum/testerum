@@ -90,7 +90,7 @@ export class HttpResponseVerifyBodyComponent implements OnInit, OnDestroy {
             bodyVerifyType == HttpBodyVerifyMatchingType.EXACT_MATCH
     }
 
-    shouldDisplayAceEditor(): boolean {
+    shouldDisplayTextEditor(): boolean {
         let bodyVerifyType = this.expectedBody.httpBodyVerifyMatchingType;
         return bodyVerifyType == HttpBodyVerifyMatchingType.CONTAINS ||
             bodyVerifyType == HttpBodyVerifyMatchingType.EXACT_MATCH ||

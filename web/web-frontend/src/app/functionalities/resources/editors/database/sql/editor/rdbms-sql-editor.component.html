@@ -1,3 +1,8 @@
-<div class="full-size-flex-element ace-editor-container">
-    <monaco-editor #monacoEditorComponent [options]="editorOptions" [value]="sqlText" (valueChange)="onChange($event)" style="height:100%"></monaco-editor>
+<div #parentElement class="full-size-flex-element ace-editor-container">
+    <monaco-editor #monacoEditorComponent
+                   [options]="editorOptions"
+                   [value]="sqlText"
+                   [parentElemntRef]="parentElement"
+                   (valueChange)="onChange($event)"
+                   style="height:100%"></monaco-editor>
 </div>

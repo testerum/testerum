@@ -20,8 +20,13 @@
         </div>
     </p-toolbar>
 
-    <div class="my-json-editor-container">
-        <monaco-editor #monacoEditorComponent [options]="editorOptions" [value]="jsonText" (valueChange)="onChange($event)" style="height:100%"></monaco-editor>
+    <div #parentElement class="my-json-editor-container">
+        <monaco-editor #monacoEditorComponent
+                       [options]="editorOptions"
+                       [value]="jsonText"
+                       [parentElemntRef]="parentElement"
+                       (valueChange)="onChange($event)"
+                       style="height:100%"></monaco-editor>
     </div>
 </div>
 

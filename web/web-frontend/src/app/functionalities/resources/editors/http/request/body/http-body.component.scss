@@ -1,20 +1,21 @@
 .http-body {
-    .radio label {
-        margin-right: 10px;
-        display: flex;
-        align-items: center;
+    .radio{
+        margin: 0;
+
+        label {
+            margin-right: 10px;
+            display: flex;
+            align-items: baseline;
+        }
     }
 
     .editor-container {
         position: relative;
-        min-height: 200px;
-        height: 100%;
     }
 
     .body-options {
         display: flex;
         flex-flow: row;
-        min-height: 34px;
         align-items: center;
 
         .btn-xxs {
@@ -45,8 +46,12 @@
     }
 
     .align-center {
-        align-items: center;
         display: flex;
+        align-items: center;
+    }
+    .align-baseline {
+        display: flex;
+        align-items: baseline;
     }
 }
 

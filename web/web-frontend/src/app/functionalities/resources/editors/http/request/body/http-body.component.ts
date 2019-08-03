@@ -35,7 +35,8 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
 
     editorOptions: editor.IEditorConstructionOptions = {
         language: this.editorMode,
-        readOnly: !this.httpRequestService.editMode
+        readOnly: !this.httpRequestService.editMode,
+
     };
 
     private changesMadeSubscription: Subscription;

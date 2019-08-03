@@ -1,4 +1,9 @@
 
-<div class="ace-editor-container">
-    <monaco-editor #monacoEditorComponent [options]="editorOptions" [value]="model" (valueChange)="onTextChange($event)" style="height:100%"></monaco-editor>
+<div #parentElement class="ace-editor-container">
+    <monaco-editor #monacoEditorComponent
+                   [options]="editorOptions"
+                   [value]="model"
+                   [parentElemntRef]="parentElement"
+                   (valueChange)="onTextChange($event)"
+                   style="height:100%"></monaco-editor>
 </div>

@@ -1,5 +1,6 @@
 <div class="http-response-verify-body">
-    <div class="my-line">
+    <div class="body-matching-toolbar"
+        [class.body-matching-toolbar-bottom-border]="shouldDisplayTextEditor()">
 
         <!-- BODY MATCHING -->
         <label class="my-label label-size">Body Matching:</label>
@@ -51,7 +52,14 @@
     </div>
 
     <!-- BODY TYPE JSON VERIFY-->
-    <div *ngIf="shouldDisplayAceEditor()" class="full-size-flex-element ace-editor-container">
-        <monaco-editor #monacoEditorComponent [options]="editorOptions" [value]="getModel().bodyVerify" (valueChange)="onTextChange($event)" style="height:100%"></monaco-editor>
+    <div #parentElement *ngIf="shouldDisplayTextEditor()" class="full-size-flex-element monaco-editor-container">
+        <monaco-editor #monacoEditorComponent
+                       [options]="editorOptions"
+                       [value]="getModel().bodyVerify"
+                       [autoSizing]="true"
+                       [minHeight]="400"
+                       [parentElemntRef]="parentElement"
+                       (valueChange)="onTextChange($event)"
+                       style="height:100%"></monaco-editor>
     </div>
 </div>

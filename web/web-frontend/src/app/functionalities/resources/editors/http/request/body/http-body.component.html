@@ -3,7 +3,7 @@
     <div class="body-options">
         <div class="left-options">
             <!-- BODY TYPE-->
-            <div class="radio body-type align-center">
+            <div class="radio body-type align-baseline">
                 <label *ngFor="let bodyType of HttpBodyType.enums">
                     <input type="radio"
                            [(ngModel)]="body.bodyType"
@@ -15,7 +15,7 @@
             </div>
 
             <!-- CONTENT TYPE -->
-            <div *ngIf="body.bodyType == HttpBodyType.RAW" class="align-center">
+            <div *ngIf="body.bodyType == HttpBodyType.RAW" class="align-baseline">
 
                 <div class="btn-group" dropdown [autoClose]="true">
 
@@ -61,8 +61,13 @@
     </div>
 
     <!-- CONTENT -->
-    <div *ngIf="body.bodyType == HttpBodyType.RAW" class="full-size-flex-element editor-container">
-        <monaco-editor #monacoEditorComponent [options]="editorOptions" [value]="body.content" (valueChange)="onTextChange($event)" style="height:100%"></monaco-editor>
+    <div #parentElement *ngIf="body.bodyType == HttpBodyType.RAW" class="full-size-flex-element editor-container">
+        <monaco-editor #monacoEditorComponent
+                       [options]="editorOptions"
+                       [value]="body.content"
+                       [parentElemntRef]="parentElement"
+                       (valueChange)="onTextChange($event)"
+                       style="height:100%"></monaco-editor>
     </div>
 
     <div *ngIf="body.bodyType == HttpBodyType.X_WWW_FORM_URLENCODED || body.bodyType == HttpBodyType.FORM_DATA"
