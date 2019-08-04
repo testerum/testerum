@@ -13,7 +13,6 @@ import {ResourceNodeComponent} from "./tree/container/node/resource-node.compone
 import {SchemaChooserModalComponent} from "./editors/database/connection/schema_chooser_modal/schema-chooser-modal.component";
 import {RdbmsSqlComponent} from "./editors/database/sql/rdbms-sql.component";
 import {RdbmsSqlEditorComponent} from "./editors/database/sql/editor/rdbms-sql-editor.component";
-import {AceEditorModule} from "ng2-ace-editor";
 import {RdbmsVerifyComponent} from "./editors/database/verify/rdbms-verify.component";
 import {RdbmsVerifyTreeComponent} from "./editors/database/verify/rdbms-verify-tree/rdbms-verify-tree.component";
 import {RdbmsVerifySchemaNodeComponent} from "./editors/database/verify/rdbms-verify-tree/schema-node/rdbms-verify-schema-node.component";
@@ -73,7 +72,6 @@ import {AngularSplitModule} from "angular-split";
         BsDropdownModule.forRoot(),
         DndModule.forRoot(),
         AngularSplitModule.forRoot(),
-        AceEditorModule,
         CheckboxModule,
 
         AutoCompleteModule,

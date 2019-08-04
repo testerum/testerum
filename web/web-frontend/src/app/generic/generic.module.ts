@@ -89,7 +89,6 @@ import {JsonVerifyTreeComponent} from "./components/json-verify/json-verify-tree
 import {JsonVerifyTreeService} from "./components/json-verify/json-verify-tree/json-verify-tree.service";
 import {JsonVerifyEditorComponent} from "./components/json-verify/json-verify-editor/json-verify-editor.component";
 import {JsonVerifyComponent} from "./components/json-verify/json-verify.component";
-import {AceEditorModule} from "ng2-ace-editor";
 import {AreYouSureModalService} from "./components/are_you_sure_modal/are-you-sure-modal.service";
 import {LogoComponent} from './components/logo/logo.component';
 import {InfoModalService} from "./components/info_modal/info-modal.service";
@@ -127,8 +126,6 @@ import {ResizedDirective} from "./components/monaco-editor/directives/resized-ev
         PopoverModule.forRoot(),
         MarkdownModule.forRoot(),
         FormsModule,
-
-        AceEditorModule,
 
         ChartModule,
         FileUploadModule,
