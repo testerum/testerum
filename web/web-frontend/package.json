@@ -31,7 +31,6 @@
     "css-element-queries": "^1.2.1",
     "jquery": "3.3.1",
     "monaco-editor": "0.17.1",
-    "ng2-ace-editor": "0.3.9",
     "ng2-dnd": "5.0.2",
     "ngx-bootstrap": "3.2.0",
     "ngx-markdown": "7.1.4",
