@@ -1,33 +1,34 @@
 <!-- BODY TYPE -->
-<div class="my-line">
-    <label class="my-label label-size">Body Type:</label>
-    <div class="my-value" *ngIf="!isEditMode()">
-        {{getModel().bodyType?.toString()}}
+<div class="http-mock-response-body">
+    <div class="my-line">
+        <label class="my-label label-size">Body Type:</label>
+        <div class="my-value" *ngIf="!isEditMode()">
+            {{getModel().bodyType?.toString()}}
+        </div>
+
+        <div class="my-value" *ngIf="isEditMode()">
+            <select class="form-control phase-input"
+                    (ngModelChange)="bodyTypeChanged($event)"
+                    [(ngModel)]="getModel().bodyType" name="bodyType">
+
+                <option *ngFor="let bodyTypes of getHttpMockResponseBodyTypes(); let i = index"
+                        [ngValue]="bodyTypes">
+                    {{bodyTypes.toString()}}
+                </option>
+            </select>
+        </div>
     </div>
 
-    <div class="my-value" *ngIf="isEditMode()">
-        <select class="form-control phase-input"
-                (ngModelChange)="bodyTypeChanged($event)"
-                #bodyTypeNgModel="ngModel"
-                [(ngModel)]="getModel().bodyType" name="bodyType">
-
-            <option *ngFor="let bodyTypes of getHttpMockResponseBodyTypes(); let i = index"
-                    [ngValue]="bodyTypes">
-                {{bodyTypes.toString()}}
-            </option>
-        </select>
+    <!-- BODY TYPE JSON VERIFY-->
+    <div #parentElement class="full-size-flex-element ace-editor-container">
+        <monaco-editor #monacoEditorComponent
+                       [options]="editorOptions"
+                       [value]="getModel().content"
+                       [autoSizing]="true"
+                       [minHeight]="400"
+                       [parentElemntRef]="parentElement"
+                       (valueChange)="onTextChange($event)"
+                       style="height:100%"></monaco-editor>
     </div>
 </div>
 
-<!-- BODY TYPE JSON VERIFY-->
-<div class="full-size-flex-element ace-editor-container">
-    <ace-editor
-        #editor
-        [(text)]="getModel().content"
-        [mode]="getModel().bodyType.editorMode"
-        [theme]="'eclipse'"
-        [options]="options"
-        [readOnly]="!isEditMode()"
-        [autoUpdateContent]="true"
-        class="ace-editor"></ace-editor>
-</div>

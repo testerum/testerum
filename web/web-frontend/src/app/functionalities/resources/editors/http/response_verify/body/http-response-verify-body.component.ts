@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {HttpResponseVerifyService} from "../http-response-verify.service";
 import {HttpBodyVerifyMatchingType} from "../model/enums/http-body-verify-matching-type.enum";
 import {HttpBodyVerifyType} from "../model/enums/http-body-verify-type.enum";
@@ -18,8 +18,6 @@ export class HttpResponseVerifyBodyComponent implements OnInit, OnDestroy {
 
     @Input() expectedBody: HttpResponseBodyVerify;
 
-    aceEditorModeOptions: Array<string>=[];
-
     editorOptions: editor.IEditorConstructionOptions = {};
 
     HttpBodyVerifyMatchingType = HttpBodyVerifyMatchingType;
@@ -34,11 +32,6 @@ export class HttpResponseVerifyBodyComponent implements OnInit, OnDestroy {
         this.editModeSubscription = this.httpResponseVerifyService.editModeEventEmitter.subscribe(editMode => {
             this.refreshEditorOptions();
         });
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        // this.refreshEditorOptions();
-
     }
 
     ngOnDestroy(): void {
@@ -76,11 +69,6 @@ export class HttpResponseVerifyBodyComponent implements OnInit, OnDestroy {
 
     bodyVerifyMatchingTypeChange(value: HttpBodyVerifyMatchingType) {
         this.expectedBody.httpBodyVerifyMatchingType = value;
-        switch (value) {
-            case HttpBodyVerifyMatchingType.CONTAINS: this.aceEditorModeOptions = HttpBodyVerifyType.enums.map(it => it.toString()); break;
-            case HttpBodyVerifyMatchingType.EXACT_MATCH: this.aceEditorModeOptions = HttpBodyVerifyType.enums.map(it => it.toString()); break;
-            case HttpBodyVerifyMatchingType.REGEX_MATCH: this.aceEditorModeOptions = [HttpBodyVerifyType.TEXT.toString()]; break;
-        }
         this.refreshEditorOptions();
     }
 

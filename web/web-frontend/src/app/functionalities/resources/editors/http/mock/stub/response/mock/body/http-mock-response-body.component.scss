@@ -1,17 +1,23 @@
-.label-size {
-    width: 7em;
+.http-mock-response-body {
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+
+    .label-size {
+        width: 7em;
+    }
+
+    .my-value {
+        width: inherit;
+    }
+
+    .ace-editor-container {
+        position: relative;
+        min-height: 280px;
+    }
+    .ace-editor {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+    }
 }
 
-.my-value {
-    width: inherit;
-}
-
-.ace-editor-container {
-    position: relative;
-    min-height: 280px;
-}
-.ace-editor {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-}
