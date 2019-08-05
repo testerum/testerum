@@ -1,8 +1,14 @@
-<div class="node-text">
+<div class="node-text step-text-container">
 
     <div (click)="setNodeAsSelected()"
          [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
          [class.tree-leaf-selected]="isSelected">
         <step-text [stepDef]="model.stepDef"></step-text>
+    </div>
+
+    <div class="step-button-panel">
+        <info-icon *ngIf="model.stepDef.description"
+                   [message]="model.stepDef.description"
+                   class="step-description-info-icon"></info-icon>
     </div>
 </div>
