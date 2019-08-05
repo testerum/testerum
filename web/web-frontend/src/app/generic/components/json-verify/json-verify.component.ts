@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {JsonUtil} from '../../../utils/json.util';
 import {JsonCompareModeEnum} from "./model/json-compare-mode.enum";
 import {JsonVerifyEditorComponent} from "./json-verify-editor/json-verify-editor.component";
@@ -12,7 +22,7 @@ import {JsonVerifyEditorComponent} from "./json-verify-editor/json-verify-editor
     ],
     encapsulation: ViewEncapsulation.None
 })
-export class JsonVerifyComponent {
+export class JsonVerifyComponent implements OnChanges {
 
     @Input() model: string;
     @Output() modelChange = new EventEmitter<string>();
@@ -24,8 +34,15 @@ export class JsonVerifyComponent {
     @ViewChild(JsonVerifyEditorComponent) jsonVerifyEditorComponent: JsonVerifyEditorComponent;
 
     onTextChange(jsonAsString: string) {
-        this.isValidJson = JsonUtil.isJson(jsonAsString);
-        this.modelChange.emit(jsonAsString)
+        this.modelChange.emit(jsonAsString);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        this.checkAndSetIfIsValidJson();
+    }
+
+    private checkAndSetIfIsValidJson() {
+        this.isValidJson = JsonUtil.isJson(this.model);
     }
 
     getJsonCompareModes(): Array<JsonCompareModeEnum> {
