@@ -57,6 +57,7 @@ class WebDriverExpressionSteps {
             context.putAll(variables.toMap())
 
             // services
+            context["testLogger"] = logger
             context["testVariables"] = variables
 
             // misc

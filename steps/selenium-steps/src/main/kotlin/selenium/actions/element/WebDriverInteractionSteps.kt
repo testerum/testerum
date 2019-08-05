@@ -12,10 +12,7 @@ import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 
 
-
 class WebDriverInteractionSteps {
-
-
 
     private val logger = TesterumServiceLocator.getTesterumLogger()
 
@@ -190,7 +187,7 @@ class WebDriverInteractionSteps {
 
 //----------------------------------------------------------------------------------------------------------------------
     @When(
-            value = "I scroll element <<elementLocator>> into the view",
+            value = "I scroll into view the element <<elementLocator>>",
             description = "Changes the scroll bar position to bring the element into the view port of the browser"
     )
 
@@ -211,7 +208,16 @@ class WebDriverInteractionSteps {
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
-            (driver as JavascriptExecutor).executeScript("arguments[0].scrollIntoView(true);", element)
+
+            val javascriptExecutor = driver as? JavascriptExecutor
+            if (javascriptExecutor != null) {
+                javascriptExecutor.executeScript("arguments[0].scrollIntoView(true);", element)
+            } else {
+                throw RuntimeException(
+                        "the current WebDriver driver cannot execute JavaScript" +
+                        ": scrolling an element into view is not possible"
+                )
+            }
         }
     }
 }
