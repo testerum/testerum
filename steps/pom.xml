@@ -20,6 +20,7 @@
         <module>rdbms-steps</module>
         <module>http-steps</module>
         <module>selenium-steps</module>
+        <module>util-steps</module>
         <module>vars-steps</module>
     </modules>
 
