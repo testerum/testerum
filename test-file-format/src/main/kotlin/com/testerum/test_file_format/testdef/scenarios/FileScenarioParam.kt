@@ -1,4 +1,4 @@
-package com.testerum.test_file_format.testdef.parametrized
+package com.testerum.test_file_format.testdef.scenarios
 
 data class FileScenarioParam(val name: String,
                              val type: FileScenarioParamType,

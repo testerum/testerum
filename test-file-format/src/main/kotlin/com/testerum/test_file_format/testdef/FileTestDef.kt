@@ -1,7 +1,7 @@
 package com.testerum.test_file_format.testdef
 
 import com.testerum.test_file_format.common.step_call.FileStepCall
-import com.testerum.test_file_format.testdef.parametrized.FileScenario
+import com.testerum.test_file_format.testdef.scenarios.FileScenario
 import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
 
 data class FileTestDef(val name: String,

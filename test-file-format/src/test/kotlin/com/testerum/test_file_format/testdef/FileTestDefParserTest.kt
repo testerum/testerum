@@ -6,10 +6,10 @@ import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
 import com.testerum.test_file_format.common.step_call.phase.FileStepPhase
-import com.testerum.test_file_format.testdef.parametrized.FileScenario
-import com.testerum.test_file_format.testdef.parametrized.FileScenarioParam
-import com.testerum.test_file_format.testdef.parametrized.FileScenarioParamType
 import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
+import com.testerum.test_file_format.testdef.scenarios.FileScenario
+import com.testerum.test_file_format.testdef.scenarios.FileScenarioParam
+import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamType
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test

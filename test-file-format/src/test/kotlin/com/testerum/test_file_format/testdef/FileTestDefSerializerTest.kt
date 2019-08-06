@@ -5,6 +5,9 @@ import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
 import com.testerum.test_file_format.common.step_call.phase.FileStepPhase
 import com.testerum.test_file_format.test_util.SerializerTestRunner
 import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
+import com.testerum.test_file_format.testdef.scenarios.FileScenario
+import com.testerum.test_file_format.testdef.scenarios.FileScenarioParam
+import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -26,6 +29,53 @@ class FileTestDefSerializerTest {
                                           |Just read it and you'll see what I mean.
                                           |Escaped >> multiline end.""".trimMargin(),
                         tags = listOf("one", "two", "three", "four"),
+                        scenarios = listOf(
+                                FileScenario(
+                                        name = null,
+                                        params = emptyList()
+                                ),
+                                FileScenario(
+                                        name = "A scenario without params",
+                                        params = emptyList()
+                                ),
+                                FileScenario(
+                                        name = "A scenario with description and params",
+                                        params = listOf(
+                                                FileScenarioParam(
+                                                        name = "firstName",
+                                                        type = FileScenarioParamType.TEXT,
+                                                        value = "John"
+                                                ),
+                                                FileScenarioParam(
+                                                        name = "lastName",
+                                                        type = FileScenarioParamType.TEXT,
+                                                        value = "Doe"
+                                                ),
+                                                FileScenarioParam(
+                                                        name = "description",
+                                                        type = FileScenarioParamType.TEXT,
+                                                        value = """ |The ultimate description
+                                                                            |for the unknown guy.""".trimMargin()
+                                                ),
+                                                FileScenarioParam(
+                                                        name = "info",
+                                                        type = FileScenarioParamType.JSON,
+                                                        value = """{"person": {"address": {"street": "Eroilor"}}}"""
+                                                ),
+                                                FileScenarioParam(
+                                                        name = "multilineInfo",
+                                                        type = FileScenarioParamType.JSON,
+                                                        value = """ |{
+                                                                            |    "person": {
+                                                                            |        "address": {
+                                                                            |            "street": "Eroilor"
+                                                                            |        }
+                                                                            |    }
+                                                                            |}""".trimMargin()
+                                                )
+                                        )
+                                )
+                        ),
                         steps = listOf(
                                 FileStepCall(
                                         phase = FileStepPhase.GIVEN,
@@ -59,6 +109,28 @@ class FileTestDefSerializerTest {
                               |
                               |    tags = <<one, two, three, four>>
                               |
+                              |    scenario:
+                              |
+                              |    scenario: A scenario without params
+                              |
+                              |    scenario: A scenario with description and params
+                              |        param firstName = <<John>>
+                              |        param lastName = <<Doe>>
+                              |        param description = <<
+                              |            The ultimate description
+                              |            for the unknown guy.
+                              |        >>
+                              |        param-json info = <<{"person": {"address": {"street": "Eroilor"}}}>>
+                              |        param-json multilineInfo = <<
+                              |            {
+                              |                "person": {
+                              |                    "address": {
+                              |                        "street": "Eroilor"
+                              |                    }
+                              |                }
+                              |            }
+                              |        >>
+                              |
                               |    step: Given some initial state
                               |    step: When I do some action
                               |    step: Then something should happen
@@ -79,6 +151,28 @@ class FileTestDefSerializerTest {
                    |
                    |            tags = <<one, two, three, four>>
                    |
+                   |            scenario:
+                   |
+                   |            scenario: A scenario without params
+                   |
+                   |            scenario: A scenario with description and params
+                   |                param firstName = <<John>>
+                   |                param lastName = <<Doe>>
+                   |                param description = <<
+                   |                    The ultimate description
+                   |                    for the unknown guy.
+                   |                >>
+                   |                param-json info = <<{"person": {"address": {"street": "Eroilor"}}}>>
+                   |                param-json multilineInfo = <<
+                   |                    {
+                   |                        "person": {
+                   |                            "address": {
+                   |                                "street": "Eroilor"
+                   |                            }
+                   |                        }
+                   |                    }
+                   |                >>
+                   |
                    |            step: Given some initial state
                    |            step: When I do some action
                    |            step: Then something should happen
@@ -91,6 +185,53 @@ class FileTestDefSerializerTest {
                                           |It tests many cools things.
                                           |Just read it and you'll see what I mean.""".trimMargin(),
                                 tags = listOf("one", "two", "three", "four"),
+                                scenarios = listOf(
+                                        FileScenario(
+                                                name = null,
+                                                params = emptyList()
+                                        ),
+                                        FileScenario(
+                                                name = "A scenario without params",
+                                                params = emptyList()
+                                        ),
+                                        FileScenario(
+                                                name = "A scenario with description and params",
+                                                params = listOf(
+                                                        FileScenarioParam(
+                                                                name = "firstName",
+                                                                type = FileScenarioParamType.TEXT,
+                                                                value = "John"
+                                                        ),
+                                                        FileScenarioParam(
+                                                                name = "lastName",
+                                                                type = FileScenarioParamType.TEXT,
+                                                                value = "Doe"
+                                                        ),
+                                                        FileScenarioParam(
+                                                                name = "description",
+                                                                type = FileScenarioParamType.TEXT,
+                                                                value = """ |The ultimate description
+                                                                            |for the unknown guy.""".trimMargin()
+                                                        ),
+                                                        FileScenarioParam(
+                                                                name = "info",
+                                                                type = FileScenarioParamType.JSON,
+                                                                value = """{"person": {"address": {"street": "Eroilor"}}}"""
+                                                        ),
+                                                        FileScenarioParam(
+                                                                name = "multilineInfo",
+                                                                type = FileScenarioParamType.JSON,
+                                                                value = """ |{
+                                                                            |    "person": {
+                                                                            |        "address": {
+                                                                            |            "street": "Eroilor"
+                                                                            |        }
+                                                                            |    }
+                                                                            |}""".trimMargin()
+                                                        )
+                                                )
+                                        )
+                                ),
                                 steps = listOf(
                                         FileStepCall(
                                                 phase = FileStepPhase.GIVEN,
