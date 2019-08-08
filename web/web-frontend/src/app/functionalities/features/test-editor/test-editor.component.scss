@@ -1,6 +1,5 @@
 @import "../../../../resources/css/testerum-variables.scss";
 
-
 .test-editor {
     overflow-y: auto;
     height: 100%;
@@ -68,5 +67,10 @@
     .toggle-test-state.ui-state-active {
         background-color: $error-color !important;
         color: white !important;
+    }
+
+    .actions-header {
+        display: flex;
+        align-items: center;
     }
 }

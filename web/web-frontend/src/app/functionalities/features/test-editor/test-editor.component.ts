@@ -19,6 +19,9 @@ import {AreYouSureModalService} from "../../../generic/components/are_you_sure_m
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 import {StepCallWarningUtil} from "../../../generic/components/step-call-tree/util/step-call-warning.util";
 import {ContextService} from "../../../service/context.service";
+import {Scenario} from "../../../model/test/scenario/scenario.model";
+import {ScenarioTreeComponent} from "./scenario-tree/scenario-tree.component";
+import {ScenarioTreeUtil} from "./scenario-tree/util/scenario-tree.util";
 
 @Component({
     moduleId: module.id,
@@ -42,6 +45,8 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     tagsToShow:string[] = [];
     currentTagSearch:string;
 
+    @ViewChild(ScenarioTreeComponent) scenarioTreeComponent: ScenarioTreeComponent;
+
     @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
     descriptionMarkdownEditor: MarkdownEditorComponent;
     @ViewChild("descriptionMarkdownEditor") set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
@@ -57,6 +62,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     private routeSubscription: Subscription;
     private editModeStepCallTreeSubscription: Subscription;
     private warningRecalculationChangesSubscription: Subscription;
+    private addNewScenarioSubsciption: Subscription;
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
@@ -143,6 +149,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
         if(this.routeSubscription) this.routeSubscription.unsubscribe();
         if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
         if(this.warningRecalculationChangesSubscription) this.warningRecalculationChangesSubscription.unsubscribe();
+        if(this.addNewScenarioSubsciption) this.addNewScenarioSubsciption.unsubscribe();
     }
 
     canDeactivate(): boolean {
@@ -323,5 +330,45 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
         this.contextService.stepToCopy = null;
 
         this.stepCallTreeComponent.stepCallTreeComponentService.setSelectedNode(null);
+    }
+
+    addScenario() {
+        if (!this.isEditMode) {
+            this.setEditMode(true);
+        }
+
+        this.scenarioTreeComponent.scenarioTreeComponentService.addNewScenario();
+    }
+
+    getScenarioDescription(): string {
+        return "A Scenario is a set of parameters.\n" +
+            "This test will be executed multiple times, once for each scenario.\n" +
+            "If there is no Scenario defined the test will be executed only once.";
+    }
+
+    getStepsDescription(): string {
+        return "A test is a list of actions, called steps.\n" +
+            "The steps can use the parameters defined in the Scenarios.";
+    }
+
+    canPasteScenario(): boolean {
+        return this.scenarioTreeComponent.scenarioTreeComponentService.canPaste();
+    }
+
+    onPasteScenario() {
+        let scenarioTreeComponentService = this.scenarioTreeComponent.scenarioTreeComponentService;
+
+        let treeModel = this.scenarioTreeComponent.jsonTreeModel;
+        if (scenarioTreeComponentService.scenarioToCopy) {
+            let scenarioToCopyModel = scenarioTreeComponentService.scenarioToCopy.model.scenario;
+
+            let newScenario = scenarioToCopyModel.clone();
+            scenarioTreeComponentService.testModel.scenarios.push(newScenario);
+
+            let scenarioContainer = ScenarioTreeUtil.getScenarioContainer(newScenario, this.testModel.scenarios.length, scenarioTreeComponentService.jsonTreeModel);
+            scenarioTreeComponentService.jsonTreeModel.children.push(scenarioContainer);
+
+            scenarioTreeComponentService.afterPasteOperation();
+        }
     }
 }

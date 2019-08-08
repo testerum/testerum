@@ -1,0 +1,28 @@
+<div class="node">
+
+    <div class="full-line text-container"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
+         (click)="collapseNode();$event.stopPropagation();">
+
+        <i class="fas fa-angle-double-left tree-node-icon" style="width: 10px" aria-hidden="true"></i>
+        <i class="fas fa-angle-double-right tree-node-icon" aria-hidden="true"></i>
+        <span>Parameters</span>
+
+
+        <!-- BUTTONS -->
+        <div class="button-panel-hide-on-hover btn-group">
+            <div *ngIf="!model.jsonTreeNodeState.showChildren"
+                 title="Define Step" class="btn btn-default btn-xs btn-group"
+                 (click)="editStep(); $event.stopPropagation()">
+                <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+
+    <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

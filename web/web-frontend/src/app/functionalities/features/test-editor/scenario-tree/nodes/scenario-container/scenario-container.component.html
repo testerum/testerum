@@ -1,0 +1,56 @@
+<div class="node scenario_container_component">
+
+    <div class="scenario_text_and_buttons full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false"
+         (click)="toggleNode();$event.stopPropagation();">
+
+        <div [class.selected_for_copy_or_cut]="isSelectedForCopyOrCut()">
+            <tree-text-edit [(ngModel)]="this.model.scenario.name"
+                            [isEditMode]="isEditMode()"
+                            [isTextEditMode]="isScenarioNameEditMode"></tree-text-edit>
+        </div>
+
+        <!-- BUTTONS -->
+        <div *ngIf="isEditMode()"
+             class="button-panel-hide-on-hover btn-group">
+            <div title="Edit Scenario Name" class="btn btn-default btn-xs btn-group"
+                 (click)="editScenarioName(); $event.stopPropagation()">
+                <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+            </div>
+
+            <div title="Move Scenario Up"
+                 *ngIf="!isFirstStep()"
+                 class="btn btn-default btn-xs btn-group"
+                 (click)="moveScenarioUp(); $event.stopPropagation()">
+                <i class="fas fa-arrow-up" aria-hidden="true"></i>
+            </div>
+
+            <div title="Move Scenario Down"
+                 *ngIf="!isLastStep()"
+                 class="btn btn-default btn-xs btn-group"
+                 (click)="moveScenarioDown(); $event.stopPropagation()">
+                <i class="fas fa-arrow-down" aria-hidden="true"></i>
+            </div>
+
+            <div title="Copy Step" class="btn btn-default btn-xs btn-group"
+                 (click)="onCopyStep(); $event.stopPropagation()">
+                <i class="fa_my-copy" aria-hidden="true"></i>
+            </div>
+
+            <div title="Remove Step"
+                 class="btn btn-default btn-xs btn-group"
+                 (click)="removeStep(); $event.stopPropagation()">
+                <i class="fa_my-delete" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+
+    <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>
+
+

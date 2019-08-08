@@ -36,9 +36,13 @@ import {FeaturesTreeComponent} from "./features-tree/features-tree.component";
 import {FeaturesTreeFilterComponent} from "./features-tree/features-tree-filter/features-tree-filter.component";
 import {TestsRunnerTreeToolbarComponent} from './tests-runner/tests-runner-tree/tests-runner-tree-toolbar/tests-runner-tree-toolbar.component';
 import {TestsRunnerLogsToolbarComponent} from "./tests-runner/tests-runner-logs/tests-runner-logs-toolbar/tests-runner-logs-toolbar.component";
-import { LogLineCollapsableComponent } from './tests-runner/tests-runner-logs/log-line-collapsable/log-line-collapsable.component';
+import {LogLineCollapsableComponent} from './tests-runner/tests-runner-logs/log-line-collapsable/log-line-collapsable.component';
 import {TestsRunnerService} from "./tests-runner/tests-runner.service";
 import {AngularSplitModule} from "angular-split";
+import {ScenarioTreeComponent} from "./test-editor/scenario-tree/scenario-tree.component";
+import {ScenarioContainerComponent} from "./test-editor/scenario-tree/nodes/scenario-container/scenario-container.component";
+import {ScenarioParamsContainerComponent} from "./test-editor/scenario-tree/nodes/scenario-params-container/scenario-params-container.component";
+import { TreeTextEditComponent } from './test-editor/scenario-tree/nodes/scenario-container/tree-text-edit/tree-text-edit.component';
 
 @NgModule({
     imports: [
@@ -75,6 +79,7 @@ import {AngularSplitModule} from "angular-split";
         FeatureContainerComponent,
         TestNodeComponent,
         TestEditorComponent,
+        ScenarioTreeComponent,
 
         TestsRunnerComponent,
         RunnerTreeComponent,
@@ -86,9 +91,15 @@ import {AngularSplitModule} from "angular-split";
         TestsRunnerTreeToolbarComponent,
         TestsRunnerLogsToolbarComponent,
         LogLineCollapsableComponent,
+
+        ScenarioContainerComponent,
+        ScenarioParamsContainerComponent,
+        TreeTextEditComponent,
     ],
     entryComponents: [
         RunnerTreeNodeComponent,
+        ScenarioContainerComponent,
+        ScenarioParamsContainerComponent,
     ],
     providers: [
         TestsService,

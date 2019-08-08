@@ -1,0 +1,17 @@
+<div class="tree-text-edit">
+    <div *ngIf="!isTextEditMode" class="text-mode">
+        {{text}}
+    </div>
+
+    <div *ngIf="isTextEditMode"
+         (click)="$event.stopPropagation()"
+         class="edit-mode">
+
+        <input type="text" pInputText
+               [(ngModel)]="text"
+               (blur)="setTextEditMode(false)"
+               (keydown.escape)="setTextEditMode(false); $event.preventDefault()"
+               (keydown.enter)="setTextEditMode(false); $event.preventDefault()"
+               class="input-text" />
+    </div>
+</div>
