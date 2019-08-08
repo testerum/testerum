@@ -1,33 +1,43 @@
-package com.testerum.runner_cmdline.runner_tree.nodes.test
+package com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test
 
 import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.common_kotlin.indent
+import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioMapper
+import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioParamMapper
 import com.testerum.model.test.TestModel
-import com.testerum.runner.events.model.TestEndEvent
-import com.testerum.runner.events.model.TestStartEvent
+import com.testerum.model.test.scenario.Scenario
+import com.testerum.runner.events.model.ScenarioEndEvent
+import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
+import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTestException
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
+import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamSerializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.nio.file.Path as JavaPath
 
-class RunnerTest(protected val beforeEachTestHooks: List<RunnerHook>,
-                      protected val test: TestModel,
-                      protected val filePath: JavaPath,
-                      protected val indexInParent: Int,
-                      protected val steps: List<RunnerStep>,
-                      protected val afterEachTestHooks: List<RunnerHook>) : RunnerFeatureOrTest() {
+class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
+                     private val test: TestModel,
+                     private val scenario: Scenario,
+                     private val scenarioIndex: Int,
+                     private val filePath: java.nio.file.Path,
+                     private val indexInParent: Int,
+                     private val steps: List<RunnerStep>,
+                     private val afterEachTestHooks: List<RunnerHook>) : RunnerFeatureOrTest() {
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
+
+        private val businessToFileScenarioMapper = BusinessToFileScenarioMapper(
+                BusinessToFileScenarioParamMapper()
+        )
     }
 
     init {
@@ -39,12 +49,14 @@ class RunnerTest(protected val beforeEachTestHooks: List<RunnerHook>,
     override lateinit var parent: RunnerTreeNode
     override val positionInParent = PositionInParent(test.id, indexInParent)
 
+    private val scenarioName = scenario.name ?: "Execution ${scenarioIndex + 1}"
+
     private fun getPathForLogging(): String {
-        return "test at [${filePath.toAbsolutePath().normalize()}]"
+        return "scenario [$scenarioName] (index $scenarioIndex) of test at [${filePath.toAbsolutePath().normalize()}]"
     }
 
     private fun getNameForLogging(): String {
-        return "test [${test.name}] at [${test.path}]"
+        return "scenario [$scenarioName] (index $scenarioIndex) of test [${test.name}] at [${test.path}]"
     }
 
     override fun getGlueClasses(context: RunnerContext): List<Class<*>> {
@@ -78,7 +90,7 @@ class RunnerTest(protected val beforeEachTestHooks: List<RunnerHook>,
             return disable(context)
         }
 
-        logTestStart(context)
+        logScenarioStart(context)
 
         var executionStatus: ExecutionStatus = ExecutionStatus.PASSED
         var exception: Throwable? = null
@@ -86,6 +98,11 @@ class RunnerTest(protected val beforeEachTestHooks: List<RunnerHook>,
         val startTime = System.currentTimeMillis()
         try {
             val dynamicVars = DynamicVariablesContext()
+
+            for (scenarioParam in scenario.params) {
+                dynamicVars[scenarioParam.name] = scenarioParam.value
+            }
+
             context.glueObjectFactory.beforeTest()
 
             val vars = VariablesContext.forTest(dynamicVars, globalVars)
@@ -156,20 +173,20 @@ class RunnerTest(protected val beforeEachTestHooks: List<RunnerHook>,
                 val afterTestException = RuntimeException("glueObjectFactory.afterTest() failed", e)
 
                 exception = RunnerTestException(
-                        message = "test execution failure",
+                        message = "scenario execution failure",
                         cause = exception,
                         suppressedException = afterTestException
                 )
             }
 
-            logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
+            logScenarioEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
         }
 
         return executionStatus
     }
 
     override fun skip(context: RunnerContext): ExecutionStatus {
-        logTestStart(context)
+        logScenarioStart(context)
 
         var executionStatus = ExecutionStatus.SKIPPED
         var exception: Throwable? = null
@@ -183,13 +200,13 @@ class RunnerTest(protected val beforeEachTestHooks: List<RunnerHook>,
             executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
-            logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
+            logScenarioEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
             return executionStatus
         }
     }
 
     private fun disable(context: RunnerContext): ExecutionStatus {
-        logTestStart(context)
+        logScenarioStart(context)
 
         var executionStatus = ExecutionStatus.DISABLED
         var exception: Throwable? = null
@@ -203,33 +220,50 @@ class RunnerTest(protected val beforeEachTestHooks: List<RunnerHook>,
             executionStatus = ExecutionStatus.FAILED
             exception = e
         } finally {
-            logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
+            logScenarioEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
             return executionStatus
         }
     }
 
-    private fun logTestStart(context: RunnerContext) {
+    private fun logScenarioStart(context: RunnerContext) {
         context.logEvent(
-                TestStartEvent(
+                ScenarioStartEvent(
                         eventKey = eventKey,
                         testName = test.name,
                         testFilePath = test.path,
+                        scenario = scenario,
+                        scenarioIndex = scenarioIndex,
                         tags = test.tags
                 )
         )
         context.logMessage("Started executing ${getNameForLogging()}")
+
+        context.logMessage("")
+        context.logMessage("Scenario params")
+        context.logMessage("---------------")
+
+        val fileScenario = businessToFileScenarioMapper.mapScenario(scenario)
+
+        for (param in fileScenario.params) {
+            context.logMessage(
+                    FileScenarioParamSerializer.serializeToString(param)
+            )
+        }
+        context.logMessage("")
     }
 
-    private fun logTestEnd(context: RunnerContext,
-                                  executionStatus: ExecutionStatus,
-                                  exception: Throwable?,
-                                  durationMillis: Long) {
+    private fun logScenarioEnd(context: RunnerContext,
+                               executionStatus: ExecutionStatus,
+                               exception: Throwable?,
+                               durationMillis: Long) {
         context.logMessage("Finished executing ${getNameForLogging()}; status: [$executionStatus]", exception)
         context.logEvent(
-                TestEndEvent(
+                ScenarioEndEvent(
                         eventKey = eventKey,
                         testFilePath = test.path,
                         testName = test.name,
+                        scenario = scenario,
+                        scenarioIndex = scenarioIndex,
                         status = executionStatus,
                         durationMillis = durationMillis
                 )
@@ -240,11 +274,11 @@ class RunnerTest(protected val beforeEachTestHooks: List<RunnerHook>,
 
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
         // show test info
-        destination.indent(indentLevel).append("test")
+        destination.indent(indentLevel).append("scenario")
         if (test.properties.isDisabled) {
             destination.append(" DISABLED")
         }
-        destination.append(" '").append(test.name).append("'")
+        destination.append(" '").append(scenarioName).append("' (index $scenarioIndex) of test '").append(test.name).append("' at [").append(test.path).append("]")
         if (test.tags.isNotEmpty()) {
             destination.append(", tags=").append(test.tags)
         }

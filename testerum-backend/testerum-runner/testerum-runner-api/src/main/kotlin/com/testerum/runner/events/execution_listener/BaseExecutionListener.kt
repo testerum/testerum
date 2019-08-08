@@ -2,7 +2,11 @@ package com.testerum.runner.events.execution_listener
 
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
+import com.testerum.runner.events.model.ParametrizedTestEndEvent
+import com.testerum.runner.events.model.ParametrizedTestStartEvent
 import com.testerum.runner.events.model.RunnerEvent
+import com.testerum.runner.events.model.ScenarioEndEvent
+import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.StepEndEvent
 import com.testerum.runner.events.model.StepStartEvent
 import com.testerum.runner.events.model.SuiteEndEvent
@@ -17,21 +21,27 @@ open class BaseExecutionListener : ExecutionListener {
 
     override fun onEvent(event: RunnerEvent) {
         when (event) {
-            is SuiteStartEvent   -> onSuiteStart(event)
-            is SuiteEndEvent     -> onSuiteEnd(event)
+            is SuiteStartEvent            -> onSuiteStart(event)
+            is SuiteEndEvent              -> onSuiteEnd(event)
 
-            is FeatureStartEvent -> onFeatureStart(event)
-            is FeatureEndEvent   -> onFeatureEnd(event)
+            is FeatureStartEvent          -> onFeatureStart(event)
+            is FeatureEndEvent            -> onFeatureEnd(event)
 
-            is TestStartEvent    -> onTestStart(event)
-            is TestEndEvent      -> onTestEnd(event)
+            is TestStartEvent             -> onTestStart(event)
+            is TestEndEvent               -> onTestEnd(event)
 
-            is StepStartEvent    -> onStepStart(event)
-            is StepEndEvent      -> onStepEnd(event)
+            is ParametrizedTestStartEvent -> onParametrizedTestStart(event)
+            is ParametrizedTestEndEvent   -> onParametrizedTestEnd(event)
 
-            is TextLogEvent      -> onTextLog(event)
+            is ScenarioStartEvent         -> onScenarioStart(event)
+            is ScenarioEndEvent           -> onScenarioEnd(event)
 
-            else                 -> onUnknownEvent(event)
+            is StepStartEvent             -> onStepStart(event)
+            is StepEndEvent               -> onStepEnd(event)
+
+            is TextLogEvent               -> onTextLog(event)
+
+            else                          -> onUnknownEvent(event)
         }
 
     }
@@ -39,11 +49,17 @@ open class BaseExecutionListener : ExecutionListener {
     protected open fun onSuiteStart(event: SuiteStartEvent) {}
     protected open fun onSuiteEnd(event: SuiteEndEvent) {}
 
+    protected open fun onFeatureStart(event: FeatureStartEvent) {}
+    protected open fun onFeatureEnd(event: FeatureEndEvent) {}
+
     protected open fun onTestStart(event: TestStartEvent) {}
     protected open fun onTestEnd(event: TestEndEvent) {}
 
-    protected open fun onFeatureStart(event: FeatureStartEvent) {}
-    protected open fun onFeatureEnd(event: FeatureEndEvent) {}
+    protected open fun onParametrizedTestStart(event: ParametrizedTestStartEvent) {}
+    protected open fun onParametrizedTestEnd(event: ParametrizedTestEndEvent) {}
+
+    protected open fun onScenarioStart(event: ScenarioStartEvent) {}
+    protected open fun onScenarioEnd(event: ScenarioEndEvent) {}
 
     protected open fun onStepStart(event: StepStartEvent) {}
     protected open fun onStepEnd(event: StepEndEvent) {}

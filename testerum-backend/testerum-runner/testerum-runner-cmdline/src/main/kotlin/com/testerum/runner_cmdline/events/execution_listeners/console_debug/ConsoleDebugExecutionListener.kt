@@ -3,7 +3,11 @@ package com.testerum.runner_cmdline.events.execution_listeners.console_debug
 import com.testerum.runner.events.execution_listener.BaseExecutionListener
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
+import com.testerum.runner.events.model.ParametrizedTestEndEvent
+import com.testerum.runner.events.model.ParametrizedTestStartEvent
 import com.testerum.runner.events.model.RunnerEvent
+import com.testerum.runner.events.model.ScenarioEndEvent
+import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.StepEndEvent
 import com.testerum.runner.events.model.StepStartEvent
 import com.testerum.runner.events.model.SuiteEndEvent
@@ -59,6 +63,34 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indent()
 
         log("TEST_END: status=${event.status}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}\n")
+    }
+
+    override fun onParametrizedTestStart(event: ParametrizedTestStartEvent) {
+        indent()
+        log("PARAMETRIZED_TEST_START: testName='${event.testName}', testFilePath='${event.testFilePath}'\n")
+
+        indentLevel++
+    }
+
+    override fun onParametrizedTestEnd(event: ParametrizedTestEndEvent) {
+        indentLevel--
+        indent()
+
+        log("PARAMETRIZED_TEST_END: status=${event.status}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}\n")
+    }
+
+    override fun onScenarioStart(event: ScenarioStartEvent) {
+        indent()
+        log("SCENARIO_START: scenarioName='${event.scenario.name.orEmpty()}', scenarioIndex=${event.scenarioIndex}, testName='${event.testName}', testFilePath='${event.testFilePath}'\n")
+
+        indentLevel++
+    }
+
+    override fun onScenarioEnd(event: ScenarioEndEvent) {
+        indentLevel--
+        indent()
+
+        log("SCENARIO_END: status=${event.status}, scenarioName='${event.scenario.name.orEmpty()}', scenarioIndex=${event.scenarioIndex}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}\n")
     }
 
     override fun onStepStart(event: StepStartEvent) {

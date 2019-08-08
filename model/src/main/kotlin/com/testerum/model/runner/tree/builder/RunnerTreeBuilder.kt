@@ -86,7 +86,7 @@ class RunnerTreeBuilder {
                     val isParametrizedTest = payload.scenarios.isNotEmpty()
 
                     if (isParametrizedTest) {
-                        val testScenarios: List<RunnerTestScenarioNode> = payload.scenarios.mapIndexed { index, scenario ->  createTestExecutionBranch(payload, index, scenario) }
+                        val testScenarios: List<RunnerTestScenarioNode> = payload.scenarios.mapIndexed { index, scenario ->  createTestScenarioBranch(payload, index, scenario) }
 
                         RunnerParametrizedTestNode(
                                 id = payload.id,
@@ -109,17 +109,17 @@ class RunnerTreeBuilder {
             }
         }
 
-        private fun createTestExecutionBranch(test: TestModel,
-                                              index: Int,
-                                              scenario: Scenario): RunnerTestScenarioNode {
+        private fun createTestScenarioBranch(test: TestModel,
+                                             scenarioIndex: Int,
+                                             scenario: Scenario): RunnerTestScenarioNode {
             val stepCalls: List<RunnerStepNode> = test.stepCalls.map(this::createStepCallBranch)
 
             return RunnerTestScenarioNode(
-                    id = "${test.id}-$index",
+                    id = "${test.id}-$scenarioIndex",
                     path = Path.createInstance(
-                            "${test.path}/$index"
+                            "${test.path}/$scenarioIndex"
                     ),
-                    name = scenario.name ?: "Execution ${index + 1}",
+                    name = scenario.name ?: "Execution ${scenarioIndex + 1}",
                     children = stepCalls
             )
         }
