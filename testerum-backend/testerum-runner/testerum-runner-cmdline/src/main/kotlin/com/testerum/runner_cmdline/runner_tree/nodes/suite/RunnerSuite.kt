@@ -13,10 +13,10 @@ import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 
-data class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
-                       private val featuresOrTests: List<RunnerFeatureOrTest>,
-                       private val afterAllTestsHooks: List<RunnerHook>,
-                       private val executionName: String?) : RunnerTreeNode() {
+class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
+                  private val featuresOrTests: List<RunnerFeatureOrTest>,
+                  private val afterAllTestsHooks: List<RunnerHook>,
+                  private val executionName: String?) : RunnerTreeNode() {
 
     init {
         for (featureOrTest in featuresOrTests) {

@@ -1,5 +1,6 @@
 package json_support.utils
 
+import com.testerum.model.expressions.json.util.MapMerger
 import json_support.utils.map_dsl.createMap
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo

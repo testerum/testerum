@@ -7,6 +7,8 @@ import com.testerum.test_file_format.common.step_call.FileStepCallSerializer
 import com.testerum.test_file_format.common.tags.FileTagsSerializer
 import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
 import com.testerum.test_file_format.testdef.properties.FileTestDefPropertiesSerializer
+import com.testerum.test_file_format.testdef.scenarios.FileScenario
+import com.testerum.test_file_format.testdef.scenarios.FileScenarioSerializer
 import java.io.Writer
 
 object FileTestDefSerializer : BaseSerializer<FileTestDef>() {
@@ -18,6 +20,7 @@ object FileTestDefSerializer : BaseSerializer<FileTestDef>() {
         serializeTestProperties(source.properties, destination, indentLevel + 1)
         serializeDescription(source.description, destination, indentLevel + 1)
         serializeTags(source.tags, destination, indentLevel + 1)
+        serializeScenarios(source.scenarios, destination, indentLevel + 1)
         serializeSteps(source.steps, destination, indentLevel + 1)
     }
 
@@ -47,12 +50,23 @@ object FileTestDefSerializer : BaseSerializer<FileTestDef>() {
     }
 
     private fun serializeTags(tags: List<String>, destination: Writer, indentLevel: Int) {
-        if (!tags.isNotEmpty()) {
+        if (tags.isEmpty()) {
             return
         }
 
         destination.write("\n")
         FileTagsSerializer.serialize(tags, destination, indentLevel)
+    }
+
+    private fun serializeScenarios(scenarios: List<FileScenario>, destination: Writer, indentLevel: Int) {
+        if (scenarios.isEmpty()) {
+            return
+        }
+
+        for (scenario in scenarios) {
+            destination.write("\n")
+            FileScenarioSerializer.serialize(scenario, destination, indentLevel)
+        }
     }
 
     private fun serializeSteps(steps: List<FileStepCall>, destination: Writer, indentLevel: Int) {

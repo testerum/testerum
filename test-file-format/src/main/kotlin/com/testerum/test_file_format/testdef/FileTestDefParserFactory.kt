@@ -15,10 +15,11 @@ import com.testerum.test_file_format.manual_test.status.FileManualTestStatus
 import com.testerum.test_file_format.manual_test.status.FileManualTestStatusParserFactory
 import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
 import com.testerum.test_file_format.testdef.properties.FileTestDefPropertiesParserFactory.testProperties
+import com.testerum.test_file_format.testdef.scenarios.FileScenarioParserFactory.testScenarios
 import org.jparsec.Parser
 import org.jparsec.Parsers.sequence
 import org.jparsec.Scanners.string
-import java.util.*
+import java.util.Optional
 
 object FileTestDefParserFactory : ParserFactory<FileTestDef> {
 
@@ -31,8 +32,9 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
                 testTestProperties(),
                 testDescription(),
                 testTags(),
+                testScenarios(),
                 testStepCalls()
-        ) { _, testName, properties, description, tags, steps -> FileTestDef(testName, properties, description, tags, steps) }
+        ) { _, testName, properties, description, tags, scenarios, steps -> FileTestDef(testName, properties, description, tags, scenarios, steps) }
     }
 
     fun manualTestDef(): Parser<FileManualTestDef> {

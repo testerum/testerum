@@ -6,7 +6,8 @@ import com.testerum.model.test.TestProperties
 import com.testerum.test_file_format.testdef.FileTestDef
 import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
 
-class BusinessToFileTestMapper(private val businessToFileStepCallMapper: BusinessToFileStepCallMapper) {
+class BusinessToFileTestMapper(private val businessToFileScenarioMapper: BusinessToFileScenarioMapper,
+                               private val businessToFileStepCallMapper: BusinessToFileStepCallMapper) {
 
     fun map(test: TestModel): FileTestDef {
         return FileTestDef(
@@ -14,6 +15,7 @@ class BusinessToFileTestMapper(private val businessToFileStepCallMapper: Busines
                 properties = mapTestProperties(test.properties),
                 description = test.description,
                 tags = test.tags,
+                scenarios = businessToFileScenarioMapper.mapScenarios(test.scenarios),
                 steps = businessToFileStepCallMapper.mapStepCalls(test.stepCalls)
         )
     }

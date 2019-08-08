@@ -8,7 +8,8 @@ import com.testerum.test_file_format.testdef.FileTestDef
 import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
 import java.nio.file.Path as JavaPath
 
-class FileToBusinessTestMapper(private val stepCallMapper: FileToBusinessStepCallMapper) {
+class FileToBusinessTestMapper(private val stepCallMapper: FileToBusinessStepCallMapper,
+                               private val fileToBusinessScenarioMapper: FileToBusinessScenarioMapper) {
 
     fun mapTest(fileTest: FileTestDef, relativeFilePath: JavaPath): TestModel {
         val path = Path.createInstance(relativeFilePath.toString())
@@ -24,6 +25,7 @@ class FileToBusinessTestMapper(private val stepCallMapper: FileToBusinessStepCal
                 properties = mapTestProperties(fileTest.properties),
                 description = fileTest.description,
                 tags = fileTest.tags,
+                scenarios = fileToBusinessScenarioMapper.mapScenarios(fileTest.scenarios),
                 stepCalls = stepCalls
         )
     }

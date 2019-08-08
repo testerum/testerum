@@ -8,6 +8,7 @@ import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.step.UndefinedStepDef
 import com.testerum.model.test.TestModel
+import com.testerum.model.test.scenario.Scenario
 import com.testerum.model.tests_finder.TestsFinder
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
@@ -16,6 +17,8 @@ import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
+import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerParametrizedTest
+import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerScenario
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.nodes.step.impl.RunnerBasicStep
 import com.testerum.runner_cmdline.runner_tree.nodes.step.impl.RunnerComposedStep
@@ -163,16 +166,64 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                     )
                 }
                 is TestWithFilePath -> {
-                    createRunnerTest(
-                            test = payload.test,
-                            filePath = payload.filePath,
-                            testIndexInParent = indexInParent,
-                            beforeEachTestHooks = beforeEachTestHooks,
-                            afterEachTestHooks = afterEachTestHooks
-                    )
+                    val isParametrizedTest = payload.test.scenarios.isNotEmpty()
+
+                    if (isParametrizedTest) {
+                        val testScenarios: List<RunnerScenario> = payload.test.scenarios.mapIndexed { index, scenario ->
+                            createTestScenarioBranch(
+                                    test = payload.test,
+                                    filePath = payload.filePath,
+                                    scenarioIndex = index,
+                                    scenario = scenario,
+                                    testIndexInParent = indexInParent,
+                                    beforeEachTestHooks = beforeEachTestHooks,
+                                    afterEachTestHooks = afterEachTestHooks
+                            )
+                        }
+
+                        RunnerParametrizedTest(
+                                test = payload.test,
+                                filePath = payload.filePath,
+                                indexInParent = indexInParent,
+                                scenarios = testScenarios
+                        )
+                    } else {
+                        createRunnerTest(
+                                test = payload.test,
+                                filePath = payload.filePath,
+                                testIndexInParent = indexInParent,
+                                beforeEachTestHooks = beforeEachTestHooks,
+                                afterEachTestHooks = afterEachTestHooks
+                        )
+                    }
                 }
                 else -> throw unknownPayloadException(payload)
             }
+        }
+
+        private fun createTestScenarioBranch(test: TestModel,
+                                             filePath: JavaPath,
+                                             scenarioIndex: Int,
+                                             scenario: Scenario,
+                                             testIndexInParent: Int,
+                                             beforeEachTestHooks: List<RunnerHook>,
+                                             afterEachTestHooks: List<RunnerHook>): RunnerScenario {
+            val runnerSteps = mutableListOf<RunnerStep>()
+
+            for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
+                runnerSteps += createRunnerStep(stepCall, stepIndexInParent)
+            }
+
+            return RunnerScenario(
+                    beforeEachTestHooks = beforeEachTestHooks,
+                    test = test,
+                    scenario = scenario,
+                    scenarioIndex = scenarioIndex,
+                    filePath = filePath,
+                    indexInParent = testIndexInParent,
+                    steps = runnerSteps,
+                    afterEachTestHooks = afterEachTestHooks
+            )
         }
 
         private fun createRunnerTest(test: TestModel,

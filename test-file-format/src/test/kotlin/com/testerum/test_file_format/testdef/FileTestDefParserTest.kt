@@ -7,6 +7,9 @@ import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
 import com.testerum.test_file_format.common.step_call.phase.FileStepPhase
 import com.testerum.test_file_format.testdef.properties.FileTestDefProperties
+import com.testerum.test_file_format.testdef.scenarios.FileScenario
+import com.testerum.test_file_format.testdef.scenarios.FileScenarioParam
+import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamType
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
@@ -30,6 +33,28 @@ class FileTestDefParserTest {
                             |
                             |    tags = <<one, two, three>>
                             |
+                            |    scenario:
+                            |
+                            |    scenario: A scenario without params
+                            |
+                            |    scenario: A scenario with description and params
+                            |       param firstName = <<John>>
+                            |       param lastName = <<Doe>>
+                            |       param description = <<
+                            |           The ultimate description
+                            |           for the unknown guy.
+                            |       >>
+                            |       param-json info = <<{"person": {"address": {"street": "Eroilor"}}}>>
+                            |       param-json multilineInfo = <<
+                            |           {
+                            |               "person": {
+                            |                   "address": {
+                            |                       "street": "Eroilor"
+                            |                   }
+                            |               }
+                            |           }
+                            |       >>
+                            |
                             |    step: Given I go to page <<https://{{host}}:{{port}}/login>>
                             |    step: When I type <<{{username}}>> into the <<.username>> input
                             |    step: When I type <<{{password}}>> into the <<.password>> input
@@ -52,6 +77,53 @@ class FileTestDefParserTest {
                                 description =  """ |A composed step that allows us to bypass the login screen.
                                                    |Will be useful from many tests.""".trimMargin(),
                                 tags = listOf("one", "two", "three"),
+                                scenarios = listOf(
+                                        FileScenario(
+                                                name = null,
+                                                params = emptyList()
+                                        ),
+                                        FileScenario(
+                                                name = "A scenario without params",
+                                                params = emptyList()
+                                        ),
+                                        FileScenario(
+                                                name = "A scenario with description and params",
+                                                params = listOf(
+                                                        FileScenarioParam(
+                                                                name = "firstName",
+                                                                type = FileScenarioParamType.TEXT,
+                                                                value = "John"
+                                                        ),
+                                                        FileScenarioParam(
+                                                                name = "lastName",
+                                                                type = FileScenarioParamType.TEXT,
+                                                                value = "Doe"
+                                                        ),
+                                                        FileScenarioParam(
+                                                                name = "description",
+                                                                type = FileScenarioParamType.TEXT,
+                                                                value = """ |The ultimate description
+                                                                            |for the unknown guy.""".trimMargin()
+                                                        ),
+                                                        FileScenarioParam(
+                                                                name = "info",
+                                                                type = FileScenarioParamType.JSON,
+                                                                value = """{"person": {"address": {"street": "Eroilor"}}}"""
+                                                        ),
+                                                        FileScenarioParam(
+                                                                name = "multilineInfo",
+                                                                type = FileScenarioParamType.JSON,
+                                                                value = """ |{
+                                                                            |    "person": {
+                                                                            |        "address": {
+                                                                            |            "street": "Eroilor"
+                                                                            |        }
+                                                                            |    }
+                                                                            |}""".trimMargin()
+                                                        )
+                                                )
+                                        )
+                                ),
                                 steps = listOf(
                                         FileStepCall(
                                                 phase = FileStepPhase.GIVEN,

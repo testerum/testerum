@@ -26,6 +26,8 @@ import com.testerum.file_service.file.trial.JavaPreferencesTrialFileService
 import com.testerum.file_service.file.trial.TrialFileService
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileFeatureMapper
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileRunConfigMapper
+import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioMapper
+import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioParamMapper
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileStepMapper
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileTestMapper
 import com.testerum.file_service.mapper.business_to_file.common.BusinessToFilePhaseMapper
@@ -37,6 +39,8 @@ import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileMa
 import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileManualTestStatusMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessFeatureMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessRunConfigMapper
+import com.testerum.file_service.mapper.file_to_business.FileToBusinessScenarioMapper
+import com.testerum.file_service.mapper.file_to_business.FileToBusinessScenarioParamMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessStepMapper
 import com.testerum.file_service.mapper.file_to_business.FileToBusinessTestMapper
 import com.testerum.file_service.mapper.file_to_business.common.FileToBusinessPhaseMapper
@@ -67,8 +71,15 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
             callsMapper = fileToBusinessStepCallMapper
     )
 
+    private val fileToBusinessScenarioParamMapper = FileToBusinessScenarioParamMapper()
+
+    private val fileToBusinessScenarioMapper = FileToBusinessScenarioMapper(
+            fileToBusinessScenarioParamMapper = fileToBusinessScenarioParamMapper
+    )
+
     private val fileToBusinessTestMapper = FileToBusinessTestMapper(
-            stepCallMapper = fileToBusinessStepCallMapper
+            stepCallMapper = fileToBusinessStepCallMapper,
+            fileToBusinessScenarioMapper = fileToBusinessScenarioMapper
     )
 
     private val fileToBusinessFeatureMapper = FileToBusinessFeatureMapper()
@@ -107,7 +118,14 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
             businessToFileStepCallMapper = businessToFileStepCallMapper
     )
 
+    private val businessToFileScenarioParamMapper = BusinessToFileScenarioParamMapper()
+
+    private val businessToFileScenarioMapper = BusinessToFileScenarioMapper(
+            businessToFileScenarioParamMapper = businessToFileScenarioParamMapper
+    )
+
     private val businessToFileTestMapper = BusinessToFileTestMapper(
+            businessToFileScenarioMapper = businessToFileScenarioMapper,
             businessToFileStepCallMapper = businessToFileStepCallMapper
     )
 

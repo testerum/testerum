@@ -9,8 +9,8 @@ import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
 import com.testerum.common_json.util.prettyPrintJson
-import json.model.JsJson
-import json.model.JsonResource
+import com.testerum.model.expressions.json.JsJson
+import com.testerum.model.expressions.json.JsonResource
 import json.transformer.JsonTextTransformer
 import json_support.module_di.JsonStepsModuleServiceLocator
 
