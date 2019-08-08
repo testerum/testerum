@@ -4,8 +4,10 @@ import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.common_kotlin.indent
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioMapper
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioParamMapper
+import com.testerum.model.expressions.json.JsJson
 import com.testerum.model.test.TestModel
 import com.testerum.model.test.scenario.Scenario
+import com.testerum.model.test.scenario.param.ScenarioParamType
 import com.testerum.runner.events.model.ScenarioEndEvent
 import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
@@ -99,8 +101,13 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
         try {
             val dynamicVars = DynamicVariablesContext()
 
-            for (scenarioParam in scenario.params) {
-                dynamicVars[scenarioParam.name] = scenarioParam.value
+            for (param in scenario.params) {
+                val actualValue: Any? = when (param.type) {
+                    ScenarioParamType.TEXT -> param.value
+                    ScenarioParamType.JSON -> JsJson(param.value)
+                }
+
+                dynamicVars[param.name] = actualValue
             }
 
             context.glueObjectFactory.beforeTest()

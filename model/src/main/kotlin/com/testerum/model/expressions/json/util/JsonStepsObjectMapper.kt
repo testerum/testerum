@@ -1,4 +1,4 @@
-package json_support.utils
+package com.testerum.model.expressions.json.util
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature

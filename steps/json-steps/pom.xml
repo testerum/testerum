@@ -14,6 +14,7 @@
 
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
+
         <!-- testerum-api -->
         <dependency>
             <groupId>com.testerum</groupId>
@@ -24,6 +25,12 @@
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>step-transformer-utils</artifactId>
+        </dependency>
+
+        <!-- model -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>model</artifactId>
         </dependency>
 
         <!-- common-json-diff -->

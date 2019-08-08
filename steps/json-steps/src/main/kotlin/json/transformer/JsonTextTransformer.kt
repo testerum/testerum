@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.testerum.api.transformer.ParameterInfo
 import com.testerum.api.transformer.Transformer
 import com.testerum.step_transformer_utils.JsonVariableReplacer
-import json.model.JsonResource
+import com.testerum.model.expressions.json.JsonResource
 import json_support.module_di.JsonStepsModuleServiceLocator
-import json_support.utils.JSON_STEPS_OBJECT_MAPPER
+import com.testerum.model.expressions.json.util.JSON_STEPS_OBJECT_MAPPER
 
 class JsonTextTransformer: Transformer<JsonResource> {
 
