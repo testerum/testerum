@@ -1,12 +1,13 @@
 package com.testerum.runner_cmdline.events.execution_listeners.utils.events_stack
 
 import com.testerum.runner.events.model.FeatureStartEvent
+import com.testerum.runner.events.model.ParametrizedTestStartEvent
+import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.StepStartEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.report_model.ReportStep
-import java.util.*
+import java.util.ArrayDeque
 import java.util.concurrent.atomic.AtomicInteger
-import kotlin.collections.ArrayList
 
 class ExecutionEventsStack {
 
@@ -52,14 +53,50 @@ class ExecutionEventsStack {
         }
     }
 
+    fun computeCurrentParametrizedTestLogBaseName(): String {
+        val featurePath = getCurrentFeaturePath()
+        val testFileName = getCurrentTestFileName()
+
+        if (featurePath == "") {
+            return "$testFileName-logs"
+        } else {
+            return "$featurePath/$testFileName/test-logs"
+        }
+    }
+
+    fun computeCurrentScenarioLogBaseName(): String {
+        val featurePath = getCurrentFeaturePath()
+        val testFileName = getCurrentTestFileName()
+        val scenarioIndex = getCurrentScenarioIndex()
+
+        if (featurePath == "") {
+            return "$testFileName-logs-$scenarioIndex"
+        } else {
+            return "$featurePath/$testFileName/test-logs-$scenarioIndex"
+        }
+    }
+
     private fun getCurrentTestFileName(): String {
         for (event in stack.descendingIterator()) {
             if (event is TestStartEvent) {
+                return event.testFilePath.fileName!!
+            } else if (event is ParametrizedTestStartEvent) {
                 return event.testFilePath.fileName!!
             }
         }
 
         throw IllegalArgumentException("there is no test in execution")
+    }
+
+    private fun getCurrentScenarioIndex(): Int {
+        for (event in stack.descendingIterator()) {
+            if (event is ScenarioStartEvent) {
+                return event.scenarioIndex
+            }
+        }
+
+        throw IllegalArgumentException("there is no scenario in execution")
+
     }
 
     fun computeCurrentStepLogBaseName(): String {
