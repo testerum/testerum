@@ -43,6 +43,7 @@ import {ScenarioTreeComponent} from "./test-editor/scenario-tree/scenario-tree.c
 import {ScenarioContainerComponent} from "./test-editor/scenario-tree/nodes/scenario-container/scenario-container.component";
 import {ScenarioParamsContainerComponent} from "./test-editor/scenario-tree/nodes/scenario-params-container/scenario-params-container.component";
 import { TreeTextEditComponent } from './test-editor/scenario-tree/nodes/scenario-container/tree-text-edit/tree-text-edit.component';
+import {ScenarioParamNodeComponent} from "./test-editor/scenario-tree/nodes/scenario-param-node/scenario-param-node.component";
 
 @NgModule({
     imports: [
@@ -95,11 +96,13 @@ import { TreeTextEditComponent } from './test-editor/scenario-tree/nodes/scenari
         ScenarioContainerComponent,
         ScenarioParamsContainerComponent,
         TreeTextEditComponent,
+        ScenarioParamNodeComponent,
     ],
     entryComponents: [
         RunnerTreeNodeComponent,
         ScenarioContainerComponent,
         ScenarioParamsContainerComponent,
+        ScenarioParamNodeComponent,
     ],
     providers: [
         TestsService,

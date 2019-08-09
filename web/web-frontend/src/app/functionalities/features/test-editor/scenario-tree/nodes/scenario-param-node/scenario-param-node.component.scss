@@ -1,0 +1,66 @@
+.arg-node {
+    &.shell {
+        border-radius: 3px;
+        border: 1px solid #D5D5D5;
+        color: #222222;
+        cursor: default;
+        width: fit-content;
+    }
+
+    .empty-body-label {
+        color: #999;
+        display: flex;
+        justify-content: center;
+    }
+
+    .header {
+        display: block;
+        padding-right: 7px;
+        border: none;
+        width: inherit;
+        cursor: pointer;
+        margin-bottom: 0;
+        margin-left: -4px;
+        font-size: 14px;
+    }
+
+    .collapsed-header {
+        margin-left: 15px;
+    }
+
+    .content-shell {
+        padding: .0em 1em 0.5em 1em;
+        max-height: 500px;
+        overflow: auto;
+        cursor: default;
+        resize: both;
+
+        &.content-shell-close {
+            margin-top: 0.2em;
+            padding: 0;
+        }
+    }
+
+    .arg-error-icon {
+        margin-left: 5px;
+    }
+
+    .arg-error-icon-in-tooltip {
+        line-height: 1.42em;
+    }
+
+    .btn-xs {
+        margin-left: 6px;
+        margin-top: -4px;
+    }
+
+    .toggle-icon {
+        width: 8px;
+        margin-right: 5px;
+    }
+
+    .param-info-icon {
+        display: inline-block;
+        margin-left: 5px;
+    }
+}

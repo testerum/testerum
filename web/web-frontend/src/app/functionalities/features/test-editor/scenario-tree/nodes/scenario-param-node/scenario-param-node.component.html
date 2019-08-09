@@ -1,0 +1,41 @@
+<fieldset class="arg-node shell">
+    <legend class="header"
+            (click)="animate()">
+
+        <i *ngIf="model.scenarioParam.value"
+           class="fas toggle-icon"
+           [class.fa-caret-right]="animationState == 'close'"
+           [class.fa-caret-down]="animationState == 'open'"
+           aria-hidden="true"></i>
+
+        <span>
+            <span>{{model.scenarioParam.name}}</span>
+            <span>:&nbsp;</span>
+            <span>{{getParamUiType()}}</span>
+        </span>
+
+        <info-icon [message]="getParamDescription()"
+                   class="param-info-icon"></info-icon>
+
+        <div title="Edit"
+             class="btn btn-default btn-xs btn-group"
+             (click)="editOrViewResourceInModal(); $event.stopPropagation()">
+            <span class="fas fa-pencil-alt">
+            </span>
+        </div>
+    </legend>
+
+    <div class="content-shell"
+         [class.content-shell-close]="animationState == 'close'"
+         [@expandCollapse]="animationState">
+
+        <div #resourceContainer></div>
+
+        <div *ngIf="!argHasContent()"
+             class="empty-body-label">
+            Undefined value
+        </div>
+    </div>
+
+</fieldset>
+

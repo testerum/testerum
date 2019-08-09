@@ -30,4 +30,8 @@ export class ScenarioParamsContainerComponent implements OnInit{
     isEditMode(): boolean {
         return this.scenarioTreeComponentService.isEditMode;
     }
+
+    onAddParameter() {
+
+    }
 }

@@ -8,6 +8,8 @@ import {ScenarioContainerModel} from "./model/scenario-container.model";
 import {ScenarioContainerComponent} from "./nodes/scenario-container/scenario-container.component";
 import {ScenarioParamsContainerModel} from "./model/scenario-params-container.model";
 import {ScenarioParamsContainerComponent} from "./nodes/scenario-params-container/scenario-params-container.component";
+import {ScenarioParamNodeComponent} from "./nodes/scenario-param-node/scenario-param-node.component";
+import {ScenarioParamNodeModel} from "./model/scenario-param-node.model";
 
 @Component({
     selector: 'scenario-tree',
@@ -23,7 +25,8 @@ export class ScenarioTreeComponent implements OnInit, OnChanges {
     jsonTreeModel: JsonTreeModel = new JsonTreeModel();
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(ScenarioContainerModel, ScenarioContainerComponent)
-        .addPair(ScenarioParamsContainerModel, ScenarioParamsContainerComponent);
+        .addPair(ScenarioParamsContainerModel, ScenarioParamsContainerComponent)
+        .addPair(ScenarioParamNodeModel, ScenarioParamNodeComponent);
 
     constructor(public scenarioTreeComponentService: ScenarioTreeComponentService) {
     }

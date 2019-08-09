@@ -1,0 +1,23 @@
+.scenario-params {
+    .text_and_buttons {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+
+        &:hover {
+            .button-panel-hide-on-hover {
+                display: inline-block;
+            }
+        }
+
+        .button-panel-hide-on-hover {
+            display: none;
+            margin-left: 5px;
+        }
+
+        .selected_for_copy_or_cut {
+            border: 1px black dotted;
+            border-radius: 10px;
+        }
+    }
+}
