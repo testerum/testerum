@@ -31,7 +31,7 @@ export class ScenarioTreeUtil {
         return scenarioContainerModel;
     }
 
-    private static getScenarioParamNode(parent: ScenarioParamsContainerModel, scenarioParam: ScenarioParam): ScenarioParamNodeModel {
+    static getScenarioParamNode(parent: ScenarioParamsContainerModel, scenarioParam: ScenarioParam): ScenarioParamNodeModel {
         return new ScenarioParamNodeModel(parent, scenarioParam);
     }
 

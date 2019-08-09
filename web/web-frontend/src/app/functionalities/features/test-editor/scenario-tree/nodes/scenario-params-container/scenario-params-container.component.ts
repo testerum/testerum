@@ -2,6 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ScenarioParamsContainerModel} from "../../model/scenario-params-container.model";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {ScenarioTreeComponentService} from "../../scenario-tree.component-service";
+import {ScenarioParamNodeModel} from "../../model/scenario-param-node.model";
+import {ScenarioTreeUtil} from "../../util/scenario-tree.util";
+import {ScenarioParam} from "../../../../../../model/test/scenario/param/scenario-param.model";
 
 @Component({
     selector: 'scenario-params-container',
@@ -32,6 +35,8 @@ export class ScenarioParamsContainerComponent implements OnInit{
     }
 
     onAddParameter() {
-
+        let scenarioParamNode = ScenarioTreeUtil.getScenarioParamNode(this.model, new ScenarioParam());
+        this.model.children.push(scenarioParamNode);
+        this.model.jsonTreeNodeState.showChildren = true;
     }
 }

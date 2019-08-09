@@ -9,11 +9,9 @@
         <i class="fas fa-angle-double-right tree-node-icon" aria-hidden="true"></i>
         <span>Parameters</span>
 
-
         <!-- BUTTONS -->
         <div class="button-panel-hide-on-hover btn-group">
-            <div *ngIf="!model.jsonTreeNodeState.showChildren"
-                 title="Add Parameter" class="btn btn-default btn-xs btn-group"
+            <div title="Add Parameter" class="btn btn-default btn-xs btn-group"
                  (click)="onAddParameter(); $event.stopPropagation()">
                 <i class="fa_my-plus" aria-hidden="true"></i>
             </div>
