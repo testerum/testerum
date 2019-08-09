@@ -20,10 +20,6 @@ import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-de
 import {StepCallWarningUtil} from "../../../generic/components/step-call-tree/util/step-call-warning.util";
 import {ContextService} from "../../../service/context.service";
 import {ScenarioTreeComponent} from "./scenario-tree/scenario-tree.component";
-import {ScenarioTreeUtil} from "./scenario-tree/util/scenario-tree.util";
-import {NameUtil} from "../../../utils/name.util";
-import {ScenarioParamsContainerComponent} from "./scenario-tree/nodes/scenario-params-container/scenario-params-container.component";
-import {ScenarioParamsContainerModel} from "./scenario-tree/model/scenario-params-container.model";
 
 @Component({
     moduleId: module.id,
@@ -358,27 +354,6 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     }
 
     onPasteScenario() {
-        let scenarioTreeComponentService = this.scenarioTreeComponent.scenarioTreeComponentService;
-        let treeModel = this.scenarioTreeComponent.jsonTreeModel;
-
-        if (scenarioTreeComponentService.scenarioToCopy) {
-            let scenarioToCopyModel = scenarioTreeComponentService.scenarioToCopy.model.scenario;
-
-            let newScenario = scenarioToCopyModel.clone();
-            if (newScenario.name) {
-                let allScenariosName = ScenarioTreeUtil.getAllScenariosName(this.scenarioTreeComponent.testModel.scenarios);
-                newScenario.name = NameUtil.getUniqueNameWithIndexSuffix(allScenariosName, newScenario.name);
-            }
-            scenarioTreeComponentService.testModel.scenarios.push(newScenario);
-
-            let scenarioContainer = ScenarioTreeUtil.getScenarioContainer(newScenario, this.testModel.scenarios.length, treeModel);
-            scenarioContainer.jsonTreeNodeState.showChildren = true;
-            (scenarioContainer.children[0] as ScenarioParamsContainerModel).jsonTreeNodeState.showChildren = true;
-            scenarioContainer.showAsEditScenarioNameMode = true;
-
-            treeModel.children.push(scenarioContainer);
-
-            scenarioTreeComponentService.afterPasteOperation();
-        }
+        this.scenarioTreeComponent.scenarioTreeComponentService.onPasteScenario();
     }
 }

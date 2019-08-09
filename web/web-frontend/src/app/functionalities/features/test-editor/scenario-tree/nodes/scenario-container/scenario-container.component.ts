@@ -60,7 +60,7 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     }
 
     editScenarioName() {
-        this.isScenarioNameEditMode = true;
+        this.treeTextEditComponent.setTextEditMode(true)
     }
 
     public moveScenarioUp(): void {

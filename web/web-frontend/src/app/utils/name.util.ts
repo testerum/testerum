@@ -3,7 +3,9 @@ import {ObjectUtil} from "./object.util";
 
 export class NameUtil {
 
-    static getUniqueNameWithIndexSuffix(allKnownNames: string[], nameToAdd: string): string {
+    static readonly COPY_SUFFIX = " - Copy";
+
+    static getUniqueNameWithCopyAndIndexSuffix(allKnownNames: string[], nameToAdd: string): string {
         if (this.isNameUnique(allKnownNames, nameToAdd)) {
             return nameToAdd;
         }
@@ -27,16 +29,22 @@ export class NameUtil {
 }
 
 class NameWithIndex {
-    nameWithoutIndex: string;
-    index: number;
+    rootName: string;
+    index: number = 0;
 
-    constructor(nameWithIndex: string) {
-        let indexAsString = StringUtils.substringAfterLast(nameWithIndex, " ");
+    constructor(fullName: string) {
+        let indexAsString = StringUtils.substringAfterLast(fullName, " ");
         if (indexAsString !== null && ObjectUtil.isANumber(indexAsString)) {
-            this.nameWithoutIndex = StringUtils.substringBeforeLast(nameWithIndex, " ");
-            this.index = ObjectUtil.getAsNumber(indexAsString);
+            let nameWithoutIndex = StringUtils.substringBeforeLast(fullName, " ");
+            let nameWithoutCopySuffix = StringUtils.substringBeforeLast(nameWithoutIndex, NameUtil.COPY_SUFFIX);
+            if (nameWithoutCopySuffix) {
+                this.rootName = nameWithoutCopySuffix;
+                this.index = ObjectUtil.getAsNumber(indexAsString);
+            } else {
+                this.rootName = fullName;
+            }
         } else {
-            this.nameWithoutIndex = nameWithIndex;
+            this.rootName = fullName;
         }
     }
 
@@ -49,6 +57,6 @@ class NameWithIndex {
     }
 
     toString(): string {
-        return this.nameWithoutIndex + " " + this.index;
+        return this.rootName + NameUtil.COPY_SUFFIX + " " + this.index;
     }
 }
