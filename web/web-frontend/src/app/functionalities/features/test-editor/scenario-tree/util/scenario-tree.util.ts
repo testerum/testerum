@@ -34,4 +34,14 @@ export class ScenarioTreeUtil {
     private static getScenarioParamNode(parent: ScenarioParamsContainerModel, scenarioParam: ScenarioParam): ScenarioParamNodeModel {
         return new ScenarioParamNodeModel(parent, scenarioParam);
     }
+
+    static getAllScenariosName(scenarios: Scenario[]): string[] {
+        let result = [];
+        for (const scenario of scenarios) {
+            if (scenario.name) {
+                result.push(scenario.name)
+            }
+        }
+        return result;
+    }
 }

@@ -1,8 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {ScenarioTreeComponentService} from "../../scenario-tree.component-service";
 import {ScenarioContainerModel} from "../../model/scenario-container.model";
 import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
+import {TreeTextEditComponent} from "./tree-text-edit/tree-text-edit.component";
 
 @Component({
     selector: 'scenario-container',
@@ -12,12 +13,14 @@ import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/
         '../../../../../../generic/css/tree.scss',
     ]
 })
-export class ScenarioContainerComponent implements OnInit {
+export class ScenarioContainerComponent implements OnInit, AfterViewInit {
 
     readonly EMPTY_SCENARIO_NAME_PREFIX = "Scenario ";
 
     @Input() model: ScenarioContainerModel;
     @Input() modelComponentMapping: ModelComponentMapping;
+
+    @ViewChild("treeTextEdit") treeTextEditComponent: TreeTextEditComponent;
 
     hasMouseOver: boolean = false;
     isScenarioNameEditMode: any = false;
@@ -28,6 +31,13 @@ export class ScenarioContainerComponent implements OnInit {
     ngOnInit() {
         if (!this.model.scenario.name) {
             this.setDefaultName();
+        }
+        this.isScenarioNameEditMode = this.model.showAsEditScenarioNameMode;
+    }
+
+    ngAfterViewInit(): void {
+        if (this.model.showAsEditScenarioNameMode) {
+            this.treeTextEditComponent.focusInputElement();
         }
     }
 
@@ -112,4 +122,5 @@ export class ScenarioContainerComponent implements OnInit {
     isSelectedForCopyOrCut(): boolean {
         return this.scenarioTreeComponentService.getSelectedNode() == this;
     }
+
 }

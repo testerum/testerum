@@ -16,7 +16,6 @@ export class ScenarioParamsContainerComponent {
     @Input() modelComponentMapping: ModelComponentMapping;
 
     hasMouseOver: boolean = false;
-    showChildren: boolean = true;
 
     constructor(private scenarioTreeComponentService: ScenarioTreeComponentService) {
     }

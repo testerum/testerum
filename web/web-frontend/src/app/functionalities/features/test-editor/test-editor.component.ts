@@ -19,9 +19,11 @@ import {AreYouSureModalService} from "../../../generic/components/are_you_sure_m
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 import {StepCallWarningUtil} from "../../../generic/components/step-call-tree/util/step-call-warning.util";
 import {ContextService} from "../../../service/context.service";
-import {Scenario} from "../../../model/test/scenario/scenario.model";
 import {ScenarioTreeComponent} from "./scenario-tree/scenario-tree.component";
 import {ScenarioTreeUtil} from "./scenario-tree/util/scenario-tree.util";
+import {NameUtil} from "../../../utils/name.util";
+import {ScenarioParamsContainerComponent} from "./scenario-tree/nodes/scenario-params-container/scenario-params-container.component";
+import {ScenarioParamsContainerModel} from "./scenario-tree/model/scenario-params-container.model";
 
 @Component({
     moduleId: module.id,
@@ -357,16 +359,23 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
     onPasteScenario() {
         let scenarioTreeComponentService = this.scenarioTreeComponent.scenarioTreeComponentService;
-
         let treeModel = this.scenarioTreeComponent.jsonTreeModel;
+
         if (scenarioTreeComponentService.scenarioToCopy) {
             let scenarioToCopyModel = scenarioTreeComponentService.scenarioToCopy.model.scenario;
 
             let newScenario = scenarioToCopyModel.clone();
+            if (newScenario.name) {
+                let allScenariosName = ScenarioTreeUtil.getAllScenariosName(this.scenarioTreeComponent.testModel.scenarios);
+                newScenario.name = NameUtil.getUniqueNameWithIndexSuffix(allScenariosName, newScenario.name);
+            }
             scenarioTreeComponentService.testModel.scenarios.push(newScenario);
 
-            let scenarioContainer = ScenarioTreeUtil.getScenarioContainer(newScenario, this.testModel.scenarios.length, scenarioTreeComponentService.jsonTreeModel);
-            scenarioTreeComponentService.jsonTreeModel.children.push(scenarioContainer);
+            let scenarioContainer = ScenarioTreeUtil.getScenarioContainer(newScenario, this.testModel.scenarios.length, treeModel);
+            (scenarioContainer.children[0] as ScenarioParamsContainerModel).jsonTreeNodeState.showChildren = true;
+            scenarioContainer.showAsEditScenarioNameMode = true;
+
+            treeModel.children.push(scenarioContainer);
 
             scenarioTreeComponentService.afterPasteOperation();
         }

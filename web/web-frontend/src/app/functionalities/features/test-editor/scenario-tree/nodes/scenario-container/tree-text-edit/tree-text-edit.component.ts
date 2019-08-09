@@ -1,5 +1,6 @@
-import {Component, forwardRef, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {FocusDirective} from "../../../../../../../generic/directives/focus.directive";
 
 @Component({
     selector: 'tree-text-edit',
@@ -14,6 +15,8 @@ export class TreeTextEditComponent implements ControlValueAccessor {
     text: string;
     @Input() isEditMode: boolean;
     @Input() isTextEditMode: boolean = false;
+
+    @ViewChild('input') inputElementRef: ElementRef;
 
     propagateChange = (_: any) => {};
 
@@ -34,5 +37,9 @@ export class TreeTextEditComponent implements ControlValueAccessor {
 
     setTextEditMode(isTextEditMode: boolean) {
         this.isTextEditMode = isTextEditMode;
+    }
+
+    focusInputElement() {
+        FocusDirective.focusElement(this.inputElementRef.nativeElement)
     }
 }

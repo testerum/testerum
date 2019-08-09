@@ -32,6 +32,13 @@ export class StringUtils {
         return !StringUtils.isEmpty(str);
     }
 
+    static equalsIgnoreCase(str1: string, str2: string): boolean {
+        if (str1 == null || str2 == null) {
+            return str1 === str2;
+        }
+        return str1.toUpperCase() === str2.toUpperCase();
+    }
+
     static isMultilineString(str: string): boolean {
         return str.indexOf("\n") >= 0;
     }

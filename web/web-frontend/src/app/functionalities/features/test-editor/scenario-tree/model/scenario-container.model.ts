@@ -12,6 +12,7 @@ export class ScenarioContainerModel extends JsonTreeContainerAbstract {
     children: Array<JsonTreeContainer> = [];
 
     scenario: Scenario;
+    showAsEditScenarioNameMode: boolean = false;
 
     options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 

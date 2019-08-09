@@ -13,7 +13,7 @@ export class FocusDirective implements AfterViewInit, OnChanges {
 
     ngAfterViewInit(): void {
         if (this.focus) {
-            this.focusElement();
+            FocusDirective.focusElement(this.element);
         }
     }
 
@@ -23,12 +23,11 @@ export class FocusDirective implements AfterViewInit, OnChanges {
             focus.currentValue !== focus.previousValue &&
             focus.currentValue === true
         ) {
-            this.focusElement();
+            FocusDirective.focusElement(this.element);
         }
     }
 
-    focusElement(): void {
-        let element = this.element;
+    static focusElement(element: HTMLElement): void {
         if(element.tagName.toLowerCase() == 'input') {
             element.focus();
         } else {
