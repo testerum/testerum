@@ -372,6 +372,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
             scenarioTreeComponentService.testModel.scenarios.push(newScenario);
 
             let scenarioContainer = ScenarioTreeUtil.getScenarioContainer(newScenario, this.testModel.scenarios.length, treeModel);
+            scenarioContainer.jsonTreeNodeState.showChildren = true;
             (scenarioContainer.children[0] as ScenarioParamsContainerModel).jsonTreeNodeState.showChildren = true;
             scenarioContainer.showAsEditScenarioNameMode = true;
 

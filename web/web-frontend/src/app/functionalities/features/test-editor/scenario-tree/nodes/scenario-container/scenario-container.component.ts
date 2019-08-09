@@ -38,6 +38,7 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         if (this.model.showAsEditScenarioNameMode) {
             this.treeTextEditComponent.focusInputElement();
+            this.treeTextEditComponent.selectAllTextInInputElement();
         }
     }
 
@@ -122,5 +123,4 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     isSelectedForCopyOrCut(): boolean {
         return this.scenarioTreeComponentService.getSelectedNode() == this;
     }
-
 }

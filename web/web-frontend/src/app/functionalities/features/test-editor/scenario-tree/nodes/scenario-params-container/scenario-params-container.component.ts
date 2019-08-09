@@ -11,13 +11,16 @@ import {ScenarioTreeComponentService} from "../../scenario-tree.component-servic
         '../../../../../../generic/css/tree.scss',
     ]
 })
-export class ScenarioParamsContainerComponent {
+export class ScenarioParamsContainerComponent implements OnInit{
     @Input() model: ScenarioParamsContainerModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
     hasMouseOver: boolean = false;
 
     constructor(private scenarioTreeComponentService: ScenarioTreeComponentService) {
+    }
+
+    ngOnInit(): void {
     }
 
     collapseNode() {

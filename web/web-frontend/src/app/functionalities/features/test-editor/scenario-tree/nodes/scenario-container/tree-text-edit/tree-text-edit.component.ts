@@ -42,4 +42,9 @@ export class TreeTextEditComponent implements ControlValueAccessor {
     focusInputElement() {
         FocusDirective.focusElement(this.inputElementRef.nativeElement)
     }
+
+    selectAllTextInInputElement() {
+        let input = this.inputElementRef;
+        setTimeout(function () { input.nativeElement.select(); }, 50);
+    }
 }
