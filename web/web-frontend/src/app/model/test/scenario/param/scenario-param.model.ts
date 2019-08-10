@@ -21,9 +21,9 @@ export class ScenarioParam implements Serializable<ScenarioParam> {
     serialize() {
         return "" +
             '{' +
-            '"name":' + JsonUtil.stringify(this.name) +
+            '"name":' + (this.name == null ? JsonUtil.stringify("") : JsonUtil.stringify(this.name)) +
             ',"type":' + JsonUtil.stringify(this.type.toString()) +
-            ',"value":' + JsonUtil.stringify(this.value) +
+            ',"value":' + (this.value == null ? JsonUtil.stringify("") : JsonUtil.stringify(this.value)) +
             '}'
     }
 

@@ -15,7 +15,7 @@ export class ScenarioParamsContainerModel extends JsonTreeContainerAbstract {
     constructor(parentContainer: JsonTreeContainer) {
         super(parentContainer);
 
-        this.getNodeState().showChildren = false;
+        this.getNodeState().showChildren = true;
     }
 
     getChildren(): Array<ScenarioParamNodeModel> {

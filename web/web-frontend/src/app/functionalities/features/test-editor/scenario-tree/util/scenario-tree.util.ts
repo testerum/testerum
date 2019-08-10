@@ -18,6 +18,7 @@ export class ScenarioTreeUtil {
     static getScenarioContainer(scenario: Scenario, indexInParent: number, parent: JsonTreeModel): ScenarioContainerModel {
         let scenarioContainerModel = new ScenarioContainerModel(parent, indexInParent, scenario);
         let scenarioParamsContainerModel = new ScenarioParamsContainerModel(scenarioContainerModel);
+        scenarioParamsContainerModel.jsonTreeNodeState.showChildren = true;
 
         for (const param of scenario.params) {
             scenarioParamsContainerModel.children.push(

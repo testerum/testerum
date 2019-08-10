@@ -71,7 +71,7 @@ export class ScenarioParamModalComponent {
     private initOtherParamsName() {
         let otherParamsName: string[] = [];
         for (const param of this.currentScenario.params) {
-            if (this.oldScenarioParam != null && param !== this.oldScenarioParam) {
+            if (param !== this.oldScenarioParam) {
                 otherParamsName.push(param.name);
             }
         }
