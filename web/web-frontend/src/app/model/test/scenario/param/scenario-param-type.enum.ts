@@ -2,16 +2,23 @@ import {Enum} from "../../../enums/enum.interface";
 
 export class ScenarioParamType extends Enum {
 
-    public static TEXT = new ScenarioParamType("TEXT");
-    public static JSON = new ScenarioParamType("JSON");
+    public static TEXT = new ScenarioParamType("TEXT", "Text");
+    public static JSON = new ScenarioParamType("JSON", "JSON");
 
     static readonly enums: Array<ScenarioParamType> = [
         ScenarioParamType.TEXT,
         ScenarioParamType.JSON
     ];
 
-    private constructor(httpMethodAsString: string) {
-        super(httpMethodAsString);
+    private uiLabel: string;
+
+    private constructor(serverForm: string, uiLabel: string) {
+        super(serverForm);
+        this.uiLabel = uiLabel;
+    }
+
+    public toUiLabel(): string {
+        return this.uiLabel;
     }
 
     public static fromString(methodAsString: string) {

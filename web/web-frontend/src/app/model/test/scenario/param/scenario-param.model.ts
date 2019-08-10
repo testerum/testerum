@@ -26,4 +26,8 @@ export class ScenarioParam implements Serializable<ScenarioParam> {
             ',"value":' + JsonUtil.stringify(this.value) +
             '}'
     }
+
+    clone(): ScenarioParam {
+        return new ScenarioParam().deserialize(JSON.parse(this.serialize()));
+    }
 }

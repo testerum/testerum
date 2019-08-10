@@ -1,8 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ScenarioParamNodeModel} from "../../model/scenario-param-node.model";
 import {ScenarioTreeComponentService} from "../../scenario-tree.component-service";
 import {StringUtils} from "../../../../../../utils/string-utils.util";
+import {ScenarioParamModalService} from "./modal/scenario-param-modal.service";
+import {ScenarioParam} from "../../../../../../model/test/scenario/param/scenario-param.model";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'scenario-param-node',
@@ -24,7 +27,7 @@ import {StringUtils} from "../../../../../../utils/string-utils.util";
         ])
     ]
 })
-export class ScenarioParamNodeComponent implements OnInit {
+export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
     @Input() model: ScenarioParamNodeModel;
 
     collapsed: boolean = false;
@@ -38,10 +41,16 @@ export class ScenarioParamNodeComponent implements OnInit {
         }
     }
 
-    constructor(private scenarioTreeComponentService: ScenarioTreeComponentService){
+    private scenarioParamModalSubscription: Subscription;
+    constructor(private scenarioTreeComponentService: ScenarioTreeComponentService,
+                private scenarioParamModalService: ScenarioParamModalService){
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        if (this.scenarioParamModalSubscription) this.scenarioParamModalSubscription.unsubscribe();
     }
 
     argHasContent(): boolean {
@@ -68,7 +77,7 @@ export class ScenarioParamNodeComponent implements OnInit {
     }
 
     getParamUiType(): string {
-        return this.model.scenarioParam.type.toString();
+        return this.model.scenarioParam.type.toUiLabel();
     }
 
     getParamDescription(): string {
@@ -76,6 +85,8 @@ export class ScenarioParamNodeComponent implements OnInit {
     }
 
     editOrViewResourceInModal() {
+        this.scenarioParamModalSubscription = this.scenarioParamModalService.showEditScenarioParamModal(this.model.scenarioParam).subscribe( (newScenarioParam: ScenarioParam|null) => {
 
+        });
     }
 }

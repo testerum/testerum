@@ -1,4 +1,4 @@
-<fieldset class="arg-node shell">
+<fieldset class="scenario-param-node-component">
     <legend class="header"
             (click)="animate()">
 
@@ -9,7 +9,8 @@
            aria-hidden="true"></i>
 
         <span>
-            <span>{{model.scenarioParam.name}}</span>
+            <span *ngIf="model.scenarioParam.name">{{model.scenarioParam.name}}</span>
+            <span *ngIf="!model.scenarioParam.name" class="undefined-name">Undefined</span>
             <span>:&nbsp;</span>
             <span>{{getParamUiType()}}</span>
         </span>
