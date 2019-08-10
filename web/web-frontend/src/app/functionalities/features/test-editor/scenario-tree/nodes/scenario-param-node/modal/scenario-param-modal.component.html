@@ -40,8 +40,16 @@
                         </div>
 
                         <div class="my-value" *ngIf="isEditParamNameMode">
-                            <input [(ngModel)]="newScenarioParam.name"
+                            <input required isNotBlankValidator
+                                   #nameNgModel="ngModel"
+                                   [ngModel]="newScenarioParam.name"
+                                   (ngModelChange)="onNameChange($event)"
                                    type="text" class="form-control" name="name">
+                            <input-error [model]="nameNgModel"
+                                         [errorMessages]="{
+                                        required: 'A name is required',
+                                        parameter_with_the_same_name_already_exist: 'A parameter with the same name already exists'
+                                     }"></input-error>
                         </div>
                     </div>
 

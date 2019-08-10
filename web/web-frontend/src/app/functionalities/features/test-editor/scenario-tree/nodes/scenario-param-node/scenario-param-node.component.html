@@ -30,9 +30,15 @@
          [class.content-shell-close]="animationState == 'close'"
          [@expandCollapse]="animationState">
 
-        <div #resourceContainer></div>
+        <div *ngIf="paramHasValue() && isJsonValueType()" class="param-value-container">
+            <code [innerHtml]="getHighlightedValueAsJson()"></code>
+        </div>
 
-        <div *ngIf="!argHasContent()"
+        <div *ngIf="paramHasValue() && !isJsonValueType()" class="param-value-container">
+            {{model.scenarioParam.value}}
+        </div>
+
+        <div *ngIf="!paramHasValue()"
              class="empty-body-label">
             Undefined value
         </div>

@@ -7,6 +7,7 @@ import {ScenarioTreeUtil} from "../../util/scenario-tree.util";
 import {ScenarioParam} from "../../../../../../model/test/scenario/param/scenario-param.model";
 import {ScenarioParamModalService} from "../scenario-param-node/modal/scenario-param-modal.service";
 import {Subscription} from "rxjs";
+import {ScenarioContainerModel} from "../../model/scenario-container.model";
 
 @Component({
     selector: 'scenario-params-container',
@@ -45,7 +46,7 @@ export class ScenarioParamsContainerComponent implements OnInit, OnDestroy {
 
     onAddParameter() {
         this.scenarioParamModalSubscription = this.scenarioParamModalService
-            .showEditScenarioParamModal(null, this.scenarioTreeComponentService.testModel.scenarios)
+            .showEditScenarioParamModal(null, this.scenarioTreeComponentService.testModel.scenarios, (this.model.getParent() as ScenarioContainerModel).scenario)
             .subscribe( (newScenarioParam: ScenarioParam|null) => {
 
                 if (newScenarioParam != null) {

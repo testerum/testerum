@@ -5,6 +5,9 @@ import {ScenarioParam} from "../../../../../../../model/test/scenario/param/scen
 import {Scenario} from "../../../../../../../model/test/scenario/scenario.model";
 import {ScenarioParamType} from "../../../../../../../model/test/scenario/param/scenario-param-type.enum";
 import {editor} from "monaco-editor";
+import {NgForm} from "@angular/forms";
+import {ArrayUtil} from "../../../../../../../utils/array.util";
+import {FormUtil} from "../../../../../../../utils/form.util";
 
 @Component({
     moduleId: module.id,
@@ -20,14 +23,17 @@ export class ScenarioParamModalComponent {
     oldScenarioParam: ScenarioParam;
     newScenarioParam: ScenarioParam;
     allScenarios: Scenario[];
+    currentScenario: Scenario;
 
     modalComponentRef: ComponentRef<ScenarioParamModalComponent>;
     modalSubject: Subject<ScenarioParam|null>;
 
     modalTitle;
+    otherParamsName: string[] = [];
     isEditParamNameMode: boolean = false;
 
     @ViewChild("resourceModal") modal: ModalDirective;
+    @ViewChild(NgForm) form: NgForm;
 
     editorOptions: editor.IEditorConstructionOptions = {
         language: 'text'
@@ -41,6 +47,8 @@ export class ScenarioParamModalComponent {
         if (this.oldScenarioParam == null) {
             this.isEditParamNameMode = true;
         }
+
+        this.initOtherParamsName();
 
         this.modal.show();
         this.modal.onHidden.subscribe(event => {
@@ -60,8 +68,18 @@ export class ScenarioParamModalComponent {
         }
     }
 
+    private initOtherParamsName() {
+        let otherParamsName: string[] = [];
+        for (const param of this.currentScenario.params) {
+            if (this.oldScenarioParam != null && param !== this.oldScenarioParam) {
+                otherParamsName.push(param.name);
+            }
+        }
+        this.otherParamsName = otherParamsName;
+    }
+
     isValid() {
-        return false;
+        return this.form.valid;
     }
 
     isJsonValueType(): boolean {
@@ -74,6 +92,13 @@ export class ScenarioParamModalComponent {
 
     getRenameNameDescription(): string {
         return "Renaming the name of this parameter will be renamed in the other scenarios too"
+    }
+
+    onNameChange(newName: string) {
+        this.newScenarioParam.name = newName;
+        if (ArrayUtil.containsElement(this.otherParamsName, newName)) {
+            FormUtil.addErrorToForm(this.form, "name", "parameter_with_the_same_name_already_exist");
+        }
     }
 
     getParamTypes(): ScenarioParamType[]  {

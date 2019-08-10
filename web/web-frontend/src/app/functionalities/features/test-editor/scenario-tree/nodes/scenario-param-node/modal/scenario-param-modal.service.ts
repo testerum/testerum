@@ -11,7 +11,7 @@ export class ScenarioParamModalService {
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
-    showEditScenarioParamModal(scenarioParam: ScenarioParam, allScenarios: Scenario[]): Observable<ScenarioParam|null> {
+    showEditScenarioParamModal(scenarioParam: ScenarioParam, allScenarios: Scenario[], currentScenario: Scenario): Observable<ScenarioParam|null> {
         let modalSubject = new Subject<ScenarioParam|null>();
 
         const factory = this.componentFactoryResolver.resolveComponentFactory(ScenarioParamModalComponent);
@@ -25,6 +25,7 @@ export class ScenarioParamModalService {
             modalInstance.newScenarioParam = new ScenarioParam();
         }
         modalInstance.allScenarios = allScenarios;
+        modalInstance.currentScenario = currentScenario;
 
         modalInstance.modalComponentRef = modalComponentRef;
         modalInstance.modalSubject = modalSubject;

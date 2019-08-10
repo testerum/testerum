@@ -6,7 +6,10 @@ import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {ScenarioParamModalService} from "./modal/scenario-param-modal.service";
 import {ScenarioParam} from "../../../../../../model/test/scenario/param/scenario-param.model";
 import {Subscription} from "rxjs";
-import {ScenarioTreeUtil} from "../../util/scenario-tree.util";
+import {ScenarioContainerModel} from "../../model/scenario-container.model";
+import {ScenarioParamType} from "../../../../../../model/test/scenario/param/scenario-param-type.enum";
+import * as Prism from 'prismjs';
+import 'prismjs/components/prism-json';
 
 @Component({
     selector: 'scenario-param-node',
@@ -54,9 +57,17 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
         if (this.scenarioParamModalSubscription) this.scenarioParamModalSubscription.unsubscribe();
     }
 
-    argHasContent(): boolean {
+    paramHasValue(): boolean {
         let paramValue = this.model.scenarioParam.value;
         return StringUtils.isNotEmpty(paramValue);
+    }
+
+    isJsonValueType(): boolean {
+        return this.model.scenarioParam.type == ScenarioParamType.JSON;
+    }
+
+    getHighlightedValueAsJson(): string {
+        return Prism.highlight(this.model.scenarioParam.value, Prism.languages.json, 'json');
     }
 
     animate() {
@@ -87,7 +98,7 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
 
     editOrViewResourceInModal() {
         this.scenarioParamModalSubscription = this.scenarioParamModalService
-            .showEditScenarioParamModal(this.model.scenarioParam, this.scenarioTreeComponentService.testModel.scenarios)
+            .showEditScenarioParamModal(this.model.scenarioParam, this.scenarioTreeComponentService.testModel.scenarios, (this.model.getParent().getParent() as ScenarioContainerModel).scenario)
             .subscribe( (newScenarioParam: ScenarioParam|null) => {
 
                 if (newScenarioParam != null) {
