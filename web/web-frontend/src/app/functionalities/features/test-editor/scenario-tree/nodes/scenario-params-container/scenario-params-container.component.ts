@@ -50,6 +50,8 @@ export class ScenarioParamsContainerComponent implements OnInit, OnDestroy {
             .subscribe( (newScenarioParam: ScenarioParam|null) => {
 
                 if (newScenarioParam != null) {
+                    (this.model.parentContainer as ScenarioContainerModel).scenario.params.push(newScenarioParam);
+
                     let scenarioParamNode = ScenarioTreeUtil.getScenarioParamNode(this.model, newScenarioParam);
 
                     this.model.children.push(scenarioParamNode);

@@ -18,7 +18,7 @@ export class TreeTextEditComponent implements ControlValueAccessor {
 
     @ViewChild('input') inputElementRef: ElementRef;
 
-    propagateChange = (_: any) => {};
+    private propagateChange: Function;
 
     writeValue(obj: any): void {
         this.text = obj;
@@ -32,6 +32,7 @@ export class TreeTextEditComponent implements ControlValueAccessor {
     setDisabledState(isDisabled: boolean): void {}
 
     onTextChange(text: string) {
+        this.text = text;
         this.propagateChange(this.text);
     }
 

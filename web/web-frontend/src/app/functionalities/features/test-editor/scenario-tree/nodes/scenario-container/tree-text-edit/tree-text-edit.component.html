@@ -9,7 +9,8 @@
 
         <input #input
                type="text" pInputText
-               [(ngModel)]="text"
+               [ngModel]="text"
+               (ngModelChange)="onTextChange($event)"
                (blur)="setTextEditMode(false)"
                (keydown.escape)="setTextEditMode(false); $event.preventDefault()"
                (keydown.enter)="setTextEditMode(false); $event.preventDefault()"

@@ -7,7 +7,8 @@
 
         <div [class.selected_for_copy_or_cut]="isSelectedForCopyOrCut()">
             <tree-text-edit #treeTextEdit
-                            [(ngModel)]="this.model.scenario.name"
+                            [ngModel]="this.model.scenario.name"
+                            (ngModelChange)="onScenarioNameChange($event)"
                             [isEditMode]="isEditMode()"
                             [isTextEditMode]="isScenarioNameEditMode"></tree-text-edit>
         </div>

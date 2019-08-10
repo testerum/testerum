@@ -8,6 +8,7 @@ import {ArrayUtil} from "../../../../utils/array.util";
 import {ScenarioContainerComponent} from "./nodes/scenario-container/scenario-container.component";
 import {NameUtil} from "../../../../utils/name.util";
 import {ScenarioParamsContainerModel} from "./model/scenario-params-container.model";
+import {ScenarioParam} from "../../../../model/test/scenario/param/scenario-param.model";
 
 @Injectable()
 export class ScenarioTreeComponentService {
@@ -28,11 +29,36 @@ export class ScenarioTreeComponentService {
 
     addNewScenario() {
         let scenario = new Scenario();
+        scenario.params = this.getEmptyParamsThatExistsInOtherScenarios();
         this.testModel.scenarios.push(scenario);
+
         let scenarioContainer = ScenarioTreeUtil.getScenarioContainer(scenario, this.testModel.scenarios.length, this.jsonTreeModel);
         scenarioContainer.jsonTreeNodeState.showChildren = true;
         scenarioContainer.showAsEditScenarioNameMode = true;
         this.jsonTreeModel.getChildren().push(scenarioContainer);
+    }
+
+    private getEmptyParamsThatExistsInOtherScenarios(): ScenarioParam[] {
+        let resultParamsMap: Map<string, ScenarioParam> = new Map<string, ScenarioParam>();
+
+        for (const scenario of this.testModel.scenarios) {
+            for (const param of scenario.params) {
+                let key = param.name.toLowerCase();
+                let existingScenarioParam = resultParamsMap.get(key);
+                if (!existingScenarioParam) {
+                    let scenarioParamToAdd = param.clone();
+                    scenarioParamToAdd.value = null;
+                    resultParamsMap.set(key, scenarioParamToAdd);
+                }
+            }
+        }
+
+        let result: ScenarioParam[] = [];
+        resultParamsMap.forEach((value, key) => {
+            result.push(value);
+        });
+
+        return result;
     }
 
     removeScenario(scenarioContainer: ScenarioContainerModel) {

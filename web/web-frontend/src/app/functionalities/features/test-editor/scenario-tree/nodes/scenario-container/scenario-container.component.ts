@@ -123,4 +123,8 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     isSelectedForCopyOrCut(): boolean {
         return this.scenarioTreeComponentService.getSelectedNode() == this;
     }
+
+    onScenarioNameChange(newName: string) {
+        this.model.scenario.name = newName;
+    }
 }
