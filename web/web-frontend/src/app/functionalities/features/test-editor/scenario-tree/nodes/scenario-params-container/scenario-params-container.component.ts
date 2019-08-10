@@ -1,10 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ScenarioParamsContainerModel} from "../../model/scenario-params-container.model";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {ScenarioTreeComponentService} from "../../scenario-tree.component-service";
 import {ScenarioParamNodeModel} from "../../model/scenario-param-node.model";
 import {ScenarioTreeUtil} from "../../util/scenario-tree.util";
 import {ScenarioParam} from "../../../../../../model/test/scenario/param/scenario-param.model";
+import {ScenarioParamModalService} from "../scenario-param-node/modal/scenario-param-modal.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'scenario-params-container',
@@ -14,16 +16,23 @@ import {ScenarioParam} from "../../../../../../model/test/scenario/param/scenari
         '../../../../../../generic/css/tree.scss',
     ]
 })
-export class ScenarioParamsContainerComponent implements OnInit{
+export class ScenarioParamsContainerComponent implements OnInit, OnDestroy {
     @Input() model: ScenarioParamsContainerModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
     hasMouseOver: boolean = false;
 
-    constructor(private scenarioTreeComponentService: ScenarioTreeComponentService) {
+    private scenarioParamModalSubscription: Subscription;
+
+    constructor(private scenarioTreeComponentService: ScenarioTreeComponentService,
+                private scenarioParamModalService: ScenarioParamModalService) {
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        if (this.scenarioParamModalSubscription) this.scenarioParamModalSubscription.unsubscribe();
     }
 
     collapseNode() {
@@ -35,8 +44,16 @@ export class ScenarioParamsContainerComponent implements OnInit{
     }
 
     onAddParameter() {
-        let scenarioParamNode = ScenarioTreeUtil.getScenarioParamNode(this.model, new ScenarioParam());
-        this.model.children.push(scenarioParamNode);
-        this.model.jsonTreeNodeState.showChildren = true;
+        this.scenarioParamModalSubscription = this.scenarioParamModalService
+            .showEditScenarioParamModal(null, this.scenarioTreeComponentService.testModel.scenarios)
+            .subscribe( (newScenarioParam: ScenarioParam|null) => {
+
+                if (newScenarioParam != null) {
+                    let scenarioParamNode = ScenarioTreeUtil.getScenarioParamNode(this.model, newScenarioParam);
+
+                    this.model.children.push(scenarioParamNode);
+                    this.model.jsonTreeNodeState.showChildren = true;
+                }
+        });
     }
 }

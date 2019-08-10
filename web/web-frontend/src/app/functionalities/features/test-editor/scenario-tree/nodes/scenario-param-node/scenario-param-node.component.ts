@@ -6,6 +6,7 @@ import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {ScenarioParamModalService} from "./modal/scenario-param-modal.service";
 import {ScenarioParam} from "../../../../../../model/test/scenario/param/scenario-param.model";
 import {Subscription} from "rxjs";
+import {ScenarioTreeUtil} from "../../util/scenario-tree.util";
 
 @Component({
     selector: 'scenario-param-node',
@@ -85,8 +86,15 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
     }
 
     editOrViewResourceInModal() {
-        this.scenarioParamModalSubscription = this.scenarioParamModalService.showEditScenarioParamModal(this.model.scenarioParam).subscribe( (newScenarioParam: ScenarioParam|null) => {
+        this.scenarioParamModalSubscription = this.scenarioParamModalService
+            .showEditScenarioParamModal(this.model.scenarioParam, this.scenarioTreeComponentService.testModel.scenarios)
+            .subscribe( (newScenarioParam: ScenarioParam|null) => {
 
+                if (newScenarioParam != null) {
+                    this.model.scenarioParam.name = newScenarioParam.name;
+                    this.model.scenarioParam.type = newScenarioParam.type;
+                    this.model.scenarioParam.value = newScenarioParam.value;
+                }
         });
     }
 }

@@ -1,4 +1,4 @@
-.arg-modal {
+.scenario-param-modal {
     .modal-dialog {
         max-width: 1200px;
         width: 90%;
@@ -7,67 +7,43 @@
 
     .modal-content {
         height: 100%;
-    }
 
-    .modal-body {
-        max-height: calc(100% - 120px);
-        height: 100%;
-        overflow-x: hidden;
-    }
+        .modal-header {
+            display: grid;
+            grid-template-areas: 'header-left header-right';
 
-    .footer-left {
-        float: left;
-        height: 32px;
-        align-items: center;
-        display: flex;
-    }
+            .modal-header-buttons {
+                grid-area: header-right;
+                align-self: center;
+                justify-self: end;
 
-    .footer-right {
-        float: right;
-        height: 32px;
-        align-items: center;
-        display: flex;
-    }
+                display: flex;
+                align-items: center;
+            }
 
-    .shared-input {
-        margin: 0;
-    }
+            .modal-title {
+                grid-area: header-left;
+            }
+        }
 
-    .shared-label {
-        margin: 0 0 0 10px;
-    }
+        .modal-body {
+            max-height: calc(100% - 120px);
+            height: 100%;
+            overflow-x: hidden;
 
-    .shared-path {
-        font-style: italic;
-        margin-left: 20px;
-    }
+            .label-size {
+                width: 5em;
+            }
 
-    .shared-path-label {
-        font-weight: bold;
-    }
+            .param-value-container {
+                position: relative;
 
-    .modal-header {
-        display: grid;
-        grid-template-areas: 'header-left header-right'
-    }
-
-    .modal-title {
-        grid-area: header-left;
-    }
-
-    .modal-header-buttons {
-        grid-area: header-right;
-        align-self: center;
-        justify-self: end;
-
-        display: flex;
-        align-items: center;
-    }
-
-    .select-shared-button {
-        height: 25px;
-        padding: 0 12px;
-        margin-right: 50px;
+                .my-text-editor-container {
+                    border: 1px solid #c8c8c8;
+                    border-radius: 3px;
+                }
+            }
+        }
     }
 }
 

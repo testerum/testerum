@@ -1,5 +1,5 @@
 
-<div bsModal #resourceModal="bs-modal" class="arg-modal modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+<div bsModal #resourceModal="bs-modal" class="scenario-param-modal modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
@@ -19,7 +19,71 @@
 
             <!-- BODY-->
             <div class="modal-body">
-                <div #modalBody></div>
+
+                <form class="form-horizontal flex-panel">
+<!-- NAME -->
+                    <div class="my-line">
+                        <label class="my-label label-size">Name:</label>
+
+                        <div class="my-value full-line" *ngIf="!isEditParamNameMode">
+                            {{newScenarioParam.name}}
+                            <div class="button-panel btn-group my-button-panel">
+
+                                <div title="Rename parameter name" class="btn btn-default btn-xs btn-group"
+                                     (click)="onEditParamName();$event.stopPropagation();">
+                                    <i class="fa_my-edit" aria-hidden="true"></i>
+                                </div>
+
+                                <info-icon [message]="getRenameNameDescription()"
+                                           class="param-info-icon"></info-icon>
+                            </div>
+                        </div>
+
+                        <div class="my-value" *ngIf="isEditParamNameMode">
+                            <input [(ngModel)]="newScenarioParam.name"
+                                   type="text" class="form-control" name="name">
+                        </div>
+                    </div>
+
+<!-- TYPE -->
+                    <div class="my-line">
+                        <label class="my-label label-size">Type:</label>
+
+                        <div class="my-value">
+                            <select class="form-control my-compare-mode-select" name="compareMode"
+                                    #paramTypeModeNgModel="ngModel" [ngModel]="newScenarioParam.type"
+                                    (change)="onParamTypeChange(paramTypeModeNgModel.value)">
+                                <option *ngFor="let paramType of getParamTypes()" [ngValue]="paramType">
+                                    {{paramType.toUiLabel()}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+<!-- VALUE -->
+                    <div class="my-line">
+                        <label class="my-label label-size">Value:</label>
+
+                        <div class="my-value full-line param-value-container">
+                            <!-- JSON VALUE -->
+                            <json-editor *ngIf="isJsonValueType()"
+                                         [jsonText]="newScenarioParam.value"
+                                         [editMode]="true"
+                                         (valueChange)="onValueChange($event)"></json-editor>
+
+                            <!-- TEXT VALUE -->
+                            <div *ngIf="!isJsonValueType()" #parentElement class="my-text-editor-container">
+                                <monaco-editor #monacoEditorComponent
+                                               [options]="editorOptions"
+                                               [value]="newScenarioParam.value"
+                                               [parentElemntRef]="parentElement"
+                                               (valueChange)="onValueChange($event)"
+                                               style="height:100%"></monaco-editor>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
             </div>
 
             <!-- FOOTER Buttons-->

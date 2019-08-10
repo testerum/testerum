@@ -101,6 +101,7 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private initMonaco() {
+
         let opts: editor.IEditorConstructionOptions = {
             value: [this.value].join('\n'),
             language: 'text',
@@ -119,6 +120,17 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
             opts = Object.assign({}, opts, this.options);
         }
 
+        let theme: editor.IStandaloneThemeData = {
+            base: 'vs',
+            inherit: true,
+            rules: [],
+            colors: {
+                'editorLineNumber.foreground': '#C0BEBC',
+                'editorGutter.background': '#f0f0f0'
+            }
+        };
+        monaco.editor.defineTheme('myTheme', theme);
+
         this.editor = monaco.editor.create(this.container, opts);
         this.editor.getModel().updateOptions(
             {
@@ -127,6 +139,8 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
                 tabSize: 2
             });
         // this.editor.layout();
+
+        monaco.editor.setTheme('myTheme');
 
         this.editor.onDidChangeModelContent(() => {
             this.valueChange.emit(this.editor.getValue());
