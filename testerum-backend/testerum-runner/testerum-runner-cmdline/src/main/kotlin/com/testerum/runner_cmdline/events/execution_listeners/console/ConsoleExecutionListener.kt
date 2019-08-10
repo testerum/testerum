@@ -2,8 +2,12 @@ package com.testerum.runner_cmdline.events.execution_listeners.console
 
 import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.common_cmdline.banner.TesterumBanner
+import com.testerum.common_kotlin.emptyToNull
 import com.testerum.runner.events.execution_listener.BaseExecutionListener
+import com.testerum.runner.events.model.ParametrizedTestStartEvent
 import com.testerum.runner.events.model.RunnerEvent
+import com.testerum.runner.events.model.ScenarioEndEvent
+import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
@@ -15,7 +19,7 @@ import java.time.format.DateTimeFormatter
 class ConsoleExecutionListener : BaseExecutionListener() {
 
     companion object {
-        private val TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
+        private val TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss.SSS")
     }
 
     // todo: allow the listeners to access the execution tree (to know from the beginning how many tests there are, etc.)
@@ -23,7 +27,6 @@ class ConsoleExecutionListener : BaseExecutionListener() {
 
     // todo: share this stack among all listeners, to minimize memory
     private val eventsStack = ExecutionEventsStack()
-    private val failedTests = ArrayList<TestEndEvent>()
 
     override fun start() {
         print(TesterumBanner.BANNER + "\n\n")
@@ -34,6 +37,28 @@ class ConsoleExecutionListener : BaseExecutionListener() {
         super.onEvent(event)
     }
 
+    override fun onParametrizedTestStart(event: ParametrizedTestStartEvent) {
+        print("* Parametrized Test [${event.testName}] (at [${event.testFilePath}])\n")
+    }
+
+    override fun onScenarioStart(event: ScenarioStartEvent) {
+        print("*   Scenario [${event.scenario.name.emptyToNull() ?: "Scenario ${event.scenarioIndex + 1}"}]")
+    }
+
+    override fun onScenarioEnd(event: ScenarioEndEvent) {
+        print(" ===> ${event.status} (in ${event.durationMillis} ms)\n")
+        if (event.status == ExecutionStatus.FAILED) {
+            val logs = eventsStack.peek(
+                    untilItemType = ScenarioStartEvent::class.java,
+                    desiredItemType = TextLogEvent::class.java
+            )
+
+            for (log in logs) {
+                print(formatTextLogEvent(log, indentLevel = 1))
+            }
+        }
+    }
+
     override fun onTestStart(event: TestStartEvent) {
         print("* Test [${event.testName}] (at [${event.testFilePath}])")
     }
@@ -41,8 +66,6 @@ class ConsoleExecutionListener : BaseExecutionListener() {
     override fun onTestEnd(event: TestEndEvent) {
         print(" ===> ${event.status} (in ${event.durationMillis} ms)\n")
         if (event.status == ExecutionStatus.FAILED) {
-            failedTests += event
-
             val logs = eventsStack.peek(
                     untilItemType = TestStartEvent::class.java,
                     desiredItemType = TextLogEvent::class.java

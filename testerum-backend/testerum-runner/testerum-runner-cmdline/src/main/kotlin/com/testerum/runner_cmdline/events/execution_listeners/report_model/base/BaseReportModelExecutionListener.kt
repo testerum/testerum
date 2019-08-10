@@ -6,6 +6,10 @@ import com.testerum.common_kotlin.writeText
 import com.testerum.runner.events.execution_listener.BaseExecutionListener
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
+import com.testerum.runner.events.model.ParametrizedTestEndEvent
+import com.testerum.runner.events.model.ParametrizedTestStartEvent
+import com.testerum.runner.events.model.ScenarioEndEvent
+import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.StepEndEvent
 import com.testerum.runner.events.model.StepStartEvent
 import com.testerum.runner.events.model.SuiteEndEvent
@@ -15,16 +19,19 @@ import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.report_model.FeatureOrTestRunnerReportNode
 import com.testerum.runner.report_model.ReportLog
+import com.testerum.runner.report_model.ReportScenario
 import com.testerum.runner.report_model.ReportStep
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.logger.ReportToFileLoggerStack
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportFeatureMapper
+import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportParametrizedTestMapper
+import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportScenarioMapper
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportStepMapper
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportSuiteMapper
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.ReportTestMapper
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper.StepDefsByMinId
 import com.testerum.runner_cmdline.events.execution_listeners.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
 import com.testerum.runner_cmdline.events.execution_listeners.utils.events_stack.ExecutionEventsStack
-import java.util.*
+import java.util.ArrayDeque
 import javax.annotation.concurrent.NotThreadSafe
 import java.nio.file.Path as JavaPath
 
@@ -124,6 +131,118 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
         eventsStack.push(reportFeature)
     }
 
+    final override fun onParametrizedTestStart(event: ParametrizedTestStartEvent) {
+        eventsStack.push(event)
+
+        val logBaseName = eventsStack.computeCurrentParametrizedTestLogBaseName()
+        loggerStack.push(
+                textFilePath = getTextLogsDirectory().resolve("$logBaseName.$LOG_TEXT_EXTENSION"),
+                modelFilePath = getModelLogsDirectory().resolve("$logBaseName.$LOG_MODEL_EXTENSION")
+        )
+    }
+
+    final override fun onParametrizedTestEnd(event: ParametrizedTestEndEvent) {
+        @Suppress("UnnecessaryVariable")
+        val parametrizedTestEndEvent = event
+
+        var parametrizedTestStartEvent: ParametrizedTestStartEvent? = null
+        val children = ArrayDeque<ReportScenario>()
+
+        var done = false
+        while (!done) {
+            val eventFromStack: Any? = eventsStack.popOrNull()
+
+            if (eventFromStack == null) {
+                done = true
+            } else {
+                when (eventFromStack) {
+                    is ParametrizedTestStartEvent -> {
+                        parametrizedTestStartEvent = eventFromStack
+                        done = true
+                    }
+                    is ReportScenario -> {
+                        children.addFirst(eventFromStack)
+                    }
+                }
+            }
+        }
+
+        if (parametrizedTestStartEvent == null) {
+            throw IllegalStateException(
+                    "Got ${ParametrizedTestEndEvent::class.simpleName} [$parametrizedTestEndEvent]" +
+                    " without a corresponding previous ${ParametrizedTestStartEvent::class.simpleName}"
+            )
+        }
+
+        val testLogger = loggerStack.pop()
+
+        val reportParametrizedTest = ReportParametrizedTestMapper.mapReportParametrizedTest(
+                startEvent = parametrizedTestStartEvent,
+                endEvent = parametrizedTestEndEvent,
+                destinationDirectory = destinationDirectory,
+                testLogger = testLogger,
+                children = children.toList()
+        )
+
+        eventsStack.push(reportParametrizedTest)
+    }
+
+    final override fun onScenarioStart(event: ScenarioStartEvent) {
+        eventsStack.push(event)
+
+        val logBaseName = eventsStack.computeCurrentScenarioLogBaseName()
+        loggerStack.push(
+                textFilePath = getTextLogsDirectory().resolve("$logBaseName.$LOG_TEXT_EXTENSION"),
+                modelFilePath = getModelLogsDirectory().resolve("$logBaseName.$LOG_MODEL_EXTENSION")
+        )
+    }
+
+    final override fun onScenarioEnd(event: ScenarioEndEvent) {
+        @Suppress("UnnecessaryVariable")
+        val scenarioEndEvent = event
+
+        var scenarioStartEvent: ScenarioStartEvent? = null
+        val children = ArrayDeque<ReportStep>()
+
+        var done = false
+        while (!done) {
+            val eventFromStack: Any? = eventsStack.popOrNull()
+
+            if (eventFromStack == null) {
+                done = true
+            } else {
+                when (eventFromStack) {
+                    is ScenarioStartEvent -> {
+                        scenarioStartEvent = eventFromStack
+                        done = true
+                    }
+                    is ReportStep -> {
+                        children.addFirst(eventFromStack)
+                    }
+                }
+            }
+        }
+
+        if (scenarioStartEvent == null) {
+            throw IllegalStateException(
+                    "Got ${ScenarioEndEvent::class.simpleName} [$scenarioEndEvent]" +
+                    " without a corresponding previous ${ScenarioStartEvent::class.simpleName}"
+            )
+        }
+
+        val testLogger = loggerStack.pop()
+
+        val reportScenario = ReportScenarioMapper.mapReportScenario(
+                startEvent = scenarioStartEvent,
+                endEvent = scenarioEndEvent,
+                destinationDirectory = destinationDirectory,
+                testLogger = testLogger,
+                children = children.toList()
+        )
+
+        eventsStack.push(reportScenario)
+    }
+
     final override fun onTestStart(event: TestStartEvent) {
         eventsStack.push(event)
 
@@ -188,16 +307,9 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
                 textFilePath = getTextLogsDirectory().resolve("$logBaseName.$LOG_TEXT_EXTENSION"),
                 modelFilePath = getModelLogsDirectory().resolve("$logBaseName.$LOG_MODEL_EXTENSION")
         )
-//        onTextLog(
-//                createLogEvent("Executing step ${event.stepCall}")
-//        )
     }
 
     final override fun onStepEnd(event: StepEndEvent) {
-//        onTextLog(
-//                createLogEvent("Finished executing step ${event.stepCall}")
-//        )
-
         @Suppress("UnnecessaryVariable")
         val stepEndEvent = event
 

@@ -49,7 +49,7 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
     }
 
     override lateinit var parent: RunnerTreeNode
-    override val positionInParent = PositionInParent(test.id, indexInParent)
+    override val positionInParent = PositionInParent("${test.id}-$scenarioIndex", indexInParent)
 
     private val scenarioName = scenario.name ?: "Execution ${scenarioIndex + 1}"
 
