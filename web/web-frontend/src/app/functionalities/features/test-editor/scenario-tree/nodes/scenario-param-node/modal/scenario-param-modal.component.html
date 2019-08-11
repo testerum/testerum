@@ -22,12 +22,12 @@
 
                 <form class="form-horizontal flex-panel">
 <!-- NAME -->
-                    <div class="my-line">
+                    <div class="my-line name-container">
                         <label class="my-label label-size">Name:</label>
 
-                        <div class="my-value full-line" *ngIf="!isEditParamNameMode">
-                            {{newScenarioParam.name}}
-                            <div class="button-panel btn-group my-button-panel">
+                        <div class="my-value full-line align-row align-center-on-vertical" *ngIf="!isEditParamNameMode">
+                            {{newParam.name}}
+                            <div class="button-panel btn-group my-button-panel align-row align-center-on-vertical">
 
                                 <div title="Rename parameter name" class="btn btn-default btn-xs btn-group"
                                      (click)="onEditParamName();$event.stopPropagation();">
@@ -42,7 +42,7 @@
                         <div class="my-value" *ngIf="isEditParamNameMode">
                             <input required isNotBlankValidator
                                    #nameNgModel="ngModel"
-                                   [ngModel]="newScenarioParam.name"
+                                   [ngModel]="newParam.name"
                                    (ngModelChange)="onNameChange($event)"
                                    type="text" class="form-control" name="name">
                             <input-error [model]="nameNgModel"
@@ -59,7 +59,7 @@
 
                         <div class="my-value">
                             <select class="form-control my-compare-mode-select" name="compareMode"
-                                    #paramTypeModeNgModel="ngModel" [ngModel]="newScenarioParam.type"
+                                    #paramTypeModeNgModel="ngModel" [ngModel]="newParam.type"
                                     (change)="onParamTypeChange(paramTypeModeNgModel.value)">
                                 <option *ngFor="let paramType of getParamTypes()" [ngValue]="paramType">
                                     {{paramType.toUiLabel()}}
@@ -75,7 +75,7 @@
                         <div class="my-value full-line param-value-container">
                             <!-- JSON VALUE -->
                             <json-editor *ngIf="isJsonValueType()"
-                                         [jsonText]="newScenarioParam.value"
+                                         [jsonText]="newParam.value"
                                          [editMode]="true"
                                          (valueChange)="onValueChange($event)"></json-editor>
 
@@ -83,7 +83,7 @@
                             <div *ngIf="!isJsonValueType()" #parentElement class="my-text-editor-container">
                                 <monaco-editor #monacoEditorComponent
                                                [options]="editorOptions"
-                                               [value]="newScenarioParam.value"
+                                               [value]="newParam.value"
                                                [parentElemntRef]="parentElement"
                                                (valueChange)="onValueChange($event)"
                                                style="height:100%"></monaco-editor>
@@ -96,7 +96,8 @@
 
             <!-- FOOTER Buttons-->
             <div class="modal-footer">
-                <button (click)="onCancel();$event.stopPropagation();" type="button" class="btn btn-default">Close</button>
+                <button *ngIf="oldParam" (click)="deleteAction();$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
+                <button (click)="onCancel();$event.stopPropagation();" type="button" class="btn btn-default">Cancel</button>
                 <button (click)="onOk();$event.stopPropagation();"
                         [disabled]="!isValid()"
                         type="button" class="btn btn-primary">Ok</button>

@@ -8,6 +8,12 @@ import {editor} from "monaco-editor";
 import {NgForm} from "@angular/forms";
 import {ArrayUtil} from "../../../../../../../utils/array.util";
 import {FormUtil} from "../../../../../../../utils/form.util";
+import {
+    ScenarioParamChangeModel,
+    ScenarioParamModalResultModelAction
+} from "./model/scenario-param-change.model";
+import {AreYouSureModalEnum} from "../../../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
+import {AreYouSureModalService} from "../../../../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 
 @Component({
     moduleId: module.id,
@@ -20,13 +26,13 @@ import {FormUtil} from "../../../../../../../utils/form.util";
 })
 export class ScenarioParamModalComponent {
 
-    oldScenarioParam: ScenarioParam;
-    newScenarioParam: ScenarioParam;
+    oldParam: ScenarioParam;
+    newParam: ScenarioParam;
     allScenarios: Scenario[];
     currentScenario: Scenario;
 
     modalComponentRef: ComponentRef<ScenarioParamModalComponent>;
-    modalSubject: Subject<ScenarioParam|null>;
+    modalSubject: Subject<ScenarioParamChangeModel>;
 
     modalTitle;
     otherParamsName: string[] = [];
@@ -39,12 +45,13 @@ export class ScenarioParamModalComponent {
         language: 'text'
     };
 
-    constructor(private cd: ChangeDetectorRef) {
+    constructor(private cd: ChangeDetectorRef,
+                private areYouSureModalService: AreYouSureModalService) {
     }
 
     ngAfterViewInit(): void {
-        this.modalTitle = this.oldScenarioParam ? "Edit Scenario Param": "Add Param to Scenario";
-        if (this.oldScenarioParam == null) {
+        this.modalTitle = this.oldParam ? "Edit Scenario Param": "Add Param to Scenario";
+        if (this.oldParam == null) {
             this.isEditParamNameMode = true;
         }
 
@@ -71,7 +78,7 @@ export class ScenarioParamModalComponent {
     private initOtherParamsName() {
         let otherParamsName: string[] = [];
         for (const param of this.currentScenario.params) {
-            if (param !== this.oldScenarioParam) {
+            if (param !== this.oldParam) {
                 otherParamsName.push(param.name);
             }
         }
@@ -83,7 +90,7 @@ export class ScenarioParamModalComponent {
     }
 
     isJsonValueType(): boolean {
-        return this.newScenarioParam.type == ScenarioParamType.JSON;
+        return this.newParam.type == ScenarioParamType.JSON;
     }
 
     onEditParamName() {
@@ -95,7 +102,7 @@ export class ScenarioParamModalComponent {
     }
 
     onNameChange(newName: string) {
-        this.newScenarioParam.name = newName;
+        this.newParam.name = newName;
         if (ArrayUtil.containsElement(this.otherParamsName, newName)) {
             FormUtil.addErrorToForm(this.form, "name", "parameter_with_the_same_name_already_exist");
         }
@@ -106,22 +113,47 @@ export class ScenarioParamModalComponent {
     }
 
     onParamTypeChange(newScenarioParamType: ScenarioParamType) {
-        this.newScenarioParam.type = newScenarioParamType;
+        this.newParam.type = newScenarioParamType;
         this.refresh();
     }
 
     onValueChange(newValue: string) {
-        this.newScenarioParam.value = newValue;
+        this.newParam.value = newValue;
         this.refresh();
     }
 
+    deleteAction() {
+        this.areYouSureModalService.showAreYouSureModal(
+            "Delete",
+            "Are you sure you want to delete this feature?"
+        ).subscribe((action: AreYouSureModalEnum) => {
+            if (action == AreYouSureModalEnum.OK) {
+                let result = new ScenarioParamChangeModel();
+                result.action = ScenarioParamModalResultModelAction.DELETE;
+                result.oldParam = this.oldParam;
+
+                this.modalSubject.next(result);
+                this.modal.hide();
+            }
+        });
+    }
+
     onCancel() {
-        this.modalSubject.next(null);
+        let result = new ScenarioParamChangeModel();
+        result.oldParam = this.oldParam;
+        result.action = ScenarioParamModalResultModelAction.CANCEL;
+
+        this.modalSubject.next(result);
         this.modal.hide();
     }
 
     onOk() {
-        this.modalSubject.next(this.newScenarioParam);
+        let result = new ScenarioParamChangeModel();
+        result.action = this.oldParam == null ? ScenarioParamModalResultModelAction.ADD : ScenarioParamModalResultModelAction.UPDATE;
+        result.oldParam = this.oldParam;
+        result.newParam = this.newParam;
+
+        this.modalSubject.next(result);
         this.modal.hide();
     }
 }

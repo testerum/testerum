@@ -2,12 +2,10 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ScenarioParamsContainerModel} from "../../model/scenario-params-container.model";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {ScenarioTreeComponentService} from "../../scenario-tree.component-service";
-import {ScenarioParamNodeModel} from "../../model/scenario-param-node.model";
-import {ScenarioTreeUtil} from "../../util/scenario-tree.util";
-import {ScenarioParam} from "../../../../../../model/test/scenario/param/scenario-param.model";
 import {ScenarioParamModalService} from "../scenario-param-node/modal/scenario-param-modal.service";
 import {Subscription} from "rxjs";
 import {ScenarioContainerModel} from "../../model/scenario-container.model";
+import {ScenarioParamChangeModel} from "../scenario-param-node/modal/model/scenario-param-change.model";
 
 @Component({
     selector: 'scenario-params-container',
@@ -47,16 +45,13 @@ export class ScenarioParamsContainerComponent implements OnInit, OnDestroy {
     onAddParameter() {
         this.scenarioParamModalSubscription = this.scenarioParamModalService
             .showEditScenarioParamModal(null, this.scenarioTreeComponentService.testModel.scenarios, (this.model.getParent() as ScenarioContainerModel).scenario)
-            .subscribe( (newScenarioParam: ScenarioParam|null) => {
+            .subscribe( (paramChangeModel: ScenarioParamChangeModel) => {
 
-                if (newScenarioParam != null) {
-                    (this.model.parentContainer as ScenarioContainerModel).scenario.params.push(newScenarioParam);
+                this.scenarioTreeComponentService.updateScenariosParams(paramChangeModel, this.getScenarioOfThisParam());
+            });
+    }
 
-                    let scenarioParamNode = ScenarioTreeUtil.getScenarioParamNode(this.model, newScenarioParam);
-
-                    this.model.children.push(scenarioParamNode);
-                    this.model.jsonTreeNodeState.showChildren = true;
-                }
-        });
+    private getScenarioOfThisParam() {
+        return (this.model.getParent() as ScenarioContainerModel).scenario;
     }
 }

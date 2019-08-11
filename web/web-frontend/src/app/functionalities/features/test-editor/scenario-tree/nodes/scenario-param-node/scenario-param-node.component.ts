@@ -4,12 +4,12 @@ import {ScenarioParamNodeModel} from "../../model/scenario-param-node.model";
 import {ScenarioTreeComponentService} from "../../scenario-tree.component-service";
 import {StringUtils} from "../../../../../../utils/string-utils.util";
 import {ScenarioParamModalService} from "./modal/scenario-param-modal.service";
-import {ScenarioParam} from "../../../../../../model/test/scenario/param/scenario-param.model";
 import {Subscription} from "rxjs";
 import {ScenarioContainerModel} from "../../model/scenario-container.model";
 import {ScenarioParamType} from "../../../../../../model/test/scenario/param/scenario-param-type.enum";
 import * as Prism from 'prismjs';
 import 'prismjs/components/prism-json';
+import {ScenarioParamChangeModel} from "./modal/model/scenario-param-change.model";
 
 @Component({
     selector: 'scenario-param-node',
@@ -66,6 +66,10 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
         return this.model.scenarioParam.type == ScenarioParamType.JSON;
     }
 
+    isEditMode(): boolean {
+        return this.scenarioTreeComponentService.isEditMode;
+    }
+
     getHighlightedValueAsJson(): string {
         return Prism.highlight(this.model.scenarioParam.value, Prism.languages.json, 'json');
     }
@@ -98,14 +102,14 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
 
     editOrViewResourceInModal() {
         this.scenarioParamModalSubscription = this.scenarioParamModalService
-            .showEditScenarioParamModal(this.model.scenarioParam, this.scenarioTreeComponentService.testModel.scenarios, (this.model.getParent().getParent() as ScenarioContainerModel).scenario)
-            .subscribe( (newScenarioParam: ScenarioParam|null) => {
+            .showEditScenarioParamModal(this.model.scenarioParam, this.scenarioTreeComponentService.testModel.scenarios, this.getScenarioOfThisParam())
+            .subscribe( (paramModalResult: ScenarioParamChangeModel) => {
 
-                if (newScenarioParam != null) {
-                    this.model.scenarioParam.name = newScenarioParam.name;
-                    this.model.scenarioParam.type = newScenarioParam.type;
-                    this.model.scenarioParam.value = newScenarioParam.value;
-                }
+                this.scenarioTreeComponentService.updateScenariosParams(paramModalResult, this.getScenarioOfThisParam());
         });
+    }
+
+    private getScenarioOfThisParam() {
+        return (this.model.getParent().getParent() as ScenarioContainerModel).scenario;
     }
 }

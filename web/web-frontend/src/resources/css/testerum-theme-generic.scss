@@ -89,3 +89,15 @@ h1 .path {
     height: calc(100% - 38px);
 }
 
+.align-row {
+    display: flex;
+    flex-direction: row;
+}
+.align-column {
+    display: flex;
+    flex-direction: row;
+}
+.align-center-on-vertical {
+    display: flex;
+    align-items: center;
+}

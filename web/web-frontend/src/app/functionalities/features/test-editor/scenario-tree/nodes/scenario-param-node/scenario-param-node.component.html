@@ -18,7 +18,8 @@
         <info-icon [message]="getParamDescription()"
                    class="param-info-icon"></info-icon>
 
-        <div title="Edit"
+        <div *ngIf="isEditMode()"
+             title="Edit"
              class="btn btn-default btn-xs btn-group"
              (click)="editOrViewResourceInModal(); $event.stopPropagation()">
             <span class="fas fa-pencil-alt">

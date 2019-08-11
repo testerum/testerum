@@ -9,6 +9,10 @@ import {ScenarioContainerComponent} from "./nodes/scenario-container/scenario-co
 import {NameUtil} from "../../../../utils/name.util";
 import {ScenarioParamsContainerModel} from "./model/scenario-params-container.model";
 import {ScenarioParam} from "../../../../model/test/scenario/param/scenario-param.model";
+import {
+    ScenarioParamChangeModel,
+    ScenarioParamModalResultModelAction
+} from "./nodes/scenario-param-node/modal/model/scenario-param-change.model";
 
 @Injectable()
 export class ScenarioTreeComponentService {
@@ -21,6 +25,10 @@ export class ScenarioTreeComponentService {
 
     isEditMode: boolean;
     editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+    initComponentTree() {
+        ScenarioTreeUtil.mapScenarioToTreeModel(this.testModel.scenarios, this.jsonTreeModel);
+    }
 
     setEditMode(editMode: boolean) {
         this.editModeEventEmitter.emit(editMode);
@@ -109,5 +117,106 @@ export class ScenarioTreeComponentService {
     private afterPasteOperation() {
         this.scenarioToCopy = null;
         this.setSelectedNode(null);
+    }
+
+    updateScenariosParams(paramChangeResult: ScenarioParamChangeModel, scenarioOfChangedParam: Scenario) {
+
+        let oldParam = paramChangeResult.oldParam;
+        let newParam = paramChangeResult.newParam;
+
+        if (paramChangeResult.action == ScenarioParamModalResultModelAction.CANCEL) { return; }
+
+        if (paramChangeResult.action == ScenarioParamModalResultModelAction.DELETE) {
+            this.deleteParamFromAllScenarios(oldParam);
+        }
+
+        if (paramChangeResult.action == ScenarioParamModalResultModelAction.ADD) {
+            this.addParamToAllScenarios(newParam, scenarioOfChangedParam);
+        }
+
+        if (paramChangeResult.action == ScenarioParamModalResultModelAction.UPDATE) {
+            this.updateParamInAllScenarios(oldParam, newParam, scenarioOfChangedParam);
+        }
+        this.initComponentTree();
+    }
+
+    private getParamWithName(scenario: Scenario, name: string): ScenarioParam|null {
+        for (const param of scenario.params) {
+            if (param.name == name) {
+                return param;
+            }
+        }
+        return null;
+    }
+
+    private deleteParamFromAllScenarios(paramToDelete: ScenarioParam) {
+
+        for (const scenario of this.testModel.scenarios) {
+            let scenarioParamToDelete = this.getParamByNameFromScenario(paramToDelete.name, scenario);
+            if (scenarioParamToDelete) {
+                ArrayUtil.removeElementFromArray(scenario.params, scenarioParamToDelete);
+            }
+        }
+    }
+
+    private getParamByNameFromScenario(paramName: string, scenario: Scenario): ScenarioParam|null {
+        for (const param of scenario.params) {
+            if (param.name == paramName) {
+                return param;
+            }
+        }
+        return null;
+    }
+
+    private addParamToAllScenarios(newParam: ScenarioParam, scenarioOfChangedParam: Scenario) {
+        for (const scenario of this.testModel.scenarios) {
+            let alreadyExistingParamByName = this.getParamByNameFromScenario(newParam.name, scenario);
+
+            let alreadyExistingValue: string;
+            if (alreadyExistingParamByName) {
+                alreadyExistingValue = alreadyExistingParamByName.value;
+                ArrayUtil.removeElementFromArray(scenario.params, alreadyExistingParamByName);
+            }
+
+            let scenarioParam = new ScenarioParam();
+            scenarioParam.name = newParam.name;
+            scenarioParam.type = newParam.type;
+            scenarioParam.value = scenarioOfChangedParam == scenario ? newParam.value : alreadyExistingValue;
+
+            scenario.params.push(scenarioParam)
+        }
+    }
+
+    private updateParamInAllScenarios(oldParam: ScenarioParam, newParam: ScenarioParam, scenarioOfChangedParam: Scenario) {
+        if (oldParam.name != newParam.name ||
+            oldParam.type != newParam.type) {
+            this.updateParmNameAndTypeAllScenarios(oldParam, newParam, scenarioOfChangedParam);
+        }
+
+        oldParam.name = newParam.name;
+        oldParam.type = newParam.type;
+        oldParam.value = newParam.value;
+    }
+
+    private updateParmNameAndTypeAllScenarios(oldParam: ScenarioParam, newParam: ScenarioParam, scenarioOfChangedParam: Scenario) {
+
+        for (const scenario of this.testModel.scenarios) {
+
+            let paramWithOldName = this.getParamWithName(scenario, oldParam.name);
+            if (paramWithOldName == null) {
+                let indexOfOldParam = scenarioOfChangedParam.params.indexOf(oldParam);
+
+                let scenarioParam = new ScenarioParam();
+                scenarioParam.name = newParam.name;
+                scenarioParam.type = newParam.type;
+                scenarioParam.value = newParam.value;
+
+                scenario.params.splice(indexOfOldParam, 0, scenarioParam);
+                continue;
+            }
+
+            paramWithOldName.name = newParam.name;
+            paramWithOldName.type = newParam.type;
+        }
     }
 }

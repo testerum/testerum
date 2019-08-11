@@ -35,7 +35,7 @@ export class ScenarioTreeComponent implements OnInit, OnChanges {
         this.scenarioTreeComponentService.testModel = this.testModel;
         this.scenarioTreeComponentService.isEditMode = this.isEditMode;
         this.scenarioTreeComponentService.jsonTreeModel = this.jsonTreeModel;
-        ScenarioTreeUtil.mapScenarioToTreeModel(this.testModel.scenarios, this.jsonTreeModel);
+        this.scenarioTreeComponentService.initComponentTree();
     }
 
     ngOnChanges(changes: SimpleChanges): void {

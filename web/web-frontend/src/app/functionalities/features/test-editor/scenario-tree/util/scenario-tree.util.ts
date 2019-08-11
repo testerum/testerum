@@ -4,15 +4,21 @@ import {ScenarioContainerModel} from "../model/scenario-container.model";
 import {ScenarioParamsContainerModel} from "../model/scenario-params-container.model";
 import {ScenarioParam} from "../../../../../model/test/scenario/param/scenario-param.model";
 import {ScenarioParamNodeModel} from "../model/scenario-param-node.model";
+import {JsonTreeNode} from "../../../../../generic/components/json-tree/model/json-tree-node.model";
+import {JsonTreeContainer} from "../../../../../generic/components/json-tree/model/json-tree-container.model";
 
 export class ScenarioTreeUtil {
 
     static mapScenarioToTreeModel(scenarios: Scenario[], treeModel: JsonTreeModel) {
+
+        let treeChildren: ScenarioContainerModel[] = [];
         for (let i = 0; i < scenarios.length; i++) {
-            treeModel.children.push(
+            treeChildren.push(
                 this.getScenarioContainer(scenarios[i], i, treeModel)
-            )
+            );
         }
+        this.copyChildrenStateFromOldToNew(treeModel.children, treeChildren);
+        treeModel.children = treeChildren;
     }
 
     static getScenarioContainer(scenario: Scenario, indexInParent: number, parent: JsonTreeModel): ScenarioContainerModel {
@@ -44,5 +50,25 @@ export class ScenarioTreeUtil {
             }
         }
         return result;
+    }
+
+
+    private static copyChildrenStateFromOldToNew(oldChildren: Array<JsonTreeNode>, newChildren: Array<JsonTreeNode>) {
+        if(oldChildren == null || oldChildren.length == 0 || newChildren == null || newChildren.length == 0) return;
+        if(oldChildren.length != newChildren.length) return;
+
+        for (let i = 0; i < oldChildren.length; i++) {
+            let oldChild = oldChildren[i];
+            let newChild = newChildren[i];
+
+            if (oldChild.isContainer() && newChild.isContainer()) {
+                this.copyTreeContainerStateFromOldToNew(oldChild as JsonTreeContainer, newChild as JsonTreeContainer);
+            }
+        }
+    }
+
+    private static copyTreeContainerStateFromOldToNew(oldChild: JsonTreeContainer, newChild: JsonTreeContainer) {
+        newChild.getNodeState().showChildren = oldChild.getNodeState().showChildren;
+        this.copyChildrenStateFromOldToNew(oldChild.getChildren(), newChild.getChildren());
     }
 }
