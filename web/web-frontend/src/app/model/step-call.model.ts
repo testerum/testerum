@@ -20,6 +20,8 @@ export class StepCall implements Serializable<StepCall> {
     id: string = IdUtils.getTemporaryId();
     stepDef: StepDef;
     args: Array<Arg> = [];
+    enabled: boolean = true;
+
     variableHolder: VariableHolder = new VariableHolder();
 
     private warnings: Array<Warning> = [];
@@ -87,6 +89,8 @@ export class StepCall implements Serializable<StepCall> {
             this.args.push(arg);
         }
 
+        this.enabled = input['enabled'];
+
         this.warnings = [];
         for (let warning of (input['warnings'] || [])) {
             this.warnings.push(
@@ -105,6 +109,7 @@ export class StepCall implements Serializable<StepCall> {
             '"id":' + JsonUtil.stringify(this.id) + ',' +
             '"stepDef":' + this.stepDef.serialize() + ',' +
             '"args":' + JsonUtil.serializeArrayOfSerializable(this.args) + ',' +
+            ',"enabled":' + JsonUtil.stringify(this.enabled) +
             '"warnings": []' +
             '}'
     }

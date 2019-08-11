@@ -17,7 +17,11 @@ import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
-import com.testerum.test_file_format.common.step_call.part.arg_part.*
+import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
+import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
+import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartSerializer
+import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
+import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
 
 class FileToBusinessStepCallMapper(private val phaseMapper: FileToBusinessPhaseMapper) {
 
@@ -37,9 +41,11 @@ class FileToBusinessStepCallMapper(private val phaseMapper: FileToBusinessPhaseM
         for ((index, fileStepCall) in fileStepCalls.withIndex()) {
             uiSteps.add(
                     StepCall(
-                            "$stepCallIdPrefix-$index",
-                            mapStepsCall(fileStepCall),
-                            mapStepsCallArgs(fileStepCall)
+                            id = "$stepCallIdPrefix-$index",
+                            stepDef = mapStepsCall(fileStepCall),
+                            args = mapStepsCallArgs(fileStepCall),
+                            warnings = emptyList(),
+                            enabled = fileStepCall.enabled
                     )
             )
         }
