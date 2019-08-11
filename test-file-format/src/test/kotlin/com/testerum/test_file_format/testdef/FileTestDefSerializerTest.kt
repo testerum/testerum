@@ -127,7 +127,7 @@ class FileTestDefSerializerTest {
                               |
                               |    scenario: A scenario without params
                               |
-                              |    scenario[disabled]: A disabled scenario
+                              |    scenario [disabled]: A disabled scenario
                               |        param name = <<value>>
                               |
                               |    scenario: A scenario with description and params
@@ -172,7 +172,7 @@ class FileTestDefSerializerTest {
                    |
                    |            scenario: A scenario without params
                    |
-                   |            scenario[disabled]: A disabled scenario
+                   |            scenario [disabled]: A disabled scenario
                    |                param name = <<value>>
                    |
                    |            scenario: A scenario with description and params

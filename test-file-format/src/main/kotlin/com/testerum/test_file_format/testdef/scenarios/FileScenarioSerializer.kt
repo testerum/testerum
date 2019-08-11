@@ -14,7 +14,7 @@ object FileScenarioSerializer : BaseSerializer<FileScenario>() {
         indent(destination, indentLevel)
         destination.write("scenario")
         if (!source.enabled) {
-            destination.write("[disabled]")
+            destination.write(" [disabled]")
         }
         destination.write(":")
 
