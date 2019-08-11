@@ -53,7 +53,7 @@ class RunnerParametrizedTest(private val test: TestModel,
 
         val startTime = System.currentTimeMillis()
         try {
-            for (scenario in scenarios) {
+            for ((scenarioIndex, scenario) in scenarios.withIndex()) {
                 val scenarioStatus: ExecutionStatus = scenario.run(context, globalVars)
 
                 if (status == ExecutionStatus.PASSED && scenarioStatus != ExecutionStatus.PASSED) {

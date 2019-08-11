@@ -19,12 +19,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
-class RunnerTest(protected val beforeEachTestHooks: List<RunnerHook>,
-                      protected val test: TestModel,
-                      protected val filePath: JavaPath,
-                      protected val indexInParent: Int,
-                      protected val steps: List<RunnerStep>,
-                      protected val afterEachTestHooks: List<RunnerHook>) : RunnerFeatureOrTest() {
+class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
+                 private val test: TestModel,
+                 private val filePath: JavaPath,
+                 private val indexInParent: Int,
+                 private val steps: List<RunnerStep>,
+                 private val afterEachTestHooks: List<RunnerHook>) : RunnerFeatureOrTest() {
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(RunnerHook::class.java)

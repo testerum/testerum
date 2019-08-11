@@ -3,11 +3,14 @@ package com.testerum.web_backend.services.runner.execution
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_jdk.toStringWithStacktrace
+import com.testerum.common_kotlin.isDirectory
 import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.model.runner.config.RunConfig
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
 import com.testerum.model.test.TestModel
+import com.testerum.model.tests_finder.FeatureTestPath
+import com.testerum.model.tests_finder.TestTestPath
 import com.testerum.model.tests_finder.TestsFinder
 import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.events.model.RunnerErrorEvent
@@ -58,12 +61,18 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
     fun createExecution(runConfig: RunConfig): TestExecutionResponse {
         val testsDirectoryRoot = webProjectManager.getProjectServices().dirs().getTestsDir()
-        val testFilesOrDirectories = runConfig.pathsToInclude.map {
-            testsDirectoryRoot.resolve(it.toString())
+        val testPaths = runConfig.pathsToInclude.map {
+            val javaPath = testsDirectoryRoot.resolve(it.toString())
+
+            if (javaPath.isDirectory) {
+                FeatureTestPath(javaPath)
+            } else {
+                TestTestPath(javaPath)
+            }
         }
 
         val testsMap = TestsFinder.loadTestsToRun(
-                testFilesOrDirectories = testFilesOrDirectories,
+                testPaths = testPaths,
                 tagsToInclude = runConfig.tagsToInclude,
                 tagsToExclude = runConfig.tagsToExclude,
                 testsDirectoryRoot = testsDirectoryRoot,
