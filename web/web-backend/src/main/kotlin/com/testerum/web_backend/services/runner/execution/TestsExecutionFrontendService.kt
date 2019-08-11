@@ -8,8 +8,10 @@ import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.model.runner.config.RunConfig
 import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
+import com.testerum.model.runner.tree.builder.TestPathAndModel
 import com.testerum.model.test.TestModel
 import com.testerum.model.tests_finder.FeatureTestPath
+import com.testerum.model.tests_finder.TestPath
 import com.testerum.model.tests_finder.TestTestPath
 import com.testerum.model.tests_finder.TestsFinder
 import com.testerum.runner.cmdline.report_type.RunnerReportType
@@ -96,7 +98,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
                 variablesEnvironment = currentEnvironment
         )
 
-        val runnerRootNode = getRunnerRootNode(testsMap.values.toList())
+        val runnerRootNode = getRunnerRootNode(testsMap)
 
         return TestExecutionResponse(
                 executionId = executionId,
@@ -104,9 +106,14 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         )
     }
 
-    private fun getRunnerRootNode(tests: List<TestModel>): RunnerRootNode {
+    private fun getRunnerRootNode(testsMap: Map<TestPath, TestModel>): RunnerRootNode {
         val builder = RunnerTreeBuilder()
-        tests.forEach { builder.addTest(it) }
+
+        for ((path, model) in testsMap) {
+            builder.addTest(
+                    TestPathAndModel(path, model)
+            )
+        }
 
         return builder.build()
     }

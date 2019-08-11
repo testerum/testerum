@@ -18,6 +18,7 @@ import com.testerum.model.step.StepCall
 import com.testerum.model.step.UndefinedStepDef
 import com.testerum.model.test.TestModel
 import com.testerum.model.test.scenario.Scenario
+import com.testerum.model.tests_finder.ScenariosTestPath
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
 
@@ -25,8 +26,8 @@ class RunnerTreeBuilder {
 
     val builder = TreeBuilder(RunnerTreeBuilderCustomizer)
 
-    fun addTest(test: TestModel) {
-        if (test.properties.isManual) {
+    fun addTest(test: TestPathAndModel) {
+        if (test.model.properties.isManual) {
             return
         }
 
@@ -37,20 +38,20 @@ class RunnerTreeBuilder {
 
     private object RunnerTreeBuilderCustomizer : TreeBuilderCustomizer {
         override fun getPath(payload: Any): List<String> = when (payload) {
-            is TestModel -> payload.path.parts
-            else         -> throw unknownPayloadException(payload)
+            is TestPathAndModel -> payload.model.path.parts
+            else                -> throw unknownPayloadException(payload)
         }
 
         override fun isContainer(payload: Any): Boolean = when (payload) {
-            is TestModel -> false
-            else         -> throw unknownPayloadException(payload)
+            is TestPathAndModel -> false
+            else                -> throw unknownPayloadException(payload)
         }
 
         override fun getRootLabel(): String = "Runner"
 
         override fun getLabel(payload: Any): String = when (payload) {
-            is TestModel -> payload.name
-            else         -> throw unknownPayloadException(payload)
+            is TestPathAndModel -> payload.model.name
+            else                -> throw unknownPayloadException(payload)
         }
 
         override fun createRootNode(childrenNodes: List<Any>): Any {
@@ -82,25 +83,40 @@ class RunnerTreeBuilder {
                             children = children
                     )
                 }
-                is TestModel -> {
-                    val isParametrizedTest = payload.scenarios.isNotEmpty()
+                is TestPathAndModel -> {
+                    val isParametrizedTest = payload.model.scenarios.isNotEmpty()
 
                     if (isParametrizedTest) {
-                        val testScenarios: List<RunnerTestScenarioNode> = payload.scenarios.mapIndexed { index, scenario ->  createTestScenarioBranch(payload, index, scenario) }
+                        val testScenarios: List<RunnerTestScenarioNode> = payload.model.scenarios.mapIndexed { index, scenario ->
+                            createTestScenarioBranch(payload.model, index, scenario)
+                        }
+
+                        val filteredTestScenarios = if (payload.path is ScenariosTestPath) {
+                            if (payload.path.scenarioIndexes.isEmpty()) {
+                                // there is no filter on scenarios
+                                testScenarios
+                            } else {
+                                testScenarios.filterIndexed { scenarioIndex, _ ->
+                                    scenarioIndex in payload.path.scenarioIndexes
+                                }
+                            }
+                        } else {
+                            testScenarios
+                        }
 
                         RunnerParametrizedTestNode(
-                                id = payload.id,
+                                id = payload.model.id,
                                 name = label,
-                                path = payload.path,
-                                children = testScenarios
+                                path = payload.model.path,
+                                children = filteredTestScenarios
                         )
                     } else {
-                        val stepCalls: List<RunnerStepNode> = payload.stepCalls.map(this::createStepCallBranch)
+                        val stepCalls: List<RunnerStepNode> = payload.model.stepCalls.map(this::createStepCallBranch)
 
                         RunnerTestNode(
-                                id = payload.id,
+                                id = payload.model.id,
                                 name = label,
-                                path = payload.path,
+                                path = payload.model.path,
                                 children = stepCalls
                         )
                     }

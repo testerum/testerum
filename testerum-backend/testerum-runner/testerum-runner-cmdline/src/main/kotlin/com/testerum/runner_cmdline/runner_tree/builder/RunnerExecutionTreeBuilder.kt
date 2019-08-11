@@ -209,12 +209,6 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                             testScenarios
                         }
 
-                        val indexesOfScenariosToRun = if (payload.testPath is ScenariosTestPath) {
-                            payload.testPath.scenarioIndexes
-                        } else {
-                            emptyList()
-                        }
-
                         RunnerParametrizedTest(
                                 test = payload.test,
                                 filePath = payload.testPath.javaPath,
