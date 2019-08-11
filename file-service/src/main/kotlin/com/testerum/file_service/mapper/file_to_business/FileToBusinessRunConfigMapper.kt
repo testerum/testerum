@@ -2,8 +2,8 @@ package com.testerum.file_service.mapper.file_to_business
 
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.runner.config.FileRunConfig
+import com.testerum.model.runner.config.PathWithScenarioIndexes
 import com.testerum.model.runner.config.RunConfig
-import java.nio.file.Path as JavaPath
 
 class FileToBusinessRunConfigMapper {
 
@@ -14,7 +14,10 @@ class FileToBusinessRunConfigMapper {
                 tagsToInclude = fileConfig.tagsToInclude,
                 tagsToExclude = fileConfig.tagsToExclude,
                 pathsToInclude = fileConfig.pathsToInclude.map {
-                    Path.createInstance(it)
+                    PathWithScenarioIndexes(
+                            path = Path.createInstance(it.path),
+                            scenarioIndexes = it.scenarioIndexes
+                    )
                 }
         )
     }

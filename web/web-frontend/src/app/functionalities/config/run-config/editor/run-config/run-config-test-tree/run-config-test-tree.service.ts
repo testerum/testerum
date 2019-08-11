@@ -9,6 +9,7 @@ import {FeatureService} from "../../../../../../service/feature.service";
 import {Path} from "../../../../../../model/infrastructure/path/path.model";
 import {RunConfigTestTreeBaseModel} from "./model/run-config-test-tree-base.model";
 import {RunConfigTestTreeContainerModel} from "./model/run-config-test-tree-container.model";
+import {PathWithScenarioIndexes} from "../../../model/path-with-scenario-indexes.model";
 
 @Injectable()
 export class RunConfigTestTreeService {
@@ -23,8 +24,8 @@ export class RunConfigTestTreeService {
                 private featureService: FeatureService) {
     }
 
-    initializeTreeFromServer(paths: Array<Path>, expandToLevel: number = 2) {
-        this.paths = paths;
+    initializeTreeFromServer(paths: Array<PathWithScenarioIndexes>, expandToLevel: number = 2) {
+        this.paths = paths.map(pathWithScenarioIndexes => pathWithScenarioIndexes.path);
 
         this.featureService.getFeatureTree(this.treeFilter).subscribe(
             (rootNode: RootFeatureNode) => {

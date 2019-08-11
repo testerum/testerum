@@ -8,6 +8,7 @@ import {Path} from "../../../../../../model/infrastructure/path/path.model";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {FeaturesTreeFilter} from "../../../../../../model/feature/filter/features-tree-filter.model";
 import {Subscription} from "rxjs";
+import {PathWithScenarioIndexes} from "../../../model/path-with-scenario-indexes.model";
 
 @Component({
     moduleId: module.id,
@@ -17,7 +18,7 @@ import {Subscription} from "rxjs";
 })
 export class RunConfigTestTreeComponent implements OnInit, OnChanges, OnDestroy {
 
-    @Input() paths: Array<Path>;
+    @Input() paths: Array<PathWithScenarioIndexes>;
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(RunConfigTestTreeRootModel, RunConfigTestTreeNodeComponent)
         .addPair(RunConfigTestTreeContainerModel, RunConfigTestTreeNodeComponent)

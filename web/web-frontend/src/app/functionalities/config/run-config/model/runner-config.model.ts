@@ -1,13 +1,14 @@
 import {Serializable} from "../../../../model/infrastructure/serializable.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {JsonUtil} from "../../../../utils/json.util";
+import {PathWithScenarioIndexes} from "./path-with-scenario-indexes.model";
 
 export class RunConfig implements Serializable<RunConfig> {
     name: string;
     settings: Map<string, string> = new Map<string, string>();
     tagsToInclude: Array<string> = [];
     tagsToExclude: Array<string> = [];
-    pathsToInclude: Array<Path> = [];
+    pathsToInclude: Array<PathWithScenarioIndexes> = [];
 
     deserialize(input: Object): RunConfig {
 
@@ -22,7 +23,7 @@ export class RunConfig implements Serializable<RunConfig> {
         this.tagsToExclude = input['tagsToExclude'] || [];
         this.pathsToInclude = [];
         for (let selectedPathJson of (input['pathsToInclude']) || []) {
-            this.pathsToInclude.push(Path.deserialize(selectedPathJson));
+            this.pathsToInclude.push(new PathWithScenarioIndexes().deserialize(selectedPathJson));
         }
 
         return this;

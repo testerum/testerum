@@ -290,12 +290,16 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         // tests
         for (testPathToRun in execution.testOrDirectoryPathsToRun) {
             val path: JavaPath = projectDirs.getTestsDir()
-                    .resolve(testPathToRun.toString())
+                    .resolve(testPathToRun.path.toString())
                     .toAbsolutePath()
                     .normalize()
 
             args += "--test-path"
-            args += "$path"
+            args += if (testPathToRun.scenarioIndexes.isEmpty()) {
+                "$path"
+            } else {
+                "$path[${testPathToRun.scenarioIndexes.joinToString(separator = ",")}]"
+            }
         }
 
         // variables

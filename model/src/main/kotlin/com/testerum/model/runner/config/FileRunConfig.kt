@@ -7,4 +7,4 @@ data class FileRunConfig @JsonCreator constructor(@JsonProperty("name")         
                                                   @JsonProperty("settings")       val settings: Map<String, String>,
                                                   @JsonProperty("tagsToInclude")  val tagsToInclude: List<String> = emptyList(),
                                                   @JsonProperty("tagsToExclude")  val tagsToExclude: List<String> = emptyList(),
-                                                  @JsonProperty("pathsToInclude") val pathsToInclude: List<String> = emptyList())
+                                                  @JsonProperty("pathsToInclude") val pathsToInclude: List<FilePathWithScenarioIndexes> = emptyList())

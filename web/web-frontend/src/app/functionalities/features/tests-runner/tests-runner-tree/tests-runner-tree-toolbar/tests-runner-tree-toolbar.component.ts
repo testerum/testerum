@@ -7,6 +7,7 @@ import {RunnerComposedStepTreeNodeModel} from "../model/runner-composed-step-tre
 import {RunnerTestTreeNodeModel} from "../model/runner-test-tree-node.model";
 import {RunnerTreeService} from "../runner-tree.service";
 import {RunConfig} from "../../../../config/run-config/model/runner-config.model";
+import {PathWithScenarioIndexes} from "../../../../config/run-config/model/path-with-scenario-indexes.model";
 
 @Component({
     selector: 'tests-runner-tree-toolbar',
@@ -34,15 +35,22 @@ export class TestsRunnerTreeToolbarComponent implements OnInit {
             this.testRunnerService.reRunTests()
         }
     }
-    
+
     onReRunFailedTests() {
         let runConfig = new RunConfig();
         runConfig.name = "Failed Tests Execution";
         runConfig.settings = this.testRunnerService.lastRunConfig.settings;
-        runConfig.pathsToInclude = this.runnerTreeService.getFailedTestsPaths();
+        runConfig.pathsToInclude = this.runnerTreeService.getFailedTestsPaths().map(pathToExecute => {
+            const pathWithScenarioIndexes = new PathWithScenarioIndexes();
+
+            pathWithScenarioIndexes.path = pathToExecute;
+            pathWithScenarioIndexes.scenarioIndexes = [];
+
+            return pathWithScenarioIndexes
+        });
         this.testRunnerService.runRunConfig(runConfig);
     }
-    
+
     areTestRunning(): boolean {
         return this.testRunnerService.areTestRunning;
     }

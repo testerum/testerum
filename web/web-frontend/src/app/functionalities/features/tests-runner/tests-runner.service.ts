@@ -14,6 +14,7 @@ import {RunnerEventMarshaller} from '../../../model/test/event/marshaller/runner
 import {ContextService} from "../../../service/context.service";
 import {Project} from "../../../model/home/project.model";
 import {RunConfig} from "../../config/run-config/model/runner-config.model";
+import {PathWithScenarioIndexes} from "../../config/run-config/model/path-with-scenario-indexes.model";
 
 @Injectable()
 export class TestsRunnerService {
@@ -52,7 +53,14 @@ export class TestsRunnerService {
     runTests(pathsToExecute: Path[]) {
         const runConfig = new RunConfig();
         runConfig.name = "temp run config";
-        runConfig.pathsToInclude = pathsToExecute;
+        runConfig.pathsToInclude = pathsToExecute.map(pathToExecute => {
+            const pathWithScenarioIndexes = new PathWithScenarioIndexes();
+
+            pathWithScenarioIndexes.path = pathToExecute;
+            pathWithScenarioIndexes.scenarioIndexes = [];
+
+            return pathWithScenarioIndexes
+        });
 
         this.runRunConfig(runConfig);
     }
