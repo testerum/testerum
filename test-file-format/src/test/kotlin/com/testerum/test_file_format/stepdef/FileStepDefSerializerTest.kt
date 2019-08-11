@@ -83,6 +83,7 @@ class FileStepDefSerializerTest {
                    |
                    |            step: Given some initial state
                    |            step: When I do some action
+                   |            step [disabled]: When I call a disabled step
                    |            step: Then something should happen
                    |""".trimMargin(),
                 FileStepDefSerializer.serializeToString(
@@ -109,6 +110,13 @@ class FileStepDefSerializerTest {
                                                 parts = listOf(
                                                         FileTextStepCallPart("I do some action")
                                                 )
+                                        ),
+                                        FileStepCall(
+                                                phase = FileStepPhase.WHEN,
+                                                parts = listOf(
+                                                        FileTextStepCallPart("I call a disabled step")
+                                                ),
+                                                enabled = false
                                         ),
                                         FileStepCall(
                                                 phase = FileStepPhase.THEN,

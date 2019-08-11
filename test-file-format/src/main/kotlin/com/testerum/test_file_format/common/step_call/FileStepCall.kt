@@ -6,4 +6,5 @@ import com.testerum.test_file_format.common.step_call.phase.FileStepPhase
 
 data class FileStepCall(val phase: FileStepPhase,
                         val parts: List<FileStepCallPart>,
-                        val vars: List<FileStepVar> = emptyList())
+                        val vars: List<FileStepVar> = emptyList(),
+                        val enabled: Boolean = true)
