@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory
 
 class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
                      private val test: TestModel,
-                     private val scenario: Scenario,
+                     val scenario: Scenario,
                      private val scenarioIndex: Int,
                      private val filePath: java.nio.file.Path,
                      private val indexInParent: Int,
@@ -89,6 +89,10 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
 
     private fun tryToRun(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         if (test.properties.isDisabled) {
+            return disable(context)
+        }
+
+        if (!scenario.enabled) {
             return disable(context)
         }
 
