@@ -1,5 +1,6 @@
 package com.testerum.file_service.mapper.business_to_file
 
+import com.testerum.model.runner.config.FilePathWithScenarioIndexes
 import com.testerum.model.runner.config.FileRunConfig
 import com.testerum.model.runner.config.RunConfig
 
@@ -12,7 +13,10 @@ class BusinessToFileRunConfigMapper {
                 tagsToInclude = config.tagsToInclude,
                 tagsToExclude = config.tagsToExclude,
                 pathsToInclude = config.pathsToInclude.map {
-                    it.toString()
+                    FilePathWithScenarioIndexes(
+                            path = it.path.toString(),
+                            scenarioIndexes = it.scenarioIndexes
+                    )
                 }
         )
     }

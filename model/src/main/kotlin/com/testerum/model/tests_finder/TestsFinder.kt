@@ -10,33 +10,46 @@ import java.nio.file.Path as JavaPath
 
 object TestsFinder {
 
-    fun loadTestsToRun(testFilesOrDirectories: List<JavaPath>,
+    fun loadTestsToRun(testPaths: List<TestPath>,
                        tagsToInclude: List<String>,
                        tagsToExclude: List<String>,
                        testsDirectoryRoot: JavaPath,
-                       loadTestAtPath: (path: Path) -> TestModel?): Map<JavaPath, TestModel> {
-        val result = LinkedHashMap<JavaPath, TestModel>()
+                       loadTestAtPath: (path: Path) -> TestModel?): Map<TestPath, TestModel> {
+        val result = LinkedHashMap<TestPath, TestModel>()
 
         // load all tests (except manual tests)
         val allTestPaths = findTestsUnderDirectory(testsDirectoryRoot)
-        val allTests = LinkedHashMap<JavaPath, TestModel>()
+        val allTests = LinkedHashMap<TestPath, TestModel>()
 
         for (testPath in allTestPaths) {
             val test = loadTest(testPath, testsDirectoryRoot, loadTestAtPath)
 
             if (!test.properties.isManual) {
-                allTests[testPath] = test
+                allTests[TestTestPath(testPath)] = test
             }
         }
 
-        // 1. add those specified in testFilesOrDirectories
-        if (testFilesOrDirectories.isEmpty()) {
+        // 1. add those specified in testPaths
+        if (testPaths.isEmpty()) {
             result.putAll(allTests)
         } else {
-            val canonicalTestFileOrDirPaths = testFilesOrDirectories.map { it.canonicalize() }
+            val canonicalTestFileOrDirPaths = testPaths.map {
+                when (it) {
+                    is FeatureTestPath -> FeatureTestPath(it.featureDir.canonicalize())
+                    is TestTestPath -> TestTestPath(it.testFile.canonicalize())
+                    is ScenariosTestPath -> ScenariosTestPath(it.testFile.canonicalize(), it.scenarioIndexes)
+                }
+            }
             for ((path, test) in allTests) {
-                if (path.hasAncestor(canonicalTestFileOrDirPaths)) {
-                    result[path] = test
+                for (canonicalTestFileOrDirPath in canonicalTestFileOrDirPaths) {
+                    when (canonicalTestFileOrDirPath) {
+                        is TestTestPath, is ScenariosTestPath -> if (path.javaPath.startsWith(canonicalTestFileOrDirPath.javaPath)) {
+                            result[canonicalTestFileOrDirPath] = test
+                        }
+                        is FeatureTestPath -> if (path.javaPath.startsWith(canonicalTestFileOrDirPath.javaPath)) {
+                            result[path] = test
+                        }
+                    }
                 }
             }
         }
@@ -90,13 +103,4 @@ object TestsFinder {
         return result
     }
 
-    private fun JavaPath.hasAncestor(possibleCanonicalAncestors: List<JavaPath>): Boolean {
-        for (possibleCanonicalAncestor in possibleCanonicalAncestors) {
-            if (this.startsWith(possibleCanonicalAncestor)) {
-                return true
-            }
-        }
-
-        return false
-    }
 }

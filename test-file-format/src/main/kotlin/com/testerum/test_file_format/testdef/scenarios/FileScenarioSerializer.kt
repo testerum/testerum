@@ -6,13 +6,17 @@ import java.io.Writer
 object FileScenarioSerializer : BaseSerializer<FileScenario>() {
 
     override fun serialize(source: FileScenario, destination: Writer, indentLevel: Int) {
-        indent(destination, indentLevel)
         serializeScenarioLine(source, destination, indentLevel)
         serializeParams(source, destination, indentLevel)
     }
 
     private fun serializeScenarioLine(source: FileScenario, destination: Writer, indentLevel: Int) {
-        destination.write("scenario:")
+        indent(destination, indentLevel)
+        destination.write("scenario")
+        if (!source.enabled) {
+            destination.write(" [disabled]")
+        }
+        destination.write(":")
 
         if (source.name != null) {
             destination.write(" ")

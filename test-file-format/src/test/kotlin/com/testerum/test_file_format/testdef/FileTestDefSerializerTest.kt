@@ -32,11 +32,24 @@ class FileTestDefSerializerTest {
                         scenarios = listOf(
                                 FileScenario(
                                         name = null,
-                                        params = emptyList()
+                                        params = emptyList(),
+                                        enabled = true
                                 ),
                                 FileScenario(
                                         name = "A scenario without params",
-                                        params = emptyList()
+                                        params = emptyList(),
+                                        enabled = true
+                                ),
+                                FileScenario(
+                                        name = "A disabled scenario",
+                                        params = listOf(
+                                                FileScenarioParam(
+                                                        name = "name",
+                                                        type = FileScenarioParamType.TEXT,
+                                                        value = "value"
+                                                )
+                                        ),
+                                        enabled = false
                                 ),
                                 FileScenario(
                                         name = "A scenario with description and params",
@@ -73,7 +86,8 @@ class FileTestDefSerializerTest {
                                                                             |    }
                                                                             |}""".trimMargin()
                                                 )
-                                        )
+                                        ),
+                                        enabled = true
                                 )
                         ),
                         steps = listOf(
@@ -112,6 +126,9 @@ class FileTestDefSerializerTest {
                               |    scenario:
                               |
                               |    scenario: A scenario without params
+                              |
+                              |    scenario [disabled]: A disabled scenario
+                              |        param name = <<value>>
                               |
                               |    scenario: A scenario with description and params
                               |        param firstName = <<John>>
@@ -155,6 +172,9 @@ class FileTestDefSerializerTest {
                    |
                    |            scenario: A scenario without params
                    |
+                   |            scenario [disabled]: A disabled scenario
+                   |                param name = <<value>>
+                   |
                    |            scenario: A scenario with description and params
                    |                param firstName = <<John>>
                    |                param lastName = <<Doe>>
@@ -188,11 +208,24 @@ class FileTestDefSerializerTest {
                                 scenarios = listOf(
                                         FileScenario(
                                                 name = null,
-                                                params = emptyList()
+                                                params = emptyList(),
+                                                enabled = true
                                         ),
                                         FileScenario(
                                                 name = "A scenario without params",
-                                                params = emptyList()
+                                                params = emptyList(),
+                                                enabled = true
+                                        ),
+                                        FileScenario(
+                                                name = "A disabled scenario",
+                                                params = listOf(
+                                                        FileScenarioParam(
+                                                                name = "name",
+                                                                type = FileScenarioParamType.TEXT,
+                                                                value = "value"
+                                                        )
+                                                ),
+                                                enabled = false
                                         ),
                                         FileScenario(
                                                 name = "A scenario with description and params",
@@ -229,7 +262,8 @@ class FileTestDefSerializerTest {
                                                                             |    }
                                                                             |}""".trimMargin()
                                                         )
-                                                )
+                                                ),
+                                                enabled = true
                                         )
                                 ),
                                 steps = listOf(

@@ -10,7 +10,8 @@ class BusinessToFileScenarioMapper(private val businessToFileScenarioParamMapper
     fun mapScenario(scenario: Scenario): FileScenario {
         return FileScenario(
                 name = scenario.name,
-                params = businessToFileScenarioParamMapper.mapParams(scenario.params)
+                params = businessToFileScenarioParamMapper.mapParams(scenario.params),
+                enabled = scenario.enabled
         )
     }
 

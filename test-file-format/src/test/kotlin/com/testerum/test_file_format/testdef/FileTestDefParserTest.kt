@@ -37,23 +37,26 @@ class FileTestDefParserTest {
                             |
                             |    scenario: A scenario without params
                             |
+                            |    scenario [disabled]: A disabled scenario
+                            |        param name = <<value>>
+                            |
                             |    scenario: A scenario with description and params
-                            |       param firstName = <<John>>
-                            |       param lastName = <<Doe>>
-                            |       param description = <<
-                            |           The ultimate description
-                            |           for the unknown guy.
-                            |       >>
-                            |       param-json info = <<{"person": {"address": {"street": "Eroilor"}}}>>
-                            |       param-json multilineInfo = <<
-                            |           {
-                            |               "person": {
-                            |                   "address": {
-                            |                       "street": "Eroilor"
-                            |                   }
-                            |               }
-                            |           }
-                            |       >>
+                            |        param firstName = <<John>>
+                            |        param lastName = <<Doe>>
+                            |        param description = <<
+                            |            The ultimate description
+                            |            for the unknown guy.
+                            |        >>
+                            |        param-json info = <<{"person": {"address": {"street": "Eroilor"}}}>>
+                            |        param-json multilineInfo = <<
+                            |            {
+                            |                "person": {
+                            |                    "address": {
+                            |                        "street": "Eroilor"
+                            |                    }
+                            |                }
+                            |            }
+                            |        >>
                             |
                             |    step: Given I go to page <<https://{{host}}:{{port}}/login>>
                             |    step: When I type <<{{username}}>> into the <<.username>> input
@@ -80,11 +83,24 @@ class FileTestDefParserTest {
                                 scenarios = listOf(
                                         FileScenario(
                                                 name = null,
-                                                params = emptyList()
+                                                params = emptyList(),
+                                                enabled = true
                                         ),
                                         FileScenario(
                                                 name = "A scenario without params",
-                                                params = emptyList()
+                                                params = emptyList(),
+                                                enabled = true
+                                        ),
+                                        FileScenario(
+                                                name = "A disabled scenario",
+                                                params = listOf(
+                                                        FileScenarioParam(
+                                                                name = "name",
+                                                                type = FileScenarioParamType.TEXT,
+                                                                value = "value"
+                                                        )
+                                                ),
+                                                enabled = false
                                         ),
                                         FileScenario(
                                                 name = "A scenario with description and params",
@@ -121,7 +137,8 @@ class FileTestDefParserTest {
                                                                             |    }
                                                                             |}""".trimMargin()
                                                         )
-                                                )
+                                                ),
+                                                enabled = true
                                         )
                                 ),
                                 steps = listOf(

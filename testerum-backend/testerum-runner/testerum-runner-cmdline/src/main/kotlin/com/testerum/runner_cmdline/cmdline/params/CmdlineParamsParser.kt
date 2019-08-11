@@ -1,5 +1,11 @@
 package com.testerum.runner_cmdline.cmdline.params
 
+import com.google.common.base.Splitter
+import com.testerum.common_kotlin.isDirectory
+import com.testerum.model.tests_finder.FeatureTestPath
+import com.testerum.model.tests_finder.ScenariosTestPath
+import com.testerum.model.tests_finder.TestPath
+import com.testerum.model.tests_finder.TestTestPath
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserVersionHelpRequestedException
@@ -10,9 +16,15 @@ import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.nio.file.Paths
 import java.nio.file.Path as JavaPath
 
 object CmdlineParamsParser {
+
+    private val testFileWithScenarioRegex = Regex("""(.*\.test)\[([^]]+)]""")
+    private val scenarioIndexesSplitter = Splitter.on(",")
+            .trimResults()
+            .omitEmptyStrings()
 
     fun parse(vararg args: String): CmdlineParams {
         val mutableParams = MutableCmdlineParams()
@@ -194,10 +206,19 @@ object CmdlineParamsParser {
                     "If  the  paths  are  relative, they  will  be  resolved",
                     "relative to the features directory.",
                     "",
+                    "For a parametrized test, by default all scenarios will",
+                    "be run. If you want to run only some scenarios,",
+                    "add them to the end of the test filename, within",
+                    "square brackets: my-little.test[3]. The number is the",
+                    "index of the scenario, starting with 0.",
+                    "If you want to run multiple scenarios, use comma to",
+                    "separate the indexes: my-little.test[0,2,5]",
+                    "",
                     "Example:",
                     "    --test-path \"/path/to/some feature/\"",
                     "    --test-path \"/path/to/another-feature/File 1.test\"",
                     "    --test-path \"another-feature/File 2.test\"",
+                    "    --test-path \"a-feature/Parametrized.test[0,2,5]\"",
                     "",
                     "See also:",
                     "    --include-tag",
@@ -206,7 +227,7 @@ object CmdlineParamsParser {
                 ],
                 showDefaultValue = CommandLine.Help.Visibility.NEVER
         )
-        var testFilesOrDirectories: List<JavaPath> = arrayListOf()
+        var testFilesOrDirectories: List<String> = arrayListOf()
 
         @CommandLine.Option(
                 names = ["--include-tag"],
@@ -416,7 +437,7 @@ object CmdlineParamsParser {
                     variableOverrides = variableOverrides,
                     settingsFile = getValidatedSettingsFile(),
                     settingOverrides = settingOverrides,
-                    testFilesOrDirectories = getValidatedTestFilesOrDirectories(),
+                    testPaths = getValidatedTestFilesOrDirectories(),
                     tagsToInclude = tagsToInclude,
                     tagsToExclude = tagsToExclude,
                     reportsWithProperties = reports,
@@ -439,15 +460,58 @@ object CmdlineParamsParser {
 
         private fun getValidatedSettingsFile(): JavaPath? = getValidatedOptionalFile(settingsFile, "settingsFile")
 
-        private fun getValidatedTestFilesOrDirectories(): List<JavaPath> {
-            return testFilesOrDirectories.map {
-                val testPath = if (it.isAbsolute) {
-                    it
+        private fun getValidatedTestFilesOrDirectories(): List<TestPath> {
+            return testFilesOrDirectories.map { pathSpecification ->
+                val matchResult = testFileWithScenarioRegex.matchEntire(pathSpecification)
+
+                if (matchResult == null) {
+                    val javaPathSpecification = Paths.get(pathSpecification)
+
+                    val testPath = if (javaPathSpecification.isAbsolute) {
+                        javaPathSpecification
+                    } else {
+                        repositoryDirectory!!.resolve("features").resolve(pathSpecification)
+                    }
+
+                    val javaPath = getValidatedRequiredFileOrDirectory(testPath, "testPath")
+
+                    if (javaPath.isDirectory) {
+                        FeatureTestPath(javaPath)
+                    } else {
+                        TestTestPath(javaPath)
+                    }
                 } else {
-                    repositoryDirectory!!.resolve("features").resolve(it)
+                    val javaPathSpecification = Paths.get(matchResult.groupValues[1])
+                    val scenarioIndexes = scenarioIndexesSplitter.split(matchResult.groupValues[2])
+                            .toList()
+                            .map {
+                                parseScenarioIndex(it)
+                            }
+
+                    val testPath = if (javaPathSpecification.isAbsolute) {
+                        javaPathSpecification
+                    } else {
+                        repositoryDirectory!!.resolve("features").resolve(javaPathSpecification)
+                    }
+
+                    val javaPath = getValidatedRequiredFileOrDirectory(testPath, "testPath")
+
+                    ScenariosTestPath(javaPath, scenarioIndexes)
+                }
+            }
+        }
+
+        private fun parseScenarioIndex(text: String): Int {
+            try {
+                val number = text.toInt()
+
+                if (number < 0) {
+                    throw IllegalArgumentException("invalid scenario index: should not be negative, but found [$number]")
                 }
 
-                getValidatedRequiredFileOrDirectory(testPath, "testPath")
+                return number
+            } catch (e: NumberFormatException) {
+                throw IllegalArgumentException("invalid scenario index: [$text] is not a number", e)
             }
         }
 

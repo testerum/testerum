@@ -9,6 +9,8 @@ import com.testerum.model.step.StepCall
 import com.testerum.model.step.UndefinedStepDef
 import com.testerum.model.test.TestModel
 import com.testerum.model.test.scenario.Scenario
+import com.testerum.model.tests_finder.ScenariosTestPath
+import com.testerum.model.tests_finder.TestPath
 import com.testerum.model.tests_finder.TestsFinder
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
@@ -27,11 +29,16 @@ import com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite
 import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
+import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
 class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProjectManager,
                                  private val basicStepsCache: BasicStepsCache,
                                  private val executionName: String?) {
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(RunnerExecutionTreeBuilder::class.java)
+    }
 
     fun createTree(cmdlineParams: CmdlineParams,
                    testsDir: JavaPath): RunnerSuite {
@@ -40,14 +47,14 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
 
         val testsDirectoryRoot = testsDir.toAbsolutePath()
         val testsMap = TestsFinder.loadTestsToRun(
-                testFilesOrDirectories = cmdlineParams.testFilesOrDirectories,
+                testPaths = cmdlineParams.testPaths,
                 tagsToInclude = cmdlineParams.tagsToInclude,
                 tagsToExclude = cmdlineParams.tagsToExclude,
                 testsDirectoryRoot = testsDirectoryRoot,
                 loadTestAtPath = { runnerProjectManager.getProjectServices().getTestsCache().getTestAtPath(it) }
         )
         val tests = testsMap.map { (path, test) -> TestWithFilePath(test, path) }
-        val features = loadFeatures(tests.map { it.filePath }, testsDirectoryRoot)
+        val features = loadFeatures(tests.map { it.testPath.javaPath }, testsDirectoryRoot)
 
         val builder = TreeBuilder(
                 customizer = RunnerExecutionTreeBuilderCustomizer(hooks, executionName)
@@ -91,7 +98,7 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
         }
     }
 
-    private data class TestWithFilePath(val test: TestModel, val filePath: JavaPath)
+    private data class TestWithFilePath(val test: TestModel, val testPath: TestPath)
 
     private class RunnerExecutionTreeBuilderCustomizer(hooks: Collection<HookDef>,
                                                        private val executionName: String?) : TreeBuilderCustomizer {
@@ -172,7 +179,7 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                         val testScenarios: List<RunnerScenario> = payload.test.scenarios.mapIndexed { index, scenario ->
                             createTestScenarioBranch(
                                     test = payload.test,
-                                    filePath = payload.filePath,
+                                    filePath = payload.testPath.javaPath,
                                     scenarioIndex = index,
                                     scenario = scenario,
                                     testIndexInParent = indexInParent,
@@ -181,16 +188,41 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                             )
                         }
 
+                        val filteredTestScenarios = if (payload.testPath is ScenariosTestPath) {
+                            // verify filter criteria
+                            for (scenarioIndex in payload.testPath.scenarioIndexes) {
+                                if (scenarioIndex >= testScenarios.size) {
+                                    LOG.warn("invalid scenario index [$scenarioIndex] for test at [${payload.testPath.testFile}]: this test has only ${testScenarios.size} scenarios; the index must be between 0 and ${testScenarios.size - 1} inclusive")
+                                }
+                            }
+
+                            // filter scenarios
+                            if (payload.testPath.scenarioIndexes.isEmpty()) {
+                                // there is no filter on scenarios
+                                testScenarios
+                            } else {
+                                testScenarios.filterIndexed { scenarioIndex, _ ->
+                                    scenarioIndex in payload.testPath.scenarioIndexes
+                                }
+                            }
+                        } else {
+                            testScenarios
+                        }
+
                         RunnerParametrizedTest(
                                 test = payload.test,
-                                filePath = payload.filePath,
+                                filePath = payload.testPath.javaPath,
                                 indexInParent = indexInParent,
-                                scenarios = testScenarios
+                                scenarios = filteredTestScenarios
                         )
                     } else {
+                        if (payload.testPath is ScenariosTestPath) {
+                            LOG.warn("the test at [${payload.testPath.testFile}] is nor parametrized, so specifying which scenarios to run has no effect (got scenarioIndexes=${payload.testPath.scenarioIndexes})")
+                        }
+
                         createRunnerTest(
                                 test = payload.test,
-                                filePath = payload.filePath,
+                                filePath = payload.testPath.javaPath,
                                 testIndexInParent = indexInParent,
                                 beforeEachTestHooks = beforeEachTestHooks,
                                 afterEachTestHooks = afterEachTestHooks

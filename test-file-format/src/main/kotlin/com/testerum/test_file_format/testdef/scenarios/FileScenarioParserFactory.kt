@@ -22,13 +22,16 @@ object FileScenarioParserFactory : ParserFactory<FileScenario> {
 
     fun testScenario(): Parser<FileScenario> {
         return Parsers.sequence(
-                Scanners.string("scenario:"),
+                Scanners.string("scenario"),
+                CommonScanners.optionalWhitespace(),
+                Scanners.string("[disabled]").source().asOptional(),
+                Scanners.string(":"),
                 Parsers.sequence(
                         Scanners.string(" "),
                         testScenarioName()
                 ).asOptional(),
                 testScenarioParams()
-        ) { _, optionalName, params -> FileScenario(name = optionalName.orElse(null), params = params) }
+        ) { _, _, disabled, _, optionalName, params -> FileScenario(name = optionalName.orElse(null), params = params, enabled = !disabled.isPresent) }
     }
 
     private fun testScenarioName(): Parser<String> {
