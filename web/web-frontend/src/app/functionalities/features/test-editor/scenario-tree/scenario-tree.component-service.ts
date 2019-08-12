@@ -219,4 +219,46 @@ export class ScenarioTreeComponentService {
             paramWithOldName.type = newParam.type;
         }
     }
+
+    reorderParamsLikeTheOrderInScenario(mainScenario: Scenario) {
+        for (const scenario of this.testModel.scenarios) {
+            if (scenario == mainScenario) { continue; }
+
+            for (let i = 0; i < mainScenario.params.length; i++) {
+                const mainParam = mainScenario.params[i];
+
+                this.moveParamInTargetScenarioAtIndex(scenario, mainParam.name, i);
+
+            }
+
+        }
+        this.initComponentTree();
+    }
+
+    private moveParamInTargetScenarioAtIndex(targetScenario: Scenario, paramNameToMove: string, indexWhereItShouldBeMoved: number) {
+        let targetParamIndex: number = this.getParamIndexByName(targetScenario, paramNameToMove);
+        if (0 <= targetParamIndex && targetParamIndex != indexWhereItShouldBeMoved) {
+            this.swapParameters(targetScenario, targetParamIndex, indexWhereItShouldBeMoved);
+        }
+    }
+
+    private getParamIndexByName(targetScenario: Scenario, paramNameToMove: string): number {
+        for (let i = 0; i < targetScenario.params.length; i++) {
+            if (targetScenario.params[i].name == paramNameToMove) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private swapParameters(scenario: Scenario, paramIndexA: number, paramIndexB: number) {
+        let params = scenario.params;
+
+        if(paramIndexA == paramIndexB) { return; }
+        if (!(paramIndexA < params.length || paramIndexB < params.length)) { return; }
+
+        let tempParam = params[paramIndexA];
+        params[paramIndexA] = params[paramIndexB];
+        params[paramIndexB] = tempParam;
+    }
 }

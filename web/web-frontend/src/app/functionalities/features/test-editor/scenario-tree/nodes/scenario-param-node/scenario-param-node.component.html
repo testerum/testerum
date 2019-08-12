@@ -19,11 +19,28 @@
                    class="param-info-icon"></info-icon>
 
         <div *ngIf="isEditMode()"
-             title="Edit"
-             class="btn btn-default btn-xs btn-group"
-             (click)="editOrViewResourceInModal(); $event.stopPropagation()">
-            <span class="fas fa-pencil-alt">
-            </span>
+             class="btn-group">
+
+            <div title="Edit"
+                 class="btn btn-default btn-xs"
+                 (click)="editOrViewResourceInModal(); $event.stopPropagation()">
+                <span class="fas fa-pencil-alt">
+                </span>
+            </div>
+
+            <div title="Move Param Up"
+                 *ngIf="!isFirstStep()"
+                 class="btn btn-default btn-xs"
+                 (click)="moveParamUp(); $event.stopPropagation()">
+                <i class="fas fa-arrow-up" aria-hidden="true"></i>
+            </div>
+
+            <div title="Move Param Down"
+                 *ngIf="!isLastStep()"
+                 class="btn btn-default btn-xs"
+                 (click)="moveParamDown(); $event.stopPropagation()">
+                <i class="fas fa-arrow-down" aria-hidden="true"></i>
+            </div>
         </div>
     </legend>
 

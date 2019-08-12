@@ -10,6 +10,7 @@ import {ScenarioParamType} from "../../../../../../model/test/scenario/param/sce
 import * as Prism from 'prismjs';
 import 'prismjs/components/prism-json';
 import {ScenarioParamChangeModel} from "./modal/model/scenario-param-change.model";
+import {Scenario} from "../../../../../../model/test/scenario/scenario.model";
 
 @Component({
     selector: 'scenario-param-node',
@@ -109,7 +110,45 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getScenarioOfThisParam() {
+    private getScenarioOfThisParam(): Scenario {
         return (this.model.getParent().getParent() as ScenarioContainerModel).scenario;
+    }
+
+    isFirstStep() {
+        return this.findStepIndex() == 0;
+    }
+
+    isLastStep() {
+        return this.findStepIndex() == this.model.parentContainer.getChildren().length - 1;
+    }
+
+    private findStepIndex(): number {
+        return this.model.parentContainer.getChildren().indexOf(this.model);
+    }
+
+    moveParamUp() {
+        let scenario = this.getScenarioOfThisParam();
+        let currentParam = this.model.scenarioParam;
+        let currentParamIndex = scenario.params.indexOf(currentParam);
+
+        if(1 <= currentParamIndex && currentParamIndex < scenario.params.length) {
+            let previewsParam = scenario.params[currentParamIndex - 1];
+            scenario.params[currentParamIndex - 1] = currentParam;
+            scenario.params[currentParamIndex] = previewsParam;
+        }
+        this.scenarioTreeComponentService.reorderParamsLikeTheOrderInScenario(scenario);
+    }
+
+    moveParamDown() {
+        let scenario = this.getScenarioOfThisParam();
+        let currentParam = this.model.scenarioParam;
+        let currentParamIndex = scenario.params.indexOf(currentParam);
+
+        if(0 <= currentParamIndex && currentParamIndex < scenario.params.length - 1) {
+            let nextNodeModel = scenario.params[currentParamIndex + 1];
+            scenario.params[currentParamIndex] = nextNodeModel;
+            scenario.params[currentParamIndex + 1] = currentParam;
+        }
+        this.scenarioTreeComponentService.reorderParamsLikeTheOrderInScenario(scenario);
     }
 }
