@@ -98,7 +98,26 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
     }
 
     getParamDescription(): string {
-        return "to be added";
+        if (this.model.scenarioParam.type == ScenarioParamType.JSON) {
+            return "You can access the values of a JSON parameter in an object oriented manner. For example: \n" +
+                'Given the JSON parameter will have the name <code>{{company}}</code> and the value:\n' +
+                '<code>{\n' +
+                '  "menu": {\n' +
+                '  "value": "File",\n' +
+                '  "popup": {\n' +
+                '    "menuitem": [\n' +
+                '      {"value": "New", "onclick": "CreateNewDoc()"},\n' +
+                '      {"value": "Open", "onclick": "OpenDoc()"},\n' +
+                '      {"value": "Close", "onclick": "CloseDoc()"}\n' +
+                '    ]\n' +
+                '  }\n' +
+                '}</code>\n' +
+                'Then you can access different values from this JSON like:\n' +
+                '<code>{{company}}</code> - will return the full JSON\n' +
+                '<code>{{company.menu.value}}</code> - will return "File"\n' +
+                '<code>{{company.menu.popup[0].value}}</code> - will return "New"'
+        }
+        return "You can access the value of this variable where ever you need it by using the expression: <code>{{"+this.model.scenarioParam.name+"}}</code>";
     }
 
     editOrViewResourceInModal() {
