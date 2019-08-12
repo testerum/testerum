@@ -18,7 +18,7 @@ class WebDriverExpressionSteps {
             value = "I execute the WebDriver JS script <<script>>",
             description = "Executes a custom JavaScript script that has access to the WebDriver and all the variables in the test scope.\n" +
                     "This script is not executed in the browser context.\n" +
-                    "In this scritp context you have access to the following variables:\n" +
+                    "In this script context you have access to the following variables:\n" +
                     "- ``testLogger``    - this is a TesterumLogger instance.\n" +
                     "- ``testVariables`` - this is a Map with all the variables defined in this test.\n" +
                     "- ``failTest(message)`` - function that allows to fail the test with the given message (String).\n" +
