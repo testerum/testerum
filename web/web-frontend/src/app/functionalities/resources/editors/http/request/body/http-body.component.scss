@@ -1,32 +1,59 @@
+.http-body {
+    .radio{
+        margin: 0;
 
-.radio label {
-    margin-right: 10px;
+        label {
+            margin-right: 10px;
+            display: flex;
+            align-items: baseline;
+        }
+    }
+
+    .editor-container {
+        position: relative;
+    }
+
+    .body-options {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+
+        .btn-xxs {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1em;
+            padding: 0.1em 0.8em;
+        }
+
+        .left-options {
+            display: flex;
+            flex-grow: 2;
+        }
+        .right-options {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            .format-button-container {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .body-type {
+        padding-top: 0;
+    }
+
+    .align-center {
+        display: flex;
+        align-items: center;
+    }
+    .align-baseline {
+        display: flex;
+        align-items: baseline;
+    }
 }
 
-.ace-editor-container {
-    position: relative;
-    min-height: 200px;
-}
-
-.ace-editor {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-}
-
-.body-options {
-    display: flex;
-    flex-flow: row;
-    min-height: 34px;
-}
-
-.body-type {
-    padding-top: 0;
-}
-
-.align-center {
-    align-items: center;
-    display: flex;
-}
 
 

@@ -1,49 +1,76 @@
 @import "../../../../../../resources/css/testerum-variables.scss";
 
-.label-size {
-    width: 5em;
-}
+.http-request {
+    height: 100%;
 
-[role] {
-    cursor: pointer;
-}
-.active {
-    cursor: default;
-}
-.active > a {
-    cursor: default;
-}
+    .form {
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+    }
+    .label-size {
+        width: 5em;
+    }
 
-.http-method-view {
-    font-weight: bold;
-    margin-left: 15px;
-    color: $http-method-color;
-}
+    [role] {
+        cursor: pointer;
+    }
 
-.http-url-view {
-    margin-left: 1em;
-}
+    .active {
+        cursor: default;
+    }
 
-.http-parm-button-view {
-    margin-left: 20px;
-}
+    .active > a {
+        cursor: default;
+    }
 
-.exe-http-req-btn {
-    padding: 2px 12px;
-}
-.exe-http-req-btn-edit {
-    padding: 4px 12px;
-}
-.params-btn {
-    padding: 4px 12px;
-}
+    .http-method-view {
+        font-weight: bold;
+        margin-left: 15px;
+        color: $http-method-color;
+    }
 
-.follow-redirects {
-    font-weight: normal;
-    margin-top   : 1em;
-    margin-bottom: 1.25em;
-}
+    .http-url-view {
+        margin-left: 1em;
+    }
 
-.http-response-body{
-    overflow: auto;
+    .http-parm-button-view {
+        margin-left: 20px;
+    }
+
+    .exe-http-req-btn {
+        padding: 2px 12px;
+    }
+
+    .exe-http-req-btn-edit {
+        padding: 4px 12px;
+    }
+
+    .params-btn {
+        padding: 4px 12px;
+    }
+
+    .follow-redirects {
+        font-weight: normal;
+        margin-top: 1em;
+        margin-bottom: 1.25em;
+    }
+
+    .http-response-body {
+        overflow: auto;
+    }
+
+    .condensed-view-container {
+        .condensed-view-body {
+            white-space: pre;
+            line-height: 12px;
+            font-size: 12px;
+
+            code {
+                background-color: inherit;
+                font-family: "Hack Regular Nerd Font Complete", monospace;
+                padding: 0;
+            }
+        }
+    }
 }

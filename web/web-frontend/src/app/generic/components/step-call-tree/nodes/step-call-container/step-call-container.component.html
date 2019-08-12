@@ -77,6 +77,11 @@
                 <i class="fa_my-delete" aria-hidden="true"></i>
             </div>
         </div>
+        <div class="step-button-panel">
+            <info-icon *ngIf="model.stepCall.stepDef.description"
+                       [message]="model.stepCall.stepDef.description"
+                       class="step-description-info-icon"></info-icon>
+        </div>
     </div>
 
     <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"

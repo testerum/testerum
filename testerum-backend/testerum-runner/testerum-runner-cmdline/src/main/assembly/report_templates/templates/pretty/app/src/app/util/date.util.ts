@@ -8,9 +8,9 @@ export class DateUtil {
             minute = date.getMinutes();
 
         return DateUtil.twoDigitToString(day)
-            + "/"
+            + "-"
             + DateUtil.twoDigitToString(month)
-            + "/"
+            + "-"
             + DateUtil.twoDigitToString(year)
             + " "
             + DateUtil.twoDigitToString(hour)

@@ -13,7 +13,6 @@ export class MarkdownEditorComponent implements AfterViewInit {
 
     private value: string; //did this with setter and getters because binding this value on update is not working
 
-    @Input() options: any;
     @Input() editMode: boolean = true;
     oldEditMode: boolean = true;
 
@@ -46,7 +45,12 @@ export class MarkdownEditorComponent implements AfterViewInit {
 
     initMarkdownEditor() {
         const config = {
-            ...this.options,
+            showIcons: ["bold","italic","strikethrough","heading","code","quote","unordered-list","ordered-list","link","image","table","horizontal-rule","preview","side-by-side","fullscreen","guide"],
+            status: false,
+            spellChecker: false,
+            insertTexts: {
+                table: ["", "\n\n| Column 1 | Column 2 | Column 3 |\n| ------------- | ------------- | ------------- |\n| Text          | Text          | Text          |\n\n"],
+            },
             element: this.textarea.nativeElement
         };
         this.simpleMDE = new SimpleMDE(config);

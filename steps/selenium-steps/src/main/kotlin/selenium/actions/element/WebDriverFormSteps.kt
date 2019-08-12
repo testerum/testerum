@@ -209,7 +209,7 @@ class WebDriverFormSteps {
 
 //----------------------------------------------------------------------------------------------------------------------
     @When(
-            value = "I move the mouse pointer to the element <<elementLocator>>",
+            value = "I move the mouse pointer over the element <<elementLocator>>",
             description = "Finds the specified element and simulate mouse hover effect."
     )
     fun hoverOver(

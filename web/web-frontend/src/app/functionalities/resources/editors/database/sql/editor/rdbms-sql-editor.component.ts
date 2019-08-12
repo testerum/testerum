@@ -1,7 +1,5 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {AceEditorComponent} from "ng2-ace-editor";
-import 'brace/mode/sql';
-import 'brace/theme/crimson_editor';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {editor} from "monaco-editor";
 
 @Component({
     moduleId: module.id,
@@ -10,22 +8,30 @@ import 'brace/theme/crimson_editor';
     styleUrls: ['rdbms-sql-editor.component.scss']
 })
 
-export class RdbmsSqlEditorComponent {
+export class RdbmsSqlEditorComponent implements OnChanges {
     @Input() sqlText: string = "";
     @Input() editMode: boolean = false;
 
     @Output() change: EventEmitter<string> = new EventEmitter<string>();
 
-    @ViewChild('editor') editor: AceEditorComponent;
-
-    options: any = {
-        printMargin: true,
-        highlightActiveLine: true,
-        useSoftTabs: true
-
+    editorOptions: editor.IEditorConstructionOptions = {
+        language: 'sql',
+        readOnly: !this.editMode
     };
 
     onChange(code: string) {
         this.change.emit(code)
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['editMode'] != null) {
+            this.editorOptions = Object.assign(
+                {},
+                this.editorOptions,
+                {
+                    readOnly: !this.editMode
+                }
+            );
+        }
     }
 }

@@ -46,9 +46,9 @@
 
         <!-- DELAY -->
         <div class="my-line">
-            <label class="my-label label-size">Delay (ms)</label>
+            <label class="my-label label-size">Delay (ms):</label>
             <div class="my-value" *ngIf="!isEditMode()">
-                {{getModel().delay || ""}}
+                {{getModel().delay != null ? getModel().delay : "0"}}
             </div>
             <div class="my-value response-delay" *ngIf="isEditMode()">
                 <input isNumberValidator

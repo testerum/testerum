@@ -37,8 +37,16 @@ export class StepChooserComponent implements AfterViewInit {
         this.modal.hide()
     }
 
+    isStepSelected(): boolean {
+        return this.stepChooserService.treeModel != null &&
+            this.stepChooserService.treeModel.selectedNode != null &&
+            (this.stepChooserService.treeModel.selectedNode as StepTreeNodeModel).stepDef != null;
+    }
+
     onStepChooseAction() {
-        this.stepChooserService.onStepChooseAction();
-        this.modal.hide()
+        if (this.isStepSelected()) {
+            this.stepChooserService.onStepChooseAction();
+            this.modal.hide()
+        }
     }
 }

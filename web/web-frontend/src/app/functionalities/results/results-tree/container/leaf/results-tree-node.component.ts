@@ -45,8 +45,7 @@ export class ResultsTreeNodeComponent implements OnInit, OnDestroy {
     getNodeText(): string {
         let minHourSec = StringUtils.substringBeforeLast(this.model.name, "-");
         minHourSec = minHourSec.split("-").join(":");
-        let millis = StringUtils.substringAfterLast(this.model.name, "-");
-        return minHourSec+"."+millis;
+        return minHourSec;
     }
 
     showResultFile() {

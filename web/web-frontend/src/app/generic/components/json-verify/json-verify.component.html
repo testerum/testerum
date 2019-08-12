@@ -2,6 +2,9 @@
     <p-toolbar>
         <div class="my-toolbar-container">
             <div class="my-compare-mode-container">
+                <info-icon [message]="getJsonVerifyExplanation()"
+                           class="description-info-icon"></info-icon>
+
                 Compare Mode:
 
                 <select class="form-control my-compare-mode-select" name="compareMode"
@@ -21,6 +24,12 @@
                      class="btn btn-default btn-xxs btn-group">
                     Insert
                 </div>
+
+                <div (click)="onFormatJsonEvent()"
+                     [class.disabled]="!editMode"
+                     class="btn btn-default btn-xxs btn-group format-json-button">
+                    Format JSON
+                </div>
             </div>
 
             <span class="label my-toolbar-label"
@@ -32,6 +41,6 @@
     </p-toolbar>
 
     <div class="my-json-editor-container">
-        <json-verify-editor [(model)]="model" [isEditMode]="editMode" (change)="onTextChange($event)"></json-verify-editor>
+        <json-verify-editor [model]="model" [isEditMode]="editMode" (textChange)="onTextChange($event)"></json-verify-editor>
     </div>
 </div>

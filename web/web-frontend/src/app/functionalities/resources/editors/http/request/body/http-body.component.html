@@ -1,57 +1,73 @@
-<div class="full-size-flex-element flex-panel">
+<div class="full-size-flex-element flex-panel http-body">
 
     <div class="body-options">
-        <!-- BODY TYPE-->
-        <div class="radio body-type align-center">
-            <label *ngFor="let bodyType of HttpBodyType.enums">
-                <input type="radio"
-                       [(ngModel)]="body.bodyType"
-                       (ngModelChange)="setHeaderBasedOnBodyType($event)"
-                       [attr.disabled]="!httpRequestService.editMode || bodyType == HttpBodyType.FORM_DATA || bodyType == HttpBodyType.BINARY?'':null"
-                       [value]="bodyType">
-                {{bodyType.toString()}}
-            </label>
-        </div>
+        <div class="left-options">
+            <!-- BODY TYPE-->
+            <div class="radio body-type align-baseline">
+                <label *ngFor="let bodyType of HttpBodyType.enums">
+                    <input type="radio"
+                           [(ngModel)]="body.bodyType"
+                           (ngModelChange)="setHeaderBasedOnBodyType($event)"
+                           [attr.disabled]="!httpRequestService.editMode || bodyType == HttpBodyType.FORM_DATA || bodyType == HttpBodyType.BINARY?'':null"
+                           [value]="bodyType">
+                    {{bodyType.toString()}}
+                </label>
+            </div>
 
-        <!-- CONTENT TYPE -->
-        <div *ngIf="body.bodyType == HttpBodyType.RAW" class="align-center">
+            <!-- CONTENT TYPE -->
+            <div *ngIf="body.bodyType == HttpBodyType.RAW" class="align-baseline">
 
-            <div class="btn-group" dropdown [autoClose]="true">
+                <div class="btn-group" dropdown [autoClose]="true">
 
-                <a href dropdownToggle (click)="false">
-                    {{getContentType().toString()}}
-                    <span *ngIf="getContentType().contentType">
+                    <a href dropdownToggle (click)="false">
+                        {{getContentType().toString()}}
+                        <span *ngIf="getContentType().contentType">
                         ({{getContentType().contentType}})
                     </span>
-                    <span class="caret"></span>
-                </a>
+                        <span class="caret"></span>
+                    </a>
 
-                <ul *dropdownMenu class="dropdown-menu" role="menu">
-                    <li *ngFor="let httpContentType of HttpContentType.enums" role="menuitem">
-                        <a href (click)="setContentType(httpContentType);false;" class="dropdown-item">
-                            {{httpContentType.toString()}}
-                            <span *ngIf="httpContentType.contentType">
+                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                        <li *ngFor="let httpContentType of HttpContentType.enums" role="menuitem">
+                            <a href (click)="setContentType(httpContentType);false;" class="dropdown-item">
+                                {{httpContentType.toString()}}
+                                <span *ngIf="httpContentType.contentType">
                         ({{httpContentType.contentType}})
                         </span>
-                        </a>
-                    </li>
-                </ul>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+        </div>
+
+        <div class="right-options">
+            <!-- FORMAT JSON BUTTON-->
+            <div class="format-button-container">
+                <div (click)="onFormatJsonEvent()"
+                     [class.hidden]="!shouldDisplayFormatButton()"
+                     class="btn btn-default btn-xxs btn-group format-json-button">
+                    Format {{editorMode | uppercase}}
+                </div>
+            </div>
+
+            <span class="label my-toolbar-label"
+                  [class.hidden]="!shouldDisplayJsonValidation()"
+                  [class.label-success]="isValidJson"
+                  [class.label-danger]="!isValidJson">
+                {{isValidJson? "Valid JSON": "Invalid JSON"}}
+            </span>
         </div>
     </div>
 
     <!-- CONTENT -->
-    <div *ngIf="body.bodyType == HttpBodyType.RAW" class="full-size-flex-element ace-editor-container">
-        <ace-editor
-            #editor
-            [(text)]="body.content"
-            [mode]="aceEditorMode"
-            [theme]="'eclipse'"
-            [options]="options"
-            [readOnly]="!httpRequestService.editMode"
-            [autoUpdateContent]="true"
-            [durationBeforeCallback]="1000"
-            class="ace-editor"></ace-editor>
+    <div #parentElement *ngIf="body.bodyType == HttpBodyType.RAW" class="full-size-flex-element editor-container">
+        <monaco-editor #monacoEditorComponent
+                       [options]="editorOptions"
+                       [value]="body.content"
+                       [parentElemntRef]="parentElement"
+                       (valueChange)="onTextChange($event)"
+                       style="height:100%"></monaco-editor>
     </div>
 
     <div *ngIf="body.bodyType == HttpBodyType.X_WWW_FORM_URLENCODED || body.bodyType == HttpBodyType.FORM_DATA"

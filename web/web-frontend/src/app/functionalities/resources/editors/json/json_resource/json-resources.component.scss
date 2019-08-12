@@ -4,15 +4,13 @@
     .condensed-view-container {
         .condensed-view-body {
             white-space: pre;
-            line-height: 1em;
-            font-size: 1em;
+            line-height: 12px;
+            font-size: 12px;
 
             code {
                 background-color: inherit;
                 font-family: "Hack Regular Nerd Font Complete", monospace;
-                line-height: .85em;
                 padding: 0;
-                font-size: .85em;
             }
         }
     }
@@ -25,13 +23,9 @@
         flex-grow: 2;
     }
 
-    .full-height-value {
+    .monaco-editor-container {
         align-self: stretch;
         position: relative;
-
-        .ace-editor {
-            height: 100%;
-        }
     }
 }
 

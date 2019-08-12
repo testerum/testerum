@@ -1,14 +1,17 @@
 import {StepDef} from "../../../../../../model/step-def.model";
+import {StepSearchItem} from "../../../../../../utils/step-search/model/step-search-item.model";
 
-export class StepCallSuggestion {
-    stepCallText: string;
+export class StepCallSuggestion extends StepSearchItem {
+    stepText: string;
     stepDef: StepDef;
-    actionText: string;
-    score: number;
+    tokens: Array<string>;
+    matchingPercentage: number = 0;
+    isPerfectMatch: boolean = false;
 
-    constructor(stepCallText: string,  stepDef: StepDef, actionText: string = null ) {
-        this.stepCallText = stepCallText;
-        this.stepDef = stepDef;
+    actionText: string;
+
+    constructor(stepText: string,  stepDef: StepDef, actionText: string = null ) {
+        super(stepText, stepDef);
         this.actionText = actionText;
     }
 }

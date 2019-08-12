@@ -32,7 +32,9 @@
 
             <div class="my-value" *ngIf="isEditMode()">
                 <select class="form-control phase-input"
-                        [(ngModel)]="getModel().bodyType" name="bodyType">
+                        #bodyTypeNgModel="ngModel"
+                        [ngModel]="getModel().bodyType"
+                        (change)="onBodyTypeChange(bodyTypeNgModel.value)" name="bodyType">
 
                     <option *ngFor="let bodyVerifyType of getBodyVerifyTypes(); let i = index"
                             [ngValue]="bodyVerifyType">
@@ -50,18 +52,16 @@
     </div>
 
     <!-- BODY TYPE JSON VERIFY-->
-    <div *ngIf="shouldDisplayAceEditor()"
+    <div #parentElement *ngIf="shouldDisplayTextEditor()"
          class="full-size-flex-element ace-editor-container">
-        <ace-editor
-            #editor
-            [(text)]="getModel().content"
-            [mode]="getModel().bodyType.editorMode"
-            [theme]="'eclipse'"
-            [options]="options"
-            [readOnly]="!isEditMode()"
-            [autoUpdateContent]="false"
-            [durationBeforeCallback]="1000"
-            class="ace-editor"></ace-editor>
 
+        <monaco-editor #monacoEditorComponent
+                       [options]="editorOptions"
+                       [value]="getModel().content"
+                       [autoSizing]="true"
+                       [minHeight]="400"
+                       [parentElemntRef]="parentElement"
+                       (valueChange)="onTextChange($event)"
+                       style="height:100%"></monaco-editor>
     </div>
 </div>

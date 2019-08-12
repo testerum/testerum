@@ -1,7 +1,12 @@
 package com.testerum.common.expression_evaluator
 
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
-import com.testerum.common.expression_evaluator.helpers.impl.*
+import com.testerum.common.expression_evaluator.helpers.impl.DataGeneratorScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.DateScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.EscapeHelper
+import com.testerum.common.expression_evaluator.helpers.impl.GenerateStringByRegexScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.TestHelper
+import com.testerum.common.expression_evaluator.helpers.impl.UuidScriptingHelper
 import delight.nashornsandbox.NashornSandbox
 import delight.nashornsandbox.NashornSandboxes
 import jdk.nashorn.internal.runtime.ECMAException
@@ -15,7 +20,8 @@ object ExpressionEvaluator {
             DateScriptingHelper,
             DataGeneratorScriptingHelper,
             GenerateStringByRegexScriptingHelper,
-            EscapeHelper
+            EscapeHelper,
+            TestHelper
     )
 
     private val sandbox: NashornSandbox = NashornSandboxes.create().apply {

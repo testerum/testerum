@@ -21,7 +21,7 @@
             <!-- FOOTER Buttons-->
             <div class="modal-footer">
                 <button (click)="onCancelAction()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button (click)="onStepChooseAction()" type="button" class="btn btn-primary">Add Step</button>
+                <button [class.disabled]="!isStepSelected()" (click)="onStepChooseAction()" type="button" class="btn btn-primary">Add Step</button>
             </div>
         </div>
     </div>

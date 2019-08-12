@@ -1,6 +1,6 @@
-test-def: When I scroll element <<elementLocator>> into the view
+test-def: When I scroll into view the element <<elementLocator>>
 
     step: Given I am at the "HTML 5 TEST PAGE"
-    step: When I scroll element <<#embedded__images>> into the view
+    step: When I scroll into view the element <<#embedded__images>>
     step: When I wait <<2000>> milliseconds
     step: Then the element <<#simpleImage>> should be present

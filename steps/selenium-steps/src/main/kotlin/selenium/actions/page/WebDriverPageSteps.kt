@@ -15,11 +15,45 @@ class WebDriverPageSteps {
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
     @Given(
+            value = "the page at url <<url>> is open",
+            description = "Navigates to the given URL."
+    )
+    fun givenThePageAtUrlIsOpen(url: String) {
+        logger.info(
+                "opening page\n" +
+                        "------------\n" +
+                        "url : $url\n" +
+                        "\n"
+        )
+
+        webDriverManager.executeWebDriverStep { driver ->
+            driver.navigate().to(url)
+        }
+    }
+
+    @When(
+            value = "I navigate to url <<url>>"
+    )
+    fun whenINavigateToUrl(url: String) {
+        logger.info(
+                "opening page\n" +
+                        "------------\n" +
+                        "url : $url\n" +
+                        "\n"
+        )
+
+        webDriverManager.executeWebDriverStep { driver ->
+            driver.navigate().to(url)
+        }
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    @Given(
             value = "the window width is <<windowWidth>> and height is <<windowHeight>>",
             description = "Resize the browser window to the specified width and height in pixels.\n" +
                     "If no values are provided, the default width is 1024px and default height is 700px."
     )
-    fun click(
+    fun resizeWindow(
             @Param(
                     description = "This parameter needs to be a number and represents the browser window width in pixels.\n" +
                             "The default value is 1024"
@@ -62,22 +96,6 @@ class WebDriverPageSteps {
         webDriverManager.closeWindow()
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-    @When(
-            value = "I navigate to url <<url>>"
-    )
-    fun whenINavigateToUrl(url: String) {
-        logger.info(
-                "opening page\n" +
-                        "------------\n" +
-                        "url : $url\n" +
-                        "\n"
-        )
-
-        webDriverManager.executeWebDriverStep { driver ->
-            driver.navigate().to(url)
-        }
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
     @When(

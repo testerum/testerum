@@ -14,7 +14,6 @@ class WebDriverAssertSelectSteps {
     private val logger = TesterumServiceLocator.getTesterumLogger()
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
-//----------------------------------------------------------------------------------------------------------------------
     @Then (
             value = "the option <<optionLocator>> from the select element <<elementLocator>> should be selected",
             description = "Checks if an element from a drop-down or multi-select is selected based on an option locator.\n" +
@@ -117,7 +116,7 @@ class WebDriverAssertSelectSteps {
         return false;
     }
 
-//----------------------------------------------------------------------------------------------------------------------
+//======================================================================================================================
     @Then (
             value = "the option <<optionLocator>> from the select element <<elementLocator>> should not be selected",
             description = "Checks if an element from a drop-down or multi-select is NOT selected based on an option locator.\n" +
@@ -195,61 +194,4 @@ class WebDriverAssertSelectSteps {
         }
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-    @Then(
-            value = "the element <<elementLocator>> is checked",
-            description = "Confirm that the target element has been checked. The test will stop if the assert fails."
-    )
-    fun assertsThatElementIsChecked (
-            @Param(
-                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
-            )
-            elementLocator: String
-    ) {
-        logger.info(
-                "assert that element is checked (checkbox / radio)\n" +
-                "-------------------------------------------------\n" +
-                "elementLocator : $elementLocator\n" +
-                "\n"
-        )
-
-        webDriverManager.waitForElementPresent(elementLocator)
-        webDriverManager.executeWebDriverStep { driver ->
-            val field: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
-                    ?: throw AssertionError("the field [$elementLocator] should be present on the page, but is not")
-
-            if (!field.isSelected()) {
-                throw AssertionError("the element [$elementLocator] should be checked, but is not")
-            }
-        }
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-    @Then(
-            value = "the element <<elementLocator>> is not checked",
-            description = "Confirm that the target element is not checked. The test will stop if the assert fails."
-    )
-    fun assertsThatElementIsNotChecked (
-            @Param(
-                    description = SeleniumSharedDescriptions.ELEMENT_LOCATOR_DESCRIPTION
-            )
-            elementLocator: String
-    ) {
-        logger.info(
-                "assert that element is not checked (checkbox / radio)\n" +
-                "-------------------------------------------------\n" +
-                "elementLocator : $elementLocator\n" +
-                "\n"
-        )
-
-        webDriverManager.waitForElementPresent(elementLocator)
-        webDriverManager.executeWebDriverStep { driver ->
-            val field: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
-                    ?: throw AssertionError("the field [$elementLocator] should be present on the page, but is not")
-
-            if (field.isSelected()) {
-                throw AssertionError("the element [$elementLocator] should not be checked, but is not")
-            }
-        }
-    }
 }

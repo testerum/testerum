@@ -1,68 +1,72 @@
 .my-json-verify-root {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
     width: 100%;
-}
+    height: 100%;
 
-.my-toolbar-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+    .my-toolbar-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: calc(100% - 29px);
 
-.my-toolbar-label {
-    font-size: .9em;
-    font-weight: normal;
-    padding: .3em .6em;
-}
+        .my-toolbar-label {
+            font-size: .9em;
+            font-weight: normal;
+            padding: .3em .6em;
+        }
 
-.my-btn-toolbar {
-    height: 20px;
-    padding: 0.25em 0.2em;
-}
+        .my-btn-toolbar {
+            height: 20px;
+            padding: 0.25em 0.2em;
+        }
 
-.my-json-editor-container {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    top: 28px;
-    left: 0;
-}
+        .my-compare-mode-container {
+            display: flex;
+            align-items: center;
 
-.my-compare-mode-container {
-    display: flex;
-    align-items: center;
-}
+            .description-info-icon {
+                margin-left: 5px;
+                margin-right: 10px;
+            }
 
-.my-compare-mode-select {
-    height: 20px;
-    font-size: 1em;
-    font-weight: bold;
-    padding: 0 8px;
-    margin-left: 5px;
-}
+            .my-compare-mode-select {
+                height: 20px;
+                font-size: 1em;
+                font-weight: bold;
+                padding: 0 8px;
+                margin-left: 5px;
+            }
 
-.btn-xxs {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1em;
-    padding: 0.1em 0.8em;
-}
+            .format-json-button {
+                margin-left: 25px;
+            }
+        }
+    }
 
-.column-content {
-    display: flex;
-    flex-direction: column;
-}
+    .my-json-editor-container {
+        border: 1px solid #c8c8c8;
+        border-top: 0;
+        border-radius: 3px;
+    }
 
-.center-text {
-    text-align: center;
-}
+    .btn-xxs {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1em;
+        padding: 0.1em 0.8em;
+    }
 
-.center {
-    align-self: center;
-}
+    .column-content {
+        display: flex;
+        flex-direction: column;
+    }
 
+    .center-text {
+        text-align: center;
+    }
+
+    .center {
+        align-self: center;
+    }
+}
 

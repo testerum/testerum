@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Input, OnChanges,
+    OnInit,
+    SimpleChanges,
+    ViewChild
+} from '@angular/core';
 import {ResourceComponent} from "../../resource-component.interface";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {NgForm} from "@angular/forms";
@@ -30,12 +38,6 @@ export class JsonResourceComponent extends ResourceComponent<BasicResource> impl
 
     @ViewChild(NgForm) form: NgForm;
 
-    options: any = {
-        printMargin: true,
-        highlightActiveLine: true,
-        useSoftTabs: true
-    };
-
     constructor(private cd: ChangeDetectorRef){
         super();
     }
@@ -50,6 +52,11 @@ export class JsonResourceComponent extends ResourceComponent<BasicResource> impl
         if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
             this.cd.detectChanges();
         }
+    }
+
+    onChange(code: string) {
+        this.model.content = code;
+        this.refresh();
     }
 
     isFormValid(): boolean {

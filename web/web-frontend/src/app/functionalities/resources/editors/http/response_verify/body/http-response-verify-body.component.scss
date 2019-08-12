@@ -2,6 +2,22 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+
+    .body-matching-toolbar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 8px 0;
+    }
+    .body-matching-toolbar-bottom-border {
+        border-bottom: 1px solid #c8c8c8;
+        border-radius: 3px;
+    }
+
+    .json-verify-container {
+    }
 
     .phase-input {
         width: auto;
@@ -11,20 +27,9 @@
         width: 8em;
     }
 
-    .json-verify-container {
-        min-height: 400px;
-        position: relative;
-        flex-grow: 2;
-    }
-
-    .ace-editor-container {
+    .monaco-editor-container {
         position: relative;
         min-height: 200px;
-    }
-    .ace-editor {
-        position: absolute;
-        top: 0;
-        bottom: 0;
     }
 }
 

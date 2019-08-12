@@ -10,6 +10,7 @@ import {AbstractComponentCanDeactivate} from "../../../../generic/interfaces/can
 import {ManualSelectTestsTreeComponent} from "./manual-select-tests-tree/manual-select-tests-tree.component";
 import {ManualTestPlansOverviewService} from "../overview/manual-test-plans-overview.service";
 import {Path} from "../../../../model/infrastructure/path/path.model";
+import {Message} from "primeng/api";
 
 @Component({
     selector: 'manual-test-plan-editor',
@@ -25,15 +26,12 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
     isFinalized: boolean = false;
     isCreateAction: boolean = false;
 
+    warnings: Message[] = [];
+
     pieChartData: any;
 
     @ViewChild(MarkdownEditorComponent) descriptionMarkdownEditor: MarkdownEditorComponent;
     @ViewChild(ManualSelectTestsTreeComponent) manualSelectTestsTreeComponent: ManualSelectTestsTreeComponent;
-
-    markdownEditorOptions = {
-        status: false,
-        spellChecker: false
-    };
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
@@ -69,6 +67,7 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
 
     private initialize(manualTestsRunner: ManualTestPlan) {
         this.model = manualTestsRunner;
+        this.warnings = [];
 
         this.setEditMode(this.model.path.isEmpty());
 
@@ -161,8 +160,14 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
     }
 
     saveAction(): void {
+
         this.model.manualTreeTests = this.manualSelectTestsTreeComponent.getSelectedTests();
         this.model.description = this.descriptionMarkdownEditor.getValue();
+
+        if (this.model.manualTreeTests.length == 0) {
+            this.showWarningThatTestsNeedsToBeSelected();
+            return;
+        }
 
         this.manualExecPlansService
             .save(this.model)
@@ -174,5 +179,12 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
         this.setEditMode(false);
         this.manualTestPlansOverviewService.initializeManualPlansOverview();
         this.urlService.navigateToManualExecPlanEditor(savedManualTestRunner.path);
+    }
+
+    private showWarningThatTestsNeedsToBeSelected() {
+        this.warnings = [];
+        this.warnings.push(
+            {severity: 'error', summary: "Please select the tests that you want to execute in this Test Plan"}
+        )
     }
 }

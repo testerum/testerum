@@ -1,13 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpMockService} from "../../http-mock.service";
 import {HttpMockRequestBody} from "../../model/request/http-mock-request-body.model";
 import {HttpMockRequestBodyMatchingType} from "../../model/enums/http-mock-request-body-matching-type.enum";
 import {HttpMockRequestBodyVerifyType} from "../../model/enums/http-mock-request-body-verify-type.enum";
-import {HttpMock} from "../../model/http-mock.model";
 import {JsonVerifyTreeService} from "../../../../../../../../generic/components/json-verify/json-verify-tree/json-verify-tree.service";
-import {EmptyJsonVerify} from "../../../../../../../../generic/components/json-verify/json-verify-tree/model/empty-json-verify.model";
-import {SerializationUtil} from "../../../../../../../../generic/components/json-verify/json-verify-tree/model/util/serialization.util";
-import {JsonSchemaExtractor} from "../../../../../../../../generic/components/json-verify/json-schema/json-schema.extractor";
+import {editor} from "monaco-editor";
+import {Subscription} from "rxjs";
+import {HttpBodyVerifyType} from "../../../../response_verify/model/enums/http-body-verify-type.enum";
 
 @Component({
     moduleId: module.id,
@@ -17,47 +16,39 @@ import {JsonSchemaExtractor} from "../../../../../../../../generic/components/js
         'http-mock-request-body.component.scss'
     ]
 })
-export class HttpMockRequestBodyComponent implements OnInit{
+export class HttpMockRequestBodyComponent implements OnInit, OnDestroy{
 
-    sampleJsonText: string;
-
-    aceEditorModeOptions: Array<string>=[];
-    options: any = {
-        printMargin: true,
-        highlightActiveLine: true,
-        useSoftTabs: true
-    };
+    editorOptions: editor.IEditorConstructionOptions = {};
 
     HttpMockRequestBodyMatchingType = HttpMockRequestBodyMatchingType;
 
-    constructor(private httpMockService: HttpMockService,
-                private jsonVerifyTreeService: JsonVerifyTreeService) {
+    private editModeSubscription: Subscription;
+    constructor(private httpMockService: HttpMockService) {
     }
 
     ngOnInit(): void {
-        // this.jsonVerifyTreeService.setEmpty();
-        // this.jsonVerifyTreeService.editMode = this.httpMockService.editMode;
-        // this.httpMockService.editModeEventEmitter.subscribe(
-        //     (editMode: boolean) => this.jsonVerifyTreeService.editMode = editMode
-        // );
+        this.refreshEditorOptions();
 
-        this.onModelSet(this.httpMockService.httpMock);
-        this.httpMockService.onModelSetEventEmitter.subscribe(
-            (httpMock: HttpMock) => this.onModelSet(httpMock)
-        )
+        this.editModeSubscription = this.httpMockService.editModeEventEmitter.subscribe(editMode => {
+            this.refreshEditorOptions();
+        });
     }
 
-    onModelSet(httpMock: HttpMock) {
-        // if(!httpMock || !httpMock.expectedRequest.body.content) {
-        //     this.jsonVerifyTreeService.setJsonSchema(new EmptyJsonVerify(null))
-        // }
+    ngOnDestroy(): void {
+        if(this.editModeSubscription) this.editModeSubscription.unsubscribe();
+    }
 
-        if(httpMock.expectedRequest.body.matchingType == HttpMockRequestBodyMatchingType.JSON_VERIFY) {
-            let jsonVerifyAsJson = JSON.parse(httpMock.expectedRequest.body.content);
-            let jsonTreeNode = new SerializationUtil().deserialize(jsonVerifyAsJson);
-            // this.jsonVerifyTreeService.setJsonVerifyRootResource(jsonTreeNode);
-        }
-
+    refreshEditorOptions() {
+        let language = (this.getModel() || this.getModel().bodyType) ? this.getModel().bodyType.editorMode: this.getModel().bodyType.editorMode;
+        let editMode = this.httpMockService.editMode;
+        this.editorOptions = Object.assign(
+            {},
+            this.editorOptions,
+            {
+                language: language,
+                readOnly: !editMode
+            }
+        );
     }
 
     getModel(): HttpMockRequestBody {
@@ -78,11 +69,6 @@ export class HttpMockRequestBodyComponent implements OnInit{
 
     bodyMatchingTypeChange(value: HttpMockRequestBodyMatchingType) {
         this.getModel().matchingType = value;
-        switch (value) {
-            case HttpMockRequestBodyMatchingType.CONTAINS: this.aceEditorModeOptions = HttpMockRequestBodyVerifyType.enums.map(it => it.toString()); break;
-            case HttpMockRequestBodyMatchingType.EXACT_MATCH: this.aceEditorModeOptions = HttpMockRequestBodyVerifyType.enums.map(it => it.toString()); break;
-            case HttpMockRequestBodyMatchingType.REGEX_MATCH: this.aceEditorModeOptions = [HttpMockRequestBodyVerifyType.TEXT.toString()]; break;
-        }
     }
 
     shouldDisplayBodyTypeChooser() {
@@ -92,32 +78,19 @@ export class HttpMockRequestBodyComponent implements OnInit{
         return shouldDisplay;
     }
 
-    shouldDisplayAceEditor(): boolean {
+    shouldDisplayTextEditor(): boolean {
         let bodyVerifyType = this.getModel().matchingType;
         return bodyVerifyType == HttpMockRequestBodyMatchingType.CONTAINS ||
             bodyVerifyType == HttpMockRequestBodyMatchingType.EXACT_MATCH ||
             bodyVerifyType == HttpMockRequestBodyMatchingType.REGEX_MATCH;
     }
-    //
-    // onSampleJsonTextChange(json:string) {
-    //     this.sampleJsonText = json;
-    //     let jsonRootNode;
-    //     try {
-    //         jsonRootNode = JSON.parse(json);
-    //     } catch (e) {
-    //         //ignore exception, JSON is not valid
-    //         return;
-    //     }
-    //     let verifyJsonRoot = new SerializationUtil().deserialize(jsonRootNode);
-    //
-    //     let jsonSchema = new JsonSchemaExtractor().getJsonSchemaFromJson(
-    //         verifyJsonRoot
-    //     );
-    //
-    //     this.jsonVerifyTreeService.setJsonSchema(jsonSchema);
-    // }
-    //
-    // shouldDisplayJsonSample(): boolean {
-    //     return this.isEditMode() && ( this.jsonVerifyTreeService.isEmptyModel() || this.sampleJsonText != null);
-    // }
+
+    onTextChange(text: string) {
+        this.getModel().content = text;
+    }
+
+    onBodyTypeChange(bodyType: HttpBodyVerifyType) {
+        this.getModel().bodyType = bodyType;
+        this.refreshEditorOptions();
+    }
 }

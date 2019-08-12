@@ -1,5 +1,6 @@
 <div class="http-response-verify-body">
-    <div class="my-line">
+    <div class="body-matching-toolbar"
+        [class.body-matching-toolbar-bottom-border]="shouldDisplayTextEditor()">
 
         <!-- BODY MATCHING -->
         <label class="my-label label-size">Body Matching:</label>
@@ -31,7 +32,9 @@
 
             <div class="my-value" style="width: max-content" *ngIf="isEditMode()">
                 <select class="form-control phase-input"
-                        [(ngModel)]="getModel().httpBodyType" name="bodyType">
+                        #bodyTypeNgModel="ngModel"
+                        [ngModel]="getModel().httpBodyType"
+                        (change)="onBodyTypeChange(bodyTypeNgModel.value)" name="bodyType">
 
                     <option *ngFor="let bodyVerifyTypes of getHttpBodyVerifyTypes(); let i = index"
                             [ngValue]="bodyVerifyTypes">
@@ -49,17 +52,14 @@
     </div>
 
     <!-- BODY TYPE JSON VERIFY-->
-    <div *ngIf="shouldDisplayAceEditor()"
-         class="full-size-flex-element ace-editor-container">
-        <ace-editor
-            #editor
-            [(text)]="getModel().bodyVerify"
-            [mode]="getModel().httpBodyType.editorMode"
-            [theme]="'eclipse'"
-            [options]="options"
-            [readOnly]="!isEditMode()"
-            [autoUpdateContent]="false"
-            [durationBeforeCallback]="1000"
-            class="ace-editor"></ace-editor>
+    <div #parentElement *ngIf="shouldDisplayTextEditor()" class="full-size-flex-element monaco-editor-container">
+        <monaco-editor #monacoEditorComponent
+                       [options]="editorOptions"
+                       [value]="getModel().bodyVerify"
+                       [autoSizing]="true"
+                       [minHeight]="400"
+                       [parentElemntRef]="parentElement"
+                       (valueChange)="onTextChange($event)"
+                       style="height:100%"></monaco-editor>
     </div>
 </div>

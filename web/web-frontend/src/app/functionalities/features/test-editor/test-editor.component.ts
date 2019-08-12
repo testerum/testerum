@@ -28,10 +28,6 @@ import {ContextService} from "../../../service/context.service";
     encapsulation: ViewEncapsulation.None
 })
 export class TestEditorComponent extends AbstractComponentCanDeactivate implements OnInit, OnDestroy, DoCheck{
-    markdownEditorOptions = {
-        status: false,
-        spellChecker: false
-    };
 
     StepPhaseEnum = StepPhaseEnum;
     testModel: TestModel = new TestModel;

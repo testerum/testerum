@@ -89,7 +89,6 @@ import {JsonVerifyTreeComponent} from "./components/json-verify/json-verify-tree
 import {JsonVerifyTreeService} from "./components/json-verify/json-verify-tree/json-verify-tree.service";
 import {JsonVerifyEditorComponent} from "./components/json-verify/json-verify-editor/json-verify-editor.component";
 import {JsonVerifyComponent} from "./components/json-verify/json-verify.component";
-import {AceEditorModule} from "ng2-ace-editor";
 import {AreYouSureModalService} from "./components/are_you_sure_modal/are-you-sure-modal.service";
 import {LogoComponent} from './components/logo/logo.component';
 import {InfoModalService} from "./components/info_modal/info-modal.service";
@@ -111,9 +110,15 @@ import { DynamicInputComponent } from './components/form/dynamic-input/dynamic-i
 import { SeleniumDriverInputComponent } from './components/form/dynamic-input/selenium-driver-input/selenium-driver-input.component';
 import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-driver-input/selenium-drivers.service";
 import {FileTreeNodeComponent} from "./components/form/file_chooser/file-tree/nodes/node/file-tree-node.component";
+import {CommonModule} from "@angular/common";
+import {MonacoEditorLoaderDirective} from "./components/monaco-editor/directives/monaco-editor-loader.directive";
+import {MonacoEditorComponent} from "./components/monaco-editor/components/monaco-editor/monaco-editor.component";
+import {MonacoDiffEditorComponent} from "./components/monaco-editor/components/monaco-diff-editor/monaco-diff-editor.component";
+import {ResizedDirective} from "./components/monaco-editor/directives/resized-event.directive";
 
 @NgModule({
     imports: [
+        CommonModule,
         BrowserModule,
         BrowserAnimationsModule,
         ModalModule.forRoot(),
@@ -121,8 +126,6 @@ import {FileTreeNodeComponent} from "./components/form/file_chooser/file-tree/no
         PopoverModule.forRoot(),
         MarkdownModule.forRoot(),
         FormsModule,
-
-        AceEditorModule,
 
         ChartModule,
         FileUploadModule,
@@ -195,6 +198,12 @@ import {FileTreeNodeComponent} from "./components/form/file_chooser/file-tree/no
         LogoComponent,
         InfoIconComponent,
         DynamicInputComponent,
+
+        MonacoEditorLoaderDirective,
+        MonacoEditorComponent,
+        MonacoDiffEditorComponent,
+        ResizedDirective,
+        JsonEditorComponent
     ],
     declarations: [
         SafeHtmlPipe,
@@ -281,6 +290,11 @@ import {FileTreeNodeComponent} from "./components/form/file_chooser/file-tree/no
         ServerNotAvailableModalComponent,
         DynamicInputComponent,
         SeleniumDriverInputComponent,
+
+        MonacoEditorLoaderDirective,
+        MonacoEditorComponent,
+        MonacoDiffEditorComponent,
+        ResizedDirective
     ],
     providers: [
         TreeService,
@@ -345,6 +359,9 @@ import {FileTreeNodeComponent} from "./components/form/file_chooser/file-tree/no
         ArgModalComponent,
         ServerNotAvailableModalComponent,
         ErrorFeedbackModalComponent,
+
+        MonacoEditorComponent,
+        MonacoDiffEditorComponent,
     ]
 })
 export class GenericModule { }
