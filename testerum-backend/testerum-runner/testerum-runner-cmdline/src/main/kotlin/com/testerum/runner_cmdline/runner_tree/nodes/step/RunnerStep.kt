@@ -22,6 +22,10 @@ abstract class RunnerStep(val stepCall: StepCall,
     protected open fun doDisable(context: RunnerContext) { }
 
     fun run(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
+        if (!stepCall.enabled) {
+            return disable(context)
+        }
+
         logStepStart(context)
 
         var executionStatus = ExecutionStatus.PASSED
@@ -60,7 +64,7 @@ abstract class RunnerStep(val stepCall: StepCall,
         }
     }
 
-    fun disable(context: RunnerContext) {
+    fun disable(context: RunnerContext): ExecutionStatus {
         logStepStart(context)
 
         var executionStatus = ExecutionStatus.DISABLED
@@ -75,6 +79,8 @@ abstract class RunnerStep(val stepCall: StepCall,
         } finally {
             logStepEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
         }
+
+        return executionStatus
     }
 
     private fun logStepStart(context: RunnerContext) {
