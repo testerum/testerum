@@ -121,7 +121,7 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
 
             try {
                 for (hook in beforeEachTestHooks) {
-                    if (executionStatus == ExecutionStatus.PASSED) {
+                    if (executionStatus == ExecutionStatus.PASSED || executionStatus == ExecutionStatus.DISABLED) {
                         val stepExecutionStatus: ExecutionStatus = hook.run(context)
 
                         executionStatus = stepExecutionStatus
@@ -142,7 +142,7 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
                 context.logMessage("marking ${getNameForLogging()} as $executionStatus because it doesn't have any steps")
             } else {
                 for (step in steps) {
-                    if (executionStatus == ExecutionStatus.PASSED) {
+                    if (executionStatus == ExecutionStatus.PASSED || executionStatus == ExecutionStatus.DISABLED) {
                         val stepExecutionStatus: ExecutionStatus = step.run(context, vars)
 
                         executionStatus = stepExecutionStatus
@@ -155,7 +155,7 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
             var endHookStatus: ExecutionStatus = ExecutionStatus.PASSED
             try {
                 for (hook in afterEachTestHooks) {
-                    if (endHookStatus == ExecutionStatus.PASSED) {
+                    if (endHookStatus == ExecutionStatus.PASSED || executionStatus == ExecutionStatus.DISABLED) {
                         val stepExecutionStatus: ExecutionStatus = hook.run(context)
 
                         endHookStatus = stepExecutionStatus

@@ -15,7 +15,11 @@ open class FileStepCallSerializerWithPrefix(private val prefix: String): BaseSer
     }
 
     private fun serializeStepCallLine(source: FileStepCall, destination: Writer, indentLevel: Int) {
-        destination.write("$prefix: ")
+        destination.write(prefix)
+        if (!source.enabled) {
+            destination.write(" [disabled]")
+        }
+        destination.write(": ")
         FileStepPhaseSerializer.serialize(source.phase, destination, indentLevel)
         destination.write(" ")
 

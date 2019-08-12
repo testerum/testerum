@@ -29,7 +29,7 @@ class FileStepCallParserTest {
                 equalTo(
                         "failed to parse:\n" +
                         "Given an empty database\n" +
-                        "^--- ERROR at line 1, column 1: [step:] expected, [G] encountered"
+                        "^--- ERROR at line 1, column 1: [step] expected, [G] encountered"
                 )
         )
     }

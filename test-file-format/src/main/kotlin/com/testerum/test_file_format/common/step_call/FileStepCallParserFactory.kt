@@ -1,7 +1,7 @@
 package com.testerum.test_file_format.common.step_call
 
 import com.testerum.common.parsing.ParserFactory
-import com.testerum.common.parsing.util.CommonScanners
+import com.testerum.common.parsing.util.CommonScanners.atLeastOneNewLine
 import com.testerum.common.parsing.util.CommonScanners.optionalNewLines
 import com.testerum.common.parsing.util.CommonScanners.optionalWhitespace
 import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
@@ -13,6 +13,7 @@ import com.testerum.test_file_format.manual_step_call.status.FileManualStepCallS
 import com.testerum.test_file_format.manual_step_call.status.FileManualStepCallStatusParserFactory.manualStepStatus
 import org.jparsec.Parser
 import org.jparsec.Parsers.sequence
+import org.jparsec.Scanners
 import org.jparsec.Scanners.string
 
 object FileStepCallParserFactory : ParserFactory<FileStepCall> {
@@ -25,14 +26,18 @@ object FileStepCallParserFactory : ParserFactory<FileStepCall> {
 
     fun stepCall(prefix: String): Parser<FileStepCall> {
         return sequence(
-                string("$prefix:"),
-                string(" "),
+                string(prefix),
+                sequence(
+                        optionalWhitespace(),
+                        Scanners.string("[disabled]").source().asOptional()
+                ),
+                string(": "),
                 stepPhase(),
                 string(" "),
                 stepCallPart().many1(),
                 stepVars(),
                 optionalNewLines()
-        ) { _, _, phase, _, parts, vars, _ -> FileStepCall(phase, parts, vars) }
+        ) { _, disabled, _, phase, _, parts, vars, _ -> FileStepCall(phase, parts, vars, !disabled.isPresent) }
     }
 
     fun manualStepCall(): Parser<FileManualStepCall> {
@@ -53,7 +58,7 @@ object FileStepCallParserFactory : ParserFactory<FileStepCall> {
                 optionalNewLines()
         ) { _, stepCallStatus: FileManualStepCallStatus, _, phase, _, parts, vars, _ ->
             FileManualStepCall(
-                    step = FileStepCall(phase, parts, vars),
+                    step = FileStepCall(phase, parts, vars, true),
                     status = stepCallStatus
             )
         }
@@ -61,13 +66,12 @@ object FileStepCallParserFactory : ParserFactory<FileStepCall> {
 
     private fun stepVars(): Parser<List<FileStepVar>> {
         return sequence(
-                CommonScanners.atLeastOneNewLine(),
-                CommonScanners.optionalWhitespace(),
+                atLeastOneNewLine(),
+                optionalWhitespace(),
                 FileStepVarParserFactory.stepVar()
         ).atomic()
                 .many()
                 .optional(emptyList())
     }
-
 
 }

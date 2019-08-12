@@ -32,6 +32,7 @@ class FileStepDefParserTest {
                             |
                             |    step: Given I go to page <<https://{{host}}:{{port}}/login>>
                             |    step: When I type <<{{username}}>> into the <<.username>> input
+                            |    step [disabled]: When I call a disabled step
                             |    step: When I type <<{{password}}>> into the <<.password>> input
                             |
                             |    step: When I type <<{{text}}>> into the <<.{{cssClassName}}>> input
@@ -82,6 +83,14 @@ class FileStepDefParserTest {
                                                         FileTextStepCallPart(" input")
                                                 ),
                                                 vars = emptyList()
+                                        ),
+                                        FileStepCall(
+                                                phase = FileStepPhase.WHEN,
+                                                parts = listOf(
+                                                        FileTextStepCallPart("I call a disabled step")
+                                                ),
+                                                vars = emptyList(),
+                                                enabled = false
                                         ),
                                         FileStepCall(
                                                 phase = FileStepPhase.WHEN,

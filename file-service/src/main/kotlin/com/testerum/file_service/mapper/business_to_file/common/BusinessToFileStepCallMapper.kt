@@ -29,7 +29,8 @@ class BusinessToFileStepCallMapper(private val businessToFilePhaseMapper: Busine
         return FileStepCall(
                 phase = businessToFilePhaseMapper.mapPhase(stepCall.stepDef.phase),
                 parts = mapStepCallParts(stepCall, varsContainer),
-                vars = varsContainer.getVars()
+                vars = varsContainer.getVars(),
+                enabled = stepCall.enabled
         )
     }
 

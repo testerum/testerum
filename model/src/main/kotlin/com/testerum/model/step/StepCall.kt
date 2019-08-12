@@ -13,7 +13,8 @@ data class StepCall @JsonCreator constructor(
         @JsonProperty("id") val id: String,
         @JsonProperty("stepDef") val stepDef: StepDef,
         @JsonProperty("args") val args: List<Arg>,
-        @JsonProperty("warnings") val warnings: List<Warning> = emptyList()
+        @JsonProperty("warnings") val warnings: List<Warning> = emptyList(),
+        @JsonProperty("enabled") val enabled: Boolean = true
 ) {
 
     private val _descendantsHaveWarnings: Boolean

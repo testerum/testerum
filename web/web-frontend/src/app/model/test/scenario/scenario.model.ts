@@ -6,7 +6,7 @@ export class Scenario implements Serializable<Scenario> {
 
     name: string;
     params: Array<ScenarioParam> = [];
-    enabled: boolean;
+    enabled: boolean = true;
 
     deserialize(input: Object): Scenario {
         this.name = input['name'];
