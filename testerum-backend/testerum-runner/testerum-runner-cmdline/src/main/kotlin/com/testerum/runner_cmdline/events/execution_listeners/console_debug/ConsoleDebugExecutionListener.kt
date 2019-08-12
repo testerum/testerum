@@ -34,12 +34,12 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("SUITE_END: key=${event.eventKey}, status=${event.status}, durationMillis=${event.durationMillis}\n")
+        log("SUITE_END: status=${event.status}, durationMillis=${event.durationMillis}, key=${event.eventKey}\n")
     }
 
     override fun onFeatureStart(event: FeatureStartEvent) {
         indent()
-        log("FEATURE_START: key=${event.eventKey}, featureName='${event.featureName}'\n")
+        log("FEATURE_START: featureName='${event.featureName}', key=${event.eventKey}\n")
 
         indentLevel++
     }
@@ -48,12 +48,12 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("FEATURE_END: key=${event.eventKey}, status=${event.status}, featureName='${event.featureName}', durationMillis=${event.durationMillis}\n")
+        log("FEATURE_END: status=${event.status}, featureName='${event.featureName}', durationMillis=${event.durationMillis}, key=${event.eventKey}\n")
     }
 
     override fun onTestStart(event: TestStartEvent) {
         indent()
-        log("TEST_START: key=${event.eventKey}, testName='${event.testName}', testFilePath='${event.testFilePath}'\n")
+        log("TEST_START: testName='${event.testName}', testFilePath='${event.testFilePath}', key=${event.eventKey}\n")
 
         indentLevel++
     }
@@ -62,12 +62,12 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("TEST_END: key=${event.eventKey}, status=${event.status}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}\n")
+        log("TEST_END: status=${event.status}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}, key=${event.eventKey}\n")
     }
 
     override fun onParametrizedTestStart(event: ParametrizedTestStartEvent) {
         indent()
-        log("PARAMETRIZED_TEST_START: key=${event.eventKey}, testName='${event.testName}', testFilePath='${event.testFilePath}'\n")
+        log("PARAMETRIZED_TEST_START: testName='${event.testName}', testFilePath='${event.testFilePath}', key=${event.eventKey}\n")
 
         indentLevel++
     }
@@ -76,12 +76,12 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("PARAMETRIZED_TEST_END: key=${event.eventKey}, status=${event.status}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}\n")
+        log("PARAMETRIZED_TEST_END: status=${event.status}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}, key=${event.eventKey}\n")
     }
 
     override fun onScenarioStart(event: ScenarioStartEvent) {
         indent()
-        log("SCENARIO_START: key=${event.eventKey}, scenarioName='${event.scenario.name.orEmpty()}', scenarioIndex=${event.scenarioIndex}, testName='${event.testName}', testFilePath='${event.testFilePath}'\n")
+        log("SCENARIO_START: scenarioName='${event.scenario.name.orEmpty()}', scenarioIndex=${event.scenarioIndex}, testName='${event.testName}', testFilePath='${event.testFilePath}', key=${event.eventKey}\n")
 
         indentLevel++
     }
@@ -90,12 +90,12 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("SCENARIO_END: key=${event.eventKey}, status=${event.status}, scenarioName='${event.scenario.name.orEmpty()}', scenarioIndex=${event.scenarioIndex}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}\n")
+        log("SCENARIO_END: status=${event.status}, scenarioName='${event.scenario.name.orEmpty()}', scenarioIndex=${event.scenarioIndex}, testName='${event.testName}', testFilePath='${event.testFilePath}', durationMillis=${event.durationMillis}, key=${event.eventKey}\n")
     }
 
     override fun onStepStart(event: StepStartEvent) {
         indent()
-        log("STEP_START: key=${event.eventKey}, stepCall='${event.stepCall}'\n")
+        log("STEP_START: stepCall='${event.stepCall}', key=${event.eventKey}\n")
 
         indentLevel++
     }
@@ -104,14 +104,14 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
         indentLevel--
         indent()
 
-        log("STEP_END: key=${event.eventKey}, status=${event.status}, stepCall='${event.stepCall}', durationMillis=${event.durationMillis}\n")
+        log("STEP_END: status=${event.status}, stepCall='${event.stepCall}', durationMillis=${event.durationMillis}, key=${event.eventKey}\n")
     }
 
     override fun onTextLog(event: TextLogEvent) {
         indent()
         log(
                 buildString {
-                    append("TEXT_LOG: key=${event.eventKey}, ")
+                    append("TEXT_LOG: ")
                     append(event.logLevel.formatForLogging)
                     append(" ")
                     append(
