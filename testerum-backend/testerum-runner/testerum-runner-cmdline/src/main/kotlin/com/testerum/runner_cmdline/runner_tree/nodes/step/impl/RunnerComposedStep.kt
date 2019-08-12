@@ -44,7 +44,7 @@ class RunnerComposedStep(stepCall: StepCall,
         context.testVariables.setVariablesContext(subVars)
 
         for (step in steps) {
-            if (executionStatus == ExecutionStatus.PASSED) {
+            if (executionStatus == ExecutionStatus.PASSED || executionStatus == ExecutionStatus.DISABLED) {
                 val nestedExecutionStatus: ExecutionStatus = step.run(context, subVars)
 
                 executionStatus = nestedExecutionStatus
