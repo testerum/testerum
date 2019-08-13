@@ -61,7 +61,6 @@ class WebDriverElementAssertions {
                 "\n"
         )
 
-        webDriverManager.waitForElementPresent(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement? = ElementLocatorService.locateElement(driver, elementLocator)
             if (element != null) {
