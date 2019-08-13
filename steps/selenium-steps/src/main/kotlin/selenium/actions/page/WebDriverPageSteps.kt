@@ -111,7 +111,10 @@ class WebDriverPageSteps {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    @When("I refresh the current page")
+    @When(
+            value = "I refresh the current page",
+            description = "It refreshes the current page."
+    )
     fun refreshTheCurrentPage() {
         logger.info("refreshing the current page\n\n")
 
