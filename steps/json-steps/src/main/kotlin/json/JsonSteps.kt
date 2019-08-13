@@ -82,7 +82,12 @@ class JsonSteps {
         variables[name] = resultObject
     }
 
-    @Then("the JSON <<actualValue>> is equal to <<expectedValue>>")
+    @Then(
+            value = "the JSON <<actualValue>> is equal to <<expectedValue>>",
+            description = "Compares two JSON values." +
+                    "The expected JSON can use comparison modes, and assertion functions, like @isNotNull().\n" +
+                    "See [JSON verify](https://testerum.com/documentation/ui/http/#http-verify-body-json) for details."
+    )
     fun compareJsons(@Param(required = false) actualValue: Any?,
                      @Param(required = false) expectedValue: Any?) {
         val actual: String? = getJsonStringForComparison(actualValue, "actualValue")
