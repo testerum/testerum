@@ -1,7 +1,7 @@
 package selenium.actions.contexts
 
 import com.testerum.api.annotations.steps.When
-import selenium_steps_support.service.frame_switchers.FrameSwitchers
+import selenium_steps_support.service.frame_switchers.FrameSwitcher
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.text_match.TextMatcherService
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
@@ -17,7 +17,7 @@ class WebDriverContextSwitchSteps {
     )
     fun switchToFrame(frameLocator: String) {
         webDriverManager.switchCurrentWebDriver { topWebDriver ->
-            return@switchCurrentWebDriver FrameSwitchers.switchToFrame(topWebDriver, frameLocator)
+            return@switchCurrentWebDriver FrameSwitcher.switchToFrame(topWebDriver, frameLocator)
         }
     }
 
