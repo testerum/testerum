@@ -26,6 +26,10 @@ import {RunnerTreeFilterModel} from "./model/filter/runner-tree-filter.model";
 import {RunnerStoppedEvent} from '../../../../model/test/event/runner-stopped.event';
 import {JsonTreeService} from "../../../../generic/components/json-tree/json-tree.service";
 import {Path} from "../../../../model/infrastructure/path/path.model";
+import {ParametrizedTestStartEvent} from "../../../../model/test/event/parametrized-test-start.event";
+import {ParametrizedTestEndEvent} from "../../../../model/test/event/parametrized-test-end.event";
+import {ScenarioStartEvent} from "../../../../model/test/event/scenario-start.event";
+import {ScenarioEndEvent} from "../../../../model/test/event/scenario-end.event";
 
 @Injectable()
 export class RunnerTreeService {
@@ -35,6 +39,7 @@ export class RunnerTreeService {
 
     private treeRootNode: RunnerRootTreeNodeModel;
     private treeTestsNodes: RunnerTestTreeNodeModel[] = [];
+    private numberOfSimpleTestsAndScenarios: number = 0;
     private treeTestsWithFoldersNodes: RunnerTestTreeNodeModel[] = [];
     private allNodesMapByEventKey: Map<string, RunnerTreeNodeModel> = new Map<string, RunnerTreeNodeModel>();
 
@@ -138,6 +143,44 @@ export class RunnerTreeService {
             return;
         }
 
+        if (runnerEvent instanceof ParametrizedTestStartEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
+            runnerTreeNode.eventKey = runnerEvent.eventKey;
+            runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
+            runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
+        }
+
+        if (runnerEvent instanceof ParametrizedTestEndEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
+            runnerTreeNode.changeState(runnerEvent.status);
+            runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
+        }
+
+        if (runnerEvent instanceof ScenarioStartEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
+            runnerTreeNode.eventKey = runnerEvent.eventKey;
+            runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
+            runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
+        }
+
+        if (runnerEvent instanceof ScenarioEndEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
+            runnerTreeNode.changeState(runnerEvent.status);
+
+            switch (runnerEvent.status) {
+                case ExecutionStatusEnum.PASSED: this.executionPieService.pieModel.incrementPassed(); break;
+                case ExecutionStatusEnum.FAILED: this.executionPieService.pieModel.incrementFailed(); this.hasFailedTests = true; break;
+                case ExecutionStatusEnum.DISABLED: this.executionPieService.pieModel.incrementDisabled(); break;
+                case ExecutionStatusEnum.UNDEFINED: this.executionPieService.pieModel.incrementUndefined(); break;
+                case ExecutionStatusEnum.SKIPPED: this.executionPieService.pieModel.incrementSkipped(); break;
+            }
+            runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
+        }
+
         if (runnerEvent instanceof StepStartEvent) {
             let runnerTreeNode: RunnerTreeNodeModel = this.allNodesMapByEventKey.get(eventKey);
             runnerTreeNode.eventKey = runnerEvent.eventKey;
@@ -198,6 +241,7 @@ export class RunnerTreeService {
         this.treeRootNode = this.treeModel.children[0] as RunnerRootTreeNodeModel;
         this.treeTestsWithFoldersNodes = ArrayUtil.copyArrayOfObjects(this.treeRootNode.children);
         this.treeTestsNodes = RunnerTreeUtil.getTreeTestNodes(this.treeRootNode);
+        this.numberOfSimpleTestsAndScenarios = RunnerTreeUtil.getNumberOfSimpleTestsAndScenarios(this.treeRootNode);
         this.allNodesMapByEventKey = RunnerTreeUtil.getAllNodesMapByEventKey(this.treeRootNode);
 
         this.restPieData(this.executionPieService.pieModel);
@@ -206,8 +250,8 @@ export class RunnerTreeService {
 
     private restPieData(pieModel: ExecutionPieModel) {
         pieModel.reset();
-        pieModel.totalTests = this.treeTestsNodes.length;
-        pieModel.waitingToExecute = this.treeTestsNodes.length;
+        pieModel.totalTests = this.numberOfSimpleTestsAndScenarios;
+        pieModel.waitingToExecute = this.numberOfSimpleTestsAndScenarios;
     }
 
     setNodeAsSelected(runnerTreeNodeModel: RunnerTreeNodeModel) {

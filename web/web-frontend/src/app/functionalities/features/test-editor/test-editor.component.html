@@ -16,6 +16,7 @@
                     </div>
                 </div>
 
+<!-- NAME ------------------------------------------------------------------------------------------------------------->
                 <div class="my-line">
                     <label class="my-label label-size">Name</label>
 
@@ -34,7 +35,7 @@
                     </div>
                 </div>
 
-                <!-- TEST TYPE & DISABLED -->
+<!-- TEST TYPE & DISABLED --------------------------------------------------------------------------------------------->
                 <div class="my-line">
                     <label class="my-label label-size">Type</label>
                     <div class="type-value-container my-value">
@@ -66,7 +67,7 @@
                     </div>
                 </div>
 
-                <!-- TAGS -->
+<!-- TAGS ------------------------------------------------------------------------------------------------------------->
                 <div class="my-line" *ngIf="!isEditMode && testModel.tags.length > 0 ">
                     <label class="my-label label-size">Tags</label>
                     <div class="my-value" *ngIf="!isEditMode">
@@ -99,7 +100,7 @@
                                          class="markdown-editor-dynamic-size"></markdown-editor>
                     </div>
                 </div>
-<!--SCENARIOS---------------------------------------------------------------------------------------------------------->
+<!-- SCENARIOS -------------------------------------------------------------------------------------------------------->
                 <div *ngIf="isEditMode || testModel.scenarios.length != 0" class="actions-header">
                     <h4 class="inline"><strong>Scenarios</strong></h4>
 
@@ -126,7 +127,7 @@
                 <scenario-tree [testModel]="testModel"
                                [isEditMode]="isEditMode"></scenario-tree>
 
-<!--STEPS-------------------------------------------------------------------------------------------------------------->
+<!-- STEPS ------------------------------------------------------------------------------------------------------------>
                 <p-messages *ngIf="warnings.length > 0" [(value)]="warnings" styleClass="error-message"></p-messages>
 
                 <div class="actions-header">
@@ -136,7 +137,7 @@
                     <div class="step-action-panel inline btn-group">
 
                         <div *ngIf="!isEditMode && !testModel.properties.isManual && testModel.stepCalls.length != 0"
-                             title="Run Test" class="btn btn-default btn-xs btn-group"
+                             title="{{testModel.scenarios.length == 0 ? 'Run Test' : 'Run Test for each Scenario' }}}" class="btn btn-default btn-xs btn-group"
                              (click)="runTest(); $event.stopPropagation()">
                             <i class="fa_my-run" aria-hidden="true"></i>
                         </div>

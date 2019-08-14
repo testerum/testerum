@@ -11,6 +11,8 @@ import {RunnerTestTreeNodeModel} from "../../model/runner-test-tree-node.model";
 import {TestsRunnerService} from "../../../tests-runner.service";
 import {RunnerTreeFilterModel} from "../../model/filter/runner-tree-filter.model";
 import {UrlService} from "../../../../../../service/url.service";
+import {RunnerScenarioTreeNodeModel} from "../../model/runner-scenario-tree-node.model";
+import {RunnerParametrizedTestTreeNodeModel} from "../../model/runner-parametrized-test-tree-node.model";
 
 @Component({
     moduleId: module.id,
@@ -50,9 +52,11 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
     isFeatureNode(): boolean {
         return this.model instanceof RunnerFeatureTreeNodeModel;
     }
-
     isTestNode(): boolean {
-        return this.model instanceof RunnerTestTreeNodeModel;
+        return this.model instanceof RunnerTestTreeNodeModel || this.model instanceof RunnerParametrizedTestTreeNodeModel;
+    }
+    isScenarioNode(): boolean {
+        return this.model instanceof RunnerScenarioTreeNodeModel;
     }
     isStepNode(): boolean {
         return this.model instanceof RunnerComposedStepTreeNodeModel || this.model instanceof RunnerBasicStepTreeNodeModel

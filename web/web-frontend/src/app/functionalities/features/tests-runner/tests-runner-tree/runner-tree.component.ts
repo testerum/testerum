@@ -14,6 +14,8 @@ import {RunnerRootNode} from "../../../../model/runner/tree/runner-root-node.mod
 import {Subscription} from "rxjs";
 import {RunnerEvent} from "../../../../model/test/event/runner.event";
 import {RunnerEventTypeEnum} from "../../../../model/test/event/enums/runner-event-type.enum";
+import {RunnerParametrizedTestTreeNodeModel} from "./model/runner-parametrized-test-tree-node.model";
+import {RunnerScenarioTreeNodeModel} from "./model/runner-scenario-tree-node.model";
 
 @Component({
     moduleId: module.id,
@@ -31,6 +33,8 @@ export class RunnerTreeComponent implements OnInit, OnDestroy {
         .addPair(RunnerRootTreeNodeModel, RunnerTreeNodeComponent)
         .addPair(RunnerFeatureTreeNodeModel, RunnerTreeNodeComponent)
         .addPair(RunnerTestTreeNodeModel, RunnerTreeNodeComponent)
+        .addPair(RunnerParametrizedTestTreeNodeModel, RunnerTreeNodeComponent)
+        .addPair(RunnerScenarioTreeNodeModel, RunnerTreeNodeComponent)
         .addPair(RunnerComposedStepTreeNodeModel, RunnerTreeNodeComponent)
         .addPair(RunnerBasicStepTreeNodeModel, RunnerTreeNodeComponent);
 

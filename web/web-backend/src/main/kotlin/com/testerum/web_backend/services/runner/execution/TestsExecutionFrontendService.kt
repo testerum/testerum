@@ -64,7 +64,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
     fun createExecution(runConfig: RunConfig): TestExecutionResponse {
         val testsDirectoryRoot = webProjectManager.getProjectServices().dirs().getTestsDir()
         val testPaths = runConfig.pathsToInclude.map {
-            val javaPath = testsDirectoryRoot.resolve(it.toString())
+            val javaPath = testsDirectoryRoot.resolve(it.path.toString())
 
             if (javaPath.isDirectory) {
                 FeatureTestPath(javaPath)

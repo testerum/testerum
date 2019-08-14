@@ -94,6 +94,11 @@ body {
     color: white;
 }
 
+.fa_my-scenario {
+    @extend .fas;
+    @extend .fa-stream;
+}
+
 .fa_my-step {
     @extend .fas;
     @extend .fa-shoe-prints;

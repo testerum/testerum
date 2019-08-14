@@ -28,6 +28,8 @@
 
         <i *ngIf="isTestNode()" class="fa_my-automated-test" aria-hidden="true"></i>
 
+        <i *ngIf="isScenarioNode()" class="fa_my-scenario" aria-hidden="true"></i>
+
         <span *ngIf="!isStepNode()"
               class="node-text"
               [class.tree-leaf-selected]="model.isSelected()">{{model.text}}</span>

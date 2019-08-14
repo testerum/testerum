@@ -14,6 +14,10 @@ import {RunnerBasicStepTreeNodeModel} from "../model/runner-basic-step-tree-node
 import {RunnerBasicStepNode} from "../../../../../model/runner/tree/runner-basic-step-node.model";
 import {RunnerUndefinedStepNode} from "../../../../../model/runner/tree/runner-undefined-step-node.model";
 import {RunnerEvent} from "../../../../../model/test/event/runner.event";
+import {RunnerParametrizedTestNode} from "../../../../../model/runner/tree/runner-parametrized-test.node";
+import {RunnerScenarioNode} from "../../../../../model/runner/tree/runner-scenario-node.model";
+import {RunnerParametrizedTestTreeNodeModel} from "../model/runner-parametrized-test-tree-node.model";
+import {RunnerScenarioTreeNodeModel} from "../model/runner-scenario-tree-node.model";
 
 export class RunnerTreeUtil {
 
@@ -36,6 +40,8 @@ export class RunnerTreeUtil {
         if (parentServerNode instanceof RunnerRootNode ||
             parentServerNode instanceof RunnerFeatureNode ||
             parentServerNode instanceof RunnerTestNode ||
+            parentServerNode instanceof RunnerParametrizedTestNode ||
+            parentServerNode instanceof RunnerScenarioNode ||
             parentServerNode instanceof RunnerComposedStepNode) {
             serverNodeChildren = parentServerNode.children;
         }
@@ -69,6 +75,22 @@ export class RunnerTreeUtil {
             testTreeNode.getNodeState().showChildren = false;
 
             treeNode = testTreeNode;
+        }
+
+        if (serverNode instanceof RunnerParametrizedTestNode) {
+            let parametrizedTestTreeNode = new RunnerParametrizedTestTreeNodeModel(parentNode);
+            parametrizedTestTreeNode.text = serverNode.name;
+            parametrizedTestTreeNode.getNodeState().showChildren = true;
+
+            treeNode = parametrizedTestTreeNode;
+        }
+
+        if (serverNode instanceof RunnerScenarioNode) {
+            let scenarioTreeNodeModel = new RunnerScenarioTreeNodeModel(parentNode);
+            scenarioTreeNodeModel.text = serverNode.name;
+            scenarioTreeNodeModel.getNodeState().showChildren = false;
+
+            treeNode = scenarioTreeNodeModel;
         }
 
         if (serverNode instanceof RunnerComposedStepNode) {
@@ -138,5 +160,22 @@ export class RunnerTreeUtil {
 
     private static appendParentNodeToEventKey(eventKey: string, node: RunnerTreeNodeModel): string {
         return node.id + "_" + node.parentContainer.getChildren().indexOf(node, 0) + "#" + eventKey
+    }
+
+    static getNumberOfSimpleTestsAndScenarios(treeRootNode: RunnerRootTreeNodeModel): number {
+        return this.getNumberOfSimpleTestsAnsScenariosOfContainer(treeRootNode, 0);
+    }
+
+    private static getNumberOfSimpleTestsAnsScenariosOfContainer(parentNode: RunnerTreeContainerNodeModel, result: number): number {
+        for (const childNode of parentNode.getChildren()) {
+            if (childNode instanceof RunnerFeatureTreeNodeModel || childNode instanceof RunnerParametrizedTestTreeNodeModel) {
+                result = this.getNumberOfSimpleTestsAnsScenariosOfContainer(childNode, result);
+            }
+
+            if (childNode instanceof RunnerTestTreeNodeModel || childNode instanceof RunnerScenarioTreeNodeModel) {
+                result++;
+            }
+        }
+        return result;
     }
 }

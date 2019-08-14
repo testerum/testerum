@@ -5,6 +5,8 @@ import { RunnerTestNode } from "../runner-test-node.model";
 import { RunnerTestOrFeatureNode } from "../runner-test-or-feature-node.model";
 import { RunnerStepNode } from "../runner-step-node.model";
 import { RunnerUndefinedStepNode } from "../runner-undefined-step-node.model";
+import {RunnerParametrizedTestNode} from "../runner-parametrized-test.node";
+import {RunnerScenarioNode} from "../runner-scenario-node.model";
 
 export class RunnerTreeDeserializationUtil {
 
@@ -19,7 +21,21 @@ export class RunnerTreeDeserializationUtil {
         if (inputNode["@type"] == "RUNNER_FEATURE") {
             return new RunnerFeatureNode().deserialize(inputNode)
         }
+        if (inputNode["@type"] == "RUNNER_PARAMETRIZED_TEST") {
+            return new RunnerParametrizedTestNode().deserialize(inputNode)
+        }
 
+        throw Error(`unknown node type [${inputNode["@type"]}]`);
+    }
+
+    public static deserializeRunnerScenariosNodes(inputNodes: Object[]): RunnerScenarioNode[] {
+        return inputNodes.map((inputNode) => RunnerTreeDeserializationUtil.deserializeRunnerScenarioNode(inputNode));
+    }
+
+    private static deserializeRunnerScenarioNode(inputNode: Object): RunnerScenarioNode {
+        if (inputNode["@type"] == "RUNNER_TEST_SCENARIO") {
+            return new RunnerScenarioNode().deserialize(inputNode)
+        }
         throw Error(`unknown node type [${inputNode["@type"]}]`);
     }
 
@@ -40,5 +56,4 @@ export class RunnerTreeDeserializationUtil {
 
         throw Error(`unknown node type [${inputNode["@type"]}]`);
     }
-
 }
