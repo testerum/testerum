@@ -17,7 +17,7 @@ import {ScenarioParamNodeModel} from "./model/scenario-param-node.model";
     styleUrls: ['./scenario-tree.component.scss'],
     providers: [ScenarioTreeComponentService]
 })
-export class ScenarioTreeComponent implements OnInit, OnChanges {
+export class ScenarioTreeComponent implements OnChanges {
 
     @Input() testModel: TestModel;
     @Input() isEditMode: boolean = false;
@@ -31,7 +31,7 @@ export class ScenarioTreeComponent implements OnInit, OnChanges {
     constructor(public scenarioTreeComponentService: ScenarioTreeComponentService) {
     }
 
-    ngOnInit() {
+    private initComponentTree() {
         this.scenarioTreeComponentService.testModel = this.testModel;
         this.scenarioTreeComponentService.isEditMode = this.isEditMode;
         this.scenarioTreeComponentService.jsonTreeModel = this.jsonTreeModel;
@@ -42,6 +42,8 @@ export class ScenarioTreeComponent implements OnInit, OnChanges {
         if (changes['isEditMode'] != null) {
             this.scenarioTreeComponentService.isEditMode = this.isEditMode;
         }
+        if (changes['testModel']) {
+            this.initComponentTree();
+        }
     }
-
 }
