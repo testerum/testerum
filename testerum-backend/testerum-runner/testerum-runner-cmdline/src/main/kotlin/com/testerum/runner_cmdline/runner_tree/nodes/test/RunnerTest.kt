@@ -39,14 +39,6 @@ class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
     override lateinit var parent: RunnerTreeNode
     override val positionInParent = PositionInParent(test.id, indexInParent)
 
-    private fun getPathForLogging(): String {
-        return "test at [${filePath.toAbsolutePath().normalize()}]"
-    }
-
-    private fun getNameForLogging(): String {
-        return "test [${test.name}] at [${test.path}]"
-    }
-
     override fun getGlueClasses(context: RunnerContext): List<Class<*>> {
         val glueClasses = mutableListOf<Class<*>>()
 
@@ -69,7 +61,7 @@ class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
         try {
             return tryToRun(context, globalVars)
         } catch (e: Exception) {
-            throw RuntimeException("failed to execute ${getPathForLogging()}", e)
+            throw RuntimeException("failed to execute test at [${filePath.toAbsolutePath().normalize()}]", e)
         }
     }
 
@@ -111,7 +103,7 @@ class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
 
             if (steps.isEmpty()) {
                 executionStatus = ExecutionStatus.UNDEFINED
-                context.logMessage("marking ${getNameForLogging()} as $executionStatus because it doesn't have any steps")
+                context.logMessage("marking test [${test.name}] at [${test.path}] as $executionStatus because it doesn't have any steps")
             } else {
                 for (step in steps) {
                     if (executionStatus == ExecutionStatus.PASSED || executionStatus == ExecutionStatus.DISABLED) {
@@ -217,14 +209,14 @@ class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                         tags = test.tags
                 )
         )
-        context.logMessage("Started executing ${getNameForLogging()}")
+        context.logMessage("Started executing test [${test.name}] at [${test.path}]")
     }
 
     private fun logTestEnd(context: RunnerContext,
                                   executionStatus: ExecutionStatus,
                                   exception: Throwable?,
                                   durationMillis: Long) {
-        context.logMessage("Finished executing ${getNameForLogging()}; status: [$executionStatus]", exception)
+        context.logMessage("Finished executing test [${test.name}] at [${test.path}]; status: [$executionStatus]", exception)
         context.logEvent(
                 TestEndEvent(
                         eventKey = eventKey,
