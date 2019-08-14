@@ -30,7 +30,6 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
                      val scenario: Scenario,
                      private val scenarioIndex: Int,
                      private val filePath: java.nio.file.Path,
-                     private val indexInParent: Int,
                      private val steps: List<RunnerStep>,
                      private val afterEachTestHooks: List<RunnerHook>) : RunnerFeatureOrTest() {
 
@@ -49,7 +48,7 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
     }
 
     override lateinit var parent: RunnerTreeNode
-    override val positionInParent = PositionInParent("${test.id}-$scenarioIndex", indexInParent)
+    override val positionInParent = PositionInParent("${test.id}-$scenarioIndex", scenarioIndex)
 
     private val scenarioName = scenario.name ?: "Execution ${scenarioIndex + 1}"
 
