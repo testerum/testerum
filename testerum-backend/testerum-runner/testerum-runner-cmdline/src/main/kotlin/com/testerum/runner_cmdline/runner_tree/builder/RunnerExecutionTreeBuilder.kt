@@ -182,7 +182,6 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                                     filePath = payload.testPath.javaPath,
                                     scenarioIndex = index,
                                     scenario = scenario,
-                                    testIndexInParent = indexInParent,
                                     beforeEachTestHooks = beforeEachTestHooks,
                                     afterEachTestHooks = afterEachTestHooks
                             )
@@ -237,7 +236,6 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                                              filePath: JavaPath,
                                              scenarioIndex: Int,
                                              scenario: Scenario,
-                                             testIndexInParent: Int,
                                              beforeEachTestHooks: List<RunnerHook>,
                                              afterEachTestHooks: List<RunnerHook>): RunnerScenario {
             val runnerSteps = mutableListOf<RunnerStep>()
@@ -252,7 +250,6 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                     scenario = scenario,
                     scenarioIndex = scenarioIndex,
                     filePath = filePath,
-                    indexInParent = testIndexInParent,
                     steps = runnerSteps,
                     afterEachTestHooks = afterEachTestHooks
             )
