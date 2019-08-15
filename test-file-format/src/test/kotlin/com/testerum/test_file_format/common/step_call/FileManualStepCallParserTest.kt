@@ -37,6 +37,26 @@ class FileManualStepCallParserTest {
     }
 
     @Test
+    fun `should parse disabled step`() {
+        assertThat(
+                parser.parse("step [NOT_EXECUTED, disabled]: Given an empty database"),
+                equalTo(
+                        FileManualStepCall(
+                                step = FileStepCall(
+                                        phase = FileStepPhase.GIVEN,
+                                        parts = listOf(
+                                                FileTextStepCallPart("an empty database")
+                                        ),
+                                        vars = emptyList()
+                                ),
+                                status = FileManualStepCallStatus.NOT_EXECUTED,
+                                enabled = false
+                        )
+                )
+        )
+    }
+
+    @Test
     fun `should parse steps with one expressionArgPart`() {
         assertThat(
                 parser.parse(
