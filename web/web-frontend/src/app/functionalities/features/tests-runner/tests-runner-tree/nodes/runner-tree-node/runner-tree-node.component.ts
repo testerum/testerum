@@ -13,6 +13,7 @@ import {RunnerTreeFilterModel} from "../../model/filter/runner-tree-filter.model
 import {UrlService} from "../../../../../../service/url.service";
 import {RunnerScenarioTreeNodeModel} from "../../model/runner-scenario-tree-node.model";
 import {RunnerParametrizedTestTreeNodeModel} from "../../model/runner-parametrized-test-tree-node.model";
+import {RunnerRootTreeNodeModel} from "../../model/runner-root-tree-node.model";
 
 @Component({
     moduleId: module.id,
@@ -49,6 +50,9 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
         }
     }
 
+    isTestSuiteNode(): boolean {
+        return this.model instanceof RunnerRootTreeNodeModel;
+    }
     isFeatureNode(): boolean {
         return this.model instanceof RunnerFeatureTreeNodeModel;
     }
@@ -66,17 +70,24 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
     }
 
     getStatusTooltip(): string {
-        switch (this.model.state) {
-            case ExecutionStatusEnum.WAITING: return "Waiting";
-            case ExecutionStatusEnum.EXECUTING : return "Executing";
-            case ExecutionStatusEnum.PASSED: return "Passed";
-            case ExecutionStatusEnum.FAILED: return "Failed";
-            case ExecutionStatusEnum.DISABLED: return "Disabled";
-            case ExecutionStatusEnum.UNDEFINED: return "Undefined steps";
-            case ExecutionStatusEnum.SKIPPED: return "Skipped";
+        let result = "";
+        if(this.isTestSuiteNode()) result += "Test Suite";
+        if(this.isFeatureNode()) result += "Feature";
+        if(this.isTestNode()) result += "Test";
+        if(this.isScenarioNode()) result += "Scenario";
+        if(this.isStepNode()) result += "Step";
 
-            default: return "";
+        switch (this.model.state) {
+            case ExecutionStatusEnum.WAITING: result += " is Waiting"; break;
+            case ExecutionStatusEnum.EXECUTING : result += " is Executing"; break;
+            case ExecutionStatusEnum.PASSED: result += " has Passed"; break;
+            case ExecutionStatusEnum.FAILED: result += " has Failed"; break;
+            case ExecutionStatusEnum.DISABLED: result += " is Disabled"; break;
+            case ExecutionStatusEnum.UNDEFINED: result += " is Undefined Steps"; break;
+            case ExecutionStatusEnum.SKIPPED: result += " was Skipped"; break;
         }
+
+        return result;
     }
 
     collapseNode() {
