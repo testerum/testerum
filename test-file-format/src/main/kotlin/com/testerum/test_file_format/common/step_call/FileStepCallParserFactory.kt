@@ -9,8 +9,8 @@ import com.testerum.test_file_format.common.step_call.`var`.FileStepVarParserFac
 import com.testerum.test_file_format.common.step_call.part.FileStepCallPartParserFactory.stepCallPart
 import com.testerum.test_file_format.common.step_call.phase.FileStepPhaseParserFactory.stepPhase
 import com.testerum.test_file_format.manual_step_call.FileManualStepCall
-import com.testerum.test_file_format.manual_step_call.status.FileManualStepCallStatus
-import com.testerum.test_file_format.manual_step_call.status.FileManualStepCallStatusParserFactory.manualStepStatus
+import com.testerum.test_file_format.manual_step_call.status.FileManualStepCallProperties
+import com.testerum.test_file_format.manual_step_call.status.FileManualStepCallPropertiesParserFactory.manualStepProperties
 import org.jparsec.Parser
 import org.jparsec.Parsers.sequence
 import org.jparsec.Scanners
@@ -46,7 +46,7 @@ object FileStepCallParserFactory : ParserFactory<FileStepCall> {
                         string("step "),
                         optionalWhitespace()
                 ),
-                manualStepStatus(),
+                manualStepProperties(),
                 sequence(
                         optionalWhitespace(),
                         string(": ")
@@ -56,10 +56,11 @@ object FileStepCallParserFactory : ParserFactory<FileStepCall> {
                 stepCallPart().many1(),
                 stepVars(),
                 optionalNewLines()
-        ) { _, stepCallStatus: FileManualStepCallStatus, _, phase, _, parts, vars, _ ->
+        ) { _, stepCallProperties: FileManualStepCallProperties, _, phase, _, parts, vars, _ ->
             FileManualStepCall(
                     step = FileStepCall(phase, parts, vars, true),
-                    status = stepCallStatus
+                    status = stepCallProperties.status,
+                    enabled = stepCallProperties.enabled
             )
         }
     }

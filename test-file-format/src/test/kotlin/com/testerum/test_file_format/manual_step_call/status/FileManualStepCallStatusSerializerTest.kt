@@ -11,25 +11,40 @@ class FileManualStepCallStatusSerializerTest {
     companion object {
         private val testRunner = SerializerTestRunner(
                 FileManualStepCallStatusSerializer,
-                FileManualStepCallStatusParserFactory.manualStepStatus()
+                FileManualStepCallPropertiesParserFactory.manualStepProperties()
         )
 
         @JvmStatic
         @Suppress("unused")
         fun provideTestArguments(): Stream<Arguments> {
-            return FileManualStepCallStatus.values().map {
-                Arguments.of(it)
-            }.stream()
+            val arguments = mutableListOf<Arguments>()
+
+            for (status in FileManualStepCallStatus.values()) {
+                arguments += Arguments.of(
+                        FileManualStepCallProperties(status, enabled = false)
+                )
+                arguments += Arguments.of(
+                        FileManualStepCallProperties(status, enabled = true)
+                )
+            }
+
+            return arguments.stream()
         }
     }
 
     @ParameterizedTest
     @MethodSource("provideTestArguments")
-    fun test(statusToTest: FileManualStepCallStatus) {
+    fun test(propertyToTest: FileManualStepCallProperties) {
+        val expected = if (propertyToTest.enabled) {
+            "[${propertyToTest.status.name}]"
+        } else {
+            "[${propertyToTest.status.name}, disabled]"
+        }
+
         testRunner.execute(
-                original = statusToTest,
+                original = propertyToTest,
                 indentLevel = 0,
-                expected = "[${statusToTest.name}]"
+                expected = expected
         )
     }
 
