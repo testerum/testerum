@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {ScenarioTreeComponentService} from "../../scenario-tree.component-service";
 import {ScenarioContainerModel} from "../../model/scenario-container.model";
@@ -13,7 +13,8 @@ import {TestsRunnerService} from "../../../../tests-runner/tests-runner.service"
     styleUrls: [
         'scenario-container.component.scss',
         '../../../../../../generic/css/tree.scss',
-    ]
+    ],
+    encapsulation: ViewEncapsulation.None
 })
 export class ScenarioContainerComponent implements OnInit, AfterViewInit {
 
@@ -60,6 +61,10 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
 
     isEditMode(): boolean {
         return this.scenarioTreeComponentService.isEditMode;
+    }
+
+    isDisabled(): boolean {
+        return !this.model.scenario.enabled;
     }
 
     editScenarioName() {
@@ -110,11 +115,11 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
         return this.model.parentContainer.getChildren().indexOf(this.model);
     }
 
-    public removeStep(): void {
+    public removeScenario(): void {
         this.scenarioTreeComponentService.removeScenario(this.model);
     }
 
-    onCopyStep() {
+    onCopyScenario() {
         this.setSelected();
         this.scenarioTreeComponentService.setScenarioToCopy(this);
     }
@@ -137,5 +142,9 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
 
     runScenario() {
         this.testsRunnerService.runTestScenario(this.getTestModel().path, this.findScenarioIndex());
+    }
+
+    disableOrEnableScenario() {
+        this.model.scenario.enabled = !this.model.scenario.enabled;
     }
 }

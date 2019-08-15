@@ -5,10 +5,11 @@
          (mouseleave)="hasMouseOver=false"
          (click)="toggleNode();$event.stopPropagation();">
 
-        <div [class.selected_for_copy_or_cut]="isSelectedForCopyOrCut()">
+        <div [class.selected_for_copy_or_cut]="isSelectedForCopyOrCut()" title="{{isDisabled() ? 'Disabled Scenario': ''}}">
             <tree-text-edit #treeTextEdit
                             [ngModel]="this.model.scenario.name"
                             (ngModelChange)="onScenarioNameChange($event)"
+                            [class.disabled]="isDisabled()"
                             [isEditMode]="isEditMode()"
                             [isTextEditMode]="isScenarioNameEditMode"></tree-text-edit>
         </div>
@@ -44,14 +45,21 @@
                 <i class="fas fa-arrow-down" aria-hidden="true"></i>
             </div>
 
-            <div title="Copy Step" class="btn btn-default btn-xs btn-group"
-                 (click)="onCopyStep(); $event.stopPropagation()">
+            <div title="Copy Scenario" class="btn btn-default btn-xs btn-group"
+                 (click)="onCopyScenario(); $event.stopPropagation()">
                 <i class="fa_my-copy" aria-hidden="true"></i>
             </div>
 
-            <div title="Remove Step"
+            <div title="{{isDisabled() ? 'Enable Scenario': 'Disable Scenario'}}"
                  class="btn btn-default btn-xs btn-group"
-                 (click)="removeStep(); $event.stopPropagation()">
+                 [class.active]="isDisabled()"
+                 (click)="disableOrEnableScenario(); $event.stopPropagation()">
+                <i class="fa_my-disabled-ban" aria-hidden="true"></i>
+            </div>
+
+            <div title="Remove Scenario"
+                 class="btn btn-default btn-xs btn-group"
+                 (click)="removeScenario(); $event.stopPropagation()">
                 <i class="fa_my-delete" aria-hidden="true"></i>
             </div>
         </div>

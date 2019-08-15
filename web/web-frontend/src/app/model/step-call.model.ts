@@ -109,7 +109,7 @@ export class StepCall implements Serializable<StepCall> {
             '"id":' + JsonUtil.stringify(this.id) + ',' +
             '"stepDef":' + this.stepDef.serialize() + ',' +
             '"args":' + JsonUtil.serializeArrayOfSerializable(this.args) + ',' +
-            ',"enabled":' + JsonUtil.stringify(this.enabled) +
+            '"enabled":' + JsonUtil.stringify(this.enabled) + ',' +
             '"warnings": []' +
             '}'
     }

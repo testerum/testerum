@@ -20,5 +20,10 @@
             border: 1px black dotted;
             border-radius: 10px;
         }
+        tree-text-edit.disabled {
+            .text-mode {
+                text-decoration: line-through;
+            }
+        }
     }
 }

@@ -258,6 +258,10 @@ body {
     @extend .fas;
     @extend .fa-times;
 }
+.fa_my-disabled-ban {
+    @extend .fas;
+    @extend .fa-ban;
+}
 .fa_my-enabled {
     @extend .fas;
     @extend .fa-check;
