@@ -87,28 +87,29 @@ class RunnerTreeBuilder {
                     val isParametrizedTest = payload.model.scenarios.isNotEmpty()
 
                     if (isParametrizedTest) {
-                        val testScenarios: List<RunnerTestScenarioNode> = payload.model.scenarios.mapIndexed { index, scenario ->
-                            createTestScenarioBranch(payload.model, index, scenario)
-                        }
-
                         val filteredTestScenarios = if (payload.path is ScenariosTestPath) {
                             if (payload.path.scenarioIndexes.isEmpty()) {
                                 // there is no filter on scenarios
-                                testScenarios
+                                payload.model.scenarios
                             } else {
-                                testScenarios.filterIndexed { scenarioIndex, _ ->
+                                payload.model.scenarios.filterIndexed { scenarioIndex, _ ->
                                     scenarioIndex in payload.path.scenarioIndexes
                                 }
                             }
                         } else {
-                            testScenarios
+                            payload.model.scenarios
+                        }
+
+
+                        val runnerScenariosNodes: List<RunnerTestScenarioNode> = filteredTestScenarios.mapIndexed { index, scenario ->
+                            createTestScenarioBranch(payload.model, index, scenario)
                         }
 
                         RunnerParametrizedTestNode(
                                 id = payload.model.id,
                                 name = label,
                                 path = payload.model.path,
-                                children = filteredTestScenarios
+                                children = runnerScenariosNodes
                         )
                     } else {
                         val stepCalls: List<RunnerStepNode> = payload.model.stepCalls.map(this::createStepCallBranch)

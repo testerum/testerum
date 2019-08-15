@@ -176,7 +176,31 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                     val isParametrizedTest = payload.test.scenarios.isNotEmpty()
 
                     if (isParametrizedTest) {
-                        val testScenarios: List<RunnerScenario> = payload.test.scenarios.mapIndexed { index, scenario ->
+                        // verify filter criteria
+                        if (payload.testPath is ScenariosTestPath) {
+                            for (scenarioIndex in payload.testPath.scenarioIndexes) {
+                                if (scenarioIndex >= payload.test.scenarios.size) {
+                                    LOG.warn("invalid scenario index [$scenarioIndex] for test at [${payload.testPath.testFile}]: this test has only ${payload.test.scenarios.size} scenarios; the index must be between 0 and ${payload.test.scenarios.size - 1} inclusive")
+                                }
+                            }
+                        }
+
+                        val filteredTestScenarios = if (payload.testPath is ScenariosTestPath) {
+                            // filter scenarios
+                            if (payload.testPath.scenarioIndexes.isEmpty()) {
+                                // there is no filter on scenarios
+                                payload.test.scenarios
+                            } else {
+                                payload.test.scenarios.filterIndexed { scenarioIndex, _ ->
+                                    scenarioIndex in payload.testPath.scenarioIndexes
+                                }
+                            }
+                        } else {
+                            payload.test.scenarios
+                        }
+
+
+                        val runnerScenariosNodes: List<RunnerScenario> = filteredTestScenarios.mapIndexed { index, scenario ->
                             createTestScenarioBranch(
                                     test = payload.test,
                                     filePath = payload.testPath.javaPath,
@@ -187,32 +211,12 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                             )
                         }
 
-                        val filteredTestScenarios = if (payload.testPath is ScenariosTestPath) {
-                            // verify filter criteria
-                            for (scenarioIndex in payload.testPath.scenarioIndexes) {
-                                if (scenarioIndex >= testScenarios.size) {
-                                    LOG.warn("invalid scenario index [$scenarioIndex] for test at [${payload.testPath.testFile}]: this test has only ${testScenarios.size} scenarios; the index must be between 0 and ${testScenarios.size - 1} inclusive")
-                                }
-                            }
-
-                            // filter scenarios
-                            if (payload.testPath.scenarioIndexes.isEmpty()) {
-                                // there is no filter on scenarios
-                                testScenarios
-                            } else {
-                                testScenarios.filterIndexed { scenarioIndex, _ ->
-                                    scenarioIndex in payload.testPath.scenarioIndexes
-                                }
-                            }
-                        } else {
-                            testScenarios
-                        }
 
                         RunnerParametrizedTest(
                                 test = payload.test,
                                 filePath = payload.testPath.javaPath,
                                 indexInParent = indexInParent,
-                                scenarios = filteredTestScenarios
+                                scenarios = runnerScenariosNodes
                         )
                     } else {
                         if (payload.testPath is ScenariosTestPath) {
