@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
-import {StepTextPartEnum} from "../../../model/enums/step-text-part.enum";
 import {StepDef} from "../../../model/step-def.model";
 import {StepPatternPart} from "../../../model/text/parts/step-pattern-part.model";
 import {ParamStepPatternPart} from "../../../model/text/parts/param-step-pattern-part.model";
@@ -51,5 +50,9 @@ export class StepTextComponent<T extends StepDef> {
 
     isUndefinedStepDef(): boolean {
         return this.stepDef instanceof UndefinedStepDef;
+    }
+
+    isDisabled(): boolean {
+        return !this.stepCall.enabled;
     }
 }

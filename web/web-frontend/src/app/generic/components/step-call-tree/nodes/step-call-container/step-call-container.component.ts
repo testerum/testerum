@@ -312,4 +312,12 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     isSelectedForCopyOrCut(): boolean {
         return this.stepCallTreeComponentService.getSelectedNode() == this;
     }
+
+    isDisabled(): boolean {
+        return !this.model.stepCall.enabled;
+    }
+
+    disableOrEnableStep() {
+        this.model.stepCall.enabled = !this.model.stepCall.enabled;
+    }
 }

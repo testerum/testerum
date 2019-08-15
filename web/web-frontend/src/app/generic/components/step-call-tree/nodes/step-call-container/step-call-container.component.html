@@ -71,6 +71,13 @@
                 <i class="fa_my-copy" aria-hidden="true"></i>
             </div>
 
+            <div title="{{isDisabled() ? 'Enable Step': 'Disable Step'}}"
+                 class="btn btn-default btn-xs btn-group"
+                 [class.active]="isDisabled()"
+                 (click)="disableOrEnableStep(); $event.stopPropagation()">
+                <i class="fa_my-disabled-ban" aria-hidden="true"></i>
+            </div>
+
             <div title="Remove Step"
                  class="btn btn-default btn-xs btn-group"
                  (click)="removeStep(); $event.stopPropagation()">
