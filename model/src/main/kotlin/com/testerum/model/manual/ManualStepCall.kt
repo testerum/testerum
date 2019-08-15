@@ -6,4 +6,5 @@ import com.testerum.model.manual.enums.ManualTestStepStatus
 import com.testerum.model.step.StepCall
 
 data class ManualStepCall @JsonCreator constructor(@JsonProperty("stepCall") val stepCall: StepCall,
-                                                   @JsonProperty("status") val status: ManualTestStepStatus)
+                                                   @JsonProperty("status") val status: ManualTestStepStatus,
+                                                   @JsonProperty("enabled") val enabled: Boolean)

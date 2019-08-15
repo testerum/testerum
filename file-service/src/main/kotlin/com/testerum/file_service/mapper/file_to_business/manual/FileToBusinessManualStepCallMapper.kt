@@ -19,7 +19,8 @@ class FileToBusinessManualStepCallMapper(private val stepCallMapper: FileToBusin
 
             manualStepCalls += ManualStepCall(
                     stepCall = stepsCalls[i],
-                    status = status
+                    status = status,
+                    enabled = fileManualStepCall.enabled
             )
         }
 
