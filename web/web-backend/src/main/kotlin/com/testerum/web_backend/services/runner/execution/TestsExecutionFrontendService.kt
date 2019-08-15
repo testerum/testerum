@@ -11,6 +11,7 @@ import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
 import com.testerum.model.runner.tree.builder.TestPathAndModel
 import com.testerum.model.test.TestModel
 import com.testerum.model.tests_finder.FeatureTestPath
+import com.testerum.model.tests_finder.ScenariosTestPath
 import com.testerum.model.tests_finder.TestPath
 import com.testerum.model.tests_finder.TestTestPath
 import com.testerum.model.tests_finder.TestsFinder
@@ -68,8 +69,10 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
             if (javaPath.isDirectory) {
                 FeatureTestPath(javaPath)
-            } else {
+            } else if (it.scenarioIndexes.isEmpty()) {
                 TestTestPath(javaPath)
+            } else {
+                ScenariosTestPath(javaPath, it.scenarioIndexes)
             }
         }
 
