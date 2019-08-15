@@ -50,6 +50,17 @@ export class TestsRunnerService {
         });
     }
 
+    runTestScenario(testPathToExecute: Path, testIndex: number) {
+        const runConfig = new RunConfig();
+        runConfig.name = "temp run config";
+        let pathWithScenarioIndexes = new PathWithScenarioIndexes();
+        pathWithScenarioIndexes.path = testPathToExecute;
+        pathWithScenarioIndexes.scenarioIndexes = [testIndex];
+        runConfig.pathsToInclude = [pathWithScenarioIndexes];
+
+        this.runRunConfig(runConfig);
+    }
+
     runTests(pathsToExecute: Path[]) {
         const runConfig = new RunConfig();
         runConfig.name = "temp run config";

@@ -4,6 +4,8 @@ import {ScenarioTreeComponentService} from "../../scenario-tree.component-servic
 import {ScenarioContainerModel} from "../../model/scenario-container.model";
 import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/model/json-tree-container.model";
 import {TreeTextEditComponent} from "./tree-text-edit/tree-text-edit.component";
+import {TestModel} from "../../../../../../model/test/test.model";
+import {TestsRunnerService} from "../../../../tests-runner/tests-runner.service";
 
 @Component({
     selector: 'scenario-container',
@@ -25,7 +27,8 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     hasMouseOver: boolean = false;
     isScenarioNameEditMode: any = false;
 
-    constructor(private scenarioTreeComponentService: ScenarioTreeComponentService) {
+    constructor(private scenarioTreeComponentService: ScenarioTreeComponentService,
+                private testsRunnerService: TestsRunnerService) {
     }
 
     ngOnInit() {
@@ -95,15 +98,15 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
         }
     }
 
-    isFirstStep(): boolean {
-        return this.findStepIndex() == 0;
+    isFirstScenario(): boolean {
+        return this.findScenarioIndex() == 0;
     }
 
-    isLastStep(): boolean {
-        return this.findStepIndex() == this.model.parentContainer.getChildren().length - 1;
+    isLastScenario(): boolean {
+        return this.findScenarioIndex() == this.model.parentContainer.getChildren().length - 1;
     }
 
-    private findStepIndex(): number {
+    private findScenarioIndex(): number {
         return this.model.parentContainer.getChildren().indexOf(this.model);
     }
 
@@ -126,5 +129,13 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
 
     onScenarioNameChange(newName: string) {
         this.model.scenario.name = newName;
+    }
+
+    getTestModel(): TestModel {
+        return this.scenarioTreeComponentService.testModel;
+    }
+
+    runScenario() {
+        this.testsRunnerService.runTestScenario(this.getTestModel().path, this.findScenarioIndex());
     }
 }

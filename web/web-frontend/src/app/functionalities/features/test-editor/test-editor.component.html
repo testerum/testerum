@@ -106,6 +106,13 @@
 
                     <!-- BUTTONS -->
                     <div class="step-action-panel inline btn-group">
+
+                        <div *ngIf="!isEditMode && !testModel.properties.isManual && testModel.stepCalls.length != 0 && hasScenarios()"
+                             title="Run Test for all Scenarios" class="btn btn-default btn-xs btn-group"
+                             (click)="runTestForAllScenarios(); $event.stopPropagation()">
+                            <i class="fa_my-run" aria-hidden="true"></i>
+                        </div>
+
                         <div title="Add Scenario" class="btn btn-default btn-xs btn-group"
                              (click)="addScenario(); $event.stopPropagation()">
                             <i class="fa_my-plus" aria-hidden="true"></i>
@@ -136,8 +143,8 @@
                     <!-- BUTTONS -->
                     <div class="step-action-panel inline btn-group">
 
-                        <div *ngIf="!isEditMode && !testModel.properties.isManual && testModel.stepCalls.length != 0"
-                             title="{{testModel.scenarios.length == 0 ? 'Run Test' : 'Run Test for each Scenario' }}}" class="btn btn-default btn-xs btn-group"
+                        <div *ngIf="!isEditMode && !testModel.properties.isManual && testModel.stepCalls.length != 0 && !hasScenarios()"
+                             title="Run Test" class="btn btn-default btn-xs btn-group"
                              (click)="runTest(); $event.stopPropagation()">
                             <i class="fa_my-run" aria-hidden="true"></i>
                         </div>

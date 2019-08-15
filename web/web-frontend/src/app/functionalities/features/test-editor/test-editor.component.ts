@@ -60,7 +60,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     private routeSubscription: Subscription;
     private editModeStepCallTreeSubscription: Subscription;
     private warningRecalculationChangesSubscription: Subscription;
-    private addNewScenarioSubsciption: Subscription;
+    private addNewScenarioSubscription: Subscription;
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
@@ -147,7 +147,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
         if(this.routeSubscription) this.routeSubscription.unsubscribe();
         if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
         if(this.warningRecalculationChangesSubscription) this.warningRecalculationChangesSubscription.unsubscribe();
-        if(this.addNewScenarioSubsciption) this.addNewScenarioSubsciption.unsubscribe();
+        if(this.addNewScenarioSubscription) this.addNewScenarioSubscription.unsubscribe();
     }
 
     canDeactivate(): boolean {
@@ -355,5 +355,13 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
     onPasteScenario() {
         this.scenarioTreeComponent.scenarioTreeComponentService.onPasteScenario();
+    }
+
+    hasScenarios(): boolean {
+        return this.testModel.scenarios.length != 0;
+    }
+
+    runTestForAllScenarios() {
+        this.testsRunnerService.runTests([this.testModel.path]);
     }
 }
