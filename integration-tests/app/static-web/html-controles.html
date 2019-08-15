@@ -49,6 +49,21 @@
             var y = e.clientY - rect.top;  //y position within the element.
             setControlText("double-click="+x+","+y);
         }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+
     </script>
 </head>
 <body>
@@ -98,7 +113,7 @@
                 <fieldset>
                     <legend>Text Changes</legend>
                     <div>
-                        <button type="button" id="set-text-button" onclick="setControlText(this.innerHTML)">Set Text Instantly</button>
+                        <button type="button" id="set-text-button" onclick="setControlText(this.innerHTML)" value="testJavaScript Variables">Set Text Instantly</button>
                         <button type="button" id="set-text-in-3-sec-button" onclick="setTimeout(function() { setControlText($('#set-text-in-3-sec-button').text());}, 3000)">Set Text with 3 seconds delay</button>
                     </div>
                 </fieldset>
@@ -206,7 +221,7 @@
                     </p>
                     <p>
                         <label for="ir">Range input</label>
-                        <input type="range" id="ir" value="10">
+                        <input type="range" id="ir" value="10" onchange="setControlText(this.value)">
                     </p>
                     <p>
                         <label for="idd">Date input</label>
@@ -273,8 +288,6 @@
                     setControlText("Alert box was closed")'>Show Alert</button>
                 </div>
             </fieldset>
-        </section>
-
 
         <section id="embedded">
             <header><h1>Embedded content</h1></header>
@@ -320,6 +333,9 @@
                 <header><h2>IFrame</h2></header>
                 <div><iframe src="browser-size.html" height="300"></iframe></div>
             </article>
+            <div class="element_click_class"
+                 style="border: 1px black solid; width: 10em; text-align: center; padding: .2em; cursor: pointer;"
+                 onclick="setControlText(this.innerHTML)">Clickable element</div>
         </section>
     </main>
 </div>

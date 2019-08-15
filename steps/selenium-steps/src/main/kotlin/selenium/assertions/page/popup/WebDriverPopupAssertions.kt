@@ -38,7 +38,7 @@ class WebDriverPopupAssertions {
         }
     }
 
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @Then(
             value = "an alert, confirm or prompt is not present",
             description = "Checks that native browser alert, confirm or prompt popup is not present on the page."
@@ -62,7 +62,7 @@ class WebDriverPopupAssertions {
         }
     }
 
-//======================================================================================================================
+//----------------------------------------------------------------------------------------------------------------------
     @Then(
             value = "the alert, confirm or prompt message is <<alertMessage>>",
             description = "Checks if the alert, confirm or prompt popup has the provided message."

@@ -2,7 +2,7 @@ test-def: When I execute the WebDriver JS script <<script>>
 
     step: When I execute the WebDriver JS script <<{{script}}>>
         var script = <<
-            webDriver.get("{{HTML5_TEST_PAGE_URL}}/html-controles.html")
+            webDriver.get("{{URL}}/html-controles.html")
             if(webDriver.getTitle() != 'HTML5 Test Page') {
                failTest("Expecting tab name to be 'HTML5 Test Page' but it is: "+webDriver.getTitle())
             }

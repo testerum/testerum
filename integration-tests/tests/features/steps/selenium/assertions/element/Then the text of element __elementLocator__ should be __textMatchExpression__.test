@@ -1,6 +1,6 @@
 test-def: Then the text of element <<elementLocator>> should be <<textMatchExpression>>
 
-    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/actions/special-keys/index.html>> is open
+    step: Given the page at url <<{{URL}}/actions/special-keys/index.html>> is open
     step: When I type <<testing is fun>> into the field <<css=input>>
     step: When I press the special keys <<ENTER>> on the element <<css=input>>
     step: Then the text of element <<#result>> should be <<testing is fun>>

@@ -1,6 +1,6 @@
 test-def: When I switch the context to the frame <<frameLocator>>
 
-    step: Given the page at url <<{{HTML5_TEST_PAGE_URL}}/actions/contexts/frames/frameset/index.html>> is open
+    step: Given the page at url <<{{URL}}/actions/contexts/frames/frameset/index.html>> is open
     step: When I switch the context to the frame <<id=top>>
     step: Then the text of element <<id=frame-name>> should be <<Top>>
     step: When I switch the context to the frame <<{{frameLocator}}>>

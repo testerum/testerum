@@ -1,0 +1,6 @@
+test-def: When I move the mouse pointer to the element <<elementLocator>>
+
+    step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I move the mouse pointer over the element <<#showAlertWhenMouseOver>>
+    step: When I wait <<1000>> milliseconds
+    step: Then an alert, confirm or prompt is present

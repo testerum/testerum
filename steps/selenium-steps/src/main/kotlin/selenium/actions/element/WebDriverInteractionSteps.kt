@@ -88,7 +88,7 @@ class WebDriverInteractionSteps {
         throw AssertionError("the position parameter [$position] is not a valid. The parameter format should be two numbers separated by comma. (i.e. - 10,20)")
     }
 
-    webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.waitForElementPresent(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")

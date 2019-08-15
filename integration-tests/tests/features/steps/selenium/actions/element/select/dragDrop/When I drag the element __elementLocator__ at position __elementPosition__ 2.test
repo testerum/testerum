@@ -1,0 +1,10 @@
+test-def: When I drag the element <<elementLocator>> at position <<elementPosition>> 2
+
+    description = <<
+        Case 2: Both elements are out of view. Scrolling the draggable element into view brings also the droppable element into view.
+        This case works on all browsers.
+    >>
+
+    step: Given the page at url <<{{URL}}/dragdrop.html>> is open
+    step: When I drag the element <<#draggable-not-in-view>> at position <<22,731>>
+    step: Then the text of element <<#droppable-brought-in-view>> should be <<Dropped!>>

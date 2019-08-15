@@ -4,4 +4,4 @@ test-def: When I click the element <<elementLocator>> at <<position>>
 
     step: Given I am at the "HTML 5 TEST PAGE"
     step: When I click the element <<id=click-area>> at <<50,55>>
-    step: Then the Control Text should be <<click=946,98.65625>>
+    step: Then the Control Text should be <<click=417,98.65625>>

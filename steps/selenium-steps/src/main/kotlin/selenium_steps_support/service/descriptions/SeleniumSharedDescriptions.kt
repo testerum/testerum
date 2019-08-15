@@ -33,4 +33,44 @@ object SeleniumSharedDescriptions {
             "Note that the part ``expressionType=`` is optional.\n" +
             "If it's missing, the expression type will be ``exact``. For example ``some text`` will only match ``some text``.\n"
 
+    const val FRAME_LOCATOR_DESCRIPTION = "An expression used to identify a frame or iframe. In the simplest form," +
+            " it's an element locator (see format below) used to identify the ``frame`` or the ``iframe`` DOM element.\n" +
+            "\n" +
+            "\n" +
+            "Frames can be nested, down to any level. For example the main page can be split like this:\n" +
+            "```\n" +
+            "    +------------------------------------------------+\n" +
+            "    |            |                                   |\n" +
+            "    |            |             frame 2               |\n" +
+            "    |            |                                   |\n" +
+            "    |  frame 1   +-----------------------------------|\n" +
+            "    |            |                                   |\n" +
+            "    |            |             frame 3               |\n" +
+            "    |            |                                   |\n" +
+            "    +------------------------------------------------+\n" +
+            "```\n" +
+            "\n" +
+            "Frame 3 can be further split like this:\n" +
+            "```\n" +
+            "    +------------------------------------------------+\n" +
+            "    |            |                                   |\n" +
+            "    |            |             frame 2               |\n" +
+            "    |            |                                   |\n" +
+            "    |  frame 1   +-----------------+-----------------|\n" +
+            "    |            |                 |                 |\n" +
+            "    |            |    frame 3.1    |    frame 3.2    |\n" +
+            "    |            |                 |                 |\n" +
+            "    +------------------------------+-----------------+\n" +
+            "```\n" +
+            "To identify frame 3.2, we need first to identify frame 3 and then frame 3.2." +
+            " We do this by separating the element locator expressions by newlines, like this:\n" +
+            "```\n" +
+            "id=frame_3\n" +
+            "id=frame_3_2\n" +
+            "```\n" +
+            "\n" +
+            "\n" +
+            "### Element locators\n" +
+            "\n" +
+            ELEMENT_LOCATOR_DESCRIPTION
 }

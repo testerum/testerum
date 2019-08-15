@@ -21,26 +21,27 @@ commands
 --------
 [done] open(url)
 [done] click(elementLocator)
-sendKeys(elementLocator)
-clearText(elementLocator)
-submit(elementLocator)
+[done] sendKeys(elementLocator)
+[done] clearText(elementLocator)
+[done] submit(elementLocator)
+[done] mouse pointer over(hover over)
 todo: work with multiple windows (tabs) (driver.windowHandle, driver.windowHandles, driver.switchTo()
 todo: execute javascript, see org.openqa.selenium.JavascriptExecutor
 
-todo: work with all standard form elements
+[done] work with all standard form elements
     * input
         * classic
             * button
             * checkbox
             * file
-            * hidden
+todo:       * hidden
             * image
             * password
-            * radio
+[done]      * radio
             * reset
             * submit
             * text
-        * html5
+todo:       * html5
             * color
             * date
             * datetime-local
@@ -53,15 +54,15 @@ todo: work with all standard form elements
             * time
             * url
             * week
-    * select + option
+[done]  * select + option
         * dropdown
         * list
         * multi-selection
     * textarea
     * button
-hover
-scroll
-drag & drop
+[done] hover
+[done] scroll
+[done] drag & drop
 step that executes JS in the test JVM (the runner JVM) and has WebDriver in the context; we should also be able to throw AssertionError()
 
 

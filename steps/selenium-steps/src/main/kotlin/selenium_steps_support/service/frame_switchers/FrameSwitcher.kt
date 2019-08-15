@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver
 import selenium_steps_support.service.elem_locators.ElementLocatorService
 import java.util.regex.Pattern
 
-object FrameSwitchers {
+object FrameSwitcher {
 
     private val SPLITTER = Splitter.on(Pattern.compile("\n|\r\n"))
             .trimResults()

@@ -21,7 +21,8 @@ class DebugSteps {
     }
 
     @When(
-            value = "I log all the variables to the console"
+            value = "I log all the variables",
+            description = "Shows all the variables and their values in the log. All variables that can be used at this point will be logged."
     )
     fun logVariables() {
         logger.info(
