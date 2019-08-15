@@ -176,43 +176,51 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                     val isParametrizedTest = payload.test.scenarios.isNotEmpty()
 
                     if (isParametrizedTest) {
-                        val testScenarios: List<RunnerScenario> = payload.test.scenarios.mapIndexed { index, scenario ->
+                        // verify filter criteria
+                        if (payload.testPath is ScenariosTestPath) {
+                            for (scenarioIndex in payload.testPath.scenarioIndexes) {
+                                if (scenarioIndex >= payload.test.scenarios.size) {
+                                    LOG.warn("invalid scenario index [$scenarioIndex] for test at [${payload.testPath.testFile}]: this test has only ${payload.test.scenarios.size} scenarios; the index must be between 0 and ${payload.test.scenarios.size - 1} inclusive")
+                                }
+                            }
+                        }
+
+                        val scenariosWithOriginalIndex = payload.test.scenarios.mapIndexed { index, scenario ->
+                            index to scenario
+                        }
+
+                        val filteredTestScenarios = if (payload.testPath is ScenariosTestPath) {
+                            // filter scenarios
+                            if (payload.testPath.scenarioIndexes.isEmpty()) {
+                                // there is no filter on scenarios
+                                scenariosWithOriginalIndex
+                            } else {
+                                scenariosWithOriginalIndex.filterIndexed { scenarioIndex, _ ->
+                                    scenarioIndex in payload.testPath.scenarioIndexes
+                                }
+                            }
+                        } else {
+                            scenariosWithOriginalIndex
+                        }
+
+
+                        val runnerScenariosNodes: List<RunnerScenario> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
                             createTestScenarioBranch(
                                     test = payload.test,
                                     filePath = payload.testPath.javaPath,
-                                    scenarioIndex = index,
-                                    scenario = scenario,
+                                    scenarioWithOriginalIndex = scenarioWithOriginalIndex,
+                                    filteredScenarioIndex = filteredScenarioIndex,
                                     beforeEachTestHooks = beforeEachTestHooks,
                                     afterEachTestHooks = afterEachTestHooks
                             )
                         }
 
-                        val filteredTestScenarios = if (payload.testPath is ScenariosTestPath) {
-                            // verify filter criteria
-                            for (scenarioIndex in payload.testPath.scenarioIndexes) {
-                                if (scenarioIndex >= testScenarios.size) {
-                                    LOG.warn("invalid scenario index [$scenarioIndex] for test at [${payload.testPath.testFile}]: this test has only ${testScenarios.size} scenarios; the index must be between 0 and ${testScenarios.size - 1} inclusive")
-                                }
-                            }
-
-                            // filter scenarios
-                            if (payload.testPath.scenarioIndexes.isEmpty()) {
-                                // there is no filter on scenarios
-                                testScenarios
-                            } else {
-                                testScenarios.filterIndexed { scenarioIndex, _ ->
-                                    scenarioIndex in payload.testPath.scenarioIndexes
-                                }
-                            }
-                        } else {
-                            testScenarios
-                        }
 
                         RunnerParametrizedTest(
                                 test = payload.test,
                                 filePath = payload.testPath.javaPath,
                                 indexInParent = indexInParent,
-                                scenarios = filteredTestScenarios
+                                scenarios = runnerScenariosNodes
                         )
                     } else {
                         if (payload.testPath is ScenariosTestPath) {
@@ -234,10 +242,13 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
 
         private fun createTestScenarioBranch(test: TestModel,
                                              filePath: JavaPath,
-                                             scenarioIndex: Int,
-                                             scenario: Scenario,
+                                             scenarioWithOriginalIndex: Pair<Int, Scenario>,
+                                             filteredScenarioIndex: Int,
                                              beforeEachTestHooks: List<RunnerHook>,
                                              afterEachTestHooks: List<RunnerHook>): RunnerScenario {
+            val originalScenarioIndex = scenarioWithOriginalIndex.first
+            val scenario = scenarioWithOriginalIndex.second
+
             val runnerSteps = mutableListOf<RunnerStep>()
 
             for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
@@ -248,7 +259,8 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                     beforeEachTestHooks = beforeEachTestHooks,
                     test = test,
                     scenario = scenario,
-                    scenarioIndex = scenarioIndex,
+                    originalScenarioIndex = originalScenarioIndex,
+                    filteredScenarioIndex = filteredScenarioIndex,
                     filePath = filePath,
                     steps = runnerSteps,
                     afterEachTestHooks = afterEachTestHooks

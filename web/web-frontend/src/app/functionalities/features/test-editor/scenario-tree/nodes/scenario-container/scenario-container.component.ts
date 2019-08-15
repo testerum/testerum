@@ -47,7 +47,7 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     }
 
     private setDefaultName() {
-        this.model.scenario.name = this.EMPTY_SCENARIO_NAME_PREFIX + this.model.indexInParent;
+        this.model.scenario.name = this.EMPTY_SCENARIO_NAME_PREFIX + (this.model.indexInParent + 1);
     }
 
     toggleNode() {
