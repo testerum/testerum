@@ -185,27 +185,31 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                             }
                         }
 
+                        val scenariosWithOriginalIndex = payload.test.scenarios.mapIndexed { index, scenario ->
+                            index to scenario
+                        }
+
                         val filteredTestScenarios = if (payload.testPath is ScenariosTestPath) {
                             // filter scenarios
                             if (payload.testPath.scenarioIndexes.isEmpty()) {
                                 // there is no filter on scenarios
-                                payload.test.scenarios
+                                scenariosWithOriginalIndex
                             } else {
-                                payload.test.scenarios.filterIndexed { scenarioIndex, _ ->
+                                scenariosWithOriginalIndex.filterIndexed { scenarioIndex, _ ->
                                     scenarioIndex in payload.testPath.scenarioIndexes
                                 }
                             }
                         } else {
-                            payload.test.scenarios
+                            scenariosWithOriginalIndex
                         }
 
 
-                        val runnerScenariosNodes: List<RunnerScenario> = filteredTestScenarios.mapIndexed { index, scenario ->
+                        val runnerScenariosNodes: List<RunnerScenario> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
                             createTestScenarioBranch(
                                     test = payload.test,
                                     filePath = payload.testPath.javaPath,
-                                    scenarioIndex = index,
-                                    scenario = scenario,
+                                    scenarioWithOriginalIndex = scenarioWithOriginalIndex,
+                                    filteredScenarioIndex = filteredScenarioIndex,
                                     beforeEachTestHooks = beforeEachTestHooks,
                                     afterEachTestHooks = afterEachTestHooks
                             )
@@ -238,10 +242,13 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
 
         private fun createTestScenarioBranch(test: TestModel,
                                              filePath: JavaPath,
-                                             scenarioIndex: Int,
-                                             scenario: Scenario,
+                                             scenarioWithOriginalIndex: Pair<Int, Scenario>,
+                                             filteredScenarioIndex: Int,
                                              beforeEachTestHooks: List<RunnerHook>,
                                              afterEachTestHooks: List<RunnerHook>): RunnerScenario {
+            val originalScenarioIndex = scenarioWithOriginalIndex.first
+            val scenario = scenarioWithOriginalIndex.second
+
             val runnerSteps = mutableListOf<RunnerStep>()
 
             for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
@@ -252,7 +259,8 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                     beforeEachTestHooks = beforeEachTestHooks,
                     test = test,
                     scenario = scenario,
-                    scenarioIndex = scenarioIndex,
+                    originalScenarioIndex = originalScenarioIndex,
+                    filteredScenarioIndex = filteredScenarioIndex,
                     filePath = filePath,
                     steps = runnerSteps,
                     afterEachTestHooks = afterEachTestHooks

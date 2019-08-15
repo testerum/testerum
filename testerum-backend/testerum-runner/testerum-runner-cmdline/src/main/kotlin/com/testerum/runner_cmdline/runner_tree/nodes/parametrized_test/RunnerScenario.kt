@@ -28,7 +28,8 @@ import org.slf4j.LoggerFactory
 class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
                      private val test: TestModel,
                      val scenario: Scenario,
-                     private val scenarioIndex: Int,
+                     private val originalScenarioIndex: Int,
+                     private val filteredScenarioIndex: Int,
                      private val filePath: java.nio.file.Path,
                      private val steps: List<RunnerStep>,
                      private val afterEachTestHooks: List<RunnerHook>) : RunnerFeatureOrTest() {
@@ -48,16 +49,16 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
     }
 
     override lateinit var parent: RunnerTreeNode
-    override val positionInParent = PositionInParent("${test.id}-$scenarioIndex", scenarioIndex)
+    override val positionInParent = PositionInParent("${test.id}-$filteredScenarioIndex", filteredScenarioIndex)
 
-    private val scenarioName = scenario.name ?: "Execution ${scenarioIndex + 1}"
+    private val scenarioName = scenario.name ?: "Scenario ${originalScenarioIndex + 1}"
 
     private fun getPathForLogging(): String {
-        return "scenario [$scenarioName] (index $scenarioIndex) of test at [${filePath.toAbsolutePath().normalize()}]"
+        return "scenario [$scenarioName] (index $originalScenarioIndex) of test at [${filePath.toAbsolutePath().normalize()}]"
     }
 
     private fun getNameForLogging(): String {
-        return "scenario [$scenarioName] (index $scenarioIndex) of test [${test.name}] at [${test.path}]"
+        return "scenario [$scenarioName] (index $originalScenarioIndex) of test [${test.name}] at [${test.path}]"
     }
 
     override fun getGlueClasses(context: RunnerContext): List<Class<*>> {
@@ -242,7 +243,7 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
                         testName = test.name,
                         testFilePath = test.path,
                         scenario = scenario,
-                        scenarioIndex = scenarioIndex,
+                        scenarioIndex = filteredScenarioIndex,
                         tags = test.tags
                 )
         )
@@ -273,7 +274,7 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
                         testFilePath = test.path,
                         testName = test.name,
                         scenario = scenario,
-                        scenarioIndex = scenarioIndex,
+                        scenarioIndex = filteredScenarioIndex,
                         status = executionStatus,
                         durationMillis = durationMillis
                 )
@@ -288,7 +289,7 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
         if (test.properties.isDisabled) {
             destination.append(" DISABLED")
         }
-        destination.append(" '").append(scenarioName).append("' (index $scenarioIndex) of test '").append(test.name).append("' at [").append(test.path).append("]")
+        destination.append(" '").append(scenarioName).append("' (index $originalScenarioIndex) of test '").append(test.name).append("' at [").append(test.path).append("]")
         if (test.tags.isNotEmpty()) {
             destination.append(", tags=").append(test.tags)
         }

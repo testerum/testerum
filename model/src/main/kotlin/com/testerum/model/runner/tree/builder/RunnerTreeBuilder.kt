@@ -87,22 +87,26 @@ class RunnerTreeBuilder {
                     val isParametrizedTest = payload.model.scenarios.isNotEmpty()
 
                     if (isParametrizedTest) {
+                        val scenariosWithOriginalIndex = payload.model.scenarios.mapIndexed { index, scenario ->
+                            index to scenario
+                        }
+
                         val filteredTestScenarios = if (payload.path is ScenariosTestPath) {
                             if (payload.path.scenarioIndexes.isEmpty()) {
                                 // there is no filter on scenarios
-                                payload.model.scenarios
+                                scenariosWithOriginalIndex
                             } else {
-                                payload.model.scenarios.filterIndexed { scenarioIndex, _ ->
+                                scenariosWithOriginalIndex.filterIndexed { scenarioIndex, _ ->
                                     scenarioIndex in payload.path.scenarioIndexes
                                 }
                             }
                         } else {
-                            payload.model.scenarios
+                            scenariosWithOriginalIndex
                         }
 
 
-                        val runnerScenariosNodes: List<RunnerTestScenarioNode> = filteredTestScenarios.mapIndexed { index, scenario ->
-                            createTestScenarioBranch(payload.model, index, scenario)
+                        val runnerScenariosNodes: List<RunnerTestScenarioNode> = filteredTestScenarios.mapIndexed {  filteredScenarioIndex, scenarioWithOriginalIndex ->
+                            createTestScenarioBranch(payload.model, scenarioWithOriginalIndex, filteredScenarioIndex)
                         }
 
                         RunnerParametrizedTestNode(
@@ -127,16 +131,19 @@ class RunnerTreeBuilder {
         }
 
         private fun createTestScenarioBranch(test: TestModel,
-                                             scenarioIndex: Int,
-                                             scenario: Scenario): RunnerTestScenarioNode {
+                                             scenarioWithOriginalIndex: Pair<Int, Scenario>,
+                                             filteredScenarioIndex: Int): RunnerTestScenarioNode {
+            val originalScenarioIndex = scenarioWithOriginalIndex.first
+            val scenario = scenarioWithOriginalIndex.second
+
             val stepCalls: List<RunnerStepNode> = test.stepCalls.map(this::createStepCallBranch)
 
             return RunnerTestScenarioNode(
-                    id = "${test.id}-$scenarioIndex",
+                    id = "${test.id}-$filteredScenarioIndex",
                     path = Path.createInstance(
-                            "${test.path}/$scenarioIndex"
+                            "${test.path}/$filteredScenarioIndex"
                     ),
-                    name = scenario.name ?: "Execution ${scenarioIndex + 1}",
+                    name = scenario.name ?: "Scenario ${originalScenarioIndex + 1}",
                     children = stepCalls
             )
         }
