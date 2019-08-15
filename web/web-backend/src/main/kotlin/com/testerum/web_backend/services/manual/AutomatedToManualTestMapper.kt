@@ -12,7 +12,8 @@ class AutomatedToManualTestMapper {
         val stepCalls = test.stepCalls.map { stepCall ->
             ManualStepCall(
                     stepCall = stepCall,
-                    status = ManualTestStepStatus.NOT_EXECUTED
+                    status = ManualTestStepStatus.NOT_EXECUTED,
+                    enabled = stepCall.enabled
             )
         }
 
