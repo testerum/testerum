@@ -53,6 +53,9 @@ export class StepTextComponent<T extends StepDef> {
     }
 
     isDisabled(): boolean {
-        return !this.stepCall.enabled;
+        if (this.stepCall) {
+            return !this.stepCall.enabled;
+        }
+        return false;
     }
 }
