@@ -24,6 +24,7 @@ export abstract class RunnerTreeContainerNodeModel extends RunnerTreeNodeModel i
     parentContainer: JsonTreeContainer;
     hidden: boolean = false;
     selected: boolean = false;
+    enabled: boolean = true;
 
     private _containerOptions: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 

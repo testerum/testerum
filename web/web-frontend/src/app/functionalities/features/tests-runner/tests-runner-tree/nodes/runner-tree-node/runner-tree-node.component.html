@@ -32,6 +32,7 @@
 
         <span *ngIf="!isStepNode()"
               class="node-text"
+              [class.disabled]="!isEnabled()"
               [class.tree-leaf-selected]="model.isSelected()">{{model.text}}</span>
 
         <span *ngIf="isStepNode()"

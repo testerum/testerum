@@ -101,4 +101,17 @@ export class RunnerTreeNodeComponent implements OnInit, OnDestroy {
     onEditTest() {
         this.urlService.navigateToTest(this.model.path);
     }
+
+    isEnabled(): boolean {
+
+        if (this.model instanceof RunnerTestTreeNodeModel || this.model instanceof RunnerParametrizedTestTreeNodeModel) {
+            return this.model.enabled;
+        }
+
+        if (this.model instanceof RunnerScenarioTreeNodeModel) {
+            return this.model.enabled;
+        }
+
+        return true;
+    }
 }

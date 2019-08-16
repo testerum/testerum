@@ -2,16 +2,7 @@ package com.testerum.model.runner.tree.builder
 
 import com.testerum.model.feature.Feature
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.runner.tree.RunnerBasicStepNode
-import com.testerum.model.runner.tree.RunnerComposedStepNode
-import com.testerum.model.runner.tree.RunnerFeatureNode
-import com.testerum.model.runner.tree.RunnerParametrizedTestNode
-import com.testerum.model.runner.tree.RunnerRootNode
-import com.testerum.model.runner.tree.RunnerStepNode
-import com.testerum.model.runner.tree.RunnerTestNode
-import com.testerum.model.runner.tree.RunnerTestOrFeatureNode
-import com.testerum.model.runner.tree.RunnerTestScenarioNode
-import com.testerum.model.runner.tree.RunnerUndefinedStepNode
+import com.testerum.model.runner.tree.*
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
@@ -105,7 +96,7 @@ class RunnerTreeBuilder {
                         }
 
 
-                        val runnerScenariosNodes: List<RunnerTestScenarioNode> = filteredTestScenarios.mapIndexed {  filteredScenarioIndex, scenarioWithOriginalIndex ->
+                        val runnerScenariosNodes: List<RunnerScenarioNode> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
                             createTestScenarioBranch(payload.model, scenarioWithOriginalIndex, filteredScenarioIndex)
                         }
 
@@ -122,6 +113,7 @@ class RunnerTreeBuilder {
                                 id = payload.model.id,
                                 name = label,
                                 path = payload.model.path,
+                                enabled = !payload.model.properties.isDisabled,
                                 children = stepCalls
                         )
                     }
@@ -132,18 +124,19 @@ class RunnerTreeBuilder {
 
         private fun createTestScenarioBranch(test: TestModel,
                                              scenarioWithOriginalIndex: Pair<Int, Scenario>,
-                                             filteredScenarioIndex: Int): RunnerTestScenarioNode {
+                                             filteredScenarioIndex: Int): RunnerScenarioNode {
             val originalScenarioIndex = scenarioWithOriginalIndex.first
             val scenario = scenarioWithOriginalIndex.second
 
             val stepCalls: List<RunnerStepNode> = test.stepCalls.map(this::createStepCallBranch)
 
-            return RunnerTestScenarioNode(
+            return RunnerScenarioNode(
                     id = "${test.id}-$filteredScenarioIndex",
                     path = Path.createInstance(
                             "${test.path}/$filteredScenarioIndex"
                     ),
                     name = scenario.name ?: "Scenario ${originalScenarioIndex + 1}",
+                    enabled = scenario.enabled,
                     children = stepCalls
             )
         }

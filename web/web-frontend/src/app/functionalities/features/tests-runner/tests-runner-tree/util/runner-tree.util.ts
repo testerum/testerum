@@ -18,6 +18,7 @@ import {RunnerParametrizedTestNode} from "../../../../../model/runner/tree/runne
 import {RunnerScenarioNode} from "../../../../../model/runner/tree/runner-scenario-node.model";
 import {RunnerParametrizedTestTreeNodeModel} from "../model/runner-parametrized-test-tree-node.model";
 import {RunnerScenarioTreeNodeModel} from "../model/runner-scenario-tree-node.model";
+import {setCheckNoChangesMode} from "@angular/core/src/render3/state";
 
 export class RunnerTreeUtil {
 
@@ -73,6 +74,7 @@ export class RunnerTreeUtil {
             let testTreeNode = new RunnerTestTreeNodeModel(parentNode);
             testTreeNode.text = serverNode.name;
             testTreeNode.getNodeState().showChildren = false;
+            testTreeNode.enabled = serverNode.enabled;
 
             treeNode = testTreeNode;
         }
@@ -89,6 +91,7 @@ export class RunnerTreeUtil {
             let scenarioTreeNodeModel = new RunnerScenarioTreeNodeModel(parentNode);
             scenarioTreeNodeModel.text = serverNode.name;
             scenarioTreeNodeModel.getNodeState().showChildren = false;
+            scenarioTreeNodeModel.enabled = serverNode.enabled;
 
             treeNode = scenarioTreeNodeModel;
         }

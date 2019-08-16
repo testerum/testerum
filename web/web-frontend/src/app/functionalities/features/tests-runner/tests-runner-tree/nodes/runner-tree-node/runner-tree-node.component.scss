@@ -13,6 +13,10 @@ i {
     color: $success-color;
 }
 
+.disabled {
+    text-decoration: line-through;
+}
+
 .my-button-panel {
     margin-left: 5px;
     margin-top: 2px;

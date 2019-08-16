@@ -8,11 +8,13 @@ export class RunnerTestNode implements RunnerTestOrFeatureNode, Serializable<Run
     id: string;
     path: Path;
     name: string;
+    enabled: boolean;
     children: Array<RunnerStepNode> = [];
 
     deserialize(input: Object): RunnerTestNode {
         this.id = input["id"];
         this.name = input["name"];
+        this.enabled = input["enabled"];
         this.path = Path.deserialize(input["path"]);
 
         this.children = RunnerTreeDeserializationUtil.deserializeRunnerStepNodes(input["children"] || []);

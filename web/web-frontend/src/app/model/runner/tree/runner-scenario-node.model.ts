@@ -10,6 +10,7 @@ export class RunnerScenarioNode implements RunnerNode, Serializable<RunnerScenar
     id: string;
     path: Path;
     name: string;
+    enabled: boolean;
 
     children: Array<RunnerStepNode> = [];
 
@@ -17,6 +18,7 @@ export class RunnerScenarioNode implements RunnerNode, Serializable<RunnerScenar
         this.id = input["id"];
         this.path = Path.deserialize(input["path"]);
         this.name = input["name"];
+        this.enabled = input["enabled"];
 
         this.children = RunnerTreeDeserializationUtil.deserializeRunnerStepNodes(input["children"] || []);
 
