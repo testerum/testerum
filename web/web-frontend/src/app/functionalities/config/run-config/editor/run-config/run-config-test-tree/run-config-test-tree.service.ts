@@ -16,7 +16,7 @@ export class RunConfigTestTreeService {
 
     treeModel: JsonTreeModel = new JsonTreeModel();
     treeFilter: FeaturesTreeFilter = FeaturesTreeFilter.createEmptyFilter();
-    paths: Array<Path> = [];
+    paths: Array<PathWithScenarioIndexes> = [];
 
     refreshTreeEventEmitter: EventEmitter<void> = new EventEmitter<void>();
 
@@ -25,7 +25,7 @@ export class RunConfigTestTreeService {
     }
 
     initializeTreeFromServer(paths: Array<PathWithScenarioIndexes>, expandToLevel: number = 2) {
-        this.paths = paths.map(pathWithScenarioIndexes => pathWithScenarioIndexes.path);
+        this.paths = paths;
 
         this.featureService.getFeatureTree(this.treeFilter).subscribe(
             (rootNode: RootFeatureNode) => {
@@ -35,7 +35,7 @@ export class RunConfigTestTreeService {
 
                 let allTreeNodes: RunConfigTestTreeBaseModel[] = this.treeModel.getAllTreeNodes<RunConfigTestTreeBaseModel>();
                 for (const selectedPath of this.paths) {
-                    let nodeToSelect = this.getNodeByPath(allTreeNodes, selectedPath);
+                    let nodeToSelect = this.getNodeByPath(allTreeNodes, selectedPath.path);
                     if (nodeToSelect != null) {
                         nodeToSelect.setSelected(true);
                     }
@@ -64,7 +64,7 @@ export class RunConfigTestTreeService {
 
     private addPathsOfNode(treeNode: RunConfigTestTreeBaseModel) {
         if(treeNode.isSelectedNode()) {
-            this.paths.push(treeNode.path);
+            this.paths.push(new PathWithScenarioIndexes(treeNode.path));
             return;
         }
 

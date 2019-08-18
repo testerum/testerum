@@ -7,6 +7,12 @@ export class PathWithScenarioIndexes implements Serializable<PathWithScenarioInd
     path: Path;
     scenarioIndexes: Array<number> = [];
 
+
+    constructor(path: Path = null, scenarioIndexes: Array<number> = []) {
+        this.path = path;
+        this.scenarioIndexes = scenarioIndexes;
+    }
+
     deserialize(input: Object): PathWithScenarioIndexes {
         this.path = Path.deserialize(input['path']);
         this.scenarioIndexes = input["scenarioIndexes"];
