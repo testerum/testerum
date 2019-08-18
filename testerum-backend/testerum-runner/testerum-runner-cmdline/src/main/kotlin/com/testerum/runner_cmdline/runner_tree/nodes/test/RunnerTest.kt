@@ -72,7 +72,7 @@ class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
 
         logTestStart(context)
 
-        var executionStatus: ExecutionStatus = ExecutionStatus.PASSED
+        var status: ExecutionStatus = ExecutionStatus.PASSED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
@@ -85,10 +85,12 @@ class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
 
             try {
                 for (hook in beforeEachTestHooks) {
-                    if (executionStatus == ExecutionStatus.PASSED || executionStatus == ExecutionStatus.DISABLED) {
-                        val stepExecutionStatus: ExecutionStatus = hook.run(context)
+                    if (status <= ExecutionStatus.PASSED) {
+                        val beforeHookStatus: ExecutionStatus = hook.run(context)
 
-                        executionStatus = stepExecutionStatus
+                        if (beforeHookStatus > status) {
+                            status = beforeHookStatus
+                        }
                     } else {
                         hook.skip()
                     }
@@ -102,27 +104,31 @@ class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
             }
 
             if (steps.isEmpty()) {
-                executionStatus = ExecutionStatus.UNDEFINED
-                context.logMessage("marking test [${test.name}] at [${test.path}] as $executionStatus because it doesn't have any steps")
+                status = ExecutionStatus.UNDEFINED
+                context.logMessage("marking test [${test.name}] at [${test.path}] as $status because it doesn't have any steps")
             } else {
                 for (step in steps) {
-                    if (executionStatus == ExecutionStatus.PASSED || executionStatus == ExecutionStatus.DISABLED) {
-                        val stepExecutionStatus: ExecutionStatus = step.run(context, vars)
+                    if (status <= ExecutionStatus.PASSED) {
+                        val stepStatus: ExecutionStatus = step.run(context, vars)
 
-                        executionStatus = stepExecutionStatus
+                        if (stepStatus > status) {
+                            status = stepStatus
+                        }
                     } else {
                         step.skip(context)
                     }
                 }
             }
 
-            var endHookStatus: ExecutionStatus = ExecutionStatus.PASSED
+            var overallEndHooksStatus: ExecutionStatus = ExecutionStatus.PASSED
             try {
                 for (hook in afterEachTestHooks) {
-                    if (endHookStatus == ExecutionStatus.PASSED || executionStatus == ExecutionStatus.DISABLED) {
-                        val stepExecutionStatus: ExecutionStatus = hook.run(context)
+                    if (overallEndHooksStatus == ExecutionStatus.PASSED || status == ExecutionStatus.DISABLED) {
+                        val endHookStatus: ExecutionStatus = hook.run(context)
 
-                        endHookStatus = stepExecutionStatus
+                        if (endHookStatus > overallEndHooksStatus) {
+                            overallEndHooksStatus = endHookStatus
+                        }
                     } else {
                         hook.skip()
                     }
@@ -135,11 +141,11 @@ class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                 throw RuntimeException(errorMessage, e)
             }
 
-            if (executionStatus == ExecutionStatus.PASSED && endHookStatus != ExecutionStatus.PASSED) {
-                executionStatus = endHookStatus
+            if (overallEndHooksStatus > status) {
+                status = overallEndHooksStatus
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.FAILED
+            status = ExecutionStatus.FAILED
             exception = e
         } finally {
             try {
@@ -154,10 +160,10 @@ class RunnerTest(private val beforeEachTestHooks: List<RunnerHook>,
                 )
             }
 
-            logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
+            logTestEnd(context, status, exception, durationMillis = System.currentTimeMillis() - startTime)
         }
 
-        return executionStatus
+        return status
     }
 
     override fun skip(context: RunnerContext): ExecutionStatus {

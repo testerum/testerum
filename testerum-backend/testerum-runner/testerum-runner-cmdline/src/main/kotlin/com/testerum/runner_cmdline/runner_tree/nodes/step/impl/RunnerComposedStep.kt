@@ -38,22 +38,24 @@ class RunnerComposedStep(stepCall: StepCall,
             return executionStatus
         }
 
-        var executionStatus: ExecutionStatus = ExecutionStatus.PASSED
+        var status: ExecutionStatus = ExecutionStatus.PASSED
 
         val subVars = vars.forStep(stepCall)
         context.testVariables.setVariablesContext(subVars)
 
         for (step in steps) {
-            if (executionStatus == ExecutionStatus.PASSED || executionStatus == ExecutionStatus.DISABLED) {
-                val nestedExecutionStatus: ExecutionStatus = step.run(context, subVars)
+            if (status == ExecutionStatus.PASSED || status == ExecutionStatus.DISABLED) {
+                val nestedStatus: ExecutionStatus = step.run(context, subVars)
 
-                executionStatus = nestedExecutionStatus
+                if (nestedStatus > status) {
+                    status = nestedStatus
+                }
             } else {
                 step.skip(context)
             }
         }
 
-        return executionStatus
+        return status
     }
 
     override fun doSkip(context: RunnerContext) {
