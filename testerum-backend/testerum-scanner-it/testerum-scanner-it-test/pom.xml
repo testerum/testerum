@@ -16,11 +16,6 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.testerum</groupId>
             <artifactId>testerum-scanner</artifactId>
         </dependency>
 
@@ -35,6 +30,15 @@
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>testerum-scanner-it-steplib3-java</artifactId>
+        </dependency>
+
+
+        <!--==================== testerum dependencies ====================-->
+
+        <!-- testerum-steps-api -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
 
 

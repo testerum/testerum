@@ -14,39 +14,50 @@
 
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
-        </dependency>
 
+        <!-- common-json -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-json</artifactId>
         </dependency>
 
+        <!-- common-json-diff -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-json-diff</artifactId>
         </dependency>
 
+        <!-- settings -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>settings</artifactId>
         </dependency>
 
+        <!-- common-rdbms -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-rdbms</artifactId>
         </dependency>
 
+        <!-- step-rdbms-util -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>step-rdbms-util</artifactId>
         </dependency>
 
+        <!-- step-transformer-utils -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>step-transformer-utils</artifactId>
+        </dependency>
+
+
+        <!--==================== testerum dependencies ====================-->
+
+        <!-- testerum-steps-api -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
 
 

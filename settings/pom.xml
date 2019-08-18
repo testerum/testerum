@@ -12,6 +12,7 @@
 
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
+
         <!-- common-di -->
         <dependency>
             <groupId>com.testerum</groupId>
@@ -24,11 +25,15 @@
             <artifactId>common-jdk</artifactId>
         </dependency>
 
-        <!-- testerum-api -->
+
+        <!--==================== testerum dependencies ====================-->
+
+        <!-- testerum-steps-api -->
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
+
 
         <!--==================== External Dependencies ====================-->
 

@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>testerum-api</module>
         <module>testerum-scanner</module>
         <module>testerum-scanner-it</module>
         <module>testerum-runner</module>

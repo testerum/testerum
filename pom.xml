@@ -62,6 +62,9 @@
         <testerumNodeVersion>v10.14.2</testerumNodeVersion>
         <testerumNpmVersion>6.4.1</testerumNpmVersion>
 
+        <!--========== testerum dependencies versions ==========-->
+        <testerum-steps-api.version>1.0.37</testerum-steps-api.version>
+
         <!--========== dependencies versions ==========-->
         <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.2</logback.version>
@@ -246,12 +249,6 @@
                 <version>${project.version}</version>
                 <classifier>dist</classifier>
             </dependency>
-            
-            <dependency>
-                <groupId>com.testerum</groupId>
-                <artifactId>testerum-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>com.testerum</groupId>
@@ -341,6 +338,15 @@
                 <groupId>com.testerum</groupId>
                 <artifactId>vars-steps</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+
+            <!--==================== testerum dependencies ====================-->
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>testerum-steps-api</artifactId>
+                <version>${testerum-steps-api.version}</version>
             </dependency>
 
 

@@ -15,12 +15,6 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
-        <!-- testerum-api -->
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
-        </dependency>
-
         <!-- step-transformer-utils -->
         <dependency>
             <groupId>com.testerum</groupId>
@@ -49,6 +43,15 @@
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-di</artifactId>
+        </dependency>
+
+
+        <!--==================== testerum dependencies ====================-->
+
+        <!-- testerum-steps-api -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
 
 
