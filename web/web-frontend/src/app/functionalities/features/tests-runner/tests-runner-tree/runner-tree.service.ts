@@ -230,6 +230,13 @@ export class RunnerTreeService {
             return;
         }
 
+        //SKIPPED should overwrite only EXECUTING and WAITING state
+        if (parentNode.state != ExecutionStatusEnum.EXECUTING &&
+            parentNode.state != ExecutionStatusEnum.WAITING &&
+            state == ExecutionStatusEnum.SKIPPED) {
+            return;
+        }
+
         parentNode.changeState(state);
         parentNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
 
