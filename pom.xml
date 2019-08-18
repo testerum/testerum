@@ -878,6 +878,13 @@
                     </executions>
                 </plugin>
 
+                <!-- maven-clean-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
                 <!-- Maven Compiler -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -891,13 +898,6 @@
                             <exclude>ngapp/**</exclude>
                         </excludes>
                     </configuration>
-                </plugin>
-
-                <!-- maven-clean-plugin -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.1.0</version>
                 </plugin>
 
                 <!-- maven-install-plugin -->
