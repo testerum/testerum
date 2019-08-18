@@ -2,11 +2,21 @@ package com.testerum.api.test_context
 
 enum class ExecutionStatus {
 
-    PASSED,
-    FAILED,
+    // VERY IMPORTANT
+    // --------------
+    //
+    // Don't change the order of the constants in this enum.
+    // The constants are listed in increasing order of importance.
+    //
+    // For example, when you have 2 children in the runner tree, one FAILED and another UNDEFINED, the status
+    // of the parent node will be FAILED, because FAILED is more important than UNDEFINED.
+    //
+
     DISABLED,
-    UNDEFINED,
+    PASSED,
     SKIPPED,
+    UNDEFINED,
+    FAILED,
     ;
 
 }

@@ -61,7 +61,7 @@ class RunnerFeature(featurePathFromRoot: List<String>,
             for (featureOrTest in featuresOrTests) {
                 val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
 
-                if (status == PASSED && featureOrTestStatus != PASSED) {
+                if (featureOrTestStatus > status) {
                     status = featureOrTestStatus
                 }
             }
@@ -86,7 +86,7 @@ class RunnerFeature(featurePathFromRoot: List<String>,
             for (featureOrTest in featuresOrTests) {
                 val featureOrTestStatus: ExecutionStatus = featureOrTest.skip(context)
 
-                if (status == SKIPPED && featureOrTestStatus != SKIPPED && featureOrTestStatus != PASSED) {
+                if (featureOrTestStatus > status) {
                     status = featureOrTestStatus
                 }
             }

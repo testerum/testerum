@@ -56,7 +56,7 @@ class RunnerParametrizedTest(private val test: TestModel,
             for (scenario in scenarios) {
                 val scenarioStatus: ExecutionStatus = scenario.run(context, globalVars)
 
-                if (status == ExecutionStatus.PASSED && scenarioStatus != ExecutionStatus.PASSED) {
+                if (scenarioStatus > status) {
                     status = scenarioStatus
                 }
             }
@@ -81,7 +81,7 @@ class RunnerParametrizedTest(private val test: TestModel,
             for (scenario in scenarios) {
                 val featureOrTestStatus: ExecutionStatus = scenario.skip(context)
 
-                if (status == ExecutionStatus.SKIPPED && featureOrTestStatus != ExecutionStatus.SKIPPED && featureOrTestStatus != ExecutionStatus.PASSED) {
+                if (featureOrTestStatus > status) {
                     status = featureOrTestStatus
                 }
             }

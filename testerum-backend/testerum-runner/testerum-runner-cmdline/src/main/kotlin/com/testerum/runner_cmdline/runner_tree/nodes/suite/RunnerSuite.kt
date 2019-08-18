@@ -112,7 +112,7 @@ class RunnerSuite(private val beforeAllTestsHooks: List<RunnerHook>,
         for (featureOrTest in featuresOrTests) {
             val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
 
-            if (status == PASSED && featureOrTestStatus != PASSED) {
+            if (featureOrTestStatus > status) {
                 status = featureOrTestStatus
             }
         }
