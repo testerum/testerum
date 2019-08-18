@@ -1,6 +1,6 @@
 package com.testerum.settings
 
-import com.testerum.api.test_context.settings.model.Setting
+import com.testerum_api.testerum_steps_api.test_context.settings.model.Setting
 
 fun SettingsManager.getNonDefaultSettings(): List<Setting> {
     return getSettings().filter {

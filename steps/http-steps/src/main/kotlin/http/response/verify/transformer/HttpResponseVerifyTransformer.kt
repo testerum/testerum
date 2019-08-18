@@ -3,8 +3,8 @@ package http.response.verify.transformer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.treeToValue
-import com.testerum.api.transformer.ParameterInfo
-import com.testerum.api.transformer.Transformer
+import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 import com.testerum.common_json.ObjectMapperFactory
 import http.response.verify.model.HttpResponseVerify
 import http_support.module_di.HttpStepsModuleServiceLocator

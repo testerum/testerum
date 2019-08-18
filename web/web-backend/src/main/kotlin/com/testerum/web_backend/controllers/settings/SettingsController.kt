@@ -1,6 +1,6 @@
 package com.testerum.web_backend.controllers.settings
 
-import com.testerum.api.test_context.settings.model.Setting
+import com.testerum_api.testerum_steps_api.test_context.settings.model.Setting
 import com.testerum.web_backend.services.settings.SettingsFrontendService
 import org.springframework.web.bind.annotation.*
 

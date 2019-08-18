@@ -1,9 +1,9 @@
 package selenium.actions.hooks
 
-import com.testerum.api.annotations.hooks.AfterEachTest
-import com.testerum.api.annotations.hooks.BeforeAllTests
-import com.testerum.api.services.TesterumServiceLocator
-import com.testerum.api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.annotations.hooks.AfterEachTest
+import com.testerum_api.testerum_steps_api.annotations.hooks.BeforeAllTests
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
@@ -19,7 +19,7 @@ class WebDriverShutdownHook {
 
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
-    @BeforeAllTests
+    @com.testerum_api.testerum_steps_api.annotations.hooks.BeforeAllTests
     fun registerShutdownHook() {
         // register a JVM shutdown hook, to prevent drivers & browsers from remaining open,
         // when the runner is stopped with e.g. a SIGTERM
@@ -29,7 +29,7 @@ class WebDriverShutdownHook {
     }
 
 
-    @AfterEachTest(order = Int.MAX_VALUE /*to make this hook runs last*/)
+    @com.testerum_api.testerum_steps_api.annotations.hooks.AfterEachTest(order = Int.MAX_VALUE /*to make this hook runs last*/)
     fun destroyWebDriver() {
         takeScreenshotIfFailed()
         closeBrowserIfNeeded()

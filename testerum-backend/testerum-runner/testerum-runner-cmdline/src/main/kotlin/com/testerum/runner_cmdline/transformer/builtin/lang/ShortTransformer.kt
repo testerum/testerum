@@ -1,7 +1,7 @@
 package com.testerum.runner_cmdline.transformer.builtin.lang
 
-import com.testerum.api.transformer.ParameterInfo
-import com.testerum.api.transformer.Transformer
+import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 
 object ShortTransformer : Transformer<Short> {
 

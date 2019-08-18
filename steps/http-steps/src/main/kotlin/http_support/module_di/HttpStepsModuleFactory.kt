@@ -1,6 +1,6 @@
 package http_support.module_di
 
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 import com.testerum.common.json_diff.module_di.JsonDiffModuleFactory
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext

@@ -1,8 +1,8 @@
 package com.testerum.settings.new_stuff
 
-import com.testerum.api.test_context.settings.model.Setting
-import com.testerum.api.test_context.settings.model.SettingDefinition
-import com.testerum.api.test_context.settings.model.SettingType
+import com.testerum_api.testerum_steps_api.test_context.settings.model.Setting
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingDefinition
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingType
 import com.testerum.settings.SettingsManager
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat

@@ -1,8 +1,8 @@
 package com.testerum.scanner_it_test
 
-import com.testerum.api.annotations.hooks.HooksConstants
-import com.testerum.api.test_context.settings.model.SettingDefinition
-import com.testerum.api.test_context.settings.model.SettingType
+import com.testerum_api.testerum_steps_api.annotations.hooks.HooksConstants
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingDefinition
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingType
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.text.StepPattern

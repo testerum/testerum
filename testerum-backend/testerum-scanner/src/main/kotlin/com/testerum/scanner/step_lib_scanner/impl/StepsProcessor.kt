@@ -1,10 +1,5 @@
 package com.testerum.scanner.step_lib_scanner.impl
 
-import com.testerum.api.annotations.steps.Given
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.Then
-import com.testerum.api.annotations.steps.When
-import com.testerum.api.annotations.util.annotationNullToRealNull
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.step.BasicStepDef
@@ -16,6 +11,11 @@ import com.testerum.scanner.step_lib_scanner.step_pattern_parser.ScannerStepPatt
 import com.testerum.scanner.step_lib_scanner.step_pattern_parser.model.ParamSimpleBasicStepPatternPart
 import com.testerum.scanner.step_lib_scanner.step_pattern_parser.model.SimpleBasicStepPatternPart
 import com.testerum.scanner.step_lib_scanner.step_pattern_parser.model.TextSimpleBasicStepPatternPart
+import com.testerum_api.testerum_steps_api.annotations.steps.Given
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.Then
+import com.testerum_api.testerum_steps_api.annotations.steps.When
+import com.testerum_api.testerum_steps_api.annotations.util.annotationNullToRealNull
 import io.github.classgraph.ClassInfo
 import io.github.classgraph.MethodInfo
 import java.lang.reflect.Method

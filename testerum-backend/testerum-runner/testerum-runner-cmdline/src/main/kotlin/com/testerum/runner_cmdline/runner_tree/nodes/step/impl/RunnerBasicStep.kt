@@ -1,9 +1,9 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.step.impl
 
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.test_context.ExecutionStatus
-import com.testerum.api.transformer.ParameterInfo
-import com.testerum.api.transformer.Transformer
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 import com.testerum.common_kotlin.indent
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.StepCall

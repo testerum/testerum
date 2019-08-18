@@ -1,8 +1,8 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.feature
 
-import com.testerum.api.test_context.ExecutionStatus
-import com.testerum.api.test_context.ExecutionStatus.PASSED
-import com.testerum.api.test_context.ExecutionStatus.SKIPPED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
 import com.testerum.common_kotlin.indent
 import com.testerum.model.feature.Feature
 import com.testerum.runner.events.model.FeatureEndEvent

@@ -1,6 +1,5 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test
 
-import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.common_kotlin.indent
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioMapper
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioParamMapper
@@ -22,6 +21,7 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesConte
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamSerializer
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

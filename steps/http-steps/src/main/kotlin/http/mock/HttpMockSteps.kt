@@ -1,10 +1,10 @@
 package http.mock
 
-import com.testerum.api.annotations.hooks.BeforeEachTest
-import com.testerum.api.annotations.steps.Given
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.services.TesterumServiceLocator
-import com.testerum.api.test_context.logger.TesterumLogger
+import com.testerum_api.testerum_steps_api.annotations.hooks.BeforeEachTest
+import com.testerum_api.testerum_steps_api.annotations.steps.Given
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
 import com.testerum.model.resources.http.mock.server.HttpMockServer
 import com.testerum.model.resources.http.mock.stub.HttpMock
 import http.mock.transformer.HttpMockServerTransformer
@@ -18,7 +18,7 @@ class HttpMockSteps {
     private val httpMockService: HttpMockService = HttpStepsModuleServiceLocator.bootstrapper.httpStepsModuleFactory.httpMockService
     private val logger: TesterumLogger = TesterumServiceLocator.getTesterumLogger()
 
-    @BeforeEachTest
+    @com.testerum_api.testerum_steps_api.annotations.hooks.BeforeEachTest
     fun beforeTest() {
         httpMockService.clearAllStubs()
     }

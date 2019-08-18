@@ -1,9 +1,9 @@
 package http_support
 
-import com.testerum.api.annotations.settings.DeclareSetting
-import com.testerum.api.annotations.settings.DeclareSettings
-import com.testerum.api.test_context.settings.RunnerSettingsManager
-import com.testerum.api.test_context.settings.model.SettingType
+import com.testerum_api.testerum_steps_api.annotations.settings.DeclareSetting
+import com.testerum_api.testerum_steps_api.annotations.settings.DeclareSettings
+import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsManager
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingType
 import http_support.HttpStepsSettingsManager.Companion.SETTINGS_CATEGORY
 import http_support.HttpStepsSettingsManager.Companion.SETTINGS_KEY_CONNECTION_TIMEOUT_MILLIS
 import http_support.HttpStepsSettingsManager.Companion.SETTINGS_KEY_SOCKET_TIMEOUT_MILLIS

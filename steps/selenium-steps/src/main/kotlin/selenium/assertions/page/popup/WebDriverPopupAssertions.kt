@@ -1,8 +1,8 @@
 package selenium.assertions.page.popup
 
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.Then
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.Then
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 import org.openqa.selenium.NoAlertPresentException
 import selenium.actions.page.popup.WebDriverPopupSteps
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions

@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.object_factory
 
-import com.testerum.api.test_context.TestContext
+import com.testerum_api.testerum_steps_api.test_context.TestContext
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
 
 class EnhancedGlueObjectFactory(private val wrapped: GlueObjectFactory,

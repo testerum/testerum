@@ -1,6 +1,6 @@
 package selenium_steps_support.service.webdriver_factory
 
-import com.testerum.api.test_context.settings.model.SeleniumBrowserType
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumBrowserType
 import selenium_steps_support.service.webdriver_factory.chrome.ChromeWebDriverFactory
 import selenium_steps_support.service.webdriver_factory.chrome.EdgeWebDriverFactory
 import selenium_steps_support.service.webdriver_factory.chrome.FirefoxWebDriverFactory

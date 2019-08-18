@@ -1,7 +1,7 @@
 package assertions
 
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.Then
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.Then
 
 class AssertionsSteps {
 

@@ -1,8 +1,8 @@
 package selenium.assertions.element
 
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.Then
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.Then
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 import org.openqa.selenium.WebElement
 import selenium_steps_support.service.css_class.CssClassAttributeParser
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions

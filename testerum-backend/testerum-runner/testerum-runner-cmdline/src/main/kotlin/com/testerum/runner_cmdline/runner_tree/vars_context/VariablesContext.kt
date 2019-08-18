@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.runner_tree.vars_context
 
-import com.testerum.api.test_context.test_vars.VariableNotFoundException
+import com.testerum_api.testerum_steps_api.test_context.test_vars.VariableNotFoundException
 import com.testerum.common.expression_evaluator.ExpressionEvaluator
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.file_service.caches.resolved.resolvers.file_arg_transformer.FileArgTransformer

@@ -1,13 +1,13 @@
 package com.testerum.runner_cmdline
 
-import com.testerum.api.services.TesterumServiceLocator
-import com.testerum.api.test_context.ExecutionStatus
-import com.testerum.api.test_context.TestContext
-import com.testerum.api.test_context.logger.TesterumLogger
-import com.testerum.api.test_context.settings.RunnerSettingsManager
-import com.testerum.api.test_context.settings.RunnerTesterumDirs
-import com.testerum.api.test_context.test_vars.TestVariables
-import com.testerum.api.transformer.Transformer
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.TestContext
+import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
+import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsManager
+import com.testerum_api.testerum_steps_api.test_context.settings.RunnerTesterumDirs
+import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
 import com.testerum.file_service.caches.resolved.BasicStepsCache

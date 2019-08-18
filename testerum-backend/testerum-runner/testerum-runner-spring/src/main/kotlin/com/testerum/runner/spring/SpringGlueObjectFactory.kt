@@ -1,8 +1,8 @@
 package com.testerum.runner.spring
 
-import com.testerum.api.services.TesterumServiceLocator
-import com.testerum.api.test_context.TestContext
-import com.testerum.api.test_context.TestContextAware
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.TestContext
+import com.testerum_api.testerum_steps_api.test_context.TestContextAware
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

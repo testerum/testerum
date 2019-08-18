@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.events.execution_listeners.console
 
-import com.testerum.api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.common_kotlin.emptyToNull
 import com.testerum.runner.events.execution_listener.BaseExecutionListener

@@ -1,8 +1,8 @@
 package com.testerum.runner_cmdline.transformer
 
-import com.testerum.api.transformer.ParameterInfo
-import com.testerum.api.transformer.Transformer
-import com.testerum.api.transformer.impl.NoTransformer
+import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
+import com.testerum_api.testerum_steps_api.transformer.Transformer
+import com.testerum_api.testerum_steps_api.transformer.impl.NoTransformer
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
 
 class TransformerFactory(private val glueObjectFactory: GlueObjectFactory,

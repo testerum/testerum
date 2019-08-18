@@ -1,6 +1,5 @@
 package com.testerum.scanner.step_lib_scanner
 
-import com.testerum.api.test_context.settings.model.SettingDefinition
 import com.testerum.model.step.BasicStepDef
 import com.testerum.scanner.step_lib_scanner.impl.getHookDefinitions
 import com.testerum.scanner.step_lib_scanner.impl.getSettingDefinitions
@@ -8,6 +7,7 @@ import com.testerum.scanner.step_lib_scanner.impl.getStepDefinitions
 import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanFilter
 import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanResult
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingDefinition
 import io.github.classgraph.ClassGraph
 import io.github.classgraph.ScanResult
 import org.slf4j.LoggerFactory

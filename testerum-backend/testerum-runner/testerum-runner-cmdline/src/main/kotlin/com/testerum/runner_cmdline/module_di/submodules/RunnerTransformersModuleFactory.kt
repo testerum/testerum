@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.module_di.submodules
 
-import com.testerum.api.transformer.Transformer
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import com.testerum.runner_cmdline.transformer.builtin.atomic.AtomicBooleanTransformer

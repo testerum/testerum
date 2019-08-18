@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.runner_tree.vars_context
 
-import com.testerum.api.test_context.test_vars.TestVariables
+import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 import javax.annotation.concurrent.NotThreadSafe
 
 @NotThreadSafe

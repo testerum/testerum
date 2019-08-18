@@ -1,6 +1,6 @@
 package com.testerum.runner.statistics_model.events_aggregators
 
-import com.testerum.api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum.common_stats.Aggregator
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.runner.events.model.FeatureEndEvent

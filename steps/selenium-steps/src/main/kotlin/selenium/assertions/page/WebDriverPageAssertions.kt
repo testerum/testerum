@@ -1,8 +1,8 @@
 package selenium.assertions.page
 
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.Then
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.Then
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.text_match.TextMatcherService

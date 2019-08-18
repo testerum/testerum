@@ -1,9 +1,9 @@
 package selenium.actions.page
 
-import com.testerum.api.annotations.steps.Given
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.When
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.annotations.steps.Given
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.When
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 import org.openqa.selenium.Dimension
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.webdriver_manager.WebDriverManager

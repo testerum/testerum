@@ -1,8 +1,8 @@
 package com.testerum.scanner.step_lib_scanner.impl
 
-import com.testerum.api.annotations.settings.DeclareSetting
-import com.testerum.api.annotations.settings.DeclareSettings
-import com.testerum.api.test_context.settings.model.SettingDefinition
+import com.testerum_api.testerum_steps_api.annotations.settings.DeclareSetting
+import com.testerum_api.testerum_steps_api.annotations.settings.DeclareSettings
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingDefinition
 import io.github.classgraph.ClassInfo
 import java.util.Collections
 

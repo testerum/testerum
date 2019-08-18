@@ -1,12 +1,12 @@
 package com.testerum.scanner.step_lib_scanner.impl
 
-import com.testerum.api.annotations.hooks.AfterAllTests
-import com.testerum.api.annotations.hooks.AfterEachTest
-import com.testerum.api.annotations.hooks.BeforeAllTests
-import com.testerum.api.annotations.hooks.BeforeEachTest
-import com.testerum.api.annotations.util.annotationNullToRealNull
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
+import com.testerum_api.testerum_steps_api.annotations.hooks.AfterAllTests
+import com.testerum_api.testerum_steps_api.annotations.hooks.AfterEachTest
+import com.testerum_api.testerum_steps_api.annotations.hooks.BeforeAllTests
+import com.testerum_api.testerum_steps_api.annotations.hooks.BeforeEachTest
+import com.testerum_api.testerum_steps_api.annotations.util.annotationNullToRealNull
 import io.github.classgraph.ClassInfo
 import io.github.classgraph.MethodInfo
 import java.lang.reflect.Method
