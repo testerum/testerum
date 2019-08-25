@@ -47,10 +47,10 @@ class FileManualStepCallParserTest {
                                         parts = listOf(
                                                 FileTextStepCallPart("an empty database")
                                         ),
-                                        vars = emptyList()
+                                        vars = emptyList(),
+                                        enabled = false
                                 ),
-                                status = FileManualStepCallStatus.NOT_EXECUTED,
-                                enabled = false
+                                status = FileManualStepCallStatus.NOT_EXECUTED
                         )
                 )
         )

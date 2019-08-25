@@ -1,8 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {ManualTestPlansService} from "../service/manual-test-plans.service";
 import {Path} from "../../../model/infrastructure/path/path.model";
-import {ManualTestPlan} from "../plans/model/manual-test-plan.model";
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 import {ManualRunnerEditorComponent} from "./editor/manual-runner-editor.component";
 

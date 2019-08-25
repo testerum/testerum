@@ -42,7 +42,8 @@ class FileManualTestDefSerializerTest {
                                                 phase = FileStepPhase.WHEN,
                                                 parts = listOf(
                                                         FileTextStepCallPart("I do some action")
-                                                )
+                                                ),
+                                                enabled = false
                                         ),
                                         status = FileManualStepCallStatus.FAILED
                                 ),
@@ -75,7 +76,7 @@ class FileManualTestDefSerializerTest {
                               |    tags = <<one, two, three, four>>
                               |
                               |    step [PASSED]: Given some initial state
-                              |    step [FAILED]: When I do some action
+                              |    step [FAILED, disabled]: When I do some action
                               |    step [NOT_EXECUTED]: Then something should happen
                               |
                               |    status = BLOCKED
@@ -104,7 +105,7 @@ class FileManualTestDefSerializerTest {
                    |            tags = <<one, two, three, four>>
                    |
                    |            step [PASSED]: Given some initial state
-                   |            step [FAILED]: When I do some action
+                   |            step [FAILED, disabled]: When I do some action
                    |            step [NOT_EXECUTED]: Then something should happen
                    |
                    |            status = BLOCKED
@@ -138,7 +139,8 @@ class FileManualTestDefSerializerTest {
                                                         phase = FileStepPhase.WHEN,
                                                         parts = listOf(
                                                                 FileTextStepCallPart("I do some action")
-                                                        )
+                                                        ),
+                                                        enabled = false
                                                 ),
                                                 status = FileManualStepCallStatus.FAILED
                                         ),

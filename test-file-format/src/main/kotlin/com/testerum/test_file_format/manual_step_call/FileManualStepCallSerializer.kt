@@ -17,6 +17,11 @@ object FileManualStepCallSerializer: BaseSerializer<FileManualStepCall>() {
     private fun serializeStepCallLine(source: FileManualStepCall, destination: Writer, indentLevel: Int) {
         destination.write("step [")
         destination.write(source.status.name)
+
+        if (!source.step.enabled) {
+            destination.write(", disabled")
+        }
+
         destination.write("]: ")
 
         FileStepPhaseSerializer.serialize(source.step.phase, destination, indentLevel)

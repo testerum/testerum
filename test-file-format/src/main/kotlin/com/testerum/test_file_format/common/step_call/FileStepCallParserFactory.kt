@@ -58,9 +58,8 @@ object FileStepCallParserFactory : ParserFactory<FileStepCall> {
                 optionalNewLines()
         ) { _, stepCallProperties: FileManualStepCallProperties, _, phase, _, parts, vars, _ ->
             FileManualStepCall(
-                    step = FileStepCall(phase, parts, vars, true),
-                    status = stepCallProperties.status,
-                    enabled = stepCallProperties.enabled
+                    step = FileStepCall(phase, parts, vars, stepCallProperties.enabled),
+                    status = stepCallProperties.status
             )
         }
     }
