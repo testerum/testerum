@@ -100,7 +100,8 @@ export class ReportGridComponent implements OnInit, OnDestroy {
     onExpandToTests() {
         this.expandNodesThatMatchExpression(this.suiteGridRootNodes, (node: ReportGridNode) => {
             return node.data.nodeType == ReportGridNodeType.SUITE ||
-                node.data.nodeType == ReportGridNodeType.FEATURE;
+                   node.data.nodeType == ReportGridNodeType.FEATURE ||
+                   node.data.nodeType == ReportGridNodeType.PARAMETRIZED_TEST
         });
 
         this.suiteGridRootNodes = ArrayUtil.copyArrayOfObjects(this.suiteGridRootNodes);
@@ -110,7 +111,9 @@ export class ReportGridComponent implements OnInit, OnDestroy {
         this.expandNodesThatMatchExpression(this.suiteGridRootNodes, (node: ReportGridNode) => {
             return node.data.nodeType == ReportGridNodeType.SUITE ||
                 node.data.nodeType == ReportGridNodeType.FEATURE ||
-                node.data.nodeType == ReportGridNodeType.TEST;
+                node.data.nodeType == ReportGridNodeType.TEST ||
+                node.data.nodeType == ReportGridNodeType.PARAMETRIZED_TEST ||
+                node.data.nodeType == ReportGridNodeType.SCENARIO
         });
 
         this.suiteGridRootNodes = ArrayUtil.copyArrayOfObjects(this.suiteGridRootNodes)
@@ -191,5 +194,29 @@ export class ReportGridComponent implements OnInit, OnDestroy {
 
     onLogsLoad(data: ReportLog[]) {
         window['logsModalService'].showLogsModal(data);
+    }
+
+    getGridLineTitle(nodeData: ReportGridNodeData): string {
+        let result = "";
+        switch (nodeData.nodeType) {
+            case ReportGridNodeType.SUITE: {result += "Test Suite"; break;}
+            case ReportGridNodeType.FEATURE: {result += "Feature"; break;}
+            case ReportGridNodeType.TEST: {result += "Test"; break;}
+            case ReportGridNodeType.PARAMETRIZED_TEST: {result += "Parametrized Test"; break;}
+            case ReportGridNodeType.SCENARIO: {result += "Scenario"; break;}
+            case ReportGridNodeType.COMPOSED_STEP: {result += "Composed Step"; break;}
+            case ReportGridNodeType.BASIC_STEP: {result += "Basic Step"; break;}
+            case ReportGridNodeType.UNDEFINED_STEP: {result += "Undefined Step"; break;}
+        }
+
+        switch (nodeData.status) {
+            case ExecutionStatus.PASSED: result += " has Passed"; break;
+            case ExecutionStatus.FAILED: result += " has Failed"; break;
+            case ExecutionStatus.DISABLED: result += " is Disabled"; break;
+            case ExecutionStatus.UNDEFINED: result += " is Undefined Steps"; break;
+            case ExecutionStatus.SKIPPED: result += " was Skipped"; break;
+        }
+
+        return result;
     }
 }

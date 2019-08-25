@@ -3,13 +3,14 @@ import {ReportTest} from "../model/report/report-test";
 import {RunnerReportNode} from "../model/report/runner-report-node";
 import {ReportFeature} from "../model/report/report-feature";
 import {ReportStep} from "../model/report/report-step";
+import {ReportParametrizedTest} from "../model/report/report-parametrized-test";
 
 export class ReportModelExtractor {
 
     readonly reportSuite: ReportSuite;
 
     private reportTests: Array<ReportTest>;
-    private reportSteps: Array<ReportStep>;
+    private reportParametrizedTests: Array<ReportParametrizedTest>;
 
     constructor(reportSuite: ReportSuite) {
         this.reportSuite = reportSuite;
@@ -28,6 +29,19 @@ export class ReportModelExtractor {
         return tests;
     }
 
+    public getParametrizedTests(): Array<ReportParametrizedTest> {
+        if (this.reportParametrizedTests) {
+            return this.reportParametrizedTests;
+        }
+
+        const parametrizedTests: Array<ReportParametrizedTest> = [];
+
+        this.addParametrizedTests(parametrizedTests, this.reportSuite);
+
+        this.reportParametrizedTests = parametrizedTests;
+        return parametrizedTests;
+    }
+
     private addTests(destinationTests: Array<ReportTest>, node: RunnerReportNode) {
         if (node instanceof ReportSuite || node instanceof ReportFeature) {
             for (const child of node.children) {
@@ -38,27 +52,13 @@ export class ReportModelExtractor {
         }
     }
 
-    getAllReportSteps(): Array<ReportStep> {
-        if (this.reportSteps) {
-            return this.reportSteps;
-        }
-
-        let result: Array<ReportStep> = [];
-        let tests = this.getTests();
-        for (const test of tests) {
-            this.extractAllReportStepsFromArray(test.children, result);
-        }
-
-        this.reportSteps = result;
-        return result;
-    }
-
-    private extractAllReportStepsFromArray(testReportSteps: Array<ReportStep>, result: Array<ReportStep>) {
-        for (const testReportStep of testReportSteps) {
-            result.push(testReportStep);
-            if (testReportStep.children && testReportStep.children.length > 0) {
-                this.extractAllReportStepsFromArray(testReportStep.children, result);
+    private addParametrizedTests(destinationParametrizedTests: Array<ReportParametrizedTest>, node: RunnerReportNode) {
+        if (node instanceof ReportSuite || node instanceof ReportFeature) {
+            for (const child of node.children) {
+                this.addParametrizedTests(destinationParametrizedTests, child)
             }
+        } else if (node instanceof ReportParametrizedTest) {
+            destinationParametrizedTests.push(node);
         }
     }
 }

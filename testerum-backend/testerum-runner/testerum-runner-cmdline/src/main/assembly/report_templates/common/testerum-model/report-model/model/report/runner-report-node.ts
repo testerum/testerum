@@ -7,5 +7,7 @@ export enum RunnerReportNodeType {
     SUITE,
     FEATURE,
     TEST,
+    PARAMETRIZED_TEST,
+    SCENARIO,
     STEP
 }

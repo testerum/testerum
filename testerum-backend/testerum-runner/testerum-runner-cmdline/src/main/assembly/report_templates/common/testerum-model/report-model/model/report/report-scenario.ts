@@ -1,13 +1,12 @@
 import {FeatureOrTestRunnerReportNode} from "./feature-or-test-runner-report-node";
 import {ExecutionStatus} from "./execution-status";
+import {ReportStep} from "./report-step";
 import {MarshallingUtils} from "../../../json-marshalling/marshalling-utils";
-import {RunnerReportNodeType} from "./runner-report-node";
-import {ReportTest} from "./report-test";
-import {ReportParametrizedTest} from "./report-parametrized-test";
 
-export class ReportFeature implements FeatureOrTestRunnerReportNode {
+export class ReportScenario implements FeatureOrTestRunnerReportNode {
 
-    constructor(public readonly featureName: string,
+    constructor(public readonly testName: string,
+                public readonly testFilePath: string,
                 public readonly tags: Array<string>,
                 public readonly startTime: Date,
                 public readonly endTime: Date,
@@ -15,15 +14,15 @@ export class ReportFeature implements FeatureOrTestRunnerReportNode {
                 public readonly status: ExecutionStatus,
                 public readonly textLogFilePath: string,
                 public readonly modelLogFilePath: string,
-                public readonly children: Array<FeatureOrTestRunnerReportNode>) {
-    }
+                public readonly children: Array<ReportStep>) {}
 
-    static parse(input: Object): ReportFeature {
+    static parse(input: Object): ReportScenario {
         if (!input) {
             return null;
         }
 
-        const featureName = input["featureName"];
+        const testName = input["testName"];
+        const testFilePath = input["testFilePath"];
         const tags = MarshallingUtils.parseListOfStrings(input["tags"]);
         const startTime = MarshallingUtils.parseLocalDateTime(input["startTime"]);
         const endTime = MarshallingUtils.parseLocalDateTime(input["endTime"]);
@@ -31,13 +30,8 @@ export class ReportFeature implements FeatureOrTestRunnerReportNode {
         const status = MarshallingUtils.parseEnum(input["status"], ExecutionStatus);
         const textLogFilePath = input["textLogFilePath"];
         const modelLogFilePath = input["modelLogFilePath"];
-        const children = MarshallingUtils.parseListPolymorphically<FeatureOrTestRunnerReportNode>(input["children"], {
-            [RunnerReportNodeType[RunnerReportNodeType.FEATURE]]: ReportFeature,
-            [RunnerReportNodeType[RunnerReportNodeType.TEST]]: ReportTest,
-            [RunnerReportNodeType[RunnerReportNodeType.PARAMETRIZED_TEST]]: ReportParametrizedTest
-        });
+        const children = MarshallingUtils.parseList(input["children"], ReportStep);
 
-        return new ReportFeature(featureName, tags, startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children);
+        return new ReportScenario(testName, testFilePath, tags, startTime, endTime, durationMillis, status, textLogFilePath, modelLogFilePath, children);
     }
-
 }

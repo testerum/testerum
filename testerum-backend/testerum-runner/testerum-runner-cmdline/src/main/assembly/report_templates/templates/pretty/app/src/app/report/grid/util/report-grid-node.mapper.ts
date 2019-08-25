@@ -15,6 +15,8 @@ import {ReportGridFilter} from "../model/report-grid-filter.model";
 import {ReportGridTagsUtil} from "./report-grid-tags.util";
 import {ArrayUtil} from "../../../util/array.util";
 import {ReportStepDef} from "../../../../../../../../common/testerum-model/report-model/model/step/def/report-step-def";
+import {ReportParametrizedTest} from "../../../../../../../../common/testerum-model/report-model/model/report/report-parametrized-test";
+import {ReportScenario} from "../../../../../../../../common/testerum-model/report-model/model/report/report-scenario";
 
 export class ReportGridNodeMapper {
 
@@ -47,6 +49,14 @@ export class ReportGridNodeMapper {
                 if (test) {
                     node.children.push(
                         test
+                    );
+                }
+            }
+            if (testOrFeature instanceof ReportParametrizedTest) {
+                let parametrizedTest = this.mapParametrizedTest(testOrFeature, filter, node);
+                if (parametrizedTest) {
+                    node.children.push(
+                        parametrizedTest
                     );
                 }
             }
@@ -85,9 +95,16 @@ export class ReportGridNodeMapper {
             if (testOrFeature instanceof ReportTest) {
                 let test = this.mapTest(testOrFeature, filter, node);
                 if (test) {
-                    test.parent = node;
                     node.children.push(
                         test
+                    );
+                }
+            }
+            if (testOrFeature instanceof ReportParametrizedTest) {
+                let parametrizedTest = this.mapParametrizedTest(testOrFeature, filter, node);
+                if (parametrizedTest) {
+                    node.children.push(
+                        parametrizedTest
                     );
                 }
             }
@@ -96,7 +113,6 @@ export class ReportGridNodeMapper {
         if (!filter.areTestFoldersShown) {
             return node.children as ReportGridNode[];
         }
-
 
         let result: ReportGridNode[] = [];
 
@@ -138,6 +154,85 @@ export class ReportGridNodeMapper {
         node.data.tags = test.tags;
 
         for (const step of test.children) {
+            let stepNode = this.mapSteps(step, filter, node);
+            stepNode.parent = node;
+
+            node.children.push(
+                stepNode
+            );
+        }
+
+        if(filter.selectedTags.length != 0) {
+            if(!this.nodeOrParentOrSubNodesMatchesAnyOfTheTags(node, filter.selectedTags)) {
+                return null;
+            }
+        }
+
+        return node;
+    }
+
+    private static mapParametrizedTest(parametrizedTest: ReportParametrizedTest, filter: ReportGridFilter, parentNode: ReportGridNode): ReportGridNode {
+
+        let node = new ReportGridNode();
+        node.parent = parentNode;
+        node.leaf = !(parametrizedTest.children && parametrizedTest.children.length > 0);
+        node.expanded = true; //!node.leaf && this.hasAnFailureStatus(test.status);
+
+        node.data = new ReportGridNodeData();
+        node.data.textAsHtml = parametrizedTest.testName;
+        node.data.status = parametrizedTest.status;
+        node.data.durationMillis = parametrizedTest.durationMillis;
+        node.data.textLogFilePath = parametrizedTest.textLogFilePath;
+        node.data.modelLogFilePath = parametrizedTest.modelLogFilePath;
+        node.data.nodeType = ReportGridNodeType.PARAMETRIZED_TEST;
+        node.data.tags = parametrizedTest.tags;
+
+        for (const scenario of parametrizedTest.children) {
+            let scenarioNode = this.mapScenario(scenario, filter, node);
+
+            if (scenarioNode) {
+                node.children.push(scenarioNode);
+            }
+        }
+
+        if(filter.selectedTags.length != 0) {
+            if(!this.nodeOrParentOrSubNodesMatchesAnyOfTheTags(node, filter.selectedTags)) {
+                return null;
+            }
+        }
+
+        if (node.children.length == 0 && parametrizedTest.children.length != 0) {
+            return null;
+        }
+
+        return node;
+    }
+
+    private static mapScenario(scenario: ReportScenario, filter: ReportGridFilter, parentNode: ReportGridNode): ReportGridNode {
+
+        if (scenario.status == ExecutionStatus.PASSED && !filter.showPassed ||
+            scenario.status == ExecutionStatus.FAILED && !filter.showFailed ||
+            scenario.status == ExecutionStatus.DISABLED && !filter.showDisabled ||
+            scenario.status == ExecutionStatus.UNDEFINED && !filter.showUndefined ||
+            scenario.status == ExecutionStatus.SKIPPED && !filter.showSkipped) {
+            return null;
+        }
+
+        let node = new ReportGridNode();
+        node.parent = parentNode;
+        node.leaf = !(scenario.children && scenario.children.length > 0);
+        node.expanded = false; //!node.leaf && this.hasAnFailureStatus(test.status);
+
+        node.data = new ReportGridNodeData();
+        node.data.textAsHtml = scenario.testName;
+        node.data.status = scenario.status;
+        node.data.durationMillis = scenario.durationMillis;
+        node.data.textLogFilePath = scenario.textLogFilePath;
+        node.data.modelLogFilePath = scenario.modelLogFilePath;
+        node.data.nodeType = ReportGridNodeType.SCENARIO;
+        node.data.tags = scenario.tags;
+
+        for (const step of scenario.children) {
             let stepNode = this.mapSteps(step, filter, node);
             stepNode.parent = node;
 

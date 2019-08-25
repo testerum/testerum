@@ -74,6 +74,12 @@ $fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts/';
     color: #333333;
     align-self: center;
 }
+.fa_my-scenario {
+    @extend .fas;
+    @extend .fa-stream;
+    color: #333333;
+    align-self: center;
+}
 .fa_my-tag {
     @extend .fas;
     @extend .fa-tag;

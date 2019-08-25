@@ -127,14 +127,17 @@
                 [class.row-color-skipped]="rowData.status == ExecutionStatus.SKIPPED"
                 [class.row-color-undefined]="rowData.status == ExecutionStatus.UNDEFINED"
                 [class.row-color-passed]="rowData.status == ExecutionStatus.PASSED"
-                [class.row-color-failed]="rowData.status == ExecutionStatus.FAILED">
+                [class.row-color-failed]="rowData.status == ExecutionStatus.FAILED"
+                title="{{getGridLineTitle(rowData)}}">
 
                 <td>
                     <div class="my-name-cell">
                         <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-                        <i *ngIf="rowData.nodeType == ReportGridNodeType.FEATURE && !rowNode.node.expanded" class="fa_my-tree-folder-closed-colored" title="Feature"></i>
-                        <i *ngIf="rowData.nodeType == ReportGridNodeType.FEATURE && rowNode.node.expanded" class="fa_my-tree-folder-opened-colored" title="Feature"></i>
-                        <i *ngIf="rowData.nodeType == ReportGridNodeType.TEST" class="fa_my-automated-test" title="Test"></i>
+                        <i *ngIf="rowData.nodeType == ReportGridNodeType.FEATURE && !rowNode.node.expanded" class="fa_my-tree-folder-closed-colored"></i>
+                        <i *ngIf="rowData.nodeType == ReportGridNodeType.FEATURE && rowNode.node.expanded" class="fa_my-tree-folder-opened-colored"></i>
+                        <i *ngIf="rowData.nodeType == ReportGridNodeType.TEST" class="fa_my-automated-test"></i>
+                        <i *ngIf="rowData.nodeType == ReportGridNodeType.PARAMETRIZED_TEST" class="fa_my-automated-test"></i>
+                        <i *ngIf="rowData.nodeType == ReportGridNodeType.SCENARIO" class="fa_my-scenario"></i>
 
                         <div [innerHTML]="rowData.textAsHtml"></div>
                     </div>

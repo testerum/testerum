@@ -8,6 +8,8 @@ import {ReportStepDef, StepDefType} from "../step/def/report-step-def";
 import {ReportBasicStepDef} from "../step/def/report-basic-step-def";
 import {ReportComposedStepDef} from "../step/def/report-composed-step-def";
 import {ReportUndefinedStepDef} from "../step/def/report-undefined-step-def";
+import {ReportParametrizedTest} from "./report-parametrized-test";
+import {ReportScenario} from "./report-scenario";
 
 export class ReportSuite implements RunnerReportNode {
 
@@ -36,7 +38,9 @@ export class ReportSuite implements RunnerReportNode {
 
         const children = MarshallingUtils.parseListPolymorphically<FeatureOrTestRunnerReportNode>(input["children"], {
             [RunnerReportNodeType[RunnerReportNodeType.FEATURE]]: ReportFeature,
-            [RunnerReportNodeType[RunnerReportNodeType.TEST]]: ReportTest
+            [RunnerReportNodeType[RunnerReportNodeType.TEST]]: ReportTest,
+            [RunnerReportNodeType[RunnerReportNodeType.PARAMETRIZED_TEST]]: ReportParametrizedTest,
+            [RunnerReportNodeType[RunnerReportNodeType.SCENARIO]]: ReportScenario
         });
 
         const stepDefsById = MarshallingUtils.parseMapPolymorficaly<ReportStepDef>(input["stepDefsById"], {

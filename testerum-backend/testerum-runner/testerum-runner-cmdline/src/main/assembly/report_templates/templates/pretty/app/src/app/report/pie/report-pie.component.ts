@@ -62,14 +62,27 @@ export class ReportPieComponent implements OnInit {
 
         model.totalTests = tests.length;
         for (const test of tests) {
-            switch (test.status) {
-                case ExecutionStatus.PASSED: {model.passed ++; break;}
-                case ExecutionStatus.FAILED: {model.failed ++; break;}
-                case ExecutionStatus.DISABLED: {model.disabled ++; break;}
-                case ExecutionStatus.UNDEFINED: {model.undefined ++; break;}
-                case ExecutionStatus.SKIPPED: {model.skipped ++; break;}
+            this.addExecutionStatusToReportPie(test.status, model);
+        }
+
+        let parametrizedTests = this.reportService.reportModelExtractor.getParametrizedTests();
+        for (const parametrizedTest of parametrizedTests) {
+            let scenarios = parametrizedTest.children;
+            model.totalTests += scenarios.length;
+            for (const scenario of scenarios) {
+                this.addExecutionStatusToReportPie(scenario.status, model);
             }
         }
         return model;
+    }
+
+    private addExecutionStatusToReportPie(status: ExecutionStatus, model) {
+        switch (status) {
+            case ExecutionStatus.PASSED: { model.passed++; break; }
+            case ExecutionStatus.FAILED: { model.failed++; break; }
+            case ExecutionStatus.DISABLED: { model.disabled++; break; }
+            case ExecutionStatus.UNDEFINED: { model.undefined++; break; }
+            case ExecutionStatus.SKIPPED: { model.skipped++; break; }
+        }
     }
 }
