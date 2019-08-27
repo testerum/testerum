@@ -7,6 +7,8 @@ import {TreeTextEditComponent} from "./tree-text-edit/tree-text-edit.component";
 import {TestModel} from "../../../../../../model/test/test.model";
 import {TestsRunnerService} from "../../../../tests-runner/tests-runner.service";
 import {StringUtils} from "../../../../../../utils/string-utils.util";
+import {ScenarioTreeUtil} from "../../util/scenario-tree.util";
+import {ScenarioNameUtil} from "../../util/scenario-name.util";
 
 @Component({
     selector: 'scenario-container',
@@ -18,8 +20,6 @@ import {StringUtils} from "../../../../../../utils/string-utils.util";
     encapsulation: ViewEncapsulation.None
 })
 export class ScenarioContainerComponent implements OnInit, AfterViewInit {
-
-    readonly EMPTY_SCENARIO_NAME_PREFIX = "Scenario ";
 
     @Input() model: ScenarioContainerModel;
     @Input() modelComponentMapping: ModelComponentMapping;
@@ -48,7 +48,8 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     }
 
     private setDefaultName() {
-        this.model.scenario.name = this.EMPTY_SCENARIO_NAME_PREFIX + (this.model.indexInParent + 1);
+        let allScenariosName = ScenarioTreeUtil.getAllScenariosName(this.scenarioTreeComponentService.testModel.scenarios);
+        this.model.scenario.name = ScenarioNameUtil.getNextDefaultName(allScenariosName);
     }
 
     toggleNode() {

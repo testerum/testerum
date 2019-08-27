@@ -48,7 +48,7 @@ export class StringUtils {
         if(index < 0) {
             return null;
         }
-        return mainString.substring(index + 1);
+        return mainString.substring(index + searchedPart.length);
     }
     static substringBeforeLast(mainString: string, searchedPart: string): string {
         let index = mainString.lastIndexOf(searchedPart);
@@ -62,7 +62,7 @@ export class StringUtils {
         if(index < 0) {
             return null;
         }
-        return mainString.substring(index+1);
+        return mainString.substring(index + searchedPart.length);
     }
 
     static substringBefore(mainString: string, searchedPart: string): string {
