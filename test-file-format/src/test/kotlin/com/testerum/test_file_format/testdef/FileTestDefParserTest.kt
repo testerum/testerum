@@ -216,6 +216,40 @@ class FileTestDefParserTest {
     }
 
     @Test
+    fun `can parse scenario without name, but with parameters`() {
+        assertThat(
+                parser.parse(
+                        "test-def: scenario without name, but with params\n" +
+                        "\n" +
+                        "    scenario: \n" + // this extra space before the newline, is what triggers the bug; this is the reason we don't use a raw string (IntelliJ would strip the space at the end of the line)
+                        "        param paramName = <<paramValue>>\n"
+                ),
+                equalTo(
+                        FileTestDef(
+                                name = "scenario without name, but with params",
+                                properties = FileTestDefProperties(isManual = false, isDisabled = false),
+                                description = null,
+                                tags = emptyList(),
+                                scenarios = listOf(
+                                        FileScenario(
+                                                name = null,
+                                                params = listOf(
+                                                        FileScenarioParam(
+                                                                name = "paramName",
+                                                                type = FileScenarioParamType.TEXT,
+                                                                value = "paramValue"
+                                                        )
+                                                ),
+                                                enabled = true
+                                        )
+                                ),
+                                steps = emptyList()
+                        )
+                )
+        )
+    }
+
+    @Test
     fun `should allow test with only description, but without steps`() {
         assertThat(
                 parser.parse(

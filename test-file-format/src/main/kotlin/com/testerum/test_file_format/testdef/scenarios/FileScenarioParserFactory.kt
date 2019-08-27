@@ -26,12 +26,10 @@ object FileScenarioParserFactory : ParserFactory<FileScenario> {
                 CommonScanners.optionalWhitespace(),
                 Scanners.string("[disabled]").source().asOptional(),
                 Scanners.string(":"),
-                Parsers.sequence(
-                        Scanners.string(" "),
-                        testScenarioName()
-                ).asOptional(),
+                CommonScanners.optionalWhitespace(),
+                testScenarioName().asOptional(),
                 testScenarioParams()
-        ) { _, _, disabled, _, optionalName, params -> FileScenario(name = optionalName.orElse(null), params = params, enabled = !disabled.isPresent) }
+        ) { _, _, disabled, _, _, optionalName, params -> FileScenario(name = optionalName.orElse(null), params = params, enabled = !disabled.isPresent) }
     }
 
     private fun testScenarioName(): Parser<String> {
