@@ -6,6 +6,7 @@ import {JsonTreeContainer} from "../../../../../../generic/components/json-tree/
 import {TreeTextEditComponent} from "./tree-text-edit/tree-text-edit.component";
 import {TestModel} from "../../../../../../model/test/test.model";
 import {TestsRunnerService} from "../../../../tests-runner/tests-runner.service";
+import {StringUtils} from "../../../../../../utils/string-utils.util";
 
 @Component({
     selector: 'scenario-container',
@@ -146,5 +147,13 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
 
     disableOrEnableScenario() {
         this.model.scenario.enabled = !this.model.scenario.enabled;
+    }
+
+    onTextEditModeChanged(textEditMode: boolean) {
+        if (!textEditMode) {
+            if (StringUtils.isEmpty(this.model.scenario.name)) {
+                this.setDefaultName();
+            }
+        }
     }
 }

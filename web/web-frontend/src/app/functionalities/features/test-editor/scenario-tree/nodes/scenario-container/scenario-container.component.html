@@ -11,7 +11,8 @@
                             (ngModelChange)="onScenarioNameChange($event)"
                             [class.disabled]="isDisabled()"
                             [isEditMode]="isEditMode()"
-                            [isTextEditMode]="isScenarioNameEditMode"></tree-text-edit>
+                            [isTextEditMode]="isScenarioNameEditMode"
+                            (onTextEditModeChanged)="onTextEditModeChanged($event)"></tree-text-edit>
         </div>
 
         <!-- BUTTONS -->
