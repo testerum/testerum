@@ -1,6 +1,7 @@
 package com.testerum.model.text.parts
 
 import com.fasterxml.jackson.annotation.*
+import com.testerum.model.text.parts.param_meta.type.TypeMeta
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
@@ -12,9 +13,8 @@ sealed class StepPatternPart
 
 data class ParamStepPatternPart @JsonCreator constructor(
         @JsonProperty("name") val name: String,
-        @JsonProperty("type") val type: String,
-        @JsonProperty("description") val description: String? = null,
-        @JsonProperty("enumValues") val enumValues: List<String> = emptyList()
+        @JsonProperty("typeMeta") val typeMeta: TypeMeta,
+        @JsonProperty("description") val description: String? = null
 ) : StepPatternPart()
 
 data class TextStepPatternPart @JsonCreator constructor(

@@ -2,6 +2,7 @@ package com.testerum.model.text
 
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
+import com.testerum.model.text.parts.param_meta.type.StringTypeMeta
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
@@ -34,7 +35,7 @@ class StepPatternTest {
         val stepPattern = StepPattern(
                 patternParts = listOf(
                         TextStepPatternPart("t-1"),
-                        ParamStepPatternPart(name = "p-1", type = "TEXT")
+                        ParamStepPatternPart(name = "p-1", typeMeta = StringTypeMeta())
                 )
         )
 
@@ -46,7 +47,7 @@ class StepPatternTest {
                         StepPattern(
                                 patternParts = listOf(
                                         TextStepPatternPart("t-1"),
-                                        ParamStepPatternPart(name = "p-1", type = "TEXT"),
+                                        ParamStepPatternPart(name = "p-1", typeMeta = StringTypeMeta()),
                                         TextStepPatternPart("text")
                                 )
                         )
@@ -59,7 +60,7 @@ class StepPatternTest {
         val stepPattern = StepPattern(
                 patternParts = listOf(
                         TextStepPatternPart("t-1"),
-                        ParamStepPatternPart(name = "p-1", type = "TEXT"),
+                        ParamStepPatternPart(name = "p-1", typeMeta = StringTypeMeta()),
                         TextStepPatternPart("t-2")
                 )
         )
@@ -72,7 +73,7 @@ class StepPatternTest {
                         StepPattern(
                                 patternParts = listOf(
                                         TextStepPatternPart("t-1"),
-                                        ParamStepPatternPart(name = "p-1", type = "TEXT"),
+                                        ParamStepPatternPart(name = "p-1", typeMeta = StringTypeMeta()),
                                         TextStepPatternPart("t-2text")
                                 )
                         )

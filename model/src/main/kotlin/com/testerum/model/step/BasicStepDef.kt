@@ -6,6 +6,7 @@ import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
+import com.testerum.model.text.parts.param_meta.type.TypeMetaFactory
 import com.testerum.model.warning.Warning
 
 data class BasicStepDef @JsonCreator constructor(@JsonProperty("phase")       override val phase: StepPhaseEnum,
@@ -19,7 +20,7 @@ data class BasicStepDef @JsonCreator constructor(@JsonProperty("phase")       ov
     private val _path = run {
         val paramTypes = stepPattern.patternParts
                 .filter { it is ParamStepPatternPart }
-                .map { (it as ParamStepPatternPart).type }
+                .map { TypeMetaFactory.getStringTypeFromTypeMeta((it as ParamStepPatternPart).typeMeta) }
 
         val packagesWithClass: List<String> = className.split('.')
         val packages: List<String> = packagesWithClass.dropLast(1)

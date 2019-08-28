@@ -24,6 +24,7 @@ import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
+import com.testerum.model.text.parts.param_meta.type.TypeMetaFactory
 import com.testerum.scanner.step_lib_scanner.model.ScannerBasicStepLibrary
 import com.testerum.scanner.step_lib_scanner.model.ScannerLibraryFile
 import com.testerum.scanner.step_lib_scanner.model.StepLibrariesScanResult
@@ -308,9 +309,8 @@ class StepLibraryPersistentCacheManger(private val threadPool: ExecutorService) 
 
                     ParamStepPatternPart(
                             name = paramName,
-                            type = param.type.name,
-                            description = getParamDescription(paramAnnotation),
-                            enumValues = enumValues
+                            typeMeta = TypeMetaFactory.getTypeMetaFromJavaType(param.type.name, enumValues),
+                            description = getParamDescription(paramAnnotation)
                     )
                 }
             }

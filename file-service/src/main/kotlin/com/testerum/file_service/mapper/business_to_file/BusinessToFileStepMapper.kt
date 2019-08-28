@@ -39,7 +39,7 @@ class BusinessToFileStepMapper(private val businessToFilePhaseMapper: BusinessTo
     private fun mapSignaturePart(part: StepPatternPart): FileStepDefSignaturePart {
         return when (part) {
             is TextStepPatternPart  -> FileTextStepDefSignaturePart(part.text)
-            is ParamStepPatternPart -> FileParamStepDefSignaturePart(part.name, part.type) //TODO: what about the part.description and part.enumValues
+            is ParamStepPatternPart -> FileParamStepDefSignaturePart(part.name, part.meta.type.typeAsString) //TODO: what about the part.description and part.enumValues
             else                    -> throw Exception("unknown StepPatternPart [${part.javaClass.name}]")
         }
     }

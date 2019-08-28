@@ -12,16 +12,13 @@ import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
+import com.testerum.model.text.parts.param_meta.type.StringTypeMeta
 import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileStepCallPart
 import com.testerum.test_file_format.common.step_call.part.FileTextStepCallPart
-import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
-import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
-import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartSerializer
-import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
-import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
+import com.testerum.test_file_format.common.step_call.part.arg_part.*
 
 class FileToBusinessStepCallMapper(private val phaseMapper: FileToBusinessPhaseMapper) {
 
@@ -86,7 +83,7 @@ class FileToBusinessStepCallMapper(private val phaseMapper: FileToBusinessPhaseM
                                 varName: String): StepPatternPart {
         return when (filePart) {
             is FileTextStepCallPart -> TextStepPatternPart(filePart.text)
-            is FileArgStepCallPart  -> ParamStepPatternPart(varName, "TEXT") // at this point we don't know anything about how this parameter is defined (actual name or type); this will come later, after step resolving
+            is FileArgStepCallPart  -> ParamStepPatternPart(varName, StringTypeMeta()) // at this point we don't know anything about how this parameter is defined (actual name or type); this will come later, after step resolving
             else                    -> throw Exception("unknown FileStepCallPart [${filePart.javaClass.name}]")
         }
     }
