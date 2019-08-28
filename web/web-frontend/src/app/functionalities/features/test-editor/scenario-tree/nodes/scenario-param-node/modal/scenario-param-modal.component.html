@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="my-value" *ngIf="isEditParamNameMode">
-                            <input required isNotBlankValidator
+                            <input required isNotBlankValidator paramNameValidator
                                    #nameNgModel="ngModel"
                                    [ngModel]="newParam.name"
                                    (ngModelChange)="onNameChange($event)"
@@ -48,7 +48,8 @@
                             <input-error [model]="nameNgModel"
                                          [errorMessages]="{
                                         required: 'A name is required',
-                                        parameter_with_the_same_name_already_exist: 'A parameter with the same name already exists'
+                                        parameter_with_the_same_name_already_exist: 'A parameter with the same name already exists',
+                                        invalidParamName: 'Invalid parameter name. A parameter can start only with a letter or _ and can contain only letters, numbers and the _ sign'
                                      }"></input-error>
                         </div>
                     </div>

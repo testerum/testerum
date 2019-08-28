@@ -115,6 +115,7 @@ import {MonacoEditorLoaderDirective} from "./components/monaco-editor/directives
 import {MonacoEditorComponent} from "./components/monaco-editor/components/monaco-editor/monaco-editor.component";
 import {MonacoDiffEditorComponent} from "./components/monaco-editor/components/monaco-diff-editor/monaco-diff-editor.component";
 import {ResizedDirective} from "./components/monaco-editor/directives/resized-event.directive";
+import {ParamNameValidatorDirective} from "./validators/param-name-validator.directive";
 
 @NgModule({
     imports: [
@@ -181,6 +182,7 @@ import {ResizedDirective} from "./components/monaco-editor/directives/resized-ev
         IsNumberValidatorDirective,
         UrlNameValidatorDirective,
         IsNotBlankValidatorDirective,
+        ParamNameValidatorDirective,
 
         FileChooserInputComponent,
 
@@ -244,6 +246,7 @@ import {ResizedDirective} from "./components/monaco-editor/directives/resized-ev
         IsNumberValidatorDirective,
         UrlNameValidatorDirective,
         IsNotBlankValidatorDirective,
+        ParamNameValidatorDirective,
 
         FileChooserInputComponent,
         FileTreeContainerComponent,
