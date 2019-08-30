@@ -8,7 +8,7 @@ import {ObjectUtil} from "../../utils/object.util";
 })
 export class ParamNameValidatorDirective implements Validator {
 
-    regexp = new RegExp('^[a-zA-Z_][0-9a-zA-Z_]*$');
+    static regexp = new RegExp('^[a-zA-Z_][0-9a-zA-Z_]*$');
 
     validate(control: AbstractControl): {[key: string]: any} {
         let inputValue = control.value;
@@ -17,7 +17,7 @@ export class ParamNameValidatorDirective implements Validator {
             return null;
         }
 
-        if (!this.regexp.test(inputValue)) {
+        if (!ParamNameValidatorDirective.isValidParamName(inputValue)) {
             return this.notValidParamNameResponse(control)
         }
 
@@ -26,5 +26,9 @@ export class ParamNameValidatorDirective implements Validator {
 
     notValidParamNameResponse(control: AbstractControl) {
         return {'invalidParamName': {value: control.value}}
+    }
+
+    static isValidParamName(paramName: string): boolean {
+        return ParamNameValidatorDirective.regexp.test(paramName)
     }
 }
