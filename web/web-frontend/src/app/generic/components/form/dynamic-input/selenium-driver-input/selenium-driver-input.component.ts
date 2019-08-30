@@ -48,7 +48,11 @@ export class SeleniumDriverInputComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.deserializedDefaultValue = this.defaultValue ? new SeleniumDriverSettingValue().deserialize(JSON.parse(this.defaultValue)) : new SeleniumDriverSettingValue();
-        this.deserializedValue = this.value ? new SeleniumDriverSettingValue().deserialize(JSON.parse(this.value)) : new SeleniumDriverSettingValue();
+        if (this.value) {
+            this.deserializedValue = new SeleniumDriverSettingValue().deserialize(JSON.parse(this.value))
+        } else {
+            this.deserializedValue = this.defaultValue ? new SeleniumDriverSettingValue().deserialize(JSON.parse(this.defaultValue)) : new SeleniumDriverSettingValue();
+        }
 
         this.initBrowserDriver();
         this.initInstallationSettings();
