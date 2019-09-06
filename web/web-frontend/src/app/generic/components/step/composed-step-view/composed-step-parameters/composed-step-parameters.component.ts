@@ -3,6 +3,7 @@ import {StepPatternPart} from "../../../../../model/text/parts/step-pattern-part
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
 import {BasicResourceComponent} from "../../../../../functionalities/resources/editors/basic/basic-resource.component";
+import {EnumTypeMeta} from "../../../../../model/text/parts/param-meta/enum-type.meta";
 
 @ Component({
     moduleId: module.id,
@@ -59,8 +60,8 @@ export class ComposedStepParametersComponent implements OnInit {
         paramPatternPart.enumValues = splitedValues
     }
 
-    isEnumType(serverType: string):boolean {
-        return serverType == ResourceMapEnum.ENUM.serverType;
+    isEnumType(paramStepPattern: ParamStepPatternPart):boolean {
+        return paramStepPattern.serverType instanceof EnumTypeMeta;
     }
 
     getParamUiName(serverType: string): string {

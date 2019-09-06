@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.text.parts.param_meta.TypeMeta
 import com.testerum.model.warning.Warning
 
 data class Arg @JsonCreator constructor(@JsonProperty("name") val name: String?,
                                         @JsonProperty("content") val content: String?,
-                                        @JsonProperty("type") val type: String,
+                                        @JsonProperty("typeMeta") val typeMeta: TypeMeta,
                                         @JsonProperty("path") val path: Path?,
                                         @JsonProperty("oldPath") val oldPath: Path? = path,
                                         @JsonProperty("warnings") val warnings: List<Warning> = emptyList()) {
@@ -57,7 +58,7 @@ data class Arg @JsonCreator constructor(@JsonProperty("name") val name: String?,
     override fun toString(): String = buildString {
         append("Arg(")
         append(" name=[").append(name).append("]")
-        append(" type=[").append(type).append("]")
+        append(" typeMeta=[").append(typeMeta).append("]")
         append(", path=[").append(path).append("]")
         append(", content=[").append(content).append("]")
         append(")")

@@ -31,10 +31,16 @@ import {JsonVerify} from "../../../generic/components/json-verify/model/json-ver
 import {JsonUtil} from "../../../utils/json.util";
 import {JsonResourceComponent} from "./json/json_resource/json-resource.component";
 import {JsonResourceType} from "../tree/model/type/json.resource-type.model";
+import {TypeMeta} from "../../../model/text/parts/param-meta/type-meta.model";
+import {TextTypeMeta} from "../../../model/text/parts/param-meta/text-type.meta";
+import {NumberTypeMeta} from "../../../model/text/parts/param-meta/number-type.meta";
+import {EnumTypeMeta} from "../../../model/text/parts/param-meta/enum-type.meta";
+import {BooleanTypeMeta} from "../../../model/text/parts/param-meta/boolean-type.meta";
+import {ObjectTypeMeta} from "../../../model/text/parts/param-meta/object-type.meta";
 
 export class ResourceMapEnum {
     public static TEXT: ResourceMapEnum = new ResourceMapEnum(
-        "java.lang.String",
+        new TextTypeMeta("java.lang.String"),
         "TEXT",
         "Text",
         null,
@@ -45,7 +51,7 @@ export class ResourceMapEnum {
         (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static NUMBER: ResourceMapEnum = new ResourceMapEnum(
-        "java.lang.Double",
+        new NumberTypeMeta(),
         "NUMBER",
         "Number",
         null,
@@ -56,7 +62,7 @@ export class ResourceMapEnum {
         (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static ENUM: ResourceMapEnum = new ResourceMapEnum(
-        "ENUM",
+        new EnumTypeMeta(),
         "ENUM",
         "Enum",
         null,
@@ -67,7 +73,7 @@ export class ResourceMapEnum {
         (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static BOOLEAN: ResourceMapEnum = new ResourceMapEnum(
-        "java.lang.Boolean",
+        new BooleanTypeMeta(),
         "BOOLEAN",
         "Boolean",
         null,
@@ -78,7 +84,7 @@ export class ResourceMapEnum {
         (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static RDBMS_CONNECTION: ResourceMapEnum = new ResourceMapEnum(
-        "database.relational.connection_manager.model.RdbmsConnection",
+        new ObjectTypeMeta("database.relational.connection_manager.model.RdbmsConnection"),
         "database.relational.connection_manager.model.RdbmsConnection",
         "RdbmsConnection",
         "rdbms.connection.yaml",
@@ -89,7 +95,7 @@ export class ResourceMapEnum {
         (input:string) => {return new RdbmsConnectionConfig().deserialize(JsonUtil.parseJson(input))}
     );
     public static RDBMS_SQL: ResourceMapEnum = new ResourceMapEnum(
-        "database.relational.model.RdbmsSql",
+        new ObjectTypeMeta("database.relational.model.RdbmsSql"),
         "database.relational.model.RdbmsSql",
         "RdbmsSql",
         "sql",
@@ -100,7 +106,7 @@ export class ResourceMapEnum {
         (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static RDBMS_VERIFY: ResourceMapEnum = new ResourceMapEnum(
-        "database.relational.model.RdbmsVerify",
+        new ObjectTypeMeta("database.relational.model.RdbmsVerify"),
         "database.relational.model.RdbmsVerify",
         "RdbmsVerify",
         "rdbms.verify.json",
@@ -111,7 +117,7 @@ export class ResourceMapEnum {
         (input:string) => {return new SchemaVerify(null).deserialize(JsonUtil.parseJson(input))}
     );
     public static HTTP_REQUEST: ResourceMapEnum = new ResourceMapEnum(
-        "com.testerum.model.resources.http.request.HttpRequest",
+        new ObjectTypeMeta("com.testerum.model.resources.http.request.HttpRequest"),
         "com.testerum.model.resources.http.request.HttpRequest",
         "HttpRequest",
         "http.request.yaml",
@@ -122,7 +128,7 @@ export class ResourceMapEnum {
         (input:string) => {return new HttpRequest().deserialize(JsonUtil.parseJson(input))}
     );
     public static HTTP_RESPONSE_VERIFY: ResourceMapEnum = new ResourceMapEnum(
-        "http.response.verify.model.HttpResponseVerify",
+        new ObjectTypeMeta("http.response.verify.model.HttpResponseVerify"),
         "http.response.verify.model.HttpResponseVerify",
         "HttpResponseVerify",
         "http.response.verify.yaml",
@@ -133,7 +139,7 @@ export class ResourceMapEnum {
         (input:string) => {return new HttpResponseVerify().deserialize(JsonUtil.parseJson(input))}
     );
     public static HTTP_MOCK_SERVER_VERIFY: ResourceMapEnum = new ResourceMapEnum(
-        "com.testerum.model.resources.http.mock.server.HttpMockServer",
+        new ObjectTypeMeta("com.testerum.model.resources.http.mock.server.HttpMockServer"),
         "com.testerum.model.resources.http.mock.server.HttpMockServer",
         "HttpMockServer",
         "http.mock.server.yaml",
@@ -144,7 +150,7 @@ export class ResourceMapEnum {
         (input:string) => {return new HttpMockServer().deserialize(JsonUtil.parseJson(input))}
     );
     public static HTTP_MOCK_STUB_VERIFY: ResourceMapEnum = new ResourceMapEnum(
-        "com.testerum.model.resources.http.mock.stub.HttpMock",
+        new ObjectTypeMeta("com.testerum.model.resources.http.mock.stub.HttpMock"),
         "com.testerum.model.resources.http.mock.stub.HttpMock",
         "HttpStub",
         "http.stub.yaml",
@@ -155,7 +161,7 @@ export class ResourceMapEnum {
         (input:string) => {return new HttpMock().deserialize(JsonUtil.parseJson(input))}
     );
     public static JSON_VERIFY: ResourceMapEnum = new ResourceMapEnum(
-        "net.qutester.model.resources.json.verify.JsonVerify",
+        new ObjectTypeMeta("net.qutester.model.resources.json.verify.JsonVerify"),
         "net.qutester.model.resources.json.verify.JsonVerify",
         "JsonVerify",
         "verify.json",
@@ -166,7 +172,7 @@ export class ResourceMapEnum {
         (input:string) => {return new JsonVerify().deserialize(input)}
     );
     public static JSON: ResourceMapEnum = new ResourceMapEnum(
-        "json.model.JsonResource",
+        new ObjectTypeMeta("json.model.JsonResource"),
         "json.model.JsonResource",
         "JSON",
         "json",
@@ -192,13 +198,19 @@ export class ResourceMapEnum {
         ResourceMapEnum.JSON,
     ];
 
-    static getResourceMapEnumByServerType(serverType: string): ResourceMapEnum {
+    static getResourceMapEnumByTypeMeta(serverType: TypeMeta): ResourceMapEnum {
         for (let paramType of ResourceMapEnum.ALL_PARAM_TYPES) {
-            if (paramType.serverType == serverType) {
-                return paramType;
+            if (paramType.serverType.constructor == serverType.constructor) {
+                if (serverType instanceof ObjectTypeMeta) {
+                    if (serverType.javaType == paramType.serverType.javaType) {
+                        return paramType;
+                    }
+                } else {
+                    return paramType;
+                }
             }
         }
-        return null;
+        return ResourceMapEnum.TEXT;
     }
 
     static getResourceMapEnumByUiType(uiType: string): ResourceMapEnum {
@@ -238,7 +250,7 @@ export class ResourceMapEnum {
         throw new Error("Unknown data SERVER_TYPE [" + uiType + "]");
     }
 
-    public readonly serverType: string;
+    public readonly serverType: TypeMeta;
     public readonly uiType: string;
     public readonly uiName: string;
     public readonly fileExtension: string;
@@ -248,7 +260,7 @@ export class ResourceMapEnum {
     public readonly contentTypeDeserializeFunction: Function;
 
 
-    private constructor(serverType: string,
+    private constructor(serverType: TypeMeta,
                         uiType: string,
                         uiName: string,
                         fileExtension: string,

@@ -1,7 +1,7 @@
 package com.testerum.model.text.parts
 
 import com.fasterxml.jackson.annotation.*
-import com.testerum.model.text.parts.param_meta.type.TypeMeta
+import com.testerum.model.text.parts.param_meta.TypeMeta
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")

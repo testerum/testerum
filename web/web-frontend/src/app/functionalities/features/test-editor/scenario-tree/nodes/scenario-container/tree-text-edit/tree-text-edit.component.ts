@@ -20,7 +20,7 @@ import {FocusDirective} from "../../../../../../../generic/directives/focus.dire
         { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TreeTextEditComponent), multi: true}
     ]
 })
-export class TreeTextEditComponent implements ControlValueAccessor, OnChanges {
+export class TreeTextEditComponent implements ControlValueAccessor {
 
     text: string;
     @Input() isEditMode: boolean;
@@ -41,11 +41,6 @@ export class TreeTextEditComponent implements ControlValueAccessor, OnChanges {
 
     registerOnTouched(fn: any): void {}
     setDisabledState(isDisabled: boolean): void {}
-
-    ngOnChanges(changes: SimpleChanges): void {
-        console.log("changes", changes);
-    }
-
 
     onTextChange(text: string) {
         this.text = text;

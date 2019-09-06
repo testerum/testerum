@@ -2,6 +2,8 @@ import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {StepPatternPart} from "../../../../model/text/parts/step-pattern-part.model";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
 import {ResourceMapEnum} from "../../../resources/editors/resource-map.enum";
+import {TypeMeta} from "../../../../model/text/parts/param-meta/type-meta.model";
+import {EnumTypeMeta} from "../../../../model/text/parts/param-meta/enum-type.meta";
 
 @Component({
     moduleId: module.id,
@@ -29,8 +31,8 @@ export class BasicStepParametersComponent {
         return false;
     }
 
-    isEnumType(type: any):boolean {
-        return type == ResourceMapEnum.ENUM;
+    isEnumType(type: TypeMeta):boolean {
+        return type instanceof EnumTypeMeta;
     }
 
     getParamUiName(serverType: string): string {

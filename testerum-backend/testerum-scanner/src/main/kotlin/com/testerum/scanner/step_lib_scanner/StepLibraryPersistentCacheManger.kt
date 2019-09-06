@@ -24,7 +24,7 @@ import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
-import com.testerum.model.text.parts.param_meta.type.TypeMetaFactory
+import com.testerum.model.text.parts.param_meta.TypeMetaFactory
 import com.testerum.scanner.step_lib_scanner.model.ScannerBasicStepLibrary
 import com.testerum.scanner.step_lib_scanner.model.ScannerLibraryFile
 import com.testerum.scanner.step_lib_scanner.model.StepLibrariesScanResult

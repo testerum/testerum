@@ -7,6 +7,7 @@ import {ObjectUtil} from "../../../../../utils/object.util";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
+import {NumberTypeMeta} from "../../../../../model/text/parts/param-meta/number-type.meta";
 
 
 @Directive({
@@ -33,7 +34,7 @@ export class ArgValueValidatorDirective implements Validator {
             return null;
         }
 
-        if (this.stepParameter.uiType == ResourceMapEnum.NUMBER.serverType && !ObjectUtil.isANumber(nonVariableReferenceInput)) {
+        if (this.stepParameter.serverType instanceof NumberTypeMeta && !ObjectUtil.isANumber(nonVariableReferenceInput)) {
             return this.returnError("argValueValidator_notANumber", control)
         }
 

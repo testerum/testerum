@@ -87,7 +87,7 @@ fun StepPattern.isStepPatternChangeCompatible(otherStepPattern: StepPattern): Bo
             val otherParamPatternPart = otherStepPattern.getParamPatternPartByIndex(currentParamIndex)
                     ?: return false
 
-            if (patternPart.type != otherParamPatternPart.type) {
+            if (patternPart.typeMeta != otherParamPatternPart.typeMeta) {
                 return false
             }
 

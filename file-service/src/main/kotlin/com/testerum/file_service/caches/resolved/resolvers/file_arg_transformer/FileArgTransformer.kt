@@ -8,6 +8,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import com.fasterxml.jackson.datatype.guava.GuavaModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
+import com.testerum.model.text.parts.param_meta.ObjectTypeMeta
+import com.testerum.model.text.parts.param_meta.StringTypeMeta
+import com.testerum.model.text.parts.param_meta.TypeMetaFactory
 
 object FileArgTransformer {
 
@@ -53,7 +56,8 @@ object FileArgTransformer {
     }
 
     fun jsonToFileFormat(text: String, argType: String?): String {
-        if (!shouldTransform(argType)) {
+        val typeMetaFromJavaType = if(argType != null) TypeMetaFactory.getTypeMetaFromString(argType) else StringTypeMeta();
+        if (!(typeMetaFromJavaType is ObjectTypeMeta)) {
             return text
         }
 

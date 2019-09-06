@@ -63,11 +63,11 @@ class ArgsResolver(private val resourceFileService: ResourceFileService) {
             }
         }
 
-        val transformedContent = FileArgTransformer.fileFormatToJson(content.orEmpty(), paramPart.type).emptyToNull()
+        val transformedContent = FileArgTransformer.fileFormatToJson(content.orEmpty(), paramPart.typeMeta.javaType).emptyToNull()
 
         return arg.copy(
                 content = transformedContent,
-                type = paramPart.type,
+                typeMeta = paramPart.typeMeta,
                 path = path,
                 oldPath = path,
                 warnings = warnings

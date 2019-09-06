@@ -2,7 +2,7 @@ package com.testerum.model.text
 
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
-import com.testerum.model.text.parts.param_meta.type.StringTypeMeta
+import com.testerum.model.text.parts.param_meta.StringTypeMeta
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test

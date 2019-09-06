@@ -8,14 +8,15 @@ import com.testerum.model.step.BasicStepDef
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
+import com.testerum.model.text.parts.param_meta.EnumTypeMeta
+import com.testerum.model.text.parts.param_meta.NumberTypeMeta
+import com.testerum.model.text.parts.param_meta.StringTypeMeta
 import com.testerum.scanner.step_lib_scanner.StepLibraryPersistentCacheManger
 import com.testerum.scanner.step_lib_scanner.model.StepLibrariesScanResult
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalTo
-import org.hamcrest.Matchers.hasSize
-import org.hamcrest.Matchers.matchesPattern
+import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -110,9 +111,8 @@ class StepLibraryPersistentCacheMangerTest {
                                                     TextStepPatternPart(text = "step with an "),
                                                     ParamStepPatternPart(
                                                             name = "enumParameter",
-                                                            type = "java.util.concurrent.TimeUnit",
-                                                            description = null,
-                                                            enumValues = listOf("NANOSECONDS", "MICROSECONDS", "MILLISECONDS", "SECONDS", "MINUTES", "HOURS", "DAYS")
+                                                            typeMeta = EnumTypeMeta("java.util.concurrent.TimeUnit", listOf("NANOSECONDS", "MICROSECONDS", "MILLISECONDS", "SECONDS", "MINUTES", "HOURS", "DAYS")),
+                                                            description = null
                                                     )
                                             )
                                     ),
@@ -163,30 +163,26 @@ class StepLibraryPersistentCacheMangerTest {
                                                     TextStepPatternPart(text = "I login as "),
                                                     ParamStepPatternPart(
                                                             name = "username",
-                                                            type = "java.lang.String",
-                                                            description = null,
-                                                            enumValues = emptyList()
+                                                            typeMeta = StringTypeMeta(),
+                                                            description = null
                                                     ),
                                                     TextStepPatternPart(text = "/"),
                                                     ParamStepPatternPart(
                                                             name = "password",
-                                                            type = "java.lang.String",
-                                                            description = null,
-                                                            enumValues = emptyList()
+                                                            typeMeta = StringTypeMeta(),
+                                                            description = null
                                                     ),
                                                     TextStepPatternPart(text = " to "),
                                                     ParamStepPatternPart(
                                                             name = "host",
-                                                            type = "java.lang.String",
-                                                            description = null,
-                                                            enumValues = emptyList()
+                                                            typeMeta = StringTypeMeta(),
+                                                            description = null
                                                     ),
                                                     TextStepPatternPart(text = "/"),
                                                     ParamStepPatternPart(
                                                             name = "port",
-                                                            type = "int",
-                                                            description = "param description",
-                                                            enumValues = emptyList()
+                                                            typeMeta = NumberTypeMeta("int"),
+                                                            description = "param description"
                                                     )
                                             )
                                     ),
@@ -206,9 +202,8 @@ class StepLibraryPersistentCacheMangerTest {
                                                     TextStepPatternPart(text = "step with an "),
                                                     ParamStepPatternPart(
                                                             name = "enumParameter",
-                                                            type = "java.util.concurrent.TimeUnit",
-                                                            description = null,
-                                                            enumValues = listOf("NANOSECONDS", "MICROSECONDS", "MILLISECONDS", "SECONDS", "MINUTES", "HOURS", "DAYS")
+                                                            typeMeta = EnumTypeMeta("java.util.concurrent.TimeUnit", listOf("NANOSECONDS", "MICROSECONDS", "MILLISECONDS", "SECONDS", "MINUTES", "HOURS", "DAYS")),
+                                                            description = null
                                                     )
                                             )
                                     ),
@@ -259,30 +254,26 @@ class StepLibraryPersistentCacheMangerTest {
                                                     TextStepPatternPart(text = "I login as "),
                                                     ParamStepPatternPart(
                                                             name = "username",
-                                                            type = "java.lang.String",
-                                                            description = null,
-                                                            enumValues = emptyList()
+                                                            typeMeta = StringTypeMeta(),
+                                                            description = null
                                                     ),
                                                     TextStepPatternPart(text = "/"),
                                                     ParamStepPatternPart(
                                                             name = "password",
-                                                            type = "java.lang.String",
-                                                            description = null,
-                                                            enumValues = emptyList()
+                                                            typeMeta = StringTypeMeta(),
+                                                            description = null
                                                     ),
                                                     TextStepPatternPart(text = " to "),
                                                     ParamStepPatternPart(
                                                             name = "host",
-                                                            type = "java.lang.String",
-                                                            description = null,
-                                                            enumValues = emptyList()
+                                                            typeMeta = StringTypeMeta(),
+                                                            description = null
                                                     ),
                                                     TextStepPatternPart(text = "/"),
                                                     ParamStepPatternPart(
                                                             name = "port",
-                                                            type = "int",
-                                                            description = "param description",
-                                                            enumValues = emptyList()
+                                                            typeMeta = NumberTypeMeta("int"),
+                                                            description = "param description"
                                                     )
                                             )
                                     ),
@@ -302,9 +293,8 @@ class StepLibraryPersistentCacheMangerTest {
                                                     TextStepPatternPart(text = "step with an "),
                                                     ParamStepPatternPart(
                                                             name = "enumParameter",
-                                                            type = "java.util.concurrent.TimeUnit",
-                                                            description = null,
-                                                            enumValues = listOf("NANOSECONDS", "MICROSECONDS", "MILLISECONDS", "SECONDS", "MINUTES", "HOURS", "DAYS")
+                                                            typeMeta = EnumTypeMeta("java.util.concurrent.TimeUnit", listOf("NANOSECONDS", "MICROSECONDS", "MILLISECONDS", "SECONDS", "MINUTES", "HOURS", "DAYS")),
+                                                            description = null
                                                     )
                                             )
                                     ),
@@ -355,30 +345,26 @@ class StepLibraryPersistentCacheMangerTest {
                                                     TextStepPatternPart(text = "I login as "),
                                                     ParamStepPatternPart(
                                                             name = "username",
-                                                            type = "java.lang.String",
-                                                            description = null,
-                                                            enumValues = emptyList()
+                                                            typeMeta = StringTypeMeta(),
+                                                            description = null
                                                     ),
                                                     TextStepPatternPart(text = "/"),
                                                     ParamStepPatternPart(
                                                             name = "password",
-                                                            type = "java.lang.String",
-                                                            description = null,
-                                                            enumValues = emptyList()
+                                                            typeMeta = StringTypeMeta(),
+                                                            description = null
                                                     ),
                                                     TextStepPatternPart(text = " to "),
                                                     ParamStepPatternPart(
                                                             name = "host",
-                                                            type = "java.lang.String",
-                                                            description = null,
-                                                            enumValues = emptyList()
+                                                            typeMeta = StringTypeMeta(),
+                                                            description = null
                                                     ),
                                                     TextStepPatternPart(text = "/"),
                                                     ParamStepPatternPart(
                                                             name = "port",
-                                                            type = "int",
-                                                            description = "param description",
-                                                            enumValues = emptyList()
+                                                            typeMeta = NumberTypeMeta("int"),
+                                                            description = "param description"
                                                     )
                                             )
                                     ),

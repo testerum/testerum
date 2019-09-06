@@ -6,7 +6,7 @@ import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
-import com.testerum.model.text.parts.param_meta.type.TypeMetaFactory
+import com.testerum.model.text.parts.param_meta.TypeMetaFactory
 import com.testerum.model.warning.Warning
 
 data class BasicStepDef @JsonCreator constructor(@JsonProperty("phase")       override val phase: StepPhaseEnum,

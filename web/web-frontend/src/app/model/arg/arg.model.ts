@@ -7,13 +7,15 @@ import {ResourceMapEnum} from "../../functionalities/resources/editors/resource-
 import {Warning} from "../warning/Warning";
 import {BasicResourceComponent} from "../../functionalities/resources/editors/basic/basic-resource.component";
 import {Serializable} from "../infrastructure/serializable.model";
+import {TypeMeta} from "../text/parts/param-meta/type-meta.model";
+import {FieldTypeMeta} from "../text/parts/param-meta/field/field-type-meta.model";
 
 export class Arg implements Serializable<Arg> {
 
     name: string;
 
     content:Resource<any>;
-    serverType: string;
+    serverType: TypeMeta;
     uiType: string;
     path: Path;
     oldPath: Path;
@@ -29,8 +31,8 @@ export class Arg implements Serializable<Arg> {
 
     deserialize(input: Object): Arg {
         this.name = input["name"];
-        this.serverType = input["type"];
-        this.uiType = ServerToUiTypeMapperUtil.mapServerToUi(this.serverType);
+        this.serverType = FieldTypeMeta.deserializeTypeMeta(input["typeMeta"]);
+        this.uiType = ServerToUiTypeMapperUtil.mapServerToUi(this.serverType.javaType);
         if (input["path"]) {
             this.path = Path.deserialize(input["path"]);
         }
@@ -66,7 +68,7 @@ export class Arg implements Serializable<Arg> {
         return ""+
             '{' +
             '"name":' + JsonUtil.stringify(this.name) +
-            ',"type":' + JsonUtil.stringify(this.uiType) +
+            ',"typeMeta":' + JsonUtil.serializeSerializable(this.serverType) +
             ',"path":' + JsonUtil.stringify(this.path) +
             ',"oldPath":' + JsonUtil.stringify(this.oldPath) +
             ',"content":' + content +

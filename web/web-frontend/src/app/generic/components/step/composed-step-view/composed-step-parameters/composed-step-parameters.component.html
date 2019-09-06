@@ -15,14 +15,14 @@
                         <select *ngIf="isEditMode"
                                 class="smaller-input form-control"
                                 [value]="asParam(patternPart).uiType"
-                                #selectItem (change)="onValueChanged(selectItem.value, patternPart)">
+                                #selectItem (change)="onValueChanged(selectItem.value, asParam(patternPart))">
                             <option *ngFor="let enumValue of getStepParamTypesValues()" value="{{enumValue.uiType}}">
                                 {{enumValue.uiName}}
                             </option>
                         </select>
                     </td>
                     <td>
-                        <div *ngIf="isEnumType(asParam(patternPart).serverType)" style="display: flex">
+                        <div *ngIf="isEnumType(asParam(patternPart))" style="display: flex">
                             [&nbsp;
                             <div *ngIf="!isEditMode" class="inline">
                                 {{asParam(patternPart).enumValues || ""}}
@@ -30,7 +30,7 @@
 
                             <div *ngIf="isEditMode" class="inline">
                                 <input [value]="asParam(patternPart).enumValues"
-                                       #allowedValueInput (change)="setAllowedValues(allowedValueInput.value, patternPart)"
+                                       #allowedValueInput (change)="setAllowedValues(allowedValueInput.value, asParam(patternPart))"
                                        type="text" class="smaller-input form-control">
                             </div>
                             &nbsp;]

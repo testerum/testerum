@@ -83,8 +83,8 @@ class RunnerBasicStep(stepCall: StepCall,
                 continue
             }
 
-            val paramClass: Class<*> = PRIMITIVE_TYPES_BY_NAME[patternPart.type]
-                    ?: stepsClassLoader.loadClass(patternPart.type)
+            val paramClass: Class<*> = PRIMITIVE_TYPES_BY_NAME[patternPart.typeMeta.javaType]
+                    ?: stepsClassLoader.loadClass(patternPart.typeMeta.javaType)
 
             result += paramClass
         }

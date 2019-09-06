@@ -12,7 +12,7 @@ import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
-import com.testerum.model.text.parts.param_meta.type.StringTypeMeta
+import com.testerum.model.text.parts.param_meta.StringTypeMeta
 import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.`var`.FileStepVar
 import com.testerum.test_file_format.common.step_call.part.FileArgStepCallPart
@@ -102,10 +102,10 @@ class FileToBusinessStepCallMapper(private val phaseMapper: FileToBusinessPhaseM
         val argPartWithResolvedVariables: String = resolveVariables(argParts, vars)
 
         return Arg(
-                name    = computeArgName(argParts, vars),
-                content = argPartWithResolvedVariables.emptyToNull(),
-                type    = "TEXT", // this can only be known after we resolve the step definitions
-                path    = null    // when resolving, this will be replaced with the real path if this argument is an external resource
+                name     = computeArgName(argParts, vars),
+                content  = argPartWithResolvedVariables.emptyToNull(),
+                typeMeta = StringTypeMeta(), // this can only be known after we resolve the step definitions
+                path     = null    // when resolving, this will be replaced with the real path if this argument is an external resource
         )
     }
 

@@ -1,17 +1,8 @@
 package com.testerum.runner_cmdline.events.execution_listeners.report_model.base.mapper
 
 import com.testerum.model.arg.Arg
-import com.testerum.model.step.BasicStepDef
-import com.testerum.model.step.ComposedStepDef
-import com.testerum.model.step.StepCall
-import com.testerum.model.step.StepDef
-import com.testerum.model.step.UndefinedStepDef
-import com.testerum.runner.report_model.ReportBasicStepDef
-import com.testerum.runner.report_model.ReportComposedStepDef
-import com.testerum.runner.report_model.ReportStepCall
-import com.testerum.runner.report_model.ReportStepCallArg
-import com.testerum.runner.report_model.ReportStepDef
-import com.testerum.runner.report_model.ReportUndefinedStepDef
+import com.testerum.model.step.*
+import com.testerum.runner.report_model.*
 import kotlin.reflect.jvm.jvmName
 
 object ReportStepDefAndCallMapper {
@@ -73,7 +64,7 @@ object ReportStepDefAndCallMapper {
         return ReportStepCallArg(
                 name = arg.name,
                 content = arg.contentForLogging,
-                type = arg.type,
+                type = arg.typeMeta.javaType,
                 path = arg.path?.toString()
         )
     }

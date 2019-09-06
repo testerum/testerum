@@ -8,6 +8,7 @@ import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
+import com.testerum.model.text.parts.param_meta.TypeMetaFactory
 import com.testerum.model.util.StepHashUtil
 import com.testerum.test_file_format.stepdef.FileStepDef
 import com.testerum.test_file_format.stepdef.signature.part.FileParamStepDefSignaturePart
@@ -45,7 +46,7 @@ class FileToBusinessStepMapper(private val phaseMapper: FileToBusinessPhaseMappe
     private fun mapSignaturePart(fileSignaturePart: FileStepDefSignaturePart): StepPatternPart {
         return when (fileSignaturePart) {
             is FileTextStepDefSignaturePart  -> TextStepPatternPart(fileSignaturePart.text)
-            is FileParamStepDefSignaturePart -> ParamStepPatternPart(fileSignaturePart.name, fileSignaturePart.type)
+            is FileParamStepDefSignaturePart -> ParamStepPatternPart(fileSignaturePart.name, TypeMetaFactory.getTypeMetaFromString(fileSignaturePart.type) ?: throw RuntimeException("Unknown TypeMeta [${fileSignaturePart.type}]"))
             else                             -> throw Exception("unknown FileStepDefSignaturePart [${fileSignaturePart.javaClass.name}]")
         }
     }

@@ -3,11 +3,11 @@ package com.testerum.runner_cmdline.runner_tree.vars_context
 import com.testerum.api.test_context.test_vars.VariableNotFoundException
 import com.testerum.common.expression_evaluator.ExpressionEvaluator
 import com.testerum.common.parsing.executer.ParserExecuter
-import com.testerum.file_service.caches.resolved.resolvers.file_arg_transformer.FileArgTransformer
 import com.testerum.model.arg.Arg
 import com.testerum.model.step.StepCall
 import com.testerum.model.step.StepDef
 import com.testerum.model.text.parts.ParamStepPatternPart
+import com.testerum.model.text.parts.param_meta.ObjectTypeMeta
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
@@ -86,7 +86,7 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
     }
 
     fun resolveIn(arg: Arg): Any? {
-        val escape: (String) -> String = if (FileArgTransformer.shouldTransform(arg.type)) {
+        val escape: (String) -> String = if(arg.typeMeta is ObjectTypeMeta) {
             { StringEscapeUtils.escapeJson(it) }
         } else {
             { it }
