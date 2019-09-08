@@ -1,6 +1,7 @@
 package com.testerum.runner_cmdline.events.execution_listeners.report_model.template
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.testerum.common_jdk.OsUtils
 import com.testerum.common_kotlin.PathUtils
 import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.deleteContentsRecursivelyIfExists
@@ -91,8 +92,11 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
 
         // todo: extract methods
         writeLatestSymlink()
-        writeLatestReportSymlink()
-        writeStatisticsSymlink()
+        if (!OsUtils.IS_WINDOWS) {
+            // Windows cannot create file symlinks without admin privileges
+            writeLatestReportSymlink()
+            writeStatisticsSymlink()
+        }
         writeAutoRefreshDashboardHtmlFile()
 
         writeJsonFullStats()
