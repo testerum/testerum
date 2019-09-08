@@ -27,8 +27,8 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     companion object {
         private val LOG = LoggerFactory.getLogger(ManagedReportsExecutionListener::class.java)
 
-        private val LATEST_REPORT_HTML_FILE_CONTENT: String = run {
-            val filePath = "/managed-reports/latest-report.html"
+        private val AUTO_REFRESH_DASHBOARD_HTML_FILE_CONTENT: String = run {
+            val filePath = "/managed-reports/autorefresh-dashboard.html"
 
             val fileInputStream = ManagedReportsExecutionListener::class.java.getResourceAsStream(filePath)
                     ?: throw RuntimeException("could not load classpath resource at [$filePath]")
@@ -91,7 +91,9 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
 
         // todo: extract methods
         writeLatestSymlink()
-        writeLatestReportHtmlFile()
+        writeLatestReportSymlink()
+        writeStatisticsSymlink()
+        writeAutoRefreshDashboardHtmlFile()
 
         writeJsonFullStats()
         aggregateJsonFullStats()
@@ -113,28 +115,54 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
         }
     }
 
-    /** create/update "latest-report.html" file */
-    private fun writeLatestReportHtmlFile() {
+    /** create/update "latest-report.html" report symlink */
+    private fun writeLatestReportSymlink() {
         try {
-            val latestReportFile: JavaPath = managedReportsDir.resolve("latest-report.html")
-
-            if (shouldWriteLatestReportHtmlFile(latestReportFile)) {
-                latestReportFile.writeText(LATEST_REPORT_HTML_FILE_CONTENT)
-            }
+            PathUtils.createOrUpdateSymbolicLink(
+                    absoluteSymlinkPath = managedReportsDir.resolve("latest-report.html").toAbsolutePath().normalize(),
+                    absoluteTarget = RunnerDirs.getLatestReportSymlink(managedReportsDir).resolve("pretty").resolve("index.html").toAbsolutePath().normalize(),
+                    symlinkRelativeTo = managedReportsDir
+            )
         } catch (e: Exception) {
-            LOG.warn("failed to write [latest-report.html] file", e)
+            LOG.warn("""failed to create/update "latest-report.html" symlink""", e)
         }
     }
 
-    private fun shouldWriteLatestReportHtmlFile(latestReportFile: JavaPath): Boolean {
-        if (latestReportFile.doesNotExist) {
+    /** create/update "statistics.html" report symlink */
+    private fun writeStatisticsSymlink() {
+        try {
+            PathUtils.createOrUpdateSymbolicLink(
+                    absoluteSymlinkPath = managedReportsDir.resolve("statistics.html").toAbsolutePath().normalize(),
+                    absoluteTarget = RunnerDirs.getAggregatedStatisticsDir(managedReportsDir).resolve("index.html").toAbsolutePath().normalize(),
+                    symlinkRelativeTo = managedReportsDir
+            )
+        } catch (e: Exception) {
+            LOG.warn("""failed to create/update "statistics.html" symlink""", e)
+        }
+    }
+
+    /** create/update "autorefresh-dashboard.html" file */
+    private fun writeAutoRefreshDashboardHtmlFile() {
+        try {
+            val autoRefreshDashboardFile: JavaPath = managedReportsDir.resolve("autorefresh-dashboard.html")
+
+            if (shouldWriteAutoRefreshDashboardHtmlFile(autoRefreshDashboardFile)) {
+                autoRefreshDashboardFile.writeText(AUTO_REFRESH_DASHBOARD_HTML_FILE_CONTENT)
+            }
+        } catch (e: Exception) {
+            LOG.warn("failed to write [autorefresh-dashboard.html] file", e)
+        }
+    }
+
+    private fun shouldWriteAutoRefreshDashboardHtmlFile(autoRefreshDashboardFile: JavaPath): Boolean {
+        if (autoRefreshDashboardFile.doesNotExist) {
             return true
         }
 
         // different content
         // if the content is the same, don't overwrite, because a browser might read it just then
-        val actualContent = latestReportFile.readText()
-        if (actualContent != LATEST_REPORT_HTML_FILE_CONTENT) {
+        val actualContent = autoRefreshDashboardFile.readText()
+        if (actualContent != AUTO_REFRESH_DASHBOARD_HTML_FILE_CONTENT) {
             return true
         }
 
