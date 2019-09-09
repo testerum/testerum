@@ -1,6 +1,11 @@
 package com.testerum.model.text.parts.param_meta
 
+import com.testerum.model.text.parts.param_meta.field.FieldTypeMeta
+import com.testerum.model.text.parts.param_meta.util.ReflectionPrimitiveTypeUtil
+import java.lang.reflect.ParameterizedType
+import java.util.*
 import kotlin.reflect.KClass
+
 
 object TypeMetaFactory {
 
@@ -12,48 +17,6 @@ object TypeMetaFactory {
         EnumTypeMeta::class    to "ENUM",
         ListTypeMeta::class    to "LIST",
         ObjectTypeMeta::class  to "OBJECT"
-    );
-
-    val JAVA_TYPE_TO_STRING_TYPE_META: Map<String, String> = mapOf (
-        "TEXT"                to "TEXT",
-        "char"                to "TEXT",
-        "java.lang.Character" to "TEXT",
-        "java.lang.String"    to "TEXT",
-
-        "NUMBER"              to "NUMBER",
-        "byte"                to "NUMBER",
-        "short"               to "NUMBER",
-        "int"                 to "NUMBER",
-        "long"                to "NUMBER",
-        "float"               to "NUMBER",
-        "double"              to "NUMBER",
-        "java.lang.Byte"      to "NUMBER",
-        "java.lang.Short"     to "NUMBER",
-        "java.lang.Integer"   to "NUMBER",
-        "java.lang.Long"      to "NUMBER",
-        "java.lang.Float"     to "NUMBER",
-        "java.lang.Double"    to "NUMBER",
-
-        "ENUM"                to "ENUM",
-
-        "BOOLEAN"             to "BOOLEAN",
-        "boolean"             to "BOOLEAN",
-        "java.lang.Boolean"   to "BOOLEAN",
-
-        "java.util.Date" to "DATE",
-
-        "java.util.ArrayList"     to "LIST",
-        "java.util.LinkedList"    to "LIST",
-        "java.util.Vector"        to "LIST",
-        "java.util.Stack"         to "LIST",
-        "java.util.Queue"         to "LIST",
-        "java.util.PriorityQueue" to "LIST",
-        "java.util.ArrayDeque"    to "LIST",
-        "java.util.HashSet"       to "LIST",
-        "java.util.LinkedHashSet" to "LIST",
-        "java.util.TreeSet"       to "LIST",
-        "java.util.SortedSet"     to "LIST"
-
     );
 
     fun getTypeMetaFromString(type: String?): TypeMeta? {
@@ -78,19 +41,96 @@ object TypeMetaFactory {
         return typeMetaAsString ?: TYPE_META_TO_STRING_MAPPING.get(StringTypeMeta::class)!!
     }
 
-    fun getTypeMetaFromJavaType(javaTypeAsString: String, enumValues: List<String>): TypeMeta {
-        val typeMetaAsString = JAVA_TYPE_TO_STRING_TYPE_META.get(javaTypeAsString) ?: return ObjectTypeMeta(javaTypeAsString)
+    fun getTypeMetaFromJavaType(javaClass: Class<*>): TypeMeta {
 
-        val typeMeta = getTypeMetaFromString(typeMetaAsString)
-                ?: return ObjectTypeMeta(javaTypeAsString)
-
-        if (typeMeta is ObjectTypeMeta) {
-            return ObjectTypeMeta(javaTypeAsString)
+        if (javaClass.name == "java.lang.Object") {
+            return StringTypeMeta(javaClass.name)
         }
 
-        if (typeMeta is EnumTypeMeta) {
-            return EnumTypeMeta(javaTypeAsString, enumValues)
+        if (ReflectionPrimitiveTypeUtil.isPrimitive(javaClass.name)) {
+            val primitiveClass = ReflectionPrimitiveTypeUtil.getPrimitiveClass(javaClass.name)
+
+            if (ReflectionPrimitiveTypeUtil.isPrimitiveNumber(javaClass.name)) {
+                return NumberTypeMeta(primitiveClass.name)
+            }
+
+            if (ReflectionPrimitiveTypeUtil.isPrimitiveBoolean(javaClass.name)) {
+                return BooleanTypeMeta(primitiveClass.name)
+            }
+
+            if (ReflectionPrimitiveTypeUtil.isPrimitiveChar(javaClass.name)) {
+                return StringTypeMeta(primitiveClass.name)
+            }
+
+            return StringTypeMeta(javaClass.name)
         }
-        return typeMeta;
+
+        if (Collection::class.java.isAssignableFrom(javaClass)) {
+            val genericMetaType = getGenericTypeByIndexIfExists(javaClass, 0) ?: StringTypeMeta()
+            return ListTypeMeta(javaClass.name, genericMetaType)
+        }
+
+        if (Map::class.java.isAssignableFrom(javaClass)) {
+            val keyGenericMetaType = getGenericTypeByIndexIfExists(javaClass, 0) ?: StringTypeMeta()
+            val valueGenericMetaType = getGenericTypeByIndexIfExists(javaClass, 1) ?: StringTypeMeta()
+            return MapTypeMeta(javaClass.name, keyGenericMetaType, valueGenericMetaType)
+        }
+
+        if (Number::class.java.isAssignableFrom(javaClass)) {
+            return NumberTypeMeta(javaClass.name)
+        }
+
+        if (String::class.java.isAssignableFrom(javaClass)) {
+            return StringTypeMeta(javaClass.name)
+        }
+
+        if (Boolean::class.java.isAssignableFrom(javaClass)) {
+            return BooleanTypeMeta(javaClass.name)
+        }
+
+        if (Date::class.java.isAssignableFrom(javaClass)) {
+            return DateTypeMeta(javaClass.name)
+        }
+
+        if (javaClass.isEnum) {
+            val enumValues: List<String>
+            val enumConstants: Array<out Any>? = javaClass.enumConstants
+            enumValues = enumConstants?.map { (it as Enum<*>).name }
+                    ?.toList()
+                    ?: Collections.emptyList()
+
+            return EnumTypeMeta(javaClass.name, enumValues)
+        }
+
+        val fieldsTypeMeta: MutableList<FieldTypeMeta> = mutableListOf<FieldTypeMeta>()
+        for (field in javaClass.declaredFields) {
+
+            //ignore kotlin added fields
+            if (field.type.name.startsWith("[Lkotlin.") ||
+                    field.type.name.startsWith("kotlin")) {
+                continue;
+            }
+
+            val fieldTypeMeta = getTypeMetaFromJavaType(field.type)
+            fieldsTypeMeta.add(
+                    FieldTypeMeta(field.name, fieldTypeMeta)
+            )
+        }
+
+        return ObjectTypeMeta(javaClass.name, fieldsTypeMeta)
+    }
+
+    private fun getGenericTypeByIndexIfExists(javaClass: Class<*>, genericIndex: Int): TypeMeta? {
+
+
+        if (javaClass is ParameterizedType) {
+            val parameterizedType = javaClass as ParameterizedType
+            val typeArguments = parameterizedType.actualTypeArguments
+            if (typeArguments.size > genericIndex) {
+                val typeArgClass = typeArguments[genericIndex] as Class<*>;
+                return getTypeMetaFromJavaType(typeArgClass)
+            }
+        }
+        return null;
     }
 }

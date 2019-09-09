@@ -24,7 +24,6 @@ import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
-import com.testerum.model.text.parts.param_meta.TypeMetaFactory
 import com.testerum.scanner.step_lib_scanner.model.ScannerBasicStepLibrary
 import com.testerum.scanner.step_lib_scanner.model.ScannerLibraryFile
 import com.testerum.scanner.step_lib_scanner.model.StepLibrariesScanResult
@@ -34,6 +33,7 @@ import com.testerum.scanner.step_lib_scanner.step_pattern_parser.ScannerStepPatt
 import com.testerum.scanner.step_lib_scanner.step_pattern_parser.model.ParamSimpleBasicStepPatternPart
 import com.testerum.scanner.step_lib_scanner.step_pattern_parser.model.SimpleBasicStepPatternPart
 import com.testerum.scanner.step_lib_scanner.step_pattern_parser.model.TextSimpleBasicStepPatternPart
+import com.testerum.scanner.step_lib_scanner.type_meta_extractor.TypeMetaExtractor
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.scanners.MethodParameterScanner
@@ -46,7 +46,6 @@ import java.lang.reflect.Parameter
 import java.net.URL
 import java.net.URLClassLoader
 import java.nio.file.Files
-import java.util.Collections.emptyList
 import java.util.Collections.emptyMap
 import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
@@ -296,20 +295,11 @@ class StepLibraryPersistentCacheManger(private val threadPool: ExecutorService) 
 
                     paramIndex++
                     val param = methodParameters[paramIndex]
-
-                    // todo: move this to a separate method
-                    val enumValues: List<String>
-
-                    val enumConstants: Array<out Any>? = param.type.enumConstants
-                    enumValues = enumConstants?.map { (it as Enum<*>).name }
-                                              ?.toList()
-                                              ?: emptyList()
-
                     val paramAnnotation: Param? = param.getAnnotation(Param::class.java)
 
                     ParamStepPatternPart(
                             name = paramName,
-                            typeMeta = TypeMetaFactory.getTypeMetaFromJavaType(param.type.name, enumValues),
+                            typeMeta = TypeMetaExtractor.extractTypeMeta(param),
                             description = getParamDescription(paramAnnotation)
                     )
                 }

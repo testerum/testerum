@@ -7,6 +7,7 @@ import {ListTypeMeta} from "../list-type.meta";
 import {JsonUtil} from "../../../../../utils/json.util";
 import {ObjectTypeMeta} from "../object-type.meta";
 import {TextTypeMeta} from "../text-type.meta";
+import {MapTypeMeta} from "../map-type.meta";
 
 export class FieldTypeMeta implements Serializable<FieldTypeMeta> {
     name: string;
@@ -36,6 +37,9 @@ export class FieldTypeMeta implements Serializable<FieldTypeMeta> {
             }
             if (itemsTypeSerialized["@type"] == "LIST") {
                 return new ListTypeMeta().deserialize(itemsTypeSerialized);
+            }
+            if (itemsTypeSerialized["@type"] == "MAP") {
+                return new MapTypeMeta().deserialize(itemsTypeSerialized);
             }
             if (itemsTypeSerialized["@type"] == "NUMBER") {
                 return new NumberTypeMeta().deserialize(itemsTypeSerialized);
