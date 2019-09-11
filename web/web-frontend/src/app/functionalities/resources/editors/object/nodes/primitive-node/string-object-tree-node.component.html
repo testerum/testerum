@@ -1,0 +1,27 @@
+<div class="node">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false">
+
+        <span>{{model.objectName}}: </span>
+        <span *ngIf="!isEditMode()">{{model.serverObject}}</span>
+
+        <input #input
+               *ngIf="isEditMode()"
+               [ngModel]="model.value"
+               (click)="$event.stopPropagation();"
+               (ngModelChange)="onValueChange($event)"
+               type="text" class="node-attr-input-value">
+
+        <div class="button-panel btn-group"
+             *ngIf="isEditMode()"
+             [class.hidden]="!hasMouseOver">
+            <div
+                title="Delete" class="btn btn-default btn-xxs btn-group"
+                (click)="deleteEntry();$event.stopPropagation();">
+                <i class="fa_my-delete" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+</div>

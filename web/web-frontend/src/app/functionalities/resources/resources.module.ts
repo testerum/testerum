@@ -60,6 +60,8 @@ import {ResourcesTreeComponent} from "./tree/resources-tree.component";
 import {SchemaChooserModalService} from "./editors/database/connection/schema_chooser_modal/schema-chooser-modal.service";
 import {JsonResourceComponent} from "./editors/json/json_resource/json-resource.component";
 import {AngularSplitModule} from "angular-split";
+import {ObjectResourceComponent} from "./editors/object/object-resource.component";
+import {StringObjectTreeNodeComponent} from "./editors/object/nodes/primitive-node/string-object-tree-node.component";
 
 @NgModule({
     imports: [
@@ -99,6 +101,9 @@ import {AngularSplitModule} from "angular-split";
         JsonResourceComponent,
 
         SchemaChooserModalComponent,
+
+        ObjectResourceComponent,
+        StringObjectTreeNodeComponent,
     ],
     exports: [
         RdbmsConnectionConfigComponent,
@@ -112,6 +117,8 @@ import {AngularSplitModule} from "angular-split";
         HttpResponseVerifyComponent,
         HttpMockComponent,
         HttpMockServerComponent,
+
+        ObjectResourceComponent,
 
     ],
     declarations: [
@@ -164,6 +171,9 @@ import {AngularSplitModule} from "angular-split";
         HttpMockServerComponent,
 
         BasicResourceComponent,
+
+        ObjectResourceComponent,
+        StringObjectTreeNodeComponent,
     ],
     providers: [
         ResourcesTreeService,

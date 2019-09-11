@@ -91,7 +91,7 @@ export class ArgNodeComponent implements OnInit {
             this.stepCallTreeComponentService.setEditMode(true);
         }
 
-        this.argModalService.showAreYouSureModal(this.model.arg, this.model.stepPatternParam).subscribe( (event:ArgModalEnum) => {
+        this.argModalService.showArgModal(this.model.arg, this.model.stepPatternParam).subscribe( (event:ArgModalEnum) => {
             this.initCondensedViewMode(this.model.arg);
             this.resourceComponentRef.instance.refresh();
         });

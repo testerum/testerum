@@ -24,6 +24,7 @@ import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-patt
 import {BasicResource} from "../../../../model/resource/basic/basic-resource.model";
 import {Subject} from "rxjs";
 import {ArgModalEnum} from "./enum/arg-modal.enum";
+import {ObjectResourceModel} from "../../../../functionalities/resources/editors/object/object-resource.model";
 
 @Component({
     moduleId: module.id,
@@ -210,7 +211,7 @@ export class ArgModalComponent {
         let resource = this.resourceComponentRef.instance.model;
         if(ObjectUtil.hasAMethodCalled(resource, "clone")) {
             let serializedResource = resource.serialize();
-            let resourceAsJson = resource instanceof BasicResource ? serializedResource : JSON.parse(serializedResource);
+            let resourceAsJson = resource instanceof BasicResource || resource instanceof ObjectResourceModel ? serializedResource : JSON.parse(serializedResource);
             this.arg.content.reset();
             this.arg.content.deserialize(resourceAsJson)
         } else {

@@ -37,6 +37,9 @@ import {NumberTypeMeta} from "../../../model/text/parts/param-meta/number-type.m
 import {EnumTypeMeta} from "../../../model/text/parts/param-meta/enum-type.meta";
 import {BooleanTypeMeta} from "../../../model/text/parts/param-meta/boolean-type.meta";
 import {ObjectTypeMeta} from "../../../model/text/parts/param-meta/object-type.meta";
+import {ObjectResourceComponent} from "./object/object-resource.component";
+import {ObjectResourceType} from "../tree/model/type/object.resource-type.model";
+import {ObjectResourceModel} from "./object/object-resource.model";
 
 export class ResourceMapEnum {
     public static TEXT: ResourceMapEnum = new ResourceMapEnum(
@@ -182,9 +185,20 @@ export class ResourceMapEnum {
         () => {return JsonResourceType.getInstanceForChildren()},
         (input:string) => {return new BasicResource().deserialize(input)}
     );
+    public static OBJECT: ResourceMapEnum = new ResourceMapEnum(
+        new ObjectTypeMeta("json.model.JsonResource"),
+        "json.model.JsonResource",
+        "Custom",
+        "obj.json",
+        ObjectResourceComponent,
+        () => {return new ObjectResourceModel()},
+        () => {return ObjectResourceType.getInstanceForRoot()},
+        () => {return ObjectResourceType.getInstanceForChildren()},
+        (input:string) => {return new ObjectResourceModel().deserialize(input)}
+    );
     public static ALL_PARAM_TYPES: Array<ResourceMapEnum> = [
-        ResourceMapEnum.TEXT,
-        ResourceMapEnum.NUMBER,
+        // ResourceMapEnum.TEXT,
+        // ResourceMapEnum.NUMBER,
         ResourceMapEnum.ENUM,
         ResourceMapEnum.BOOLEAN,
         ResourceMapEnum.RDBMS_CONNECTION,
@@ -196,6 +210,7 @@ export class ResourceMapEnum {
         ResourceMapEnum.HTTP_MOCK_STUB_VERIFY,
         ResourceMapEnum.JSON_VERIFY,
         ResourceMapEnum.JSON,
+        ResourceMapEnum.OBJECT,
     ];
 
     static getResourceMapEnumByTypeMeta(serverType: TypeMeta): ResourceMapEnum {
@@ -219,7 +234,7 @@ export class ResourceMapEnum {
                 return paramType;
             }
         }
-        return null;
+        return this.OBJECT;
     }
 
     static getResourceMapEnumByFileExtension(fileExtension: string): ResourceMapEnum {
@@ -247,7 +262,7 @@ export class ResourceMapEnum {
             }
         }
 
-        throw new Error("Unknown data SERVER_TYPE [" + uiType + "]");
+        return this.OBJECT.contentTypeDeserializeFunction(input)
     }
 
     public readonly serverType: TypeMeta;

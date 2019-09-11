@@ -12,7 +12,7 @@ export class ArgModalService {
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
-    showAreYouSureModal(arg: Arg, stepParameter: ParamStepPatternPart): Observable<ArgModalEnum> {
+    showArgModal(arg: Arg, stepParameter: ParamStepPatternPart): Observable<ArgModalEnum> {
         let modalSubject = new Subject<ArgModalEnum>();
 
         const factory = this.componentFactoryResolver.resolveComponentFactory(ArgModalComponent);
