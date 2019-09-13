@@ -1,0 +1,25 @@
+<div class="node">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false">
+
+        <span>{{model.objectName}}: </span>
+
+        <div class="button-panel btn-group"
+             *ngIf="isEditMode()"
+             [class.hidden]="!hasMouseOver">
+            <div
+                title="Delete" class="btn btn-default btn-xxs btn-group"
+                (click)="deleteEntry();$event.stopPropagation();">
+                <i class="fa_my-delete" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+
+    <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"
+                   [modelComponentMapping]="modelComponentMapping"
+                   [model]="model"
+                   class="full-line">
+    </json-children>
+</div>

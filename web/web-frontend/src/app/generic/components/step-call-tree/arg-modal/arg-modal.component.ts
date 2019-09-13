@@ -217,6 +217,9 @@ export class ArgModalComponent {
         } else {
             this.arg.content = resource
         }
+
+        this.resourceComponentRef.instance.refresh();
+
         this.modalSubject.next(ArgModalEnum.OK);
         this.resourceModal.hide();
     }

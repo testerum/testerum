@@ -1,24 +1,42 @@
-import {ChangeDetectorRef, Component, Input} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ObjectResourceComponentService} from "../../object-resource.component-service";
 import {ArrayUtil} from "../../../../../../utils/array.util";
 import {StringObjectTreeModel} from "../../model/string-object-tree.model";
+import {ObjectObjectTreeModel} from "../../model/object-object-tree.model";
+import {ObjectTypeMeta} from "../../../../../../model/text/parts/param-meta/object-type.meta";
+import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 
 @Component({
     moduleId: module.id,
     selector: 'json-string-verify-node',
-    templateUrl: 'string-object-tree-node.component.html',
+    templateUrl: 'object-object-tree-node.component.html',
     styleUrls: [
         '../../../../../../generic/css/tree.scss',
     ]
 })
-export class StringObjectTreeNodeComponent {
+export class ObjectObjectTreeNodeComponent implements OnInit{
 
-    @Input() model: StringObjectTreeModel;
+    @Input() model: ObjectObjectTreeModel;
+    @Input() modelComponentMapping: ModelComponentMapping;
 
     hasMouseOver: boolean = false;
 
     constructor(private cd: ChangeDetectorRef,
                 private objectResourceComponentService: ObjectResourceComponentService) {
+    }
+
+    ngOnInit(): void {
+        let objectTypeMeta = this.model.typeMeta as ObjectTypeMeta;
+
+        for (const field of objectTypeMeta.fields) {
+            let fieldValue = this.model.serverObject ? this.model.serverObject[field.name] : null;
+            this.objectResourceComponentService.addFieldToObjectTree (
+                this.model,
+                field.type,
+                field.name,
+                fieldValue
+            )
+        }
     }
 
     isEditMode(): boolean {
@@ -27,11 +45,6 @@ export class StringObjectTreeNodeComponent {
 
     deleteEntry(): void {
         ArrayUtil.removeElementFromArray(this.model.parentContainer.getParent().getChildren(), this.model);
-    }
-
-    onValueChange(newValue: string) {
-        this.model.value = newValue;
-        this.refresh();
     }
 
     refresh() {

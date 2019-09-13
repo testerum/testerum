@@ -61,7 +61,8 @@ import {SchemaChooserModalService} from "./editors/database/connection/schema_ch
 import {JsonResourceComponent} from "./editors/json/json_resource/json-resource.component";
 import {AngularSplitModule} from "angular-split";
 import {ObjectResourceComponent} from "./editors/object/object-resource.component";
-import {StringObjectTreeNodeComponent} from "./editors/object/nodes/primitive-node/string-object-tree-node.component";
+import {StringObjectTreeNodeComponent} from "./editors/object/nodes/string-node/string-object-tree-node.component";
+import {ObjectObjectTreeNodeComponent} from "./editors/object/nodes/object-node/object-object-tree-node.component";
 
 @NgModule({
     imports: [
@@ -104,6 +105,7 @@ import {StringObjectTreeNodeComponent} from "./editors/object/nodes/primitive-no
 
         ObjectResourceComponent,
         StringObjectTreeNodeComponent,
+        ObjectObjectTreeNodeComponent,
     ],
     exports: [
         RdbmsConnectionConfigComponent,
@@ -174,6 +176,7 @@ import {StringObjectTreeNodeComponent} from "./editors/object/nodes/primitive-no
 
         ObjectResourceComponent,
         StringObjectTreeNodeComponent,
+        ObjectObjectTreeNodeComponent,
     ],
     providers: [
         ResourcesTreeService,

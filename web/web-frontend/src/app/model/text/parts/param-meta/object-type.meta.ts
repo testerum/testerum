@@ -11,6 +11,15 @@ export class ObjectTypeMeta implements TypeMeta, Serializable<ObjectTypeMeta> {
         this.javaType = javaType;
     }
 
+    getFieldTypeMetaByName(fieldName: string): FieldTypeMeta | null {
+        for (const field of this.fields) {
+            if (field.name == fieldName) {
+                return field
+            }
+        }
+        return null;
+    }
+
     deserialize(input: Object): ObjectTypeMeta {
         this.javaType = input["javaType"];
 

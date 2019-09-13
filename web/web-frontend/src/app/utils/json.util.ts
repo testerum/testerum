@@ -1,4 +1,5 @@
 import {Serializable} from "../model/infrastructure/serializable.model";
+import {StringUtils} from "./string-utils.util";
 
 export class JsonUtil {
     static readonly TESTERUM_EXPRESION_PATTERN = /{{(.*?)(?=}})}}/g;
@@ -75,7 +76,7 @@ export class JsonUtil {
     }
 
     public static parseJson(str: string) {
-        if (!str) {
+        if (StringUtils.isEmpty(str)) {
             return null;
         }
         return JSON.parse(str);
