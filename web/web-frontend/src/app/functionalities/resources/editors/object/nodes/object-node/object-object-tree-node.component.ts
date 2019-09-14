@@ -11,6 +11,7 @@ import {ModelComponentMapping} from "../../../../../../model/infrastructure/mode
     selector: 'json-string-verify-node',
     templateUrl: 'object-object-tree-node.component.html',
     styleUrls: [
+        '../nodes.scss',
         '../../../../../../generic/css/tree.scss',
     ]
 })

@@ -32,7 +32,7 @@ import {JsonUtil} from "../../../utils/json.util";
 import {JsonResourceComponent} from "./json/json_resource/json-resource.component";
 import {JsonResourceType} from "../tree/model/type/json.resource-type.model";
 import {TypeMeta} from "../../../model/text/parts/param-meta/type-meta.model";
-import {TextTypeMeta} from "../../../model/text/parts/param-meta/text-type.meta";
+import {StringTypeMeta} from "../../../model/text/parts/param-meta/string-type.meta";
 import {NumberTypeMeta} from "../../../model/text/parts/param-meta/number-type.meta";
 import {EnumTypeMeta} from "../../../model/text/parts/param-meta/enum-type.meta";
 import {BooleanTypeMeta} from "../../../model/text/parts/param-meta/boolean-type.meta";
@@ -43,7 +43,7 @@ import {ObjectResourceModel} from "./object/object-resource.model";
 
 export class ResourceMapEnum {
     public static TEXT: ResourceMapEnum = new ResourceMapEnum(
-        new TextTypeMeta("java.lang.String"),
+        new StringTypeMeta("java.lang.String"),
         "TEXT",
         "Text",
         null,

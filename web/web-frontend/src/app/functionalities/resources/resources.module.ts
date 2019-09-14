@@ -63,6 +63,7 @@ import {AngularSplitModule} from "angular-split";
 import {ObjectResourceComponent} from "./editors/object/object-resource.component";
 import {StringObjectTreeNodeComponent} from "./editors/object/nodes/string-node/string-object-tree-node.component";
 import {ObjectObjectTreeNodeComponent} from "./editors/object/nodes/object-node/object-object-tree-node.component";
+import {EnumObjectTreeNodeComponent} from "./editors/object/nodes/enum-node/enum-object-tree-node.component";
 
 @NgModule({
     imports: [
@@ -104,6 +105,7 @@ import {ObjectObjectTreeNodeComponent} from "./editors/object/nodes/object-node/
         SchemaChooserModalComponent,
 
         ObjectResourceComponent,
+        EnumObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,
     ],
@@ -175,6 +177,7 @@ import {ObjectObjectTreeNodeComponent} from "./editors/object/nodes/object-node/
         BasicResourceComponent,
 
         ObjectResourceComponent,
+        EnumObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,
     ],

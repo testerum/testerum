@@ -8,12 +8,13 @@
         <span *ngIf="isEditMode()">: <span class="field-type">{{getTypeForUI()}}</span> = </span>
         <span *ngIf="!isEditMode()"> = {{model.serverObject}}</span>
 
-        <input #input
-               *ngIf="isEditMode()"
-               [ngModel]="model.value"
-               (click)="$event.stopPropagation();"
-               (ngModelChange)="onValueChange($event)"
-               type="text" class="node-attr-input-value">
+        <p-dropdown *ngIf="isEditMode()"
+                    [options]="possibleValues"
+                    [(ngModel)]="model.value"
+                    (click)="$event.stopPropagation();"
+                    class="my-p-dropdown"
+                    editable="true"
+                    name="enum"></p-dropdown>
 
         <div class="button-panel btn-group"
              *ngIf="isEditMode()"

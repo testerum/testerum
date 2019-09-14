@@ -1,5 +1,5 @@
 import {JsonTreeContainer} from "../../../../../generic/components/json-tree/model/json-tree-container.model";
-import {TextTypeMeta} from "../../../../../model/text/parts/param-meta/text-type.meta";
+import {StringTypeMeta} from "../../../../../model/text/parts/param-meta/string-type.meta";
 import {JsonUtil} from "../../../../../utils/json.util";
 import {JsonTreeNode} from "../../../../../generic/components/json-tree/model/json-tree-node.model";
 import {JsonTreeContainerAbstract} from "../../../../../generic/components/json-tree/model/json-tree-container.abstract";
@@ -13,13 +13,13 @@ export class ObjectObjectTreeModel extends JsonTreeContainerAbstract implements 
 
     objectName: string;
     serverObject: any;
-    typeMeta: TextTypeMeta;
+    typeMeta: StringTypeMeta;
 
     children: ObjectTreeModel[] = [];
 
     value: object;
 
-    constructor(parentContainer: JsonTreeContainer, objectName: string, serverObject: any, typeMeta: TextTypeMeta) {
+    constructor(parentContainer: JsonTreeContainer, objectName: string, serverObject: any, typeMeta: StringTypeMeta) {
         super(parentContainer);
         this.objectName = objectName;
         this.serverObject = serverObject;

@@ -6,8 +6,9 @@ import {NumberTypeMeta} from "../number-type.meta";
 import {ListTypeMeta} from "../list-type.meta";
 import {JsonUtil} from "../../../../../utils/json.util";
 import {ObjectTypeMeta} from "../object-type.meta";
-import {TextTypeMeta} from "../text-type.meta";
+import {StringTypeMeta} from "../string-type.meta";
 import {MapTypeMeta} from "../map-type.meta";
+import {EnumTypeMeta} from "../enum-type.meta";
 
 export class FieldTypeMeta implements Serializable<FieldTypeMeta> {
     name: string;
@@ -35,6 +36,9 @@ export class FieldTypeMeta implements Serializable<FieldTypeMeta> {
             if (itemsTypeSerialized["@type"] == "DATE") {
                 return new DateTypeMeta().deserialize(itemsTypeSerialized);
             }
+            if (itemsTypeSerialized["@type"] == "ENUM") {
+                return new EnumTypeMeta().deserialize(itemsTypeSerialized);
+            }
             if (itemsTypeSerialized["@type"] == "LIST") {
                 return new ListTypeMeta().deserialize(itemsTypeSerialized);
             }
@@ -48,7 +52,7 @@ export class FieldTypeMeta implements Serializable<FieldTypeMeta> {
                 return new ObjectTypeMeta().deserialize(itemsTypeSerialized);
             }
             if (itemsTypeSerialized["@type"] == "TEXT") {
-                return new TextTypeMeta().deserialize(itemsTypeSerialized);
+                return new StringTypeMeta().deserialize(itemsTypeSerialized);
             }
         }
         return null;

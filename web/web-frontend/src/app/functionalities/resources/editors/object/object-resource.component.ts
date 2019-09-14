@@ -12,6 +12,8 @@ import {ObjectObjectTreeModel} from "./model/object-object-tree.model";
 import {JsonUtil} from "../../../../utils/json.util";
 import {ObjectObjectTreeNodeComponent} from "./nodes/object-node/object-object-tree-node.component";
 import {ObjectTreeModel} from "./model/interfaces/object-tree.model";
+import {EnumObjectTreeModel} from "./model/enum-object-tree.model";
+import {EnumObjectTreeNodeComponent} from "./nodes/enum-node/enum-object-tree-node.component";
 
 @Component({
     selector: 'object-resource',
@@ -38,6 +40,7 @@ export class ObjectResourceComponent extends ResourceComponent<any> implements O
 
     treeModel: JsonTreeModel = new JsonTreeModel();
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
+        .addPair(EnumObjectTreeModel, EnumObjectTreeNodeComponent)
         .addPair(StringObjectTreeModel, StringObjectTreeNodeComponent)
         .addPair(ObjectObjectTreeModel, ObjectObjectTreeNodeComponent);
 
