@@ -84,7 +84,7 @@ object TypeMetaFactory {
             return StringTypeMeta(javaClass.name)
         }
 
-        if (Boolean::class.java.isAssignableFrom(javaClass)) {
+        if ("java.lang.Boolean".equals(javaClass.name)) {
             return BooleanTypeMeta(javaClass.name)
         }
 

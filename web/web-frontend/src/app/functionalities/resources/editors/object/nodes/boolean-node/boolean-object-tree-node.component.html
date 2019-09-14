@@ -1,0 +1,19 @@
+<div class="node">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false">
+
+        <span>{{model.objectName}}</span>
+        <span *ngIf="isEditMode()">: <span class="field-type">{{getTypeForUI()}}</span> = </span>
+        <span *ngIf="!isEditMode()"> = {{model.serverObject}}</span>
+
+        <p-dropdown *ngIf="isEditMode()"
+                    [options]="possibleValues"
+                    [(ngModel)]="model.value"
+                    (click)="$event.stopPropagation();"
+                    class="my-p-dropdown"
+                    editable="true"
+                    name="enum"></p-dropdown>
+    </div>
+</div>

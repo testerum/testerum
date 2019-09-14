@@ -64,6 +64,7 @@ import {ObjectResourceComponent} from "./editors/object/object-resource.componen
 import {StringObjectTreeNodeComponent} from "./editors/object/nodes/string-node/string-object-tree-node.component";
 import {ObjectObjectTreeNodeComponent} from "./editors/object/nodes/object-node/object-object-tree-node.component";
 import {EnumObjectTreeNodeComponent} from "./editors/object/nodes/enum-node/enum-object-tree-node.component";
+import {BooleanObjectTreeNodeComponent} from "./editors/object/nodes/boolean-node/boolean-object-tree-node.component";
 
 @NgModule({
     imports: [
@@ -105,6 +106,7 @@ import {EnumObjectTreeNodeComponent} from "./editors/object/nodes/enum-node/enum
         SchemaChooserModalComponent,
 
         ObjectResourceComponent,
+        BooleanObjectTreeNodeComponent,
         EnumObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,
@@ -177,6 +179,7 @@ import {EnumObjectTreeNodeComponent} from "./editors/object/nodes/enum-node/enum
         BasicResourceComponent,
 
         ObjectResourceComponent,
+        BooleanObjectTreeNodeComponent,
         EnumObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,

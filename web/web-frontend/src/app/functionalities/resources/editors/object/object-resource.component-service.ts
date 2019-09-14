@@ -8,23 +8,33 @@ import {ObjectTypeMeta} from "../../../../model/text/parts/param-meta/object-typ
 import {ObjectObjectTreeModel} from "./model/object-object-tree.model";
 import {EnumTypeMeta} from "../../../../model/text/parts/param-meta/enum-type.meta";
 import {EnumObjectTreeModel} from "./model/enum-object-tree.model";
+import {BooleanTypeMeta} from "../../../../model/text/parts/param-meta/boolean-type.meta";
+import {BooleanObjectTreeModel} from "./model/boolean-object-tree.model";
 
 @Injectable()
 export class ObjectResourceComponentService {
     editMode: boolean = false;
 
     addFieldToObjectTree(parentContainer: JsonTreeContainer, serverType: TypeMeta, objectName: string, serverObject: object) {
+        if (serverType instanceof BooleanTypeMeta) {
+            parentContainer.getChildren().push(
+                new BooleanObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
+        }
         if (serverType instanceof EnumTypeMeta) {
-            let enumObjectTreeModel = new EnumObjectTreeModel(parentContainer, objectName, serverObject, serverType);
-            parentContainer.getChildren().push(enumObjectTreeModel)
+            parentContainer.getChildren().push(
+                new EnumObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
         }
         if (serverType instanceof StringTypeMeta || serverType instanceof NumberTypeMeta) {
-            let stringObjectTreeModel = new StringObjectTreeModel(parentContainer, objectName, serverObject, serverType);
-            parentContainer.getChildren().push(stringObjectTreeModel)
+            parentContainer.getChildren().push(
+                new StringObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
         }
         if (serverType instanceof ObjectTypeMeta) {
-            let objectTreeModel = new ObjectObjectTreeModel(parentContainer, objectName, serverObject, serverType);
-            parentContainer.getChildren().push(objectTreeModel)
+            parentContainer.getChildren().push(
+                new ObjectObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
         }
     }
 }

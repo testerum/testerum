@@ -5,20 +5,21 @@ import {ObjectNodeUtil} from "../util/object-node.util";
 import {EnumObjectTreeModel} from "../../model/enum-object-tree.model";
 import {SelectItem} from "primeng/api";
 import {StringSelectItem} from "../../../../../../model/prime-ng/StringSelectItem";
+import {BooleanObjectTreeModel} from "../../model/boolean-object-tree.model";
 
 @Component({
     moduleId: module.id,
     selector: 'json-string-verify-node',
-    templateUrl: 'enum-object-tree-node.component.html',
+    templateUrl: 'boolean-object-tree-node.component.html',
     encapsulation: ViewEncapsulation.None,
     styleUrls: [
         '../nodes.scss',
         '../../../../../../generic/css/tree.scss',
     ]
 })
-export class EnumObjectTreeNodeComponent implements OnInit {
+export class BooleanObjectTreeNodeComponent implements OnInit {
 
-    @Input() model: EnumObjectTreeModel;
+    @Input() model: BooleanObjectTreeModel;
 
     possibleValues: SelectItem[] = [];
 
@@ -29,23 +30,12 @@ export class EnumObjectTreeNodeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        let enumTypeMeta = this.model.typeMeta;
-        if (enumTypeMeta) {
-            for (const possibleValue of enumTypeMeta.possibleValues) {
-                let enumSelectItem = new StringSelectItem(
-                    possibleValue
-                );
-                this.possibleValues.push(enumSelectItem)
-            }
-        }
+        this.possibleValues.push(new StringSelectItem("true"));
+        this.possibleValues.push(new StringSelectItem("false"));
     }
 
     isEditMode(): boolean {
         return this.objectResourceComponentService.editMode;
-    }
-
-    deleteEntry(): void {
-        ArrayUtil.removeElementFromArray(this.model.parentContainer.getParent().getChildren(), this.model);
     }
 
     onValueChange(newValue: string) {
