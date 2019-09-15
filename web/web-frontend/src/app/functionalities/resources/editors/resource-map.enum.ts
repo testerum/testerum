@@ -186,8 +186,8 @@ export class ResourceMapEnum {
         (input:string) => {return new BasicResource().deserialize(input)}
     );
     public static OBJECT: ResourceMapEnum = new ResourceMapEnum(
-        new ObjectTypeMeta("json.model.JsonResource"),
-        "json.model.JsonResource",
+        new ObjectTypeMeta(),
+        "OBJECT",
         "Custom",
         "obj.json",
         ObjectResourceComponent,
@@ -197,8 +197,8 @@ export class ResourceMapEnum {
         (input:string) => {return new ObjectResourceModel().deserialize(input)}
     );
     public static ALL_PARAM_TYPES: Array<ResourceMapEnum> = [
-        // ResourceMapEnum.TEXT,
-        // ResourceMapEnum.NUMBER,
+        ResourceMapEnum.TEXT,
+        ResourceMapEnum.NUMBER,
         ResourceMapEnum.ENUM,
         ResourceMapEnum.BOOLEAN,
         ResourceMapEnum.RDBMS_CONNECTION,
@@ -217,7 +217,8 @@ export class ResourceMapEnum {
         for (let paramType of ResourceMapEnum.ALL_PARAM_TYPES) {
             if (paramType.serverType.constructor == serverType.constructor) {
                 if (serverType instanceof ObjectTypeMeta) {
-                    if (serverType.javaType == paramType.serverType.javaType) {
+                    if (serverType.javaType == paramType.serverType.javaType || // because http or other known resources are OBJECT TYPE
+                        paramType.serverType.javaType == null) { //this case is to match the OBJECT TYPE RESOURCE
                         return paramType;
                     }
                 } else {

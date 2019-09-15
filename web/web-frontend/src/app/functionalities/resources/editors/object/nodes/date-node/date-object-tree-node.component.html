@@ -1,0 +1,17 @@
+<div class="node">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false">
+
+        <span>{{model.objectName}}</span>
+        <span *ngIf="isEditMode()">: <span class="field-type">{{getTypeForUI()}}</span> = </span>
+        <span *ngIf="!isEditMode()"> = {{model.serverObject}}</span>
+
+        <p-calendar *ngIf="isEditMode()"
+                    [(ngModel)]="model.value"
+                    [showIcon]="true"
+                    dateFormat="yy-mm-dd"
+                    showTime="showTime" hourFormat="24" [utc]="true"></p-calendar>
+    </div>
+</div>

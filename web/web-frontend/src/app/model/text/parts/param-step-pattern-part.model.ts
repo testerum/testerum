@@ -1,6 +1,5 @@
 import {StepPatternPart} from "./step-pattern-part.model";
 import {JsonUtil} from "../../../utils/json.util";
-import {ServerToUiTypeMapperUtil} from "../../../utils/server-to-ui-type-mapper.util";
 import {Serializable} from "../../infrastructure/serializable.model";
 import {TypeMeta} from "./param-meta/type-meta.model";
 import {FieldTypeMeta} from "./param-meta/field/field-type-meta.model";

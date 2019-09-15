@@ -62,7 +62,7 @@ class BusinessToFileStepCallMapper(private val businessToFilePhaseMapper: Busine
                                  arg: Arg,
                                  varsContainer: UniqueNamesFileStepVarContainer): FileStepCallPart {
         val content: String = arg.content?.let {
-            FileArgTransformer.jsonToFileFormat(it, arg.typeMeta.fileType())
+            FileArgTransformer.jsonToFileFormat(it, arg.typeMeta)
         }.orEmpty()
 
         val path: Path? = arg.path

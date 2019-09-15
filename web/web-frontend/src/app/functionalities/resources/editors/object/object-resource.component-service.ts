@@ -10,6 +10,8 @@ import {EnumTypeMeta} from "../../../../model/text/parts/param-meta/enum-type.me
 import {EnumObjectTreeModel} from "./model/enum-object-tree.model";
 import {BooleanTypeMeta} from "../../../../model/text/parts/param-meta/boolean-type.meta";
 import {BooleanObjectTreeModel} from "./model/boolean-object-tree.model";
+import {DateTypeMeta} from "../../../../model/text/parts/param-meta/date-type-meta.model";
+import {DateObjectTreeModel} from "./model/date-object-tree.model";
 
 @Injectable()
 export class ObjectResourceComponentService {
@@ -19,6 +21,11 @@ export class ObjectResourceComponentService {
         if (serverType instanceof BooleanTypeMeta) {
             parentContainer.getChildren().push(
                 new BooleanObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
+        }
+        if (serverType instanceof DateTypeMeta) {
+            parentContainer.getChildren().push(
+                new DateObjectTreeModel(parentContainer, objectName, serverObject, serverType)
             )
         }
         if (serverType instanceof EnumTypeMeta) {

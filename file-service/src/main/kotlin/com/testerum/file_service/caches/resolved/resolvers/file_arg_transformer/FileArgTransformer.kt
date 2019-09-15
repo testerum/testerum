@@ -8,21 +8,12 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import com.fasterxml.jackson.datatype.guava.GuavaModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
+import com.testerum.model.text.parts.param_meta.ListTypeMeta
+import com.testerum.model.text.parts.param_meta.MapTypeMeta
 import com.testerum.model.text.parts.param_meta.ObjectTypeMeta
-import com.testerum.model.text.parts.param_meta.StringTypeMeta
-import com.testerum.model.text.parts.param_meta.TypeMetaFactory
+import com.testerum.model.text.parts.param_meta.TypeMeta
 
 object FileArgTransformer {
-
-    private val ARG_TYPES_TO_TRANSFORM: Set<String> = setOf(
-            "com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig",
-
-            "com.testerum.model.resources.http.request.HttpRequest",
-            "http.response.verify.model.HttpResponseVerify",
-
-            "com.testerum.model.resources.http.mock.server.HttpMockServer",
-            "com.testerum.model.resources.http.mock.stub.HttpMock"
-    )
 
     private val JSON_MAPPER: ObjectMapper = ObjectMapper().apply {
         registerModule(AfterburnerModule())
@@ -55,9 +46,8 @@ object FileArgTransformer {
         }
     }
 
-    fun jsonToFileFormat(text: String, argType: String?): String {
-        val typeMetaFromJavaType = if(argType != null) TypeMetaFactory.getTypeMetaFromString(argType) else StringTypeMeta();
-        if (!(typeMetaFromJavaType is ObjectTypeMeta)) {
+    fun jsonToFileFormat(text: String, argType: TypeMeta): String {
+        if (!shouldTransform(argType)) {
             return text
         }
 
@@ -66,8 +56,8 @@ object FileArgTransformer {
         return YAML_MAPPER.writeValueAsString(jsonTree)
     }
 
-    fun fileFormatToJson(text: String, argType: String?): String? {
-        if (!shouldTransform(argType)) {
+    fun fileFormatToJson(text: String, argTypeMeta: TypeMeta): String? {
+        if (!shouldTransform(argTypeMeta)) {
             return text
         }
         if (text == "") {
@@ -84,9 +74,9 @@ object FileArgTransformer {
         return JSON_MAPPER.writeValueAsString(jsonTree)
     }
 
-    fun shouldTransform(argType: String?): Boolean {
-        return argType != null
-                && ARG_TYPES_TO_TRANSFORM.contains(argType)
+    fun shouldTransform(argTypeMeta: TypeMeta): Boolean {
+        return argTypeMeta is ObjectTypeMeta ||
+               argTypeMeta is ListTypeMeta ||
+               argTypeMeta is MapTypeMeta
     }
-
 }

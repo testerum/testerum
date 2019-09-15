@@ -27,7 +27,7 @@ import {HttpBodyComponent} from "./editors/http/request/body/http-body.component
 import {HttpBodyTypeFormComponent} from "./editors/http/request/body-type-form/http-body-type-form.component";
 import {HttpParamsComponent} from "./editors/http/request/params/http-params.component";
 import {
-    AutoCompleteModule,
+    AutoCompleteModule, CalendarModule,
     CheckboxModule,
     DropdownModule,
     ToggleButtonModule,
@@ -65,6 +65,7 @@ import {StringObjectTreeNodeComponent} from "./editors/object/nodes/string-node/
 import {ObjectObjectTreeNodeComponent} from "./editors/object/nodes/object-node/object-object-tree-node.component";
 import {EnumObjectTreeNodeComponent} from "./editors/object/nodes/enum-node/enum-object-tree-node.component";
 import {BooleanObjectTreeNodeComponent} from "./editors/object/nodes/boolean-node/boolean-object-tree-node.component";
+import {DateObjectTreeNodeComponent} from "./editors/object/nodes/date-node/date-object-tree-node.component";
 
 @NgModule({
     imports: [
@@ -84,6 +85,7 @@ import {BooleanObjectTreeNodeComponent} from "./editors/object/nodes/boolean-nod
         ToolbarModule,
         DropdownModule,
         TooltipModule,
+        CalendarModule,
 
         GenericModule,
     ],
@@ -107,6 +109,7 @@ import {BooleanObjectTreeNodeComponent} from "./editors/object/nodes/boolean-nod
 
         ObjectResourceComponent,
         BooleanObjectTreeNodeComponent,
+        DateObjectTreeNodeComponent,
         EnumObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,
@@ -180,6 +183,7 @@ import {BooleanObjectTreeNodeComponent} from "./editors/object/nodes/boolean-nod
 
         ObjectResourceComponent,
         BooleanObjectTreeNodeComponent,
+        DateObjectTreeNodeComponent,
         EnumObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,

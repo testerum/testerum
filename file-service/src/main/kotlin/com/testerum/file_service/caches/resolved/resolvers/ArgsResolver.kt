@@ -55,7 +55,7 @@ class ArgsResolver(private val resourceFileService: ResourceFileService) {
 
                             null
                         } else {
-                            FileArgTransformer.fileFormatToJson(resource.body, resourceType.javaType)
+                            FileArgTransformer.fileFormatToJson(resource.body, resourceType.typeMeta)
                         }
                     }
                 }
@@ -63,7 +63,7 @@ class ArgsResolver(private val resourceFileService: ResourceFileService) {
             }
         }
 
-        val transformedContent = FileArgTransformer.fileFormatToJson(content.orEmpty(), paramPart.typeMeta.javaType).emptyToNull()
+        val transformedContent = FileArgTransformer.fileFormatToJson(content.orEmpty(), paramPart.typeMeta).emptyToNull()
 
         return arg.copy(
                 content = transformedContent,

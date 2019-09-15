@@ -1,22 +1,25 @@
 package com.testerum.model.resources
 
 import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.text.parts.param_meta.ObjectTypeMeta
+import com.testerum.model.text.parts.param_meta.StringTypeMeta
+import com.testerum.model.text.parts.param_meta.TypeMeta
 
 enum class ResourceType(val relativeRootDir: String,
                         val fileExtension: String,
-                        val javaType: String? = null) {
+                        val typeMeta: TypeMeta) {
 
-    RDBMS_CONNECTION    ("RDBMS/Connections"   , "rdbms.connection.yaml", "com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig"),
-    RDBMS_SQL           ("RDBMS/SQL"           , "sql"),
-    RDBMS_VERIFY        ("RDBMS/Verify"        , "rdbms.verify.json"),
+    RDBMS_CONNECTION    ("RDBMS/Connections"   , "rdbms.connection.yaml"    , ObjectTypeMeta("com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig")),
+    RDBMS_SQL           ("RDBMS/SQL"           , "sql"                      , StringTypeMeta()),
+    RDBMS_VERIFY        ("RDBMS/Verify"        , "rdbms.verify.json"        , StringTypeMeta()),
 
-    HTTP_REQUEST        ("HTTP/Request"        , "http.request.yaml"        , "com.testerum.model.resources.http.request.HttpRequest"),
-    HTTP_RESPONSE_VERIFY("HTTP/Response Verify", "http.response.verify.yaml", "http.response.verify.model.HttpResponseVerify"),
-    HTTP_MOCK_SERVER    ("HTTP/Mock/Server"    , "http.mock.server.yaml"    , "com.testerum.model.resources.http.mock.server.HttpMockServer"),
-    HTTP_MOCK_STUB      ("HTTP/Mock/Stub"      , "http.stub.yaml"           , "com.testerum.model.resources.http.mock.stub.HttpMock"),
+    HTTP_REQUEST        ("HTTP/Request"        , "http.request.yaml"        , ObjectTypeMeta("com.testerum.model.resources.http.request.HttpRequest")),
+    HTTP_RESPONSE_VERIFY("HTTP/Response Verify", "http.response.verify.yaml", ObjectTypeMeta("http.response.verify.model.HttpResponseVerify")),
+    HTTP_MOCK_SERVER    ("HTTP/Mock/Server"    , "http.mock.server.yaml"    , ObjectTypeMeta("com.testerum.model.resources.http.mock.server.HttpMockServer")),
+    HTTP_MOCK_STUB      ("HTTP/Mock/Stub"      , "http.stub.yaml"           , ObjectTypeMeta("com.testerum.model.resources.http.mock.stub.HttpMock")),
 
-    JSON_VERIFY         ("JSON/Verify"         , "verify.json"),
-    JSON                ("JSON/Resource"       , "json"),
+    JSON_VERIFY         ("JSON/Verify"         , "verify.json"              , StringTypeMeta()),
+    JSON                ("JSON/Resource"       , "json"                     , StringTypeMeta()),
     ;
 
     companion object {

@@ -23,7 +23,7 @@ class ResourcesFrontendService(private val webProjectManager: WebProjectManager,
 
         val resourceType = ResourceType.getByFileExtension(path)
                 ?: throw RuntimeException("unknown ResourceType based on the path extension [$path]")
-        val transformedBody = FileArgTransformer.fileFormatToJson(resource.body, resourceType.javaType).orEmpty()
+        val transformedBody = FileArgTransformer.fileFormatToJson(resource.body, resourceType.typeMeta).orEmpty()
 
         return resource.copy(
                 body = transformedBody

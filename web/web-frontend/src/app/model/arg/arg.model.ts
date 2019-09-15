@@ -1,11 +1,9 @@
 import {Path} from "../infrastructure/path/path.model";
 import {Resource} from "../resource/resource.model";
 import {JsonUtil} from "../../utils/json.util";
-import {ServerToUiTypeMapperUtil} from "../../utils/server-to-ui-type-mapper.util";
 import {ParamStepPatternPart} from "../text/parts/param-step-pattern-part.model";
 import {ResourceMapEnum} from "../../functionalities/resources/editors/resource-map.enum";
 import {Warning} from "../warning/Warning";
-import {BasicResourceComponent} from "../../functionalities/resources/editors/basic/basic-resource.component";
 import {Serializable} from "../infrastructure/serializable.model";
 import {TypeMeta} from "../text/parts/param-meta/type-meta.model";
 import {FieldTypeMeta} from "../text/parts/param-meta/field/field-type-meta.model";
@@ -32,7 +30,7 @@ export class Arg implements Serializable<Arg> {
     deserialize(input: Object): Arg {
         this.name = input["name"];
         this.serverType = FieldTypeMeta.deserializeTypeMeta(input["typeMeta"]);
-        this.uiType = ServerToUiTypeMapperUtil.mapServerToUi(this.serverType.javaType);
+        this.uiType = ResourceMapEnum.getResourceMapEnumByTypeMeta(this.serverType).uiType;
         if (input["path"]) {
             this.path = Path.deserialize(input["path"]);
         }
