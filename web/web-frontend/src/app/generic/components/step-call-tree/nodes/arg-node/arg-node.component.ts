@@ -12,7 +12,6 @@ import {
 import {ArgNodeModel} from "../../model/arg-node.model";
 import {ResourceComponent} from "../../../../../functionalities/resources/editors/resource-component.interface";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
-import {Subscription} from "rxjs";
 import {StepCallTreeComponentService} from "../../step-call-tree.component-service";
 import {ArgModalService} from "../../arg-modal/arg-modal.service";
 import {ArgModalEnum} from "../../arg-modal/enum/arg-modal.enum";
@@ -54,11 +53,11 @@ export class ArgNodeComponent implements OnInit {
     }
 
     private resourceComponentRef: ComponentRef<ResourceComponent<any>>;
-    @ViewChild('resourceContainer', {read: ViewContainerRef}) content:ViewContainerRef;
+    @ViewChild('resourceContainer', {read: ViewContainerRef, static: true}) content: ViewContainerRef;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
                 private stepCallTreeComponentService: StepCallTreeComponentService,
-                private argModalService: ArgModalService){
+                private argModalService: ArgModalService) {
     }
 
     ngOnInit(): void {
@@ -77,9 +76,9 @@ export class ArgNodeComponent implements OnInit {
         this.resourceComponentRef.instance.editMode = false;
     }
 
-    private getResourceRenderer():Type<any>  {
+    private getResourceRenderer(): Type<any> {
         let paramTypeEnumByType = ResourceMapEnum.getResourceMapEnumByUiType(this.model.arg.uiType);
-        if(paramTypeEnumByType) {
+        if (paramTypeEnumByType) {
             return paramTypeEnumByType.resourceComponent;
         }
 
@@ -91,7 +90,7 @@ export class ArgNodeComponent implements OnInit {
             this.stepCallTreeComponentService.setEditMode(true);
         }
 
-        this.argModalService.showArgModal(this.model.arg, this.model.stepPatternParam).subscribe( (event:ArgModalEnum) => {
+        this.argModalService.showArgModal(this.model.arg, this.model.stepPatternParam).subscribe((event: ArgModalEnum) => {
             this.initCondensedViewMode(this.model.arg);
             this.resourceComponentRef.instance.refresh();
         });
@@ -128,7 +127,7 @@ export class ArgNodeComponent implements OnInit {
     }
 
     animate() {
-        if(this.animationState == "close") {
+        if (this.animationState == "close") {
             this.animationState = "open";
         } else {
             this.animationState = "close";

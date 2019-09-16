@@ -21,7 +21,7 @@ export class AttachmentsComponent implements OnInit {
     @Input() fileAttachmentsAdded: File[] = [];
     @Input() attachmentsPathsToDelete: Path[] = [];
 
-    @ViewChild("fileUpload") fileUpload: FileUpload;
+    @ViewChild("fileUpload", { static: true }) fileUpload: FileUpload;
 
     constructor(private infoModalService: InfoModalService,
                 private contextService: ContextService){}

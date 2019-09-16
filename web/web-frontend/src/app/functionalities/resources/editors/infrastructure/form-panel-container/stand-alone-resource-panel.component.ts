@@ -31,7 +31,7 @@ import {AbstractComponentCanDeactivate} from "../../../../../generic/interfaces/
 })
 export class StandAloneResourcePanelComponent extends AbstractComponentCanDeactivate implements OnInit, OnDestroy {
 
-    @ViewChild('panelBody', {read: ViewContainerRef}) bodyElement:ViewContainerRef;
+    @ViewChild('panelBody', { read: ViewContainerRef, static: true }) bodyElement:ViewContainerRef;
 
     resource: ResourceContext<any>;
     resourceFileExtension:string;

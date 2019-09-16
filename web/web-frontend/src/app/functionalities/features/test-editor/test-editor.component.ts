@@ -38,16 +38,16 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
 
-    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;
 
-    @ViewChild(ScenarioTreeComponent) scenarioTreeComponent: ScenarioTreeComponent;
+    @ViewChild(ScenarioTreeComponent, { static: true }) scenarioTreeComponent: ScenarioTreeComponent;
 
-    @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
+    @ViewChild(StepCallTreeComponent, { static: true }) stepCallTreeComponent: StepCallTreeComponent;
     descriptionMarkdownEditor: MarkdownEditorComponent;
-    @ViewChild("descriptionMarkdownEditor") set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
+    @ViewChild("descriptionMarkdownEditor", { static: false }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
         if (descriptionMarkdownEditor != null) {
             descriptionMarkdownEditor.setEditMode(this.isEditMode);
             descriptionMarkdownEditor.setValue(this.testModel.description);

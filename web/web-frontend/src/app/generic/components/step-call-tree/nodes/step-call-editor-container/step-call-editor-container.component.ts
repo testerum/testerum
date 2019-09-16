@@ -57,7 +57,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     hasMouseOver: boolean = false;
     stepSearch: StepSearch<StepCallSuggestion>;
 
-    @ViewChild("autoCompleteComponent") autocompleteComponent: AutoComplete;
+    @ViewChild("autoCompleteComponent", { static: true }) autocompleteComponent: AutoComplete;
 
     private onDocumentClick: (event) => void;
 

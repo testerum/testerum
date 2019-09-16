@@ -16,7 +16,7 @@ import {StepChooserNodeComponent} from "./step-chooser-container/step-chooser-no
 })
 export class StepChooserComponent implements AfterViewInit {
 
-    @ViewChild("modal") modal:ModalDirective;
+    @ViewChild("modal", { static: true }) modal:ModalDirective;
 
     jsonModelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
         .addPair(StepTreeContainerModel, StepChooserContainerComponent)

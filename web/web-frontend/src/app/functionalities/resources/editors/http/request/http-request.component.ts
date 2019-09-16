@@ -40,13 +40,13 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
         save() {}
     };
 
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild(NgForm, { static: false }) form: NgForm;
 
     partToDisplay: HttpPart = HttpPart.HEADERS;
     HttpPart = HttpPart;
     HttpMethod = HttpMethod;
 
-    @ViewChild("httpParams") httpParams: HttpParamsComponent;
+    @ViewChild("httpParams", { static: false }) httpParams: HttpParamsComponent;
 
     private changesMadeEventSubscription: Subscription;
     constructor(private cd: ChangeDetectorRef,

@@ -20,7 +20,7 @@ import {StepPathModalComponentService} from "./step-path-modal.component-service
 
 export class StepPathModalComponent implements OnInit, AfterViewInit {
 
-    @ViewChild("modal") modal: ModalDirective;
+    @ViewChild("modal", { static: true }) modal: ModalDirective;
 
     modalComponentRef: ComponentRef<StepPathModalComponent>;
     modalSubject: Subject<Path>;

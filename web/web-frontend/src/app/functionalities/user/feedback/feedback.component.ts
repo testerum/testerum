@@ -15,7 +15,7 @@ export class FeedbackComponent implements AfterViewInit, OnDestroy {
     errorMessage: string;
     model: Feedback = new Feedback();
 
-    @ViewChild("feedbackModal") modal:ModalDirective;
+    @ViewChild("feedbackModal", { static: true }) modal:ModalDirective;
     modalComponentRef: ComponentRef<FeedbackComponent>;
 
     saveFeedbackSubscription: Subscription;

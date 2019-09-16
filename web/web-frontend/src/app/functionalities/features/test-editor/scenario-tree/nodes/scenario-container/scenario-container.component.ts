@@ -24,7 +24,7 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     @Input() model: ScenarioContainerModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
-    @ViewChild("treeTextEdit") treeTextEditComponent: TreeTextEditComponent;
+    @ViewChild("treeTextEdit", { static: true }) treeTextEditComponent: TreeTextEditComponent;
 
     hasMouseOver: boolean = false;
     isScenarioNameEditMode: any = false;

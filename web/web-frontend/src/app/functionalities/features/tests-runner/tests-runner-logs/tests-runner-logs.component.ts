@@ -29,8 +29,8 @@ import {ExecutionStatusEnum} from "../../../../model/test/event/enums/execution-
 export class TestsRunnerLogsComponent implements AfterViewInit, OnInit, OnDestroy {
 
 
-    @ViewChild('logsContainer') logsContainer: ElementRef;
-    @ViewChild('logsFooter') scrollFooter: ElementRef;
+    @ViewChild('logsContainer', { static: true }) logsContainer: ElementRef;
+    @ViewChild('logsFooter', { static: true }) scrollFooter: ElementRef;
 
     logsToDisplay: Array<TestsRunnerLogModel> = [];
     selectedRunnerTreeNode: RunnerTreeNodeModel;

@@ -27,7 +27,7 @@ export class JsonVerifyResourceComponent extends ResourceComponent<JsonVerify> i
         save() {}
     };
 
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild(NgForm, { static: false }) form: NgForm;
 
     sampleJsonText: string;
 

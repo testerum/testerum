@@ -23,7 +23,7 @@ import {ErrorFeedbackService} from "./error-feedback.service";
 })
 export class ErrorFeedbackModalComponent implements AfterViewInit {
 
-    @ViewChild("errorModal") modal: ModalDirective;
+    @ViewChild("errorModal", { static: true }) modal: ModalDirective;
 
     error: MyError;
 

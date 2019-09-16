@@ -32,7 +32,7 @@ export class HttpMockComponent extends ResourceComponent<HttpMock> implements On
         save() {}
     };
 
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild(NgForm, { static: false }) form: NgForm;
 
     HttpMockResponseType = HttpMockResponseType;
 

@@ -12,7 +12,7 @@ import {map} from "rxjs/operators";
 })
 export class ServerNotAvailableModalComponent implements AfterViewInit {
 
-    @ViewChild("serverNotAvailableModal") modal:ModalDirective;
+    @ViewChild("serverNotAvailableModal", { static: true }) modal:ModalDirective;
 
     modalComponentRef: ComponentRef<ServerNotAvailableModalComponent>;
     shouldRefreshWhenServerIsBack: boolean = false;

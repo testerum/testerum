@@ -11,7 +11,7 @@ import {UrlService} from "../../../service/url.service";
 })
 export class ProjectReloadModalComponent implements AfterViewInit {
 
-    @ViewChild("projectReloadModal") modal:ModalDirective;
+    @ViewChild("projectReloadModal", { static: true }) modal:ModalDirective;
 
     modalComponentRef: ComponentRef<ProjectReloadModalComponent>;
     modalSubject:Subject<void>;

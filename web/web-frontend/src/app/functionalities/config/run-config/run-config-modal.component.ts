@@ -21,7 +21,7 @@ import {RunConfigService} from "../../../service/run-config.service";
 })
 export class RunConfigModalComponent implements AfterViewInit, OnDestroy {
 
-    @ViewChild("runnerModal") modal: ModalDirective;
+    @ViewChild("runnerModal", { static: true }) modal: ModalDirective;
     modalComponentRef: ComponentRef<RunConfigModalComponent>;
 
     selectedCategory: string;

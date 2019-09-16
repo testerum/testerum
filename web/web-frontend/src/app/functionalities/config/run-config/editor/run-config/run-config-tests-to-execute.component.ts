@@ -14,10 +14,10 @@ export class RunConfigTestsToExecuteComponent implements OnInit {
     @Input() runnerConfig: RunConfig;
 
     allKnownTags: Array<string> = [];
-    @ViewChild("tagsToIncludeElement") tagsExecuteAutoComplete: AutoComplete;
+    @ViewChild("tagsToIncludeElement", { static: true }) tagsExecuteAutoComplete: AutoComplete;
     tagsToIncludeToShow:string[] = [];
     currentToExecuteTagSearch:string;
-    @ViewChild("tagsToExcludeElement") tagsExcludeAutoComplete: AutoComplete;
+    @ViewChild("tagsToExcludeElement", { static: true }) tagsExcludeAutoComplete: AutoComplete;
     tagsToExcludeToShow:string[] = [];
     currentToExcludeTagSearch:string;
 

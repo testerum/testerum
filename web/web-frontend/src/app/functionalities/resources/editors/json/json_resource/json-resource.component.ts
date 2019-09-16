@@ -28,7 +28,7 @@ export class JsonResourceComponent extends ResourceComponent<BasicResource> impl
         save() {}
     };
 
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild(NgForm, { static: false }) form: NgForm;
 
     constructor(private cd: ChangeDetectorRef){
         super();

@@ -15,7 +15,7 @@ export class JsonEditorComponent implements OnInit, OnChanges {
 
     @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
 
-    @ViewChild("monacoEditorComponent") monacoEditorComponent: MonacoEditorComponent;
+    @ViewChild("monacoEditorComponent", { static: true }) monacoEditorComponent: MonacoEditorComponent;
 
     isValidJson: boolean = true;
 

@@ -22,7 +22,7 @@ export class ManualTestsStatusTreeToolbarComponent implements OnInit {
     @Input() planPath: Path;
     @Input() treeModel:JsonTreeModel;
 
-    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;

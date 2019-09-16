@@ -44,7 +44,7 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     @Input() isCreateAction: boolean = false;
     @Input() stepContext: StepContext = new StepContext();
 
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild(NgForm, { static: true }) form: NgForm;
     StepPhaseEnum = StepPhaseEnum;
 
     oldModel: ComposedStepDef;
@@ -54,15 +54,15 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     warnings: Message[] = [];
     areChildComponentsValid: boolean = true;
 
-    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;
 
-    @ViewChild(StepCallTreeComponent) stepCallTreeComponent: StepCallTreeComponent;
+    @ViewChild(StepCallTreeComponent, { static: true }) stepCallTreeComponent: StepCallTreeComponent;
     editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    @ViewChild("descriptionMarkdownEditor") descriptionMarkdownEditor: MarkdownEditorComponent;
+    @ViewChild("descriptionMarkdownEditor", { static: true }) descriptionMarkdownEditor: MarkdownEditorComponent;
 
     private editModeStepCallTreeSubscription: Subscription;
     private warningRecalculationChangesSubscription: Subscription;

@@ -20,9 +20,9 @@ export class FileChooserModalComponent implements OnInit, AfterViewInit, OnDestr
 
     @Input() showFiles: boolean;
 
-    @ViewChild(FileTreeComponent) fileTreeComponent: FileTreeComponent;
+    @ViewChild(FileTreeComponent, { static: true }) fileTreeComponent: FileTreeComponent;
 
-    @ViewChild("infoModal") modal: ModalDirective;
+    @ViewChild("infoModal", { static: true }) modal: ModalDirective;
     directoryChooserDialogService: FileChooserModalService;
 
     isTesterumProjectChooser: boolean = false;

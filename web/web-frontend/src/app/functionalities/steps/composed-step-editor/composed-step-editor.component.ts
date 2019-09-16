@@ -32,8 +32,8 @@ export class ComposedStepEditorComponent extends AbstractComponentCanDeactivate 
     isCreateAction: boolean = false;
     pathForTitle: string = "";
 
-    @ViewChild(ComposedStepViewComponent) composedStepViewComponent: ComposedStepViewComponent;
-    @ViewChild(UpdateIncompatibilityDialogComponent) updateIncompatibilityDialogComponent: UpdateIncompatibilityDialogComponent;
+    @ViewChild(ComposedStepViewComponent, { static: true }) composedStepViewComponent: ComposedStepViewComponent;
+    @ViewChild(UpdateIncompatibilityDialogComponent, { static: true }) updateIncompatibilityDialogComponent: UpdateIncompatibilityDialogComponent;
 
     private editModeSubscription: Subscription;
 

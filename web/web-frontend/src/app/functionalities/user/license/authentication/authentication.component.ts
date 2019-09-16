@@ -32,7 +32,7 @@ export class AuthenticationComponent implements OnDestroy {
     email: string;
     password: string;
 
-    @ViewChild("licenseFileUpload") licenseFileUpload: FileUpload;
+    @ViewChild("licenseFileUpload", { static: true }) licenseFileUpload: FileUpload;
     licenseFile: File;
 
     constructor(private cd: ChangeDetectorRef,

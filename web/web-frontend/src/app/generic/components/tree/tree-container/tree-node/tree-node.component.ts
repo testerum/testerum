@@ -28,7 +28,7 @@ export class TreeNodeComponent implements OnInit {
 
     isSelected:boolean = false;
 
-    @ViewChild('content', {read: ViewContainerRef}) content:ViewContainerRef;
+    @ViewChild('content', { read: ViewContainerRef, static: true }) content:ViewContainerRef;
 
     constructor(private treeService:TreeService,
                 private componentFactoryResolver: ComponentFactoryResolver){

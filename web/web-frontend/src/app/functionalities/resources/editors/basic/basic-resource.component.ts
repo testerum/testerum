@@ -35,7 +35,7 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
         }
     };
 
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild(NgForm, { static: false }) form: NgForm;
 
     editNameMode: boolean = false;
     multiLineText: boolean = false;

@@ -20,7 +20,7 @@ export class FeaturesTreeFilterComponent implements OnInit {
 
     @Input() treeModel:JsonTreeModel;
 
-    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     selectedTags: Array<string> = [];
     tagsToShow:string[] = [];

@@ -44,7 +44,7 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
         save() {}
     };
 
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild(NgForm, { static: false }) form: NgForm;
 
     selectedRdbmsConnection: Path;
     availableRdbmsConnections: SelectItem[] = [];

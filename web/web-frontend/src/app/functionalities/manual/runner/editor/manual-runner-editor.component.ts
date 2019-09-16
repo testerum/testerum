@@ -42,7 +42,7 @@ export class ManualRunnerEditorComponent implements OnInit {
     ];
 
     descriptionMarkdownEditor: MarkdownEditorComponent;
-    @ViewChild("descriptionMarkdownEditor") set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
+    @ViewChild("descriptionMarkdownEditor", { static: false }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
         if (descriptionMarkdownEditor != null) {
             descriptionMarkdownEditor.setEditMode(this.isEditMode);
             descriptionMarkdownEditor.setValue(this.model.description);
@@ -50,7 +50,7 @@ export class ManualRunnerEditorComponent implements OnInit {
         this.descriptionMarkdownEditor = descriptionMarkdownEditor;
     }
     commentMarkdownEditor: MarkdownEditorComponent;
-    @ViewChild("commentMarkdownEditor") set setCommentMarkdownEditor(commentMarkdownEditor: MarkdownEditorComponent) {
+    @ViewChild("commentMarkdownEditor", { static: false }) set setCommentMarkdownEditor(commentMarkdownEditor: MarkdownEditorComponent) {
         if (commentMarkdownEditor != null) {
             commentMarkdownEditor.setEditMode(this.isEditMode);
             commentMarkdownEditor.setValue(this.model.comments);

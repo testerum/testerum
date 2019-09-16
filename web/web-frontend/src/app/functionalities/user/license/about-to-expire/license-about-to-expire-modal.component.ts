@@ -20,7 +20,7 @@ export class LicenseAboutToExpireModalComponent implements OnInit, AfterViewInit
     daysUntilExpiration: number;
     isTrialLicense: boolean;
 
-    @ViewChild("userProfileModal") modal: ModalDirective;
+    @ViewChild("userProfileModal", { static: true }) modal: ModalDirective;
     modalComponentRef: ComponentRef<LicenseAboutToExpireModalComponent>;
 
     constructor(private cd: ChangeDetectorRef) {

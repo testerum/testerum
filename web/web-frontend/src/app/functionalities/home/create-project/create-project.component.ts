@@ -15,7 +15,7 @@ export class CreateProjectComponent implements AfterViewInit {
     name: string;
     path: string;
 
-    @ViewChild("modal") modal:ModalDirective;
+    @ViewChild("modal", { static: true }) modal:ModalDirective;
 
     createProjectService: CreateProjectService;
     constructor() {

@@ -13,8 +13,8 @@ import {VariablesEnvironment} from "../model/variables-environment.model";
     styleUrls: ['./environment-edit-modal.component.scss']
 })
 export class EnvironmentEditModalComponent implements OnDestroy {
-    @ViewChild("modal") modal: ModalDirective;
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild("modal", { static: true }) modal: ModalDirective;
+    @ViewChild(NgForm, { static: true }) form: NgForm;
 
     title: string;
 

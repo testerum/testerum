@@ -31,7 +31,7 @@ export class JsonVerifyEditorComponent implements OnInit, OnChanges {
     @Output() modelChange = new EventEmitter<string>();
     @Output() textChange = new EventEmitter<string>();
 
-    @ViewChild("monacoEditorComponent") monacoEditorComponent: MonacoEditorComponent;
+    @ViewChild("monacoEditorComponent", { static: true }) monacoEditorComponent: MonacoEditorComponent;
 
     editorOptions: editor.IEditorConstructionOptions = {
         language: 'json',

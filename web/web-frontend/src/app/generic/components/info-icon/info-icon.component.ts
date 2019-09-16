@@ -17,8 +17,8 @@ export class InfoIconComponent {
     @Input() width: string;
     @Input() height: string;
 
-    @ViewChild(OverlayPanel) overlayPanel: OverlayPanel ;
-    @ViewChild("actualTarget") actualTargetElement: ElementRef;
+    @ViewChild(OverlayPanel, { static: true }) overlayPanel: OverlayPanel ;
+    @ViewChild("actualTarget", { static: true }) actualTargetElement: ElementRef;
 
     private shouldShow: boolean;
     constructor(private cd: ChangeDetectorRef) {}

@@ -11,7 +11,7 @@ import {Subject} from "rxjs";
 })
 export class AreYouSureModalComponent implements AfterViewInit {
 
-    @ViewChild("areYouSureModal") modal:ModalDirective;
+    @ViewChild("areYouSureModal", { static: true }) modal:ModalDirective;
 
     title:string;
     text:string;

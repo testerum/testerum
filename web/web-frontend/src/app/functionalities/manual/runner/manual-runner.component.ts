@@ -11,7 +11,7 @@ import {ManualRunnerEditorComponent} from "./editor/manual-runner-editor.compone
 })
 export class ManualRunnerComponent extends AbstractComponentCanDeactivate implements OnInit {
 
-    @ViewChild(ManualRunnerEditorComponent) manualRunnerEditorComponent: ManualRunnerEditorComponent;
+    @ViewChild(ManualRunnerEditorComponent, { static: true }) manualRunnerEditorComponent: ManualRunnerEditorComponent;
 
     planPath: Path;
 

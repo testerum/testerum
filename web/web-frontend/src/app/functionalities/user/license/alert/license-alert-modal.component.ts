@@ -26,7 +26,7 @@ export class LicenseAlertModalComponent implements OnInit, AfterViewInit {
 
     counter: number;
 
-    @ViewChild("userProfileModal") modal: ModalDirective;
+    @ViewChild("userProfileModal", { static: true }) modal: ModalDirective;
     modalComponentRef: ComponentRef<LicenseAlertModalComponent>;
 
     constructor(private cd: ChangeDetectorRef,

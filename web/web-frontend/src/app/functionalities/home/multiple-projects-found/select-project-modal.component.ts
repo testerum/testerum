@@ -10,7 +10,7 @@ import {Observable, Subject} from "rxjs";
 })
 export class SelectProjectModalComponent implements AfterViewInit {
 
-    @ViewChild("selectProjectModal") modal:ModalDirective;
+    @ViewChild("selectProjectModal", { static: true }) modal:ModalDirective;
     modalSubject:Subject<Project>;
     modalComponentRef: ComponentRef<SelectProjectModalComponent>;
 

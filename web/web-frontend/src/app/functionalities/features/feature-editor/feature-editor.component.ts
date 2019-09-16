@@ -41,7 +41,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
 
-    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;
@@ -50,8 +50,8 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     pathSubscription: Subscription;
     fileUploadSubscription: Subscription;
 
-    @ViewChild(NgForm) form: NgForm;
-    @ViewChild(MarkdownEditorComponent) descriptionMarkdownEditor: MarkdownEditorComponent;
+    @ViewChild(NgForm, { static: true }) form: NgForm;
+    @ViewChild(MarkdownEditorComponent, { static: true }) descriptionMarkdownEditor: MarkdownEditorComponent;
 
     pathForTitle: string = "";
 

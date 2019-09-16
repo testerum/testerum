@@ -65,7 +65,7 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
     @Input() minHeight: number = 400;
     @Output() valueChange = new EventEmitter<string>();
 
-    @ViewChild('editor') editorContent: ElementRef;
+    @ViewChild('editor', { static: true }) editorContent: ElementRef;
 
     container: HTMLDivElement;
     editor: editor.IStandaloneCodeEditor;

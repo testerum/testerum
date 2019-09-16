@@ -24,7 +24,7 @@ export class LicenseModalComponent implements AfterViewInit {
 
     model: LicenseInfo;
 
-    @ViewChild("userProfileModal") modal: ModalDirective;
+    @ViewChild("userProfileModal", { static: true }) modal: ModalDirective;
     modalComponentRef: ComponentRef<LicenseModalComponent>;
 
     constructor(private cd: ChangeDetectorRef,

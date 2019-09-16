@@ -52,11 +52,11 @@ export class ArgModalComponent {
     resourceMapping: ResourceMapEnum;
 
     resourceComponentRef: ComponentRef<ResourceComponent<any>>;
-    @ViewChild("resourceModal") resourceModal: ModalDirective;
-    @ViewChild("isSharedResourceInput") isSharedResourceInput: ElementRef;
-    @ViewChild('modalBody', {read: ViewContainerRef}) modalBodyElement:ViewContainerRef;
-    @ViewChild(NewSharedResourcePathModalComponent) newSharedResourcePathModal: NewSharedResourcePathModalComponent;
-    @ViewChild(SelectSharedResourceModalComponent) selectSharedResourceModal: SelectSharedResourceModalComponent;
+    @ViewChild("resourceModal", { static: true }) resourceModal: ModalDirective;
+    @ViewChild("isSharedResourceInput", { static: true }) isSharedResourceInput: ElementRef;
+    @ViewChild('modalBody', { read: ViewContainerRef, static: true }) modalBodyElement:ViewContainerRef;
+    @ViewChild(NewSharedResourcePathModalComponent, { static: true }) newSharedResourcePathModal: NewSharedResourcePathModalComponent;
+    @ViewChild(SelectSharedResourceModalComponent, { static: true }) selectSharedResourceModal: SelectSharedResourceModalComponent;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
                 private resourceService: ResourceService,

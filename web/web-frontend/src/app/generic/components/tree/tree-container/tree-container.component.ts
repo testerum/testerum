@@ -29,7 +29,7 @@ export class TreeContainerComponent implements OnInit {
 
     @Input() modelComponentMapping: ModelComponentMapping;
 
-    @ViewChild('content', {read: ViewContainerRef}) content:ViewContainerRef;
+    @ViewChild('content', { read: ViewContainerRef, static: true }) content:ViewContainerRef;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
     }

@@ -19,8 +19,8 @@ import {StringSelectItem} from "../../model/prime-ng/StringSelectItem";
 })
 export class VariablesComponent implements OnInit, OnDestroy {
 
-    @ViewChild("modal") modal: ModalDirective;
-    @ViewChild(EnvironmentEditModalComponent) environmentEditModalComponent: EnvironmentEditModalComponent;
+    @ViewChild("modal", { static: true }) modal: ModalDirective;
+    @ViewChild(EnvironmentEditModalComponent, { static: true }) environmentEditModalComponent: EnvironmentEditModalComponent;
 
     projectVariables: AllProjectVariables;
 

@@ -5,7 +5,6 @@ import {FormsModule} from "@angular/forms";
 import {
     AutoCompleteModule,
     DropdownModule,
-    EditorModule,
     InputTextModule, MessageModule, MessagesModule,
     ToolbarModule,
     TooltipModule
@@ -48,7 +47,6 @@ import {AngularSplitModule} from "angular-split";
         CardModule,
         ChartModule,
         DropdownModule,
-        EditorModule,
         InputTextModule,
         PanelModule,
         TooltipModule,

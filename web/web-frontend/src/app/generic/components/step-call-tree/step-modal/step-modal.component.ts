@@ -16,8 +16,8 @@ export class StepModalComponent implements AfterViewInit {
     isCreateAction: boolean = false;
     stepContext: StepContext = new StepContext();
 
-    @ViewChild("modal") modal: ModalDirective;
-    @ViewChild("composedStepView") composedStepViewComponent: ComposedStepViewComponent;
+    @ViewChild("modal", { static: true }) modal: ModalDirective;
+    @ViewChild("composedStepView", { static: true }) composedStepViewComponent: ComposedStepViewComponent;
 
     modalComponentRef: ComponentRef<StepModalComponent>;
     modalSubject: Subject<ComposedStepDef>;

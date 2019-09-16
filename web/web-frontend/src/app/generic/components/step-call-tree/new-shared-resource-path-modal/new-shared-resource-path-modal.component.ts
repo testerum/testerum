@@ -22,9 +22,9 @@ export class NewSharedResourcePathModalComponent implements OnInit {
     name: string;
     selectedDirectoryPath: Path = Path.createInstanceOfEmptyPath();
 
-    @ViewChild("resourceModal") resourceModal: ModalDirective;
-    @ViewChild(PathChooserComponent) pathChooserComponent: PathChooserComponent;
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild("resourceModal", { static: true }) resourceModal: ModalDirective;
+    @ViewChild(PathChooserComponent, { static: true }) pathChooserComponent: PathChooserComponent;
+    @ViewChild(NgForm, { static: true }) form: NgForm;
 
     resourcePaths:Array<Path> = [];
     selectedResourcePathSubject: Subject<Path>;

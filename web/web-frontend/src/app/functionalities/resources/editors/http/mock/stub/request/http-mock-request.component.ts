@@ -17,10 +17,10 @@ export class HttpMockRequestComponent implements AfterViewInit {
 
     HttpMockRequestMethod = HttpMockRequestMethod;
 
-    @ViewChild("queryParamPanel") queryParamPanel: CollapsablePanelComponent;
-    @ViewChild("headersPanel") headersPanel: CollapsablePanelComponent;
-    @ViewChild("bodyPanel") bodyPanel: CollapsablePanelComponent;
-    @ViewChild("scenarioPanel") scenarioPanel: CollapsablePanelComponent;
+    @ViewChild("queryParamPanel", { static: false }) queryParamPanel: CollapsablePanelComponent;
+    @ViewChild("headersPanel", { static: false }) headersPanel: CollapsablePanelComponent;
+    @ViewChild("bodyPanel", { static: false }) bodyPanel: CollapsablePanelComponent;
+    @ViewChild("scenarioPanel", { static: false }) scenarioPanel: CollapsablePanelComponent;
 
     constructor(private httpMockService:HttpMockService) {
     }

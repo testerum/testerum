@@ -13,16 +13,14 @@ import {RunnerComposedStepTreeNodeModel} from "../model/runner-composed-step-tre
 import {RunnerBasicStepTreeNodeModel} from "../model/runner-basic-step-tree-node.model";
 import {RunnerBasicStepNode} from "../../../../../model/runner/tree/runner-basic-step-node.model";
 import {RunnerUndefinedStepNode} from "../../../../../model/runner/tree/runner-undefined-step-node.model";
-import {RunnerEvent} from "../../../../../model/test/event/runner.event";
 import {RunnerParametrizedTestNode} from "../../../../../model/runner/tree/runner-parametrized-test.node";
 import {RunnerScenarioNode} from "../../../../../model/runner/tree/runner-scenario-node.model";
 import {RunnerParametrizedTestTreeNodeModel} from "../model/runner-parametrized-test-tree-node.model";
 import {RunnerScenarioTreeNodeModel} from "../model/runner-scenario-tree-node.model";
-import {setCheckNoChangesMode} from "@angular/core/src/render3/state";
 
 export class RunnerTreeUtil {
 
-    static mapServerModelToTreeModel(runnerRootNode: RunnerRootNode, treeModel:JsonTreeModel): JsonTreeModel {
+    static mapServerModelToTreeModel(runnerRootNode: RunnerRootNode, treeModel: JsonTreeModel): JsonTreeModel {
 
         treeModel.children.length = 0;
 
@@ -112,7 +110,7 @@ export class RunnerTreeUtil {
         }
 
         if (treeNode == null) {
-            throw new Error("Couldn't map the current instance to a tree node ["+JSON.stringify(serverNode)+"]");
+            throw new Error("Couldn't map the current instance to a tree node [" + JSON.stringify(serverNode) + "]");
         }
 
         treeNode.id = serverNode.id;
@@ -153,7 +151,7 @@ export class RunnerTreeUtil {
 
             let eventKey = "";
             let eventKeyParent: RunnerTreeNodeModel = childNode;
-            while(!(eventKeyParent instanceof JsonTreeModel)) {
+            while (!(eventKeyParent instanceof JsonTreeModel)) {
                 eventKey = this.appendParentNodeToEventKey(eventKey, eventKeyParent);
                 eventKeyParent = eventKeyParent.getParent() as RunnerTreeContainerNodeModel;
             }

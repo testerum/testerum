@@ -38,8 +38,8 @@ export class ScenarioParamModalComponent {
     otherParamsName: string[] = [];
     isEditParamNameMode: boolean = false;
 
-    @ViewChild("resourceModal") modal: ModalDirective;
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild("resourceModal", { static: true }) modal: ModalDirective;
+    @ViewChild(NgForm, { static: true }) form: NgForm;
 
     editorOptions: editor.IEditorConstructionOptions = {
         language: 'text'

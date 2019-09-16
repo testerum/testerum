@@ -13,7 +13,7 @@ import {Project} from "../../model/home/project.model";
 })
 export class MenuVariablesComponent implements OnInit, OnDestroy {
 
-    @ViewChild(VariablesComponent) variablesComponent: VariablesComponent;
+    @ViewChild(VariablesComponent, { static: true }) variablesComponent: VariablesComponent;
 
     selectedEnvironment: string;
     availableEnvironments: string[] = [];

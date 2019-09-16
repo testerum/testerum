@@ -37,8 +37,8 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
         save() {}
     };
 
-    @ViewChild(NgForm) form: NgForm;
-    @ViewChild(HttpResponseVerifyBodyComponent) httpResponseVerifyBodyComponent: HttpResponseVerifyBodyComponent;
+    @ViewChild(NgForm, { static: false }) form: NgForm;
+    @ViewChild(HttpResponseVerifyBodyComponent, { static: false }) httpResponseVerifyBodyComponent: HttpResponseVerifyBodyComponent;
 
     HttpBodyVerifyMatchingType = HttpBodyVerifyMatchingType;
 

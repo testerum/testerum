@@ -31,7 +31,7 @@ export class JsonVerifyComponent implements OnChanges {
     isValidJson: boolean = true;
     selectedJsonCompareMode: JsonCompareModeEnum;
 
-    @ViewChild(JsonVerifyEditorComponent) jsonVerifyEditorComponent: JsonVerifyEditorComponent;
+    @ViewChild(JsonVerifyEditorComponent, { static: true }) jsonVerifyEditorComponent: JsonVerifyEditorComponent;
 
     onTextChange(jsonAsString: string) {
         this.modelChange.emit(jsonAsString);

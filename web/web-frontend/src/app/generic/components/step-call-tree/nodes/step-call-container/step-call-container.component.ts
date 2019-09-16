@@ -33,7 +33,7 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     @Input() model: StepCallContainerModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
-    @ViewChild(StepTextComponent) stepTextComponent: StepTextComponent<any>;
+    @ViewChild(StepTextComponent, { static: true }) stepTextComponent: StepTextComponent<any>;
 
     hasMouseOver: boolean = false;
 

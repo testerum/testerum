@@ -10,7 +10,7 @@ import {Observable, Subject} from "rxjs";
 })
 export class InfoModalComponent implements AfterViewInit {
 
-    @ViewChild("infoModal") modal:ModalDirective;
+    @ViewChild("infoModal", { static: true }) modal:ModalDirective;
 
     title:string;
     text:string;

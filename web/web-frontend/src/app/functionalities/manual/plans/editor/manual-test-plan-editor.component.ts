@@ -30,8 +30,8 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
 
     pieChartData: any;
 
-    @ViewChild(MarkdownEditorComponent) descriptionMarkdownEditor: MarkdownEditorComponent;
-    @ViewChild(ManualSelectTestsTreeComponent) manualSelectTestsTreeComponent: ManualSelectTestsTreeComponent;
+    @ViewChild(MarkdownEditorComponent, { static: true }) descriptionMarkdownEditor: MarkdownEditorComponent;
+    @ViewChild(ManualSelectTestsTreeComponent, { static: false }) manualSelectTestsTreeComponent: ManualSelectTestsTreeComponent;
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,

@@ -10,7 +10,7 @@ import {Observable, Subject} from "rxjs";
 })
 export class UpdateIncompatibilityDialogComponent {
 
-    @ViewChild("infoModal") infoModal: ModalDirective;
+    @ViewChild("infoModal", { static: true }) infoModal: ModalDirective;
 
     pathsForAffectedTests: Array<Path> = [];
     pathsForDirectAffectedSteps: Array<Path> = [];

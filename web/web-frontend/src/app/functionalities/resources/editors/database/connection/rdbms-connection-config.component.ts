@@ -34,7 +34,7 @@ export class RdbmsConnectionConfigComponent extends ResourceComponent<RdbmsConne
         save() {}
     };
 
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild(NgForm, { static: false }) form: NgForm;
 
     drivers: Array<RdbmsDriver> = [];
     selectedDriver: RdbmsDriver;

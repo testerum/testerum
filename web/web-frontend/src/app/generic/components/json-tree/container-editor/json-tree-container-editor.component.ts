@@ -20,7 +20,7 @@ export class JsonTreeContainerEditor {
     oldName: string;
     isFile: boolean;
 
-    @ViewChild(NgForm) form: NgForm;
+    @ViewChild(NgForm, { static: true }) form: NgForm;
 
     private siblingsNodeNames: Array<string> = null;
 

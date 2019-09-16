@@ -16,7 +16,7 @@ export class MarkdownEditorComponent implements AfterViewInit {
     @Input() editMode: boolean = true;
     oldEditMode: boolean = true;
 
-    @ViewChild('descriptionArea') textarea: ElementRef;
+    @ViewChild('descriptionArea', { static: true }) textarea: ElementRef;
     simpleMDE: SimpleMDE;
 
     setValue(value: string): void {

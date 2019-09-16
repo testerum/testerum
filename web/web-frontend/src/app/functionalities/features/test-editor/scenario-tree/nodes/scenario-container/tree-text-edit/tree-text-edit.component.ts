@@ -27,7 +27,7 @@ export class TreeTextEditComponent implements ControlValueAccessor {
     @Input() isTextEditMode: boolean = false;
     @Output() onTextEditModeChanged = new EventEmitter<boolean>();
 
-    @ViewChild('input') inputElementRef: ElementRef;
+    @ViewChild('input', { static: false }) inputElementRef: ElementRef;
 
     private propagateChange: Function;
 

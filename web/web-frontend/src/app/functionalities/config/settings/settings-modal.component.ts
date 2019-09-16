@@ -23,7 +23,7 @@ import {SettingsUtil} from "./util/settings.util";
 })
 export class SettingsModalComponent implements AfterViewInit {
 
-    @ViewChild("settingsModal") modal: ModalDirective;
+    @ViewChild("settingsModal", { static: true }) modal: ModalDirective;
     modalComponentRef: ComponentRef<SettingsModalComponent>;
 
     selectedCategory: string;
