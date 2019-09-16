@@ -3,13 +3,48 @@
     color: #afafaf;
 }
 
+input {
+    height: 20px;
+    padding: 0.1em;
+    vertical-align: middle;
+    font-size: smaller;
+}
+
 .my-p-dropdown {
     line-height: normal;
     margin-left: 5px;
 
-    input {
-        padding: .1em;
-        vertical-align: middle;
-        font-size: smaller;
+}
+
+.my-p-calendar {
+    .ui-calendar {
+        display: inline-flex;
+
+        button {
+            height: 20px;
+        }
+
+        .ui-datepicker {
+            padding: .1em;
+
+            .ui-datepicker-calendar {
+                margin-top: 0;
+            }
+
+            table td {
+                padding: 0;
+            }
+        }
+
+        .ui-timepicker {
+            padding: 0;
+            a {
+                font-size: 1em;
+                height: 20px;
+            }
+            div a:last-child {
+                margin: 0;
+            }
+        }
     }
 }

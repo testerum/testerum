@@ -11,6 +11,7 @@
         <p-calendar *ngIf="isEditMode()"
                     [(ngModel)]="model.value"
                     [showIcon]="true"
+                    class="my-p-calendar"
                     dateFormat="yy-mm-dd"
                     showTime="showTime" hourFormat="24" [utc]="true"></p-calendar>
     </div>
