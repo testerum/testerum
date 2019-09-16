@@ -66,6 +66,7 @@ import {ObjectObjectTreeNodeComponent} from "./editors/object/nodes/object-node/
 import {EnumObjectTreeNodeComponent} from "./editors/object/nodes/enum-node/enum-object-tree-node.component";
 import {BooleanObjectTreeNodeComponent} from "./editors/object/nodes/boolean-node/boolean-object-tree-node.component";
 import {DateObjectTreeNodeComponent} from "./editors/object/nodes/date-node/date-object-tree-node.component";
+import {ListObjectTreeNodeComponent} from "./editors/object/nodes/list-node/list-object-tree-node.component";
 
 @NgModule({
     imports: [
@@ -111,6 +112,7 @@ import {DateObjectTreeNodeComponent} from "./editors/object/nodes/date-node/date
         BooleanObjectTreeNodeComponent,
         DateObjectTreeNodeComponent,
         EnumObjectTreeNodeComponent,
+        ListObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,
     ],
@@ -185,6 +187,7 @@ import {DateObjectTreeNodeComponent} from "./editors/object/nodes/date-node/date
         BooleanObjectTreeNodeComponent,
         DateObjectTreeNodeComponent,
         EnumObjectTreeNodeComponent,
+        ListObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,
     ],

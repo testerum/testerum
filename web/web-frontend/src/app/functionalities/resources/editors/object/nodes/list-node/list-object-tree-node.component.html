@@ -1,0 +1,24 @@
+<div class="node">
+
+    <div class="full-line"
+         (mouseover)="hasMouseOver=true;$event.stopPropagation();"
+         (mouseleave)="hasMouseOver=false">
+
+        <span>{{getName()}}</span>
+        <span *ngIf="isEditMode()">: <span class="field-type">{{getTypeForUI()}}</span></span>
+
+        <div class="button-panel btn-group"
+             *ngIf="isEditMode()">
+            <div title="Add item to list" class="btn btn-default btn-xs btn-group"
+                 (click)="addNewItem();$event.stopPropagation();">
+                <i class="fa_my-plus" aria-hidden="true"></i>
+            </div>
+        </div>
+
+        <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"
+                       [modelComponentMapping]="modelComponentMapping"
+                       [model]="model"
+                       class="full-line">
+        </json-children>
+    </div>
+</div>

@@ -3,6 +3,7 @@ package com.testerum.model.text.parts.param_meta
 import com.testerum.model.text.parts.param_meta.field.FieldTypeMeta
 import com.testerum.model.text.parts.param_meta.util.ReflectionPrimitiveTypeUtil
 import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -41,7 +42,7 @@ object TypeMetaFactory {
         return typeMetaAsString ?: TYPE_META_TO_STRING_MAPPING.get(StringTypeMeta::class)!!
     }
 
-    fun getTypeMetaFromJavaType(javaClass: Class<*>): TypeMeta {
+    fun getTypeMetaFromJavaType(javaClass: Class<*>, genericsType: Type): TypeMeta {
 
         if (javaClass.name == "java.lang.Object") {
             return StringTypeMeta(javaClass.name)
@@ -66,7 +67,7 @@ object TypeMetaFactory {
         }
 
         if (Collection::class.java.isAssignableFrom(javaClass)) {
-            val genericMetaType = getGenericTypeByIndexIfExists(javaClass, 0) ?: StringTypeMeta()
+            val genericMetaType = getGenericTypeByIndexIfExists(genericsType, 0) ?: StringTypeMeta()
             return ListTypeMeta(javaClass.name, genericMetaType)
         }
 
@@ -105,13 +106,12 @@ object TypeMetaFactory {
         val fieldsTypeMeta: MutableList<FieldTypeMeta> = mutableListOf<FieldTypeMeta>()
         for (field in javaClass.declaredFields) {
 
-            //ignore kotlin added fields
-            if (field.type.name.startsWith("[Lkotlin.") ||
-                    field.type.name.startsWith("kotlin")) {
+            //ignore compiler (kotlin) added fields
+            if (field.isSynthetic) {
                 continue;
             }
 
-            val fieldTypeMeta = getTypeMetaFromJavaType(field.type)
+            val fieldTypeMeta = getTypeMetaFromJavaType(field.type, field.genericType)
             fieldsTypeMeta.add(
                     FieldTypeMeta(field.name, fieldTypeMeta)
             )
@@ -120,15 +120,18 @@ object TypeMetaFactory {
         return ObjectTypeMeta(javaClass.name, fieldsTypeMeta)
     }
 
-    private fun getGenericTypeByIndexIfExists(javaClass: Class<*>, genericIndex: Int): TypeMeta? {
+    private fun getGenericTypeByIndexIfExists(genericsType: Type, genericIndex: Int): TypeMeta? {
 
 
-        if (javaClass is ParameterizedType) {
-            val parameterizedType = javaClass as ParameterizedType
-            val typeArguments = parameterizedType.actualTypeArguments
+        if (genericsType is ParameterizedType) {
+            val typeArguments = genericsType.actualTypeArguments
             if (typeArguments.size > genericIndex) {
-                val typeArgClass = typeArguments[genericIndex] as Class<*>;
-                return getTypeMetaFromJavaType(typeArgClass)
+                val typeArg = typeArguments[genericIndex]
+                return when (typeArg) {
+                    is ParameterizedType -> getTypeMetaFromJavaType(typeArg.rawType as Class<*>, typeArg)
+                    is Class<*> -> getTypeMetaFromJavaType(typeArg as Class<*>, typeArg)
+                    else -> throw RuntimeException ("Unknown Type $typeArg")
+                }
             }
         }
         return null;

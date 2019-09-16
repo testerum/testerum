@@ -1,10 +1,10 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ObjectResourceComponentService} from "../../object-resource.component-service";
 import {ArrayUtil} from "../../../../../../utils/array.util";
-import {StringObjectTreeModel} from "../../model/string-object-tree.model";
 import {ObjectObjectTreeModel} from "../../model/object-object-tree.model";
 import {ObjectTypeMeta} from "../../../../../../model/text/parts/param-meta/object-type.meta";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
+import {ObjectNodeUtil} from "../util/object-node.util";
 
 @Component({
     moduleId: module.id,
@@ -15,7 +15,7 @@ import {ModelComponentMapping} from "../../../../../../model/infrastructure/mode
         '../../../../../../generic/css/tree.scss',
     ]
 })
-export class ObjectObjectTreeNodeComponent implements OnInit{
+export class ObjectObjectTreeNodeComponent implements OnInit {
 
     @Input() model: ObjectObjectTreeModel;
     @Input() modelComponentMapping: ModelComponentMapping;
@@ -31,7 +31,7 @@ export class ObjectObjectTreeNodeComponent implements OnInit{
 
         for (const field of objectTypeMeta.fields) {
             let fieldValue = this.model.serverObject ? this.model.serverObject[field.name] : null;
-            this.objectResourceComponentService.addFieldToObjectTree (
+            this.objectResourceComponentService.addFieldToObjectTree(
                 this.model,
                 field.type,
                 field.name,
@@ -45,12 +45,20 @@ export class ObjectObjectTreeNodeComponent implements OnInit{
     }
 
     deleteEntry(): void {
-        ArrayUtil.removeElementFromArray(this.model.parentContainer.getParent().getChildren(), this.model);
+        ArrayUtil.removeElementFromArray(this.model.getParent().getChildren(), this.model);
     }
 
     refresh() {
         if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
             this.cd.detectChanges();
         }
+    }
+
+    getTypeForUI(): string {
+        return ObjectNodeUtil.getFieldTypeForUI(this.model.typeMeta)
+    }
+
+    getName(): string {
+        return ObjectNodeUtil.getNodeNameForUI(this.model);
     }
 }

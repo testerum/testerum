@@ -18,6 +18,8 @@ import {BooleanObjectTreeModel} from "./model/boolean-object-tree.model";
 import {BooleanObjectTreeNodeComponent} from "./nodes/boolean-node/boolean-object-tree-node.component";
 import {DateObjectTreeModel} from "./model/date-object-tree.model";
 import {DateObjectTreeNodeComponent} from "./nodes/date-node/date-object-tree-node.component";
+import {ListObjectTreeModel} from "./model/list-object-tree.model";
+import {ListObjectTreeNodeComponent} from "./nodes/list-node/list-object-tree-node.component";
 
 @Component({
     selector: 'object-resource',
@@ -47,6 +49,7 @@ export class ObjectResourceComponent extends ResourceComponent<any> implements O
         .addPair(BooleanObjectTreeModel, BooleanObjectTreeNodeComponent)
         .addPair(DateObjectTreeModel, DateObjectTreeNodeComponent)
         .addPair(EnumObjectTreeModel, EnumObjectTreeNodeComponent)
+        .addPair(ListObjectTreeModel, ListObjectTreeNodeComponent)
         .addPair(StringObjectTreeModel, StringObjectTreeNodeComponent)
         .addPair(ObjectObjectTreeModel, ObjectObjectTreeNodeComponent);
 

@@ -62,4 +62,8 @@ export class EnumObjectTreeNodeComponent implements OnInit {
     getTypeForUI(): string {
         return ObjectNodeUtil.getFieldTypeForUI(this.model.typeMeta)
     }
+
+    getName(): string {
+        return ObjectNodeUtil.getNodeNameForUI(this.model);
+    }
 }

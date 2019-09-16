@@ -4,7 +4,7 @@
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
          (mouseleave)="hasMouseOver=false">
 
-        <span>{{model.objectName}}</span>
+        <span>{{getName()}}</span>
         <span *ngIf="isEditMode()">: <span class="field-type">{{getTypeForUI()}}</span> = </span>
         <span *ngIf="!isEditMode()"> = {{model.serverObject}}</span>
 
@@ -20,7 +20,7 @@
              *ngIf="isEditMode()"
              [class.hidden]="!hasMouseOver">
             <div
-                title="Delete" class="btn btn-default btn-xxs btn-group"
+                title="Delete" class="btn btn-default btn-xs btn-group"
                 (click)="deleteEntry();$event.stopPropagation();">
                 <i class="fa_my-delete" aria-hidden="true"></i>
             </div>

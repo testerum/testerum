@@ -15,7 +15,15 @@ class CustomParamSteps {
             value = "I LOG <<person>>",
             description = "Log the Person parameter."
     )
-    fun waitForAPeriodOfTime(@Param(description = "the person parameter") person: Person) {
+    fun logPerosnParam(@Param(description = "the person parameter") person: Person) {
         logger.error("PERSON: $person")
+    }
+
+    @Given(
+            value = "I LOG compnay <<company>>",
+            description = "Log the company parameter."
+    )
+    fun logCompanyParam(@Param(description = "the company parameter") company: Company) {
+        logger.error("COMPANY: $company")
     }
 }

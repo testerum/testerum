@@ -11,6 +11,6 @@ object TypeMetaExtractor {
         // todo: move this to a separate method
 
 
-        return TypeMetaFactory.getTypeMetaFromJavaType(param.type)
+        return TypeMetaFactory.getTypeMetaFromJavaType(param.type, param.parameterizedType)
     }
 }

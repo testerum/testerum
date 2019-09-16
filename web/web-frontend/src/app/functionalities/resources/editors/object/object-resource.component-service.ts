@@ -12,6 +12,8 @@ import {BooleanTypeMeta} from "../../../../model/text/parts/param-meta/boolean-t
 import {BooleanObjectTreeModel} from "./model/boolean-object-tree.model";
 import {DateTypeMeta} from "../../../../model/text/parts/param-meta/date-type-meta.model";
 import {DateObjectTreeModel} from "./model/date-object-tree.model";
+import {ListTypeMeta} from "../../../../model/text/parts/param-meta/list-type.meta";
+import {ListObjectTreeModel} from "./model/list-object-tree.model";
 
 @Injectable()
 export class ObjectResourceComponentService {
@@ -31,6 +33,11 @@ export class ObjectResourceComponentService {
         if (serverType instanceof EnumTypeMeta) {
             parentContainer.getChildren().push(
                 new EnumObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
+        }
+        if (serverType instanceof ListTypeMeta) {
+            parentContainer.getChildren().push(
+                new ListObjectTreeModel(parentContainer, objectName, serverObject, serverType)
             )
         }
         if (serverType instanceof StringTypeMeta || serverType instanceof NumberTypeMeta) {

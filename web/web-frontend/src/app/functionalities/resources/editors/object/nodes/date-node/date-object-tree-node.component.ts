@@ -48,4 +48,8 @@ export class DateObjectTreeNodeComponent implements OnInit {
     getTypeForUI(): string {
         return ObjectNodeUtil.getFieldTypeForUI(this.model.typeMeta)
     }
+
+    getName(): string {
+        return ObjectNodeUtil.getNodeNameForUI(this.model);
+    }
 }
