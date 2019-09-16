@@ -6,6 +6,7 @@ import {EnumObjectTreeModel} from "../../model/enum-object-tree.model";
 import {SelectItem} from "primeng/api";
 import {StringSelectItem} from "../../../../../../model/prime-ng/StringSelectItem";
 import {BooleanObjectTreeModel} from "../../model/boolean-object-tree.model";
+import {ListObjectTreeModel} from "../../model/list-object-tree.model";
 
 @Component({
     moduleId: module.id,
@@ -47,6 +48,14 @@ export class BooleanObjectTreeNodeComponent implements OnInit {
         if (!this.cd['destroyed']) { //without this the folowing error will appear: "ERROR Error: ViewDestroyedError: Attempt to use a destroyed view: detectChanges"
             this.cd.detectChanges();
         }
+    }
+
+    shouldDisplayDeleteButton(): boolean {
+        return this.model.parentContainer instanceof ListObjectTreeModel;
+    }
+
+    deleteEntry(): void {
+        ArrayUtil.removeElementFromArray(this.model.getParent().getChildren(), this.model);
     }
 
     getTypeForUI(): string {

@@ -5,6 +5,7 @@ import {ObjectNodeUtil} from "../util/object-node.util";
 import {EnumObjectTreeModel} from "../../model/enum-object-tree.model";
 import {SelectItem} from "primeng/api";
 import {StringSelectItem} from "../../../../../../model/prime-ng/StringSelectItem";
+import {ListObjectTreeModel} from "../../model/list-object-tree.model";
 
 @Component({
     moduleId: module.id,
@@ -44,8 +45,12 @@ export class EnumObjectTreeNodeComponent implements OnInit {
         return this.objectResourceComponentService.editMode;
     }
 
+    shouldDisplayDeleteButton(): boolean {
+        return this.model.parentContainer instanceof ListObjectTreeModel;
+    }
+
     deleteEntry(): void {
-        ArrayUtil.removeElementFromArray(this.model.parentContainer.getParent().getChildren(), this.model);
+        ArrayUtil.removeElementFromArray(this.model.getParent().getChildren(), this.model);
     }
 
     onValueChange(newValue: string) {

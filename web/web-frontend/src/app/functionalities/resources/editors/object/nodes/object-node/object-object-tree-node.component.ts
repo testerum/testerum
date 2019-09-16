@@ -5,6 +5,7 @@ import {ObjectObjectTreeModel} from "../../model/object-object-tree.model";
 import {ObjectTypeMeta} from "../../../../../../model/text/parts/param-meta/object-type.meta";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {ObjectNodeUtil} from "../util/object-node.util";
+import {ListObjectTreeModel} from "../../model/list-object-tree.model";
 
 @Component({
     moduleId: module.id,
@@ -42,6 +43,10 @@ export class ObjectObjectTreeNodeComponent implements OnInit {
 
     isEditMode(): boolean {
         return this.objectResourceComponentService.editMode;
+    }
+
+    shouldDisplayDeleteButton(): boolean {
+        return this.model.parentContainer instanceof ListObjectTreeModel;
     }
 
     deleteEntry(): void {

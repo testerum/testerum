@@ -13,6 +13,12 @@
                  (click)="addNewItem();$event.stopPropagation();">
                 <i class="fa_my-plus" aria-hidden="true"></i>
             </div>
+            <div *ngIf="shouldDisplayDeleteButton()"
+                 [class.hidden]="!hasMouseOver"
+                 title="Delete" class="btn btn-default btn-xs btn-group"
+                 (click)="deleteEntry();$event.stopPropagation();">
+                <i class="fa_my-delete" aria-hidden="true"></i>
+            </div>
         </div>
 
         <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"

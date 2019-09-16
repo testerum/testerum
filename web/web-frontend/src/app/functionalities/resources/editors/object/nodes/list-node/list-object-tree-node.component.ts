@@ -59,6 +59,14 @@ export class ListObjectTreeNodeComponent implements OnInit {
         }
     }
 
+    shouldDisplayDeleteButton(): boolean {
+        return this.model.parentContainer instanceof ListObjectTreeModel;
+    }
+
+    deleteEntry(): void {
+        ArrayUtil.removeElementFromArray(this.model.getParent().getChildren(), this.model);
+    }
+
     getTypeForUI(): string {
         let listTypeMeta = ObjectNodeUtil.getFieldTypeForUI((this.model.typeMeta as ListTypeMeta).itemsType);
         return ObjectNodeUtil.getFieldTypeForUI(this.model.typeMeta) +"<" + listTypeMeta +">"

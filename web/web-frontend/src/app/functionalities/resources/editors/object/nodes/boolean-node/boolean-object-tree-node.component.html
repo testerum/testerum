@@ -6,7 +6,10 @@
 
         <span>{{getName()}}</span>
         <span *ngIf="isEditMode()">: <span class="field-type">{{getTypeForUI()}}</span> = </span>
-        <span *ngIf="!isEditMode()"> = {{model.serverObject}}</span>
+        <span *ngIf="!isEditMode()"> =
+            <span *ngIf="model.serverObject != null">{{model.serverObject}}</span>
+            <span *ngIf="model.serverObject == null" class="null-value">null</span>
+        </span>
 
         <p-dropdown *ngIf="isEditMode()"
                     [options]="possibleValues"
@@ -15,5 +18,15 @@
                     class="my-p-dropdown"
                     editable="true"
                     name="enum"></p-dropdown>
+
+        <div class="button-panel btn-group"
+             *ngIf="isEditMode()"
+             [class.hidden]="!hasMouseOver">
+            <div *ngIf="shouldDisplayDeleteButton()"
+                 title="Delete" class="btn btn-default btn-xs btn-group"
+                 (click)="deleteEntry();$event.stopPropagation();">
+                <i class="fa_my-delete" aria-hidden="true"></i>
+            </div>
+        </div>
     </div>
 </div>

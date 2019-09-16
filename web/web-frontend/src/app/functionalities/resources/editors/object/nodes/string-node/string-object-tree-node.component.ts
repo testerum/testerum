@@ -3,6 +3,7 @@ import {ObjectResourceComponentService} from "../../object-resource.component-se
 import {ArrayUtil} from "../../../../../../utils/array.util";
 import {StringObjectTreeModel} from "../../model/string-object-tree.model";
 import {ObjectNodeUtil} from "../util/object-node.util";
+import {ListObjectTreeModel} from "../../model/list-object-tree.model";
 
 @Component({
     moduleId: module.id,
@@ -27,8 +28,12 @@ export class StringObjectTreeNodeComponent {
         return this.objectResourceComponentService.editMode;
     }
 
+    shouldDisplayDeleteButton(): boolean {
+        return this.model.parentContainer instanceof ListObjectTreeModel;
+    }
+
     deleteEntry(): void {
-        ArrayUtil.removeElementFromArray(this.model.parentContainer.getParent().getChildren(), this.model);
+        ArrayUtil.removeElementFromArray(this.model.getParent().getChildren(), this.model);
     }
 
     onValueChange(newValue: string) {
