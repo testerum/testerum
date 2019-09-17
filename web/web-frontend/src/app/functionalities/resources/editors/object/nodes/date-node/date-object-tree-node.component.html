@@ -1,4 +1,4 @@
-<div class="node">
+<div class="node date-object">
 
     <div class="full-line"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
@@ -11,12 +11,24 @@
             <span *ngIf="model.serverObject == null" class="null-value">null</span>
         </span>
 
-        <p-calendar *ngIf="isEditMode()"
-                    [(ngModel)]="model.value"
-                    [showIcon]="true"
-                    class="my-p-calendar"
-                    dateFormat="yy-mm-dd"
-                    showTime="showTime" hourFormat="24" [utc]="true"></p-calendar>
+        <span *ngIf="isEditMode()"
+              class="calendar">
+            <input [ngModel]="inputDate"
+                   (ngModelChange)="inputChange($event)"
+                   class="calendar-input"/>
+            <p-calendar [ngModel]="date"
+                        (onSelect)="onDateSelect($event)"
+                        [showIcon]="true"
+                        [monthNavigator]="true"
+                        [yearNavigator]="true"
+                        yearRange="1960:2050"
+                        class="my-p-calendar"
+                        dateFormat="yy-mm-dd"
+                        hideOnDateTimeSelect="true"
+                        dataType="string"
+                        keepInvalid="true"
+                        showTime="showTime" hourFormat="24" [utc]="true"></p-calendar>
+        </span>
 
         <div class="button-panel btn-group"
              *ngIf="isEditMode()"

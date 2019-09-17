@@ -1,0 +1,72 @@
+.date-object {
+
+    .full-line {
+        display: flex;
+        align-items: center;
+    }
+
+    .calendar {
+        display: inline-flex;
+        height: 20px;
+        margin-left: 5px;
+
+        .calendar-input {
+
+        }
+
+        .my-p-calendar {
+            .ui-calendar {
+                display: inline-flex;
+
+                input {
+                    display: none;
+                }
+
+                button {
+                    height: 20px;
+                }
+
+                .ui-datepicker {
+                    padding: .1em;
+
+                    .ui-datepicker-calendar {
+                        margin-top: 0;
+                    }
+
+                    table {
+                        th {
+                            padding: 0 0.4em;
+                        }
+                        td {
+                            padding: 0;
+
+                            a {
+                                padding: 0;
+                            }
+                        }
+                    }
+                }
+
+                .ui-timepicker {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0;
+                    span {
+                        font-size: 1em;
+                    }
+                    a {
+                        font-size: 1em;
+                        height: 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    div a:last-child {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}

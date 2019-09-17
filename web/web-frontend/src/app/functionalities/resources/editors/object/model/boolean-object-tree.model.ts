@@ -5,6 +5,7 @@ import {JsonTreeNodeAbstract} from "../../../../../generic/components/json-tree/
 import {ObjectTreeModel} from "./interfaces/object-tree.model";
 import {EnumTypeMeta} from "../../../../../model/text/parts/param-meta/enum-type.meta";
 import {BooleanTypeMeta} from "../../../../../model/text/parts/param-meta/boolean-type.meta";
+import {DateUtil} from "../../../../../utils/date.util";
 
 export class BooleanObjectTreeModel extends JsonTreeNodeAbstract implements ObjectTreeModel {
 
@@ -18,12 +19,17 @@ export class BooleanObjectTreeModel extends JsonTreeNodeAbstract implements Obje
 
     value: string;
 
+    valueAsDate: Date;
+
     constructor(parentContainer: JsonTreeContainer, objectName: string, serverObject: any, typeMeta: BooleanTypeMeta) {
         super(parentContainer);
         this.objectName = objectName;
         this.serverObject = serverObject;
         this.typeMeta = typeMeta;
-        this.value = serverObject
+        this.value = serverObject;
+
+        this.valueAsDate = new Date()
+        DateUtil
     }
 
     serialize(): string {
