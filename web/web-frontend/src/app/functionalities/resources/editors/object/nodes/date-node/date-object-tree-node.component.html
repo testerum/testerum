@@ -31,6 +31,9 @@
                         showTime="showTime" hourFormat="24" [utc]="true"></p-calendar>
         </span>
 
+        <info-icon [message]="getDescription()"
+                   class="date-info-icon"></info-icon>
+
         <div class="button-panel btn-group"
              *ngIf="isEditMode()"
              [class.hidden]="!hasMouseOver">

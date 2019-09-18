@@ -76,4 +76,18 @@ export class DateObjectTreeNodeComponent implements OnInit {
         this.date = DateUtil.stringToDate(event);
         this.model.value = event;
     }
+
+    getDescription(): string {
+        return "You can specify a date using the following format:\n" +
+            "<code>mm-dd-yyyy hh:mm:ss</code>\n" +
+            "mm - month, mandatory field\n" +
+            "dd - day, mandatory field\n" +
+            "yyyy - year, mandatory field\n" +
+            "hh - hour, optional field\n" +
+            "mm - minutes, optional field\n" +
+            "ss - seconds, optional field\n" +
+            "\n" +
+            "You can also use variables from the context.\n" +
+            "e.g.: <code>{{variable_name}}</code>"
+    }
 }
