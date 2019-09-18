@@ -1,4 +1,4 @@
-<div class="node">
+<div class="node boolean-object">
 
     <div class="full-line"
          (mouseover)="hasMouseOver=true;$event.stopPropagation();"
@@ -11,13 +11,19 @@
             <span *ngIf="model.serverObject == null" class="null-value">null</span>
         </span>
 
-        <p-dropdown *ngIf="isEditMode()"
-                    [options]="possibleValues"
-                    [(ngModel)]="model.value"
-                    (click)="$event.stopPropagation();"
-                    class="my-p-dropdown"
-                    editable="true"
-                    name="enum"></p-dropdown>
+        <span *ngIf="isEditMode()"
+              class="select-editable my-dropdown">
+            <input #booleanInput
+                   [ngModel]="model.value"
+                   (ngModelChange)="onValueChange($event)"
+                   [attr.list]="id"
+                   type="text"
+                   name="enum-input"
+                   (click)="onInputEvent($event)" />
+            <datalist [attr.id]="id">
+                <option *ngFor="let possibleValue of possibleValues" value="{{possibleValue}}"></option>
+            </datalist>
+        </span>
 
         <div class="button-panel btn-group"
              *ngIf="isEditMode()"

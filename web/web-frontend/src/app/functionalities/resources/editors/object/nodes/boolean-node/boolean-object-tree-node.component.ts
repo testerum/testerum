@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ObjectResourceComponentService} from "../../object-resource.component-service";
 import {ArrayUtil} from "../../../../../../utils/array.util";
 import {ObjectNodeUtil} from "../util/object-node.util";
@@ -6,6 +6,7 @@ import {SelectItem} from "primeng/api";
 import {StringSelectItem} from "../../../../../../model/prime-ng/StringSelectItem";
 import {BooleanObjectTreeModel} from "../../model/boolean-object-tree.model";
 import {ListObjectTreeModel} from "../../model/list-object-tree.model";
+import {IdUtils} from "../../../../../../utils/id.util";
 
 @Component({
     moduleId: module.id,
@@ -21,7 +22,11 @@ export class BooleanObjectTreeNodeComponent implements OnInit {
 
     @Input() model: BooleanObjectTreeModel;
 
-    possibleValues: SelectItem[] = [];
+    @ViewChild('booleanInput', { static: false }) inputElementRef: ElementRef;
+    private tempValueHolder: string;
+
+    id = IdUtils.getTemporaryId();
+    possibleValues: string[] = [];
 
     hasMouseOver: boolean = false;
 
@@ -30,8 +35,8 @@ export class BooleanObjectTreeNodeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.possibleValues.push(new StringSelectItem("true"));
-        this.possibleValues.push(new StringSelectItem("false"));
+        this.possibleValues.push("true");
+        this.possibleValues.push("false");
     }
 
     isEditMode(): boolean {
@@ -41,6 +46,15 @@ export class BooleanObjectTreeNodeComponent implements OnInit {
     onValueChange(newValue: string) {
         this.model.value = newValue;
         this.refresh();
+    }
+
+    onInputEvent(event: MouseEvent) {
+        this.tempValueHolder = this.inputElementRef.nativeElement.value;
+        this.inputElementRef.nativeElement.value = '';
+        let that = this;
+        setTimeout(() => {
+            this.inputElementRef.nativeElement.value = this.tempValueHolder;
+        }, 10);
     }
 
     refresh() {

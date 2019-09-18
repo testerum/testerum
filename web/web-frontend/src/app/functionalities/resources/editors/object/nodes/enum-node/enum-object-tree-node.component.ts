@@ -1,11 +1,10 @@
-import {ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ObjectResourceComponentService} from "../../object-resource.component-service";
 import {ArrayUtil} from "../../../../../../utils/array.util";
 import {ObjectNodeUtil} from "../util/object-node.util";
 import {EnumObjectTreeModel} from "../../model/enum-object-tree.model";
-import {SelectItem} from "primeng/api";
-import {StringSelectItem} from "../../../../../../model/prime-ng/StringSelectItem";
 import {ListObjectTreeModel} from "../../model/list-object-tree.model";
+import {IdUtils} from "../../../../../../utils/id.util";
 
 @Component({
     moduleId: module.id,
@@ -13,6 +12,7 @@ import {ListObjectTreeModel} from "../../model/list-object-tree.model";
     templateUrl: 'enum-object-tree-node.component.html',
     encapsulation: ViewEncapsulation.None,
     styleUrls: [
+        'enum-object-tree-node.component.scss',
         '../nodes.scss',
         '../../../../../../generic/css/tree.scss',
     ]
@@ -21,7 +21,11 @@ export class EnumObjectTreeNodeComponent implements OnInit {
 
     @Input() model: EnumObjectTreeModel;
 
-    possibleValues: SelectItem[] = [];
+    @ViewChild('enumInput', { static: false }) inputElementRef: ElementRef;
+    private tempValueHolder: string;
+
+    id = IdUtils.getTemporaryId();
+    possibleValues: string[] = [];
 
     hasMouseOver: boolean = false;
 
@@ -33,10 +37,7 @@ export class EnumObjectTreeNodeComponent implements OnInit {
         let enumTypeMeta = this.model.typeMeta;
         if (enumTypeMeta) {
             for (const possibleValue of enumTypeMeta.possibleValues) {
-                let enumSelectItem = new StringSelectItem(
-                    possibleValue
-                );
-                this.possibleValues.push(enumSelectItem)
+                this.possibleValues.push(possibleValue)
             }
         }
     }
@@ -56,6 +57,15 @@ export class EnumObjectTreeNodeComponent implements OnInit {
     onValueChange(newValue: string) {
         this.model.value = newValue;
         this.refresh();
+    }
+
+    onInputEvent(event: MouseEvent) {
+        this.tempValueHolder = this.inputElementRef.nativeElement.value;
+        this.inputElementRef.nativeElement.value = '';
+        let that = this;
+        setTimeout(() => {
+            this.inputElementRef.nativeElement.value = this.tempValueHolder;
+        }, 10);
     }
 
     refresh() {
