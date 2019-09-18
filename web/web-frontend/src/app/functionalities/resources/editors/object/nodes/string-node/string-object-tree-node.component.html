@@ -16,6 +16,7 @@
                [ngModel]="model.value"
                (click)="$event.stopPropagation();"
                (ngModelChange)="onValueChange($event)"
+               autocomplete="off"
                type="text" class="node-attr-input-value">
 
         <div class="button-panel btn-group"

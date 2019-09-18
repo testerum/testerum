@@ -8,6 +8,8 @@ import {BooleanTypeMeta} from "../../../../../model/text/parts/param-meta/boolea
 import {ListTypeMeta} from "../../../../../model/text/parts/param-meta/list-type.meta";
 import {JsonTreeContainerAbstract} from "../../../../../generic/components/json-tree/model/json-tree-container.abstract";
 import {JsonTreeNode} from "../../../../../generic/components/json-tree/model/json-tree-node.model";
+import {MapTypeMeta} from "../../../../../model/text/parts/param-meta/map-type.meta";
+import {MapItemObjectTreeModel} from "../nodes/map-node/item/map-item-object-tree.model";
 
 export class MapObjectTreeModel extends JsonTreeContainerAbstract implements ObjectTreeModel {
 
@@ -17,11 +19,11 @@ export class MapObjectTreeModel extends JsonTreeContainerAbstract implements Obj
 
     objectName: string;
     serverObject: any;
-    typeMeta: ListTypeMeta;
+    typeMeta: MapTypeMeta;
 
-    children: ObjectTreeModel[] = [];
+    children: MapItemObjectTreeModel[] = [];
 
-    constructor(parentContainer: JsonTreeContainer, objectName: string, serverObject: any, typeMeta: ListTypeMeta) {
+    constructor(parentContainer: JsonTreeContainer, objectName: string, serverObject: any, typeMeta: MapTypeMeta) {
         super(parentContainer);
         this.objectName = objectName;
         this.serverObject = serverObject;
@@ -29,7 +31,7 @@ export class MapObjectTreeModel extends JsonTreeContainerAbstract implements Obj
     }
 
     serialize(): string {
-        let result = "[";
+        let result = "{";
 
         for (let i = 0; i < this.children.length; i++) {
             let child = this.children[i];
@@ -40,7 +42,7 @@ export class MapObjectTreeModel extends JsonTreeContainerAbstract implements Obj
             }
         }
 
-        result += "]";
+        result += "}";
 
         return result;
     }

@@ -34,6 +34,6 @@ export class MapTypeMeta implements TypeMeta, Serializable<MapTypeMeta> {
         ',"javaType":'+ JsonUtil.stringify(this.javaType) +
         ',"keyType":'+ this.keyType ? this.keyType.serialize() : null +
         ',"valueType":'+ this.valueType ? this.valueType.serialize() : null +
-            '}'
+        '}'
     }
 }

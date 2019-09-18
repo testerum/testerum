@@ -67,6 +67,8 @@ import {EnumObjectTreeNodeComponent} from "./editors/object/nodes/enum-node/enum
 import {BooleanObjectTreeNodeComponent} from "./editors/object/nodes/boolean-node/boolean-object-tree-node.component";
 import {DateObjectTreeNodeComponent} from "./editors/object/nodes/date-node/date-object-tree-node.component";
 import {ListObjectTreeNodeComponent} from "./editors/object/nodes/list-node/list-object-tree-node.component";
+import {MapObjectTreeNodeComponent} from "./editors/object/nodes/map-node/map-object-tree-node.component";
+import {MapItemObjectTreeNodeComponent} from "./editors/object/nodes/map-node/item/map-item-object-tree-node.component";
 
 @NgModule({
     imports: [
@@ -113,6 +115,8 @@ import {ListObjectTreeNodeComponent} from "./editors/object/nodes/list-node/list
         DateObjectTreeNodeComponent,
         EnumObjectTreeNodeComponent,
         ListObjectTreeNodeComponent,
+        MapObjectTreeNodeComponent,
+        MapItemObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,
     ],
@@ -188,6 +192,8 @@ import {ListObjectTreeNodeComponent} from "./editors/object/nodes/list-node/list
         DateObjectTreeNodeComponent,
         EnumObjectTreeNodeComponent,
         ListObjectTreeNodeComponent,
+        MapObjectTreeNodeComponent,
+        MapItemObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,
     ],

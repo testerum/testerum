@@ -20,6 +20,10 @@ import {DateObjectTreeModel} from "./model/date-object-tree.model";
 import {DateObjectTreeNodeComponent} from "./nodes/date-node/date-object-tree-node.component";
 import {ListObjectTreeModel} from "./model/list-object-tree.model";
 import {ListObjectTreeNodeComponent} from "./nodes/list-node/list-object-tree-node.component";
+import {MapObjectTreeNodeComponent} from "./nodes/map-node/map-object-tree-node.component";
+import {MapObjectTreeModel} from "./model/map-object-tree.model";
+import {MapItemObjectTreeNodeComponent} from "./nodes/map-node/item/map-item-object-tree-node.component";
+import {MapItemObjectTreeModel} from "./nodes/map-node/item/map-item-object-tree.model";
 
 @Component({
     selector: 'object-resource',
@@ -50,6 +54,8 @@ export class ObjectResourceComponent extends ResourceComponent<any> implements O
         .addPair(DateObjectTreeModel, DateObjectTreeNodeComponent)
         .addPair(EnumObjectTreeModel, EnumObjectTreeNodeComponent)
         .addPair(ListObjectTreeModel, ListObjectTreeNodeComponent)
+        .addPair(MapObjectTreeModel, MapObjectTreeNodeComponent)
+        .addPair(MapItemObjectTreeModel, MapItemObjectTreeNodeComponent)
         .addPair(StringObjectTreeModel, StringObjectTreeNodeComponent)
         .addPair(ObjectObjectTreeModel, ObjectObjectTreeNodeComponent);
 

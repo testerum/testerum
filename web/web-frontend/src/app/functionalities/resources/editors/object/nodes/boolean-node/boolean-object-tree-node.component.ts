@@ -2,7 +2,6 @@ import {ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@a
 import {ObjectResourceComponentService} from "../../object-resource.component-service";
 import {ArrayUtil} from "../../../../../../utils/array.util";
 import {ObjectNodeUtil} from "../util/object-node.util";
-import {EnumObjectTreeModel} from "../../model/enum-object-tree.model";
 import {SelectItem} from "primeng/api";
 import {StringSelectItem} from "../../../../../../model/prime-ng/StringSelectItem";
 import {BooleanObjectTreeModel} from "../../model/boolean-object-tree.model";

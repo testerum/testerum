@@ -14,6 +14,8 @@ import {DateTypeMeta} from "../../../../model/text/parts/param-meta/date-type-me
 import {DateObjectTreeModel} from "./model/date-object-tree.model";
 import {ListTypeMeta} from "../../../../model/text/parts/param-meta/list-type.meta";
 import {ListObjectTreeModel} from "./model/list-object-tree.model";
+import {MapTypeMeta} from "../../../../model/text/parts/param-meta/map-type.meta";
+import {MapObjectTreeModel} from "./model/map-object-tree.model";
 
 @Injectable()
 export class ObjectResourceComponentService {
@@ -38,6 +40,11 @@ export class ObjectResourceComponentService {
         if (serverType instanceof ListTypeMeta) {
             parentContainer.getChildren().push(
                 new ListObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
+        }
+        if (serverType instanceof MapTypeMeta) {
+            parentContainer.getChildren().push(
+                new MapObjectTreeModel(parentContainer, objectName, serverObject, serverType)
             )
         }
         if (serverType instanceof StringTypeMeta || serverType instanceof NumberTypeMeta) {
