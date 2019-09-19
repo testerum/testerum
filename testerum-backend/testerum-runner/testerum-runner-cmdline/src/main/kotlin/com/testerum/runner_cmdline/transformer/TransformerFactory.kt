@@ -4,6 +4,7 @@ import com.testerum.api.transformer.ParameterInfo
 import com.testerum.api.transformer.Transformer
 import com.testerum.api.transformer.impl.NoTransformer
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
+import com.testerum.runner_cmdline.transformer.builtin.unknonw_object.ObjectTransformer
 
 class TransformerFactory(private val glueObjectFactory: GlueObjectFactory,
                          private val globalTransformers: List<Transformer<*>>) {
@@ -22,9 +23,11 @@ class TransformerFactory(private val glueObjectFactory: GlueObjectFactory,
 
     // todo: look at how cucumber implemented transformers and see what we are missing
 
-    fun getTransformer(paramInfo: ParameterInfo): Transformer<Any?>?
-            = getPerParameterTransformer(paramInfo)
-              ?: getGlobalTransformer(paramInfo)
+    fun getTransformer(paramInfo: ParameterInfo): Transformer<Any?>? {
+        return getPerParameterTransformer(paramInfo)
+                ?: getGlobalTransformer(paramInfo)
+                ?: getDefaultTransformer()
+    }
 
     private fun getPerParameterTransformer(paramInfo: ParameterInfo): Transformer<Any?>? {
         val transformerClass: Class<out Transformer<Any?>> = paramInfo.transformerClass
@@ -43,4 +46,7 @@ class TransformerFactory(private val glueObjectFactory: GlueObjectFactory,
         return globalTransformers.firstOrNull { it.canTransform(paramInfo) }
     }
 
+    private fun getDefaultTransformer(): Transformer<Any?> {
+        return ObjectTransformer
+    }
 }
