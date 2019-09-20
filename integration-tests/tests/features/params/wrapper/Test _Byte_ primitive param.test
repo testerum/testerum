@@ -1,0 +1,4 @@
+test-def: Test "Byte" primitive param
+
+    step: Given I add the "Byte" variable <<35>> in context with the name <<justAVarName>>
+    step: Then <<{{justAVarName}}>> is equal to <<35>>

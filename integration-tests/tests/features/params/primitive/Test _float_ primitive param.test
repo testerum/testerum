@@ -1,0 +1,4 @@
+test-def: Test "float" primitive param
+
+    step: Given I add the "float" variable <<324.6>> in context with the name <<justAVarName>>
+    step: Then <<{{justAVarName}}>> is equal to <<324.6>>

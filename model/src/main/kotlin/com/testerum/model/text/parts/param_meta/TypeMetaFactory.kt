@@ -81,7 +81,7 @@ object TypeMetaFactory {
             return NumberTypeMeta(javaClass.name)
         }
 
-        if (String::class.java.isAssignableFrom(javaClass)) {
+        if ("java.lang.Character".equals(javaClass.name) || String::class.java.isAssignableFrom(javaClass)) {
             return StringTypeMeta(javaClass.name)
         }
 

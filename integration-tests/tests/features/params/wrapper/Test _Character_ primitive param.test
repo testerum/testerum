@@ -1,0 +1,4 @@
+test-def: Test "Character" primitive param
+
+    step: Given I add the "Character" variable <<c>> in context with the name <<justAVarName>>
+    step: Then <<{{justAVarName}}>> is equal to <<c>>

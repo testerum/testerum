@@ -1,0 +1,4 @@
+test-def: Test "long" primitive param
+
+    step: Given I add the "long" variable <<305>> in context with the name <<justAVarName>>
+    step: Then <<{{justAVarName}}>> is equal to <<305>>

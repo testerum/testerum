@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>steps</artifactId>
+        <groupId>com.testerum</groupId>
+        <version>develop-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>test-steps</artifactId>
+
+
+    <dependencies>
+        <!--==================== Internal Dependencies ====================-->
+
+        <!-- testerum api -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-api</artifactId>
+        </dependency>
+
+
+        <!--==================== External Dependencies ====================-->
+
+        <!-- Kotlin -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+        </dependency>
+
+        <!-- commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+
+        <plugins>
+            <!-- Kotlin -->
+            <plugin>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <profiles>
+        <!-- development -->
+        <profile>
+            <id>development</id>
+
+            <!-- activated by the absence of the "production" system property -->
+            <activation>
+                <property>
+                    <name>!production</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <!-- copy dependencies to "package/basic_steps" directory -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+
+                        <configuration>
+                            <outputDirectory>${project.basedir}/../../package/basic_steps</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
