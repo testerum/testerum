@@ -1,0 +1,8 @@
+test-def: Test Object with "int" primitive param
+
+    step: Given I add Object with the "int" param <<{{int}}>> in context with the name <<justAVarName>>
+        var int = <<
+            param: "33"
+            
+        >>
+    step: Then <<{{justAVarName.param}}>> is equal to <<33>>

@@ -1,0 +1,8 @@
+test-def: Test Object with "short" primitive param
+
+    step: Given I add Object with the "short" param <<{{short}}>> in context with the name <<justAVarName>>
+        var short = <<
+            param: "33"
+            
+        >>
+    step: Then <<{{justAVarName.param}}>> is equal to <<33>>

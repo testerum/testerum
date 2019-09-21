@@ -1,0 +1,8 @@
+test-def: Test Object with "boolean" primitive param
+
+    step: Given I add Object with the "boolean" param <<{{boolean}}>> in context with the name <<justAVarName>>
+        var boolean = <<
+            param: false
+            
+        >>
+    step: Then <<{{justAVarName.param}}>> is equal to <<false>>
