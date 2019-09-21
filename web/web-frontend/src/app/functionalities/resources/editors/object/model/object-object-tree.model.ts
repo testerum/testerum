@@ -24,12 +24,26 @@ export class ObjectObjectTreeModel extends JsonTreeContainerAbstract implements 
         this.typeMeta = typeMeta;
     }
 
+    isEmpty(): boolean {
+        for (const child of this.children) {
+            if (!child.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     serialize(): string {
+        if(this.isEmpty()) return null;
+
         let result = "{";
 
         for (let i = 0; i < this.children.length; i++) {
             let child = this.children[i];
-            result += JsonUtil.stringify(child.objectName) +": "+child.serialize();
+            let serializedChild = child.serialize();
+            if (serializedChild) {
+                result += JsonUtil.stringify(child.objectName) + ": " + serializedChild;
+            }
 
             if (i != this.children.length - 1) {
                 result += ","

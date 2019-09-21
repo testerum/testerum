@@ -8,5 +8,6 @@ export interface ObjectTreeModel extends JsonTreeNode {
     serverObject: any;
     typeMeta: StringTypeMeta;
 
+    isEmpty(): boolean;
     serialize(): string;
 }

@@ -30,6 +30,10 @@ export class MapObjectTreeModel extends JsonTreeContainerAbstract implements Obj
         this.typeMeta = typeMeta;
     }
 
+    isEmpty(): boolean {
+        return this.children.length == 0;
+    }
+
     serialize(): string {
         let result = "{";
 

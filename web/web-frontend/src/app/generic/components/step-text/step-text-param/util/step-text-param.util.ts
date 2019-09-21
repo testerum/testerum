@@ -2,12 +2,13 @@ import {BasicResource} from "../../../../../model/resource/basic/basic-resource.
 import {StringUtils} from "../../../../../utils/string-utils.util";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+import {ObjectResourceModel} from "../../../../../functionalities/resources/editors/object/object-resource.model";
 
 export class StepTextParamUtil {
 
 
     static hasValue(arg:Arg): boolean {
-        if (arg.content instanceof BasicResource) {
+        if (arg.content instanceof BasicResource || arg.content instanceof ObjectResourceModel) {
             return arg.content.content != null
                 && (typeof arg.content.content == "string" && !StringUtils.isEmpty(arg.content.content));
         }else

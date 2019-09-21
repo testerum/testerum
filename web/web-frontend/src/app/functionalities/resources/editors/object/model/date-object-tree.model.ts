@@ -6,6 +6,7 @@ import {ObjectTreeModel} from "./interfaces/object-tree.model";
 import {EnumTypeMeta} from "../../../../../model/text/parts/param-meta/enum-type.meta";
 import {BooleanTypeMeta} from "../../../../../model/text/parts/param-meta/boolean-type.meta";
 import {DateTypeMeta} from "../../../../../model/text/parts/param-meta/date-type-meta.model";
+import {StringUtils} from "../../../../../utils/string-utils.util";
 
 export class DateObjectTreeModel extends JsonTreeNodeAbstract implements ObjectTreeModel {
 
@@ -25,6 +26,10 @@ export class DateObjectTreeModel extends JsonTreeNodeAbstract implements ObjectT
         this.serverObject = serverObject;
         this.typeMeta = typeMeta;
         this.value = serverObject
+    }
+
+    isEmpty(): boolean {
+        return StringUtils.isEmpty(this.value);
     }
 
     serialize(): string {

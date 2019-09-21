@@ -1,10 +1,5 @@
 import {JsonTreeContainer} from "../../../../../generic/components/json-tree/model/json-tree-container.model";
-import {StringTypeMeta} from "../../../../../model/text/parts/param-meta/string-type.meta";
-import {JsonUtil} from "../../../../../utils/json.util";
-import {JsonTreeNodeAbstract} from "../../../../../generic/components/json-tree/model/json-tree-node.abstract";
 import {ObjectTreeModel} from "./interfaces/object-tree.model";
-import {EnumTypeMeta} from "../../../../../model/text/parts/param-meta/enum-type.meta";
-import {BooleanTypeMeta} from "../../../../../model/text/parts/param-meta/boolean-type.meta";
 import {ListTypeMeta} from "../../../../../model/text/parts/param-meta/list-type.meta";
 import {JsonTreeContainerAbstract} from "../../../../../generic/components/json-tree/model/json-tree-container.abstract";
 import {JsonTreeNode} from "../../../../../generic/components/json-tree/model/json-tree-node.model";
@@ -26,6 +21,10 @@ export class ListObjectTreeModel extends JsonTreeContainerAbstract implements Ob
         this.objectName = objectName;
         this.serverObject = serverObject;
         this.typeMeta = typeMeta;
+    }
+
+    isEmpty(): boolean {
+        return this.children.length == 0;
     }
 
     serialize(): string {

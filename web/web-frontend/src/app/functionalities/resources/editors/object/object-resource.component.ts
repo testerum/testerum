@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ResourceComponent} from "../resource-component.interface";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
 import {NgForm} from "@angular/forms";
@@ -30,7 +30,7 @@ import {MapItemObjectTreeModel} from "./nodes/map-node/item/map-item-object-tree
     templateUrl: './object-resource.component.html',
     styleUrls: ['./object-resource.component.scss'],
     providers: [ObjectResourceComponentService],
-    // changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObjectResourceComponent extends ResourceComponent<any> implements OnInit {
 
@@ -41,11 +41,8 @@ export class ObjectResourceComponent extends ResourceComponent<any> implements O
     @Input() condensedViewMode: boolean = false;
     @Input() isSharedResource: boolean = false;
     @Input() contextActions: ResourceContextActions = new class implements ResourceContextActions {
-        cancel() {
-        }
-
-        save() {
-        }
+        cancel() {}
+        save() {}
     };
 
     treeModel: JsonTreeModel = new JsonTreeModel();
@@ -71,11 +68,12 @@ export class ObjectResourceComponent extends ResourceComponent<any> implements O
     }
 
     onBeforeSave(): void {
-        if (this.treeModel.children.length == 0) {
+        if (this.treeModel.children.length == 0 || this.isEmptyTree()) {
             this.model.content = "";
         }
         let firstObjectRootElement: ObjectTreeModel = this.treeModel.children[0] as ObjectTreeModel;
         this.model.content = firstObjectRootElement.serialize();
+
     }
 
     refresh() {
@@ -108,5 +106,19 @@ export class ObjectResourceComponent extends ResourceComponent<any> implements O
 
     getForm(): NgForm {
         return null;
+    }
+
+    private isEmptyTree(): boolean {
+        for (const child of this.treeModel.children) {
+            if(!(child as ObjectTreeModel).isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    shouldShowTree(): boolean {
+        return this.condensedViewMode && this.model.isEmpty()
     }
 }

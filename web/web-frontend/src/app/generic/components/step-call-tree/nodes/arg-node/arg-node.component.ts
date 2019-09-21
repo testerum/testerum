@@ -16,6 +16,7 @@ import {StepCallTreeComponentService} from "../../step-call-tree.component-servi
 import {ArgModalService} from "../../arg-modal/arg-modal.service";
 import {ArgModalEnum} from "../../arg-modal/enum/arg-modal.enum";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {StringUtils} from "../../../../../utils/string-utils.util";
 
 @Component({
     selector: 'arg-node',
@@ -120,6 +121,9 @@ export class ArgNodeComponent implements OnInit {
     getArgUiType(): string {
         let resourceType = ResourceMapEnum.getResourceMapEnumByUiType(this.model.arg.uiType);
         if (resourceType) {
+            if (resourceType == ResourceMapEnum.OBJECT && this.model.arg.serverType) {
+                return StringUtils.substringAfterLast(this.model.arg.serverType.javaType, ".")
+            }
             return resourceType.uiName;
         }
 

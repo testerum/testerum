@@ -53,6 +53,8 @@ object FileArgTransformer {
 
         val jsonTree: JsonNode? = JSON_MAPPER.readTree(text)
 
+        if(jsonTree == null) return ""
+
         return YAML_MAPPER.writeValueAsString(jsonTree)
     }
 
