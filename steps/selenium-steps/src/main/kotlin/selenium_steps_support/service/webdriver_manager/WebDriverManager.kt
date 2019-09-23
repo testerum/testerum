@@ -154,7 +154,9 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
             val tempFileDeletedOnExit = driver.getScreenshotAs(OutputType.FILE).toPath()
 
             // todo: where should be put these files? in what directory? revisit this code when implementing reports
-            val screenshotFile = Files.createTempFile("testerum-selenium-", tempFileDeletedOnExit.fileName.toString())
+            val screenshotFile = Files.createTempFile("testerum-screenshots/testerum-selenium-", tempFileDeletedOnExit.fileName.toString())
+
+            Files.copy(tempFileDeletedOnExit, screenshotFile)
 
             return screenshotFile
         } else {
