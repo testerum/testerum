@@ -1,0 +1,3 @@
+step-def: Given I am at the "Browser Size Test Page"
+
+    step: Given the page at url <<{{URL}}/browser-size.html>> is open
