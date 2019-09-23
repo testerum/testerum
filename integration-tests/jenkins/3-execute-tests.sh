@@ -5,4 +5,5 @@ exec "${WORKSPACE}/testerum/runner/bin/testerum-runner.sh" \
   --setting testerum.selenium.driver.browserType=CHROME \
   --setting testerum.selenium.driver.headless=true \
   --setting testerum.selenium.takeScreenshotAfterEachStep=true \
+  --report=CONSOLE_DEBUG \
   --managed-reports-directory /var/www/downloads.testerum.com/reports
