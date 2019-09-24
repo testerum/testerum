@@ -127,6 +127,10 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
     @GuardedBy("lock")
     private var _webDriver: WebDriver? = null
 
+    private val tempDirScreenshotsDirectory: JavaPath by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+        Files.createTempDirectory("testerum-screenshots")
+    }
+
     private val currentWebDriver: WebDriver
         get() = synchronized(lock) {
             if (_webDriver == null) {
@@ -154,7 +158,7 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
             val tempFileDeletedOnExit = driver.getScreenshotAs(OutputType.FILE).toPath()
 
             // todo: where should be put these files? in what directory? revisit this code when implementing reports
-            val screenshotFile = Files.createTempFile("testerum-screenshots/testerum-selenium-", tempFileDeletedOnExit.fileName.toString())
+            val screenshotFile = Files.createTempFile(tempDirScreenshotsDirectory, "testerum-selenium-", tempFileDeletedOnExit.fileName.toString())
 
             Files.copy(tempFileDeletedOnExit, screenshotFile)
 
