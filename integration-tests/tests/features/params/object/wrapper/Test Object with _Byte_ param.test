@@ -1,0 +1,8 @@
+test-def: Test Object with "Byte" param
+
+    step: Given I add Object with the "Byte" param <<{{Byte}}>> in context with the name <<justAVarName>>
+        var Byte = <<
+            param: "32"
+            
+        >>
+    step: Then <<{{justAVarName.param}}>> is equal to <<32>>

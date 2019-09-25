@@ -1,0 +1,8 @@
+test-def: Test Object with "Character" param
+
+    step: Given I add Object with the "Character" param <<{{Character}}>> in context with the name <<justAVarName>>
+        var Character = <<
+            param: x
+            
+        >>
+    step: Then <<{{justAVarName.param}}>> is equal to <<x>>

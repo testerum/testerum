@@ -1,0 +1,8 @@
+test-def: Test Object with "Double" param
+
+    step: Given I add Object with the "Double" param <<{{Double}}>> in context with the name <<justAVarName>>
+        var Double = <<
+            param: "32.3"
+            
+        >>
+    step: Then <<{{justAVarName.param}}>> is equal to <<32.3>>

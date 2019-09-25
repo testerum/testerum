@@ -1,0 +1,8 @@
+test-def: Test Object with "Float" param
+
+    step: Given I add Object with the "Float" param <<{{Float}}>> in context with the name <<justAVarName>>
+        var Float = <<
+            param: "32.3"
+            
+        >>
+    step: Then <<{{justAVarName.param}}>> is equal to <<32.3>>
