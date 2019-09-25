@@ -33,6 +33,7 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager.Compani
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_WAIT_TIMEOUT_MILLIS
 import selenium_steps_support.utils.SeleniumStepsDirs
 import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 import javax.annotation.concurrent.GuardedBy
@@ -160,7 +161,7 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
             // todo: where should be put these files? in what directory? revisit this code when implementing reports
             val screenshotFile = Files.createTempFile(tempDirScreenshotsDirectory, "testerum-selenium-", tempFileDeletedOnExit.fileName.toString())
 
-            Files.copy(tempFileDeletedOnExit, screenshotFile)
+            Files.copy(tempFileDeletedOnExit, screenshotFile, StandardCopyOption.REPLACE_EXISTING)
 
             return screenshotFile
         } else {
