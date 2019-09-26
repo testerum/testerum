@@ -45,6 +45,8 @@ object FirefoxWebDriverFactory : WebDriverFactory {
             LOG.info("using system Firefox installation")
         }
 
+        options.addArguments("--width=1920", "--height=1080");
+
         return FirefoxDriver(options)
     }
 
