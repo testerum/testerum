@@ -2,4 +2,4 @@ test-def: Then the url of the current page should not be <<textMatchExpression>>
 
     step: Given I am at the "HTML 5 TEST PAGE"
     step: When I navigate to special keys input page
-    step: Then the title of the current page should not be <<http://localhost:10080/html-controls.html>>
+    step: Then the title of the current page should not be <<{{URL}}/html-controls.html>>
