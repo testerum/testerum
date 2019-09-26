@@ -45,6 +45,8 @@ object ChromeWebDriverFactory : WebDriverFactory {
             LOG.info("using system Chrome installation")
         }
 
+        options.addArguments("window-size=1920,1080");
+
         return ChromeDriver(options)
     }
 
