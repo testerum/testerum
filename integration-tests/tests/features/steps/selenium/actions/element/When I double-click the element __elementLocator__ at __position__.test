@@ -1,5 +1,7 @@
 test-def: When I double-click the element <<elementLocator>> at <<position>>
 
+    test-properties = <<disabled>>
+
     description = <<The position value is dynamically changed with different executions.>>
 
     step: Given I am at the "HTML 5 TEST PAGE"
