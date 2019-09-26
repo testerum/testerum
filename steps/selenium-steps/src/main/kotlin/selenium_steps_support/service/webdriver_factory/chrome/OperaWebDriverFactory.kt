@@ -2,9 +2,11 @@ package selenium_steps_support.service.webdriver_factory.chrome
 
 import com.testerum.api.test_context.settings.model.SeleniumDriverSettingValue
 import com.testerum.model.selenium.SeleniumDriversByBrowser
+import org.openqa.selenium.UnexpectedAlertBehaviour
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.opera.OperaDriver
 import org.openqa.selenium.opera.OperaOptions
+import org.openqa.selenium.remote.CapabilityType
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import selenium_steps_support.service.webdriver_factory.WebDriverFactory
@@ -43,6 +45,8 @@ object OperaWebDriverFactory : WebDriverFactory {
         } else {
             LOG.info("using system Opera installation")
         }
+
+        options.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE)
 
         return OperaDriver(options)
     }
