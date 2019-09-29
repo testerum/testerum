@@ -8,24 +8,21 @@ import com.testerum.model.step.BasicStepDef
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
-import com.testerum.scanner.step_lib_scanner.StepLibraryPersistentCacheManger
-import com.testerum.scanner.step_lib_scanner.model.StepLibrariesScanResult
+import com.testerum.scanner.step_lib_scanner.ExtensionsScanner
+import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanFilter
+import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanResult
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.hasSize
-import org.hamcrest.Matchers.matchesPattern
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.nio.file.Path as JavaPath
 
-class StepLibraryPersistentCacheMangerTest {
+class ExtensionsScannerTest {
 
     // note: because this test expects jar files, and because IntelliJ doesn't create them,
     // you will need to run the following before running this class from IntelliJ:
@@ -35,13 +32,13 @@ class StepLibraryPersistentCacheMangerTest {
     // todo: tests for scanner that updates an existing cache
 
     private lateinit var threadPool: ExecutorService
-    private lateinit var stepLibraryPersistentCacheManger: StepLibraryPersistentCacheManger
+    private lateinit var extensionsScanner: ExtensionsScanner
 
     @BeforeEach
     fun beforeAll() {
         // todo: test performance: does using more threads help (it may, if the whole stuff is IO bound)
         threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1)
-        stepLibraryPersistentCacheManger = StepLibraryPersistentCacheManger(threadPool)
+        extensionsScanner = ExtensionsScanner(threadPool)
     }
 
     @AfterEach
@@ -51,31 +48,20 @@ class StepLibraryPersistentCacheMangerTest {
     }
 
     @Test
-    fun `test from scratch - cache file doesn't exist`() {
-        val stepLib1: JavaPath = findWithWildcards("../testerum-scanner-it-steplib1/target/", "testerum-scanner-it-steplib1-*.jar")
-        val stepLib2: JavaPath = findWithWildcards("../testerum-scanner-it-steplib2/target/", "testerum-scanner-it-steplib2-*.jar")
-        val stepLib3Java: JavaPath = findWithWildcards("../testerum-scanner-it-steplib3-java/target/", "testerum-scanner-it-steplib3-java-*.jar")
-
-
+    fun test() {
         val threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1)
         try {
-            val cacheFile = Files.createTempFile("testerum-scanner-cache-it-", ".json")
-            cacheFile.toFile()
-                    .deleteOnExit()
-
-            val stepScanResult: StepLibrariesScanResult = stepLibraryPersistentCacheManger.scan(
-                    jars = listOf(stepLib1, stepLib2, stepLib3Java),
-                    cacheFile = cacheFile
+            val stepScanResult: ExtensionsScanResult = extensionsScanner.scan(
+                    ExtensionsScanFilter(
+                            onlyFromPackages = listOf(
+                                    "com.testerum.scanner_it_steplib1.steps",
+                                    "com.testerum.scanner_it_steplib2.steps",
+                                    "com.testerum.scanner_it_steplib3java.steps"
+                            )
+                    )
             )
 
-            val libraries = stepScanResult.libraries
-            assertThat(libraries, hasSize(3))
-
-            // library 1
-            val lib1 = libraries[0]
-            assertThat(lib1.jarFile.name, matchesPattern("""testerum-scanner-it-steplib1-.*\.jar"""))
-
-            val lib1_sortedSteps = lib1.steps.sortedWith(
+            val sortedSteps = stepScanResult.steps.sortedWith(
                     compareBy(
                             { it.className },
                             { it.phase },
@@ -83,9 +69,9 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
 
-            assertThat(lib1_sortedSteps, hasSize(13))
+            assertThat(sortedSteps, hasSize(15))
             assertThat(
-                    lib1_sortedSteps[0],
+                    sortedSteps[0],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.GIVEN,
@@ -101,7 +87,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[1],
+                    sortedSteps[1],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.GIVEN,
@@ -122,7 +108,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[2],
+                    sortedSteps[2],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.GIVEN,
@@ -138,7 +124,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[3],
+                    sortedSteps[3],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.GIVEN,
@@ -154,7 +140,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[4],
+                    sortedSteps[4],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.GIVEN,
@@ -197,7 +183,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[5],
+                    sortedSteps[5],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.WHEN,
@@ -218,7 +204,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[6],
+                    sortedSteps[6],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.WHEN,
@@ -234,7 +220,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[7],
+                    sortedSteps[7],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.WHEN,
@@ -250,7 +236,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[8],
+                    sortedSteps[8],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.WHEN,
@@ -293,7 +279,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[9],
+                    sortedSteps[9],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.THEN,
@@ -314,7 +300,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[10],
+                    sortedSteps[10],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.THEN,
@@ -330,7 +316,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[11],
+                    sortedSteps[11],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.THEN,
@@ -346,7 +332,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib1_sortedSteps[12],
+                    sortedSteps[12],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.THEN,
@@ -388,238 +374,8 @@ class StepLibraryPersistentCacheMangerTest {
                             )
                     )
             )
-
-
-            val lib1_sortedHooks = lib1.hooks.sortedWith(
-                    compareBy(
-                            { it.className },
-                            { it.phase },
-                            { it.methodName }
-                    )
-            )
-
-            assertThat(lib1_sortedHooks, hasSize(12))
-
             assertThat(
-                    lib1_sortedHooks[0],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.BEFORE_ALL_TESTS,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "beforeAllTestsSimple",
-                                    order = HooksConstants.DEFAULT_ORDER,
-                                    description = null
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[1],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.BEFORE_ALL_TESTS,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "beforeAllTestsWithAllAnnotationFields",
-                                    order = 100,
-                                    description = "beforeAllTests with all annotation fields"
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[2],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.BEFORE_ALL_TESTS,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "beforeAllTestsWithDescription",
-                                    order = HooksConstants.DEFAULT_ORDER,
-                                    description = "beforeAllTests description"
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[3],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.BEFORE_EACH_TEST,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "beforeTestSimple",
-                                    order = HooksConstants.DEFAULT_ORDER,
-                                    description = null
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[4],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.BEFORE_EACH_TEST,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "beforeTestWithAllAnnotationFields",
-                                    order = 100,
-                                    description = "beforeTest with all annotation fields"
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[5],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.BEFORE_EACH_TEST,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "beforeTestWithDescription",
-                                    order = HooksConstants.DEFAULT_ORDER,
-                                    description = "beforeTest description"
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[6],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.AFTER_EACH_TEST,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "afterTestSimple",
-                                    order = HooksConstants.DEFAULT_ORDER,
-                                    description = null
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[7],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.AFTER_EACH_TEST,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "afterTestWithAllAnnotationFields",
-                                    order = 100,
-                                    description = "afterTest with all annotation fields"
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[8],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.AFTER_EACH_TEST,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "afterTestWithDescription",
-                                    order = HooksConstants.DEFAULT_ORDER,
-                                    description = "afterTest description"
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[9],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.AFTER_ALL_TESTS,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "afterAllTestSimple",
-                                    order = HooksConstants.DEFAULT_ORDER,
-                                    description = null
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[10],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.AFTER_ALL_TESTS,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "afterAllTestWithAllAnnotationFields",
-                                    order = 100,
-                                    description = "afterAllTest with all annotation fields"
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedHooks[11],
-                    equalTo(
-                            HookDef(
-                                    phase = HookPhase.AFTER_ALL_TESTS,
-                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
-                                    methodName = "afterAllTestWithDescription",
-                                    order = HooksConstants.DEFAULT_ORDER,
-                                    description = "afterAllTest description"
-                            )
-                    )
-            )
-
-            val lib1_sortedSettings = lib1.settingDefinitions.sortedBy { it.key }
-
-            assertThat(lib1_sortedSettings, hasSize(4))
-
-            assertThat(
-                    lib1_sortedSettings[0],
-                    equalTo(
-                            SettingDefinition(
-                                    key = "stepLib1.other",
-                                    label = "1-Other",
-                                    type = SettingType.TEXT,
-                                    defaultValue = "yep",
-                                    description = "other description",
-                                    category = "other category"
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedSettings[1],
-                    equalTo(
-                            SettingDefinition(
-                                    key = "stepLib1.param1",
-                                    label = "1-Param 1",
-                                    type = SettingType.NUMBER,
-                                    defaultValue = "10",
-                                    description = "param1 description",
-                                    category = "param1 category"
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedSettings[2],
-                    equalTo(
-                            SettingDefinition(
-                                    key = "stepLib1.param2",
-                                    label = "1-Param 2",
-                                    type = SettingType.TEXT,
-                                    defaultValue = "some text",
-                                    description = "param2 description",
-                                    category = "param2 category"
-                            )
-                    )
-            )
-            assertThat(
-                    lib1_sortedSettings[3],
-                    equalTo(
-                            SettingDefinition(
-                                    key = "stepLib1.param3",
-                                    label = "1-Param 3",
-                                    type = SettingType.FILESYSTEM_DIRECTORY,
-                                    defaultValue = "/some/path",
-                                    description = "param3 description",
-                                    category = "param3 category"
-                            )
-                    )
-            )
-
-
-            // library 2
-            val lib2 = libraries[1]
-
-            assertThat(lib2.jarFile.name, matchesPattern("""testerum-scanner-it-steplib2-.*\.jar"""))
-
-            val lib2_sortedSteps = lib2.steps.sortedWith(
-                    compareBy(
-                            { it.className },
-                            { it.phase },
-                            { it.methodName }
-                    )
-            )
-
-            assertThat(lib2_sortedSteps, hasSize(1))
-
-            assertThat(
-                    lib2_sortedSteps[0],
+                    sortedSteps[13],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.GIVEN,
@@ -634,23 +390,8 @@ class StepLibraryPersistentCacheMangerTest {
                             )
                     )
             )
-
-            // library 3
-            val lib3 = libraries[2]
-            assertThat(lib3.jarFile.name, matchesPattern("""testerum-scanner-it-steplib3-.*\.jar"""))
-
-            val lib3_sortedSteps = lib3.steps.sortedWith(
-                    compareBy(
-                            { it.className },
-                            { it.phase },
-                            { it.methodName }
-                    )
-            )
-
-            assertThat(lib3_sortedSteps, hasSize(1))
-
             assertThat(
-                    lib3_sortedSteps[0],
+                    sortedSteps[14],
                     equalTo(
                             BasicStepDef(
                                     phase = StepPhaseEnum.GIVEN,
@@ -666,7 +407,8 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
 
-            val lib3_sortedHooks = lib3.hooks.sortedWith(
+
+            val sortedHooks = stepScanResult.hooks.sortedWith(
                     compareBy(
                             { it.className },
                             { it.phase },
@@ -674,10 +416,154 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
 
-            assertThat(lib3_sortedHooks, hasSize(1))
+            assertThat(sortedHooks, hasSize(13))
 
             assertThat(
-                    lib3_sortedHooks[0],
+                    sortedHooks[0],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.BEFORE_ALL_TESTS,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "beforeAllTestsSimple",
+                                    order = HooksConstants.DEFAULT_ORDER,
+                                    description = null
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[1],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.BEFORE_ALL_TESTS,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "beforeAllTestsWithAllAnnotationFields",
+                                    order = 100,
+                                    description = "beforeAllTests with all annotation fields"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[2],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.BEFORE_ALL_TESTS,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "beforeAllTestsWithDescription",
+                                    order = HooksConstants.DEFAULT_ORDER,
+                                    description = "beforeAllTests description"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[3],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.BEFORE_EACH_TEST,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "beforeTestSimple",
+                                    order = HooksConstants.DEFAULT_ORDER,
+                                    description = null
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[4],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.BEFORE_EACH_TEST,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "beforeTestWithAllAnnotationFields",
+                                    order = 100,
+                                    description = "beforeTest with all annotation fields"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[5],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.BEFORE_EACH_TEST,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "beforeTestWithDescription",
+                                    order = HooksConstants.DEFAULT_ORDER,
+                                    description = "beforeTest description"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[6],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.AFTER_EACH_TEST,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "afterTestSimple",
+                                    order = HooksConstants.DEFAULT_ORDER,
+                                    description = null
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[7],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.AFTER_EACH_TEST,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "afterTestWithAllAnnotationFields",
+                                    order = 100,
+                                    description = "afterTest with all annotation fields"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[8],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.AFTER_EACH_TEST,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "afterTestWithDescription",
+                                    order = HooksConstants.DEFAULT_ORDER,
+                                    description = "afterTest description"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[9],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.AFTER_ALL_TESTS,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "afterAllTestSimple",
+                                    order = HooksConstants.DEFAULT_ORDER,
+                                    description = null
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[10],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.AFTER_ALL_TESTS,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "afterAllTestWithAllAnnotationFields",
+                                    order = 100,
+                                    description = "afterAllTest with all annotation fields"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[11],
+                    equalTo(
+                            HookDef(
+                                    phase = HookPhase.AFTER_ALL_TESTS,
+                                    className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
+                                    methodName = "afterAllTestWithDescription",
+                                    order = HooksConstants.DEFAULT_ORDER,
+                                    description = "afterAllTest description"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedHooks[12],
                     equalTo(
                             HookDef(
                                     phase = HookPhase.BEFORE_EACH_TEST,
@@ -689,12 +575,64 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
 
-            val lib3_sortedSettings = lib3.settingDefinitions.sortedBy { it.key }
+            val sortedSettings = stepScanResult.settingDefinitions.sortedBy { it.key }
 
-            assertThat(lib3_sortedSettings, hasSize(4))
+            assertThat(sortedSettings, hasSize(8))
 
             assertThat(
-                    lib3_sortedSettings[0],
+                    sortedSettings[0],
+                    equalTo(
+                            SettingDefinition(
+                                    key = "stepLib1.other",
+                                    label = "1-Other",
+                                    type = SettingType.TEXT,
+                                    defaultValue = "yep",
+                                    description = "other description",
+                                    category = "other category"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedSettings[1],
+                    equalTo(
+                            SettingDefinition(
+                                    key = "stepLib1.param1",
+                                    label = "1-Param 1",
+                                    type = SettingType.NUMBER,
+                                    defaultValue = "10",
+                                    description = "param1 description",
+                                    category = "param1 category"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedSettings[2],
+                    equalTo(
+                            SettingDefinition(
+                                    key = "stepLib1.param2",
+                                    label = "1-Param 2",
+                                    type = SettingType.TEXT,
+                                    defaultValue = "some text",
+                                    description = "param2 description",
+                                    category = "param2 category"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedSettings[3],
+                    equalTo(
+                            SettingDefinition(
+                                    key = "stepLib1.param3",
+                                    label = "1-Param 3",
+                                    type = SettingType.FILESYSTEM_DIRECTORY,
+                                    defaultValue = "/some/path",
+                                    description = "param3 description",
+                                    category = "param3 category"
+                            )
+                    )
+            )
+            assertThat(
+                    sortedSettings[4],
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib3Java.param1",
@@ -707,7 +645,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib3_sortedSettings[1],
+                    sortedSettings[5],
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib3Java.param2",
@@ -720,7 +658,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib3_sortedSettings[2],
+                    sortedSettings[6],
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib3Java.param3",
@@ -733,7 +671,7 @@ class StepLibraryPersistentCacheMangerTest {
                     )
             )
             assertThat(
-                    lib3_sortedSettings[3],
+                    sortedSettings[7],
                     equalTo(
                             SettingDefinition(
                                     key = "stepLib3Java.param4",
@@ -751,12 +689,6 @@ class StepLibraryPersistentCacheMangerTest {
             // no need for threadPool.awaitExecution() because the try block insures that all threads finished
         }
 
-    }
-
-    private fun findWithWildcards(directory: String, wildcard: String): JavaPath {
-        return Files.newDirectoryStream(Paths.get(directory), wildcard).use { stream ->
-            stream.first()
-        }
     }
 
 }

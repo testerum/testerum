@@ -35,6 +35,7 @@ import org.zeroturnaround.exec.ProcessExecutor
 import org.zeroturnaround.exec.ProcessResult
 import org.zeroturnaround.exec.listener.ProcessListener
 import org.zeroturnaround.exec.stream.LogOutputStream
+import java.io.File
 import java.nio.file.Files
 import java.time.LocalDateTime
 import java.util.concurrent.ConcurrentHashMap
@@ -67,12 +68,10 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         val testPaths = runConfig.pathsToInclude.map {
             val javaPath = testsDirectoryRoot.resolve(it.path.toString())
 
-            if (javaPath.isDirectory) {
-                FeatureTestPath(javaPath)
-            } else if (it.scenarioIndexes.isEmpty()) {
-                TestTestPath(javaPath)
-            } else {
-                ScenariosTestPath(javaPath, it.scenarioIndexes)
+            when {
+                javaPath.isDirectory -> FeatureTestPath(javaPath)
+                it.scenarioIndexes.isEmpty() -> TestTestPath(javaPath)
+                else -> ScenariosTestPath(javaPath, it.scenarioIndexes)
             }
         }
 
@@ -235,7 +234,10 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         commandLine += "-Dfile.encoding=UTF-8"
 
         commandLine += "-classpath"
-        commandLine += "${getRunnerLibPath()}/*"
+        commandLine +=
+                "${getRunnerLibPath()}/*" +
+                "${File.pathSeparatorChar}" +
+                "${testerumDirs.getBasicStepsDir()}/*"
 
         commandLine += "-Dtesterum.packageDirectory=${testerumDirs.getInstallDir()}"
         commandLine += "-XX:-OmitStackTraceInFastThrow"
@@ -257,12 +259,6 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
                 .normalize()
     }
 
-    private fun getBuiltInBasicStepsDirectory(): JavaPath {
-        val builtInBasicStepsDir = testerumDirs.getBasicStepsDir()
-
-        return builtInBasicStepsDir.toAbsolutePath().normalize()
-    }
-
     private fun createArgsFile(args: List<String>): JavaPath {
         val argsFile: JavaPath = Files.createTempFile("testerum-runner-", ".cmdline-options").toAbsolutePath().normalize()
         argsFile.toFile().deleteOnExit()
@@ -282,11 +278,6 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
         args += "--repository-directory"
         args += "$repositoryDir"
-
-        // built-in basic steps
-        val builtInBasicStepsDir: JavaPath = getBuiltInBasicStepsDirectory()
-        args += "--basic-steps-directory"
-        args += "$builtInBasicStepsDir"
 
         // output
         args += "--report"

@@ -102,26 +102,6 @@ object CmdlineParamsParser {
         )
         var repositoryDirectory: JavaPath? = null
 
-        // todo: step directory separation: we should have 2 directories: "built-in" vs "user" basic steps (last one is optional)
-        @CommandLine.Option(
-                names = ["--basic-steps-directory"],
-                required = false,
-                description = [
-                    "path to the directory containing the basic steps jar",
-                    "files",
-                    "",
-                    "If  missing,   the  path  will  be   the  \"basic_steps\"",
-                    "directory in the Testerum installation directory.",
-                    "",
-                    "You will very rarely need to use this argument.",
-                    "",
-                    "Example:",
-                    "    --basic-steps-directory /testerum/basic_steps",
-                    ""
-                ]
-        )
-        var basicStepsDirectory: JavaPath? = null
-
         @CommandLine.Option(
                 names = ["--var"],
                 description = [
@@ -432,7 +412,6 @@ object CmdlineParamsParser {
             return CmdlineParams(
                     verbose = verbose,
                     repositoryDirectory = getValidatedRepositoryDirectory(),
-                    basicStepsDirectory = getValidatedBasicStepsDirectory(),
                     variablesEnvironment = variablesEnvironment,
                     variableOverrides = variableOverrides,
                     settingsFile = getValidatedSettingsFile(),
@@ -447,16 +426,6 @@ object CmdlineParamsParser {
         }
 
         private fun getValidatedRepositoryDirectory(): JavaPath = getValidatedRequiredDirectory(repositoryDirectory, "repositoryDirectory")
-
-        private fun getValidatedBasicStepsDirectory(): JavaPath {
-            val basicStepsDir = if (basicStepsDirectory != null) {
-                basicStepsDirectory
-            } else {
-                RunnerDirs.getDefaultBasicStepsDir()
-            }
-
-            return getValidatedRequiredDirectory(basicStepsDir, "basicStepsDirectory")
-        }
 
         private fun getValidatedSettingsFile(): JavaPath? = getValidatedOptionalFile(settingsFile, "settingsFile")
 

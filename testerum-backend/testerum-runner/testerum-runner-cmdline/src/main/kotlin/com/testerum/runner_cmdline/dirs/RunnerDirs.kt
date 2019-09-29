@@ -33,7 +33,7 @@ object RunnerDirs {
         return@run absolutePath
     }
 
-    fun getDefaultBasicStepsDir(): JavaPath = getInstallDir().resolve("basic_steps")
+    fun getBasicStepsDir(): JavaPath = getInstallDir().resolve("basic_steps")
 
     fun getSeleniumDriversDir(): JavaPath = getInstallDir().resolve("selenium-drivers")
 

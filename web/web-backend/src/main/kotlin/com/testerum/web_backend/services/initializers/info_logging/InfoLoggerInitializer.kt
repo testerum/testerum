@@ -31,7 +31,6 @@ class InfoLoggerInitializer(private val settingsManager: SettingsManager,
         LOG.info("-----")
 
         val infoMap = mapOf<String, Any?>(
-                "basicStepsDir"    to frontendDirs.getBasicStepsDir(),
                 "jdbcDriversDir"   to frontendDirs.getJdbcDriversDir(),
                 "testerumDir"      to frontendDirs.getTesterumDir()
         )

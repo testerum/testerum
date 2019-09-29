@@ -222,7 +222,7 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
     )
 
     val basicStepsCache = BasicStepsCache(
-            persistentCacheManger = scannerModuleFactory.stepLibraryPersistentCacheManger,
+            persistentCacheManager = scannerModuleFactory.extensionsScanner,
             settingsManager = settingsModuleFactory.settingsManager
     )
 

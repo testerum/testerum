@@ -45,6 +45,6 @@ exec "$JAVACMD" \
     -Dtesterum.web.httpPort="${TESTERUM_WEB_HTTPPORT}" \
     -Dtesterum.packageDirectory="${BASEDIR}" \
     -Xmx1024m \
-    -classpath "${BASEDIR}/lib/*" \
+    -classpath "${BASEDIR}/lib/*:${BASEDIR}/basic_steps/*" \
     com.testerum.web_backend.TesterumWebMain \
     "$@"

@@ -9,15 +9,11 @@ import com.testerum.api.test_context.settings.RunnerTesterumDirs
 import com.testerum.api.test_context.test_vars.TestVariables
 import com.testerum.api.transformer.Transformer
 import com.testerum.common_jdk.stopwatch.StopWatch
-import com.testerum.common_kotlin.hasExtension
-import com.testerum.common_kotlin.isRegularFile
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
-import com.testerum.common_kotlin.walkAndCollect
 import com.testerum.file_service.caches.resolved.BasicStepsCache
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
-import com.testerum.runner_cmdline.classloader.RunnerClassloaderFactory
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.runner_cmdline.events.EventsService
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
@@ -31,11 +27,9 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.test_context.TestContextImpl
 import com.testerum.runner_cmdline.transformer.TransformerFactory
 import com.testerum.settings.TesterumDirs
-import java.nio.file.Paths
 import java.nio.file.Path as JavaPath
 
 class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
-                        private val runnerClassloaderFactory: RunnerClassloaderFactory,
                         private val runnerSettingsManager: RunnerSettingsManager,
                         private val runnerTesterumDirs: RunnerTesterumDirs,
                         private val testerumDirs: TesterumDirs,
@@ -72,7 +66,7 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
 
 
         // setup runner services
-        val stepsClassLoader: ClassLoader = runnerClassloaderFactory.createStepsClassLoader()
+        val stepsClassLoader: ClassLoader = Thread.currentThread().contextClassLoader
         val testContext = TestContextImpl(stepsClassLoader = stepsClassLoader)
         @Suppress("DEPRECATION")
         run {
@@ -128,30 +122,10 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
     private fun initialize(cmdlineParams: CmdlineParams) {
         executionListenerFinder.setReports(cmdlineParams.reportsWithProperties, cmdlineParams.managedReportsDir)
 
-        val basicStepsDir = testerumDirs.getBasicStepsDir()
-
-        basicStepsCache.initialize(
-                stepLibraryJarFiles = getStepLibraryJarFiles(basicStepsDir),
-                persistentCacheFile = getPersistentCacheFile()
-        )
-    }
-
-    private fun getPersistentCacheFile(): JavaPath {
-        val userHomeDir = Paths.get(
-                System.getProperty("user.home")
-                        ?: throw IllegalStateException("[user.home] system property was not set")
-        )
-
-        return userHomeDir.resolve(".testerum/cache/basic-steps-cache.json")
+        basicStepsCache.initialize()
     }
 
     private fun getProjectVariablesDir(): JavaPath = runnerProjectManager.getProjectServices().dirs().getVariablesDir()
-
-    private fun getStepLibraryJarFiles(basicStepsDir: JavaPath): List<JavaPath> {
-        return basicStepsDir.walkAndCollect {
-            it.isRegularFile && it.hasExtension(".jar")
-        }
-    }
 
     private fun logRunnerSuite(suite: RunnerSuite) {
         println("------------------------------[ execution tree ]------------------------------")

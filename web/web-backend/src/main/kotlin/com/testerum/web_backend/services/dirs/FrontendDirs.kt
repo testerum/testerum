@@ -23,7 +23,6 @@ class FrontendDirs(private val testerumDirs: TesterumDirs) {
 
     fun getFileLocalVariablesFile(): JavaPath = getSettingsDir().resolve("variables.json")
 
-    fun getCacheDir(): JavaPath = getTesterumDir().resolve("cache")
     fun getLicensesDir(): JavaPath = getTesterumDir().resolve("licenses")
 
     fun getReportsDir(projectId: String): JavaPath = getTesterumDir().resolve("reports").resolve(projectId)
