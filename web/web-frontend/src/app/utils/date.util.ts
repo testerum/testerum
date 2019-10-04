@@ -33,8 +33,67 @@ export class DateUtil {
             + DateUtil.twoDigitToString(minute);
     }
 
+    // returns the date in the following format:
+    // yyyy-MM-ddTHH:mm:ss.SSSZ
+    static dateToIsoDateString(date: Date): string {
+        if(!date) return null;
+
+        let year = date.getFullYear(),
+            month = date.getMonth() + 1, // months are zero indexed
+            day = date.getDate(),
+            hour = date.getHours(),
+            minute = date.getMinutes(),
+            seconds = date.getSeconds(),
+            millis = date.getMilliseconds();
+
+
+        return year
+            + "-"
+            + DateUtil.twoDigitToString(month)
+            + "-"
+            + DateUtil.twoDigitToString(day)
+            + "T"
+            + DateUtil.twoDigitToString(hour)
+            + ":"
+            + DateUtil.twoDigitToString(minute)
+            + ":"
+            + DateUtil.twoDigitToString(seconds)
+            + "."
+            + DateUtil.threeDigitToString(millis)
+            + "Z";
+    }
+
+    private static isoDateRegexp = new RegExp('(\\d{4}-[01]\\d-[0-3]\\d(T[0-2]\\d:[0-5]\\d:[0-5]\\d(\\.\\d+([+-][0-2]\\d:[0-5]\\d|Z))?)?)');
+    static isoDateStringToDate(serverDateAsString: string): Date | null {
+        if (serverDateAsString == null || !this.isoDateRegexp.test(serverDateAsString)) { return null; }
+
+        var b = serverDateAsString.split(/\D+/);
+        let year    = ObjectUtil.getAsNumber(b[0]);
+        let month   = ObjectUtil.getAsNumber(b[1]) - 1;
+        let day     = ObjectUtil.getAsNumber(b[2]);
+        let hours   = (b.length >= 3 && ObjectUtil.isANumber(b[3])) ? ObjectUtil.getAsNumber(b[3]) : 0;
+        let minutes = (b.length >= 4 && ObjectUtil.isANumber(b[4])) ? ObjectUtil.getAsNumber(b[4]) : 0;
+        let seconds = (b.length >= 5 && ObjectUtil.isANumber(b[5])) ? ObjectUtil.getAsNumber(b[5]) : 0;
+        let millis  = (b.length >= 6 && ObjectUtil.isANumber(b[6])) ? ObjectUtil.getAsNumber(b[6]) : 0;
+
+        return new Date(
+            year,
+            month,
+            day,
+            hours,
+            minutes,
+            seconds,
+            millis);
+    }
+
     private static twoDigitToString(number: number): string {
         return number < 10 ? "0"+number : ""+number;
+    }
+
+    private static threeDigitToString(number: number): string {
+        if(number < 10) return "00"+number;
+        if(number < 100) return "0"+number;
+        return ""+number;
     }
 
     static durationToShortString(durantionInMillis: number): string {

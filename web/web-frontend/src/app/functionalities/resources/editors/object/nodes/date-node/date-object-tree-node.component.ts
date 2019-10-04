@@ -5,6 +5,7 @@ import {ObjectNodeUtil} from "../util/object-node.util";
 import {BooleanObjectTreeModel} from "../../model/boolean-object-tree.model";
 import {ListObjectTreeModel} from "../../model/list-object-tree.model";
 import {DateUtil} from "../../../../../../utils/date.util";
+import {StringUtils} from "../../../../../../utils/string-utils.util";
 
 @Component({
     moduleId: module.id,
@@ -31,16 +32,14 @@ export class DateObjectTreeNodeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.date = DateUtil.stringToDate(this.model.value);
+        if (StringUtils.isNotEmpty(this.model.value)) {
+            this.date = DateUtil.isoDateStringToDate(this.model.value);
+            this.inputDate = DateUtil.dateToIsoDateString(this.date);
+        }
     }
 
     isEditMode(): boolean {
         return this.objectResourceComponentService.editMode;
-    }
-
-    onValueChange(newValue: string) {
-        this.model.value = newValue;
-        this.refresh();
     }
 
     refresh() {
@@ -66,15 +65,16 @@ export class DateObjectTreeNodeComponent implements OnInit {
     }
 
     onDateSelect(event: Date) {
-        this.inputDate = DateUtil.dateTimeToShortString(event);
         this.date = event;
-        this.model.value = this.inputDate;
+        this.inputDate = DateUtil.dateToIsoDateString(this.date);
+        this.model.value = DateUtil.dateToIsoDateString(this.date);
+        this.refresh();
     }
 
     inputChange(event: any) {
         this.inputDate = event;
-        this.date = DateUtil.stringToDate(event);
-        this.model.value = event;
+        this.date = DateUtil.isoDateStringToDate(event);
+        this.model.value = DateUtil.dateToIsoDateString(this.date);
     }
 
     getDescription(): string {

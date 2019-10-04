@@ -7,7 +7,7 @@
         <span>{{getName()}}</span>
         <span *ngIf="isEditMode()">: <span class="field-type">{{getTypeForUI()}}</span> = </span>
         <span *ngIf="!isEditMode()"> =
-            <span *ngIf="model.serverObject != null">{{model.serverObject}}</span>
+            <span *ngIf="model.serverObject != null">{{inputDate}}</span>
             <span *ngIf="model.serverObject == null" class="null-value">null</span>
         </span>
 

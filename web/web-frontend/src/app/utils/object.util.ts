@@ -8,7 +8,8 @@ export class ObjectUtil {
     }
 
     static isANumber(value: string): boolean {
-        if("" === value.trim()) {
+
+        if(value == null || "" === value.trim()) {
             return false;
         }
 

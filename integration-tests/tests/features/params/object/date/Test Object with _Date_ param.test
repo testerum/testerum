@@ -1,0 +1,8 @@
+test-def: Test Object with "Date" param
+
+    step: Given I add Object with the "Date" param <<{{Date}}>> in context with the name <<justAVarName>>
+        var Date = <<
+            date: 2019-10-31T04:32:00.000Z
+            
+        >>
+    step: Then <<{{justAVarName.date}}>> is equal to <<2019-10-31T04:32:00.000Z>>
