@@ -1,0 +1,6 @@
+test-def: When I submit the form containing the field <<elementLocator>>
+
+    step: Given the page at url <<{{URL}}/actions/special-keys/index.html>> is open
+    step: When I type <<test>> into the field <<css=input>>
+    step: When I submit the form containing the field <<css=input>>
+    step: Then the text of element <<#result>> should be <<test>>

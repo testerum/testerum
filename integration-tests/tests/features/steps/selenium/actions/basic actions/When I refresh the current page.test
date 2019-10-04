@@ -1,0 +1,16 @@
+test-def: When I refresh the current page
+
+    step: Given the page at url <<{{URL}}/actions/special-keys/index.html>> is open
+    step: When I type <<This is for testing purposes.>> into the field <<css=input>>
+    step: When I press the special keys <<CONTROL+a>> on the element <<css=input>>
+    step: When I press the special keys <<CONTROL+x>> on the element <<css=input>>
+    step: When I type <<After this proposition another one will be pasted.>> into the field <<css=input>>
+    step: When I press the special keys <<CONTROL+v>> on the element <<css=input>>
+    step: When I delete the final dot and the last two words
+    step: When I start from the beginning writing my name <<Marius >>
+    step: When I copy my name from the beginning and paste it at the end
+    step: When I delete <<Marius>> from the beginning
+    step: When I press the special keys <<ENTER>> on the element <<css=input>>
+    step: Then the text of element <<#result>> should be <<After this proposition another one will be pasted.This is for Marius>>
+    step: When I refresh the current page
+    step: Then the text of element <<#result>> should be <<{{''}}>>

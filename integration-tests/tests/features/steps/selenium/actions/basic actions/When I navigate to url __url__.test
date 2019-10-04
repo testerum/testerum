@@ -1,0 +1,5 @@
+test-def: When I navigate to url <<url>>
+
+    step: When I navigate to HTML TEST PAGE
+    step: Then the url of the current page should be <<{{URL}}/html-controls.html>>
+    step: Then the element <<#element_click>> should be enabled
