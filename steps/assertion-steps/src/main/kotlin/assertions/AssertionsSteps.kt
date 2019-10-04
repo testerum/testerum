@@ -1,7 +1,9 @@
 package assertions
 
+import assertions.util.toIsoString
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then
+import java.util.*
 
 class AssertionsSteps {
 
@@ -11,13 +13,17 @@ class AssertionsSteps {
         var actual: Any? = actualValue
         var expected: Any? = expectedValue
 
-        if (actualValue is String) {
-            if (expectedValue !is String) {
-                expected = expectedValue.toString()
+        if (actualValue is String && expectedValue !is String) {
+            expected = when (expectedValue) {
+                is Date -> expectedValue.toIsoString();
+                else -> expectedValue.toString()
             }
-        } else {
-            if (expectedValue is String) {
-                actual = actualValue.toString()
+        }
+
+        if (expectedValue is String && actualValue !is String) {
+            actual = when (actualValue) {
+                is Date -> actualValue.toIsoString();
+                else -> actualValue.toString()
             }
         }
 
@@ -46,12 +52,18 @@ class AssertionsSteps {
         var actual: Any? = actualValue
         var expected: Any? = expectedValue
 
-        if (actualValue is String) {
-            if (expectedValue !is String) {
+        if (actualValue is String && expectedValue !is String) {
+            if (expectedValue is Date) {
+                expected = expectedValue.toIsoString();
+            } else{
                 expected = expectedValue.toString()
             }
-        } else {
-            if (expectedValue is String) {
+        }
+
+        if (expectedValue is String && actualValue !is String) {
+            if (actualValue is Date) {
+                actual = actualValue.toIsoString();
+            } else{
                 actual = actualValue.toString()
             }
         }
