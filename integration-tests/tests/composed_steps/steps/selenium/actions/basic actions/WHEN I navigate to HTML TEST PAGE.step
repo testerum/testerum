@@ -1,3 +1,0 @@
-step-def: When I navigate to HTML TEST PAGE
-
-    step: Given the page at url <<{{URL}}/html-controls.html>> is open
