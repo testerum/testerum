@@ -1,0 +1,4 @@
+test-def: When I execute the JS script <<script>>
+
+    step: When I execute the JS script <<testVariables.set("myVar", "value from script")>>
+    step: Then <<{{myVar}}>> is equal to <<value from script>>

@@ -1,0 +1,3 @@
+step-def: Then in the Control Panel Text should be the text <<controlPanelText: TEXT>>
+
+    step: Then the text of element <<#control-panel>> should be <<{{controlPanelText}}>>

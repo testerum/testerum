@@ -1,0 +1,4 @@
+test-def: When I execute the JS script <<script>> and save the result into the variable <<varName>>
+
+    step: When I execute the JS script <<5 + 10>> and save the result into the variable <<myVar>>
+    step: Then <<{{myVar}}>> is equal to <<15>>

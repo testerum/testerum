@@ -1,5 +1,0 @@
-test-def: When I navigate to the next page
-
-    step: Given the page at url <<https://testerum.com/features/>> is open
-    step: When I navigate to the next page
-    step: When I wait <<2500>> milliseconds

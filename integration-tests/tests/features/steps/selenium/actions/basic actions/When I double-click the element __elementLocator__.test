@@ -1,5 +1,0 @@
-test-def: When I double-click the element <<elementLocator>>
-
-    step: Given I am at the "HTML 5 TEST PAGE"
-    step: When I double-click the element <<#element_double_click>>
-    step: Then the text of element <<#control-panel>> should be <<Double Clickable element>>

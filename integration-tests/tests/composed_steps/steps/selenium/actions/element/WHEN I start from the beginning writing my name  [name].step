@@ -1,0 +1,4 @@
+step-def: When I start from the beginning writing my name <<name: TEXT>>
+
+    step: When I press the special keys <<HOME>> on the element <<css=input>>
+    step: When I type <<{{name}}>> into the field <<css=input>>

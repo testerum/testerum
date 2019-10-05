@@ -1,0 +1,3 @@
+step-def: Given I am at the "HTML 5 TEST PAGE"
+
+    step: Given the page at url <<{{URL}}/html-controles.html>> is open
