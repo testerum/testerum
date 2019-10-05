@@ -12,6 +12,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.api.annotations.settings.DeclareSetting
 import com.testerum.api.annotations.settings.DeclareSettings
 import com.testerum.api.test_context.settings.RunnerSettingsManager
+import com.testerum.api.test_context.settings.model.SeleniumBrowserType
 import com.testerum.api.test_context.settings.model.SeleniumDriverSettingValue
 import com.testerum.api.test_context.settings.model.SettingType
 import com.testerum.common_jdk.OsUtils
@@ -32,6 +33,7 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager.Compani
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_WAIT_TIMEOUT_MILLIS
 import selenium_steps_support.utils.SeleniumStepsDirs
 import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 import javax.annotation.concurrent.GuardedBy
@@ -100,6 +102,11 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
         internal const val SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP = "testerum.selenium.takeScreenshotAfterEachStep"
 
         internal const val SETTING_KEY_DRIVER = "testerum.selenium.driver"
+        internal const val SETTING_KEY_DRIVER_BROWSER_TYPE = "testerum.selenium.driver.browserType"
+        internal const val SETTING_KEY_DRIVER_BROWSER_EXECUTABLE_PATH = "testerum.selenium.driver.browserExecutablePath"
+        internal const val SETTING_KEY_DRIVER_HEADLESS = "testerum.selenium.driver.headless"
+        internal const val SETTING_KEY_DRIVER_DRIVER_VERSION = "testerum.selenium.driver.driverVersion"
+        internal const val SETTING_KEY_DRIVER_REMOTE_URL = "testerum.selenium.driver.remoteUrl"
 
         private val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper().apply {
             registerModule(AfterburnerModule())
@@ -120,6 +127,10 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
 
     @GuardedBy("lock")
     private var _webDriver: WebDriver? = null
+
+    private val tempDirScreenshotsDirectory: JavaPath by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+        Files.createTempDirectory("testerum-screenshots")
+    }
 
     private val currentWebDriver: WebDriver
         get() = synchronized(lock) {
@@ -148,7 +159,9 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
             val tempFileDeletedOnExit = driver.getScreenshotAs(OutputType.FILE).toPath()
 
             // todo: where should be put these files? in what directory? revisit this code when implementing reports
-            val screenshotFile = Files.createTempFile("testerum-selenium-", tempFileDeletedOnExit.fileName.toString())
+            val screenshotFile = Files.createTempFile(tempDirScreenshotsDirectory, "testerum-selenium-", tempFileDeletedOnExit.fileName.toString())
+
+            Files.copy(tempFileDeletedOnExit, screenshotFile, StandardCopyOption.REPLACE_EXISTING)
 
             return screenshotFile
         } else {
@@ -213,7 +226,47 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
     private fun getSeleniumDriverSetting(): SeleniumDriverSettingValue {
         val unparsedDriver = runnerSettingsManager.getRequiredSetting(SETTING_KEY_DRIVER).resolvedValue
 
-        return OBJECT_MAPPER.readValue(unparsedDriver)
+        var seleniumDriverSettingValue = OBJECT_MAPPER.readValue<SeleniumDriverSettingValue>(unparsedDriver)
+
+        // check for overrides: browserType
+        val browserType: SeleniumBrowserType? = runnerSettingsManager.getSetting(SETTING_KEY_DRIVER_BROWSER_TYPE)?.resolvedValue?.let {
+            SeleniumBrowserType.safeValueOf(it)
+                    ?: throw IllegalArgumentException(
+                            "invalid value [$it] for setting [$SETTING_KEY_DRIVER_BROWSER_TYPE]" +
+                                    ": it should be one of the following ${SeleniumBrowserType.values().toList()}"
+                    )
+        }
+        if (browserType != null) {
+            seleniumDriverSettingValue = seleniumDriverSettingValue.copy(browserType = browserType)
+        }
+
+        // check for overrides: browserExecutablePath
+        val browserExecutablePath: String? = runnerSettingsManager.getSetting(SETTING_KEY_DRIVER_BROWSER_EXECUTABLE_PATH)?.resolvedValue
+        if (browserExecutablePath != null) {
+            seleniumDriverSettingValue = seleniumDriverSettingValue.copy(browserExecutablePath = browserExecutablePath)
+        }
+
+        // check for overrides: headless
+        val headless: Boolean? = runnerSettingsManager.getSetting(SETTING_KEY_DRIVER_HEADLESS)?.resolvedValue?.let {
+            it.toBoolean()
+        }
+        if (headless != null) {
+            seleniumDriverSettingValue = seleniumDriverSettingValue.copy(headless = headless)
+        }
+
+        // check for overrides: driverVersion
+        val driverVersion: String? = runnerSettingsManager.getSetting(SETTING_KEY_DRIVER_DRIVER_VERSION)?.resolvedValue
+        if (driverVersion != null) {
+            seleniumDriverSettingValue = seleniumDriverSettingValue.copy(driverVersion = driverVersion)
+        }
+
+        // check for overrides: remoteUrl
+        val remoteUrl: String? = runnerSettingsManager.getSetting(SETTING_KEY_DRIVER_REMOTE_URL)?.resolvedValue
+        if (remoteUrl != null) {
+            seleniumDriverSettingValue = seleniumDriverSettingValue.copy(remoteUrl = remoteUrl)
+        }
+
+        return seleniumDriverSettingValue
     }
 
 }

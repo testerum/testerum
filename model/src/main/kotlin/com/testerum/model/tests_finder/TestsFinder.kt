@@ -6,9 +6,12 @@ import com.testerum.common_kotlin.isRegularFile
 import com.testerum.common_kotlin.walk
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.test.TestModel
+import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
 object TestsFinder {
+
+    private val LOG = LoggerFactory.getLogger(TestsFinder::class.java)
 
     fun loadTestsToRun(testPaths: List<TestPath>,
                        tagsToInclude: List<String>,
@@ -23,6 +26,7 @@ object TestsFinder {
 
         for (testPath in allTestPaths) {
             val test = loadTest(testPath, testsDirectoryRoot, loadTestAtPath)
+                    ?: continue
 
             if (!test.properties.isManual) {
                 allTests[TestTestPath(testPath)] = test
@@ -75,17 +79,17 @@ object TestsFinder {
 
     private fun loadTest(testPath: JavaPath,
                          testsDirectoryRoot: JavaPath,
-                         loadTestAtPath: (path: Path) -> TestModel?): TestModel {
-        try {
+                         loadTestAtPath: (path: Path) -> TestModel?): TestModel? {
+        return try {
             val relativeTestPath = testsDirectoryRoot.relativize(testPath)
             val testerumPath = Path.createInstance(relativeTestPath.toString())
 
-            val test = loadTestAtPath(testerumPath)
+            loadTestAtPath(testerumPath)
                     ?: throw RuntimeException("could not find test at [${testPath.toAbsolutePath().normalize()}]")
-
-            return test
         } catch (e: Exception) {
-            throw RuntimeException("failed to load test at [${testPath.toAbsolutePath().normalize()}]", e)
+            LOG.warn("failed to load test at [${testPath.toAbsolutePath().normalize()}]", e)
+
+            null
         }
     }
 

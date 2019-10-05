@@ -1,8 +1,8 @@
 <div
-    *ngIf="model.errors"
+    *ngIf="allErrorsKey().length > 0"
     class="alert alert-danger"
     [style.width.px]="width">
-    <ng-container *ngFor="let errorKey of errorKeys()">
+    <ng-container *ngFor="let errorKey of allErrorsKey()">
         <div >
             {{errorMessages[errorKey]}}
         </div>

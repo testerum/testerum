@@ -51,6 +51,12 @@
         </div>
     </div>
 
+    <input-error *ngIf="errorsKey.length > 0"
+                 [errorsKey]="errorsKey"
+                 [errorMessages]="{
+                        invalidParamName: 'Invalid parameter name &#34;'+ invalidParameterName +'&#34;. A parameter can start only with a letter or _ and can contain only letters, numbers and the _ sign'
+                     }"></input-error>
+
     <json-children [jsonTreeNodeState]="model.jsonTreeNodeState"
                    [modelComponentMapping]="modelComponentMapping"
                    [model]="model"

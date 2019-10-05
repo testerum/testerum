@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgModel} from "@angular/forms";
+import {ArrayUtil} from "../../../../utils/array.util";
 
 @Component({
     moduleId: module.id,
@@ -8,18 +9,26 @@ import {NgModel} from "@angular/forms";
     styleUrls: ["input-error.component.scss"]
 })
 
-export class InputErrorComponent implements OnInit {
+export class InputErrorComponent {
     @Input() model: NgModel;
+    @Input() errorsKey: string[] = [];
     @Input() errorMessages: any;
     @Input() width: number;
 
-    constructor() {
-    }
+    allErrorsKey(): string[] {
+        let errorsKey = [];
 
-    ngOnInit() {
-    }
+        let modelErrorsKey = this.model && this.model.errors ? Object.keys(this.model.errors) : [];
+        for (const modelErrorKey of modelErrorsKey) {
+            errorsKey.push(modelErrorKey)
+        }
 
-    errorKeys() {
-        return this.model.errors ? Object.keys(this.model.errors) : [];
+        if (this.errorsKey) {
+            for (const inputErrorKey of this.errorsKey) {
+                errorsKey.push(inputErrorKey);
+            }
+        }
+
+        return errorsKey;
     }
 }

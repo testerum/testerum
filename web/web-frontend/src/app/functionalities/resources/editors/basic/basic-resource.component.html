@@ -28,8 +28,15 @@
             </div>
 
             <div class="my-value" *ngIf="editNameMode">
-                <input [(ngModel)]="name"
-                       type="text" class="form-control" name="name">
+                <input paramNameValidator
+                       #nameNgModel="ngModel"
+                       [(ngModel)]="name"
+                       type="text"
+                       class="form-control" name="name">
+                <input-error [model]="nameNgModel"
+                             [errorMessages]="{
+                                invalidParamName: 'Invalid parameter name. A parameter can start only with a letter or _ and can contain only letters, numbers and the _ sign'
+                             }"></input-error>
             </div>
         </div>
 

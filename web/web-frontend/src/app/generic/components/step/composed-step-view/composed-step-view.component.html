@@ -35,9 +35,11 @@
                        type="text" class="form-control full-width" name="stepPattern"
                        placeholder="Step pattern">
                 <input-error [model]="stepPattern"
+                             [errorsKey]="errorsKey"
                              [errorMessages]="{
                                 required: 'A step definition is required',
-                                step_pattern_already_exists: 'This step definition already exists'
+                                step_pattern_already_exists: 'This step definition already exists',
+                                invalidParamName: 'Invalid parameter name &#34;'+ invalidParameterName +'&#34;. A parameter can start only with a letter or _ and can contain only letters, numbers and the _ sign'
                          }"></input-error>
             </span>
 

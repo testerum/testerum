@@ -30,6 +30,7 @@ import {MarkdownEditorComponent} from "../../markdown-editor/markdown-editor.com
 import {StepCallWarningUtil} from "../../step-call-tree/util/step-call-warning.util";
 import {ContextService} from "../../../../service/context.service";
 import {StepContext} from "../../../../model/step/context/step-context.model";
+import {ParamNameValidatorDirective} from "../../../validators/param-name-validator.directive";
 
 @Component({
     selector: 'composed-step-view',
@@ -50,6 +51,9 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     oldModel: ComposedStepDef;
     pattern: string;
     allowPathEdit = false;
+
+    errorsKey: string[] = [];
+    invalidParameterName: string;
 
     warnings: Message[] = [];
     areChildComponentsValid: boolean = true;
@@ -187,7 +191,25 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     onPatternChanged() {
-        this.model.stepPattern.setPatternText(this.pattern)
+        this.model.stepPattern.setPatternText(this.pattern);
+
+        this.errorsKey = this.getStepCallErrors(this.model);
+        if (this.errorsKey.length > 0) {
+            return;
+        }
+    }
+
+    private getStepCallErrors(stepDef: StepDef): string[] {
+        this.invalidParameterName = null;
+
+        let paramParts = stepDef.stepPattern.getParamParts();
+        for (const paramPart of paramParts) {
+            if (!ParamNameValidatorDirective.isValidParamName(paramPart.name)) {
+                this.invalidParameterName = paramPart.name;
+                return ["invalidParamName"]
+            }
+        }
+        return [];
     }
 
     addStep() {

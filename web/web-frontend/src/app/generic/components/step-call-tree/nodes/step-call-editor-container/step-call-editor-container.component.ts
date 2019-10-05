@@ -33,6 +33,7 @@ import {merge} from "rxjs";
 import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {PathUtil} from "../../../../../utils/path.util";
 import {StepSearch} from "../../../../../utils/step-search/step-search.class";
+import {ParamNameValidatorDirective} from "../../../../validators/param-name-validator.directive";
 
 @Component({
     selector: 'step-call-editor-container',
@@ -46,13 +47,14 @@ import {StepSearch} from "../../../../../utils/step-search/step-search.class";
 })
 export class StepCallEditorContainerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
-    private MAX_SUGGESTION_NUMBER = 10;
-
     @Input() model: StepCallEditorContainerModel;
     @Input() modelComponentMapping: ModelComponentMapping;
 
     allPossibleSuggestions: StepCallSuggestion[] = [];
     suggestions: StepCallSuggestion[] = [];
+
+    errorsKey: string[] = [];
+    invalidParameterName: string;
 
     hasMouseOver: boolean = false;
     stepSearch: StepSearch<StepCallSuggestion>;
@@ -135,6 +137,8 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
     }
 
     searchSuggestions(event) {
+        this.errorsKey = [];
+
         let query: string = event.query;
         let previewsStepDefPhase = this.getPreviewsStepDefPhase();
         let newSuggestions = this.stepSearch.find(query, previewsStepDefPhase);
@@ -155,6 +159,14 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
                     newSuggestions.unshift(
                     this.createUndefinedStepCallSuggestion(previewsStepDefPhase, queryStepTextWithoutPhase,"Create Step &rarr;&nbsp;", true)
                 );
+            }
+
+            if (newSuggestions.length > 0 && newSuggestions[0].actionText != null) {
+                this.errorsKey = this.getStepCallErrors(newSuggestions[0].stepDef);
+                if (this.errorsKey.length > 0) {
+                    this.suggestions = [];
+                    return;
+                }
             }
         }
 
@@ -202,6 +214,7 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
         this.suggestions = [];
 
         let newStepCall: StepCall = this.createStepCallFromExistingStepDef(event);
+
         if (event.actionText != null) {
             let warning = new Warning();
             warning.type = WarningType.UNDEFINED_STEP_CALL;
@@ -254,5 +267,18 @@ export class StepCallEditorContainerComponent implements OnInit, OnDestroy, Afte
 
     private removeThisEditorFromTree() {
         this.stepCallTreeComponentService.removeStepCallEditorIfExist();
+    }
+
+    private getStepCallErrors(stepDef: StepDef): string[] {
+        this.invalidParameterName = null;
+
+        let paramParts = stepDef.stepPattern.getParamParts();
+        for (const paramPart of paramParts) {
+            if (!ParamNameValidatorDirective.isValidParamName(paramPart.name)) {
+                this.invalidParameterName = paramPart.name;
+                return ["invalidParamName"]
+            }
+        }
+        return [];
     }
 }
