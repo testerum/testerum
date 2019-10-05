@@ -1,12 +1,9 @@
 import {JsonTreeContainer} from "../../../../../generic/components/json-tree/model/json-tree-container.model";
-import {StringTypeMeta} from "../../../../../model/text/parts/param-meta/string-type.meta";
 import {JsonUtil} from "../../../../../utils/json.util";
 import {JsonTreeNodeAbstract} from "../../../../../generic/components/json-tree/model/json-tree-node.abstract";
 import {ObjectTreeModel} from "./interfaces/object-tree.model";
-import {EnumTypeMeta} from "../../../../../model/text/parts/param-meta/enum-type.meta";
-import {BooleanTypeMeta} from "../../../../../model/text/parts/param-meta/boolean-type.meta";
-import {DateTypeMeta} from "../../../../../model/text/parts/param-meta/date-type-meta.model";
 import {StringUtils} from "../../../../../utils/string-utils.util";
+import {TypeMeta} from "../../../../../model/text/parts/param-meta/type-meta.model";
 
 export class DateObjectTreeModel extends JsonTreeNodeAbstract implements ObjectTreeModel {
 
@@ -16,11 +13,11 @@ export class DateObjectTreeModel extends JsonTreeNodeAbstract implements ObjectT
 
     objectName: string;
     serverObject: any;
-    typeMeta: DateTypeMeta;
+    typeMeta: TypeMeta;
 
     value: string;
 
-    constructor(parentContainer: JsonTreeContainer, objectName: string, serverObject: any, typeMeta: DateTypeMeta) {
+    constructor(parentContainer: JsonTreeContainer, objectName: string, serverObject: any, typeMeta: TypeMeta) {
         super(parentContainer);
         this.objectName = objectName;
         this.serverObject = serverObject;

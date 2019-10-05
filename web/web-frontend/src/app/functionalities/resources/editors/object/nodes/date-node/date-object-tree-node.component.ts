@@ -79,14 +79,18 @@ export class DateObjectTreeNodeComponent implements OnInit {
 
     getDescription(): string {
         return "You can specify a date using the following format:\n" +
-            "<code>mm-dd-yyyy hh:mm:ss</code>\n" +
-            "mm - month, mandatory field\n" +
-            "dd - day, mandatory field\n" +
-            "yyyy - year, mandatory field\n" +
-            "hh - hour, optional field\n" +
-            "mm - minutes, optional field\n" +
-            "ss - seconds, optional field\n" +
-            "\n" +
+            "<code>yyyy-MM-ddTHH:mm:ss.SSSZ</code>\n" +
+            "<br/>" +
+            "mm - month\n" +
+            "dd - day\n" +
+            "yyyy - year\n" +
+            "hh - hour\n" +
+            "mm - minutes\n" +
+            "ss - seconds\n" +
+            "SSS - milliseconds\n" +
+            "<br/>" +
+            "example: <code>1981-10-31T04:17:40.000Z</code>\n" +
+            "<br/>" +
             "You can also use variables from the context.\n" +
             "e.g.: <code>{{variable_name}}</code>"
     }

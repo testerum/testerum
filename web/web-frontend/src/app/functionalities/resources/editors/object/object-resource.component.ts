@@ -24,6 +24,9 @@ import {MapObjectTreeNodeComponent} from "./nodes/map-node/map-object-tree-node.
 import {MapObjectTreeModel} from "./model/map-object-tree.model";
 import {MapItemObjectTreeNodeComponent} from "./nodes/map-node/item/map-item-object-tree-node.component";
 import {MapItemObjectTreeModel} from "./nodes/map-node/item/map-item-object-tree.model";
+import {InstantTypeMeta} from "../../../../model/text/parts/param-meta/instant-type-meta.model";
+import {LocalDateTimeTypeMeta} from "../../../../model/text/parts/param-meta/local-date-time-type-meta.model";
+import {LocalDateTypeMeta} from "../../../../model/text/parts/param-meta/local-date-type-meta.model";
 
 @Component({
     selector: 'object-resource',

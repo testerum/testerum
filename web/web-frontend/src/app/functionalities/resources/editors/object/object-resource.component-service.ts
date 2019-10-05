@@ -16,6 +16,10 @@ import {ListTypeMeta} from "../../../../model/text/parts/param-meta/list-type.me
 import {ListObjectTreeModel} from "./model/list-object-tree.model";
 import {MapTypeMeta} from "../../../../model/text/parts/param-meta/map-type.meta";
 import {MapObjectTreeModel} from "./model/map-object-tree.model";
+import {InstantTypeMeta} from "../../../../model/text/parts/param-meta/instant-type-meta.model";
+import {LocalDateTimeTypeMeta} from "../../../../model/text/parts/param-meta/local-date-time-type-meta.model";
+import {LocalDateTypeMeta} from "../../../../model/text/parts/param-meta/local-date-type-meta.model";
+import {ZonedDateTimeTypeMeta} from "../../../../model/text/parts/param-meta/zoned-date-time-type-meta.model";
 
 @Injectable()
 export class ObjectResourceComponentService {
@@ -37,9 +41,24 @@ export class ObjectResourceComponentService {
                 new EnumObjectTreeModel(parentContainer, objectName, serverObject, serverType)
             )
         }
+        if (serverType instanceof InstantTypeMeta) {
+            parentContainer.getChildren().push(
+                new DateObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
+        }
         if (serverType instanceof ListTypeMeta) {
             parentContainer.getChildren().push(
                 new ListObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
+        }
+        if (serverType instanceof LocalDateTimeTypeMeta) {
+            parentContainer.getChildren().push(
+                new DateObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
+        }
+        if (serverType instanceof LocalDateTypeMeta) {
+            parentContainer.getChildren().push(
+                new DateObjectTreeModel(parentContainer, objectName, serverObject, serverType)
             )
         }
         if (serverType instanceof MapTypeMeta) {
@@ -55,6 +74,11 @@ export class ObjectResourceComponentService {
         if (serverType instanceof ObjectTypeMeta) {
             parentContainer.getChildren().push(
                 new ObjectObjectTreeModel(parentContainer, objectName, serverObject, serverType)
+            )
+        }
+        if (serverType instanceof ZonedDateTimeTypeMeta) {
+            parentContainer.getChildren().push(
+                new DateObjectTreeModel(parentContainer, objectName, serverObject, serverType)
             )
         }
     }

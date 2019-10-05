@@ -2,8 +2,13 @@ package com.testerum.model.text.parts.param_meta
 
 import com.testerum.model.text.parts.param_meta.field.FieldTypeMeta
 import com.testerum.model.text.parts.param_meta.util.ReflectionPrimitiveTypeUtil
+import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -11,13 +16,17 @@ import kotlin.reflect.KClass
 object TypeMetaFactory {
 
     val TYPE_META_TO_STRING_MAPPING = mapOf(
-        StringTypeMeta::class  to "TEXT",
-        BooleanTypeMeta::class to "BOOLEAN",
-        NumberTypeMeta::class  to "NUMBER",
-        DateTypeMeta::class    to "DATE",
-        EnumTypeMeta::class    to "ENUM",
-        ListTypeMeta::class    to "LIST",
-        ObjectTypeMeta::class  to "OBJECT"
+        StringTypeMeta::class        to "TEXT",
+        BooleanTypeMeta::class       to "BOOLEAN",
+        NumberTypeMeta::class        to "NUMBER",
+        DateTypeMeta::class          to "DATE",
+        InstantTypeMeta::class       to "INSTANT",
+        LocalDateTypeMeta::class     to "LOCAL_DATE",
+        LocalDateTimeTypeMeta::class to "LOCAL_DATE_TIME",
+        ZonedDateTimeTypeMeta::class to "ZONED_DATE_TIME",
+        EnumTypeMeta::class          to "ENUM",
+        ListTypeMeta::class          to "LIST",
+        ObjectTypeMeta::class        to "OBJECT"
     );
 
     fun getTypeMetaFromString(type: String?): TypeMeta? {
@@ -30,6 +39,10 @@ object TypeMetaFactory {
             BooleanTypeMeta::class -> return BooleanTypeMeta();
             NumberTypeMeta::class -> return NumberTypeMeta("java.lang.Integer");
             DateTypeMeta::class -> return DateTypeMeta();
+            InstantTypeMeta::class -> return InstantTypeMeta();
+            LocalDateTypeMeta::class -> return LocalDateTypeMeta();
+            LocalDateTimeTypeMeta::class -> return LocalDateTimeTypeMeta();
+            ZonedDateTimeTypeMeta::class -> return ZonedDateTimeTypeMeta();
             EnumTypeMeta::class -> return EnumTypeMeta("Enum");
             ListTypeMeta::class -> return ListTypeMeta("java.util.ArrayList", StringTypeMeta());
             ObjectTypeMeta::class -> return ObjectTypeMeta("java.lang.String");
@@ -92,6 +105,18 @@ object TypeMetaFactory {
         if (Date::class.java.isAssignableFrom(javaClass)) {
             return DateTypeMeta(javaClass.name)
         }
+        if (Instant::class.java.isAssignableFrom(javaClass)) {
+            return InstantTypeMeta(javaClass.name)
+        }
+        if (LocalDate::class.java.isAssignableFrom(javaClass)) {
+            return InstantTypeMeta(javaClass.name)
+        }
+        if (LocalDateTime::class.java.isAssignableFrom(javaClass)) {
+            return InstantTypeMeta(javaClass.name)
+        }
+        if (ZonedDateTime::class.java.isAssignableFrom(javaClass)) {
+            return InstantTypeMeta(javaClass.name)
+        }
 
         if (javaClass.isEnum) {
             val enumValues: List<String>
@@ -108,6 +133,11 @@ object TypeMetaFactory {
 
             //ignore compiler (kotlin) added fields
             if (field.isSynthetic) {
+                continue;
+            }
+
+            //ignore static fields
+            if (Modifier.isStatic(field.modifiers)) {
                 continue;
             }
 

@@ -1,0 +1,8 @@
+test-def: Test Object with "ZonedDateTime" param
+
+    step: Given I add Object with the "ZonedDateTime" param <<{{ZonedDateTime}}>> in context with the name <<justAVarName>>
+        var ZonedDateTime = <<
+            zonedDateTime: 2019-10-31T12:47:30.000Z
+            
+        >>
+    step: Then <<{{justAVarName.zonedDateTime}}>> is equal to <<2019-10-31T12:47:30.000Z>>

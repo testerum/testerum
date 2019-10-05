@@ -1,0 +1,8 @@
+test-def: Test Object with "Instant" param
+
+    step: Given I add Object with the "Instant" param <<{{Instant}}>> in context with the name <<justAVarName>>
+        var Instant = <<
+            instant: 2019-10-31T12:47:30.000Z
+            
+        >>
+    step: Then <<{{justAVarName.instant}}>> is equal to <<2019-10-31T12:47:30.000Z>>

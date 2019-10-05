@@ -3,6 +3,10 @@ package assertions
 import assertions.util.toIsoString
 import com.testerum.api.annotations.steps.Param
 import com.testerum.api.annotations.steps.Then
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.util.*
 
 class AssertionsSteps {
@@ -16,6 +20,10 @@ class AssertionsSteps {
         if (actualValue is String && expectedValue !is String) {
             expected = when (expectedValue) {
                 is Date -> expectedValue.toIsoString();
+                is Instant -> expectedValue.toIsoString();
+                is LocalDate -> expectedValue.toIsoString();
+                is LocalDateTime -> expectedValue.toIsoString();
+                is ZonedDateTime -> expectedValue.toIsoString();
                 else -> expectedValue.toString()
             }
         }
@@ -23,6 +31,10 @@ class AssertionsSteps {
         if (expectedValue is String && actualValue !is String) {
             actual = when (actualValue) {
                 is Date -> actualValue.toIsoString();
+                is Instant -> actualValue.toIsoString();
+                is LocalDate -> actualValue.toIsoString();
+                is LocalDateTime -> actualValue.toIsoString();
+                is ZonedDateTime -> actualValue.toIsoString();
                 else -> actualValue.toString()
             }
         }

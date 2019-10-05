@@ -9,6 +9,10 @@ import {ObjectTypeMeta} from "../object-type.meta";
 import {StringTypeMeta} from "../string-type.meta";
 import {MapTypeMeta} from "../map-type.meta";
 import {EnumTypeMeta} from "../enum-type.meta";
+import {InstantTypeMeta} from "../instant-type-meta.model";
+import {LocalDateTimeTypeMeta} from "../local-date-time-type-meta.model";
+import {LocalDateTypeMeta} from "../local-date-type-meta.model";
+import {ZonedDateTimeTypeMeta} from "../zoned-date-time-type-meta.model";
 
 export class FieldTypeMeta implements Serializable<FieldTypeMeta> {
     name: string;
@@ -39,8 +43,17 @@ export class FieldTypeMeta implements Serializable<FieldTypeMeta> {
             if (itemsTypeSerialized["@type"] == "ENUM") {
                 return new EnumTypeMeta().deserialize(itemsTypeSerialized);
             }
+            if (itemsTypeSerialized["@type"] == "INSTANT") {
+                return new InstantTypeMeta().deserialize(itemsTypeSerialized);
+            }
             if (itemsTypeSerialized["@type"] == "LIST") {
                 return new ListTypeMeta().deserialize(itemsTypeSerialized);
+            }
+            if (itemsTypeSerialized["@type"] == "LOCAL_DATE_TIME") {
+                return new LocalDateTimeTypeMeta().deserialize(itemsTypeSerialized);
+            }
+            if (itemsTypeSerialized["@type"] == "LOCAL_DATE") {
+                return new LocalDateTypeMeta().deserialize(itemsTypeSerialized);
             }
             if (itemsTypeSerialized["@type"] == "MAP") {
                 return new MapTypeMeta().deserialize(itemsTypeSerialized);
@@ -53,6 +66,9 @@ export class FieldTypeMeta implements Serializable<FieldTypeMeta> {
             }
             if (itemsTypeSerialized["@type"] == "TEXT") {
                 return new StringTypeMeta().deserialize(itemsTypeSerialized);
+            }
+            if (itemsTypeSerialized["@type"] == "ZONED_DATE_TIME") {
+                return new ZonedDateTimeTypeMeta().deserialize(itemsTypeSerialized);
             }
         }
         return null;

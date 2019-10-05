@@ -1,0 +1,8 @@
+test-def: Test Object with "LocalDate" param
+
+    step: Given I add Object with the "LocalDate" param <<{{LocalDate}}>> in context with the name <<justAVarName>>
+        var LocalDate = <<
+            localDate: 2019-10-31T15:39:42.000Z
+            
+        >>
+    step: Then <<{{justAVarName.localDate}}>> is equal to <<2019-10-31T00:00:00.000Z>>
