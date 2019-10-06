@@ -16,7 +16,7 @@ import {ListObjectTreeModel} from "../../model/list-object-tree.model";
         '../../../../../../generic/css/tree.scss',
     ]
 })
-export class ObjectObjectTreeNodeComponent implements OnInit {
+export class ObjectObjectTreeNodeComponent {
 
     @Input() model: ObjectObjectTreeModel;
     @Input() modelComponentMapping: ModelComponentMapping;
@@ -25,9 +25,6 @@ export class ObjectObjectTreeNodeComponent implements OnInit {
 
     constructor(private cd: ChangeDetectorRef,
                 private objectResourceComponentService: ObjectResourceComponentService) {
-    }
-
-    ngOnInit(): void {
     }
 
     isEditMode(): boolean {

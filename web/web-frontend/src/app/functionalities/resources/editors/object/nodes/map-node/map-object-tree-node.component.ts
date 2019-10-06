@@ -18,7 +18,7 @@ import {MapItemObjectTreeModel} from "./item/map-item-object-tree.model";
         '../../../../../../generic/css/tree.scss',
     ]
 })
-export class MapObjectTreeNodeComponent implements OnInit {
+export class MapObjectTreeNodeComponent {
 
     @Input() model: MapObjectTreeModel;
     @Input() modelComponentMapping: ModelComponentMapping;
@@ -29,10 +29,6 @@ export class MapObjectTreeNodeComponent implements OnInit {
 
     constructor(private cd: ChangeDetectorRef,
                 private objectResourceComponentService: ObjectResourceComponentService) {
-    }
-
-    ngOnInit(): void {
-
     }
 
     isEditMode(): boolean {

@@ -22,7 +22,7 @@ import {ModelComponentMapping} from "../../../../../../model/infrastructure/mode
         '../../../../../../generic/css/tree.scss',
     ]
 })
-export class ListObjectTreeNodeComponent implements OnInit {
+export class ListObjectTreeNodeComponent {
 
     @Input() model: ListObjectTreeModel;
     @Input() modelComponentMapping: ModelComponentMapping;
@@ -31,9 +31,6 @@ export class ListObjectTreeNodeComponent implements OnInit {
 
     constructor(private cd: ChangeDetectorRef,
                 private objectResourceComponentService: ObjectResourceComponentService) {
-    }
-
-    ngOnInit(): void {
     }
 
     isEditMode(): boolean {
