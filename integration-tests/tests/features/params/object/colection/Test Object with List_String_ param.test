@@ -1,0 +1,12 @@
+test-def: Test Object with List<String> param
+
+    step: Given I add Object with the "List<String>" param <<{{List}}>> in context with the name <<justAVarName>>
+        var List = <<
+            list:
+             - value 1
+             - value 2
+             - value 3
+            
+        >>
+    step: Then <<{{justAVarName.list[0]}}>> is equal to <<value 1>>
+    step: Then <<{{justAVarName.list[2]}}>> is equal to <<value 3>>

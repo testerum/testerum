@@ -1,0 +1,11 @@
+test-def: Test Object with Set<String> param
+
+    step: Given I add Object with the "Set<String>" param <<{{Set}}>> in context with the name <<justAVarName>>
+        var Set = <<
+            set:
+             - value 1
+             - value 2
+             - value 3
+            
+        >>
+    step: Then <<{{justAVarName.set.contains("value 1")}}>> is true

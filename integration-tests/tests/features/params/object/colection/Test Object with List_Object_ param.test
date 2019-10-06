@@ -1,0 +1,20 @@
+test-def: Test Object with List<Object> param
+
+    step: Given I add Object with the "List<Object>" param <<{{List}}>> in context with the name <<justAVarName>>
+        var List = <<
+            list:
+             -
+              name: value 1
+              date: 2019-10-01T02:10:13.000Z
+             -
+              name: value 2
+              date: 2019-10-17T02:10:42.000Z
+             -
+              name: value 3
+              date: 2019-10-31T02:10:52.000Z
+            
+        >>
+    step: Then <<{{justAVarName.list[0].name}}>> is equal to <<value 1>>
+    step: Then <<{{justAVarName.list[2].name}}>> is equal to <<value 3>>
+    step: Then <<{{justAVarName.list[0].date}}>> is equal to <<2019-10-01T02:10:13.000Z>>
+    step: Then <<{{justAVarName.list[2].date}}>> is equal to <<2019-10-31T02:10:52.000Z>>

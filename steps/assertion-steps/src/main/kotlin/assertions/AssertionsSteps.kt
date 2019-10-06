@@ -65,18 +65,24 @@ class AssertionsSteps {
         var expected: Any? = expectedValue
 
         if (actualValue is String && expectedValue !is String) {
-            if (expectedValue is Date) {
-                expected = expectedValue.toIsoString();
-            } else{
-                expected = expectedValue.toString()
+            expected = when (expectedValue) {
+                is Date -> expectedValue.toIsoString();
+                is Instant -> expectedValue.toIsoString();
+                is LocalDate -> expectedValue.toIsoString();
+                is LocalDateTime -> expectedValue.toIsoString();
+                is ZonedDateTime -> expectedValue.toIsoString();
+                else -> expectedValue.toString()
             }
         }
 
         if (expectedValue is String && actualValue !is String) {
-            if (actualValue is Date) {
-                actual = actualValue.toIsoString();
-            } else{
-                actual = actualValue.toString()
+            actual = when (actualValue) {
+                is Date -> actualValue.toIsoString();
+                is Instant -> actualValue.toIsoString();
+                is LocalDate -> actualValue.toIsoString();
+                is LocalDateTime -> actualValue.toIsoString();
+                is ZonedDateTime -> actualValue.toIsoString();
+                else -> actualValue.toString()
             }
         }
 
