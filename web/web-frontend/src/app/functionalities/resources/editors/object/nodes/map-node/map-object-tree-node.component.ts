@@ -2,14 +2,7 @@ import {ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@a
 import {ObjectResourceComponentService} from "../../object-resource.component-service";
 import {ArrayUtil} from "../../../../../../utils/array.util";
 import {ObjectNodeUtil} from "../util/object-node.util";
-import {EnumObjectTreeModel} from "../../model/enum-object-tree.model";
-import {SelectItem} from "primeng/api";
-import {StringSelectItem} from "../../../../../../model/prime-ng/StringSelectItem";
-import {BooleanObjectTreeModel} from "../../model/boolean-object-tree.model";
 import {ListObjectTreeModel} from "../../model/list-object-tree.model";
-import {ObjectTypeMeta} from "../../../../../../model/text/parts/param-meta/object-type.meta";
-import {ListTypeMeta} from "../../../../../../model/text/parts/param-meta/list-type.meta";
-import {ObjectUtil} from "../../../../../../utils/object.util";
 import {ModelComponentMapping} from "../../../../../../model/infrastructure/model-component-mapping.model";
 import {MapObjectTreeModel} from "../../model/map-object-tree.model";
 import {MapTypeMeta} from "../../../../../../model/text/parts/param-meta/map-type.meta";
@@ -39,26 +32,7 @@ export class MapObjectTreeNodeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        let typeMeta = this.model.typeMeta;
 
-        if (this.model.serverObject) {
-            let index = 0;
-            for (var prop in this.model.serverObject) {
-                if (Object.prototype.hasOwnProperty.call(this.model.serverObject, prop)) {
-                    this.model.children.push(
-                        new MapItemObjectTreeModel(
-                            this.model,
-                            index,
-                            prop,
-                            typeMeta.keyType,
-                            this.model.serverObject[prop],
-                            typeMeta.valueType
-                        )
-                    );
-                    index++;
-                }
-            }
-        }
     }
 
     isEditMode(): boolean {

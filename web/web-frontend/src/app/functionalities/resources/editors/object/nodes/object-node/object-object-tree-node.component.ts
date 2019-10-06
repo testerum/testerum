@@ -28,17 +28,6 @@ export class ObjectObjectTreeNodeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        let objectTypeMeta = this.model.typeMeta as ObjectTypeMeta;
-
-        for (const field of objectTypeMeta.fields) {
-            let fieldValue = this.model.serverObject ? this.model.serverObject[field.name] : null;
-            this.objectResourceComponentService.addFieldToObjectTree(
-                this.model,
-                field.type,
-                field.name,
-                fieldValue
-            )
-        }
     }
 
     isEditMode(): boolean {

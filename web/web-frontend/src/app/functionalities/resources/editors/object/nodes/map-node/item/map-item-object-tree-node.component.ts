@@ -28,18 +28,6 @@ export class MapItemObjectTreeNodeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.objectResourceComponentService.addFieldToObjectTree(
-            this.model,
-            this.model.keyTypeMeta,
-            "key",
-            this.model.keyObject
-        );
-        this.objectResourceComponentService.addFieldToObjectTree(
-            this.model,
-            this.model.valueTypeMeta,
-            "value",
-            this.model.valueObject
-        );
     }
 
     isEditMode(): boolean {

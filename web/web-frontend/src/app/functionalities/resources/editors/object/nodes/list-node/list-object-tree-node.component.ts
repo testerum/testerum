@@ -34,19 +34,6 @@ export class ListObjectTreeNodeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        let listTypeMeta = this.model.typeMeta as ListTypeMeta;
-
-        if (this.model.serverObject) {
-            for (let i = 0; i < this.model.serverObject.length; i++) {
-                const item = this.model.serverObject[i];
-                this.objectResourceComponentService.addFieldToObjectTree(
-                    this.model,
-                    listTypeMeta.itemsType,
-                    "item " + i,
-                    item
-                )
-            }
-        }
     }
 
     isEditMode(): boolean {

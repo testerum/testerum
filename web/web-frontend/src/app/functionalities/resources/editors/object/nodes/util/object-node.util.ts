@@ -27,7 +27,7 @@ export class ObjectNodeUtil {
             return "Enum"
         }
         if (typeMeta instanceof ListTypeMeta) {
-            return "List"
+            return StringUtils.substringAfterLast(typeMeta.javaType, ".")
         }
         if (typeMeta instanceof MapTypeMeta) {
             return "Map"

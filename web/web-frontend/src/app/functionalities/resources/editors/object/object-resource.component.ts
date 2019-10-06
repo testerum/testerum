@@ -100,7 +100,7 @@ export class ObjectResourceComponent extends ResourceComponent<any> implements O
         let objectName = this.stepParameter.name;
         let serverObject = JsonUtil.parseJson(this.model.content);
 
-        this.objectResourceComponentService.addFieldToObjectTree(this.treeModel, serverType, objectName, serverObject);
+        this.objectResourceComponentService.addFieldToObjectTree(this.treeModel, serverType, objectName, serverObject, this.condensedViewMode, true);
     }
 
     isFormValid(): boolean {
