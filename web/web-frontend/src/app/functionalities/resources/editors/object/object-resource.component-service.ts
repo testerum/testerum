@@ -106,7 +106,7 @@ export class ObjectResourceComponentService {
         }
     }
 
-    private addMapChildren(model: MapObjectTreeModel) {
+    public addMapChildren(model: MapObjectTreeModel) {
         let typeMeta = model.typeMeta;
 
         if (model.serverObject) {
@@ -129,7 +129,7 @@ export class ObjectResourceComponentService {
         }
     }
 
-    private addMapItemChildren(model: MapItemObjectTreeModel) {
+    public addMapItemChildren(model: MapItemObjectTreeModel) {
         this.addFieldToObjectTree(
             model,
             model.keyTypeMeta,

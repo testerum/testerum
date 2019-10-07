@@ -1,0 +1,15 @@
+test-def: Test Object with Map<String, Object>
+
+    step: Given I add Object with the "Map<String, Object>" param <<{{mapOfStringAndObject}}>> in context with the name <<justAVarName>>
+        var mapOfStringAndObject = <<
+            mapOfStringAndObject:
+              key 1:
+                name: value name 1
+                date: 2019-09-11T18:43:10.000Z
+              key 2:
+                name: value name 2
+                date: 2019-10-09T18:43:31.000Z
+            
+        >>
+    step: Then <<{{justAVarName.mapOfStringAndObject.get("key 1").name}}>> is equal to <<value name 1>>
+    step: Then <<{{justAVarName.mapOfStringAndObject.get("key 1").date}}>> is equal to <<2019-09-11T18:43:10.000Z>>

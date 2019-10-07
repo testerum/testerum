@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, ViewEncapsulation} from '@angular/core';
 import {ObjectResourceComponentService} from "../../object-resource.component-service";
 import {ArrayUtil} from "../../../../../../utils/array.util";
 import {ObjectNodeUtil} from "../util/object-node.util";
@@ -61,15 +61,15 @@ export class MapObjectTreeNodeComponent {
 
     addNewItem() {
         let typeMeta = this.model.typeMeta as MapTypeMeta;
-        this.model.children.push(
-            new MapItemObjectTreeModel(
-                this.model,
-                this.model.children.length,
-                null,
-                typeMeta.keyType,
-                null,
-                typeMeta.valueType
-            )
-        )
+        let mapItemObjectTreeModel = new MapItemObjectTreeModel(
+            this.model,
+            this.model.children.length,
+            null,
+            typeMeta.keyType,
+            null,
+            typeMeta.valueType
+        );
+        this.objectResourceComponentService.addMapItemChildren(mapItemObjectTreeModel);
+        this.model.children.push(mapItemObjectTreeModel);
     }
 }

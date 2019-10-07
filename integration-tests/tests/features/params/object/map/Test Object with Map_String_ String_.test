@@ -1,0 +1,12 @@
+test-def: Test Object with Map<String, String>
+
+    step: Given I add Object with the "Map<String, String>" param <<{{mapOfStringAndString}}>> in context with the name <<justAVarName>>
+        var mapOfStringAndString = <<
+            mapOfStringAndString:
+              key 1: value 1
+              key 2: value 2
+              key 3: value 3
+            
+        >>
+    step: Then <<{{justAVarName.mapOfStringAndString.get("key 1")}}>> is equal to <<value 1>>
+    step: Then <<{{justAVarName.mapOfStringAndString.get("key 3")}}>> is equal to <<value 3>>

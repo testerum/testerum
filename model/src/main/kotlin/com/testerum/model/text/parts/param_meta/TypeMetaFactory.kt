@@ -5,6 +5,7 @@ import com.testerum.model.text.parts.param_meta.util.ReflectionPrimitiveTypeUtil
 import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
+import java.lang.reflect.WildcardType
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -85,8 +86,11 @@ object TypeMetaFactory {
         }
 
         if (Map::class.java.isAssignableFrom(javaClass)) {
-            val keyGenericMetaType = getGenericTypeByIndexIfExists(javaClass, 0) ?: StringTypeMeta()
-            val valueGenericMetaType = getGenericTypeByIndexIfExists(javaClass, 1) ?: StringTypeMeta()
+            val keyGenericMetaType = getGenericTypeByIndexIfExists(genericsType, 0) ?: StringTypeMeta()
+            val valueGenericMetaType = getGenericTypeByIndexIfExists(genericsType, 1) ?: StringTypeMeta()
+
+            if (keyGenericMetaType !is StringTypeMeta) throw java.lang.RuntimeException("Only Maps with String key are allowed as parameters or innerparameters for steps. Map type with problem: $genericsType")
+
             return MapTypeMeta(javaClass.name, keyGenericMetaType, valueGenericMetaType)
         }
 
@@ -152,14 +156,26 @@ object TypeMetaFactory {
 
     private fun getGenericTypeByIndexIfExists(genericsType: Type, genericIndex: Int): TypeMeta? {
 
-
         if (genericsType is ParameterizedType) {
             val typeArguments = genericsType.actualTypeArguments
             if (typeArguments.size > genericIndex) {
                 val typeArg = typeArguments[genericIndex]
                 return when (typeArg) {
+                    is Class<*> -> getTypeMetaFromJavaType(typeArg, typeArg)
                     is ParameterizedType -> getTypeMetaFromJavaType(typeArg.rawType as Class<*>, typeArg)
-                    is Class<*> -> getTypeMetaFromJavaType(typeArg as Class<*>, typeArg)
+
+                    is WildcardType -> {
+                        val upperBounds = typeArg.upperBounds
+                        if(upperBounds.size > 1) throw java.lang.RuntimeException("Generics with multiple upper bounds are not supported: $typeArg")
+
+                        val upperWildcardType = upperBounds[0]
+                        when (upperWildcardType) {
+                            is Class<*> -> getTypeMetaFromJavaType(upperWildcardType, typeArg)
+                            is ParameterizedType -> getTypeMetaFromJavaType(upperWildcardType.rawType as Class<*>, typeArg)
+                            else -> throw java.lang.RuntimeException("Generics with complex upper bounds are not supported: $typeArg")
+                        }
+                        return getGenericTypeByIndexIfExists(upperBounds[0], 0);
+                    }
                     else -> throw RuntimeException ("Unknown Type $typeArg")
                 }
             }
