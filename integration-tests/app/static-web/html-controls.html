@@ -34,22 +34,41 @@
             setControlText("Confirm box was closed! '"+ responseText + "' was inserted.")
         }
 
-        function showClickXY(e) {
-            // e = Mouse click event.
-            var rect = e.target.getBoundingClientRect();
-            var x = e.clientX - rect.left; //x position within the element.
-            var y = e.clientY - rect.top;  //y position within the element.
-            setControlText("click="+x+","+y);
+        function showClickXY(mouseEvent) {
+            var pos = getMousePosition(mouseEvent);
+            setControlText("click="+pos.x+","+pos.y);
         }
 
-        function showDoubleClickXY(e) {
-            // e = Mouse click event.
-            var rect = e.target.getBoundingClientRect();
-            var x = e.clientX - rect.left; //x position within the element.
-            var y = e.clientY - rect.top;  //y position within the element.
-            setControlText("double-click="+x+","+y);
+        function showDoubleClickXY(mouseEvent) {
+            var pos = getMousePosition(mouseEvent);
+            setControlText("double-click="+pos.x+","+pos.y);
         }
 
+        function getMousePosition(mouseEvent) {
+            var xPosition = 0;
+            var yPosition = 0;
+
+            var el = mouseEvent.target;
+            while (el) {
+                if (el.tagName == "BODY") {
+                    // deal with browser quirks with body/window/document and page scroll
+                    var xScrollPos = el.scrollLeft || document.documentElement.scrollLeft;
+                    var yScrollPos = el.scrollTop || document.documentElement.scrollTop;
+
+                    xPosition += (el.offsetLeft - xScrollPos + el.clientLeft);
+                    yPosition += (el.offsetTop - yScrollPos + el.clientTop);
+                } else {
+                    xPosition += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+                    yPosition += (el.offsetTop - el.scrollTop + el.clientTop);
+                }
+
+                el = el.offsetParent;
+            }
+            return {
+                x: xPosition,
+                y: yPosition
+            };
+        }
         function allowDrop(ev) {
             ev.preventDefault();
         }
