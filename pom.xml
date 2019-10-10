@@ -340,6 +340,12 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>test-steps</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
 
             <!--==================== testerum dependencies ====================-->
 

@@ -389,6 +389,10 @@
                     <groupId>com.testerum</groupId>
                     <artifactId>vars-steps</artifactId>
                 </dependency>
+                <dependency>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>test-steps</artifactId>
+                </dependency>
             </dependencies>
         </profile>
 

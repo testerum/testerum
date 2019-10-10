@@ -16,12 +16,12 @@ test-def: Test with complex object 2
               isRightHanded: true
               birthDate: 1981-10-31T12:44:38.000Z
               address:
-                street: Graan Voor Visch 15901
+                street: str. Eroilor nr.75b
             
         >>
     step: Then <<{{company.name}}>> is equal to <<Testerum>>
-    step: Then <<{{company.employees[0].name}}>> is equal to <<Testerum>>
-    step: Then <<{{company.age}}>> is equal to <<31>>
-    step: Then <<{{person.isRightHanded()}}>> is equal to <<true>>
-    step: Then <<{{person.birthDate}}>> is equal to <<1981-10-31T12:44:38.000Z>>
-    step: Then <<{{person.address.street}}>> is equal to <<str. Eroilor nr.75b>>
+    step: Then <<{{company.employees[0].name}}>> is equal to <<Ionut Pruteanu>>
+    step: Then <<{{company.employees[0].age}}>> is equal to <<31>>
+    step: Then <<{{company.employees[0].isRightHanded()}}>> is equal to <<true>>
+    step: Then <<{{company.employees[0].birthDate}}>> is equal to <<1981-10-31T12:44:38.000Z>>
+    step: Then <<{{company.employees[0].address.street}}>> is equal to <<str. Eroilor nr.75b>>
