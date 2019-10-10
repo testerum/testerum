@@ -169,12 +169,11 @@ object TypeMetaFactory {
                         if(upperBounds.size > 1) throw java.lang.RuntimeException("Generics with multiple upper bounds are not supported: $typeArg")
 
                         val upperWildcardType = upperBounds[0]
-                        when (upperWildcardType) {
-                            is Class<*> -> getTypeMetaFromJavaType(upperWildcardType, typeArg)
-                            is ParameterizedType -> getTypeMetaFromJavaType(upperWildcardType.rawType as Class<*>, typeArg)
+                        return when (upperWildcardType) {
+                            is Class<*> -> getTypeMetaFromJavaType(upperWildcardType, upperWildcardType)
+                            is ParameterizedType -> getTypeMetaFromJavaType(upperWildcardType.rawType as Class<*>, upperWildcardType)
                             else -> throw java.lang.RuntimeException("Generics with complex upper bounds are not supported: $typeArg")
                         }
-                        return getGenericTypeByIndexIfExists(upperBounds[0], 0);
                     }
                     else -> throw RuntimeException ("Unknown Type $typeArg")
                 }

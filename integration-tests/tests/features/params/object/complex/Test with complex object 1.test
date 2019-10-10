@@ -1,0 +1,18 @@
+test-def: Test with complex object 1
+
+    step: Given I add the Person <<{{person}}>> in context with the name <<person>>
+        var person = <<
+            name: Ionut Pruteanu
+            age: "38"
+            sex: MAN
+            isRightHanded: true
+            birthDate: 1981-10-31T04:31:27.000Z
+            address:
+              street: str. Eroilor nr.75b
+            
+        >>
+    step: Then <<{{person.name}}>> is equal to <<Ionut Pruteanu>>
+    step: Then <<{{person.age}}>> is equal to <<38>>
+    step: Then <<{{person.isRightHanded()}}>> is equal to <<true>>
+    step: Then <<{{person.birthDate}}>> is equal to <<1981-10-31T04:31:27.000Z>>
+    step: Then <<{{person.address.street}}>> is equal to <<str. Eroilor nr.75b>>

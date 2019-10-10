@@ -1,4 +1,4 @@
-package TEST.complex
+package TEST.`object`.complex
 
 import com.testerum.api.annotations.steps.Given
 import com.testerum.api.annotations.steps.Param

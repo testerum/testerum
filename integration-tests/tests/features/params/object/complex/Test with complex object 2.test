@@ -1,0 +1,27 @@
+test-def: Test with complex object 2
+
+    step: Given I add the Company <<{{company}}>> in context with the name <<company>>
+        var company = <<
+            name: Testerum
+            address:
+              street: Graan Voor Visch 15901
+            departmentEmployees:
+              CEO: "1"
+              CTO: "2"
+            employees:
+             -
+              name: Ionut Pruteanu
+              age: "31"
+              sex: MAN
+              isRightHanded: true
+              birthDate: 1981-10-31T12:44:38.000Z
+              address:
+                street: Graan Voor Visch 15901
+            
+        >>
+    step: Then <<{{company.name}}>> is equal to <<Testerum>>
+    step: Then <<{{company.employees[0].name}}>> is equal to <<Testerum>>
+    step: Then <<{{company.age}}>> is equal to <<31>>
+    step: Then <<{{person.isRightHanded()}}>> is equal to <<true>>
+    step: Then <<{{person.birthDate}}>> is equal to <<1981-10-31T12:44:38.000Z>>
+    step: Then <<{{person.address.street}}>> is equal to <<str. Eroilor nr.75b>>
