@@ -104,34 +104,42 @@
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>assertion-steps</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>debug-steps</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>http-steps</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>json-steps</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>rdbms-steps</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>selenium-steps</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>util-steps</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>vars-steps</artifactId>
+            <scope>provided</scope>
         </dependency>
 
 
