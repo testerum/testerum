@@ -1,9 +1,9 @@
 package selenium.actions.vars
 
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.When
-import com.testerum.api.services.TesterumServiceLocator
-import com.testerum.api.test_context.test_vars.TestVariables
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.When
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 import org.openqa.selenium.WebElement
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.elem_locators.ElementLocatorService

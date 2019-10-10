@@ -23,12 +23,15 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
+            <artifactId>common-stats</artifactId>
         </dependency>
+
+
+        <!--==================== testerum dependencies ====================-->
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>common-stats</artifactId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
 
 

@@ -1,6 +1,6 @@
 package com.testerum.settings
 
-import com.testerum.api.test_context.settings.model.SettingDefinition
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingDefinition
 
 interface SettingsManagerModifier {
 

@@ -1,8 +1,8 @@
 package com.testerum.runner.report_model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.model.test.scenario.Scenario
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import java.time.LocalDateTime
 
 data class ReportScenario(@JsonProperty("testName")         val testName: String,

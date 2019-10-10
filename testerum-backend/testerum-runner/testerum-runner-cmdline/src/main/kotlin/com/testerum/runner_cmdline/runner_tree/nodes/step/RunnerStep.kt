@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.step
 
-import com.testerum.api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum.model.step.StepCall
 import com.testerum.runner.events.model.StepEndEvent
 import com.testerum.runner.events.model.StepStartEvent

@@ -6,7 +6,6 @@ import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.file_service.module_di.FileServiceModuleFactory
 import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
 import com.testerum.runner_cmdline.RunnerApplication
-import com.testerum.runner_cmdline.classloader.RunnerClassloaderFactory
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.runner_cmdline.events.EventsService
 import com.testerum.runner_cmdline.logger.TesterumLoggerImpl
@@ -17,7 +16,6 @@ import com.testerum.runner_cmdline.runner_tree.builder.RunnerExecutionTreeBuilde
 import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.settings.RunnerSettingsManagerImpl
 import com.testerum.runner_cmdline.settings.RunnerTesterumDirsImpl
-import com.testerum.model.tests_finder.TestsFinder
 import com.testerum.settings.module_di.SettingsModuleFactory
 
 class RunnerModuleFactory(context: ModuleFactoryContext,
@@ -46,11 +44,6 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
             eventsService = eventsService
     )
 
-    private val runnerClassloaderFactory = RunnerClassloaderFactory(
-            settingsManager = settingsModuleFactory.settingsManager,
-            testerumDirs = settingsModuleFactory.testerumDirs
-    )
-
     private val runnerExecutionTreeBuilder = RunnerExecutionTreeBuilder(
             runnerProjectManager = runnerProjectManager,
             basicStepsCache = fileServiceModuleFactory.basicStepsCache,
@@ -67,7 +60,6 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
 
     val runnerApplication = RunnerApplication(
             runnerProjectManager = runnerProjectManager,
-            runnerClassloaderFactory = runnerClassloaderFactory,
             runnerSettingsManager = runnerSettingsManager,
             runnerTesterumDirs = runnerTesterumDirs,
             testerumDirs = settingsModuleFactory.testerumDirs,

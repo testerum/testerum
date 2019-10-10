@@ -15,17 +15,21 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
-        <!-- testerum-api -->
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
-        </dependency>
-
         <!-- testerum-runner-api -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>testerum-runner-api</artifactId>
         </dependency>
+
+
+        <!--==================== testerum dependencies ====================-->
+
+        <!-- testerum-steps-api -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-steps-api</artifactId>
+        </dependency>
+
 
         <!--==================== External Dependencies ====================-->
 

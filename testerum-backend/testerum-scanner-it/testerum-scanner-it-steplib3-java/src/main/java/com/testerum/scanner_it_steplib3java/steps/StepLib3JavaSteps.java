@@ -1,10 +1,10 @@
 package com.testerum.scanner_it_steplib3java.steps;
 
-import com.testerum.api.annotations.hooks.BeforeEachTest;
-import com.testerum.api.annotations.settings.DeclareSetting;
-import com.testerum.api.annotations.settings.DeclareSettings;
-import com.testerum.api.test_context.settings.model.SettingType;
-import com.testerum.api.annotations.steps.Given;
+import com.testerum_api.testerum_steps_api.annotations.hooks.BeforeEachTest;
+import com.testerum_api.testerum_steps_api.annotations.settings.DeclareSetting;
+import com.testerum_api.testerum_steps_api.annotations.settings.DeclareSettings;
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingType;
+import com.testerum_api.testerum_steps_api.annotations.steps.Given;
 
 @DeclareSettings({
         @DeclareSetting(

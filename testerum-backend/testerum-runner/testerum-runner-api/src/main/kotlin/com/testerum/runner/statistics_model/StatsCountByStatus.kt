@@ -1,7 +1,7 @@
 package com.testerum.runner.statistics_model
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.testerum.api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 
 class StatsCountByStatus constructor(countByStatusMap: Map<ExecutionStatus, Long>) {
 

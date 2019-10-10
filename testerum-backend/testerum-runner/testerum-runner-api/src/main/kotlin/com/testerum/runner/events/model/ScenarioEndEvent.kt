@@ -2,10 +2,10 @@ package com.testerum.runner.events.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.testerum.api.test_context.ExecutionStatus
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.test.scenario.Scenario
 import com.testerum.runner.events.model.position.EventKey
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import java.time.LocalDateTime
 
 data class ScenarioEndEvent @JsonCreator constructor(

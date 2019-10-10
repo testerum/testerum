@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.node.TextNode
-import com.testerum.api.test_context.test_vars.TestVariables
+import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 
 class JsonVariableReplacer(private val testVariables: TestVariables) {
 

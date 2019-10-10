@@ -1,8 +1,8 @@
 package assertions
 
 import assertions.util.toIsoString
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.Then
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.Then
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime

@@ -2,7 +2,7 @@ package com.testerum.model.selenium
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.testerum.api.test_context.settings.model.SeleniumBrowserType
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumBrowserType
 import com.testerum.common_jdk.ComparableVersion
 import java.util.TreeMap
 

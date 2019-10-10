@@ -1,8 +1,8 @@
 package json.transformer
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.testerum.api.transformer.ParameterInfo
-import com.testerum.api.transformer.Transformer
+import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 import com.testerum.step_transformer_utils.JsonVariableReplacer
 import com.testerum.model.expressions.json.JsonResource
 import json_support.module_di.JsonStepsModuleServiceLocator

@@ -16,10 +16,10 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
-        <!-- testerum-api -->
+        <!-- testerum-steps-api -->
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
 
         <!-- jackson-databind -->

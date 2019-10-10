@@ -18,10 +18,13 @@
             <artifactId>common-kotlin</artifactId>
         </dependency>
 
-        <!-- testerum api -->
+
+        <!--==================== testerum dependencies ====================-->
+
+        <!-- testerum-steps-api -->
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
 
 

@@ -2,7 +2,7 @@ package com.testerum.runner.events.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.testerum.api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum.runner.events.model.position.EventKey
 import java.time.LocalDateTime
 

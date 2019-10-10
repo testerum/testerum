@@ -13,16 +13,19 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
-        <!-- testerum api -->
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
-        </dependency>
-
         <!-- common-expression-evaluator -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-expression-evaluator</artifactId>
+        </dependency>
+
+
+        <!--==================== testerum dependencies ====================-->
+
+        <!-- testerum api -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
 
 

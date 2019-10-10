@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.logger
 
-import com.testerum.api.test_context.logger.TesterumLogger
+import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.error.ExceptionDetail
 import com.testerum.runner.events.model.log_level.LogLevel

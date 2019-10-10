@@ -1,10 +1,10 @@
 package http.request
 
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.When
-import com.testerum.api.services.TesterumServiceLocator
-import com.testerum.api.test_context.logger.TesterumLogger
-import com.testerum.api.test_context.test_vars.TestVariables
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.When
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
+import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 import com.testerum.common_httpclient.HttpClientService
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.response.ValidHttpResponse

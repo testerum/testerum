@@ -1,6 +1,6 @@
 package com.testerum.web_backend.services.settings
 
-import com.testerum.api.test_context.settings.model.Setting
+import com.testerum_api.testerum_steps_api.test_context.settings.model.Setting
 import com.testerum.file_service.file.SettingsFileService
 import com.testerum.settings.SettingsManager
 import com.testerum.settings.getNonDefaultSettings

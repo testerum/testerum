@@ -1,7 +1,7 @@
 package selenium.actions.contexts
 
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.When
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.When
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
 import selenium_steps_support.service.frame_switchers.FrameSwitcher
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator

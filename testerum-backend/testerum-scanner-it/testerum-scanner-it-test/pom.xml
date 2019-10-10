@@ -16,33 +16,29 @@
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.testerum</groupId>
             <artifactId>testerum-scanner</artifactId>
         </dependency>
 
-        <!--
-            Depending on step libraries to make sure Maven builds them before this module.
-
-            Scope is "provided" to insure that the step libraries will not end-up in the
-            runtime classpath of this module (we are scanning jars directly).
-        -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>testerum-scanner-it-steplib1</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>testerum-scanner-it-steplib2</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>testerum-scanner-it-steplib3-java</artifactId>
+        </dependency>
+
+
+        <!--==================== testerum dependencies ====================-->
+
+        <!-- testerum-steps-api -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
 
 
@@ -55,6 +51,12 @@
 
 
         <!--==================== test dependencies ====================-->
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- JUnit 5 -->
         <dependency>

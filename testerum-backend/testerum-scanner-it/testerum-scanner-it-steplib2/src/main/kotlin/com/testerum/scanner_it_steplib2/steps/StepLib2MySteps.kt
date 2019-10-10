@@ -1,6 +1,6 @@
 package com.testerum.scanner_it_steplib2.steps
 
-import com.testerum.api.annotations.steps.Given
+import com.testerum_api.testerum_steps_api.annotations.steps.Given
 
 class StepLib2MySteps {
 

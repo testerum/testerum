@@ -1,9 +1,9 @@
 package database.relational.transformer
 
-import com.testerum.api.services.TesterumServiceLocator
-import com.testerum.api.test_context.test_vars.TestVariables
-import com.testerum.api.transformer.ParameterInfo
-import com.testerum.api.transformer.Transformer
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
+import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 import database.relational.model.RdbmsVerify
 
 class RdbmsVerifyTransformer: Transformer<RdbmsVerify> {

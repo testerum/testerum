@@ -1,6 +1,6 @@
 package selenium_steps_support.service.module_di
 
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import com.testerum.file_service.file.SeleniumDriversFileService

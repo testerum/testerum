@@ -1,8 +1,8 @@
 package database.relational
 
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.Then
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.Then
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 import com.testerum.common.json_diff.JsonComparer
 import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
 import com.testerum.common.json_diff.impl.node_comparer.JsonCompareResult

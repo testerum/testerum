@@ -12,11 +12,11 @@
     <artifactId>testerum-scanner-it-steplib2</artifactId>
 
     <dependencies>
-        <!--==================== Internal Dependencies ====================-->
+        <!--==================== testerum dependencies ====================-->
 
         <dependency>
             <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
 
 

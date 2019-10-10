@@ -1,7 +1,7 @@
 package com.testerum.runner_cmdline.settings
 
-import com.testerum.api.test_context.settings.RunnerSettingsManager
-import com.testerum.api.test_context.settings.model.Setting
+import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsManager
+import com.testerum_api.testerum_steps_api.test_context.settings.model.Setting
 import com.testerum.settings.SettingsManager
 import com.testerum.settings.getRequiredSetting
 

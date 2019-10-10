@@ -37,12 +37,6 @@
             <artifactId>settings</artifactId>
         </dependency>
 
-        <!-- testerum api -->
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>testerum-api</artifactId>
-        </dependency>
-
         <!-- model -->
         <dependency>
             <groupId>com.testerum</groupId>
@@ -53,6 +47,15 @@
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>file-service</artifactId>
+        </dependency>
+
+
+        <!--==================== testerum dependencies ====================-->
+
+        <!-- testerum-steps-api -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-steps-api</artifactId>
         </dependency>
 
 
@@ -73,7 +76,7 @@
         <!-- selenium -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-server</artifactId>
+            <artifactId>selenium-java</artifactId>
         </dependency>
 
         <!--jparsec -->

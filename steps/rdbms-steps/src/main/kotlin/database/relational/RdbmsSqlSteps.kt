@@ -1,8 +1,8 @@
 package database.relational
 
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.annotations.steps.When
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.annotations.steps.When
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 import database.relational.connection_manager.model.RdbmsConnection
 import database.relational.model.RdbmsSql
 import database.relational.transformer.RdbmsConnectionTransformer

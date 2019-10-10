@@ -25,7 +25,7 @@ set OPTS=%OPTS% -Dlogback.configurationFile="%BASEDIR%\conf\testerum-logback.xml
 set OPTS=%OPTS% -Dtesterum.web.httpPort=%TESTERUM_WEB_HTTPPORT%
 set OPTS=%OPTS% -Dtesterum.packageDirectory="%BASEDIR%"
 set OPTS=%OPTS% -Xmx1024m
-set OPTS=%OPTS% -classpath "%BASEDIR%\lib\*"
+set OPTS=%OPTS% -classpath "%BASEDIR%\lib\*;%BASEDIR%\basic_steps\*"
 set OPTS=%OPTS% com.testerum.web_backend.TesterumWebMain
 set OPTS=%OPTS% %CMD_LINE_ARGS%
 
