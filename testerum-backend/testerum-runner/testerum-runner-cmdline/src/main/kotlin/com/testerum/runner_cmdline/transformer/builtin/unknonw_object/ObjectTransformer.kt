@@ -1,9 +1,9 @@
 package com.testerum.runner_cmdline.transformer.builtin.unknonw_object
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.testerum.api.transformer.ParameterInfo
-import com.testerum.api.transformer.Transformer
 import com.testerum.common_json.ObjectMapperFactory
+import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 
 object ObjectTransformer : Transformer<Any> {
 

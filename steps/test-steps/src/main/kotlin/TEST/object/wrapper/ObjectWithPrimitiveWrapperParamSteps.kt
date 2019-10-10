@@ -1,9 +1,9 @@
 package TEST.`object`.wrapper
 
 import TEST.`object`.wrapper.model.*
-import com.testerum.api.annotations.steps.Given
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.annotations.steps.Given
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 
 class ObjectWithPrimitiveWrapperParamSteps {
 

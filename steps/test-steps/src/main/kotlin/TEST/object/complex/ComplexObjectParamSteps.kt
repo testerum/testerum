@@ -1,10 +1,10 @@
 package TEST.`object`.complex
 
-import com.testerum.api.annotations.steps.Given
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.services.TesterumServiceLocator
-import com.testerum.api.test_context.logger.TesterumLogger
-import com.testerum.api.test_context.test_vars.TestVariables
+import com.testerum_api.testerum_steps_api.annotations.steps.Given
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
+import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 import java.util.*
 
 class ComplexParamSteps {

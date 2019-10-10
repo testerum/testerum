@@ -3,9 +3,9 @@ package TEST.`object`.map
 import TEST.`object`.map.model.ObjectWithMapOfStringAndDateParam
 import TEST.`object`.map.model.ObjectWithMapOfStringAndObjectParam
 import TEST.`object`.map.model.ObjectWithMapOfStringAndStringParam
-import com.testerum.api.annotations.steps.Given
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.annotations.steps.Given
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 
 class ObjectWithMapParamSteps {
 

@@ -4,9 +4,9 @@ import TEST.`object`.list.model.ObjectWithListOfDatesParam
 import TEST.`object`.list.model.ObjectWithListOfObjectsParam
 import TEST.`object`.list.model.ObjectWithListOfStringsParam
 import TEST.`object`.list.model.ObjectWithSetOfStringsParam
-import com.testerum.api.annotations.steps.Given
-import com.testerum.api.annotations.steps.Param
-import com.testerum.api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.annotations.steps.Given
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 
 class ObjectWithListParamSteps {
 
@@ -15,7 +15,7 @@ class ObjectWithListParamSteps {
 
     @Given(value = "I add Object with the \"List<String>\" param <<List>> in context with the name <<variableName>>")
     fun objectWithListOfStrings(@Param obj: ObjectWithListOfStringsParam,
-                       @Param variableName: String) {
+                                @Param variableName: String) {
         testVariables[variableName] = obj
         logger.info("DEFINED VARIABLE [$variableName] with value [$obj]")
     }
