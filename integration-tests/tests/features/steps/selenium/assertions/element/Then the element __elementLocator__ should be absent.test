@@ -1,4 +1,5 @@
 test-def: Then the element <<elementLocator>> should be absent
 
     step: Given I am at the "HTML 5 TEST PAGE"
+    step: When I click the element <<#hide-element-button>>
     step: Then the element <<#element_to_test_step_which_is_not_on_the_page>> should be absent

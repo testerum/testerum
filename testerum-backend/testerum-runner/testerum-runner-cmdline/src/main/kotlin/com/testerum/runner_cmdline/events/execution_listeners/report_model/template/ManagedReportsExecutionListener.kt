@@ -28,14 +28,16 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     companion object {
         private val LOG = LoggerFactory.getLogger(ManagedReportsExecutionListener::class.java)
 
-        private val AUTO_REFRESH_DASHBOARD_HTML_FILE_CONTENT: String = run {
-            val filePath = "/managed-reports/autorefresh-dashboard.html"
+        private val AUTO_REFRESH_DASHBOARD_HTML_FILE_CONTENT: String = getClasspathResourceContent("/managed-reports/autorefresh-dashboard.html")
+        private val LATEST_REPORT_HTML_FILE_CONTENT: String = getClasspathResourceContent("/managed-reports/latest-report.html")
+        private val STATISTICS_HTML_FILE_CONTENT: String = getClasspathResourceContent("/managed-reports/statistics.html")
 
-            val fileInputStream = ManagedReportsExecutionListener::class.java.getResourceAsStream(filePath)
-                    ?: throw RuntimeException("could not load classpath resource at [$filePath]")
+        private fun getClasspathResourceContent(location: String): String {
+            val fileInputStream = ManagedReportsExecutionListener::class.java.getResourceAsStream(location)
+                    ?: throw RuntimeException("could not load classpath resource at [$location]")
 
             fileInputStream.use {
-                IOUtils.toString(it, Charsets.UTF_8)
+                return IOUtils.toString(it, Charsets.UTF_8)
             }
         }
     }
@@ -90,14 +92,15 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
             exception = e
         }
 
-        // todo: extract methods
+        writeStatisticsHtmlFile()
+        writeLatestReportHtmlFile()
         writeLatestSymlink()
+        writeAutoRefreshDashboardHtmlFile()
+
         if (!OsUtils.IS_WINDOWS) {
             // Windows cannot create file symlinks without admin privileges
             writeLatestReportSymlink()
-            writeStatisticsSymlink()
         }
-        writeAutoRefreshDashboardHtmlFile()
 
         writeJsonFullStats()
         aggregateJsonFullStats()
@@ -171,6 +174,28 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
         }
 
         return false
+    }
+
+    /** create/update "latest report" file */
+    private fun writeLatestReportHtmlFile() {
+        try {
+            val latestReportFile: JavaPath = managedReportsDir.resolve("latest-report.html")
+
+            latestReportFile.writeText(LATEST_REPORT_HTML_FILE_CONTENT)
+        } catch (e: Exception) {
+            LOG.warn("failed to write [latest-report.html] file", e)
+        }
+    }
+
+    /** create/update "statistics.html" report symlink */
+    private fun writeStatisticsHtmlFile() {
+        try {
+            val statisticsFile: JavaPath = managedReportsDir.resolve("statistics.html")
+
+            statisticsFile.writeText(STATISTICS_HTML_FILE_CONTENT)
+        } catch (e: Exception) {
+            LOG.warn("failed to write [statistics.html] file", e)
+        }
     }
 
     /** create/update json full stats */

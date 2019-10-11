@@ -50,8 +50,8 @@
                 var currentIframeId = "report-iframe-" + window.testerum.currentIframeIndex;
                 var otherIframeId = "report-iframe-" + (1 - window.testerum.currentIframeIndex);
 
-                const currentIframe = document.getElementById(currentIframeId);
-                const othertIframe = document.getElementById(otherIframeId);
+                var currentIframe = document.getElementById(currentIframeId);
+                var othertIframe = document.getElementById(otherIframeId);
 
                 othertIframe.onload = null;
                 currentIframe.onload = function () {

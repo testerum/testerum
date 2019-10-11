@@ -232,62 +232,6 @@
 
 
     <profiles>
-        <!-- development -->
-        <profile>
-            <id>development</id>
-
-            <!--
-                Activated by the lack of the "production" system property.
-                This means a developer doesn't have to do anything to activate the development profile.
-                On the Jenkins server, adding "-Dproduction" parameter to the build is a one-time job.
-            -->
-            <activation>
-                <property>
-                    <name>!production</name>
-                </property>
-            </activation>
-
-            <dependencies>
-                <!-- basic steps -->
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>assertion-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>debug-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>http-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>json-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>rdbms-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>selenium-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>util-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>vars-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>test-steps</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-
         <!-- production -->
         <profile>
             <id>production</id>
@@ -433,6 +377,46 @@
                     <name>!production</name>
                 </property>
             </activation>
+
+            <dependencies>
+                <!-- basic steps -->
+                <dependency>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>assertion-steps</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>debug-steps</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>http-steps</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>json-steps</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>rdbms-steps</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>selenium-steps</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>util-steps</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>vars-steps</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>test-steps</artifactId>
+                </dependency>
+            </dependencies>
 
             <build>
                 <plugins>

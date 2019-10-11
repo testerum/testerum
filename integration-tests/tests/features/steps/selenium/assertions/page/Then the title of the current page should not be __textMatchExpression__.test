@@ -1,4 +1,5 @@
 test-def: Then the title of the current page should not be <<textMatchExpression>>
 
     step: Given I am at the "HTML 5 TEST PAGE"
-    step: Then the title of the current page should not be <<HTML5 Test Page For Testing>>
+    step: When I navigate to url <<https://testerum.com/>>
+    step: Then the title of the current page should not be <<HTML5 Test Page>>
