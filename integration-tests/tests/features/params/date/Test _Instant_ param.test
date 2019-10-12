@@ -1,0 +1,4 @@
+test-def: Test "Instant" param
+
+    step: Given I add the "Instant" param <<2019-10-31T04:36:13.000Z>> in context with the name <<myBirthDate>>
+    step: Then <<{{myBirthDate}}>> is equal to <<2019-10-31T04:36:13.000Z>>

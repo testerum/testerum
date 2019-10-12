@@ -40,56 +40,36 @@
             </div>
         </div>
 
-        <div class="my-line"
-             [class.multiline-text-line]="isMultilineText()">
-            <label class="my-label label-size">Value:</label>
-            <div class="my-value" *ngIf="!editMode">
-                {{model.content || ""}}
-            </div>
+        <string-input-basic-resource *ngIf="isStringResource()"
+                                     [name]="name"
+                                     [model]="model"
+                                     [stepParameter]="stepParameter"
+                                     [editMode]="editMode"
+                                     [condensedViewMode]="condensedViewMode"
+                                     [contextActions]="contextActions"></string-input-basic-resource>
 
-            <!--INPUT component-->
-            <div class="my-value"
-                 [class.hidden]="isMultilineText()">
-                <div class="input-container">
-                    <input argValueValidator
-                           #valueNgModel="ngModel" [(ngModel)]="model.content"
-                           (keyup)="onKeyUp($event)"
-                           type="text" class="form-control" name="value">
+        <boolean-input-basic-resource *ngIf="isBooleanResource()"
+                                      [name]="name"
+                                      [model]="model"
+                                      [stepParameter]="stepParameter"
+                                      [editMode]="editMode"
+                                      [condensedViewMode]="condensedViewMode"
+                                      [contextActions]="contextActions"></boolean-input-basic-resource>
 
-                    <div class="button-panel btn-group my-button-panel">
-                        <div title="Multi line" class="btn btn-default btn-xs btn-group"
-                             (click)="setMultilineText(true);$event.stopPropagation();">
-                            <i class="fas fa-align-justify" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
-                <input-error [model]="valueNgModel"
-                             [errorMessages]="{
-                                argValueValidator_notANumber: 'This field should be a valid number.'
-                             }"></input-error>
-            </div>
+        <date-input-basic-resource *ngIf="isDateResource()"
+                                      [name]="name"
+                                      [model]="model"
+                                      [stepParameter]="stepParameter"
+                                      [editMode]="editMode"
+                                      [condensedViewMode]="condensedViewMode"
+                                      [contextActions]="contextActions"></date-input-basic-resource>
 
-            <!--TEXT ARIA component-->
-            <div class="my-value multiline-text"
-                 [class.hidden]="!isMultilineText()">
-                <div class="input-container">
-                    <textarea argValueValidator
-                              #valueNgModel="ngModel" [(ngModel)]="model.content"
-                              (keyup)="onKeyUp($event)"
-                              type="text" class="form-control" name="value"></textarea>
-                    <div class="button-panel btn-group my-button-panel">
-                        <div *ngIf="isSmallText()"
-                             title="Single line" class="btn btn-default btn-xs btn-group"
-                             (click)="setMultilineText(false);$event.stopPropagation();">
-                            <i class="fas fa-minus"></i>
-                        </div>
-                    </div>
-                </div>
-                <input-error [model]="valueNgModel"
-                             [errorMessages]="{
-                                argValueValidator_notANumber: 'This field should be a valid number.'
-                             }"></input-error>
-            </div>
-        </div>
+        <enum-input-basic-resource *ngIf="isEnumResource()"
+                                   [name]="name"
+                                   [model]="model"
+                                   [stepParameter]="stepParameter"
+                                   [editMode]="editMode"
+                                   [condensedViewMode]="condensedViewMode"
+                                   [contextActions]="contextActions"></enum-input-basic-resource>
     </form>
 </div>

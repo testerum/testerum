@@ -1,0 +1,6 @@
+test-def: Test "List" param
+
+    step: Given I add the "List" variable <<{{cars}}>> in context with the name <<myCars>>
+        var cars = <<["DACIA","ARO"]>>
+    step: Then <<{{myCars[0]}}>> is equal to <<DACIA>>
+    step: Then <<{{myCars[1]}}>> is equal to <<ARO>>

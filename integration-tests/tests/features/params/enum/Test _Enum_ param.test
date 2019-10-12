@@ -1,0 +1,4 @@
+test-def: Test "Enum" param
+
+    step: Given I add the "Enum" variable <<BMW>> in context with the name <<justAVarName>>
+    step: Then <<{{justAVarName}}>> is equal to <<BMW>>

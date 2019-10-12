@@ -1,0 +1,26 @@
+<div class="string-input-basic-resource">
+    <div class="my-value" *ngIf="!editMode">
+        {{model.content || ""}}
+        <span *ngIf="model.content != null">{{model.content}}</span>
+        <span *ngIf="model.content == null" class="null-value">null</span>
+    </div>
+
+    <!--INPUT component-->
+    <div class="my-line" *ngIf="editMode">
+        <label class="my-label label-size">Value:</label>
+
+        <span *ngIf="editMode"
+              class="my-value my-dropdown">
+            <input #booleanInput
+                   [ngModel]="model.content"
+                   (ngModelChange)="onValueChange($event)"
+                   [attr.list]="id"
+                   type="text"
+                   name="enum-input"
+                   (click)="onInputEvent($event)" />
+            <datalist [attr.id]="id">
+                <option *ngFor="let possibleValue of possibleValues" value="{{possibleValue}}"></option>
+            </datalist>
+        </span>
+    </div>
+</div>

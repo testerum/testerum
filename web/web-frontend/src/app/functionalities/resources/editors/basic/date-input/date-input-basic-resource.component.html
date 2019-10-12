@@ -1,0 +1,38 @@
+<div class="date-input-basic-resource">
+    <div class="my-value" *ngIf="!editMode">
+        {{model.content || ""}}
+        <span *ngIf="model.content != null">{{model.content}}</span>
+        <span *ngIf="model.content == null" class="null-value">null</span>
+    </div>
+
+    <!--INPUT component-->
+    <div class="my-line" *ngIf="editMode">
+        <label class="my-label label-size">Value:</label>
+
+
+        <span *ngIf="editMode"
+              class="my-value calendar">
+            <input [ngModel]="inputDate"
+                   (ngModelChange)="inputChange($event)"
+                   autocomplete="off"
+                   class="calendar-input"/>
+            <p-calendar [ngModel]="date"
+                        (onSelect)="onDateSelect($event)"
+                        [showIcon]="true"
+                        [monthNavigator]="true"
+                        [yearNavigator]="true"
+                        yearRange="1960:2050"
+                        class="my-p-calendar"
+                        dateFormat="yy-mm-dd"
+                        hideOnDateTimeSelect="true"
+                        dataType="string"
+                        keepInvalid="true"
+                        showTime="showTime" hourFormat="24" [utc]="true"></p-calendar>
+        </span>
+
+        <info-icon *ngIf="editMode || inputDate"
+                   [message]="getDescription()"
+                   class="date-info-icon"></info-icon>
+
+    </div>
+</div>

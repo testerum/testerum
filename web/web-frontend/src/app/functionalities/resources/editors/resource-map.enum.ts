@@ -40,6 +40,8 @@ import {ObjectTypeMeta} from "../../../model/text/parts/param-meta/object-type.m
 import {ObjectResourceComponent} from "./object/object-resource.component";
 import {ObjectResourceType} from "../tree/model/type/object.resource-type.model";
 import {ObjectResourceModel} from "./object/object-resource.model";
+import {ListTypeMeta} from "../../../model/text/parts/param-meta/list-type.meta";
+import {MapTypeMeta} from "../../../model/text/parts/param-meta/map-type.meta";
 
 export class ResourceMapEnum {
     public static TEXT: ResourceMapEnum = new ResourceMapEnum(
@@ -185,11 +187,33 @@ export class ResourceMapEnum {
         () => {return JsonResourceType.getInstanceForChildren()},
         (input:string) => {return new BasicResource().deserialize(input)}
     );
+    public static LIST: ResourceMapEnum = new ResourceMapEnum(
+        new ListTypeMeta(),
+        "LIST",
+        "List",
+        null,
+        ObjectResourceComponent,
+        () => {return new ObjectResourceModel()},
+        () => {return ObjectResourceType.getInstanceForRoot()},
+        () => {return ObjectResourceType.getInstanceForChildren()},
+        (input:string) => {return new ObjectResourceModel().deserialize(input)}
+    );
+    public static MAP: ResourceMapEnum = new ResourceMapEnum(
+        new MapTypeMeta(),
+        "MAP",
+        "Map",
+        null,
+        ObjectResourceComponent,
+        () => {return new ObjectResourceModel()},
+        () => {return ObjectResourceType.getInstanceForRoot()},
+        () => {return ObjectResourceType.getInstanceForChildren()},
+        (input:string) => {return new ObjectResourceModel().deserialize(input)}
+    );
     public static OBJECT: ResourceMapEnum = new ResourceMapEnum(
         new ObjectTypeMeta(),
         "OBJECT",
         "Custom",
-        "obj.json",
+        null,
         ObjectResourceComponent,
         () => {return new ObjectResourceModel()},
         () => {return ObjectResourceType.getInstanceForRoot()},
@@ -210,6 +234,8 @@ export class ResourceMapEnum {
         ResourceMapEnum.HTTP_MOCK_STUB_VERIFY,
         ResourceMapEnum.JSON_VERIFY,
         ResourceMapEnum.JSON,
+        ResourceMapEnum.LIST,
+        ResourceMapEnum.MAP,
         ResourceMapEnum.OBJECT,
     ];
 

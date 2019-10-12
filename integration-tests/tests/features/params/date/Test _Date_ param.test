@@ -1,0 +1,4 @@
+test-def: Test "Date" param
+
+    step: Given I add the "Date" param <<2019-10-31T04:38:17.000Z>> in context with the name <<justAVarName>>
+    step: Then <<{{justAVarName}}>> is equal to <<2019-10-31T04:38:17.000Z>>

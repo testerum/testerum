@@ -1,0 +1,4 @@
+test-def: Test "LocalDateTime" param
+
+    step: Given I add the "LocalDateTime" param <<2019-10-31T22:54:58.000Z>> in context with the name <<myBirthDate>>
+    step: Then <<{{myBirthDate}}>> is equal to <<2019-10-31T22:54:58.000Z>>

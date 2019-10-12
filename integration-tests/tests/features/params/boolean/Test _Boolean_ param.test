@@ -1,0 +1,4 @@
+test-def: Test "Boolean" param
+
+    step: Given I add the "Boolean" variable <<true>> in context with the name <<justAVarName>>
+    step: Then <<{{justAVarName}}>> is equal to <<true>>

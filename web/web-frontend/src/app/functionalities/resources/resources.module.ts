@@ -69,6 +69,10 @@ import {DateObjectTreeNodeComponent} from "./editors/object/nodes/date-node/date
 import {ListObjectTreeNodeComponent} from "./editors/object/nodes/list-node/list-object-tree-node.component";
 import {MapObjectTreeNodeComponent} from "./editors/object/nodes/map-node/map-object-tree-node.component";
 import {MapItemObjectTreeNodeComponent} from "./editors/object/nodes/map-node/item/map-item-object-tree-node.component";
+import { StringInputBasicResourceComponent } from './editors/basic/string-input/string-input-basic-resource.component';
+import { BooleanInputBasicResourceComponent } from './editors/basic/boolean-input/boolean-input-basic-resource.component';
+import { EnumInputBasicResourceComponent } from './editors/basic/enum-input/enum-input-basic-resource.component';
+import { DateInputBasicResourceComponent } from './editors/basic/date-input/date-input-basic-resource.component';
 
 @NgModule({
     imports: [
@@ -196,6 +200,10 @@ import {MapItemObjectTreeNodeComponent} from "./editors/object/nodes/map-node/it
         MapItemObjectTreeNodeComponent,
         StringObjectTreeNodeComponent,
         ObjectObjectTreeNodeComponent,
+        StringInputBasicResourceComponent,
+        BooleanInputBasicResourceComponent,
+        EnumInputBasicResourceComponent,
+        DateInputBasicResourceComponent,
     ],
     providers: [
         ResourcesTreeService,

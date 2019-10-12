@@ -1,0 +1,6 @@
+test-def: Test "Map" param with "null" value
+
+    step: Given I add the "Map" variable <<{{Map}}>> in context with the name <<colorsILike>>
+        var Map = <<{"red":false,"blue":"null"}>>
+    step: Then <<{{colorsILike.get("red")}}>> is equal to <<false>>
+    step: Then <<{{colorsILike.get("blue")}}>> is equal to <<null>>
