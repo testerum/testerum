@@ -30,6 +30,7 @@ import {ParametrizedTestStartEvent} from "../../../../model/test/event/parametri
 import {ParametrizedTestEndEvent} from "../../../../model/test/event/parametrized-test-end.event";
 import {ScenarioStartEvent} from "../../../../model/test/event/scenario-start.event";
 import {ScenarioEndEvent} from "../../../../model/test/event/scenario-end.event";
+import {JsonTreeExpandUtil} from "../../../../generic/components/json-tree/util/json-tree-expand.util";
 
 @Injectable()
 export class RunnerTreeService {
@@ -250,6 +251,10 @@ export class RunnerTreeService {
         this.treeTestsNodes = RunnerTreeUtil.getTreeTestNodes(this.treeRootNode);
         this.numberOfSimpleTestsAndScenarios = RunnerTreeUtil.getNumberOfSimpleTestsAndScenarios(this.treeRootNode);
         this.allNodesMapByEventKey = RunnerTreeUtil.getAllNodesMapByEventKey(this.treeRootNode);
+
+        if (this.treeTestsNodes.length == 1) {
+            JsonTreeExpandUtil.expandTreeToLevel(this.treeModel,  100)
+        }
 
         this.restPieData(this.executionPieService.pieModel);
         this.hasFailedTests = false;
