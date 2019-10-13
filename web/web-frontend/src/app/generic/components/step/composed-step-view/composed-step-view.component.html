@@ -142,5 +142,6 @@
     <step-call-tree [stepCalls]="model.stepCalls"
                     [containerPath]="model.path.getParentPath()"
                     [isEditMode]="isEditMode"
+                    [editModeEventEmitter]="editModeEventEmitter"
                     (change)="onStepCallTreeChange()"></step-call-tree>
 </form>

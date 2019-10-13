@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, DoCheck, EventEmitter, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {TestsService} from "../../../service/tests.service";
 import {TestModel} from "../../../model/test/test.model";
@@ -35,8 +35,9 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     oldTestModel: TestModel;
     pathForTitle: string = "";
     isEditExistingTest: boolean; //TODO: is this used?
-    isEditMode: boolean = false;
     isCreateAction: boolean = false;
+    isEditMode: boolean = false;
+    readonly editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
@@ -58,9 +59,9 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     warnings: Message[] = [];
 
     private routeSubscription: Subscription;
-    private editModeStepCallTreeSubscription: Subscription;
     private warningRecalculationChangesSubscription: Subscription;
     private addNewScenarioSubscription: Subscription;
+    private editModeEventEmitterSubscription: Subscription;
 
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
@@ -88,10 +89,6 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
             this.initPathForTitle();
         });
-        this.editModeStepCallTreeSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.editModeEventEmitter.subscribe( (editMode: boolean) => {
-                this.isEditMode = editMode;
-            }
-        );
 
         this.warningRecalculationChangesSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
             let testModel = this.getModelForWarningRecalculation();
@@ -102,6 +99,21 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
                 ArrayUtil.replaceElementsInArray(this.testModel.warnings, newTestModel.warnings);
                 this.refreshWarnings();
             })
+        });
+
+        this.editModeEventEmitterSubscription = this.editModeEventEmitter.subscribe( (isEditMode: boolean) => {
+            if (isEditMode) {
+                this.tagsService.getTags().subscribe(tags => {
+                    ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
+                });
+            }
+
+            this.isEditMode = isEditMode;
+            this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
+            if(this.descriptionMarkdownEditor) {
+                this.descriptionMarkdownEditor.setEditMode(isEditMode);
+                this.descriptionMarkdownEditor.setValue(this.testModel.description);
+            }
         })
     }
 
@@ -145,9 +157,9 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
     ngOnDestroy(): void {
         if(this.routeSubscription) this.routeSubscription.unsubscribe();
-        if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
         if(this.warningRecalculationChangesSubscription) this.warningRecalculationChangesSubscription.unsubscribe();
         if(this.addNewScenarioSubscription) this.addNewScenarioSubscription.unsubscribe();
+        if(this.editModeEventEmitterSubscription) this.editModeEventEmitterSubscription.unsubscribe();
     }
 
     canDeactivate(): boolean {
@@ -170,18 +182,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     }
 
     setEditMode(isEditMode: boolean) {
-        if (isEditMode) {
-            this.tagsService.getTags().subscribe(tags => {
-                ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
-            });
-        }
-
-        this.isEditMode = isEditMode;
-        this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
-        if(this.descriptionMarkdownEditor) {
-            this.descriptionMarkdownEditor.setEditMode(isEditMode);
-            this.descriptionMarkdownEditor.setValue(this.testModel.description);
-        }
+        this.editModeEventEmitter.emit(isEditMode);
     }
 
     enableEditTestMode(): void {

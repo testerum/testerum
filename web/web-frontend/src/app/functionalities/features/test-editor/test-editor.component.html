@@ -170,6 +170,7 @@
                 <step-call-tree [stepCalls]="testModel.stepCalls"
                                 [containerPath]="testModel.path.getParentPath()"
                                 [isEditMode]="isEditMode"
+                                [editModeEventEmitter]="editModeEventEmitter"
                                 [areManualSteps]="testModel.properties.isManual"></step-call-tree>
 
                 <div class="panel-footer-sticky-buttons">

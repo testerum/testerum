@@ -42,8 +42,10 @@ export class StepCallTreeComponentService {
     }
 
     setEditMode(editMode: boolean) {
+        if(this.isEditMode == editMode) return;
+
+        this.isEditMode = editMode;
         this.editModeEventEmitter.emit(editMode);
-        this.isEditMode = editMode
     }
 
     triggerWarningRecalculationChangesEvent(): void {

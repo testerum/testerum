@@ -41,9 +41,10 @@ import {ParamNameValidatorDirective} from "../../../validators/param-name-valida
 export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterContentChecked, DoCheck {
 
     @Input() model: ComposedStepDef;
-    @Input() isEditMode: boolean;
     @Input() isCreateAction: boolean = false;
     @Input() stepContext: StepContext = new StepContext();
+    @Input() isEditMode: boolean;
+
 
     @ViewChild(NgForm, { static: true }) form: NgForm;
     StepPhaseEnum = StepPhaseEnum;
@@ -64,11 +65,11 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     currentTagSearch:string;
 
     @ViewChild(StepCallTreeComponent, { static: true }) stepCallTreeComponent: StepCallTreeComponent;
-    editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+    readonly editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     @ViewChild("descriptionMarkdownEditor", { static: true }) descriptionMarkdownEditor: MarkdownEditorComponent;
 
-    private editModeStepCallTreeSubscription: Subscription;
+    private editModeEventEmitterSubscription: Subscription;
     private warningRecalculationChangesSubscription: Subscription;
 
     constructor(private stepPathModalService: StepPathModalService,
@@ -99,12 +100,12 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         });
         this.refreshDescription();
 
-        this.editModeStepCallTreeSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.editModeEventEmitter.subscribe( (editMode: boolean) => {
-                this.isEditMode = editMode;
-                this.refreshDescription();
-                this.editModeEventEmitter.emit(this.isEditMode);
-            }
-        );
+        this.editModeEventEmitterSubscription = this.editModeEventEmitter.subscribe( (editMode: boolean) => {
+            this.isEditMode = editMode;
+            this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(this.isEditMode);
+
+            this.refreshDescription();
+        });
 
         this.warningRecalculationChangesSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
             this.recalculateWarnings();
@@ -144,11 +145,7 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     setEditMode(editMode: boolean) {
-        this.isEditMode = editMode;
-        this.editModeEventEmitter.emit(this.isEditMode);
-        this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(this.isEditMode);
-
-        this.refreshDescription();
+        this.editModeEventEmitter.emit(editMode);
     }
 
     ngAfterContentChecked(): void {
@@ -156,7 +153,7 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     ngOnDestroy(): void {
-        if(this.editModeStepCallTreeSubscription) this.editModeStepCallTreeSubscription.unsubscribe();
+        if(this.editModeEventEmitterSubscription) this.editModeEventEmitterSubscription.unsubscribe();
         if(this.warningRecalculationChangesSubscription) this.warningRecalculationChangesSubscription.unsubscribe();
     }
 

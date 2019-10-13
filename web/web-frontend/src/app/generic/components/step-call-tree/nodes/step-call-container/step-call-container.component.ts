@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {StepTextComponent} from "../../../step-text/step-text.component";
 import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
@@ -18,6 +18,7 @@ import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.mo
 import {ContextService} from "../../../../../service/context.service";
 import {StepContext} from "../../../../../model/step/context/step-context.model";
 import {PathUtil} from "../../../../../utils/path.util";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'step-call-container',
@@ -99,7 +100,13 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         return this.stepCallTreeComponentService.areManualSteps;
     }
 
+    setEditModeToTrue() {
+        this.stepCallTreeComponentService.editModeEventEmitter.emit(true);
+    }
+
     editStep() {
+        this.setEditModeToTrue();
+
         let stepToEdit;
         let stepContext: StepContext = new StepContext(this.isManualStep());
 
@@ -195,6 +202,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     public moveStepUp(): void {
+        this.setEditModeToTrue();
+
         let stepIndex = this.findStepIndex();
         if(stepIndex > 0) {
             let parentContainer = this.model.parentContainer;
@@ -224,6 +233,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     public moveStepDown(): void {
+        this.setEditModeToTrue();
+
         let stepIndex = this.findStepIndex();
         if(0 <= stepIndex && stepIndex < this.getTotalCountOfSiblings()-1) {
             let parentContainer = this.model.parentContainer;
@@ -254,6 +265,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     public removeStep(): void {
+        this.setEditModeToTrue();
+
         if (this.stepCallOrderChangeSubscription) {
             this.stepCallOrderChangeSubscription.unsubscribe();
         }
@@ -296,11 +309,15 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     onCutStep() {
+        this.setEditModeToTrue();
+
         this.setSelected();
         this.contextService.setPathToCut(this);
     }
 
     onCopyStep() {
+        this.setEditModeToTrue();
+
         this.setSelected();
         this.contextService.setPathToCopy(this);
     }
@@ -318,6 +335,8 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
     }
 
     disableOrEnableStep() {
+        this.setEditModeToTrue();
+
         this.model.stepCall.enabled = !this.model.stepCall.enabled;
     }
 }
