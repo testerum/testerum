@@ -17,6 +17,7 @@
                    [ngModel]="model.value"
                    (ngModelChange)="onValueChange($event)"
                    [attr.list]="id"
+                   autocomplete="off"
                    type="text"
                    name="enum-input"
                    (click)="onInputEvent($event)" />
