@@ -10,37 +10,32 @@
                             [ngModel]="this.model.scenario.name"
                             (ngModelChange)="onScenarioNameChange($event)"
                             [class.disabled]="isDisabled()"
-                            [isEditMode]="isEditMode()"
                             [isTextEditMode]="isScenarioNameEditMode"
                             (onTextEditModeChanged)="onTextEditModeChanged($event)"></tree-text-edit>
         </div>
 
         <!-- BUTTONS -->
-        <div *ngIf="!isEditMode()"
-             class="button-panel-hide-on-hover btn-group">
-            <div title="Run Scenario" class="btn btn-default btn-xs btn-group"
-                 *ngIf="!getTestModel().properties.isManual && getTestModel().stepCalls.length != 0"
+        <div class="button-panel-hide-on-hover btn-group">
+            <div *ngIf="!isEditMode() && !getTestModel().properties.isManual && getTestModel().stepCalls.length != 0"
+                 title="Run Scenario" class="btn btn-default btn-xs btn-group"
                  (click)="runScenario(); $event.stopPropagation()">
                 <i class="fa_my-run" aria-hidden="true"></i>
             </div>
-        </div>
 
-        <div *ngIf="isEditMode()"
-             class="button-panel-hide-on-hover btn-group">
             <div title="Edit Scenario Name" class="btn btn-default btn-xs btn-group"
                  (click)="editScenarioName(); $event.stopPropagation()">
                 <i class="fas fa-pencil-alt" aria-hidden="true"></i>
             </div>
 
-            <div title="Move Scenario Up"
-                 *ngIf="!isFirstScenario()"
+            <div *ngIf="!isFirstScenario()"
+                 title="Move Scenario Up"
                  class="btn btn-default btn-xs btn-group"
                  (click)="moveScenarioUp(); $event.stopPropagation()">
                 <i class="fas fa-arrow-up" aria-hidden="true"></i>
             </div>
 
-            <div title="Move Scenario Down"
-                 *ngIf="!isLastScenario()"
+            <div *ngIf="!isLastScenario()"
+                 title="Move Scenario Down"
                  class="btn btn-default btn-xs btn-group"
                  (click)="moveScenarioDown(); $event.stopPropagation()">
                 <i class="fas fa-arrow-down" aria-hidden="true"></i>

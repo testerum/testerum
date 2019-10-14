@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {TestModel} from "../../../../model/test/test.model";
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
@@ -17,10 +17,11 @@ import {ScenarioParamNodeModel} from "./model/scenario-param-node.model";
     styleUrls: ['./scenario-tree.component.scss'],
     providers: [ScenarioTreeComponentService]
 })
-export class ScenarioTreeComponent implements OnChanges {
+export class ScenarioTreeComponent implements OnChanges, OnInit {
 
     @Input() testModel: TestModel;
     @Input() isEditMode: boolean = false;
+    @Input() editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     jsonTreeModel: JsonTreeModel = new JsonTreeModel();
     modelComponentMapping: ModelComponentMapping = new ModelComponentMapping()
@@ -31,19 +32,18 @@ export class ScenarioTreeComponent implements OnChanges {
     constructor(public scenarioTreeComponentService: ScenarioTreeComponentService) {
     }
 
+    ngOnInit(): void {
+        this.scenarioTreeComponentService.editModeEventEmitter = this.editModeEventEmitter;
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        this.initComponentTree();
+    }
+
     private initComponentTree() {
         this.scenarioTreeComponentService.testModel = this.testModel;
         this.scenarioTreeComponentService.isEditMode = this.isEditMode;
         this.scenarioTreeComponentService.jsonTreeModel = this.jsonTreeModel;
         this.scenarioTreeComponentService.initComponentTree();
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['isEditMode'] != null) {
-            this.scenarioTreeComponentService.isEditMode = this.isEditMode;
-        }
-        if (changes['testModel']) {
-            this.initComponentTree();
-        }
     }
 }

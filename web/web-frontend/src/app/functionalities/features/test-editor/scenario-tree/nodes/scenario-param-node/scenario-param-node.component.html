@@ -17,8 +17,7 @@
         <info-icon [message]="getParamDescription()"
                    class="param-info-icon"></info-icon>
 
-        <div *ngIf="isEditMode()"
-             class="btn-group">
+        <div class="btn-group">
 
             <div title="Edit"
                  class="btn btn-default btn-xs"
@@ -29,14 +28,14 @@
 
             <div title="Move Param Up"
                  *ngIf="!isFirstStep()"
-                 class="btn btn-default btn-xs"
+                 class="btn btn-default btn-xs button-hide-on-hover"
                  (click)="moveParamUp(); $event.stopPropagation()">
                 <i class="fas fa-arrow-up" aria-hidden="true"></i>
             </div>
 
             <div title="Move Param Down"
                  *ngIf="!isLastStep()"
-                 class="btn btn-default btn-xs"
+                 class="btn btn-default btn-xs button-hide-on-hover"
                  (click)="moveParamDown(); $event.stopPropagation()">
                 <i class="fas fa-arrow-down" aria-hidden="true"></i>
             </div>

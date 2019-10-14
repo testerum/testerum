@@ -3,7 +3,7 @@ import {
     ElementRef, EventEmitter,
     forwardRef,
     Input,
-    OnChanges,
+    OnChanges, OnDestroy,
     OnInit,
     Output,
     SimpleChanges,
@@ -11,6 +11,8 @@ import {
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {FocusDirective} from "../../../../../../../generic/directives/focus.directive";
+import {ScenarioTreeComponentService} from "../../../scenario-tree.component-service";
+import {TestsRunnerService} from "../../../../../tests-runner/tests-runner.service";
 
 @Component({
     selector: 'tree-text-edit',
@@ -20,16 +22,29 @@ import {FocusDirective} from "../../../../../../../generic/directives/focus.dire
         { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TreeTextEditComponent), multi: true}
     ]
 })
-export class TreeTextEditComponent implements ControlValueAccessor {
+export class TreeTextEditComponent implements ControlValueAccessor, OnInit, OnDestroy {
 
     text: string;
-    @Input() isEditMode: boolean;
     @Input() isTextEditMode: boolean = false;
     @Output() onTextEditModeChanged = new EventEmitter<boolean>();
 
     @ViewChild('input', { static: false }) inputElementRef: ElementRef;
 
     private propagateChange: Function;
+
+    constructor(private scenarioTreeComponentService: ScenarioTreeComponentService) {
+    }
+
+    ngOnInit(): void {
+        this.scenarioTreeComponentService.editModeEventEmitter.subscribe( (isEditMode: boolean) => {
+            if (isEditMode == false) {
+                this.setTextEditMode(false);
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+    }
 
     writeValue(obj: any): void {
         this.text = obj;
@@ -48,8 +63,10 @@ export class TreeTextEditComponent implements ControlValueAccessor {
     }
 
     setTextEditMode(isTextEditMode: boolean) {
-        this.isTextEditMode = isTextEditMode;
-        this.onTextEditModeChanged.emit(this.isTextEditMode);
+        if (this.isTextEditMode != isTextEditMode) {
+            this.isTextEditMode = isTextEditMode;
+            this.onTextEditModeChanged.emit(this.isTextEditMode);
+        }
     }
 
     focusInputElement() {

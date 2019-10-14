@@ -5,6 +5,16 @@
     cursor: default;
     width: fit-content;
 
+    &:hover {
+        .button-hide-on-hover {
+            display: inline-block;
+        }
+    }
+
+    .button-hide-on-hover {
+        display: none;
+    }
+
     .header {
         display: block;
         padding-right: 7px;
