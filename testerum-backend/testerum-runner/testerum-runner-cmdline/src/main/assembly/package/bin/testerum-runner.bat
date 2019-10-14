@@ -14,7 +14,7 @@ set OPTS=
 set OPTS=%OPTS% -Dfile.encoding=UTF-8
 set OPTS=%OPTS% -Duser.timezone=GMT
 set OPTS=%OPTS% -Dtesterum.packageDirectory="%BASEDIR%"
-set OPTS=%OPTS% -classpath "%BASEDIR%\runner\lib\*"
+set OPTS=%OPTS% -classpath "%BASEDIR%\runner\lib\*;%BASEDIR%\basic_steps\*"
 set OPTS=%OPTS% com.testerum.runner_cmdline.TesterumRunner
 set OPTS=%OPTS% %CMD_LINE_ARGS%
 
