@@ -30,15 +30,18 @@
 
             &.log-type-debug {
                 color: $log-type-debug-color;
+
             }
             &.log-type-info {
                 color: $log-type-info-color;
             }
             &.log-type-warning {
                 color: $log-type-warning-color;
+                background: #fff7cf;
             }
             &.log-type-exception {
                 color: $log-type-exception-color;
+                background: #fff7cf;
             }
         }
 

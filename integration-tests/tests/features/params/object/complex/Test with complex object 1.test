@@ -4,7 +4,7 @@ test-def: Test with complex object 1
         var person = <<
             name: Ionut Pruteanu
             age: "38"
-            sex: MAN
+            sex: UNCLEAR
             isRightHanded: true
             birthDate: 1981-10-31T04:31:27.000Z
             address:
@@ -12,7 +12,7 @@ test-def: Test with complex object 1
             
         >>
     step: Then <<{{person.name}}>> is equal to <<Ionut Pruteanu>>
-    step: Then <<{{person.age}}>> is equal to <<38>>
+    step: Then <<{{person.age}}>> is equal to <<39>>
     step: Then <<{{person.isRightHanded()}}>> is equal to <<true>>
     step: Then <<{{person.birthDate}}>> is equal to <<1981-10-31T04:31:27.000Z>>
     step: Then <<{{person.address.street}}>> is equal to <<str. Eroilor nr.75b>>
