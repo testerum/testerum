@@ -13,7 +13,7 @@ const appRoutes: Routes = [
     { path: ":project/not-found", component: NotFundComponent},
     { path: "not-found", component: NotFundComponent},
     { path: ":project/settings", component: SettingsModalComponent, canActivate: [LicenseGuard, CurrentProjectGuard]},
-    { path: ":project", redirectTo: ":project/features"},
+    { path: ":project", redirectTo: ":project/project"},
     { path: '**', component: PageNotFoundComponent }
 ];
 @NgModule({

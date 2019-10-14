@@ -33,35 +33,35 @@ export class UrlService {
     }
 
     public navigateToFeatures() {
-        this.navigateToProjectPath(["/features"]);
+        this.navigateToProjectPath(["/project"]);
     }
 
     public navigateToCreateFeature(path: Path) {
         if (!path) {
             throw new Error("A path should be provided")
         }
-        this.navigateToProjectPath(["/features/create", {path: path.toString()}]);
+        this.navigateToProjectPath(["/project/create", {path: path.toString()}]);
     }
 
     public navigateToFeature(path: Path) {
         if (!path) {
             throw new Error("A path should be provided")
         }
-        this.navigateToProjectPath(["/features/show", {path: path.toString()}]);
+        this.navigateToProjectPath(["/project/show", {path: path.toString()}]);
     }
 
     public navigateToCreateTest(path: Path) {
         if (!path) {
             throw new Error("A path should be provided")
         }
-        this.navigateToProjectPath(["/features/tests/create", {path: path.toString()}]);
+        this.navigateToProjectPath(["/project/tests/create", {path: path.toString()}]);
     }
 
     public navigateToTest(path: Path) {
         if (!path) {
             throw new Error("A path should be provided")
         }
-        this.navigateToProjectPath(["/features/tests/show", {path: path.toString()}]);
+        this.navigateToProjectPath(["/project/tests/show", {path: path.toString()}]);
     }
 
     public navigateToResources() {
