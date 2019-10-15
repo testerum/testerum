@@ -126,7 +126,6 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
         this.scenarioParamModalSubscription = this.scenarioParamModalService
             .showEditScenarioParamModal(this.model.scenarioParam, this.scenarioTreeComponentService.testModel.scenarios, this.getScenarioOfThisParam())
             .subscribe( (paramModalResult: ScenarioParamChangeModel) => {
-
                 this.scenarioTreeComponentService.updateScenariosParams(paramModalResult, this.getScenarioOfThisParam());
         });
     }
