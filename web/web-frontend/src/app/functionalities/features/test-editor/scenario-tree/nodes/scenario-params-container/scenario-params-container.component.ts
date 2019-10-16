@@ -43,14 +43,14 @@ export class ScenarioParamsContainerComponent implements OnInit, OnDestroy {
     }
 
     onAddParameter() {
-        if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); }
 
         this.scenarioParamModalSubscription = this.scenarioParamModalService
             .showEditScenarioParamModal(null, this.scenarioTreeComponentService.testModel.scenarios, (this.model.getParent() as ScenarioContainerModel).scenario)
             .subscribe( (paramChangeModel: ScenarioParamChangeModel) => {
-
                 this.model.getNodeState().showChildren = true;
                 this.scenarioTreeComponentService.updateScenariosParams(paramChangeModel, this.getScenarioOfThisParam());
+
+                if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); } // if I take this action outside this, the parameter will not going to be added. I don't understand why, looks like a bug in Angular.
             });
     }
 
