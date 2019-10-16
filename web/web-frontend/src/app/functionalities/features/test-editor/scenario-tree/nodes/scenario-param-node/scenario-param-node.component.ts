@@ -121,10 +121,11 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
     }
 
     editOrViewResourceInModal() {
+        if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); }
+
         this.scenarioParamModalSubscription = this.scenarioParamModalService
             .showEditScenarioParamModal(this.model.scenarioParam, this.scenarioTreeComponentService.testModel.scenarios, this.getScenarioOfThisParam())
             .subscribe( (paramModalResult: ScenarioParamChangeModel) => {
-
                 this.scenarioTreeComponentService.updateScenariosParams(paramModalResult, this.getScenarioOfThisParam());
         });
     }
@@ -146,6 +147,8 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
     }
 
     moveParamUp() {
+        if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); }
+
         let scenario = this.getScenarioOfThisParam();
         let currentParam = this.model.scenarioParam;
         let currentParamIndex = scenario.params.indexOf(currentParam);
@@ -159,6 +162,8 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
     }
 
     moveParamDown() {
+        if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); }
+
         let scenario = this.getScenarioOfThisParam();
         let currentParam = this.model.scenarioParam;
         let currentParamIndex = scenario.params.indexOf(currentParam);

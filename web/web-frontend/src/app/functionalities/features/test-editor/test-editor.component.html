@@ -132,7 +132,8 @@
                 </div>
 
                 <scenario-tree [testModel]="testModel"
-                               [isEditMode]="isEditMode"></scenario-tree>
+                               [isEditMode]="isEditMode"
+                               [editModeEventEmitter]="editModeEventEmitter"></scenario-tree>
 
 <!-- STEPS ------------------------------------------------------------------------------------------------------------>
                 <p-messages *ngIf="warnings.length > 0" [(value)]="warnings" styleClass="error-message"></p-messages>

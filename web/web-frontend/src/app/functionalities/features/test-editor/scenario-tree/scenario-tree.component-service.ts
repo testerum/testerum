@@ -24,7 +24,7 @@ export class ScenarioTreeComponentService {
     scenarioToCopy: ScenarioContainerComponent;
 
     isEditMode: boolean;
-    editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+    editModeEventEmitter: EventEmitter<boolean>;
 
     initComponentTree() {
         ScenarioTreeUtil.mapScenarioToTreeModel(this.testModel.scenarios, this.jsonTreeModel);

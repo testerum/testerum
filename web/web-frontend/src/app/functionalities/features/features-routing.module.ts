@@ -12,7 +12,7 @@ import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
 const testsRoutes: Routes = [
     {
-        path: ":project/features", component: FeaturesComponent, canActivate: [LicenseGuard, CurrentProjectGuard], canActivateChild: [LicenseGuard],
+        path: ":project/project", component: FeaturesComponent, canActivate: [LicenseGuard, CurrentProjectGuard], canActivateChild: [LicenseGuard],
         children: [
             {
                 path: ':action', component: FeatureEditorComponent, resolve: {featureModel: FeatureResolver}, canDeactivate: [UnsavedChangesGuard]

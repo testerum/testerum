@@ -42,6 +42,6 @@ exec "$JAVACMD" \
     -Dfile.encoding=UTF8 \
     -Duser.timezone=GMT \
     -Dtesterum.packageDirectory="${BASEDIR}" \
-    -classpath "${BASEDIR}/runner/lib/*" \
+    -classpath "${BASEDIR}/runner/lib/*:${BASEDIR}/basic_steps/*" \
     com.testerum.runner_cmdline.TesterumRunner \
     "$@"
