@@ -92,6 +92,7 @@ public class MainFrame extends JFrame {
         portErrorMessage.setVisible(false);
         openInBrowserButton.setEnabled(true);
         saveAndRestartApplicationButton.setEnabled(true);
+        onOpenTesterumInBrowser();
     }
 
     private void setServerAsLoading() {
@@ -120,6 +121,10 @@ public class MainFrame extends JFrame {
 
     @SuppressWarnings("unused")
     private void onOpenInBrowserClicked(final ActionEvent actionEvent) {
+        onOpenTesterumInBrowser();
+    }
+
+    private void onOpenTesterumInBrowser() {
         try {
             Desktop.getDesktop().browse(new URI(urlTextFiled.getText()));
         } catch (final Exception e) {
