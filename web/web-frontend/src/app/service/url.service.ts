@@ -141,4 +141,12 @@ export class UrlService {
         commands[0] = "/" + this.contextService.getProjectName() + commands[0];
         return this.router.navigate(commands, extras);
     }
+
+    public navigateToVideos(url: string) {
+        let win = window.open("https://testerum.com/videos/", '_blank');
+    }
+
+    public navigateToDocumentation(url: string) {
+        let win = window.open("https://testerum.com/documentation/", '_blank');
+    }
 }

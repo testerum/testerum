@@ -80,4 +80,12 @@ export class HomeComponent implements OnInit, OnDestroy {
                 });            }
         });
     }
+
+    navigateToVideos() {
+        this.urlService.navigateToVideos('https://testerum.com/videos/');
+    }
+
+    navigateToDocumentation() {
+        this.urlService.navigateToDocumentation('https://testerum.com/documentation/');
+    }
 }

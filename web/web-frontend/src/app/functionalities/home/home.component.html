@@ -7,7 +7,9 @@
                 <div class="version">{{testerumVersion}}</div>
             </div>
             <div class="quote">
-                <div class="quote-sign">“</div>{{quote}}<div class="quote-sign">”</div>
+                <div class="quote-sign">“</div>
+                {{quote}}
+                <div class="quote-sign">”</div>
                 <div *ngIf="author" class="author">- {{author}}</div>
             </div>
         </div>
@@ -51,12 +53,40 @@
                             Open Project
                         </li>
                         <!--<li>--> <!-- TODO: uncomment when we will integrate GIT -->
-                            <!--<i class="fab fa-git-square"></i>-->
-                            <!--Check out from GIT-->
+                        <!--<i class="fab fa-git-square"></i>-->
+                        <!--Check out from GIT-->
                         <!--</li>-->
                     </ul>
                 </div>
             </div>
+
+            <div class="knowledge-start-panel">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Knowledge</div>
+                    <div class="quick-start panel-body">
+                        <ul>
+                            <li>
+                                <i class="fas fa-eye">
+                                    <a href="https://testerum.com/documentation/ui/why-testerum/"></a>
+                                </i>
+                                Sample Project
+                            </li>
+                            <li (click)="navigateToVideos()">
+                                <i class="fab fa-youtube"></i>
+                                Videos
+                            </li>
+                            <li (click)="navigateToDocumentation()">
+                                <i class="fas fa-book"></i>
+                                Documentation
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
+
+
     </div>
 </div>
