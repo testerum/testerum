@@ -68,6 +68,7 @@ import com.testerum.web_backend.controllers.tests.TestsController
 import com.testerum.web_backend.controllers.user.UserController
 import com.testerum.web_backend.controllers.variables.VariablesController
 import com.testerum.web_backend.controllers.version_info.VersionController
+import com.testerum.web_backend.services.demo.DemoService
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import com.testerum.web_backend.services.features.FeaturesFrontendService
 import com.testerum.web_backend.services.feedback.FeedbackFrontendService
@@ -79,6 +80,7 @@ import com.testerum.web_backend.services.initializers.caches.CachesInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.BasicStepsCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.JdbcDriversCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.LicenseCacheInitializer
+import com.testerum.web_backend.services.initializers.demo.DemoInitializer
 import com.testerum.web_backend.services.initializers.info_logging.InfoLoggerInitializer
 import com.testerum.web_backend.services.initializers.settings.SettingsManagerInitializer
 import com.testerum.web_backend.services.manual.AutomatedToManualTestMapper
@@ -242,10 +244,18 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             frontendDirs = frontendDirs
     )
 
+    private val demoService = DemoService(
+            testerumDirs = settingsModuleFactory.testerumDirs
+    )
+    private val demoInitializer = DemoInitializer(
+            demoService = demoService
+    );
+
     val webBackendInitializer = WebBackendInitializer(
             settingsManagerInitializer = settingsManagerInitializer,
             cachesInitializer = cachesInitializer,
-            infoLoggerInitializer = infoLoggerInitializer
+            infoLoggerInitializer = infoLoggerInitializer,
+            demoInitializer = demoInitializer
     )
 
 
@@ -452,7 +462,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             seleniumDriversFileService = fileServiceModuleFactory.seleniumDriversFileService,
             frontendDirs = frontendDirs
     )
-
 
     //---------------------------------------- web controllers ----------------------------------------//
 
