@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {Project} from "../model/home/project.model";
 
@@ -12,9 +12,14 @@ export class DemoService {
     constructor(private http: HttpClient) {}
 
     openDemoProject(): Observable<Project> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
 
         return this.http
-            .post<any>(this.BASE_URL+"/start", null, null)
+            .post<any>(this.BASE_URL+"/start", null, httpOptions)
             .pipe(map(it => Project.deserialize(it)));
     }
 }
