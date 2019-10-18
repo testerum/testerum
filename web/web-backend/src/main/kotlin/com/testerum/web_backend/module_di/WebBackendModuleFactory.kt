@@ -34,6 +34,7 @@ import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
 import com.testerum.settings.module_di.SettingsModuleFactory
 import com.testerum.web_backend.config.TesterumWebBackendConfig
 import com.testerum.web_backend.config.TesterumWebBackendConfigFactory
+import com.testerum.web_backend.controllers.demo.DemoController
 import com.testerum.web_backend.controllers.error.ErrorController
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_exception.CloudErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.cloud_invalid_credentials.CloudInvalidCredentialsResponsePreparer
@@ -480,6 +481,9 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             projectFrontendService = projectFrontendService
     )
 
+    private val demoController = DemoController(
+    )
+
     private val feedbackController = FeedbackController(
             feedbackFrontendService = feedbackFrontendService
     )
@@ -573,6 +577,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             versionController,
             homeController,
             projectController,
+            demoController,
             feedbackController,
             settingsController,
             runnerController,
