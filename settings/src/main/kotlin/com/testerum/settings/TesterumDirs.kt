@@ -26,4 +26,6 @@ class TesterumDirs {
     fun getJdbcDriversDir(): JavaPath = getInstallDir().resolve("relational_database_drivers")
     fun getSeleniumDriversDir(): JavaPath = getInstallDir().resolve("selenium-drivers")
 
+    fun getDemoDir(): JavaPath = getInstallDir().resolve("demo")
+    fun getDemoTestsDir(): JavaPath = getTesterumDir().resolve("demo-tests")
 }
