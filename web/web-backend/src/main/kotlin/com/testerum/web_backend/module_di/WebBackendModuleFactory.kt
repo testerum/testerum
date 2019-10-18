@@ -158,12 +158,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     //---------------------------------------- initializers ----------------------------------------//
 
-    private val settingsManagerInitializer = SettingsManagerInitializer(
-            settingsFileService = fileServiceModuleFactory.settingsFileService,
-            settingsManager = settingsModuleFactory.settingsManager,
-            settingsDir = frontendDirs.getSettingsDir()
-    )
-
     private val stepCachesInitializer = BasicStepsCacheInitializer(
             frontendDirs = frontendDirs,
             basicStepsCache = fileServiceModuleFactory.basicStepsCache
@@ -202,12 +196,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             signedLicensedUserProfileParser = signedLicensedUserProfileParser
     )
 
-    private val feedbackCloudClient = FeedbackCloudClient (
-            httpClient = httpClient,
-            baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
-            objectMapper = restApiObjectMapper
-    )
-
     private val licensesCloudClient = LicenseCloudClient(
             httpClient = httpClient,
             baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
@@ -240,25 +228,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             licenseCacheInitializer = licenseCacheInitializer
     )
 
-    private val infoLoggerInitializer = InfoLoggerInitializer(
-            settingsManager = settingsModuleFactory.settingsManager,
-            frontendDirs = frontendDirs
-    )
-
-    private val demoService = DemoService(
-            testerumDirs = settingsModuleFactory.testerumDirs
-    )
-    private val demoInitializer = DemoInitializer(
-            demoService = demoService
-    );
-
-    val webBackendInitializer = WebBackendInitializer(
-            settingsManagerInitializer = settingsManagerInitializer,
-            cachesInitializer = cachesInitializer,
-            infoLoggerInitializer = infoLoggerInitializer,
-            demoInitializer = demoInitializer
-    )
-
 
     //---------------------------------------- services ----------------------------------------//
 
@@ -289,6 +258,13 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val versionInfoFrontendService = VersionInfoFrontendService()
 
     private val variablesResolverService = VariablesResolverService()
+
+
+    private val feedbackCloudClient = FeedbackCloudClient (
+            httpClient = httpClient,
+            baseUrl = testerumWebBackendConfig.cloudFunctionsBaseUrl,
+            objectMapper = restApiObjectMapper
+    )
 
     private val feedbackFrontendService = FeedbackFrontendService (
             feedbackCloudClient = feedbackCloudClient
@@ -464,6 +440,12 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             frontendDirs = frontendDirs
     )
 
+    private val demoService = DemoService(
+            testerumDirs = settingsModuleFactory.testerumDirs,
+            projectFrontendService = projectFrontendService
+    )
+
+
     //---------------------------------------- web controllers ----------------------------------------//
 
     private val errorController = ErrorController(
@@ -491,6 +473,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val demoController = DemoController(
+            demoService = demoService
     )
 
     private val feedbackController = FeedbackController(
@@ -577,6 +560,33 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     private val seleniumDriversController = SeleniumDriversController(
             seleniumDriversFrontendService = seleniumDriversFrontendService
     )
+
+
+
+    //---------------------------------------- initializers ----------------------------------------//
+
+    private val settingsManagerInitializer = SettingsManagerInitializer(
+            settingsFileService = fileServiceModuleFactory.settingsFileService,
+            settingsManager = settingsModuleFactory.settingsManager,
+            settingsDir = frontendDirs.getSettingsDir()
+    )
+
+    private val infoLoggerInitializer = InfoLoggerInitializer(
+            settingsManager = settingsModuleFactory.settingsManager,
+            frontendDirs = frontendDirs
+    )
+
+    private val demoInitializer = DemoInitializer(
+            demoService = demoService
+    );
+
+    val webBackendInitializer = WebBackendInitializer(
+            settingsManagerInitializer = settingsManagerInitializer,
+            cachesInitializer = cachesInitializer,
+            infoLoggerInitializer = infoLoggerInitializer,
+            demoInitializer = demoInitializer
+    )
+
 
 
     //---------------------------------------- list of web controllers ----------------------------------------//
