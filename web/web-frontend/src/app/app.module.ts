@@ -61,6 +61,7 @@ import {AuthenticationHttpInterceptor} from "./service/interceptors/authenticati
 import {ConfigModule} from "./functionalities/config/config.module";
 import {RunConfigService} from "./service/run-config.service";
 import { MenuRunnerComponent } from './menu/runner/menu-runner.component';
+import {DemoService} from "./service/demo.service";
 
 @NgModule({
     imports: [
@@ -126,6 +127,7 @@ import { MenuRunnerComponent } from './menu/runner/menu-runner.component';
         TagsService,
         UserService,
         RunConfigService,
+        DemoService,
 
         ResourceService,
         RdbmsService,

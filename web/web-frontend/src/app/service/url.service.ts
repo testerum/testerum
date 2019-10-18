@@ -32,7 +32,7 @@ export class UrlService {
         win.focus();
     }
 
-    public navigateToFeatures() {
+    public navigateToProject() {
         this.navigateToProjectPath(["/project"]);
     }
 

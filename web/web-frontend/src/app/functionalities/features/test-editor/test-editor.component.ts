@@ -244,7 +244,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     private cancelActionAfterConfirmation(): void {
         if (this.isCreateAction) {
             this.setEditMode(false); //this is required for CanDeactivate
-            this.urlService.navigateToFeatures()
+            this.urlService.navigateToProject()
         } else {
             this.testsService.getTest(this.testModel.path.toString()).subscribe(
                 result => {
