@@ -60,7 +60,7 @@ export class TestsService {
     }
 
     showTestsScreen() {
-        this.urlService.navigateToFeatures();
+        this.urlService.navigateToProject();
     }
 
     getWarnings(testModel:TestModel): Observable<TestModel> {

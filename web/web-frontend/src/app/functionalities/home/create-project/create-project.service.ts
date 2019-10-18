@@ -32,7 +32,7 @@ export class CreateProjectService {
     onCreateProjectAction(createProjectRequest: CreateProjectRequest) {
         this.projectService.createProject(createProjectRequest).subscribe((project: Project) => {
             this.contextService.setCurrentProject(project);
-            this.urlService.navigateToFeatures();
+            this.urlService.navigateToProject();
         })
     }
 

@@ -11,6 +11,7 @@ import {ProjectService} from "../../service/project.service";
 import {UrlService} from "../../service/url.service";
 import {AreYouSureModalService} from "../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AreYouSureModalEnum} from "../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
+import {DemoService} from "../../service/demo.service";
 
 @Component({
     selector: 'home',
@@ -31,7 +32,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                 private createProjectService: CreateProjectService,
                 private fileDirChooserModalService: FileChooserModalService,
                 private areYouSureModalService: AreYouSureModalService,
-                private urlService: UrlService) {
+                private urlService: UrlService,
+                private demoService: DemoService) {
     }
 
     ngOnInit() {
@@ -52,7 +54,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     navigateToProject(project: Project) {
         this.projectService.openProject(project.path).subscribe((project: Project) => { //we call open project just to register the open date
             this.contextService.setCurrentProject(project);
-            this.urlService.navigateToFeatures();
+            this.urlService.navigateToProject();
         });
     }
 
@@ -64,7 +66,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.fileDirChooserModalService.showTesterumProjectChooserModal().subscribe((selectedPathAsString: string) => {
             this.projectService.openProject(selectedPathAsString).subscribe((project: Project) => {
                 this.contextService.setCurrentProject(project);
-                this.urlService.navigateToFeatures()
+                this.urlService.navigateToProject()
             });
         })
     }
@@ -78,6 +80,13 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.projectService.deleteProject(project.path).subscribe( value => {
                     ArrayUtil.removeElementFromArray(this.recentProjects, project);
                 });            }
+        });
+    }
+
+    onOpenDemoProject() {
+        this.demoService.openDemoProject().subscribe((project: Project) => {
+            this.contextService.setCurrentProject(project);
+            this.urlService.navigateToProject();
         });
     }
 

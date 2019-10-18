@@ -173,7 +173,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     private cancelActionAfterConfirmation(): void {
         if (this.isCreateAction) {
             this.setEditMode(false); //this is required for CanDeactivate
-            this.urlService.navigateToFeatures()
+            this.urlService.navigateToProject()
         } else {
             this.featureService.getFeature(this.model.path).subscribe(
                 result => {
