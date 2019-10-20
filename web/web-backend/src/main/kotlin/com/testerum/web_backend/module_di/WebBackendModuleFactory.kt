@@ -404,10 +404,20 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             testResolver = fileServiceModuleFactory.testResolver
     )
 
+    private val demoService = DemoService(
+            testerumDirs = settingsModuleFactory.testerumDirs
+    ).apply {
+        context.registerShutdownHook {
+            stopDemoApp()
+        }
+    }
+
     private val projectFrontendService = ProjectFrontendService(
             frontendDirs = frontendDirs,
             recentProjectsFileService = fileServiceModuleFactory.recentProjectsFileService,
             testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService,
+            demoService = demoService,
+            testerumDirs = settingsModuleFactory.testerumDirs,
             projectManager = projectManager
     )
 
@@ -440,10 +450,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             frontendDirs = frontendDirs
     )
 
-    private val demoService = DemoService(
-            testerumDirs = settingsModuleFactory.testerumDirs,
-            projectFrontendService = projectFrontendService
-    )
 
 
     //---------------------------------------- web controllers ----------------------------------------//
@@ -473,7 +479,8 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val demoController = DemoController(
-            demoService = demoService
+            demoService = demoService,
+            projectFrontendService = projectFrontendService
     )
 
     private val feedbackController = FeedbackController(

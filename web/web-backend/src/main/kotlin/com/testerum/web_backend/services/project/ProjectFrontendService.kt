@@ -7,7 +7,9 @@ import com.testerum.model.home.Project
 import com.testerum.model.project.FileProject
 import com.testerum.model.project.RecentProject
 import com.testerum.project_manager.ProjectManager
+import com.testerum.settings.TesterumDirs
 import com.testerum.web_backend.controllers.project.model.CreateProjectRequest
+import com.testerum.web_backend.services.demo.DemoService
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import org.slf4j.LoggerFactory
 import java.nio.file.AccessDeniedException
@@ -18,6 +20,8 @@ import java.nio.file.Path as JavaPath
 class ProjectFrontendService(private val frontendDirs: FrontendDirs,
                              private val recentProjectsFileService: RecentProjectsFileService,
                              private val testerumProjectFileService: TesterumProjectFileService,
+                             private val demoService: DemoService,
+                             private val testerumDirs: TesterumDirs,
                              private val projectManager: ProjectManager) {
 
     companion object {
@@ -103,7 +107,11 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
         // add to recent projects list
         recentProjectsFileService.add(recentProject, frontendDirs.getRecentProjectsFile())
 
-        return mapToProject(savedFileProject, recentProject)
+        val project = mapToProject(savedFileProject, recentProject)
+
+        startOrStopDemoApp(project)
+
+        return project
     }
 
     fun openProject(path: String): Project {
@@ -116,7 +124,10 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
         // load recent project
         val recentProject = recentProjectsFileService.updateLastOpened(projectRootDir, recentProjectsFile)
 
-        return mapToProject(fileProject, recentProject)
+        val project = mapToProject(fileProject, recentProject)
+        startOrStopDemoApp(project)
+
+        return project
     }
 
     fun reloadProject(path: String) {
@@ -162,4 +173,18 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
         )
     }
 
+    fun getDemoProject(): Project {
+        return openProject(
+            testerumDirs.getDemoTestsDir().toString()
+        )
+    }
+
+    private fun startOrStopDemoApp(project: Project) {
+        println("Project Path: ${project.path}");
+        if (testerumDirs.getDemoTestsDir().toString() == project.path) {
+            demoService.startDemoApp();
+        } else {
+            demoService.stopDemoApp();
+        }
+    }
 }
