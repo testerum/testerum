@@ -2,7 +2,9 @@
      (mouseenter)="show($event);"
      (mouseleave)="waitAndHide($event);">
 
-    <i class="fa_my-info-colored" aria-hidden="true" #actualTarget></i>
+    <i class="fa_my-info-colored"
+       [style.font-size]="iconFontSize"
+       aria-hidden="true" #actualTarget></i>
 
     <p-overlayPanel #op
                     appendTo="body"

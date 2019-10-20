@@ -16,6 +16,7 @@ export class InfoIconComponent {
     @Input() maxHeight: string = '400px';
     @Input() width: string;
     @Input() height: string;
+    @Input() iconFontSize: string = '1.3em';
 
     @ViewChild(OverlayPanel, { static: true }) overlayPanel: OverlayPanel ;
     @ViewChild("actualTarget", { static: true }) actualTargetElement: ElementRef;

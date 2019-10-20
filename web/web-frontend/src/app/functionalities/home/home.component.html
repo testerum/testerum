@@ -64,19 +64,17 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">Knowledge</div>
                     <div class="quick-start panel-body">
-                        <ul>
-                            <li (click)="onOpenDemoProject()">
+                        <ul class="knowledge-list">
+                            <li class="sample-project-option" (click)="onOpenDemoProject()">
                                 <i class="fas fa-eye"></i>
                                 Sample Project
+                                <info-icon class="info-sample-project" [iconFontSize]="'1em'"
+                                           [message]="getDemoDescription()"></info-icon>
                             </li>
                             <li (click)="navigateToVideos()">
-                                <i class="fab fa-youtube"></i>
-                                Videos
-                            </li>
-                            <li (click)="navigateToDocumentation()">
-                                <i class="fas fa-book"></i>
-                                Documentation
-                            </li>
+                                <i class="fab fa-youtube"></i> Videos</li>
+                            <li class ="documentation-option" (click)="navigateToDocumentation()">
+                                <i class="fas fa-book"></i> Documentation</li>
                         </ul>
                     </div>
                 </div>
