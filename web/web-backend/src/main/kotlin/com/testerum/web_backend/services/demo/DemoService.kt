@@ -1,10 +1,7 @@
 package com.testerum.web_backend.services.demo
 
-import com.testerum.common_fsnotifier.native_fs_notifier.event_interpreter.FsNotifierEventInterpreter
 import com.testerum.common_jdk.OsUtils
-import com.testerum.model.home.Project
 import com.testerum.settings.TesterumDirs
-import com.testerum.web_backend.services.project.ProjectFrontendService
 import org.apache.commons.io.FileUtils
 import org.slf4j.LoggerFactory
 import org.zeroturnaround.exec.ProcessExecutor
@@ -13,13 +10,12 @@ import org.zeroturnaround.exec.stream.LogOutputStream
 import org.zeroturnaround.process.ProcessUtil
 import org.zeroturnaround.process.Processes
 import org.zeroturnaround.process.SystemProcess
-import java.nio.file.Path
 import java.util.concurrent.TimeUnit
 
-class DemoService (private val testerumDirs: TesterumDirs,
-                   private val projectFrontendService: ProjectFrontendService) {
+class DemoService(private val testerumDirs: TesterumDirs) {
+
     companion object {
-        private val LOG = LoggerFactory.getLogger(FsNotifierEventInterpreter::class.java)
+        private val LOG = LoggerFactory.getLogger(DemoService::class.java)
     }
 
     private var demoAppProcess: Process? = null
@@ -33,10 +29,8 @@ class DemoService (private val testerumDirs: TesterumDirs,
     }
 
     fun startDemoApp() {
+
         LOG.debug("Starting DemoApp")
-        val scriptFileExtension = if (OsUtils.IS_WINDOWS) ".bat" else ".sh"
-        val scriptFileName = "start" + scriptFileExtension
-        val scriptFilePath: Path = testerumDirs.getDemoDir().resolve(scriptFileName)
 
         while (demoAppProcess != null && demoAppProcess!!.isAlive) {
             stopDemoApp();
@@ -44,7 +38,7 @@ class DemoService (private val testerumDirs: TesterumDirs,
         }
 
         ProcessExecutor()
-                .command(getCommand(scriptFilePath))
+                .command(getCommand())
                 .readOutput(true)
                 .addListener(object : ProcessListener() {
                     override fun afterStart(newProcess: Process, executor: ProcessExecutor) {
@@ -58,17 +52,26 @@ class DemoService (private val testerumDirs: TesterumDirs,
                             }
                         }
                 )
+                .destroyOnExit()
                 .start()
     }
 
 
-    private fun getCommand(scriptFilePath: Path ): List<String> {
+    private fun getCommand(): List<String> {
         val result = mutableListOf<String>()
 
-        result += scriptFilePath.toString()
+        // java
+        result += OsUtils.getJavaBinaryPath().toString()
+
+        result += "-Dfile.encoding=UTF8"
+        result += "-Duser.timezone=GMT"
+        result += "-Xmx1024m"
+        result += "-jar"
+        result += "${testerumDirs.getDemoDir()}\\lib\\demo-spring-petclinic.war"
 
         return result
     }
+
 
     fun stopDemoApp() {
         if (demoAppProcess != null) {
@@ -86,9 +89,4 @@ class DemoService (private val testerumDirs: TesterumDirs,
         )
     }
 
-    fun getDemoProject(): Project {
-        return projectFrontendService.openProject(
-                testerumDirs.getDemoTestsDir().toString()
-        )
-    }
 }
