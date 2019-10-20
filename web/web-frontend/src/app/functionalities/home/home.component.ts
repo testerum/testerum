@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Project} from "../../model/home/project.model";
 import {HomeService} from "../../service/home.service";
 import {Subscription} from "rxjs";
@@ -96,5 +96,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     navigateToDocumentation() {
         this.urlService.navigateToDocumentation('https://testerum.com/documentation/');
+    }
+
+    getDemoDescription(): string {
+        return "This demo will start an embedded application on localhost:9966\n" +
+            "A free port at this address is required, otherwise\n" +
+            "the demo-app will not start properly and the tests" +
+            "will not pass.\n" +
+            "Open this sample project and you will learn " +
+            "step-by-step how to use Testerum."
     }
 }
