@@ -9,8 +9,8 @@ import org.zeroturnaround.exec.stream.LogOutputStream
 import org.zeroturnaround.process.ProcessUtil
 import org.zeroturnaround.process.Processes
 import org.zeroturnaround.process.SystemProcess
+import java.io.File
 import java.util.concurrent.TimeUnit
-import java.nio.file.Path as JavaPath
 
 class TesterumExecuter {
 
@@ -69,7 +69,9 @@ class TesterumExecuter {
 
         // classpath
         result += "-classpath"
-        result += "${PathsManager.classpathLibDir}/*"
+        result += "${PathsManager.classpathLibDir}/*"+
+                  "${File.pathSeparatorChar}" +
+                  "${PathsManager.classpathBasicStepsDir}/*"
 
         // main class
         result += "com.testerum.web_backend.TesterumWebMain"
