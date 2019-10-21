@@ -77,6 +77,12 @@ object FileArgTransformer {
     }
 
     fun shouldTransform(argTypeMeta: TypeMeta): Boolean {
+        if(argTypeMeta is ObjectTypeMeta) {
+            when (argTypeMeta.javaType) {
+                "database.relational.model.RdbmsSql" -> return false;
+                "json.model.JsonResource" -> return false;
+            }
+        }
         return argTypeMeta is ObjectTypeMeta ||
                argTypeMeta is ListTypeMeta ||
                argTypeMeta is MapTypeMeta

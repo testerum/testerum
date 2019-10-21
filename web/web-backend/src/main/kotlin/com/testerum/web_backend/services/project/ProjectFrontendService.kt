@@ -174,13 +174,10 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
     }
 
     fun getDemoProject(): Project {
-        return openProject(
-            testerumDirs.getDemoTestsDir().toString()
-        )
+        return Project("Testerum-Sample-Project", testerumDirs.getDemoTestsDir().toString(), LocalDateTime.now())
     }
 
     private fun startOrStopDemoApp(project: Project) {
-        println("Project Path: ${project.path}");
         if (testerumDirs.getDemoTestsDir().toString() == project.path) {
             demoService.startDemoApp();
         } else {

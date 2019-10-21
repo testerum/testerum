@@ -1,16 +1,16 @@
 package json
 
+import com.testerum.common.json_diff.JsonComparer
+import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
+import com.testerum.common_json.util.prettyPrintJson
+import com.testerum.model.expressions.json.JsJson
 import com.testerum_api.testerum_steps_api.annotations.steps.Given
 import com.testerum_api.testerum_steps_api.annotations.steps.Param
 import com.testerum_api.testerum_steps_api.annotations.steps.Then
 import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
 import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
-import com.testerum.common.json_diff.JsonComparer
-import com.testerum.common.json_diff.impl.node_comparer.DifferentJsonCompareResult
-import com.testerum.common_json.util.prettyPrintJson
-import com.testerum.model.expressions.json.JsJson
-import com.testerum.model.expressions.json.JsonResource
+import json.model.JsonResource
 import json.transformer.JsonTextTransformer
 import json_support.module_di.JsonStepsModuleServiceLocator
 
