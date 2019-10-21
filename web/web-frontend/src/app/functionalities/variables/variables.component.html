@@ -56,39 +56,41 @@
                         <col span="1" style="width: 4%;">
                     </colgroup>
 
-                    <tr>
-                        <th>Name</th>
-                        <th>Value</th>
-                        <th></th>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <th>Value</th>
+                            <th></th>
+                        </tr>
 
-                    <tr *ngFor="let variable of variables; let last = last">
+                        <tr *ngFor="let variable of variables; let last = last">
 
-                        <!-- KEY -->
-                        <td class="variable-key">
-                            <input (change)="onNewKeyChange($event)"
-                                   [(ngModel)]="variable.key"
-                                   type="text" pInputText  class="form-control full-width">
-                        </td>
+                            <!-- KEY -->
+                            <td class="variable-key">
+                                <input (change)="onNewKeyChange($event)"
+                                       [(ngModel)]="variable.key"
+                                       type="text" pInputText  class="form-control full-width">
+                            </td>
 
-                        <!-- VALUE -->
-                        <td class="variable-value">
-                            <input (change)="onNewValueChange($event)"
-                                   (keydown)="onNewValueKeyDown($event, variable)"
-                                   [(ngModel)]="variable.value"
-                                   [class.inherited-variable-value]="variable.isVariableFromDefaultEnvironment"
-                                   type="text" pInputText  class="form-control full-width">
-                        </td>
+                            <!-- VALUE -->
+                            <td class="variable-value">
+                                <input (change)="onNewValueChange($event)"
+                                       (keydown)="onNewValueKeyDown($event, variable)"
+                                       [(ngModel)]="variable.value"
+                                       [class.inherited-variable-value]="variable.isVariableFromDefaultEnvironment"
+                                       type="text" pInputText  class="form-control full-width">
+                            </td>
 
-                        <!-- DELETE -->
-                        <td  class="variable-action">
-                            <a *ngIf="!last"
-                               href (click)="deleteVariable(variable);false;"
-                               class="btn btn-danger" aria-label="Delete">
-                                <i  class="far fa-trash-alt" aria-hidden="true"></i>
-                            </a>
-                        </td>
-                    </tr>
+                            <!-- DELETE -->
+                            <td  class="variable-action">
+                                <a *ngIf="!last"
+                                   href (click)="deleteVariable(variable);false;"
+                                   class="btn btn-danger" aria-label="Delete">
+                                    <i  class="far fa-trash-alt" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
 
