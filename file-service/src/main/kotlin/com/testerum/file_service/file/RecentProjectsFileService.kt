@@ -12,12 +12,13 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.model.project.RecentProject
+import com.testerum.settings.TesterumDirs
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import java.nio.file.Path as JavaPath
 
-class RecentProjectsFileService {
+class RecentProjectsFileService (private val testerumDirs: TesterumDirs) {
 
     companion object {
         private val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper().apply {
@@ -67,6 +68,12 @@ class RecentProjectsFileService {
 
     fun updateLastOpened(projectRootDir: JavaPath,
                          recentProjectsFile: JavaPath): RecentProject {
+
+        // to prevent Demo App to end-up in the recent projects
+        if (projectRootDir == testerumDirs.getDemoTestsDir()) {
+            return RecentProject(testerumDirs.getDemoTestsDir(), LocalDateTime.now())
+        }
+
         val recentProject = getByPathOrAdd(projectRootDir, recentProjectsFile)
         val recentProjectToSave = recentProject.copy(
                 lastOpened = LocalDateTime.now()

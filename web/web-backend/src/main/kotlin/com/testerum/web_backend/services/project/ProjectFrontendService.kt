@@ -174,7 +174,7 @@ class ProjectFrontendService(private val frontendDirs: FrontendDirs,
     }
 
     fun getDemoProject(): Project {
-        return Project("TESTERUM-DEMO", testerumDirs.getDemoTestsDir().toString(), LocalDateTime.now())
+        return Project("Testerum-Sample-Project", testerumDirs.getDemoTestsDir().toString(), LocalDateTime.now())
     }
 
     private fun startOrStopDemoApp(project: Project) {
