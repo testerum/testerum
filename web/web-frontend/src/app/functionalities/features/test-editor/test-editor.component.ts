@@ -72,6 +72,22 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
                 private contextService: ContextService,
                 private areYouSureModalService: AreYouSureModalService) {
         super();
+
+        //should be initialized before we use "setEditMode"
+        this.editModeEventEmitterSubscription = this.editModeEventEmitter.subscribe( (isEditMode: boolean) => {
+            if (isEditMode) {
+                this.tagsService.getTags().subscribe(tags => {
+                    ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
+                });
+            }
+
+            this.isEditMode = isEditMode;
+            this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
+            if(this.descriptionMarkdownEditor) {
+                this.descriptionMarkdownEditor.setEditMode(isEditMode);
+                this.descriptionMarkdownEditor.setValue(this.testModel.description);
+            }
+        })
     }
 
     ngOnInit(): void {
@@ -101,20 +117,6 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
             })
         });
 
-        this.editModeEventEmitterSubscription = this.editModeEventEmitter.subscribe( (isEditMode: boolean) => {
-            if (isEditMode) {
-                this.tagsService.getTags().subscribe(tags => {
-                    ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
-                });
-            }
-
-            this.isEditMode = isEditMode;
-            this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
-            if(this.descriptionMarkdownEditor) {
-                this.descriptionMarkdownEditor.setEditMode(isEditMode);
-                this.descriptionMarkdownEditor.setValue(this.testModel.description);
-            }
-        })
     }
 
     private getModelForWarningRecalculation() {
