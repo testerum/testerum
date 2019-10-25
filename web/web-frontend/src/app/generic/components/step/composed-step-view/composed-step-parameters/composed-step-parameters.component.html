@@ -3,41 +3,43 @@
 
     <div class="step-parameters-container">
         <table class="step-parameters-table table table-hover">
-            <ng-container *ngFor="let patternPart of patternParts; let i = index">
-                <tr *ngIf="isParamPattern(patternPart)">
-                    <td>
-                        <strong>{{asParam(patternPart).name}}</strong>
-                    </td>
-                    <td>
-                        <ng-container *ngIf="!isEditMode">
-                            {{getParamUiName(asParam(patternPart).uiType)}}
-                        </ng-container>
-                        <select *ngIf="isEditMode"
-                                class="smaller-input form-control"
-                                [value]="asParam(patternPart).uiType"
-                                #selectItem (change)="onValueChanged(selectItem.value, asParam(patternPart))">
-                            <option *ngFor="let enumValue of getStepParamTypesValues()" value="{{enumValue.uiType}}">
-                                {{enumValue.uiName}}
-                            </option>
-                        </select>
-                    </td>
-                    <td>
-                        <div *ngIf="isEnumType(asParam(patternPart))" style="display: flex">
-                            [&nbsp;
-                            <div *ngIf="!isEditMode" class="inline">
-                                {{asParam(patternPart).enumValues || ""}}
-                            </div>
+            <tbody>
+                <ng-container *ngFor="let patternPart of patternParts; let i = index">
+                    <tr *ngIf="isParamPattern(patternPart)">
+                        <td>
+                            <strong>{{asParam(patternPart).name}}</strong>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="!isEditMode">
+                                {{getParamUiName(asParam(patternPart).uiType)}}
+                            </ng-container>
+                            <select *ngIf="isEditMode"
+                                    class="smaller-input form-control"
+                                    [value]="asParam(patternPart).uiType"
+                                    #selectItem (change)="onValueChanged(selectItem.value, asParam(patternPart))">
+                                <option *ngFor="let enumValue of getStepParamTypesValues()" value="{{enumValue.uiType}}">
+                                    {{enumValue.uiName}}
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <div *ngIf="isEnumType(asParam(patternPart))" style="display: flex">
+                                [&nbsp;
+                                <div *ngIf="!isEditMode" class="inline">
+                                    {{asParam(patternPart).enumValues || ""}}
+                                </div>
 
-                            <div *ngIf="isEditMode" class="inline">
-                                <input [value]="asParam(patternPart).enumValues"
-                                       #allowedValueInput (change)="setAllowedValues(allowedValueInput.value, asParam(patternPart))"
-                                       type="text" class="smaller-input form-control">
+                                <div *ngIf="isEditMode" class="inline">
+                                    <input [value]="asParam(patternPart).enumValues"
+                                           #allowedValueInput (change)="setAllowedValues(allowedValueInput.value, asParam(patternPart))"
+                                           type="text" class="smaller-input form-control">
+                                </div>
+                                &nbsp;]
                             </div>
-                            &nbsp;]
-                        </div>
-                    </td>
-                </tr>
-            </ng-container>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
         </table>
     </div>
 </ng-container>

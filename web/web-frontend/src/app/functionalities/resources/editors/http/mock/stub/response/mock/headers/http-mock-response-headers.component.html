@@ -5,42 +5,43 @@
         <col *ngIf="isEditMode()" span="1" style="width: 2em;">
     </colgroup>
 
-    <tr>
-        <th>Header Name</th>
-        <th>Header Value</th>
-        <th *ngIf="isEditMode()"></th>
-    </tr>
+    <tbody>
+        <tr>
+            <th>Header Name</th>
+            <th>Header Value</th>
+            <th *ngIf="isEditMode()"></th>
+        </tr>
 
-    <!-- KEY -->
-    <tr *ngFor="let header of headers; let last = last">
-        <td *ngIf="!header.isEmpty() || isEditMode()">
-            <span *ngIf="!isEditMode()">{{header.key}}</span>
-            <p-autoComplete *ngIf="isEditMode()"
-                            (change)="onNewKeyChange($event)"
-                            [(ngModel)]="header.key"
-                            [suggestions]="suggestionHeaders"
-                            (completeMethod)="filterSuggestionHeaders($event)"
-                            inputStyleClass="autocomplete-input form-control"
-                            class="autocomplete-full-width"
-                            [dropdown]="true"></p-autoComplete>
-        </td>
+        <!-- KEY -->
+        <tr *ngFor="let header of headers; let last = last">
+            <td *ngIf="!header.isEmpty() || isEditMode()">
+                <span *ngIf="!isEditMode()">{{header.key}}</span>
+                <p-autoComplete *ngIf="isEditMode()"
+                                (change)="onNewKeyChange($event)"
+                                [(ngModel)]="header.key"
+                                [suggestions]="suggestionHeaders"
+                                (completeMethod)="filterSuggestionHeaders($event)"
+                                inputStyleClass="autocomplete-input form-control"
+                                class="autocomplete-full-width"
+                                [dropdown]="true"></p-autoComplete>
+            </td>
 
-        <!-- VALUE -->
-        <td *ngIf="!header.isEmpty() || isEditMode()">
-            <span *ngIf="!isEditMode()">{{header.value}}</span>
-            <input *ngIf="isEditMode()"
-                   (change)="onNewValueChange($event)"
-                   [(ngModel)]="header.value"
-                   type="text" pInputText  class="form-control full-width">
-        </td>
+            <!-- VALUE -->
+            <td *ngIf="!header.isEmpty() || isEditMode()">
+                <span *ngIf="!isEditMode()">{{header.value}}</span>
+                <input *ngIf="isEditMode()"
+                       (change)="onNewValueChange($event)"
+                       [(ngModel)]="header.value"
+                       type="text" pInputText  class="form-control full-width">
+            </td>
 
-        <!-- DELETE -->
-        <td *ngIf="!header.isEmpty() && isEditMode()">
-            <a href (click)="deleteHeader(header);false;"
-               class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
-                <i  class="far fa-trash-alt" aria-hidden="true"></i>
-            </a>
-        </td>
-    </tr>
-
+            <!-- DELETE -->
+            <td *ngIf="!header.isEmpty() && isEditMode()">
+                <a href (click)="deleteHeader(header);false;"
+                   class="btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
+                    <i  class="far fa-trash-alt" aria-hidden="true"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
 </table>

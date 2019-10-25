@@ -1,42 +1,46 @@
 <table class="headers table table-striped"
        [class.headers-edit]="isEditMode()">
+
     <colgroup>
         <col span="1">
         <col span="1">
         <col *ngIf="isEditMode()" span="1" style="width: 2em;">
     </colgroup>
 
-    <tr>
-        <th>Key</th>
-        <th>Value</th>
-        <th *ngIf="isEditMode()"></th>
-    </tr>
+    <tbody>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+            <th *ngIf="isEditMode()"></th>
+        </tr>
 
-    <tr *ngFor="let header of headers; let last = last">
-        <td *ngIf="!header.isEmpty() || isEditMode()">
-            <span *ngIf="!isEditMode()">{{header.key}}</span>
-            <p-autoComplete *ngIf="isEditMode()"
-                            (change)="onNewKeyChange($event)"
-                            (onSelect)="onNewKeyChange($event)"
-                            [(ngModel)]="header.key"
-                            [suggestions]="suggestionHeaders"
-                            (completeMethod)="filterSuggestionHeaders($event)"
-                            inputStyleClass="autocomplete-input form-control"
-                            class="autocomplete-full-width"
-                            [dropdown]="true"></p-autoComplete>
-        </td>
-        <td *ngIf="!header.isEmpty() || isEditMode()">
-            <span *ngIf="!isEditMode()">{{header.value}}</span>
-            <input *ngIf="isEditMode()"
-                   (change)="onNewValueChange($event)"
-                   [(ngModel)]="header.value"
-                   type="text" pInputText  class="form-control full-width">
-        </td>
-        <td *ngIf="!header.isEmpty() && isEditMode()">
-            <a href (click)="deleteHeader(header);false;"
-               class="delete-header-btn btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
-                <i  class="far fa-trash-alt" aria-hidden="true"></i>
-            </a>
-        </td>
-    </tr>
+        <tr *ngFor="let header of headers; let last = last">
+            <td *ngIf="!header.isEmpty() || isEditMode()">
+                <span *ngIf="!isEditMode()">{{header.key}}</span>
+                <p-autoComplete *ngIf="isEditMode()"
+                                (change)="onNewKeyChange($event)"
+                                (onSelect)="onNewKeyChange($event)"
+                                [(ngModel)]="header.key"
+                                [suggestions]="suggestionHeaders"
+                                (completeMethod)="filterSuggestionHeaders($event)"
+                                inputStyleClass="autocomplete-input form-control"
+                                class="autocomplete-full-width"
+                                [dropdown]="true"></p-autoComplete>
+            </td>
+            <td *ngIf="!header.isEmpty() || isEditMode()">
+                <span *ngIf="!isEditMode()">{{header.value}}</span>
+                <input *ngIf="isEditMode()"
+                       (change)="onNewValueChange($event)"
+                       [(ngModel)]="header.value"
+                       type="text" pInputText  class="form-control full-width">
+            </td>
+            <td *ngIf="!header.isEmpty() && isEditMode()">
+                <a href (click)="deleteHeader(header);false;"
+                   class="delete-header-btn btn btn-danger" *ngIf="isEditMode()" aria-label="Delete">
+                    <i  class="far fa-trash-alt" aria-hidden="true"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+
 </table>

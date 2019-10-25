@@ -3,31 +3,33 @@
 
     <div class="step-parameters-container">
         <table class="step-parameters-table table table-hover">
-            <ng-container *ngFor="let patternPart of patternParts; let i = index">
-                <tr *ngIf="isParamPattern(patternPart)">
-                    <td>
-                        <strong>{{asParam(patternPart).name}}</strong>
-                    </td>
-                    <td>
-                        <ng-container>
-                            {{getParamUiName(asParam(patternPart).uiType)}}
-                        </ng-container>
-                    </td>
-                    <td>
-                        <div *ngIf="isEnumType(asParam(patternPart).serverType)" style="display: flex">
-                            [&nbsp;
-                            <div *ngIf="!isEditMode" class="inline">
-                                {{asParam(patternPart).enumValues || ""}}
+            <tbody>
+                <ng-container *ngFor="let patternPart of patternParts; let i = index">
+                    <tr *ngIf="isParamPattern(patternPart)">
+                        <td>
+                            <strong>{{asParam(patternPart).name}}</strong>
+                        </td>
+                        <td>
+                            <ng-container>
+                                {{getParamUiName(asParam(patternPart).uiType)}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <div *ngIf="isEnumType(asParam(patternPart).serverType)" style="display: flex">
+                                [&nbsp;
+                                <div *ngIf="!isEditMode" class="inline">
+                                    {{asParam(patternPart).enumValues || ""}}
+                                </div>
+                                &nbsp;]
                             </div>
-                            &nbsp;]
-                        </div>
-                    </td>
-                    <td class="param-icon-column" *ngIf="asParam(patternPart).description">
-                        <info-icon [message]="asParam(patternPart).description"
-                                   maxWidth="500px"></info-icon>
-                    </td>
-                </tr>
-            </ng-container>
+                        </td>
+                        <td class="param-icon-column" *ngIf="asParam(patternPart).description">
+                            <info-icon [message]="asParam(patternPart).description"
+                                       maxWidth="500px"></info-icon>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
         </table>
     </div>
 </ng-container>
