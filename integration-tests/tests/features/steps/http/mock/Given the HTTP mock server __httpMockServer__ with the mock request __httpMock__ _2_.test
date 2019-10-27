@@ -1,0 +1,52 @@
+test-def: Given the HTTP mock server <<httpMockServer>> with the mock request <<httpMock>> (2)
+
+    description = <<
+        HTTP Mock  - Tests the Query Params
+        
+        
+        This test tells us if the HTTP mock step works well in terms of:
+        
+        -starting a server with a given port
+        -serves data as requested
+    >>
+
+    step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{get_users}}>>
+        var httpMockServer = <<
+            port: "12101"
+            
+        >>
+        var get_users = <<
+            expectedRequest:
+              method: GET
+              url: /users\?id=1
+            mockResponse:
+              statusCode: 200
+              headers:
+                Content-Type: application/json
+              body:
+                bodyType: JSON
+                content: "{\r\n   \"id\": 1\r\n}"
+            
+        >>
+    step: When I execute the HTTP request <<{{get_users}}>>
+        var get_users = <<
+            method: GET
+            url: http://localhost:12101/users?id=1
+            followRedirects: true
+            headers: {}
+            
+        >>
+    step: Then the HTTP response should be <<{{httpResponseVerify}}>>
+        var httpResponseVerify = <<
+            expectedStatusCode: 200
+            expectedHeaders:
+             -
+              key: Content-Type
+              compareMode: EXACT_MATCH
+              value: application/json
+            expectedBody:
+              httpBodyVerifyMatchingType: JSON_VERIFY
+              httpBodyType: JSON
+              bodyVerify: "{\r\n  \"id\": 1\r\n}"
+            
+        >>
