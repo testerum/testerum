@@ -48,7 +48,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
     @ViewChild(StepCallTreeComponent, { static: true }) stepCallTreeComponent: StepCallTreeComponent;
     descriptionMarkdownEditor: MarkdownEditorComponent;
-    @ViewChild("descriptionMarkdownEditor", { static: false }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
+    @ViewChild("descriptionMarkdownEditor", { static: true }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
         if (descriptionMarkdownEditor != null) {
             descriptionMarkdownEditor.setEditMode(this.isEditMode);
             descriptionMarkdownEditor.setValue(this.testModel.description);
@@ -75,6 +75,9 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
         //should be initialized before we use "setEditMode"
         this.editModeEventEmitterSubscription = this.editModeEventEmitter.subscribe( (isEditMode: boolean) => {
+
+            if(this.isEditMode == isEditMode) return;
+
             if (isEditMode) {
                 this.tagsService.getTags().subscribe(tags => {
                     ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
@@ -85,7 +88,6 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
             this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
             if(this.descriptionMarkdownEditor) {
                 this.descriptionMarkdownEditor.setEditMode(isEditMode);
-                this.descriptionMarkdownEditor.setValue(this.testModel.description);
             }
         })
     }

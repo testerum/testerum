@@ -42,7 +42,7 @@ export class ManualRunnerEditorComponent implements OnInit {
     ];
 
     descriptionMarkdownEditor: MarkdownEditorComponent;
-    @ViewChild("descriptionMarkdownEditor", { static: false }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
+    @ViewChild("descriptionMarkdownEditor", { static: true }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
         if (descriptionMarkdownEditor != null) {
             descriptionMarkdownEditor.setEditMode(this.isEditMode);
             descriptionMarkdownEditor.setValue(this.model.description);
