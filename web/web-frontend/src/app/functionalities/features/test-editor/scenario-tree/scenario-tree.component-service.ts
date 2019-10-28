@@ -199,10 +199,11 @@ export class ScenarioTreeComponentService {
     }
 
     private updateParmNameAndTypeAllScenarios(oldParam: ScenarioParam, newParam: ScenarioParam, scenarioOfChangedParam: Scenario) {
+        let oldParamName = oldParam.name;
 
         for (const scenario of this.testModel.scenarios) {
 
-            let paramWithOldName = this.getParamWithName(scenario, oldParam.name);
+            let paramWithOldName = this.getParamWithName(scenario, oldParamName);
             if (paramWithOldName == null) {
                 let indexOfOldParam = scenarioOfChangedParam.params.indexOf(oldParam);
 
