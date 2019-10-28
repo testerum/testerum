@@ -4,6 +4,7 @@ import com.testerum.model.arg.Arg
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.test.TestModel
+import com.testerum.model.test.scenario.Scenario
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.StepPatternPart
 
@@ -31,6 +32,10 @@ fun TestModel.isChangedRequiringSave(existingTest: TestModel?): Boolean {
     }
 
     if (tags.isChangedRequiringSave(existingTest.tags)) {
+        return true
+    }
+
+    if (scenarios.isChangedRequiringSave(existingTest.scenarios)) {
         return true
     }
 
@@ -85,6 +90,23 @@ private fun List<String>.isChangedRequiringSave(existingTags: List<String>): Boo
         val existingTag = existingTags[i]
 
         if (tag != existingTag) {
+            return true
+        }
+    }
+
+    return false
+}
+
+@JvmName("isChangedRequiringSaveScenarios")
+private fun List<Scenario>.isChangedRequiringSave(existingScenarios: List<Scenario>): Boolean {
+    if (this.size != existingScenarios.size) {
+        return true
+    }
+
+    for ((i, scenario) in this.withIndex()) {
+        val existingScenario = existingScenarios[i]
+
+        if (scenario != existingScenario) {
             return true
         }
     }
