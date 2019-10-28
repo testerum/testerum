@@ -1,13 +1,7 @@
 package com.testerum.runner_cmdline.events.execution_listeners.report_model.template
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.testerum.common_jdk.OsUtils
-import com.testerum.common_kotlin.PathUtils
-import com.testerum.common_kotlin.createDirectories
-import com.testerum.common_kotlin.deleteContentsRecursivelyIfExists
-import com.testerum.common_kotlin.doesNotExist
-import com.testerum.common_kotlin.readText
-import com.testerum.common_kotlin.writeText
+import com.testerum.common_kotlin.*
 import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.model.RunnerEvent
@@ -97,11 +91,6 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
         writeLatestSymlink()
         writeAutoRefreshDashboardHtmlFile()
 
-        if (!OsUtils.IS_WINDOWS) {
-            // Windows cannot create file symlinks without admin privileges
-            writeLatestReportSymlink()
-        }
-
         writeJsonFullStats()
         aggregateJsonFullStats()
         writeFullStatsApp()
@@ -119,19 +108,6 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
             )
         } catch (e: Exception) {
             LOG.warn("""failed to create/update "latest" report symlink""", e)
-        }
-    }
-
-    /** create/update "latest-report.html" report symlink */
-    private fun writeLatestReportSymlink() {
-        try {
-            PathUtils.createOrUpdateSymbolicLink(
-                    absoluteSymlinkPath = managedReportsDir.resolve("latest-report.html").toAbsolutePath().normalize(),
-                    absoluteTarget = RunnerDirs.getLatestReportSymlink(managedReportsDir).resolve("pretty").resolve("index.html").toAbsolutePath().normalize(),
-                    symlinkRelativeTo = managedReportsDir
-            )
-        } catch (e: Exception) {
-            LOG.warn("""failed to create/update "latest-report.html" symlink""", e)
         }
     }
 
