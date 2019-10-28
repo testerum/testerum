@@ -1,0 +1,105 @@
+test-def: Given the HTTP mock server <<httpMockServer>> with the mock request <<httpMock>> (4)  Scenarios ToDoList
+
+    description = <<
+        HTTP Mock  - Tets the Scenarios
+        
+        
+        This test tells us if the HTTP mock step works well in terms of:
+        
+        -starting a server with a given port
+        -serves data as requested
+    >>
+
+    step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{Empty_to_do_list}}>>
+        var httpMockServer = <<
+            port: "12101"
+            
+        >>
+        var Empty_to_do_list = <<
+            expectedRequest:
+              method: GET
+              url: /todo-items
+              scenario:
+                scenarioName: To do list
+                currentState: Started
+                newState: null
+            mockResponse:
+              statusCode: 200
+              headers:
+                Content-Type: application/json
+              body:
+                bodyType: JSON
+                content: "{\r\n  \"items\": []\r\n}"
+            
+        >>
+    step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{Post_first_to_do_item}}>>
+        var httpMockServer = <<
+            port: "12101"
+            
+        >>
+        var Post_first_to_do_item = <<
+            expectedRequest:
+              method: POST
+              url: /todo-items
+              scenario:
+                scenarioName: To do list
+                currentState: Started
+                newState: First item added
+            mockResponse:
+              statusCode: 201
+              headers:
+                Content-Type: application/json
+            
+        >>
+    step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{Single_item_to_do_list}}>>
+        var httpMockServer = <<
+            port: "12101"
+            
+        >>
+        var Single_item_to_do_list = <<
+            expectedRequest:
+              method: GET
+              url: /todo-items
+              scenario:
+                scenarioName: To do list
+                currentState: First item added
+                newState: null
+            mockResponse:
+              statusCode: 200
+              headers:
+                Content-Type: application/json
+              body:
+                bodyType: JSON
+                content: "{\r\n  \"items\": [\r\n    {\r\n      \"id\": \"1\",\r\n      \"description\"\
+                  : \"Read all about Scenarios\"\r\n    }\r\n  ]\r\n}"
+            
+        >>
+    step: When I execute the HTTP request <<{{get_empty_list}}>>
+        var get_empty_list = <<
+            method: GET
+            url: http://localhost:12101/todo-items
+            followRedirects: true
+            headers: {}
+            
+        >>
+    step: When I execute the HTTP request <<{{add_one_item}}>>
+        var add_one_item = <<
+            method: POST
+            url: http://localhost:12101/todo-items
+            followRedirects: true
+            headers:
+              Content-Type: application/json
+            body:
+              bodyType: RAW
+              content: "{\r\n  \"items\": [\r\n    {\r\n      \"id\": \"1\",\r\n      \"description\"\
+                : \"Read all about Scenarios\"\r\n    }\r\n  ]\r\n}"
+            
+        >>
+    step: When I execute the HTTP request <<{{get_item_list}}>>
+        var get_item_list = <<
+            method: GET
+            url: http://localhost:12101/todo-items
+            followRedirects: true
+            headers: {}
+            
+        >>

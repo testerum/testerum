@@ -157,7 +157,7 @@ export class ResourceMapEnum {
     public static HTTP_MOCK_STUB_VERIFY: ResourceMapEnum = new ResourceMapEnum(
         new ObjectTypeMeta("com.testerum.model.resources.http.mock.stub.HttpMock"),
         "com.testerum.model.resources.http.mock.stub.HttpMock",
-        "HttpStub",
+        "HttpMock",
         "http.stub.yaml",
         HttpMockComponent,
         () => {return new HttpMock()},
