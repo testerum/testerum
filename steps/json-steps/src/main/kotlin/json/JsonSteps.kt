@@ -26,11 +26,7 @@ class JsonSteps {
             description = "Sets the value of a variable to the given JSON."
     )
     fun declareJsonVariable(name: String,
-
-                            @Param(
-                                    transformer = JsonTextTransformer::class
-                            )
-                            value: JsonResource) {
+                            @Param(transformer = JsonTextTransformer::class) value: JsonResource) {
         val jsonValue = JsJson(value.text)
 
         val jsonValueForLogging = jsonValue.toPrettyString()
@@ -47,11 +43,7 @@ class JsonSteps {
             description = "Changes a JSON variable."
     )
     fun changeJson(name: String,
-
-                   @Param(
-                           transformer = JsonTextTransformer::class
-                   )
-                   changes: JsonResource) {
+                   @Param(transformer = JsonTextTransformer::class) changes: JsonResource) {
 
 
         val jsonObject = getJsJsonVariable(name)
@@ -88,10 +80,10 @@ class JsonSteps {
                     " The expected JSON can use comparison modes, and assertion functions, like ``@isNotNull()``.\n" +
                     "See <a target='_blank' href='https://testerum.com/documentation/ui/http/#http-verify-body-json'>JSON verify</a> for details."
     )
-    fun compareJsons(@Param(required = false) actualValue: Any?,
-                     @Param(required = false) expectedValue: Any?) {
-        val actual: String? = getJsonStringForComparison(actualValue, "actualValue")
-        val expected: String? = getJsonStringForComparison(expectedValue, "expectedValue")
+    fun compareJsons(@Param(transformer = JsonTextTransformer::class, required = false) actualValue: JsonResource?,
+                     @Param(transformer = JsonTextTransformer::class, required = false) expectedValue: JsonResource?) {
+        val actual: String? = actualValue?.text;
+        val expected: String? = expectedValue?.text
 
         if (actual == null) {
             if (expected != null) {

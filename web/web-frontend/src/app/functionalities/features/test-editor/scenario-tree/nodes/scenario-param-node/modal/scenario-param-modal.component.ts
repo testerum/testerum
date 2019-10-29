@@ -102,9 +102,10 @@ export class ScenarioParamModalComponent {
     }
 
     onNameChange(newName: string) {
-        this.newParam.name = newName;
         if (ArrayUtil.containsElement(this.otherParamsName, newName)) {
             FormUtil.addErrorToForm(this.form, "name", "parameter_with_the_same_name_already_exist");
+        } else {
+            this.newParam.name = newName;
         }
     }
 

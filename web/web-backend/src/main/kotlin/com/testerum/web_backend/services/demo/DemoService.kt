@@ -22,9 +22,14 @@ class DemoService(private val testerumDirs: TesterumDirs) {
 
     fun copyDemoFilesFromInstallDirToUserSettingsDir() {
 
+        val demoTestsLocation = testerumDirs.getDemoTestsDir().toFile()
+        if (demoTestsLocation.exists()) {
+            FileUtils.deleteDirectory(demoTestsLocation)
+        }
+
         FileUtils.copyDirectory(
                 testerumDirs.getDemoDir().resolve("tests").toFile(),
-                testerumDirs.getDemoTestsDir().toFile()
+                demoTestsLocation
         )
     }
 

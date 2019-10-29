@@ -121,13 +121,14 @@ export class ScenarioParamNodeComponent implements OnInit, OnDestroy {
     }
 
     editOrViewResourceInModal() {
-        if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); }
 
         this.scenarioParamModalSubscription = this.scenarioParamModalService
             .showEditScenarioParamModal(this.model.scenarioParam, this.scenarioTreeComponentService.testModel.scenarios, this.getScenarioOfThisParam())
             .subscribe( (paramModalResult: ScenarioParamChangeModel) => {
                 this.scenarioTreeComponentService.updateScenariosParams(paramModalResult, this.getScenarioOfThisParam());
-        });
+
+                if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); } //if I take this action outside this, the subscribe will not going to be called. I don't understand why, looks like a bug in Angular.
+            });
     }
 
     private getScenarioOfThisParam(): Scenario {
