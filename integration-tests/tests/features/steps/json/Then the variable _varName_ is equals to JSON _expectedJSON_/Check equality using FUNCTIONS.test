@@ -1,4 +1,4 @@
-test-def: Given  the variable <<name>> with JSON value <<value>>
+test-def: Check equality using FUNCTIONS
 
     step: Given the variable <<user>> with JSON value <<{{value}}>>
         var value = <<
@@ -26,13 +26,13 @@ test-def: Given  the variable <<name>> with JSON value <<value>>
               }
             }
         >>
-    step: Then the JSON <<{{user}}>> is equal to <<{{expectedValue}}>>
-        var expectedValue = <<
+    step: Then the variable <<user>> is equals to JSON <<{{expectedJSON}}>>
+        var expectedJSON = <<
             {
-              "id": 1,
-              "name": "Leanne Graham",
-              "username": "Bret",
-              "email": "Sincere@april.biz",
+              "id": "@isNotNull()",
+              "name": "@isNotBlank()",
+              "username": "@isNotEmpty()",
+              "email": "@matchesRegex('.+\\@.+\\..+')",
               "address": {
                 "street": "Kulas Light",
                 "suite": "Apt. 556",

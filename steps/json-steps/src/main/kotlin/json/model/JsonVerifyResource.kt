@@ -1,6 +1,6 @@
 package json.model
 
-data class JsonResource(val text: String) {
+data class JsonVerifyResource(val text: String) {
     override fun toString(): String {
         return text
     }

@@ -1,14 +1,14 @@
 package json.transformer
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.testerum.model.expressions.json.util.JSON_STEPS_OBJECT_MAPPER
+import com.testerum.step_transformer_utils.JsonVariableReplacer
 import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
 import com.testerum_api.testerum_steps_api.transformer.Transformer
-import com.testerum.step_transformer_utils.JsonVariableReplacer
 import json.model.JsonResource
 import json_support.module_di.JsonStepsModuleServiceLocator
-import com.testerum.model.expressions.json.util.JSON_STEPS_OBJECT_MAPPER
 
-class JsonTextTransformer: Transformer<JsonResource> {
+class JsonResourceTransformer: Transformer<JsonResource> {
 
     private val jsonVariableReplacer: JsonVariableReplacer = JsonStepsModuleServiceLocator.bootstrapper.jsonStepsModuleFactory.jsonVariableReplacer
 
@@ -24,5 +24,4 @@ class JsonTextTransformer: Transformer<JsonResource> {
 
         return JsonResource(serializedJson)
     }
-
 }

@@ -166,8 +166,8 @@ export class ResourceMapEnum {
         (input:string) => {return new HttpMock().deserialize(JsonUtil.parseJson(input))}
     );
     public static JSON_VERIFY: ResourceMapEnum = new ResourceMapEnum(
-        new ObjectTypeMeta("net.qutester.model.resources.json.verify.JsonVerify"),
-        "net.qutester.model.resources.json.verify.JsonVerify",
+        new ObjectTypeMeta("json.model.JsonVerifyResource"),
+        "json.model.JsonVerifyResource",
         "JsonVerify",
         "verify.json",
         JsonVerifyResourceComponent,

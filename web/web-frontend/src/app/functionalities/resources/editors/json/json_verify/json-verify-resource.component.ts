@@ -4,6 +4,8 @@ import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-p
 import {NgForm} from "@angular/forms";
 import {JsonUtil} from '../../../../../utils/json.util';
 import {JsonVerify} from "../../../../../generic/components/json-verify/model/json-verify.model";
+import * as Prism from 'prismjs';
+import 'prismjs/components/prism-json';
 
 @Component({
     moduleId: module.id,
@@ -72,5 +74,9 @@ export class JsonVerifyResourceComponent extends ResourceComponent<JsonVerify> i
 
     onTextChange(jsonAsString: string) {
         this.isValidJson = JsonUtil.isJson(jsonAsString);
+    }
+
+    getHighlightedJson(): string {
+        return Prism.highlight(this.model.jsonAsString, Prism.languages.json, 'json');
     }
 }

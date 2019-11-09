@@ -81,6 +81,7 @@ object FileArgTransformer {
             when (argTypeMeta.javaType) {
                 "database.relational.model.RdbmsSql" -> return false;
                 "json.model.JsonResource" -> return false;
+                "json.model.JsonVerifyResource" -> return false;
             }
         }
         return argTypeMeta is ObjectTypeMeta ||

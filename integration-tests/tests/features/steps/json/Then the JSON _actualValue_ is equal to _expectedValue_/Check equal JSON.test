@@ -1,4 +1,4 @@
-test-def: Given  the variable <<name>> with JSON value <<value>>
+test-def: Check equal JSON
 
     step: Given the variable <<user>> with JSON value <<{{value}}>>
         var value = <<
@@ -26,7 +26,8 @@ test-def: Given  the variable <<name>> with JSON value <<value>>
               }
             }
         >>
-    step: Then the JSON <<{{user}}>> is equal to <<{{expectedValue}}>>
+    step: Then the JSON <<{{actualValue}}>> is equal to <<{{expectedValue}}>>
+        var actualValue = <<{{user}}>>
         var expectedValue = <<
             {
               "id": 1,

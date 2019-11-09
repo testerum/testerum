@@ -1,9 +1,5 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.step.impl
 
-import com.testerum_api.testerum_steps_api.annotations.steps.Param
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
-import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
-import com.testerum_api.testerum_steps_api.transformer.Transformer
 import com.testerum.common_kotlin.indent
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.StepCall
@@ -13,6 +9,10 @@ import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.runner_cmdline.transformer.TransformerFactory
+import com.testerum_api.testerum_steps_api.annotations.steps.Param
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.lang.reflect.Parameter
@@ -158,13 +158,12 @@ class RunnerBasicStep(stepCall: StepCall,
                 return untransformedArg
             }
 
-            // we can only convert String-s
-            val mismatchedArgTypesErrorMessage = "mismatched argument types: the step method expects [${paramInfo.type.name}], but the actual value is [${untransformedType.name}]"
+            // if the "untransformedArg" is not a String we will call to String. Could access a variable from the context.
             val untransformedArgAsString: String = untransformedArg as? String
-                    ?: throw RuntimeException(mismatchedArgTypesErrorMessage)
+                    ?: untransformedArg.toString()
 
             if (transformer == null) {
-                throw RuntimeException("$mismatchedArgTypesErrorMessage; in addition, no Transformer<${paramInfo.type.simpleName}> could be found")
+                throw RuntimeException("No Transformer<${paramInfo.type.simpleName}> could be found")
             }
 
             return transformer.transform(
