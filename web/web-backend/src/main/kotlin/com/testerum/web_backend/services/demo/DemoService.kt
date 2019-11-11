@@ -81,7 +81,7 @@ class DemoService(private val testerumDirs: TesterumDirs) {
         result += "-Duser.timezone=GMT"
         result += "-Xmx1024m"
         result += "-jar"
-        result += "${testerumDirs.getDemoDir()}\\lib\\demo-spring-petclinic.war"
+        result += "${testerumDirs.getDemoDir()}/lib/demo-spring-petclinic.war"
 
         return result
     }
