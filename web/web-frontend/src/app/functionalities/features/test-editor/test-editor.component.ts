@@ -97,13 +97,14 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
         this.routeSubscription = this.route.data.subscribe(data => {
             this.testModel = data['testModel'];
-            if (this.descriptionMarkdownEditor && this.testModel.description) {
-                this.descriptionMarkdownEditor.setValue(this.testModel.description);
-            }
 
             this.isEditExistingTest =  IdUtils.isTemporaryId(this.testModel.id);
             this.setEditMode(IdUtils.isTemporaryId(this.testModel.id));
             this.isCreateAction = !this.testModel.path.fileName;
+
+            if (this.descriptionMarkdownEditor) {
+                this.descriptionMarkdownEditor.setValue(this.testModel.description, this.isCreateAction);
+            }
 
             this.initPathForTitle();
         });

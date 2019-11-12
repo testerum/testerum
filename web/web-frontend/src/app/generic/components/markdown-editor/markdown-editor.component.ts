@@ -19,12 +19,12 @@ export class MarkdownEditorComponent implements AfterViewInit {
     @ViewChild('descriptionArea', { static: true }) textarea: ElementRef;
     simpleMDE: SimpleMDE;
 
-    setValue(value: string): void {
+    setValue(value: string, isCreateMode: boolean = false): void {
         if (this.simpleMDE) {
-            if (!this.editMode) {
-                this.setEditMode(true);
+            if (this.simpleMDE.isPreviewActive()) {
+                this.simpleMDE.togglePreview();
                 this.simpleMDE.value(value ? value : "");
-                this.setEditMode(false);
+                this.simpleMDE.togglePreview();
             } else {
                 this.simpleMDE.value(value ? value : "");
             }

@@ -70,9 +70,6 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
 
         this.routeSubscription = this.route.data.subscribe(data => {
             this.model = data['featureModel'];
-            if (this.descriptionMarkdownEditor && this.model.description) {
-                this.descriptionMarkdownEditor.setValue(this.model.description);
-            }
 
             let actionParam = this.route.snapshot.params["action"];
 
@@ -84,6 +81,10 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
                 this.isCreateAction = false;
             }
             this.initPathForTitle();
+
+            if (this.descriptionMarkdownEditor) {
+                this.descriptionMarkdownEditor.setValue(this.model.description);
+            }
         });
     }
 
