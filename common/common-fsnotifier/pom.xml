@@ -6,7 +6,7 @@
     <parent>
         <artifactId>common</artifactId>
         <groupId>com.testerum</groupId>
-        <version>3.0.12</version>
+        <version>develop-SNAPSHOT</version>
     </parent>
 
     <artifactId>common-fsnotifier</artifactId>
