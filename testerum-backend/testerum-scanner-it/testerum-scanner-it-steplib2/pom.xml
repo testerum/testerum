@@ -6,7 +6,7 @@
     <parent>
         <artifactId>testerum-scanner-it</artifactId>
         <groupId>com.testerum</groupId>
-        <version>develop-SNAPSHOT</version>
+        <version>3.0.12</version>
     </parent>
 
     <artifactId>testerum-scanner-it-steplib2</artifactId>
