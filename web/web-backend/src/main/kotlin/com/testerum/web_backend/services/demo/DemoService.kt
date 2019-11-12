@@ -5,6 +5,7 @@ import com.testerum.settings.TesterumDirs
 import org.apache.commons.io.FileUtils
 import org.slf4j.LoggerFactory
 import org.zeroturnaround.exec.ProcessExecutor
+import org.zeroturnaround.exec.ProcessResult
 import org.zeroturnaround.exec.listener.ProcessListener
 import org.zeroturnaround.exec.stream.LogOutputStream
 import org.zeroturnaround.process.ProcessUtil
@@ -49,11 +50,19 @@ class DemoService(private val testerumDirs: TesterumDirs) {
                     override fun afterStart(newProcess: Process, executor: ProcessExecutor) {
                         demoAppProcess = newProcess
                     }
+
+                    override fun afterStop(process: Process?) {
+                        LOG.info("Demo app stopped")
+                    }
+
+                    override fun afterFinish(process: Process?, result: ProcessResult) {
+                        LOG.info("Demo app finished; exitCode=[${result.exitValue}]")
+                    }
                 })
                 .redirectOutput(
                         object : LogOutputStream() {
                             override fun processLine(line: String) {
-                                LOG.debug("DemoApp Log: ${line}")
+                                LOG.info("DemoApp Log: ${line}")
                             }
                         }
                 )
@@ -72,7 +81,7 @@ class DemoService(private val testerumDirs: TesterumDirs) {
         result += "-Duser.timezone=GMT"
         result += "-Xmx1024m"
         result += "-jar"
-        result += "${testerumDirs.getDemoDir()}\\lib\\demo-spring-petclinic.war"
+        result += "${testerumDirs.getDemoDir()}/lib/demo-spring-petclinic.war"
 
         return result
     }
