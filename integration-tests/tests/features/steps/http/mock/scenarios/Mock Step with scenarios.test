@@ -1,0 +1,143 @@
+test-def: Mock Step with scenarios
+
+    description = <<
+        HTTP Mock  - Tets the Scenarios
+        
+        
+        This test tells us if the HTTP mock step works well in terms of:
+        
+        -starting a server with a given port
+        -serves data as requested
+    >>
+
+    step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{get_users_list}}>>
+        var httpMockServer = <<
+            port: "12101"
+            
+        >>
+        var get_users_list = <<
+            expectedRequest:
+              method: GET
+              url: /users
+              scenario:
+                scenarioName: Users
+                currentState: Started
+                newState: null
+            mockResponse:
+              statusCode: 200
+              headers:
+                Content-Type: application/json
+              body:
+                bodyType: JSON
+                content: "{\r\n  \"users\": []\r\n}"
+            
+        >>
+    step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{add_user}}>>
+        var httpMockServer = <<
+            port: "12101"
+            
+        >>
+        var add_user = <<
+            expectedRequest:
+              method: POST
+              url: /users
+              scenario:
+                scenarioName: Users
+                currentState: Started
+                newState: First user added
+            mockResponse:
+              statusCode: 201
+              headers:
+                Content-Type: application/json
+              body:
+                bodyType: JSON
+                content: "{\r\n  \"users\": [\r\n    {\r\n      \"username\": \"john.john\",\r\
+                  \n      \"firstName\": \"John\",\r\n      \"lastName\": \"John\"\r\n    }\r\n\
+                  \  ]\r\n}"
+            
+        >>
+    step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{get_users_lists}}>>
+        var httpMockServer = <<
+            port: "12101"
+            
+        >>
+        var get_users_lists = <<
+            expectedRequest:
+              method: GET
+              url: /users
+              scenario:
+                scenarioName: Users
+                currentState: First user added
+                newState: null
+            mockResponse:
+              statusCode: 200
+              headers:
+                Content-Type: application/json
+              body:
+                bodyType: JSON
+                content: "{\r\n  \"users\": [\r\n    {\r\n      \"username\": \"john.john\",\r\
+                  \n      \"firstName\": \"John\",\r\n      \"lastName\": \"John\"\r\n    }\r\n\
+                  \  ]\r\n}"
+            
+        >>
+    step: When I execute the HTTP request <<{{get_users_list_}}>>
+        var get_users_list_ = <<
+            method: GET
+            url: http://localhost:12101/users
+            followRedirects: true
+            headers: {}
+            
+        >>
+    step: Then the HTTP response should be <<{{verify_users_list}}>>
+        var verify_users_list = <<
+            expectedStatusCode: 200
+            expectedBody:
+              httpBodyVerifyMatchingType: JSON_VERIFY
+              httpBodyType: JSON
+              bodyVerify: "{\r\n  \"users\": []\r\n}"
+            
+        >>
+    step: When I execute the HTTP request <<{{add_user}}>>
+        var add_user = <<
+            method: POST
+            url: http://localhost:12101/users
+            followRedirects: true
+            headers:
+              Content-Type: application/json
+            body:
+              bodyType: RAW
+              content: "{\r\n  \"users\": [\r\n    {\r\n      \"username\": \"john.john\",\r\n\
+                \      \"firstName\": \"John\",\r\n      \"lastName\": \"John\"\r\n    }\r\n \
+                \ ]\r\n}"
+            
+        >>
+    step: Then the HTTP response should be <<{{verify_created_user}}>>
+        var verify_created_user = <<
+            expectedStatusCode: 201
+            expectedBody:
+              httpBodyVerifyMatchingType: JSON_VERIFY
+              httpBodyType: JSON
+              bodyVerify: "{\r\n  \"users\": [\r\n    {\r\n      \"username\": \"john.john\",\r\
+                \n      \"firstName\": \"John\",\r\n      \"lastName\": \"John\"\r\n    }\r\n\
+                \  ]\r\n}"
+            
+        >>
+    step: When I execute the HTTP request <<{{get_users_list}}>>
+        var get_users_list = <<
+            method: GET
+            url: http://localhost:12101/users
+            followRedirects: true
+            headers: {}
+            
+        >>
+    step: Then the HTTP response should be <<{{verify_user_list_in__First_user_created__state}}>>
+        var verify_user_list_in__First_user_created__state = <<
+            expectedStatusCode: 200
+            expectedBody:
+              httpBodyVerifyMatchingType: JSON_VERIFY
+              httpBodyType: JSON
+              bodyVerify: "{\r\n  \"users\": [\r\n    {\r\n      \"username\": \"john.john\",\r\
+                \n      \"firstName\": \"John\",\r\n      \"lastName\": \"John\"\r\n    }\r\n\
+                \  ]\r\n}"
+            
+        >>
