@@ -1,4 +1,4 @@
-test-def: Given the HTTP mock server <<httpMockServer>> with the mock request <<httpMock>> (2)
+test-def: Mock Step with Query Params
 
     description = <<
         HTTP Mock  - Tests the Query Params
@@ -18,7 +18,12 @@ test-def: Given the HTTP mock server <<httpMockServer>> with the mock request <<
         var get_users = <<
             expectedRequest:
               method: GET
-              url: /users\?id=1
+              url: /users
+              params:
+               -
+                key: id
+                compareMode: EXACT_MATCH
+                value: "1"
             mockResponse:
               statusCode: 200
               headers:
