@@ -70,6 +70,8 @@
                                 Sample Project
                                 <info-icon class="info-sample-project" [iconFontSize]="'1em'"
                                            [message]="getDemoDescription()"></info-icon>
+
+                                <bubble-tip *ngIf="recentProjects.length == 0"></bubble-tip>
                             </li>
                             <li (click)="navigateToVideos()">
                                 <i class="fab fa-youtube"></i> Videos</li>

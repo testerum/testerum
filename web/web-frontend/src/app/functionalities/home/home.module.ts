@@ -10,6 +10,7 @@ import {ModalModule} from "ngx-bootstrap";
 import {FormsModule} from "@angular/forms";
 import {SelectProjectModalComponent} from "./multiple-projects-found/select-project-modal.component";
 import {SelectProjectModalService} from "./multiple-projects-found/select-project-modal.service";
+import { BubbleTipComponent } from './bubble-tip/bubble-tip.component';
 
 @NgModule({
     imports: [
@@ -26,6 +27,7 @@ import {SelectProjectModalService} from "./multiple-projects-found/select-projec
         HomeComponent,
         CreateProjectComponent,
         SelectProjectModalComponent,
+        BubbleTipComponent,
     ],
     entryComponents: [
         CreateProjectComponent,

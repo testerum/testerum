@@ -1,0 +1,10 @@
+<!--=== SOURCE: https://codepen.io/Founts/pen/gmhcl ==-->
+<div *ngIf="show"
+     (click)="$event.stopPropagation()"
+     @fade
+     class="talk-bubble tri-right round border right-top">
+    <i class="close fas fa-times-circle" (click)="onClose(); $event.stopPropagation()"></i>
+    <div class="talktext">
+        <p>To learn about Testerum check our sample project</p>
+    </div>
+</div>
