@@ -124,8 +124,23 @@ export class DateUtil {
     }
 
     static getDaysBetweenDates(startDate: Date, endDate: Date): number {
-        let secondsInADay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-        return Math.round(Math.abs((endDate.getTime() - startDate.getTime())/secondsInADay));
+        let millisInADay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+        return Math.round(Math.abs((endDate.getTime() - startDate.getTime())/millisInADay));
+    }
+
+    static getHoursBetweenDates(startDate: Date, endDate: Date): number {
+        let millisInAHour = 60*60*1000; // minutes*seconds*milliseconds
+        return Math.round(Math.abs((endDate.getTime() - startDate.getTime())/millisInAHour));
+    }
+
+    static getMinutesBetweenDates(startDate: Date, endDate: Date): number {
+        let millisInAMinute = 60*1000; // seconds*milliseconds
+        return Math.round(Math.abs((endDate.getTime() - startDate.getTime())/millisInAMinute));
+    }
+
+    static getSecondsBetweenDates(startDate: Date, endDate: Date): number {
+        let millisInASecond = 60*1000; // milliseconds
+        return Math.round(Math.abs((endDate.getTime() - startDate.getTime())/millisInASecond));
     }
 
     private static regexp = new RegExp('(\\d{1,2})-(\\d{1,2})-(\\d{4})(\\s+(\\d{1,2}):(\\d{1,2})(:(\\d{1,2}))?)?');

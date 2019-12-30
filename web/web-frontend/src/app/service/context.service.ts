@@ -6,6 +6,7 @@ import {LicenseInfo} from "../model/user/license/license-info.model";
 import {UserService} from "./user.service";
 import {UserLicenseInfo} from "../model/user/license/user-license-info.model";
 import {JsonUtil} from "../utils/json.util";
+import {DateUtil} from "../utils/date.util";
 
 @Injectable()
 export class ContextService {
@@ -93,6 +94,7 @@ export class ContextService {
 class LicenseContext {
     private LOCAL_STORAGE_AUTH_TOKEN_KEY = "authToken";
     private LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT = "LAST_USED_OF_REMAINING_DAYS_LICENSE_ALERT";
+    private LICENSE_ALERT_MODAL_SHOWN_DATE = "LICENSE_ALERT_MODAL_SHOWN_DATE";
 
     private licenseInfo: LicenseInfo;
 
@@ -113,7 +115,7 @@ class LicenseContext {
         return !!this.licenseInfo.currentUserLicense;
     }
 
-    hasValidLicenseOrTrialValidOrExpired(): boolean {
+    hasValidLicenseOrTrial(): boolean {
         if (!this.licenseInfo) return false;
 
         if (this.licenseInfo.currentUserLicense && this.licenseInfo.currentUserLicense.expired == false) {
@@ -149,6 +151,18 @@ class LicenseContext {
 
     getLicenseInfo(): LicenseInfo {
         return this.licenseInfo;
+    }
+
+    getLicenseAlertModalShownDate(): Date {
+        let dateAsIsoString = localStorage.getItem(this.LICENSE_ALERT_MODAL_SHOWN_DATE);
+        if (!dateAsIsoString) {
+            return new Date(1900, 1, 1);
+        }
+        return new Date(dateAsIsoString);
+    }
+
+    saveLicenseAlertModalShownDate(date: Date) {
+        localStorage.setItem(this.LICENSE_ALERT_MODAL_SHOWN_DATE, date.toISOString());
     }
 
     getLastUsedOfRemainingDaysLicenseAlert(): number {

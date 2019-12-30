@@ -6,24 +6,14 @@ import com.testerum.web_backend.filter.cache.DisableCacheFilter
 import com.testerum.web_backend.filter.project.CurrentProjectFilter
 import com.testerum.web_backend.filter.project_fswatcher_pause.ProjectFsWatcherPauseFilter
 import com.testerum.web_backend.filter.security.CurrentUserFilter
-import com.testerum.web_backend.filter.security.TesterumSecurityFilter
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
 import org.eclipse.jetty.security.SecurityHandler
-import org.eclipse.jetty.server.Handler
-import org.eclipse.jetty.server.HandlerContainer
-import org.eclipse.jetty.server.HttpConnectionFactory
-import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.server.ServerConnector
+import org.eclipse.jetty.server.*
 import org.eclipse.jetty.server.handler.ErrorHandler
 import org.eclipse.jetty.server.handler.HandlerList
 import org.eclipse.jetty.server.handler.StatisticsHandler
 import org.eclipse.jetty.server.session.SessionHandler
-import org.eclipse.jetty.servlet.DefaultServlet
-import org.eclipse.jetty.servlet.ErrorPageErrorHandler
-import org.eclipse.jetty.servlet.FilterHolder
-import org.eclipse.jetty.servlet.ServletContextHandler
-import org.eclipse.jetty.servlet.ServletHandler
-import org.eclipse.jetty.servlet.ServletHolder
+import org.eclipse.jetty.servlet.*
 import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer
 import org.fusesource.jansi.Ansi
@@ -32,7 +22,7 @@ import org.fusesource.jansi.AnsiConsole
 import org.slf4j.LoggerFactory
 import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.web.servlet.DispatcherServlet
-import java.util.EnumSet
+import java.util.*
 import javax.servlet.DispatcherType
 
 object TesterumWebMain {
@@ -147,16 +137,6 @@ object TesterumWebMain {
                     name = CurrentUserFilter::class.java.simpleName.decapitalize()
                 },
                 "/*",
-                EnumSet.of(DispatcherType.REQUEST)
-        )
-
-        // add TesterumSecurityFilter
-        webAppContext.addFilter(
-                FilterHolder().apply {
-                    filter = TesterumSecurityFilter()
-                    name = TesterumSecurityFilter::class.java.simpleName.decapitalize()
-                },
-                "/rest/*",
                 EnumSet.of(DispatcherType.REQUEST)
         )
 

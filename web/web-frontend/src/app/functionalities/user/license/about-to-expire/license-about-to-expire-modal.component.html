@@ -5,18 +5,18 @@
                 <button (click)="cancel()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">
                     <i class="fas fa-user"></i>
-                    {{isTrialLicense ? "Trial License" : "License Info"}}
+                    License Info
                 </h4>
             </div>
 
             <div class="modal-body">
-                <div class="title">{{isTrialLicense ? 'Your trial license is about to expire' : 'Your license is about to expire'}}</div>
+                <div class="title">Your license is about to expire</div>
 
                 <div class="remaining-days">{{daysUntilExpiration}}</div>
                 <div class="remaining-days-label">{{(daysUntilExpiration == 1) ? "remaining day" : "remaining days"}}</div>
                 <div class="buy">
-                    <div class="buy-label">{{isTrialLicense ? "Please consider buying a license" : "Please consider updating your license"}}</div>
-                    <button (click)="navigateToBuyPage()" type="button" class="btn btn-warning" data-dismiss="modal">{{isTrialLicense ? "Buy License" : "Renew License"}}</button>
+                    <div class="buy-label">Please consider updating your license</div>
+                    <button (click)="navigateToBuyPage()" type="button" class="btn btn-warning" data-dismiss="modal">Renew License</button>
                 </div>
             </div>
 

@@ -14,10 +14,13 @@ export class LicenseAboutToExpireModalService {
 
     showLicenseAboutToExpireModalIfIsTheCase() {
         let isTrialLicense = !!this.contextService.license.getLicenseInfo().trialLicense;
+        if (isTrialLicense) {
+            return;
+        }
 
         let daysUntilExpiration: number = this.getDaysUntilExpiration();
         let lastUsedOfRemainingDaysLicenseAlert: number = this.contextService.license.getLastUsedOfRemainingDaysLicenseAlert();
-        let nextAlertDaysRemaining: number = this.getNextToBeUsedOfRemainingDaysLicenseAlert(lastUsedOfRemainingDaysLicenseAlert, isTrialLicense);
+        let nextAlertDaysRemaining: number = this.getNextToBeUsedOfRemainingDaysLicenseAlert(lastUsedOfRemainingDaysLicenseAlert);
 
         if(lastUsedOfRemainingDaysLicenseAlert > 0 &&
             daysUntilExpiration > lastUsedOfRemainingDaysLicenseAlert) {
@@ -36,7 +39,6 @@ export class LicenseAboutToExpireModalService {
             let modalInstance: LicenseAboutToExpireModalComponent = modalComponentRef.instance;
 
             modalInstance.daysUntilExpiration = daysUntilExpiration;
-            modalInstance.isTrialLicense = isTrialLicense;
 
             modalInstance.modalComponentRef = modalComponentRef;
         }
@@ -53,13 +55,8 @@ export class LicenseAboutToExpireModalService {
         return -1;
     }
 
-    private getNextToBeUsedOfRemainingDaysLicenseAlert(lastUsedOfRemainingDaysLicenseAlert: number,
-                                                       isTrialLicense: boolean): number {
+    private getNextToBeUsedOfRemainingDaysLicenseAlert(lastUsedOfRemainingDaysLicenseAlert: number): number {
         for (const alertDay of Config.REMAINING_DAYS_LICENSE_ALERT) {
-            if (isTrialLicense && alertDay > 10) {
-                continue;
-            }
-
             if(alertDay >= lastUsedOfRemainingDaysLicenseAlert) {
                 continue;
             }

@@ -4,7 +4,6 @@ import {RouterModule, Routes} from "@angular/router";
 import {StepsComponent} from "./steps.component";
 import {ComposedStepEditorComponent} from "./composed-step-editor/composed-step-editor.component";
 import {ComposedStepEditorResolver} from "./composed-step-editor/composed-step-editor.resolver";
-import {LicenseGuard} from "../../service/guards/license.guard";
 import {BasicStepEditorComponent} from "./basic-step-editor/basic-step-editor.component";
 import {BasicStepEditorResolver} from "./basic-step-editor/basic-step-editor.resolver";
 import {UnsavedChangesGuard} from "../../service/guards/unsaved-changes.guard";
@@ -12,7 +11,7 @@ import {CurrentProjectGuard} from "../../service/guards/current-project.guard";
 
 const stepsRoutes: Routes = [
     {
-        path:":project/steps", component:StepsComponent, canActivate: [LicenseGuard, CurrentProjectGuard], canActivateChild: [LicenseGuard],
+        path:":project/steps", component:StepsComponent, canActivate: [CurrentProjectGuard],
         children: [
             {
                 path: 'composed', component: ComposedStepEditorComponent, resolve: {composedStepDef: ComposedStepEditorResolver}, canDeactivate: [UnsavedChangesGuard]

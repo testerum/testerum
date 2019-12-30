@@ -18,7 +18,6 @@ import {ModalDirective} from "ngx-bootstrap";
 export class LicenseAboutToExpireModalComponent implements OnInit, AfterViewInit {
 
     daysUntilExpiration: number;
-    isTrialLicense: boolean;
 
     @ViewChild("userProfileModal", { static: true }) modal: ModalDirective;
     modalComponentRef: ComponentRef<LicenseAboutToExpireModalComponent>;

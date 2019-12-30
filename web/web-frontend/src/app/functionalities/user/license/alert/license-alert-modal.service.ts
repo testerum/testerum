@@ -4,20 +4,21 @@ import {LicenseAlertModalComponent} from "./license-alert-modal.component";
 import {ContextService} from "../../../../service/context.service";
 import {Config} from "../../../../config";
 import {Router} from "@angular/router";
+import {DateUtil} from "../../../../utils/date.util";
 
 @Injectable()
 export class LicenseAlertModalService {
 
     private licenseAlertModalInstance: LicenseAlertModalComponent;
     private countdownUntilLicenseExpiredModalInterval: any;
-    private isTrialLicense: boolean;
+    private isExpiredLicense: boolean;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
                 private router: Router,
                 private contextService: ContextService) {
     }
 
-    private showAlertLicenseModal(isTrialLicense: boolean) {
+    private showAlertLicenseModal(isExpiredLicense: boolean) {
 
         if (window.location.pathname.startsWith("/license")) {
             return;
@@ -27,7 +28,7 @@ export class LicenseAlertModalService {
         let modalComponentRef = AppComponent.rootViewContainerRef.createComponent(factory);
         let modalInstance: LicenseAlertModalComponent = modalComponentRef.instance;
 
-        modalInstance.isTrialLicense = isTrialLicense;
+        modalInstance.isExpiredLicense = isExpiredLicense;
         modalInstance.licenseAlertModalService = this;
 
         modalInstance.modalComponentRef = modalComponentRef;
@@ -37,28 +38,38 @@ export class LicenseAlertModalService {
 
     public onApplicationInitialize() {
         let licenseInfo = this.contextService.license.getLicenseInfo();
-        if (!licenseInfo.trialLicense && !licenseInfo.currentUserLicense && licenseInfo.serverHasLicenses) {
-            return;
-        }
-        this.isTrialLicense = false;
 
-        if (licenseInfo.currentUserLicense &&
-            !licenseInfo.currentUserLicense.expired) {
-                return
+        this.isExpiredLicense = false;
+
+        if (licenseInfo.currentUserLicense) {
+            if (!licenseInfo.currentUserLicense.expired) {
+                return;
+            }
+            this.isExpiredLicense = true;
         }
+
         if (licenseInfo.trialLicense) {
             if (!licenseInfo.trialLicense.expired) {
                 return;
             }
-            this.isTrialLicense = true;
         }
 
-        this.showAlertLicenseModal(this.isTrialLicense);
+        if (!this.shouldShowLicenseAlert()) {
+            return;
+        }
+
+        this.showAlertLicenseModal(this.isExpiredLicense);
     }
 
     public startAlertLicenseModalCountdown() {
         this.countdownUntilLicenseExpiredModalInterval = setTimeout(() => {
-            this.showAlertLicenseModal(this.isTrialLicense);
-        }, 1000*Config.COUNTDOWN_UNTIL_LICENSE_EXPIRED_MODAL_IS_SHOWN_IN_SECONDS);
+            this.showAlertLicenseModal(this.isExpiredLicense);
+        }, 1000*Config.COUNTDOWN_LICENSE_ALERT_MODAL_IN_SECONDS);
+    }
+
+    private shouldShowLicenseAlert(): boolean {
+        let licenseAlertModalShownDate = this.contextService.license.getLicenseAlertModalShownDate();
+        let secondsFromLastShown: number = DateUtil.getSecondsBetweenDates(new Date(), licenseAlertModalShownDate);
+        return Config.COUNTDOWN_LICENSE_ALERT_MODAL_IN_SECONDS < secondsFromLastShown;
     }
 }

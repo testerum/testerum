@@ -5,19 +5,24 @@
             <div class="modal-header">
                 <h4 class="modal-title">
                     <i class="fas fa-user"></i>
-                    License Expired
+                    License
                 </h4>
             </div>
 
             <!-- TRIAL LICENSE -->
             <div class="modal-body">
-                <div class="title">Your {{isTrialLicense?"Trial ":""}}License has expired.</div>
-                <div class="description">Please consider {{isTrialLicense?"buying a":"renewing your"}} license</div>
-                <div [class.hidden]="counter == 0" class="resume-evaluation-container">
-                    <div class="resume-evaluation-text">You can resume your work in:</div>
-                    <div class="resume-evaluation-countdown">{{counter}}</div>
-                    <div class="resume-evaluation-seconds">seconds</div>
+                <div class="title">Please consider {{isExpiredLicense?"renewing your":"buying a"}} license</div>
+                <div class="description">
+                    <div class="license-details">
+                        You can use Testerum for free:
+                        <ul>
+                            <li>for educational purposes</li>
+                            <li>for open source projects</li>
+                            <li>if your team has less than 5 members</li>
+                        </ul>
+                    </div>
                 </div>
+
                 <div class="info-text">
                     * If you already have a license assigned to you, please authenticate
                 </div>
@@ -28,8 +33,8 @@
                     <button (click)="onAuthenticate()" type="button" class="btn btn-success">Authenticate</button>
                 </div>
                 <div class="footer-right-side">
-                    <button (click)="openBuyPage()" type="button" class="btn btn-warning">{{isTrialLicense?"Buy license":"Renew license"}}</button>
-                    <button *ngIf="counter == 0" (click)="onContinueEvaluating()" type="button" class="btn btn-primary" data-dismiss="modal">Continue Evaluating</button>
+                    <button (click)="openBuyPage()" type="button" class="btn btn-warning">{{isExpiredLicense?"Renew license":"Buy license"}}</button>
+                    <button (click)="onContinueEvaluating()" type="button" class="btn btn-primary" data-dismiss="modal">Continue with the free license</button>
                 </div>
             </div>
         </div>

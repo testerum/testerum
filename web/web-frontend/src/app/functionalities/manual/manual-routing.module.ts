@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 
 import {RouterModule, Routes} from "@angular/router";
-import {LicenseGuard} from "../../service/guards/license.guard";
 import {ManualTestPlansComponent} from "./plans/manual-test-plans.component";
 import {ManualTestPlanEditorComponent} from "./plans/editor/manual-test-plan-editor.component";
 import {ManualTestPlanEditorResolver} from "./plans/editor/manual-test-plan-editor-resolver.service";
@@ -13,15 +12,13 @@ const manualRoutes: Routes = [
     {
         path: ":project/manual/plans/runner",
         component: ManualRunnerComponent,
-        canActivate: [LicenseGuard, CurrentProjectGuard],
-        canActivateChild: [LicenseGuard],
+        canActivate: [CurrentProjectGuard],
         canDeactivate: [UnsavedChangesGuard]
     },
     {
         path: ":project/manual/plans",
         component: ManualTestPlansComponent,
-        canActivate: [LicenseGuard, CurrentProjectGuard],
-        canActivateChild: [LicenseGuard],
+        canActivate: [CurrentProjectGuard],
         children: [
             {
                 path: ':action',

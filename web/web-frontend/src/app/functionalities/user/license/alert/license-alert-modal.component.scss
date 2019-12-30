@@ -14,18 +14,22 @@
         }
 
         .description {
+            height: 7em;
+            display: flex;
+            align-items: center;
+            margin-left: 6em;
             font-size: 1.5em;
-            margin-bottom: 2em;
-        }
 
-        .resume-evaluation-container {
-            .resume-evaluation-text {
-                font-size: 1.2em;
-                margin-bottom: 0.5em;
-            }
-            .resume-evaluation-countdown {
-                font-size: 2em;
-                font-weight: bold;
+            .license-details {
+                text-align: left;
+                display: inline-block;
+
+                ul {
+                    margin-left: 3em;
+                    font-size: .9em;
+                    line-height: 1.2em;
+                    margin-top: .5em;
+                }
             }
         }
 

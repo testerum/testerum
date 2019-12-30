@@ -4,14 +4,12 @@ import {
     ChangeDetectorRef,
     Component,
     ComponentRef,
-    OnInit,
     ViewChild
 } from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {LicenseAlertModalService} from "./license-alert-modal.service";
-import {Config} from "../../../../config";
-import {LicenseGuard} from "../../../../service/guards/license.guard";
 import {UrlService} from "../../../../service/url.service";
+import {ContextService} from "../../../../service/context.service";
 
 @Component({
     selector: 'license-alert-component',
@@ -19,36 +17,26 @@ import {UrlService} from "../../../../service/url.service";
     styleUrls: ['./license-alert-modal.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
 })
-export class LicenseAlertModalComponent implements OnInit, AfterViewInit {
+export class LicenseAlertModalComponent implements AfterViewInit {
 
-    isTrialLicense: boolean;
+    isExpiredLicense: boolean;
     licenseAlertModalService: LicenseAlertModalService;
 
-    counter: number;
-
-    @ViewChild("userProfileModal", { static: true }) modal: ModalDirective;
+    @ViewChild("userProfileModal", {static: true}) modal: ModalDirective;
     modalComponentRef: ComponentRef<LicenseAlertModalComponent>;
 
     constructor(private cd: ChangeDetectorRef,
+                private contextService: ContextService,
                 private urlService: UrlService) {
     }
 
-    ngOnInit(): void {
-    }
-
     ngAfterViewInit(): void {
-        this.counter = Config.COUNTDOWN_LICENSE_EXPIRED_MODAL_IN_SECONDS;
-
-        LicenseGuard.isLicenseExpiredAlertModalShown = true;
-
         this.modal.show();
         this.modal.onHidden.subscribe(event => {
             this.modalComponentRef.destroy();
             this.modalComponentRef = null;
         });
         this.refresh();
-
-        this.startCountdown();
     }
 
     refresh() {
@@ -58,22 +46,9 @@ export class LicenseAlertModalComponent implements OnInit, AfterViewInit {
     }
 
     onContinueEvaluating() {
-        LicenseGuard.isLicenseExpiredAlertModalShown = false;
+        this.contextService.license.saveLicenseAlertModalShownDate(new Date());
         this.modal.hide();
         this.licenseAlertModalService.startAlertLicenseModalCountdown();
-    }
-
-    private startCountdown() {
-
-        let interval = setInterval(() => {
-            this.counter--;
-
-            if(this.counter == 0 ){
-                clearInterval(interval);
-            }
-            this.refresh();
-
-        }, 1000);
     }
 
     openBuyPage() {
@@ -81,7 +56,6 @@ export class LicenseAlertModalComponent implements OnInit, AfterViewInit {
     }
 
     onAuthenticate() {
-        LicenseGuard.isLicenseExpiredAlertModalShown = false;
         this.modal.hide();
         this.urlService.navigateToLicense("");
     }

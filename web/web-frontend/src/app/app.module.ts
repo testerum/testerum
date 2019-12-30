@@ -22,7 +22,6 @@ import {VariablesComponent} from "./functionalities/variables/variables.componen
 import {ModalModule} from "ngx-bootstrap/modal";
 import {VariablesService} from "./service/variables.service";
 import {FileSystemService} from "./service/file-system.service";
-import {LicenseGuard} from "./service/guards/license.guard";
 import {SettingsService} from "./service/settings.service";
 import {FileChooserInputComponent} from "./generic/components/form/file_chooser/file-chooser-input.component";
 import {FileTreeContainerComponent} from "./generic/components/form/file_chooser/file-tree/nodes/container/file-tree-container.component";
@@ -106,7 +105,6 @@ import {DemoService} from "./service/demo.service";
         VariablesComponent,
     ],
     providers: [
-        LicenseGuard,
         UnsavedChangesGuard,
         CurrentProjectGuard,
 
