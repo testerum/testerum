@@ -25,7 +25,7 @@
                             class="recent-project"
                             (click)="navigateToProject(recentProject)">
                             <div class="project-name">{{recentProject.name}}</div>
-                            <div class="project-path">{{recentProject.path.toString(true)}}</div>
+                            <div class="project-path">{{recentProject.path.toString()}}</div>
                             <div class="button-panel btn-group my-project-button-panel">
                                 <div title="Remove project from list" class="btn btn-default btn-xs btn-group"
                                      (click)="removeProject(recentProject);$event.stopPropagation();">
@@ -68,7 +68,9 @@
                             <li class="sample-project-option" (click)="onOpenDemoProject()">
                                 <i class="fas fa-eye"></i>
                                 Sample Project
-                                <info-icon class="info-sample-project" [iconFontSize]="'1em'"
+                                <info-icon class="info-sample-project"
+                                           [iconFontSize]="'1em'"
+                                           [width]="'30em'"
                                            [message]="getDemoDescription()"></info-icon>
 
                                 <bubble-tip *ngIf="recentProjects.length == 0"></bubble-tip>
