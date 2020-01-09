@@ -14,17 +14,7 @@
                 <div *ngIf="isTrialLicense() || serverRequiresAuthentication()" class="not-licensed-panel">
 
                     <div *ngIf="isTrialLicense()" class="trial-license-panel">
-                        <div class="title">{{isTrialLicenseExpired() ? 'Trial Period Expired' : 'Trial License'}}</div>
-
-                        <div class="my-line">
-                            <label class="my-label label-size">End date:</label>
-                            <div class="my-value">{{getDateAsString(model.trialLicense.endDate)}} </div>
-                        </div>
-
-                        <div *ngIf="!this.model.trialLicense.expired" class="my-line">
-                            <label class="my-label label-size">Remaining days:</label>
-                            <div class="my-value">{{getTrialRemainingDays()}} </div>
-                        </div>
+                        <div class="title">Unlicensed</div>
                     </div>
 
                     <div *ngIf="!isTrialLicense()" class="license-required-panel">

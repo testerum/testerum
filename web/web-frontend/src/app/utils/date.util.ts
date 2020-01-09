@@ -139,7 +139,7 @@ export class DateUtil {
     }
 
     static getSecondsBetweenDates(startDate: Date, endDate: Date): number {
-        let millisInASecond = 60*1000; // milliseconds
+        let millisInASecond = 1000; // milliseconds
         return Math.round(Math.abs((endDate.getTime() - startDate.getTime())/millisInASecond));
     }
 
