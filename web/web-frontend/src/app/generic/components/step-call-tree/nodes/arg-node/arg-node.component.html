@@ -22,7 +22,6 @@
         </i>
 
         <ng-template #warningPopTemplate>
-            <i class="arg-error-icon-in-tooltip fas fa-exclamation-triangle error_color" aria-hidden="true"></i>
             <div *ngFor="let warning of model.arg.warnings">
                 <div>{{warning.message}}</div>
             </div>

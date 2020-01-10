@@ -7,7 +7,8 @@ import {
     OnInit,
     Type,
     ViewChild,
-    ViewContainerRef
+    ViewContainerRef,
+    ViewEncapsulation
 } from '@angular/core';
 import {ArgNodeModel} from "../../model/arg-node.model";
 import {ResourceComponent} from "../../../../../functionalities/resources/editors/resource-component.interface";
@@ -21,6 +22,7 @@ import {StringUtils} from "../../../../../utils/string-utils.util";
 @Component({
     selector: 'arg-node',
     templateUrl: 'arg-node.component.html',
+    encapsulation: ViewEncapsulation.None,
     styleUrls: [
         'arg-node.component.scss',
         '../step-call-tree.scss',
