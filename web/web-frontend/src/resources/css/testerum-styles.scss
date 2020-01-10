@@ -25,6 +25,10 @@ body {
     line-height: 1;
 }
 
+code { //used by PrismJs. example: to format the HTTP JSON Body
+    tab-size: 2;
+}
+
 @font-face {
     font-family: "Hack Regular Nerd Font Complete";
     src: url("../fonts/hack-nerd-font/Hack-Regular-Nerd-Font-Complete-Mono-2.0.0.ttf");
