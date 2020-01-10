@@ -171,7 +171,7 @@ export class ArgModalComponent {
         this.selectSharedResourceModal.resourceMapping = this.resourceMapping;
         this.selectSharedResourceModal.show().subscribe(
             (selectedPath: Path) => {
-                if (selectedPath != null) {
+                if (selectedPath != null && selectedPath.isFile()) {
                     this.resourceService.getResource(selectedPath, this.arg.content.createInstance()).subscribe(
                         (resource: ResourceContext<any>) => {
                             this.setResourceComponentInBody(resource.body, selectedPath.fileName);
