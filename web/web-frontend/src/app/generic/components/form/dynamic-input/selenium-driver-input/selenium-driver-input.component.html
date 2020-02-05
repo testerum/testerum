@@ -25,7 +25,10 @@
     <div *ngIf="supportsCustomDriverVersion()" class="my-selenium-driver-setting-line">
         <p-inputSwitch [(ngModel)]="customBrowserDriver"
                        (onChange)="onCustomBrowserDriverSwitchChanged()"></p-inputSwitch>
-        <div class="installation-value">{{customBrowserDriver ? "custom browser version" : "latest browser version"}}</div>
+        <div class="installation-value">{{customBrowserDriver ? "custom browser version" : "latest browser version"}}
+        </div>
+        <info-icon [message]='"In order to keep the package as small as possible, we keep embedded the last 3 drivers for each browser." +
+         " If you need an older version please check out: https://testerum.com/documentation/ui/selenium/."'></info-icon>
 
         <div [class.hidden]="!customBrowserDriver" class="custom-setting">
             <div class="my-selenium-driver-setting-value">
