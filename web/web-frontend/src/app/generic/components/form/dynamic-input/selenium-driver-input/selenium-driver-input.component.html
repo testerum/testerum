@@ -27,8 +27,6 @@
                        (onChange)="onCustomBrowserDriverSwitchChanged()"></p-inputSwitch>
         <div class="installation-value">{{customBrowserDriver ? "custom browser version" : "latest browser version"}}
         </div>
-        <info-icon [message]='"In order to keep the package as small as possible, we keep embedded the last 3 drivers for each browser." +
-         " If you need an older version please check out: https://testerum.com/documentation/ui/selenium/."'></info-icon>
 
         <div [class.hidden]="!customBrowserDriver" class="custom-setting">
             <div class="my-selenium-driver-setting-value">
@@ -37,6 +35,8 @@
                             (onChange)="onSelectedBrowserVersionChanged($event)">
                 </p-dropdown>
             </div>
+            <info-icon *ngIf="customBrowserDriver" [message]='"If you want to add a custom driver version please check out our documentation: https://testerum.com/documentation/ui/selenium/ "'>
+            </info-icon>
         </div>
     </div>
 
