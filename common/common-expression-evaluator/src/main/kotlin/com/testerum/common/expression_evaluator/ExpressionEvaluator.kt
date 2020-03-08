@@ -1,16 +1,10 @@
 package com.testerum.common.expression_evaluator
 
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
-import com.testerum.common.expression_evaluator.helpers.impl.DataGeneratorScriptingHelper
-import com.testerum.common.expression_evaluator.helpers.impl.DateScriptingHelper
-import com.testerum.common.expression_evaluator.helpers.impl.EscapeHelper
-import com.testerum.common.expression_evaluator.helpers.impl.GenerateStringByRegexScriptingHelper
-import com.testerum.common.expression_evaluator.helpers.impl.TestHelper
-import com.testerum.common.expression_evaluator.helpers.impl.UuidScriptingHelper
-import delight.nashornsandbox.NashornSandbox
-import delight.nashornsandbox.NashornSandboxes
+import com.testerum.common.expression_evaluator.helpers.impl.*
 import jdk.nashorn.internal.runtime.ECMAException
 import javax.script.Bindings
+import javax.script.ScriptEngineManager
 
 object ExpressionEvaluator {
 
@@ -24,29 +18,25 @@ object ExpressionEvaluator {
             TestHelper
     )
 
-    private val sandbox: NashornSandbox = NashornSandboxes.create().apply {
-        allowPrintFunctions(true)
-
-        disallowAllClasses()
-
-        for (helper in helpers) {
-            val globalVariables = helper.globalVariables
-
-            for ((name, value) in globalVariables) {
-                inject(name, value)
-            }
-        }
-    }
+    private val jsEngine = ScriptEngineManager().getEngineByName("nashorn")
 
     fun evaluate(expression: String,
                  context: Map<String, Any?>): Any? {
-        val bindings: Bindings = sandbox.createBindings().apply {
+        val bindings: Bindings = jsEngine.createBindings().apply {
+            for (helper in helpers) {
+                val globalVariables = helper.globalVariables
+
+                for ((name, value) in globalVariables) {
+                    put(name, value)
+                }
+            }
+
             putAll(context)
             put("vars", context)
         }
 
         try {
-            return sandbox.eval(expression, bindings)
+            return jsEngine.eval(expression, bindings)
         } catch (e: Exception) {
             val ecmaException = e.selfOrCauseOfType<ECMAException>()
             val originalErrorMessage = if (ecmaException != null) {
