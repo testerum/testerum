@@ -67,6 +67,29 @@ export class StatsModelExtractor {
         return result;
     }
 
+    getTagSuccessPerDay(tag: string): Map<Date, boolean> {
+        let result: Map<Date, boolean> = new Map<Date, boolean>();
+
+        if (!this.stats || !this.stats.perDay) {
+            return result;
+        }
+
+        this.stats.perDay.forEach((value: StatsAll, key: Date) => {
+            let tagStats = value.status.perTagAvg.get(tag);
+            if (tagStats) {
+                let isTagPassed: boolean = true;
+
+                if (tagStats.getCount(ExecutionStatus.FAILED) > 0 ||
+                    tagStats.getCount(ExecutionStatus.UNDEFINED) > 0) {
+                    isTagPassed = false;
+                }
+                result.set(key, isTagPassed);
+            }
+        });
+
+        return result;
+    }
+
     getTags(): Array<string> {
         let result: Array<string> = [];
 

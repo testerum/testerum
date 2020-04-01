@@ -4,6 +4,7 @@ import {ExecutionStatus} from "../../../../../../../common/testerum-model/report
 import {DataPointModel} from "../../model/data-point.model";
 import {TagUptime} from "./tag-uptime/tag-uptime.modal";
 import {ArrayUtil} from "../../../../../../pretty/app/src/app/util/array.util";
+import {StatsAll} from "../../../../../../../common/testerum-model/statistics-model/model/stats-all";
 
 @Component({
     selector: 'tag-uptime',
@@ -49,26 +50,16 @@ export class TagUptimeComponent implements OnInit, OnChanges {
 
         this.tagsUptime = [];
         for (const tag of this.tags) {
-            let passedTagPoints = this.statsService.statsModelExtractor.getTagData(ExecutionStatus.PASSED, tag);
-            let failedTagPoints = this.statsService.statsModelExtractor.getTagData(ExecutionStatus.FAILED, tag);
-            let undefinedTagPoints = this.statsService.statsModelExtractor.getTagData(ExecutionStatus.UNDEFINED, tag);
+            let tagSuccessPerDay = this.statsService.statsModelExtractor.getTagSuccessPerDay(tag);
 
             let passedSum = 0;
-            passedTagPoints.forEach((point: DataPointModel) => {
-                if (this.startDate <= point.x && point.x <= this.endDate) {
-                    passedSum += point.y
-                }
-            });
-
             let failedSum = 0;
-            failedTagPoints.forEach((point: DataPointModel) => {
-                if (this.startDate <= point.x && point.x <= this.endDate) {
-                    failedSum += point.y
-                }
-            });
-            undefinedTagPoints.forEach((point: DataPointModel) => {
-                if (this.startDate <= point.x && point.x <= this.endDate) {
-                    failedSum += point.y
+
+            tagSuccessPerDay.forEach((value: boolean, key: Date) => {
+                if (value) {
+                    passedSum += 1
+                } else {
+                    failedSum += 1
                 }
             });
 
