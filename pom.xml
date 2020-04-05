@@ -73,7 +73,7 @@
         <flyway.version>4.1.2</flyway.version>
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
         <junit.platform.version>1.2.0</junit.platform.version>
-        <jetty.version>9.4.12.v20180830</jetty.version>
+        <jetty.version>9.4.27.v20200227</jetty.version>
         <selenium.version>3.13.0</selenium.version>
     </properties>
 
