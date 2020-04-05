@@ -1,31 +1,28 @@
 @file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
 
-package org.garnishtest.modules.generic.exception_utils.suppressed_ex
+package com.testerum.step_rdbms_util.jdbc_transactions.exec
 
 import lombok.NonNull
-import org.garnishtest.modules.generic.exception_utils.suppressed_ex.action.RiskyAction
-import org.garnishtest.modules.generic.exception_utils.suppressed_ex.action.RiskyActionExecutionResult
 import javax.annotation.concurrent.NotThreadSafe
 
 @NotThreadSafe
 class ExceptionTrackingExecutor {
 
-    private val actionFailures = mutableListOf<RiskyActionExecutionResult<*>>()
+    private val actionFailures = mutableListOf<ExecutionResult<*>>()
 
-    fun <R> execute(@NonNull action: RiskyAction<R>): RiskyActionExecutionResult<R> {
-        try {
-            val result = action.execute()
+    fun <R> execute(@NonNull action: () -> R): ExecutionResult<R> {
+        return try {
+            val result = action()
 
-            return RiskyActionExecutionResult.success(result)
+            ExecutionResult.success(result)
         } catch (e: Exception) {
-            val failure = RiskyActionExecutionResult.failure<R>(e)
+            val failure = ExecutionResult.failure<R>(e)
             actionFailures.add(failure)
 
-            return failure
+            failure
         }
     }
 
-    @Throws(ExceptionTrackingExecutorException::class)
     fun throwIfNeeded() {
         if (actionFailures.size == 0) {
             return

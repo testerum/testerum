@@ -14,7 +14,6 @@
 
     <modules>
         <module>step-rdbms-util</module>
-        <module>step-exception-util</module>
         <module>step-transformer-utils</module>
     </modules>
 

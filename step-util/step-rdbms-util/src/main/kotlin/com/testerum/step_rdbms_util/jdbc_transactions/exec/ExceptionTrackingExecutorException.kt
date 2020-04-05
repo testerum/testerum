@@ -1,4 +1,4 @@
-package org.garnishtest.modules.generic.exception_utils.suppressed_ex
+package com.testerum.step_rdbms_util.jdbc_transactions.exec
 
 class ExceptionTrackingExecutorException(message: String,
                                          cause: Throwable,

@@ -2,7 +2,7 @@ package database.relational.connection_manager.model
 
 import com.testerum.common_rdbms.util.resolveConnectionUrl
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
-import org.garnishtest.modules.generic.db_util.scripts.DbScriptsExecutor
+import com.testerum.step_rdbms_util.scripts.DbScriptsExecutor
 import java.sql.Connection
 import java.sql.Driver
 import java.util.*
