@@ -239,12 +239,6 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
-                <artifactId>step-variables-resolver-util</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.testerum</groupId>
                 <artifactId>web-frontend</artifactId>
                 <version>${project.version}</version>
                 <classifier>dist</classifier>

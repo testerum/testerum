@@ -3,7 +3,6 @@ package database.relational.connection_manager.model
 import com.testerum.common_rdbms.util.resolveConnectionUrl
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
 import org.garnishtest.modules.generic.db_util.scripts.DbScriptsExecutor
-import org.garnishtest.modules.generic.variables_resolver.impl.MapBasedVariablesResolver
 import java.sql.Connection
 import java.sql.Driver
 import java.util.*
@@ -33,9 +32,8 @@ class RdbmsConnection constructor(val rdbmsConnectionConfig: RdbmsConnectionConf
         )
 
         val dbScriptsExecutor = DbScriptsExecutor(dataSource)
-        val mapBasedVariablesResolver = MapBasedVariablesResolver("\${", "}")
 
-        dbScriptsExecutor.executeScript(mapBasedVariablesResolver, sqlScript)
+        dbScriptsExecutor.executeScript(sqlScript)
     }
 
 }

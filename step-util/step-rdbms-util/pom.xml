@@ -23,12 +23,6 @@
             <artifactId>step-exception-util</artifactId>
         </dependency>
 
-        <!-- garnish-variables-resolver -->
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>step-variables-resolver-util</artifactId>
-        </dependency>
-
 
         <!--==================== 3rd party dependencies ====================-->
 
