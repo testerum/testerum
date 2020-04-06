@@ -1266,7 +1266,7 @@
                     <version>2.5.3</version>
 
                     <configuration>
-                        <tagNameFormat>release-tags/@{project.version}</tagNameFormat>
+                        <tagNameFormat>v@{project.version}</tagNameFormat>
                         <arguments>-Dproduction</arguments>
                         <goals>install</goals>
                     </configuration>
