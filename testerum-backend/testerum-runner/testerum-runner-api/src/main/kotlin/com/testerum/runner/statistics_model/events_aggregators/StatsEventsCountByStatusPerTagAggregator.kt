@@ -1,23 +1,17 @@
 package com.testerum.runner.statistics_model.events_aggregators
 
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum.common_stats.Aggregator
 import com.testerum.model.step.ComposedStepDef
-import com.testerum.runner.events.model.FeatureEndEvent
-import com.testerum.runner.events.model.FeatureStartEvent
-import com.testerum.runner.events.model.RunnerEvent
-import com.testerum.runner.events.model.StepEndEvent
-import com.testerum.runner.events.model.StepStartEvent
-import com.testerum.runner.events.model.TestEndEvent
-import com.testerum.runner.events.model.TestStartEvent
+import com.testerum.runner.events.model.*
 import com.testerum.runner.statistics_model.StatsCountByStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import java.util.*
 
 class StatsEventsCountByStatusPerTagAggregator : Aggregator<RunnerEvent, Map<String, StatsCountByStatus>> {
 
     private val featureTagsStack = ArrayDeque<Set<String>>()
-    private var testTags = emptySet<String>()
-    private var stepTags = emptySet<String>()
+    private var testTagsStack = ArrayDeque<Set<String>>()
+    private var stepTagsStack = ArrayDeque<Set<String>>()
 
     private val result = HashMap<String, HashMap<ExecutionStatus, Long>>()
 
@@ -49,13 +43,15 @@ class StatsEventsCountByStatusPerTagAggregator : Aggregator<RunnerEvent, Map<Str
 
     private fun updateTestTags(event: RunnerEvent) {
         if (event is TestStartEvent) {
-            testTags = TreeSet(event.tags)
+            testTagsStack.addLast(
+                    TreeSet(event.tags)
+            )
         }
     }
 
     private fun cleanupTestTags(event: RunnerEvent) {
         if (event is TestEndEvent) {
-            testTags = emptySet()
+            testTagsStack.pollLast()
         }
     }
 
@@ -63,14 +59,19 @@ class StatsEventsCountByStatusPerTagAggregator : Aggregator<RunnerEvent, Map<Str
         if (event is StepStartEvent) {
             val stepDef = event.stepCall.stepDef
             if (stepDef is ComposedStepDef) {
-                stepTags = TreeSet(stepDef.tags)
+                stepTagsStack.addLast(
+                        TreeSet(stepDef.tags)
+                )
             }
         }
     }
 
     private fun cleanupStepTags(event: RunnerEvent) {
         if (event is StepEndEvent) {
-            stepTags = emptySet()
+            val stepDef = event.stepCall.stepDef
+            if (stepDef is ComposedStepDef) {
+                stepTagsStack.pollLast()
+            }
         }
     }
 
@@ -82,14 +83,17 @@ class StatsEventsCountByStatusPerTagAggregator : Aggregator<RunnerEvent, Map<Str
             is TestEndEvent -> {
                 tags = TreeSet<String>().apply {
                     addAll(featureTagsStack.pollLast() ?: emptySet())
-                    addAll(testTags)
+                    addAll(testTagsStack.last)
                 }
 
                 status = event.status
             }
             is StepEndEvent -> {
-                tags = stepTags
-                status = event.status
+                val stepDef = event.stepCall.stepDef
+                if (stepDef is ComposedStepDef) {
+                    tags = stepTagsStack.last
+                    status = event.status
+                }
             }
         }
 
