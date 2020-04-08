@@ -1,4 +1,4 @@
-package com.testerum.web_backend.controllers.project.model
+package com.testerum.model.home
 
 import java.nio.file.Path as JavaPath
 
