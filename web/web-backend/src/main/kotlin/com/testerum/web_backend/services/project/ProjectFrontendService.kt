@@ -8,7 +8,7 @@ import com.testerum.model.project.FileProject
 import com.testerum.model.project.RecentProject
 import com.testerum.project_manager.ProjectManager
 import com.testerum.settings.TesterumDirs
-import com.testerum.web_backend.controllers.project.model.CreateProjectRequest
+import com.testerum.model.home.CreateProjectRequest
 import com.testerum.web_backend.services.demo.DemoService
 import com.testerum.web_backend.services.dirs.FrontendDirs
 import org.slf4j.LoggerFactory

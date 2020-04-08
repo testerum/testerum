@@ -1,7 +1,7 @@
 package com.testerum.web_backend.controllers.project
 
 import com.testerum.model.home.Project
-import com.testerum.web_backend.controllers.project.model.CreateProjectRequest
+import com.testerum.model.home.CreateProjectRequest
 import com.testerum.web_backend.services.project.ProjectFrontendService
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
