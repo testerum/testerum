@@ -2,11 +2,10 @@ package http.request.transformer
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.treeToValue
-import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
-import com.testerum_api.testerum_steps_api.transformer.Transformer
 import com.testerum.common_json.ObjectMapperFactory
 import com.testerum.model.resources.http.request.HttpRequest
+import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 import http_support.module_di.HttpStepsModuleServiceLocator
 
 class HttpRequestTransformer: Transformer<HttpRequest> {
@@ -22,7 +21,7 @@ class HttpRequestTransformer: Transformer<HttpRequest> {
 
         jsonVariableReplacer.replaceVariables(rootNode)
 
-        return objectMapper.treeToValue(rootNode)
+        return objectMapper.treeToValue(rootNode, HttpRequest::class.java)
     }
 
 }

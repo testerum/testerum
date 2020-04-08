@@ -2,11 +2,10 @@ package database.relational.transformer
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.treeToValue
-import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
-import com.testerum_api.testerum_steps_api.transformer.Transformer
 import com.testerum.common_json.ObjectMapperFactory
 import com.testerum.model.resources.rdbms.connection.RdbmsConnectionConfig
+import com.testerum_api.testerum_steps_api.transformer.ParameterInfo
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 import database.relational.connection_manager.RdbmsConnectionManager
 import database.relational.connection_manager.model.RdbmsConnection
 import database.relational.module_di.RdbmsStepsModuleServiceLocator
@@ -25,7 +24,7 @@ class RdbmsConnectionTransformer: Transformer<RdbmsConnection> {
 
         jsonVariableReplacer.replaceVariables(rootNode)
 
-        val connectionConfig: RdbmsConnectionConfig = objectMapper.treeToValue(rootNode)
+        val connectionConfig: RdbmsConnectionConfig = objectMapper.treeToValue(rootNode, RdbmsConnectionConfig::class.java)
 
         return rdbmsConnectionManager.getRdbmsConnection(connectionConfig)
     }
