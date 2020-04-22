@@ -82,7 +82,9 @@ class StatsEventsCountByStatusPerTagAggregator : Aggregator<RunnerEvent, Map<Str
         when (event) {
             is TestEndEvent -> {
                 tags = TreeSet<String>().apply {
-                    addAll(featureTagsStack.pollLast() ?: emptySet())
+                    for (featureTags in featureTagsStack) {
+                        addAll(featureTags)
+                    }
                     addAll(testTagsStack.last)
                 }
 

@@ -7,6 +7,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.streams.asSequence
 import java.nio.file.Path as JavaPath
 
 object RunnerDirs {
@@ -76,12 +77,9 @@ object RunnerDirs {
             return
         }
 
-        Files.list(managedReportsDir).use { managedReportsDirStream ->
-            for (dayDir in managedReportsDirStream) {
-                processExecutionDirsForDayDir(dayDir, process)
-            }
+        for (dayDir in managedReportsDir.listingSortedByLastModified()) {
+            processExecutionDirsForDayDir(dayDir, process)
         }
-
     }
 
     private fun processExecutionDirsForDayDir(dayDir: JavaPath,
@@ -93,10 +91,8 @@ object RunnerDirs {
             return
         }
 
-        Files.list(dayDir).use { dayDirStream ->
-            for (executionDir in dayDirStream) {
-                process(executionDir)
-            }
+        for (executionDir in dayDir.listingSortedByLastModified()) {
+            process(executionDir)
         }
     }
 
@@ -106,6 +102,12 @@ object RunnerDirs {
                 ?: return false
 
         return DAY_DIR_RECOGNIZER.matches(fileName.toString())
+    }
+
+    private fun JavaPath.listingSortedByLastModified(): Sequence<JavaPath> {
+        return Files.list(this)
+                .asSequence()
+                .sortedBy { Files.getLastModifiedTime(it) }
     }
 
 }
