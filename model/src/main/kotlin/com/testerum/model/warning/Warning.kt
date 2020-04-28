@@ -1,10 +1,12 @@
 package com.testerum.model.warning
 
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.model.message.MessageKey
 import java.text.MessageFormat
 
-data class Warning(val type: WarningType,
-                   val message: String) {
+data class Warning @JsonCreator constructor(@JsonProperty("type") val type: WarningType,
+                                            @JsonProperty("message") val message: String) {
 
     companion object {
         val UNDEFINED_STEP_CALL = Warning(
@@ -44,5 +46,4 @@ data class Warning(val type: WarningType,
             )
         }
     }
-
 }
