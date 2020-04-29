@@ -1,6 +1,8 @@
 package com.testerum.model.text.parts.param_meta
 
-class LocalDateTypeMeta(override val javaType: String = "java.time.LocalDate") : TypeMeta {
+import com.fasterxml.jackson.annotation.JsonProperty
+
+class LocalDateTypeMeta(@JsonProperty("javaType") override val javaType: String = "java.time.LocalDate") : TypeMeta {
     override fun fileType(): String {
         return "LOCAL_DATE"
     }
