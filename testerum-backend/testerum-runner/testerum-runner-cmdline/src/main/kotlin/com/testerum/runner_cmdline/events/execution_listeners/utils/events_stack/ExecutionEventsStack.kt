@@ -1,13 +1,15 @@
 package com.testerum.runner_cmdline.events.execution_listeners.utils.events_stack
 
-import com.testerum.runner.events.model.FeatureStartEvent
-import com.testerum.runner.events.model.ParametrizedTestStartEvent
-import com.testerum.runner.events.model.ScenarioStartEvent
-import com.testerum.runner.events.model.StepStartEvent
-import com.testerum.runner.events.model.TestStartEvent
+import com.testerum.runner.events.model.*
 import com.testerum.runner.report_model.ReportStep
-import java.util.ArrayDeque
+import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.collections.ArrayList
+import kotlin.collections.List
+import kotlin.collections.iterator
+import kotlin.collections.joinToString
+import kotlin.collections.plusAssign
+import kotlin.collections.reverse
 
 class ExecutionEventsStack {
 
@@ -105,7 +107,7 @@ class ExecutionEventsStack {
         val stepPath = getCurrentStepPath()
 
         if (featurePath == "") {
-            return "$testName-logs"
+            return "$testName/step-$stepPath-logs"
         } else {
             return "$featurePath/$testName/step-$stepPath-logs"
         }
