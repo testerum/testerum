@@ -1,5 +1,4 @@
 import {Path} from "../infrastructure/path/path.model";
-import {StepCall} from "../step-call.model";
 import {Serializable} from "../infrastructure/serializable.model";
 
 export class CheckComposedStepDefUpdateCompatibilityResponse implements Serializable<CheckComposedStepDefUpdateCompatibilityResponse>{
@@ -11,8 +10,8 @@ export class CheckComposedStepDefUpdateCompatibilityResponse implements Serializ
     pathsForTransitiveAffectedSteps: Array<Path> = [];
 
     deserialize(input: Object): CheckComposedStepDefUpdateCompatibilityResponse {
-        this.isCompatible = input["compatible"];
-        this.isUniqueStepPattern = input["uniqueStepPattern"];
+        this.isCompatible = input["isCompatible"];
+        this.isUniqueStepPattern = input["isUniqueStepPattern"];
 
         for (let pathsForAffectedTest of (input['pathsForAffectedTests']) || []) {
             this.pathsForAffectedTests.push(Path.deserialize(pathsForAffectedTest));
