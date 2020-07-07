@@ -9,3 +9,4 @@ Creating ComposedStep in the test screen
         - As a default this path can be the test path. User can change the location of this step later on the Steps screen
     - if the ComposedStep has parameters, how can the user set the type of this params
     - how a user can edit a new added step
+
