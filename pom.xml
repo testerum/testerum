@@ -52,7 +52,7 @@
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
         <!-- Kotlin settings -->
-        <kotlin.version>1.3.41</kotlin.version>
+        <kotlin.version>1.3.72</kotlin.version>
         <kotlin.apiVersion>1.3</kotlin.apiVersion>
         <kotlin.languageVersion>1.3</kotlin.languageVersion>
         <kotlin.jvmTarget>${maven.compiler.target}</kotlin.jvmTarget>
