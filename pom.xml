@@ -37,7 +37,7 @@
         <developerConnection>scm:git:git@github.com:testerum/testerum.git</developerConnection>
         <url>https://github.com/testerum/testerum</url>
         <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <properties>
         <!-- maven settings -->
@@ -1162,6 +1162,9 @@
                         <apiVersion>${kotlin.apiVersion}</apiVersion>
                         <languageVersion>${kotlin.languageVersion}</languageVersion>
                         <jvmTarget>${kotlin.jvmTarget}</jvmTarget>
+                        <args>
+                            <arg>-Xjvm-default=enable</arg>
+                        </args>
                     </configuration>
 
                     <executions>
