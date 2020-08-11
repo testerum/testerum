@@ -11,9 +11,9 @@ export class PathInfo implements Serializable<PathInfo> {
 
     deserialize(input: Object): PathInfo {
         this.pathAsString = input['pathAsString'];
-        this.isValidPath = input['validPath'];
-        this.isExistingPath = input['existingPath'];
-        this.isProjectDirectory = input['projectDirectory'];
+        this.isValidPath = input['isValidPath'];
+        this.isExistingPath = input['isExistingPath'];
+        this.isProjectDirectory = input['isProjectDirectory'];
         this.canCreateChild = input['canCreateChild'];
         return this;
     }
