@@ -4,7 +4,7 @@
 
     <groupId>com.testerum</groupId>
     <artifactId>testerum</artifactId>
-    <version>3.1.20</version>
+    <version>develop-SNAPSHOT</version>
 
     <modules>
         <module>common</module>
@@ -36,7 +36,7 @@
         <connection>https://github.com/testerum/testerum.git</connection>
         <developerConnection>scm:git:git@github.com:testerum/testerum.git</developerConnection>
         <url>https://github.com/testerum/testerum</url>
-        <tag>v3.1.20</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
