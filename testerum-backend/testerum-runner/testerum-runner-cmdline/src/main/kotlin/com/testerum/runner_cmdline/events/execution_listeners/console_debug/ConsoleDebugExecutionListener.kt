@@ -19,7 +19,7 @@ import com.testerum.runner_cmdline.events.execution_listeners.utils.console_outp
 import javax.annotation.concurrent.NotThreadSafe
 
 @NotThreadSafe
-class ConsoleDebugExecutionListener : BaseExecutionListener() {
+open class ConsoleDebugExecutionListener : BaseExecutionListener() {
 
     private var indentLevel = 0
 

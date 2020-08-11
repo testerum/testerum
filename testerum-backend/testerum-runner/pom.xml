@@ -6,7 +6,7 @@
     <parent>
         <artifactId>testerum-backend</artifactId>
         <groupId>com.testerum</groupId>
-        <version>3.1.20</version>
+        <version>develop-SNAPSHOT</version>
     </parent>
 
     <artifactId>testerum-runner</artifactId>
@@ -15,6 +15,7 @@
     <modules>
         <module>testerum-runner-api</module>
         <module>testerum-runner-cmdline</module>
+        <module>testerum-runner-junit</module>
         <module>testerum-runner-spring</module>
     </modules>
 

@@ -11,6 +11,7 @@ import com.testerum.runner_cmdline.events.execution_listeners.console.ConsoleExe
 import com.testerum.runner_cmdline.events.execution_listeners.console_debug.ConsoleDebugExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.json_stats.JsonStatsExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.junit.JUnitExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model.JsonModelExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.ManagedReportsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template.CustomTemplateExecutionListener
@@ -27,6 +28,8 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
                     RunnerReportType.JSON_EVENTS        to { properties: Map<String, String> -> JsonEventsExecutionListener(properties) },
                     RunnerReportType.JSON_MODEL         to { properties: Map<String, String> -> JsonModelExecutionListener(properties) },
                     RunnerReportType.JSON_STATS         to { properties: Map<String, String> -> JsonStatsExecutionListener(properties) },
+
+                    RunnerReportType.JUNIT              to { properties: Map<String, String> -> JUnitExecutionListener() },
 
                     RunnerReportType.CUSTOM_TEMPLATE    to { properties: Map<String, String> -> CustomTemplateExecutionListener(properties) },
                     RunnerReportType.PRETTY             to builtInTemplateExecutionListenerFactory("pretty")

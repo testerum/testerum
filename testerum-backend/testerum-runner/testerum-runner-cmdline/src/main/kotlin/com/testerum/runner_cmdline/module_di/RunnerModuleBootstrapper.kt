@@ -10,7 +10,6 @@ import com.testerum.runner_cmdline.module_di.submodules.RunnerListenersModuleFac
 import com.testerum.runner_cmdline.module_di.submodules.RunnerTransformersModuleFactory
 import com.testerum.scanner.step_lib_scanner.module_di.TesterumScannerModuleFactory
 import com.testerum.settings.module_di.SettingsModuleFactory
-import java.nio.file.Path as JavaPath
 
 class RunnerModuleBootstrapper(cmdlineParams: CmdlineParams,
                                stopWatch: StopWatch) {
@@ -26,7 +25,7 @@ class RunnerModuleBootstrapper(cmdlineParams: CmdlineParams,
 
     private val runnerTransformersModuleFactory = RunnerTransformersModuleFactory(context)
 
-    private val runnerListenersModuleFactory = RunnerListenersModuleFactory(context)
+    val runnerListenersModuleFactory = RunnerListenersModuleFactory(context)
 
     private val fileServiceModuleFactory = FileServiceModuleFactory(context, settingsModuleFactory, scannerModuleFactory)
 

@@ -1,8 +1,5 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.feature
 
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
 import com.testerum.common_kotlin.indent
 import com.testerum.model.feature.Feature
 import com.testerum.runner.events.model.FeatureEndEvent
@@ -12,11 +9,14 @@ import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
 
 class RunnerFeature(featurePathFromRoot: List<String>,
-                    private val featureName: String,
-                    private val tags: List<String>,
-                    private val featuresOrTests: List<RunnerFeatureOrTest>,
+                    val featureName: String,
+                    val tags: List<String>,
+                    val featuresOrTests: List<RunnerFeatureOrTest>,
                     indexInParent: Int): RunnerFeatureOrTest() {
 
     override lateinit var parent: RunnerTreeNode

@@ -1,30 +1,19 @@
 package com.testerum.runner_cmdline.cmdline.params
 
-import com.google.common.base.Splitter
-import com.testerum.common_kotlin.isDirectory
-import com.testerum.model.tests_finder.FeatureTestPath
-import com.testerum.model.tests_finder.ScenariosTestPath
 import com.testerum.model.tests_finder.TestPath
-import com.testerum.model.tests_finder.TestTestPath
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserVersionHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
-import com.testerum.runner_cmdline.dirs.RunnerDirs
+import com.testerum.runner_cmdline.cmdline.params.parser.parseStringToTestPath
 import picocli.CommandLine
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.nio.file.Path as JavaPath
 
 object CmdlineParamsParser {
-
-    private val testFileWithScenarioRegex = Regex("""(.*\.test)\[([^]]+)]""")
-    private val scenarioIndexesSplitter = Splitter.on(",")
-            .trimResults()
-            .omitEmptyStrings()
 
     fun parse(vararg args: String): CmdlineParams {
         val mutableParams = MutableCmdlineParams()
@@ -430,58 +419,7 @@ object CmdlineParamsParser {
         private fun getValidatedSettingsFile(): JavaPath? = getValidatedOptionalFile(settingsFile, "settingsFile")
 
         private fun getValidatedTestFilesOrDirectories(): List<TestPath> {
-            return testFilesOrDirectories.map { pathSpecification ->
-                val matchResult = testFileWithScenarioRegex.matchEntire(pathSpecification)
-
-                if (matchResult == null) {
-                    val javaPathSpecification = Paths.get(pathSpecification)
-
-                    val testPath = if (javaPathSpecification.isAbsolute) {
-                        javaPathSpecification
-                    } else {
-                        repositoryDirectory!!.resolve("features").resolve(pathSpecification)
-                    }
-
-                    val javaPath = getValidatedRequiredFileOrDirectory(testPath, "testPath")
-
-                    if (javaPath.isDirectory) {
-                        FeatureTestPath(javaPath)
-                    } else {
-                        TestTestPath(javaPath)
-                    }
-                } else {
-                    val javaPathSpecification = Paths.get(matchResult.groupValues[1])
-                    val scenarioIndexes = scenarioIndexesSplitter.split(matchResult.groupValues[2])
-                            .toList()
-                            .map {
-                                parseScenarioIndex(it)
-                            }
-
-                    val testPath = if (javaPathSpecification.isAbsolute) {
-                        javaPathSpecification
-                    } else {
-                        repositoryDirectory!!.resolve("features").resolve(javaPathSpecification)
-                    }
-
-                    val javaPath = getValidatedRequiredFileOrDirectory(testPath, "testPath")
-
-                    ScenariosTestPath(javaPath, scenarioIndexes)
-                }
-            }
-        }
-
-        private fun parseScenarioIndex(text: String): Int {
-            try {
-                val number = text.toInt()
-
-                if (number < 0) {
-                    throw IllegalArgumentException("invalid scenario index: should not be negative, but found [$number]")
-                }
-
-                return number
-            } catch (e: NumberFormatException) {
-                throw IllegalArgumentException("invalid scenario index: [$text] is not a number", e)
-            }
+            return parseStringToTestPath(testFilesOrDirectories, repositoryDirectory, usageToString(this))
         }
 
         private fun getValidatedRequiredDirectory(directory: JavaPath?, directoryLabel: String): JavaPath {
@@ -538,27 +476,5 @@ object CmdlineParamsParser {
 
             return normalizedFile
         }
-
-        private fun getValidatedRequiredFileOrDirectory(path: JavaPath, pathLabel: String): JavaPath {
-            val usageHelp = usageToString(this)
-
-            val normalizedPath = path.toAbsolutePath().normalize()
-            if (!Files.exists(normalizedPath)) {
-                throw CmdlineParamsParserParsingException(
-                        errorMessage = "$pathLabel [$normalizedPath] does not exist",
-                        usageHelp = usageHelp
-                )
-            }
-            if (!Files.isReadable(normalizedPath)) {
-                throw CmdlineParamsParserParsingException(
-                        errorMessage = "$pathLabel [$normalizedPath] is not readable; maybe you don't have enough access rights to read this path?",
-                        usageHelp = usageHelp
-                )
-            }
-
-            return normalizedPath
-        }
     }
-
 }
-

@@ -1,13 +1,5 @@
 package com.testerum.runner_cmdline
 
-import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
-import com.testerum_api.testerum_steps_api.test_context.TestContext
-import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
-import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsManager
-import com.testerum_api.testerum_steps_api.test_context.settings.RunnerTesterumDirs
-import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
-import com.testerum_api.testerum_steps_api.transformer.Transformer
 import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
 import com.testerum.file_service.caches.resolved.BasicStepsCache
@@ -27,6 +19,14 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.test_context.TestContextImpl
 import com.testerum.runner_cmdline.transformer.TransformerFactory
 import com.testerum.settings.TesterumDirs
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.TestContext
+import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
+import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsManager
+import com.testerum_api.testerum_steps_api.test_context.settings.RunnerTesterumDirs
+import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
+import com.testerum_api.testerum_steps_api.transformer.Transformer
 import java.nio.file.Path as JavaPath
 
 class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
@@ -47,7 +47,12 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
 
     fun execute(cmdlineParams: CmdlineParams): ExitCode {
         return try {
-            tryToExecute(cmdlineParams)
+            initialize(cmdlineParams)
+
+            // create execution tree
+            val suite = getRunnerSuiteToBeExecuted(cmdlineParams)
+
+            tryToExecute(cmdlineParams, suite)
         } catch (e: Exception) {
             System.err.println("execution failure")
             e.printStackTrace(System.err)
@@ -56,14 +61,21 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         }
     }
 
-    private fun tryToExecute(cmdlineParams: CmdlineParams): ExitCode {
+    fun getRunnerSuiteToBeExecuted(cmdlineParams: CmdlineParams): RunnerSuite {
         initialize(cmdlineParams)
 
-        // create execution tree
         val testsDir = runnerProjectManager.getProjectServices().dirs().getTestsDir()
-        val suite: RunnerSuite = runnerExecutionTreeBuilder.createTree(cmdlineParams, testsDir)
-        logRunnerSuite(suite)
+        val suite: RunnerSuite = runnerExecutionTreeBuilder.createTree(cmdlineParams, testsDir);
+        return suite;
+    }
 
+    fun jUnitExecute(cmdlineParams: CmdlineParams, suite: RunnerSuite): ExitCode {
+        return tryToExecute(cmdlineParams, suite)
+    }
+
+    private fun tryToExecute(cmdlineParams: CmdlineParams, suite: RunnerSuite): ExitCode {
+
+        logRunnerSuite(suite)
 
         // setup runner services
         val stepsClassLoader: ClassLoader = Thread.currentThread().contextClassLoader

@@ -51,7 +51,7 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
     override lateinit var parent: RunnerTreeNode
     override val positionInParent = PositionInParent("${test.id}-$filteredScenarioIndex", filteredScenarioIndex)
 
-    private val scenarioName = scenario.name ?: "Scenario ${originalScenarioIndex + 1}"
+    val scenarioName = scenario.name ?: "Scenario ${originalScenarioIndex + 1}"
 
     private fun getPathForLogging(): String {
         return "scenario [$scenarioName] (index $originalScenarioIndex) of test at [${filePath.toAbsolutePath().normalize()}]"

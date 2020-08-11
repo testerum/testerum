@@ -12,10 +12,10 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesConte
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import java.nio.file.Path as JavaPath
 
-class RunnerParametrizedTest(private val test: TestModel,
-                             private val filePath: JavaPath,
-                             private val indexInParent: Int,
-                             private val scenarios: List<RunnerScenario>) : RunnerFeatureOrTest() {
+class RunnerParametrizedTest(val test: TestModel,
+                             val filePath: JavaPath,
+                             val indexInParent: Int,
+                             val scenarios: List<RunnerScenario>) : RunnerFeatureOrTest() {
 
     init {
         for (scenario in scenarios) {

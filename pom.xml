@@ -4,7 +4,7 @@
 
     <groupId>com.testerum</groupId>
     <artifactId>testerum</artifactId>
-    <version>3.1.20</version>
+    <version>develop-SNAPSHOT</version>
 
     <modules>
         <module>common</module>
@@ -36,7 +36,7 @@
         <connection>https://github.com/testerum/testerum.git</connection>
         <developerConnection>scm:git:git@github.com:testerum/testerum.git</developerConnection>
         <url>https://github.com/testerum/testerum</url>
-        <tag>v3.1.20</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
@@ -81,6 +81,12 @@
         <dependencies>
 
             <!--==================== internal dependencies ====================-->
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>testerum-runner-cmdline</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.testerum</groupId>
@@ -334,6 +340,11 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>testerum-runner-junit</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!--==================== testerum dependencies ====================-->
 
@@ -977,8 +988,7 @@
                             <include>**/*Test.java</include>
                             <include>**/*TestSuite.java</include>
                         </includes>
-                        <argLine>-Xmx1024m -Xms128m -Dfile.encoding=UTF8 "-Dtesterum.packageDirectory=${project.basedir}/package"
-                        </argLine>
+<!--                        <argLine>-Xmx1024m -Xms128m -Dfile.encoding=UTF8 "-Dtesterum.packageDirectory=${project.basedir}/package"</argLine>-->
                         <excludes>
                             <exclude>**/*ManualTest.java</exclude>
                             <exclude>**/*IntegrationTest.java</exclude>
@@ -1174,6 +1184,13 @@
                             <goals>
                                 <goal>compile</goal>
                             </goals>
+                            <configuration>
+                                <sourceDirs>
+                                    <source>src/main/java</source>
+                                    <source>src/main/kotlin</source>
+                                    <source>src/main/resources</source>
+                                </sourceDirs>
+                            </configuration>
                         </execution>
                         <execution>
                             <id>test-compile</id>

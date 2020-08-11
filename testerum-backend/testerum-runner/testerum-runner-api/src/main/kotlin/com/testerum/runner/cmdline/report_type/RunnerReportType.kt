@@ -10,6 +10,8 @@ enum class RunnerReportType {
     JSON_MODEL,
     JSON_STATS,
 
+    JUNIT,
+
     CUSTOM_TEMPLATE,
     PRETTY,
     ;
