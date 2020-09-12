@@ -11,6 +11,7 @@ import com.testerum.runner_cmdline.events.execution_listeners.console.ConsoleExe
 import com.testerum.runner_cmdline.events.execution_listeners.console_debug.ConsoleDebugExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.json_stats.JsonStatsExecutionListener
+import com.testerum.runner_cmdline.events.execution_listeners.remote_server.RemoteServerExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model.JsonModelExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.ManagedReportsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template.CustomTemplateExecutionListener
@@ -29,8 +30,11 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
                     RunnerReportType.JSON_STATS         to { properties: Map<String, String> -> JsonStatsExecutionListener(properties) },
 
                     RunnerReportType.CUSTOM_TEMPLATE    to { properties: Map<String, String> -> CustomTemplateExecutionListener(properties) },
-                    RunnerReportType.PRETTY             to builtInTemplateExecutionListenerFactory("pretty")
-            ),
+                    RunnerReportType.PRETTY             to builtInTemplateExecutionListenerFactory("pretty"),
+
+                    RunnerReportType.REMOTE_SERVER      to { properties: Map<String, String> -> RemoteServerExecutionListener(properties) }
+
+                ),
             managedReportsExecutionListenerFactory = {  managedReportsDir: JavaPath -> ManagedReportsExecutionListener(managedReportsDir) }
     )
 

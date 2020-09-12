@@ -52,6 +52,11 @@
             <artifactId>common-rdbms</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-httpclient</artifactId>
+        </dependency>
+
         <!-- testerum-runner-api -->
         <dependency>
             <groupId>com.testerum</groupId>

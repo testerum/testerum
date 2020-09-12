@@ -55,4 +55,8 @@ class ValidHttpResponse @JsonCreator constructor(
 
         return null;
     }
+
+    override fun toString(): String {
+        return "HttpResponse(protocol='$protocol', statusCode=$statusCode, headers=$headers, body=${bodyAsUtf8String})"
+    }
 }

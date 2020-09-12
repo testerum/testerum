@@ -7,11 +7,16 @@ import java.nio.file.Path
 
 class JsonEventsReportTypeBuilder {
 
+    var reportServerURL: String? = null
     var destinationFileName: Path? = null
     var wrapJsonWithPrefixAndPostfix: Boolean? = null
 
     fun build(): String {
         val builder = GenericReportTypeBuilder(RunnerReportType.JSON_EVENTS)
+
+        reportServerURL?.let {
+            builder.properties[EventListenerProperties.JsonEvents.REPORT_SERVER_URL] = it
+        }
 
         destinationFileName?.let {
             builder.properties[EventListenerProperties.JsonEvents.DESTINATION_FILE_NAME] = it.toAbsolutePath().normalize().toString()

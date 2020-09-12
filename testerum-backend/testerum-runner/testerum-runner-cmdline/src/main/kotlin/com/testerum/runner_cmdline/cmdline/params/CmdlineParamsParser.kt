@@ -345,6 +345,13 @@ object CmdlineParamsParser {
                     "be created.",
                     "",
                     "",
+                    "",
+                    "",
+                    "REMOTE_SERVER report type",
+                    "-------------------------",
+//TODO Ionut: add documentation for REMOTE_SERVER Report
+                    "",
+                    "",
                     "Multiple reports can be specified at the same time:",
                     "--report CONSOLE --report PRETTY:destinationDirectory=/p",
                     "",

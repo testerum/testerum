@@ -4,6 +4,16 @@ object EventListenerProperties {
 
     object JsonEvents {
         /**
+         * type     : String
+         * required : yes
+         *
+         * Required property that is an HTTP URL that points to the central reports server.
+         * If missing, an error is going to be triggered.
+         */
+//TODO Ionut: add a proper description. Specify what happens if the property is missing or if the reporting server is not found
+        const val REPORT_SERVER_URL = "reportServerURL"
+
+        /**
          * type     : java.nio.file.Path
          * required : no
          *
