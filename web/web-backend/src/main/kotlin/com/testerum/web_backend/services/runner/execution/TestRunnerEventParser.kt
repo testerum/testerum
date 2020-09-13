@@ -27,7 +27,7 @@ class TestRunnerEventParser(private val jsonObjectMapper: ObjectMapper,
     companion object {
         private val LOG = LoggerFactory.getLogger(TestRunnerEventParser::class.java)
 
-        // IMPORTANT: if you change these, also change it in com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
+        // IMPORTANT: if you change these, also change it in com.testerum.report_generators.reports.json_events.JsonEventsExecutionListener
         private const val TESTERUM_EVENT_PREFIX  = "-->testerum\u0000-->"
         private const val TESTERUM_EVENT_POSTFIX = "<--testerum\u0000<--"
     }

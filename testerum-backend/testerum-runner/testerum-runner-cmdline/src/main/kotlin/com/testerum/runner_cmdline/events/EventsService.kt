@@ -5,7 +5,7 @@ import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
-import com.testerum.runner_cmdline.events.execution_listeners.utils.console_output_capture.ConsoleOutputCapturer
+import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner_cmdline.module_di.submodules.RunnerListenersModuleFactory
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime

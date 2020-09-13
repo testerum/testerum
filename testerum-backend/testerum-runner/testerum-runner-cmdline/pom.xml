@@ -22,6 +22,12 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
+        <!-- report generators -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>report-generators</artifactId>
+        </dependency>
+
         <!-- common-di -->
         <dependency>
             <groupId>com.testerum</groupId>
@@ -50,11 +56,6 @@
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-rdbms</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>common-httpclient</artifactId>
         </dependency>
 
         <!-- testerum-runner-api -->
@@ -181,12 +182,6 @@
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-        </dependency>
-
-        <!-- zt-exec -->
-        <dependency>
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-exec</artifactId>
         </dependency>
 
 

@@ -10,7 +10,6 @@ import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserH
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserVersionHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
-import com.testerum.runner_cmdline.dirs.RunnerDirs
 import picocli.CommandLine
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream

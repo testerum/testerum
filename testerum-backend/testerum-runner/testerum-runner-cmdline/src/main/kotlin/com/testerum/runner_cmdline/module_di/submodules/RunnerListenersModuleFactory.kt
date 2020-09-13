@@ -7,14 +7,14 @@ import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import com.testerum.runner.events.execution_listener.ExecutionListenerFactory
 import com.testerum.runner_cmdline.dirs.RunnerDirs
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
-import com.testerum.runner_cmdline.events.execution_listeners.console.ConsoleExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.console_debug.ConsoleDebugExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.json_stats.JsonStatsExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.remote_server.RemoteServerExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model.JsonModelExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.ManagedReportsExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template.CustomTemplateExecutionListener
+import com.testerum.report_generators.reports.console.ConsoleExecutionListener
+import com.testerum.report_generators.reports.console_debug.ConsoleDebugExecutionListener
+import com.testerum.report_generators.reports.json_events.JsonEventsExecutionListener
+import com.testerum.report_generators.reports.json_stats.JsonStatsExecutionListener
+import com.testerum.report_generators.reports.remote_server.RemoteServerExecutionListener
+import com.testerum.report_generators.reports.report_model.json_model.JsonModelExecutionListener
+import com.testerum.report_generators.reports.report_model.template.ManagedReportsExecutionListener
+import com.testerum.report_generators.reports.report_model.template.custom_template.CustomTemplateExecutionListener
 import java.nio.file.Path as JavaPath
 
 class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFactory(context) {
