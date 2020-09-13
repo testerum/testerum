@@ -1,0 +1,13 @@
+
+server:
+    port: 7788
+
+logging:
+    pattern:
+        console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger [%mdc{}] - %msg%n"
+    level:
+        root: WARN
+        org.springframework.web: INFO
+        org.springframework.security: INFO
+        com.ahold: DEBUG
+
