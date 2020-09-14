@@ -1,4 +1,4 @@
-package com.testerum.runner_cmdline.dirs
+package com.testerum.report_generators.dirs
 
 import com.testerum.common_jdk.OsUtils
 import com.testerum.common_kotlin.doesNotExist
@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter
 import kotlin.streams.asSequence
 import java.nio.file.Path as JavaPath
 
-object RunnerDirs {
+object ReportDirs {
 
     private val DAY_DIR_NAME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val DAY_DIR_RECOGNIZER = Regex("""\d{4}-\d{2}-\d{2}""")

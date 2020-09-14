@@ -1,18 +1,23 @@
 package com.testerum.report_generators.reports.report_model.template
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.testerum.common_kotlin.*
+import com.testerum.common_kotlin.PathUtils
+import com.testerum.common_kotlin.createDirectories
+import com.testerum.common_kotlin.deleteContentsRecursivelyIfExists
+import com.testerum.common_kotlin.doesNotExist
+import com.testerum.common_kotlin.readText
+import com.testerum.common_kotlin.writeText
+import com.testerum.report_generators.dirs.ReportDirs
+import com.testerum.report_generators.reports.json_stats.JsonStatsExecutionListener
+import com.testerum.report_generators.reports.report_model.template.custom_template.CustomTemplateExecutionListener
+import com.testerum.report_generators.reports.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
+import com.testerum.report_generators.reports.utils.node.RunnerNodeExecuter
 import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.statistics_model.Stats
 import com.testerum.runner.statistics_model.events_aggregators.StatsEventsAggregator
 import com.testerum.runner.statistics_model.stats_aggregator.StatsStatsAggregator
-import com.testerum.runner_cmdline.dirs.RunnerDirs
-import com.testerum.report_generators.reports.json_stats.JsonStatsExecutionListener
-import com.testerum.report_generators.reports.report_model.template.custom_template.CustomTemplateExecutionListener
-import com.testerum.report_generators.reports.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
-import com.testerum.report_generators.reports.utils.node.RunnerNodeExecuter
 import org.apache.commons.io.IOUtils
 import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
@@ -36,10 +41,10 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
         }
     }
 
-    private val reportsDestinationDirectory = RunnerDirs.createResultsDirectoryName(managedReportsDir)
+    private val reportsDestinationDirectory = ReportDirs.createResultsDirectoryName(managedReportsDir)
 
     private val managedPrettyListener = run {
-        val scriptFileName: JavaPath = RunnerDirs.getReportTemplatesDir()
+        val scriptFileName: JavaPath = ReportDirs.getReportTemplatesDir()
                 .resolve("pretty")
                 .resolve("main.bundle.js")
                 .toAbsolutePath().normalize()
@@ -54,7 +59,7 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     private val statsAggregator = StatsEventsAggregator()
 
     private val managedStatsListener = run {
-        val scriptFileName: JavaPath = RunnerDirs.getReportTemplatesDir()
+        val scriptFileName: JavaPath = ReportDirs.getReportTemplatesDir()
                 .resolve("pretty")
                 .resolve("main.bundle.js")
                 .toAbsolutePath().normalize()
@@ -102,7 +107,7 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     private fun writeLatestSymlink() {
         try {
             PathUtils.createOrUpdateSymbolicLink(
-                    absoluteSymlinkPath = RunnerDirs.getLatestReportSymlink(managedReportsDir).toAbsolutePath().normalize(),
+                    absoluteSymlinkPath = ReportDirs.getLatestReportSymlink(managedReportsDir).toAbsolutePath().normalize(),
                     absoluteTarget = reportsDestinationDirectory.toAbsolutePath().normalize(),
                     symlinkRelativeTo = managedReportsDir
             )
@@ -116,7 +121,7 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
         try {
             PathUtils.createOrUpdateSymbolicLink(
                     absoluteSymlinkPath = managedReportsDir.resolve("statistics.html").toAbsolutePath().normalize(),
-                    absoluteTarget = RunnerDirs.getAggregatedStatisticsDir(managedReportsDir).resolve("index.html").toAbsolutePath().normalize(),
+                    absoluteTarget = ReportDirs.getAggregatedStatisticsDir(managedReportsDir).resolve("index.html").toAbsolutePath().normalize(),
                     symlinkRelativeTo = managedReportsDir
             )
         } catch (e: Exception) {
@@ -177,7 +182,7 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     /** create/update json full stats */
     private fun writeJsonFullStats() {
         try {
-            val fullStatsFile = RunnerDirs.getFullStatsFileName(reportsDestinationDirectory)
+            val fullStatsFile = ReportDirs.getFullStatsFileName(reportsDestinationDirectory)
             fullStatsFile.parent?.createDirectories()
             EXECUTION_LISTENERS_OBJECT_MAPPER.writeValue(fullStatsFile.toFile(), statsAggregator.getResult())
         } catch (e: Exception) {
@@ -190,11 +195,11 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
             val aggregatedStats: Stats = aggregateStats()
 
             // make sure the aggregatedStatisticsDir exists and is empty
-            val aggregatedStatisticsDir = RunnerDirs.getAggregatedStatisticsDir(managedReportsDir)
+            val aggregatedStatisticsDir = ReportDirs.getAggregatedStatisticsDir(managedReportsDir)
             aggregatedStatisticsDir.deleteContentsRecursivelyIfExists()
             aggregatedStatisticsDir.createDirectories()
 
-            val aggregatedStatisticsJsonFile = RunnerDirs.getAggregatedStatisticsJsonFile(managedReportsDir)
+            val aggregatedStatisticsJsonFile = ReportDirs.getAggregatedStatisticsJsonFile(managedReportsDir)
             EXECUTION_LISTENERS_OBJECT_MAPPER.writeValue(aggregatedStatisticsJsonFile.toFile(), aggregatedStats)
         } catch (e: Exception) {
             LOG.warn("failed to create/update json full stats", e)
@@ -204,7 +209,7 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     private fun aggregateStats(): Stats {
         val aggregator = StatsStatsAggregator()
 
-        RunnerDirs.processExecutionDirs(managedReportsDir) { executionDir ->
+        ReportDirs.processExecutionDirs(managedReportsDir) { executionDir ->
             val fullStats = loadFullStats(executionDir)
 
             if (fullStats != null) {
@@ -216,7 +221,7 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     }
 
     private fun loadFullStats(executionDir: JavaPath): Stats? {
-        val fullStatsFile = RunnerDirs.getFullStatsFileName(executionDir)
+        val fullStatsFile = ReportDirs.getFullStatsFileName(executionDir)
         if (fullStatsFile.doesNotExist) {
             return null
         }
@@ -225,12 +230,12 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     }
 
     private fun writeFullStatsApp() {
-        val scriptFileName: JavaPath = RunnerDirs.getReportTemplatesDir()
+        val scriptFileName: JavaPath = ReportDirs.getReportTemplatesDir()
                 .resolve("stats")
                 .resolve("main.bundle.js")
                 .toAbsolutePath().normalize()
-        val modelFile = RunnerDirs.getAggregatedStatisticsJsonFile(managedReportsDir)
-        val destinationDirectory = RunnerDirs.getAggregatedStatisticsDir(managedReportsDir)
+        val modelFile = ReportDirs.getAggregatedStatisticsJsonFile(managedReportsDir)
+        val destinationDirectory = ReportDirs.getAggregatedStatisticsDir(managedReportsDir)
 
         RunnerNodeExecuter.executeNode(
                 scriptFileName,
@@ -238,5 +243,4 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
                 destinationDirectory.toString()
         )
     }
-
 }

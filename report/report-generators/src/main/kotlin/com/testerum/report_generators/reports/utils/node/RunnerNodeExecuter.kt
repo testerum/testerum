@@ -1,14 +1,13 @@
 package com.testerum.report_generators.reports.utils.node
 
 import com.testerum.common_jdk.toStringWithStacktrace
-import com.testerum.runner.exit_code.ExitCode
-import com.testerum.runner_cmdline.dirs.RunnerDirs
+import com.testerum.report_generators.dirs.ReportDirs
 import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.report_generators.reports.utils.string_writer.println
+import com.testerum.runner.exit_code.ExitCode
 import org.zeroturnaround.exec.ProcessExecutor
 import org.zeroturnaround.exec.ProcessResult
 import org.zeroturnaround.exec.stream.LogOutputStream
-import sun.rmi.log.LogOutputStream
 import java.nio.file.Path as JavaPath
 
 object RunnerNodeExecuter {
@@ -55,7 +54,7 @@ object RunnerNodeExecuter {
                                   args: List<String>): List<String> {
         val commandLine = mutableListOf<String>()
 
-        commandLine.add(RunnerDirs.getNodeBinaryPath().toString())
+        commandLine.add(ReportDirs.getNodeBinaryPath().toString())
 
         commandLine.add(scriptFile.toString())
         commandLine.addAll(args)

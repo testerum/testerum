@@ -28,6 +28,12 @@
             <artifactId>common-cmdline</artifactId>
         </dependency>
 
+        <!-- common-kotlin -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-kotlin</artifactId>
+        </dependency>
+
         <!-- common-httpclient -->
         <dependency>
             <groupId>com.testerum</groupId>
