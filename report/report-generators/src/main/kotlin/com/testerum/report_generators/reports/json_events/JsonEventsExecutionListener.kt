@@ -1,12 +1,12 @@
 package com.testerum.report_generators.reports.json_events
 
-import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
-import com.testerum.runner.events.execution_listener.ExecutionListener
-import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.report_generators.reports.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
 import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.report_generators.reports.utils.string_writer.TextPrinter
 import com.testerum.report_generators.reports.utils.string_writer.impl.FileTextPrinter
+import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
+import com.testerum.runner.events.execution_listener.ExecutionListener
+import com.testerum.runner.events.model.RunnerEvent
 import java.nio.file.Paths
 
 class JsonEventsExecutionListener(private val properties: Map<String, String>) : ExecutionListener {

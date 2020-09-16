@@ -3,7 +3,18 @@ package com.testerum.report_generators.reports.report_model.base
 import com.fasterxml.jackson.databind.ObjectWriter
 import com.testerum.common_kotlin.createDirectories
 import com.testerum.common_kotlin.writeText
+import com.testerum.report_generators.reports.report_model.base.logger.ReportToFileLoggerStack
+import com.testerum.report_generators.reports.report_model.base.mapper.ReportFeatureMapper
+import com.testerum.report_generators.reports.report_model.base.mapper.ReportParametrizedTestMapper
+import com.testerum.report_generators.reports.report_model.base.mapper.ReportScenarioMapper
+import com.testerum.report_generators.reports.report_model.base.mapper.ReportStepMapper
+import com.testerum.report_generators.reports.report_model.base.mapper.ReportSuiteMapper
+import com.testerum.report_generators.reports.report_model.base.mapper.ReportTestMapper
+import com.testerum.report_generators.reports.report_model.base.mapper.StepDefsByMinId
+import com.testerum.report_generators.reports.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
+import com.testerum.report_generators.reports.utils.events_stack.ExecutionEventsStack
 import com.testerum.runner.events.execution_listener.BaseExecutionListener
+import com.testerum.runner.events.model.ConfigurationEvent
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
 import com.testerum.runner.events.model.ParametrizedTestEndEvent
@@ -21,17 +32,7 @@ import com.testerum.runner.report_model.FeatureOrTestRunnerReportNode
 import com.testerum.runner.report_model.ReportLog
 import com.testerum.runner.report_model.ReportScenario
 import com.testerum.runner.report_model.ReportStep
-import com.testerum.report_generators.reports.report_model.base.logger.ReportToFileLoggerStack
-import com.testerum.report_generators.reports.report_model.base.mapper.ReportFeatureMapper
-import com.testerum.report_generators.reports.report_model.base.mapper.ReportParametrizedTestMapper
-import com.testerum.report_generators.reports.report_model.base.mapper.ReportScenarioMapper
-import com.testerum.report_generators.reports.report_model.base.mapper.ReportStepMapper
-import com.testerum.report_generators.reports.report_model.base.mapper.ReportSuiteMapper
-import com.testerum.report_generators.reports.report_model.base.mapper.ReportTestMapper
-import com.testerum.report_generators.reports.report_model.base.mapper.StepDefsByMinId
-import com.testerum.report_generators.reports.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
-import com.testerum.report_generators.reports.utils.events_stack.ExecutionEventsStack
-import java.util.ArrayDeque
+import java.util.*
 import javax.annotation.concurrent.NotThreadSafe
 import java.nio.file.Path as JavaPath
 
@@ -62,6 +63,10 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
                 textFilePath = getTextLogsDirectory().resolve("suite-logs.$LOG_TEXT_EXTENSION"),
                 modelFilePath = getModelLogsDirectory().resolve("suite-logs.$LOG_MODEL_EXTENSION")
         )
+    }
+
+    override fun onConfigurationEvent(event: ConfigurationEvent) {
+        eventsStack.push(event)
     }
 
     final override fun onSuiteStart(event: SuiteStartEvent) {

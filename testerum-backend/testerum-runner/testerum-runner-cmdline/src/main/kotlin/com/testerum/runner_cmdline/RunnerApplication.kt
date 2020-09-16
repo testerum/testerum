@@ -1,17 +1,12 @@
 package com.testerum.runner_cmdline
 
-import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
-import com.testerum_api.testerum_steps_api.test_context.TestContext
-import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
-import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsManager
-import com.testerum_api.testerum_steps_api.test_context.settings.RunnerTesterumDirs
-import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
-import com.testerum_api.testerum_steps_api.transformer.Transformer
 import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
 import com.testerum.file_service.caches.resolved.BasicStepsCache
+import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.file_service.file.VariablesFileService
+import com.testerum.runner.events.model.ConfigurationEvent
+import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
@@ -27,6 +22,15 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.test_context.TestContextImpl
 import com.testerum.runner_cmdline.transformer.TransformerFactory
 import com.testerum.settings.TesterumDirs
+import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.TestContext
+import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
+import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsManager
+import com.testerum_api.testerum_steps_api.test_context.settings.RunnerTesterumDirs
+import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
+import com.testerum_api.testerum_steps_api.transformer.Transformer
+import java.time.LocalDateTime
 import java.nio.file.Path as JavaPath
 
 class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
@@ -81,12 +85,12 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
 
         // create RunnerContext
         val runnerContext = RunnerContext(
-                eventsService = eventsService,
-                stepsClassLoader = stepsClassLoader,
-                glueObjectFactory = glueObjectFactory,
-                transformerFactory = transformerFactory,
-                testVariables = testVariables,
-                testContext = testContext
+            eventsService = eventsService,
+            stepsClassLoader = stepsClassLoader,
+            glueObjectFactory = glueObjectFactory,
+            transformerFactory = transformerFactory,
+            testVariables = testVariables,
+            testContext = testContext
         )
 
         // add steps to GlueObjectFactory
@@ -95,13 +99,13 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         // setup variables
         val projectId = runnerProjectManager.getProjectServices().project.id
         val globalVars = GlobalVariablesContext.from(
-                variablesFileService.getMergedVariables(
-                        projectVariablesDir = getProjectVariablesDir(),
-                        fileLocalVariablesFile = testerumDirs.getFileLocalVariablesFile(),
-                        projectId = projectId,
-                        currentEnvironment = cmdlineParams.variablesEnvironment,
-                        variableOverrides = cmdlineParams.variableOverrides
-                )
+            variablesFileService.getMergedVariables(
+                projectVariablesDir = getProjectVariablesDir(),
+                fileLocalVariablesFile = testerumDirs.getFileLocalVariablesFile(),
+                projectId = projectId,
+                currentEnvironment = cmdlineParams.variablesEnvironment,
+                variableOverrides = cmdlineParams.variableOverrides
+            )
         )
 
         // execute tests
@@ -122,7 +126,34 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
     private fun initialize(cmdlineParams: CmdlineParams) {
         executionListenerFinder.setReports(cmdlineParams.reportsWithProperties, cmdlineParams.managedReportsDir)
 
+        triggerConfigurationEvent(cmdlineParams)
+
         basicStepsCache.initialize()
+    }
+
+    private fun triggerConfigurationEvent(cmdlineParams: CmdlineParams) {
+        val projectInfo = TesterumProjectFileService().load(cmdlineParams.repositoryDirectory)
+
+        eventsService.logEvent(
+            ConfigurationEvent(
+                time = LocalDateTime.now(),
+                eventKey = EventKey.LOG_EVENT_KEY,
+                projectId = projectInfo.id,
+                projectName = projectInfo.name,
+                verbose = cmdlineParams.verbose,
+                repositoryDirectory = cmdlineParams.repositoryDirectory.toString(),
+                variablesEnvironment = cmdlineParams.variablesEnvironment,
+                variableOverrides = cmdlineParams.variableOverrides,
+                settingsFile = cmdlineParams.settingsFile.toString(),
+                settingOverrides = cmdlineParams.settingOverrides,
+                testPaths = cmdlineParams.testPaths,
+                tagsToInclude = cmdlineParams.tagsToInclude,
+                tagsToExclude = cmdlineParams.tagsToExclude,
+                reportsWithProperties = cmdlineParams.reportsWithProperties,
+                managedReportsDir = cmdlineParams.managedReportsDir.toString(),
+                executionName = cmdlineParams.executionName
+            )
+        )
     }
 
     private fun getProjectVariablesDir(): JavaPath = runnerProjectManager.getProjectServices().dirs().getVariablesDir()
@@ -132,5 +163,4 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         print(suite.toString())
         println("------------------------------------------------------------------------------\n")
     }
-
 }

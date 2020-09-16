@@ -1,6 +1,8 @@
 package com.testerum.report_generators.reports.console_debug
 
+import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner.events.execution_listener.BaseExecutionListener
+import com.testerum.runner.events.model.ConfigurationEvent
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
 import com.testerum.runner.events.model.ParametrizedTestEndEvent
@@ -15,13 +17,16 @@ import com.testerum.runner.events.model.SuiteStartEvent
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
-import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import javax.annotation.concurrent.NotThreadSafe
 
 @NotThreadSafe
 class ConsoleDebugExecutionListener : BaseExecutionListener() {
 
     private var indentLevel = 0
+
+    override fun onConfigurationEvent(event: ConfigurationEvent) {
+        log("CONFIGURATION: ${event.toString()}\n")
+    }
 
     override fun onSuiteStart(event: SuiteStartEvent) {
         indent()

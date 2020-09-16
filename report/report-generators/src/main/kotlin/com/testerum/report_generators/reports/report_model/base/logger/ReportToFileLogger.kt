@@ -1,8 +1,8 @@
 package com.testerum.report_generators.reports.report_model.base.logger
 
 import com.testerum.common_kotlin.createDirectories
-import com.testerum.runner.report_model.ReportLog
 import com.testerum.report_generators.reports.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
+import com.testerum.runner.report_model.ReportLog
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.time.format.DateTimeFormatter
