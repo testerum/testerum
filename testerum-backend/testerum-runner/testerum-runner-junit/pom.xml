@@ -9,6 +9,7 @@
         <version>develop-SNAPSHOT</version>
     </parent>
 
+<!--  TODO IONUT: rename this module  -->
     <artifactId>testerum-runner-junit</artifactId>
     <packaging>jar</packaging>
 
