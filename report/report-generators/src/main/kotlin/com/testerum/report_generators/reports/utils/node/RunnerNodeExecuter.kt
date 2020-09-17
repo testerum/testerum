@@ -2,8 +2,6 @@ package com.testerum.report_generators.reports.utils.node
 
 import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.report_generators.dirs.ReportDirs
-import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
-import com.testerum.report_generators.reports.utils.string_writer.println
 import com.testerum.runner.exit_code.ExitCode
 import org.zeroturnaround.exec.ProcessExecutor
 import org.zeroturnaround.exec.ProcessResult
@@ -24,16 +22,16 @@ object RunnerNodeExecuter {
                     .redirectOutput(
                             object : LogOutputStream() {
                                 override fun processLine(line: String) {
-                                    ConsoleOutputCapturer.getOriginalTextWriter().println("[$scriptFileName] $line")
+                                    println("[$scriptFileName] $line")
                                 }
                             }
                     )
             val startTime = System.currentTimeMillis()
             val processResult: ProcessResult = processExecutor.execute()
-            ConsoleOutputCapturer.getOriginalTextWriter().println("execution took ${System.currentTimeMillis() - startTime} ms")
+            println("execution took ${System.currentTimeMillis() - startTime} ms")
 
             if (processResult.exitValue == ExitCode.RUNNER_FAILED.code) {
-                ConsoleOutputCapturer.getOriginalTextWriter().println(
+                println(
                         """|node process exited with code ${processResult.exitValue}
                            |commandLine = $commandLine
                            |output = [${processResult.outputUTF8()}]
@@ -41,7 +39,7 @@ object RunnerNodeExecuter {
                 )
             }
         } catch (e: Exception) {
-            ConsoleOutputCapturer.getOriginalTextWriter().println(
+            println(
                     """|failed to start the node process
                        |commandLine = $commandLine
                        |exception = ${e.toStringWithStacktrace()}

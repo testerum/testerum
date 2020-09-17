@@ -16,7 +16,6 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
     private val eventsAsStringBuilder = StringBuilder()
 
-    //TODO Ionut: is this the proper way to deal with a null param? Check with Cristi the error message
     private val reportServerUrl = properties[REPORT_SERVER_URL]
         ?: throw RuntimeException("${RunnerReportType.REMOTE_SERVER.toString()} requires the parameter \"${REPORT_SERVER_URL}\"")
 
@@ -33,24 +32,24 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
     override fun stop() {
 
-//TODO Ionut: this is a closable resource, see how you can close it properly
-        val httpClient = TesterumHttpClientFactory.createHttpClient()
-        val httpClientService = HttpClientService(httpClient)
+        TesterumHttpClientFactory.createHttpClient().use { httpClient ->
+            val httpClientService = HttpClientService(httpClient)
 
-        val request = HttpRequest(
-            method = HttpRequestMethod.POST,
-            url = "$reportServerUrl/report/v1",
-            body = HttpRequestBody(HttpRequestBodyType.RAW, eventsAsStringBuilder.toString()),
-            followRedirects = true
-        )
-        val response = httpClientService.executeHttpRequest(request)
+            val request = HttpRequest(
+                method = HttpRequestMethod.POST,
+                url = "$reportServerUrl/report/v1",
+                body = HttpRequestBody(HttpRequestBodyType.RAW, eventsAsStringBuilder.toString()),
+                followRedirects = true
+            )
+            val response = httpClientService.executeHttpRequest(request)
 
-        if (400 <= response.statusCode) {
-            throw RuntimeException(
-                """Exception appeared while calling the Report Server at URL: ${reportServerUrl}
+            if (400 <= response.statusCode) {
+                throw RuntimeException(
+                    """Exception appeared while calling the Report Server at URL: ${reportServerUrl}
                    HTTP Request: ${request}
                    HTTP Response: ${response}"""
-            )
+                )
+            }
         }
     }
 }
