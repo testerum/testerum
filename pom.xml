@@ -930,6 +930,29 @@
                     </executions>
                 </plugin>
 
+                <!-- spring boot git info generator -->
+                <plugin>
+                    <groupId>pl.project13.maven</groupId>
+                    <artifactId>git-commit-id-plugin</artifactId>
+                    <version>4.0.2</version>
+
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>revision</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+
+                    <configuration>
+                        <verbose>false</verbose>
+                        <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+                        <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                        <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                        <abbrevLength>40</abbrevLength> <!-- don't abbreviate git commit sha1 -->
+                    </configuration>
+                </plugin>
+
                 <!-- maven-clean-plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

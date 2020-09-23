@@ -11,3 +11,9 @@ logging:
         org.springframework.security: INFO
         com.ahold: DEBUG
 
+management:
+    endpoints:
+        web:
+            base-path: /management
+            exposure:
+              include: info
