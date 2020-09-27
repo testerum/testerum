@@ -25,7 +25,7 @@ class ConsoleDebugExecutionListener : BaseExecutionListener() {
     private var indentLevel = 0
 
     override fun onConfigurationEvent(event: ConfigurationEvent) {
-        log("CONFIGURATION: ${event.toString()}\n")
+        log("CONFIGURATION: $event\n")
     }
 
     override fun onSuiteStart(event: SuiteStartEvent) {

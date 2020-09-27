@@ -34,10 +34,6 @@ object ReportDirs {
         return@run absolutePath
     }
 
-    fun getBasicStepsDir(): JavaPath = getInstallDir().resolve("basic_steps")
-
-    fun getSeleniumDriversDir(): JavaPath = getInstallDir().resolve("selenium-drivers")
-
     private fun getRunnerDir(): JavaPath = getInstallDir().resolve("runner")
 
     private fun getRunnerNodeDir(): JavaPath = getRunnerDir().resolve("node")

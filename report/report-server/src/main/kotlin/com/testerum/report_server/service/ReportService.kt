@@ -6,8 +6,8 @@ import com.testerum.report_generators.reports.utils.EXECUTION_LISTENERS_OBJECT_M
 import com.testerum.runner.events.model.ConfigurationEvent
 import com.testerum.runner.events.model.RunnerEvent
 import org.springframework.stereotype.Service
-import java.nio.file.Path
 import java.nio.file.Paths
+import java.nio.file.Path as JavaPath
 
 @Service
 class ReportService() {
@@ -19,15 +19,18 @@ class ReportService() {
 
         val managedReportsExecutionListener = ManagedReportsExecutionListener(reportPath)
 
-        managedReportsExecutionListener.start();
-        for (eventAsString in eventsList) {
-            val event = EXECUTION_LISTENERS_OBJECT_MAPPER.readValue<RunnerEvent>(eventAsString)
-            managedReportsExecutionListener.onEvent(event)
+        try {
+            managedReportsExecutionListener.start();
+            for (eventAsString in eventsList) {
+                val event = EXECUTION_LISTENERS_OBJECT_MAPPER.readValue<RunnerEvent>(eventAsString)
+                managedReportsExecutionListener.onEvent(event)
+            }
+        } finally {
+            managedReportsExecutionListener.stop()
         }
-        managedReportsExecutionListener.stop()
     }
 
-    private fun getReportPath(configEvent: ConfigurationEvent): Path {
+    private fun getReportPath(configEvent: ConfigurationEvent): JavaPath {
         val rootReportDirectory = Paths.get(System.getProperty("user.home")).resolve(".testerum").resolve("reports")
         val executedEnvironment = configEvent.variablesEnvironment ?: "default-environment"
         val projectIdentifier = "${executedEnvironment}-${configEvent.projectId}"
@@ -37,6 +40,7 @@ class ReportService() {
 
     private fun getConfigEvent(eventsList: List<String>): ConfigurationEvent {
         val configEventAsString: String = eventsList.first { it.contains("\"@type\":\"CONFIGURATION_EVENT\"") }
-        return EXECUTION_LISTENERS_OBJECT_MAPPER.readValue<ConfigurationEvent>(configEventAsString)
+
+        return EXECUTION_LISTENERS_OBJECT_MAPPER.readValue(configEventAsString)
     }
 }

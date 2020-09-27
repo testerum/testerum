@@ -1,7 +1,7 @@
 package com.testerum.report_generators.reports.utils.console_output_capture
 
 import com.testerum.report_generators.reports.utils.string_writer.TextPrinter
-import com.testerum.report_generators.reports.utils.string_writer.impl.PrinterTextWriter
+import com.testerum.report_generators.reports.utils.string_writer.impl.PrintStreamTextPrinter
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import java.nio.charset.StandardCharsets
@@ -78,7 +78,7 @@ private class ConsoleOutputCapturingData(val owner: String) {
     }
     private val originalStdout: PrintStream = System.out
     private val originalStderr: PrintStream = System.err
-    private val originalTextWriter = PrinterTextWriter(originalStdout)
+    private val originalTextWriter = PrintStreamTextPrinter(originalStdout)
 
     private val capturingOutputStream = ByteArrayOutputStream()
     private val capturingPrintStream: PrintStream = PrintStream(capturingOutputStream, false, CHARSET.name())

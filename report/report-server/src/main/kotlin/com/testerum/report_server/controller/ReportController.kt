@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/report/v1", produces = ["application/json"])
 class ReportController(private val reportService: ReportService) {
 
-    @PostMapping()
+    @PostMapping
     fun addReport(@RequestBody events: String) {
-
         val eventsList = events.lines()
         reportService.addReport(eventsList)
     }
