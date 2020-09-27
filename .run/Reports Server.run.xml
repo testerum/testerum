@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Reports Server" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <module name="report-server" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.testerum.report_server.Application" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="Application" />
     <option name="VM_PARAMETERS" value="-Dtesterum.packageDirectory=$PROJECT_DIR$/package" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <method v="2">
