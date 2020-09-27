@@ -10,3 +10,9 @@ logging:
         org.springframework.web: INFO
         com.testerum: DEBUG
 
+management:
+    endpoints:
+        web:
+            base-path: /management
+            exposure:
+              include: info
