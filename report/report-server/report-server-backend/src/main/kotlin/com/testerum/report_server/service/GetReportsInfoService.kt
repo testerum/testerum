@@ -70,8 +70,10 @@ class GetReportsInfoService {
         return url.toString()
     }
 
-    private fun getSubDirectories(reportsRootDirectory: JavaPath): List<JavaPath> {
-        Files.walk(reportsRootDirectory, 1).use { stream ->
+    private fun getSubDirectories(rootDirectory: JavaPath): List<JavaPath> {
+        if(Files.notExists(rootDirectory)) return emptyList()
+
+        Files.walk(rootDirectory, 1).use { stream ->
             return stream
                 .filter { it.isDirectory }
                 .toList()

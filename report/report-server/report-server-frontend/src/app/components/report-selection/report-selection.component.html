@@ -1,6 +1,10 @@
 <div class="report-selection">
 
-  <table mat-table [dataSource]="reports" class="reports-table">
+  <div *ngIf="reports.length == 0" class="no-reports-message">
+    NO REPORTS ARE AVAILABLE!
+  </div>
+
+  <table mat-table *ngIf="reports.length != 0" [dataSource]="reports" class="reports-table">
 
     <!-- Project Name Column -->
     <ng-container matColumnDef="projectName">

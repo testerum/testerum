@@ -4,9 +4,15 @@
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+
+  .no-reports-message {
+    font-size: 3em;
+    font-weight: bold;
+    align-self: center;
+  }
 
   .reports-table {
+    padding-top: 2em;
 
     .mat-header-cell, .mat-cell{
       padding-right: 1em;
