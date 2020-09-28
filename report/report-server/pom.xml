@@ -14,7 +14,7 @@
 
     <modules>
         <module>report-server-backend</module>
-<!--        <module>report-server-frontend</module>-->
+        <module>report-server-frontend</module>
     </modules>
 
 </project>
