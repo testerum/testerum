@@ -1,0 +1,60 @@
+
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-size: 14px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1;
+}
+
+// ======== FONTS ==========
+@font-face {
+    font-family: "Righteous";
+    src: url("../fonts/righteous/Righteous-Regular.ttf");
+}
+
+@font-face {
+  font-family: "FreeMono";
+  src: url("../fonts/freemono/FreeMono.ttf");
+}
+
+@font-face {
+  font-family: "FreeMono";
+  src: url("../fonts/freemono/FreeMonoBold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "FreeMono";
+  src: url("../fonts/freemono/FreeMonoOblique.ttf");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "FreeMono";
+  src: url("../fonts/freemono/FreeMonoOblique.ttf");
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: "FreeMono";
+  src: url("../fonts/freemono/FreeMonoBoldOblique.ttf");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "FreeMono";
+  src: url("../fonts/freemono/FreeMonoBoldOblique.ttf");
+  font-weight: bold;
+  font-style: oblique;
+}

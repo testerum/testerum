@@ -1,0 +1,17 @@
+
+.menu {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  padding: 0.3em 0;
+
+  background-image: linear-gradient(to bottom,#3c3c3c 0,#222 100%);
+  background-repeat: repeat-x;
+  min-height: initial;
+  margin-bottom: 0;
+  border-radius: 4px 4px 0 0;
+
+  .logo-item {
+    font-size: 0.8em;
+  }
+}

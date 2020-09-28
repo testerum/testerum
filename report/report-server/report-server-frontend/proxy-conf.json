@@ -1,0 +1,12 @@
+{
+  "/v1": {
+    "target": "http://localhost:7788",
+    "secure": false,
+    "ws": true
+  },
+  "/static-reports": {
+    "target": "http://localhost:7788",
+    "secure": false,
+    "ws": true
+  }
+}

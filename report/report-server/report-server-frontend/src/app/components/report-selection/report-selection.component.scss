@@ -1,0 +1,50 @@
+@import "../../../resources/css/testerum-reports-variables";
+
+.report-selection {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .reports-table {
+
+    .mat-column-projectName {
+      width: 20em;
+    }
+
+    .mat-column-environment {
+      width: 20em;
+    }
+
+    .mat-column-projectId {
+      width: 15em;
+    }
+    .mat-column-action {
+      width: 16em;
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+
+        .button-success {
+          background-color: $success-color;
+        }
+        .button-info {
+          background-color: $info-color;
+        }
+        .button-primary {
+          background-color: $primary-color;
+        }
+      }
+    }
+
+    .mat-header-cell {
+      font-size: 1.5em;
+      color: black;
+    }
+
+    .mat-row:hover {
+      background-color: $hover-color;
+      cursor: pointer;
+    }
+  }
+}
