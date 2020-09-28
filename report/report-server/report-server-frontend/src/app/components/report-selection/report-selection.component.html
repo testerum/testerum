@@ -30,11 +30,17 @@
       <td mat-cell *matCellDef="let element">
         <div class="button-container">
           <button mat-raised-button [routerLink]="['/reports', 'statistics', element.projectId]" class="button-success">
-<!--            <fa-icon [icon]="faTachometerAlt"></fa-icon>-->
+            <fa-icon [icon]="faChartPie"></fa-icon>
             Statistics
           </button>
-          <button mat-raised-button [routerLink]="['/reports', 'dashboard', element.projectId]" class="button-primary">Dashboard</button>
-          <button mat-raised-button [routerLink]="['/reports', 'latest-report', element.projectId]" class="button-info">Latest Report</button>
+          <button mat-raised-button [routerLink]="['/reports', 'dashboard', element.projectId]" class="button-primary">
+            <fa-icon [icon]="faTachometerAlt"></fa-icon>
+            Dashboard
+          </button>
+          <button mat-raised-button [routerLink]="['/reports', 'latest-report', element.projectId]" class="button-info">
+            <fa-icon [icon]="faTasks"></fa-icon>
+            Latest Report
+          </button>
         </div>
       </td>
     </ng-container>

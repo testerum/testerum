@@ -14,10 +14,12 @@ import {ParametrizedTestStartEvent} from "../parametrized-test-start.event";
 import {ParametrizedTestEndEvent} from "../parametrized-test-end.event";
 import {ScenarioStartEvent} from "../scenario-start.event";
 import {ScenarioEndEvent} from "../scenario-end.event";
+import {ConfigurationEvent} from "../configuration.event";
 
 export const RunnerEventMarshaller = {
     deserializeRunnerEvent: (runnerEventAsJson: object): RunnerEvent => {
         switch (runnerEventAsJson["@type"]) {
+            case "CONFIGURATION_EVENT"          : return new ConfigurationEvent().deserialize(runnerEventAsJson);
             case "TEST_SUITE_START_EVENT"       : return new SuiteStartEvent().deserialize(runnerEventAsJson);
             case "TEST_SUITE_END_EVENT"         : return new SuiteEndEvent().deserialize(runnerEventAsJson);
             case "FEATURE_START_EVENT"          : return new FeatureStartEvent().deserialize(runnerEventAsJson);
@@ -35,6 +37,6 @@ export const RunnerEventMarshaller = {
             case "RUNNER_STOPPED_EVENT"         : return new RunnerStoppedEvent().deserialize(runnerEventAsJson);
         }
 
-        return null;
+        throw new Error(`Unknown Runner Event type [${runnerEventAsJson["@type"]}]; eventJson = [${JSON.stringify(runnerEventAsJson)}]`)
     }
 };

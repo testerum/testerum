@@ -26,7 +26,14 @@
         button {
           background-color: $success-color;
           margin-right: 1em;
-          width: 9em;
+          line-height: 25px;
+          width: 10em;
+
+          fa-icon {
+            font-size: 1.2em;
+            color: #a5ff9a;
+            margin-right: 0.3em;
+          }
         }
       }
     }

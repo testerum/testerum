@@ -1,6 +1,7 @@
 
 
 export enum RunnerEventTypeEnum {
+    CONFIGURATION_EVENT,
     TEST_SUITE_START_EVENT,
     TEST_SUITE_END_EVENT,
     FEATURE_START_EVENT,
