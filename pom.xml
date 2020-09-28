@@ -91,6 +91,12 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
+                <artifactId>common-angular</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
                 <artifactId>common-cmdline</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -347,6 +353,13 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>report-server-frontend</artifactId>
+                <version>${project.version}</version>
+                <classifier>dist</classifier>
+            </dependency>
+
 
             <!--==================== testerum dependencies ====================-->
 
@@ -585,7 +598,7 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.1.0</version>
+                <version>4.0.1</version>
             </dependency>
 
             <!-- http client -->
