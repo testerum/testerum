@@ -1,0 +1,48 @@
+:host {
+  height: 100%;
+}
+
+.menu-bar {
+  height: 100%;
+
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  padding: 1px 0;
+
+  background-image: linear-gradient(to bottom, #3c3c3c 0, #222 100%);
+  background-repeat: repeat-x;
+  min-height: initial;
+  margin-bottom: 0;
+  border-radius: 4px 4px 0 0;
+
+  .menu {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    list-style: none;
+
+    li {
+      list-style: none;
+
+      a {
+        padding: 0 .75em;
+        margin: 0;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
+        color: #9d9d9d;
+        text-decoration: none;
+
+        &:hover {
+          background-color: #525252;
+          color: #fff;
+          text-decoration: none;
+        }
+      }
+    }
+
+    .logo-item {
+      font-size: 0.8em;
+      padding: 0 .75em;
+    }
+  }
+}

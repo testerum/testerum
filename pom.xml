@@ -18,6 +18,7 @@
         <module>web</module>
         <module>settings</module>
         <module>steps</module>
+        <module>report</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -68,7 +69,7 @@
         <!--========== dependencies versions ==========-->
         <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.2</logback.version>
-        <spring.version>5.1.0.RELEASE</spring.version>
+        <spring.version>5.2.8.RELEASE</spring.version>
         <jackson.version>2.10.3</jackson.version>
         <flyway.version>4.1.2</flyway.version>
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
@@ -85,6 +86,12 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>assertion-functions</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>common-angular</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -334,6 +341,25 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>report-generators</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>report-server-backend</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>report-server-frontend</artifactId>
+                <version>${project.version}</version>
+                <classifier>dist</classifier>
+            </dependency>
+
 
             <!--==================== testerum dependencies ====================-->
 
@@ -572,7 +598,7 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.1.0</version>
+                <version>4.0.1</version>
             </dependency>
 
             <!-- http client -->
@@ -921,6 +947,29 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+
+                <!-- spring boot git info generator -->
+                <plugin>
+                    <groupId>pl.project13.maven</groupId>
+                    <artifactId>git-commit-id-plugin</artifactId>
+                    <version>4.0.2</version>
+
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>revision</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+
+                    <configuration>
+                        <verbose>false</verbose>
+                        <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+                        <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                        <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                        <abbrevLength>40</abbrevLength> <!-- don't abbreviate git commit sha1 -->
+                    </configuration>
                 </plugin>
 
                 <!-- maven-clean-plugin -->

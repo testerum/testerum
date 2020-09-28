@@ -12,7 +12,7 @@ import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserH
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserVersionHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
-import com.testerum.runner_cmdline.events.execution_listeners.utils.console_output_capture.ConsoleOutputCapturer
+import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner_cmdline.module_di.RunnerModuleBootstrapper
 import com.testerum.runner_cmdline.module_di.TesterumRunnerLoggingConfigurator
 import com.testerum.runner_cmdline.version.RunnerVersionInfoService

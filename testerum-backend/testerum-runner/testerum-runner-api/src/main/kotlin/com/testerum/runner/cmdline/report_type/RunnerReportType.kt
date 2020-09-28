@@ -12,6 +12,8 @@ enum class RunnerReportType {
 
     CUSTOM_TEMPLATE,
     PRETTY,
+
+    REMOTE_SERVER
     ;
 
     companion object {

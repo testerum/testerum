@@ -1,0 +1,47 @@
+<div class="report-selection">
+
+  <div *ngIf="reports.length == 0" class="no-reports-message">
+    NO REPORTS ARE AVAILABLE!
+  </div>
+
+  <table mat-table *ngIf="reports.length != 0" [dataSource]="reports" class="reports-table">
+
+    <!-- Project Name Column -->
+    <ng-container matColumnDef="projectName">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="'project-name'"> Project Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.projectName}} </td>
+    </ng-container>
+
+    <!-- Environment -->
+    <ng-container matColumnDef="environment">
+      <th mat-header-cell *matHeaderCellDef> Environment </th>
+      <td mat-cell *matCellDef="let element"> {{element.projectEnvironment}} </td>
+    </ng-container>
+
+    <!-- Project ID -->
+    <ng-container matColumnDef="projectId">
+      <th mat-header-cell *matHeaderCellDef> Project ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.projectId}} </td>
+    </ng-container>
+
+    <!-- Action -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Action </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="button-container">
+          <button mat-raised-button [routerLink]="['/reports', 'statistics', element.projectId]" class="button-success">
+<!--            <fa-icon [icon]="faTachometerAlt"></fa-icon>-->
+            Statistics
+          </button>
+          <button mat-raised-button [routerLink]="['/reports', 'dashboard', element.projectId]" class="button-primary">Dashboard</button>
+          <button mat-raised-button [routerLink]="['/reports', 'latest-report', element.projectId]" class="button-info">Latest Report</button>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Header and Row Declarations -->
+    <tr mat-header-row *matHeaderRowDef="['projectName', 'environment', 'projectId', 'action']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['projectName', 'environment', 'projectId', 'action']"></tr>
+  </table>
+
+</div>

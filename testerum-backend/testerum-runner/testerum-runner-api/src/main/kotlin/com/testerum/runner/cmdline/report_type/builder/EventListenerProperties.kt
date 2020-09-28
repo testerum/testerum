@@ -3,6 +3,7 @@ package com.testerum.runner.cmdline.report_type.builder
 object EventListenerProperties {
 
     object JsonEvents {
+
         /**
          * type     : java.nio.file.Path
          * required : no
@@ -43,6 +44,17 @@ object EventListenerProperties {
 
     object Pretty {
         const val DESTINATION_DIRECTORY = "destinationDirectory"
+    }
+
+    object RemoteServer {
+        /**
+         * type     : String
+         * required : yes
+         *
+         * Required property that is an HTTP URL that points to the Reports Server.
+         * If missing, an error is going to be triggered.
+         */
+        const val REPORT_SERVER_URL = "reportServerUrl"
     }
 
 }

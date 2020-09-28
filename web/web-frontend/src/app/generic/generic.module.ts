@@ -57,9 +57,12 @@ import {PathChooserNodeComponent} from "./components/path-chooser/container/node
 import {PathChooserService} from "./components/path-chooser/path-chooser.service";
 import {SelectSharedResourceModalComponent} from "./components/step-call-tree/select-shared-resource-modal/select-shared-resource-modal.component";
 import {
-    AutoCompleteModule, DropdownModule,
-    FileUploadModule, InputSwitchModule,
-    InputTextModule, KeyFilterModule,
+    AutoCompleteModule,
+    DropdownModule,
+    FileUploadModule,
+    InputSwitchModule,
+    InputTextModule,
+    KeyFilterModule,
     MessageService,
     SelectButtonModule,
     ToggleButtonModule,
@@ -96,18 +99,18 @@ import {InfoIconComponent} from './components/info-icon/info-icon.component';
 import {ArgModalService} from "./components/step-call-tree/arg-modal/arg-modal.service";
 import {FileChooserModalService} from "./components/form/file_chooser/dialog/file-chooser-modal.service";
 import {UrlNameValidatorDirective} from "./validators/url-name-validator.directive";
-import { FileTreeComponent } from './components/form/file_chooser/file-tree/file-tree.component';
+import {FileTreeComponent} from './components/form/file_chooser/file-tree/file-tree.component';
 import {MarkdownModule} from 'ngx-markdown';
-import { SafeUrlPipe } from './pipes/safe-url.pipe';
-import { ServerNotAvailableModalComponent } from './error/server-not-available/server-not-available-modal.component'
+import {SafeUrlPipe} from './pipes/safe-url.pipe';
+import {ServerNotAvailableModalComponent} from './error/server-not-available/server-not-available-modal.component'
 import {ServerNotAvailableModalService} from "./error/server-not-available/server-not-available-modal.service";
 import {IsNotBlankValidatorDirective} from "./validators/is_not_blank-validator.directive";
-import { ErrorComponent } from './error/error.component';
+import {ErrorComponent} from './error/error.component';
 import {ToastModule} from "primeng/toast";
 import {ErrorFeedbackModalService} from "./error/report-modal/error-feedback-modal.service";
 import {ErrorFeedbackService} from "./error/report-modal/error-feedback.service";
-import { DynamicInputComponent } from './components/form/dynamic-input/dynamic-input.component';
-import { SeleniumDriverInputComponent } from './components/form/dynamic-input/selenium-driver-input/selenium-driver-input.component';
+import {DynamicInputComponent} from './components/form/dynamic-input/dynamic-input.component';
+import {SeleniumDriverInputComponent} from './components/form/dynamic-input/selenium-driver-input/selenium-driver-input.component';
 import {SeleniumDriversService} from "./components/form/dynamic-input/selenium-driver-input/selenium-drivers.service";
 import {FileTreeNodeComponent} from "./components/form/file_chooser/file-tree/nodes/node/file-tree-node.component";
 import {CommonModule} from "@angular/common";

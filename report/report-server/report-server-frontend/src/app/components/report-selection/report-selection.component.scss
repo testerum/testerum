@@ -1,0 +1,44 @@
+@import "../../../resources/css/testerum-reports-variables";
+
+.report-selection {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+
+  .no-reports-message {
+    font-size: 3em;
+    font-weight: bold;
+    align-self: center;
+  }
+
+  .reports-table {
+    padding-top: 2em;
+
+    .mat-header-cell, .mat-cell{
+      padding-right: 1em;
+    }
+    .mat-column-action {
+      width: 16em;
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+
+        button {
+          background-color: $success-color;
+          margin-right: 1em;
+          width: 9em;
+        }
+      }
+    }
+
+    .mat-header-cell {
+      font-size: 1.5em;
+      color: black;
+    }
+
+    .mat-row:hover {
+      background-color: $hover-color;
+      cursor: pointer;
+    }
+  }
+}
