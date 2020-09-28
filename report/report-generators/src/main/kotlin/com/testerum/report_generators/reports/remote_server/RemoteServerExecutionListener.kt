@@ -35,7 +35,7 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
             val request = HttpRequest(
                 method = HttpRequestMethod.POST,
-                url = "$reportServerUrl/report/v1",
+                url = "$reportServerUrl/v1/reports",
                 body = HttpRequestBody(HttpRequestBodyType.RAW, eventsAsStringBuilder.toString()),
                 followRedirects = true
             )

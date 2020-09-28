@@ -9,7 +9,7 @@ import com.testerum.runner.events.model.RunnerEvent
 import org.springframework.stereotype.Service
 
 @Service
-class ReportService() {
+class AddReportService() {
 
     fun addReport(eventsList: List<String>) {
         val configEvent: ConfigurationEvent = getConfigEvent(eventsList)
