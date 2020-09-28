@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {ReportInfo} from "../../model/report-info.model";
+import {faTachometerAlt} from "@fortawesome/free-solid-svg-icons/faTachometerAlt";
 
 @Component({
   selector: 'report-selection',
@@ -9,6 +10,8 @@ import {ReportInfo} from "../../model/report-info.model";
   styleUrls: ['./report-selection.component.scss']
 })
 export class ReportSelectionComponent implements OnInit, OnDestroy {
+
+  faTachometerAlt = faTachometerAlt
 
   reports: Array<ReportInfo> = []
 

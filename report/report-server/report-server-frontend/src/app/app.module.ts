@@ -17,6 +17,7 @@ import {ReportComponent} from './components/report/report.component';
 import {ReportResolver} from "./components/report/report.resolver";
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,8 @@ import {CommonModule} from "@angular/common";
 
     MatTableModule,
     MatButtonModule,
+
+    FontAwesomeModule,
   ],
   providers: [
     ReportSelectionResolver,

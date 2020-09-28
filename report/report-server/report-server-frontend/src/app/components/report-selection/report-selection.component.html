@@ -29,7 +29,10 @@
       <th mat-header-cell *matHeaderCellDef> Action </th>
       <td mat-cell *matCellDef="let element">
         <div class="button-container">
-          <button mat-raised-button [routerLink]="['/reports', 'statistics', element.projectId]" class="button-success">Statistics</button>
+          <button mat-raised-button [routerLink]="['/reports', 'statistics', element.projectId]" class="button-success">
+<!--            <fa-icon [icon]="faTachometerAlt"></fa-icon>-->
+            Statistics
+          </button>
           <button mat-raised-button [routerLink]="['/reports', 'dashboard', element.projectId]" class="button-primary">Dashboard</button>
           <button mat-raised-button [routerLink]="['/reports', 'latest-report', element.projectId]" class="button-info">Latest Report</button>
         </div>
