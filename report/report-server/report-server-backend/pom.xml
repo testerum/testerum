@@ -176,6 +176,35 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
+
+            <!-- maven-assembly-plugin (create final dist file) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+
+                <configuration>
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <attach>true</attach>
+                </configuration>
+
+                <executions>
+                    <!-- assemble-dist -->
+                    <execution>
+                        <id>assemble-dist</id>
+                        <phase>package</phase>
+
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/assembly-descriptor.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
