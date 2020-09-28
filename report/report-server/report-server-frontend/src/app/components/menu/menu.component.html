@@ -1,7 +1,12 @@
-<div class="menu">
-  <ul>
+<div class="menu-bar">
+  <ul class="menu">
+
     <li class="logo-item">
       <logo [whiteColor]="true"></logo>
+    </li>
+
+    <li *ngIf="shouldDisplayReportsLink">
+      <a [routerLink]="['/reports']" routerLinkActive="active">Reports List</a>
     </li>
   </ul>
 </div>
