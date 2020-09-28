@@ -8,16 +8,8 @@
 
   .reports-table {
 
-    .mat-column-projectName {
-      width: 20em;
-    }
-
-    .mat-column-environment {
-      width: 20em;
-    }
-
-    .mat-column-projectId {
-      width: 15em;
+    .mat-header-cell, .mat-cell{
+      padding-right: 1em;
     }
     .mat-column-action {
       width: 16em;
@@ -25,14 +17,10 @@
         display: flex;
         justify-content: space-between;
 
-        .button-success {
+        button {
           background-color: $success-color;
-        }
-        .button-info {
-          background-color: $info-color;
-        }
-        .button-primary {
-          background-color: $primary-color;
+          margin-right: 1em;
+          width: 9em;
         }
       }
     }
