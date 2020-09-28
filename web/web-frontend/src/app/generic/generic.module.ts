@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from "@angular/platform-browser";
 import {AreYouSureModalComponent} from "./components/are_you_sure_modal/are-you-sure-modal.component";
 import {PopoverModule} from "ngx-bootstrap";
-import {ModalModule} from 'ngx-bootSafeUrlPipestrap/modal';
+import {ModalModule} from 'ngx-bootstrap/modal';
 import {TreeComponent} from "./components/tree/tree.component";
 import {TreeContainerComponent} from "./components/tree/tree-container/tree-container.component";
 import {TreeNodeComponent} from "./components/tree/tree-container/tree-node/tree-node.component";
