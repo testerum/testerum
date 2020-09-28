@@ -11,5 +11,84 @@
 
     <artifactId>report-server-frontend</artifactId>
 
+  <profiles>
+    <!-- production -->
+    <profile>
+      <id>production</id>
+
+      <!-- activated by the presence of the "production" system property -->
+      <activation>
+        <property>
+          <name>production</name>
+        </property>
+      </activation>
+
+      <build>
+        <plugins>
+          <!-- front-end compilation -->
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+
+            <executions>
+              <execution>
+                <id>install node and npm</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>install-node-and-npm</goal>
+                </goals>
+              </execution>
+
+              <execution>
+                <id>npm install</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>npm</goal>
+                </goals>
+                <configuration>
+                  <arguments>install</arguments>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>npm build for production</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>npm</goal>
+                </goals>
+                <configuration>
+                  <arguments>run-script maven-build</arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- maven-assembly-plugin (create final zip containing files created by appassembler-maven-plugin) -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>package</phase>
+
+                <goals>
+                  <goal>single</goal>
+                </goals>
+
+                <configuration>
+                  <appendAssemblyId>true</appendAssemblyId>
+                  <descriptors>
+                    <descriptor>${project.basedir}/maven/assembly-descriptor.xml</descriptor>
+                  </descriptors>
+                  <attach>true</attach>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 
 </project>
