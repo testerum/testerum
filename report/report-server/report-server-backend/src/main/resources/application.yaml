@@ -16,3 +16,7 @@ management:
             base-path: /management
             exposure:
               include: info
+
+spring:
+    resources:
+        static-locations: "classpath:/frontend"

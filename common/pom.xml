@@ -14,6 +14,7 @@
 
     <modules>
         <module>assertion-functions</module>
+        <module>common-angular</module>
         <module>common-cmdline</module>
         <module>common-crypto</module>
         <module>common-expression-evaluator</module>
