@@ -17,7 +17,7 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
     private val eventsAsStringBuilder = StringBuilder()
 
     private val reportServerUrl = properties[REPORT_SERVER_URL]
-        ?: throw RuntimeException("${RunnerReportType.REMOTE_SERVER.toString()} requires the parameter \"${REPORT_SERVER_URL}\"")
+        ?: throw IllegalArgumentException("${RunnerReportType.REMOTE_SERVER} requires the property \"$REPORT_SERVER_URL\"")
 
     override fun start() {}
 
