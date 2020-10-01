@@ -65,7 +65,8 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         initialize(cmdlineParams)
 
         val testsDir = runnerProjectManager.getProjectServices().dirs().getTestsDir()
-        val suite: RunnerSuite = runnerExecutionTreeBuilder.createTree(cmdlineParams, testsDir);
+        val suite: RunnerSuite = runnerExecutionTreeBuilder.createTree(cmdlineParams, testsDir)
+
         return suite;
     }
 

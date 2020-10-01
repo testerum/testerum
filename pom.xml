@@ -988,7 +988,7 @@
                             <include>**/*Test.java</include>
                             <include>**/*TestSuite.java</include>
                         </includes>
-<!--                        <argLine>-Xmx1024m -Xms128m -Dfile.encoding=UTF8 "-Dtesterum.packageDirectory=${project.basedir}/package"</argLine>-->
+                        <argLine>-Xmx1024m -Xms128m -Dfile.encoding=UTF8 "-Dtesterum.packageDirectory=${project.basedir}/package"</argLine>
                         <excludes>
                             <exclude>**/*ManualTest.java</exclude>
                             <exclude>**/*IntegrationTest.java</exclude>
@@ -1188,7 +1188,6 @@
                                 <sourceDirs>
                                     <source>src/main/java</source>
                                     <source>src/main/kotlin</source>
-                                    <source>src/main/resources</source>
                                 </sourceDirs>
                             </configuration>
                         </execution>

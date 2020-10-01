@@ -9,6 +9,7 @@ import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
+import com.testerum.runner.junit5.logger.JUnitEventLogger
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.runner_cmdline.events.execution_listeners.junit.JUnitExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.utils.console_output_capture.ConsoleOutputCapturer
@@ -19,7 +20,6 @@ import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerPar
 import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerScenario
 import com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite
 import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest
-import com.testerum.runner.junit5.logger.JUnitEventLogger
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import org.junit.jupiter.api.DynamicContainer.dynamicContainer
 import org.junit.jupiter.api.DynamicNode
@@ -31,6 +31,8 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.LinkedBlockingDeque
 import kotlin.concurrent.thread
 
+//We expect the tests in JUnit to be executed in the same order as in Testerum,
+//and if this is not the case, this class will do the wrong thing without warning.
 class JunitTestProvider(repositoryDirectory: Path,
                         variablesEnvironment: String? = null,
                         variableOverrides: Map<String, String> = emptyMap(),
@@ -41,7 +43,6 @@ class JunitTestProvider(repositoryDirectory: Path,
                         tagsToExclude: List<String> = emptyList()
 ) {
 
-    private val bootstrapper: RunnerModuleBootstrapper
     private val cmdlineParams: CmdlineParams = CmdlineParams(
             verbose = false,
             repositoryDirectory = repositoryDirectory,
@@ -57,6 +58,8 @@ class JunitTestProvider(repositoryDirectory: Path,
             executionName = null
     )
 
+    private val bootstrapper: RunnerModuleBootstrapper = RunnerModuleBootstrapper(cmdlineParams, StopWatch.start())
+
     private lateinit var testSuiteToBeExecuted: RunnerSuite
     private val loggingListener = JUnitEventLogger()
 
@@ -64,10 +67,6 @@ class JunitTestProvider(repositoryDirectory: Path,
     private val eventQueueInitialized = CountDownLatch(1)
 
     private var isTestStarted = false
-
-    init {
-        bootstrapper = RunnerModuleBootstrapper(cmdlineParams, StopWatch.start())
-    }
 
     fun getTesterumTests(): List<DynamicNode> {
         testSuiteToBeExecuted = bootstrapper.runnerModuleFactory.runnerApplication.getRunnerSuiteToBeExecuted(cmdlineParams)
@@ -89,10 +88,20 @@ class JunitTestProvider(repositoryDirectory: Path,
         return junitExecutionTree
     }
 
+    private fun defineNode(runnerNode: RunnerFeatureOrTest): DynamicNode {
+        return when (runnerNode) {
+            is RunnerFeature -> dynamicContainer(runnerNode.featureName, runnerNode.featuresOrTests.map { defineNode(it) })
+            is RunnerParametrizedTest -> dynamicContainer(runnerNode.test.name, runnerNode.scenarios.map { defineNode(it) })
+            is RunnerScenario -> dynamicTest(runnerNode.scenarioName, { handleTestInfo() })
+            is RunnerTest -> dynamicTest(runnerNode.test.name, { handleTestInfo() })
+            else -> throw RuntimeException("Unhandled ${runnerNode.javaClass.name} case")
+        }
+    }
+
     private fun executeTesterumTests() {
         val executionListeners = bootstrapper.runnerListenersModuleFactory.executionListenerFinder.executionListeners
         val jUnitExecutionListener: ExecutionListener = executionListeners.find { listener -> listener is JUnitExecutionListener }
-                ?: throw RuntimeException("JUnitExecutionListener is not registred")
+                ?: throw RuntimeException("JUnitExecutionListener is not registered")
 
         eventQueue = (jUnitExecutionListener as JUnitExecutionListener).eventQueue
         eventQueueInitialized.countDown()
@@ -133,19 +142,7 @@ class JunitTestProvider(repositoryDirectory: Path,
         }
     }
 
-    private fun defineNode(runnerNode: RunnerFeatureOrTest): DynamicNode {
-
-        return when (runnerNode) {
-            is RunnerFeature -> dynamicContainer(runnerNode.featureName, runnerNode.featuresOrTests.map { defineNode(it) })
-            is RunnerParametrizedTest -> dynamicContainer(runnerNode.test.name, runnerNode.scenarios.map { defineNode(it) })
-            is RunnerScenario -> dynamicTest(runnerNode.scenarioName, { handleTestInfo() })
-            is RunnerTest -> dynamicTest(runnerNode.test.name, { handleTestInfo() })
-            else -> throw RuntimeException("Unhandled ${runnerNode.javaClass.name} case")
-        }
-    }
-
     private fun handleTestInitializingEvents() {
-
         eventQueueInitialized.await()
 
         while (true) {

@@ -3,10 +3,10 @@ import java.util.List;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.TestFactory;
 
-public class TesterumTestFactory {
+public class TesterumJunitTest {
 
     @TestFactory()
-    public List<DynamicNode> harceaParceaTestsFactory() {
+    public List<DynamicNode> testerumTests() {
         return new TesterumJunitTestFactory("../../../integration-tests/tests")
             .testPaths("backend")
             .getTests();

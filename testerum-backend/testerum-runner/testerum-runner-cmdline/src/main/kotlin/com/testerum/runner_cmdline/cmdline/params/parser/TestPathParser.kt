@@ -72,7 +72,6 @@ private fun parseScenarioIndex(text: String): Int {
 }
 
 private fun getValidatedRequiredFileOrDirectory(path: Path, pathLabel: String, usageHelp: String): Path {
-
     val normalizedPath = path.toAbsolutePath().normalize()
     if (!Files.exists(normalizedPath)) {
         throw CmdlineParamsParserParsingException(

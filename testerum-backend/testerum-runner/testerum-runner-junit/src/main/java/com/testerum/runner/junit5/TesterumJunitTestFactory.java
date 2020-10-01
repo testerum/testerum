@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DynamicNode;
 
 public class TesterumJunitTestFactory {
@@ -27,46 +28,50 @@ public class TesterumJunitTestFactory {
         this.repositoryDirectory = Paths.get(repositoryDirectory);
     }
 
-    public TesterumJunitTestFactory setVariablesEnvironment(String variablesEnvironment) {
+    public @NotNull TesterumJunitTestFactory variablesEnvironment(@NotNull String variablesEnvironment) {
+        if (variablesEnvironment == null) throw new IllegalArgumentException("This parameter can not be null");
+
         this.variablesEnvironment = variablesEnvironment;
         return this;
     }
 
-    public TesterumJunitTestFactory variableOverrides(Map<String, String> variableOverrides) {
-        if (variableOverrides == null) return this;
+    public @NotNull TesterumJunitTestFactory variableOverrides(@NotNull Map<String, String> variableOverrides) {
+        if (variableOverrides == null) throw new IllegalArgumentException("This parameter can not be null");
 
         this.variableOverrides = variableOverrides;
         return this;
     }
 
-    public TesterumJunitTestFactory settingsFile(String settingsFile) {
+    public @NotNull TesterumJunitTestFactory settingsFile(@NotNull String settingsFile) {
+        if (settingsFile == null) throw new IllegalArgumentException("This parameter can not be null");
+
         this.settingsFile = Paths.get(settingsFile);
         return this;
     }
 
-    public TesterumJunitTestFactory settingOverrides(Map<String, String> settingOverrides) {
-        if (settingOverrides == null) return this;
+    public @NotNull TesterumJunitTestFactory settingOverrides(@NotNull Map<String, String> settingOverrides) {
+        if (settingOverrides == null) throw new IllegalArgumentException("This parameter can not be null");
 
         this.settingOverrides = settingOverrides;
         return this;
     }
 
-    public TesterumJunitTestFactory testPaths(String... testPaths) {
-        if (testPaths == null) return this;
+    public @NotNull TesterumJunitTestFactory testPaths(@NotNull String... testPaths) {
+        if (testPaths == null) throw new IllegalArgumentException("This parameter can not be null");
 
         this.testPaths = parseStringToTestPath(Arrays.asList(testPaths), repositoryDirectory, "");
         return this;
     }
 
-    public TesterumJunitTestFactory tagsToInclude(List<String> tagsToInclude) {
-        if (tagsToInclude == null) return this;
+    public @NotNull TesterumJunitTestFactory tagsToInclude(@NotNull List<String> tagsToInclude) {
+        if (tagsToInclude == null) throw new IllegalArgumentException("This parameter can not be null");
 
         this.tagsToInclude = tagsToInclude;
         return this;
     }
 
-    public TesterumJunitTestFactory tagsToExclude(List<String> tagsToExclude) {
-        if (tagsToExclude == null) return this;
+    public @NotNull TesterumJunitTestFactory tagsToExclude(@NotNull List<String> tagsToExclude) {
+        if (tagsToExclude == null) throw new IllegalArgumentException("This parameter can not be null");
 
         this.tagsToExclude = tagsToExclude;
         return this;
