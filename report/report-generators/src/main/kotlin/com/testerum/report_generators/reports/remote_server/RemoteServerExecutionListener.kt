@@ -1,11 +1,13 @@
 package com.testerum.report_generators.reports.remote_server
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.testerum.common_httpclient.HttpClientService
 import com.testerum.common_httpclient.TesterumHttpClientFactory
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.request.HttpRequestBody
 import com.testerum.model.resources.http.request.enums.HttpRequestBodyType
 import com.testerum.model.resources.http.request.enums.HttpRequestMethod
+import com.testerum.model.resources.http.response.ValidHttpResponse
 import com.testerum.report_generators.reports.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
 import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties.RemoteServer.REPORT_SERVER_URL
@@ -21,7 +23,7 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
     private val REPORTS_SERVER_BASE_URL = "$reportServerUrl/v1/reports"
 
 
-    private var isPingSuccessful = false;
+    private var isServerHealthy = false;
     private val eventsAsStringBuilder = StringBuilder()
 
     override fun start() {
@@ -30,33 +32,39 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
             val request = HttpRequest(
                 method = HttpRequestMethod.GET,
-                url = "$REPORTS_SERVER_BASE_URL/ping",
+                url = "$REPORTS_SERVER_BASE_URL/management/health",
                 body = null,
                 followRedirects = true
             )
             try {
                 val response = httpClientService.executeHttpRequest(request)
 
-                if (response.statusCode != 200) {
+                if (response.statusCode != 200 || !serverIsUp(response)) {
                     throw RuntimeException(
-                        """There is a problem with the Reports Server at URL: $reportServerUrl
-                      |PING request details: $request
-                      |PING response details: $response
-                    """.trimMargin()
+                        """|There is a problem with the Reports Server at URL: $reportServerUrl
+                           |PING request details: $request
+                           |PING response details: $response""".trimMargin()
                     )
                 }
 
-
-
-                isPingSuccessful = true
+                isServerHealthy = true
             } catch (e: Exception) {
                 throw RuntimeException(
-                    """Can not connect to Reports Server at URL: $reportServerUrl
-                      |PING request details: $request
-                    """.trimMargin(),
+                    """|Can not connect to Reports Server at URL: $reportServerUrl
+                       |PING request details: $request""".trimMargin(),
                     e
                 )
             }
+        }
+    }
+
+    private fun serverIsUp(response: ValidHttpResponse): Boolean {
+        return try {
+            val healthResponse = ValidHttpResponse.OBJECT_MAPPER.readValue<HealthResponse>(response.body)
+
+            healthResponse.status == "UP"
+        } catch (e: Exception) {
+            false
         }
     }
 
@@ -70,7 +78,9 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
 
     override fun stop() {
-        if(!isPingSuccessful) return
+        if (!isServerHealthy) {
+            return
+        }
 
         TesterumHttpClientFactory.createHttpClient().use { httpClient ->
             val httpClientService = HttpClientService(httpClient)
@@ -85,11 +95,13 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
             if (400 <= response.statusCode) {
                 throw RuntimeException(
-                    """An error occurred while calling the Report Server at URL: ${reportServerUrl}
-                   HTTP Request: $request
-                   HTTP Response: $response"""
+                    """|An error occurred while calling the Report Server at URL: ${reportServerUrl}
+                       |HTTP Request: $request
+                       |HTTP Response: $response""".trimMargin()
                 )
             }
         }
     }
+
+    private class HealthResponse(val status: String)
 }
