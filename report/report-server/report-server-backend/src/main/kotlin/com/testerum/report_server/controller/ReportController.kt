@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RestController
 class ReportController(private val addReportService: AddReportService,
                        private val getReportsInfoService: GetReportsInfoService) {
 
-    @GetMapping("ping")
-    fun ping()  {}
-
     @GetMapping
     fun getReportsInfo(): List<ReportInfo> {
         return getReportsInfoService.getReportsInfo()

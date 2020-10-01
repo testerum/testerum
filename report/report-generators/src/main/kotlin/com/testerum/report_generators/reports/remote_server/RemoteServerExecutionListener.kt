@@ -16,12 +16,8 @@ import com.testerum.runner.events.model.RunnerEvent
 
 class RemoteServerExecutionListener(private val properties: Map<String, String>) : ExecutionListener {
 
-
     private val reportServerUrl = properties[REPORT_SERVER_URL]
         ?: throw RuntimeException("${RunnerReportType.REMOTE_SERVER.toString()} requires the parameter \"${REPORT_SERVER_URL}\"")
-
-    private val REPORTS_SERVER_BASE_URL = "$reportServerUrl/v1/reports"
-
 
     private var isServerHealthy = false;
     private val eventsAsStringBuilder = StringBuilder()
@@ -32,7 +28,7 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
             val request = HttpRequest(
                 method = HttpRequestMethod.GET,
-                url = "$REPORTS_SERVER_BASE_URL/management/health",
+                url = "$reportServerUrl/management/health",
                 body = null,
                 followRedirects = true
             )
@@ -41,9 +37,9 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
                 if (response.statusCode != 200 || !serverIsUp(response)) {
                     throw RuntimeException(
-                        """|There is a problem with the Reports Server at URL: $reportServerUrl
-                           |PING request details: $request
-                           |PING response details: $response""".trimMargin()
+                        """|The Reports Server did not start correctly:
+                           |HTTP Request details: $request
+                           |HTTP Response details: $response""".trimMargin()
                     )
                 }
 
@@ -51,7 +47,7 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
             } catch (e: Exception) {
                 throw RuntimeException(
                     """|Can not connect to Reports Server at URL: $reportServerUrl
-                       |PING request details: $request""".trimMargin(),
+                       |HTTP Request details: $request""".trimMargin(),
                     e
                 )
             }
@@ -76,7 +72,6 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
         eventsAsStringBuilder.append(EXECUTION_LISTENERS_OBJECT_MAPPER.writeValueAsString(event))
     }
 
-
     override fun stop() {
         if (!isServerHealthy) {
             return
@@ -87,7 +82,7 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
             val request = HttpRequest(
                 method = HttpRequestMethod.POST,
-                url = REPORTS_SERVER_BASE_URL,
+                url = "$reportServerUrl/v1/reports",
                 body = HttpRequestBody(HttpRequestBodyType.RAW, eventsAsStringBuilder.toString()),
                 followRedirects = true
             )
