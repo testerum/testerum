@@ -39,12 +39,14 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
                 if (response.statusCode != 200) {
                     throw RuntimeException(
-                        """Can not connect to Reports Server at URL: $reportServerUrl
+                        """There is a problem with the Reports Server at URL: $reportServerUrl
                       |PING request details: $request
-                      |PING response details: $request
+                      |PING response details: $response
                     """.trimMargin()
                     )
                 }
+
+
 
                 isPingSuccessful = true
             } catch (e: Exception) {

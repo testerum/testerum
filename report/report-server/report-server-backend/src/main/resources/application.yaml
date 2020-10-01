@@ -15,7 +15,7 @@ management:
         web:
             base-path: /management
             exposure:
-              include: info
+              include: info, health
 
 spring:
     resources:

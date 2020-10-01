@@ -1,19 +1,21 @@
 package com.testerum.report_generators.reports.console
 
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.common_kotlin.emptyToNull
+import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
+import com.testerum.report_generators.reports.utils.events_stack.ExecutionEventsStack
 import com.testerum.runner.events.execution_listener.BaseExecutionListener
 import com.testerum.runner.events.model.ParametrizedTestStartEvent
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.ScenarioEndEvent
 import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.SuiteEndEvent
+import com.testerum.runner.events.model.SuiteStartEvent
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
-import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
-import com.testerum.report_generators.reports.utils.events_stack.ExecutionEventsStack
+import com.testerum.runner.events.model.log_level.LogLevel
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import java.time.format.DateTimeFormatter
 
 class ConsoleExecutionListener : BaseExecutionListener() {
@@ -28,6 +30,8 @@ class ConsoleExecutionListener : BaseExecutionListener() {
     // todo: share this stack among all listeners, to minimize memory
     private val eventsStack = ExecutionEventsStack()
 
+    private var isBeforeFirstTest = true
+
     override fun start() {
         print(TesterumBanner.BANNER + "\n\n")
     }
@@ -35,6 +39,10 @@ class ConsoleExecutionListener : BaseExecutionListener() {
     override fun onEvent(event: RunnerEvent) {
         eventsStack.push(event)
         super.onEvent(event)
+    }
+
+    override fun onSuiteStart(event: SuiteStartEvent) {
+        isBeforeFirstTest = false
     }
 
     override fun onParametrizedTestStart(event: ParametrizedTestStartEvent) {
@@ -79,6 +87,17 @@ class ConsoleExecutionListener : BaseExecutionListener() {
 
     override fun onSuiteEnd(event: SuiteEndEvent) {
         print("\nTest suite status: ${event.status}\n")
+    }
+
+    // log only the errors before initialization because all the other errors are logged at the end of the test execution
+    override fun onTextLog(event: TextLogEvent) {
+        if (!isBeforeFirstTest) {
+            return
+        }
+
+        if (event.logLevel == LogLevel.ERROR) {
+            print(formatTextLogEvent(event, indentLevel = 0))
+        }
     }
 
     private fun formatTextLogEvent(logEvent: TextLogEvent,

@@ -53,8 +53,7 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         return try {
             tryToExecute(cmdlineParams)
         } catch (e: Exception) {
-            System.err.println("execution failure")
-            e.printStackTrace(System.err)
+            testerumLogger.error("execution failure", e)
 
             ExitCode.RUNNER_FAILED
         }
