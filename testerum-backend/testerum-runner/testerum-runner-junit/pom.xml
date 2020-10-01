@@ -87,12 +87,6 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <version>${kotlin.version}</version>
-<!--                <configuration>-->
-<!--                    <compilerPlugins>-->
-<!--                        <plugin>spring</plugin>-->
-<!--                    </compilerPlugins>-->
-<!--                    <jvmTarget>${maven.compiler.source}</jvmTarget>-->
-<!--                </configuration>-->
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -165,6 +159,28 @@
                         <include>**/*TestFactory.java</include>
                     </includes>
                 </configuration>
+            </plugin>
+
+            <!-- Maven Shade Plugin - create a jar with all Testerum dependencies included -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.testerum:*</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
 
