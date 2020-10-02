@@ -17,7 +17,7 @@ import com.testerum.runner.events.model.RunnerEvent
 class RemoteServerExecutionListener(private val properties: Map<String, String>) : ExecutionListener {
 
     private val reportServerUrl = properties[REPORT_SERVER_URL]
-        ?: throw RuntimeException("${RunnerReportType.REMOTE_SERVER.toString()} requires the parameter \"${REPORT_SERVER_URL}\"")
+        ?: throw IllegalArgumentException("${RunnerReportType.REMOTE_SERVER} requires the property \"$REPORT_SERVER_URL\"")
 
     private var isServerHealthy = false;
     private val eventsAsStringBuilder = StringBuilder()
