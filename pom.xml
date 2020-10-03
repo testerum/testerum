@@ -342,7 +342,7 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
-                <artifactId>testerum-runner-junit</artifactId>
+                <artifactId>testerum-junit</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

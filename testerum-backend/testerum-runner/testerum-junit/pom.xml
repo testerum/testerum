@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>testerum-runner</artifactId>
+        <groupId>com.testerum</groupId>
+        <version>develop-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>testerum-junit</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <gpg.keyname>contact+maven-deployer@testerum.com</gpg.keyname>
+    </properties>
+
+    <scm>
+        <connection>scm:git:https://gitlab.com/testerum/testerum-api.git</connection>
+        <developerConnection>scm:git:git@gitlab.com:testerum/testerum-api.git</developerConnection>
+        <url>https://gitlab.com/testerum/testerum-api</url>
+        <tag>release-tags/1.0.37</tag>
+    </scm>
+
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jcenter</id>
+            <name>JCenter</name>
+            <url>https://jcenter.bintray.com/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencies>
+        <!--==================== Internal Dependencies ====================-->
+
+        <!-- testerum-runner-cmdline -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-runner-cmdline</artifactId>
+        </dependency>
+
+        <!-- STEPS -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>assertion-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>debug-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>http-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>json-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>rdbms-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>selenium-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>util-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>vars-steps</artifactId>
+        </dependency>
+
+        <!--==================== External Dependencies ====================-->
+
+        <!-- Kotlin -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+        </dependency>
+
+        <!-- slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- junit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+
+            <!-- Kotlin -->
+            <plugin>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <version>${kotlin.version}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <sourceDir>src/main/kotlin</sourceDir>
+                                <sourceDir>src/main/java</sourceDir>
+                            </sourceDirs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <sourceDir>src/test/kotlin</sourceDir>
+                                <sourceDir>src/test/java</sourceDir>
+                            </sourceDirs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <!-- Replacing default-compile as it is treated specially by maven -->
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                    <!-- Replacing default-testCompile as it is treated specially by maven -->
+                    <execution>
+                        <id>default-testCompile</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>java-compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>java-test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Surefire -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+            <!-- Maven Shade Plugin - create a jar with all Testerum dependencies included -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.testerum:*</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- jgit buildnumber plugin to get tag name -->
+            <plugin>
+                <groupId>ru.concerteza.buildnumber</groupId>
+                <artifactId>maven-jgit-buildnumber-plugin</artifactId>
+            </plugin>
+
+            <!-- Enforcer -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+
+            <!-- maven-gpg-plugin -->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-gpg-plugin</artifactId>-->
+<!--            </plugin>-->
+
+            <!-- nexus-staging-maven-plugin -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+
+                <!-- maven-clean-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
+                <!-- Enforcer -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.4.1</version>
+
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>extra-enforcer-rules</artifactId>
+                            <version>1.0-beta-9</version>
+                        </dependency>
+                    </dependencies>
+
+                    <executions>
+                        <execution>
+                            <id>enforce-banned-dependencies</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <requirePluginVersions>
+                                        <message>Best Practice is to always define plugin versions!</message>
+                                        <banLatest>true</banLatest>
+                                        <banRelease>true</banRelease>
+                                        <banSnapshots>true</banSnapshots>
+                                        <phases>clean,deploy,site</phases>
+                                    </requirePluginVersions>
+
+                                    <bannedDependencies>
+                                        <excludes>
+                                            <exclude>commons-logging</exclude>        <!-- using slf4j instead -->
+                                            <exclude>org.jboss.logging</exclude>      <!-- using slf4j instead -->
+                                        </excludes>
+                                    </bannedDependencies>
+
+                                    <enforceBytecodeVersion>
+                                        <maxJdkVersion>${maven.compiler.target}</maxJdkVersion>
+                                    </enforceBytecodeVersion>
+
+                                    <banDuplicateClasses>
+                                        <findAllDuplicates>true</findAllDuplicates>
+                                        <ignoreWhenIdentical>false</ignoreWhenIdentical>
+                                    </banDuplicateClasses>
+
+                                    <requireSameVersions>
+                                        <dependencies>
+                                            <dependency>org.slf4j:*</dependency>
+                                        </dependencies>
+                                    </requireSameVersions>
+                                    <requireSameVersions>
+                                        <dependencies>
+                                            <dependency>com.fasterxml.jackson.core:*</dependency>
+                                        </dependencies>
+                                    </requireSameVersions>
+                                </rules>
+
+                                <fail>true</fail>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- jgit buildnumber plugin to get tag name -->
+                <plugin>
+                    <groupId>ru.concerteza.buildnumber</groupId>
+                    <artifactId>maven-jgit-buildnumber-plugin</artifactId>
+                    <version>1.2.10</version>
+                    <executions>
+                        <execution>
+                            <id>git-buildnumber</id>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>extract-buildnumber</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- maven-resources-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
+                <!-- Maven Compiler -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+
+
+                <!-- maven-jar-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.1.2</version>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Application-Maven-GroupId>${project.groupId}</Application-Maven-GroupId>
+                                <Application-Maven-ArtifactId>${project.artifactId}</Application-Maven-ArtifactId>
+                                <Application-Maven-Version>${project.version}</Application-Maven-Version>
+                                <Application-Maven-BuildTimestamp>${buildTimestamp}</Application-Maven-BuildTimestamp>
+                                <Application-Git-Revision>${git.revision}</Application-Git-Revision>
+                                <Application-Git-Branch>${git.branch}</Application-Git-Branch>
+                                <Application-Git-Tag>${git.tag}</Application-Git-Tag>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+
+                <!-- maven-source-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.1.0</version>
+
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Application-Maven-GroupId>${project.groupId}</Application-Maven-GroupId>
+                                <Application-Maven-ArtifactId>${project.artifactId}</Application-Maven-ArtifactId>
+                                <Application-Maven-Version>${project.version}</Application-Maven-Version>
+                                <Application-Maven-BuildTimestamp>${buildTimestamp}</Application-Maven-BuildTimestamp>
+                                <Application-Git-Revision>${git.revision}</Application-Git-Revision>
+                                <Application-Git-Branch>${git.branch}</Application-Git-Branch>
+                                <Application-Git-Tag>${git.tag}</Application-Git-Tag>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+
+                <!-- maven-javadoc-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.1.1</version>
+                </plugin>
+
+                <!-- maven-install-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+
+                <!-- maven-deploy-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+
+                <!-- maven-site-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.8.2</version>
+                </plugin>
+
+                <!--maven-release-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+
+                    <configuration>
+                        <tagNameFormat>release-tags/@{project.version}</tagNameFormat>
+                        <arguments>-Dproduction</arguments>
+                        <goals>deploy</goals>
+                    </configuration>
+                </plugin>
+
+                <!-- dokka-maven-plugin -->
+                <plugin>
+                    <groupId>org.jetbrains.dokka</groupId>
+                    <artifactId>dokka-maven-plugin</artifactId>
+                    <version>0.9.18</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>javadocJar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <perPackageOptions>
+                            <!-- workaround for https://github.com/Kotlin/dokka/issues/464 -->
+                            <!-- please check after Dokka 0.9.19 is released and remove if the bug is fixed -->
+                            <packageOption>
+                                <prefix>com.testerum_api.testerum_steps_api.annotations</prefix>
+                                <suppress>true</suppress>
+                            </packageOption>
+                        </perPackageOptions>
+                    </configuration>
+                </plugin>
+
+                <!-- maven-gpg-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.6</version>
+
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+
+                    <configuration>
+                        <keyname>${gpg.keyname}</keyname>
+                        <passphraseServerId>${gpg.keyname}</passphraseServerId>
+                        <gpgArguments>
+                            <arg>--pinentry-mode</arg>
+                            <arg>loopback</arg>
+                        </gpgArguments>
+                    </configuration>
+                </plugin>
+
+                <!-- nexus-staging-maven-plugin -->
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.8</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

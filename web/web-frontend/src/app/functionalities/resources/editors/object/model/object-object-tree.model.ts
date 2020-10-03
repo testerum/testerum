@@ -38,15 +38,18 @@ export class ObjectObjectTreeModel extends JsonTreeContainerAbstract implements 
 
         let result = "{";
 
+        let isFirstNode = true;
         for (let i = 0; i < this.children.length; i++) {
             let child = this.children[i];
             let serializedChild = child.serialize();
-            if (serializedChild) {
-                result += JsonUtil.stringify(child.objectName) + ": " + serializedChild;
-            }
 
-            if (i != this.children.length - 1) {
-                result += ","
+            if (serializedChild) {
+                if (!isFirstNode) {
+                    result += ","
+                }
+                isFirstNode = false;
+
+                result += JsonUtil.stringify(child.objectName) + ": " + serializedChild;
             }
         }
 

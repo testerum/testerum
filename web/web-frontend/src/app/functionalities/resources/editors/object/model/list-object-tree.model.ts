@@ -34,7 +34,7 @@ export class ListObjectTreeModel extends JsonTreeContainerAbstract implements Ob
             let child = this.children[i];
             result += child.serialize();
 
-            if (i != this.children.length - 1) {
+            if (i < this.children.length - 1) {
                 result += ","
             }
         }

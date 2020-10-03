@@ -13,9 +13,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>testerum-junit</module>
         <module>testerum-runner-api</module>
         <module>testerum-runner-cmdline</module>
-        <module>testerum-runner-junit</module>
         <module>testerum-runner-spring</module>
     </modules>
 
