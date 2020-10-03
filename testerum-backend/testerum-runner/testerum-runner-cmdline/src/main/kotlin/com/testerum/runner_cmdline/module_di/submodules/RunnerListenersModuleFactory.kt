@@ -15,14 +15,7 @@ import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import com.testerum.runner.events.execution_listener.ExecutionListenerFactory
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
-import com.testerum.runner_cmdline.events.execution_listeners.console.ConsoleExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.console_debug.ConsoleDebugExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.json_events.JsonEventsExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.json_stats.JsonStatsExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.junit.JUnitExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.json_model.JsonModelExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.ManagedReportsExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.custom_template.CustomTemplateExecutionListener
 import java.nio.file.Path as JavaPath
 
 class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFactory(context) {

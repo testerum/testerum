@@ -2,6 +2,7 @@ package com.testerum.runner.junit5.provider
 
 import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.model.tests_finder.TestPath
+import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.TestEndEvent
@@ -12,7 +13,6 @@ import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.junit5.logger.JUnitEventLogger
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.runner_cmdline.events.execution_listeners.junit.JUnitExecutionListener
-import com.testerum.runner_cmdline.events.execution_listeners.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner_cmdline.module_di.RunnerModuleBootstrapper
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature
@@ -69,6 +69,8 @@ class JunitTestProvider(repositoryDirectory: Path,
     private var isTestStarted = false
 
     fun getTesterumTests(): List<DynamicNode> {
+        ConsoleOutputCapturer.startCapture("junit-TesterumRunner")
+
         testSuiteToBeExecuted = bootstrapper.runnerModuleFactory.runnerApplication.getRunnerSuiteToBeExecuted(cmdlineParams)
 
         val junitExecutionTree = testSuiteToBeExecuted.featuresOrTests.map { defineNode(it) }
@@ -106,7 +108,6 @@ class JunitTestProvider(repositoryDirectory: Path,
         eventQueue = (jUnitExecutionListener as JUnitExecutionListener).eventQueue
         eventQueueInitialized.countDown()
 
-        ConsoleOutputCapturer.startCapture("junit-TesterumRunner")
         bootstrapper.context.use {
             try {
                 bootstrapper.runnerModuleFactory.runnerApplication.jUnitExecute(cmdlineParams, testSuiteToBeExecuted)

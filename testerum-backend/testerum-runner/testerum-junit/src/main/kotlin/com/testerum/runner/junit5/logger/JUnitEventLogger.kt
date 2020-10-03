@@ -1,5 +1,6 @@
 package com.testerum.runner.junit5.logger
 
+import com.testerum.report_generators.reports.console_debug.ConsoleDebugExecutionListener
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
 import com.testerum.runner.events.model.ParametrizedTestEndEvent
@@ -14,7 +15,6 @@ import com.testerum.runner.events.model.SuiteStartEvent
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
-import com.testerum.runner_cmdline.events.execution_listeners.console_debug.ConsoleDebugExecutionListener
 
 // We use this class to o hide some logs from the JUnit runner because they will be attached to a wrong node in the JUnit execution tree
 class JUnitEventLogger: ConsoleDebugExecutionListener() {

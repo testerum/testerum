@@ -51,8 +51,6 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
 
     fun execute(cmdlineParams: CmdlineParams): ExitCode {
         return try {
-            initialize(cmdlineParams)
-
             // create execution tree
             val suite = getRunnerSuiteToBeExecuted(cmdlineParams)
 
