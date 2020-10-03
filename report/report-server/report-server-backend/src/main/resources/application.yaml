@@ -1,0 +1,22 @@
+
+server:
+    port: 7788
+
+logging:
+    pattern:
+        console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger [%mdc{}] - %msg%n"
+    level:
+        root: WARN
+        org.springframework.web: DEBUG
+        com.testerum: DEBUG
+
+management:
+    endpoints:
+        web:
+            base-path: /management
+            exposure:
+              include: info, health
+
+spring:
+    resources:
+        static-locations: "classpath:/frontend"

@@ -6,6 +6,7 @@ import com.testerum.runner.cmdline.report_type.builder.impl.JsonEventsReportType
 import com.testerum.runner.cmdline.report_type.builder.impl.JsonModelReportTypeBuilder
 import com.testerum.runner.cmdline.report_type.builder.impl.JsonStatsReportTypeBuilder
 import com.testerum.runner.cmdline.report_type.builder.impl.PrettyReportTypeBuilder
+import com.testerum.runner.cmdline.report_type.builder.impl.RemoteServerReportTypeBuilder
 
 // facade to make it easy to access all builders using auto-completion
 object ReportTypeBuilders {
@@ -42,7 +43,6 @@ object ReportTypeBuilders {
         return builder.build()
     }
 
-
     fun customTemplate(body: CustomTemplateReportTypeBuilder.() -> Unit): String {
         val builder = CustomTemplateReportTypeBuilder()
 
@@ -59,4 +59,11 @@ object ReportTypeBuilders {
         return builder.build()
     }
 
+    fun remoteServer(body: RemoteServerReportTypeBuilder.() -> Unit): String {
+        val builder = RemoteServerReportTypeBuilder()
+
+        builder.body()
+
+        return builder.build()
+    }
 }

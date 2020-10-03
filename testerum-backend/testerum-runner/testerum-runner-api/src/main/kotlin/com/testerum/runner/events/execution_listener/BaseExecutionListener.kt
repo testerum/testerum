@@ -1,5 +1,6 @@
 package com.testerum.runner.events.execution_listener
 
+import com.testerum.runner.events.model.ConfigurationEvent
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
 import com.testerum.runner.events.model.ParametrizedTestEndEvent
@@ -21,6 +22,7 @@ open class BaseExecutionListener : ExecutionListener {
 
     override fun onEvent(event: RunnerEvent) {
         when (event) {
+            is ConfigurationEvent         -> onConfigurationEvent(event)
             is SuiteStartEvent            -> onSuiteStart(event)
             is SuiteEndEvent              -> onSuiteEnd(event)
 
@@ -45,6 +47,8 @@ open class BaseExecutionListener : ExecutionListener {
         }
 
     }
+
+    protected open fun onConfigurationEvent(event: ConfigurationEvent) {}
 
     protected open fun onSuiteStart(event: SuiteStartEvent) {}
     protected open fun onSuiteEnd(event: SuiteEndEvent) {}

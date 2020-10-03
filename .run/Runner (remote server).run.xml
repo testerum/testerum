@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Runner (remote server)" type="JetRunConfigurationType">
+    <module name="testerum-runner-cmdline" />
+    <option name="VM_PARAMETERS" value="-Dtesterum.packageDirectory=$PROJECT_DIR$/package" />
+    <option name="PROGRAM_PARAMETERS" value="--repository-directory=$PROJECT_DIR$/integration-tests/tests --test-path backend --report CONSOLE --report REMOTE_SERVER:reportServerUrl=http://localhost:7788 " />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="PASS_PARENT_ENVS" value="true" />
+    <option name="MAIN_CLASS_NAME" value="com.testerum.runner_cmdline.TesterumRunner" />
+    <option name="WORKING_DIRECTORY" value="" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

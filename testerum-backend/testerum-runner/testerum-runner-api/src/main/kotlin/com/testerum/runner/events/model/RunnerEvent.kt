@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonSubTypes(value = [
+        JsonSubTypes.Type(value = ConfigurationEvent::class         , name = "CONFIGURATION_EVENT"),
         JsonSubTypes.Type(value = SuiteStartEvent::class            , name = "TEST_SUITE_START_EVENT"),
         JsonSubTypes.Type(value = SuiteEndEvent::class              , name = "TEST_SUITE_END_EVENT"),
         JsonSubTypes.Type(value = FeatureStartEvent::class          , name = "FEATURE_START_EVENT"),

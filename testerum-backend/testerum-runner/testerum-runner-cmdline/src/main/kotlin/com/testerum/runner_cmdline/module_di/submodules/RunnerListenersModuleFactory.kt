@@ -2,10 +2,18 @@ package com.testerum.runner_cmdline.module_di.submodules
 
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
+import com.testerum.report_generators.dirs.ReportDirs
+import com.testerum.report_generators.reports.console.ConsoleExecutionListener
+import com.testerum.report_generators.reports.console_debug.ConsoleDebugExecutionListener
+import com.testerum.report_generators.reports.json_events.JsonEventsExecutionListener
+import com.testerum.report_generators.reports.json_stats.JsonStatsExecutionListener
+import com.testerum.report_generators.reports.remote_server.RemoteServerExecutionListener
+import com.testerum.report_generators.reports.report_model.json_model.JsonModelExecutionListener
+import com.testerum.report_generators.reports.report_model.template.ManagedReportsExecutionListener
+import com.testerum.report_generators.reports.report_model.template.custom_template.CustomTemplateExecutionListener
 import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import com.testerum.runner.events.execution_listener.ExecutionListenerFactory
-import com.testerum.runner_cmdline.dirs.RunnerDirs
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
 import com.testerum.runner_cmdline.events.execution_listeners.console.ConsoleExecutionListener
 import com.testerum.runner_cmdline.events.execution_listeners.console_debug.ConsoleDebugExecutionListener
@@ -32,13 +40,16 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
                     RunnerReportType.JUNIT              to { properties: Map<String, String> -> JUnitExecutionListener() },
 
                     RunnerReportType.CUSTOM_TEMPLATE    to { properties: Map<String, String> -> CustomTemplateExecutionListener(properties) },
-                    RunnerReportType.PRETTY             to builtInTemplateExecutionListenerFactory("pretty")
-            ),
+                    RunnerReportType.PRETTY             to builtInTemplateExecutionListenerFactory("pretty"),
+
+                    RunnerReportType.REMOTE_SERVER      to { properties: Map<String, String> -> RemoteServerExecutionListener(properties) }
+
+                ),
             managedReportsExecutionListenerFactory = {  managedReportsDir: JavaPath -> ManagedReportsExecutionListener(managedReportsDir) }
     )
 
     private fun builtInTemplateExecutionListenerFactory(name: String): ExecutionListenerFactory = { properties: Map<String, String> ->
-        val scriptFileName: JavaPath = RunnerDirs.getReportTemplatesDir()
+        val scriptFileName: JavaPath = ReportDirs.getReportTemplatesDir()
                 .resolve(name)
                 .resolve("main.bundle.js")
                 .toAbsolutePath().normalize()

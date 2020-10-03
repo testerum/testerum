@@ -4,7 +4,7 @@ import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.cmdline.report_type.marshaller.RunnerReportTypeParser
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.execution_listener.ExecutionListenerFactory
-import com.testerum.runner_cmdline.events.execution_listeners.report_model.template.ManagedReportsExecutionListener
+import com.testerum.report_generators.reports.report_model.template.ManagedReportsExecutionListener
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 import java.nio.file.Path as JavaPath
