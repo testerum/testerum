@@ -178,12 +178,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
 
-            <!-- failsafe -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-
             <!-- maven-assembly-plugin (create final dist file) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
