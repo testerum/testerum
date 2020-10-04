@@ -23,7 +23,7 @@ export class ObjectTypeMeta implements TypeMeta, Serializable<ObjectTypeMeta> {
     deserialize(input: Object): ObjectTypeMeta {
         this.javaType = input["javaType"];
 
-        if(input["fields"]) {
+        if (input["fields"]) {
             for (const field of input["fields"] || []) {
                 this.fields.push(
                     new FieldTypeMeta().deserialize(field)
@@ -34,10 +34,11 @@ export class ObjectTypeMeta implements TypeMeta, Serializable<ObjectTypeMeta> {
     }
 
     serialize(): string {
-        return ''+
-               '{' +
-               '"@type": "OBJECT"'+
-               ',"javaType":'+ JsonUtil.stringify(this.javaType) +
-               '}'
+        return '' +
+            '{' +
+            '"@type": "OBJECT"' +
+            ',"javaType":' + JsonUtil.stringify(this.javaType) +
+            ',"fields":' + JsonUtil.serializeArrayOfSerializable(this.fields) +
+            '}'
     }
 }

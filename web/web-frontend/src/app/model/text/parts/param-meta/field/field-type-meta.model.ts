@@ -26,10 +26,10 @@ export class FieldTypeMeta implements Serializable<FieldTypeMeta> {
 
     serialize(): string {
         return '' +
-        '{' +
-        '"name":' + JsonUtil.stringify(this.name) +
-        '"type":' + this.type ? this.type.serialize() : null +
-        '}'
+            '{' +
+            '"name":' + JsonUtil.stringify(this.name) +
+            ',"type":' + JsonUtil.serializeSerializable(this.type) +
+            '}'
     }
 
     static deserializeTypeMeta(itemsTypeSerialized: any): TypeMeta {
