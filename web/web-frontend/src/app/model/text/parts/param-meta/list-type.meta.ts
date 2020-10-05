@@ -27,7 +27,7 @@ export class ListTypeMeta implements TypeMeta, Serializable<ListTypeMeta> {
             '{' +
             '"@type": "LIST"'+
             ',"javaType":'+ JsonUtil.stringify(this.javaType) +
-            ',"itemsType":'+ this.itemsType ? this.itemsType.serialize() : null +
+            ',"itemsType":'+ JsonUtil.serializeSerializable(this.itemsType) +
             '}'
     }
 }
