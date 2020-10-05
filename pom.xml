@@ -6,6 +6,8 @@
     <artifactId>testerum</artifactId>
     <version>develop-SNAPSHOT</version>
 
+    <packaging>pom</packaging>
+
     <modules>
         <module>common</module>
         <module>model</module>
@@ -21,7 +23,33 @@
         <module>report</module>
     </modules>
 
-    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>Testerum test automation platform</description>
+    <url>https://testerum.com/</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0 with exception clauses</name>
+            <url>https://github.com/testerum/testerum/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Vasile-Cristian Mocanu</name>
+            <email>cristian.mocanu@testerum.com</email>
+            <organization>Testerum</organization>
+            <organizationUrl>https://testerum.com/</organizationUrl>
+        </developer>
+
+        <developer>
+            <name>Ionut Pruteanu</name>
+            <email>ionut.pruteanu@testerum.com</email>
+            <organization>Testerum</organization>
+            <organizationUrl>https://testerum.com/</organizationUrl>
+        </developer>
+    </developers>
+
 
     <ciManagement>
         <system>Jenkins</system>
