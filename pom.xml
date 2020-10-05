@@ -40,6 +40,21 @@
         <tag>HEAD</tag>
     </scm>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jcenter</id>
+            <name>JCenter</name>
+            <url>https://jcenter.bintray.com/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <!-- maven settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
