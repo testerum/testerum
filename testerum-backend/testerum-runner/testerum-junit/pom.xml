@@ -6,7 +6,7 @@
     <parent>
         <artifactId>testerum-runner</artifactId>
         <groupId>com.testerum</groupId>
-        <version>3.5.2</version>
+        <version>develop-SNAPSHOT</version>
     </parent>
 
     <artifactId>testerum-junit</artifactId>
@@ -22,7 +22,7 @@
         <connection>scm:git:https://gitlab.com/testerum/testerum-api.git</connection>
         <developerConnection>scm:git:git@gitlab.com:testerum/testerum-api.git</developerConnection>
         <url>https://gitlab.com/testerum/testerum-api</url>
-        <tag>v3.5.2</tag>
+        <tag>release-tags/1.0.37</tag>
     </scm>
 
 

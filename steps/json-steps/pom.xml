@@ -6,7 +6,7 @@
     <parent>
         <artifactId>steps</artifactId>
         <groupId>com.testerum</groupId>
-        <version>3.5.2</version>
+        <version>develop-SNAPSHOT</version>
     </parent>
 
     <artifactId>json-steps</artifactId>
