@@ -1178,6 +1178,31 @@
                     <version>3.1.1</version>
                 </plugin>
 
+                <!-- dokka-maven-plugin -->
+                <plugin>
+                    <groupId>org.jetbrains.dokka</groupId>
+                    <artifactId>dokka-maven-plugin</artifactId>
+                    <version>0.9.18</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>javadocJar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <perPackageOptions>
+                            <!-- workaround for https://github.com/Kotlin/dokka/issues/464 -->
+                            <!-- please check after Dokka 0.9.19 is released and remove if the bug is fixed -->
+                            <packageOption>
+                                <prefix>com.testerum_api.testerum_steps_api.annotations</prefix>
+                                <suppress>true</suppress>
+                            </packageOption>
+                        </perPackageOptions>
+                    </configuration>
+                </plugin>
+
                 <!-- maven-jar-plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -1470,6 +1495,11 @@
         <profile>
             <id>deploy-to-mvn-central</id>
 
+            <properties>
+                <maven.javadoc.skip>false</maven.javadoc.skip>
+                <maven.source.skip>false</maven.source.skip>
+            </properties>
+
             <build>
                 <pluginManagement>
                     <plugins>
@@ -1526,6 +1556,18 @@
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
                     </plugin>
+                    <!-- maven-source-plugin -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+
+                    <!-- dokka-maven-plugin -->
+                    <plugin>
+                        <groupId>org.jetbrains.dokka</groupId>
+                        <artifactId>dokka-maven-plugin</artifactId>
+                    </plugin>
+
                 </plugins>
             </build>
         </profile>

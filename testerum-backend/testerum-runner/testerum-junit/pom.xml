@@ -14,8 +14,6 @@
 
     <properties>
         <gpg.keyname>contact+maven-deployer@testerum.com</gpg.keyname>
-        <maven.javadoc.skip>false</maven.javadoc.skip>
-        <maven.source.skip>false</maven.source.skip>
     </properties>
 
     <scm>
@@ -222,17 +220,6 @@
                 <artifactId>maven-enforcer-plugin</artifactId>
             </plugin>
 
-            <!-- maven-gpg-plugin -->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-gpg-plugin</artifactId>-->
-<!--            </plugin>-->
-
-            <!-- nexus-staging-maven-plugin -->
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-            </plugin>
         </plugins>
 
         <pluginManagement>
