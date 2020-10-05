@@ -4,7 +4,7 @@
 
     <groupId>com.testerum</groupId>
     <artifactId>testerum</artifactId>
-    <version>develop-SNAPSHOT</version>
+    <version>3.5.2</version>
 
     <modules>
         <module>common</module>
@@ -37,7 +37,7 @@
         <connection>https://github.com/testerum/testerum.git</connection>
         <developerConnection>scm:git:git@github.com:testerum/testerum.git</developerConnection>
         <url>https://github.com/testerum/testerum</url>
-        <tag>HEAD</tag>
+        <tag>v3.5.2</tag>
     </scm>
 
     <pluginRepositories>
