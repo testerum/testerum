@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.common_kotlin.indent
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.StepCall
+import com.testerum.model.test.hooks.Hooks
 import com.testerum.model.test.scenario.Scenario
 import com.testerum.model.warning.Warning
 
@@ -17,6 +18,7 @@ data class TestModel @JsonCreator constructor(@JsonProperty("name") val name: St
                                               @JsonProperty("description") val description: String?,
                                               @JsonProperty("tags") val tags: List<String> = emptyList(),
                                               @JsonProperty("scenarios") val scenarios: List<Scenario> = emptyList(),
+                                              @JsonProperty("hooks") val hooks: Hooks = Hooks.EMPTY,
                                               @JsonProperty("stepCalls") val stepCalls: List<StepCall> = emptyList(),
                                               @JsonProperty("warnings") val warnings: List<Warning> = emptyList()) {
 
