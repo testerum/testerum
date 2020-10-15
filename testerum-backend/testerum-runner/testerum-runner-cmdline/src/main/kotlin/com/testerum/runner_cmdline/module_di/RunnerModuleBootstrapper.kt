@@ -27,9 +27,9 @@ class RunnerModuleBootstrapper(cmdlineParams: CmdlineParams,
 
     val runnerListenersModuleFactory = RunnerListenersModuleFactory(context)
 
-    val fileServiceModuleFactory = FileServiceModuleFactory(context, settingsModuleFactory, scannerModuleFactory)
+    val fileServiceModuleFactory = FileServiceModuleFactory(context, settingsModuleFactory)
 
-    private val projectManagerModuleFactory = ProjectManagerModuleFactory(context, fileServiceModuleFactory)
+    private val projectManagerModuleFactory = ProjectManagerModuleFactory(context, fileServiceModuleFactory, settingsModuleFactory, scannerModuleFactory)
 
     val runnerModuleFactory = RunnerModuleFactory(context, runnerTransformersModuleFactory, runnerListenersModuleFactory, settingsModuleFactory, fileServiceModuleFactory, projectManagerModuleFactory, cmdlineParams, stopWatch)
 
