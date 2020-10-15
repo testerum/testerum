@@ -4,7 +4,6 @@ import com.testerum.common_kotlin.walk
 import com.testerum.file_service.caches.resolved.resolvers.StepsResolver
 import com.testerum.file_service.caches.warnings.WarningService
 import com.testerum.file_service.file.ComposedStepFileService
-import com.testerum.model.util.escape
 import com.testerum.file_service.util.isChangedRequiringSave
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.exception.ValidationException
@@ -20,6 +19,8 @@ import com.testerum.model.step.tree.builder.ComposedStepDirectoryTreeBuilder
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.TextStepPatternPart
 import com.testerum.model.util.StepHashUtil
+import com.testerum.model.util.escape
+import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.util.concurrent.locks.ReentrantReadWriteLock
@@ -38,6 +39,7 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
 
     private val lock = ReentrantReadWriteLock()
 
+    private var additionalBasicStepsDir: JavaPath? = null
     private var composedStepsDir: JavaPath? = null
     private var resourcesDir: JavaPath? = null
 
@@ -46,20 +48,20 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
     private var stepsByHash: MutableMap</*hash: */String, StepDef> = hashMapOf()
     private var stepsByPath: MutableMap<Path, StepDef> = hashMapOf()
 
-    fun initialize(composedStepsDir: JavaPath?,
-                   resourcesDir: JavaPath?) {
+    fun initialize(additionalBasicStepsDir: JavaPath,
+                   composedStepsDir: JavaPath,
+                   resourcesDir: JavaPath) {
         lock.write {
-            if (composedStepsDir == null || resourcesDir == null) {
-                LOG.info("not loading composed steps because either the composed steps dir or the resources dir is unknown")
-            } else {
-                this.composedStepsDir = composedStepsDir
-                this.resourcesDir = resourcesDir
+            this.additionalBasicStepsDir = additionalBasicStepsDir
+            this.composedStepsDir = composedStepsDir
+            this.resourcesDir = resourcesDir
 
-                // load unresolved composed steps
-                this.unresolvedComposedSteps = ArrayList(loadComposedSteps(composedStepsDir))
+            basicStepsCache.initialize(additionalBasicStepsDir)
 
-                resolveSteps()
-            }
+            // load unresolved composed steps
+            this.unresolvedComposedSteps = ArrayList(loadComposedSteps(composedStepsDir))
+
+            resolveSteps()
         }
     }
 
@@ -128,6 +130,12 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
 
         return result
     }
+
+    fun getBasicSteps(): Collection<BasicStepDef> = lock.read { basicStepsCache.getBasicSteps() }
+
+    fun getBasicStepAtPath(basicStepPath: Path): BasicStepDef? = lock.read { basicStepsCache.getStepAtPath(basicStepPath) }
+
+    fun getHooks(): Collection<HookDef> = lock.read { basicStepsCache.getHooks() }
 
     fun getAllSteps(): Collection<StepDef> = lock.read { stepsByHash.values }
 

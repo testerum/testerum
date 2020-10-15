@@ -8,7 +8,6 @@ import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.filter.StepsTreeFilter
 import com.testerum.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
 import com.testerum.model.step.tree.ComposedContainerStepNode
-import com.testerum.web_backend.services.initializers.caches.impl.BasicStepsCacheInitializer
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.save.SaveFrontendService
 import com.testerum.web_backend.services.steps.filterer.StepsTreeFilterer
@@ -16,8 +15,7 @@ import com.testerum.web_backend.services.steps.filterer.StepsTreeFilterer
 class ComposedStepsFrontendService(private val webProjectManager: WebProjectManager,
                                    private val composedStepUpdateCompatibilityFrontendService: ComposedStepUpdateCompatibilityFrontendService,
                                    private val saveFrontendService: SaveFrontendService,
-                                   private val warningService: WarningService,
-                                   private val basicStepsCacheInitializer: BasicStepsCacheInitializer) {
+                                   private val warningService: WarningService) {
 
     private fun stepsCache() = webProjectManager.getProjectServices().getStepsCache()
 

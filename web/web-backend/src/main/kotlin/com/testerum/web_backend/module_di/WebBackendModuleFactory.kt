@@ -78,7 +78,6 @@ import com.testerum.web_backend.services.home.HomeFrontendService
 import com.testerum.web_backend.services.home.QuotesService
 import com.testerum.web_backend.services.initializers.WebBackendInitializer
 import com.testerum.web_backend.services.initializers.caches.CachesInitializer
-import com.testerum.web_backend.services.initializers.caches.impl.BasicStepsCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.JdbcDriversCacheInitializer
 import com.testerum.web_backend.services.initializers.caches.impl.LicenseCacheInitializer
 import com.testerum.web_backend.services.initializers.demo.DemoInitializer
@@ -158,11 +157,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
 
     //---------------------------------------- initializers ----------------------------------------//
 
-    private val stepCachesInitializer = BasicStepsCacheInitializer(
-            frontendDirs = frontendDirs,
-            basicStepsCache = fileServiceModuleFactory.basicStepsCache
-    )
-
     private val jdbcDriversCacheInitializer = JdbcDriversCacheInitializer(
             frontendDirs = frontendDirs,
             jdbcDriversCache = rdbmsDriverConfigCache
@@ -223,7 +217,6 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val cachesInitializer = CachesInitializer(
-            basicStepsCacheInitializer = stepCachesInitializer,
             jdbcDriversCacheInitializer = jdbcDriversCacheInitializer,
             licenseCacheInitializer = licenseCacheInitializer
     )
@@ -309,7 +302,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
     )
 
     private val basicStepsFrontendService = BasicStepsFrontendService(
-            basicStepsCache = fileServiceModuleFactory.basicStepsCache
+            webProjectManager = webProjectManager
     )
 
     private val stepsTreeFrontendService = StepsTreeFrontendService(
@@ -324,8 +317,7 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             webProjectManager = webProjectManager,
             composedStepUpdateCompatibilityFrontendService = composedStepUpdateCompatibilityFrontendService,
             warningService = fileServiceModuleFactory.warningService,
-            saveFrontendService = saveFrontendService,
-            basicStepsCacheInitializer = stepCachesInitializer
+            saveFrontendService = saveFrontendService
     )
 
     private val resourcesFrontendService = ResourcesFrontendService(
