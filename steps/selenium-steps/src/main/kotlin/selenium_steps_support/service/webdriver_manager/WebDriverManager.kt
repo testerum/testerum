@@ -89,7 +89,50 @@ import java.nio.file.Path as JavaPath
             label = "Advanced WebDriver customization (capabilities, etc.)",
             type = SettingType.JAVASCRIPT,
             defaultValue = "",
-            description = """""",
+            description = """
+                Enables advanced customization of the ``WebDriver`` instance, like for example setting ``DesiredCapabilities``.
+
+                This can be done by calling methods on the ``capabilities`` object, which is available in the context of this script.
+
+                The type of this object depends on the selected browser, as follows:
+
+                | Browser                     | Type (link to documentation) |
+                |-----------------------------|------------------------------|
+                | Google Chrome               | [ChromeOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/chrome/ChromeOptions.html) |
+                | Firefox                     | [FirefoxOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/firefox/FirefoxOptions.html) |
+                | Opera                       | [OperaOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/opera/OperaOptions.html) |
+                | Microsoft Edge              | [EdgeOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/edge/EdgeOptions.html) |
+                | Microsoft Internet Explorer | [InternetExplorerOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/ie/InternetExplorerOptions.html) |
+                | Safari                      | [SafariOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/safari/SafariOptions.html) |
+                | remote WebDriver            | [DesiredCapabilities](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/remote/DesiredCapabilities.html) |
+
+                Example script (generic):
+                ```javascript
+                capabilities.setCapability("os_version", "11");
+                capabilities.setCapability("device", "iPhone 8 Plus");
+                capabilities.setCapability("real_mobile", "true");
+                capabilities.setCapability("browserstack.local", "false");
+                ```
+
+                Another example (for Chrome):
+                ```javascript
+                capabilities.addArguments("start-maximized");
+                
+                var Proxy = Java.type("org.openqa.selenium.Proxy")
+                var proxy = new Proxy();
+                proxy.setHttpProxy("myhttpproxy:3337");
+                capabilities.setCapability("proxy", proxy);
+                ```
+
+                More information for browser-specific options:
+                * [for Google Chrome](https://chromedriver.chromium.org/capabilities)
+                * [for Firefox](https://developer.mozilla.org/en-US/docs/Web/WebDriver/Capabilities/firefoxOptions)
+                * [for Opera](https://github.com/operasoftware/operachromiumdriver/blob/master/docs/desktop.md)
+                * [for Microsoft Edge (EdgeHTML engine)](https://docs.microsoft.com/en-us/microsoft-edge/webdriver)
+                * [for Microsoft Edge (Chromium engine)](https://docs.microsoft.com/en-us/microsoft-edge/webdriver-chromium?tabs=javascript)
+                * [for Microsoft Internet Explorer](https://www.selenium.dev/documentation/en/driver_idiosyncrasies/driver_specific_capabilities/#internet-explorer)
+                * [for Safari](https://developer.apple.com/documentation/webkit/about_webdriver_for_safari)
+            """,
             category = SETTINGS_CATEGORY
     )
 ])
@@ -154,7 +197,8 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
                 val webDriver = webDriverFactory.createWebDriver(seleniumDriverSetting, seleniumDriversByBrowser)
 
                 _webDriver = webDriver.apply {
-                    // not maximizing on Mac because it makes WebDriver throw an exception for Chrome on Mac: "failed to change window state to normal, current state is maximized"
+                    // not maximizing on Mac because it makes WebDriver throw an exception for Chrome on Mac:
+                    // "failed to change window state to normal, current state is maximized"
                     if (!OsUtils.IS_MAC) {
                         manage().window().maximize() // todo: make this configurable
                     }
