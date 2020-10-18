@@ -15,6 +15,15 @@
 
     <dependencies>
 
+        <!--==================== internal dependencies ====================-->
+
+        <!-- common-nashorn -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-nashorn</artifactId>
+        </dependency>
+
+
         <!--==================== 3rd party dependencies ====================-->
 
         <!-- slf4j -->

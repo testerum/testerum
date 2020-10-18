@@ -1,4 +1,4 @@
-package com.testerum.common.expression_evaluator.helpers.util
+package com.testerum.common.nashorn
 
 class ScriptingArgs(val functionName: String,
                     val args: Array<out Any?>) {
