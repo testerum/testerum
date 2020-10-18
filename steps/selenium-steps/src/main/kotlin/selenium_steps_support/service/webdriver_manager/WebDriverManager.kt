@@ -31,6 +31,7 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager.Compani
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_WAIT_TIMEOUT_MILLIS
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT
 import selenium_steps_support.utils.SeleniumStepsDirs
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
@@ -82,6 +83,14 @@ import java.nio.file.Path as JavaPath
             defaultValue = "false",
             description = """Takes a screenshot after each Selenium Test. Possible values: "true", "false"""",
             category = SETTINGS_CATEGORY
+    ),
+    DeclareSetting(
+            key = SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT,
+            label = "Advanced WebDriver customization (capabilities, etc.)",
+            type = SettingType.JAVASCRIPT,
+            defaultValue = "",
+            description = """""",
+            category = SETTINGS_CATEGORY
     )
 ])
 class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
@@ -92,6 +101,13 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
 
         internal const val SETTINGS_CATEGORY = "Selenium"
 
+        internal const val SETTING_KEY_DRIVER = "testerum.selenium.driver"
+        internal const val SETTING_KEY_DRIVER_BROWSER_TYPE = "testerum.selenium.driver.browserType"
+        internal const val SETTING_KEY_DRIVER_BROWSER_EXECUTABLE_PATH = "testerum.selenium.driver.browserExecutablePath"
+        internal const val SETTING_KEY_DRIVER_HEADLESS = "testerum.selenium.driver.headless"
+        internal const val SETTING_KEY_DRIVER_DRIVER_VERSION = "testerum.selenium.driver.driverVersion"
+        internal const val SETTING_KEY_DRIVER_REMOTE_URL = "testerum.selenium.driver.remoteUrl"
+
         internal const val SETTING_KEY_WAIT_TIMEOUT_MILLIS = "testerum.selenium.waitTimeoutMillis"
 
         internal const val SETTING_KEY_AFTER_STEP_DELAY_MILLIS = "testerum.selenium.afterStepDelayMillis"
@@ -101,12 +117,8 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
 
         internal const val SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP = "testerum.selenium.takeScreenshotAfterEachStep"
 
-        internal const val SETTING_KEY_DRIVER = "testerum.selenium.driver"
-        internal const val SETTING_KEY_DRIVER_BROWSER_TYPE = "testerum.selenium.driver.browserType"
-        internal const val SETTING_KEY_DRIVER_BROWSER_EXECUTABLE_PATH = "testerum.selenium.driver.browserExecutablePath"
-        internal const val SETTING_KEY_DRIVER_HEADLESS = "testerum.selenium.driver.headless"
-        internal const val SETTING_KEY_DRIVER_DRIVER_VERSION = "testerum.selenium.driver.driverVersion"
-        internal const val SETTING_KEY_DRIVER_REMOTE_URL = "testerum.selenium.driver.remoteUrl"
+        internal const val SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT = "testerum.selenium.webDriverCustomizationScript"
+
 
         private val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper().apply {
             registerModule(AfterburnerModule())
