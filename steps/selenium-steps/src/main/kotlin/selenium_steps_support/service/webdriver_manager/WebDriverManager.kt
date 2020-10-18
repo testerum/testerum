@@ -191,10 +191,12 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
         get() = synchronized(lock) {
             if (_webDriver == null) {
                 val seleniumDriverSetting = getSeleniumDriverSetting()
+                val webDriverCustomizationScript = runnerSettingsManager.getSetting(SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT)?.resolvedValue
+
                 val webDriverFactory = WebDriverFactories.getWebDriverFactory(seleniumDriverSetting.browserType)
                 val seleniumDriversByBrowser = seleniumDriversFileService.getDriversInfo(SeleniumStepsDirs.getSeleniumDriversDir())
 
-                val webDriver = webDriverFactory.createWebDriver(seleniumDriverSetting, seleniumDriversByBrowser)
+                val webDriver = webDriverFactory.createWebDriver(seleniumDriverSetting, webDriverCustomizationScript, seleniumDriversByBrowser)
 
                 _webDriver = webDriver.apply {
                     // not maximizing on Mac because it makes WebDriver throw an exception for Chrome on Mac:

@@ -1,7 +1,8 @@
 package selenium_steps_support.service.webdriver_factory.chrome
 
-import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumDriverSettingValue
+import com.testerum.common.expression_evaluator.ExpressionEvaluator
 import com.testerum.model.selenium.SeleniumDriversByBrowser
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumDriverSettingValue
 import org.openqa.selenium.UnexpectedAlertBehaviour
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.CapabilityType
@@ -16,8 +17,11 @@ object RemoteWebDriverFactory : WebDriverFactory {
 
     private val LOG: Logger = LoggerFactory.getLogger(RemoteWebDriverFactory::class.java)
 
-    override fun createWebDriver(config: SeleniumDriverSettingValue,
-                                 driversByBrowser: SeleniumDriversByBrowser): WebDriver {
+    override fun createWebDriver(
+        config: SeleniumDriverSettingValue,
+        webDriverCustomizationScript: String?,
+        driversByBrowser: SeleniumDriversByBrowser
+    ): WebDriver {
         if (config.remoteUrl == null) {
             throw IllegalArgumentException("when connecting to a remove Selenium driver server, the URL is required")
         }
@@ -30,9 +34,18 @@ object RemoteWebDriverFactory : WebDriverFactory {
 
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE)
 
+        if (!webDriverCustomizationScript.isNullOrBlank()) {
+            ExpressionEvaluator.evaluate(
+                expression = webDriverCustomizationScript,
+                context = mapOf(
+                    "capabilities" to capabilities
+                )
+            )
+        }
+
         return RemoteWebDriver(
-                URL(config.remoteUrl),
-                capabilities
+            URL(config.remoteUrl),
+            capabilities
         )
     }
 
