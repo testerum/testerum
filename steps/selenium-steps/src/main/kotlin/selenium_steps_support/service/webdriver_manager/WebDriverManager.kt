@@ -29,6 +29,7 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager.Compani
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_AFTER_STEP_DELAY_MILLIS
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_MAXIMIZE_WINDOW_BEFORE_TEST
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_WAIT_TIMEOUT_MILLIS
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT
@@ -82,6 +83,14 @@ import java.nio.file.Path as JavaPath
             type = SettingType.BOOLEAN,
             defaultValue = "false",
             description = """Takes a screenshot after each Selenium Test. Possible values: "true", "false"""",
+            category = SETTINGS_CATEGORY
+    ),
+    DeclareSetting(
+            key = SETTING_KEY_MAXIMIZE_WINDOW_BEFORE_TEST,
+            label = "Maximizes window before the test",
+            type = SettingType.BOOLEAN,
+            defaultValue = "true",
+            description = """Automatically maximizes the browser window before executing the test. Possible values: "true", "false"""",
             category = SETTINGS_CATEGORY
     ),
     DeclareSetting(
@@ -159,6 +168,7 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
         internal const val SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT = "onFailure"
 
         internal const val SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP = "testerum.selenium.takeScreenshotAfterEachStep"
+        internal const val SETTING_KEY_MAXIMIZE_WINDOW_BEFORE_TEST = "testerum.selenium.mazimizeWindowBeforeTest"
 
         internal const val SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT = "testerum.selenium.webDriverCustomizationScript"
 
@@ -199,10 +209,12 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
                 val webDriver = webDriverFactory.createWebDriver(seleniumDriverSetting, webDriverCustomizationScript, seleniumDriversByBrowser)
 
                 _webDriver = webDriver.apply {
-                    // not maximizing on Mac because it makes WebDriver throw an exception for Chrome on Mac:
-                    // "failed to change window state to normal, current state is maximized"
-                    if (!OsUtils.IS_MAC) {
-                        manage().window().maximize() // todo: make this configurable
+                    if (runnerSettingsManager.getRequiredSetting(SETTING_KEY_MAXIMIZE_WINDOW_BEFORE_TEST).resolvedValue.toBoolean()) {
+                        // not maximizing on Mac because it makes WebDriver throw an exception for Chrome on Mac:
+                        // "failed to change window state to normal, current state is maximized"
+                        if (!OsUtils.IS_MAC) {
+                            manage().window().maximize() // todo: make this configurable
+                        }
                     }
                 }
             }
