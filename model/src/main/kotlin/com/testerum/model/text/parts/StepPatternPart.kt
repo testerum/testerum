@@ -1,6 +1,10 @@
 package com.testerum.model.text.parts
 
-import com.fasterxml.jackson.annotation.*
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.testerum.model.text.parts.param_meta.TypeMeta
 
 @JsonIgnoreProperties(ignoreUnknown = true)

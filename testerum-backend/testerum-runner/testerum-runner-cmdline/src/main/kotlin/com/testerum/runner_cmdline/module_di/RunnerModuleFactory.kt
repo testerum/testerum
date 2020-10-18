@@ -46,7 +46,6 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
 
     private val runnerExecutionTreeBuilder = RunnerExecutionTreeBuilder(
             runnerProjectManager = runnerProjectManager,
-            basicStepsCache = fileServiceModuleFactory.basicStepsCache,
             executionName = cmdlineParams.executionName
     )
 
@@ -64,7 +63,6 @@ class RunnerModuleFactory(context: ModuleFactoryContext,
             runnerTesterumDirs = runnerTesterumDirs,
             testerumDirs = settingsModuleFactory.testerumDirs,
             eventsService = eventsService,
-            basicStepsCache = fileServiceModuleFactory.basicStepsCache,
             runnerExecutionTreeBuilder = runnerExecutionTreeBuilder,
             variablesFileService = fileServiceModuleFactory.variablesFileService,
             testVariables = TestVariablesImpl,

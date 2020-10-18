@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.nio.file.Paths
-import java.util.*
+import java.util.Collections
 import java.nio.file.Path as JavaPath
 
 data class Path @JsonCreator constructor(

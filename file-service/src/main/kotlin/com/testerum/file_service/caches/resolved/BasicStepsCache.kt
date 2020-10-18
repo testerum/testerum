@@ -1,15 +1,18 @@
 package com.testerum.file_service.caches.resolved
 
+import com.testerum.common_kotlin.hasExtension
+import com.testerum.common_kotlin.list
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.BasicStepDef
 import com.testerum.scanner.step_lib_scanner.ExtensionsScanner
-import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanFilter
+import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanConfig
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.settings.SettingsManager
 import org.slf4j.LoggerFactory
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
+import java.nio.file.Path as JavaPath
 
 class BasicStepsCache(private val persistentCacheManager: ExtensionsScanner,
                       private val settingsManager: SettingsManager) {
@@ -31,10 +34,10 @@ class BasicStepsCache(private val persistentCacheManager: ExtensionsScanner,
 
     fun getStepAtPath(basicStepPath: Path): BasicStepDef? = lock.read { stepsByPath[basicStepPath] }
 
-    fun initialize() {
+    fun initialize(additionalBasicStepsDir: JavaPath) {
         lock.write {
             // load step libs
-            val (steps, hooks) = loadStepLibs()
+            val (steps, hooks) = loadStepLibs(additionalBasicStepsDir)
             this.basicSteps = ArrayList(steps)
             this.hooks = ArrayList(hooks)
 
@@ -50,11 +53,13 @@ class BasicStepsCache(private val persistentCacheManager: ExtensionsScanner,
         }
     }
 
-    private fun loadStepLibs(): Pair<List<BasicStepDef>, List<HookDef>> {
+    private fun loadStepLibs(additionalBasicStepsDir: JavaPath): Pair<List<BasicStepDef>, List<HookDef>> {
         val startTimeMillis = System.currentTimeMillis()
 
         val scanResult = persistentCacheManager.scan(
-                ExtensionsScanFilter()
+            ExtensionsScanConfig(
+                extraJars = additionalBasicStepsDir.list { it.hasExtension(".jar") }
+            )
         )
 
         // register setting definitions
