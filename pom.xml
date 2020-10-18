@@ -165,6 +165,12 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
+                <artifactId>common-nashorn</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
                 <artifactId>common-expression-evaluator</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -445,6 +451,19 @@
                 <groupId>com.github.tomakehurst</groupId>
                 <artifactId>wiremock-standalone</artifactId>
                 <version>2.18.0</version>
+            </dependency>
+
+            <!-- JDom - XML Parser -->
+            <dependency>
+                <groupId>org.jdom</groupId>
+                <artifactId>jdom2</artifactId>
+                <version>2.0.6</version>
+            </dependency>
+            <!-- Jaxen - JDom dependency required for xpath -->
+            <dependency>
+                <groupId>jaxen</groupId>
+                <artifactId>jaxen</artifactId>
+                <version>1.2.0</version>
             </dependency>
 
             <!-- lombok -->
@@ -980,6 +999,13 @@
                 <groupId>org.hamcrest</groupId>
                 <artifactId>java-hamcrest</artifactId>
                 <version>2.0.0.0</version>
+            </dependency>
+
+            <!-- assertj-core -->
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.17.2</version>
             </dependency>
 
         </dependencies>
