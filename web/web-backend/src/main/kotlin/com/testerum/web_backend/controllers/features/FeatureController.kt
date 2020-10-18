@@ -67,10 +67,12 @@ class FeatureController(private val featuresFrontendService: FeaturesFrontendSer
     @ResponseBody
     fun getAttachmentFileContent(@RequestParam(value = "path") pathAsString: String,
                                  @RequestParam(value = "thumbnail", required = false) thumbnail: Boolean,
+                                 @RequestParam(value = "size", required = false) size: String? = null,
                                  response: HttpServletResponse) {
         featuresFrontendService.writeAttachmentFileContentToResponse(
                 Path.createInstance(pathAsString),
                 thumbnail,
+                size,
                 response
         )
     }

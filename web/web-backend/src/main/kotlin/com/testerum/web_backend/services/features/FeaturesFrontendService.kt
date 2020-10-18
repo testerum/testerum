@@ -148,6 +148,7 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
 
     fun writeAttachmentFileContentToResponse(attachmentFilePath: Path,
                                              thumbnail: Boolean,
+                                             size: String?,
                                              response: HttpServletResponse) {
         val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
 
@@ -158,15 +159,40 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
         response.bufferSize = DEFAULT_BUFFER_SIZE
 
         if (thumbnail && attachment.mimeType?.startsWith("image/") == true) {
-            writeImageThumbnailToResponse(attachmentFilePath, featuresDir, attachment, response)
-        } else {
-            writeFullAttachmentFileContentToContent(attachmentFilePath, featuresDir, attachment, response)
+            writeImageThumbnailToResponse(
+                attachmentFilePath,
+                featuresDir,
+                attachment,
+                ATTACHMENT_THUMBNAIL_WIDTH,
+                ATTACHMENT_THUMBNAIL_HEIGHT,
+                response
+            )
+            return
         }
+
+        if (size != null && attachment.mimeType?.startsWith("image/") == true) {
+            writeImageThumbnailToResponse(
+                attachmentFilePath,
+                featuresDir,
+                attachment,
+                ATTACHMENT_THUMBNAIL_WIDTH,
+                ATTACHMENT_THUMBNAIL_HEIGHT,
+                response
+            )
+
+
+            return
+        }
+
+        writeFullAttachmentFileContentToContent(attachmentFilePath, featuresDir, attachment, response)
+
     }
 
     private fun writeImageThumbnailToResponse(attachmentFilePath: Path,
                                               featuresDir: JavaPath,
                                               attachment: Attachment,
+                                              width: Int,
+                                              height: Int,
                                               response: HttpServletResponse) {
         val attachmentInputStream = featureFileService.openAttachmentContentInputStream(attachmentFilePath, featuresDir)
                 ?: return
