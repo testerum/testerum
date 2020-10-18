@@ -1,0 +1,32 @@
+test-def: xpath to get text
+
+    step: Given the HTTP mock server <<{{xmlMockServer}}>> with the mock request <<{{xmlMock}}>>
+        var xmlMockServer = <<
+            port: "6789"
+            
+        >>
+        var xmlMock = <<
+            expectedRequest:
+              method: GET
+              url: /xml
+            mockResponse:
+              statusCode: 200
+              headers:
+                Content-Type: application/xml
+              body:
+                bodyType: XML
+                content: "<bookstore\>\r\n  <book\>\r\n    <title lang=\"en\"\>Harry Potter</title\>\r\
+                  \n    <price\>29.99</price\>\r\n  </book\>\r\n\r\n  <book\>\r\n    <title lang=\"\
+                  nl\"\>Learning XML</title\>\r\n    <price\>39.95</price\>\r\n  </book\>\r\n</bookstore\>"
+            
+        >>
+    step: When I execute the HTTP request <<{{get_xml}}>>
+        var get_xml = <<
+            method: GET
+            url: http://localhost:6789/xml
+            followRedirects: true
+            headers: {}
+            
+        >>
+    step: Then <<{{httpResponse.xmlBody.xpath("/*/book[1]/title/text()")}}>> is equal to <<Harry Potter>>
+    step: Then <<{{httpResponse.xmlBody.xpath("/*/book[2]/title/text()")}}>> is equal to <<Learning XML>>

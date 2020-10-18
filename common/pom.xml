@@ -17,6 +17,7 @@
         <module>common-angular</module>
         <module>common-cmdline</module>
         <module>common-crypto</module>
+        <module>common-nashorn</module>
         <module>common-expression-evaluator</module>
         <module>common-fsnotifier</module>
         <module>common-httpclient</module>

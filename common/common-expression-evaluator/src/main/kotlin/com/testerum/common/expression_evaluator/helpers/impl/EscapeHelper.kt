@@ -1,60 +1,60 @@
 package com.testerum.common.expression_evaluator.helpers.impl
 
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
-import com.testerum.common.expression_evaluator.helpers.util.TextTranslationJsFunction
+import com.testerum.common.expression_evaluator.helpers.util.TextTransformJsFunction
 import org.apache.commons.text.StringEscapeUtils
 
 object EscapeHelper : ScriptingHelper {
 
-    private val escapeJson = TextTranslationJsFunction(functionName = "escapeJson") {
+    private val escapeJson = TextTransformJsFunction(name = "escapeJson") {
         StringEscapeUtils.escapeJson(it)
     }
 
-    private val unescapeJson = TextTranslationJsFunction(functionName = "unescapeJson") {
+    private val unescapeJson = TextTransformJsFunction(name = "unescapeJson") {
         StringEscapeUtils.unescapeJson(it)
     }
 
-    private val escapeXml = TextTranslationJsFunction(functionName = "escapeXml") {
+    private val escapeXml = TextTransformJsFunction(name = "escapeXml") {
         StringEscapeUtils.escapeXml10(it)
     }
 
-    private val escapeXml11 = TextTranslationJsFunction(functionName = "escapeXml11") {
+    private val escapeXml11 = TextTransformJsFunction(name = "escapeXml11") {
         StringEscapeUtils.escapeXml11(it)
     }
 
-    private val unescapeXml = TextTranslationJsFunction(functionName = "unescapeXml") {
+    private val unescapeXml = TextTransformJsFunction(name = "unescapeXml") {
         StringEscapeUtils.unescapeXml(it)
     }
 
-    private val escapeJavaScript = TextTranslationJsFunction(functionName = "escapeJavaScript") {
+    private val escapeJavaScript = TextTransformJsFunction(name = "escapeJavaScript") {
         StringEscapeUtils.escapeEcmaScript(it)
     }
 
-    private val unescapeJavaScript = TextTranslationJsFunction(functionName = "unescapeJavaScript") {
+    private val unescapeJavaScript = TextTransformJsFunction(name = "unescapeJavaScript") {
         StringEscapeUtils.unescapeEcmaScript(it)
     }
 
-    private val escapeHtml = TextTranslationJsFunction(functionName = "escapeHtml") {
+    private val escapeHtml = TextTransformJsFunction(name = "escapeHtml") {
         StringEscapeUtils.escapeHtml4(it)
     }
 
-    private val unescapeHtml = TextTranslationJsFunction(functionName = "unescapeHtml") {
+    private val unescapeHtml = TextTransformJsFunction(name = "unescapeHtml") {
         StringEscapeUtils.unescapeHtml4(it)
     }
 
     override val globalVariables: Map<String, Any?> = mapOf(
-            escapeJson.functionName          to escapeJson,
-            unescapeJson.functionName        to unescapeJson,
+            escapeJson.name          to escapeJson,
+            unescapeJson.name        to unescapeJson,
 
-            escapeXml.functionName           to escapeXml,
-            escapeXml11.functionName         to escapeXml11,
-            unescapeXml.functionName         to unescapeXml,
+            escapeXml.name           to escapeXml,
+            escapeXml11.name         to escapeXml11,
+            unescapeXml.name         to unescapeXml,
 
-            escapeJavaScript.functionName    to escapeJavaScript,
-            unescapeJavaScript.functionName  to unescapeJavaScript,
+            escapeJavaScript.name    to escapeJavaScript,
+            unescapeJavaScript.name  to unescapeJavaScript,
 
-            escapeHtml.functionName          to escapeHtml,
-            unescapeHtml.functionName        to unescapeHtml
+            escapeHtml.name          to escapeHtml,
+            unescapeHtml.name        to unescapeHtml
     )
 
 }

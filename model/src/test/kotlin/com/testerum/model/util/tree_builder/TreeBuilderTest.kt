@@ -3,8 +3,7 @@ package com.testerum.model.util.tree_builder
 import com.testerum.common_kotlin.indent
 import com.testerum.common_kotlin.withAdditional
 import com.testerum.model.infrastructure.path.Path
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class TreeBuilderTest {
@@ -14,63 +13,64 @@ class TreeBuilderTest {
         val builder = TreeBuilder(MyCustomizer)
 
         builder.add(
-                MyFeature("rest", Path.createInstance("owners/create/rest"))
+            MyFeature("rest", Path.createInstance("owners/create/rest"))
         )
         builder.add(
-                MyFeature("owners", Path.createInstance("owners"))
+            MyFeature("owners", Path.createInstance("owners"))
         )
         builder.add(
-                MyFeature("create", Path.createInstance("owners/create"))
+            MyFeature("create", Path.createInstance("owners/create"))
         )
 
         builder.add(
-                MyTest("Test 1", Path.createInstance("owners/create/ui"))
+            MyTest("Test 1", Path.createInstance("owners/create/ui"))
         )
         builder.add(
-                MyTest("Test 2", Path.createInstance("owners/create/ui"))
+            MyTest("Test 2", Path.createInstance("owners/create/ui"))
         )
         builder.add(
-                MyTest("Test 3", Path.createInstance("owners/create/ui"))
+            MyTest("Test 3", Path.createInstance("owners/create/ui"))
         )
 
         val root: MyRootNode = builder.build() as MyRootNode
 
-        assertThat(
-                builder.toString(),
-                equalTo(
-                        """|Features
-                           |  owners
-                           |    create
-                           |      rest
-                           |      ui
-                           |        Test 1
-                           |        Test 2
-                           |        Test 3
-                           |""".trimMargin()
-                )
-        )
-        assertThat(
-                MyNodeRenderer.render(root),
-                equalTo(
-                        """|[R] Features
-                           |  [F] owners
-                           |    [F] create
-                           |      [F] rest
-                           |      [F] ui
-                           |        [T] Test 1
-                           |        [T] Test 2
-                           |        [T] Test 3
-                           |""".trimMargin()
-                )
-        )
+        assertThat(builder.toString())
+            .isEqualTo(
+                """|Features
+                   |  owners
+                   |    create
+                   |      rest
+                   |      ui
+                   |        Test 1
+                   |        Test 2
+                   |        Test 3
+                   |""".trimMargin()
+            )
+
+        assertThat(MyNodeRenderer.render(root))
+            .isEqualTo(
+                """|[R] Features
+                   |  [F] owners
+                   |    [F] create
+                   |      [F] rest
+                   |      [F] ui
+                   |        [T] Test 1
+                   |        [T] Test 2
+                   |        [T] Test 3
+                   |""".trimMargin()
+            )
     }
 
     // payloads
-    private data class MyFeature(val label: String,
-                                 val path: Path)
+    private data class MyFeature(
+        val label: String,
+        val path: Path
+    )
 
-    private data class MyTest(val label: String,
-                              val path: Path)
+    private data class MyTest(
+        val label: String,
+        val path: Path
+    )
 
     // nodes
     private interface MyNode {
@@ -81,18 +81,22 @@ class TreeBuilderTest {
         val children: List<MyNode>
     }
 
-    private data class MyRootNode(override val label: String,
-                                  override val children: List<MyNode>) : MyContainerNode
+    private data class MyRootNode(
+        override val label: String,
+        override val children: List<MyNode>
+    ) : MyContainerNode
 
-    private data class MyFeatureNode(override val label: String,
-                                     override val children: List<MyNode>) : MyContainerNode
+    private data class MyFeatureNode(
+        override val label: String,
+        override val children: List<MyNode>
+    ) : MyContainerNode
 
-    private data class MyTestNode(override val label: String): MyNode
+    private data class MyTestNode(override val label: String) : MyNode
 
     // node renderer
     private object MyNodeRenderer {
 
-        fun render(root: MyRootNode) : String {
+        fun render(root: MyRootNode): String {
             val result = StringBuilder()
 
             renderToString(result, root, 0)
@@ -101,16 +105,18 @@ class TreeBuilderTest {
 
         }
 
-        private fun renderToString(destination: StringBuilder,
-                                   node: MyNode,
-                                   indentLevel: Int) {
+        private fun renderToString(
+            destination: StringBuilder,
+            node: MyNode,
+            indentLevel: Int
+        ) {
             destination.indent(indentLevel, indentPerLevel = 2)
 
             val labelPrefix: String = when (node) {
                 is MyRootNode -> "[R]"
                 is MyFeatureNode -> "[F]"
                 is MyTestNode -> "[T]"
-                else             -> throw IllegalArgumentException("unknown node type [${node.javaClass.name}]")
+                else -> throw IllegalArgumentException("unknown node type [${node.javaClass.name}]")
             }
 
             destination.append("$labelPrefix ${node.label}").append('\n')
@@ -134,7 +140,7 @@ class TreeBuilderTest {
         override fun getPath(payload: Any): List<String> = when (payload) {
             is MyFeature -> payload.path.directories
             is MyTest -> payload.path.directories.withAdditional(payload.label)
-            else         -> throw unknownPayloadException(payload)
+            else -> throw unknownPayloadException(payload)
         }
 
         override fun getRootLabel(): String = "Features"
@@ -143,7 +149,7 @@ class TreeBuilderTest {
             return when (payload) {
                 is MyFeature -> payload.label
                 is MyTest -> payload.label
-                else         -> throw unknownPayloadException(payload)
+                else -> throw unknownPayloadException(payload)
             }
         }
 
@@ -151,7 +157,7 @@ class TreeBuilderTest {
             return when (payload) {
                 is MyFeature -> true
                 is MyTest -> false
-                else         -> throw unknownPayloadException(payload)
+                else -> throw unknownPayloadException(payload)
             }
         }
 
@@ -160,19 +166,21 @@ class TreeBuilderTest {
             return MyRootNode("Features", childrenNodes as List<MyNode>)
         }
 
-        override fun createNode(payload: Any?,
-                                label: String,
-                                path: List<String>,
-                                childrenNodes: List<Any>,
-                                indexInParent: Int): Any {
+        override fun createNode(
+            payload: Any?,
+            label: String,
+            path: List<String>,
+            childrenNodes: List<Any>,
+            indexInParent: Int
+        ): Any {
             @Suppress("UNCHECKED_CAST")
             return when (payload) {
                 null, is MyFeature -> return MyFeatureNode(
-                        label = label,
-                        children = childrenNodes as List<MyNode>
+                    label = label,
+                    children = childrenNodes as List<MyNode>
                 )
                 is MyTest -> MyTestNode(label)
-                else               -> throw unknownPayloadException(payload)
+                else -> throw unknownPayloadException(payload)
             }
         }
 
