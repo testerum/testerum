@@ -99,40 +99,40 @@ class StepLib1MySteps {
 
     //~~~~~~ hooks ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.BeforeEachTest
+    @BeforeEachTest
     fun beforeTestSimple() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.BeforeEachTest(description = "beforeTest description")
+    @BeforeEachTest(description = "beforeTest description")
     fun beforeTestWithDescription() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.BeforeEachTest(description = "beforeTest with all annotation fields", order = 100)
+    @BeforeEachTest(description = "beforeTest with all annotation fields", order = 100)
     fun beforeTestWithAllAnnotationFields() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.BeforeAllTests
+    @BeforeAllTests
     fun beforeAllTestsSimple() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.BeforeAllTests(description = "beforeAllTests description")
+    @BeforeAllTests(description = "beforeAllTests description")
     fun beforeAllTestsWithDescription() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.BeforeAllTests(description = "beforeAllTests with all annotation fields", order = 100)
+    @BeforeAllTests(description = "beforeAllTests with all annotation fields", order = 100)
     fun beforeAllTestsWithAllAnnotationFields() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.AfterEachTest
+    @AfterEachTest
     fun afterTestSimple() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.AfterEachTest(description = "afterTest description")
+    @AfterEachTest(description = "afterTest description")
     fun afterTestWithDescription() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.AfterEachTest(description = "afterTest with all annotation fields", order = 100)
+    @AfterEachTest(description = "afterTest with all annotation fields", order = 100)
     fun afterTestWithAllAnnotationFields() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.AfterAllTests
+    @AfterAllTests
     fun afterAllTestSimple() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.AfterAllTests(description = "afterAllTest description")
+    @AfterAllTests(description = "afterAllTest description")
     fun afterAllTestWithDescription() { }
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.AfterAllTests(description = "afterAllTest with all annotation fields", order = 100)
+    @AfterAllTests(description = "afterAllTest with all annotation fields", order = 100)
     fun afterAllTestWithAllAnnotationFields() { }
 
 }
