@@ -29,8 +29,7 @@
                         <div class="setting vertical-space"
                              *ngFor="let setting of settingsByCategory.get(settingCategory)">
 
-                            <div *ngIf="!isComposedSetting(setting.definition.type)"
-                                 class="simple-setting">
+                            <div *ngIf="!isComposedSetting(setting.definition.type) && !isCustomSetting(setting.definition.type)" class="simple-setting">
                                 <div class="input-description-container">
                                     <div class="my-label">{{setting.definition.label ? setting.definition.label : setting.definition.key}}</div>
                                     <info-icon [message]="setting.definition.description"></info-icon>
@@ -41,8 +40,7 @@
                                                [possibleValues]="setting.definition.enumValues"></dynamic-input>
                             </div>
 
-                            <div *ngIf="isComposedSetting(setting.definition.type)"
-                                 class="composed-setting">
+                            <div *ngIf="isComposedSetting(setting.definition.type)" class="composed-setting">
 
                                 <collapsable-panel [title]="setting.definition.label ? setting.definition.label : setting.definition.key"
                                                    [heading]="2">
@@ -52,7 +50,13 @@
                                                    [possibleValues]="setting.definition.enumValues"></dynamic-input>
 
                                 </collapsable-panel>
+                            </div>
 
+                            <div *ngIf="isCustomSetting(setting.definition.type)" class="composed-setting">
+
+                                <ng-container *ngIf="setting.definition.type == SettingType.JAVASCRIPT">
+                                    <selenium-advanced [setting]="setting"></selenium-advanced>
+                                </ng-container>
                             </div>
 
                             <div class="vertical-space"></div>

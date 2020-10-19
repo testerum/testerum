@@ -32,6 +32,8 @@ export class SettingsModalComponent implements AfterViewInit {
     settingsCategories: Array<string> = [];
     settingsByCategory: Map<string, Array<Setting>> = new Map<string, Array<Setting>>();
 
+    SettingType = SettingType;
+
     constructor(private cd: ChangeDetectorRef,
                 private settingsService: SettingsService) {}
 
@@ -107,5 +109,9 @@ export class SettingsModalComponent implements AfterViewInit {
 
     isComposedSetting(settingType: SettingType): boolean {
         return settingType == SettingType.SELENIUM_DRIVER;
+    }
+
+    isCustomSetting(settingType: SettingType): boolean {
+        return settingType == SettingType.JAVASCRIPT;
     }
 }
