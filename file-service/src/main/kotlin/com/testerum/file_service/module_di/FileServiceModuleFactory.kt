@@ -3,57 +3,29 @@ package com.testerum.file_service.module_di
 import com.testerum.common_di.BaseModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import com.testerum.file_service.business.trial.TrialService
+import com.testerum.file_service.caches.resolved.BasicStepsCache
 import com.testerum.file_service.caches.resolved.resolvers.ArgsResolver
 import com.testerum.file_service.caches.resolved.resolvers.StepsResolver
 import com.testerum.file_service.caches.resolved.resolvers.TestResolver
 import com.testerum.file_service.caches.warnings.WarningService
-import com.testerum.file_service.file.ComposedStepFileService
-import com.testerum.file_service.file.FeatureFileService
-import com.testerum.file_service.file.LocalVariablesFileService
-import com.testerum.file_service.file.ManualTestFileService
-import com.testerum.file_service.file.ManualTestPlanFileService
-import com.testerum.file_service.file.RecentProjectsFileService
-import com.testerum.file_service.file.ResourceFileService
-import com.testerum.file_service.file.ResultsFileService
-import com.testerum.file_service.file.RunConfigFileService
-import com.testerum.file_service.file.SeleniumDriversFileService
-import com.testerum.file_service.file.SettingsFileService
-import com.testerum.file_service.file.TestFileService
-import com.testerum.file_service.file.TesterumProjectFileService
-import com.testerum.file_service.file.VariablesFileService
+import com.testerum.file_service.file.*
 import com.testerum.file_service.file.trial.JavaPreferencesTrialFileService
 import com.testerum.file_service.file.trial.TrialFileService
-import com.testerum.file_service.mapper.business_to_file.BusinessToFileFeatureMapper
-import com.testerum.file_service.mapper.business_to_file.BusinessToFileRunConfigMapper
-import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioMapper
-import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioParamMapper
-import com.testerum.file_service.mapper.business_to_file.BusinessToFileStepMapper
-import com.testerum.file_service.mapper.business_to_file.BusinessToFileTestMapper
+import com.testerum.file_service.mapper.business_to_file.*
 import com.testerum.file_service.mapper.business_to_file.common.BusinessToFilePhaseMapper
 import com.testerum.file_service.mapper.business_to_file.common.BusinessToFileStepCallMapper
-import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileManualStepCallMapper
-import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileManualStepStatusMapper
-import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileManualTestMapper
-import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileManualTestPlanMapper
-import com.testerum.file_service.mapper.business_to_file.manual.BusinessToFileManualTestStatusMapper
-import com.testerum.file_service.mapper.file_to_business.FileToBusinessFeatureMapper
-import com.testerum.file_service.mapper.file_to_business.FileToBusinessRunConfigMapper
-import com.testerum.file_service.mapper.file_to_business.FileToBusinessScenarioMapper
-import com.testerum.file_service.mapper.file_to_business.FileToBusinessScenarioParamMapper
-import com.testerum.file_service.mapper.file_to_business.FileToBusinessStepMapper
-import com.testerum.file_service.mapper.file_to_business.FileToBusinessTestMapper
+import com.testerum.file_service.mapper.business_to_file.manual.*
+import com.testerum.file_service.mapper.file_to_business.*
 import com.testerum.file_service.mapper.file_to_business.common.FileToBusinessPhaseMapper
 import com.testerum.file_service.mapper.file_to_business.common.FileToBusinessStepCallMapper
-import com.testerum.file_service.mapper.file_to_business.manual.FileToBusinessManualStepCallMapper
-import com.testerum.file_service.mapper.file_to_business.manual.FileToBusinessManualStepStatusMapper
-import com.testerum.file_service.mapper.file_to_business.manual.FileToBusinessManualTestMapper
-import com.testerum.file_service.mapper.file_to_business.manual.FileToBusinessManualTestPlanMapper
-import com.testerum.file_service.mapper.file_to_business.manual.FileToBusinessManualTestStatusMapper
+import com.testerum.file_service.mapper.file_to_business.manual.*
+import com.testerum.scanner.step_lib_scanner.module_di.TesterumScannerModuleFactory
 import com.testerum.settings.module_di.SettingsModuleFactory
 import java.time.Clock
 
 class FileServiceModuleFactory(context: ModuleFactoryContext,
-                               settingsModuleFactory: SettingsModuleFactory) : BaseModuleFactory(context) {
+                               settingsModuleFactory: SettingsModuleFactory,
+                               scannerModuleFactory: TesterumScannerModuleFactory) : BaseModuleFactory(context) {
 
     //---------------------------------------- mapper: file -> business ----------------------------------------------//
 
@@ -218,6 +190,11 @@ class FileServiceModuleFactory(context: ModuleFactoryContext,
 
     val stepsResolver = StepsResolver(
             argsResolver = argsResolver
+    )
+
+    val basicStepsCache = BasicStepsCache(
+            persistentCacheManager = scannerModuleFactory.extensionsScanner,
+            settingsManager = settingsModuleFactory.settingsManager
     )
 
     val testResolver = TestResolver(

@@ -63,11 +63,10 @@ class ProjectServices(projectRootDir: Path,
     }
 
     private fun StepsCache.initializeStepsCacheFromProjectServices() {
-        val additionalBasicStepsDir = dirs.getAdditionalBasicStepsDir()
         val composedStepsDir = dirs.getComposedStepsDir()
         val resourcesDir = dirs.getResourcesDir()
 
-        initialize(additionalBasicStepsDir, composedStepsDir, resourcesDir)
+        initialize(composedStepsDir, resourcesDir)
     }
 
 }
