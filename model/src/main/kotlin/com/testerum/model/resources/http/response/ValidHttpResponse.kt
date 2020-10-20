@@ -18,7 +18,8 @@ class ValidHttpResponse @JsonCreator constructor(
         @JsonProperty("protocol") val protocol: String,
         @JsonProperty("statusCode") val statusCode: Int,
         @JsonProperty("headers") val headers: List<HttpResponseHeader> = emptyList(),
-        @JsonProperty("body") val body: ByteArray = ByteArray(0)
+        @JsonProperty("body") val body: ByteArray = ByteArray(0),
+        @JsonProperty("durationInMillis") val durationInMillis: Long
 ) : HttpResponse {
 
     companion object {
