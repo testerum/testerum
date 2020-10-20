@@ -223,7 +223,7 @@ object TesterumWebMain {
         }
 
         // enable WebSocket communication
-        WebSocketServerContainerInitializer.initialize(webAppContext)
+        WebSocketServerContainerInitializer.configureContext(webAppContext)
 
         return webAppContext
 

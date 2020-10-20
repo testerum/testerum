@@ -1,9 +1,8 @@
 package com.testerum.runner_cmdline
 
 import com.testerum.common_jdk.stopwatch.StopWatch
-import com.testerum.common_kotlin.hasExtension
-import com.testerum.common_kotlin.list
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
+import com.testerum.file_service.caches.resolved.BasicStepsCache
 import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.runner.events.model.ConfigurationEvent
@@ -31,7 +30,6 @@ import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsM
 import com.testerum_api.testerum_steps_api.test_context.settings.RunnerTesterumDirs
 import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 import com.testerum_api.testerum_steps_api.transformer.Transformer
-import java.net.URLClassLoader
 import java.time.LocalDateTime
 import java.nio.file.Path as JavaPath
 
@@ -40,6 +38,7 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
                         private val runnerTesterumDirs: RunnerTesterumDirs,
                         private val testerumDirs: TesterumDirs,
                         private val eventsService: EventsService,
+                        private val basicStepsCache: BasicStepsCache,
                         private val runnerExecutionTreeBuilder: RunnerExecutionTreeBuilder,
                         private val variablesFileService: VariablesFileService,
                         private val testVariables: TestVariablesImpl,
@@ -81,7 +80,7 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         logRunnerSuite(suite)
 
         // setup runner services
-        val stepsClassLoader: ClassLoader = stepsClassLoader()
+        val stepsClassLoader: ClassLoader = Thread.currentThread().contextClassLoader
         val testContext = TestContextImpl(stepsClassLoader = stepsClassLoader)
         @Suppress("DEPRECATION")
         run {
@@ -134,22 +133,12 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         }
     }
 
-    private fun stepsClassLoader(): ClassLoader {
-        val additionalBasicStepsDir = runnerProjectManager.getProjectServices().dirs().getAdditionalBasicStepsDir()
-        val additionalJars = additionalBasicStepsDir.list { it.hasExtension(".jar") }
-
-        return URLClassLoader(
-            Array(additionalJars.size) { i ->
-                additionalJars[i].toUri().toURL()
-            },
-            Thread.currentThread().contextClassLoader
-        )
-    }
-
     private fun initialize(cmdlineParams: CmdlineParams) {
         executionListenerFinder.setReports(cmdlineParams.reportsWithProperties, cmdlineParams.managedReportsDir)
 
         triggerConfigurationEvent(cmdlineParams)
+
+        basicStepsCache.initialize()
     }
 
     private fun triggerConfigurationEvent(cmdlineParams: CmdlineParams) {

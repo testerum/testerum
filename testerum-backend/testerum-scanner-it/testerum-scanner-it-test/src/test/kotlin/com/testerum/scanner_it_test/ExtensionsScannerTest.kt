@@ -9,7 +9,7 @@ import com.testerum.model.text.parts.param_meta.EnumTypeMeta
 import com.testerum.model.text.parts.param_meta.NumberTypeMeta
 import com.testerum.model.text.parts.param_meta.StringTypeMeta
 import com.testerum.scanner.step_lib_scanner.ExtensionsScanner
-import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanConfig
+import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanFilter
 import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanResult
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
@@ -55,7 +55,7 @@ class ExtensionsScannerTest {
         val threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1)
         try {
             val stepScanResult: ExtensionsScanResult = extensionsScanner.scan(
-                    ExtensionsScanConfig(
+                    ExtensionsScanFilter(
                             onlyFromPackages = listOf(
                                     "com.testerum.scanner_it_steplib1.steps",
                                     "com.testerum.scanner_it_steplib2.steps",
