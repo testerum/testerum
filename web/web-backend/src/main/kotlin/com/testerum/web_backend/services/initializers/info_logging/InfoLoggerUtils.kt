@@ -28,7 +28,7 @@ object InfoLoggerUtils {
         return map.keys
                 .asSequence()
                 .map { it.length }
-                .maxOrNull() ?: 0
+                .max() ?: 0
     }
 
     private fun getValueToDisplay(key: String?,

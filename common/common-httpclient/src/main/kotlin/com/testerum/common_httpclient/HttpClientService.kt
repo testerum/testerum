@@ -7,6 +7,7 @@ import com.testerum.model.resources.http.request.enums.HttpRequestMethod
 import com.testerum.model.resources.http.response.HttpResponseHeader
 import com.testerum.model.resources.http.response.ValidHttpResponse
 import org.apache.http.HttpEntityEnclosingRequest
+import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpDelete
@@ -22,6 +23,7 @@ import org.apache.http.entity.ContentType
 import org.apache.http.entity.StringEntity
 import org.apache.http.util.EntityUtils
 import java.net.URI
+import java.util.concurrent.TimeUnit
 
 
 class HttpClientService(private val httpClient: HttpClient) {
@@ -40,14 +42,14 @@ class HttpClientService(private val httpClient: HttpClient) {
                            socketTimeoutMillis: Int = 0): ValidHttpResponse {
         // method
         val httpRequest: HttpRequestBase = when (request.method) {
-            HttpRequestMethod.GET     -> HttpGet()
-            HttpRequestMethod.POST    -> HttpPost()
-            HttpRequestMethod.PUT     -> HttpPut()
-            HttpRequestMethod.DELETE  -> HttpDelete()
-            HttpRequestMethod.HEAD    -> HttpHead()
+            HttpRequestMethod.GET -> HttpGet()
+            HttpRequestMethod.POST -> HttpPost()
+            HttpRequestMethod.PUT -> HttpPut()
+            HttpRequestMethod.DELETE -> HttpDelete()
+            HttpRequestMethod.HEAD -> HttpHead()
             HttpRequestMethod.OPTIONS -> HttpOptions()
-            HttpRequestMethod.TRACE   -> HttpTrace()
-            HttpRequestMethod.PATCH   -> HttpPatch()
+            HttpRequestMethod.TRACE -> HttpTrace()
+            HttpRequestMethod.PATCH -> HttpPatch()
             else                      -> throw RuntimeException("Unrecognized request method [${request.method}]")
         }
 
@@ -90,16 +92,16 @@ class HttpClientService(private val httpClient: HttpClient) {
             httpRequest.setHeader(header.key, header.value)
         }
 
-        // call
-        @Suppress("UnnecessaryVariable") // having a local variable helps debugging
-        val response = httpClient.execute(httpRequest) {
-            convertResponse(it)
-        }
 
-        return response
+        // call
+        val requestStartTime = System.nanoTime()
+        val httpResponse = httpClient.execute(httpRequest)
+        val responseDurationInMillis: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - requestStartTime)
+
+        return convertResponse(httpResponse, responseDurationInMillis)
     }
 
-    private fun convertResponse(httpResponse: org.apache.http.HttpResponse): ValidHttpResponse {
+    private fun convertResponse(httpResponse: HttpResponse, responseDurationInMillis: Long): ValidHttpResponse {
         val headers = LinkedHashMultimap.create<String, String>()
 
         for (header in httpResponse.allHeaders) {
@@ -108,17 +110,17 @@ class HttpClientService(private val httpClient: HttpClient) {
 
         val headersListModel = headers.asMap().map { entry ->
             HttpResponseHeader(
-                    key = entry.key,
-                    values = ArrayList(entry.value)
+                key = entry.key,
+                values = ArrayList(entry.value)
             )
         }
 
         return ValidHttpResponse(
-                protocol = httpResponse.protocolVersion.toString(),
-                statusCode = httpResponse.statusLine.statusCode,
-                headers = headersListModel,
-                body = httpResponse.entity?.let { EntityUtils.toByteArray(it) } ?: ByteArray(0)
+            protocol = httpResponse.protocolVersion.toString(),
+            statusCode = httpResponse.statusLine.statusCode,
+            headers = headersListModel,
+            body = httpResponse.entity?.let { EntityUtils.toByteArray(it) } ?: ByteArray(0),
+            durationInMillis = responseDurationInMillis
         )
     }
-
 }

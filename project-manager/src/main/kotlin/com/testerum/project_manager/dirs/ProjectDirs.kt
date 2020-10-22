@@ -13,8 +13,6 @@ class ProjectDirs(val projectRootDir: JavaPath) {
 
     fun getManualTestsDir(): JavaPath = projectRootDir.resolve("manual_tests")
 
-    fun getAdditionalBasicStepsDir(): JavaPath = projectRootDir.resolve("basic_steps")
-
     fun getComposedStepsDir(): JavaPath = projectRootDir.resolve("composed_steps")
 
     fun getResourcesDir(): JavaPath = projectRootDir.resolve("resources")
