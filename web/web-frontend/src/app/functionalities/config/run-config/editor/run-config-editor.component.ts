@@ -75,8 +75,17 @@ export class RunConfigEditorComponent implements OnInit, OnDestroy {
     }
 
     getValueForSetting(setting: Setting): string {
-        let settingValue = this.runnerConfig.settings.get(setting.definition.key);
+        return this.runnerConfig.settings.get(setting.definition.key)
+    }
 
-        return settingValue
+    isComposedSetting(settingType: SettingType): boolean {
+        return settingType == SettingType.SELENIUM_DRIVER;
+    }
+
+    resolveSetting(setting: Setting): Setting {
+        let cloneSetting = setting.clone();
+        cloneSetting.unresolvedValue = this.getValueForSetting(setting);
+
+        return cloneSetting;
     }
 }

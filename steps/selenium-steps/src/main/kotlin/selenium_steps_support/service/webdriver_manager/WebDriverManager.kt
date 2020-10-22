@@ -142,7 +142,8 @@ import java.nio.file.Path as JavaPath
                 * [for Microsoft Internet Explorer](https://www.selenium.dev/documentation/en/driver_idiosyncrasies/driver_specific_capabilities/#internet-explorer)
                 * [for Safari](https://developer.apple.com/documentation/webkit/about_webdriver_for_safari)
             """,
-            category = SETTINGS_CATEGORY
+            category = SETTINGS_CATEGORY,
+            uiHints = ["collapsible", "collapsedWhenEmpty"]
     )
 ])
 class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,

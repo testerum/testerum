@@ -13,6 +13,16 @@
                type="text" class="form-control full-width">
     </div>
 
+    <div #parentElement *ngIf="inputType == InputTypeEnum.JAVASCRIPT">
+        <monaco-editor [options]="{'language': 'javascript'}"
+                       [(value)]="value"
+                       [parentElemntRef]="parentElement"
+                       [minHeight]="100"
+                       [autoSizing]="false"
+                       (valueChange)="onValueChange()"
+                       class="javascript-input"></monaco-editor>
+    </div>
+
     <div *ngIf="inputType == InputTypeEnum.POSITIVE_INTEGER">
         <input [(ngModel)]="value"
                (ngModelChange)="onNumberChange()"

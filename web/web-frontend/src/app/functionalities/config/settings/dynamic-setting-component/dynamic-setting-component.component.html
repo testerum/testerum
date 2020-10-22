@@ -1,0 +1,26 @@
+
+<div class="dynamic-setting-component">
+    <div class="input-description-container"
+         [class.collapsible]="isCollapsible"
+         (click)="animate()">
+        <i  class="fas icon" *ngIf="isCollapsible"
+            [class.fa-caret-right] = "animationState == 'close'"
+            [class.fa-caret-down] = "animationState == 'open'"
+            aria-hidden="true"></i>
+
+        <div class="my-label">{{setting.definition.label ? setting.definition.label : setting.definition.key}}</div>
+        <info-icon [message]="setting.definition.description"></info-icon>
+    </div>
+
+    <div [class.content-shell]="!collapsed"
+         [class.content-shell-hidden]="collapsed"
+         [@expandCollapse] ="animationState"
+         (@expandCollapse.done)="onAnimateEnd()">
+
+        <dynamic-input [value]="setting.unresolvedValue"
+                       [defaultValue]="setting.definition.defaultValue"
+                       [inputType]="getDynamicInputType(setting.definition.type)"
+                       [possibleValues]="setting.definition.enumValues"
+                       (valueChange)="onValueChange($event)"></dynamic-input>
+    </div>
+</div>

@@ -35,18 +35,26 @@
 
                     <div class="setting vertical-space"
                          *ngFor="let setting of settingsByCategory.get(settingCategory)">
-                        <div class="input-description-container">
-                            <div class="my-label">{{setting.definition.label? setting.definition.label : setting.definition.key}}</div>
-                            <info-icon [message]="setting.definition.description"></info-icon>
+
+                        <ng-container *ngIf="!isComposedSetting(setting.definition.type)">
+                            <dynamic-setting-component [setting]="resolveSetting(setting)"
+                                                       (valueChange)="onSettingChange($event, setting)"></dynamic-setting-component>
+                        </ng-container>
+
+                        <div *ngIf="isComposedSetting(setting.definition.type)" class="composed-setting">
+
+                            <collapsable-panel [title]="setting.definition.label ? setting.definition.label : setting.definition.key"
+                                               [heading]="2">
+
+                                <dynamic-input [defaultValue]="setting.unresolvedValue"
+                                               [value]="getValueForSetting(setting)"
+                                               [possibleValues]="setting.definition.enumValues"
+                                               [inputType]="getDynamicInputType(setting.definition.type)"
+                                               (valueChange)="onSettingChange($event, setting)"></dynamic-input>
+
+                            </collapsable-panel>
                         </div>
 
-                        <dynamic-input [defaultValue]="setting.unresolvedValue"
-                                       [value]="getValueForSetting(setting)"
-                                       [possibleValues]="setting.definition.enumValues"
-                                       [inputType]="getDynamicInputType(setting.definition.type)"
-                                       (valueChange)="onSettingChange($event, setting)"></dynamic-input>
-
-                        <div class="vertical-space"></div>
                     </div>
                 </p-tabPanel>
             </p-tabView>

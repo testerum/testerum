@@ -1,0 +1,26 @@
+.dynamic-setting-component {
+    .collapsible {
+        cursor: pointer;
+    }
+
+    .input-description-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .icon {
+            width: 12px;
+        }
+
+        .my-label {
+            margin-right: 7px;
+        }
+    }
+
+    .content-shell-hidden {
+        overflow: hidden;
+    }
+    .content-shell {
+        overflow: inherit;
+    }
+}

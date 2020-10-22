@@ -19,14 +19,15 @@ import {RunConfigTestsToExecuteComponent} from './run-config/editor/run-config/r
 import {RunConfigTestTreeService} from "./run-config/editor/run-config/run-config-test-tree/run-config-test-tree.service";
 import {RunConfigTestTreeComponent} from "./run-config/editor/run-config/run-config-test-tree/run-config-test-tree.component";
 import {RunConfigTestTreeNodeComponent} from "./run-config/editor/run-config/run-config-test-tree/nodes/run-tree-node/run-config-test-tree-node.component";
-import {SeleniumAdvancedComponent} from "./settings/custom-settings/selenium-advanced/selenium-advanced.component";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {DynamicSettingComponentComponent} from './settings/dynamic-setting-component/dynamic-setting-component.component';
 
 @NgModule({
     imports: [
         ConfigRoutingModule,
-
         BrowserModule,
         FormsModule,
+        BrowserAnimationsModule,
 
         AngularSplitModule.forRoot(),
         ModalModule.forRoot(),
@@ -39,11 +40,9 @@ import {SeleniumAdvancedComponent} from "./settings/custom-settings/selenium-adv
 
         GenericModule,
     ],
-    exports: [
-    ],
+    exports: [],
     declarations: [
         SettingsModalComponent,
-        SeleniumAdvancedComponent,
 
         RunConfigModalComponent,
         RunnersConfigListComponent,
@@ -52,6 +51,7 @@ import {SeleniumAdvancedComponent} from "./settings/custom-settings/selenium-adv
         RunConfigTestsToExecuteComponent,
         RunConfigTestTreeComponent,
         RunConfigTestTreeNodeComponent,
+        DynamicSettingComponentComponent,
     ],
     entryComponents: [
         SettingsModalComponent,
@@ -65,4 +65,5 @@ import {SeleniumAdvancedComponent} from "./settings/custom-settings/selenium-adv
         RunConfigTestTreeService,
     ],
 })
-export class ConfigModule { }
+export class ConfigModule {
+}
