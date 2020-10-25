@@ -131,6 +131,24 @@ import java.nio.file.Path as JavaPath
                 var proxy = new Proxy();
                 proxy.setHttpProxy("myhttpproxy:3337");
                 capabilities.setCapability("proxy", proxy);
+
+                ```
+                Another example (for [BrowserStack](https://www.browserstack.com/)):
+                ```javascript
+                var HashMap = Java.type('java.util.HashMap');
+                var ArrayList = Java.type('java.util.ArrayList');
+                
+                capabilities.setCapability('os','OS X');
+                capabilities.setCapability('os_version', 'Catalina');
+                capabilities.setCapability('browser', 'Chrome');
+                capabilities.setCapability('browser_version', '86');
+                capabilities.setCapability('name', 'Chrome test');
+                
+                var chromeOptions = new HashMap();
+                var chromeArgs = new ArrayList();
+                chromeArgs.add('window-size=400,300');
+                chromeOptions.put('args', chromeArgs);
+                capabilities.setCapability('goog:chromeOptions', chromeOptions);
                 ```
 
                 More information for browser-specific options:
