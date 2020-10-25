@@ -169,7 +169,7 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
         internal const val SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT = "onFailure"
 
         internal const val SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP = "testerum.selenium.takeScreenshotAfterEachStep"
-        internal const val SETTING_KEY_MAXIMIZE_WINDOW_BEFORE_TEST = "testerum.selenium.mazimizeWindowBeforeTest"
+        internal const val SETTING_KEY_MAXIMIZE_WINDOW_BEFORE_TEST = "testerum.selenium.maximizeWindowBeforeTest"
 
         internal const val SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT = "testerum.selenium.webDriverCustomizationScript"
 
