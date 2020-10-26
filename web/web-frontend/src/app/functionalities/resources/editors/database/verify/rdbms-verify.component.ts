@@ -19,6 +19,7 @@ import {ResourceComponent} from "../../resource-component.interface";
 import {NgForm} from "@angular/forms";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {SelectItem} from "primeng/api";
+import {ResourceContextActions} from "../../infrastructure/model/resource-context-actions.model";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -44,7 +45,7 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
         save() {}
     };
 
-    @ViewChild(NgForm, { static: false }) form: NgForm;
+    @ViewChild(NgForm) form: NgForm;
 
     selectedRdbmsConnection: Path;
     availableRdbmsConnections: SelectItem[] = [];

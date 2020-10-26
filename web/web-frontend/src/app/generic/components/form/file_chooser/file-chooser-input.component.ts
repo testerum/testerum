@@ -21,7 +21,7 @@ export class FileChooserInputComponent implements ControlValueAccessor {
     value: string;
     @Input() disabled: boolean = false;
     @Input() showFiles: boolean = false;
-    @ViewChild(FileChooserModalComponent, { static: false }) fileChooserModalComponent: FileChooserModalComponent;
+    @ViewChild(FileChooserModalComponent) fileChooserModalComponent: FileChooserModalComponent;
 
     constructor(private fileChooserModalService: FileChooserModalService) {
     }

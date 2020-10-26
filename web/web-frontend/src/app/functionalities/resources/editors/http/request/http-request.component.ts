@@ -16,6 +16,7 @@ import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-http';
 import {HttpContentType} from "../../../../../model/resource/http/enum/http-content-type.enum";
+import {ResourceContextActions} from "../../infrastructure/model/resource-context-actions.model";
 
 @Component({
     moduleId: module.id,
@@ -40,13 +41,13 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
         save() {}
     };
 
-    @ViewChild(NgForm, { static: false }) form: NgForm;
+    @ViewChild(NgForm) form: NgForm;
 
     partToDisplay: HttpPart = HttpPart.HEADERS;
     HttpPart = HttpPart;
     HttpMethod = HttpMethod;
 
-    @ViewChild("httpParams", { static: false }) httpParams: HttpParamsComponent;
+    @ViewChild("httpParams") httpParams: HttpParamsComponent;
 
     private changesMadeEventSubscription: Subscription;
     constructor(private cd: ChangeDetectorRef,

@@ -21,7 +21,7 @@ export class EnumObjectTreeNodeComponent implements OnInit {
 
     @Input() model: EnumObjectTreeModel;
 
-    @ViewChild('enumInput', { static: false }) inputElementRef: ElementRef;
+    @ViewChild('enumInput') inputElementRef: ElementRef;
     private tempValueHolder: string;
 
     id = IdUtils.getTemporaryId();

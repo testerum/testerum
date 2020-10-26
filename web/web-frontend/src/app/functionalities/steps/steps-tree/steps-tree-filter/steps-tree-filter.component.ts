@@ -17,7 +17,7 @@ import {StepsTreeFilter} from "../../../../model/step/filter/steps-tree-filter.m
 })
 export class StepsTreeFilterComponent {
 
-    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     selectedTags: Array<string> = [];
     tagsToShow:string[] = [];

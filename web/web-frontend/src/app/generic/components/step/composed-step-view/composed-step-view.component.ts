@@ -59,7 +59,7 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     warnings: Message[] = [];
     areChildComponentsValid: boolean = true;
 
-    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;

@@ -14,7 +14,7 @@ import {StepChooserService} from "../step-chooser.service";
 })
 export class StepChooserTreeFilterComponent implements OnInit {
 
-    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     selectedTags: Array<string> = [];
     tagsToShow:string[] = [];

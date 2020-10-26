@@ -3,6 +3,7 @@ import {NgForm} from "@angular/forms";
 import {ResourceComponent} from "../../resource-component.interface";
 import {BasicResource} from "../../../../../model/resource/basic/basic-resource.model";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+import {ResourceContextActions} from "../../infrastructure/model/resource-context-actions.model";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -28,7 +29,7 @@ export class RdbmsSqlComponent extends ResourceComponent<BasicResource> implemen
         save() {}
     };
 
-    @ViewChild(NgForm, { static: false }) form: NgForm;
+    @ViewChild(NgForm) form: NgForm;
 
     constructor(private cd: ChangeDetectorRef){
         super();

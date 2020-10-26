@@ -17,7 +17,7 @@ import {InputTypeEnum} from "../../../../generic/components/form/dynamic-input/m
 })
 export class RunConfigEditorComponent implements OnInit, OnDestroy {
 
-    @ViewChild(NgForm, { static: false }) form: NgForm;
+    @ViewChild(NgForm) form: NgForm;
 
     runnerConfig: RunConfig|null;
 

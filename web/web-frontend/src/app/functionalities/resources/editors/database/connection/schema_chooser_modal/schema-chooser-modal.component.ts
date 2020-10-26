@@ -10,7 +10,7 @@ import {ModalDirective} from "ngx-bootstrap";
 })
 export class SchemaChooserModalComponent implements AfterViewInit {
 
-    @ViewChild("schemaChooserModalComponent", { static: false }) modal: ModalDirective;
+    @ViewChild("schemaChooserModalComponent") modal: ModalDirective;
 
     listener: SchemaChooserModalListener;
     schemas:Array<string> = [];

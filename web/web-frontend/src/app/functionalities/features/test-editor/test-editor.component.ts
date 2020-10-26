@@ -39,7 +39,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     isEditMode: boolean = false;
     readonly editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;

@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BasicResource} from "../../../../../model/resource/basic/basic-resource.model";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
+import {ResourceContextActions} from "../../infrastructure/model/resource-context-actions.model";
 
 @Component({
     selector: 'string-input-basic-resource',

@@ -7,7 +7,6 @@ import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {ArrayUtil} from "../../../../../utils/array.util";
 import {TagsService} from "../../../../../service/tags.service";
 import {AutoComplete} from "primeng/primeng";
-import {ManualTestsStatusTreeNodeComponent} from "../nodes/runner-tree-node/manual-tests-status-tree-node.component";
 import {ManualUiTreeBaseStatusModel} from "../model/manual-ui-tree-base-status.model";
 
 @Component({
@@ -22,7 +21,7 @@ export class ManualTestsStatusTreeToolbarComponent implements OnInit {
     @Input() planPath: Path;
     @Input() treeModel:JsonTreeModel;
 
-    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;
