@@ -75,6 +75,7 @@ export class RdbmsVerifyComponent extends ResourceComponent<SchemaVerify> implem
         }
     }
 
+    // @ts-ignore
     get editMode(): boolean {
         return this._editMode;
     }

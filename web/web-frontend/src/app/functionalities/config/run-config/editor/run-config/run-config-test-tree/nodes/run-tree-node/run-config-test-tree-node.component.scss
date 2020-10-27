@@ -1,8 +1,4 @@
 @import "../../../../../../../../../resources/css/testerum-variables";
-$fa-font-path: '../../../../../../../../../../node_modules/@fortawesome/fontawesome-free/webfonts';
-@import '../../../../../../../../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
-@import '../../../../../../../../../../node_modules/@fortawesome/fontawesome-free/scss/regular';
-@import '../../../../../../../../../../node_modules/@fortawesome/fontawesome-free/scss/solid';
 
 .runner-config-test-tree-node {
     i {
@@ -22,18 +18,18 @@ $fa-font-path: '../../../../../../../../../../node_modules/@fortawesome/fontawes
     }
 
     .fa_my-runner-config-test-selected {
-        @extend .far;
-        @extend .fa-check-square;
+        @extend .far !optional;
+        @extend .fa-check-square !optional;
         width: 13px;
     }
     .fa_my-runner-config-test-partial-selected {
-        @extend .far;
-        @extend .fa-minus-square;
+        @extend .far !optional;
+        @extend .fa-minus-square !optional;
         width: 13px;
     }
     .fa_my-runner-config-test-not-selected {
-        @extend .far;
-        @extend .fa-square;
+        @extend .far !optional;
+        @extend .fa-square !optional;
         width: 13px;
     }
 }

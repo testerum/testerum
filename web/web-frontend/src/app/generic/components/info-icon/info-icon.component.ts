@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core';
-import {OverlayPanel} from "primeng/primeng";
 import {FlowUtil} from "../../../utils/flow.util";
+import {OverlayPanel} from "primeng/overlaypanel";
 
 @Component({
     selector: 'info-icon',

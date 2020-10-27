@@ -64,6 +64,7 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
         }
     }
 
+    // @ts-ignore
     get editMode(): boolean {
         return this._editMode;
     }

@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {JsonTreeExpandUtil} from "../../json-tree/util/json-tree-expand.util";
 import {TagsService} from "../../../../service/tags.service";
 import {StepsTreeFilter} from "../../../../model/step/filter/steps-tree-filter.model";
 import {StepChooserService} from "../step-chooser.service";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
     selector: 'step-chooser-tree-filter',

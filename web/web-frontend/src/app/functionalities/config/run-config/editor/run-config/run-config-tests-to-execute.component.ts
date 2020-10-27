@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {RunConfig} from "../../model/runner-config.model";
-import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../../utils/array.util";
 import {TagsService} from "../../../../../service/tags.service";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
     selector: 'run-config-tests-to-execute',

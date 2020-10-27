@@ -6,8 +6,8 @@ import {ManualTestsStatusTreeService} from "../manual-tests-status-tree.service"
 import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {ArrayUtil} from "../../../../../utils/array.util";
 import {TagsService} from "../../../../../service/tags.service";
-import {AutoComplete} from "primeng/primeng";
 import {ManualUiTreeBaseStatusModel} from "../model/manual-ui-tree-base-status.model";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
     selector: 'manual-tests-status-tree-toolbar',

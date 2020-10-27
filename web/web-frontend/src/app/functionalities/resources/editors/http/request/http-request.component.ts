@@ -97,6 +97,7 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
         this.partToDisplay = HttpPart.BODY;
     }
 
+    // @ts-ignore
     set editMode(value: boolean) {
         this._editMode = value;
         if (this.httpRequestService) {

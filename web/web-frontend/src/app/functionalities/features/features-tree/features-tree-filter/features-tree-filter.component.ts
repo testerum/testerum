@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {JsonTreeModel} from "../../../../generic/components/json-tree/model/json-tree.model";
-import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {FeaturesTreeService} from "../features-tree.service";
 import {FeaturesTreeFilter} from "../../../../model/feature/filter/features-tree-filter.model";
@@ -8,6 +7,7 @@ import {Path} from "../../../../model/infrastructure/path/path.model";
 import {ActivatedRoute} from "@angular/router";
 import {JsonTreeExpandUtil} from "../../../../generic/components/json-tree/util/json-tree-expand.util";
 import {TagsService} from "../../../../service/tags.service";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
     selector: 'features-tree-filter',

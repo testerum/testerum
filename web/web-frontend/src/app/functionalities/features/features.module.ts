@@ -20,16 +20,6 @@ import {TestsRunnerLogsService} from "./tests-runner/tests-runner-logs/tests-run
 import {FeaturesTreeService} from "./features-tree/features-tree.service";
 import {TestNodeComponent} from "./features-tree/container/node/test-node.component";
 import {FeatureContainerComponent} from "./features-tree/container/feature-container.component";
-import {
-    AutoCompleteModule,
-    InputTextModule,
-    MessageModule,
-    MessagesModule,
-    SelectButtonModule,
-    ToggleButtonModule,
-    ToolbarModule,
-    TooltipModule
-} from "primeng/primeng";
 import {FeatureResolver} from "./feature-editor/feature.resolver";
 import {FeatureEditorComponent} from "./feature-editor/feature-editor.component";
 import {FeaturesTreeComponent} from "./features-tree/features-tree.component";
@@ -42,10 +32,18 @@ import {AngularSplitModule} from "angular-split";
 import {ScenarioTreeComponent} from "./test-editor/scenario-tree/scenario-tree.component";
 import {ScenarioContainerComponent} from "./test-editor/scenario-tree/nodes/scenario-container/scenario-container.component";
 import {ScenarioParamsContainerComponent} from "./test-editor/scenario-tree/nodes/scenario-params-container/scenario-params-container.component";
-import { TreeTextEditComponent } from './test-editor/scenario-tree/nodes/scenario-container/tree-text-edit/tree-text-edit.component';
+import {TreeTextEditComponent} from './test-editor/scenario-tree/nodes/scenario-container/tree-text-edit/tree-text-edit.component';
 import {ScenarioParamNodeComponent} from "./test-editor/scenario-tree/nodes/scenario-param-node/scenario-param-node.component";
 import {ScenarioParamModalService} from "./test-editor/scenario-tree/nodes/scenario-param-node/modal/scenario-param-modal.service";
 import {ScenarioParamModalComponent} from "./test-editor/scenario-tree/nodes/scenario-param-node/modal/scenario-param-modal.component";
+import {TooltipModule} from "primeng/tooltip";
+import {ToolbarModule} from "primeng/toolbar";
+import {SelectButtonModule} from "primeng/selectbutton";
+import {AutoCompleteModule} from "primeng/autocomplete";
+import {InputTextModule} from "primeng/inputtext";
+import {MessageModule} from "primeng/message";
+import {MessagesModule} from "primeng/messages";
+import {ToggleButtonModule} from "primeng/togglebutton";
 
 @NgModule({
     imports: [

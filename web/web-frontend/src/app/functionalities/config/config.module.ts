@@ -7,7 +7,6 @@ import {ConfigRoutingModule} from "./config-routing.module";
 import {SettingsModalComponent} from "./settings/settings-modal.component";
 import {SettingsModalService} from "./settings/settings-modal.service";
 import {ListboxModule} from "primeng/listbox";
-import {AutoCompleteModule, OrderListModule, TabViewModule, ToolbarModule, TooltipModule} from "primeng/primeng";
 import {RunConfigModalComponent} from './run-config/run-config-modal.component';
 import {RunConfigModalService} from "./run-config/run-config-modal.service";
 import {AngularSplitModule} from "angular-split";
@@ -21,6 +20,11 @@ import {RunConfigTestTreeComponent} from "./run-config/editor/run-config/run-con
 import {RunConfigTestTreeNodeComponent} from "./run-config/editor/run-config/run-config-test-tree/nodes/run-tree-node/run-config-test-tree-node.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {DynamicSettingComponentComponent} from './settings/dynamic-setting-component/dynamic-setting-component.component';
+import {OrderListModule} from "primeng/orderlist";
+import {ToolbarModule} from "primeng/toolbar";
+import {TooltipModule} from "primeng/tooltip";
+import {TabViewModule} from "primeng/tabview";
+import {AutoCompleteModule} from "primeng/autocomplete";
 
 @NgModule({
     imports: [

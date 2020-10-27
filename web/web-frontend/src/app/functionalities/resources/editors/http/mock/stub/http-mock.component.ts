@@ -58,6 +58,7 @@ export class HttpMockComponent extends ResourceComponent<HttpMock> implements On
         }
     }
 
+    // @ts-ignore
     get editMode(): boolean {
         return this._editMode;
     }

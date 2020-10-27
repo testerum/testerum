@@ -9,7 +9,6 @@ import {MarkdownEditorComponent} from "../../../generic/components/markdown-edit
 import {FormUtil} from "../../../utils/form.util";
 import {NgForm} from "@angular/forms";
 import {UrlService} from "../../../service/url.service";
-import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../utils/array.util";
 import {TagsService} from "../../../service/tags.service";
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
@@ -18,6 +17,7 @@ import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-de
 import {ContextService} from "../../../service/context.service";
 import {ProjectService} from "../../../service/project.service";
 import {Project} from "../../../model/home/project.model";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
     moduleId: module.id,
