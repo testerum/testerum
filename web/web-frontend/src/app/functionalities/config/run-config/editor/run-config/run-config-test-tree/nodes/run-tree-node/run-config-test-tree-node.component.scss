@@ -1,3 +1,5 @@
+@import "../../../../../../../../../resources/css/testerum-theme-fontawesome";
+@import "../../../../../../../../../resources/css/testerum-styles";
 @import "../../../../../../../../../resources/css/testerum-variables";
 
 .runner-config-test-tree-node {
@@ -18,18 +20,18 @@
     }
 
     .fa_my-runner-config-test-selected {
-        @extend .far !optional;
-        @extend .fa-check-square !optional;
+        @extend .far;
+        @extend .fa-check-square;
         width: 13px;
     }
     .fa_my-runner-config-test-partial-selected {
-        @extend .far !optional;
-        @extend .fa-minus-square !optional;
+        @extend .far;
+        @extend .fa-minus-square;
         width: 13px;
     }
     .fa_my-runner-config-test-not-selected {
-        @extend .far !optional;
-        @extend .fa-square !optional;
+        @extend .far;
+        @extend .fa-square;
         width: 13px;
     }
 }

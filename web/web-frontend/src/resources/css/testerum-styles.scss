@@ -1,9 +1,4 @@
-$fa-font-path: '../../../@fortawesome/fontawesome-free/webfonts';
-@import '../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
-@import '../../../node_modules/@fortawesome/fontawesome-free/scss/regular';
-@import '../../../node_modules/@fortawesome/fontawesome-free/scss/solid';
-@import '../../../node_modules/@fortawesome/fontawesome-free/scss/brands';
-
+@import "testerum-theme-fontawesome.scss";
 @import "testerum-variables.scss";
 @import "testerum-theme.scss";
 
@@ -79,8 +74,8 @@ code { //used by PrismJs. example: to format the HTTP JSON Body
 //========== ICONS =========================
 //declared in this file because I couldn't make them work in some other place
 .fa_my-automated-test {
-    @extend .fas !optional;
-    @extend .fa-bolt !optional;
+    @extend .fas;
+    @extend .fa-bolt;
     color: $automated-test-color
 }
 .fa_my-automated-test_white {
@@ -89,8 +84,8 @@ code { //used by PrismJs. example: to format the HTTP JSON Body
 }
 
 .fa_my-manual-test {
-    @extend .fas !optional;
-    @extend .fa-hand-paper !optional;
+    @extend .fas;
+    @extend .fa-hand-paper;
     color: $manual-test-color;
 }
 .fa_my-manual-test_white {
@@ -99,18 +94,18 @@ code { //used by PrismJs. example: to format the HTTP JSON Body
 }
 
 .fa_my-scenario {
-    @extend .fas !optional;
-    @extend .fa-stream !optional;
+    @extend .fas;
+    @extend .fa-stream;
 }
 
 .fa_my-step {
-    @extend .fas !optional;
-    @extend .fa-shoe-prints !optional;
+    @extend .fas;
+    @extend .fa-shoe-prints;
 }
 
 .fa_my-disabled-test {
-    @extend .fas !optional;
-    @extend .fa-ban !optional;
+    @extend .fas;
+    @extend .fa-ban;
     color: $disabled-color;
 }
 
@@ -126,18 +121,18 @@ code { //used by PrismJs. example: to format the HTTP JSON Body
 }
 //Run stop icons
 .fa_my-run {
-    @extend .fas !optional;
-    @extend .fa-play !optional;
+    @extend .fas;
+    @extend .fa-play;
 }
 .fa_my-stop {
-    @extend .fas !optional;
-    @extend .fa-stop !optional;
+    @extend .fas;
+    @extend .fa-stop;
     color: $error-color;
 }
 // runner icons
 .fa_my-runner-waiting {
-    @extend .fas !optional;
-    @extend .fa-spinner !optional;
+    @extend .fas;
+    @extend .fa-spinner;
 }
 .fa_my-runner-waiting-colored {
     @extend .fa_my-runner-waiting;
@@ -148,50 +143,50 @@ code { //used by PrismJs. example: to format the HTTP JSON Body
     color: $waiting-color;
 }
 .fa_my-runner-passed {
-    @extend .fas !optional;
-    @extend .fa-check !optional;
+    @extend .fas;
+    @extend .fa-check;
 }
 .fa_my-runner-passed-colored {
     @extend .fa_my-runner-passed;
     color: $success-color;
 }
 .fa_my-runner-failed {
-    @extend .fas !optional;
-    @extend .fa-times !optional;
+    @extend .fas;
+    @extend .fa-times;
 }
 .fa_my-runner-failed-colored {
-    @extend .fas !optional;
-    @extend .fa-times !optional;
+    @extend .fas;
+    @extend .fa-times;
     color: $error-color;
 }
 .fa_my-runner-disabled {
-    @extend .fas !optional;
-    @extend .fa-ban !optional;
+    @extend .fas;
+    @extend .fa-ban;
 }
 .fa_my-runner-disabled-colored {
-    @extend .fas !optional;
-    @extend .fa-ban !optional;
+    @extend .fas;
+    @extend .fa-ban;
     color: $disabled-color;
 }
 .fa_my-runner-undefined {
-    @extend .fas !optional;
-    @extend .fa-question !optional;
+    @extend .fas;
+    @extend .fa-question;
 }
 .fa_my-runner-undefined-colored {
     @extend .fa_my-runner-undefined;
     color: $warning-color;
 }
 .fa_my-runner-skipped {
-    @extend .fas !optional;
-    @extend .fa-angle-double-right !optional;
+    @extend .fas;
+    @extend .fa-angle-double-right;
 }
 .fa_my-runner-skipped-colored {
     @extend .fa_my-runner-skipped;
     color: #aae8ff;
 }
 .fa_my-runner-attention {
-    @extend .fas !optional;
-    @extend .fa-exclamation !optional;
+    @extend .fas;
+    @extend .fa-exclamation;
 }
 .fa_my-runner-attention-colored {
     @extend .fa_my-runner-attention;
@@ -209,86 +204,86 @@ code { //used by PrismJs. example: to format the HTTP JSON Body
 
 // tree icons
 .fa_my-tree-node-open {
-    @extend .fas !optional;
-    @extend .fa-caret-down !optional;
+    @extend .fas;
+    @extend .fa-caret-down;
 }
 .fa_my-tree-node-close {
-    @extend .fas !optional;
-    @extend .fa-caret-right !optional;
+    @extend .fas;
+    @extend .fa-caret-right;
 }
 .fa_my-tree-node-empty {
-    @extend .fas !optional;
-    @extend .fa-caret-right !optional;
+    @extend .fas;
+    @extend .fa-caret-right;
     color: #d8d8d8;
 }
 .fa_my-tree-folder-closed-colored {
-    @extend .fas !optional;
-    @extend .fa-folder !optional;
+    @extend .fas;
+    @extend .fa-folder;
     color: #c7c308;
     font-size: 15px;
 }
 .fa_my-tree-folder-opened-colored {
-    @extend .fas !optional;
-    @extend .fa-folder-open !optional;
+    @extend .fas;
+    @extend .fa-folder-open;
     color: #c7c308;
     font-size: 15px;
 }
 // Other icons
 .fa_my-folder-opened {
-    @extend .fas !optional;
-    @extend .fa-folder-open !optional;
+    @extend .fas;
+    @extend .fa-folder-open;
 }
 .fa_my-edit {
-    @extend .fas !optional;
-    @extend .fa-pencil-alt !optional;
+    @extend .fas;
+    @extend .fa-pencil-alt;
 }
 .fa_my-plus {
-    @extend .fas !optional;
-    @extend .fa-plus !optional;
+    @extend .fas;
+    @extend .fa-plus;
 }
 .fa_my-delete {
-    @extend .fas !optional;
-    @extend .fa-trash-alt !optional;
+    @extend .fas;
+    @extend .fa-trash-alt;
 }
 .fa_my-search {
-    @extend .fas !optional;
-    @extend .fa-search !optional;
+    @extend .fas;
+    @extend .fa-search;
 }
 .fa_my-tag {
-    @extend .fas !optional;
-    @extend .fa-tag !optional;
+    @extend .fas;
+    @extend .fa-tag;
 }
 .fa_my-disabled {
-    @extend .fas !optional;
-    @extend .fa-times !optional;
+    @extend .fas;
+    @extend .fa-times;
 }
 .fa_my-disabled-ban {
-    @extend .fas !optional;
-    @extend .fa-ban !optional;
+    @extend .fas;
+    @extend .fa-ban;
 }
 .fa_my-enabled {
-    @extend .fas !optional;
-    @extend .fa-check !optional;
+    @extend .fas;
+    @extend .fa-check;
 }
 .fa_my-composed-step {
-    @extend .fas !optional;
-    @extend .fa-random !optional;
+    @extend .fas;
+    @extend .fa-random;
 }
 .fa_my-basic-step {
-    @extend .fas !optional;
-    @extend .fa-arrow-right !optional;
+    @extend .fas;
+    @extend .fa-arrow-right;
 }
 .fa_my-cut {
-    @extend .fas !optional;
-    @extend .fa-cut !optional;
+    @extend .fas;
+    @extend .fa-cut;
 }
 .fa_my-copy {
-    @extend .fas !optional;
-    @extend .fa-copy !optional;
+    @extend .fas;
+    @extend .fa-copy;
 }
 .fa_my-paste {
-    @extend .fas !optional;
-    @extend .fa-paste !optional;
+    @extend .fas;
+    @extend .fa-paste;
 }
 
 .nav-tabs {
