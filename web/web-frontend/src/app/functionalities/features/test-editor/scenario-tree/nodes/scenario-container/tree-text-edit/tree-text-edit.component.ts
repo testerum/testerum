@@ -1,18 +1,17 @@
 import {
     Component,
-    ElementRef, EventEmitter,
+    ElementRef,
+    EventEmitter,
     forwardRef,
     Input,
-    OnChanges, OnDestroy,
+    OnDestroy,
     OnInit,
     Output,
-    SimpleChanges,
     ViewChild
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {FocusDirective} from "../../../../../../../generic/directives/focus.directive";
 import {ScenarioTreeComponentService} from "../../../scenario-tree.component-service";
-import {TestsRunnerService} from "../../../../../tests-runner/tests-runner.service";
 
 @Component({
     selector: 'tree-text-edit',
@@ -28,7 +27,7 @@ export class TreeTextEditComponent implements ControlValueAccessor, OnInit, OnDe
     @Input() isTextEditMode: boolean = false;
     @Output() onTextEditModeChanged = new EventEmitter<boolean>();
 
-    @ViewChild('input', { static: false }) inputElementRef: ElementRef;
+    @ViewChild('input') inputElementRef: ElementRef;
 
     private propagateChange: Function;
 

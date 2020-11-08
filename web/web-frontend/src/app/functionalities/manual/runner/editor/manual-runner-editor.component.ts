@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {ManualTestStatus} from "../../plans/model/enums/manual-test-status.enum";
 import {Path} from "../../../../model/infrastructure/path/path.model";
@@ -10,7 +10,6 @@ import {UrlService} from "../../../../service/url.service";
 import {MarkdownEditorComponent} from "../../../../generic/components/markdown-editor/markdown-editor.component";
 import {StepCall} from "../../../../model/step-call.model";
 import {ManualTestsStatusTreeComponent} from "../../common/manual-tests-status-tree/manual-tests-status-tree.component";
-import {ManualStepCall} from "../../plans/model/manual-step-call.model";
 import {AreYouSureModalEnum} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalService} from "../../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {ManualTestPlanOverviewComponent} from "../../plans/overview/item/manual-test-plan-overview.component";
@@ -50,7 +49,7 @@ export class ManualRunnerEditorComponent implements OnInit {
         this.descriptionMarkdownEditor = descriptionMarkdownEditor;
     }
     commentMarkdownEditor: MarkdownEditorComponent;
-    @ViewChild("commentMarkdownEditor", { static: false }) set setCommentMarkdownEditor(commentMarkdownEditor: MarkdownEditorComponent) {
+    @ViewChild("commentMarkdownEditor") set setCommentMarkdownEditor(commentMarkdownEditor: MarkdownEditorComponent) {
         if (commentMarkdownEditor != null) {
             commentMarkdownEditor.setEditMode(this.isEditMode);
             commentMarkdownEditor.setValue(this.model.comments);

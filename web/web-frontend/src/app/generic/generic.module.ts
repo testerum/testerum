@@ -56,19 +56,6 @@ import {PathChooserContainerComponent} from "./components/path-chooser/container
 import {PathChooserNodeComponent} from "./components/path-chooser/container/node/path-chooser-node.component";
 import {PathChooserService} from "./components/path-chooser/path-chooser.service";
 import {SelectSharedResourceModalComponent} from "./components/step-call-tree/select-shared-resource-modal/select-shared-resource-modal.component";
-import {
-    AutoCompleteModule,
-    DropdownModule,
-    FileUploadModule,
-    InputSwitchModule,
-    InputTextModule,
-    KeyFilterModule,
-    MessageService,
-    SelectButtonModule,
-    ToggleButtonModule,
-    ToolbarModule,
-    TooltipModule
-} from "primeng/primeng";
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {MarkdownEditorComponent} from "./components/markdown-editor/markdown-editor.component";
 import {AttachmentsComponent} from "./components/form/attachments/attachments.component";
@@ -119,6 +106,17 @@ import {MonacoEditorComponent} from "./components/monaco-editor/components/monac
 import {MonacoDiffEditorComponent} from "./components/monaco-editor/components/monaco-diff-editor/monaco-diff-editor.component";
 import {ResizedDirective} from "./components/monaco-editor/directives/resized-event.directive";
 import {ParamNameValidatorDirective} from "./validators/param-name-validator.directive";
+import {ToolbarModule} from "primeng/toolbar";
+import {SelectButtonModule} from "primeng/selectbutton";
+import {TooltipModule} from "primeng/tooltip";
+import {AutoCompleteModule} from "primeng/autocomplete";
+import {FileUploadModule} from "primeng/fileupload";
+import {InputTextModule} from "primeng/inputtext";
+import {ToggleButtonModule} from "primeng/togglebutton";
+import {KeyFilterModule} from "primeng/keyfilter";
+import {InputSwitchModule} from "primeng/inputswitch";
+import {DropdownModule} from "primeng/dropdown";
+import {MessageService} from "primeng/api";
 
 @NgModule({
     imports: [

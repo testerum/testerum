@@ -1,8 +1,10 @@
-import {Input} from "@angular/core";
+import {Directive, Input} from "@angular/core";
 import {Resource} from "../../../model/resource/resource.model";
 import {NgForm} from "@angular/forms";
 import {ParamStepPatternPart} from "../../../model/text/parts/param-step-pattern-part.model";
+import {ResourceContextActions} from "./infrastructure/model/resource-context-actions.model";
 
+@Directive()
 export abstract class ResourceComponent<T extends Resource<T>> {
 
     @Input() name: string;

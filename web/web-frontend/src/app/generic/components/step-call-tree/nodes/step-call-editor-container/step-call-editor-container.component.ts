@@ -20,7 +20,6 @@ import {StepTextUtil} from "./util/StepTextUtil";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {StepPattern} from "../../../../../model/text/step-pattern.model";
-import {AutoComplete} from "primeng/primeng";
 import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
 import {MessageService} from "../../../../../service/message.service";
 import {MessageKey} from "../../../../../model/messages/message.enum";
@@ -34,6 +33,7 @@ import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {PathUtil} from "../../../../../utils/path.util";
 import {StepSearch} from "../../../../../utils/step-search/step-search.class";
 import {ParamNameValidatorDirective} from "../../../../validators/param-name-validator.directive";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
     selector: 'step-call-editor-container',

@@ -31,7 +31,7 @@
                 <!-- DESCRIPTION -->
                 <div class="my-line" [class.hidden]="!model.description">
                     <label class="my-label label-size">Description</label>
-                    <div class="my-value my-default-line-height">
+                    <div class="my-value">
                         <markdown-editor #descriptionMarkdownEditor
                                          [editMode]="false"
                                          class="markdown-editor-dynamic-size"></markdown-editor>
@@ -133,7 +133,7 @@
                      [class.hidden]="!shouldDisplayComment()">
                     <label class="my-label label-size">Comment</label>
 
-                    <div class="my-value my-default-line-height" (dblclick)="setEditMode(true)">
+                    <div class="my-value" (dblclick)="setEditMode(true)">
                         <markdown-editor #commentMarkdownEditor
                                          [editMode]="!isFinalized()"
                                          class="markdown-editor-dynamic-size"></markdown-editor>

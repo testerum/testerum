@@ -17,7 +17,7 @@ import {InputTypeEnum} from "../../../../generic/components/form/dynamic-input/m
 })
 export class RunConfigEditorComponent implements OnInit, OnDestroy {
 
-    @ViewChild(NgForm, { static: false }) form: NgForm;
+    @ViewChild(NgForm) form: NgForm;
 
     runnerConfig: RunConfig|null;
 
@@ -75,8 +75,17 @@ export class RunConfigEditorComponent implements OnInit, OnDestroy {
     }
 
     getValueForSetting(setting: Setting): string {
-        let settingValue = this.runnerConfig.settings.get(setting.definition.key);
+        return this.runnerConfig.settings.get(setting.definition.key)
+    }
 
-        return settingValue
+    isComposedSetting(settingType: SettingType): boolean {
+        return settingType == SettingType.SELENIUM_DRIVER;
+    }
+
+    resolveSetting(setting: Setting): Setting {
+        let cloneSetting = setting.clone();
+        cloneSetting.unresolvedValue = this.getValueForSetting(setting);
+
+        return cloneSetting;
     }
 }

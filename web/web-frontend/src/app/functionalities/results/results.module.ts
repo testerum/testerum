@@ -11,9 +11,9 @@ import {DndModule} from "ng2-dnd";
 import {ResultComponent} from "./main/result/result.component";
 import {FeaturesModule} from "../features/features.module";
 import {RunnerResultTabsComponent} from "./main/runner-result-tabs.component";
-import {TabViewModule} from "primeng/primeng";
 import {ResultsComponent} from "./results.component";
 import {AngularSplitModule} from "angular-split";
+import {TabViewModule} from "primeng/tabview";
 
 @NgModule({
     imports: [

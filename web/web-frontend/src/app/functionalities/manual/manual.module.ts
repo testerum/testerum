@@ -2,13 +2,6 @@ import {NgModule} from '@angular/core';
 import {ManualRoutingModule} from "./manual-routing.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
-import {
-    AutoCompleteModule,
-    DropdownModule,
-    InputTextModule, MessageModule, MessagesModule,
-    ToolbarModule,
-    TooltipModule
-} from "primeng/primeng";
 import {TableModule} from "primeng/table";
 import {CollapseModule, ModalModule} from "ngx-bootstrap";
 import {CardModule} from "primeng/card";
@@ -33,6 +26,13 @@ import {ManualRunnerEditorComponent} from "./runner/editor/manual-runner-editor.
 import {ManualRunnerStepStatusComponent} from "./runner/editor/step_status/manual-runner-step-status.component";
 import {ManualTestPlansOverviewService} from "./plans/overview/manual-test-plans-overview.service";
 import {AngularSplitModule} from "angular-split";
+import {AutoCompleteModule} from "primeng/autocomplete";
+import {DropdownModule} from "primeng/dropdown";
+import {InputTextModule} from "primeng/inputtext";
+import {TooltipModule} from "primeng/tooltip";
+import {ToolbarModule} from "primeng/toolbar";
+import {MessagesModule} from "primeng/messages";
+import {MessageModule} from "primeng/message";
 
 @NgModule({
     imports: [

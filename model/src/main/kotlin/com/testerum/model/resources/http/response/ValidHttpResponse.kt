@@ -11,13 +11,15 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.testerum.model.resources.http.response.xml_body.RootElementXmlJsObject
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 class ValidHttpResponse @JsonCreator constructor(
         @JsonProperty("protocol") val protocol: String,
         @JsonProperty("statusCode") val statusCode: Int,
         @JsonProperty("headers") val headers: List<HttpResponseHeader> = emptyList(),
-        @JsonProperty("body") val body: ByteArray = ByteArray(0)
+        @JsonProperty("body") val body: ByteArray = ByteArray(0),
+        @JsonProperty("durationInMillis") val durationInMillis: Long
 ) : HttpResponse {
 
     companion object {
@@ -44,6 +46,11 @@ class ValidHttpResponse @JsonCreator constructor(
     @get:JsonIgnore
     val jsonBody: Any by lazy(mode = LazyThreadSafetyMode.NONE) {
         OBJECT_MAPPER.readValue(bodyAsUtf8String, Object::class.java)
+    }
+
+    @get:JsonIgnore
+    val xmlBody: Any by lazy(mode = LazyThreadSafetyMode.NONE) {
+        RootElementXmlJsObject(body)
     }
 
     fun getHeaderValue(key: String): String? {

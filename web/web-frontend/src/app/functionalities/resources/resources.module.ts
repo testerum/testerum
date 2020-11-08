@@ -26,14 +26,6 @@ import {HttpHeaderComponent} from "./editors/http/request/header/http-header.com
 import {HttpBodyComponent} from "./editors/http/request/body/http-body.component";
 import {HttpBodyTypeFormComponent} from "./editors/http/request/body-type-form/http-body-type-form.component";
 import {HttpParamsComponent} from "./editors/http/request/params/http-params.component";
-import {
-    AutoCompleteModule, CalendarModule,
-    CheckboxModule,
-    DropdownModule,
-    ToggleButtonModule,
-    ToolbarModule,
-    TooltipModule
-} from "primeng/primeng";
 import {HttpResponseComponent} from "./editors/http/request/response/http-request-response.component";
 import {HttpResponseVerifyComponent} from "./editors/http/response_verify/http-response-verify.component";
 import {HttpResponseVerifyService} from "./editors/http/response_verify/http-response-verify.service";
@@ -69,10 +61,17 @@ import {DateObjectTreeNodeComponent} from "./editors/object/nodes/date-node/date
 import {ListObjectTreeNodeComponent} from "./editors/object/nodes/list-node/list-object-tree-node.component";
 import {MapObjectTreeNodeComponent} from "./editors/object/nodes/map-node/map-object-tree-node.component";
 import {MapItemObjectTreeNodeComponent} from "./editors/object/nodes/map-node/item/map-item-object-tree-node.component";
-import { StringInputBasicResourceComponent } from './editors/basic/string-input/string-input-basic-resource.component';
-import { BooleanInputBasicResourceComponent } from './editors/basic/boolean-input/boolean-input-basic-resource.component';
-import { EnumInputBasicResourceComponent } from './editors/basic/enum-input/enum-input-basic-resource.component';
-import { DateInputBasicResourceComponent } from './editors/basic/date-input/date-input-basic-resource.component';
+import {StringInputBasicResourceComponent} from './editors/basic/string-input/string-input-basic-resource.component';
+import {BooleanInputBasicResourceComponent} from './editors/basic/boolean-input/boolean-input-basic-resource.component';
+import {EnumInputBasicResourceComponent} from './editors/basic/enum-input/enum-input-basic-resource.component';
+import {DateInputBasicResourceComponent} from './editors/basic/date-input/date-input-basic-resource.component';
+import {CheckboxModule} from "primeng/checkbox";
+import {AutoCompleteModule} from "primeng/autocomplete";
+import {ToggleButtonModule} from "primeng/togglebutton";
+import {TooltipModule} from "primeng/tooltip";
+import {ToolbarModule} from "primeng/toolbar";
+import {CalendarModule} from "primeng/calendar";
+import {DropdownModule} from "primeng/dropdown";
 
 @NgModule({
     imports: [

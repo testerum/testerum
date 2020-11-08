@@ -5,6 +5,7 @@ import {NgForm} from "@angular/forms";
 import {BasicResource} from "../../../../../model/resource/basic/basic-resource.model";
 import * as Prism from 'prismjs';
 import 'prismjs/components/prism-json';
+import {ResourceContextActions} from "../../infrastructure/model/resource-context-actions.model";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -28,7 +29,7 @@ export class JsonResourceComponent extends ResourceComponent<BasicResource> impl
         save() {}
     };
 
-    @ViewChild(NgForm, { static: false }) form: NgForm;
+    @ViewChild(NgForm) form: NgForm;
 
     constructor(private cd: ChangeDetectorRef){
         super();

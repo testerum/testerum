@@ -2,8 +2,6 @@ import {ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, View
 import {ObjectResourceComponentService} from "../../object-resource.component-service";
 import {ArrayUtil} from "../../../../../../utils/array.util";
 import {ObjectNodeUtil} from "../util/object-node.util";
-import {SelectItem} from "primeng/api";
-import {StringSelectItem} from "../../../../../../model/prime-ng/StringSelectItem";
 import {BooleanObjectTreeModel} from "../../model/boolean-object-tree.model";
 import {ListObjectTreeModel} from "../../model/list-object-tree.model";
 import {IdUtils} from "../../../../../../utils/id.util";
@@ -22,7 +20,7 @@ export class BooleanObjectTreeNodeComponent implements OnInit {
 
     @Input() model: BooleanObjectTreeModel;
 
-    @ViewChild('booleanInput', { static: false }) inputElementRef: ElementRef;
+    @ViewChild('booleanInput') inputElementRef: ElementRef;
     private tempValueHolder: string;
 
     id = IdUtils.getTemporaryId();

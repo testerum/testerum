@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { StepsComponent } from './steps.component';
+import {NgModule} from '@angular/core';
+import {StepsComponent} from './steps.component';
 import {StepsRoutingModule} from "./steps-routing.module";
 import {GenericModule} from "../../generic/generic.module";
 import {BrowserModule} from "@angular/platform-browser";
@@ -18,17 +18,15 @@ import {BasicStepEditorResolver} from "./basic-step-editor/basic-step-editor.res
 import {BasicStepParametersComponent} from "./basic-step-editor/basic-step-parameters/basic-step-parameters.component";
 import {CollapseModule, ModalModule, PopoverModule, SortableModule} from "ngx-bootstrap";
 import {StepsTreeComponent} from "./steps-tree/steps-tree.component";
-import {
-    AutoCompleteModule,
-    InputTextModule,
-    SelectButtonModule,
-    ToolbarModule,
-    TooltipModule
-} from "primeng/primeng";
 import {StepsTreeFilterComponent} from "./steps-tree/steps-tree-filter/steps-tree-filter.component";
 import {ComposedStepViewComponent} from "../../generic/components/step/composed-step-view/composed-step-view.component";
 import {MarkdownModule} from 'ngx-markdown'
 import {AngularSplitModule} from "angular-split";
+import {ToolbarModule} from "primeng/toolbar";
+import {TooltipModule} from "primeng/tooltip";
+import {SelectButtonModule} from "primeng/selectbutton";
+import {AutoCompleteModule} from "primeng/autocomplete";
+import {InputTextModule} from "primeng/inputtext";
 
 @NgModule({
     imports: [

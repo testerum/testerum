@@ -3,9 +3,9 @@ import {Attachment} from "../../../../model/file/attachment.model";
 import {DateUtil} from "../../../../utils/date.util";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {FileUpload} from "primeng/primeng";
 import {InfoModalService} from "../../info_modal/info-modal.service";
 import {ContextService} from "../../../../service/context.service";
+import {FileUpload} from "primeng/fileupload";
 
 @Component({
     selector: 'attachments-component',

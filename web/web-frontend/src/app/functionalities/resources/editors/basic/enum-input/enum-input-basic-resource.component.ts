@@ -3,6 +3,7 @@ import {IdUtils} from "../../../../../utils/id.util";
 import {BasicResource} from "../../../../../model/resource/basic/basic-resource.model";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {EnumTypeMeta} from "../../../../../model/text/parts/param-meta/enum-type.meta";
+import {ResourceContextActions} from "../../infrastructure/model/resource-context-actions.model";
 
 @Component({
   selector: 'enum-input-basic-resource',
@@ -18,7 +19,7 @@ export class EnumInputBasicResourceComponent implements OnInit {
     @Input() condensedViewMode: boolean = false;
     @Input() contextActions: ResourceContextActions;
 
-    @ViewChild('enumInput', { static: false }) inputElementRef: ElementRef;
+    @ViewChild('enumInput') inputElementRef: ElementRef;
     private tempValueHolder: string;
 
     id = IdUtils.getTemporaryId();

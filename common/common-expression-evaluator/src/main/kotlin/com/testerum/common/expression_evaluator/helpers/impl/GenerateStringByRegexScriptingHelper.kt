@@ -2,8 +2,8 @@ package com.testerum.common.expression_evaluator.helpers.impl
 
 import com.mifmif.common.regex.Generex
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
-import com.testerum.common.expression_evaluator.helpers.util.JsFunction
-import com.testerum.common.expression_evaluator.helpers.util.ScriptingArgs
+import com.testerum.common.nashorn.JsFunction
+import com.testerum.common.nashorn.ScriptingArgs
 
 /**
  * String generator based on a regex expression.
@@ -11,8 +11,11 @@ import com.testerum.common.expression_evaluator.helpers.util.ScriptingArgs
  */
 object GenerateStringByRegexScriptingHelper : ScriptingHelper {
 
-    private val generateStringByRegex = object : JsFunction(functionName = "generateStringByRegex") {
-        override fun call(thiz: Any?, args: ScriptingArgs): Any? {
+    private object GenerateStringByRegexJsFunction : JsFunction() {
+        override val name: String
+            get() = "generateStringByRegex"
+
+        override fun call(receiver: Any?, args: ScriptingArgs): Any? {
             args.requireLength(1)
             val regex: String = args[0]
 
@@ -21,7 +24,7 @@ object GenerateStringByRegexScriptingHelper : ScriptingHelper {
     }
 
     override val globalVariables: Map<String, Any?> = mapOf(
-            generateStringByRegex.functionName to generateStringByRegex
+        GenerateStringByRegexJsFunction.name to GenerateStringByRegexJsFunction
     )
 
 }

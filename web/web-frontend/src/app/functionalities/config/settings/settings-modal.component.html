@@ -29,20 +29,11 @@
                         <div class="setting vertical-space"
                              *ngFor="let setting of settingsByCategory.get(settingCategory)">
 
-                            <div *ngIf="!isComposedSetting(setting.definition.type)"
-                                 class="simple-setting">
-                                <div class="input-description-container">
-                                    <div class="my-label">{{setting.definition.label ? setting.definition.label : setting.definition.key}}</div>
-                                    <info-icon [message]="setting.definition.description"></info-icon>
-                                </div>
+                            <ng-container *ngIf="!isComposedSetting(setting.definition.type)">
+                                <dynamic-setting-component [setting]="setting"></dynamic-setting-component>
+                            </ng-container>
 
-                                <dynamic-input [(value)]="setting.unresolvedValue"
-                                               [inputType]="getDynamicInputType(setting.definition.type)"
-                                               [possibleValues]="setting.definition.enumValues"></dynamic-input>
-                            </div>
-
-                            <div *ngIf="isComposedSetting(setting.definition.type)"
-                                 class="composed-setting">
+                            <div *ngIf="isComposedSetting(setting.definition.type)" class="composed-setting">
 
                                 <collapsable-panel [title]="setting.definition.label ? setting.definition.label : setting.definition.key"
                                                    [heading]="2">
@@ -52,7 +43,6 @@
                                                    [possibleValues]="setting.definition.enumValues"></dynamic-input>
 
                                 </collapsable-panel>
-
                             </div>
 
                             <div class="vertical-space"></div>

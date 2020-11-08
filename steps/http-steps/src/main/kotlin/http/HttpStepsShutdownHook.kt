@@ -5,7 +5,7 @@ import http_support.module_di.HttpStepsModuleServiceLocator
 
 class HttpStepsShutdownHook {
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.AfterAllTests
+    @AfterAllTests
     fun shutdown() {
         HttpStepsModuleServiceLocator.bootstrapper.context.shutdown()
     }

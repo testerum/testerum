@@ -1,5 +1,6 @@
 import {
-    ChangeDetectionStrategy, ChangeDetectorRef,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ComponentFactory,
     ComponentFactoryResolver,
@@ -25,6 +26,7 @@ import {BasicResource} from "../../../../model/resource/basic/basic-resource.mod
 import {Subject} from "rxjs";
 import {ArgModalEnum} from "./enum/arg-modal.enum";
 import {ObjectResourceModel} from "../../../../functionalities/resources/editors/object/object-resource.model";
+import {ResourceContextActions} from "../../../../functionalities/resources/editors/infrastructure/model/resource-context-actions.model";
 
 @Component({
     moduleId: module.id,

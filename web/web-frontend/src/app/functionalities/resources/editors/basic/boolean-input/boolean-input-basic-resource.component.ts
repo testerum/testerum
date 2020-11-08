@@ -1,7 +1,8 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {BasicResource} from "../../../../../model/resource/basic/basic-resource.model";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {IdUtils} from "../../../../../utils/id.util";
+import {ResourceContextActions} from "../../infrastructure/model/resource-context-actions.model";
 
 @Component({
     selector: 'boolean-input-basic-resource',
@@ -17,7 +18,7 @@ export class BooleanInputBasicResourceComponent {
     @Input() condensedViewMode: boolean = false;
     @Input() contextActions: ResourceContextActions;
 
-    @ViewChild('booleanInput', { static: false }) inputElementRef: ElementRef;
+    @ViewChild('booleanInput') inputElementRef: ElementRef;
     private tempValueHolder: string;
 
     id = IdUtils.getTemporaryId();

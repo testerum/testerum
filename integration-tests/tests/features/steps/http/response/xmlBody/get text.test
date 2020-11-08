@@ -1,0 +1,34 @@
+test-def: get text
+
+    step: Given the HTTP mock server <<{{xmlMockServer}}>> with the mock request <<{{xmlMock}}>>
+        var xmlMockServer = <<
+            port: "6789"
+            
+        >>
+        var xmlMock = <<
+            expectedRequest:
+              method: GET
+              url: /xml
+            mockResponse:
+              statusCode: 200
+              headers:
+                Content-Type: application/xml
+              body:
+                bodyType: XML
+                content: "<bookstore\>\r\n  <book\>\r\n    <title lang=\"en\"\>Harry Potter</title\>\r\
+                  \n    <price\>29.99</price\>\r\n  </book\>\r\n\r\n  <book\>\r\n    super tare\r\n\
+                  \    <title lang=\"nl\"\>Learning XML</title\>\r\n    clar ca da\r\n    <price\>39.95</price\>\r\
+                  \n    merge si asa\r\n  </book\>\r\n</bookstore\>"
+            
+        >>
+    step: When I execute the HTTP request <<{{get_xml}}>>
+        var get_xml = <<
+            method: GET
+            url: http://localhost:6789/xml
+            followRedirects: true
+            headers: {}
+            
+        >>
+    step: Then <<{{httpResponse.xmlBody.bookstore.book[1].getText()}}>> is equal to <<super tare clar ca da merge si asa>>
+    step: Then <<{{httpResponse.xmlBody.bookstore.book[1].getText(1)}}>> is equal to <<clar ca da>>
+    step: Then <<{{httpResponse.xmlBody.bookstore.book[1].getText(2)}}>> is equal to <<merge si asa>>

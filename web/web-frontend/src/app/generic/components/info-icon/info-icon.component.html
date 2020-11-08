@@ -6,7 +6,7 @@
        [style.font-size]="iconFontSize"
        aria-hidden="true" #actualTarget></i>
 
-    <p-overlayPanel #op
+    <p-overlayPanel #op [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"
                     appendTo="body"
                     baseZIndex="9999"
                     autoZIndex="false">
