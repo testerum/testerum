@@ -1,5 +1,5 @@
 import {StepSearchTokenizationUtil} from "../util/step-search-tokenization.util";
-import {StepDef} from "../../../model/step-def.model";
+import {StepDef} from "../../../model/step/step-def.model";
 
 export class StepSearchItem {
     stepText: string;

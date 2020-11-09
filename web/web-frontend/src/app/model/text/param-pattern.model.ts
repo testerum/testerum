@@ -1,5 +1,3 @@
-import {StepsPackageModel} from "../steps-package.model";
-import {StepPatternParser} from "./parser/step-pattern-parser";
 import {StepPattern} from "./step-pattern.model";
 import {ParamPatternParser} from "./parser/param-pattern-parser";
 import {TextStepPatternPart} from "./parts/text-step-pattern-part.model";

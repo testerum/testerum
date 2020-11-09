@@ -1,4 +1,4 @@
-import {StepDef} from "../../../../../../model/step-def.model";
+import {StepDef} from "../../../../../../model/step/step-def.model";
 import {StepSearchItem} from "../../../../../../utils/step-search/model/step-search-item.model";
 
 export class StepCallSuggestion extends StepSearchItem {

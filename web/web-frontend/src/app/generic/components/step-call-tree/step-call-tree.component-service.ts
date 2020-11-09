@@ -1,8 +1,8 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import {StepCallEditorContainerModel} from "./model/step-call-editor-container.model";
 import {JsonTreeContainer} from "../json-tree/model/json-tree-container.model";
-import {StepCall} from "../../../model/step-call.model";
-import {ComposedStepDef} from "../../../model/composed-step-def.model";
+import {StepCall} from "../../../model/step/step-call.model";
+import {ComposedStepDef} from "../../../model/step/composed-step-def.model";
 import {StepCallContainerModel} from "./model/step-call-container.model";
 import {JsonTreeModel} from "../json-tree/model/json-tree.model";
 import {SubStepsContainerModel} from "./model/sub-steps-container.model";
@@ -10,7 +10,7 @@ import {StepCallTreeUtil} from "./util/step-call-tree.util";
 import {ArrayUtil} from "../../../utils/array.util";
 import {StepCallContainerComponent} from "./nodes/step-call-container/step-call-container.component";
 import {Path} from "../../../model/infrastructure/path/path.model";
-import {UndefinedStepDef} from "../../../model/undefined-step-def.model";
+import {UndefinedStepDef} from "../../../model/step/undefined-step-def.model";
 
 @Injectable()
 export class StepCallTreeComponentService {

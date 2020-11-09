@@ -1,7 +1,7 @@
 import {JsonTreeContainerAbstract} from "../../json-tree/model/json-tree-container.abstract";
 import {JsonTreeNodeState} from "../../json-tree/model/json-tree-node-state.model";
 import {JsonTreeContainer} from "../../json-tree/model/json-tree-container.model";
-import {StepCall} from "../../../../model/step-call.model";
+import {StepCall} from "../../../../model/step/step-call.model";
 import {JsonTreeContainerOptions} from "../../json-tree/model/behavior/JsonTreeContainerOptions";
 
 export class StepCallEditorContainerModel extends JsonTreeContainerAbstract {

@@ -9,14 +9,14 @@ import {
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import {ComposedStepDef} from "../../../../model/composed-step-def.model";
+import {ComposedStepDef} from "../../../../model/step/composed-step-def.model";
 import {NgForm} from "@angular/forms";
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
 import {AutoComplete, Message} from "primeng/primeng";
 import {Arg} from "../../../../model/arg/arg.model";
 import {ArrayUtil} from "../../../../utils/array.util";
-import {StepDef} from "../../../../model/step-def.model";
-import {StepCall} from "../../../../model/step-call.model";
+import {StepDef} from "../../../../model/step/step-def.model";
+import {StepCall} from "../../../../model/step/step-call.model";
 import {StepTreeNodeModel} from "../../../../functionalities/steps/steps-tree/model/step-tree-node.model";
 import {StepTreeContainerModel} from "../../../../functionalities/steps/steps-tree/model/step-tree-container.model";
 import {TagsService} from "../../../../service/tags.service";

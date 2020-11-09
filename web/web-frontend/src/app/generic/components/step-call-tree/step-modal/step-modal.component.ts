@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, ComponentRef, OnDestroy, ViewChild} from '@angular/core';
-import {ComposedStepDef} from "../../../../model/composed-step-def.model";
+import {AfterViewInit, Component, ComponentRef, ViewChild} from '@angular/core';
+import {ComposedStepDef} from "../../../../model/step/composed-step-def.model";
 import {ModalDirective} from "ngx-bootstrap";
 import {ComposedStepViewComponent} from "../../step/composed-step-view/composed-step-view.component";
 import {Subject} from "rxjs";

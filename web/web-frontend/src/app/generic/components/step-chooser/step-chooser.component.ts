@@ -1,7 +1,6 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {StepChooserService} from "./step-chooser.service";
-import {StepDef} from "../../../model/step-def.model";
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";
 import {StepChooserContainerComponent} from "./step-chooser-container/step-chooser-container.component";
 import {StepTreeContainerModel} from "../../../functionalities/steps/steps-tree/model/step-tree-container.model";

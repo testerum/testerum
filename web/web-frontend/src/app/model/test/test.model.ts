@@ -1,13 +1,13 @@
 import {TreeNodeModel} from "../infrastructure/tree-node.model";
 import {JsonUtil} from "../../utils/json.util";
 import {IdUtils} from "../../utils/id.util";
-import {StepCall} from "../step-call.model";
+import {StepCall} from "../step/step-call.model";
 import {Path} from "../infrastructure/path/path.model";
 import {TestProperties} from "./test-properties.model";
 import {Warning} from "../warning/Warning";
 import {Serializable} from "../infrastructure/serializable.model";
-import {ComposedStepDef} from "../composed-step-def.model";
-import {UndefinedStepDef} from "../undefined-step-def.model";
+import {ComposedStepDef} from "../step/composed-step-def.model";
+import {UndefinedStepDef} from "../step/undefined-step-def.model";
 import {Scenario} from "./scenario/scenario.model";
 
 export class TestModel implements Serializable<TestModel>, TreeNodeModel {

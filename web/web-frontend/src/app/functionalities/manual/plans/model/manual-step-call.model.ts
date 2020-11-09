@@ -1,5 +1,5 @@
 import {Serializable} from "../../../../model/infrastructure/serializable.model";
-import {StepCall} from "../../../../model/step-call.model";
+import {StepCall} from "../../../../model/step/step-call.model";
 import {ManualTestStepStatus} from "./enums/manual-test-step-status.enum";
 import {JsonUtil} from "../../../../utils/json.util";
 

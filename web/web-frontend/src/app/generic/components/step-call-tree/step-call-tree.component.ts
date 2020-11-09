@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {StepCall} from "../../../model/step-call.model";
+import {StepCall} from "../../../model/step/step-call.model";
 import {StepCallTreeUtil} from "./util/step-call-tree.util";
 import {JsonTreeModel} from "../json-tree/model/json-tree.model";
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";

@@ -1,8 +1,6 @@
 import {Injectable} from "@angular/core";
-import {Resolve, ActivatedRouteSnapshot, Params, ActivatedRoute} from "@angular/router";
-import {TestsService} from "../../../service/tests.service";
-import {TestModel} from "../../../model/test/test.model";
-import {ComposedStepDef} from "../../../model/composed-step-def.model";
+import {ActivatedRoute, ActivatedRouteSnapshot, Resolve} from "@angular/router";
+import {ComposedStepDef} from "../../../model/step/composed-step-def.model";
 import {StepsService} from "../../../service/steps.service";
 import {Path} from "../../../model/infrastructure/path/path.model";
 

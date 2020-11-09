@@ -1,8 +1,6 @@
 import {Path} from "../../infrastructure/path/path.model";
-import {StepPattern} from "../../text/step-pattern.model";
 import {BasicStepNode} from "./basic-step-node.model";
-import {StepPhaseEnum} from "../../enums/step-phase.enum";
-import {BasicStepDef} from "../../basic-step-def.model";
+import {BasicStepDef} from "../basic-step-def.model";
 import {Serializable} from "../../infrastructure/serializable.model";
 
 export class BasicStepStepNode implements BasicStepNode, Serializable<BasicStepStepNode> {

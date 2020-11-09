@@ -1,6 +1,6 @@
-import {StepCall} from "../../../../model/step-call.model";
+import {StepCall} from "../../../../model/step/step-call.model";
 import {ArrayUtil} from "../../../../utils/array.util";
-import {ComposedStepDef} from "../../../../model/composed-step-def.model";
+import {ComposedStepDef} from "../../../../model/step/composed-step-def.model";
 
 
 export class StepCallWarningUtil {

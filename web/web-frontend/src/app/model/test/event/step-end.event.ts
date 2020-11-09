@@ -1,6 +1,6 @@
 import {ExecutionStatusEnum} from "./enums/execution-status.enum";
 import {RunnerEvent} from "./runner.event";
-import {StepCall} from "../../step-call.model";
+import {StepCall} from "../../step/step-call.model";
 import {EventKey} from "./fields/event-key.model";
 import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
 import {Serializable} from "../../infrastructure/serializable.model";

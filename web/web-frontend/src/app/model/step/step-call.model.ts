@@ -1,19 +1,19 @@
 import {StepDef} from "./step-def.model";
-import {JsonUtil} from "../utils/json.util";
+import {JsonUtil} from "../../utils/json.util";
 import {BasicStepDef} from "./basic-step-def.model";
-import {Arg} from "./arg/arg.model";
-import {StepPhaseEnum} from "./enums/step-phase.enum";
-import {StringUtils} from "../utils/string-utils.util";
-import {IdUtils} from "../utils/id.util";
+import {Arg} from "../arg/arg.model";
+import {StepPhaseEnum} from "../enums/step-phase.enum";
+import {StringUtils} from "../../utils/string-utils.util";
+import {IdUtils} from "../../utils/id.util";
 import {ComposedStepDef} from "./composed-step-def.model";
-import {VariableHolder} from "../generic/variable/variable-holder.model";
-import {TextStepPatternPart} from "./text/parts/text-step-pattern-part.model";
-import {ParamStepPatternPart} from "./text/parts/param-step-pattern-part.model";
+import {VariableHolder} from "../../generic/variable/variable-holder.model";
+import {TextStepPatternPart} from "../text/parts/text-step-pattern-part.model";
+import {ParamStepPatternPart} from "../text/parts/param-step-pattern-part.model";
 import {UndefinedStepDef} from "./undefined-step-def.model";
-import {Warning} from "./warning/Warning";
-import {Serializable} from "./infrastructure/serializable.model";
-import {ArrayUtil} from "../utils/array.util";
-import {StepTextParamUtil} from "../generic/components/step-text/step-text-param/util/step-text-param.util";
+import {Warning} from "../warning/Warning";
+import {Serializable} from "../infrastructure/serializable.model";
+import {ArrayUtil} from "../../utils/array.util";
+import {StepTextParamUtil} from "../../generic/components/step-text/step-text-param/util/step-text-param.util";
 
 export class StepCall implements Serializable<StepCall> {
 

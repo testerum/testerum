@@ -7,7 +7,7 @@ import {JsonTreePathUtil} from "../../../../generic/components/json-tree/util/js
 import {StepTreeContainerModel} from "../model/step-tree-container.model";
 import {StepsTreeService} from "../steps-tree.service";
 import {StepTreeNodeModel} from "../model/step-tree-node.model";
-import {BasicStepDef} from "../../../../model/basic-step-def.model";
+import {BasicStepDef} from "../../../../model/step/basic-step-def.model";
 import {StepsService} from "../../../../service/steps.service";
 import {CopyPath} from "../../../../model/infrastructure/path/copy-path.model";
 import {ArrayUtil} from "../../../../utils/array.util";

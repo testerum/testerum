@@ -1,13 +1,13 @@
 import {StepDef} from "./step-def.model";
-import {StepPhaseEnum} from "./enums/step-phase.enum";
+import {StepPhaseEnum} from "../enums/step-phase.enum";
 import {StepCall} from "./step-call.model";
-import {JsonUtil} from "../utils/json.util";
-import {IdUtils} from "../utils/id.util";
-import {StepPattern} from "./text/step-pattern.model";
-import {Path} from "./infrastructure/path/path.model";
-import {Warning} from "./warning/Warning";
-import {StringUtils} from "../utils/string-utils.util";
-import {Serializable} from "./infrastructure/serializable.model";
+import {JsonUtil} from "../../utils/json.util";
+import {IdUtils} from "../../utils/id.util";
+import {StepPattern} from "../text/step-pattern.model";
+import {Path} from "../infrastructure/path/path.model";
+import {Warning} from "../warning/Warning";
+import {StringUtils} from "../../utils/string-utils.util";
+import {Serializable} from "../infrastructure/serializable.model";
 import {UndefinedStepDef} from "./undefined-step-def.model";
 
 export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {

@@ -1,5 +1,5 @@
 import {ExecutionStatusEnum} from "../../../../../model/test/event/enums/execution-status.enum";
-import {StepCall} from "../../../../../model/step-call.model";
+import {StepCall} from "../../../../../model/step/step-call.model";
 import {EventKey} from "../../../../../model/test/event/fields/event-key.model";
 import {JsonTreeNodeState} from "../../../../../generic/components/json-tree/model/json-tree-node-state.model";
 import {JsonTreeContainer} from "../../../../../generic/components/json-tree/model/json-tree-container.model";

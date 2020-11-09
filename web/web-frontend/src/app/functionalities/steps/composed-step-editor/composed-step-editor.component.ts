@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {ComposedStepDef} from "../../../model/composed-step-def.model";
+import {ComposedStepDef} from "../../../model/step/composed-step-def.model";
 import {StepsService} from "../../../service/steps.service";
 import {StepsTreeService} from "../steps-tree/steps-tree.service";
 import {IdUtils} from "../../../utils/id.util";
@@ -8,7 +8,7 @@ import {ValidationModel} from "../../../model/exception/validation.model";
 import {ErrorHttpInterceptor} from "../../../service/interceptors/error.http-interceptor";
 import {FormUtil} from "../../../utils/form.util";
 import {ValidationErrorResponse} from "../../../model/exception/validation-error-response.model";
-import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/step/CheckComposedStepDefUpdateCompatibilityResponse";
+import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/step/compatibility/CheckComposedStepDefUpdateCompatibilityResponse";
 import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
 import {UrlService} from "../../../service/url.service";
 import {ComposedStepViewComponent} from "../../../generic/components/step/composed-step-view/composed-step-view.component";

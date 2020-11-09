@@ -1,10 +1,5 @@
-
 import {JsonTreePathNode} from "../../../../generic/components/json-tree/model/path/json-tree-path-node.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
-import {StepPattern} from "../../../../model/text/step-pattern.model";
-import {StepDef} from "../../../../model/step-def.model";
-import {TestModel} from "../../../../model/test/test.model";
 import {Comparable} from "../../../../model/infrastructure/comparable.model";
 import {FeatureTreeContainerModel} from "./feature-tree-container.model";
 import {TestProperties} from "../../../../model/test/test-properties.model";

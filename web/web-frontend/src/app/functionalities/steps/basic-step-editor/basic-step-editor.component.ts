@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
 import {ActivatedRoute} from "@angular/router";
-import {BasicStepDef} from "../../../model/basic-step-def.model";
+import {BasicStepDef} from "../../../model/step/basic-step-def.model";
 
 @Component({
     moduleId: module.id,

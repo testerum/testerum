@@ -1,8 +1,7 @@
-
-import {Injectable,EventEmitter} from "@angular/core";
-import {BasicStepDef} from "../../../model/basic-step-def.model";
+import {EventEmitter, Injectable} from "@angular/core";
 import {TreeNodeModel} from "../../../model/infrastructure/tree-node.model";
 import {SelectedTreeNodeEventModel} from "./event/selected-tree-node-event.model";
+
 @Injectable()
 export class TreeService {
 

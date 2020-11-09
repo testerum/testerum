@@ -1,12 +1,12 @@
 import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {BasicStepDef} from "../model/basic-step-def.model";
+import {BasicStepDef} from "../model/step/basic-step-def.model";
 import {Observable} from 'rxjs';
-import {ComposedStepDef} from "../model/composed-step-def.model";
+import {ComposedStepDef} from "../model/step/composed-step-def.model";
 import {RenamePath} from "../model/infrastructure/path/rename-path.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {CopyPath} from "../model/infrastructure/path/copy-path.model";
-import {CheckComposedStepDefUpdateCompatibilityResponse} from "../model/step/CheckComposedStepDefUpdateCompatibilityResponse";
+import {CheckComposedStepDefUpdateCompatibilityResponse} from "../model/step/compatibility/CheckComposedStepDefUpdateCompatibilityResponse";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
 import {StepsTreeFilter} from "../model/step/filter/steps-tree-filter.model";

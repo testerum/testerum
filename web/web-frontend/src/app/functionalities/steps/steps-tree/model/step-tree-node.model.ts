@@ -1,6 +1,6 @@
 import {JsonTreePathNode} from "../../../../generic/components/json-tree/model/path/json-tree-path-node.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
-import {StepDef} from "../../../../model/step-def.model";
+import {StepDef} from "../../../../model/step/step-def.model";
 import {JsonTreePathContainer} from "../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
 
 export class StepTreeNodeModel extends JsonTreePathNode {

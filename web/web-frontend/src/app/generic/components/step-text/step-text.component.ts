@@ -1,10 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {StepPhaseEnum} from "../../../model/enums/step-phase.enum";
-import {StepDef} from "../../../model/step-def.model";
+import {StepDef} from "../../../model/step/step-def.model";
 import {StepPatternPart} from "../../../model/text/parts/step-pattern-part.model";
 import {ParamStepPatternPart} from "../../../model/text/parts/param-step-pattern-part.model";
-import {StepCall} from "../../../model/step-call.model";
-import {UndefinedStepDef} from "../../../model/undefined-step-def.model";
+import {StepCall} from "../../../model/step/step-call.model";
+import {UndefinedStepDef} from "../../../model/step/undefined-step-def.model";
 import {StringUtils} from "../../../utils/string-utils.util";
 
 @Component({

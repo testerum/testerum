@@ -1,5 +1,5 @@
 import {ComponentRef, EventEmitter, Injectable} from "@angular/core";
-import {StepDef} from "../../../model/step-def.model";
+import {StepDef} from "../../../model/step/step-def.model";
 import {JsonTreeNodeEventModel} from "../json-tree/event/selected-json-tree-node-event.model";
 import {StepTreeNodeModel} from "../../../functionalities/steps/steps-tree/model/step-tree-node.model";
 import {JsonTreeModel} from "../json-tree/model/json-tree.model";

@@ -1,6 +1,6 @@
 import {ComponentFactoryResolver, Injectable} from "@angular/core";
 import {StepModalComponent} from "./step-modal.component";
-import {ComposedStepDef} from "../../../../model/composed-step-def.model";
+import {ComposedStepDef} from "../../../../model/step/composed-step-def.model";
 import {Observable, Subject} from "rxjs";
 import {AppComponent} from "../../../../app.component";
 import {StepContext} from "../../../../model/step/context/step-context.model";

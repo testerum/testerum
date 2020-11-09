@@ -1,24 +1,23 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {StepTextComponent} from "../../../step-text/step-text.component";
-import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
+import {UndefinedStepDef} from "../../../../../model/step/undefined-step-def.model";
 import {StepModalService} from "../../step-modal/step-modal.service";
-import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
+import {ComposedStepDef} from "../../../../../model/step/composed-step-def.model";
 import {ArrayUtil} from "../../../../../utils/array.util";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {ResourceMapEnum} from "../../../../../functionalities/resources/editors/resource-map.enum";
 import {StepCallTreeComponentService} from "../../step-call-tree.component-service";
-import {StepCall} from "../../../../../model/step-call.model";
+import {StepCall} from "../../../../../model/step/step-call.model";
 import {JsonTreeModel} from "../../../json-tree/model/json-tree.model";
 import {ModelComponentMapping} from "../../../../../model/infrastructure/model-component-mapping.model";
-import {BasicStepDef} from "../../../../../model/basic-step-def.model";
+import {BasicStepDef} from "../../../../../model/step/basic-step-def.model";
 import {SubStepsContainerModel} from "../../model/sub-steps-container.model";
 import {StepCallTreeUtil} from "../../util/step-call-tree.util";
 import {JsonTreeContainer} from "../../../json-tree/model/json-tree-container.model";
 import {ContextService} from "../../../../../service/context.service";
 import {StepContext} from "../../../../../model/step/context/step-context.model";
 import {PathUtil} from "../../../../../utils/path.util";
-import {Subscription} from "rxjs";
 
 @Component({
     selector: 'step-call-container',

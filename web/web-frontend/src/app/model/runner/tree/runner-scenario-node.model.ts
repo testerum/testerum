@@ -1,6 +1,4 @@
-import { RunnerNode } from "./runner-node.model";
-import { StepCall } from "../../step-call.model";
-import {Scenario} from "../../test/scenario/scenario.model";
+import {RunnerNode} from "./runner-node.model";
 import {RunnerStepNode} from "./runner-step-node.model";
 import {Serializable} from "../../infrastructure/serializable.model";
 import {Path} from "../../infrastructure/path/path.model";
