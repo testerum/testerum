@@ -2,19 +2,25 @@ package com.testerum.common.expression_evaluator.helpers.impl
 
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
 import com.testerum.common.expression_evaluator.helpers.impl.date.TesterumDate
-import com.testerum.common.expression_evaluator.helpers.util.JsFunction
-import com.testerum.common.expression_evaluator.helpers.util.ScriptingArgs
+import com.testerum.common.nashorn.JsFunction
+import com.testerum.common.nashorn.ScriptingArgs
 
 object DateScriptingHelper : ScriptingHelper {
 
-    private val currentDate = object : JsFunction(functionName = "currentDate") {
-        override fun call(thiz: Any?, args: ScriptingArgs): Any? {
+    private object CurrentDateJsFunction: JsFunction() {
+        override val name: String
+            get() = "currentDate"
+
+        override fun call(receiver: Any?, args: ScriptingArgs): Any? {
             return TesterumDate()
         }
     }
 
-    private val date = object : JsFunction(functionName = "date") {
-        override fun call(thiz: Any?, args: ScriptingArgs): Any? {
+    private object DateJsFunction: JsFunction() {
+        override val name: String
+            get() = "date"
+
+        override fun call(receiver: Any?, args: ScriptingArgs): Any? {
             when (args.size) {
                 3 -> {
                     val year: Int = args[0]
@@ -50,8 +56,8 @@ object DateScriptingHelper : ScriptingHelper {
     }
 
     override val globalVariables: Map<String, Any?> = mapOf(
-            currentDate.functionName to currentDate,
-            date.functionName        to date
+        CurrentDateJsFunction.name to CurrentDateJsFunction,
+        DateJsFunction.name to DateJsFunction
     )
 
 }

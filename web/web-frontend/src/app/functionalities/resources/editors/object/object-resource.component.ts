@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ResourceComponent} from "../resource-component.interface";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
 import {NgForm} from "@angular/forms";
@@ -24,9 +24,7 @@ import {MapObjectTreeNodeComponent} from "./nodes/map-node/map-object-tree-node.
 import {MapObjectTreeModel} from "./model/map-object-tree.model";
 import {MapItemObjectTreeNodeComponent} from "./nodes/map-node/item/map-item-object-tree-node.component";
 import {MapItemObjectTreeModel} from "./nodes/map-node/item/map-item-object-tree.model";
-import {InstantTypeMeta} from "../../../../model/text/parts/param-meta/instant-type-meta.model";
-import {LocalDateTimeTypeMeta} from "../../../../model/text/parts/param-meta/local-date-time-type-meta.model";
-import {LocalDateTypeMeta} from "../../../../model/text/parts/param-meta/local-date-type-meta.model";
+import {ResourceContextActions} from "../infrastructure/model/resource-context-actions.model";
 
 @Component({
     selector: 'object-resource',

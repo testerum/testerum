@@ -17,6 +17,10 @@ $max-height: 250px;
     }
 }
 
+markdown-editor {
+    line-height: 15px;
+}
+
 markdown-editor .editor-toolbar:before {
     margin:0
 }

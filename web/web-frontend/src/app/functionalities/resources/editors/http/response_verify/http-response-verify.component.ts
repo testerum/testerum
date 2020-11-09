@@ -13,6 +13,7 @@ import {HttpBodyVerifyMatchingType} from "./model/enums/http-body-verify-matchin
 import * as Prism from 'prismjs';
 import 'prismjs/components/prism-json';
 import {HttpBodyVerifyType} from "./model/enums/http-body-verify-type.enum";
+import {ResourceContextActions} from "../../infrastructure/model/resource-context-actions.model";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -37,8 +38,8 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
         save() {}
     };
 
-    @ViewChild(NgForm, { static: false }) form: NgForm;
-    @ViewChild(HttpResponseVerifyBodyComponent, { static: false }) httpResponseVerifyBodyComponent: HttpResponseVerifyBodyComponent;
+    @ViewChild(NgForm) form: NgForm;
+    @ViewChild(HttpResponseVerifyBodyComponent) httpResponseVerifyBodyComponent: HttpResponseVerifyBodyComponent;
 
     HttpBodyVerifyMatchingType = HttpBodyVerifyMatchingType;
 
@@ -63,6 +64,7 @@ export class HttpResponseVerifyComponent extends ResourceComponent<HttpResponseV
         }
     }
 
+    // @ts-ignore
     get editMode(): boolean {
         return this._editMode;
     }

@@ -12,7 +12,7 @@ import http.response.verify.model.HttpBodyVerifyMatchingType
 import http.response.verify.model.HttpResponseVerify
 import org.apache.commons.lang3.StringUtils
 import org.apache.http.impl.EnglishReasonPhraseCatalog
-import java.util.Locale
+import java.util.*
 
 fun HttpRequest.prettyPrint() = buildString {
     append("\t$method $url\n")
@@ -89,6 +89,8 @@ fun ValidHttpResponse.prettyPrint() = buildString {
 
     append("\n")
     append("\n")
+
+    append("Response duration in millis: $durationInMillis")
 }
 
 fun HttpResponseVerify.prettyPrint() = buildString {

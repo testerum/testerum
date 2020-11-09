@@ -3,7 +3,6 @@ import {NgForm} from "@angular/forms";
 import {BasicResource} from "../../../../model/resource/basic/basic-resource.model";
 import {ResourceComponent} from "../resource-component.interface";
 import {ParamStepPatternPart} from "../../../../model/text/parts/param-step-pattern-part.model";
-import {NumberTypeMeta} from "../../../../model/text/parts/param-meta/number-type.meta";
 import {BooleanTypeMeta} from "../../../../model/text/parts/param-meta/boolean-type.meta";
 import {EnumTypeMeta} from "../../../../model/text/parts/param-meta/enum-type.meta";
 import {DateTypeMeta} from "../../../../model/text/parts/param-meta/date-type-meta.model";
@@ -11,6 +10,7 @@ import {InstantTypeMeta} from "../../../../model/text/parts/param-meta/instant-t
 import {LocalDateTimeTypeMeta} from "../../../../model/text/parts/param-meta/local-date-time-type-meta.model";
 import {LocalDateTypeMeta} from "../../../../model/text/parts/param-meta/local-date-type-meta.model";
 import {ZonedDateTimeTypeMeta} from "../../../../model/text/parts/param-meta/zoned-date-time-type-meta.model";
+import {ResourceContextActions} from "../infrastructure/model/resource-context-actions.model";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -35,7 +35,7 @@ export class BasicResourceComponent extends ResourceComponent<BasicResource> imp
         }
     };
 
-    @ViewChild(NgForm, { static: false }) form: NgForm;
+    @ViewChild(NgForm) form: NgForm;
 
     editNameMode: boolean = false;
 

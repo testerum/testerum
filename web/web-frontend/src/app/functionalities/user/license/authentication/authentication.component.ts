@@ -3,7 +3,6 @@ import {
     Component,
     EventEmitter,
     OnDestroy,
-    OnInit,
     Output,
     ViewChild,
     ViewEncapsulation
@@ -15,7 +14,7 @@ import {ContextService} from "../../../../service/context.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ValidationErrorResponse} from "../../../../model/exception/validation-error-response.model";
 import {ErrorCode} from "../../../../model/exception/enums/error-code.enum";
-import {FileUpload} from "primeng/primeng";
+import {FileUpload} from "primeng/fileupload";
 
 @Component({
     selector: 'authentication',

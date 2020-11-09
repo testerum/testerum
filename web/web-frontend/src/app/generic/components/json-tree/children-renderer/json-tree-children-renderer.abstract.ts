@@ -1,9 +1,10 @@
-import {Input} from "@angular/core";
+import {Directive, Input} from "@angular/core";
 import {ModelComponentMapping} from "../../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeContainer} from "../model/json-tree-container.model";
 import {JsonTreeNodeState} from "../model/json-tree-node-state.model";
 import {JsonVerifyTreeService} from "../../json-verify/json-verify-tree/json-verify-tree.service";
 
+@Directive()
 export abstract class JsonTreeChildrenRenderer {
     @Input() model:JsonTreeContainer;
     @Input() modelComponentMapping: ModelComponentMapping;

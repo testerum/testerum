@@ -1,5 +1,6 @@
 import {Serializable} from "../../../../model/infrastructure/serializable.model";
 import {SettingDefinition} from './setting-definition.model';
+import {JsonUtil} from "../../../../utils/json.util";
 
 export class Setting implements Serializable<Setting> {
 
@@ -16,7 +17,15 @@ export class Setting implements Serializable<Setting> {
     }
 
     serialize(): string {
-        throw Error("method not implemented");
+        return "" +
+            '{' +
+            '"definition":' + JsonUtil.serializeSerializable(this.definition) + ',' +
+            '"unresolvedValue":' + JsonUtil.stringify(this.unresolvedValue) + ',' +
+            '"resolvedValue":' + JsonUtil.stringify(this.resolvedValue) +
+            '}'
     }
 
+    clone(): Setting {
+        return new Setting().deserialize(JSON.parse(this.serialize()));
+    }
 }

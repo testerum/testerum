@@ -6,13 +6,14 @@ import {AppComponent} from './app.component';
 import {StatsComponent} from './stats/stats.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule} from "@angular/forms";
-import { LineStatsComponent } from './stats/line-stats/line-stats.component';
+import {LineStatsComponent} from './stats/line-stats/line-stats.component';
 import {ChartModule} from "primeng/chart";
 import {ModalModule} from "ngx-bootstrap";
-import {CalendarModule, CheckboxModule, ToggleButtonModule, TooltipModule, TreeTableModule} from "primeng/primeng";
 import {StatsService} from "./service/stats.service";
-import { TagUptimeComponent } from './stats/tag-uptime/tag-uptime.component';
+import {TagUptimeComponent} from './stats/tag-uptime/tag-uptime.component';
 import {TableModule} from "primeng/table";
+import {CalendarModule} from "primeng/calendar";
+import {CheckboxModule, ToggleButtonModule, TooltipModule, TreeTableModule} from "primeng/primeng";
 
 @NgModule({
     imports: [

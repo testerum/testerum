@@ -29,8 +29,10 @@ import selenium_steps_support.service.webdriver_manager.WebDriverManager.Compani
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_AFTER_STEP_DELAY_MILLIS
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_MAXIMIZE_WINDOW_BEFORE_TEST
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_WAIT_TIMEOUT_MILLIS
+import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT
 import selenium_steps_support.utils.SeleniumStepsDirs
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
@@ -82,6 +84,84 @@ import java.nio.file.Path as JavaPath
             defaultValue = "false",
             description = """Takes a screenshot after each Selenium Test. Possible values: "true", "false"""",
             category = SETTINGS_CATEGORY
+    ),
+    DeclareSetting(
+            key = SETTING_KEY_MAXIMIZE_WINDOW_BEFORE_TEST,
+            label = "Maximizes window before the test",
+            type = SettingType.BOOLEAN,
+            defaultValue = "true",
+            description = """Automatically maximizes the browser window before executing the test. Possible values: "true", "false"""",
+            category = SETTINGS_CATEGORY
+    ),
+    DeclareSetting(
+            key = SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT,
+            label = "Advanced WebDriver customization (capabilities, etc.)",
+            type = SettingType.JAVASCRIPT,
+            defaultValue = "",
+            description = """
+                Enables advanced customization of the ``WebDriver`` instance, like for example setting ``DesiredCapabilities``.
+
+                This can be done by calling methods on the ``capabilities`` object, which is available in the context of this script.
+
+                The type of this object depends on the selected browser, as follows:
+
+                | Browser                     | Type (link to documentation) |
+                |-----------------------------|------------------------------|
+                | Google Chrome               | [ChromeOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/chrome/ChromeOptions.html) |
+                | Firefox                     | [FirefoxOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/firefox/FirefoxOptions.html) |
+                | Opera                       | [OperaOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/opera/OperaOptions.html) |
+                | Microsoft Edge              | [EdgeOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/edge/EdgeOptions.html) |
+                | Microsoft Internet Explorer | [InternetExplorerOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/ie/InternetExplorerOptions.html) |
+                | Safari                      | [SafariOptions](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/safari/SafariOptions.html) |
+                | remote WebDriver            | [DesiredCapabilities](https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/remote/DesiredCapabilities.html) |
+
+                Example script (generic):
+                ```javascript
+                capabilities.setCapability("os_version", "11");
+                capabilities.setCapability("device", "iPhone 8 Plus");
+                capabilities.setCapability("real_mobile", "true");
+                capabilities.setCapability("browserstack.local", "false");
+                ```
+
+                Another example (for Chrome):
+                ```javascript
+                capabilities.addArguments("start-maximized");
+                
+                var Proxy = Java.type("org.openqa.selenium.Proxy")
+                var proxy = new Proxy();
+                proxy.setHttpProxy("myhttpproxy:3337");
+                capabilities.setCapability("proxy", proxy);
+
+                ```
+                Another example (for [BrowserStack](https://www.browserstack.com/)):
+                ```javascript
+                var HashMap = Java.type('java.util.HashMap');
+                var ArrayList = Java.type('java.util.ArrayList');
+                
+                capabilities.setCapability('os','OS X');
+                capabilities.setCapability('os_version', 'Catalina');
+                capabilities.setCapability('browser', 'Chrome');
+                capabilities.setCapability('browser_version', '86');
+                capabilities.setCapability('name', 'Chrome test');
+                
+                var chromeOptions = new HashMap();
+                var chromeArgs = new ArrayList();
+                chromeArgs.add('window-size=400,300');
+                chromeOptions.put('args', chromeArgs);
+                capabilities.setCapability('goog:chromeOptions', chromeOptions);
+                ```
+
+                More information for browser-specific options:
+                * [for Google Chrome](https://chromedriver.chromium.org/capabilities)
+                * [for Firefox](https://developer.mozilla.org/en-US/docs/Web/WebDriver/Capabilities/firefoxOptions)
+                * [for Opera](https://github.com/operasoftware/operachromiumdriver/blob/master/docs/desktop.md)
+                * [for Microsoft Edge (EdgeHTML engine)](https://docs.microsoft.com/en-us/microsoft-edge/webdriver)
+                * [for Microsoft Edge (Chromium engine)](https://docs.microsoft.com/en-us/microsoft-edge/webdriver-chromium?tabs=javascript)
+                * [for Microsoft Internet Explorer](https://www.selenium.dev/documentation/en/driver_idiosyncrasies/driver_specific_capabilities/#internet-explorer)
+                * [for Safari](https://developer.apple.com/documentation/webkit/about_webdriver_for_safari)
+            """,
+            category = SETTINGS_CATEGORY,
+            uiHints = ["collapsible", "collapsedWhenEmpty"]
     )
 ])
 class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
@@ -92,6 +172,13 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
 
         internal const val SETTINGS_CATEGORY = "Selenium"
 
+        internal const val SETTING_KEY_DRIVER = "testerum.selenium.driver"
+        internal const val SETTING_KEY_DRIVER_BROWSER_TYPE = "testerum.selenium.driver.browserType"
+        internal const val SETTING_KEY_DRIVER_BROWSER_EXECUTABLE_PATH = "testerum.selenium.driver.browserExecutablePath"
+        internal const val SETTING_KEY_DRIVER_HEADLESS = "testerum.selenium.driver.headless"
+        internal const val SETTING_KEY_DRIVER_DRIVER_VERSION = "testerum.selenium.driver.driverVersion"
+        internal const val SETTING_KEY_DRIVER_REMOTE_URL = "testerum.selenium.driver.remoteUrl"
+
         internal const val SETTING_KEY_WAIT_TIMEOUT_MILLIS = "testerum.selenium.waitTimeoutMillis"
 
         internal const val SETTING_KEY_AFTER_STEP_DELAY_MILLIS = "testerum.selenium.afterStepDelayMillis"
@@ -100,13 +187,10 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
         internal const val SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST_DEFAULT = "onFailure"
 
         internal const val SETTING_KEY_TAKE_SCREENSHOT_AFTER_EACH_STEP = "testerum.selenium.takeScreenshotAfterEachStep"
+        internal const val SETTING_KEY_MAXIMIZE_WINDOW_BEFORE_TEST = "testerum.selenium.maximizeWindowBeforeTest"
 
-        internal const val SETTING_KEY_DRIVER = "testerum.selenium.driver"
-        internal const val SETTING_KEY_DRIVER_BROWSER_TYPE = "testerum.selenium.driver.browserType"
-        internal const val SETTING_KEY_DRIVER_BROWSER_EXECUTABLE_PATH = "testerum.selenium.driver.browserExecutablePath"
-        internal const val SETTING_KEY_DRIVER_HEADLESS = "testerum.selenium.driver.headless"
-        internal const val SETTING_KEY_DRIVER_DRIVER_VERSION = "testerum.selenium.driver.driverVersion"
-        internal const val SETTING_KEY_DRIVER_REMOTE_URL = "testerum.selenium.driver.remoteUrl"
+        internal const val SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT = "testerum.selenium.webDriverCustomizationScript"
+
 
         private val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper().apply {
             registerModule(AfterburnerModule())
@@ -136,15 +220,20 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
         get() = synchronized(lock) {
             if (_webDriver == null) {
                 val seleniumDriverSetting = getSeleniumDriverSetting()
+                val webDriverCustomizationScript = runnerSettingsManager.getSetting(SETTING_KEY_WEB_DRIVER_CUSTOMIZATION_SCRIPT)?.resolvedValue
+
                 val webDriverFactory = WebDriverFactories.getWebDriverFactory(seleniumDriverSetting.browserType)
                 val seleniumDriversByBrowser = seleniumDriversFileService.getDriversInfo(SeleniumStepsDirs.getSeleniumDriversDir())
 
-                val webDriver = webDriverFactory.createWebDriver(seleniumDriverSetting, seleniumDriversByBrowser)
+                val webDriver = webDriverFactory.createWebDriver(seleniumDriverSetting, webDriverCustomizationScript, seleniumDriversByBrowser)
 
                 _webDriver = webDriver.apply {
-                    // not maximizing on Mac because it makes WebDriver throw an exception for Chrome on Mac: "failed to change window state to normal, current state is maximized"
-                    if (!OsUtils.IS_MAC) {
-                        manage().window().maximize() // todo: make this configurable
+                    if (runnerSettingsManager.getRequiredSetting(SETTING_KEY_MAXIMIZE_WINDOW_BEFORE_TEST).resolvedValue.toBoolean()) {
+                        // not maximizing on Mac because it makes WebDriver throw an exception for Chrome on Mac:
+                        // "failed to change window state to normal, current state is maximized"
+                        if (!OsUtils.IS_MAC) {
+                            manage().window().maximize() // todo: make this configurable
+                        }
                     }
                 }
             }

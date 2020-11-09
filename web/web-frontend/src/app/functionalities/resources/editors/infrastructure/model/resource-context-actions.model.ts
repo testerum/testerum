@@ -1,5 +1,5 @@
 
-interface ResourceContextActions {
+export interface ResourceContextActions {
 
     save();
     cancel();

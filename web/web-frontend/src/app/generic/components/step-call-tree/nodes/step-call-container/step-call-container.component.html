@@ -38,6 +38,10 @@
             </div>
         </div>
 
+        <info-icon *ngIf="model.stepCall.stepDef.description && isEditMode()"
+                   [message]="model.stepCall.stepDef.description"
+                   class="step-description-info-icon"></info-icon>
+
         <div class="step-button-panel btn-group">
 
             <div *ngIf="!isBasicStep()"
@@ -83,11 +87,6 @@
                  (click)="removeStep(); $event.stopPropagation()">
                 <i class="fa_my-delete" aria-hidden="true"></i>
             </div>
-        </div>
-        <div class="step-button-panel">
-            <info-icon *ngIf="model.stepCall.stepDef.description"
-                       [message]="model.stepCall.stepDef.description"
-                       class="step-description-info-icon"></info-icon>
         </div>
     </div>
 

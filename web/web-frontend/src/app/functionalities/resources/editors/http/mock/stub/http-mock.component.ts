@@ -8,6 +8,7 @@ import {HttpMock} from "./model/http-mock.model";
 import {ResourceComponent} from "../../../resource-component.interface";
 import {HttpMockResponseType} from "./model/enums/http-mock-response-type.enum";
 import {ParamStepPatternPart} from "../../../../../../model/text/parts/param-step-pattern-part.model";
+import {ResourceContextActions} from "../../../infrastructure/model/resource-context-actions.model";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush, //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
@@ -32,7 +33,7 @@ export class HttpMockComponent extends ResourceComponent<HttpMock> implements On
         save() {}
     };
 
-    @ViewChild(NgForm, { static: false }) form: NgForm;
+    @ViewChild(NgForm) form: NgForm;
 
     HttpMockResponseType = HttpMockResponseType;
 
@@ -57,6 +58,7 @@ export class HttpMockComponent extends ResourceComponent<HttpMock> implements On
         }
     }
 
+    // @ts-ignore
     get editMode(): boolean {
         return this._editMode;
     }

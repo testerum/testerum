@@ -9,16 +9,15 @@ import {MarkdownEditorComponent} from "../../../generic/components/markdown-edit
 import {FormUtil} from "../../../utils/form.util";
 import {NgForm} from "@angular/forms";
 import {UrlService} from "../../../service/url.service";
-import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../utils/array.util";
 import {TagsService} from "../../../service/tags.service";
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
-import {ExceptionDetail} from "../../../model/test/event/fields/exception-detail.model";
 import {ContextService} from "../../../service/context.service";
 import {ProjectService} from "../../../service/project.service";
 import {Project} from "../../../model/home/project.model";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
     moduleId: module.id,
@@ -41,7 +40,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     isEditMode: boolean = false;
     isCreateAction: boolean = false;
 
-    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;

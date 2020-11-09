@@ -1,18 +1,11 @@
 import {ResourcesTreeNode} from "./resources-tree-node.model";
-import {TreeContainerModel} from "../../../../model/infrastructure/tree-container.model";
-import {PathUtil} from "../../../../utils/path.util";
-import {JsonTreeContainerAbstract} from "../../../../generic/components/json-tree/model/json-tree-container.abstract";
 import {JsonTreeContainer} from "../../../../generic/components/json-tree/model/json-tree-container.model";
-import {JsonTreeNode} from "../../../../generic/components/json-tree/model/json-tree-node.model";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {ResourceType} from "./type/resource-type.model";
-import {ObjectUtils} from "primeng/components/utils/objectutils";
 import {JsonTreeNodeState} from "../../../../generic/components/json-tree/model/json-tree-node-state.model";
-import {JsonTreePathContainer} from "../../../../generic/components/json-tree/model/path/json-tree-path-container.model";
-import {JsonTreePathNode} from "../../../../generic/components/json-tree/model/path/json-tree-path-node.model";
 import {JsonTreeContainerOptions} from "../../../../generic/components/json-tree/model/behavior/JsonTreeContainerOptions";
 
-export class ResourcesTreeContainer extends ResourcesTreeNode implements JsonTreeContainer{
+export class ResourcesTreeContainer extends ResourcesTreeNode implements JsonTreeContainer {
 
     name: string;
     readonly path: Path;
@@ -36,16 +29,16 @@ export class ResourcesTreeContainer extends ResourcesTreeNode implements JsonTre
 
     sort() {
         this.children.sort((left: ResourcesTreeNode, right: ResourcesTreeNode) => {
-            if(left.isContainer() && !right.isContainer()) {
+            if (left.isContainer() && !right.isContainer()) {
                 return -1;
             }
 
-            if(! left.isContainer() && right.isContainer()) {
+            if (!left.isContainer() && right.isContainer()) {
                 return 1;
             }
 
-            if(left.name.toUpperCase() < right.name.toUpperCase()) return -1;
-            if(left.name.toUpperCase() > right.name.toUpperCase()) return 1;
+            if (left.name.toUpperCase() < right.name.toUpperCase()) return -1;
+            if (left.name.toUpperCase() > right.name.toUpperCase()) return 1;
 
             return 0;
         });
@@ -55,15 +48,15 @@ export class ResourcesTreeContainer extends ResourcesTreeNode implements JsonTre
         return true;
     }
 
-   getChildContainerByName(directory: string): ResourcesTreeContainer {
-      for (let child of this.children) {
-         if (child.isContainer() && child.name.toLowerCase() === directory.toLowerCase()) {
-            return child as ResourcesTreeContainer;
-         }
-      }
+    getChildContainerByName(directory: string): ResourcesTreeContainer {
+        for (let child of this.children) {
+            if (child.isContainer() && child.name.toLowerCase() === directory.toLowerCase()) {
+                return child as ResourcesTreeContainer;
+            }
+        }
 
-      return null;
-   }
+        return null;
+    }
 
     getNodeState(): JsonTreeNodeState {
         return this.jsonTreeNodeState;

@@ -19,7 +19,7 @@ class WebDriverShutdownHook {
 
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.BeforeAllTests
+    @BeforeAllTests
     fun registerShutdownHook() {
         // register a JVM shutdown hook, to prevent drivers & browsers from remaining open,
         // when the runner is stopped with e.g. a SIGTERM
@@ -29,7 +29,7 @@ class WebDriverShutdownHook {
     }
 
 
-    @com.testerum_api.testerum_steps_api.annotations.hooks.AfterEachTest(order = Int.MAX_VALUE /*to make this hook runs last*/)
+    @AfterEachTest(order = Int.MAX_VALUE /*to make this hook runs last*/)
     fun destroyWebDriver() {
         takeScreenshotIfFailed()
         closeBrowserIfNeeded()

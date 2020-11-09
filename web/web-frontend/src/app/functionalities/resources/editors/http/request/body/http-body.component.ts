@@ -20,7 +20,7 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
 
     @Input() body: HttpRequestBody;
 
-    @ViewChild("monacoEditorComponent", { static: false }) monacoEditorComponent: MonacoEditorComponent;
+    @ViewChild("monacoEditorComponent") monacoEditorComponent: MonacoEditorComponent;
 
     HttpBodyType = HttpRequestBodyType;
     HttpContentType = HttpContentType;

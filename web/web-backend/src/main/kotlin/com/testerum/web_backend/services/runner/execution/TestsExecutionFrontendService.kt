@@ -263,7 +263,16 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         val argsFile: JavaPath = Files.createTempFile("testerum-runner-", ".cmdline-options").toAbsolutePath().normalize()
         argsFile.toFile().deleteOnExit()
 
-        Files.write(argsFile, args)
+        val escapedArgs = args
+            .joinToString("\n") {
+                "\"" +
+                it.replace("\\", "\\\\")
+                  .replace("\"", "\\\"")
+                  .replace("\n", "\\n") +
+                "\""
+            }
+
+        Files.write(argsFile, escapedArgs.toByteArray(Charsets.UTF_8))
 
         return argsFile
     }

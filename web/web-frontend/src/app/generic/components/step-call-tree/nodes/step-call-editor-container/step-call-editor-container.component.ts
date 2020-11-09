@@ -11,17 +11,16 @@ import {
 import {StepCallEditorContainerModel} from "../../model/step-call-editor-container.model";
 import {StepCallSuggestion} from "./model/step-call-suggestion.model";
 import {StepsService} from "../../../../../service/steps.service";
-import {StepDef} from "../../../../../model/step/step-def.model";
-import {BasicStepDef} from "../../../../../model/step/basic-step-def.model";
-import {ComposedStepDef} from "../../../../../model/step/composed-step-def.model";
+import {StepDef} from "../../../../../model/step-def.model";
+import {BasicStepDef} from "../../../../../model/basic-step-def.model";
+import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
 import {StepPhaseEnum, StepPhaseUtil} from "../../../../../model/enums/step-phase.enum";
-import {StepCall} from "../../../../../model/step/step-call.model";
+import {StepCall} from "../../../../../model/step-call.model";
 import {StepTextUtil} from "./util/StepTextUtil";
 import {ParamStepPatternPart} from "../../../../../model/text/parts/param-step-pattern-part.model";
 import {Arg} from "../../../../../model/arg/arg.model";
 import {StepPattern} from "../../../../../model/text/step-pattern.model";
-import {AutoComplete} from "primeng/primeng";
-import {UndefinedStepDef} from "../../../../../model/step/undefined-step-def.model";
+import {UndefinedStepDef} from "../../../../../model/undefined-step-def.model";
 import {MessageService} from "../../../../../service/message.service";
 import {MessageKey} from "../../../../../model/messages/message.enum";
 import {Warning} from "../../../../../model/warning/Warning";
@@ -34,6 +33,7 @@ import {StepCallContainerModel} from "../../model/step-call-container.model";
 import {PathUtil} from "../../../../../utils/path.util";
 import {StepSearch} from "../../../../../utils/step-search/step-search.class";
 import {ParamNameValidatorDirective} from "../../../../validators/param-name-validator.directive";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
     selector: 'step-call-editor-container',

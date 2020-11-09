@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core';
-import {OverlayPanel} from "primeng/primeng";
 import {FlowUtil} from "../../../utils/flow.util";
+import {OverlayPanel} from "primeng/overlaypanel";
 
 @Component({
     selector: 'info-icon',
@@ -18,24 +18,32 @@ export class InfoIconComponent {
     @Input() height: string;
     @Input() iconFontSize: string = '1.3em';
 
-    @ViewChild(OverlayPanel, { static: true }) overlayPanel: OverlayPanel ;
+    @ViewChild(OverlayPanel, { static: true }) overlayPanel: OverlayPanel;
     @ViewChild("actualTarget", { static: true }) actualTargetElement: ElementRef;
 
-    private shouldShow: boolean;
+    private isVisible: boolean = false;
+    private shouldHide: boolean = false;
     constructor(private cd: ChangeDetectorRef) {}
 
     show(event: any) {
-        this.shouldShow = true;
-        this.overlayPanel.show(event, this.actualTargetElement.nativeElement);
+        this.shouldHide = false;
+
+        if (!this.isVisible) {
+            this.isVisible = true;
+            this.overlayPanel.show(event, this.actualTargetElement.nativeElement);
+        }
+
     }
 
     waitAndHide(event: any) {
-        this.shouldShow = false;
+        this.shouldHide = true;
 
         (async () => {
             await FlowUtil.delay(250);
-            if (!this.shouldShow) {
+            if (this.isVisible && this.shouldHide) {
                 this.overlayPanel.hide();
+                this.isVisible = false;
+
                 this.refresh();
             }
         })();

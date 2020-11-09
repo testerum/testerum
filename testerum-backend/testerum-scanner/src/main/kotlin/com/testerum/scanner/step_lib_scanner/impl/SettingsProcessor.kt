@@ -4,7 +4,7 @@ import com.testerum_api.testerum_steps_api.annotations.settings.DeclareSetting
 import com.testerum_api.testerum_steps_api.annotations.settings.DeclareSettings
 import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingDefinition
 import io.github.classgraph.ClassInfo
-import java.util.Collections
+import java.util.*
 
 val SETTINGS_CLASS_ANNOTATIONS = setOf<String>(
         DeclareSettings::class.java.name,
@@ -37,4 +37,4 @@ fun ClassInfo.getSettingDefinitions(): List<SettingDefinition> {
     return result
 }
 
-private fun DeclareSetting.toSetting() = SettingDefinition(key, label, type, defaultValue, enumValues.toList(), description, category)
+private fun DeclareSetting.toSetting() = SettingDefinition(key, label, type, defaultValue, enumValues.toList(), description, category, true, uiHints.toList())

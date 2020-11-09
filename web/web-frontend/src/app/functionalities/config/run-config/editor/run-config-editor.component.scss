@@ -63,6 +63,10 @@
                     overflow: auto;
                     padding: 0.571em 1em;
 
+                    .vertical-space {
+                        margin-top: 10px;
+                    }
+
                     .setting {
                         .input-description-container {
                             display: flex;

@@ -7,7 +7,8 @@ import {
     OnChanges,
     OnDestroy,
     OnInit,
-    Output, Renderer2,
+    Output,
+    Renderer2,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
@@ -16,7 +17,6 @@ import {editor} from 'monaco-editor';
 
 import {MonacoEditorLoaderService} from '../../services/monaco-editor-loader.service';
 import IDimension = editor.IDimension;
-import ICursorPositionChangedEvent = editor.ICursorPositionChangedEvent;
 
 declare const monaco: any;
 
@@ -70,6 +70,8 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
     container: HTMLDivElement;
     editor: editor.IStandaloneCodeEditor;
 
+    latestChangedValue: string;
+
     constructor(private monacoLoader: MonacoEditorLoaderService,
                 private renderer: Renderer2) { }
 
@@ -96,6 +98,13 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
             }
             if (changes.options.previousValue.readOnly !== changes.options.currentValue.readOnly) {
                 this.editor.updateOptions({ readOnly: changes.options.currentValue.readOnly });
+            }
+        }
+        if (this.editor && changes['value'] != null && this.value != this.latestChangedValue) {
+            if (this.value) {
+                this.editor.setValue(this.value)
+            } else {
+                this.editor.setValue("")
             }
         }
     }
@@ -143,7 +152,8 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
         monaco.editor.setTheme('myTheme');
 
         this.editor.onDidChangeModelContent(() => {
-            this.valueChange.emit(this.editor.getValue());
+            this.latestChangedValue = this.editor.getValue()
+            this.valueChange.emit(this.latestChangedValue);
             this.refresh();
         });
 
@@ -245,3 +255,10 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
         return Math.max(defaultHeight, editorHeight);
     }
 }
+
+
+
+
+
+
+

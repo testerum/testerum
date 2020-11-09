@@ -2,6 +2,7 @@ package com.testerum.runner_cmdline
 
 import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.common_jdk.stopwatch.StopWatch
+import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
@@ -12,7 +13,6 @@ import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserH
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserVersionHelpRequestedException
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
-import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner_cmdline.module_di.RunnerModuleBootstrapper
 import com.testerum.runner_cmdline.module_di.TesterumRunnerLoggingConfigurator
 import com.testerum.runner_cmdline.version.RunnerVersionInfoService
@@ -78,7 +78,7 @@ object TesterumRunner {
 
     private fun getCmdlineParams(args: Array<out String>): CmdlineParams {
         return try {
-            System.setProperty("picocli.useSimplifiedAtFiles", "true")
+            System.setProperty("picocli.useSimplifiedAtFiles", "false")
             CmdlineParamsParser.parse(*args)
         } catch (e: CmdlineParamsParserHelpRequestedException) {
             println(e.usageHelp)

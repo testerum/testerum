@@ -6,6 +6,7 @@ import {JsonUtil} from '../../../../../utils/json.util';
 import {JsonVerify} from "../../../../../generic/components/json-verify/model/json-verify.model";
 import * as Prism from 'prismjs';
 import 'prismjs/components/prism-json';
+import {ResourceContextActions} from "../../infrastructure/model/resource-context-actions.model";
 
 @Component({
     moduleId: module.id,
@@ -29,7 +30,7 @@ export class JsonVerifyResourceComponent extends ResourceComponent<JsonVerify> i
         save() {}
     };
 
-    @ViewChild(NgForm, { static: false }) form: NgForm;
+    @ViewChild(NgForm) form: NgForm;
 
     sampleJsonText: string;
 

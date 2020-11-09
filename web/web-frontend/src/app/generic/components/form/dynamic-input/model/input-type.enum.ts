@@ -1,6 +1,7 @@
 
 export class InputTypeEnum {
     public static TEXT: InputTypeEnum = new InputTypeEnum();
+    public static JAVASCRIPT: InputTypeEnum = new InputTypeEnum();
     public static POSITIVE_INTEGER: InputTypeEnum = new InputTypeEnum();
     public static INTEGER: InputTypeEnum = new InputTypeEnum();
     public static POSITIVE_NUMBER: InputTypeEnum = new InputTypeEnum();

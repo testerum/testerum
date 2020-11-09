@@ -36,7 +36,6 @@ import {TagsService} from "./service/tags.service";
 import {MessageService} from "./service/message.service";
 import {ManualModule} from "./functionalities/manual/manual.module";
 import {UnsavedChangesGuard} from "./service/guards/unsaved-changes.guard";
-import {DropdownModule, FileUploadModule, RadioButtonModule, TooltipModule} from "primeng/primeng";
 import {ContextService} from "./service/context.service";
 import {MultiProjectHttpInterceptor} from "./service/interceptors/multi-prject.http-interceptor";
 import {HomeModule} from "./functionalities/home/home.module";
@@ -59,8 +58,12 @@ import {ProjectReloadModalComponent} from "./functionalities/others/project_relo
 import {AuthenticationHttpInterceptor} from "./service/interceptors/authentication.http-interceptor";
 import {ConfigModule} from "./functionalities/config/config.module";
 import {RunConfigService} from "./service/run-config.service";
-import { MenuRunnerComponent } from './menu/runner/menu-runner.component';
+import {MenuRunnerComponent} from './menu/runner/menu-runner.component';
 import {DemoService} from "./service/demo.service";
+import {RadioButtonModule} from "primeng/radiobutton";
+import {FileUploadModule} from "primeng/fileupload";
+import {DropdownModule} from "primeng/dropdown";
+import {TooltipModule} from "primeng/tooltip";
 
 @NgModule({
     imports: [

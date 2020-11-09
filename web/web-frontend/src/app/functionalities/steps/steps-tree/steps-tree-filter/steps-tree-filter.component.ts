@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, ViewChild, ViewEncapsulation} from '@angular/core';
-import {AutoComplete} from "primeng/primeng";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {Path} from "../../../../model/infrastructure/path/path.model";
 import {ActivatedRoute} from "@angular/router";
@@ -7,6 +6,7 @@ import {JsonTreeExpandUtil} from "../../../../generic/components/json-tree/util/
 import {TagsService} from "../../../../service/tags.service";
 import {StepsTreeService} from "../steps-tree.service";
 import {StepsTreeFilter} from "../../../../model/step/filter/steps-tree-filter.model";
+import {AutoComplete} from "primeng/autocomplete";
 
 @Component({
     selector: 'steps-tree-filter',
@@ -17,7 +17,7 @@ import {StepsTreeFilter} from "../../../../model/step/filter/steps-tree-filter.m
 })
 export class StepsTreeFilterComponent {
 
-    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     selectedTags: Array<string> = [];
     tagsToShow:string[] = [];

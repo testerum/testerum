@@ -9,7 +9,6 @@ import {IdUtils} from "../../../utils/id.util";
 import {Subscription} from "rxjs";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {UrlService} from "../../../service/url.service";
-import {AutoComplete, Message} from "primeng/primeng";
 import {TagsService} from "../../../service/tags.service";
 import {ArrayUtil} from "../../../utils/array.util";
 import {StepCallTreeComponent} from "../../../generic/components/step-call-tree/step-call-tree.component";
@@ -20,6 +19,8 @@ import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-de
 import {StepCallWarningUtil} from "../../../generic/components/step-call-tree/util/step-call-warning.util";
 import {ContextService} from "../../../service/context.service";
 import {ScenarioTreeComponent} from "./scenario-tree/scenario-tree.component";
+import {AutoComplete} from "primeng/autocomplete";
+import {Message} from "primeng/api";
 
 @Component({
     moduleId: module.id,
@@ -39,7 +40,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     isEditMode: boolean = false;
     readonly editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;

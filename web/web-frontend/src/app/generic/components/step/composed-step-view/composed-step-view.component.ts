@@ -12,7 +12,6 @@ import {
 import {ComposedStepDef} from "../../../../model/step/composed-step-def.model";
 import {NgForm} from "@angular/forms";
 import {StepPhaseEnum} from "../../../../model/enums/step-phase.enum";
-import {AutoComplete, Message} from "primeng/primeng";
 import {Arg} from "../../../../model/arg/arg.model";
 import {ArrayUtil} from "../../../../utils/array.util";
 import {StepDef} from "../../../../model/step/step-def.model";
@@ -31,6 +30,8 @@ import {StepCallWarningUtil} from "../../step-call-tree/util/step-call-warning.u
 import {ContextService} from "../../../../service/context.service";
 import {StepContext} from "../../../../model/step/context/step-context.model";
 import {ParamNameValidatorDirective} from "../../../validators/param-name-validator.directive";
+import {AutoComplete} from "primeng/autocomplete";
+import {Message} from "primeng/api";
 
 @Component({
     selector: 'composed-step-view',
@@ -59,7 +60,7 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     warnings: Message[] = [];
     areChildComponentsValid: boolean = true;
 
-    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;

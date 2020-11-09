@@ -18,6 +18,12 @@
             <artifactId>common-kotlin</artifactId>
         </dependency>
 
+        <!-- common-nashorn -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-nashorn</artifactId>
+        </dependency>
+
 
         <!--==================== testerum dependencies ====================-->
 
@@ -61,6 +67,17 @@
             <artifactId>jackson-module-kotlin</artifactId>
         </dependency>
 
+        <!-- JDom - XML Parser -->
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom2</artifactId>
+        </dependency>
+        <!-- Jaxen - JDom dependency required for xpath -->
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+        </dependency>
+
         <!-- Kotlin -->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -92,10 +109,17 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- java-hamcrest -->
+        <!-- assertj-core -->
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>java-hamcrest</artifactId>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- common-expression-evaluator -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>common-expression-evaluator</artifactId>
             <scope>test</scope>
         </dependency>
 
