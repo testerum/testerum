@@ -156,8 +156,14 @@
                             <i class="fa_my-plus" aria-hidden="true"></i>
                         </div>
 
+                        <div *ngIf="isEditMode && !testModel.properties.isManual && this.hooksCallTreeComponent.jsonTreeModel.children.length == 0"
+                            title="Add Hook" class="btn btn-default btn-xs btn-group"
+                             (click)="addAfterTestHook(); $event.stopPropagation()">
+                            <i class="tree-node-icon nf nf-mdi-hook" style="width: auto"></i>
+                        </div>
+
                         <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
-                             (click)="onPasteStep(); $event.stopPropagation()">
+                             (click)="onPaste(this.stepsCallTreeComponent); $event.stopPropagation()">
                             <i class="fa_my-paste" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -169,12 +175,48 @@
                     </div>
                 </div>
 
-                <step-call-tree [stepCalls]="testModel.stepCalls"
+                <step-call-tree #stepsCallTree
+                                [stepCalls]="testModel.stepCalls"
+                                [containerPath]="testModel.path.getParentPath()"
+                                [isEditMode]="isEditMode"
+                                [editModeEventEmitter]="editModeEventEmitter"
+                                [areManualSteps]="testModel.properties.isManual"></step-call-tree>
+<!-- HOOKS ------------------------------------------------------------------------------------------------------------>
+
+                <div *ngIf="this.hooksCallTreeComponent.jsonTreeModel.children.length != 0 && !testModel.properties.isManual"
+                     class="actions-header hooks">
+
+                    <h4 class="inline"><strong>Hooks</strong></h4>
+
+                    <!-- BUTTONS -->
+                    <div class="step-action-panel inline btn-group">
+
+                        <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
+                             (click)="addAfterTestHook(); $event.stopPropagation()">
+                            <i class="fa_my-plus" aria-hidden="true"></i>
+                        </div>
+
+                        <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
+                             (click)="onPaste(this.hooksCallTreeComponent); $event.stopPropagation()">
+                            <i class="fa_my-paste" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- INFO -->
+                    <div class="step-action-panel inline btn-group">
+                        <info-icon [message]="getAfterTestHooksDescription()"
+                                   class="step-description-info-icon"></info-icon>
+                    </div>
+                </div>
+
+                <step-call-tree #hooksCallTree
+                                [stepCalls]="testModel.afterHooks"
                                 [containerPath]="testModel.path.getParentPath()"
                                 [isEditMode]="isEditMode"
                                 [editModeEventEmitter]="editModeEventEmitter"
                                 [areManualSteps]="testModel.properties.isManual"></step-call-tree>
 
+<!-- BUTTONS ---------------------------------------------------------------------------------------------------------->
                 <div class="panel-footer-sticky-buttons">
                     <div class="button-wrapper">
                         <ng-container *ngIf="!isEditMode">

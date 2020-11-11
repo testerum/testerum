@@ -9,6 +9,7 @@ import {Serializable} from "../infrastructure/serializable.model";
 import {ComposedStepDef} from "../step/composed-step-def.model";
 import {UndefinedStepDef} from "../step/undefined-step-def.model";
 import {Scenario} from "./scenario/scenario.model";
+import {ArrayUtil} from "../../utils/array.util";
 
 export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 
@@ -22,6 +23,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 
     scenarios: Array<Scenario> = [];
     stepCalls: Array<StepCall> = [];
+    afterHooks: Array<StepCall> = [];
 
     warnings: Array<Warning> = [];
     descendantsHaveWarnings: boolean = false;
@@ -54,7 +56,17 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
             }
             this.stepCalls.push(stepCall);
         }
-        this.fixStepDefInstance(this.stepCalls);
+
+        this.afterHooks = [];
+        for (let afterHookJson of (input['afterHooks'] || [])) {
+            let afterHook = new StepCall().deserialize(afterHookJson);
+            if (afterHook.stepDef instanceof UndefinedStepDef) {
+                afterHook.stepDef.path = this.path.getParentPath();
+            }
+            this.afterHooks.push(afterHook);
+        }
+        let stepCallsAndStepHooks = this.stepCalls.concat(this.afterHooks);
+        this.fixStepDefInstance(stepCallsAndStepHooks);
 
         this.warnings = [];
         for (let warning of (input['warnings'] || [])) {
@@ -80,6 +92,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
             '"tags":' + JsonUtil.stringify(this.tags) + ',' +
             '"scenarios":' + JsonUtil.serializeArrayOfSerializable(this.scenarios) + ',' +
             '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) + ',' +
+            '"afterHooks":' + JsonUtil.serializeArrayOfSerializable(this.afterHooks) + ',' +
             '"warnings": []' +
             '}'
     }

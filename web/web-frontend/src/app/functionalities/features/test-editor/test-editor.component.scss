@@ -73,4 +73,17 @@
         display: flex;
         align-items: center;
     }
+
+    .hooks {
+        margin-top: 1.2em;
+    }
+
+    .step-action-panel {
+        .nf-mdi-hook {
+            width: auto;
+            font-weight: bold;
+            font-size: 1.5em;
+            line-height: 0.1em;
+        }
+    }
 }

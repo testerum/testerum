@@ -47,7 +47,8 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
     @ViewChild(ScenarioTreeComponent, { static: true }) scenarioTreeComponent: ScenarioTreeComponent;
 
-    @ViewChild(StepCallTreeComponent, { static: true }) stepCallTreeComponent: StepCallTreeComponent;
+    @ViewChild('stepsCallTree', { static: true }) stepsCallTreeComponent: StepCallTreeComponent;
+    @ViewChild('hooksCallTree', { static: true }) hooksCallTreeComponent: StepCallTreeComponent;
     descriptionMarkdownEditor: MarkdownEditorComponent;
     @ViewChild("descriptionMarkdownEditor", { static: true }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
         if (descriptionMarkdownEditor != null) {
@@ -86,7 +87,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
             }
 
             this.isEditMode = isEditMode;
-            this.stepCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
+            this.stepsCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
             if(this.descriptionMarkdownEditor) {
                 this.descriptionMarkdownEditor.setEditMode(isEditMode);
             }
@@ -110,7 +111,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
             this.initPathForTitle();
         });
 
-        this.warningRecalculationChangesSubscription = this.stepCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
+        this.warningRecalculationChangesSubscription = this.stepsCallTreeComponent.stepCallTreeComponentService.warningRecalculationChangesEventEmitter.subscribe(refreshWarningsEvent => {
             let testModel = this.getModelForWarningRecalculation();
 
             this.testsService.getWarnings(testModel).subscribe((newTestModel:TestModel) => {
@@ -175,7 +176,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     onManualAutomatedTestToggle() {
         this.testModel.properties.isManual = !this.testModel.properties.isManual;
         if(!this.testModel.properties.isManual) {
-            this.stepCallTreeComponent.triggerWarningRecalculation();
+            this.stepsCallTreeComponent.triggerWarningRecalculation();
         }
     }
 
@@ -184,7 +185,7 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
             this.setEditMode(true);
         }
 
-        this.stepCallTreeComponent.stepCallTreeComponentService.addStepCallEditor(this.stepCallTreeComponent.jsonTreeModel);
+        this.stepsCallTreeComponent.stepCallTreeComponentService.addStepCallEditor(this.stepsCallTreeComponent.jsonTreeModel);
     }
 
     setEditMode(isEditMode: boolean) {
@@ -309,10 +310,10 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
         return this.contextService.stepToCut != null || this.contextService.stepToCopy != null;
     }
 
-    onPasteStep() {
-        let stepCallTreeComponentService = this.stepCallTreeComponent.stepCallTreeComponentService;
+    onPaste(stepsOrHooksTreeComponent: StepCallTreeComponent) {
+        let stepCallTreeComponentService = stepsOrHooksTreeComponent.stepCallTreeComponentService;
 
-        let treeModel = this.stepCallTreeComponent.jsonTreeModel;
+        let treeModel = stepsOrHooksTreeComponent.jsonTreeModel;
         if (this.contextService.stepToCopy) {
             let stepToCopyModel = this.contextService.stepToCopy.model;
 
@@ -320,21 +321,21 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
             newStepCall.stepDef = stepToCopyModel.stepCall.stepDef; //do not clone the StepDef, we still want to point to the same def
 
             stepCallTreeComponentService.addStepCallToParentContainer(newStepCall, treeModel);
-            this.afterPasteOperation();
+            this.afterPasteOperation(stepsOrHooksTreeComponent);
         }
         if (this.contextService.stepToCut) {
             let stepToCutModel = this.contextService.stepToCut.model;
 
             this.contextService.stepToCut.moveStep(treeModel);
-            this.afterPasteOperation();
+            this.afterPasteOperation(stepsOrHooksTreeComponent);
         }
     }
 
-    private afterPasteOperation() {
+    private afterPasteOperation(stepsOrHooksTreeComponent: StepCallTreeComponent) {
         this.contextService.stepToCut = null;
         this.contextService.stepToCopy = null;
 
-        this.stepCallTreeComponent.stepCallTreeComponentService.setSelectedNode(null);
+        stepsOrHooksTreeComponent.stepCallTreeComponentService.setSelectedNode(null);
     }
 
     addScenario() {
@@ -370,5 +371,21 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
     runTestForAllScenarios() {
         this.testsRunnerService.runTests([this.testModel.path]);
+    }
+
+//-- Hooks Method ------------------------------------------------------------------------------------------------------
+    addAfterTestHook() {
+        if (!this.isEditMode) {
+            this.setEditMode(true);
+        }
+
+        this.hooksCallTreeComponent.stepCallTreeComponentService.addStepCallEditor(this.hooksCallTreeComponent.jsonTreeModel);
+    }
+
+    getAfterTestHooksDescription(): string {
+        return "AFTER TEST HOOKS. \n" +
+            "The hooks are steps that are executed after the test steps.\n" +
+            "The hooks are executed no matter of the test outcome.\n" +
+            "All the root after test hooks are executed, no matter if the previews hook has failed.\n"
     }
 }

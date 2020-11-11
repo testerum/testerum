@@ -3,9 +3,9 @@ package com.testerum.model.feature
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.testerum.model.feature.hooks.Hooks
 import com.testerum.model.file.Attachment
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.test.hooks.Hooks
 
 data class Feature @JsonCreator constructor(@JsonProperty("name") val name: String,
                                             @JsonProperty("path") val path: Path,

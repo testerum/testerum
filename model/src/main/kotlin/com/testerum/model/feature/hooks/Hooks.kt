@@ -1,4 +1,4 @@
-package com.testerum.model.test.hooks
+package com.testerum.model.feature.hooks
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
