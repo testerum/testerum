@@ -171,21 +171,27 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
         }
 
         if (size != null && attachment.mimeType?.startsWith("image/") == true) {
+            val splitSize = size.split("x")
+            if (splitSize.size != 2 || splitSize[0].toIntOrNull() != null || splitSize[1].toIntOrNull() != null) {
+                writeFullAttachmentFileContentToContent(attachmentFilePath, featuresDir, attachment, response)
+            }
+
+            val width = splitSize[0].toInt();
+            val height = splitSize[1].toInt();
+
             writeImageThumbnailToResponse(
                 attachmentFilePath,
                 featuresDir,
                 attachment,
-                ATTACHMENT_THUMBNAIL_WIDTH,
-                ATTACHMENT_THUMBNAIL_HEIGHT,
+                width,
+                height,
                 response
             )
-
 
             return
         }
 
         writeFullAttachmentFileContentToContent(attachmentFilePath, featuresDir, attachment, response)
-
     }
 
     private fun writeImageThumbnailToResponse(attachmentFilePath: Path,
@@ -206,7 +212,7 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
 
             // body
             val sourceImage = ImageIO.read(attachmentInputStream)
-            val resizedImage = resizeImage(sourceImage, ATTACHMENT_THUMBNAIL_WIDTH, ATTACHMENT_THUMBNAIL_HEIGHT)
+            val resizedImage = resizeImage(sourceImage, width, height)
 
             ImageIO.write(resizedImage, "jpg", response.outputStream)
         }
