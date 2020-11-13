@@ -3,6 +3,7 @@
     <h1 *ngIf="!isRootFeature() && isCreateAction">Create SubFeature in <span class="path">{{pathForTitle}}</span></h1>
     <h1 *ngIf="!isRootFeature() && !isCreateAction">Feature <span class="path">{{pathForTitle}}</span></h1>
 
+<!-- NAME ------------------------------------------------------------------------------------------------------------->
     <div class="page-body">
         <form #form="ngForm" class="form-horizontal" (keydown.enter)="$event.preventDefault()">
 
@@ -47,7 +48,7 @@
                 </div>
             </div>
 
-            <!-- TAGS -->
+<!-- TAGS ------------------------------------------------------------------------------------------------------------->
             <div class="my-line" *ngIf="!isRootFeature() && !isEditMode && model.tags.length > 0 ">
                 <label class="my-label label-size">Tags</label>
                 <div class="my-value" *ngIf="!isEditMode">
@@ -73,7 +74,7 @@
                 </div>
             </div>
 
-            <!-- DESCRIPTION -->
+<!-- DESCRIPTION ------------------------------------------------------------------------------------------------------>
             <div class="my-line">
                 <label class="my-label-top label-size">Description</label>
 
@@ -82,7 +83,7 @@
                 </div>
             </div>
 
-            <!-- ATTACHMENTS-->
+<!-- ATTACHMENTS------------------------------------------------------------------------------------------------------->
             <div class="my-line" *ngIf="isEditMode || model.attachments.length > 0">
                 <label class="my-label-top label-size">Attachments</label>
 
@@ -94,6 +95,104 @@
                 </div>
             </div>
 
+<!-- HOOKS ------------------------------------------------------------------------------------------------------------>
+            <div *ngIf="isEditMode || hasHooks()"
+                class="hooks">
+                <div class="hooks-header my-line">
+                    <label class="my-label-top">Hooks</label>
+
+                    <div *ngIf="isEditMode && !showHooksCategories"
+                        title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
+                         (click)="addHooks(); $event.stopPropagation()">
+                        <i class="fa_my-plus" aria-hidden="true"></i>
+                    </div>
+
+                    <info-icon [message]="getHooksDescription()" class="step-description-info-icon"></info-icon>
+                </div>
+
+                <div *ngIf="showHooksCategories" class="hooks-sections">
+
+<!-- Before All Tests -->
+                    <div *ngIf="isEditMode || model.hooks.beforeAll.length != 0" class="hooks-header my-line">
+                        <label class="my-label-top">Before All Tests</label>
+
+                        <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
+                             (click)="addHook(beforeAllHooksCallTree); $event.stopPropagation()">
+                            <i class="fa_my-plus" aria-hidden="true"></i>
+                        </div>
+
+                        <info-icon [message]="getBeforeAllHooksDescription()"  class="step-description-info-icon"></info-icon>
+                    </div>
+
+                    <div class="hooks-steps">
+                        <step-call-tree #beforeAllHooksCallTree
+                                        [stepCalls]="this.model.hooks.beforeAll"
+                                        [containerPath]="this.model.path.getParentPath()"
+                                        [isEditMode]="isEditMode"
+                                        [editModeEventEmitter]="editModeEventEmitter"
+                                        [areManualSteps]="false"></step-call-tree>
+                    </div>
+
+<!-- Before Each Test -->
+                    <div *ngIf="isEditMode || model.hooks.beforeEach.length != 0" class="hooks-header my-line">
+                        <label class="my-label-top">Before Each Test</label>
+
+                        <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
+                             (click)="addHook(beforeEachHooksCallTree); $event.stopPropagation()">
+                            <i class="fa_my-plus" aria-hidden="true"></i>
+                        </div>
+
+                        <info-icon [message]="getBeforeEachHooksDescription()"  class="step-description-info-icon"></info-icon>
+                    </div>
+
+                    <step-call-tree #beforeEachHooksCallTree
+                                    [stepCalls]="this.model.hooks.beforeEach"
+                                    [containerPath]="this.model.path.getParentPath()"
+                                    [isEditMode]="isEditMode"
+                                    [editModeEventEmitter]="editModeEventEmitter"
+                                    [areManualSteps]="false"></step-call-tree>
+
+<!-- After Each Test -->
+                    <div *ngIf="isEditMode || model.hooks.afterEach.length != 0" class="hooks-header my-line">
+                        <label class="my-label-top">After Each Test</label>
+
+                        <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
+                             (click)="addHook(afterEachHooksCallTree); $event.stopPropagation()">
+                            <i class="fa_my-plus" aria-hidden="true"></i>
+                        </div>
+
+                        <info-icon [message]="getAfterEachHooksDescription()"  class="step-description-info-icon"></info-icon>
+                    </div>
+
+                    <step-call-tree #afterEachHooksCallTree
+                                    [stepCalls]="this.model.hooks.afterEach"
+                                    [containerPath]="this.model.path.getParentPath()"
+                                    [isEditMode]="isEditMode"
+                                    [editModeEventEmitter]="editModeEventEmitter"
+                                    [areManualSteps]="false"></step-call-tree>
+
+<!-- After All Tests -->
+                    <div *ngIf="isEditMode || model.hooks.afterAll.length != 0" class="hooks-header my-line">
+                        <label class="my-label-top">After All Tests</label>
+
+                        <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
+                             (click)="addHook(afterAllHooksCallTree); $event.stopPropagation()">
+                            <i class="fa_my-plus" aria-hidden="true"></i>
+                        </div>
+
+                        <info-icon [message]="getAfterAllHooksDescription()"  class="step-description-info-icon"></info-icon>
+                    </div>
+
+                    <step-call-tree #afterAllHooksCallTree
+                                    [stepCalls]="this.model.hooks.afterEach"
+                                    [containerPath]="this.model.path.getParentPath()"
+                                    [isEditMode]="isEditMode"
+                                    [editModeEventEmitter]="editModeEventEmitter"
+                                    [areManualSteps]="false"></step-call-tree>
+                </div>
+            </div>
+
+<!-- BUTTONS ---------------------------------------------------------------------------------------------------------->
             <div class="panel-footer-sticky-buttons">
                 <div class="button-wrapper">
                     <ng-container *ngIf="!isEditMode">

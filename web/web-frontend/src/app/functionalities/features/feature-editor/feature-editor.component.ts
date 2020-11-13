@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild,} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, ViewChild,} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {FeaturesTreeService} from "../features-tree/features-tree.service";
 import {Subscription} from "rxjs";
@@ -18,6 +18,7 @@ import {ContextService} from "../../../service/context.service";
 import {ProjectService} from "../../../service/project.service";
 import {Project} from "../../../model/home/project.model";
 import {AutoComplete} from "primeng/autocomplete";
+import {StepCallTreeComponent} from "../../../generic/components/step-call-tree/step-call-tree.component";
 
 @Component({
     moduleId: module.id,
@@ -38,6 +39,8 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     projectName: string;
 
     isEditMode: boolean = false;
+    readonly editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+
     isCreateAction: boolean = false;
 
     @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
@@ -51,6 +54,12 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
 
     @ViewChild(NgForm, { static: true }) form: NgForm;
     @ViewChild(MarkdownEditorComponent, { static: true }) descriptionMarkdownEditor: MarkdownEditorComponent;
+
+    @ViewChild('beforeAllHooksCallTree', { static: true }) beforeAllHooksCallTree: StepCallTreeComponent;
+    @ViewChild('beforeEachHooksCallTree', { static: true }) beforeEachHooksCallTree: StepCallTreeComponent;
+    @ViewChild('afterEachHooksCallTree', { static: true }) afterEachHooksCallTree: StepCallTreeComponent;
+    @ViewChild('afterAllHooksCallTree', { static: true }) afterAllHooksCallTree: StepCallTreeComponent;
+    showHooksCategories: boolean = false;
 
     pathForTitle: string = "";
 
@@ -84,6 +93,8 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
             if (this.descriptionMarkdownEditor) {
                 this.descriptionMarkdownEditor.setValue(this.model.description);
             }
+
+            this.showHooksCategories = this.hasHooks();
         });
     }
 
@@ -109,6 +120,8 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
             this.descriptionMarkdownEditor.setEditMode(value);
             this.descriptionMarkdownEditor.setValue(this.model.description);
         }
+
+        this.editModeEventEmitter.emit(value);
     }
 
     enableEditMode(): void {
@@ -251,5 +264,48 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
         this.setEditMode(false);
         this.featuresTreeService.initializeTestsTreeFromServer(this.model.path);
         this.urlService.navigateToFeature(this.model.path);
+    }
+
+// -- Hooks ------------------------------------------------------------------------------------------------------------
+    addHooks() {
+        this.showHooksCategories = true;
+    }
+
+    hasHooks(): boolean {
+        let hooks = this.model.hooks;
+        return hooks.beforeAll.length != 0
+            || hooks.beforeEach.length != 0
+            || hooks.afterEach.length != 0
+            || hooks.afterAll.length != 0
+    }
+
+    addHook(hooksStepCallTree: StepCallTreeComponent) {
+        hooksStepCallTree.stepCallTreeComponentService.addStepCallEditor(hooksStepCallTree.jsonTreeModel);
+    }
+
+    getHooksDescription(): string {
+        return "**Hooks** allows you to define behavior that can be executed before or after the tests.\n" +
+               "The hooks defined on a Feature will be executed on all the tests that are children of this feature.\n"
+    }
+
+    getBeforeAllHooksDescription(): string {
+        return "**Before All Tests Hooks** are executed only once before all the tests defined in this Functionality.\n" +
+            "If one of this Hooks throws an exception all the tests in this Functionality will be marked as failed.";
+    }
+
+    getBeforeEachHooksDescription(): string {
+        return "**Before Each Test Hooks** are executed before each test defined in this Functionality.\n" +
+            "If one of this Hooks throws an exception the test will be marked as failed.";
+    }
+
+    getAfterEachHooksDescription(): string {
+        return "**After Each Test Hooks** are executed after each test no mather what the test outcome is.\n" +
+            "If one of this Hooks throws an exception the test is not going to be marked as failed.";
+    }
+
+    getAfterAllHooksDescription(): string {
+        return "**After All Tests Hooks** are executed only once after all the tests in this Functionality has been executed.\n" +
+            "If one of this Hooks throws an exception the tests are not going to be marked as failed.\n" +
+            "All the steps defined at the root level will be executed, regardless if a previews step thrown an exception.";
     }
 }

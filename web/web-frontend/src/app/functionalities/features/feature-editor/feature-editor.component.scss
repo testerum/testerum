@@ -6,12 +6,37 @@
     }
 
     .label-size {
-        width: 7em;
+        width: 6.2em;
     }
 
     .my-line {
         .my-label-top {
             align-self: start;
+        }
+    }
+
+    .hooks {
+
+        .hooks-header {
+            .btn {
+                margin-left: 7px;
+            }
+            info-icon {
+                margin-left: 7px;
+                line-height: 20px;
+            }
+        }
+
+        .hooks-sections {
+            margin-left: 1.5em;
+
+            .my-line {
+                margin-bottom: 0;
+            }
+
+            .hooks-steps {
+                margin-left: 1.5em;
+            }
         }
     }
 }

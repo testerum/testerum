@@ -10,6 +10,7 @@ import {ComposedStepDef} from "../step/composed-step-def.model";
 import {UndefinedStepDef} from "../step/undefined-step-def.model";
 import {Scenario} from "./scenario/scenario.model";
 import {ArrayUtil} from "../../utils/array.util";
+import {StepDefUtil} from "../step/util/step-def.util";
 
 export class TestModel implements Serializable<TestModel>, TreeNodeModel {
 
@@ -66,7 +67,7 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
             this.afterHooks.push(afterHook);
         }
         let stepCallsAndStepHooks = this.stepCalls.concat(this.afterHooks);
-        this.fixStepDefInstance(stepCallsAndStepHooks);
+        StepDefUtil.fixStepDefInstance(stepCallsAndStepHooks);
 
         this.warnings = [];
         for (let warning of (input['warnings'] || [])) {
@@ -100,23 +101,5 @@ export class TestModel implements Serializable<TestModel>, TreeNodeModel {
     clone(): TestModel {
         let objectAsJson = JSON.parse(this.serialize());
         return new TestModel().deserialize(objectAsJson);
-    }
-
-    private fixStepDefInstance(stepCalls: Array<StepCall>) {
-        let uniqueStepDefs = new Map();
-        for (const stepCall of stepCalls) {
-            if (!(stepCall.stepDef instanceof ComposedStepDef)) {
-                continue
-            }
-
-            let stepDefKey = stepCall.stepDef.path.toString();
-            let sharedStepDefInstance = uniqueStepDefs.get(stepDefKey);
-
-            if (sharedStepDefInstance) {
-                stepCall.stepDef = sharedStepDefInstance;
-            } else {
-                uniqueStepDefs.set(stepDefKey, stepCall.stepDef)
-            }
-        }
     }
 }
