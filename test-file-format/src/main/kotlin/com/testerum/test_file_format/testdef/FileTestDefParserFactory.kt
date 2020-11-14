@@ -5,6 +5,7 @@ import com.testerum.common.parsing.util.CommonPatterns.NOT_NEWLINE
 import com.testerum.common.parsing.util.CommonScanners.optionalWhitespaceOrNewLines
 import com.testerum.test_file_format.common.description.FileDescriptionParserFactory.description
 import com.testerum.test_file_format.common.step_call.FileStepCall
+import com.testerum.test_file_format.common.step_call.FileStepCallParserFactory.afterHookCall
 import com.testerum.test_file_format.common.step_call.FileStepCallParserFactory.manualStepCall
 import com.testerum.test_file_format.common.step_call.FileStepCallParserFactory.stepCall
 import com.testerum.test_file_format.common.tags.FileTagsParserFactory.tags
@@ -19,7 +20,7 @@ import com.testerum.test_file_format.testdef.scenarios.FileScenarioParserFactory
 import org.jparsec.Parser
 import org.jparsec.Parsers.sequence
 import org.jparsec.Scanners.string
-import java.util.Optional
+import java.util.*
 
 object FileTestDefParserFactory : ParserFactory<FileTestDef> {
 
@@ -33,8 +34,9 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
                 testDescription(),
                 testTags(),
                 testScenarios(),
-                testStepCalls()
-        ) { _, testName, properties, description, tags, scenarios, steps -> FileTestDef(testName, properties, description, tags, scenarios, steps) }
+                testStepCalls(),
+                testAfterHooks(),
+        ) { _, testName, properties, description, tags, scenarios, steps, afterHooks -> FileTestDef(testName, properties, description, tags, scenarios, steps, afterHooks) }
     }
 
     fun manualTestDef(): Parser<FileManualTestDef> {
@@ -100,6 +102,14 @@ object FileTestDefParserFactory : ParserFactory<FileTestDef> {
         return sequence(
                 optionalWhitespaceOrNewLines(),
                 stepCall(),
+                optionalWhitespaceOrNewLines()
+        ) { _, step, _ -> step }.many()
+    }
+
+    private fun testAfterHooks(): Parser<List<FileStepCall>> {
+        return sequence(
+                optionalWhitespaceOrNewLines(),
+                afterHookCall(),
                 optionalWhitespaceOrNewLines()
         ) { _, step, _ -> step }.many()
     }

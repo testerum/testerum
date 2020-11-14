@@ -19,6 +19,11 @@ class FileToBusinessTestMapper(private val stepCallMapper: FileToBusinessStepCal
                 stepCallIdPrefix = path.toString()
         )
 
+        val afterHooks = stepCallMapper.mapStepCalls(
+                fileStepCalls = fileTest.afterHooks,
+                stepCallIdPrefix = path.toString()
+        )
+
         return TestModel(
                 name = fileTest.name,
                 path = path,
@@ -26,7 +31,8 @@ class FileToBusinessTestMapper(private val stepCallMapper: FileToBusinessStepCal
                 description = fileTest.description,
                 tags = fileTest.tags,
                 scenarios = fileToBusinessScenarioMapper.mapScenarios(fileTest.scenarios),
-                stepCalls = stepCalls
+                stepCalls = stepCalls,
+                afterHooks = afterHooks
         )
     }
 

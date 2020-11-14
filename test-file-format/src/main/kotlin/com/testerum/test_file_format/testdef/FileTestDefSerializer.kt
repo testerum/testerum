@@ -2,6 +2,7 @@ package com.testerum.test_file_format.testdef
 
 import com.testerum.common.serializing.BaseSerializer
 import com.testerum.test_file_format.common.description.FileDescriptionSerializer
+import com.testerum.test_file_format.common.step_call.FileAfterHookSerializer
 import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.FileStepCallSerializer
 import com.testerum.test_file_format.common.tags.FileTagsSerializer
@@ -22,6 +23,7 @@ object FileTestDefSerializer : BaseSerializer<FileTestDef>() {
         serializeTags(source.tags, destination, indentLevel + 1)
         serializeScenarios(source.scenarios, destination, indentLevel + 1)
         serializeSteps(source.steps, destination, indentLevel + 1)
+        serializeAfterHooks(source.afterHooks, destination, indentLevel + 1)
     }
 
     private fun serializeTestName(testName: String, destination: Writer, indentLevel: Int) {
@@ -81,4 +83,15 @@ object FileTestDefSerializer : BaseSerializer<FileTestDef>() {
         }
     }
 
+    private fun serializeAfterHooks(steps: List<FileStepCall>, destination: Writer, indentLevel: Int) {
+        if (steps.isEmpty()) {
+            return
+        }
+
+        destination.write("\n")
+
+        for (step in steps) {
+            FileAfterHookSerializer.serialize(step, destination, indentLevel)
+        }
+    }
 }

@@ -37,9 +37,19 @@ class WarningService {
             )
         }
 
+        // check children
+        val afterHooksWithWarnings = mutableListOf<StepCall>()
+
+        for (afterHook in test.afterHooks) {
+            afterHooksWithWarnings.add(
+                    stepCallWithWarnings(afterHook)
+            )
+        }
+
         // return copy with warnings filled-in
         return test.copy(
                 stepCalls = stepCallsWithWarnings,
+                afterHooks = afterHooksWithWarnings,
                 warnings = warnings
         )
     }

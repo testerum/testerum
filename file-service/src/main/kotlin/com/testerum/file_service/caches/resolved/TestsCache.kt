@@ -56,6 +56,7 @@ class TestsCache(private val testFileService: TestFileService,
         var result = test
 
         result = testResolver.resolveStepsDefs(getStepsCache, result, resourcesDir)
+        result = testResolver.resolveAfterHooksStepsDefs(getStepsCache, result, resourcesDir)
         result = warningService.testWithWarnings(result)
 
         return result
@@ -108,12 +109,13 @@ class TestsCache(private val testFileService: TestFileService,
             val savedTest = testFileService.save(test, testsDir)
 
             // resolve test
-            val resolvedTest = testResolver.resolveStepsDefs(getStepsCache, savedTest, resourcesDir)
-            val resolvedTestWithWarnings = warningService.testWithWarnings(resolvedTest)
+            var resolvedTest = testResolver.resolveStepsDefs(getStepsCache, savedTest, resourcesDir)
+            resolvedTest = testResolver.resolveAfterHooksStepsDefs(getStepsCache, resolvedTest, resourcesDir)
+            resolvedTest = warningService.testWithWarnings(resolvedTest)
 
             // update cache
             testsByPath.remove(test.path)
-            testsByPath[resolvedTestWithWarnings.path] = resolvedTestWithWarnings
+            testsByPath[resolvedTest.path] = resolvedTest
 
             return getTestAtPath(resolvedTest.path)!!
         }

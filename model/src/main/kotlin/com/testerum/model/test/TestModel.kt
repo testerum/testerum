@@ -32,6 +32,7 @@ data class TestModel @JsonCreator constructor(@JsonProperty("name") val name: St
         get() = _id
 
     private val _descendantsHaveWarnings: Boolean = stepCalls.any { it.warnings.isNotEmpty() || it.descendantsHaveWarnings }
+                                                 || afterHooks.any { it.warnings.isNotEmpty() || it.descendantsHaveWarnings }
 
     @get:JsonProperty("descendantsHaveWarnings")
     val descendantsHaveWarnings: Boolean

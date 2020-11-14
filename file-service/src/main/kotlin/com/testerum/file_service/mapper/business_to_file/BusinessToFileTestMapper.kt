@@ -16,7 +16,8 @@ class BusinessToFileTestMapper(private val businessToFileScenarioMapper: Busines
                 description = test.description,
                 tags = test.tags,
                 scenarios = businessToFileScenarioMapper.mapScenarios(test.scenarios),
-                steps = businessToFileStepCallMapper.mapStepCalls(test.stepCalls)
+                steps = businessToFileStepCallMapper.mapStepCalls(test.stepCalls),
+                afterHooks = businessToFileStepCallMapper.mapStepCalls(test.afterHooks)
         )
     }
 
@@ -26,5 +27,4 @@ class BusinessToFileTestMapper(private val businessToFileScenarioMapper: Busines
                 isDisabled = properties.isDisabled
         )
     }
-
 }

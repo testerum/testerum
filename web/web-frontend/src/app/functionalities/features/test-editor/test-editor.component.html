@@ -183,7 +183,7 @@
                                 [areManualSteps]="testModel.properties.isManual"></step-call-tree>
 <!-- HOOKS ------------------------------------------------------------------------------------------------------------>
 
-                <div *ngIf="this.hooksCallTreeComponent.jsonTreeModel.children.length != 0 && !testModel.properties.isManual"
+                <div *ngIf="shouldShowHooks()"
                      class="actions-header hooks">
 
                     <h4 class="inline"><strong>Hooks</strong></h4>

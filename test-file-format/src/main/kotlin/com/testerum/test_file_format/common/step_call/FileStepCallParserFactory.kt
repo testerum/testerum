@@ -24,6 +24,11 @@ object FileStepCallParserFactory : ParserFactory<FileStepCall> {
         return stepCall("step")
     }
 
+    //TODO Ionut-Cristi: why is this class a factory, why do we even need an interface? Should we do some refactoring?
+    fun afterHookCall(): Parser<FileStepCall> {
+        return stepCall("after-hook")
+    }
+
     fun stepCall(prefix: String): Parser<FileStepCall> {
         return sequence(
                 string(prefix),

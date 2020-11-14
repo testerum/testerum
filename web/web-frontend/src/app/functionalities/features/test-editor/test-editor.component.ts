@@ -49,6 +49,8 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
 
     @ViewChild('stepsCallTree', { static: true }) stepsCallTreeComponent: StepCallTreeComponent;
     @ViewChild('hooksCallTree', { static: true }) hooksCallTreeComponent: StepCallTreeComponent;
+    showHooks: boolean = false;
+
     descriptionMarkdownEditor: MarkdownEditorComponent;
     @ViewChild("descriptionMarkdownEditor", { static: true }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
         if (descriptionMarkdownEditor != null) {
@@ -374,7 +376,16 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
     }
 
 //-- Hooks Method ------------------------------------------------------------------------------------------------------
+
+    shouldShowHooks(): boolean {
+        if(this.showHooks) return true;
+
+        return this.testModel.afterHooks.length != 0 && !this.testModel.properties.isManual
+    }
+
     addAfterTestHook() {
+        this.showHooks = true;
+
         if (!this.isEditMode) {
             this.setEditMode(true);
         }
