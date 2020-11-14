@@ -1,0 +1,31 @@
+--repository-directory
+/home/cvmocanu/Development/testerum/testerum/integration-tests/tests
+--report
+JSON_EVENTS:wrapJsonWithPrefixAndPostfix=true
+--managed-reports-directory
+/home/cvmocanu/.testerum/reports/a00dee5b-b91b-440e-a6a3-0c9198f7d799
+--test-path
+/home/cvmocanu/Development/testerum/testerum/integration-tests/tests/features/backend
+--var-env
+Default
+--setting
+testerum.http.connectionTimeoutMillis=0
+--setting
+testerum.http.socketTimeoutMillis=0
+--setting
+testerum.selenium.afterStepDelayMillis=0
+--setting
+testerum.selenium.driver={"browserType": "CHROME", "browserExecutablePath": null, "headless": false, "driverVersion": null, "remoteUrl": null}
+--setting
+testerum.selenium.leaveBrowserOpenAfterTest=onFailure
+--setting
+testerum.selenium.maximizeWindowBeforeTest=true
+--setting
+testerum.selenium.takeScreenshotAfterEachStep=false
+--setting
+testerum.selenium.waitTimeoutMillis=5000
+--setting
+testerum.selenium.webDriverCustomizationScript=capabilities.setCapability("os_version", "11");\
+capabilities.setCapability("device", "iPhone 8 Plus");\
+capabilities.setCapability("real_mobile", "true");\
+capabilities.setCapability("browserstack.local", "false");\

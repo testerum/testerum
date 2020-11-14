@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.guava.GuavaModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -27,7 +26,6 @@ class RdbmsFrontendService(private val networkService: NetworkService,
         private val OBJECT_MAPPER: ObjectMapper = jacksonObjectMapper().apply {
             registerModule(AfterburnerModule())
             registerModule(JavaTimeModule())
-            registerModule(GuavaModule())
 
             enable(SerializationFeature.INDENT_OUTPUT)
             setSerializationInclusion(JsonInclude.Include.NON_NULL)

@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Runner (--help)" type="JetRunConfigurationType">
-    <module name="testerum-runner-cmdline" />
+    <module name="testerum-runner-cmdline-debug" />
     <option name="VM_PARAMETERS" value="-Dtesterum.packageDirectory=$PROJECT_DIR$/package" />
     <option name="PROGRAM_PARAMETERS" value="--help" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />

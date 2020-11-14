@@ -4,7 +4,6 @@ import com.testerum.model.exception.ValidationException
 import com.testerum.web_backend.controllers.error.model.ErrorResponse
 import com.testerum.web_backend.controllers.error.model.response_preparers.ErrorResponsePreparer
 import com.testerum.web_backend.controllers.error.model.response_preparers.generic.GenericErrorResponsePreparer
-import lombok.NonNull
 import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -14,15 +13,17 @@ import org.springframework.web.util.WebUtils
 import javax.servlet.http.HttpServletRequest
 
 @RequestMapping("/error")
-class ErrorController(val errorResponsePreparerMap: Map<Class<out Throwable>, ErrorResponsePreparer<Throwable, ErrorResponse>>,
-                      val genericErrorResponsePreparer: GenericErrorResponsePreparer) {
+class ErrorController(
+    val errorResponsePreparerMap: Map<Class<out Throwable>, ErrorResponsePreparer<Throwable, ErrorResponse>>,
+    val genericErrorResponsePreparer: GenericErrorResponsePreparer
+) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ErrorController::class.java)
     }
 
     @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun errorPage(@NonNull request: HttpServletRequest): ResponseEntity<ErrorResponse> {
+    fun errorPage(request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         val exception: Throwable? = request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) as Throwable?
         val nestedException: Throwable? = if (exception is NestedServletException && (exception.cause != null)) {
             exception.cause
@@ -35,27 +36,29 @@ class ErrorController(val errorResponsePreparerMap: Map<Class<out Throwable>, Er
         return getResponse(nestedException)
     }
 
-    private fun logException(@NonNull request: HttpServletRequest,
-                             exception: Throwable?) {
+    private fun logException(
+        request: HttpServletRequest,
+        exception: Throwable?
+    ) {
         val originalRequestUri = request.getAttribute(WebUtils.ERROR_REQUEST_URI_ATTRIBUTE) as String
         val originalStatusCode = request.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE) as Int
 
         if (exception is ValidationException) {
             LOG.debug(
-                    "returning validation exception response" +
+                "returning validation exception response" +
                     " for originalRequestUri=[{}]" +
                     ", originalStatusCode=[{}]" +
                     "; the stacktrace that follows is the original exception",
-                    originalRequestUri,
-                    originalStatusCode,
-                    exception
+                originalRequestUri,
+                originalStatusCode,
+                exception
             )
             return
         }
 
         val message = buildString {
             append(
-                    "returning error response" +
+                "returning error response" +
                     " for originalRequestUri=[{}]" +
                     ", originalStatusCode=[{}]"
             )
@@ -65,10 +68,10 @@ class ErrorController(val errorResponsePreparerMap: Map<Class<out Throwable>, Er
         }
 
         LOG.error(
-                message,
-                originalRequestUri,
-                originalStatusCode,
-                exception
+            message,
+            originalRequestUri,
+            originalStatusCode,
+            exception
         )
     }
 
@@ -80,12 +83,12 @@ class ErrorController(val errorResponsePreparerMap: Map<Class<out Throwable>, Er
         val responseFromPreparers = getResponseFromPreparers(exception)
 
         return responseFromPreparers
-                ?: genericErrorResponsePreparer.handleError(exception)
+            ?: genericErrorResponsePreparer.handleError(exception)
     }
 
     private fun getResponseFromPreparers(exception: Throwable): ResponseEntity<ErrorResponse>? {
         val errorResponsePreparer = errorResponsePreparerMap[exception.javaClass]
-                ?: return null
+            ?: return null
 
         return errorResponsePreparer.handleError(exception)
     }

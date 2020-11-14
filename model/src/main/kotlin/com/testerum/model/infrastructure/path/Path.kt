@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.nio.file.Paths
-import java.util.*
+import java.util.Collections
 import java.nio.file.Path as JavaPath
 
 data class Path @JsonCreator constructor(
-        @JsonProperty("directories") val directories: List<String>,
-        @JsonProperty("fileName") val fileName: String? = null,
-        @JsonProperty("fileExtension") val fileExtension: String? = null) {
+    @JsonProperty("directories") val directories: List<String>,
+    @JsonProperty("fileName") val fileName: String? = null,
+    @JsonProperty("fileExtension") val fileExtension: String? = null
+) {
 
     companion object {
         val EMPTY = Path(emptyList(), null, null)
@@ -19,8 +20,8 @@ data class Path @JsonCreator constructor(
 
             var pathsPart = pathAsString.split("/", "\\")
             pathsPart = pathsPart.filter { it.isNotBlank() }
-            var fileName:String? = null
-            var extension:String? = null
+            var fileName: String? = null
+            var extension: String? = null
 
             if (pathsPart.isNotEmpty()) {
                 val lastPathPart = pathsPart.last().toString()
@@ -122,7 +123,7 @@ data class Path @JsonCreator constructor(
         resultDirs.addAll(directories.subList(indexOfSubList + oldPath.directories.size, directories.size))
 
         return this.copy(
-                directories = resultDirs
+            directories = resultDirs
         )
     }
 

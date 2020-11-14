@@ -6,21 +6,25 @@ import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.ParamStepPatternPart
+import com.testerum.model.text.parts.param_meta.TypeMeta
 import com.testerum.model.text.parts.param_meta.TypeMetaFactory
 import com.testerum.model.warning.Warning
 
-data class BasicStepDef @JsonCreator constructor(@JsonProperty("phase")       override val phase: StepPhaseEnum,
-                                                 @JsonProperty("stepPattern") override val stepPattern: StepPattern,
-                                                 @JsonProperty("description") override val description: String? = null,
-                                                 @JsonProperty("tags")        val tags: List<String> = emptyList(),
-                                                 @JsonProperty("className")   val className: String,
-                                                 @JsonProperty("methodName")  val methodName: String,
-                                                 @JsonProperty("warnings")    override val warnings: List<Warning> = emptyList()): StepDef {
+data class BasicStepDef @JsonCreator constructor(
+    @JsonProperty("phase") override val phase: StepPhaseEnum,
+    @JsonProperty("stepPattern") override val stepPattern: StepPattern,
+    @JsonProperty("description") override val description: String? = null,
+    @JsonProperty("tags") val tags: List<String> = emptyList(),
+    @JsonProperty("className") val className: String,
+    @JsonProperty("methodName") val methodName: String,
+    @JsonProperty("resultType") val resultType: TypeMeta,
+    @JsonProperty("warnings") override val warnings: List<Warning> = emptyList()
+) : StepDef {
 
     private val _path = run {
         val paramTypes = stepPattern.patternParts
-                .filter { it is ParamStepPatternPart }
-                .map { TypeMetaFactory.getStringTypeFromTypeMeta((it as ParamStepPatternPart).typeMeta) }
+            .filterIsInstance<ParamStepPatternPart>()
+            .map { TypeMetaFactory.getStringTypeFromTypeMeta(it.typeMeta) }
 
         val packagesWithClass: List<String> = className.split('.')
         val packages: List<String> = packagesWithClass.dropLast(1)
@@ -45,6 +49,7 @@ data class BasicStepDef @JsonCreator constructor(@JsonProperty("phase")       ov
         append(phase)
         append(" ")
         append(stepPattern.toDebugString(varPrefix = "<<", varSuffix = ">>"))
+        append("; resultType=[$resultType]")
     }
 
 }

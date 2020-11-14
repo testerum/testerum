@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Runner" type="JetRunConfigurationType">
-    <module name="testerum-runner-cmdline" />
+  <configuration default="false" name="Runner (testerum backend CONSOLE_DEBUG)" type="JetRunConfigurationType">
+    <module name="testerum-runner-cmdline-debug" />
     <option name="VM_PARAMETERS" value="-Dtesterum.packageDirectory=$PROJECT_DIR$/package" />
-    <option name="PROGRAM_PARAMETERS" value="--repository-directory=$PROJECT_DIR$/integration-tests/tests --test-path backend --managed-reports-directory $USER_HOME$/temp/klm/local-report" />
+    <option name="PROGRAM_PARAMETERS" value="--repository-directory $PROJECT_DIR$/integration-tests/tests --test-path backend --report CONSOLE_DEBUG" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <option name="PASS_PARENT_ENVS" value="true" />

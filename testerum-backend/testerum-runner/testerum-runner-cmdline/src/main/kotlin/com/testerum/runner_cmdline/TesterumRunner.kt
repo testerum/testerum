@@ -9,15 +9,13 @@ import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner_cmdline.cmdline.exiter.Exiter
 import com.testerum.runner_cmdline.cmdline.params.CmdlineParamsParser
-import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserHelpRequestedException
-import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
-import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserVersionHelpRequestedException
-import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
+import com.testerum.runner_cmdline.cmdline.params.model.HelpRequested
+import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
+import com.testerum.runner_cmdline.cmdline.params.model.VersionRequested
+import com.testerum.runner_cmdline.help.RunnerHelpInfoService
 import com.testerum.runner_cmdline.module_di.RunnerModuleBootstrapper
 import com.testerum.runner_cmdline.module_di.TesterumRunnerLoggingConfigurator
 import com.testerum.runner_cmdline.version.RunnerVersionInfoService
-import org.fusesource.jansi.Ansi.ansi
-import org.fusesource.jansi.AnsiConsole
 import java.time.LocalDateTime
 
 object TesterumRunner {
@@ -26,13 +24,12 @@ object TesterumRunner {
     fun main(args: Array<String>) {
         val stopWatch = StopWatch.start()
 
-        AnsiConsole.systemInstall()
-        ConsoleOutputCapturer.startCapture("main")
-
         TesterumRunnerLoggingConfigurator.configureLogging()
         println(TesterumBanner.BANNER)
 
-        val cmdlineParams: CmdlineParams = getCmdlineParams(args)
+        ConsoleOutputCapturer.startCapture("main")
+
+        val cmdlineParams: RunCmdlineParams = getCmdlineParams(args)
         println("cmdlineParams = $cmdlineParams")
 
         val bootstrapper = RunnerModuleBootstrapper(cmdlineParams, stopWatch)
@@ -48,13 +45,13 @@ object TesterumRunner {
                 try {
                     for (line in remainingConsoleCapturedText.lines()) {
                         bootstrapper.runnerModuleFactory.eventsService.logEvent(
-                                TextLogEvent(
-                                        time = LocalDateTime.now(),
-                                        eventKey = EventKey.LOG_EVENT_KEY,
-                                        logLevel = LogLevel.INFO,
-                                        message = line,
-                                        exceptionDetail = null
-                                )
+                            TextLogEvent(
+                                time = LocalDateTime.now(),
+                                eventKey = EventKey.LOG_EVENT_KEY,
+                                logLevel = LogLevel.INFO,
+                                message = line,
+                                exceptionDetail = null
+                            )
                         )
                     }
                 } catch (e: Exception) {
@@ -76,30 +73,21 @@ object TesterumRunner {
         Exiter.exit(exitCode)
     }
 
-    private fun getCmdlineParams(args: Array<out String>): CmdlineParams {
-        return try {
-            System.setProperty("picocli.useSimplifiedAtFiles", "false")
-            CmdlineParamsParser.parse(*args)
-        } catch (e: CmdlineParamsParserHelpRequestedException) {
-            println(e.usageHelp)
+    private fun getCmdlineParams(args: Array<out String>): RunCmdlineParams {
+        when (val cmdlineParams = CmdlineParamsParser.parse(args.toList())) {
+            is HelpRequested -> {
+                println(RunnerHelpInfoService.getUsageHelp())
+                Exiter.exit(ExitCode.OK)
+            }
 
-            Exiter.exit(ExitCode.OK)
-        } catch (e: CmdlineParamsParserVersionHelpRequestedException) {
-            println(
-                    RunnerVersionInfoService.getFormattedVersionProperties()
-            )
+            is VersionRequested -> {
+                println(RunnerVersionInfoService.getFormattedVersionProperties())
+                Exiter.exit(ExitCode.OK)
+            }
 
-            Exiter.exit(ExitCode.OK)
-        } catch (e: CmdlineParamsParserParsingException) {
-            println(
-                    """
-                        ${ansi().fgBrightRed()}${ansi().bold()}ERROR: ${e.errorMessage}${ansi().boldOff()}${ansi().fgDefault()}
-
-                        To see the available options, use ${ansi().bold()}testerum-runner${ansi().boldOff()} ${ansi().fgYellow()}--help${ansi().fgDefault()}
-                    """.trimIndent()
-            )
-
-            Exiter.exit(ExitCode.RUNNER_FAILED)
+            is RunCmdlineParams -> {
+                return cmdlineParams
+            }
         }
     }
 

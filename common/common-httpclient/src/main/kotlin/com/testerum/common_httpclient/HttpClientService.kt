@@ -1,6 +1,5 @@
 package com.testerum.common_httpclient
 
-import com.google.common.collect.LinkedHashMultimap
 import com.testerum.model.resources.http.request.HttpRequest
 import com.testerum.model.resources.http.request.HttpRequestBody
 import com.testerum.model.resources.http.request.enums.HttpRequestMethod
@@ -102,13 +101,23 @@ class HttpClientService(private val httpClient: HttpClient) {
     }
 
     private fun convertResponse(httpResponse: HttpResponse, responseDurationInMillis: Long): ValidHttpResponse {
-        val headers = LinkedHashMultimap.create<String, String>()
+        val headers = LinkedHashMap<String, MutableList<String>>()
 
         for (header in httpResponse.allHeaders) {
-            headers.put(header.name, header.value)
+            headers.compute(header.name) { _, existingValue ->
+                if (existingValue == null) {
+                    ArrayList<String>().apply {
+                        add(header.value)
+                    }
+                } else {
+                    existingValue.add(header.value)
+
+                    existingValue
+                }
+            }
         }
 
-        val headersListModel = headers.asMap().map { entry ->
+        val headersListModel = headers.map { entry ->
             HttpResponseHeader(
                 key = entry.key,
                 values = ArrayList(entry.value)

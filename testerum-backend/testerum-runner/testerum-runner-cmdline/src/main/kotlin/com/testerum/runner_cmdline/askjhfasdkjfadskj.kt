@@ -1,9 +1,6 @@
 package com.testerum.runner_cmdline
 
-import org.fusesource.jansi.Ansi
-import org.fusesource.jansi.Ansi.ansi
-import org.fusesource.jansi.AnsiConsole
-import java.util.*
+import java.util.Random
 import javax.annotation.concurrent.NotThreadSafe
 
 @NotThreadSafe
@@ -29,9 +26,7 @@ private class Spinner {
 
 private val RANDOM = Random()
 
-fun main(args: Array<String>) {
-    AnsiConsole.systemInstall()
-
+fun main() {
     // todo: see also: https://gist.github.com/lovromazgon/9c801554ceb56157de30
     // todo: configurable colors (to match with the terminal colors)
 
@@ -46,13 +41,13 @@ fun main(args: Array<String>) {
         for (stepNumber in 1..(stepsCount)) {
             Thread.sleep(100)
 
-            print("\r${ansi().fgBrightYellow()}[${ansi().fgDefault()}${ansi().fgBrightBlue()}${spinner.currentValue()}${ansi().fgDefault()}${ansi().fgBrightYellow()}]${ansi().fgDefault()} Test number $testNumber")
+            print("\r[${spinner.currentValue()}] Test number $testNumber")
         }
 
         if (RANDOM.nextBoolean()) {
-            println("\r${ansi().fgBrightYellow()}[ OK ]${ansi().fgDefault()} Test number $testNumber                   ")
+            println("\r[ OK ] Test number $testNumber                   ")
         } else {
-            println("\r${ansi().fgBrightRed()}${ansi().a(Ansi.Attribute.INTENSITY_BOLD)}[FAIL]${ansi().a(Ansi.Attribute.INTENSITY_BOLD_OFF)} Test number $testNumber                  ${ansi().fgDefault()}")
+            println("\r[FAIL] Test number $testNumber                  ")
             failedTests += "Test number $testNumber"
         }
     }

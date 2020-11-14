@@ -24,9 +24,9 @@ import java.lang.reflect.Parameter
 
 
 val STEPS_METHOD_ANNOTATIONS = setOf<String>(
-        Given::class.java.name,
-        When::class.java.name,
-        Then::class.java.name
+    Given::class.java.name,
+    When::class.java.name,
+    Then::class.java.name
 )
 
 private val STEP_PATTERN_PARSER = ParserExecuter(ScannerStepPatternParserFactory.pattern())
@@ -48,16 +48,18 @@ private fun MethodInfo.toBasicStepDefs(): List<BasicStepDef> {
 
     return stepAnnotationInfos.map { annotationInfo ->
         createStepFromMethod(
-                stepAnnotation = StepAnnotation(
-                        annotation = annotationInfo.loadClassAndInstantiate()
-                ),
-                method = this.loadClassAndGetMethod()
+            stepAnnotation = StepAnnotation(
+                annotation = annotationInfo.loadClassAndInstantiate()
+            ),
+            method = this.loadClassAndGetMethod()
         )
     }
 }
 
-private fun createStepFromMethod(stepAnnotation: StepAnnotation,
-                                 method: Method): BasicStepDef {
+private fun createStepFromMethod(
+    stepAnnotation: StepAnnotation,
+    method: Method
+): BasicStepDef {
     try {
         return tryToCreateStepFromMethod(stepAnnotation, method)
     } catch (e: Exception) {
@@ -95,9 +97,9 @@ private fun tryToCreateStepFromMethod(stepAnnotation: StepAnnotation, method: Me
                 val paramAnnotation: Param? = param.getAnnotation(Param::class.java)
 
                 ParamStepPatternPart(
-                        name = paramName,
-                        typeMeta = TypeMetaExtractor.extractTypeMeta(param),
-                        description = getParamDescription(paramAnnotation)
+                    name = paramName,
+                    typeMeta = TypeMetaExtractor.extractTypeMetaFromParameter(param),
+                    description = getParamDescription(paramAnnotation)
                 )
             }
         }
@@ -106,12 +108,13 @@ private fun tryToCreateStepFromMethod(stepAnnotation: StepAnnotation, method: Me
     }
 
     return BasicStepDef(
-            phase = stepAnnotation.phase,
-            stepPattern = StepPattern(scannerParts),
-            className = method.declaringClass.name,
-            methodName = method.name,
-            description = stepAnnotation.description,
-            tags = stepAnnotation.tags
+        phase = stepAnnotation.phase,
+        stepPattern = StepPattern(scannerParts),
+        className = method.declaringClass.name,
+        methodName = method.name,
+        resultType = TypeMetaExtractor.extractTypeMetaFromMethodResult(method),
+        description = stepAnnotation.description,
+        tags = stepAnnotation.tags
     )
 }
 

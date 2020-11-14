@@ -1,17 +1,27 @@
 package com.testerum.runner_cmdline.cmdline.params.model
 
 import com.testerum.model.tests_finder.TestPath
-import java.nio.file.Path as JavaPath
+import java.nio.file.Path
 
-data class CmdlineParams(val verbose: Boolean,
-                         val repositoryDirectory: JavaPath,
-                         val variablesEnvironment: String?,
-                         val variableOverrides: Map<String, String>,
-                         val settingsFile: JavaPath?,
-                         val settingOverrides: Map<String, String>,
-                         val testPaths: List<TestPath>,
-                         val tagsToInclude: List<String>,
-                         val tagsToExclude: List<String>,
-                         val reportsWithProperties: List<String>,
-                         val managedReportsDir: JavaPath?,
-                         val executionName: String?)
+sealed class CmdlineParams
+
+object HelpRequested : CmdlineParams()
+
+object VersionRequested : CmdlineParams()
+
+data class RunCmdlineParams(
+    val verbose: Boolean,
+    val repositoryDirectory: Path,
+    val testPaths: List<TestPath>,
+    val packagesWithAnnotations: List<String>,
+    val includeTags: List<String>,
+    val excludeTags: List<String>,
+    val managedReportsDir: Path?,
+    val reportsWithProperties: List<String>,
+    val settingOverrides: Map<String, String>,
+    val settingsFile: Path?,
+    val variableOverrides: Map<String, String>,
+    val variablesEnvironment: String?,
+    val executionName: String?
+) : CmdlineParams()
+

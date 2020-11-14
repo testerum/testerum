@@ -2,13 +2,14 @@ package com.testerum.model.selenium
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumBrowserType
 import com.testerum.common_jdk.ComparableVersion
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumBrowserType
 import java.util.TreeMap
 
 class SeleniumDriversByBrowser(driversByBrowser: Map<SeleniumBrowserType, List<SeleniumDriverInfo>>) {
 
-    @get:JsonAnyGetter val driversByBrowser: Map<SeleniumBrowserType, List<SeleniumDriverInfo>> = sortDriversByBrowserVersion(driversByBrowser)
+    @get:JsonAnyGetter
+    val driversByBrowser: Map<SeleniumBrowserType, List<SeleniumDriverInfo>> = sortDriversByBrowserVersion(driversByBrowser)
 
 
     companion object {
@@ -21,7 +22,7 @@ class SeleniumDriversByBrowser(driversByBrowser: Map<SeleniumBrowserType, List<S
 
             for ((browserType, driverInfos) in driversByBrowser) {
                 result[browserType] = driverInfos.sortedByDescending { driverInfo ->
-                    driverInfo.browserVersions.maxBy { version ->
+                    driverInfo.browserVersions.maxByOrNull { version: String ->
                         ComparableVersion(version)
                     }
                 }
@@ -32,14 +33,16 @@ class SeleniumDriversByBrowser(driversByBrowser: Map<SeleniumBrowserType, List<S
     }
 
     @JsonIgnore
-    fun getDriverInfoByBrowserAndDriverVersion(browserType: SeleniumBrowserType,
-                                               driverVersion: String?): SeleniumDriverInfo? {
+    fun getDriverInfoByBrowserAndDriverVersion(
+        browserType: SeleniumBrowserType,
+        driverVersion: String?
+    ): SeleniumDriverInfo? {
         val drivers = driversByBrowser[browserType]
-                ?: return null
+            ?: return null
 
         return if (driverVersion == null) {
             // find the driver with the most recent version
-            drivers.maxBy { ComparableVersion(it.driverVersion) }
+            drivers.maxByOrNull { ComparableVersion(it.driverVersion) }
         } else {
             drivers.find { it.driverVersion == driverVersion }
         }

@@ -14,8 +14,10 @@
 
     <modules>
         <module>testerum-junit</module>
+        <module>testerum-junit-all</module>
         <module>testerum-runner-api</module>
         <module>testerum-runner-cmdline</module>
+        <module>testerum-runner-cmdline-debug</module>
         <module>testerum-runner-spring</module>
     </modules>
 
