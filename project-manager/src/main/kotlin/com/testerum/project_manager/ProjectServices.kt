@@ -51,8 +51,9 @@ class ProjectServices(projectRootDir: Path,
 
     private fun FeaturesCache.initializeFeatureCacheFromProjectServices() {
         val featuresDir = dirs.getFeaturesDir()
+        val resourcesDir = dirs.getResourcesDir()
 
-        initialize(featuresDir)
+        initialize(featuresDir, resourcesDir)
     }
 
     private fun TestsCache.initializeTestsCacheFromProjectServices() {

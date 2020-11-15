@@ -5,7 +5,6 @@ import {JsonUtil} from "../../utils/json.util";
 import {Attachment} from "../file/attachment.model";
 import {Serializable} from "../infrastructure/serializable.model";
 import {Hooks} from "./hooks/hooks.model";
-import {SerializationUtil} from "../../generic/components/json-verify/json-verify-tree/model/util/serialization.util";
 
 export class Feature implements Serializable<Feature>, TreeNodeModel {
 
@@ -16,7 +15,8 @@ export class Feature implements Serializable<Feature>, TreeNodeModel {
     description: string;
     tags: Array<string> = [];
     attachments: Array<Attachment> = [];
-    hooks: Hooks;
+    hooks: Hooks
+    descendantsHaveWarnings: boolean = false;
 
     deserialize(input: Object): Feature {
         this.id = input['id'];
@@ -32,6 +32,7 @@ export class Feature implements Serializable<Feature>, TreeNodeModel {
         }
 
         this.hooks = new Hooks(this.path).deserialize(input['hooks'])
+        this.descendantsHaveWarnings = input['descendantsHaveWarnings'];
 
         return this;
     }

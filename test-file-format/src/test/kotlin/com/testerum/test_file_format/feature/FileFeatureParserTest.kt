@@ -65,7 +65,7 @@ class FileFeatureParserTest {
                                 description =  """ |This feature will do wonderful things.
                                                    |It will surpass your wildest expectations.""".trimMargin(),
                                 tags = listOf("one", "two", "three"),
-                                beforeHooks = listOf(
+                                beforeAllHooks = listOf(
                                         FileStepCall(
                                                 phase = FileStepPhase.GIVEN,
                                                 parts = listOf(
@@ -87,7 +87,7 @@ class FileFeatureParserTest {
                                                 )
                                         )
                                 ),
-                                afterHooks = listOf(
+                                afterEachHooks = listOf(
                                         FileStepCall(
                                                 phase = FileStepPhase.WHEN,
                                                 parts = listOf(

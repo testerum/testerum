@@ -68,13 +68,19 @@ class FeatureTreeBuilder(rootLabel: String) {
                     @Suppress("UNCHECKED_CAST")
                     val children: List<FeatureNode> = childrenNodes as List<FeatureNode>
 
-                    val hasOwnOrDescendantWarnings: Boolean = children.any { it.hasOwnOrDescendantWarnings }
+                    val featureHasWarnings = if (payload is Feature) {
+                        payload.descendantsHaveWarnings
+                    } else {
+                        false
+                    }
+
+                    val hasOwnOrDescendantWarnings: Boolean = featureHasWarnings || children.any { it.hasOwnOrDescendantWarnings }
 
                     FeatureFeatureNode(
-                            name = label,
-                            path = Path(directories = path),
-                            children = children,
-                            hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings
+                        name = label,
+                        path = Path(directories = path),
+                        children = children,
+                        hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings
                     )
                 }
                 is TestModel -> TestFeatureNode(

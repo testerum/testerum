@@ -145,12 +145,14 @@
                         <info-icon [message]="getBeforeEachHooksDescription()"  class="step-description-info-icon"></info-icon>
                     </div>
 
-                    <step-call-tree #beforeEachHooksCallTree
-                                    [stepCalls]="this.model.hooks.beforeEach"
-                                    [containerPath]="this.model.path.getParentPath()"
-                                    [isEditMode]="isEditMode"
-                                    [editModeEventEmitter]="editModeEventEmitter"
-                                    [areManualSteps]="false"></step-call-tree>
+                    <div class="hooks-steps">
+                        <step-call-tree #beforeEachHooksCallTree
+                                        [stepCalls]="this.model.hooks.beforeEach"
+                                        [containerPath]="this.model.path.getParentPath()"
+                                        [isEditMode]="isEditMode"
+                                        [editModeEventEmitter]="editModeEventEmitter"
+                                        [areManualSteps]="false"></step-call-tree>
+                    </div>
 
 <!-- After Each Test -->
                     <div *ngIf="isEditMode || model.hooks.afterEach.length != 0" class="hooks-header my-line">
@@ -164,12 +166,14 @@
                         <info-icon [message]="getAfterEachHooksDescription()"  class="step-description-info-icon"></info-icon>
                     </div>
 
-                    <step-call-tree #afterEachHooksCallTree
-                                    [stepCalls]="this.model.hooks.afterEach"
-                                    [containerPath]="this.model.path.getParentPath()"
-                                    [isEditMode]="isEditMode"
-                                    [editModeEventEmitter]="editModeEventEmitter"
-                                    [areManualSteps]="false"></step-call-tree>
+                    <div class="hooks-steps">
+                        <step-call-tree #afterEachHooksCallTree
+                                        [stepCalls]="this.model.hooks.afterEach"
+                                        [containerPath]="this.model.path.getParentPath()"
+                                        [isEditMode]="isEditMode"
+                                        [editModeEventEmitter]="editModeEventEmitter"
+                                        [areManualSteps]="false"></step-call-tree>
+                    </div>
 
 <!-- After All Tests -->
                     <div *ngIf="isEditMode || model.hooks.afterAll.length != 0" class="hooks-header my-line">
@@ -183,12 +187,14 @@
                         <info-icon [message]="getAfterAllHooksDescription()"  class="step-description-info-icon"></info-icon>
                     </div>
 
-                    <step-call-tree #afterAllHooksCallTree
-                                    [stepCalls]="this.model.hooks.afterEach"
-                                    [containerPath]="this.model.path.getParentPath()"
-                                    [isEditMode]="isEditMode"
-                                    [editModeEventEmitter]="editModeEventEmitter"
-                                    [areManualSteps]="false"></step-call-tree>
+                    <div class="hooks-steps">
+                        <step-call-tree #afterAllHooksCallTree
+                                        [stepCalls]="this.model.hooks.afterAll"
+                                        [containerPath]="this.model.path.getParentPath()"
+                                        [isEditMode]="isEditMode"
+                                        [editModeEventEmitter]="editModeEventEmitter"
+                                        [areManualSteps]="false"></step-call-tree>
+                    </div>
                 </div>
             </div>
 

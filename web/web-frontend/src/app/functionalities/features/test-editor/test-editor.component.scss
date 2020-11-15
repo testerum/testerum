@@ -70,20 +70,22 @@
     }
 
     .actions-header {
+        margin-top: 1em;
         display: flex;
         align-items: center;
-    }
 
-    .hooks {
-        margin-top: 1.2em;
-    }
+        h4 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
 
-    .step-action-panel {
-        .nf-mdi-hook {
-            width: auto;
-            font-weight: bold;
-            font-size: 1.5em;
-            line-height: 0.1em;
+        .step-action-panel {
+            .nf-mdi-hook {
+                width: auto;
+                font-weight: bold;
+                font-size: 1.5em;
+                line-height: 0.1em;
+            }
         }
     }
 }

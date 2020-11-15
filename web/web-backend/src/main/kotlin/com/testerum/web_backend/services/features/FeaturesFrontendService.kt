@@ -139,9 +139,7 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
      * - the feature's sub-features and tests, recursively
      */
     fun delete(path: Path) {
-        val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
-
-        webProjectManager.getProjectServices().getFeatureCache().deleteFeatureAndAttachments(path, featuresDir)
+        webProjectManager.getProjectServices().getFeatureCache().deleteFeatureAndAttachments(path)
         webProjectManager.getProjectServices().getTestsCache().featureWasDeleted()
     }
 

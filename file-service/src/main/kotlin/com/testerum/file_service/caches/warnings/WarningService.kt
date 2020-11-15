@@ -1,6 +1,8 @@
 package com.testerum.file_service.caches.warnings
 
 import com.testerum.model.arg.Arg
+import com.testerum.model.feature.Feature
+import com.testerum.model.feature.hooks.Hooks
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
@@ -16,6 +18,23 @@ class WarningService {
         private val LOG = LoggerFactory.getLogger(WarningService::class.java)
     }
 
+    fun featureWithWarnings(feature: Feature): Feature {
+
+        val beforeAllHooksWithWarnings = getStepsWithWarning(feature.hooks.beforeAll)
+        val beforeEachHooksWithWarnings = getStepsWithWarning(feature.hooks.beforeEach)
+        val afterEachHooksWithWarnings = getStepsWithWarning(feature.hooks.afterEach)
+        val afterAllHooksWithWarnings = getStepsWithWarning(feature.hooks.afterAll)
+
+        return feature.copy(
+            hooks = Hooks(
+                beforeAllHooksWithWarnings,
+                beforeEachHooksWithWarnings,
+                afterEachHooksWithWarnings,
+                afterAllHooksWithWarnings
+            )
+        )
+    }
+
     fun testWithWarnings(test: TestModel): TestModel {
         if (test.properties.isManual || test.properties.isDisabled) {
             // some steps may have warnings on them (taken like this from the cache),
@@ -29,22 +48,10 @@ class WarningService {
         addTestWarnings(warnings, test)
 
         // check children
-        val stepCallsWithWarnings = mutableListOf<StepCall>()
-
-        for (stepCall in test.stepCalls) {
-            stepCallsWithWarnings.add(
-                    stepCallWithWarnings(stepCall)
-            )
-        }
+        val stepCallsWithWarnings = getStepsWithWarning(test.stepCalls)
 
         // check children
-        val afterHooksWithWarnings = mutableListOf<StepCall>()
-
-        for (afterHook in test.afterHooks) {
-            afterHooksWithWarnings.add(
-                    stepCallWithWarnings(afterHook)
-            )
-        }
+        val afterHooksWithWarnings = getStepsWithWarning(test.afterHooks)
 
         // return copy with warnings filled-in
         return test.copy(
@@ -52,6 +59,18 @@ class WarningService {
                 afterHooks = afterHooksWithWarnings,
                 warnings = warnings
         )
+    }
+
+    private fun getStepsWithWarning(steps: List<StepCall>): List<StepCall> {
+
+        val stepsWithWarnings = mutableListOf<StepCall>()
+
+        for (step in steps) {
+            stepsWithWarnings.add(
+                stepCallWithWarnings(step)
+            )
+        }
+        return stepsWithWarnings
     }
 
     private fun removeWarningsFromTest(test: TestModel): TestModel {
@@ -164,5 +183,4 @@ class WarningService {
             warnings += Warning.COMPOSED_STEP_WITHOUT_STEP_CALLS
         }
     }
-
 }

@@ -3,6 +3,7 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Resolve} from "@angular/router";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {FeatureService} from "../../../service/feature.service";
 import {Feature} from "../../../model/feature/feature.model";
+import {Hooks} from "../../../model/feature/hooks/hooks.model";
 
 @Injectable()
 export class FeatureResolver implements Resolve<any> {
@@ -19,6 +20,7 @@ export class FeatureResolver implements Resolve<any> {
         if (actionParam == "create") {
             let feature = new Feature();
             feature.path = path;
+            feature.hooks = new Hooks(path)
             return feature
         }
 

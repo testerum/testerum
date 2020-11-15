@@ -32,7 +32,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
         spellChecker: false
     };
 
-    model: Feature = new Feature();
+    model: Feature;
     fileAttachmentsAdded: File[] = [];
     attachmentsPathsToDelete: Path[] = [];
 
@@ -113,6 +113,8 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
             this.tagsService.getTags().subscribe(tags => {
                 ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
             });
+        } else {
+            this.showHooksCategories = this.hasHooks();
         }
 
         this.isEditMode = value;

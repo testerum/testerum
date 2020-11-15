@@ -13,7 +13,7 @@ data class Feature @JsonCreator constructor(@JsonProperty("name") val name: Stri
                                             @JsonProperty("description") val description: String? = null,
                                             @JsonProperty("tags") val tags: List<String> = emptyList(),
                                             @JsonProperty("attachments") val attachments: List<Attachment> = emptyList(),
-                                            @JsonProperty("hooks") val hooks: Hooks = Hooks.EMPTY,) {
+                                            @JsonProperty("hooks") val hooks: Hooks = Hooks.EMPTY) {
 
     companion object {
         const val FILE_NAME_WITHOUT_EXTENSION: String = "info"
@@ -25,6 +25,15 @@ data class Feature @JsonCreator constructor(@JsonProperty("name") val name: Stri
 
     val id: String
         get() = _id
+
+    private val _descendantsHaveWarnings: Boolean = hooks.beforeAll.any { it.warnings.isNotEmpty() || it.descendantsHaveWarnings }
+                                                 || hooks.beforeEach.any { it.warnings.isNotEmpty() || it.descendantsHaveWarnings }
+                                                 || hooks.afterEach.any { it.warnings.isNotEmpty() || it.descendantsHaveWarnings }
+                                                 || hooks.afterAll.any { it.warnings.isNotEmpty() || it.descendantsHaveWarnings }
+
+    @get:JsonProperty("descendantsHaveWarnings")
+    val descendantsHaveWarnings: Boolean
+        get() = _descendantsHaveWarnings
 
     @JsonIgnore
     fun getNewPath(): Path {

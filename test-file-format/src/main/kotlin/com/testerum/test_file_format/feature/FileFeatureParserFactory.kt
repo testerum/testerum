@@ -7,7 +7,6 @@ import com.testerum.test_file_format.common.step_call.FileStepCall
 import com.testerum.test_file_format.common.step_call.FileStepCallParserFactory.stepCall
 import com.testerum.test_file_format.common.tags.FileTagsParserFactory.tags
 import org.jparsec.Parser
-import org.jparsec.Parsers.or
 import org.jparsec.Parsers.sequence
 import java.util.*
 
@@ -19,13 +18,18 @@ object FileFeatureParserFactory : ParserFactory<FileFeature> {
         return sequence(
                 featureDescription(),
                 featureTags().asOptional(),
-                featureHooks().asOptional()
-        ) { description: Optional<String>, tags: Optional<List<String>>, hooks: Optional<List<HookWithType>> ->
+                featureHook("before-all-hook").asOptional(),
+                featureHook("before-each-hook").asOptional(),
+                featureHook("after-each-hook").asOptional(),
+                featureHook("after-all-hook").asOptional(),
+        ) { description: Optional<String>, tags: Optional<List<String>>, beforeAll: Optional<List<FileStepCall>>, beforeEach: Optional<List<FileStepCall>>, afterEach: Optional<List<FileStepCall>>, afterAll: Optional<List<FileStepCall>> ->
             FileFeature(
                     description = description.orElse(null),
                     tags = tags.orElseGet { emptyList() },
-                    beforeHooks = hooks.orElseGet { emptyList() }.filter { it.isBeforeHook  }.map { it.hook },
-                    afterHooks  = hooks.orElseGet { emptyList() }.filter { !it.isBeforeHook }.map { it.hook }
+                    beforeAllHooks = beforeAll.orElseGet { emptyList() },
+                    beforeEachHooks = beforeEach.orElseGet { emptyList() },
+                    afterEachHooks = afterEach.orElseGet { emptyList() },
+                    afterAllHooks = afterAll.orElseGet { emptyList() }
             ) 
         }
     }
@@ -46,17 +50,11 @@ object FileFeatureParserFactory : ParserFactory<FileFeature> {
         ) {_: Void?, tags: List<String>, _: Void? -> tags }
     }
 
-    private fun featureHooks(): Parser<List<HookWithType>> {
+    private fun featureHook(hookPrefix: String): Parser<List<FileStepCall>> {
         return sequence(
-                optionalWhitespaceOrNewLines(),
-                or(
-                    stepCall("before-hook").map { beforeHook -> HookWithType(beforeHook, true) },
-                    stepCall("after-hook").map { beforeHook -> HookWithType(beforeHook, false) }
-                ),
-                optionalWhitespaceOrNewLines()
-        ) { _, hooks, _ -> hooks }.many()
+            optionalWhitespaceOrNewLines(),
+            stepCall(hookPrefix),
+            optionalWhitespaceOrNewLines()
+        ) { _, step, _ -> step }.many()
     }
-
-    private class HookWithType(val hook: FileStepCall, val isBeforeHook: Boolean)
-
 }

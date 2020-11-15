@@ -13,9 +13,12 @@ class ProjectManagerModuleFactory(context: ModuleFactoryContext,
 
     val projectManager = ProjectManager(
             testerumProjectFileService = fileServiceModuleFactory.testerumProjectFileService,
-            createFeaturesCache = {
+            createFeaturesCache = { projectServices ->
                 FeaturesCache(
-                        featureFileService = fileServiceModuleFactory.featuresFileService
+                        featureFileService = fileServiceModuleFactory.featuresFileService,
+                        featureResolver = fileServiceModuleFactory.featureResolver,
+                        warningService = fileServiceModuleFactory.warningService,
+                        getStepsCache = { projectServices.getStepsCache() }
                 )
             },
             createTestsCache = { projectServices ->

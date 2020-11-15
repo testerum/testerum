@@ -1,5 +1,7 @@
 package com.testerum.file_service.caches.resolved
 
+import com.testerum.file_service.caches.resolved.resolvers.FeatureResolver
+import com.testerum.file_service.caches.warnings.WarningService
 import com.testerum.file_service.file.FeatureFileService
 import com.testerum.model.feature.Feature
 import com.testerum.model.infrastructure.path.Path
@@ -10,7 +12,10 @@ import kotlin.concurrent.read
 import kotlin.concurrent.write
 import java.nio.file.Path as JavaPath
 
-class FeaturesCache(private val featureFileService: FeatureFileService) {
+class FeaturesCache(private val featureFileService: FeatureFileService,
+                    private val featureResolver: FeatureResolver,
+                    private val warningService: WarningService,
+                    private val getStepsCache: () -> StepsCache) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(FeaturesCache::class.java)
@@ -20,9 +25,15 @@ class FeaturesCache(private val featureFileService: FeatureFileService) {
 
     private var featuresByPath: MutableMap<Path, Feature> = hashMapOf()
 
-    fun initialize(featuresDir: JavaPath) {
+    private var featuresDir: JavaPath? = null
+    private var resourcesDir: JavaPath? = null
+
+    fun initialize(featuresDir: JavaPath, resourcesDir: JavaPath) {
         lock.write {
             val startTimeMillis = System.currentTimeMillis()
+
+            this.featuresDir = featuresDir
+            this.resourcesDir = resourcesDir
 
             val newFeaturesByPath = ConcurrentHashMap<Path, Feature>()
 
@@ -30,12 +41,15 @@ class FeaturesCache(private val featureFileService: FeatureFileService) {
             for (feature in features) {
                 val pathWithoutFile = feature.path.withoutFile()
 
-                val featureWithoutFile = feature.copy(
+                var resolvedFeature = feature.copy(
                         path = pathWithoutFile,
                         oldPath = pathWithoutFile
                 )
 
-                newFeaturesByPath[featureWithoutFile.path] = featureWithoutFile
+                resolvedFeature = featureResolver.resolveHooks(getStepsCache, resolvedFeature, resourcesDir)
+                resolvedFeature = warningService.featureWithWarnings(resolvedFeature)
+
+                newFeaturesByPath[resolvedFeature.path] = resolvedFeature
             }
 
             featuresByPath = newFeaturesByPath
@@ -80,12 +94,17 @@ class FeaturesCache(private val featureFileService: FeatureFileService) {
         }
     }
 
-    fun deleteFeatureAndAttachments(path: Path, featuresDir: JavaPath) {
+    fun deleteFeatureAndAttachments(path: Path) {
         lock.write {
+            val featuresDir = this.featuresDir
+                ?: throw IllegalStateException("cannot save composed step because the featuresDir is not set")
+            val resourcesDir = this.resourcesDir
+                ?: throw IllegalStateException("cannot save composed step because the resourcesDir is not set")
+
+
             featureFileService.deleteFeature(path, featuresDir)
 
-            initialize(featuresDir)
+            initialize(featuresDir, resourcesDir)
         }
     }
-
 }
