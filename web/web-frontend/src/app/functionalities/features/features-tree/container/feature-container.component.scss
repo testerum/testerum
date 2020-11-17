@@ -1,16 +1,30 @@
+.node {
+    .flip {
+        -moz-transform: scale(1, -1);
+        -webkit-transform: scale(1, -1);
+        -o-transform: scale(1, -1);
+        -ms-transform: scale(1, -1);
+        transform: scale(1, -1);
+    }
 
-.flip {
-    -moz-transform: scale(1, -1);
-    -webkit-transform: scale(1, -1);
-    -o-transform: scale(1, -1);
-    -ms-transform: scale(1, -1);
-    transform: scale(1, -1);
-}
+    .hook-icon-container {
+        position: relative;
+        display: inline;
+        margin-right: 4px;
 
-.node-text {
-    margin-left: 5px;
-}
+        .hook-icon {
+            position: absolute;
+            top: 5px;
+            left: -3px;
+        }
+    }
 
-.my-button-panel {
-    margin-left: 5px;
+    .node-text {
+        margin-left: 5px;
+    }
+
+    .my-button-panel {
+        margin-left: 5px;
+    }
+
 }

@@ -15,14 +15,21 @@ export class FeatureTreeContainerModel extends TestTreeNodeModel implements Json
     editable:boolean = false;
 
     hasOwnOrDescendantWarnings: boolean = false;
+    hasHooks: boolean = false;
 
     private options: JsonTreeContainerOptions = new JsonTreeContainerOptions();
 
-    constructor(parentContainer: FeatureTreeContainerModel, name: string, path: Path = null, hasOwnOrDescendantWarnings: boolean = false) {
+    constructor(parentContainer: FeatureTreeContainerModel,
+                name: string,
+                path: Path = null,
+                hasOwnOrDescendantWarnings: boolean = false,
+                hasHooks: boolean = false) {
+
         super(parentContainer, name, path);
 
         this.jsonTreeNodeState.showChildren = true;
         this.hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings;
+        this.hasHooks = hasHooks;
     }
 
     getChildren(): Array<TestTreeNodeModel> {

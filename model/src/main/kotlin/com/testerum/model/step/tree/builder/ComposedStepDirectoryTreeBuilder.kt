@@ -27,7 +27,7 @@ class ComposedStepDirectoryTreeBuilder {
         @Suppress("UNCHECKED_CAST")
         override fun getLabel(payload: Any): String = (payload as List<String>).last()
 
-        override fun createRootNode(childrenNodes: List<Any>): Any {
+        override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
             @Suppress("UNCHECKED_CAST")
             val children: List<ComposedStepNode> = childrenNodes as List<ComposedStepNode>
 

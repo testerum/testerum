@@ -65,11 +65,18 @@ class FeaturesCache(private val featureFileService: FeatureFileService,
     fun getFeatureAtPath(path: Path): Feature? = lock.read { featuresByPath[path] }
 
     fun save(featureToSave: Feature, featuresDir: JavaPath): Feature {
+        val resourcesDir = this.resourcesDir
+            ?: throw IllegalStateException("cannot save composed step because the resourcesDir is not set")
+
         lock.write {
             val savedFeature = featureFileService.save(featureToSave, featuresDir)
 
+            var resolvedSavedFeature = featureResolver.resolveHooks(getStepsCache, savedFeature, resourcesDir)
+            resolvedSavedFeature = warningService.featureWithWarnings(resolvedSavedFeature)
+
+
             val oldPath = featureToSave.oldPath
-            val newPath = savedFeature.path
+            val newPath = resolvedSavedFeature.path
 
             if (oldPath != null && oldPath != newPath) {
                 val newFeaturesByPath = HashMap<Path, Feature>()
@@ -79,15 +86,15 @@ class FeaturesCache(private val featureFileService: FeatureFileService,
 
                     // todo: make "Feature.name" a calculated property
                     newFeaturesByPath[newFeaturePath] = feature.copy(
-                            name = newFeaturePath.directories.lastOrNull().orEmpty(),
-                            path = newFeaturePath,
-                            oldPath = newFeaturePath
+                        name = newFeaturePath.directories.lastOrNull().orEmpty(),
+                        path = newFeaturePath,
+                        oldPath = newFeaturePath
                     )
                 }
 
                 featuresByPath = newFeaturesByPath
             } else {
-                featuresByPath[savedFeature.path] = savedFeature
+                featuresByPath[resolvedSavedFeature.path] = resolvedSavedFeature
             }
 
             return savedFeature

@@ -133,7 +133,7 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
             else                -> throw unknownPayloadException(payload)
         }
 
-        override fun createRootNode(childrenNodes: List<Any>): Any {
+        override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
             @Suppress("UNCHECKED_CAST")
             val children: List<RunnerFeatureOrTest> = childrenNodes as List<RunnerFeatureOrTest>
 

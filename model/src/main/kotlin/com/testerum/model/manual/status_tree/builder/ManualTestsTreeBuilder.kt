@@ -33,7 +33,7 @@ class ManualTestsTreeBuilder(testPlanName: String) {
 
         override fun getLabel(payload: Any): String = (payload as ManualTest).name
 
-        override fun createRootNode(childrenNodes: List<Any>): Any {
+        override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
             @Suppress("UNCHECKED_CAST")
             val children = childrenNodes as List<ManualTestsStatusTreeBase>
 

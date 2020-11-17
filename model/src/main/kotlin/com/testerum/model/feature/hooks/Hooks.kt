@@ -1,6 +1,7 @@
 package com.testerum.model.feature.hooks
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.model.step.StepCall
 
@@ -15,4 +16,11 @@ data class Hooks @JsonCreator constructor(
         val EMPTY = Hooks()
     }
 
+    @JsonIgnore
+    fun hasHooks(): Boolean {
+        return beforeAll.isNotEmpty()
+            || beforeEach.isNotEmpty()
+            || afterEach.isNotEmpty()
+            || afterAll.isNotEmpty()
+    }
 }

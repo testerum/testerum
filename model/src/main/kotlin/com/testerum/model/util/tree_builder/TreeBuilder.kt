@@ -111,7 +111,7 @@ class TreeBuilder(private val customizer: TreeBuilderCustomizer) {
 
         // then, return the actual node
         return if (this.isRoot) {
-            customizer.createRootNode(childrenNodes)
+            customizer.createRootNode(payload, childrenNodes)
         } else {
             customizer.createNode(payload, label, path, childrenNodes, indexInParent)
         }

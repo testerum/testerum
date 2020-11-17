@@ -14,7 +14,8 @@ export default class FeaturesTreeUtil {
             null,
             serverRootNode.name,
             serverRootNode.path,
-            serverRootNode.hasOwnOrDescendantWarnings
+            serverRootNode.hasOwnOrDescendantWarnings,
+            serverRootNode.hasHooks
         );
 
         rootPackage.isRootPackage = true;
@@ -35,7 +36,14 @@ export default class FeaturesTreeUtil {
         for (const serverNode of serverContainerNode.children) {
 
             if (serverNode instanceof FeatureFeatureNode) {
-                let uiFeatureNode = new FeatureTreeContainerModel(uiContainerNode, serverNode.name, serverNode.path, serverNode.hasOwnOrDescendantWarnings);
+                let uiFeatureNode = new FeatureTreeContainerModel(
+                    uiContainerNode,
+                    serverNode.name,
+                    serverNode.path,
+                    serverNode.hasOwnOrDescendantWarnings,
+                    serverNode.hasHooks
+                );
+
                 FeaturesTreeUtil.mapServerNodeChildrenToTreeNode(serverNode, uiFeatureNode);
                 uiFeatureNode.editable = true;
                 uiContainerNode.children.push(uiFeatureNode);

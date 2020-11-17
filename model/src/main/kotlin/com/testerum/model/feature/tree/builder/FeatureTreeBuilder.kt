@@ -45,16 +45,26 @@ class FeatureTreeBuilder(rootLabel: String) {
             else         -> throw unknownPayloadException(payload)
         }
 
-        override fun createRootNode(childrenNodes: List<Any>): Any {
+        override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
             @Suppress("UNCHECKED_CAST")
             val children: List<FeatureNode> = childrenNodes as List<FeatureNode>
 
-            val hasOwnOrDescendantWarnings: Boolean = children.any { it.hasOwnOrDescendantWarnings }
+
+            var featureHasWarnings = false
+            var hasHooks = false
+
+            if (payload is Feature) {
+                featureHasWarnings = payload.descendantsHaveWarnings
+                hasHooks = payload.hooks.hasHooks()
+            }
+
+            val hasOwnOrDescendantWarnings: Boolean = featureHasWarnings || children.any { it.hasOwnOrDescendantWarnings }
 
             return RootFeatureNode(
                     name = getRootLabel(),
                     children = children,
-                    hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings
+                    hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings,
+                    hasHooks = hasHooks
             )
         }
 
@@ -68,10 +78,12 @@ class FeatureTreeBuilder(rootLabel: String) {
                     @Suppress("UNCHECKED_CAST")
                     val children: List<FeatureNode> = childrenNodes as List<FeatureNode>
 
-                    val featureHasWarnings = if (payload is Feature) {
-                        payload.descendantsHaveWarnings
-                    } else {
-                        false
+                    var featureHasWarnings = false
+                    var hasHooks = false
+
+                    if (payload is Feature) {
+                        featureHasWarnings = payload.descendantsHaveWarnings
+                        hasHooks = payload.hooks.hasHooks()
                     }
 
                     val hasOwnOrDescendantWarnings: Boolean = featureHasWarnings || children.any { it.hasOwnOrDescendantWarnings }
@@ -80,7 +92,8 @@ class FeatureTreeBuilder(rootLabel: String) {
                         name = label,
                         path = Path(directories = path),
                         children = children,
-                        hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings
+                        hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings,
+                        hasHooks = hasHooks
                     )
                 }
                 is TestModel -> TestFeatureNode(

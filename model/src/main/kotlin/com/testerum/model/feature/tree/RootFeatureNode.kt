@@ -6,6 +6,8 @@ import com.testerum.model.infrastructure.path.Path
 
 data class RootFeatureNode @JsonCreator constructor(@JsonProperty("name") override val name: String,
                                                     @JsonProperty("children") override val children: List<FeatureNode>,
-                                                    @JsonProperty("hasOwnOrDescendantWarnings") override val hasOwnOrDescendantWarnings: Boolean = false): ContainerFeatureNode {
+                                                    @JsonProperty("hasOwnOrDescendantWarnings") override val hasOwnOrDescendantWarnings: Boolean = false,
+                                                    @JsonProperty("hasHooks") val hasHooks: Boolean
+): ContainerFeatureNode {
     override val path: Path = Path.EMPTY
 }

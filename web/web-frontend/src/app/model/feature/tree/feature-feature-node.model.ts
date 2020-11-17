@@ -9,11 +9,13 @@ export class FeatureFeatureNode implements Serializable<FeatureFeatureNode>, Con
     path: Path;
     children: Array<FeatureNode> = [];
     hasOwnOrDescendantWarnings: boolean = false;
+    hasHooks: boolean = false;
 
     deserialize(input: Object): FeatureFeatureNode {
         this.name = input["name"];
         this.path = Path.deserialize(input["path"]);
         this.hasOwnOrDescendantWarnings = input["hasOwnOrDescendantWarnings"];
+        this.hasHooks = input["hasHooks"];
         this.children = FeatureTreeDeserializationUtil.deserialize(input["children"] || []);
 
         return this;

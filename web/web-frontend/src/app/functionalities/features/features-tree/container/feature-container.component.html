@@ -13,6 +13,10 @@
            [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
            [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
 
+        <div *ngIf="model.hasHooks" class="hook-icon-container">
+            <i class="hook-icon nf nf-mdi-hook" style="width: auto"></i>
+        </div>
+
         <span class="node-text"
               [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
               [class.tree-leaf-selected]="model.isSelected()">{{model.name}}</span>

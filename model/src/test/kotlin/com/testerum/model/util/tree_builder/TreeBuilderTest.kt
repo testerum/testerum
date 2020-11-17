@@ -161,7 +161,7 @@ class TreeBuilderTest {
             }
         }
 
-        override fun createRootNode(childrenNodes: List<Any>): Any {
+        override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
             @Suppress("UNCHECKED_CAST")
             return MyRootNode("Features", childrenNodes as List<MyNode>)
         }
