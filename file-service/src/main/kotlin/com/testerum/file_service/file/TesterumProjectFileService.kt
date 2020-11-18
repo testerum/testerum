@@ -1,5 +1,7 @@
 package com.testerum.file_service.file
 
+import com.dslplatform.json.DslJson
+import com.dslplatform.json.runtime.Settings
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.util.DefaultIndenter
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
@@ -21,7 +23,7 @@ import com.testerum.model.exception.ValidationException
 import com.testerum.model.project.FileProject
 import com.testerum.model.project.FileProjectV1
 import org.slf4j.LoggerFactory
-import java.util.UUID
+import java.util.*
 import java.nio.file.Path as JavaPath
 
 class TesterumProjectFileService {
@@ -98,7 +100,8 @@ class TesterumProjectFileService {
 
     private fun loadFileProjectCurrentVersionSafely(projectFile: JavaPath): FileProject? {
         return try {
-            OBJECT_MAPPER.readValue(projectFile.toFile())
+            val dslJson = DslJson<Any>(Settings.withRuntime<Any>().includeServiceLoader())
+            dslJson.deserialize(FileProject::class.java, projectFile.toFile().inputStream())
         } catch (e: Exception) {
             null
         }

@@ -668,6 +668,13 @@
                 <version>${jackson.version}</version>
             </dependency>
 
+            <!-- DSL JSON - JSON mapping library -->
+            <dependency>
+                <groupId>com.dslplatform</groupId>
+                <artifactId>dsl-json-java8</artifactId>
+                <version>1.9.7</version>
+            </dependency>
+
             <!-- javax.servlet-api -->
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -1292,6 +1299,29 @@
                     </configuration>
 
                     <executions>
+                        <!-- Config for Annotation Processor for DLS-JSON library -->
+                        <execution>
+                            <id>kapt</id>
+                            <goals>
+                                <goal>kapt</goal>
+                            </goals>
+                            <configuration>
+                                <sourceDirs>
+                                    <sourceDir>src/main/kotlin</sourceDir>
+                                </sourceDirs>
+                                <annotationProcessorPaths>
+                                    <annotationProcessorPath>
+                                        <groupId>com.dslplatform</groupId>
+                                        <artifactId>dsl-json-java8</artifactId>
+                                        <version>1.9.7</version>
+                                    </annotationProcessorPath>
+                                </annotationProcessorPaths>
+                                <annotationProcessorArgs>
+                                    <annotationProcessorArg>dsljson.unknown=WARNING</annotationProcessorArg>
+                                    <annotationProcessorArg>dsljson.jackson=false</annotationProcessorArg>
+                                </annotationProcessorArgs>
+                            </configuration>
+                        </execution>
                         <execution>
                             <id>compile</id>
                             <phase>compile</phase>

@@ -67,6 +67,12 @@
             <artifactId>jackson-module-kotlin</artifactId>
         </dependency>
 
+        <!-- DSL JSON - JSON mapping library -->
+        <dependency>
+            <groupId>com.dslplatform</groupId>
+            <artifactId>dsl-json-java8</artifactId>
+        </dependency>
+
         <!-- JDom - XML Parser -->
         <dependency>
             <groupId>org.jdom</groupId>

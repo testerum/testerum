@@ -109,6 +109,11 @@
             <artifactId>jackson-dataformat-yaml</artifactId>
         </dependency>
 
+        <!-- DSL JSON - JSON mapping library -->
+        <dependency>
+            <groupId>com.dslplatform</groupId>
+            <artifactId>dsl-json-java8</artifactId>
+        </dependency>
 
         <!--==================== test dependencies ====================-->
 
