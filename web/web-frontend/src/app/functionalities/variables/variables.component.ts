@@ -194,7 +194,6 @@ export class VariablesComponent implements OnInit, OnDestroy {
     }
 
     private setCurrentVariablesToProjectEnvironment() {
-        let varsToSave = this.variables.filter(it => { return !it.isVariableFromDefaultEnvironment });
-        this.projectVariables.setVariablesToEnvironment(this.selectedEnvironmentName, varsToSave);
+        this.projectVariables.setVariablesToEnvironment(this.selectedEnvironmentName, this.variables);
     }
 }

@@ -33,4 +33,8 @@ export class Variable implements Serializable<Variable> {
     isEmpty(): boolean {
         return !(this.key || this.value);
     }
+
+    hasEmptyValue(): boolean {
+        return this.value == null || this.value == "";
+    }
 }
