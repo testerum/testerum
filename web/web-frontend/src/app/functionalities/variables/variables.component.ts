@@ -9,6 +9,7 @@ import {Observable, Subject, Subscription} from "rxjs";
 import {EnvironmentEditModalComponent} from "./environment-edit-modal/environment-edit-modal.component";
 import {SelectItem} from "primeng/api";
 import {StringSelectItem} from "../../model/prime-ng/StringSelectItem";
+import {VariablesEnvironment} from "./model/variables-environment.model";
 
 @Component({
     moduleId: module.id,
@@ -155,7 +156,9 @@ export class VariablesComponent implements OnInit, OnDestroy {
     save(): void {
         this.setCurrentVariablesToProjectEnvironment();
 
-        this.variablesService.save(this.projectVariables).subscribe (
+        let projectVariablesToSave = this.getProjectVariablesToSave()
+
+        this.variablesService.save(projectVariablesToSave).subscribe (
             result => {
                 this.hasChanges = false;
                 this.close();
@@ -195,5 +198,35 @@ export class VariablesComponent implements OnInit, OnDestroy {
 
     private setCurrentVariablesToProjectEnvironment() {
         this.projectVariables.setVariablesToEnvironment(this.selectedEnvironmentName, this.variables);
+    }
+
+    private getProjectVariablesToSave(): AllProjectVariables {
+        let result = new AllProjectVariables();
+        result.currentEnvironment = this.projectVariables.currentEnvironment;
+        result.defaultVariables = this.projectVariables.defaultVariables;
+        result.localVariables = this.getVariablesToSave(this.projectVariables.localVariables);
+
+        for (const environment of this.projectVariables.environments) {
+            let variableEnvironmentToSave = new VariablesEnvironment();
+            variableEnvironmentToSave.name = environment.name
+            variableEnvironmentToSave.variables = this.getVariablesToSave(environment.variables)
+            result.environments.push(
+                variableEnvironmentToSave
+            )
+        }
+
+        return result;
+    }
+
+    private getVariablesToSave(variables: Variable[]): Variable[] {
+        let result: Variable[] = [];
+
+        for (const variable of variables) {
+            if (!variable.isVariableFromDefaultEnvironment) {
+                result.push(variable)
+            }
+        }
+
+        return result;
     }
 }

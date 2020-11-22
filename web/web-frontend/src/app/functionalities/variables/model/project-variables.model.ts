@@ -111,35 +111,69 @@ export class AllProjectVariables implements Serializable<AllProjectVariables> {
     }
 
     setVariablesToEnvironment(environmentName: string, variables: Variable[]) {
+        if (environmentName == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
+            this.defaultVariables = this.getChangedEnvironmentVariables(variables, true);
+        }
+        if (environmentName == AllProjectVariables.LOCAL_ENVIRONMENT_NAME) {
+            this.localVariables = this.getChangedEnvironmentVariables(variables, false);
+        }
         for (const environment of this.environments) {
             if (environment.name == environmentName) {
-                environment.variables.length = 0;
-                for (const variable of variables) {
-                    let defaultVariable = this.getVariableByKey(this.defaultVariables, variable.key);
-                    if (variable.isVariableFromDefaultEnvironment && defaultVariable && defaultVariable.value == variable.value) {
-                        continue;
-                    }
-
-                    environment.variables.push(new Variable(variable.key, variable.value, false));
-                }
-                this.sortVariablesByKey(environment.variables);
+                environment.variables = this.getChangedEnvironmentVariables(variables, false);
             }
-
-            this.ifNecessaryAddVariablesToDefault(variables);
         }
+
+        this.changeOtherEnvironmentsIfNecessary(variables);
     }
 
-    private sortVariablesByKey(variables: Variable[]) {
-        variables.sort( (a, b) => a.key > b.key ? 1 : -1)
-    }
-
-    private ifNecessaryAddVariablesToDefault(variables: Variable[]) {
+    private getChangedEnvironmentVariables(variables: Variable[], areVariablesFromDefaultEnvironment: boolean): Variable[] {
+        let result: Variable[] = [];
         for (const variable of variables) {
-            if (this.getVariableByKey(this.defaultVariables, variable.key) == null) {
-                this.defaultVariables.push(new Variable(variable.key, variable.value, false))
+            if(variable.isEmpty()) continue;
+
+            if (!areVariablesFromDefaultEnvironment) {
+                let defaultVariable = this.getVariableByKey(this.defaultVariables, variable.key);
+                if (variable.isVariableFromDefaultEnvironment && defaultVariable && defaultVariable.value == variable.value) {
+                    continue;
+                }
+            }
+
+            result.push(new Variable(variable.key, variable.value, false));
+        }
+        return result;
+    }
+
+    private changeOtherEnvironmentsIfNecessary(referenceVariables: Variable[]) {
+        this.defaultVariables = this.getChangedOtherEnvironmentsIfNecessary(this.defaultVariables, referenceVariables);
+        this.localVariables = this.getChangedOtherEnvironmentsIfNecessary(this.localVariables, referenceVariables);
+
+        for (const environment of this.environments) {
+            environment.variables = this.getChangedOtherEnvironmentsIfNecessary(environment.variables, referenceVariables);
+        }
+    }
+
+    private getChangedOtherEnvironmentsIfNecessary(environmentVariables: Variable[], referenceVariables: Variable[]): Variable[] {
+        let result: Variable[] = [];
+
+        for (const referenceVariable of referenceVariables) {
+            if(referenceVariable.isEmpty()) continue;
+
+            let environmentVariable = this.getVariableByKey(environmentVariables, referenceVariable.key);
+            if (environmentVariable) {
+                if (environmentVariable.isVariableFromDefaultEnvironment) {
+                    let defaultVariable = this.getVariableByKey(this.defaultVariables, referenceVariable.key);
+                    result.push(new Variable(defaultVariable.key, defaultVariable.value, true))
+                } else {
+                    result.push(environmentVariable)
+                }
+            } else {
+                result.push(new Variable(referenceVariable.key, "", true))
             }
         }
-        this.sortVariablesByKey(this.defaultVariables)
+
+        this.sortVariablesByKey(result)
+
+        return result;
     }
 
     private getVariableByKey(variables: Variable[], key: string): Variable {
@@ -149,5 +183,9 @@ export class AllProjectVariables implements Serializable<AllProjectVariables> {
             }
         }
         return null;
+    }
+
+    private sortVariablesByKey(variables: Variable[]) {
+        variables.sort( (a, b) => a.key > b.key ? 1 : -1)
     }
 }
