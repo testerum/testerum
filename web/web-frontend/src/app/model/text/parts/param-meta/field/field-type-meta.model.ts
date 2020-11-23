@@ -14,13 +14,13 @@ import {LocalDateTimeTypeMeta} from "../local-date-time-type-meta.model";
 import {LocalDateTypeMeta} from "../local-date-type-meta.model";
 import {ZonedDateTimeTypeMeta} from "../zoned-date-time-type-meta.model";
 
-export class FieldTypeMeta implements Serializable<FieldTypeMeta> {
+export class TypeMetaFieldDescriptor implements Serializable<TypeMetaFieldDescriptor> {
     name: string;
     type: TypeMeta;
 
-    deserialize(input: Object): FieldTypeMeta {
+    deserialize(input: Object): TypeMetaFieldDescriptor {
         this.name = input["name"];
-        this.type = FieldTypeMeta.deserializeTypeMeta(input["type"]);
+        this.type = TypeMetaFieldDescriptor.deserializeTypeMeta(input["type"]);
         return this;
     }
 

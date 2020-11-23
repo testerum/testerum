@@ -6,7 +6,7 @@ import {ResourceMapEnum} from "../../functionalities/resources/editors/resource-
 import {Warning} from "../warning/Warning";
 import {Serializable} from "../infrastructure/serializable.model";
 import {TypeMeta} from "../text/parts/param-meta/type-meta.model";
-import {FieldTypeMeta} from "../text/parts/param-meta/field/field-type-meta.model";
+import {TypeMetaFieldDescriptor} from "../text/parts/param-meta/field/field-type-meta.model";
 
 export class Arg implements Serializable<Arg> {
 
@@ -29,7 +29,7 @@ export class Arg implements Serializable<Arg> {
 
     deserialize(input: Object): Arg {
         this.name = input["name"];
-        this.serverType = FieldTypeMeta.deserializeTypeMeta(input["typeMeta"]);
+        this.serverType = TypeMetaFieldDescriptor.deserializeTypeMeta(input["typeMeta"]);
         this.uiType = ResourceMapEnum.getResourceMapEnumByTypeMeta(this.serverType).uiType;
         if (input["path"]) {
             this.path = Path.deserialize(input["path"]);
