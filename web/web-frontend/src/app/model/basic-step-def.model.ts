@@ -6,6 +6,7 @@ import {StepPattern} from "./text/step-pattern.model";
 import {Path} from "./infrastructure/path/path.model";
 import {Warning} from "./warning/Warning";
 import {Serializable} from "./infrastructure/serializable.model";
+import {TypeMeta} from "./text/parts/param-meta/type-meta.model";
 
 export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
     id:string = IdUtils.getTemporaryId();
@@ -17,6 +18,7 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
 
     className: string;
     methodName: string;
+    resultType: TypeMeta;
 
     warnings: Array<Warning> = [];
     descendantsHaveWarnings: boolean = false;
@@ -34,6 +36,7 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
         this.tags = input["tags"];
         this.className = input["className"];
         this.methodName = input["methodName"];
+        this.resultType = input["resultType"];
 
         this.warnings = [];
         for (let warning of (input['warnings'] || [])) {
@@ -59,6 +62,7 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
             '"tags":' + JsonUtil.stringify(this.tags) + ',' +
             '"className":' + JsonUtil.stringify(this.className) + ',' +
             '"methodName":' + JsonUtil.stringify(this.methodName) + ',' +
+            '"resultType":'+JsonUtil.serializeSerializable(this.resultType) +','+
             '"warnings": []' +
             '}'
     }

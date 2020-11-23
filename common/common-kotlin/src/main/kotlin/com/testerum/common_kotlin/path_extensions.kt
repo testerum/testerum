@@ -3,8 +3,8 @@
 package com.testerum.common_kotlin
 
 import org.apache.commons.io.FileUtils
-import org.apache.commons.io.IOUtils
 import java.io.IOException
+import java.net.URL
 import java.nio.charset.Charset
 import java.nio.file.FileVisitResult
 import java.nio.file.FileVisitor
@@ -182,7 +182,7 @@ fun JavaPath.readLines(charset: Charset = Charsets.UTF_8): List<String> = Files.
 
 fun JavaPath.readText(charset: Charset = Charsets.UTF_8): String {
     return Files.newBufferedReader(this, charset).use {
-        IOUtils.toString(it)
+        it.readText()
     }
 }
 
@@ -308,3 +308,29 @@ inline fun JavaPath.walkAndCollect(crossinline shouldUse: (JavaPath) -> Boolean)
 fun JavaPath.deleteOnExit() = this.toFile().deleteOnExit()
 
 fun JavaPath.canonicalize(): JavaPath = toAbsolutePath().normalize()
+
+fun List<JavaPath>.toUrlArray(): Array<URL> {
+    val result = ArrayList<URL>()
+
+    for (dir in this) {
+        if (dir.doesNotExist) {
+            continue
+        }
+
+        Files.list(dir).use { pathsStream ->
+            for (path in pathsStream) {
+                if (path.toString().endsWith(".jar")) {
+                    result += path.toUri().toURL()
+                }
+            }
+        }
+    }
+
+    // not using list.toTypedArray()" because it's inneficient:
+    // it allocates a zero-sized array first, and then
+    // the java method will allocate another array with the proper size
+    @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "UNCHECKED_CAST")
+    return (result as java.util.List<URL>).toArray(
+        arrayOfNulls(result.size)
+    )
+}

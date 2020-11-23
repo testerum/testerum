@@ -25,9 +25,6 @@ import org.eclipse.jetty.servlet.ServletHandler
 import org.eclipse.jetty.servlet.ServletHolder
 import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer
-import org.fusesource.jansi.Ansi
-import org.fusesource.jansi.Ansi.ansi
-import org.fusesource.jansi.AnsiConsole
 import org.slf4j.LoggerFactory
 import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.web.servlet.DispatcherServlet
@@ -42,8 +39,6 @@ object TesterumWebMain {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        AnsiConsole.systemInstall()
-
         val port = getPort()
         val server = createServer(port)
 
@@ -74,10 +69,7 @@ object TesterumWebMain {
         }
 
         LOG.info("Testerum server started.")
-        LOG.info(
-            "Testerum (version $versionInfo) is available at " +
-            "${ansi().bg(Ansi.Color.BLACK).fgBrightGreen()}http://localhost:$actualPort/${ansi().bgDefault().fgDefault()}"
-        )
+        LOG.info("Testerum (version $versionInfo) is available at http://localhost:$actualPort/")
         LOG.info("Press Ctrl+C to stop.")
 
         server.join()
@@ -122,98 +114,98 @@ object TesterumWebMain {
 
         // add CharacterEncodingFilter
         webAppContext.addFilter(
-                FilterHolder().apply {
-                    filter = CharacterEncodingFilter()
-                    name = CharacterEncodingFilter::class.java.simpleName.decapitalize()
+            FilterHolder().apply {
+                filter = CharacterEncodingFilter()
+                name = CharacterEncodingFilter::class.java.simpleName.decapitalize()
 
-                    initParameters["encoding"] = "UTF-8"
-                },
-                "/*",
-                EnumSet.of(DispatcherType.REQUEST)
+                initParameters["encoding"] = "UTF-8"
+            },
+            "/*",
+            EnumSet.of(DispatcherType.REQUEST)
         )
 
         // add DisableCacheFilter
         webAppContext.addFilter(
-                FilterHolder().apply {
-                    filter = DisableCacheFilter()
-                    name = DisableCacheFilter::class.java.simpleName.decapitalize()
-                },
-                "/*",
-                EnumSet.of(DispatcherType.REQUEST)
+            FilterHolder().apply {
+                filter = DisableCacheFilter()
+                name = DisableCacheFilter::class.java.simpleName.decapitalize()
+            },
+            "/*",
+            EnumSet.of(DispatcherType.REQUEST)
         )
 
         // add CurrentUserFilter
         webAppContext.addFilter(
-                FilterHolder().apply {
-                    filter = CurrentUserFilter()
-                    name = CurrentUserFilter::class.java.simpleName.decapitalize()
-                },
-                "/*",
-                EnumSet.of(DispatcherType.REQUEST)
+            FilterHolder().apply {
+                filter = CurrentUserFilter()
+                name = CurrentUserFilter::class.java.simpleName.decapitalize()
+            },
+            "/*",
+            EnumSet.of(DispatcherType.REQUEST)
         )
 
         // add CurrentProjectFilter
         webAppContext.addFilter(
-                FilterHolder().apply {
-                    filter = CurrentProjectFilter()
-                    name = CurrentProjectFilter::class.java.simpleName.decapitalize()
-                },
-                "/*",
-                EnumSet.of(DispatcherType.REQUEST)
+            FilterHolder().apply {
+                filter = CurrentProjectFilter()
+                name = CurrentProjectFilter::class.java.simpleName.decapitalize()
+            },
+            "/*",
+            EnumSet.of(DispatcherType.REQUEST)
         )
 
         // add ProjectFsWatcherPauseFilter
         webAppContext.addFilter(
-                FilterHolder().apply {
-                    filter = ProjectFsWatcherPauseFilter()
-                    name = ProjectFsWatcherPauseFilter::class.java.simpleName.decapitalize()
-                },
-                "/*",
-                EnumSet.of(DispatcherType.REQUEST)
+            FilterHolder().apply {
+                filter = ProjectFsWatcherPauseFilter()
+                name = ProjectFsWatcherPauseFilter::class.java.simpleName.decapitalize()
+            },
+            "/*",
+            EnumSet.of(DispatcherType.REQUEST)
         )
 
         // add AngularForwarderFilter
         webAppContext.addFilter(
-                FilterHolder().apply {
-                    filter = AngularForwarderFilter(
-                        forwardToUrl = "/index.html",
-                        customIgnoredUrls = listOf(
-                            // REST web services
-                            Regex("^/rest/.*"),
+            FilterHolder().apply {
+                filter = AngularForwarderFilter(
+                    forwardToUrl = "/index.html",
+                    customIgnoredUrls = listOf(
+                        // REST web services
+                        Regex("^/rest/.*"),
 
-                            // version page
-                            Regex("^/version\\.html.*")
-                        )
+                        // version page
+                        Regex("^/version\\.html.*")
                     )
-                    name = AngularForwarderFilter::class.java.simpleName.decapitalize()
-                },
-                "/*",
-                EnumSet.of(DispatcherType.REQUEST)
+                )
+                name = AngularForwarderFilter::class.java.simpleName.decapitalize()
+            },
+            "/*",
+            EnumSet.of(DispatcherType.REQUEST)
         )
 
         // add DispatcherServlet
         webAppContext.addServlet(
-                ServletHolder().apply {
-                    servlet = DispatcherServlet()
-                    name = "springDispatcherServlet"
+            ServletHolder().apply {
+                servlet = DispatcherServlet()
+                name = "springDispatcherServlet"
 
-                    initParameters["contextConfigLocation"] = "classpath:/spring/spring_web.xml"
+                initParameters["contextConfigLocation"] = "classpath:/spring/spring_web.xml"
 
-                    initOrder = 1
-                },
-                "/rest/*"
+                initOrder = 1
+            },
+            "/rest/*"
         )
 
         // add DefaultServlet, to serve static resources
         webAppContext.addServlet(
-                ServletHolder().apply {
-                    servlet = DefaultServlet()
-                    name = "frontend-static-resources"
+            ServletHolder().apply {
+                servlet = DefaultServlet()
+                name = "frontend-static-resources"
 
-                    initParameters["resourceBase"] = this.javaClass.getResource("/frontend")?.toString()
-                    initParameters["dirAllowed"] = "true"
-                },
-                "/"
+                initParameters["resourceBase"] = this.javaClass.getResource("/frontend")?.toString()
+                initParameters["dirAllowed"] = "true"
+            },
+            "/"
         )
 
 
@@ -223,7 +215,7 @@ object TesterumWebMain {
         }
 
         // enable WebSocket communication
-        WebSocketServerContainerInitializer.configureContext(webAppContext)
+        WebSocketServerContainerInitializer.initialize(webAppContext)
 
         return webAppContext
 

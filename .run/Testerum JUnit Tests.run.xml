@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Testerum JUnit Tests" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="unit tests" type="JUnit" factoryName="JUnit">
     <module name="testerum-junit" />
     <useClassPathOnly />
     <option name="PACKAGE_NAME" value="" />

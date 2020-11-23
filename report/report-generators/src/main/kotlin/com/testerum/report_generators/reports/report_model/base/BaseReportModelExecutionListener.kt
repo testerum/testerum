@@ -32,11 +32,9 @@ import com.testerum.runner.report_model.FeatureOrTestRunnerReportNode
 import com.testerum.runner.report_model.ReportLog
 import com.testerum.runner.report_model.ReportScenario
 import com.testerum.runner.report_model.ReportStep
-import java.util.*
-import javax.annotation.concurrent.NotThreadSafe
+import java.util.ArrayDeque
 import java.nio.file.Path as JavaPath
 
-@NotThreadSafe
 abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
 
     companion object {

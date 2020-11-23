@@ -6,7 +6,7 @@ import com.testerum.launcher.ui.MainFrame
 import javax.swing.JOptionPane
 import javax.swing.WindowConstants
 
-fun main(args: Array<String>) {
+fun main() {
 //    UIManager.setLookAndFeel(
 //            Plastic3DLookAndFeel()
 //    )

@@ -137,6 +137,12 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
             </plugin>
+
+            <!-- testerum-extensions-maven-plugin -->
+            <plugin>
+                <groupId>com.testerum</groupId>
+                <artifactId>testerum-extensions-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 

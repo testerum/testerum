@@ -1,6 +1,5 @@
 package com.testerum.report_generators.reports.console
 
-import com.testerum.common_cmdline.banner.TesterumBanner
 import com.testerum.common_kotlin.emptyToNull
 import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.report_generators.reports.utils.events_stack.ExecutionEventsStack
@@ -32,9 +31,7 @@ class ConsoleExecutionListener : BaseExecutionListener() {
 
     private var isBeforeFirstTest = true
 
-    override fun start() {
-        print(TesterumBanner.BANNER + "\n\n")
-    }
+    override fun start() {}
 
     override fun onEvent(event: RunnerEvent) {
         eventsStack.push(event)

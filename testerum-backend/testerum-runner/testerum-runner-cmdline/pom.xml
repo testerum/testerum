@@ -151,13 +151,10 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-guava</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-afterburner</artifactId>
         </dependency>
+
 
         <!-- slf4j -->
         <dependency>
@@ -171,17 +168,6 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
-        <!-- jansi -->
-        <dependency>
-            <groupId>org.fusesource.jansi</groupId>
-            <artifactId>jansi</artifactId>
-        </dependency>
-
-        <!-- picocli: command line args parser -->
-        <dependency>
-            <groupId>info.picocli</groupId>
-            <artifactId>picocli</artifactId>
-        </dependency>
 
         <!--==================== test dependencies ====================-->
 
@@ -207,10 +193,10 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- java-hamcrest -->
+        <!-- assertj-core -->
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>java-hamcrest</artifactId>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -218,6 +204,7 @@
 
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
 
         <plugins>
             <!-- Kotlin -->
@@ -375,42 +362,6 @@
                     <name>!production</name>
                 </property>
             </activation>
-
-            <dependencies>
-                <!-- basic steps -->
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>assertion-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>debug-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>http-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>json-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>rdbms-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>selenium-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>util-steps</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>vars-steps</artifactId>
-                </dependency>
-            </dependencies>
 
             <build>
                 <plugins>

@@ -1,6 +1,6 @@
 package com.testerum.model.text.parts.param_meta
 
-import com.testerum.model.text.parts.param_meta.field.FieldTypeMeta
+import com.testerum.model.text.parts.param_meta.field.TypeMetaFieldDescriptor
 import com.testerum.model.text.parts.param_meta.util.ReflectionPrimitiveTypeUtil
 import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
@@ -10,7 +10,8 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
-import java.util.*
+import java.util.Collections
+import java.util.Date
 import kotlin.reflect.KClass
 
 
@@ -89,7 +90,12 @@ object TypeMetaFactory {
             val keyGenericMetaType = getGenericTypeByIndexIfExists(genericsType, 0) ?: StringTypeMeta()
             val valueGenericMetaType = getGenericTypeByIndexIfExists(genericsType, 1) ?: StringTypeMeta()
 
-            if (keyGenericMetaType !is StringTypeMeta) throw java.lang.RuntimeException("Only Maps with String key are allowed as parameters or innerparameters for steps. Map type with problem: $genericsType")
+            if (keyGenericMetaType !is StringTypeMeta) {
+                throw java.lang.RuntimeException(
+                    "Only Maps with String key are allowed as parameters or inner parameters for steps." +
+                    " Map type with problem: $genericsType"
+                )
+            }
 
             return MapTypeMeta(javaClass.name, keyGenericMetaType, valueGenericMetaType)
         }
@@ -132,7 +138,7 @@ object TypeMetaFactory {
             return EnumTypeMeta(javaClass.name, enumValues)
         }
 
-        val fieldsTypeMeta: MutableList<FieldTypeMeta> = mutableListOf<FieldTypeMeta>()
+        val fieldsTypeMeta = mutableListOf<TypeMetaFieldDescriptor>()
         for (field in javaClass.declaredFields) {
 
             //ignore compiler (kotlin) added fields
@@ -147,7 +153,7 @@ object TypeMetaFactory {
 
             val fieldTypeMeta = getTypeMetaFromJavaType(field.type, field.genericType)
             fieldsTypeMeta.add(
-                    FieldTypeMeta(field.name, fieldTypeMeta)
+                    TypeMetaFieldDescriptor(field.name, fieldTypeMeta)
             )
         }
 

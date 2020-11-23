@@ -1,13 +1,13 @@
 package com.testerum.runner_cmdline.module_di.initializers
 
 import com.testerum.common_jdk.asMap
-import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
+import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
 import com.testerum.settings.SettingsManager
 import com.testerum.settings.getResolvedSettingValues
 import java.nio.file.Files
-import java.util.*
+import java.util.Properties
 
-class RunnerSettingsInitializer(private val cmdlineParams: CmdlineParams) {
+class RunnerSettingsInitializer(private val cmdlineParams: RunCmdlineParams) {
 
     fun initSettings(settingsManager: SettingsManager) {
         val settingsValues = settingsFromCommandLine()
