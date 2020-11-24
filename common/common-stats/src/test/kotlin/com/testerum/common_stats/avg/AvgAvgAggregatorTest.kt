@@ -1,7 +1,6 @@
 package com.testerum.common_stats.avg
 
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class AvgAvgAggregatorTest {
@@ -11,19 +10,19 @@ class AvgAvgAggregatorTest {
         val aggregator = AvgAvgAggregator()
 
         aggregator.aggregate(
-                Avg(sum = 0, count = 1)
+            Avg(sum = 0, count = 1)
         )
         aggregator.aggregate(
-                Avg(sum = 15, count = 3)
+            Avg(sum = 15, count = 3)
         )
         aggregator.aggregate(
-                Avg(sum = 20, count = 1)
+            Avg(sum = 20, count = 1)
         )
 
         val avg = aggregator.getResult()
 
-        MatcherAssert.assertThat(avg.sum, CoreMatchers.`is`(CoreMatchers.equalTo(35L)))
-        MatcherAssert.assertThat(avg.count, CoreMatchers.`is`(CoreMatchers.equalTo(5L)))
+        assertThat(avg.sum).isEqualTo(35L)
+        assertThat(avg.count).isEqualTo(5L)
     }
 
 }

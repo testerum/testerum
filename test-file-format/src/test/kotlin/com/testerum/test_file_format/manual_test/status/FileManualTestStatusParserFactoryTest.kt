@@ -2,9 +2,7 @@ package com.testerum.test_file_format.manual_test.status
 
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common.parsing.executer.ParserExecuterException
-import org.hamcrest.MatcherAssert
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalTo
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -16,7 +14,7 @@ class FileManualTestStatusParserFactoryTest {
 
     companion object {
         private val parser = ParserExecuter(
-                FileManualTestStatusParserFactory.manualTestStatus()
+            FileManualTestStatusParserFactory.manualTestStatus()
         )
 
         @JvmStatic
@@ -31,13 +29,12 @@ class FileManualTestStatusParserFactoryTest {
     @ParameterizedTest
     @MethodSource("provideCorrectTestArguments")
     fun `OK test`(statusToTest: FileManualTestStatus) {
-        MatcherAssert.assertThat(
-                parser.parse(
-                        """ |status = ${statusToTest.name}
-                        """.trimMargin()
-                ),
-                equalTo(statusToTest)
-        )
+        assertThat(
+            parser.parse(
+                """ |status = ${statusToTest.name}
+                """.trimMargin()
+            )
+        ).isEqualTo(statusToTest)
     }
 
     @Test
@@ -46,14 +43,12 @@ class FileManualTestStatusParserFactoryTest {
             parser.parse("= PASSED")
         }
 
-        assertThat(
-                exception.message,
-                equalTo(
-                        "failed to parse:\n" +
-                                "= PASSED\n" +
-                                "^--- ERROR at line 1, column 1: [status] expected, [=] encountered"
-                )
-        )
+        assertThat(exception.message)
+            .isEqualTo(
+                "failed to parse:\n" +
+                    "= PASSED\n" +
+                    "^--- ERROR at line 1, column 1: [status] expected, [=] encountered"
+            )
     }
 
     @Test
@@ -62,14 +57,12 @@ class FileManualTestStatusParserFactoryTest {
             parser.parse("status PASSED")
         }
 
-        assertThat(
-                exception.message,
-                equalTo(
-                        "failed to parse:\n" +
-                                "status PASSED\n" +
-                                "       ^--- ERROR at line 1, column 8: [=] expected, [P] encountered"
-                )
-        )
+        assertThat(exception.message)
+            .isEqualTo(
+                "failed to parse:\n" +
+                    "status PASSED\n" +
+                    "       ^--- ERROR at line 1, column 8: [=] expected, [P] encountered"
+            )
     }
 
 }

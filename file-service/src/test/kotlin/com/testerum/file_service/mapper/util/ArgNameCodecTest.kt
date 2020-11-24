@@ -2,10 +2,8 @@ package com.testerum.file_service.mapper.util
 
 import com.testerum.file_service.mapper.util.ArgNameCodec.argToVariableName
 import com.testerum.file_service.mapper.util.ArgNameCodec.variableToArgName
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.hamcrest.CoreMatchers.`is` as Is
 
 class ArgNameCodecTest {
 
@@ -42,27 +40,45 @@ class ArgNameCodecTest {
     @Test
     fun `underscore in arg name is not preserved when decoded back from var name`() {
         // this test is here to document the limitation
-        assertThat("arg -> var", argToVariableName("a_name"), Is(equalTo("a_name")))
-        assertThat("var -> arg", variableToArgName("a_name"), Is(equalTo("a name")))
+        assertThat(argToVariableName("a_name"))
+            .describedAs("arg -> var")
+            .isEqualTo("a_name")
+        assertThat(variableToArgName("a_name"))
+            .describedAs("var -> arg")
+            .isEqualTo("a name")
     }
 
     @Test
     fun `invalid characters are not preserved when decoded back from var name`() {
         // this test is here to document the limitation
-        assertThat("arg -> var", argToVariableName("a?big.name"), Is(equalTo("a_big_name")))
-        assertThat("var -> arg", variableToArgName("a_big_name"), Is(equalTo("a big name")))
+        assertThat(argToVariableName("a?big.name"))
+            .describedAs("arg -> var")
+            .isEqualTo("a_big_name")
+        assertThat(variableToArgName("a_big_name"))
+            .describedAs("var -> arg")
+            .isEqualTo("a big name")
     }
 
     @Test
     fun `complex test, that involves all rules, to test that they work correctly together`() {
-        assertThat("arg -> var", argToVariableName("1 a long_name  "), Is(equalTo("_1_a_long_name__")))
-        assertThat("var -> arg", variableToArgName("_1_a_long_name__"), Is(equalTo("1 a long name  ")))
+        assertThat(argToVariableName("1 a long_name  "))
+            .describedAs("arg -> var")
+            .isEqualTo("_1_a_long_name__")
+        assertThat(variableToArgName("_1_a_long_name__"))
+            .describedAs("var -> arg")
+            .isEqualTo("1 a long name  ")
     }
 
-    private fun testBothDirections(argName: String,
-                                   varName: String) {
-        assertThat("arg -> var", argToVariableName(argName), Is(equalTo(varName)))
-        assertThat("var -> arg", variableToArgName(varName), Is(equalTo(argName)))
+    private fun testBothDirections(
+        argName: String,
+        varName: String
+    ) {
+        assertThat(argToVariableName(argName))
+            .describedAs("arg -> var")
+            .isEqualTo(varName)
+        assertThat(variableToArgName(varName))
+            .describedAs("var -> arg")
+            .isEqualTo(argName)
     }
 
 }

@@ -8,12 +8,12 @@ object FileStepVarSerializer : BaseSerializer<FileStepVar>() {
 
     override fun serialize(source: FileStepVar, destination: Writer, indentLevel: Int) {
         val valueLines = source.value
-                .lines()
+            .lines()
 
         val minCommonIndent = valueLines
-                .filter(String::isNotBlank)
-                .map { indentWidth(it) }
-                .min() ?: 0
+            .filter(String::isNotBlank)
+            .map { indentWidth(it) }
+            .minOrNull() ?: 0
 
         val lines = valueLines.map {
             it.drop(minCommonIndent)
