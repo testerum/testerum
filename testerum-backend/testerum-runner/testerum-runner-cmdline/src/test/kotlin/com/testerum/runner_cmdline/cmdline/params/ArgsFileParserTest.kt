@@ -20,7 +20,6 @@ class ArgsFileParserTest {
             "    * III\\\n" +
             "    * 4th"
         val args = ArgsFileParser.parseArgsFile(fileContent)
-        val endTime = System.nanoTime()
 
         assertThat(args).hasSize(7)
         assertThat(args[0]).isEmpty()

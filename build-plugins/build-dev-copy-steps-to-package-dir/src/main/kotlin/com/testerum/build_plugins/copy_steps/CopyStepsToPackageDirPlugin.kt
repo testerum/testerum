@@ -1,4 +1,4 @@
-package com.testerum.build_plugins
+package com.testerum.build_plugins.copy_steps
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

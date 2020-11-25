@@ -1,4 +1,6 @@
+
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") apply false
@@ -15,7 +17,7 @@ allprojects {
         mavenLocal()
     }
 
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    tasks.withType<KotlinCompile>().configureEach {
         // kotlinOptions.allWarningsAsErrors = true
         kotlinOptions.apiVersion = "1.4"
         kotlinOptions.jvmTarget = "1.8"

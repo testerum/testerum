@@ -9,6 +9,7 @@ javaPlatform {
 
 dependencies {
     constraints {
+        // internal dependencies
         for (subproject in rootProject.subprojects) {
             if (subproject.name == name) {
                 continue
@@ -17,12 +18,11 @@ dependencies {
             api(project(subproject.path))
         }
 
-        val kotlinVersion: String by project
-
         // testerum-api
         api("com.testerum:testerum-steps-api:develop-SNAPSHOT")
 
         // kotlin
+        val kotlinVersion: String by project
         api(kotlin("stdlib-jdk8", kotlinVersion))
         api(kotlin("reflect", kotlinVersion))
 
