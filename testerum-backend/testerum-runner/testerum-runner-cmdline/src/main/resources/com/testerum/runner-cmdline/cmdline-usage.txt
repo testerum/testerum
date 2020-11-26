@@ -1,0 +1,243 @@
+USAGE
+    testerum-runner --help
+    testerum-runner --version
+    testerum-runner --repository-directory <repositoryDirectory> [options]
+
+OPTIONS
+    --help, -h
+        displays this help message and exits
+
+    --version
+        displays program version information and exits
+
+    --repository-directory <repository directory>
+        path to the root of the repository, where the
+        test/feature/resource/etc. files are stored
+
+        Example:
+            --repository-directory /path/to/repo/dir
+
+    --test-path <test path>
+        path to test file or directory
+
+        This argument can appear multiple times in the command line.
+
+        If no test path is specified, all tests will be run.
+
+        If the paths are relative, they will be resolved relative to the
+        features directory.
+
+        For a parametrized test, by default all scenarios will be run.
+        If you want to run only some scenarios, add them to the end of the
+        test filename, within square brackets: my-little.test[3].
+        The number is the index of the scenario, starting with 0.
+        If you want to run multiple scenarios, use comma to separate the
+        indexes: my-little.test[0,2,5]
+
+        Example:
+            --test-path "/path/to/some feature/"
+            --test-path "/path/to/another-feature/File 1.test"
+            --test-path "another-feature/File 2.test"
+            --test-path "a-feature/Parametrized.test[0,2,5]"
+
+        See also:
+            --include-tag
+            --exclude-tag
+
+    --include-tag <include tags>
+        test or feature tag used to select what tests will run
+
+        If no tag will be specified, the other options will be used to
+        determine what to run (e.g. --test-path)
+
+        If a test has one of these tags, the test will be executed.
+
+        If a feature has one of these tags, all tests inside it (recursively)
+        will be executed.
+
+        Exclude tags have priority over include tags, i.e. if a feature or a
+        test have both an include tag and an exclude tag, the feature or test
+        will NOT be executed.
+
+        Example:
+            --include-tag web
+            --include-tag a_tag --include-tag a_second_tag
+            --include-tag "tag with spaces"
+
+        See also:
+            --exclude-tag
+            --test-path
+
+    --exclude-tag <exclude tags>
+        test or feature tag used to select what tests will NOT run
+
+        If a test has one of these tags, the test will NOT be executed.
+
+        If a feature has one of these tags, all tests inside it (recursively)
+        will NOT be executed.
+
+        Exclude tags have priority over include tags, i.e. if a feature or a
+        test have both an include tag and an exclude tag, the feature or test
+        will NOT be executed.
+
+        Example:
+            --exclude-tag web
+            --exclude-tag a_tag --exclude-tag a_second_tag
+            --exclude-tag "tag with spaces"
+
+        See also:
+            --include-tag
+            --test-path
+
+    --managed-reports-directory <managed reports dir>
+        path to the root directory of managed reports.
+
+        Normally, you need to specify a different report directory every time
+        you invoke the runner, otherwise the new report will overwrite the
+        previous one.
+
+        If this argument is present, the runner will create a separate
+        directory at every execution. This makes automation easier
+        (e.g. from shell scripts or CI/CD servers).
+
+        In addition, a latest-report.html file will be created that always
+        shows the latest report.
+
+        See also:
+            --report
+
+    --report <report>
+        what report to produce
+
+        This argument can appear multiple times in the command line.
+
+        The value  of this argument has  the following generic syntax:
+            <reportType>[:prop1=val1,prop2=val2,...]
+
+        where:
+        * reportType is one of the following:
+            CONSOLE
+            CONSOLE_DEBUG
+            PRETTY
+        * the properties  are optional, and they  depend on the reportType.
+          Multiple  properties are  separated by  comma (,).
+          Keys  are  separated  from  values  by  equal (=).
+          If the value is empty, the equal sign is optional.
+          If the key or the value must contain  comma (,) or equal (=), they
+          must be escaped  using  backslash.
+          For example:
+            equation=1+2\=3,greeting=Hello\\, world!
+          will produce 2 properties:
+            "equation" with the value "1+2=3"
+            "greeting" with the value "Hello, world!"
+
+        If "--report" is missing, the default value will be CONSOLE.
+
+        Multiple reports can be specified at the same time:
+            --report CONSOLE --report PRETTY:destinationDirectory=/p
+
+        Do not specify multiple report types that use the console:
+            --report CONSOLE --report CONSOLE_DEBUG
+        If you do this, since all reports will be interleaved, it will be hard
+        to understand the results.
+
+
+        CONSOLE report type
+        -------------------
+        This report shows the test execution progress and the results to the console.
+
+        Logs are only shown for failed tests.
+
+        This report type doesn't have any properties.
+
+        Example:
+            --report CONSOLE
+
+
+        CONSOLE_DEBUG report type
+        -------------------------
+        This reports shows as much information as possible to aid in debugging
+        problems.
+
+        This report type doesn't have any properties.
+
+        Example:
+            --report CONSOLE_DEBUG
+
+
+        PRETTY report type
+        ------------------
+        This produces an interactive HTML report.
+
+        This report has one required property called "destinationDirectory",
+        which must be the path to the directory where the report will be
+        written.
+
+        Example:
+            --report PRETTY:destinationDirectory=/some/path
+
+        If the destination directory doesn't exist yet, it will be created.
+
+
+        REMOTE_SERVER report type
+        -------------------------
+        This sends the reports to the Testerum reports server.
+
+        This report has one required property called "reportServerUrl", which
+        must be the URL to the report server.
+
+        Example:
+        --report REMOTE_SERVER:reportServerUrl=http://report-server-host:7788
+
+
+        See also:
+            --managed-reports-directory
+
+    --setting <name=value>
+        override Testerum settings
+
+        This argument can appear multiple times in the command line.
+
+        This argument takes precedence over --settings-file, if the same key
+        is found in both.
+
+        Example:
+            --setting testerum.selenium.afterStepDelayMillis=0
+
+        See also:
+            --settings-file
+
+    --settings-file <settings file>
+        path to a settings file
+
+        The settings in this file override Testerum settings. The file must be
+        in the standard Java .properties format.
+
+        Example:
+            --settings-file /path/to/file.properties
+
+        See also:
+            --setting
+
+    --var <name=value>
+        override Testerum variables
+
+        This argument can appear multiple times in the command line.
+
+        This argument takes precedence over variables from --var-env, if the
+        same key is found in both.
+
+        Example:
+            --var URL=http://localhost:4200
+
+        See also:
+            --var-env
+
+    --var-env <environment name>
+        the variables environment to use
+
+        Example:
+            --var-env dev
+
+        See also:
+            --var

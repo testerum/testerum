@@ -11,7 +11,7 @@ import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.junit5.logger.JUnitEventLogger
-import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
+import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
 import com.testerum.runner_cmdline.events.execution_listeners.junit.JUnitExecutionListener
 import com.testerum.runner_cmdline.module_di.RunnerModuleBootstrapper
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
@@ -38,12 +38,13 @@ class JunitTestProvider(repositoryDirectory: Path,
                         variableOverrides: Map<String, String> = emptyMap(),
                         settingsFile: Path? = null,
                         settingOverrides: Map<String, String> = emptyMap(),
+                        packagesWithAnnotations: List<String> = emptyList(),
                         testPaths: List<TestPath> = emptyList(),
                         tagsToInclude: List<String> = emptyList(),
                         tagsToExclude: List<String> = emptyList()
 ) {
 
-    private val cmdlineParams: CmdlineParams = CmdlineParams(
+    private val cmdlineParams: RunCmdlineParams = RunCmdlineParams(
             verbose = false,
             repositoryDirectory = repositoryDirectory,
             variablesEnvironment = variablesEnvironment,
@@ -51,8 +52,9 @@ class JunitTestProvider(repositoryDirectory: Path,
             settingsFile = settingsFile,
             settingOverrides = settingOverrides,
             testPaths = testPaths,
-            tagsToInclude = tagsToInclude,
-            tagsToExclude = tagsToExclude,
+            packagesWithAnnotations = packagesWithAnnotations,
+            includeTags = tagsToInclude,
+            excludeTags = tagsToExclude,
             reportsWithProperties = listOf("JUNIT"),
             managedReportsDir = null,
             executionName = null

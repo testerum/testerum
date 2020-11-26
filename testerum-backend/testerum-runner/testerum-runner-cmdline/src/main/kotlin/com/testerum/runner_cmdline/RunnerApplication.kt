@@ -1,15 +1,17 @@
 package com.testerum.runner_cmdline
 
 import com.testerum.common_jdk.stopwatch.StopWatch
+import com.testerum.common_kotlin.hasExtension
+import com.testerum.common_kotlin.list
 import com.testerum.common_kotlin.runWithThreadContextClassLoader
-import com.testerum.file_service.caches.resolved.BasicStepsCache
+import com.testerum.common_kotlin.toUrlArray
 import com.testerum.file_service.file.TesterumProjectFileService
 import com.testerum.file_service.file.VariablesFileService
 import com.testerum.runner.events.model.ConfigurationEvent
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.exit_code.ExitCode
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
-import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
+import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
 import com.testerum.runner_cmdline.events.EventsService
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
 import com.testerum.runner_cmdline.object_factory.GlueObjectFactoryFinder
@@ -30,26 +32,28 @@ import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsM
 import com.testerum_api.testerum_steps_api.test_context.settings.RunnerTesterumDirs
 import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 import com.testerum_api.testerum_steps_api.transformer.Transformer
+import java.net.URLClassLoader
 import java.time.LocalDateTime
 import java.nio.file.Path as JavaPath
 
-class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
-                        private val runnerSettingsManager: RunnerSettingsManager,
-                        private val runnerTesterumDirs: RunnerTesterumDirs,
-                        private val testerumDirs: TesterumDirs,
-                        private val eventsService: EventsService,
-                        private val basicStepsCache: BasicStepsCache,
-                        private val runnerExecutionTreeBuilder: RunnerExecutionTreeBuilder,
-                        private val variablesFileService: VariablesFileService,
-                        private val testVariables: TestVariablesImpl,
-                        private val executionListenerFinder: ExecutionListenerFinder,
-                        private val globalTransformers: List<Transformer<*>>,
-                        private val testerumLogger: TesterumLogger,
-                        private val stopWatch: StopWatch) {
+class RunnerApplication(
+    private val runnerProjectManager: RunnerProjectManager,
+    private val runnerSettingsManager: RunnerSettingsManager,
+    private val runnerTesterumDirs: RunnerTesterumDirs,
+    private val testerumDirs: TesterumDirs,
+    private val eventsService: EventsService,
+    private val runnerExecutionTreeBuilder: RunnerExecutionTreeBuilder,
+    private val variablesFileService: VariablesFileService,
+    private val testVariables: TestVariablesImpl,
+    private val executionListenerFinder: ExecutionListenerFinder,
+    private val globalTransformers: List<Transformer<*>>,
+    private val testerumLogger: TesterumLogger,
+    private val stopWatch: StopWatch
+) {
 
     // todo: when resolving settings (in the service module), throw exception if a cycle is found
 
-    fun execute(cmdlineParams: CmdlineParams): ExitCode {
+    fun execute(cmdlineParams: RunCmdlineParams): ExitCode {
         return try {
             // create execution tree
             val suite = getRunnerSuiteToBeExecuted(cmdlineParams)
@@ -62,25 +66,25 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         }
     }
 
-    fun getRunnerSuiteToBeExecuted(cmdlineParams: CmdlineParams): RunnerSuite {
+    fun getRunnerSuiteToBeExecuted(cmdlineParams: RunCmdlineParams): RunnerSuite {
         initialize(cmdlineParams)
 
         val testsDir = runnerProjectManager.getProjectServices().dirs().getTestsDir()
         val suite: RunnerSuite = runnerExecutionTreeBuilder.createTree(cmdlineParams, testsDir)
 
-        return suite;
+        return suite
     }
 
-    fun jUnitExecute(cmdlineParams: CmdlineParams, suite: RunnerSuite): ExitCode {
+    fun jUnitExecute(cmdlineParams: RunCmdlineParams, suite: RunnerSuite): ExitCode {
         return tryToExecute(cmdlineParams, suite)
     }
 
-    private fun tryToExecute(cmdlineParams: CmdlineParams, suite: RunnerSuite): ExitCode {
+    private fun tryToExecute(cmdlineParams: RunCmdlineParams, suite: RunnerSuite): ExitCode {
 
         logRunnerSuite(suite)
 
         // setup runner services
-        val stepsClassLoader: ClassLoader = Thread.currentThread().contextClassLoader
+        val stepsClassLoader: ClassLoader = stepsClassLoader()
         val testContext = TestContextImpl(stepsClassLoader = stepsClassLoader)
         @Suppress("DEPRECATION")
         run {
@@ -133,15 +137,30 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
         }
     }
 
-    private fun initialize(cmdlineParams: CmdlineParams) {
-        executionListenerFinder.setReports(cmdlineParams.reportsWithProperties, cmdlineParams.managedReportsDir)
+    private fun stepsClassLoader(): ClassLoader {
+        val additionalBasicStepsDir = runnerProjectManager.getProjectServices().dirs().getAdditionalBasicStepsDir()
+        val additionalJars = additionalBasicStepsDir.list { it.hasExtension(".jar") }
+            .toUrlArray()
 
-        triggerConfigurationEvent(cmdlineParams)
-
-        basicStepsCache.initialize()
+        return URLClassLoader(
+            additionalJars,
+            Thread.currentThread().contextClassLoader
+        )
     }
 
-    private fun triggerConfigurationEvent(cmdlineParams: CmdlineParams) {
+    private fun initialize(cmdlineParams: RunCmdlineParams) {
+        val reportsWithProperties = if (cmdlineParams.reportsWithProperties.isEmpty()) {
+            listOf("CONSOLE")
+        } else {
+            cmdlineParams.reportsWithProperties
+        }
+
+        executionListenerFinder.setReports(reportsWithProperties, cmdlineParams.managedReportsDir)
+
+        triggerConfigurationEvent(cmdlineParams)
+    }
+
+    private fun triggerConfigurationEvent(cmdlineParams: RunCmdlineParams) {
         val projectInfo = TesterumProjectFileService().load(cmdlineParams.repositoryDirectory)
 
         eventsService.logEvent(
@@ -157,8 +176,8 @@ class RunnerApplication(private val runnerProjectManager: RunnerProjectManager,
                 settingsFile = cmdlineParams.settingsFile.toString(),
                 settingOverrides = cmdlineParams.settingOverrides,
                 testPaths = cmdlineParams.testPaths,
-                tagsToInclude = cmdlineParams.tagsToInclude,
-                tagsToExclude = cmdlineParams.tagsToExclude,
+                tagsToInclude = cmdlineParams.includeTags,
+                tagsToExclude = cmdlineParams.excludeTags,
                 reportsWithProperties = cmdlineParams.reportsWithProperties,
                 managedReportsDir = cmdlineParams.managedReportsDir.toString(),
                 executionName = cmdlineParams.executionName

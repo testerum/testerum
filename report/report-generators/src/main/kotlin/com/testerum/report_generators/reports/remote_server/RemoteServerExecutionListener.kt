@@ -66,7 +66,7 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
     override fun onEvent(event: RunnerEvent) {
         if (eventsAsStringBuilder.isNotEmpty()) {
-            eventsAsStringBuilder.appendln()
+            eventsAsStringBuilder.appendLine()
         }
 
         eventsAsStringBuilder.append(EXECUTION_LISTENERS_OBJECT_MAPPER.writeValueAsString(event))

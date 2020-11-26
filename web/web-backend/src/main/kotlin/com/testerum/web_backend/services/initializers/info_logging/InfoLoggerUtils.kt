@@ -26,9 +26,10 @@ object InfoLoggerUtils {
 
     private fun findSizeOfBiggestKey(map: Map<String, String>): Int {
         return map.keys
-                .asSequence()
-                .map { it.length }
-                .max() ?: 0
+            .asSequence()
+            .map { it.length }
+            .maxOrNull()
+            ?: 0
     }
 
     private fun getValueToDisplay(key: String?,

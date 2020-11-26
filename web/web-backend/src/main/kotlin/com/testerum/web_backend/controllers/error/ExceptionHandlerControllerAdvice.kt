@@ -1,6 +1,5 @@
 package com.testerum.web_backend.controllers.error
 
-import lombok.NonNull
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.ModelAndView
@@ -14,8 +13,10 @@ import javax.servlet.http.HttpServletRequest
 class ExceptionHandlerControllerAdvice {
 
     @ExceptionHandler(Exception::class)
-    fun defaultErrorHandler(@NonNull request: HttpServletRequest,
-                            e: Exception?): ModelAndView {
+    fun defaultErrorHandler(
+        request: HttpServletRequest,
+        e: Exception?
+    ): ModelAndView {
         request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, e)
 
         return ModelAndView("/rest/error")

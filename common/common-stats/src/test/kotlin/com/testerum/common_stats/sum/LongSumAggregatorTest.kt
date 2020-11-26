@@ -1,9 +1,7 @@
 package com.testerum.common_stats.sum
 
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.hamcrest.CoreMatchers.`is` as Is
 
 class LongSumAggregatorTest {
 
@@ -17,7 +15,7 @@ class LongSumAggregatorTest {
 
         val sum = aggregator.getResult()
 
-        assertThat(sum, Is(equalTo(45L)))
+        assertThat(sum).isEqualTo(45L)
     }
 
 }

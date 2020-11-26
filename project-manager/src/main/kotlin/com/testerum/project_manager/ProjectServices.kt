@@ -7,11 +7,14 @@ import com.testerum.model.project.FileProject
 import com.testerum.project_manager.dirs.ProjectDirs
 import java.nio.file.Path
 
-class ProjectServices(projectRootDir: Path,
-                      val project: FileProject,
-                      createFeaturesCache: (ProjectServices) -> FeaturesCache,
-                      createTestsCache: (ProjectServices) -> TestsCache,
-                      createStepsCache: (ProjectServices) -> StepsCache) {
+class ProjectServices(
+    projectRootDir: Path,
+    val project: FileProject,
+    private val packagesWithAnnotations: List<String>,
+    createFeaturesCache: (ProjectServices) -> FeaturesCache,
+    createTestsCache: (ProjectServices) -> TestsCache,
+    createStepsCache: (ProjectServices) -> StepsCache
+) {
 
     private val dirs = ProjectDirs(projectRootDir)
 
@@ -63,10 +66,14 @@ class ProjectServices(projectRootDir: Path,
     }
 
     private fun StepsCache.initializeStepsCacheFromProjectServices() {
-        val composedStepsDir = dirs.getComposedStepsDir()
-        val resourcesDir = dirs.getResourcesDir()
-
-        initialize(composedStepsDir, resourcesDir)
+        initialize(
+            packagesWithAnnotations = packagesWithAnnotations,
+            additionalBasicStepsDirs = listOf(
+                dirs.getAdditionalBasicStepsDir()
+            ),
+            composedStepsDir = dirs.getComposedStepsDir(),
+            resourcesDir = dirs.getResourcesDir()
+        )
     }
 
 }

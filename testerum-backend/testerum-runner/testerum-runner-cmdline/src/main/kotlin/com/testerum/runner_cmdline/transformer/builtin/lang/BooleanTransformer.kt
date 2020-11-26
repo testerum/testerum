@@ -14,10 +14,10 @@ object BooleanTransformer : Transformer<Boolean> {
     override fun transform(toTransform: String, paramInfo: ParameterInfo): Boolean = transform(toTransform)
 
     fun transform(toTransform: String): Boolean {
-        if (TRUE_VALUES.contains(toTransform)) {
+        if (toTransform == "true" || toTransform == "yes") {
             return true
         }
-        if (FALSE_VALUES.contains(toTransform)) {
+        if (toTransform == "false" || toTransform == "no") {
             return false
         }
 

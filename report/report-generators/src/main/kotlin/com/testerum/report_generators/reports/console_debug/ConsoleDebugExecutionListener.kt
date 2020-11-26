@@ -17,9 +17,7 @@ import com.testerum.runner.events.model.SuiteStartEvent
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
-import javax.annotation.concurrent.NotThreadSafe
 
-@NotThreadSafe
 open class ConsoleDebugExecutionListener : BaseExecutionListener() {
 
     private var indentLevel = 0

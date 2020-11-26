@@ -42,12 +42,14 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import java.nio.file.Path as JavaPath
 
-class TestsExecutionFrontendService(private val webProjectManager: WebProjectManager,
-                                    private val testerumDirs: TesterumDirs,
-                                    private val frontendDirs: FrontendDirs,
-                                    private val settingsManager: SettingsManager,
-                                    private val localVariablesFileService: LocalVariablesFileService,
-                                    private val jsonObjectMapper: ObjectMapper) {
+class TestsExecutionFrontendService(
+    private val webProjectManager: WebProjectManager,
+    private val testerumDirs: TesterumDirs,
+    private val frontendDirs: FrontendDirs,
+    private val settingsManager: SettingsManager,
+    private val localVariablesFileService: LocalVariablesFileService,
+    private val jsonObjectMapper: ObjectMapper
+) {
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(TestsExecutionFrontendService::class.java)
@@ -76,11 +78,11 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         }
 
         val testsMap = TestsFinder.loadTestsToRun(
-                testPaths = testPaths,
-                tagsToInclude = runConfig.tagsToInclude,
-                tagsToExclude = runConfig.tagsToExclude,
-                testsDirectoryRoot = testsDirectoryRoot,
-                loadTestAtPath = { webProjectManager.getProjectServices().getTestsCache().getTestAtPath(it) }
+            testPaths = testPaths,
+            tagsToInclude = runConfig.tagsToInclude,
+            tagsToExclude = runConfig.tagsToExclude,
+            testsDirectoryRoot = testsDirectoryRoot,
+            loadTestAtPath = { webProjectManager.getProjectServices().getTestsCache().getTestAtPath(it) }
         )
         val executionId = testExecutionIdGenerator.nextId()
         val projectRootDir = ProjectDirHolder.get().toAbsolutePath().normalize()
@@ -88,23 +90,23 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         // todo: remove this workaround: the UI should send the environment in the request
         val projectId = webProjectManager.getProjectServices().project.id
         val currentEnvironment = localVariablesFileService.getCurrentEnvironment(
-                fileLocalVariablesFile = frontendDirs.getFileLocalVariablesFile(),
-                projectId = projectId
+            fileLocalVariablesFile = frontendDirs.getFileLocalVariablesFile(),
+            projectId = projectId
         )
 
         testExecutionsById[executionId] = TestExecution(
-                executionId = executionId,
-                settings = runConfig.settings,
-                testOrDirectoryPathsToRun = runConfig.pathsToInclude,
-                projectRootDir = projectRootDir,
-                variablesEnvironment = currentEnvironment
+            executionId = executionId,
+            settings = runConfig.settings,
+            testOrDirectoryPathsToRun = runConfig.pathsToInclude,
+            projectRootDir = projectRootDir,
+            variablesEnvironment = currentEnvironment
         )
 
         val runnerRootNode = getRunnerRootNode(testsMap)
 
         return TestExecutionResponse(
-                executionId = executionId,
-                runnerRootNode = runnerRootNode
+            executionId = executionId,
+            runnerRootNode = runnerRootNode
         )
     }
 
@@ -113,7 +115,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
         for ((path, model) in testsMap) {
             builder.addTest(
-                    TestPathAndModel(path, model)
+                TestPathAndModel(path, model)
             )
         }
 
@@ -135,9 +137,11 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         testExecutionsById.remove(executionId)
     }
 
-    fun startExecution(executionId: Long,
-                       eventProcessor: (event: RunnerEvent) -> Unit,
-                       doneProcessor: () -> Unit) {
+    fun startExecution(
+        executionId: Long,
+        eventProcessor: (event: RunnerEvent) -> Unit,
+        doneProcessor: () -> Unit
+    ) {
         val execution = testExecutionsById[executionId]
         if (execution == null) {
             LOG.warn("trying to start an execution that no longer exists")
@@ -156,30 +160,29 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         val commandLine: List<String> = createCommandLine(argsFile)
 
         try {
-
             val testRunnerEventProcessor = TestRunnerEventParser(jsonObjectMapper, eventProcessor)
 
             val processExecutor: ProcessExecutor = ProcessExecutor()
-                    .command(commandLine)
-                    .readOutput(true)
-                    .addListener(object : ProcessListener() {
-                        override fun afterStart(process: Process, executor: ProcessExecutor) {
-                            testExecutionsById[executionId] = execution.toRunning(
-                                    stopper = ProcessKillerTestExecutionStopper(executionId, process)
-                            )
-                        }
+                .command(commandLine)
+                .readOutput(true)
+                .addListener(object : ProcessListener() {
+                    override fun afterStart(process: Process, executor: ProcessExecutor) {
+                        testExecutionsById[executionId] = execution.toRunning(
+                            stopper = ProcessKillerTestExecutionStopper(executionId, process)
+                        )
+                    }
 
-                        override fun afterStop(process: Process?) {
-                            testExecutionsById.remove(executionId)
+                    override fun afterStop(process: Process?) {
+                        testExecutionsById.remove(executionId)
+                    }
+                })
+                .redirectOutput(
+                    object : LogOutputStream() {
+                        override fun processLine(line: String) {
+                            testRunnerEventProcessor.processEvent(line)
                         }
-                    })
-                    .redirectOutput(
-                            object : LogOutputStream() {
-                                override fun processLine(line: String) {
-                                    testRunnerEventProcessor.processEvent(line)
-                                }
-                            }
-                    )
+                    }
+                )
 
             val startTime = System.currentTimeMillis()
             val processResult: ProcessResult = processExecutor.execute()
@@ -187,8 +190,8 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
             if (processResult.exitValue == ExitCode.RUNNER_FAILED.code) {
                 handleError(
-                        eventProcessor,
-                        errorMessage = """|process exited with code ${processResult.exitValue}
+                    eventProcessor,
+                    errorMessage = """|process exited with code ${processResult.exitValue}
                                           |commandLine = $commandLine
                                           |args = $args
                                           |output = [${processResult.outputUTF8()}]
@@ -197,8 +200,8 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
             }
         } catch (e: Exception) {
             handleError(
-                    eventProcessor,
-                    errorMessage = """|failed to start the runner process
+                eventProcessor,
+                errorMessage = """|failed to start the runner process
                                       |commandLine = $commandLine
                                       |args = $args
                                       |exception = ${e.toStringWithStacktrace()}
@@ -215,7 +218,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
             // send RunnerStoppedEvent
             try {
                 eventProcessor(
-                        RunnerStoppedEvent()
+                    RunnerStoppedEvent()
                 )
             } catch (e: Exception) {
                 LOG.warn("failed to process ${RunnerStoppedEvent::class.simpleName}", e)
@@ -235,7 +238,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
         commandLine += "-classpath"
         commandLine +=
-                "${getRunnerLibPath()}/*" +
+            "${getRunnerLibPath()}/*" +
                 "${File.pathSeparatorChar}" +
                 "${testerumDirs.getBasicStepsDir()}/*"
 
@@ -255,8 +258,8 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         val runnerDir: JavaPath = testerumDirs.getRunnerDir()
 
         return runnerDir.resolve("lib")
-                .toAbsolutePath()
-                .normalize()
+            .toAbsolutePath()
+            .normalize()
     }
 
     private fun createArgsFile(args: List<String>): JavaPath {
@@ -265,11 +268,8 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
         val escapedArgs = args
             .joinToString("\n") {
-                "\"" +
                 it.replace("\\", "\\\\")
-                  .replace("\"", "\\\"")
-                  .replace("\n", "\\n") +
-                "\""
+                    .replace("\n", "\\\n")
             }
 
         Files.write(argsFile, escapedArgs.toByteArray(Charsets.UTF_8))
@@ -300,9 +300,9 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
         // tests
         for (testPathToRun in execution.testOrDirectoryPathsToRun) {
             val path: JavaPath = projectDirs.getTestsDir()
-                    .resolve(testPathToRun.path.toString())
-                    .toAbsolutePath()
-                    .normalize()
+                .resolve(testPathToRun.path.toString())
+                .toAbsolutePath()
+                .normalize()
 
             args += "--test-path"
             args += if (testPathToRun.scenarioIndexes.isEmpty()) {
@@ -324,7 +324,7 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
 
         // add global settings
         val defaultSettings = settingsManager.getSettings()
-                .associateBy({ it.definition.key }, { it.resolvedValue })
+            .associateBy({ it.definition.key }, { it.resolvedValue })
         settings.putAll(defaultSettings)
 
         // override settings from execution, if needed
@@ -349,10 +349,10 @@ class TestsExecutionFrontendService(private val webProjectManager: WebProjectMan
     private fun handleError(eventProcessor: (event: RunnerEvent) -> Unit, errorMessage: String) {
         LOG.error(errorMessage)
         eventProcessor(
-                RunnerErrorEvent(
-                        time = LocalDateTime.now(),
-                        errorMessage = errorMessage
-                )
+            RunnerErrorEvent(
+                time = LocalDateTime.now(),
+                errorMessage = errorMessage
+            )
         )
     }
 

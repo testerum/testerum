@@ -11,6 +11,10 @@ atlassian-ide-plugin.xml
 .settings
 .springBeans
 
+# Gradle
+.gradle/
+build/
+
 # exclude maven target directories everywhere
 target/
 

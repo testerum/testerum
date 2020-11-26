@@ -17,21 +17,24 @@ import java.nio.file.Path as JavaPath
 typealias OpenListener = (projectRootDir: JavaPath, fileProject: FileProject) -> Unit
 typealias CloseListener = (projectRootDir: JavaPath, fileProject: FileProject) -> Unit
 
-class ProjectManager(private val testerumProjectFileService: TesterumProjectFileService,
-                     private val createFeaturesCache: (ProjectServices) -> FeaturesCache,
-                     private val createTestsCache: (ProjectServices) -> TestsCache,
-                     private val createStepsCache: (ProjectServices) -> StepsCache) {
+class ProjectManager(
+    private val testerumProjectFileService: TesterumProjectFileService,
+    private val packagesWithAnnotations: List<String>,
+    private val createFeaturesCache: (ProjectServices) -> FeaturesCache,
+    private val createTestsCache: (ProjectServices) -> TestsCache,
+    private val createStepsCache: (ProjectServices) -> StepsCache
+) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(ProjectManager::class.java)
     }
 
     private val openProjectsCache: LoadingCache</*projectRootDir: */JavaPath, ProjectServices> = CacheBuilder.newBuilder()
-            .expireAfterAccess(1, TimeUnit.HOURS)
-            .removalListener<JavaPath, ProjectServices>(this::onProjectClosed)
-            .build(object : CacheLoader<JavaPath, ProjectServices>() {
-                override fun load(projectRootDir: JavaPath): ProjectServices = openProject(projectRootDir)
-            })
+        .expireAfterAccess(1, TimeUnit.HOURS)
+        .removalListener<JavaPath, ProjectServices>(this::onProjectClosed)
+        .build(object : CacheLoader<JavaPath, ProjectServices>() {
+            override fun load(projectRootDir: JavaPath): ProjectServices = openProject(projectRootDir)
+        })
 
     private val openListeners = ArrayList<OpenListener>()
     private val closeListeners = ArrayList<CloseListener>()
@@ -42,13 +45,13 @@ class ProjectManager(private val testerumProjectFileService: TesterumProjectFile
 
     private fun startCacheCleanupThread() {
         val thread = Thread(
-                Runnable {
-                    while (true) {
-                        openProjectsCache.cleanUp()
-                        sleep(30_000)
-                    }
-                },
-                "open-projects-cleanup-thread"
+            Runnable {
+                while (true) {
+                    openProjectsCache.cleanUp()
+                    sleep(30_000)
+                }
+            },
+            "open-projects-cleanup-thread"
         )
 
         thread.isDaemon = true
@@ -68,7 +71,7 @@ class ProjectManager(private val testerumProjectFileService: TesterumProjectFile
 
     fun closeProject(projectRootDir: JavaPath) {
         openProjectsCache.invalidate(
-                canonicalKey(projectRootDir)
+            canonicalKey(projectRootDir)
         )
     }
 
@@ -86,7 +89,7 @@ class ProjectManager(private val testerumProjectFileService: TesterumProjectFile
         val startTimeMillis = System.currentTimeMillis()
 
         val fileProject = testerumProjectFileService.load(projectRootDir)
-        val projectServices = ProjectServices(projectRootDir, fileProject, createFeaturesCache, createTestsCache, createStepsCache)
+        val projectServices = ProjectServices(projectRootDir, fileProject, packagesWithAnnotations, createFeaturesCache, createTestsCache, createStepsCache)
         val endTimeInitMillis = System.currentTimeMillis()
         LOG.info("...done opening project at path [$absoluteProjectRootDir] (took ${endTimeInitMillis - startTimeMillis} ms)")
 
@@ -95,8 +98,10 @@ class ProjectManager(private val testerumProjectFileService: TesterumProjectFile
         return projectServices
     }
 
-    private fun notifyOpenListeners(projectRootDir: JavaPath,
-                                    fileProject: FileProject) {
+    private fun notifyOpenListeners(
+        projectRootDir: JavaPath,
+        fileProject: FileProject
+    ) {
         for (openListener in openListeners) {
             try {
                 openListener.invoke(projectRootDir, fileProject)

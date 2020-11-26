@@ -10,9 +10,7 @@ import com.testerum.common.json_diff.module_di.JsonDiffModuleFactory
 import com.testerum.common_assertion_functions.module_di.AssertionFunctionsModuleFactory
 import com.testerum.common_di.ModuleFactoryContext
 import org.apache.commons.io.IOUtils
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.instanceOf
-import org.hamcrest.MatcherAssert.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Disabled
@@ -395,11 +393,13 @@ class JsonComparerTest {
             val actualJson: String = loadClasspathResource("$testFilesDirectory/actual.json")
 
             val compareResult: JsonCompareResult = comparer.compare(expectedJson, actualJson)
-            assertThat(compareResult, instanceOf(DifferentJsonCompareResult::class.java))
+            assertThat(compareResult).isInstanceOf(DifferentJsonCompareResult::class.java)
 
             val differentJsonCompareResult = compareResult as DifferentJsonCompareResult
-            assertThat(differentJsonCompareResult.message, equalTo("mismatched number of items in the arrays: expected 1, but got 2 instead"))
-            assertThat(differentJsonCompareResult.jsonPath.toString(), equalTo("\$.members"))
+            assertThat(differentJsonCompareResult.message)
+                .isEqualTo("mismatched number of items in the arrays: expected 1, but got 2 instead")
+            assertThat(differentJsonCompareResult.jsonPath.toString())
+                .isEqualTo("\$.members")
         }
     }
 
@@ -411,15 +411,15 @@ class JsonComparerTest {
         val TEXT = "TEXT"
         val ARRAY = "ARRAY"
         val OBJECT = "OBJECT"
-        val fieldTypes = setOf(NULL, BOOLEAN, NUMERIC, TEXT, ARRAY, OBJECT )
+        val fieldTypes = setOf(NULL, BOOLEAN, NUMERIC, TEXT, ARRAY, OBJECT)
 
         val valuesForType = mapOf(
-                NULL    to "null",
-                BOOLEAN to "false",
-                NUMERIC to "0",
-                TEXT    to "\"\"",
-                ARRAY   to "[]",
-                OBJECT  to "{}"
+            NULL to "null",
+            BOOLEAN to "false",
+            NUMERIC to "0",
+            TEXT to "\"\"",
+            ARRAY to "[]",
+            OBJECT to "{}"
         )
 
         val assertions = mutableListOf<Executable>()
@@ -464,17 +464,17 @@ class JsonComparerTest {
             SHOULD_SUCCEED -> {
                 if (compareResult is DifferentJsonCompareResult) {
                     throw AssertionError(
-                            "expected the test to succeed" +
-                                    ", but got instead a failure" +
-                                    " with message [${compareResult.message}]" +
-                                    ", path=[${compareResult.jsonPath}]"
+                        "expected the test to succeed" +
+                            ", but got instead a failure" +
+                            " with message [${compareResult.message}]" +
+                            ", path=[${compareResult.jsonPath}]"
                     )
                 }
             }
             SHOULD_FAIL -> {
                 if (compareResult is EqualJsonCompareResult) {
                     throw AssertionError(
-                            "expected the test to fail, but got instead a success"
+                        "expected the test to fail, but got instead a success"
                     )
                 }
             }
@@ -485,7 +485,7 @@ class JsonComparerTest {
         val classLoader = Thread.currentThread().contextClassLoader
 
         val resourceStream: InputStream = classLoader.getResourceAsStream(fullName)
-                ?: throw IllegalArgumentException("cannot find resource [$fullName] in the classpath")
+            ?: throw IllegalArgumentException("cannot find resource [$fullName] in the classpath")
 
         return resourceStream.use { IOUtils.toString(it, Charsets.UTF_8) }
     }

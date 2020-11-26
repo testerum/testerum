@@ -8,23 +8,23 @@ import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.filter.StepsTreeFilter
 import com.testerum.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
 import com.testerum.model.step.tree.ComposedContainerStepNode
-import com.testerum.web_backend.services.initializers.caches.impl.BasicStepsCacheInitializer
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.save.SaveFrontendService
 import com.testerum.web_backend.services.steps.filterer.StepsTreeFilterer
 
-class ComposedStepsFrontendService(private val webProjectManager: WebProjectManager,
-                                   private val composedStepUpdateCompatibilityFrontendService: ComposedStepUpdateCompatibilityFrontendService,
-                                   private val saveFrontendService: SaveFrontendService,
-                                   private val warningService: WarningService,
-                                   private val basicStepsCacheInitializer: BasicStepsCacheInitializer) {
+class ComposedStepsFrontendService(
+    private val webProjectManager: WebProjectManager,
+    private val composedStepUpdateCompatibilityFrontendService: ComposedStepUpdateCompatibilityFrontendService,
+    private val saveFrontendService: SaveFrontendService,
+    private val warningService: WarningService
+) {
 
     private fun stepsCache() = webProjectManager.getProjectServices().getStepsCache()
 
     fun getComposedSteps(filter: StepsTreeFilter): List<ComposedStepDef> {
         return stepsCache().getAllSteps()
-                .filterIsInstance(ComposedStepDef::class.java)
-                .filter { StepsTreeFilterer.matches(it, filter) }
+            .filterIsInstance(ComposedStepDef::class.java)
+            .filter { StepsTreeFilterer.matches(it, filter) }
     }
 
     fun getComposedStepAtPath(path: Path): ComposedStepDef? {
@@ -80,12 +80,12 @@ class ComposedStepsFrontendService(private val webProjectManager: WebProjectMana
 
     fun copyComposedStep(sourcePath: Path, destinationDirPath: Path): Path {
         return webProjectManager.getProjectServices().getStepsCache()
-                .copyComposedStep(sourcePath, destinationDirPath)
+            .copyComposedStep(sourcePath, destinationDirPath)
     }
 
     fun moveComposedStep(sourcePath: Path, destinationDirPath: Path): Path {
         return webProjectManager.getProjectServices().getStepsCache()
-                .moveComposedStep(sourcePath, destinationDirPath)
+            .moveComposedStep(sourcePath, destinationDirPath)
     }
 
 }

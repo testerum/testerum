@@ -9,17 +9,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumBrowserType
 import com.testerum.common_jdk.ComparableVersion
 import com.testerum.common_kotlin.hasExtension
 import com.testerum.common_kotlin.list
 import com.testerum.model.selenium.FileSeleniumDriverInfo
 import com.testerum.model.selenium.SeleniumDriverInfo
 import com.testerum.model.selenium.SeleniumDriversByBrowser
+import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumBrowserType
 import org.slf4j.LoggerFactory
 import java.util.TreeMap
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
@@ -133,7 +131,7 @@ class SeleniumDriversFileService {
 
         for ((browserType, driverInfos) in driversByBrowser) {
             result[browserType] = driverInfos.sortedByDescending { driverInfo ->
-                driverInfo.browserVersions.maxBy { version ->
+                driverInfo.browserVersions.maxByOrNull { version ->
                     ComparableVersion(version)
                 }
             }

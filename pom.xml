@@ -9,18 +9,19 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>common</module>
-        <module>model</module>
-        <module>file-service</module>
-        <module>project-manager</module>
         <module>cloud-client</module>
+        <module>common</module>
+        <module>file-service</module>
+        <module>model</module>
+        <module>project-manager</module>
+        <module>report</module>
+        <module>settings</module>
+        <module>step-util</module>
+        <module>steps</module>
         <module>test-file-format</module>
         <module>testerum-backend</module>
-        <module>step-util</module>
+        <module>tools</module>
         <module>web</module>
-        <module>settings</module>
-        <module>steps</module>
-        <module>report</module>
     </modules>
 
     <name>${project.artifactId}</name>
@@ -58,7 +59,7 @@
 
     <issueManagement>
         <system>YouTrack</system>
-        <url>https://issues.testerum.com/</url>
+        <url>https://github.com/testerum/testerum/issues</url>
     </issueManagement>
 
     <scm>
@@ -94,10 +95,9 @@
         <maven.source.skip>true</maven.source.skip>
         <maven.build.timestamp.format>yyyy-MM-dd_HH-mm-ss</maven.build.timestamp.format>
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
-        <gpg.keyname>contact+maven-deployer@testerum.com</gpg.keyname>
 
         <!-- Kotlin settings -->
-        <kotlin.version>1.4.10</kotlin.version>
+        <kotlin.version>1.4.20</kotlin.version>
         <kotlin.apiVersion>1.4</kotlin.apiVersion>
         <kotlin.languageVersion>1.4</kotlin.languageVersion>
         <kotlin.jvmTarget>${maven.compiler.target}</kotlin.jvmTarget>
@@ -108,7 +108,7 @@
         <testerumNpmVersion>6.4.1</testerumNpmVersion>
 
         <!--========== testerum dependencies versions ==========-->
-        <testerum-steps-api.version>3.7.7</testerum-steps-api.version>
+        <testerum-steps-api.version>develop-SNAPSHOT</testerum-steps-api.version>
 
         <!--========== dependencies versions ==========-->
         <slf4j.version>1.7.25</slf4j.version>
@@ -120,6 +120,7 @@
         <junit.platform.version>1.6.2</junit.platform.version>
         <jetty.version>9.4.27.v20200227</jetty.version>
         <selenium.version>3.13.0</selenium.version>
+        <maven-api.version>3.0.5</maven-api.version>
     </properties>
 
     <dependencyManagement>
@@ -255,6 +256,12 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>common-encrypted-prefs</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>common-fast-serialization</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -466,21 +473,6 @@
                 <version>1.2.0</version>
             </dependency>
 
-            <!-- lombok -->
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.16.10</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <!-- Nullable/Nonnull annotations -->
-            <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>jsr305</artifactId>
-                <version>3.0.1</version>
-            </dependency>
-
             <!-- Spring -->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -507,17 +499,6 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-jcl</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-expression</artifactId>
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
@@ -562,28 +543,6 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>${spring.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-jcl</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-jcl</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
                 <version>${spring.version}</version>
                 <exclusions>
                     <exclusion>
@@ -675,13 +634,6 @@
                 <version>4.0.1</version>
             </dependency>
 
-            <!-- http client -->
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore</artifactId>
-                <version>4.4.4</version>
-            </dependency>
-
             <!-- Kotlin -->
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -693,18 +645,12 @@
                 <artifactId>kotlin-reflect</artifactId>
                 <version>${kotlin.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-test</artifactId>
-                <version>${kotlin.version}</version>
-                <scope>test</scope>
-            </dependency>
 
             <!-- classgraph -->
             <dependency>
                 <groupId>io.github.classgraph</groupId>
                 <artifactId>classgraph</artifactId>
-                <version>4.8.47</version>
+                <version>4.8.90</version>
             </dependency>
 
             <!--jparsec -->
@@ -740,20 +686,6 @@
                 </exclusions>
             </dependency>
 
-            <!-- jansi -->
-            <dependency>
-                <groupId>org.fusesource.jansi</groupId>
-                <artifactId>jansi</artifactId>
-                <version>1.17</version>
-            </dependency>
-
-            <!-- picocli: command line args parser -->
-            <dependency>
-                <groupId>info.picocli</groupId>
-                <artifactId>picocli</artifactId>
-                <version>3.8.1</version>
-            </dependency>
-
             <!-- jetty-server -->
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
@@ -773,13 +705,6 @@
                 <groupId>org.eclipse.jetty.websocket</groupId>
                 <artifactId>javax-websocket-server-impl</artifactId>
                 <version>${jetty.version}</version>
-            </dependency>
-
-            <!-- javax.websocket-api -->
-            <dependency>
-                <groupId>javax.websocket</groupId>
-                <artifactId>javax.websocket-api</artifactId>
-                <version>1.0</version>
             </dependency>
 
             <!-- Bouncy Castle -->
@@ -994,20 +919,29 @@
                 <version>${junit.platform.version}</version>
             </dependency>
 
-            <!-- java-hamcrest -->
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>java-hamcrest</artifactId>
-                <version>2.0.0.0</version>
-            </dependency>
-
             <!-- assertj-core -->
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
-                <version>3.17.2</version>
+                <version>3.18.1</version>
             </dependency>
 
+            <!-- maven plugin development dependencies -->
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-core</artifactId>
+                <version>${maven-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>${maven-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugin-tools</groupId>
+                <artifactId>maven-plugin-annotations</artifactId>
+                <version>3.4</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -1143,13 +1077,13 @@
                                         <banRelease>true</banRelease>
                                         <banSnapshots>true</banSnapshots>
                                         <phases>clean,deploy,site</phases>
+                                        <unCheckedPluginList>com.testerum:testerum-extensions-maven-plugin</unCheckedPluginList>
                                     </requirePluginVersions>
 
                                     <bannedDependencies>
                                         <excludes>
                                             <exclude>commons-logging</exclude>        <!-- using slf4j instead -->
                                             <exclude>org.jboss.logging</exclude>      <!-- using slf4j instead -->
-                                            <!--<exclude>com.google.collections</exclude> &lt;!&ndash; using guava instead &ndash;&gt;-->
                                         </excludes>
                                     </bannedDependencies>
 
@@ -1294,28 +1228,26 @@
                     <executions>
                         <execution>
                             <id>compile</id>
-                            <phase>compile</phase>
                             <goals>
                                 <goal>compile</goal>
                             </goals>
                             <configuration>
                                 <sourceDirs>
-                                    <source>src/main/java</source>
-                                    <source>src/main/kotlin</source>
+                                    <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                                    <sourceDir>${project.basedir}/src/main/java</sourceDir>
                                 </sourceDirs>
                             </configuration>
                         </execution>
                         <execution>
                             <id>test-compile</id>
-                            <phase>test-compile</phase>
                             <goals>
                                 <goal>test-compile</goal>
                             </goals>
 
                             <configuration>
                                 <sourceDirs>
-                                    <sourceDir>src/test/kotlin</sourceDir>
-                                    <sourceDir>src/test/java</sourceDir>
+                                    <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                                    <sourceDir>${project.basedir}/src/test/java</sourceDir>
                                 </sourceDirs>
                             </configuration>
                         </execution>
@@ -1412,6 +1344,20 @@
                     <version>3.2.1</version>
                 </plugin>
 
+                <!-- testerum-extensions-maven-plugin -->
+                <plugin>
+                    <groupId>com.testerum</groupId>
+                    <artifactId>testerum-extensions-maven-plugin</artifactId>
+                    <version>${project.version}</version>
+                    <executions>
+                        <execution>
+                            <id>assemble-testerum-step-lib</id>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -1546,12 +1492,14 @@
             </build>
         </profile>
 
+        <!-- release -->
         <profile>
-            <id>deploy-to-mvn-central</id>
+            <id>release</id>
 
             <properties>
                 <maven.javadoc.skip>false</maven.javadoc.skip>
                 <maven.source.skip>false</maven.source.skip>
+                <gpg.keyname>contact+maven-deployer@testerum.com</gpg.keyname>
             </properties>
 
             <build>

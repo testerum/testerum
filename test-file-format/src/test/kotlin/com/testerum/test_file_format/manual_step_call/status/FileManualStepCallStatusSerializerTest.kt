@@ -10,8 +10,8 @@ class FileManualStepCallStatusSerializerTest {
 
     companion object {
         private val testRunner = SerializerTestRunner(
-                FileManualStepCallStatusSerializer,
-                FileManualStepCallPropertiesParserFactory.manualStepProperties()
+            FileManualStepCallStatusSerializer,
+            FileManualStepCallPropertiesParserFactory.manualStepProperties()
         )
 
         @JvmStatic
@@ -21,10 +21,10 @@ class FileManualStepCallStatusSerializerTest {
 
             for (status in FileManualStepCallStatus.values()) {
                 arguments += Arguments.of(
-                        FileManualStepCallProperties(status, enabled = false)
+                    FileManualStepCallProperties(status, enabled = false)
                 )
                 arguments += Arguments.of(
-                        FileManualStepCallProperties(status, enabled = true)
+                    FileManualStepCallProperties(status, enabled = true)
                 )
             }
 
@@ -42,9 +42,9 @@ class FileManualStepCallStatusSerializerTest {
         }
 
         testRunner.execute(
-                original = propertyToTest,
-                indentLevel = 0,
-                expected = expected
+            original = propertyToTest,
+            indentLevel = 0,
+            expected = expected
         )
     }
 

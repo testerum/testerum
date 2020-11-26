@@ -2,15 +2,14 @@ package com.testerum.test_file_format.common.step_call.phase
 
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.common.parsing.executer.ParserExecuterException
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalTo
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class FileStepPhaseParserTest {
 
     private val parser = ParserExecuter(
-            FileStepPhaseParserFactory.stepPhase()
+        FileStepPhaseParserFactory.stepPhase()
     )
 
     @Test
@@ -19,38 +18,30 @@ class FileStepPhaseParserTest {
             parser.parse("stuff")
         }
 
-        assertThat(
-                exception.message,
-                equalTo(
-                        "failed to parse:\n" +
-                                "stuff\n" +
-                                "^--- ERROR at line 1, column 1: [Given, When or Then] expected, [s] encountered"
-                )
-        )
+        assertThat(exception.message)
+            .isEqualTo(
+                "failed to parse:\n" +
+                    "stuff\n" +
+                    "^--- ERROR at line 1, column 1: [Given, When or Then] expected, [s] encountered"
+            )
     }
 
     @Test
     fun `should parse given`() {
-        assertThat(
-                parser.parse("Given"),
-                equalTo(FileStepPhase.GIVEN)
-        )
+        assertThat(parser.parse("Given"))
+            .isEqualTo(FileStepPhase.GIVEN)
     }
 
     @Test
     fun `should parse when`() {
-        assertThat(
-                parser.parse("When"),
-                equalTo(FileStepPhase.WHEN)
-        )
+        assertThat(parser.parse("When"))
+            .isEqualTo(FileStepPhase.WHEN)
     }
 
     @Test
     fun `should parse then`() {
-        assertThat(
-                parser.parse("Then"),
-                equalTo(FileStepPhase.THEN)
-        )
+        assertThat(parser.parse("Then"))
+            .isEqualTo(FileStepPhase.THEN)
     }
 
 }

@@ -1,8 +1,6 @@
 package com.testerum.common_crypto.string_obfuscator
 
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.not
-import org.hamcrest.MatcherAssert.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class StringObfuscatorTest {
@@ -12,10 +10,12 @@ class StringObfuscatorTest {
         val plaintext = "some super secret message"
 
         val encryptedText = StringObfuscator.obfuscate(plaintext)
-        assertThat(encryptedText, not(equalTo(plaintext)))
+        assertThat(encryptedText)
+            .isNotEqualTo(plaintext)
 
         val decryptedText = StringObfuscator.deobfuscate(encryptedText)
-        assertThat(decryptedText, equalTo(plaintext))
+        assertThat(decryptedText)
+            .isEqualTo(plaintext)
     }
 
 }
