@@ -3,6 +3,7 @@ package com.testerum.common_assertion_functions.functions.builtin
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ContainerNode
 import com.fasterxml.jackson.databind.node.NullNode
+import com.fasterxml.jackson.databind.node.TextNode
 import com.testerum.common_assertion_functions.functions.AssertionFailedException
 import com.testerum.common_assertion_functions.functions.AssertionFunction
 
@@ -10,6 +11,29 @@ object TextFunctions {
 
     // "isNull"  not implemented, since one can simply put null as expected value
     // "isEmpty" not implemented, since one can simply put the empty string "" as expected value
+
+
+    @AssertionFunction
+    fun isString(actualNode: JsonNode) {
+        if (actualNode is TextNode) {
+            return
+        }
+
+        throw AssertionFailedException("expected a String, but got ${actualNode.toString()}")
+    }
+
+    @AssertionFunction
+    fun isStringOrNull(actualNode: JsonNode) {
+        if (actualNode is NullNode) {
+            return
+        }
+
+        if (actualNode is TextNode) {
+            return
+        }
+
+        throw AssertionFailedException("expected a String, but got ${actualNode.toPrettyString()}")
+    }
 
     @AssertionFunction
     fun isNotNull(actualNode: JsonNode) {
@@ -70,5 +94,4 @@ object TextFunctions {
 
         verifyText(actualNode, "expected a non-blank value", { it != null && !it.isBlank() })
     }
-
 }
