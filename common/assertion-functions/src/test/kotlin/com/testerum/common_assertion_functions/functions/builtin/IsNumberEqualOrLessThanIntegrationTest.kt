@@ -6,79 +6,79 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 
-class IsNumberEqualOrLessThenIntegrationTest : BaseBuiltinFunctionIntegrationTest() {
+class IsNumberEqualOrLessThanIntegrationTest : BaseBuiltinFunctionIntegrationTest() {
 
     @Test
     fun `should throw exception for null`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isNumberEqualOrLessThen('12')", NullNode.getInstance())
+            functionEvaluator.evaluate("@isNumberEqualOrLessThan(12)", NullNode.getInstance())
         }
     }
 
     @Test
     fun `should throw exception for a bigger number`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isNumberEqualOrLessThen('12')", intNode(13))
+            functionEvaluator.evaluate("@isNumberEqualOrLessThan(12)", intNode(13))
         }
     }
 
     @Test
     fun `should be ok for an equal number`() {
-        functionEvaluator.evaluate("@isNumberEqualOrLessThen('12')", intNode(12))
+        functionEvaluator.evaluate("@isNumberEqualOrLessThan(12)", intNode(12))
     }
 
     @Test
     fun `should be ok for a smaller number`() {
-        functionEvaluator.evaluate("@isNumberEqualOrLessThen('12')", intNode(11))
+        functionEvaluator.evaluate("@isNumberEqualOrLessThan(12)", intNode(11))
     }
 
     @Test
     fun `should be ok for a smaller decimal`() {
-        functionEvaluator.evaluate("@isNumberEqualOrLessThen('12.2')", decimalNode(BigDecimal("12.1")))
+        functionEvaluator.evaluate("@isNumberEqualOrLessThan(12.2)", decimalNode(BigDecimal("12.1")))
     }
 
     @Test
     fun `should be ok for an equal decimal`() {
-        functionEvaluator.evaluate("@isNumberEqualOrLessThen('12.2')", decimalNode(BigDecimal("12.2")))
+        functionEvaluator.evaluate("@isNumberEqualOrLessThan(12.2)", decimalNode(BigDecimal("12.2")))
     }
 
     @Test
     fun `should throw exception for a bigger decimal`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isNumberEqualOrLessThen('12.2')", decimalNode(BigDecimal("12.3")))
+            functionEvaluator.evaluate("@isNumberEqualOrLessThan(12.2)", decimalNode(BigDecimal("12.3")))
         }
     }
 
     @Test
     fun `should be ok to compare a decimal with an int`() {
-        functionEvaluator.evaluate("@isNumberEqualOrLessThen('12.2')", intNode(11))
+        functionEvaluator.evaluate("@isNumberEqualOrLessThan(12.2)", intNode(11))
     }
 
     @Test
     fun `should throw exception for integer text`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isNumberEqualOrLessThen('12.2')", textNode("11"))
+            functionEvaluator.evaluate("@isNumberEqualOrLessThan(12.2)", textNode("11"))
         }
     }
 
     @Test
     fun `should throw exception for decimal text`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isNumberEqualOrLessThen('12.2')", textNode("11.3"))
+            functionEvaluator.evaluate("@isNumberEqualOrLessThan(12.2)", textNode("11.3"))
         }
     }
 
     @Test
     fun `should throw exception for empty String`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isNumberEqualOrLessThen('12.2')", textNode(""))
+            functionEvaluator.evaluate("@isNumberEqualOrLessThan(12.2)", textNode(""))
         }
     }
 
     @Test
     fun `should throw exception for boolean`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isNumberEqualOrLessThen('12.2')", booleanNode(false))
+            functionEvaluator.evaluate("@isNumberEqualOrLessThan(12.2)", booleanNode(false))
         }
     }
 }
