@@ -12,12 +12,12 @@ import http.response.verify.model.HttpBodyVerifyMatchingType
 import http.response.verify.model.HttpResponseVerify
 import org.apache.commons.lang3.StringUtils
 import org.apache.http.impl.EnglishReasonPhraseCatalog
-import java.util.*
+import java.util.Locale
 
 fun HttpRequest.prettyPrint() = buildString {
     append("\t$method $url\n")
 
-    val longestNameLength = headers.map { it.key.length }.max() ?: 0
+    val longestNameLength = headers.map { it.key.length }.maxOrNull() ?: 0
     if (headers.isNotEmpty()) {
         append("\n")
         for ((headerName, headerValue) in headers) {
@@ -55,7 +55,7 @@ fun ValidHttpResponse.prettyPrint() = buildString {
 
     if (headers.isNotEmpty()) {
         append("\n")
-        val longestNameLength = headers.map { it.key.length }.max() ?: 0
+        val longestNameLength = headers.map { it.key.length }.maxOrNull() ?: 0
         for (header in headers) {
             for (value in header.values) {
                 append("\t")
@@ -105,8 +105,8 @@ fun HttpResponseVerify.prettyPrint() = buildString {
     if (expectedHeaders.isNotEmpty()) {
         append("\n")
         append("\tExpected headers\n")
-        val longestKeyLength = expectedHeaders.map { it.key?.length ?: 0 }.max() ?: 0
-        val longestCompareModeLength = expectedHeaders.map { it.compareMode?.name?.length ?: 0}.max() ?: 0
+        val longestKeyLength = expectedHeaders.map { it.key?.length ?: 0 }.maxOrNull() ?: 0
+        val longestCompareModeLength = expectedHeaders.map { it.compareMode?.name?.length ?: 0}.maxOrNull() ?: 0
 
         for (header in expectedHeaders) {
             append("\t")
@@ -161,8 +161,8 @@ fun HttpMock.prettyPrint() = buildString {
         append("\tExpected query params\n")
         append("\t---------------------\n")
 
-        val longestKeyLength = expectedQueryParams.map { it.key.length }.max() ?: 0
-        val longestCompareModeLength = expectedQueryParams.map { it.compareMode.name.length }.max() ?: 0
+        val longestKeyLength = expectedQueryParams.map { it.key.length }.maxOrNull() ?: 0
+        val longestCompareModeLength = expectedQueryParams.map { it.compareMode.name.length }.maxOrNull() ?: 0
         for (queryParam in expectedQueryParams) {
             append("\t")
             append(StringUtils.rightPad(queryParam.key, longestKeyLength))
@@ -183,8 +183,8 @@ fun HttpMock.prettyPrint() = buildString {
         append("\tExpected headers\n")
         append("\t----------------\n")
 
-        val longestKeyLength = expectedHeaders.map { it.key.length }.max() ?: 0
-        val longestCompareModeLength = expectedHeaders.map { it.compareMode.name.length }.max() ?: 0
+        val longestKeyLength = expectedHeaders.map { it.key.length }.maxOrNull() ?: 0
+        val longestCompareModeLength = expectedHeaders.map { it.compareMode.name.length }.maxOrNull() ?: 0
         for (header in expectedHeaders) {
             append("\t")
             append(StringUtils.rightPad(header.key, longestKeyLength))
@@ -259,7 +259,7 @@ fun HttpMock.prettyPrint() = buildString {
         // headers
         if (mockResponse.headers.isNotEmpty()) {
             append("\n")
-            val longestNameLength = mockResponse.headers.map { it.key.length }.max() ?: 0
+            val longestNameLength = mockResponse.headers.map { it.key.length }.maxOrNull() ?: 0
             for ((key, value) in mockResponse.headers) {
                 append("\t")
                 append(StringUtils.rightPad(key, longestNameLength))

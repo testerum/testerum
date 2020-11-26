@@ -7,7 +7,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
-import java.util.*
+import java.util.Date
 
 class AssertionsSteps {
 
@@ -125,6 +125,6 @@ class AssertionsSteps {
         assertDifferentValues(actualValue, null)
     }
 
-    // todo: add more; get ideas from http://hamcrest.org/JavaHamcrest/javadoc/2.0.0.0/
+    // todo: add more; get ideas from http://hamcrest.org/JavaHamcrest/javadoc/2.0.0.0/ and https://joel-costigliola.github.io/assertj/
 
 }

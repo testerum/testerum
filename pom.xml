@@ -97,7 +97,7 @@
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
         <!-- Kotlin settings -->
-        <kotlin.version>1.4.10</kotlin.version>
+        <kotlin.version>1.4.20</kotlin.version>
         <kotlin.apiVersion>1.4</kotlin.apiVersion>
         <kotlin.languageVersion>1.4</kotlin.languageVersion>
         <kotlin.jvmTarget>${maven.compiler.target}</kotlin.jvmTarget>
@@ -919,13 +919,6 @@
                 <version>${junit.platform.version}</version>
             </dependency>
 
-            <!-- java-hamcrest -->
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>java-hamcrest</artifactId>
-                <version>2.0.0.0</version>
-            </dependency>
-
             <!-- assertj-core -->
             <dependency>
                 <groupId>org.assertj</groupId>
@@ -1235,28 +1228,26 @@
                     <executions>
                         <execution>
                             <id>compile</id>
-                            <phase>compile</phase>
                             <goals>
                                 <goal>compile</goal>
                             </goals>
                             <configuration>
                                 <sourceDirs>
-                                    <source>src/main/java</source>
-                                    <source>src/main/kotlin</source>
+                                    <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                                    <sourceDir>${project.basedir}/src/main/java</sourceDir>
                                 </sourceDirs>
                             </configuration>
                         </execution>
                         <execution>
                             <id>test-compile</id>
-                            <phase>test-compile</phase>
                             <goals>
                                 <goal>test-compile</goal>
                             </goals>
 
                             <configuration>
                                 <sourceDirs>
-                                    <sourceDir>src/test/kotlin</sourceDir>
-                                    <sourceDir>src/test/java</sourceDir>
+                                    <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                                    <sourceDir>${project.basedir}/src/test/java</sourceDir>
                                 </sourceDirs>
                             </configuration>
                         </execution>

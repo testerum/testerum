@@ -3,9 +3,10 @@ package com.testerum.common_assertion_functions.functions.builtin
 import com.fasterxml.jackson.databind.JsonNode
 import com.testerum.common_assertion_functions.functions.AssertionFunction
 
+@Suppress("UNUSED_PARAMETER")
 object NumberFunctions {
 
-    //TODO: set separator optinaly
+    //TODO: set separator optionally
     @AssertionFunction
     fun isNumber(actualNode: JsonNode) {
     }

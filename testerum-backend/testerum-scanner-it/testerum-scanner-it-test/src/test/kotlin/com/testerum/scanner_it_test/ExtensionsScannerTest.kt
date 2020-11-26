@@ -17,9 +17,7 @@ import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import com.testerum_api.testerum_steps_api.annotations.hooks.HooksConstants
 import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingDefinition
 import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingType
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalTo
-import org.hamcrest.Matchers.hasSize
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -73,10 +71,9 @@ class ExtensionsScannerTest {
                 )
             )
 
-            assertThat(sortedSteps, hasSize(15))
-            assertThat(
-                sortedSteps[0],
-                equalTo(
+            assertThat(sortedSteps).hasSize(15)
+            assertThat(sortedSteps[0])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.GIVEN,
                         stepPattern = StepPattern(
@@ -90,10 +87,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[1],
-                equalTo(
+            assertThat(sortedSteps[1])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.GIVEN,
                         stepPattern = StepPattern(
@@ -114,10 +109,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[2],
-                equalTo(
+            assertThat(sortedSteps[2])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.GIVEN,
                         stepPattern = StepPattern(
@@ -131,10 +124,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[3],
-                equalTo(
+            assertThat(sortedSteps[3])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.GIVEN,
                         stepPattern = StepPattern(
@@ -148,10 +139,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[4],
-                equalTo(
+            assertThat(sortedSteps[4])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.GIVEN,
                         stepPattern = StepPattern(
@@ -188,10 +177,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[5],
-                equalTo(
+            assertThat(sortedSteps[5])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.WHEN,
                         stepPattern = StepPattern(
@@ -212,10 +199,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[6],
-                equalTo(
+            assertThat(sortedSteps[6])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.WHEN,
                         stepPattern = StepPattern(
@@ -229,10 +214,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[7],
-                equalTo(
+            assertThat(sortedSteps[7])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.WHEN,
                         stepPattern = StepPattern(
@@ -246,10 +229,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[8],
-                equalTo(
+            assertThat(sortedSteps[8])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.WHEN,
                         stepPattern = StepPattern(
@@ -286,10 +267,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[9],
-                equalTo(
+            assertThat(sortedSteps[9])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.THEN,
                         stepPattern = StepPattern(
@@ -310,10 +289,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[10],
-                equalTo(
+            assertThat(sortedSteps[10])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.THEN,
                         stepPattern = StepPattern(
@@ -327,10 +304,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[11],
-                equalTo(
+            assertThat(sortedSteps[11])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.THEN,
                         stepPattern = StepPattern(
@@ -344,10 +319,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[12],
-                equalTo(
+            assertThat(sortedSteps[12])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.THEN,
                         stepPattern = StepPattern(
@@ -384,10 +357,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[13],
-                equalTo(
+            assertThat(sortedSteps[13])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.GIVEN,
                         stepPattern = StepPattern(
@@ -401,10 +372,8 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-            assertThat(
-                sortedSteps[14],
-                equalTo(
+            assertThat(sortedSteps[14])
+                .isEqualTo(
                     BasicStepDef(
                         phase = StepPhaseEnum.GIVEN,
                         stepPattern = StepPattern(
@@ -418,8 +387,6 @@ class ExtensionsScannerTest {
                         resultType = ObjectTypeMeta(javaType = "void", fields = emptyList())
                     )
                 )
-            )
-
 
             val sortedHooks = stepScanResult.hooks.sortedWith(
                 compareBy(
@@ -429,11 +396,10 @@ class ExtensionsScannerTest {
                 )
             )
 
-            assertThat(sortedHooks, hasSize(13))
+            assertThat(sortedHooks).hasSize(13)
 
-            assertThat(
-                sortedHooks[0],
-                equalTo(
+            assertThat(sortedHooks[0])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.BEFORE_ALL_TESTS,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -442,10 +408,8 @@ class ExtensionsScannerTest {
                         description = null
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[1],
-                equalTo(
+            assertThat(sortedHooks[1])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.BEFORE_ALL_TESTS,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -454,10 +418,8 @@ class ExtensionsScannerTest {
                         description = "beforeAllTests with all annotation fields"
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[2],
-                equalTo(
+            assertThat(sortedHooks[2])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.BEFORE_ALL_TESTS,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -466,10 +428,8 @@ class ExtensionsScannerTest {
                         description = "beforeAllTests description"
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[3],
-                equalTo(
+            assertThat(sortedHooks[3])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.BEFORE_EACH_TEST,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -478,10 +438,8 @@ class ExtensionsScannerTest {
                         description = null
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[4],
-                equalTo(
+            assertThat(sortedHooks[4])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.BEFORE_EACH_TEST,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -490,10 +448,8 @@ class ExtensionsScannerTest {
                         description = "beforeTest with all annotation fields"
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[5],
-                equalTo(
+            assertThat(sortedHooks[5])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.BEFORE_EACH_TEST,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -502,10 +458,8 @@ class ExtensionsScannerTest {
                         description = "beforeTest description"
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[6],
-                equalTo(
+            assertThat(sortedHooks[6])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.AFTER_EACH_TEST,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -514,10 +468,8 @@ class ExtensionsScannerTest {
                         description = null
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[7],
-                equalTo(
+            assertThat(sortedHooks[7])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.AFTER_EACH_TEST,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -526,10 +478,8 @@ class ExtensionsScannerTest {
                         description = "afterTest with all annotation fields"
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[8],
-                equalTo(
+            assertThat(sortedHooks[8])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.AFTER_EACH_TEST,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -538,10 +488,8 @@ class ExtensionsScannerTest {
                         description = "afterTest description"
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[9],
-                equalTo(
+            assertThat(sortedHooks[9])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.AFTER_ALL_TESTS,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -550,10 +498,8 @@ class ExtensionsScannerTest {
                         description = null
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[10],
-                equalTo(
+            assertThat(sortedHooks[10])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.AFTER_ALL_TESTS,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -562,10 +508,8 @@ class ExtensionsScannerTest {
                         description = "afterAllTest with all annotation fields"
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[11],
-                equalTo(
+            assertThat(sortedHooks[11])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.AFTER_ALL_TESTS,
                         className = "com.testerum.scanner_it_steplib1.steps.StepLib1MySteps",
@@ -574,10 +518,8 @@ class ExtensionsScannerTest {
                         description = "afterAllTest description"
                     )
                 )
-            )
-            assertThat(
-                sortedHooks[12],
-                equalTo(
+            assertThat(sortedHooks[12])
+                .isEqualTo(
                     HookDef(
                         phase = HookPhase.BEFORE_EACH_TEST,
                         className = "com.testerum.scanner_it_steplib3java.steps.StepLib3JavaSteps",
@@ -586,15 +528,13 @@ class ExtensionsScannerTest {
                         description = null
                     )
                 )
-            )
 
             val sortedSettings = stepScanResult.settingDefinitions.sortedBy { it.key }
 
-            assertThat(sortedSettings, hasSize(8))
+            assertThat(sortedSettings).hasSize(8)
 
-            assertThat(
-                sortedSettings[0],
-                equalTo(
+            assertThat(sortedSettings[0])
+                .isEqualTo(
                     SettingDefinition(
                         key = "stepLib1.other",
                         label = "1-Other",
@@ -604,10 +544,8 @@ class ExtensionsScannerTest {
                         category = "other category"
                     )
                 )
-            )
-            assertThat(
-                sortedSettings[1],
-                equalTo(
+            assertThat(sortedSettings[1])
+                .isEqualTo(
                     SettingDefinition(
                         key = "stepLib1.param1",
                         label = "1-Param 1",
@@ -617,10 +555,8 @@ class ExtensionsScannerTest {
                         category = "param1 category"
                     )
                 )
-            )
-            assertThat(
-                sortedSettings[2],
-                equalTo(
+            assertThat(sortedSettings[2])
+                .isEqualTo(
                     SettingDefinition(
                         key = "stepLib1.param2",
                         label = "1-Param 2",
@@ -630,10 +566,8 @@ class ExtensionsScannerTest {
                         category = "param2 category"
                     )
                 )
-            )
-            assertThat(
-                sortedSettings[3],
-                equalTo(
+            assertThat(sortedSettings[3])
+                .isEqualTo(
                     SettingDefinition(
                         key = "stepLib1.param3",
                         label = "1-Param 3",
@@ -643,10 +577,8 @@ class ExtensionsScannerTest {
                         category = "param3 category"
                     )
                 )
-            )
-            assertThat(
-                sortedSettings[4],
-                equalTo(
+            assertThat(sortedSettings[4])
+                .isEqualTo(
                     SettingDefinition(
                         key = "stepLib3Java.param1",
                         label = "3-Param 1",
@@ -656,10 +588,8 @@ class ExtensionsScannerTest {
                         category = "param1 category"
                     )
                 )
-            )
-            assertThat(
-                sortedSettings[5],
-                equalTo(
+            assertThat(sortedSettings[5])
+                .isEqualTo(
                     SettingDefinition(
                         key = "stepLib3Java.param2",
                         label = "3-Param 2",
@@ -669,10 +599,8 @@ class ExtensionsScannerTest {
                         category = "param2 category"
                     )
                 )
-            )
-            assertThat(
-                sortedSettings[6],
-                equalTo(
+            assertThat(sortedSettings[6])
+                .isEqualTo(
                     SettingDefinition(
                         key = "stepLib3Java.param3",
                         label = "3-Param 3",
@@ -682,10 +610,8 @@ class ExtensionsScannerTest {
                         category = "param3 category"
                     )
                 )
-            )
-            assertThat(
-                sortedSettings[7],
-                equalTo(
+            assertThat(sortedSettings[7])
+                .isEqualTo(
                     SettingDefinition(
                         key = "stepLib3Java.param4",
                         label = "3-Param 4",
@@ -695,7 +621,6 @@ class ExtensionsScannerTest {
                         category = "param4 category"
                     )
                 )
-            )
 
         } finally {
             threadPool.shutdownNow()
