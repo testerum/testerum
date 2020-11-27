@@ -87,5 +87,4 @@ class ComposedStepsFrontendService(
         return webProjectManager.getProjectServices().getStepsCache()
             .moveComposedStep(sourcePath, destinationDirPath)
     }
-
 }
