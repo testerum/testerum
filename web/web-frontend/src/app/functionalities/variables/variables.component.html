@@ -67,8 +67,8 @@
 
                             <!-- KEY -->
                             <td class="variable-key">
-                                <input (change)="onNewKeyChange($event)"
-                                       [(ngModel)]="variable.key"
+                                <input (ngModelChange)="onKeyChange($event, variable)"
+                                       [ngModel]="variable.key"
                                        type="text" pInputText  class="form-control full-width">
                             </td>
 

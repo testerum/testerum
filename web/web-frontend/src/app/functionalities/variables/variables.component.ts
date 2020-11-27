@@ -100,7 +100,8 @@ export class VariablesComponent implements OnInit, OnDestroy {
         });
     }
 
-    onNewKeyChange(value: Event) {
+    onKeyChange(value: string, variable: Variable) {
+        variable.key = value;
         this.hasChanges = true;
         this.addEmptyVariableIfRequired();
     }
