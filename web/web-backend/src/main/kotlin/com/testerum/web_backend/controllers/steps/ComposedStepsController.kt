@@ -53,6 +53,12 @@ class ComposedStepsController(private val composedStepsFrontendService: Composed
         return composedStepsFrontendService.checkUpdateCompatibility(composedStepDef)
     }
 
+    @RequestMapping(method = [RequestMethod.POST], path = ["/delete/check"])
+    @ResponseBody
+    fun deleteCheck(@RequestBody composedStepDef: ComposedStepDef): CheckComposedStepDefUpdateCompatibilityResponse {
+        return composedStepsFrontendService.checkDeleteCompatibility(composedStepDef)
+    }
+
     @RequestMapping(method = [RequestMethod.POST], path = ["/save"])
     @ResponseBody
     fun save(@RequestBody composedStepDef: ComposedStepDef): ComposedStepDef {
