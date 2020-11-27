@@ -28,7 +28,7 @@ object ArrayFunctions {
             return
         }
 
-        throw AssertionFailedException("expected an Array, but got ${actualNode.toString()}")
+        throw AssertionFailedException("expected an Array or null, but got ${actualNode.toString()}")
     }
 
     @AssertionFunction
@@ -40,12 +40,12 @@ object ArrayFunctions {
                 if (actualSize > 0) {
                     return
                 } else {
-                    throw AssertionFailedException("expected an non empty Array, but got an Array with ${actualSize} ${getElementsWord(actualSize)}: ${arrayNode.toString()}")
+                    throw AssertionFailedException("expected a non empty Array, but got an Array with ${actualSize} ${getElementsWord(actualSize)}: ${arrayNode.toString()}")
                 }
             }
         }
 
-        throw AssertionFailedException("expected an non empty Array, but got ${actualNode.toString()}")
+        throw AssertionFailedException("expected a non empty Array, but got ${actualNode.toString()}")
     }
 
     @AssertionFunction
@@ -67,7 +67,7 @@ object ArrayFunctions {
     }
 
     @AssertionFunction
-    fun isArrayWithMoreElementsThan(actualNode: JsonNode, expectedValue: BigDecimal) {
+    fun isArrayWithSizeGreaterThan(actualNode: JsonNode, expectedValue: BigDecimal) {
         if (actualNode is ArrayNode) {
             val arrayNode = actualNode.get(0)
             if (arrayNode != null) {
@@ -85,7 +85,7 @@ object ArrayFunctions {
     }
 
     @AssertionFunction
-    fun isArrayWithLessElementsThan(actualNode: JsonNode, expectedValue: BigDecimal) {
+    fun isArrayWithSizeLessThan(actualNode: JsonNode, expectedValue: BigDecimal) {
         if (actualNode is ArrayNode) {
             val arrayNode = actualNode.get(0)
             if (arrayNode != null) {
