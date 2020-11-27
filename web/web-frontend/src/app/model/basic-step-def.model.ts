@@ -7,6 +7,7 @@ import {Path} from "./infrastructure/path/path.model";
 import {Warning} from "./warning/Warning";
 import {Serializable} from "./infrastructure/serializable.model";
 import {TypeMeta} from "./text/parts/param-meta/type-meta.model";
+import {TypeMetaFieldDescriptor} from "./text/parts/param-meta/field/field-type-meta.model";
 
 export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
     id:string = IdUtils.getTemporaryId();
@@ -36,7 +37,7 @@ export class BasicStepDef implements Serializable<BasicStepDef>, StepDef {
         this.tags = input["tags"];
         this.className = input["className"];
         this.methodName = input["methodName"];
-        this.resultType = input["resultType"];
+        this.resultType = TypeMetaFieldDescriptor.deserializeTypeMeta(input["resultType"]);
 
         this.warnings = [];
         for (let warning of (input['warnings'] || [])) {
