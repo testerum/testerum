@@ -41,10 +41,6 @@ class ComposedStepsFrontendService(
         return composedStepUpdateCompatibilityFrontendService.checkUpdateCompatibility(composedStepDef)
     }
 
-    fun checkDeleteCompatibility(composedStepDef: ComposedStepDef): CheckComposedStepDefUpdateCompatibilityResponse {
-        return composedStepUpdateCompatibilityFrontendService.checkUpdateCompatibility(composedStepDef)
-    }
-
     fun saveComposedStep(composedStepDef: ComposedStepDef): ComposedStepDef {
         return saveFrontendService.saveComposedStep(composedStepDef)
     }
