@@ -3,6 +3,7 @@ import {Serializable} from "../../../model/infrastructure/serializable.model";
 import {JsonUtil} from "../../../utils/json.util";
 import {Variable} from "./variable.model";
 import {ArrayUtil} from "../../../utils/array.util";
+import {StringUtils} from "../../../utils/string-utils.util";
 
 export class AllProjectVariables implements Serializable<AllProjectVariables> {
     public static DEFAULT_ENVIRONMENT_NAME = "Default";
@@ -187,5 +188,24 @@ export class AllProjectVariables implements Serializable<AllProjectVariables> {
 
     private sortVariablesByKey(variables: Variable[]) {
         variables.sort( (a, b) => a.key > b.key ? 1 : -1)
+    }
+
+    isValid(): boolean {
+        if(!this.areVariablesValid(this.defaultVariables)) return false;
+        if(!this.areVariablesValid(this.localVariables)) return false;
+
+        for (const environment of this.environments) {
+            if(!this.areVariablesValid(environment.variables)) return false;
+        }
+        return true;
+    }
+
+    private areVariablesValid(variales: Variable[]) {
+        for (const variale of variales) {
+            if(variale.isEmpty()) continue;
+            if(StringUtils.isEmpty(variale.key)) return false;
+        }
+
+        return true;
     }
 }

@@ -229,4 +229,8 @@ export class VariablesComponent implements OnInit, OnDestroy {
 
         return result;
     }
+
+    isValid(): boolean {
+        return this.projectVariables.isValid();
+    }
 }
