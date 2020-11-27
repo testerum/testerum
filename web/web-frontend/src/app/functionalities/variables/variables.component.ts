@@ -94,10 +94,34 @@ export class VariablesComponent implements OnInit, OnDestroy {
         this.disableModal = true;
         this.environmentEditModalComponent.addEnvironment(this.projectVariables).subscribe( (selectedEnvironment: string) => {
             this.selectedEnvironmentName = selectedEnvironment;
+            this.projectVariables.currentEnvironment = this.selectedEnvironmentName;
+
             this.initState(this.projectVariables);
             this.disableModal = false;
             this.hasChanges = true;
         });
+    }
+
+    onEnvironmentChange(event: any) {
+        this.setCurrentVariablesToProjectEnvironment();
+
+        this.selectedEnvironmentName = event.value;
+        this.projectVariables.currentEnvironment = this.selectedEnvironmentName;
+        this.variablesService.saveCurrentEnvironment(this.selectedEnvironmentName).subscribe(() => {});
+        this.initVariablesBasedOnEnvironment();
+    }
+
+    getEnvironmentInfoMessage(value: string): string {
+        if (value == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
+            return "Variables declared in this environment will be inherited by all the other environments"
+        }
+        if (value == AllProjectVariables.LOCAL_ENVIRONMENT_NAME) {
+            return "Variables declared in this environment will are not saved inside the project and they will not going to be commited with your tests. <br/>" +
+                "<br/>" +
+                "In this way, you can have your own private variables for your Testerum instance."
+        }
+
+        return null;
     }
 
     onKeyChange(value: string, variable: Variable) {
@@ -175,27 +199,6 @@ export class VariablesComponent implements OnInit, OnDestroy {
         return value == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME || value == AllProjectVariables.LOCAL_ENVIRONMENT_NAME;
     }
 
-    getEnvironmentInfoMessage(value: string): string {
-        if (value == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
-            return "Variables declared in this environment will be inherited by all the other environments"
-        }
-        if (value == AllProjectVariables.LOCAL_ENVIRONMENT_NAME) {
-            return "Variables declared in this environment will are not saved inside the project and they will not going to be commited with your tests. <br/>" +
-                   "<br/>" +
-                   "In this way, you can have your own private variables for your Testerum instance."
-        }
-
-        return null;
-    }
-
-    onEnvironmentChange(event: any) {
-        this.setCurrentVariablesToProjectEnvironment();
-
-        this.selectedEnvironmentName = event.value;
-        this.projectVariables.currentEnvironment = this.selectedEnvironmentName;
-        this.variablesService.saveCurrentEnvironment(this.selectedEnvironmentName).subscribe(() => {});
-        this.initVariablesBasedOnEnvironment();
-    }
 
     private setCurrentVariablesToProjectEnvironment() {
         this.projectVariables.setVariablesToEnvironment(this.selectedEnvironmentName, this.variables);
@@ -232,6 +235,23 @@ export class VariablesComponent implements OnInit, OnDestroy {
     }
 
     isValid(): boolean {
-        return this.projectVariables.isValid();
+        if(!this.areVariablesValid(this.variables)) return false;
+        if(!this.areVariablesValid(this.projectVariables.defaultVariables)) return false;
+        if(!this.areVariablesValid(this.projectVariables.localVariables)) return false;
+
+        for (const environment of this.projectVariables.environments) {
+            if(this.selectedEnvironmentName == environment.name) continue;
+            if(!this.areVariablesValid(environment.variables)) return false;
+        }
+        return true;
+    }
+
+    private areVariablesValid(variales: Variable[]) {
+        for (const variale of variales) {
+            if(variale.isEmpty()) continue;
+            if(StringUtils.isEmpty(variale.key)) return false;
+        }
+
+        return true;
     }
 }

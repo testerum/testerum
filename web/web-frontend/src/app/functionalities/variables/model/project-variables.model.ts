@@ -82,9 +82,13 @@ export class AllProjectVariables implements Serializable<AllProjectVariables> {
             }
         }
 
-        return ArrayUtil.copyArray(this.defaultVariables);
-    }
+        let result: Variable[] = [];
+        for (const variable of this.defaultVariables) {
+            result.push(new Variable(variable.key, variable.value, true))
+        }
 
+        return result;
+    }
     private getVariablesMergedWithDefaultEnvironment(environmentVariables: Variable[], defaultVariables: Variable[]): Variable[] {
         let result: Variable[] = [];
 
@@ -188,24 +192,5 @@ export class AllProjectVariables implements Serializable<AllProjectVariables> {
 
     private sortVariablesByKey(variables: Variable[]) {
         variables.sort( (a, b) => a.key > b.key ? 1 : -1)
-    }
-
-    isValid(): boolean {
-        if(!this.areVariablesValid(this.defaultVariables)) return false;
-        if(!this.areVariablesValid(this.localVariables)) return false;
-
-        for (const environment of this.environments) {
-            if(!this.areVariablesValid(environment.variables)) return false;
-        }
-        return true;
-    }
-
-    private areVariablesValid(variales: Variable[]) {
-        for (const variale of variales) {
-            if(variale.isEmpty()) continue;
-            if(StringUtils.isEmpty(variale.key)) return false;
-        }
-
-        return true;
     }
 }

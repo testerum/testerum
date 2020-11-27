@@ -18,7 +18,7 @@
                                     [style]="{'width':'7.8em'}">
                             <ng-template let-item pTemplate="selectedItem">
                                 <div class="my-dropdown-option">
-                                    <div>{{item.label}}</div>
+                                    <div class="environment-name">{{item.label}}</div>
                                     <info-icon *ngIf="isDefaultOrLocalEnvironment(item.value)"
                                                [width]="'300px'"
                                                [message]="getEnvironmentInfoMessage(item.value)"
