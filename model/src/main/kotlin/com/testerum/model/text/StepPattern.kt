@@ -8,15 +8,15 @@ import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
 
 data class StepPattern @JsonCreator constructor(
-        @JsonProperty("patternParts") val patternParts: List<StepPatternPart>
+    @JsonProperty("patternParts") val patternParts: List<StepPatternPart>
 ) {
 
     fun appendPart(partToAppend: StepPatternPart): StepPattern {
         val lastPatternPart = patternParts.lastOrNull()
 
         val shouldMergeIntoTheLastPart = lastPatternPart != null
-                && lastPatternPart is TextStepPatternPart
-                && partToAppend is TextStepPatternPart
+            && lastPatternPart is TextStepPatternPart
+            && partToAppend is TextStepPatternPart
 
         val newPatternParts = ArrayList<StepPatternPart>()
         if (shouldMergeIntoTheLastPart) {
@@ -25,9 +25,9 @@ data class StepPattern @JsonCreator constructor(
 
                 if (isLastPart) {
                     newPatternParts.add(
-                            TextStepPatternPart(
-                                    (patternPart as TextStepPatternPart).text + (partToAppend as TextStepPatternPart).text
-                            )
+                        TextStepPatternPart(
+                            (patternPart as TextStepPatternPart).text + (partToAppend as TextStepPatternPart).text
+                        )
                     )
                 } else {
                     newPatternParts.add(patternPart)
@@ -67,8 +67,7 @@ data class StepPattern @JsonCreator constructor(
     @JsonIgnore
     fun getParamStepPattern(): List<ParamStepPatternPart> {
         return patternParts
-                .filter { stepPatternPart -> stepPatternPart is ParamStepPatternPart }
-                .map { item -> item as ParamStepPatternPart }
+            .filterIsInstance<ParamStepPatternPart>()
     }
 
     override fun toString() = toDebugString("[", "]")

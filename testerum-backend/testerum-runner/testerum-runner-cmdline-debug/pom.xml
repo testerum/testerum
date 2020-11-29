@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>testerum-runner</artifactId>
+        <groupId>com.testerum</groupId>
+        <version>develop-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>testerum-runner-cmdline-debug</artifactId>
+    <packaging>jar</packaging>
+
+    <!--
+        The purpose of this modules is to make it easy to debug
+        steps from IntelliJ.
+
+        The module depends on the runner and on the steps modules.
+        In IntelliJ, we can make run configurations that start the
+        runner, but has the classpath of this module instead.
+        This allows us to put breakpoints in the  steps.
+     -->
+
+    <properties>
+        <packageDir>${project.basedir}/../../../package</packageDir>
+    </properties>
+
+    <dependencies>
+        <!--==================== Internal Dependencies ====================-->
+
+        <!-- report generators -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-runner-cmdline</artifactId>
+        </dependency>
+
+        <!-- basic steps -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>assertion-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>debug-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>http-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>json-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>rdbms-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>selenium-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>util-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>vars-steps</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+
+        <plugins>
+            <!-- Kotlin -->
+            <plugin>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

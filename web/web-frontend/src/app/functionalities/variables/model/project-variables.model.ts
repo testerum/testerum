@@ -3,6 +3,7 @@ import {Serializable} from "../../../model/infrastructure/serializable.model";
 import {JsonUtil} from "../../../utils/json.util";
 import {Variable} from "./variable.model";
 import {ArrayUtil} from "../../../utils/array.util";
+import {StringUtils} from "../../../utils/string-utils.util";
 
 export class AllProjectVariables implements Serializable<AllProjectVariables> {
     public static DEFAULT_ENVIRONMENT_NAME = "Default";
@@ -68,21 +69,6 @@ export class AllProjectVariables implements Serializable<AllProjectVariables> {
         this.environments.sort((a,b) => a.name > b.name ? 1 : -1);
     }
 
-    getVariablesByEnvironmentName(selectedEnvironmentName: string): Variable[] {
-        if (selectedEnvironmentName == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
-            return this.defaultVariables;
-        }
-        if (selectedEnvironmentName == AllProjectVariables.LOCAL_ENVIRONMENT_NAME) {
-            return this.localVariables;
-        }
-        for (const environment of this.environments) {
-            if (environment.name == selectedEnvironmentName) {
-                return environment.variables;
-            }
-        }
-        return null
-    }
-
     getVariablesByEnvironmentNameMergedWithDefaultVars(selectedEnvironmentName: string): Variable[] {
         if (selectedEnvironmentName == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
             return this.defaultVariables;
@@ -96,62 +82,115 @@ export class AllProjectVariables implements Serializable<AllProjectVariables> {
             }
         }
 
-        return ArrayUtil.copyArray(this.defaultVariables);
-    }
+        let result: Variable[] = [];
+        for (const variable of this.defaultVariables) {
+            result.push(new Variable(variable.key, variable.value, true))
+        }
 
+        return result;
+    }
     private getVariablesMergedWithDefaultEnvironment(environmentVariables: Variable[], defaultVariables: Variable[]): Variable[] {
         let result: Variable[] = [];
 
         for (const environmentVariable of environmentVariables) {
             if(environmentVariable.isEmpty()) continue;
 
-            result.push(environmentVariable);
+            if (environmentVariable.hasEmptyValue()) {
+                let defaultVariable = this.getVariableByKey(defaultVariables, environmentVariable.key)
+                result.push(new Variable(defaultVariable.key, defaultVariable.value, true))
+            } else {
+                result.push(environmentVariable);
+            }
         }
 
         for (const defaultVariable of defaultVariables) {
             if(defaultVariable.isEmpty()) continue;
 
-            if (!this.isVariableInList(environmentVariables, defaultVariable)) {
-                result.push(
-                    new Variable(defaultVariable.key, defaultVariable.value, true)
-                )
+            if (this.getVariableByKey(result, defaultVariable.key) == null) {
+                result.push(new Variable(defaultVariable.key, defaultVariable.value, true));
             }
         }
 
+        this.sortVariablesByKey(result);
         return result;
-    }
-
-    private isVariableInList(environmentVariables: Variable[], defaultVariable: Variable): boolean {
-        for (const environmentVariable of environmentVariables) {
-            if(environmentVariable.key != null && defaultVariable.key != null && environmentVariable.key.toUpperCase() == defaultVariable.key.toUpperCase()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     setVariablesToEnvironment(environmentName: string, variables: Variable[]) {
         if (environmentName == AllProjectVariables.DEFAULT_ENVIRONMENT_NAME) {
-            this.defaultVariables.length = 0;
-            for (const variable of variables) {
-                this.defaultVariables.push(variable)
-            }
+            this.defaultVariables = this.getChangedEnvironmentVariables(variables, true);
         }
-
         if (environmentName == AllProjectVariables.LOCAL_ENVIRONMENT_NAME) {
-            this.localVariables.length = 0;
-            for (const variable of variables) {
-                this.localVariables.push(variable)
-            }
+            this.localVariables = this.getChangedEnvironmentVariables(variables, false);
         }
-
         for (const environment of this.environments) {
             if (environment.name == environmentName) {
-                environment.variables.length = 0;
-                for (const variable of variables) {
-                    environment.variables.push(variable)
-                }
+                environment.variables = this.getChangedEnvironmentVariables(variables, false);
             }
         }
+
+        this.changeOtherEnvironmentsIfNecessary(variables);
+    }
+
+    private getChangedEnvironmentVariables(variables: Variable[], areVariablesFromDefaultEnvironment: boolean): Variable[] {
+        let result: Variable[] = [];
+        for (const variable of variables) {
+            if(variable.isEmpty()) continue;
+
+            if (!areVariablesFromDefaultEnvironment) {
+                let defaultVariable = this.getVariableByKey(this.defaultVariables, variable.key);
+                if (variable.isVariableFromDefaultEnvironment && defaultVariable && defaultVariable.value == variable.value) {
+                    continue;
+                }
+            }
+
+            result.push(new Variable(variable.key, variable.value, false));
+        }
+        return result;
+    }
+
+    private changeOtherEnvironmentsIfNecessary(referenceVariables: Variable[]) {
+        this.defaultVariables = this.getChangedOtherEnvironmentsIfNecessary(this.defaultVariables, referenceVariables);
+        this.localVariables = this.getChangedOtherEnvironmentsIfNecessary(this.localVariables, referenceVariables);
+
+        for (const environment of this.environments) {
+            environment.variables = this.getChangedOtherEnvironmentsIfNecessary(environment.variables, referenceVariables);
+        }
+    }
+
+    private getChangedOtherEnvironmentsIfNecessary(environmentVariables: Variable[], referenceVariables: Variable[]): Variable[] {
+        let result: Variable[] = [];
+
+        for (const referenceVariable of referenceVariables) {
+            if(referenceVariable.isEmpty()) continue;
+
+            let environmentVariable = this.getVariableByKey(environmentVariables, referenceVariable.key);
+            if (environmentVariable) {
+                if (environmentVariable.isVariableFromDefaultEnvironment) {
+                    let defaultVariable = this.getVariableByKey(this.defaultVariables, referenceVariable.key);
+                    result.push(new Variable(defaultVariable.key, defaultVariable.value, true))
+                } else {
+                    result.push(environmentVariable)
+                }
+            } else {
+                result.push(new Variable(referenceVariable.key, "", true))
+            }
+        }
+
+        this.sortVariablesByKey(result)
+
+        return result;
+    }
+
+    private getVariableByKey(variables: Variable[], key: string): Variable {
+        for (const variable of variables) {
+            if(variable.key == key) {
+                return variable;
+            }
+        }
+        return null;
+    }
+
+    private sortVariablesByKey(variables: Variable[]) {
+        variables.sort( (a, b) => a.key > b.key ? 1 : -1)
     }
 }

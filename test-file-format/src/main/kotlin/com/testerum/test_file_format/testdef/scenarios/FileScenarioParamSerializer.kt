@@ -8,12 +8,12 @@ object FileScenarioParamSerializer : BaseSerializer<FileScenarioParam>() {
 
     override fun serialize(source: FileScenarioParam, destination: Writer, indentLevel: Int) {
         val valueLines = source.value
-                .lines()
+            .lines()
 
         val minCommonIndent = valueLines
-                .filter(String::isNotBlank)
-                .map { indentWidth(it) }
-                .min() ?: 0
+            .filter(String::isNotBlank)
+            .map { indentWidth(it) }
+            .minOrNull() ?: 0
 
         val lines = valueLines.map {
             it.drop(minCommonIndent)
@@ -26,14 +26,16 @@ object FileScenarioParamSerializer : BaseSerializer<FileScenarioParam>() {
         }
     }
 
-    private fun serializeSingleLine(destination: Writer,
-                                    indentLevel: Int,
-                                    name: String,
-                                    type: FileScenarioParamType,
-                                    valueLines: List<String>) {
+    private fun serializeSingleLine(
+        destination: Writer,
+        indentLevel: Int,
+        name: String,
+        type: FileScenarioParamType,
+        valueLines: List<String>
+    ) {
         indent(destination, indentLevel)
         destination.write(
-                getSerializedParamType(type)
+            getSerializedParamType(type)
         )
         destination.write(" ")
         destination.write(name)
@@ -42,14 +44,16 @@ object FileScenarioParamSerializer : BaseSerializer<FileScenarioParam>() {
         destination.write(">>")
     }
 
-    private fun serializeMultiLine(destination: Writer,
-                                   indentLevel: Int,
-                                   name: String,
-                                   type: FileScenarioParamType,
-                                   valueLines: List<String>) {
+    private fun serializeMultiLine(
+        destination: Writer,
+        indentLevel: Int,
+        name: String,
+        type: FileScenarioParamType,
+        valueLines: List<String>
+    ) {
         indent(destination, indentLevel)
         destination.write(
-                getSerializedParamType(type)
+            getSerializedParamType(type)
         )
         destination.write(" ")
         destination.write(name)

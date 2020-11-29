@@ -1,6 +1,6 @@
 package com.testerum.runner_cmdline.runner_tree.builder
 
-import com.testerum.file_service.caches.resolved.BasicStepsCache
+import com.testerum.file_service.caches.resolved.StepsCache
 import com.testerum.model.feature.Feature
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.BasicStepDef
@@ -14,7 +14,7 @@ import com.testerum.model.tests_finder.TestPath
 import com.testerum.model.tests_finder.TestsFinder
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
-import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
+import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
 import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature
@@ -33,23 +33,25 @@ import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
 class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProjectManager,
-                                 private val basicStepsCache: BasicStepsCache,
                                  private val executionName: String?) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(RunnerExecutionTreeBuilder::class.java)
     }
 
-    fun createTree(cmdlineParams: CmdlineParams,
+    private val stepsCache: StepsCache
+        get() = runnerProjectManager.getProjectServices().getStepsCache()
+
+    fun createTree(cmdlineParams: RunCmdlineParams,
                    testsDir: JavaPath): RunnerSuite {
         // get hooks
-        val hooks: Collection<HookDef> = basicStepsCache.getHooks()
+        val hooks: Collection<HookDef> = stepsCache.getHooks()
 
         val testsDirectoryRoot = testsDir.toAbsolutePath()
         val testsMap = TestsFinder.loadTestsToRun(
                 testPaths = cmdlineParams.testPaths,
-                tagsToInclude = cmdlineParams.tagsToInclude,
-                tagsToExclude = cmdlineParams.tagsToExclude,
+                tagsToInclude = cmdlineParams.includeTags,
+                tagsToExclude = cmdlineParams.excludeTags,
                 testsDirectoryRoot = testsDirectoryRoot,
                 loadTestAtPath = { runnerProjectManager.getProjectServices().getTestsCache().getTestAtPath(it) }
         )

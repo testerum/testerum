@@ -1,59 +1,64 @@
 package com.testerum.runner_cmdline.cmdline.params.parser
 
-import com.google.common.base.Splitter
 import com.testerum.common_kotlin.isDirectory
 import com.testerum.model.tests_finder.FeatureTestPath
 import com.testerum.model.tests_finder.ScenariosTestPath
 import com.testerum.model.tests_finder.TestPath
 import com.testerum.model.tests_finder.TestTestPath
-import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserParsingException
+import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserException
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
+import java.nio.file.Path as JavaPath
 
 private val testFileWithScenarioRegex = Regex("""(.*\.test)\[([^]]+)]""")
-private val scenarioIndexesSplitter = Splitter.on(",")
-        .trimResults()
-        .omitEmptyStrings()
 
-fun parseStringToTestPath(testFilesOrDirectories: List<String>, repositoryDirectory: Path?, usageHelp: String): List<TestPath> {
+fun parseStringToTestPath(testFilesOrDirectories: List<String>, repositoryDirectory: JavaPath): List<TestPath> {
     return testFilesOrDirectories.map { pathSpecification ->
-        val matchResult = testFileWithScenarioRegex.matchEntire(pathSpecification)
+        parseTestPath(pathSpecification, repositoryDirectory)
+    }
+}
 
-        if (matchResult == null) {
-            val javaPathSpecification = Paths.get(pathSpecification)
+fun parseTestPath(
+    pathSpecification: String,
+    repositoryDirectory: JavaPath,
+): TestPath {
+    val matchResult = testFileWithScenarioRegex.matchEntire(pathSpecification)
 
-            val testPath = if (javaPathSpecification.isAbsolute) {
-                javaPathSpecification
-            } else {
-                repositoryDirectory!!.resolve("features").resolve(pathSpecification)
-            }
+    return if (matchResult == null) {
+        val javaPathSpecification = Paths.get(pathSpecification)
 
-            val javaPath = getValidatedRequiredFileOrDirectory(testPath, "testPath", usageHelp)
-
-            if (javaPath.isDirectory) {
-                FeatureTestPath(javaPath)
-            } else {
-                TestTestPath(javaPath)
-            }
+        val testPath = if (javaPathSpecification.isAbsolute) {
+            javaPathSpecification
         } else {
-            val javaPathSpecification = Paths.get(matchResult.groupValues[1])
-            val scenarioIndexes = scenarioIndexesSplitter.split(matchResult.groupValues[2])
-                    .toList()
-                    .map {
-                        parseScenarioIndex(it)
-                    }
+            repositoryDirectory.resolve("features").resolve(pathSpecification)
+        }
 
-            val testPath = if (javaPathSpecification.isAbsolute) {
-                javaPathSpecification
-            } else {
-                repositoryDirectory!!.resolve("features").resolve(javaPathSpecification)
+        val javaPath = getValidatedRequiredFileOrDirectory(testPath)
+
+        if (javaPath.isDirectory) {
+            FeatureTestPath(javaPath)
+        } else {
+            TestTestPath(javaPath)
+        }
+    } else {
+        val javaPathSpecification = Paths.get(matchResult.groupValues[1])
+
+        val scenarioIndexes = matchResult.groupValues[2].split(',')
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .map {
+                parseScenarioIndex(it)
             }
 
-            val javaPath = getValidatedRequiredFileOrDirectory(testPath, "testPath", usageHelp)
-
-            ScenariosTestPath(javaPath, scenarioIndexes)
+        val testPath = if (javaPathSpecification.isAbsolute) {
+            javaPathSpecification
+        } else {
+            repositoryDirectory.resolve("features").resolve(javaPathSpecification)
         }
+
+        val javaPath = getValidatedRequiredFileOrDirectory(testPath)
+
+        ScenariosTestPath(javaPath, scenarioIndexes)
     }
 }
 
@@ -71,19 +76,13 @@ private fun parseScenarioIndex(text: String): Int {
     }
 }
 
-private fun getValidatedRequiredFileOrDirectory(path: Path, pathLabel: String, usageHelp: String): Path {
+private fun getValidatedRequiredFileOrDirectory(path: JavaPath): JavaPath {
     val normalizedPath = path.toAbsolutePath().normalize()
     if (!Files.exists(normalizedPath)) {
-        throw CmdlineParamsParserParsingException(
-                errorMessage = "$pathLabel [$normalizedPath] does not exist",
-                usageHelp = usageHelp
-        )
+        throw CmdlineParamsParserException("test path [$normalizedPath] does not exist")
     }
     if (!Files.isReadable(normalizedPath)) {
-        throw CmdlineParamsParserParsingException(
-                errorMessage = "$pathLabel [$normalizedPath] is not readable; maybe you don't have enough access rights to read this path?",
-                usageHelp = usageHelp
-        )
+        throw CmdlineParamsParserException("test path [$normalizedPath] is not readable; maybe you don't have enough access rights to read this path?")
     }
 
     return normalizedPath

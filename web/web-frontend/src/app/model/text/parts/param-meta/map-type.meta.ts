@@ -1,7 +1,7 @@
 import {TypeMeta} from "./type-meta.model";
 import {Serializable} from "../../../infrastructure/serializable.model";
 import {JsonUtil} from "../../../../utils/json.util";
-import {FieldTypeMeta} from "./field/field-type-meta.model";
+import {TypeMetaFieldDescriptor} from "./field/field-type-meta.model";
 import {StringTypeMeta} from "./string-type.meta";
 
 export class MapTypeMeta implements TypeMeta, Serializable<MapTypeMeta> {
@@ -19,10 +19,10 @@ export class MapTypeMeta implements TypeMeta, Serializable<MapTypeMeta> {
         this.javaType = input["javaType"];
 
         let keyTypeSerialized = input["keyType"];
-        this.keyType = FieldTypeMeta.deserializeTypeMeta(keyTypeSerialized);
+        this.keyType = TypeMetaFieldDescriptor.deserializeTypeMeta(keyTypeSerialized);
 
         let valueTypeSerialized = input["valueType"];
-        this.valueType = FieldTypeMeta.deserializeTypeMeta(valueTypeSerialized);
+        this.valueType = TypeMetaFieldDescriptor.deserializeTypeMeta(valueTypeSerialized);
 
         return this;
     }

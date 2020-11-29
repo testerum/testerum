@@ -30,6 +30,7 @@
         <module>common-profiles</module>
         <module>common-json</module>
         <module>common-jdk</module>
+        <module>common-fast-serialization</module>
         <module>common-stats</module>
         <module>common-encrypted-prefs</module>
     </modules>

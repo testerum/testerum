@@ -1,14 +1,12 @@
 package com.testerum.settings
 
+import com.testerum.settings.reference_resolver.SettingsResolver
 import com.testerum_api.testerum_steps_api.test_context.settings.model.Setting
 import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingDefinition
-import com.testerum.settings.reference_resolver.SettingsResolver
 import java.util.concurrent.locks.ReentrantReadWriteLock
-import javax.annotation.concurrent.ThreadSafe
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
-@ThreadSafe
 class SettingsManager {
 
     private val lock = ReentrantReadWriteLock()

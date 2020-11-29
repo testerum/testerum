@@ -18,7 +18,7 @@
                                     [style]="{'width':'7.8em'}">
                             <ng-template let-item pTemplate="selectedItem">
                                 <div class="my-dropdown-option">
-                                    <div>{{item.label}}</div>
+                                    <div class="environment-name">{{item.label}}</div>
                                     <info-icon *ngIf="isDefaultOrLocalEnvironment(item.value)"
                                                [width]="'300px'"
                                                [message]="getEnvironmentInfoMessage(item.value)"
@@ -67,8 +67,8 @@
 
                             <!-- KEY -->
                             <td class="variable-key">
-                                <input (change)="onNewKeyChange($event)"
-                                       [(ngModel)]="variable.key"
+                                <input (ngModelChange)="onKeyChange($event, variable)"
+                                       [ngModel]="variable.key"
                                        type="text" pInputText  class="form-control full-width">
                             </td>
 
@@ -101,7 +101,7 @@
                 </ng-container>
                 <ng-container *ngIf="hasChanges">
                     <button (click)="cancel();" type="button" class="btn btn-default">Cancel</button>
-                    <button (click)="save()" class="btn btn-primary">Save</button>
+                    <button (click)="save()" [disabled]="!isValid()" class="btn btn-primary">Save</button>
                 </ng-container>
             </div>
         </div>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>testerum-runner</artifactId>
+        <groupId>com.testerum</groupId>
+        <version>develop-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>testerum-junit-all</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!--==================== Internal Dependencies ====================-->
+
+        <!-- testerum-junit -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-junit</artifactId>
+        </dependency>
+
+        <!-- STEPS -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>assertion-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>debug-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>http-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>json-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>rdbms-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>selenium-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>util-steps</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>vars-steps</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

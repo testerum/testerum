@@ -6,10 +6,8 @@ import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.locks.ReentrantLock
-import javax.annotation.concurrent.ThreadSafe
 import kotlin.concurrent.withLock
 
-@ThreadSafe
 object ConsoleOutputCapturer {
 
     private val lock = ReentrantLock()

@@ -4,7 +4,6 @@ import com.testerum.common_kotlin.walk
 import com.testerum.file_service.caches.resolved.resolvers.StepsResolver
 import com.testerum.file_service.caches.warnings.WarningService
 import com.testerum.file_service.file.ComposedStepFileService
-import com.testerum.model.util.escape
 import com.testerum.file_service.util.isChangedRequiringSave
 import com.testerum.model.enums.StepPhaseEnum
 import com.testerum.model.exception.ValidationException
@@ -20,6 +19,8 @@ import com.testerum.model.step.tree.builder.ComposedStepDirectoryTreeBuilder
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.TextStepPatternPart
 import com.testerum.model.util.StepHashUtil
+import com.testerum.model.util.escape
+import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.util.concurrent.locks.ReentrantReadWriteLock
@@ -27,10 +28,12 @@ import kotlin.concurrent.read
 import kotlin.concurrent.write
 import java.nio.file.Path as JavaPath
 
-class StepsCache(private val basicStepsCache: BasicStepsCache,
-                 private val composedStepFileService: ComposedStepFileService,
-                 private val stepsResolver: StepsResolver,
-                 private val warningService: WarningService) {
+class StepsCache(
+    private val basicStepsCache: BasicStepsCache,
+    private val composedStepFileService: ComposedStepFileService,
+    private val stepsResolver: StepsResolver,
+    private val warningService: WarningService
+) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(StepsCache::class.java)
@@ -46,27 +49,29 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
     private var stepsByHash: MutableMap</*hash: */String, StepDef> = hashMapOf()
     private var stepsByPath: MutableMap<Path, StepDef> = hashMapOf()
 
-    fun initialize(composedStepsDir: JavaPath?,
-                   resourcesDir: JavaPath?) {
+    fun initialize(
+        packagesWithAnnotations: List<String>,
+        additionalBasicStepsDirs: List<JavaPath>,
+        composedStepsDir: JavaPath,
+        resourcesDir: JavaPath,
+    ) {
         lock.write {
-            if (composedStepsDir == null || resourcesDir == null) {
-                LOG.info("not loading composed steps because either the composed steps dir or the resources dir is unknown")
-            } else {
-                this.composedStepsDir = composedStepsDir
-                this.resourcesDir = resourcesDir
+            this.composedStepsDir = composedStepsDir
+            this.resourcesDir = resourcesDir
 
-                // load unresolved composed steps
-                this.unresolvedComposedSteps = ArrayList(loadComposedSteps(composedStepsDir))
+            basicStepsCache.initialize(packagesWithAnnotations, additionalBasicStepsDirs)
 
-                resolveSteps()
-            }
+            // load unresolved composed steps
+            this.unresolvedComposedSteps = ArrayList(loadComposedSteps(composedStepsDir))
+
+            resolveSteps()
         }
     }
 
     private fun reinitializeComposedSteps() {
         lock.write {
             val composedStepsDir = this.composedStepsDir
-                    ?: throw IllegalStateException("cannot resolve steps because the composedStepsDir is not set")
+                ?: throw IllegalStateException("cannot resolve steps because the composedStepsDir is not set")
 
             // load unresolved composed steps
             this.unresolvedComposedSteps = ArrayList(loadComposedSteps(composedStepsDir))
@@ -88,7 +93,7 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
 
     private fun resolveSteps() {
         val resourcesDir = this.resourcesDir
-                ?: throw IllegalStateException("cannot resolve steps because the resourcesDir is not set")
+            ?: throw IllegalStateException("cannot resolve steps because the resourcesDir is not set")
 
         // resolve steps
         val basicSteps = basicStepsCache.getBasicSteps()
@@ -129,13 +134,19 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
         return result
     }
 
+    fun getBasicSteps(): Collection<BasicStepDef> = lock.read { basicStepsCache.getBasicSteps() }
+
+    fun getBasicStepAtPath(basicStepPath: Path): BasicStepDef? = lock.read { basicStepsCache.getStepAtPath(basicStepPath) }
+
+    fun getHooks(): Collection<HookDef> = lock.read { basicStepsCache.getHooks() }
+
     fun getAllSteps(): Collection<StepDef> = lock.read { stepsByHash.values }
 
     fun getStepAtPath(basicStepPath: Path): StepDef? = lock.read { stepsByPath[basicStepPath] }
 
     fun getComposedStepAtPath(path: Path): ComposedStepDef? {
         val step = getStepAtPath(path)
-                ?: return null
+            ?: return null
 
         if (step !is ComposedStepDef) {
             return null
@@ -149,7 +160,7 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
             val stepHash = StepHashUtil.calculateStepHash(stepPhase, stepPattern)
 
             return stepsByHash[stepHash]
-                    ?: UndefinedStepDef(stepPhase, stepPattern)
+                ?: UndefinedStepDef(stepPhase, stepPattern)
         }
     }
 
@@ -158,7 +169,7 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
     fun deleteComposedStep(path: Path) {
         lock.write {
             val composedStepsDir = this.composedStepsDir
-                    ?: throw IllegalStateException("cannot delete composed step because the composedStepsDir is not set")
+                ?: throw IllegalStateException("cannot delete composed step because the composedStepsDir is not set")
 
             composedStepFileService.deleteComposedStep(path, composedStepsDir)
 
@@ -171,7 +182,7 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
     fun saveComposedStep(composedStep: ComposedStepDef): ComposedStepDef {
         lock.write {
             val composedStepsDir = this.composedStepsDir
-                    ?: throw IllegalStateException("cannot save composed step because the composedStepsDir is not set")
+                ?: throw IllegalStateException("cannot save composed step because the composedStepsDir is not set")
 
             val existingStep = composedStep.oldPath?.let { stepsByPath[it] } as? ComposedStepDef
 
@@ -204,12 +215,12 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
     fun renameComposedStepDirectory(renamePath: RenamePath): Path {
         lock.write {
             val composedStepsDir = this.composedStepsDir
-                    ?: throw IllegalStateException("cannot rename directory step because the composedStepsDir is not set")
+                ?: throw IllegalStateException("cannot rename directory step because the composedStepsDir is not set")
 
             // rename directory
             val oldEscapedPath = renamePath.path.escape()
             val newEscapedPath = composedStepFileService.renameDirectory(renamePath, composedStepsDir)
-                                                              .escape()
+                .escape()
 
             // update cache
             val newUnresolvedComposedSteps: MutableList<ComposedStepDef> = mutableListOf()
@@ -218,8 +229,8 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
                 val newStepPath = step.path.replaceDirs(oldEscapedPath, newEscapedPath)
 
                 newUnresolvedComposedSteps += step.copy(
-                        path = newStepPath,
-                        oldPath = newStepPath
+                    path = newStepPath,
+                    oldPath = newStepPath
                 )
             }
 
@@ -233,7 +244,7 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
     fun deleteComposedStepDirectory(path: Path) {
         lock.write {
             val composedStepsDir = this.composedStepsDir
-                    ?: throw IllegalStateException("cannot delete directory step because the composedStepsDir is not set")
+                ?: throw IllegalStateException("cannot delete directory step because the composedStepsDir is not set")
 
             // delete directory
             composedStepFileService.deleteDirectory(path, composedStepsDir)
@@ -251,7 +262,7 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
     fun moveComposedStepDirectoryOrFile(copyPath: CopyPath) {
         lock.write {
             val composedStepsDir = this.composedStepsDir
-                    ?: throw IllegalStateException("cannot move composed step directory or file because the composedStepsDir is not set")
+                ?: throw IllegalStateException("cannot move composed step directory or file because the composedStepsDir is not set")
 
             composedStepFileService.moveComposedStepDirectoryOrFile(copyPath, composedStepsDir)
 
@@ -262,7 +273,7 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
     fun copyComposedStep(sourcePath: Path, destinationDirPath: Path): Path {
         lock.write {
             val composedStepsDir = this.composedStepsDir
-                    ?: throw IllegalStateException("cannot move composed step directory or file because the composedStepsDir is not set")
+                ?: throw IllegalStateException("cannot move composed step directory or file because the composedStepsDir is not set")
 
             // lookup step def
             val stepDef = getComposedStepAtPathOrFailWithError(sourcePath)
@@ -270,8 +281,8 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
             // change pattern
             var stepDefToSave = createComposedStepDefCopyWithUniquePattern(stepDef, destinationDirPath)
             stepDefToSave = stepDefToSave.copy(
-                    oldPath = null, // setting old-path to "null" to tell "save" to create
-                    path = stepDefToSave.getNewPath()
+                oldPath = null, // setting old-path to "null" to tell "save" to create
+                path = stepDefToSave.getNewPath()
             )
 
             // save
@@ -287,15 +298,15 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
     fun moveComposedStep(sourcePath: Path, destinationDirPath: Path): Path {
         lock.write {
             val composedStepsDir = this.composedStepsDir
-                    ?: throw IllegalStateException("cannot move composed step directory or file because the composedStepsDir is not set")
+                ?: throw IllegalStateException("cannot move composed step directory or file because the composedStepsDir is not set")
 
             // lookup step def
             val stepDef = getComposedStepAtPathOrFailWithError(sourcePath)
 
             // update path to tell "save" to move
             val newPath = destinationDirPath.copy(
-                    fileName = sourcePath.fileName,
-                    fileExtension = sourcePath.fileExtension
+                fileName = sourcePath.fileName,
+                fileExtension = sourcePath.fileExtension
             )
             val stepDefToSave = stepDef.copy(path = newPath)
 
@@ -314,14 +325,14 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
             val stepDef = stepsByPath[sourcePath]
             if (stepDef == null) {
                 throw ValidationException(
-                        globalMessage = "The step at path [$sourcePath] does not exist.",
-                        globalHtmlMessage = "The step at path<br/><code>$sourcePath</code><br/>does not exist."
+                    globalMessage = "The step at path [$sourcePath] does not exist.",
+                    globalHtmlMessage = "The step at path<br/><code>$sourcePath</code><br/>does not exist."
                 )
             }
             if (stepDef !is ComposedStepDef) {
                 throw ValidationException(
-                        globalMessage = "The step at path [$sourcePath] is not a composed step.",
-                        globalHtmlMessage = "The step at path<br/><code>$sourcePath</code><br/>is not a composed step."
+                    globalMessage = "The step at path [$sourcePath] is not a composed step.",
+                    globalHtmlMessage = "The step at path<br/><code>$sourcePath</code><br/>is not a composed step."
                 )
             }
 
@@ -329,8 +340,10 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
         }
     }
 
-    private fun createComposedStepDefCopyWithUniquePattern(sourceStepDef: ComposedStepDef,
-                                                           destinationDirPath: Path): ComposedStepDef {
+    private fun createComposedStepDefCopyWithUniquePattern(
+        sourceStepDef: ComposedStepDef,
+        destinationDirPath: Path
+    ): ComposedStepDef {
         lock.read {
             var destinationPattern: StepPattern
 
@@ -350,17 +363,17 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
                 postfixCount++
 
                 destinationPattern = sourceStepDef.stepPattern.appendPart(
-                        TextStepPatternPart(postfix)
+                    TextStepPatternPart(postfix)
                 )
             } while (stepExists(sourceStepDef.phase, destinationPattern))
 
             return sourceStepDef.copy(
-                    stepPattern = destinationPattern,
-                    oldPath = null,
-                    path = destinationDirPath.copy(
-                            fileName = sourceStepDef.path.fileName,
-                            fileExtension = sourceStepDef.path.fileExtension
-                    )
+                stepPattern = destinationPattern,
+                oldPath = null,
+                path = destinationDirPath.copy(
+                    fileName = sourceStepDef.path.fileName,
+                    fileExtension = sourceStepDef.path.fileExtension
+                )
             )
         }
     }
@@ -375,7 +388,7 @@ class StepsCache(private val basicStepsCache: BasicStepsCache,
 
     fun getComposedStepsDirectoriesTree(): ComposedContainerStepNode {
         val composedStepsDir = this.composedStepsDir
-                ?: throw IllegalStateException("cannot get composed steps directories tree because the composedStepsDir is not set")
+            ?: throw IllegalStateException("cannot get composed steps directories tree because the composedStepsDir is not set")
 
         val treeBuilder = ComposedStepDirectoryTreeBuilder()
 

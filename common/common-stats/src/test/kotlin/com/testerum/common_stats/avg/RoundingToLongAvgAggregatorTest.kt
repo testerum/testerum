@@ -1,9 +1,7 @@
 package com.testerum.common_stats.avg
 
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.hamcrest.CoreMatchers.`is` as Is
 
 class RoundingToLongAvgAggregatorTest {
 
@@ -17,7 +15,7 @@ class RoundingToLongAvgAggregatorTest {
 
         val avg = aggregator.getResult()
 
-        assertThat(avg, Is(equalTo(15L)))
+        assertThat(avg).isEqualTo(15L)
     }
 
     @Test
@@ -30,7 +28,7 @@ class RoundingToLongAvgAggregatorTest {
 
         val avg = aggregator.getResult()
 
-        assertThat(avg, Is(equalTo(3L)))
+        assertThat(avg).isEqualTo(3L)
     }
 
     @Test
@@ -43,7 +41,7 @@ class RoundingToLongAvgAggregatorTest {
 
         val avg = aggregator.getResult()
 
-        assertThat(avg, Is(equalTo(4L)))
+        assertThat(avg).isEqualTo(4L)
     }
 
 }

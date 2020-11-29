@@ -1,17 +1,17 @@
 import {TypeMeta} from "./type-meta.model";
 import {Serializable} from "../../../infrastructure/serializable.model";
 import {JsonUtil} from "../../../../utils/json.util";
-import {FieldTypeMeta} from "./field/field-type-meta.model";
+import {TypeMetaFieldDescriptor} from "./field/field-type-meta.model";
 
 export class ObjectTypeMeta implements TypeMeta, Serializable<ObjectTypeMeta> {
     javaType: string;
-    fields: FieldTypeMeta[] = [];
+    fields: TypeMetaFieldDescriptor[] = [];
 
     constructor(javaType = null) {
         this.javaType = javaType;
     }
 
-    getFieldTypeMetaByName(fieldName: string): FieldTypeMeta | null {
+    getFieldTypeMetaByName(fieldName: string): TypeMetaFieldDescriptor | null {
         for (const field of this.fields) {
             if (field.name == fieldName) {
                 return field
@@ -26,7 +26,7 @@ export class ObjectTypeMeta implements TypeMeta, Serializable<ObjectTypeMeta> {
         if (input["fields"]) {
             for (const field of input["fields"] || []) {
                 this.fields.push(
-                    new FieldTypeMeta().deserialize(field)
+                    new TypeMetaFieldDescriptor().deserialize(field)
                 )
             }
         }

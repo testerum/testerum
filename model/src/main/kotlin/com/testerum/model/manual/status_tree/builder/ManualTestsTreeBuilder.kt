@@ -10,7 +10,7 @@ import com.testerum.model.manual.status_tree.ManualTestsStatusTreeNode
 import com.testerum.model.manual.status_tree.ManualTestsStatusTreeRoot
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
-import java.util.*
+import java.util.EnumSet
 
 class ManualTestsTreeBuilder(testPlanName: String) {
 
@@ -38,7 +38,7 @@ class ManualTestsTreeBuilder(testPlanName: String) {
             val children = childrenNodes as List<ManualTestsStatusTreeBase>
 
             val testStatuses = getDescendantsTestStatuses(childrenNodes)
-            val status = testStatuses.minBy { it.priority } ?: ManualTestStatus.NOT_APPLICABLE
+            val status = testStatuses.minByOrNull { it.priority } ?: ManualTestStatus.NOT_APPLICABLE
 
             return ManualTestsStatusTreeRoot(
                     path = Path.EMPTY,
@@ -59,7 +59,7 @@ class ManualTestsTreeBuilder(testPlanName: String) {
                     val children = childrenNodes as List<ManualTestsStatusTreeBase>
 
                     val testStatuses = getDescendantsTestStatuses(childrenNodes)
-                    val status = testStatuses.minBy { it.priority } ?: ManualTestStatus.NOT_APPLICABLE
+                    val status = testStatuses.minByOrNull { it.priority } ?: ManualTestStatus.NOT_APPLICABLE
 
                     ManualTestsStatusTreeContainer(
                             path = Path(directories = path),

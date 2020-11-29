@@ -2,7 +2,7 @@ import {StepPatternPart} from "./step-pattern-part.model";
 import {JsonUtil} from "../../../utils/json.util";
 import {Serializable} from "../../infrastructure/serializable.model";
 import {TypeMeta} from "./param-meta/type-meta.model";
-import {FieldTypeMeta} from "./param-meta/field/field-type-meta.model";
+import {TypeMetaFieldDescriptor} from "./param-meta/field/field-type-meta.model";
 import {ResourceMapEnum} from "../../../functionalities/resources/editors/resource-map.enum";
 
 export class ParamStepPatternPart implements StepPatternPart, Serializable<ParamStepPatternPart>{
@@ -15,7 +15,7 @@ export class ParamStepPatternPart implements StepPatternPart, Serializable<Param
 
     deserialize(input: Object): ParamStepPatternPart {
         this.name = input["name"];
-        this.serverType = FieldTypeMeta.deserializeTypeMeta(input["typeMeta"]);
+        this.serverType = TypeMetaFieldDescriptor.deserializeTypeMeta(input["typeMeta"]);
         this.uiType = ResourceMapEnum.getResourceMapEnumByTypeMeta(this.serverType).uiType;
         this.description = input["description"];
 

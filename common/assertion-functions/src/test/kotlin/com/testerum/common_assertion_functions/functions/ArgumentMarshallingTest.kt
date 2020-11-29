@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.IntNode
 import com.testerum.common_assertion_functions.evaluator.FunctionEvaluator
 import com.testerum.common_assertion_functions.executer.DelegatingFunctionExecuterFactory
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.equalTo
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
@@ -14,9 +13,9 @@ class ArgumentMarshallingTest {
 
     companion object {
         private val FUNCTION_EVALUATOR = FunctionEvaluator(
-                DelegatingFunctionExecuterFactory.createDelegatingFunctionExecuter(
-                        listOf(MyFunctions)
-                )
+            DelegatingFunctionExecuterFactory.createDelegatingFunctionExecuter(
+                listOf(MyFunctions)
+            )
         )
     }
 
@@ -26,7 +25,8 @@ class ArgumentMarshallingTest {
             FUNCTION_EVALUATOR.evaluate("@functionWithThreeArguments(1, 2)", IntNode(1))
         }
 
-        assertThat(exception.message, equalTo("function [functionWithThreeArguments] expects 3 arguments, but got 2"))
+        assertThat(exception.message)
+            .isEqualTo("function [functionWithThreeArguments] expects 3 arguments, but got 2")
     }
 
     @Test
@@ -35,7 +35,8 @@ class ArgumentMarshallingTest {
             FUNCTION_EVALUATOR.evaluate("@functionWithOneArgument(1, 2, 3)", IntNode(1))
         }
 
-        assertThat(exception.message, equalTo("function [functionWithOneArgument] expects 1 arguments, but got 3"))
+        assertThat(exception.message)
+            .isEqualTo("function [functionWithOneArgument] expects 1 arguments, but got 3")
     }
 
     @Test
@@ -45,7 +46,7 @@ class ArgumentMarshallingTest {
         }
 
         assert(exception.value is Boolean)
-        assertThat(exception.value as Boolean, equalTo(true))
+        assertThat(exception.value as Boolean).isTrue
     }
 
     @Test
@@ -54,7 +55,7 @@ class ArgumentMarshallingTest {
             FUNCTION_EVALUATOR.evaluate("@functionWithBooleanObjectArgument(null)", IntNode(1))
         }
 
-        assertThat(exception.value, equalTo<Any>(null))
+        assertThat(exception.value).isNull()
     }
 
     @Test
@@ -64,7 +65,7 @@ class ArgumentMarshallingTest {
         }
 
         assert(exception.value is Boolean)
-        assertThat(exception.value as Boolean, equalTo(false))
+        assertThat(exception.value as Boolean).isFalse
     }
 
     @Test
@@ -74,7 +75,7 @@ class ArgumentMarshallingTest {
         }
 
         assert(exception.value is Int)
-        assertThat(exception.value as Int, equalTo(64))
+        assertThat(exception.value as Int).isEqualTo(64)
     }
 
     @Test
@@ -83,7 +84,7 @@ class ArgumentMarshallingTest {
             FUNCTION_EVALUATOR.evaluate("@functionWithIntegerObjectArgument(null)", IntNode(1))
         }
 
-        assertThat(exception.value, equalTo<Any>(null))
+        assertThat(exception.value).isNull()
     }
 
     @Test
@@ -93,7 +94,7 @@ class ArgumentMarshallingTest {
         }
 
         assert(exception.value is Int)
-        assertThat(exception.value as Int, equalTo(12))
+        assertThat(exception.value as Int).isEqualTo(12)
     }
 
     @Test
@@ -102,7 +103,7 @@ class ArgumentMarshallingTest {
             FUNCTION_EVALUATOR.evaluate("@functionWithBigDecimalArgument(null)", IntNode(1))
         }
 
-        assertThat(exception.value, equalTo<Any>(null))
+        assertThat(exception.value).isNull()
     }
 
     @Test
@@ -112,7 +113,7 @@ class ArgumentMarshallingTest {
         }
 
         assert(exception.value is BigDecimal)
-        assertThat(exception.value as BigDecimal, equalTo(BigDecimal("12.3")))
+        assertThat(exception.value as BigDecimal).isEqualTo(BigDecimal("12.3"))
     }
 
     @Test
@@ -121,7 +122,7 @@ class ArgumentMarshallingTest {
             FUNCTION_EVALUATOR.evaluate("@functionWithStringArgument(null)", IntNode(1))
         }
 
-        assertThat(exception.value, equalTo<Any>(null))
+        assertThat(exception.value).isNull()
     }
 
     @Test
@@ -131,7 +132,7 @@ class ArgumentMarshallingTest {
         }
 
         assert(exception.value is String)
-        assertThat(exception.value as String, equalTo("some text"))
+        assertThat(exception.value as String).isEqualTo("some text")
     }
 
 }
@@ -140,50 +141,66 @@ class ArgumentMarshallingTest {
 object MyFunctions {
 
     @AssertionFunction
-    fun functionWithOneArgument(actual: JsonNode,
-                                arg1: Int) {
+    fun functionWithOneArgument(
+        actual: JsonNode,
+        arg1: Int
+    ) {
     }
 
     @AssertionFunction
-    fun functionWithThreeArguments(actual: JsonNode,
-                                   arg1: Int,
-                                   arg2: Int,
-                                   arg3: Int) {
+    fun functionWithThreeArguments(
+        actual: JsonNode,
+        arg1: Int,
+        arg2: Int,
+        arg3: Int
+    ) {
     }
 
     @AssertionFunction
-    fun functionWithBooleanPrimitiveArgument(actual: JsonNode,
-                                             value: Boolean) {
+    fun functionWithBooleanPrimitiveArgument(
+        actual: JsonNode,
+        value: Boolean
+    ) {
         throw ExpectedException(value)
     }
 
     @AssertionFunction
-    fun functionWithBooleanObjectArgument(actual: JsonNode,
-                                          value: Boolean?) {
+    fun functionWithBooleanObjectArgument(
+        actual: JsonNode,
+        value: Boolean?
+    ) {
         throw ExpectedException(value)
     }
 
     @AssertionFunction
-    fun functionWithIntegerPrimitiveArgument(actual: JsonNode,
-                                             value: Int) {
+    fun functionWithIntegerPrimitiveArgument(
+        actual: JsonNode,
+        value: Int
+    ) {
         throw ExpectedException(value)
     }
 
     @AssertionFunction
-    fun functionWithIntegerObjectArgument(actual: JsonNode,
-                                          value: Int?) {
+    fun functionWithIntegerObjectArgument(
+        actual: JsonNode,
+        value: Int?
+    ) {
         throw ExpectedException(value)
     }
 
     @AssertionFunction
-    fun functionWithBigDecimalArgument(actual: JsonNode,
-                                       value: BigDecimal?) {
+    fun functionWithBigDecimalArgument(
+        actual: JsonNode,
+        value: BigDecimal?
+    ) {
         throw ExpectedException(value)
     }
 
     @AssertionFunction
-    fun functionWithStringArgument(actual: JsonNode,
-                                   value: String?) {
+    fun functionWithStringArgument(
+        actual: JsonNode,
+        value: String?
+    ) {
         throw ExpectedException(value)
     }
 

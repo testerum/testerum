@@ -55,12 +55,6 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-        <!-- annotations -->
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-        </dependency>
-
 
         <!--==================== test dependencies ====================-->
 
@@ -86,10 +80,10 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- java-hamcrest -->
+        <!-- assertj-core -->
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>java-hamcrest</artifactId>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
 

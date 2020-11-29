@@ -1,7 +1,7 @@
 import {TypeMeta} from "./type-meta.model";
 import {Serializable} from "../../../infrastructure/serializable.model";
 import {JsonUtil} from "../../../../utils/json.util";
-import {FieldTypeMeta} from "./field/field-type-meta.model";
+import {TypeMetaFieldDescriptor} from "./field/field-type-meta.model";
 import {StringTypeMeta} from "./string-type.meta";
 
 export class ListTypeMeta implements TypeMeta, Serializable<ListTypeMeta> {
@@ -17,7 +17,7 @@ export class ListTypeMeta implements TypeMeta, Serializable<ListTypeMeta> {
         this.javaType = input["javaType"];
 
         let itemsTypeSerialized = input["itemsType"];
-        this.itemsType = FieldTypeMeta.deserializeTypeMeta(itemsTypeSerialized);
+        this.itemsType = TypeMetaFieldDescriptor.deserializeTypeMeta(itemsTypeSerialized);
 
         return this;
     }
