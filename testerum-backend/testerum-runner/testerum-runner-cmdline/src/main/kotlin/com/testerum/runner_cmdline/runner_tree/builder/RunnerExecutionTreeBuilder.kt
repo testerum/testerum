@@ -32,8 +32,10 @@ import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
-class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProjectManager,
-                                 private val executionName: String?) {
+class RunnerExecutionTreeBuilder(
+    private val runnerProjectManager: RunnerProjectManager,
+    private val executionName: String?
+) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(RunnerExecutionTreeBuilder::class.java)
@@ -42,24 +44,26 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
     private val stepsCache: StepsCache
         get() = runnerProjectManager.getProjectServices().getStepsCache()
 
-    fun createTree(cmdlineParams: RunCmdlineParams,
-                   testsDir: JavaPath): RunnerSuite {
+    fun createTree(
+        cmdlineParams: RunCmdlineParams,
+        testsDir: JavaPath
+    ): RunnerSuite {
         // get hooks
         val hooks: Collection<HookDef> = stepsCache.getHooks()
 
         val testsDirectoryRoot = testsDir.toAbsolutePath()
         val testsMap = TestsFinder.loadTestsToRun(
-                testPaths = cmdlineParams.testPaths,
-                tagsToInclude = cmdlineParams.includeTags,
-                tagsToExclude = cmdlineParams.excludeTags,
-                testsDirectoryRoot = testsDirectoryRoot,
-                loadTestAtPath = { runnerProjectManager.getProjectServices().getTestsCache().getTestAtPath(it) }
+            testPaths = cmdlineParams.testPaths,
+            tagsToInclude = cmdlineParams.includeTags,
+            tagsToExclude = cmdlineParams.excludeTags,
+            testsDirectoryRoot = testsDirectoryRoot,
+            loadTestAtPath = { runnerProjectManager.getProjectServices().getTestsCache().getTestAtPath(it) }
         )
         val tests = testsMap.map { (path, test) -> TestWithFilePath(test, path) }
         val features = loadFeatures(tests.map { it.testPath.javaPath }, testsDirectoryRoot)
 
         val builder = TreeBuilder(
-                customizer = RunnerExecutionTreeBuilderCustomizer(hooks, executionName)
+            customizer = RunnerExecutionTreeBuilderCustomizer(hooks, executionName)
         )
         features.forEach { builder.add(it) }
         tests.forEach { builder.add(it) }
@@ -73,7 +77,7 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
         val possibleFeaturePaths = getPossibleFeaturePaths(testJavaPaths, testsDirectoryRoot)
         for (possibleFeaturePath in possibleFeaturePaths) {
             val feature = runnerProjectManager.getProjectServices().getFeatureCache().getFeatureAtPath(possibleFeaturePath)
-                    ?: continue
+                ?: continue
 
             result += feature
         }
@@ -91,7 +95,7 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
             val testPathDirectories = testPath.directories
             for (i in 1..testPathDirectories.size) {
                 result += testPathDirectories.subList(0, i)
-                        .joinToString(separator = "/")
+                    .joinToString(separator = "/")
             }
         }
 
@@ -102,8 +106,10 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
 
     private data class TestWithFilePath(val test: TestModel, val testPath: TestPath)
 
-    private class RunnerExecutionTreeBuilderCustomizer(hooks: Collection<HookDef>,
-                                                       private val executionName: String?) : TreeBuilderCustomizer {
+    private class RunnerExecutionTreeBuilderCustomizer(
+        hooks: Collection<HookDef>,
+        private val executionName: String?
+    ) : TreeBuilderCustomizer {
 
         private val beforeEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_EACH_TEST)
         private val afterEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_EACH_TEST)
@@ -111,15 +117,15 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
         private val afterAllTestsHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_ALL_TESTS)
 
         override fun getPath(payload: Any): List<String> = when (payload) {
-            is Feature          -> payload.path.parts
+            is Feature -> payload.path.parts
             is TestWithFilePath -> payload.test.path.parts
-            else                -> throw unknownPayloadException(payload)
+            else -> throw unknownPayloadException(payload)
         }
 
         override fun isContainer(payload: Any): Boolean = when (payload) {
-            is Feature          -> true
+            is Feature -> true
             is TestWithFilePath -> false
-            else                -> throw unknownPayloadException(payload)
+            else -> throw unknownPayloadException(payload)
         }
 
         override fun getRootLabel(): String = buildString {
@@ -130,9 +136,9 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
         }
 
         override fun getLabel(payload: Any): String = when (payload) {
-            is Feature          -> payload.path.directories.last()
+            is Feature -> payload.path.directories.last()
             is TestWithFilePath -> payload.test.name
-            else                -> throw unknownPayloadException(payload)
+            else -> throw unknownPayloadException(payload)
         }
 
         override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
@@ -140,10 +146,10 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
             val children: List<RunnerFeatureOrTest> = childrenNodes as List<RunnerFeatureOrTest>
 
             return RunnerSuite(
-                    beforeAllTestsHooks = beforeAllTestsHooks,
-                    featuresOrTests = children,
-                    afterAllTestsHooks = afterAllTestsHooks,
-                    executionName = executionName
+                beforeAllTestsHooks = beforeAllTestsHooks,
+                featuresOrTests = children,
+                afterAllTestsHooks = afterAllTestsHooks,
+                executionName = executionName
             )
         }
 
@@ -155,11 +161,11 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                     val children: List<RunnerFeatureOrTest> = childrenNodes as List<RunnerFeatureOrTest>
 
                     RunnerFeature(
-                            featurePathFromRoot = path,
-                            featureName = label,
-                            tags = emptyList(),
-                            featuresOrTests = children,
-                            indexInParent = indexInParent
+                        featurePathFromRoot = path,
+                        featureName = label,
+                        tags = emptyList(),
+                        featuresOrTests = children,
+                        indexInParent = indexInParent
                     )
                 }
                 is Feature -> {
@@ -167,11 +173,11 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                     val children: List<RunnerFeatureOrTest> = childrenNodes as List<RunnerFeatureOrTest>
 
                     RunnerFeature(
-                            featurePathFromRoot = path,
-                            featureName = label,
-                            tags = payload.tags,
-                            featuresOrTests = children,
-                            indexInParent = indexInParent
+                        featurePathFromRoot = path,
+                        featureName = label,
+                        tags = payload.tags,
+                        featuresOrTests = children,
+                        indexInParent = indexInParent
                     )
                 }
                 is TestWithFilePath -> {
@@ -208,21 +214,21 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
 
                         val runnerScenariosNodes: List<RunnerScenario> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
                             createTestScenarioBranch(
-                                    test = payload.test,
-                                    filePath = payload.testPath.javaPath,
-                                    scenarioWithOriginalIndex = scenarioWithOriginalIndex,
-                                    filteredScenarioIndex = filteredScenarioIndex,
-                                    beforeEachTestHooks = beforeEachTestHooks,
-                                    afterEachTestHooks = afterEachTestHooks
+                                test = payload.test,
+                                filePath = payload.testPath.javaPath,
+                                scenarioWithOriginalIndex = scenarioWithOriginalIndex,
+                                filteredScenarioIndex = filteredScenarioIndex,
+                                beforeEachTestHooks = beforeEachTestHooks,
+                                afterEachTestHooks = afterEachTestHooks
                             )
                         }
 
 
                         RunnerParametrizedTest(
-                                test = payload.test,
-                                filePath = payload.testPath.javaPath,
-                                indexInParent = indexInParent,
-                                scenarios = runnerScenariosNodes
+                            test = payload.test,
+                            filePath = payload.testPath.javaPath,
+                            indexInParent = indexInParent,
+                            scenarios = runnerScenariosNodes
                         )
                     } else {
                         if (payload.testPath is ScenariosTestPath) {
@@ -230,11 +236,11 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                         }
 
                         createRunnerTest(
-                                test = payload.test,
-                                filePath = payload.testPath.javaPath,
-                                testIndexInParent = indexInParent,
-                                beforeEachTestHooks = beforeEachTestHooks,
-                                afterEachTestHooks = afterEachTestHooks
+                            test = payload.test,
+                            filePath = payload.testPath.javaPath,
+                            testIndexInParent = indexInParent,
+                            beforeEachTestHooks = beforeEachTestHooks,
+                            afterEachTestHooks = afterEachTestHooks
                         )
                     }
                 }
@@ -242,12 +248,14 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
             }
         }
 
-        private fun createTestScenarioBranch(test: TestModel,
-                                             filePath: JavaPath,
-                                             scenarioWithOriginalIndex: Pair<Int, Scenario>,
-                                             filteredScenarioIndex: Int,
-                                             beforeEachTestHooks: List<RunnerHook>,
-                                             afterEachTestHooks: List<RunnerHook>): RunnerScenario {
+        private fun createTestScenarioBranch(
+            test: TestModel,
+            filePath: JavaPath,
+            scenarioWithOriginalIndex: Pair<Int, Scenario>,
+            filteredScenarioIndex: Int,
+            beforeEachTestHooks: List<RunnerHook>,
+            afterEachTestHooks: List<RunnerHook>
+        ): RunnerScenario {
             val originalScenarioIndex = scenarioWithOriginalIndex.first
             val scenario = scenarioWithOriginalIndex.second
 
@@ -258,22 +266,24 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
             }
 
             return RunnerScenario(
-                    beforeEachTestHooks = beforeEachTestHooks,
-                    test = test,
-                    scenario = scenario,
-                    originalScenarioIndex = originalScenarioIndex,
-                    filteredScenarioIndex = filteredScenarioIndex,
-                    filePath = filePath,
-                    steps = runnerSteps,
-                    afterEachTestHooks = afterEachTestHooks
+                beforeEachTestHooks = beforeEachTestHooks,
+                test = test,
+                scenario = scenario,
+                originalScenarioIndex = originalScenarioIndex,
+                filteredScenarioIndex = filteredScenarioIndex,
+                filePath = filePath,
+                steps = runnerSteps,
+                afterEachTestHooks = afterEachTestHooks
             )
         }
 
-        private fun createRunnerTest(test: TestModel,
-                                     filePath: JavaPath,
-                                     testIndexInParent: Int,
-                                     beforeEachTestHooks: List<RunnerHook>,
-                                     afterEachTestHooks: List<RunnerHook>): RunnerTest {
+        private fun createRunnerTest(
+            test: TestModel,
+            filePath: JavaPath,
+            testIndexInParent: Int,
+            beforeEachTestHooks: List<RunnerHook>,
+            afterEachTestHooks: List<RunnerHook>
+        ): RunnerTest {
             val runnerSteps = mutableListOf<RunnerStep>()
 
             for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
@@ -281,12 +291,12 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
             }
 
             return RunnerTest(
-                    test = test,
-                    filePath = filePath,
-                    indexInParent = testIndexInParent,
-                    steps = runnerSteps,
-                    beforeEachTestHooks = beforeEachTestHooks,
-                    afterEachTestHooks = afterEachTestHooks
+                test = test,
+                filePath = filePath,
+                indexInParent = testIndexInParent,
+                steps = runnerSteps,
+                beforeEachTestHooks = beforeEachTestHooks,
+                afterEachTestHooks = afterEachTestHooks
             )
         }
 
@@ -296,8 +306,8 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
 
             return when (stepDef) {
                 is UndefinedStepDef -> RunnerUndefinedStep(stepCall, indexInParent)
-                is BasicStepDef     -> RunnerBasicStep(stepCall, indexInParent)
-                is ComposedStepDef  -> {
+                is BasicStepDef -> RunnerBasicStep(stepCall, indexInParent)
+                is ComposedStepDef -> {
                     val nestedSteps = mutableListOf<RunnerStep>()
 
                     for ((nestedIndexInParent, nestedStepCall) in stepDef.stepCalls.withIndex()) {
@@ -307,9 +317,9 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
                     }
 
                     RunnerComposedStep(
-                            stepCall = stepCall,
-                            indexInParent = indexInParent,
-                            steps = nestedSteps
+                        stepCall = stepCall,
+                        indexInParent = indexInParent,
+                        steps = nestedSteps
                     )
                 }
                 else -> throw RuntimeException("unknown StepDef type [${stepDef.javaClass.name}]")
@@ -318,10 +328,10 @@ class RunnerExecutionTreeBuilder(private val runnerProjectManager: RunnerProject
 
         private fun Collection<HookDef>.sortedHooksForPhase(phase: HookPhase): List<RunnerHook> {
             return this.asSequence()
-                    .filter { it.phase == phase }
-                    .sortedBy { it.order }
-                    .map { RunnerHook(it) }
-                    .toList()
+                .filter { it.phase == phase }
+                .sortedBy { it.order }
+                .map { RunnerHook(it) }
+                .toList()
         }
 
     }

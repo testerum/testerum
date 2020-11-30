@@ -1,6 +1,5 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.test
 
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum.common_kotlin.indent
 import com.testerum.model.test.TestModel
 import com.testerum.runner.events.model.TestEndEvent
@@ -15,16 +14,19 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesCont
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
-class RunnerTest(val beforeEachTestHooks: List<RunnerHook>,
-                 val test: TestModel,
-                 val filePath: JavaPath,
-                 val indexInParent: Int,
-                 val steps: List<RunnerStep>,
-                 val afterEachTestHooks: List<RunnerHook>) : RunnerFeatureOrTest() {
+class RunnerTest(
+    val beforeEachTestHooks: List<RunnerHook>,
+    val test: TestModel,
+    val filePath: JavaPath,
+    val indexInParent: Int,
+    val steps: List<RunnerStep>,
+    val afterEachTestHooks: List<RunnerHook>
+) : RunnerFeatureOrTest() {
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
@@ -47,7 +49,7 @@ class RunnerTest(val beforeEachTestHooks: List<RunnerHook>,
         }
         for (step in steps) {
             glueClasses.addAll(
-                    step.getGlueClasses(context)
+                step.getGlueClasses(context)
             )
         }
         for (hook in afterEachTestHooks) {
@@ -154,9 +156,9 @@ class RunnerTest(val beforeEachTestHooks: List<RunnerHook>,
                 val afterTestException = RuntimeException("glueObjectFactory.afterTest() failed", e)
 
                 exception = RunnerTestException(
-                        message = "test execution failure",
-                        cause = exception,
-                        suppressedException = afterTestException
+                    message = "test execution failure",
+                    cause = exception,
+                    suppressedException = afterTestException
                 )
             }
 
@@ -208,29 +210,31 @@ class RunnerTest(val beforeEachTestHooks: List<RunnerHook>,
 
     private fun logTestStart(context: RunnerContext) {
         context.logEvent(
-                TestStartEvent(
-                        eventKey = eventKey,
-                        testName = test.name,
-                        testFilePath = test.path,
-                        tags = test.tags
-                )
+            TestStartEvent(
+                eventKey = eventKey,
+                testName = test.name,
+                testFilePath = test.path,
+                tags = test.tags
+            )
         )
         context.logMessage("Started executing test [${test.name}] at [${test.path}]")
     }
 
-    private fun logTestEnd(context: RunnerContext,
-                                  executionStatus: ExecutionStatus,
-                                  exception: Throwable?,
-                                  durationMillis: Long) {
+    private fun logTestEnd(
+        context: RunnerContext,
+        executionStatus: ExecutionStatus,
+        exception: Throwable?,
+        durationMillis: Long
+    ) {
         context.logMessage("Finished executing test [${test.name}] at [${test.path}]; status: [$executionStatus]", exception)
         context.logEvent(
-                TestEndEvent(
-                        eventKey = eventKey,
-                        testFilePath = test.path,
-                        testName = test.name,
-                        status = executionStatus,
-                        durationMillis = durationMillis
-                )
+            TestEndEvent(
+                eventKey = eventKey,
+                testFilePath = test.path,
+                testName = test.name,
+                status = executionStatus,
+                durationMillis = durationMillis
+            )
         )
     }
 

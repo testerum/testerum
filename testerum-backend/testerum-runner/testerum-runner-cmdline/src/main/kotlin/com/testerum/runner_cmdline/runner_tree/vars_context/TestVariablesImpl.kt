@@ -18,31 +18,25 @@ object TestVariablesImpl : TestVariables {
 
     override fun toMap(): Map<String, Any?> = variablesContext.toMap()
 
-    override fun contains(name: String): Boolean
-            = variablesContext.contains(name)
+    override fun contains(name: String): Boolean = variablesContext.contains(name)
 
-    override fun get(name: String): Any?
-            = variablesContext[name]
+    override fun get(name: String): Any? = variablesContext[name]
 
-    override fun getOrDefault(name: String, defaultValue: Any?): Any?
-            = if (contains(name)) {
+    override fun getOrDefault(name: String, defaultValue: Any?): Any? = if (contains(name)) {
         get(name)
-            } else {
-                defaultValue
-            }
+    } else {
+        defaultValue
+    }
 
-    override fun getOrDefault(name: String, defaultValueSupplier: () -> Any?): Any?
-            = if (contains(name)) {
+    override fun getOrDefault(name: String, defaultValueSupplier: () -> Any?): Any? = if (contains(name)) {
         get(name)
-            } else {
-                defaultValueSupplier()
-            }
+    } else {
+        defaultValueSupplier()
+    }
 
 
-    override fun set(name: String, value: Any?): Any?
-            = variablesContext.setDynamicVariable(name, value)
+    override fun set(name: String, value: Any?): Any? = variablesContext.setDynamicVariable(name, value)
 
-    override fun resolveIn(text: String): String
-            = variablesContext.resolveIn(text)
+    override fun resolveIn(text: String): String = variablesContext.resolveIn(text)
 
 }

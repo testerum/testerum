@@ -17,20 +17,22 @@ import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.lang.reflect.Parameter
 
-class RunnerBasicStep(stepCall: StepCall,
-                      indexInParent: Int) : RunnerStep(stepCall, indexInParent) {
+class RunnerBasicStep(
+    stepCall: StepCall,
+    indexInParent: Int
+) : RunnerStep(stepCall, indexInParent) {
 
     companion object {
         private val PRIMITIVE_TYPES_BY_NAME: Map<String, Class<*>> = run {
             val primitiveTypes = listOf<Class<*>>(
-                    Byte::class.java,
-                    Char::class.java,
-                    Short::class.java,
-                    Int::class.java,
-                    Long::class.java,
-                    Float::class.java,
-                    Double::class.java,
-                    Boolean::class.java
+                Byte::class.java,
+                Char::class.java,
+                Short::class.java,
+                Int::class.java,
+                Long::class.java,
+                Float::class.java,
+                Double::class.java,
+                Boolean::class.java
             )
 
             primitiveTypes.associateBy { it.name }
@@ -38,7 +40,7 @@ class RunnerBasicStep(stepCall: StepCall,
     }
 
     private val stepDef: BasicStepDef = stepCall.stepDef as? BasicStepDef
-            ?: throw IllegalArgumentException("this step call is not a basic step")
+        ?: throw IllegalArgumentException("this step call is not a basic step")
 
     override fun getGlueClasses(context: RunnerContext): List<Class<*>> {
         val glueClass: Class<*> = try {
@@ -64,7 +66,12 @@ class RunnerBasicStep(stepCall: StepCall,
 
         val untransformedStepMethodArguments: List<Any?> = stepCall.args.map { vars.resolveIn(it) }
 
-        val stepMethodArguments: List<Any?> = transformMethodArguments(untransformedStepMethodArguments, stepMethod, context.transformerFactory, stepCall.stepDef.stepPattern.getParamStepPattern())
+        val stepMethodArguments: List<Any?> = transformMethodArguments(
+            untransformedStepMethodArguments,
+            stepMethod,
+            context.transformerFactory,
+            stepCall.stepDef.stepPattern.getParamStepPattern()
+        )
 
         try {
             stepMethod.invoke(stepInstance, *stepMethodArguments.toTypedArray())
@@ -84,7 +91,7 @@ class RunnerBasicStep(stepCall: StepCall,
             }
 
             val paramClass: Class<*> = PRIMITIVE_TYPES_BY_NAME[patternPart.typeMeta.javaType]
-                    ?: stepsClassLoader.loadClass(patternPart.typeMeta.javaType)
+                ?: stepsClassLoader.loadClass(patternPart.typeMeta.javaType)
 
             result += paramClass
         }
@@ -92,10 +99,12 @@ class RunnerBasicStep(stepCall: StepCall,
         return result
     }
 
-    private fun transformMethodArguments(untransformedArgs: List<Any?>,
-                                         stepMethod: Method,
-                                         transformerFactory: TransformerFactory,
-                                         paramParts: List<ParamStepPatternPart>): List<Any?> {
+    private fun transformMethodArguments(
+        untransformedArgs: List<Any?>,
+        stepMethod: Method,
+        transformerFactory: TransformerFactory,
+        paramParts: List<ParamStepPatternPart>
+    ): List<Any?> {
         val result = mutableListOf<Any?>()
 
         val params: Array<Parameter> = stepMethod.parameters
@@ -108,10 +117,10 @@ class RunnerBasicStep(stepCall: StepCall,
                 val annotation: Param? = param.getAnnotation(Param::class.java)
 
                 val paramInfo = ParameterInfo(
-                        type             = param.type,
-                        parametrizedType = param.parameterizedType,
-                        transformerClass = annotation?.transformer?.java,
-                        required         = annotation?.required ?: true
+                    type = param.type,
+                    parametrizedType = param.parameterizedType,
+                    transformerClass = annotation?.transformer?.java,
+                    required = annotation?.required ?: true
                 )
 
                 if (paramInfo.required && untransformedArg == null) {
@@ -131,9 +140,11 @@ class RunnerBasicStep(stepCall: StepCall,
         return result
     }
 
-    private fun getParamName(paramParts: List<ParamStepPatternPart>,
-                             index: Int,
-                             param: Parameter): String {
+    private fun getParamName(
+        paramParts: List<ParamStepPatternPart>,
+        index: Int,
+        param: Parameter
+    ): String {
         return if (index >= paramParts.size) {
             param.name
         } else {
@@ -141,9 +152,11 @@ class RunnerBasicStep(stepCall: StepCall,
         }
     }
 
-    private fun transformArgument(untransformedArg: Any?,
-                                  transformer: Transformer<*>?,
-                                  paramInfo: ParameterInfo): Any? {
+    private fun transformArgument(
+        untransformedArg: Any?,
+        transformer: Transformer<*>?,
+        paramInfo: ParameterInfo
+    ): Any? {
         try {
             if (untransformedArg == null) {
                 if (paramInfo.type.isPrimitive) {
@@ -160,15 +173,15 @@ class RunnerBasicStep(stepCall: StepCall,
 
             // if the "untransformedArg" is not a String we will call to String. Could access a variable from the context.
             val untransformedArgAsString: String = untransformedArg as? String
-                    ?: untransformedArg.toString()
+                ?: untransformedArg.toString()
 
             if (transformer == null) {
                 throw RuntimeException("No Transformer<${paramInfo.type.simpleName}> could be found")
             }
 
             return transformer.transform(
-                    toTransform = untransformedArgAsString,
-                    paramInfo = paramInfo
+                toTransform = untransformedArgAsString,
+                paramInfo = paramInfo
             )
         } catch (e: Exception) {
             throw RuntimeException("failed to run transformer [${transformer?.javaClass}]", e)

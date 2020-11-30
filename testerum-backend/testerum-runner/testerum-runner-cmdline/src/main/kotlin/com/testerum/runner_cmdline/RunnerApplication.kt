@@ -108,7 +108,15 @@ class RunnerApplication(
         )
 
         // add steps to GlueObjectFactory
-        suite.addClassesToGlueObjectFactory(runnerContext)
+        for (glueClassName in suite.glueClassNames) {
+            val glueClass: Class<*> = try {
+                runnerContext.stepsClassLoader.loadClass(glueClassName)
+            } catch (e: ClassNotFoundException) {
+                throw RuntimeException("failed to load glue class [$glueClassName]", e)
+            }
+
+            runnerContext.glueObjectFactory.addClass(glueClass)
+        }
 
         // setup variables
         val projectId = runnerProjectManager.getProjectServices().project.id

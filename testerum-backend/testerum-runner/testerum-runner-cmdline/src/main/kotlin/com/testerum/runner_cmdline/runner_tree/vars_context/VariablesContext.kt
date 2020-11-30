@@ -1,6 +1,5 @@
 package com.testerum.runner_cmdline.runner_tree.vars_context
 
-import com.testerum_api.testerum_steps_api.test_context.test_vars.VariableNotFoundException
 import com.testerum.common.expression_evaluator.ExpressionEvaluator
 import com.testerum.common.parsing.executer.ParserExecuter
 import com.testerum.model.arg.Arg
@@ -12,17 +11,19 @@ import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartParserFactory
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
+import com.testerum_api.testerum_steps_api.test_context.test_vars.VariableNotFoundException
 import org.apache.commons.text.StringEscapeUtils
 
-class VariablesContext private constructor(private val argsVars: Map<String, Any?>,
-                                           private val dynamicVars: DynamicVariablesContext,
-                                           private val globalVars: GlobalVariablesContext) {
+class VariablesContext private constructor(
+    private val argsVars: Map<String, Any?>,
+    private val dynamicVars: DynamicVariablesContext,
+    private val globalVars: GlobalVariablesContext
+) {
 
     companion object {
         private val ARG_PART_PARSER: ParserExecuter<List<FileArgPart>> = ParserExecuter(FileArgPartParserFactory.argParts())
 
-        fun forTest(dynamicVars: DynamicVariablesContext, globalVars: GlobalVariablesContext)
-                = VariablesContext(emptyMap(), dynamicVars, globalVars)
+        fun forTest(dynamicVars: DynamicVariablesContext, globalVars: GlobalVariablesContext) = VariablesContext(emptyMap(), dynamicVars, globalVars)
     }
 
     fun getArgsVars(): Map<String, Any?> = argsVars
@@ -51,21 +52,18 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
         return VariablesContext(argsVars, dynamicVars, globalVars)
     }
 
-    fun contains(name: String): Boolean
-            = argsVars.containsKey(name)
-              || dynamicVars.containsKey(name)
-              || globalVars.containsKey(name)
+    fun contains(name: String): Boolean = argsVars.containsKey(name)
+        || dynamicVars.containsKey(name)
+        || globalVars.containsKey(name)
 
-    operator fun get(name: String): Any?
-            = when {
-                argsVars.containsKey(name)    -> argsVars[name]
-                dynamicVars.containsKey(name) -> dynamicVars[name]
-                globalVars.containsKey(name)  -> globalVars[name]
-                else                          -> throw VariableNotFoundException(name)
-            }
+    operator fun get(name: String): Any? = when {
+        argsVars.containsKey(name) -> argsVars[name]
+        dynamicVars.containsKey(name) -> dynamicVars[name]
+        globalVars.containsKey(name) -> globalVars[name]
+        else -> throw VariableNotFoundException(name)
+    }
 
-    fun setDynamicVariable(name: String, value: Any?): Any?
-            = dynamicVars.set(name, value)
+    fun setDynamicVariable(name: String, value: Any?): Any? = dynamicVars.set(name, value)
 
     fun toMap(): Map<String, Any?> {
         // todo: this looks slow...
@@ -86,7 +84,7 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
     }
 
     fun resolveIn(arg: Arg): Any? {
-        val escape: (String) -> String = if(arg.typeMeta is ObjectTypeMeta) {
+        val escape: (String) -> String = if (arg.typeMeta is ObjectTypeMeta) {
             { StringEscapeUtils.escapeJson(it) }
         } else {
             { it }
@@ -95,9 +93,11 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
         return resolveInText(arg.content, this.toMap(), escape)
     }
 
-    private fun resolveInText(text: String?,
-                              context: Map<String, Any?>,
-                              escape: (String) -> String = {it}): Any? {
+    private fun resolveInText(
+        text: String?,
+        context: Map<String, Any?>,
+        escape: (String) -> String = { it }
+    ): Any? {
         if (text == null) {
             return null
         }
@@ -108,7 +108,7 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
 
         for (part: FileArgPart in parts) {
             val resolvedArgPartPart: Any? = when (part) {
-                is FileTextArgPart       -> part.text
+                is FileTextArgPart -> part.text
                 is FileExpressionArgPart -> {
                     val expressionResult = ExpressionEvaluator.evaluate(part.text, context)
                     if (expressionResult is String) {
@@ -127,21 +127,21 @@ class VariablesContext private constructor(private val argsVars: Map<String, Any
             resolvedArgParts.size == 1 -> resolvedArgParts[0] // not doing joinToString() to preserve the type
             else -> {
                 resolvedArgParts.joinToString(
-                        separator = "",
-                        transform = {
-                            if (it is CharSequence) {
-                                it
-                            } else {
-                                escape(it.toString())
-                            }
-
+                    separator = "",
+                    transform = {
+                        if (it is CharSequence) {
+                            it
+                        } else {
+                            escape(it.toString())
                         }
+
+                    }
                 )
             }
         }
     }
 
     // todo: why do we need this, and can we replace it?
-    fun resolveIn(text: String, escape: (String) -> String = {it}): String = resolveInText(text, this.toMap(), escape).toString()
+    fun resolveIn(text: String, escape: (String) -> String = { it }): String = resolveInText(text, this.toMap(), escape).toString()
 
 }

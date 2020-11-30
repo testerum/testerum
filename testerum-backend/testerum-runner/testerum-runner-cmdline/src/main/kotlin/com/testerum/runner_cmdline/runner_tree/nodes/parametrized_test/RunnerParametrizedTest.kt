@@ -12,10 +12,12 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesConte
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import java.nio.file.Path as JavaPath
 
-class RunnerParametrizedTest(val test: TestModel,
-                             val filePath: JavaPath,
-                             val indexInParent: Int,
-                             val scenarios: List<RunnerScenario>) : RunnerFeatureOrTest() {
+class RunnerParametrizedTest(
+    val test: TestModel,
+    val filePath: JavaPath,
+    val indexInParent: Int,
+    val scenarios: List<RunnerScenario>
+) : RunnerFeatureOrTest() {
 
     init {
         for (scenario in scenarios) {
@@ -31,12 +33,13 @@ class RunnerParametrizedTest(val test: TestModel,
 
         for (scenario in scenarios) {
             glueClasses.addAll(
-                    scenario.getGlueClasses(context)
+                scenario.getGlueClasses(context)
             )
         }
 
         return glueClasses
     }
+
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         try {
             return tryToRun(context, globalVars)
@@ -96,29 +99,31 @@ class RunnerParametrizedTest(val test: TestModel,
 
     private fun logParametrizedTestStart(context: RunnerContext) {
         context.logEvent(
-                ParametrizedTestStartEvent(
-                        eventKey = eventKey,
-                        testName = test.name,
-                        testFilePath = test.path,
-                        tags = test.tags
-                )
+            ParametrizedTestStartEvent(
+                eventKey = eventKey,
+                testName = test.name,
+                testFilePath = test.path,
+                tags = test.tags
+            )
         )
         context.logMessage("Started executing parametrized test [${test.name}] at [${test.path}]")
     }
 
-    private fun logParametrizedTestEnd(context: RunnerContext,
-                                       executionStatus: ExecutionStatus,
-                                       exception: Throwable?,
-                                       durationMillis: Long) {
+    private fun logParametrizedTestEnd(
+        context: RunnerContext,
+        executionStatus: ExecutionStatus,
+        exception: Throwable?,
+        durationMillis: Long
+    ) {
         context.logMessage("Finished executing parametrized test [${test.name}] at [${test.path}]; status: [$executionStatus]", exception)
         context.logEvent(
-                ParametrizedTestEndEvent(
-                        eventKey = eventKey,
-                        testFilePath = test.path,
-                        testName = test.name,
-                        status = executionStatus,
-                        durationMillis = durationMillis
-                )
+            ParametrizedTestEndEvent(
+                eventKey = eventKey,
+                testFilePath = test.path,
+                testName = test.name,
+                status = executionStatus,
+                durationMillis = durationMillis
+            )
         )
     }
 

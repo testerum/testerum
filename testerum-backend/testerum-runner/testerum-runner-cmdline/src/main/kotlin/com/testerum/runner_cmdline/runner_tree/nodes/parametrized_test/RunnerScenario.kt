@@ -25,20 +25,22 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
-                     private val test: TestModel,
-                     val scenario: Scenario,
-                     private val originalScenarioIndex: Int,
-                     private val filteredScenarioIndex: Int,
-                     private val filePath: java.nio.file.Path,
-                     private val steps: List<RunnerStep>,
-                     private val afterEachTestHooks: List<RunnerHook>) : RunnerFeatureOrTest() {
+class RunnerScenario(
+    private val beforeEachTestHooks: List<RunnerHook>,
+    private val test: TestModel,
+    val scenario: Scenario,
+    private val originalScenarioIndex: Int,
+    private val filteredScenarioIndex: Int,
+    private val filePath: java.nio.file.Path,
+    private val steps: List<RunnerStep>,
+    private val afterEachTestHooks: List<RunnerHook>
+) : RunnerFeatureOrTest() {
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
 
         private val businessToFileScenarioMapper = BusinessToFileScenarioMapper(
-                BusinessToFileScenarioParamMapper()
+            BusinessToFileScenarioParamMapper()
         )
     }
 
@@ -69,7 +71,7 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
         }
         for (step in steps) {
             glueClasses.addAll(
-                    step.getGlueClasses(context)
+                step.getGlueClasses(context)
             )
         }
         for (hook in afterEachTestHooks) {
@@ -190,9 +192,9 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
                 val afterTestException = RuntimeException("glueObjectFactory.afterTest() failed", e)
 
                 exception = RunnerTestException(
-                        message = "scenario execution failure",
-                        cause = exception,
-                        suppressedException = afterTestException
+                    message = "scenario execution failure",
+                    cause = exception,
+                    suppressedException = afterTestException
                 )
             }
 
@@ -244,14 +246,14 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
 
     private fun logScenarioStart(context: RunnerContext) {
         context.logEvent(
-                ScenarioStartEvent(
-                        eventKey = eventKey,
-                        testName = test.name,
-                        testFilePath = test.path,
-                        scenario = scenario,
-                        scenarioIndex = filteredScenarioIndex,
-                        tags = test.tags
-                )
+            ScenarioStartEvent(
+                eventKey = eventKey,
+                testName = test.name,
+                testFilePath = test.path,
+                scenario = scenario,
+                scenarioIndex = filteredScenarioIndex,
+                tags = test.tags
+            )
         )
         context.logMessage("Started executing ${getNameForLogging()}")
 
@@ -263,27 +265,29 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
 
         for (param in fileScenario.params) {
             context.logMessage(
-                    FileScenarioParamSerializer.serializeToString(param)
+                FileScenarioParamSerializer.serializeToString(param)
             )
         }
         context.logMessage("")
     }
 
-    private fun logScenarioEnd(context: RunnerContext,
-                               executionStatus: ExecutionStatus,
-                               exception: Throwable?,
-                               durationMillis: Long) {
+    private fun logScenarioEnd(
+        context: RunnerContext,
+        executionStatus: ExecutionStatus,
+        exception: Throwable?,
+        durationMillis: Long
+    ) {
         context.logMessage("Finished executing ${getNameForLogging()}; status: [$executionStatus]", exception)
         context.logEvent(
-                ScenarioEndEvent(
-                        eventKey = eventKey,
-                        testFilePath = test.path,
-                        testName = test.name,
-                        scenario = scenario,
-                        scenarioIndex = filteredScenarioIndex,
-                        status = executionStatus,
-                        durationMillis = durationMillis
-                )
+            ScenarioEndEvent(
+                eventKey = eventKey,
+                testFilePath = test.path,
+                testName = test.name,
+                scenario = scenario,
+                scenarioIndex = filteredScenarioIndex,
+                status = executionStatus,
+                durationMillis = durationMillis
+            )
         )
     }
 
@@ -295,7 +299,8 @@ class RunnerScenario(private val beforeEachTestHooks: List<RunnerHook>,
         if (test.properties.isDisabled) {
             destination.append(" DISABLED")
         }
-        destination.append(" '").append(scenarioName).append("' (index $originalScenarioIndex) of test '").append(test.name).append("' at [").append(test.path).append("]")
+        destination.append(" '").append(scenarioName).append("' (index $originalScenarioIndex) of test '").append(test.name).append("' at [").append(test.path)
+            .append("]")
         if (test.tags.isNotEmpty()) {
             destination.append(", tags=").append(test.tags)
         }

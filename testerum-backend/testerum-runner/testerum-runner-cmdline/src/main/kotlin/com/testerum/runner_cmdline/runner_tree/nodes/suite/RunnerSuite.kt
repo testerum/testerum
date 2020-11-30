@@ -13,10 +13,13 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesConte
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 
-class RunnerSuite(val beforeAllTestsHooks: List<RunnerHook>,
-                  val featuresOrTests: List<RunnerFeatureOrTest>,
-                  val afterAllTestsHooks: List<RunnerHook>,
-                  val executionName: String?) : RunnerTreeNode() {
+class RunnerSuite(
+    val beforeAllTestsHooks: List<RunnerHook>,
+    val featuresOrTests: List<RunnerFeatureOrTest>,
+    val afterAllTestsHooks: List<RunnerHook>,
+    val executionName: String?,
+    val glueClassNames: List<String>,
+) : RunnerTreeNode() {
 
     init {
         for (featureOrTest in featuresOrTests) {
@@ -28,28 +31,6 @@ class RunnerSuite(val beforeAllTestsHooks: List<RunnerHook>,
 
     override val positionInParent: PositionInParent
         get() = EventKey.SUITE_POSITION_IN_PARENT
-
-    fun addClassesToGlueObjectFactory(context: RunnerContext) {
-        for (glueClass in getGlueClasses(context)) {
-            context.glueObjectFactory.addClass(glueClass)
-        }
-    }
-
-    private fun getGlueClasses(context: RunnerContext): List<Class<*>> {
-        val glueClasses = mutableListOf<Class<*>>()
-
-        for (hook in beforeAllTestsHooks) {
-            glueClasses += hook.getGlueClass(context)
-        }
-        for (featureOrTest in featuresOrTests) {
-            glueClasses += featureOrTest.getGlueClasses(context)
-        }
-        for (hook in afterAllTestsHooks) {
-            glueClasses += hook.getGlueClass(context)
-        }
-
-        return glueClasses
-    }
 
     fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         logSuiteStart(context)
@@ -104,9 +85,11 @@ class RunnerSuite(val beforeAllTestsHooks: List<RunnerHook>,
         return status
     }
 
-    private fun runTests(context: RunnerContext,
-                         globalVars: GlobalVariablesContext,
-                         suiteExecutionStatus: ExecutionStatus): ExecutionStatus {
+    private fun runTests(
+        context: RunnerContext,
+        globalVars: GlobalVariablesContext,
+        suiteExecutionStatus: ExecutionStatus
+    ): ExecutionStatus {
         var status = suiteExecutionStatus
 
         for (featureOrTest in featuresOrTests) {
@@ -128,21 +111,23 @@ class RunnerSuite(val beforeAllTestsHooks: List<RunnerHook>,
 
     private fun logSuiteStart(context: RunnerContext) {
         context.logEvent(
-                SuiteStartEvent(executionName = executionName)
+            SuiteStartEvent(executionName = executionName)
         )
         context.logMessage("Started executing test suite")
     }
 
-    private fun logSuiteEnd(context: RunnerContext,
-                            executionStatus: ExecutionStatus,
-                            exception: Throwable?,
-                            durationMillis: Long) {
+    private fun logSuiteEnd(
+        context: RunnerContext,
+        executionStatus: ExecutionStatus,
+        exception: Throwable?,
+        durationMillis: Long
+    ) {
         context.logMessage("Finished executing test suite; status: [$executionStatus]", exception)
         context.logEvent(
-                SuiteEndEvent(
-                        status = executionStatus,
-                        durationMillis = durationMillis
-                )
+            SuiteEndEvent(
+                status = executionStatus,
+                durationMillis = durationMillis
+            )
         )
     }
 

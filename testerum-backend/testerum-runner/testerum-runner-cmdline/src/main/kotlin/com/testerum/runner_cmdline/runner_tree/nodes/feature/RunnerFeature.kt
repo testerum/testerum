@@ -13,33 +13,25 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
 
-class RunnerFeature(featurePathFromRoot: List<String>,
-                    val featureName: String,
-                    val tags: List<String>,
-                    val featuresOrTests: List<RunnerFeatureOrTest>,
-                    indexInParent: Int): RunnerFeatureOrTest() {
+class RunnerFeature(
+    featurePathFromRoot: List<String>,
+    val featureName: String,
+    val tags: List<String>,
+    val featuresOrTests: List<RunnerFeatureOrTest>,
+    indexInParent: Int
+) : RunnerFeatureOrTest() {
 
     override lateinit var parent: RunnerTreeNode
 
     override val positionInParent = PositionInParent(
-            id= featurePathFromRoot.joinToString(separator = "/") + "/${Feature.FILE_NAME_WITH_EXTENSION}",
-            indexInParent = indexInParent
+        id = featurePathFromRoot.joinToString(separator = "/") + "/${Feature.FILE_NAME_WITH_EXTENSION}",
+        indexInParent = indexInParent
     )
 
     init {
         for (featureOrTest in featuresOrTests) {
             featureOrTest.parent = this
         }
-    }
-
-    override fun getGlueClasses(context: RunnerContext): List<Class<*>> {
-        val result = ArrayList<Class<*>>()
-
-        for (featureOrTest in featuresOrTests) {
-            result += featureOrTest.getGlueClasses(context)
-        }
-
-        return result
     }
 
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
@@ -101,27 +93,29 @@ class RunnerFeature(featurePathFromRoot: List<String>,
 
     private fun logFeatureStart(context: RunnerContext) {
         context.logEvent(
-                FeatureStartEvent(
-                        eventKey = eventKey,
-                        featureName = featureName,
-                        tags = tags
-                )
+            FeatureStartEvent(
+                eventKey = eventKey,
+                featureName = featureName,
+                tags = tags
+            )
         )
         context.logMessage("Started executing feature [$featureName]")
     }
 
-    private fun logFeatureEnd(context: RunnerContext,
-                             executionStatus: ExecutionStatus,
-                             exception: Throwable?,
-                             durationMillis: Long) {
+    private fun logFeatureEnd(
+        context: RunnerContext,
+        executionStatus: ExecutionStatus,
+        exception: Throwable?,
+        durationMillis: Long
+    ) {
         context.logMessage("Finished executing feature [$featureName]; status: [$executionStatus]", exception)
         context.logEvent(
-                FeatureEndEvent(
-                        eventKey = eventKey,
-                        featureName = featureName,
-                        status = executionStatus,
-                        durationMillis = durationMillis
-                )
+            FeatureEndEvent(
+                eventKey = eventKey,
+                featureName = featureName,
+                status = executionStatus,
+                durationMillis = durationMillis
+            )
         )
     }
 

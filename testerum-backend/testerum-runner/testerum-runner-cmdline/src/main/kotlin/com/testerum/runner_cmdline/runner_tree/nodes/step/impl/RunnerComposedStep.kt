@@ -1,16 +1,18 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.step.impl
 
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum.common_kotlin.indent
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 
-class RunnerComposedStep(stepCall: StepCall,
-                         indexInParent: Int,
-                         val steps: List<RunnerStep>) : RunnerStep(stepCall, indexInParent) {
+class RunnerComposedStep(
+    stepCall: StepCall,
+    indexInParent: Int,
+    val steps: List<RunnerStep>
+) : RunnerStep(stepCall, indexInParent) {
 
     init {
         for (step in steps) {
@@ -23,7 +25,7 @@ class RunnerComposedStep(stepCall: StepCall,
 
         for (step in steps) {
             glueClasses.addAll(
-                    step.getGlueClasses(context)
+                step.getGlueClasses(context)
             )
         }
 
