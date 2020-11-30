@@ -7,6 +7,7 @@ import com.testerum.model.infrastructure.path.RenamePath
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.filter.StepsTreeFilter
 import com.testerum.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
+import com.testerum.model.step.operation.response.CheckComposedStepDefUsageResponse
 import com.testerum.model.step.tree.ComposedContainerStepNode
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.save.SaveFrontendService
@@ -39,6 +40,10 @@ class ComposedStepsFrontendService(
 
     fun checkUpdateCompatibility(composedStepDef: ComposedStepDef): CheckComposedStepDefUpdateCompatibilityResponse {
         return composedStepUpdateCompatibilityFrontendService.checkUpdateCompatibility(composedStepDef)
+    }
+
+    fun checkUsage(composedStepDef: ComposedStepDef): CheckComposedStepDefUsageResponse {
+        return composedStepUpdateCompatibilityFrontendService.checkUsage(composedStepDef)
     }
 
     fun saveComposedStep(composedStepDef: ComposedStepDef): ComposedStepDef {

@@ -12,7 +12,7 @@ import {ComposedStepEditorResolver} from "./composed-step-editor/composed-step-e
 import {ResourcesModule} from "../resources/resources.module";
 import {JsonStepContainerComponent} from "./steps-tree/container/json-step-container.component";
 import {JsonStepNodeComponent} from "./steps-tree/container/node/json-step-node.component";
-import {UpdateIncompatibilityDialogComponent} from "./composed-step-editor/update-incompatilibity-dialog/update-incompatibility-dialog.component";
+import {StepUsageDialogComponent} from "./composed-step-editor/usage-dialog/step-usage-dialog.component";
 import {BasicStepEditorComponent} from "./basic-step-editor/basic-step-editor.component";
 import {BasicStepEditorResolver} from "./basic-step-editor/basic-step-editor.resolver";
 import {BasicStepParametersComponent} from "./basic-step-editor/basic-step-parameters/basic-step-parameters.component";
@@ -27,6 +27,7 @@ import {TooltipModule} from "primeng/tooltip";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {AutoCompleteModule} from "primeng/autocomplete";
 import {InputTextModule} from "primeng/inputtext";
+import {StepUsageDialogService} from "./composed-step-editor/usage-dialog/step-usage-dialog.service";
 
 @NgModule({
     imports: [
@@ -56,7 +57,7 @@ import {InputTextModule} from "primeng/inputtext";
 
         StepsComponent,
         ComposedStepEditorComponent,
-        UpdateIncompatibilityDialogComponent,
+        StepUsageDialogComponent,
     ],
     declarations: [
         StepsTreeFilterComponent,
@@ -68,7 +69,7 @@ import {InputTextModule} from "primeng/inputtext";
         StepsComponent,
 
         ComposedStepEditorComponent,
-        UpdateIncompatibilityDialogComponent,
+        StepUsageDialogComponent,
 
         BasicStepEditorComponent,
         BasicStepParametersComponent,
@@ -81,6 +82,7 @@ import {InputTextModule} from "primeng/inputtext";
     providers: [
         StepsService,
         StepsTreeService,
+        StepUsageDialogService,
 
         ComposedStepEditorResolver,
         BasicStepEditorResolver,

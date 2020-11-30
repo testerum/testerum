@@ -8,16 +8,20 @@ import {ValidationModel} from "../../../model/exception/validation.model";
 import {ErrorHttpInterceptor} from "../../../service/interceptors/error.http-interceptor";
 import {FormUtil} from "../../../utils/form.util";
 import {ValidationErrorResponse} from "../../../model/exception/validation-error-response.model";
-import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/step/CheckComposedStepDefUpdateCompatibilityResponse";
+import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/step/operation/CheckComposedStepDefUpdateCompatibilityResponse";
 import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
 import {UrlService} from "../../../service/url.service";
 import {ComposedStepViewComponent} from "../../../generic/components/step/composed-step-view/composed-step-view.component";
-import {UpdateIncompatibilityDialogComponent} from "./update-incompatilibity-dialog/update-incompatibility-dialog.component";
+import {StepUsageDialogComponent} from "./usage-dialog/step-usage-dialog.component";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
+import {CheckComposedStepDefUsageResponse} from "../../../model/step/operation/CheckComposedStepDefUsageResponse";
+import {StepUsageDialogModeEnum} from "./usage-dialog/model/step-usage-dialog-mode.enum";
+import {StepUsageDialogService} from "./usage-dialog/step-usage-dialog.service";
+import {StepUsageDialogResponseEnum} from "./usage-dialog/model/step-usage-dialog-response.enum";
 
 @Component({
     moduleId: module.id,
@@ -33,7 +37,7 @@ export class ComposedStepEditorComponent extends AbstractComponentCanDeactivate 
     pathForTitle: string = "";
 
     @ViewChild(ComposedStepViewComponent, { static: true }) composedStepViewComponent: ComposedStepViewComponent;
-    @ViewChild(UpdateIncompatibilityDialogComponent, { static: true }) updateIncompatibilityDialogComponent: UpdateIncompatibilityDialogComponent;
+    @ViewChild(StepUsageDialogComponent, { static: true }) stepUsageDialog: StepUsageDialogComponent;
 
     private editModeSubscription: Subscription;
 
@@ -41,6 +45,7 @@ export class ComposedStepEditorComponent extends AbstractComponentCanDeactivate 
                 private urlService: UrlService,
                 private stepsService: StepsService,
                 private stepsTreeService: StepsTreeService,
+                private stepUsageDialogService: StepUsageDialogService,
                 private errorService: ErrorHttpInterceptor,
                 private applicationEventBus: ApplicationEventBus,
                 private areYouSureModalService: AreYouSureModalService) {
@@ -114,6 +119,26 @@ export class ComposedStepEditorComponent extends AbstractComponentCanDeactivate 
     }
 
     deleteAction(): void {
+        this.stepsService.usageCheck(this.model).subscribe((stepUsage: CheckComposedStepDefUsageResponse) => {
+            if (!stepUsage.isUsed) {
+                this.areYouSureDeleteAction();
+                return;
+            }
+
+            this.stepUsageDialogService.show(
+                StepUsageDialogModeEnum.DELETE_STEP,
+                stepUsage.pathsForAffectedTests,
+                stepUsage.pathsForDirectParentSteps,
+                stepUsage.pathsForTransitiveParentSteps
+            ).subscribe((response: StepUsageDialogResponseEnum) => {
+                if (response == StepUsageDialogResponseEnum.OK) {
+                    this.deleteActionAfterConfirmation();
+                }
+            })
+        })
+    }
+
+    private areYouSureDeleteAction() {
         this.areYouSureModalService.showAreYouSureModal(
             "Delete",
             "Are you sure you want to delete this step?"
@@ -155,12 +180,15 @@ export class ComposedStepEditorComponent extends AbstractComponentCanDeactivate 
 
                         this.doSave();
                     } else {
-                        this.updateIncompatibilityDialogComponent.show(
+                        this.stepUsageDialogService.show(
+                            StepUsageDialogModeEnum.UPDATE_STEP,
                             compatibilityResponse.pathsForAffectedTests,
                             compatibilityResponse.pathsForDirectAffectedSteps,
                             compatibilityResponse.pathsForTransitiveAffectedSteps
-                        ).subscribe(callback => {
-                            this.doSave()
+                        ).subscribe((response: StepUsageDialogResponseEnum) => {
+                            if (response == StepUsageDialogResponseEnum.OK) {
+                                this.doSave()
+                            }
                         })
                     }
                 }

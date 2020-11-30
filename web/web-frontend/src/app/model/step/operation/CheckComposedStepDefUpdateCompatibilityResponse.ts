@@ -1,5 +1,5 @@
-import {Path} from "../infrastructure/path/path.model";
-import {Serializable} from "../infrastructure/serializable.model";
+import {Path} from "../../infrastructure/path/path.model";
+import {Serializable} from "../../infrastructure/serializable.model";
 
 export class CheckComposedStepDefUpdateCompatibilityResponse implements Serializable<CheckComposedStepDefUpdateCompatibilityResponse>{
 
