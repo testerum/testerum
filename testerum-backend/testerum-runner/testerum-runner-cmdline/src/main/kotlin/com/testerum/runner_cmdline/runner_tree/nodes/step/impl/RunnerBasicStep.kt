@@ -42,16 +42,6 @@ class RunnerBasicStep(
     private val stepDef: BasicStepDef = stepCall.stepDef as? BasicStepDef
         ?: throw IllegalArgumentException("this step call is not a basic step")
 
-    override fun getGlueClasses(context: RunnerContext): List<Class<*>> {
-        val glueClass: Class<*> = try {
-            context.stepsClassLoader.loadClass(stepDef.className)
-        } catch (e: ClassNotFoundException) {
-            throw RuntimeException("failed to load glue class [${stepDef.className}]", e)
-        }
-
-        return listOf(glueClass)
-    }
-
     override fun doRun(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
         val stepClass: Class<*> = try {
             context.stepsClassLoader.loadClass(stepDef.className)

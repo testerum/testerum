@@ -17,8 +17,6 @@ abstract class RunnerStep(
     override lateinit var parent: RunnerTreeNode
     override val positionInParent = PositionInParent(stepCall.id, indexInParent)
 
-    abstract fun getGlueClasses(context: RunnerContext): List<Class<*>>
-
     protected abstract fun doRun(context: RunnerContext, vars: VariablesContext): ExecutionStatus
     protected open fun doSkip(context: RunnerContext) {}
     protected open fun doDisable(context: RunnerContext) {}

@@ -20,18 +20,6 @@ class RunnerComposedStep(
         }
     }
 
-    override fun getGlueClasses(context: RunnerContext): List<Class<*>> {
-        val glueClasses = mutableListOf<Class<*>>()
-
-        for (step in steps) {
-            glueClasses.addAll(
-                step.getGlueClasses(context)
-            )
-        }
-
-        return glueClasses
-    }
-
     override fun doRun(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
         if (steps.isEmpty()) {
             val executionStatus = ExecutionStatus.UNDEFINED

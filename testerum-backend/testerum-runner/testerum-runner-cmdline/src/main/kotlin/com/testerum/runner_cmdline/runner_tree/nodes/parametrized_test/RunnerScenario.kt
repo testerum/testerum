@@ -63,24 +63,6 @@ class RunnerScenario(
         return "scenario [$scenarioName] (index $originalScenarioIndex) of test [${test.name}] at [${test.path}]"
     }
 
-    override fun getGlueClasses(context: RunnerContext): List<Class<*>> {
-        val glueClasses = mutableListOf<Class<*>>()
-
-        for (hook in beforeEachTestHooks) {
-            glueClasses += hook.getGlueClass(context)
-        }
-        for (step in steps) {
-            glueClasses.addAll(
-                step.getGlueClasses(context)
-            )
-        }
-        for (hook in afterEachTestHooks) {
-            glueClasses += hook.getGlueClass(context)
-        }
-
-        return glueClasses
-    }
-
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         try {
             return tryToRun(context, globalVars)

@@ -12,8 +12,6 @@ class RunnerUndefinedStep(
     indexInParent: Int
 ) : RunnerStep(stepCall, indexInParent) {
 
-    override fun getGlueClasses(context: RunnerContext): List<Class<*>> = emptyList()
-
     override fun doRun(context: RunnerContext, vars: VariablesContext) = ExecutionStatus.UNDEFINED
 
     override fun toString(): String = buildString { addToString(this, 0) }

@@ -62,13 +62,70 @@ class RunnerExecutionTreeBuilder(
         val tests = testsMap.map { (path, test) -> TestWithFilePath(test, path) }
         val features = loadFeatures(tests.map { it.testPath.javaPath }, testsDirectoryRoot)
 
+        val glueClassNames = getGlueClassNames(hooks, tests, features)
+
         val builder = TreeBuilder(
-            customizer = RunnerExecutionTreeBuilderCustomizer(hooks, executionName)
+            customizer = RunnerExecutionTreeBuilderCustomizer(hooks, executionName, glueClassNames)
         )
         features.forEach { builder.add(it) }
         tests.forEach { builder.add(it) }
 
         return builder.build() as RunnerSuite
+    }
+
+    private fun getGlueClassNames(
+        basicHookDefs: Collection<HookDef>,
+        testsWithPaths: List<TestWithFilePath>,
+        features: List<Feature>
+    ): List<String> {
+        val result = mutableListOf<String>()
+
+        for (basicHookDef in basicHookDefs) {
+            result += basicHookDef.className
+        }
+
+        for (testWithPath in testsWithPaths) {
+            val test = testWithPath.test
+
+            for (stepCall in test.afterHooks) {
+                addGlueClassNames(result, stepCall)
+            }
+
+            for (stepCall in test.stepCalls) {
+                addGlueClassNames(result, stepCall)
+            }
+        }
+
+        for (feature in features) {
+            for (stepCall in feature.hooks.beforeAll) {
+                addGlueClassNames(result, stepCall)
+            }
+            for (stepCall in feature.hooks.beforeEach) {
+                addGlueClassNames(result, stepCall)
+            }
+            for (stepCall in feature.hooks.afterEach) {
+                addGlueClassNames(result, stepCall)
+            }
+            for (stepCall in feature.hooks.afterAll) {
+                addGlueClassNames(result, stepCall)
+            }
+        }
+
+        return result
+    }
+
+    private fun addGlueClassNames(
+        result: MutableList<String>,
+        stepCall: StepCall
+    ) {
+        when (val stepDef = stepCall.stepDef) {
+            is BasicStepDef -> result += stepDef.className
+            is ComposedStepDef -> {
+                for (childStepCall in stepDef.stepCalls) {
+                    addGlueClassNames(result, childStepCall)
+                }
+            }
+        }
     }
 
     private fun loadFeatures(testJavaPaths: List<JavaPath>, testsDirectoryRoot: JavaPath): List<Feature> {
@@ -108,7 +165,8 @@ class RunnerExecutionTreeBuilder(
 
     private class RunnerExecutionTreeBuilderCustomizer(
         hooks: Collection<HookDef>,
-        private val executionName: String?
+        private val executionName: String?,
+        val glueClassNames: List<String>,
     ) : TreeBuilderCustomizer {
 
         private val beforeEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_EACH_TEST)
@@ -149,7 +207,8 @@ class RunnerExecutionTreeBuilder(
                 beforeAllTestsHooks = beforeAllTestsHooks,
                 featuresOrTests = children,
                 afterAllTestsHooks = afterAllTestsHooks,
-                executionName = executionName
+                executionName = executionName,
+                glueClassNames = emptyList()
             )
         }
 
