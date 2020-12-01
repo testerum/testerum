@@ -1,0 +1,75 @@
+test-def: Regex expressions
+
+    description = <<
+        Here we test the following expression:
+        
+        *  @matchesRegex()
+        *  @isNullOrMatchesRegex() 
+    >>
+
+    scenario: matchesRegex expression
+        param geo = <<
+            {
+              "index": "IndexString",
+              "lat": "-43.9509",
+              "lng": "-34.4618"
+            }
+        >>
+        param expression = <<@matchesRegex('\\\\w+')>>
+
+    scenario: isNullOrmatchesRegex expression - object with values
+        param geo = <<
+            {
+              "index": "IndexString",
+              "lat": "-43.9509",
+              "lng": "-34.4618"
+            }
+        >>
+        param expression = <<@matchesRegex('\\\\w+')>>
+
+    scenario: isNullOrMatchesRegex expression - object with null value
+        param geo = <<
+             {
+              "index": null,
+              "lat": "-43.9509",
+              "lng": "-34.4618"
+            }
+        >>
+        param expression = <<@isNullOrMatchesRegex('\\\\w+')>>
+
+    step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{get_users}}>>
+        var httpMockServer = <<
+            port: "12101"
+            
+        >>
+        var get_users = <<
+            expectedRequest:
+              method: GET
+              url: /users
+            mockResponse:
+              statusCode: 200
+              headers:
+                Content-Type: application/json
+              body:
+                bodyType: JSON
+                content: "{\r\n  \"geo\": {{geo}}\r\n}\r\n"
+            
+        >>
+    step: When I execute the HTTP request <<{{get_users}}>>
+        var get_users = <<
+            method: GET
+            url: http://localhost:12101/users
+            followRedirects: false
+            headers: {}
+            
+        >>
+    step: Then the HTTP response should be <<{{verify_users_list}}>>
+        var verify_users_list = <<
+            expectedStatusCode: 200
+            expectedBody:
+              httpBodyVerifyMatchingType: JSON_VERIFY
+              httpBodyType: JSON
+              bodyVerify: "{\r\n  \"geo\": {\r\n    \"index\": \"{{expression}}\",\r\n    \"lat\"\
+                : \"-43.9509\",\r\n    \"lng\": \"-34.4618\"\r\n  }\r\n}"
+            
+        >>
