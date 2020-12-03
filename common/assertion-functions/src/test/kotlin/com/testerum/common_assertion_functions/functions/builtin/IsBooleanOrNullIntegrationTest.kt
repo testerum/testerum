@@ -45,7 +45,7 @@ class IsBooleanOrNullIntegrationTest : BaseBuiltinFunctionIntegrationTest() {
     @Test
     fun `should throw exception for array`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isBooleanOrNull()", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}] """)))
+            functionEvaluator.evaluate("@isBooleanOrNull()", ObjectMapper().readTree(""" [{"f1":"Hello"}] """))
         }
     }
 

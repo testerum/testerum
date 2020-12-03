@@ -102,7 +102,7 @@ test-def: Array expressions
         >>
 
     scenario: isArrayWithSizeLessThan - Array with 5 elements
-        param expression = <<@isArrayWithSizeLessThan(1)>>
+        param expression = <<@isArrayWithSizeLessThan(6)>>
         param geo = <<
              [
               {

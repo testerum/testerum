@@ -12,38 +12,38 @@ class IsArrayWithSizeLessThanIntegrationTest : BaseBuiltinFunctionIntegrationTes
     @Test
     fun `should throw exception for an array with equal amount of elements - 1`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isArrayWithSizeLessThan(1)", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}] """)))
+            functionEvaluator.evaluate("@isArrayWithSizeLessThan(1)", ObjectMapper().readTree(""" [{"f1":"Hello"}] """))
         }
     }
 
     @Test
     fun `should throw exception for an array with equal amount of elements - 3`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isArrayWithSizeLessThan(3)", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """)))
+            functionEvaluator.evaluate("@isArrayWithSizeLessThan(3)", ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """))
         }
     }
 
     @Test
     fun `should be ok for an array with less elements 4 - 3`() {
-        functionEvaluator.evaluate("@isArrayWithSizeLessThan(4)", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """)))
+        functionEvaluator.evaluate("@isArrayWithSizeLessThan(4)", ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """))
     }
 
     @Test
     fun `should be ok for an array with less elements 3 - 0`() {
-        functionEvaluator.evaluate("@isArrayWithSizeLessThan(3)", arrayNode(ObjectMapper().readTree(""" [] """)))
+        functionEvaluator.evaluate("@isArrayWithSizeLessThan(3)", ObjectMapper().readTree(""" [] """))
     }
 
     @Test
     fun `should throw exception for an array with more elements 0 - 3`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isArrayWithSizeLessThan(0)", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """)))
+            functionEvaluator.evaluate("@isArrayWithSizeLessThan(0)", ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """))
         }
     }
 
     @Test
     fun `should throw exception for an array with more elements 1 - 3`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isArrayWithSizeLessThan(1)", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """)))
+            functionEvaluator.evaluate("@isArrayWithSizeLessThan(1)", ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """))
         }
     }
 
@@ -57,7 +57,7 @@ class IsArrayWithSizeLessThanIntegrationTest : BaseBuiltinFunctionIntegrationTes
     @Test
     fun `should throw exception if is called without parameter`() {
         Assertions.assertThrows(IllegalArgumentException::class.java) {
-            functionEvaluator.evaluate("@isArrayWithSizeLessThan()", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}] """)))
+            functionEvaluator.evaluate("@isArrayWithSizeLessThan()", ObjectMapper().readTree(""" [{"f1":"Hello"}] """))
         }
     }
 

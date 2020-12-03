@@ -47,7 +47,7 @@ class IsBooleanIntegrationTest : BaseBuiltinFunctionIntegrationTest() {
     @Test
     fun `should throw exception for array`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isBoolean()", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}] """)))
+            functionEvaluator.evaluate("@isBoolean()", ObjectMapper().readTree(""" [{"f1":"Hello"}] """))
         }
     }
 

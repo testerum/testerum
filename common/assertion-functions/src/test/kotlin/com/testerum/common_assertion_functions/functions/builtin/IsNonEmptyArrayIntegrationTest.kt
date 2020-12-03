@@ -46,13 +46,13 @@ class IsNonEmptyArrayIntegrationTest : BaseBuiltinFunctionIntegrationTest() {
 
     @Test
     fun `should be ok for array`() {
-        functionEvaluator.evaluate("@isNonEmptyArray()", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}] """)))
+        functionEvaluator.evaluate("@isNonEmptyArray()", ObjectMapper().readTree(""" [{"f1":"Hello"}] """))
     }
 
     @Test
     fun `should throw exception an empty array`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isNonEmptyArray()", arrayNode(ObjectMapper().readTree(""" [] """)))
+            functionEvaluator.evaluate("@isNonEmptyArray()", ObjectMapper().readTree(""" [] """))
         }
     }
 
