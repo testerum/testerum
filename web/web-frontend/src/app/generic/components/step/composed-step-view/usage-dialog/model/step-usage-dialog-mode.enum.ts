@@ -1,4 +1,4 @@
-import {Enum} from "../../../../../model/enums/enum.interface";
+import {Enum} from "../../../../../../model/enums/enum.interface";
 
 export class StepUsageDialogModeEnum extends Enum {
     public static DELETE_STEP = new StepUsageDialogModeEnum("DELETE_STEP");

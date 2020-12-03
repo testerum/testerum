@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, ComponentRef, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
-import {Path} from "../../../../model/infrastructure/path/path.model";
+import {Path} from "../../../../../model/infrastructure/path/path.model";
 import {Subject} from "rxjs";
 import {StepUsageDialogModeEnum} from "./model/step-usage-dialog-mode.enum";
-import {UrlService} from "../../../../service/url.service";
+import {UrlService} from "../../../../../service/url.service";
 import {StepUsageDialogResponseEnum} from "./model/step-usage-dialog-response.enum";
 
 @Component({
@@ -75,5 +75,11 @@ export class StepUsageDialogComponent implements AfterViewInit {
             result += path.fileName
         }
         return result;
+    }
+
+    isStepUsed(): boolean {
+        return this.pathsForAffectedTests.length > 0 ||
+            this.pathsForDirectAffectedSteps.length > 0 ||
+            this.pathsForTransitiveAffectedSteps.length > 0
     }
 }

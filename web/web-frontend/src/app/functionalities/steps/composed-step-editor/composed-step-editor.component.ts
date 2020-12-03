@@ -12,16 +12,16 @@ import {CheckComposedStepDefUpdateCompatibilityResponse} from "../../../model/st
 import {ApplicationEventBus} from "../../../event-bus/application.eventbus";
 import {UrlService} from "../../../service/url.service";
 import {ComposedStepViewComponent} from "../../../generic/components/step/composed-step-view/composed-step-view.component";
-import {StepUsageDialogComponent} from "./usage-dialog/step-usage-dialog.component";
+import {StepUsageDialogComponent} from "../../../generic/components/step/composed-step-view/usage-dialog/step-usage-dialog.component";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {Subscription} from "rxjs";
 import {AreYouSureModalEnum} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.enum";
 import {AreYouSureModalService} from "../../../generic/components/are_you_sure_modal/are-you-sure-modal.service";
 import {AbstractComponentCanDeactivate} from "../../../generic/interfaces/can-deactivate/AbstractComponentCanDeactivate";
 import {CheckComposedStepDefUsageResponse} from "../../../model/step/operation/CheckComposedStepDefUsageResponse";
-import {StepUsageDialogModeEnum} from "./usage-dialog/model/step-usage-dialog-mode.enum";
-import {StepUsageDialogService} from "./usage-dialog/step-usage-dialog.service";
-import {StepUsageDialogResponseEnum} from "./usage-dialog/model/step-usage-dialog-response.enum";
+import {StepUsageDialogModeEnum} from "../../../generic/components/step/composed-step-view/usage-dialog/model/step-usage-dialog-mode.enum";
+import {StepUsageDialogService} from "../../../generic/components/step/composed-step-view/usage-dialog/step-usage-dialog.service";
+import {StepUsageDialogResponseEnum} from "../../../generic/components/step/composed-step-view/usage-dialog/model/step-usage-dialog-response.enum";
 
 @Component({
     moduleId: module.id,

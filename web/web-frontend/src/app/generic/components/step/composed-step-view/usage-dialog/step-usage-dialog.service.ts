@@ -1,13 +1,13 @@
 import {ComponentFactoryResolver, Injectable} from "@angular/core";
 import {StepUsageDialogComponent} from "./step-usage-dialog.component";
-import {StepsService} from "../../../../service/steps.service";
-import {CheckComposedStepDefUsageResponse} from "../../../../model/step/operation/CheckComposedStepDefUsageResponse";
+import {StepsService} from "../../../../../service/steps.service";
+import {CheckComposedStepDefUsageResponse} from "../../../../../model/step/operation/CheckComposedStepDefUsageResponse";
 import {StepUsageDialogModeEnum} from "./model/step-usage-dialog-mode.enum";
-import {ComposedStepDef} from "../../../../model/composed-step-def.model";
+import {ComposedStepDef} from "../../../../../model/composed-step-def.model";
 import {Observable, Subject} from "rxjs";
 import {StepUsageDialogResponseEnum} from "./model/step-usage-dialog-response.enum";
-import {AppComponent} from "../../../../app.component";
-import {Path} from "../../../../model/infrastructure/path/path.model";
+import {AppComponent} from "../../../../../app.component";
+import {Path} from "../../../../../model/infrastructure/path/path.model";
 
 @Injectable()
 export class StepUsageDialogService {
