@@ -61,7 +61,12 @@ export class UrlService {
         if (!path) {
             throw new Error("A path should be provided")
         }
-        this.navigateToProjectPath(["/project/tests/show", {path: path.toString()}]);
+        this.navigate([this.getTestUrl(), {path: path.toString()}]);
+    }
+
+
+    public getTestUrl(): String {
+        return "/" + this.contextService.getProjectName() + "/project/tests/show"
     }
 
     public navigateToResources() {
@@ -84,7 +89,11 @@ export class UrlService {
         if (!path) {
             throw new Error("A path should be provided")
         }
-        this.navigateToProjectPath(['/steps/composed', {path: path.toString()}]);
+        this.navigate([this.getComposedStepUrl(), {path: path.toString()}]);
+    }
+
+    public getComposedStepUrl(): String {
+        return "/" + this.contextService.getProjectName() + '/steps/composed'
     }
 
     public navigateToBasicStep(path: Path) {

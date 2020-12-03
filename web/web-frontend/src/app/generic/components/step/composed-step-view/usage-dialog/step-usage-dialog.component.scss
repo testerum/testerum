@@ -1,0 +1,55 @@
+@import "src/resources/css/testerum-variables";
+.step-usage-dialog {
+    align-items: center;
+
+    .modal-dialog {
+        align-self: center;
+        width: 90%;
+        height: 80%;
+        min-height: 500px;
+        max-width: 1400px;
+
+        .modal-header {
+            .title-icon {
+                color: $warning-color;
+            }
+        }
+
+        .modal-body {
+            .title-box {
+                padding: 1em 0 1em 0;
+                border-radius: 0.25em;
+                justify-content: center;
+
+                display: flex;
+
+                .title-message {
+                    text-align: center;
+                    white-space: pre-line;
+                    background-color: inherit;
+                    border-color: inherit;
+                    font-weight: bold;
+                    font-size: 1.5em;
+                }
+            }
+
+            .sub-title {
+                font-size: 1.3em;
+                font-weight: bold;
+                margin-top: 1em;
+                text-align: center;
+            }
+
+            .affected-message {
+                margin-top: 10px;
+                font-weight: bold;
+            }
+
+            .affected-path {
+                margin-left: 30px;
+                font-weight: normal;
+            }
+        }
+    }
+}
+
