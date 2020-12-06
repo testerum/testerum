@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.testerum</groupId>
         <artifactId>step-util</artifactId>
-        <version>develop-SNAPSHOT</version>
+        <version>4.0.0</version>
     </parent>
     <packaging>jar</packaging>
 
