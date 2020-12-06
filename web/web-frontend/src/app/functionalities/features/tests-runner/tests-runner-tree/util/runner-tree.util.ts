@@ -87,6 +87,7 @@ export class RunnerTreeUtil {
 
         if (serverNode instanceof RunnerScenarioNode) {
             let scenarioTreeNodeModel = new RunnerScenarioTreeNodeModel(parentNode);
+            scenarioTreeNodeModel.scenarioIndex = serverNode.scenarioIndex;
             scenarioTreeNodeModel.text = serverNode.name;
             scenarioTreeNodeModel.getNodeState().showChildren = false;
             scenarioTreeNodeModel.enabled = serverNode.enabled;

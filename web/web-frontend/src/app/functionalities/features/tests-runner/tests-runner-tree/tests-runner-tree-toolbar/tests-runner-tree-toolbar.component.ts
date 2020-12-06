@@ -40,14 +40,7 @@ export class TestsRunnerTreeToolbarComponent implements OnInit {
         let runConfig = new RunConfig();
         runConfig.name = "Failed Tests Execution";
         runConfig.settings = this.testRunnerService.lastRunConfig.settings;
-        runConfig.pathsToInclude = this.runnerTreeService.getFailedTestsPaths().map(pathToExecute => {
-            const pathWithScenarioIndexes = new PathWithScenarioIndexes();
-
-            pathWithScenarioIndexes.path = pathToExecute;
-            pathWithScenarioIndexes.scenarioIndexes = [];
-
-            return pathWithScenarioIndexes
-        });
+        runConfig.pathsToInclude = this.runnerTreeService.getFailedTestsPaths();
         this.testRunnerService.runRunConfig(runConfig);
     }
 
