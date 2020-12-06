@@ -208,7 +208,7 @@ class RunnerExecutionTreeBuilder(
                 featuresOrTests = children,
                 afterAllTestsHooks = afterAllTestsHooks,
                 executionName = executionName,
-                glueClassNames = emptyList()
+                glueClassNames = glueClassNames
             )
         }
 
