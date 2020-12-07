@@ -6,8 +6,6 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 
 abstract class RunnerFeatureOrTest : RunnerTreeNode() {
 
-    override lateinit var parent: RunnerTreeNode
-
     abstract fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus
     abstract fun skip(context: RunnerContext): ExecutionStatus
 

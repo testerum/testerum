@@ -2,6 +2,7 @@ package com.testerum.runner_cmdline.runner_tree.nodes.test
 
 import com.testerum.common_kotlin.indent
 import com.testerum.model.test.TestModel
+import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
@@ -20,13 +21,14 @@ import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
 class RunnerTest(
+    parent: TreeNode,
     val beforeEachTestHooks: List<RunnerHook>,
     val test: TestModel,
     val filePath: JavaPath,
     val indexInParent: Int,
     val steps: List<RunnerStep>,
     val afterEachTestHooks: List<RunnerHook>
-) : RunnerFeatureOrTest() {
+) : RunnerFeatureOrTest(), TreeNode {
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
@@ -38,7 +40,12 @@ class RunnerTest(
         }
     }
 
-    override lateinit var parent: RunnerTreeNode
+    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+        ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
+
+    override val parent: RunnerTreeNode
+        get() = _parent
+
     override val positionInParent = PositionInParent(test.id, indexInParent)
 
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {

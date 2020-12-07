@@ -5,15 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.model.feature.hooks.Hooks
 import com.testerum.model.file.Attachment
+import com.testerum.model.infrastructure.path.HasPath
 import com.testerum.model.infrastructure.path.Path
 
 data class Feature @JsonCreator constructor(@JsonProperty("name") val name: String,
-                                            @JsonProperty("path") val path: Path,
+                                            @JsonProperty("path") override val path: Path,
                                             @JsonProperty("oldPath") val oldPath: Path? = path,
                                             @JsonProperty("description") val description: String? = null,
                                             @JsonProperty("tags") val tags: List<String> = emptyList(),
                                             @JsonProperty("attachments") val attachments: List<Attachment> = emptyList(),
-                                            @JsonProperty("hooks") val hooks: Hooks = Hooks.EMPTY) {
+                                            @JsonProperty("hooks") val hooks: Hooks = Hooks.EMPTY) : HasPath {
 
     companion object {
         const val FILE_NAME_WITHOUT_EXTENSION: String = "info"

@@ -133,6 +133,19 @@ data class Path @JsonCreator constructor(
 
     fun withoutFileExtension() = this.copy(fileExtension = null)
 
+    fun getParent(): Path {
+        if (this.isFile()) {
+            return Path(this.directories, null, null)
+        }
+        if (this.directories.isEmpty()) {
+            return EMPTY
+        }
+
+        val parentDirectories = this.directories.subList(0, this.directories.size - 1)
+
+        return Path(parentDirectories, null, null)
+    }
+
     override fun toString(): String = parts.joinToString(separator = "/")
 
 }

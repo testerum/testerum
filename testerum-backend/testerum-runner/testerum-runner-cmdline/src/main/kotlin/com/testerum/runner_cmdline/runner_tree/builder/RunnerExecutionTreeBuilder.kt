@@ -2,6 +2,7 @@ package com.testerum.runner_cmdline.runner_tree.builder
 
 import com.testerum.file_service.caches.resolved.StepsCache
 import com.testerum.model.feature.Feature
+import com.testerum.model.infrastructure.path.HasPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
@@ -10,13 +11,13 @@ import com.testerum.model.step.UndefinedStepDef
 import com.testerum.model.test.TestModel
 import com.testerum.model.test.scenario.Scenario
 import com.testerum.model.tests_finder.ScenariosTestPath
-import com.testerum.model.tests_finder.TestPath
 import com.testerum.model.tests_finder.TestsFinder
-import com.testerum.model.util.tree_builder.TreeBuilder
-import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
+import com.testerum.model.util.new_tree_builder.ContainerTreeNode
+import com.testerum.model.util.new_tree_builder.PathBasedTreeBuilder
+import com.testerum.model.util.new_tree_builder.TreeNode
+import com.testerum.model.util.new_tree_builder.TreeNodeFactory
 import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
 import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
-import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
 import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerParametrizedTest
@@ -36,10 +37,6 @@ class RunnerExecutionTreeBuilder(
     private val runnerProjectManager: RunnerProjectManager,
     private val executionName: String?
 ) {
-
-    companion object {
-        private val LOG = LoggerFactory.getLogger(RunnerExecutionTreeBuilder::class.java)
-    }
 
     private val stepsCache: StepsCache
         get() = runnerProjectManager.getProjectServices().getStepsCache()
@@ -64,13 +61,248 @@ class RunnerExecutionTreeBuilder(
 
         val glueClassNames = getGlueClassNames(hooks, tests, features)
 
-        val builder = TreeBuilder(
-            customizer = RunnerExecutionTreeBuilderCustomizer(hooks, executionName, glueClassNames)
-        )
-        features.forEach { builder.add(it) }
-        tests.forEach { builder.add(it) }
+        val items = mutableListOf<HasPath>()
+        items += tests
+        items += features
 
-        return builder.build() as RunnerSuite
+        val treeBuilder = PathBasedTreeBuilder(
+            RunnerTreeNodeFactory(hooks, executionName, glueClassNames)
+        )
+
+        return treeBuilder.createTree(items)
+    }
+
+    private class RunnerTreeNodeFactory(
+        hooks: Collection<HookDef>,
+        private val executionName: String?,
+        private val glueClassNames: List<String>,
+    ) : TreeNodeFactory<RunnerSuite, RunnerFeature> {
+
+        companion object {
+            private val LOG = LoggerFactory.getLogger(RunnerExecutionTreeBuilder::class.java)
+        }
+
+        private val beforeEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_EACH_TEST)
+        private val afterEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_EACH_TEST)
+        private val beforeAllTestsHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_ALL_TESTS)
+        private val afterAllTestsHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_ALL_TESTS)
+
+        override fun createRootNode(): RunnerSuite {
+            return RunnerSuite(beforeAllTestsHooks, afterAllTestsHooks, executionName, glueClassNames)
+        }
+
+        override fun createVirtualContainer(parentNode: ContainerTreeNode, path: Path): RunnerFeature {
+            return RunnerFeature(
+                parent = parentNode,
+                featurePathFromRoot = path.directories,
+                featureName = path.directories.last(),
+                tags = emptyList(),
+                indexInParent = parentNode.childrenCount
+            )
+        }
+
+        override fun createNode(parentNode: ContainerTreeNode, item: HasPath): TreeNode {
+            val indexInParent = parentNode.childrenCount
+
+            return when (item) {
+                is Feature -> {
+                    RunnerFeature(
+                        parent = parentNode,
+                        featurePathFromRoot = item.path.directories,
+                        featureName = item.name,
+                        tags = item.tags,
+                        indexInParent = parentNode.childrenCount
+                    )
+                }
+                is TestWithFilePath -> {
+                    val isParametrizedTest = item.test.scenarios.isNotEmpty()
+
+                    if (isParametrizedTest) {
+                        createParametrizedTest(item, parentNode, indexInParent)
+                    } else {
+                        createTest(item, parentNode, indexInParent)
+                    }
+                }
+                else -> throw IllegalArgumentException("unexpected item type [${item.javaClass}]: [$item]")
+            }
+        }
+
+        private fun createParametrizedTest(
+            item: TestWithFilePath,
+            parentNode: ContainerTreeNode,
+            indexInParent: Int
+        ): RunnerParametrizedTest {
+            verifyScenarioIndexesFromFilter(item)
+
+            val filteredTestScenarios = filterScenarios(item)
+
+            val runnerScenariosNodes: List<RunnerScenario> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
+                createTestScenarioBranch(
+                    test = item.test,
+                    filePath = item.testPath.javaPath,
+                    scenarioWithOriginalIndex = scenarioWithOriginalIndex,
+                    filteredScenarioIndex = filteredScenarioIndex,
+                    beforeEachTestHooks = beforeEachTestHooks,
+                    afterEachTestHooks = afterEachTestHooks
+                )
+            }
+
+            return RunnerParametrizedTest(
+                parent = parentNode,
+                test = item.test,
+                filePath = item.testPath.javaPath,
+                indexInParent = indexInParent,
+                scenarios = runnerScenariosNodes
+            )
+        }
+
+        private fun createTest(
+            item: TestWithFilePath,
+            parentNode: ContainerTreeNode,
+            indexInParent: Int
+        ): RunnerTest {
+            if (item.testPath is ScenariosTestPath) {
+                LOG.warn(
+                    "the test at [${item.testPath.testFile}] is nor parametrized," +
+                        " so specifying which scenarios to run has no effect" +
+                        " (got scenarioIndexes=${item.testPath.scenarioIndexes})"
+                )
+            }
+
+            return createRunnerTest(
+                parentNode = parentNode,
+                test = item.test,
+                filePath = item.testPath.javaPath,
+                testIndexInParent = indexInParent,
+                beforeEachTestHooks = beforeEachTestHooks,
+                afterEachTestHooks = afterEachTestHooks
+            )
+        }
+
+        private fun filterScenarios(item: TestWithFilePath): List<Pair<Int, Scenario>> {
+            val scenariosWithOriginalIndex = item.test.scenarios.mapIndexed { index, scenario ->
+                index to scenario
+            }
+
+            val filteredTestScenarios = if (item.testPath is ScenariosTestPath) {
+                // filter scenarios
+                if (item.testPath.scenarioIndexes.isEmpty()) {
+                    // there is no filter on scenarios
+                    scenariosWithOriginalIndex
+                } else {
+                    scenariosWithOriginalIndex.filterIndexed { scenarioIndex, _ ->
+                        scenarioIndex in item.testPath.scenarioIndexes
+                    }
+                }
+            } else {
+                scenariosWithOriginalIndex
+            }
+            return filteredTestScenarios
+        }
+
+        private fun verifyScenarioIndexesFromFilter(item: TestWithFilePath) {
+            if (item.testPath !is ScenariosTestPath) {
+                return
+            }
+
+            for (scenarioIndex in item.testPath.scenarioIndexes) {
+                if ((scenarioIndex < 0) || (scenarioIndex >= item.test.scenarios.size)) {
+                    LOG.warn(
+                        "invalid scenario index [$scenarioIndex]" +
+                            " for test at [${item.testPath.testFile}]" +
+                            ": this test has only ${item.test.scenarios.size} scenarios" +
+                            "; the index must be between 0 and ${item.test.scenarios.size - 1} inclusive"
+                    )
+                }
+            }
+        }
+
+        private fun createTestScenarioBranch(
+            test: TestModel,
+            filePath: java.nio.file.Path,
+            scenarioWithOriginalIndex: Pair<Int, Scenario>,
+            filteredScenarioIndex: Int,
+            beforeEachTestHooks: List<RunnerHook>,
+            afterEachTestHooks: List<RunnerHook>
+        ): RunnerScenario {
+            val originalScenarioIndex = scenarioWithOriginalIndex.first
+            val scenario = scenarioWithOriginalIndex.second
+
+            val runnerSteps = mutableListOf<RunnerStep>()
+
+            for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
+                runnerSteps += createRunnerStep(stepCall, stepIndexInParent)
+            }
+
+            return RunnerScenario(
+                beforeEachTestHooks = beforeEachTestHooks,
+                test = test,
+                scenario = scenario,
+                originalScenarioIndex = originalScenarioIndex,
+                filteredScenarioIndex = filteredScenarioIndex,
+                filePath = filePath,
+                steps = runnerSteps,
+                afterEachTestHooks = afterEachTestHooks
+            )
+        }
+
+        private fun createRunnerTest(
+            parentNode: ContainerTreeNode,
+            test: TestModel,
+            filePath: java.nio.file.Path,
+            testIndexInParent: Int,
+            beforeEachTestHooks: List<RunnerHook>,
+            afterEachTestHooks: List<RunnerHook>
+        ): RunnerTest {
+            val runnerSteps = mutableListOf<RunnerStep>()
+
+            for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
+                runnerSteps += createRunnerStep(stepCall, stepIndexInParent)
+            }
+
+            return RunnerTest(
+                parent = parentNode,
+                test = test,
+                filePath = filePath,
+                indexInParent = testIndexInParent,
+                steps = runnerSteps,
+                beforeEachTestHooks = beforeEachTestHooks,
+                afterEachTestHooks = afterEachTestHooks
+            )
+        }
+
+
+        private fun createRunnerStep(stepCall: StepCall, indexInParent: Int): RunnerStep {
+            val stepDef = stepCall.stepDef
+
+            return when (stepDef) {
+                is UndefinedStepDef -> RunnerUndefinedStep(stepCall, indexInParent)
+                is BasicStepDef -> RunnerBasicStep(stepCall, indexInParent)
+                is ComposedStepDef -> {
+                    val nestedSteps = mutableListOf<RunnerStep>()
+
+                    for ((nestedIndexInParent, nestedStepCall) in stepDef.stepCalls.withIndex()) {
+                        val nestedRunnerStep = createRunnerStep(nestedStepCall, nestedIndexInParent)
+
+                        nestedSteps += nestedRunnerStep
+                    }
+
+                    RunnerComposedStep(
+                        stepCall = stepCall,
+                        indexInParent = indexInParent,
+                        steps = nestedSteps
+                    )
+                }
+                else -> throw RuntimeException("unknown StepDef type [${stepDef.javaClass.name}]")
+            }
+        }
+        private fun Collection<HookDef>.sortedHooksForPhase(phase: HookPhase): List<RunnerHook> {
+            return this.asSequence()
+                .filter { it.phase == phase }
+                .sortedBy { it.order }
+                .map { RunnerHook(it) }
+                .toList()
+        }
     }
 
     private fun getGlueClassNames(
@@ -161,238 +393,5 @@ class RunnerExecutionTreeBuilder(
         }
     }
 
-    private data class TestWithFilePath(val test: TestModel, val testPath: TestPath)
-
-    private class RunnerExecutionTreeBuilderCustomizer(
-        hooks: Collection<HookDef>,
-        private val executionName: String?,
-        val glueClassNames: List<String>,
-    ) : TreeBuilderCustomizer {
-
-        private val beforeEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_EACH_TEST)
-        private val afterEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_EACH_TEST)
-        private val beforeAllTestsHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_ALL_TESTS)
-        private val afterAllTestsHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_ALL_TESTS)
-
-        override fun getPath(payload: Any): List<String> = when (payload) {
-            is Feature -> payload.path.parts
-            is TestWithFilePath -> payload.test.path.parts
-            else -> throw unknownPayloadException(payload)
-        }
-
-        override fun isContainer(payload: Any): Boolean = when (payload) {
-            is Feature -> true
-            is TestWithFilePath -> false
-            else -> throw unknownPayloadException(payload)
-        }
-
-        override fun getRootLabel(): String = buildString {
-            append("Suite")
-            if (executionName != null) {
-                append(" - ").append(executionName)
-            }
-        }
-
-        override fun getLabel(payload: Any): String = when (payload) {
-            is Feature -> payload.path.directories.last()
-            is TestWithFilePath -> payload.test.name
-            else -> throw unknownPayloadException(payload)
-        }
-
-        override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
-            @Suppress("UNCHECKED_CAST")
-            val children: List<RunnerFeatureOrTest> = childrenNodes as List<RunnerFeatureOrTest>
-
-            return RunnerSuite(
-                beforeAllTestsHooks = beforeAllTestsHooks,
-                featuresOrTests = children,
-                afterAllTestsHooks = afterAllTestsHooks,
-                executionName = executionName,
-                glueClassNames = glueClassNames
-            )
-        }
-
-        override fun createNode(payload: Any?, label: String, path: List<String>, childrenNodes: List<Any>, indexInParent: Int): Any {
-            @Suppress("UNCHECKED_CAST")
-            return when (payload) {
-                null -> {
-                    @Suppress("UNCHECKED_CAST")
-                    val children: List<RunnerFeatureOrTest> = childrenNodes as List<RunnerFeatureOrTest>
-
-                    RunnerFeature(
-                        featurePathFromRoot = path,
-                        featureName = label,
-                        tags = emptyList(),
-                        featuresOrTests = children,
-                        indexInParent = indexInParent
-                    )
-                }
-                is Feature -> {
-                    @Suppress("UNCHECKED_CAST")
-                    val children: List<RunnerFeatureOrTest> = childrenNodes as List<RunnerFeatureOrTest>
-
-                    RunnerFeature(
-                        featurePathFromRoot = path,
-                        featureName = label,
-                        tags = payload.tags,
-                        featuresOrTests = children,
-                        indexInParent = indexInParent
-                    )
-                }
-                is TestWithFilePath -> {
-                    val isParametrizedTest = payload.test.scenarios.isNotEmpty()
-
-                    if (isParametrizedTest) {
-                        // verify filter criteria
-                        if (payload.testPath is ScenariosTestPath) {
-                            for (scenarioIndex in payload.testPath.scenarioIndexes) {
-                                if (scenarioIndex >= payload.test.scenarios.size) {
-                                    LOG.warn("invalid scenario index [$scenarioIndex] for test at [${payload.testPath.testFile}]: this test has only ${payload.test.scenarios.size} scenarios; the index must be between 0 and ${payload.test.scenarios.size - 1} inclusive")
-                                }
-                            }
-                        }
-
-                        val scenariosWithOriginalIndex = payload.test.scenarios.mapIndexed { index, scenario ->
-                            index to scenario
-                        }
-
-                        val filteredTestScenarios = if (payload.testPath is ScenariosTestPath) {
-                            // filter scenarios
-                            if (payload.testPath.scenarioIndexes.isEmpty()) {
-                                // there is no filter on scenarios
-                                scenariosWithOriginalIndex
-                            } else {
-                                scenariosWithOriginalIndex.filterIndexed { scenarioIndex, _ ->
-                                    scenarioIndex in payload.testPath.scenarioIndexes
-                                }
-                            }
-                        } else {
-                            scenariosWithOriginalIndex
-                        }
-
-
-                        val runnerScenariosNodes: List<RunnerScenario> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
-                            createTestScenarioBranch(
-                                test = payload.test,
-                                filePath = payload.testPath.javaPath,
-                                scenarioWithOriginalIndex = scenarioWithOriginalIndex,
-                                filteredScenarioIndex = filteredScenarioIndex,
-                                beforeEachTestHooks = beforeEachTestHooks,
-                                afterEachTestHooks = afterEachTestHooks
-                            )
-                        }
-
-
-                        RunnerParametrizedTest(
-                            test = payload.test,
-                            filePath = payload.testPath.javaPath,
-                            indexInParent = indexInParent,
-                            scenarios = runnerScenariosNodes
-                        )
-                    } else {
-                        if (payload.testPath is ScenariosTestPath) {
-                            LOG.warn("the test at [${payload.testPath.testFile}] is nor parametrized, so specifying which scenarios to run has no effect (got scenarioIndexes=${payload.testPath.scenarioIndexes})")
-                        }
-
-                        createRunnerTest(
-                            test = payload.test,
-                            filePath = payload.testPath.javaPath,
-                            testIndexInParent = indexInParent,
-                            beforeEachTestHooks = beforeEachTestHooks,
-                            afterEachTestHooks = afterEachTestHooks
-                        )
-                    }
-                }
-                else -> throw unknownPayloadException(payload)
-            }
-        }
-
-        private fun createTestScenarioBranch(
-            test: TestModel,
-            filePath: JavaPath,
-            scenarioWithOriginalIndex: Pair<Int, Scenario>,
-            filteredScenarioIndex: Int,
-            beforeEachTestHooks: List<RunnerHook>,
-            afterEachTestHooks: List<RunnerHook>
-        ): RunnerScenario {
-            val originalScenarioIndex = scenarioWithOriginalIndex.first
-            val scenario = scenarioWithOriginalIndex.second
-
-            val runnerSteps = mutableListOf<RunnerStep>()
-
-            for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
-                runnerSteps += createRunnerStep(stepCall, stepIndexInParent)
-            }
-
-            return RunnerScenario(
-                beforeEachTestHooks = beforeEachTestHooks,
-                test = test,
-                scenario = scenario,
-                originalScenarioIndex = originalScenarioIndex,
-                filteredScenarioIndex = filteredScenarioIndex,
-                filePath = filePath,
-                steps = runnerSteps,
-                afterEachTestHooks = afterEachTestHooks
-            )
-        }
-
-        private fun createRunnerTest(
-            test: TestModel,
-            filePath: JavaPath,
-            testIndexInParent: Int,
-            beforeEachTestHooks: List<RunnerHook>,
-            afterEachTestHooks: List<RunnerHook>
-        ): RunnerTest {
-            val runnerSteps = mutableListOf<RunnerStep>()
-
-            for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
-                runnerSteps += createRunnerStep(stepCall, stepIndexInParent)
-            }
-
-            return RunnerTest(
-                test = test,
-                filePath = filePath,
-                indexInParent = testIndexInParent,
-                steps = runnerSteps,
-                beforeEachTestHooks = beforeEachTestHooks,
-                afterEachTestHooks = afterEachTestHooks
-            )
-        }
-
-
-        private fun createRunnerStep(stepCall: StepCall, indexInParent: Int): RunnerStep {
-            val stepDef = stepCall.stepDef
-
-            return when (stepDef) {
-                is UndefinedStepDef -> RunnerUndefinedStep(stepCall, indexInParent)
-                is BasicStepDef -> RunnerBasicStep(stepCall, indexInParent)
-                is ComposedStepDef -> {
-                    val nestedSteps = mutableListOf<RunnerStep>()
-
-                    for ((nestedIndexInParent, nestedStepCall) in stepDef.stepCalls.withIndex()) {
-                        val nestedRunnerStep = createRunnerStep(nestedStepCall, nestedIndexInParent)
-
-                        nestedSteps += nestedRunnerStep
-                    }
-
-                    RunnerComposedStep(
-                        stepCall = stepCall,
-                        indexInParent = indexInParent,
-                        steps = nestedSteps
-                    )
-                }
-                else -> throw RuntimeException("unknown StepDef type [${stepDef.javaClass.name}]")
-            }
-        }
-
-        private fun Collection<HookDef>.sortedHooksForPhase(phase: HookPhase): List<RunnerHook> {
-            return this.asSequence()
-                .filter { it.phase == phase }
-                .sortedBy { it.order }
-                .map { RunnerHook(it) }
-                .toList()
-        }
-
-    }
 
 }

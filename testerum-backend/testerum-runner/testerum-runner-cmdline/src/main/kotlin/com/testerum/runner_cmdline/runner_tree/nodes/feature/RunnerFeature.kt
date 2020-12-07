@@ -2,6 +2,8 @@ package com.testerum.runner_cmdline.runner_tree.nodes.feature
 
 import com.testerum.common_kotlin.indent
 import com.testerum.model.feature.Feature
+import com.testerum.model.util.new_tree_builder.ContainerTreeNode
+import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
@@ -14,25 +16,36 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
 
 class RunnerFeature(
+    parent: TreeNode,
     featurePathFromRoot: List<String>,
     val featureName: String,
     val tags: List<String>,
-    val featuresOrTests: List<RunnerFeatureOrTest>,
     indexInParent: Int
-) : RunnerFeatureOrTest() {
+) : RunnerFeatureOrTest(), ContainerTreeNode {
 
-    override lateinit var parent: RunnerTreeNode
+    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+        ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
+
+    override val parent: RunnerTreeNode
+        get() = _parent
+
+    private val children = mutableListOf<RunnerFeatureOrTest>()
+
+    val featuresOrTests: List<RunnerFeatureOrTest>
+        get() = children
+
+    override val childrenCount: Int
+        get() = children.size
+
+    override fun addChild(child: TreeNode) {
+        children += child as? RunnerFeatureOrTest
+            ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
+    }
 
     override val positionInParent = PositionInParent(
         id = featurePathFromRoot.joinToString(separator = "/") + "/${Feature.FILE_NAME_WITH_EXTENSION}",
         indexInParent = indexInParent
     )
-
-    init {
-        for (featureOrTest in featuresOrTests) {
-            featureOrTest.parent = this
-        }
-    }
 
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         try {
@@ -50,7 +63,7 @@ class RunnerFeature(
 
         val startTime = System.currentTimeMillis()
         try {
-            for (featureOrTest in featuresOrTests) {
+            for (featureOrTest in children) {
                 val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
 
                 if (featureOrTestStatus > status) {
@@ -75,7 +88,7 @@ class RunnerFeature(
 
         val startTime = System.currentTimeMillis()
         try {
-            for (featureOrTest in featuresOrTests) {
+            for (featureOrTest in children) {
                 val featureOrTestStatus: ExecutionStatus = featureOrTest.skip(context)
 
                 if (featureOrTestStatus > status) {
@@ -124,7 +137,7 @@ class RunnerFeature(
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
         destination.indent(indentLevel).append("feature '").append(featureName).append("'\n")
 
-        for (featureOrTest in featuresOrTests) {
+        for (featureOrTest in children) {
             featureOrTest.addToString(destination, indentLevel + 1)
         }
     }

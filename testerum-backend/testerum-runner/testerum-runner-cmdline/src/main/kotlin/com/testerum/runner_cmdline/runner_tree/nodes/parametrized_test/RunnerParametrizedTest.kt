@@ -2,6 +2,7 @@ package com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test
 
 import com.testerum.common_kotlin.indent
 import com.testerum.model.test.TestModel
+import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.ParametrizedTestEndEvent
 import com.testerum.runner.events.model.ParametrizedTestStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
@@ -13,11 +14,12 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import java.nio.file.Path as JavaPath
 
 class RunnerParametrizedTest(
+    parent: TreeNode,
     val test: TestModel,
     val filePath: JavaPath,
     val indexInParent: Int,
     val scenarios: List<RunnerScenario>
-) : RunnerFeatureOrTest() {
+) : RunnerFeatureOrTest(), TreeNode {
 
     init {
         for (scenario in scenarios) {
@@ -25,7 +27,12 @@ class RunnerParametrizedTest(
         }
     }
 
-    override lateinit var parent: RunnerTreeNode
+    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+        ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
+
+    override val parent: RunnerTreeNode
+        get() = _parent
+
     override val positionInParent = PositionInParent(test.id, indexInParent)
 
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {

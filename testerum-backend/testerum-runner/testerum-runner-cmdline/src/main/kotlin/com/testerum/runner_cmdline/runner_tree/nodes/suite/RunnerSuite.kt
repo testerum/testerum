@@ -1,6 +1,8 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.suite
 
 import com.testerum.common_kotlin.indent
+import com.testerum.model.util.new_tree_builder.ContainerTreeNode
+import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.events.model.SuiteStartEvent
 import com.testerum.runner.events.model.position.EventKey
@@ -15,22 +17,28 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 
 class RunnerSuite(
     val beforeAllTestsHooks: List<RunnerHook>,
-    val featuresOrTests: List<RunnerFeatureOrTest>,
     val afterAllTestsHooks: List<RunnerHook>,
     val executionName: String?,
     val glueClassNames: List<String>,
-) : RunnerTreeNode() {
+) : RunnerTreeNode(), ContainerTreeNode {
 
-    init {
-        for (featureOrTest in featuresOrTests) {
-            featureOrTest.parent = this
-        }
-    }
+    private val children = mutableListOf<RunnerFeatureOrTest>()
+
+    val featuresOrTests: List<RunnerFeatureOrTest>
+        get() = children
 
     override val parent: RunnerTreeNode? = null
 
     override val positionInParent: PositionInParent
         get() = EventKey.SUITE_POSITION_IN_PARENT
+
+    override val childrenCount: Int
+        get() = children.size
+
+    override fun addChild(child: TreeNode) {
+        children += child as? RunnerFeatureOrTest
+            ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
+    }
 
     fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         logSuiteStart(context)
@@ -92,7 +100,7 @@ class RunnerSuite(
     ): ExecutionStatus {
         var status = suiteExecutionStatus
 
-        for (featureOrTest in featuresOrTests) {
+        for (featureOrTest in children) {
             val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
 
             if (featureOrTestStatus > status) {
@@ -104,7 +112,7 @@ class RunnerSuite(
     }
 
     private fun skipFeaturesOrTests(context: RunnerContext) {
-        for (featureOrTest in featuresOrTests) {
+        for (featureOrTest in children) {
             featureOrTest.skip(context)
         }
     }
@@ -140,7 +148,7 @@ class RunnerSuite(
             beforeAllTestsHook.addToString(destination, indentLevel + 1)
         }
 
-        for (test in featuresOrTests) {
+        for (test in children) {
             test.addToString(destination, indentLevel + 1)
         }
 

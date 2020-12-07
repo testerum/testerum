@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.common_kotlin.indent
+import com.testerum.model.infrastructure.path.HasPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.StepCall
 import com.testerum.model.test.scenario.Scenario
@@ -11,7 +12,7 @@ import com.testerum.model.warning.Warning
 
 // todo: rename class to "Test"
 data class TestModel @JsonCreator constructor(@JsonProperty("name") val name: String,
-                                              @JsonProperty("path") val path: Path,
+                                              @JsonProperty("path") override val path: Path,
                                               @JsonProperty("oldPath") val oldPath: Path? = path,
                                               @JsonProperty("properties") val properties: TestProperties,
                                               @JsonProperty("description") val description: String?,
@@ -19,7 +20,7 @@ data class TestModel @JsonCreator constructor(@JsonProperty("name") val name: St
                                               @JsonProperty("scenarios") val scenarios: List<Scenario> = emptyList(),
                                               @JsonProperty("afterHooks") val afterHooks: List<StepCall> = emptyList(),
                                               @JsonProperty("stepCalls") val stepCalls: List<StepCall> = emptyList(),
-                                              @JsonProperty("warnings") val warnings: List<Warning> = emptyList()) {
+                                              @JsonProperty("warnings") val warnings: List<Warning> = emptyList()): HasPath {
 
     companion object {
         val TEST_FILE_EXTENSION = "test"
