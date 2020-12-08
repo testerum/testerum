@@ -21,12 +21,6 @@ class RunnerParametrizedTest(
     val scenarios: List<RunnerScenario>
 ) : RunnerFeatureOrTest(), TreeNode {
 
-    init {
-        for (scenario in scenarios) {
-            scenario.parent = this
-        }
-    }
-
     private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
         ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
 

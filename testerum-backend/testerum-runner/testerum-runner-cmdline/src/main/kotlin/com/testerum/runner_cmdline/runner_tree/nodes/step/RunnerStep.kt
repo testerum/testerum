@@ -1,6 +1,7 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.step
 
 import com.testerum.model.step.StepCall
+import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.StepEndEvent
 import com.testerum.runner.events.model.StepStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
@@ -10,11 +11,17 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 
 abstract class RunnerStep(
+    parent: TreeNode,
     val stepCall: StepCall,
     indexInParent: Int
 ) : RunnerTreeNode() {
 
-    override lateinit var parent: RunnerTreeNode
+    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+        ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
+
+    override val parent: RunnerTreeNode
+        get() = _parent
+
     override val positionInParent = PositionInParent(stepCall.id, indexInParent)
 
     protected abstract fun doRun(context: RunnerContext, vars: VariablesContext): ExecutionStatus

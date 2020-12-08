@@ -19,7 +19,9 @@ import com.testerum.model.util.new_tree_builder.TreeNodeFactory
 import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
 import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
 import com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.FeatureHookSource
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBasicHook
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerComposedHook
 import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerParametrizedTest
 import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerScenario
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
@@ -82,13 +84,13 @@ class RunnerExecutionTreeBuilder(
             private val LOG = LoggerFactory.getLogger(RunnerExecutionTreeBuilder::class.java)
         }
 
-        private val beforeEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_EACH_TEST)
-        private val afterEachTestHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_EACH_TEST)
-        private val beforeAllTestsHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.BEFORE_ALL_TESTS)
-        private val afterAllTestsHooks: List<RunnerHook> = hooks.sortedHooksForPhase(HookPhase.AFTER_ALL_TESTS)
+        private val beforeEachTestBasicHooks: List<RunnerBasicHook> = hooks.sortedBasicHooksForPhase(HookPhase.BEFORE_EACH_TEST)
+        private val afterEachTestBasicHooks: List<RunnerBasicHook> = hooks.sortedBasicHooksForPhase(HookPhase.AFTER_EACH_TEST)
+        private val beforeAllTestsBasicHooks: List<RunnerBasicHook> = hooks.sortedBasicHooksForPhase(HookPhase.BEFORE_ALL_TESTS)
+        private val afterAllTestsBasicHooks: List<RunnerBasicHook> = hooks.sortedBasicHooksForPhase(HookPhase.AFTER_ALL_TESTS)
 
         override fun createRootNode(): RunnerSuite {
-            return RunnerSuite(beforeAllTestsHooks, afterAllTestsHooks, executionName, glueClassNames)
+            return RunnerSuite(beforeAllTestsBasicHooks, afterAllTestsBasicHooks, executionName, glueClassNames)
         }
 
         override fun createVirtualContainer(parentNode: ContainerTreeNode, path: Path): RunnerFeature {
@@ -97,7 +99,9 @@ class RunnerExecutionTreeBuilder(
                 featurePathFromRoot = path.directories,
                 featureName = path.directories.last(),
                 tags = emptyList(),
-                indexInParent = parentNode.childrenCount
+                indexInParent = parentNode.childrenCount,
+                beforeAllComposedHooks = emptyList(),
+                afterAllComposedHooks = emptyList(),
             )
         }
 
@@ -106,12 +110,32 @@ class RunnerExecutionTreeBuilder(
 
             return when (item) {
                 is Feature -> {
+                    val beforeAllComposedHooks = item.hooks.beforeAll.mapIndexed { index, stepCall ->
+                        RunnerComposedHook(
+                            parent = parentNode,
+                            indexInParent = indexInParent,
+                            phase = HookPhase.BEFORE_ALL_TESTS,
+                            source = FeatureHookSource(item.path),
+                            step = createRunnerStep(parentNode, stepCall, index)
+                        )
+                    }
+                    val afterAllComposedHooks = item.hooks.afterAll.mapIndexed { index, stepCall ->
+                        RunnerComposedHook(
+                            parent = parentNode,
+                            indexInParent = indexInParent,
+                            phase = HookPhase.AFTER_ALL_TESTS,
+                            source = FeatureHookSource(item.path),
+                            step = createRunnerStep(parentNode, stepCall, index)
+                        )
+                    }
                     RunnerFeature(
                         parent = parentNode,
                         featurePathFromRoot = item.path.directories,
                         featureName = item.name,
                         tags = item.tags,
-                        indexInParent = parentNode.childrenCount
+                        indexInParent = parentNode.childrenCount,
+                        beforeAllComposedHooks = beforeAllComposedHooks,
+                        afterAllComposedHooks = afterAllComposedHooks
                     )
                 }
                 is TestWithFilePath -> {
@@ -138,12 +162,13 @@ class RunnerExecutionTreeBuilder(
 
             val runnerScenariosNodes: List<RunnerScenario> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
                 createTestScenarioBranch(
+                    parentNode = parentNode,
                     test = item.test,
                     filePath = item.testPath.javaPath,
                     scenarioWithOriginalIndex = scenarioWithOriginalIndex,
                     filteredScenarioIndex = filteredScenarioIndex,
-                    beforeEachTestHooks = beforeEachTestHooks,
-                    afterEachTestHooks = afterEachTestHooks
+                    beforeEachTestBasicHooks = beforeEachTestBasicHooks,
+                    afterEachTestBasicHooks = afterEachTestBasicHooks
                 )
             }
 
@@ -174,8 +199,8 @@ class RunnerExecutionTreeBuilder(
                 test = item.test,
                 filePath = item.testPath.javaPath,
                 testIndexInParent = indexInParent,
-                beforeEachTestHooks = beforeEachTestHooks,
-                afterEachTestHooks = afterEachTestHooks
+                beforeEachTestBasicHooks = beforeEachTestBasicHooks,
+                afterEachTestBasicHooks = afterEachTestBasicHooks
             )
         }
 
@@ -218,12 +243,13 @@ class RunnerExecutionTreeBuilder(
         }
 
         private fun createTestScenarioBranch(
+            parentNode: ContainerTreeNode,
             test: TestModel,
             filePath: java.nio.file.Path,
             scenarioWithOriginalIndex: Pair<Int, Scenario>,
             filteredScenarioIndex: Int,
-            beforeEachTestHooks: List<RunnerHook>,
-            afterEachTestHooks: List<RunnerHook>
+            beforeEachTestBasicHooks: List<RunnerBasicHook>,
+            afterEachTestBasicHooks: List<RunnerBasicHook>
         ): RunnerScenario {
             val originalScenarioIndex = scenarioWithOriginalIndex.first
             val scenario = scenarioWithOriginalIndex.second
@@ -231,18 +257,19 @@ class RunnerExecutionTreeBuilder(
             val runnerSteps = mutableListOf<RunnerStep>()
 
             for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
-                runnerSteps += createRunnerStep(stepCall, stepIndexInParent)
+                runnerSteps += createRunnerStep(parentNode, stepCall, stepIndexInParent)
             }
 
             return RunnerScenario(
-                beforeEachTestHooks = beforeEachTestHooks,
+                parent = parentNode,
+                beforeEachTestBasicHooks = beforeEachTestBasicHooks,
                 test = test,
                 scenario = scenario,
                 originalScenarioIndex = originalScenarioIndex,
                 filteredScenarioIndex = filteredScenarioIndex,
                 filePath = filePath,
                 steps = runnerSteps,
-                afterEachTestHooks = afterEachTestHooks
+                afterEachTestBasicHooks = afterEachTestBasicHooks
             )
         }
 
@@ -251,13 +278,13 @@ class RunnerExecutionTreeBuilder(
             test: TestModel,
             filePath: java.nio.file.Path,
             testIndexInParent: Int,
-            beforeEachTestHooks: List<RunnerHook>,
-            afterEachTestHooks: List<RunnerHook>
+            beforeEachTestBasicHooks: List<RunnerBasicHook>,
+            afterEachTestBasicHooks: List<RunnerBasicHook>
         ): RunnerTest {
             val runnerSteps = mutableListOf<RunnerStep>()
 
             for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
-                runnerSteps += createRunnerStep(stepCall, stepIndexInParent)
+                runnerSteps += createRunnerStep(parentNode, stepCall, stepIndexInParent)
             }
 
             return RunnerTest(
@@ -266,28 +293,33 @@ class RunnerExecutionTreeBuilder(
                 filePath = filePath,
                 indexInParent = testIndexInParent,
                 steps = runnerSteps,
-                beforeEachTestHooks = beforeEachTestHooks,
-                afterEachTestHooks = afterEachTestHooks
+                beforeEachTestBasicHooks = beforeEachTestBasicHooks,
+                afterEachTestBasicHooks = afterEachTestBasicHooks
             )
         }
 
 
-        private fun createRunnerStep(stepCall: StepCall, indexInParent: Int): RunnerStep {
+        private fun createRunnerStep(
+            parentNode: ContainerTreeNode,
+            stepCall: StepCall,
+            indexInParent: Int
+        ): RunnerStep {
             val stepDef = stepCall.stepDef
 
             return when (stepDef) {
-                is UndefinedStepDef -> RunnerUndefinedStep(stepCall, indexInParent)
-                is BasicStepDef -> RunnerBasicStep(stepCall, indexInParent)
+                is UndefinedStepDef -> RunnerUndefinedStep(parentNode, stepCall, indexInParent)
+                is BasicStepDef -> RunnerBasicStep(parentNode, stepCall, indexInParent)
                 is ComposedStepDef -> {
                     val nestedSteps = mutableListOf<RunnerStep>()
 
                     for ((nestedIndexInParent, nestedStepCall) in stepDef.stepCalls.withIndex()) {
-                        val nestedRunnerStep = createRunnerStep(nestedStepCall, nestedIndexInParent)
+                        val nestedRunnerStep = createRunnerStep(parentNode, nestedStepCall, nestedIndexInParent)
 
                         nestedSteps += nestedRunnerStep
                     }
 
                     RunnerComposedStep(
+                        parent = parentNode,
                         stepCall = stepCall,
                         indexInParent = indexInParent,
                         steps = nestedSteps
@@ -296,11 +328,12 @@ class RunnerExecutionTreeBuilder(
                 else -> throw RuntimeException("unknown StepDef type [${stepDef.javaClass.name}]")
             }
         }
-        private fun Collection<HookDef>.sortedHooksForPhase(phase: HookPhase): List<RunnerHook> {
+
+        private fun Collection<HookDef>.sortedBasicHooksForPhase(phase: HookPhase): List<RunnerBasicHook> {
             return this.asSequence()
                 .filter { it.phase == phase }
                 .sortedBy { it.order }
-                .map { RunnerHook(it) }
+                .map { RunnerBasicHook(it) }
                 .toList()
         }
     }

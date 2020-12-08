@@ -7,6 +7,7 @@ import com.testerum.model.expressions.json.JsJson
 import com.testerum.model.test.TestModel
 import com.testerum.model.test.scenario.Scenario
 import com.testerum.model.test.scenario.param.ScenarioParamType
+import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.ScenarioEndEvent
 import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
@@ -26,31 +27,31 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class RunnerScenario(
-    private val beforeEachTestHooks: List<RunnerHook>,
+    parent: TreeNode,
+    private val beforeEachTestBasicHooks: List<RunnerHook>,
     private val test: TestModel,
     val scenario: Scenario,
     private val originalScenarioIndex: Int,
     private val filteredScenarioIndex: Int,
     private val filePath: java.nio.file.Path,
     private val steps: List<RunnerStep>,
-    private val afterEachTestHooks: List<RunnerHook>
+    private val afterEachTestBasicHooks: List<RunnerHook>
 ) : RunnerFeatureOrTest() {
 
     companion object {
-        private val LOG: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
+        private val LOG: Logger = LoggerFactory.getLogger(RunnerScenario::class.java)
 
         private val businessToFileScenarioMapper = BusinessToFileScenarioMapper(
             BusinessToFileScenarioParamMapper()
         )
     }
 
-    init {
-        for (step in steps) {
-            step.parent = this
-        }
-    }
+    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+        ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
 
-    override lateinit var parent: RunnerTreeNode
+    override val parent: RunnerTreeNode
+        get() = _parent
+
     override val positionInParent = PositionInParent("${test.id}-$filteredScenarioIndex", filteredScenarioIndex)
 
     val scenarioName = scenario.name ?: "Scenario ${originalScenarioIndex + 1}"
@@ -104,15 +105,15 @@ class RunnerScenario(
             context.testVariables.setVariablesContext(vars)
 
             try {
-                for (hook in beforeEachTestHooks) {
+                for (hook in beforeEachTestBasicHooks) {
                     if (status == ExecutionStatus.PASSED || status == ExecutionStatus.DISABLED) {
-                        val beforeHookStatus: ExecutionStatus = hook.run(context)
+                        val beforeHookStatus: ExecutionStatus = hook.run(context, vars)
 
                         if (beforeHookStatus > status) {
                             status = beforeHookStatus
                         }
                     } else {
-                        hook.skip()
+                        hook.skip(context)
                     }
                 }
             } catch (e: Exception) {
@@ -142,15 +143,15 @@ class RunnerScenario(
 
             var overallEndHooksStatus: ExecutionStatus = ExecutionStatus.PASSED
             try {
-                for (hook in afterEachTestHooks) {
+                for (hook in afterEachTestBasicHooks) {
                     if (overallEndHooksStatus == ExecutionStatus.PASSED || status == ExecutionStatus.DISABLED) {
-                        val endHookStatus: ExecutionStatus = hook.run(context)
+                        val endHookStatus: ExecutionStatus = hook.run(context, vars)
 
                         if (endHookStatus > overallEndHooksStatus) {
                             overallEndHooksStatus = endHookStatus
                         }
                     } else {
-                        hook.skip()
+                        hook.skip(context)
                     }
                 }
             } catch (e: Exception) {
@@ -289,7 +290,7 @@ class RunnerScenario(
         destination.append("\n")
 
         // show children
-        for (beforeEachTestHook in beforeEachTestHooks) {
+        for (beforeEachTestHook in beforeEachTestBasicHooks) {
             beforeEachTestHook.addToString(destination, indentLevel + 1)
         }
 
@@ -297,7 +298,7 @@ class RunnerScenario(
             step.addToString(destination, indentLevel + 1)
         }
 
-        for (afterEachTestHook in afterEachTestHooks) {
+        for (afterEachTestHook in afterEachTestBasicHooks) {
             afterEachTestHook.addToString(destination, indentLevel + 1)
         }
     }

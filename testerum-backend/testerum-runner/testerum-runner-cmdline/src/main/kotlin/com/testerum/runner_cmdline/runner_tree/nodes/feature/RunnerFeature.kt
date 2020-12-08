@@ -9,19 +9,32 @@ import com.testerum.runner.events.model.FeatureStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerComposedHook
+import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
+import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
+import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
+import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class RunnerFeature(
     parent: TreeNode,
     featurePathFromRoot: List<String>,
     val featureName: String,
     val tags: List<String>,
-    indexInParent: Int
+    indexInParent: Int,
+    private val beforeAllComposedHooks: List<RunnerComposedHook>,
+    private val afterAllComposedHooks: List<RunnerComposedHook>,
 ) : RunnerFeatureOrTest(), ContainerTreeNode {
+
+    companion object {
+        private val LOG: Logger = LoggerFactory.getLogger(RunnerTest::class.java)
+    }
 
     private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
         ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
@@ -63,12 +76,62 @@ class RunnerFeature(
 
         val startTime = System.currentTimeMillis()
         try {
+            val dynamicVars = DynamicVariablesContext()
+            val vars = VariablesContext.forTest(dynamicVars, globalVars)
+
+            // before hooks
+            try {
+                for (hook in beforeAllComposedHooks) {
+                    if (status <= PASSED) {
+                        val beforeHookStatus: ExecutionStatus = hook.run(context, vars)
+
+                        if (beforeHookStatus > status) {
+                            status = beforeHookStatus
+                        }
+                    } else {
+                        hook.skip(context)
+                    }
+                }
+            } catch (e: Exception) {
+                val errorMessage = "failed to execute ${HookPhase.BEFORE_ALL_TESTS} hooks"
+
+                LOG.error(errorMessage, e)
+
+                throw RuntimeException(errorMessage, e)
+            }
+
+            // children
             for (featureOrTest in children) {
                 val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
 
                 if (featureOrTestStatus > status) {
                     status = featureOrTestStatus
                 }
+            }
+
+            var overallEndHooksStatus: ExecutionStatus = PASSED
+            try {
+                for (hook in afterAllComposedHooks) {
+                    if (overallEndHooksStatus == PASSED || status == ExecutionStatus.DISABLED) {
+                        val endHookStatus: ExecutionStatus = hook.run(context, vars)
+
+                        if (endHookStatus > overallEndHooksStatus) {
+                            overallEndHooksStatus = endHookStatus
+                        }
+                    } else {
+                        hook.skip(context)
+                    }
+                }
+            } catch (e: Exception) {
+                val errorMessage = "failed to execute ${HookPhase.AFTER_EACH_TEST} hooks"
+
+                LOG.error(errorMessage, e)
+
+                throw RuntimeException(errorMessage, e)
+            }
+
+            if (overallEndHooksStatus > status) {
+                status = overallEndHooksStatus
             }
         } catch (e: Exception) {
             status = ExecutionStatus.FAILED
@@ -137,8 +200,16 @@ class RunnerFeature(
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
         destination.indent(indentLevel).append("feature '").append(featureName).append("'\n")
 
+        for (hook in beforeAllComposedHooks) {
+            hook.addToString(destination, indentLevel + 1)
+        }
+
         for (featureOrTest in children) {
             featureOrTest.addToString(destination, indentLevel + 1)
+        }
+
+        for (hook in afterAllComposedHooks) {
+            hook.addToString(destination, indentLevel + 1)
         }
     }
 

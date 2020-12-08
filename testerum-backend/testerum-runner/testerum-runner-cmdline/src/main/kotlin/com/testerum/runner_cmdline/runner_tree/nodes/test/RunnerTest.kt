@@ -22,22 +22,16 @@ import java.nio.file.Path as JavaPath
 
 class RunnerTest(
     parent: TreeNode,
-    val beforeEachTestHooks: List<RunnerHook>,
+    val beforeEachTestBasicHooks: List<RunnerHook>,
     val test: TestModel,
     val filePath: JavaPath,
     val indexInParent: Int,
     val steps: List<RunnerStep>,
-    val afterEachTestHooks: List<RunnerHook>
+    val afterEachTestBasicHooks: List<RunnerHook>
 ) : RunnerFeatureOrTest(), TreeNode {
 
     companion object {
-        private val LOG: Logger = LoggerFactory.getLogger(RunnerHook::class.java)
-    }
-
-    init {
-        for (step in steps) {
-            step.parent = this
-        }
+        private val LOG: Logger = LoggerFactory.getLogger(RunnerTest::class.java)
     }
 
     private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
@@ -75,15 +69,15 @@ class RunnerTest(
             context.testVariables.setVariablesContext(vars)
 
             try {
-                for (hook in beforeEachTestHooks) {
+                for (hook in beforeEachTestBasicHooks) {
                     if (status <= ExecutionStatus.PASSED) {
-                        val beforeHookStatus: ExecutionStatus = hook.run(context)
+                        val beforeHookStatus: ExecutionStatus = hook.run(context, vars)
 
                         if (beforeHookStatus > status) {
                             status = beforeHookStatus
                         }
                     } else {
-                        hook.skip()
+                        hook.skip(context)
                     }
                 }
             } catch (e: Exception) {
@@ -113,15 +107,15 @@ class RunnerTest(
 
             var overallEndHooksStatus: ExecutionStatus = ExecutionStatus.PASSED
             try {
-                for (hook in afterEachTestHooks) {
+                for (hook in afterEachTestBasicHooks) {
                     if (overallEndHooksStatus == ExecutionStatus.PASSED || status == ExecutionStatus.DISABLED) {
-                        val endHookStatus: ExecutionStatus = hook.run(context)
+                        val endHookStatus: ExecutionStatus = hook.run(context, vars)
 
                         if (endHookStatus > overallEndHooksStatus) {
                             overallEndHooksStatus = endHookStatus
                         }
                     } else {
-                        hook.skip()
+                        hook.skip(context)
                     }
                 }
             } catch (e: Exception) {
@@ -242,7 +236,7 @@ class RunnerTest(
         destination.append("\n")
 
         // show children
-        for (beforeEachTestHook in beforeEachTestHooks) {
+        for (beforeEachTestHook in beforeEachTestBasicHooks) {
             beforeEachTestHook.addToString(destination, indentLevel + 1)
         }
 
@@ -250,7 +244,7 @@ class RunnerTest(
             step.addToString(destination, indentLevel + 1)
         }
 
-        for (afterEachTestHook in afterEachTestHooks) {
+        for (afterEachTestHook in afterEachTestBasicHooks) {
             afterEachTestHook.addToString(destination, indentLevel + 1)
         }
     }

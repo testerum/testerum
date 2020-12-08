@@ -133,6 +133,7 @@ data class Path @JsonCreator constructor(
 
     fun withoutFileExtension() = this.copy(fileExtension = null)
 
+    @JsonIgnore
     fun getParent(): Path {
         if (this.isFile()) {
             return Path(this.directories, null, null)

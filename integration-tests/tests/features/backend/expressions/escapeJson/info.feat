@@ -1,0 +1,4 @@
+
+before-all-hook: When I execute the JS script <<print('Feature: escapeJson - before all')>>
+
+after-all-hook: When I execute the JS script <<print('Feature: escapeJson - after all')>>

@@ -5,6 +5,7 @@ import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.StepPatternPart
+import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
@@ -18,9 +19,10 @@ import java.lang.reflect.Method
 import java.lang.reflect.Parameter
 
 class RunnerBasicStep(
+    parent: TreeNode,
     stepCall: StepCall,
     indexInParent: Int
-) : RunnerStep(stepCall, indexInParent) {
+) : RunnerStep(parent, stepCall, indexInParent) {
 
     companion object {
         private val PRIMITIVE_TYPES_BY_NAME: Map<String, Class<*>> = run {
