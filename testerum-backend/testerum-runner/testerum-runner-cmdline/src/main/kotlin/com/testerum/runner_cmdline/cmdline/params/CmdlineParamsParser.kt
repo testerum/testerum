@@ -1,5 +1,10 @@
 package com.testerum.runner_cmdline.cmdline.params
 
+import com.testerum.common_kotlin.doesNotExist
+import com.testerum.common_kotlin.exists
+import com.testerum.common_kotlin.isDirectory
+import com.testerum.common_kotlin.isNotADirectory
+import com.testerum.common_kotlin.isNotReadable
 import com.testerum.common_kotlin.readText
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserException
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
@@ -7,7 +12,6 @@ import com.testerum.runner_cmdline.cmdline.params.model.HelpRequested
 import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
 import com.testerum.runner_cmdline.cmdline.params.model.VersionRequested
 import com.testerum.runner_cmdline.cmdline.params.parser.parseTestPath
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -31,7 +35,7 @@ object CmdlineParamsParser {
     }
 
     private fun parseArgsFile(arg: String): CmdlineParams {
-        val file = getValidatedFile(
+        val file = getValidatedRequiredFile(
             Paths.get(arg.substring(1)),
             "@argsFile"
         )
@@ -66,7 +70,7 @@ object CmdlineParamsParser {
                     arg.startsWith("-") -> throw CmdlineParamsParserException("unexpected argument [$arg]")
                 }
             } catch (e: Exception) {
-                throw CmdlineParamsParserException("${e.message} at argument number ${argsIterator.currentIndex() + 1}")
+                throw CmdlineParamsParserException("${e.message} at argument number ${argsIterator.currentIndex() + 1}", e)
             }
         }
 
@@ -82,7 +86,7 @@ object CmdlineParamsParser {
         )
 
         builder.repositoryDirectory(
-            getValidatedDirectory(dir, "repositoryDirectory")
+            getValidatedRequiredDirectory(dir, "repositoryDirectory")
         )
     }
 
@@ -167,7 +171,7 @@ object CmdlineParamsParser {
         )
 
         builder.settingsFile(
-            getValidatedFile(file, "settingsFile")
+            getValidatedRequiredFile(file, "settingsFile")
         )
     }
 
@@ -191,32 +195,44 @@ object CmdlineParamsParser {
         builder.variablesEnvironment(env)
     }
 
-    private fun getValidatedDirectory(directory: Path?, directoryLabel: String): Path {
+    private fun getValidatedRequiredDirectory(directory: Path?, directoryLabel: String): Path {
         val nonNullDirectory: Path = directory
             ?: throw CmdlineParamsParserException("missing $directoryLabel")
 
         val normalizedDirectory = nonNullDirectory.toAbsolutePath().normalize()
-        if (!Files.exists(normalizedDirectory)) {
+        if (normalizedDirectory.doesNotExist) {
             throw CmdlineParamsParserException("$directoryLabel [$normalizedDirectory] does not exist")
         }
-        if (!Files.isDirectory(normalizedDirectory)) {
+        if (normalizedDirectory.isNotADirectory) {
             throw CmdlineParamsParserException("$directoryLabel [$normalizedDirectory] is not a directory")
         }
 
         return normalizedDirectory
     }
 
-    private fun getValidatedFile(file: Path, fileLabel: String): Path {
+    private fun getValidatedDirectory(directory: Path?, directoryLabel: String): Path {
+        val nonNullDirectory: Path = directory
+            ?: throw CmdlineParamsParserException("missing $directoryLabel")
+
+        val normalizedDirectory = nonNullDirectory.toAbsolutePath().normalize()
+        if (normalizedDirectory.exists && normalizedDirectory.isNotADirectory) {
+            throw CmdlineParamsParserException("$directoryLabel [$normalizedDirectory] is not a directory")
+        }
+
+        return normalizedDirectory
+    }
+
+    private fun getValidatedRequiredFile(file: Path, fileLabel: String): Path {
         val nonNullFile: Path = file
 
         val normalizedFile = nonNullFile.toAbsolutePath().normalize()
-        if (!Files.exists(normalizedFile)) {
+        if (normalizedFile.doesNotExist) {
             throw CmdlineParamsParserException("$fileLabel [$normalizedFile] does not exist")
         }
-        if (Files.isDirectory(normalizedFile)) {
+        if (normalizedFile.isDirectory) {
             throw CmdlineParamsParserException("$fileLabel [$normalizedFile] is a directory, but a file is expected")
         }
-        if (!Files.isReadable(normalizedFile)) {
+        if (normalizedFile.isNotReadable) {
             throw CmdlineParamsParserException("$fileLabel [$normalizedFile] is not readable; maybe you don't have enough access rights to read this file?")
         }
 
