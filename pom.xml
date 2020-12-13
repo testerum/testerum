@@ -12,6 +12,7 @@
         <module>cloud-client</module>
         <module>common</module>
         <module>file-service</module>
+        <module>integration-tests</module>
         <module>model</module>
         <module>project-manager</module>
         <module>report</module>
@@ -427,6 +428,18 @@
                 <groupId>com.testerum</groupId>
                 <artifactId>testerum-junit</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>testerum-junit</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>testerum-junit-all</artifactId>
+                <version>${testerum.version}</version>
             </dependency>
 
             <!--==================== testerum dependencies ====================-->
