@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>testerum</artifactId>
+        <groupId>com.testerum</groupId>
+        <version>develop-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>integration-tests</artifactId>
+
+    <properties>
+        <testerum.version>4.0.2</testerum.version>
+    </properties>
+
+    <dependencies>
+        <!--==================== testerum dependencies ====================-->
+
+        <!-- testerum-steps-api -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-steps-api</artifactId>
+        </dependency>
+
+        <!-- testerum-junit-all -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>testerum-junit-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--==================== External Dependencies ====================-->
+
+        <!-- Kotlin -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+        </dependency>
+
+        <!-- commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+
+        <plugins>
+            <!-- testerum-extensions-maven-plugin -->
+            <plugin>
+                <groupId>com.testerum</groupId>
+                <artifactId>testerum-extensions-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Kotlin -->
+            <plugin>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+            </plugin>
+
+            <!-- maven-surefire-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <argLine>-Xmx1024m -Xms128m -Dfile.encoding=UTF8</argLine>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Shade Plugin - create a jar with all Testerum dependencies included -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- development -->
+        <profile>
+            <id>development</id>
+
+            <!-- activated by the absence of the "production" system property -->
+            <activation>
+                <property>
+                    <name>!production</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <!-- copy dependencies to "package/basic_steps" directory -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>3.1.1</version>
+
+                        <executions>
+                            <execution>
+                                <id>copy-installed</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>${project.groupId}</groupId>
+                                            <artifactId>${project.artifactId}</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>${project.packaging}</type>
+                                        </artifactItem>
+                                    </artifactItems>
+
+                                    <overWriteReleases>false</overWriteReleases>
+                                    <overWriteSnapshots>false</overWriteSnapshots>
+                                    <overWriteIfNewer>true</overWriteIfNewer>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/tests/basic_steps</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

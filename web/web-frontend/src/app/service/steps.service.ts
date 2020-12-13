@@ -6,13 +6,14 @@ import {ComposedStepDef} from "../model/step/composed-step-def.model";
 import {RenamePath} from "../model/infrastructure/path/rename-path.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {CopyPath} from "../model/infrastructure/path/copy-path.model";
-import {CheckComposedStepDefUpdateCompatibilityResponse} from "../model/step/compatibility/CheckComposedStepDefUpdateCompatibilityResponse";
+import {CheckComposedStepDefUpdateCompatibilityResponse} from "../model/step/operation/CheckComposedStepDefUpdateCompatibilityResponse";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
 import {StepsTreeFilter} from "../model/step/filter/steps-tree-filter.model";
 import {RootStepNode} from "../model/step/tree/root-step-node.model";
 import {ComposedContainerStepNode} from "../model/step/tree/composed-container-step-node.model";
 import {ModelRepairerService} from "./model-repairer/model-repairer.service";
+import {CheckComposedStepDefUsageResponse} from "../model/step/operation/CheckComposedStepDefUsageResponse";
 
 @Injectable()
 export class StepsService {
@@ -80,7 +81,20 @@ export class StepsService {
 
         return this.http
             .post<CheckComposedStepDefUpdateCompatibilityResponse>(this.COMPOSED_STEPS_URL + "/update/check", body, httpOptions).pipe(
-            map(StepsService.extractCheckComposedStepDefUpdateCompatibilityResponse));
+            map(res => new CheckComposedStepDefUpdateCompatibilityResponse().deserialize(res)));
+    }
+
+    usageCheck(composedStepDef: ComposedStepDef): Observable<CheckComposedStepDefUsageResponse> {
+        let body = composedStepDef.serialize();
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+            })
+        };
+
+        return this.http
+            .post<CheckComposedStepDefUsageResponse>(this.COMPOSED_STEPS_URL + "/usage/check", body, httpOptions).pipe(
+            map(res => new CheckComposedStepDefUsageResponse().deserialize(res)));
     }
 
     save(model: ComposedStepDef): Observable<ComposedStepDef> {
@@ -122,10 +136,6 @@ export class StepsService {
 
     private static extractComposedStepDef(res: ComposedStepDef): ComposedStepDef {
         return new ComposedStepDef().deserialize(res);
-    }
-
-    private static extractCheckComposedStepDefUpdateCompatibilityResponse(res: CheckComposedStepDefUpdateCompatibilityResponse): CheckComposedStepDefUpdateCompatibilityResponse {
-        return new CheckComposedStepDefUpdateCompatibilityResponse().deserialize(res);
     }
 
     private static extractBasicStepsDef(res: Array<BasicStepDef>): Array<BasicStepDef> {

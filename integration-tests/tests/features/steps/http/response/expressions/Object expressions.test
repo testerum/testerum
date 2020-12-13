@@ -1,0 +1,68 @@
+test-def: Object expressions
+
+    description = <<
+        Here we test the following expression:
+        
+        *  @isObject()
+        *  @isObjectOrNull() 
+    >>
+
+    scenario: isObject expression
+        param expression = <<@isObject()>>
+        param geo = <<
+            {
+              "index": 1234,
+              "lat": "-43.9509",
+              "lng": "-34.4618"
+            }
+        >>
+
+    scenario: isObjectOrNull expression - Object with a null value
+        param expression = <<@isNumberOrNull()>>
+        param geo = <<null>>
+
+    scenario: isObjectOrNull expression - Object with a value
+        param expression = <<@isObject()>>
+        param geo = <<
+            {
+              "index": 1234,
+              "lat": "-43.9509",
+              "lng": "-34.4618"
+            }
+        >>
+
+    step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{get_users}}>>
+        var httpMockServer = <<
+            port: "12101"
+            
+        >>
+        var get_users = <<
+            expectedRequest:
+              method: GET
+              url: /users
+            mockResponse:
+              statusCode: 200
+              headers:
+                Content-Type: application/json
+              body:
+                bodyType: JSON
+                content: "{\r\n  \"geo\": {{geo}}\r\n}\r\n"
+            
+        >>
+    step: When I execute the HTTP request <<{{get_users}}>>
+        var get_users = <<
+            method: GET
+            url: http://localhost:12101/users
+            followRedirects: false
+            headers: {}
+            
+        >>
+    step: Then the HTTP response should be <<{{verify_users_list}}>>
+        var verify_users_list = <<
+            expectedStatusCode: 200
+            expectedBody:
+              httpBodyVerifyMatchingType: JSON_VERIFY
+              httpBodyType: JSON
+              bodyVerify: "{\r\n  \"geo\" : \"{{expression}}\"\r\n}"
+            
+        >>

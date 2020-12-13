@@ -4,10 +4,7 @@ import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.model.tests_finder.TestPath
 import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner.events.execution_listener.ExecutionListener
-import com.testerum.runner.events.model.RunnerEvent
-import com.testerum.runner.events.model.TestEndEvent
-import com.testerum.runner.events.model.TestStartEvent
-import com.testerum.runner.events.model.TextLogEvent
+import com.testerum.runner.events.model.*
 import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.junit5.logger.JUnitEventLogger
@@ -83,8 +80,8 @@ class JunitTestProvider(repositoryDirectory: Path,
             return junitExecutionTree
         }
 
-        thread(start = true) {
-            executeTesterumTests()
+        thread(start = true, name="Testerum Runner") {
+            tryExecuteTesterumTests()
         }
 
         handleTestInitializingEvents()
@@ -99,6 +96,19 @@ class JunitTestProvider(repositoryDirectory: Path,
             is RunnerScenario -> dynamicTest(runnerNode.scenarioName, { handleTestInfo() })
             is RunnerTest -> dynamicTest(runnerNode.test.name, { handleTestInfo() })
             else -> throw RuntimeException("Unhandled ${runnerNode.javaClass.name} case")
+        }
+    }
+
+    private fun tryExecuteTesterumTests() {
+        try {
+            executeTesterumTests()
+        } catch (e: Throwable) {
+            eventQueue.putFirst(
+                RunnerErrorEvent(
+                    errorMessage = e.stackTraceToString()
+                )
+            )
+            throw e
         }
     }
 
@@ -149,7 +159,7 @@ class JunitTestProvider(repositoryDirectory: Path,
         eventQueueInitialized.await()
 
         while (true) {
-            val event = eventQueue.take()
+            val event = takeNextEventFromQueue()
 
             if (event is TestStartEvent) {
                 eventQueue.putFirst(event)
@@ -166,7 +176,7 @@ class JunitTestProvider(repositoryDirectory: Path,
         eventQueueInitialized.await()
 
         while (true) {
-            val event = eventQueue.take()
+            val event = takeNextEventFromQueue()
 
             if (event is TestStartEvent) {
                 isTestStarted = true
@@ -190,6 +200,23 @@ class JunitTestProvider(repositoryDirectory: Path,
                 return
             }
         }
+    }
+
+    private fun takeNextEventFromQueue(): RunnerEvent {
+        val event = eventQueue.take()
+
+        if (event is RunnerErrorEvent) {
+            // Throwing and exception will make the current test fail, but JUnit will still attempt to run the next tests.
+            // When this happens, we will block on an empty queue, blocking forever.
+            // Putting the error back on the queue will make all next tests fail, fixing the infinite block.
+            eventQueue.putFirst(
+                RunnerErrorEvent(
+                    errorMessage = "Unrecoverable Testerum Runner failure; see previous errors."
+                )
+            )
+            throw RuntimeException(event.errorMessage)
+        }
+        return event
     }
 
     private fun logEvent(event: RunnerEvent) {

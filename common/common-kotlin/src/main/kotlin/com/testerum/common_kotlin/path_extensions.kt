@@ -40,17 +40,32 @@ val JavaPath.isNotADirectory: Boolean
 val JavaPath.isExecutable: Boolean
     get() = Files.isExecutable(this)
 
+val JavaPath.isNotExecutable: Boolean
+    get() = !isExecutable
+
 val JavaPath.isHidden: Boolean
     get() = Files.isHidden(this)
+
+val JavaPath.isNotHidden: Boolean
+    get() = !isHidden
 
 val JavaPath.isReadable: Boolean
     get() = Files.isReadable(this)
 
+val JavaPath.isNotReadable: Boolean
+    get() = !isReadable
+
 val JavaPath.isWritable: Boolean
     get() = Files.isWritable(this)
 
+val JavaPath.isNotWritable: Boolean
+    get() = !isWritable
+
 val JavaPath.isSymbolicLink: Boolean
     get() = Files.isSymbolicLink(this)
+
+val JavaPath.isNotASymbolicLink: Boolean
+    get() = !isSymbolicLink
 
 val JavaPath.hasChildren: Boolean
     get() {
@@ -312,18 +327,11 @@ fun JavaPath.canonicalize(): JavaPath = toAbsolutePath().normalize()
 fun List<JavaPath>.toUrlArray(): Array<URL> {
     val result = ArrayList<URL>()
 
-    for (dir in this) {
-        if (dir.doesNotExist) {
+    for (path in this) {
+        if (path.doesNotExist) {
             continue
         }
-
-        Files.list(dir).use { pathsStream ->
-            for (path in pathsStream) {
-                if (path.toString().endsWith(".jar")) {
-                    result += path.toUri().toURL()
-                }
-            }
-        }
+        result += path.toUri().toURL()
     }
 
     // not using list.toTypedArray()" because it's inneficient:

@@ -1,6 +1,8 @@
 package com.testerum.scanner.step_lib_scanner
 
 import com.testerum.common_fast_serialization.read_write.FastInput
+import com.testerum.common_kotlin.hasExtension
+import com.testerum.common_kotlin.list
 import com.testerum.common_kotlin.toUrlArray
 import com.testerum.model.step.BasicStepDef
 import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanResult
@@ -18,7 +20,9 @@ class ExtensionsCacheLoader {
     }
 
     fun loadCache(additionalBasicStepsDirs: List<JavaPath>): ExtensionsScanResult {
-        val additionalJars = additionalBasicStepsDirs.toUrlArray()
+        val additionalJars = additionalBasicStepsDirs.flatMap { dir ->
+            dir.list { it.hasExtension(".jar") }
+        }.toUrlArray()
 
         val classLoader = URLClassLoader(
             additionalJars,

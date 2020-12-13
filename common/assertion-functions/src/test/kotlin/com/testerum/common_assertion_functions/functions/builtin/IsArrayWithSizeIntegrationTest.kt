@@ -11,23 +11,23 @@ class IsArrayWithSizeIntegrationTest : BaseBuiltinFunctionIntegrationTest() {
 
     @Test
     fun `should be ok for an empty array`() {
-        functionEvaluator.evaluate("@isArrayWithSize(0)", arrayNode(ObjectMapper().readTree(""" [] """)))
+        functionEvaluator.evaluate("@isArrayWithSize(0)", ObjectMapper().readTree(""" [] """))
     }
 
     @Test
     fun `should be ok for an array with an element`() {
-        functionEvaluator.evaluate("@isArrayWithSize(1)", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}] """)))
+        functionEvaluator.evaluate("@isArrayWithSize(1)", ObjectMapper().readTree(""" [{"f1":"Hello"}] """))
     }
 
     @Test
     fun `should be ok for an array with 3 elements`() {
-        functionEvaluator.evaluate("@isArrayWithSize(3)", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """)))
+        functionEvaluator.evaluate("@isArrayWithSize(3)", ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """))
     }
 
     @Test
     fun `should throw exception for different numbers of elements`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isArrayWithSize(2)", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """)))
+            functionEvaluator.evaluate("@isArrayWithSize(2)", ObjectMapper().readTree(""" [{"f1":"Hello"}, {"f1":"Hello"}, {"f1":"Hello"}] """))
         }
     }
 
@@ -41,7 +41,7 @@ class IsArrayWithSizeIntegrationTest : BaseBuiltinFunctionIntegrationTest() {
     @Test
     fun `should throw exception if is called without parameter`() {
         Assertions.assertThrows(IllegalArgumentException::class.java) {
-            functionEvaluator.evaluate("@isArrayWithSize()", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}] """)))
+            functionEvaluator.evaluate("@isArrayWithSize()", ObjectMapper().readTree(""" [{"f1":"Hello"}] """))
         }
     }
 

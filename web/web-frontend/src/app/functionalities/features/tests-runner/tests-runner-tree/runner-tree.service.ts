@@ -31,6 +31,8 @@ import {ParametrizedTestEndEvent} from "../../../../model/test/event/parametrize
 import {ScenarioStartEvent} from "../../../../model/test/event/scenario-start.event";
 import {ScenarioEndEvent} from "../../../../model/test/event/scenario-end.event";
 import {JsonTreeExpandUtil} from "../../../../generic/components/json-tree/util/json-tree-expand.util";
+import {RunnerScenarioTreeNodeModel} from "./model/runner-scenario-tree-node.model";
+import {PathWithScenarioIndexes} from "../../../config/run-config/model/path-with-scenario-indexes.model";
 
 @Injectable()
 export class RunnerTreeService {
@@ -280,15 +282,39 @@ export class RunnerTreeService {
         }
     }
 
-    getFailedTestsPaths(): Path[] {
-        let failedTestsPath: Path[] = [];
+    getFailedTestsPaths(): PathWithScenarioIndexes[] {
+        let failedTests: PathWithScenarioIndexes[] = [];
 
         this.allNodesMapByEventKey.forEach((value, key) => {
-            if (value instanceof RunnerTestTreeNodeModel && value.state == ExecutionStatusEnum.FAILED) {
-                failedTestsPath.push(value.path)
+            if (value.state != ExecutionStatusEnum.FAILED) {
+                return;
+            }
+            if (value instanceof RunnerTestTreeNodeModel ) {
+                failedTests.push(
+                    new PathWithScenarioIndexes(value.path)
+                );
+            }
+            if (value instanceof RunnerScenarioTreeNodeModel) {
+                let failedTestByPath = this.getFailedTestByPath(failedTests, value.path)
+                if(failedTestByPath) {
+                    failedTestByPath.scenarioIndexes.push(value.scenarioIndex)
+                } else {
+                    failedTests.push(
+                        new PathWithScenarioIndexes(value.path, [value.scenarioIndex])
+                    );
+                }
             }
         });
 
-        return failedTestsPath;
+        return failedTests;
+    }
+
+    private getFailedTestByPath(failedTests: PathWithScenarioIndexes[], path: Path): PathWithScenarioIndexes {
+        for (const failedTest of failedTests) {
+            if(failedTest.path.equals(path)) {
+                return failedTest;
+            }
+        }
+        return null;
     }
 }

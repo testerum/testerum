@@ -6,6 +6,7 @@ import com.testerum.model.infrastructure.path.RenamePath
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.filter.StepsTreeFilter
 import com.testerum.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
+import com.testerum.model.step.operation.response.CheckComposedStepDefUsageResponse
 import com.testerum.model.step.tree.ComposedContainerStepNode
 import com.testerum.web_backend.services.steps.ComposedStepsFrontendService
 import org.springframework.http.ResponseEntity
@@ -49,8 +50,14 @@ class ComposedStepsController(private val composedStepsFrontendService: Composed
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/update/check"])
     @ResponseBody
-    fun updateCheckCompatibility(@RequestBody composedStepDef: ComposedStepDef): CheckComposedStepDefUpdateCompatibilityResponse {
+    fun updateCheck(@RequestBody composedStepDef: ComposedStepDef): CheckComposedStepDefUpdateCompatibilityResponse {
         return composedStepsFrontendService.checkUpdateCompatibility(composedStepDef)
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], path = ["/usage/check"])
+    @ResponseBody
+    fun usageCheck(@RequestBody composedStepDef: ComposedStepDef): CheckComposedStepDefUsageResponse {
+        return composedStepsFrontendService.checkUsage(composedStepDef)
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/save"])

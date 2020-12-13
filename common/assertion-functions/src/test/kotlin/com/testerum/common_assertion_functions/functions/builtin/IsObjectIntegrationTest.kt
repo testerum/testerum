@@ -45,7 +45,7 @@ class IsObjectIntegrationTest : BaseBuiltinFunctionIntegrationTest() {
     @Test
     fun `should throw exception for array`() {
         Assertions.assertThrows(AssertionFailedException::class.java) {
-            functionEvaluator.evaluate("@isObject()", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}] """)))
+            functionEvaluator.evaluate("@isObject()", ObjectMapper().readTree(""" [{"f1":"Hello"}] """))
         }
     }
 

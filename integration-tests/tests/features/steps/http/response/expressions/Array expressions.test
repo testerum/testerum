@@ -1,0 +1,171 @@
+test-def: Array expressions
+
+    description = <<
+        Here we test the following expression:
+        
+        *  @isArray(),
+        *  @isArrayorNull(), 
+        *  @isNonEmptyArray(),
+        *  @isArrayWithSize(),
+        *  @isArrayWithSizeGreaterThan(),
+    >>
+
+    scenario: isArray expression- Array with elements
+        param expression = <<@isArray()>>
+        param geo = <<
+            [
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              }
+            ]
+        >>
+
+    scenario: isArrayOrNull expression - Array with 2 elements
+        param expression = <<@isArrayOrNull()>>
+        param geo = <<
+            [
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              }
+            ]
+        >>
+
+    scenario: IsArrayOrNull expression - Null Array
+        param expression = <<@isArrayOrNull()>>
+        param geo = <<null>>
+
+    scenario: isNonEmptyArray expression - Array with 2 elements
+        param expression = <<@isNonEmptyArray()>>
+        param geo = <<
+            [
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              }
+            ]
+        >>
+
+    scenario: isArrayWithSize expression - Array with 2 elements
+        param expression = <<@isArrayWithSize(2)>>
+        param geo = <<
+            [
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              }
+            ]
+        >>
+
+    scenario: isArrayWithSizeGreaterThan - Array with 5 elements
+        param expression = <<@isArrayWithSizeGreaterThan(3)>>
+        param geo = <<
+            [
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              }
+            ]
+        >>
+
+    scenario: isArrayWithSizeLessThan - Array with 5 elements
+        param expression = <<@isArrayWithSizeLessThan(6)>>
+        param geo = <<
+             [
+              {
+                "lat": "-43.9509",
+                "lng2": "-34.4618",
+                "lat3": "-43.9509",
+                "lat4": "-43.9509"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              },
+              {
+                "lat": "-43.9509",
+                "lng": "-34.4618"
+              }
+            ]
+        >>
+
+    step: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{get_users}}>>
+        var httpMockServer = <<
+            port: "12101"
+            
+        >>
+        var get_users = <<
+            expectedRequest:
+              method: GET
+              url: /users
+            mockResponse:
+              statusCode: 200
+              headers:
+                Content-Type: application/json
+              body:
+                bodyType: JSON
+                content: "[\r\n  {\r\n    \"id\": 2,\r\n    \"name\": \"Ervin Howell\",\r\n  \
+                  \  \"address\": {\r\n      \"zipcode\": \"90566-7771\",\r\n      \"geo\": {{geo}}\r\
+                  \n    }\r\n  }\r\n]"
+            
+        >>
+    step: When I execute the HTTP request <<{{get_users}}>>
+        var get_users = <<
+            method: GET
+            url: http://localhost:12101/users
+            followRedirects: false
+            headers: {}
+            
+        >>
+    step: Then the HTTP response should be <<{{verify_users_list}}>>
+        var verify_users_list = <<
+            expectedStatusCode: 200
+            expectedBody:
+              httpBodyVerifyMatchingType: JSON_VERIFY
+              httpBodyType: JSON
+              bodyVerify: "[\r\n  {\r\n    \"id\": 2,\r\n    \"name\": \"Ervin Howell\",\r\n \
+                \   \"address\": {\r\n      \"zipcode\": \"90566-7771\",\r\n      \"geo\": \"\
+                {{expression}}\"\r\n    }\r\n  }\r\n]"
+            
+        >>

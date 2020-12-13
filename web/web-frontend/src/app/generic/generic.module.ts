@@ -117,10 +117,14 @@ import {KeyFilterModule} from "primeng/keyfilter";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {DropdownModule} from "primeng/dropdown";
 import {MessageService} from "primeng/api";
+import {StepUsageDialogComponent} from "./components/step/composed-step-view/usage-dialog/step-usage-dialog.component";
+import {StepUsageDialogService} from "./components/step/composed-step-view/usage-dialog/step-usage-dialog.service";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
     imports: [
         CommonModule,
+        RouterModule,
         BrowserModule,
         BrowserAnimationsModule,
         ModalModule.forRoot(),
@@ -178,6 +182,7 @@ import {MessageService} from "primeng/api";
         StepChooserComponent,
         StepChooserContainerComponent,
         StepChooserNodeComponent,
+        StepUsageDialogComponent,
 
         PortValidatorDirective,
         IsNumberValidatorDirective,
@@ -242,6 +247,7 @@ import {MessageService} from "primeng/api";
         StepChooserComponent,
         StepChooserContainerComponent,
         StepChooserNodeComponent,
+        StepUsageDialogComponent,
 
         PortValidatorDirective,
         IsNumberValidatorDirective,
@@ -310,6 +316,7 @@ import {MessageService} from "primeng/api";
         PathChooserService,
         StepModalService,
         StepPathModalService,
+        StepUsageDialogService,
         MessageService,
         ErrorFeedbackModalService,
         ErrorFeedbackService,
@@ -346,6 +353,7 @@ import {MessageService} from "primeng/api";
         StepModalComponent,
         StepChooserComponent,
         StepPathModalComponent,
+        StepUsageDialogComponent,
 
         // ARG renderer components
         HttpRequestComponent,

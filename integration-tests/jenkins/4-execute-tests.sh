@@ -6,5 +6,5 @@ exec "${WORKSPACE}/testerum/runner/bin/testerum-runner.sh" \
   --setting testerum.selenium.driver.driverVersion=79.0.3945.36 \
   --setting testerum.selenium.driver.headless=true \
   --setting testerum.selenium.takeScreenshotAfterEachStep=false \
-  --report=CONSOLE_DEBUG \
+  --report CONSOLE_DEBUG \
   --managed-reports-directory /var/www/downloads.testerum.com/reports

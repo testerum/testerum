@@ -7,6 +7,7 @@ import com.testerum.model.exception.ServerStateChangedException
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.operation.response.CheckComposedStepDefUpdateCompatibilityResponse
+import com.testerum.model.step.operation.response.CheckComposedStepDefUsageResponse
 import com.testerum.model.test.TestModel
 import com.testerum.model.text.StepPattern
 import com.testerum.web_backend.services.project.WebProjectManager
@@ -98,5 +99,19 @@ class ComposedStepUpdateCompatibilityFrontendService(private val webProjectManag
         return result
     }
 
+    fun checkUsage(composedStepDef: ComposedStepDef): CheckComposedStepDefUsageResponse {
+        val stepPattern = composedStepDef.stepPattern
+        val pathsForParentTests: List<Path> = findTestsThatUsesStepPatternAsChild(stepPattern).map { it.path }
+        val pathsForDirectParentSteps: List<Path> = findStepsThatUsesStepPatternAsDirectChild(stepPattern).map { it.path }
+        val pathsForTransitiveParentSteps: List<Path> = findStepsThatUsesStepPatternAsTransitiveChild(stepPattern) - pathsForDirectParentSteps
 
+        val isStepUsed = pathsForParentTests.isNotEmpty() || pathsForDirectParentSteps.isNotEmpty() || pathsForTransitiveParentSteps.isNotEmpty()
+
+        return CheckComposedStepDefUsageResponse(
+            isUsed = isStepUsed,
+            pathsForParentTests = pathsForParentTests,
+            pathsForDirectParentSteps = pathsForDirectParentSteps,
+            pathsForTransitiveParentSteps = pathsForTransitiveParentSteps
+        )
+    }
 }

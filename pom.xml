@@ -12,6 +12,7 @@
         <module>cloud-client</module>
         <module>common</module>
         <module>file-service</module>
+        <module>integration-tests</module>
         <module>model</module>
         <module>project-manager</module>
         <module>report</module>
@@ -108,7 +109,7 @@
         <testerumNpmVersion>6.4.1</testerumNpmVersion>
 
         <!--========== testerum dependencies versions ==========-->
-        <testerum-steps-api.version>3.7.7</testerum-steps-api.version>
+        <testerum-steps-api.version>4.0.2</testerum-steps-api.version>
 
         <!--========== dependencies versions ==========-->
         <slf4j.version>1.7.25</slf4j.version>
@@ -427,6 +428,18 @@
                 <groupId>com.testerum</groupId>
                 <artifactId>testerum-junit</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>testerum-junit</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>testerum-junit-all</artifactId>
+                <version>${testerum.version}</version>
             </dependency>
 
             <!--==================== testerum dependencies ====================-->

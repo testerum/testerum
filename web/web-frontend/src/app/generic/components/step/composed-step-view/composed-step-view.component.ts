@@ -32,6 +32,8 @@ import {StepContext} from "../../../../model/step/context/step-context.model";
 import {ParamNameValidatorDirective} from "../../../validators/param-name-validator.directive";
 import {AutoComplete} from "primeng/autocomplete";
 import {Message} from "primeng/api";
+import {StepUsageDialogService} from "./usage-dialog/step-usage-dialog.service";
+import {StepUsageDialogResponseEnum} from "./usage-dialog/model/step-usage-dialog-response.enum";
 
 @Component({
     selector: 'composed-step-view',
@@ -76,6 +78,7 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     constructor(private stepPathModalService: StepPathModalService,
                 private tagsService: TagsService,
                 private stepsService: StepsService,
+                private stepUsageDialogService: StepUsageDialogService,
                 private contextService: ContextService) {
     }
 
@@ -392,5 +395,11 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
 
         this.contextService.stepToCut = null;
         this.contextService.stepToCopy = null;
+    }
+
+    showUsage() {
+        this.stepUsageDialogService.showUsingStepDef(
+            this.model
+        )
     }
 }

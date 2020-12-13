@@ -46,12 +46,12 @@ class IsArrayIntegrationTest : BaseBuiltinFunctionIntegrationTest() {
 
     @Test
     fun `should be ok for array`() {
-        functionEvaluator.evaluate("@isArray()", arrayNode(ObjectMapper().readTree(""" [{"f1":"Hello"}] """)))
+        functionEvaluator.evaluate("@isArray()", ObjectMapper().readTree(""" [{"f1":"Hello"}] """))
     }
 
     @Test
     fun `should be ok for an empty array`() {
-        functionEvaluator.evaluate("@isArray()", arrayNode(ObjectMapper().readTree(""" [] """)))
+        functionEvaluator.evaluate("@isArray()", ObjectMapper().readTree(""" [] """))
     }
 
     @Test

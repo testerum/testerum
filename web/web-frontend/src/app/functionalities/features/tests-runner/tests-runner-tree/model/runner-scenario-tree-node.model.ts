@@ -13,6 +13,7 @@ export class RunnerScenarioTreeNodeModel extends RunnerTreeContainerNodeModel {
 
     id:string;
     path: Path;
+    scenarioIndex: number;
     eventKey: EventKey;
     state:ExecutionStatusEnum = ExecutionStatusEnum.WAITING;
     text:string;

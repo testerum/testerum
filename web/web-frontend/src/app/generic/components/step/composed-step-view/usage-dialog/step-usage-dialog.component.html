@@ -1,0 +1,70 @@
+<div bsModal #stepUsageModal="bs-modal" class="step-usage-dialog modal fade" tabindex="-1" role="dialog" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    <div *ngIf="mode == INFO_STEP; else showWarningTitle">
+                        Step Usage
+                    </div>
+                    <ng-template #showWarningTitle>
+                        <i class="title-icon fas fa-exclamation-triangle"></i>
+                        Warning!!
+                    </ng-template>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div  *ngIf="!(mode == INFO_STEP && isStepUsed())" class="title-box">
+                    <div class="title-message">
+                        <div *ngIf="mode == UPDATE_STEP">The new step definition is not compatible with the previous version.</div>
+                        <div *ngIf="mode == DELETE_STEP">Deleting this step will brake the following resources:</div>
+                        <div *ngIf="mode == INFO_STEP && !isStepUsed()">This Step is not used.</div>
+                    </div>
+                </div>
+
+                <div *ngIf="mode == UPDATE_STEP" class="sub-title">The following tests and steps will be broken:</div>
+
+                <div *ngIf="pathsForAffectedTests.length != 0" class="affected-message">
+                    Tests:
+                    <div *ngFor="let testPath of pathsForAffectedTests" class="affected-path">
+                        <a [routerLink]="[urlService.getTestUrl(), {path: testPath.toString()}]"
+                           (click)="close()">
+                            {{getNameFromPath(testPath)}}
+                        </a>
+                    </div>
+                </div>
+
+                <div *ngIf="pathsForDirectAffectedSteps.length != 0" class="affected-message">
+                    Directly Affected Steps:
+                    <div *ngFor="let stepPath of pathsForDirectAffectedSteps" class="affected-path">
+                        <a [routerLink]="[urlService.getComposedStepUrl(), {path: stepPath.toString()}]"
+                           (click)="close()">
+                            {{getNameFromPath(stepPath)}}
+                        </a>
+                    </div>
+                </div>
+
+                <div *ngIf="pathsForTransitiveAffectedSteps.length != 0" class="affected-message">
+                    Transitive Affected Steps:
+                    <div *ngFor="let stepPath of pathsForTransitiveAffectedSteps" class="affected-path">
+                        {{getNameFromPath(stepPath)}}
+
+
+                        <div class="btn-group">
+                            <div title="Navigate to step"
+                                 class="btn btn-default btn-xs btn-group"
+                                 (click)="goToStep(stepPath); $event.stopPropagation()">
+                                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button (click)="close()" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button *ngIf="mode == DELETE_STEP" (click)="continue()" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                <button *ngIf="mode == UPDATE_STEP" (click)="continue()" type="button" class="btn btn-primary" data-dismiss="modal">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

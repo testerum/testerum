@@ -86,7 +86,7 @@ object NumberFunctions {
     }
 
     @AssertionFunction
-    fun isNumberGraterThan(actualNode: JsonNode, expectedValue: BigDecimal?) {
+    fun isNumberGreaterThan(actualNode: JsonNode, expectedValue: BigDecimal?) {
         isNumber(actualNode)
 
         val actualValue = actualNode.numberValue()
@@ -98,7 +98,7 @@ object NumberFunctions {
     }
 
     @AssertionFunction
-    fun isNumberEqualOrGraterThan(actualNode: JsonNode, expectedValue: BigDecimal?) {
+    fun isNumberEqualOrGreaterThan(actualNode: JsonNode, expectedValue: BigDecimal?) {
         isNumber(actualNode)
 
         val actualValue = actualNode.numberValue()

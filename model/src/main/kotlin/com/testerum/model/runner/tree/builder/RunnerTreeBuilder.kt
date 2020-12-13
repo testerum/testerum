@@ -141,9 +141,8 @@ class RunnerTreeBuilder {
 
             return RunnerScenarioNode(
                     id = "${test.id}-$filteredScenarioIndex",
-                    path = Path.createInstance(
-                            "${test.path}/$filteredScenarioIndex"
-                    ),
+                    path = test.path,
+                    scenarioIndex = filteredScenarioIndex,
                     name = scenario.name ?: "Scenario ${originalScenarioIndex + 1}",
                     enabled = scenario.enabled,
                     children = stepCalls
