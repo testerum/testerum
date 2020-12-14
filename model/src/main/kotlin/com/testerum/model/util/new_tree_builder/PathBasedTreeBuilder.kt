@@ -14,11 +14,40 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
     private val nodesByPath = HashMap<String, TreeNode>()
 
     fun createTree(items: List<HasPath>): R {
-        // It's very important that Features are sorted to be before Tests.
+        // It's very important that Features are sorted to be before Tests, otherwise it will create a virtual container instead of the real one.
         // This is accomplished by just sorting by path, because the parent feature path is a prefix of the child test path.
         // The "withoutFileExtension" is important, because otherwise
         //     "backend/expressions/escapeXml 1_1/to escape.test" > "backend/expressions/escapeXml 1_1/to escape XML 1_1.test"
-        val sortedItems = items.sortedBy { it.path.withoutFileExtension().toString() }
+        val sortedItems = items.sortedWith(Comparator { left, right ->
+            val leftParts = left.path.partsWithoutFileExtension
+            val rightParts = right.path.partsWithoutFileExtension
+
+            if (leftParts.size < rightParts.size) {
+                return@Comparator -1
+            } else if (leftParts.size > rightParts.size) {
+                return@Comparator 1
+            }
+
+            val leftIsDirectory = left.path.isDirectory()
+            val rightIsDirectory = right.path.isDirectory()
+            if (leftIsDirectory < rightIsDirectory) {
+                return@Comparator 1
+            } else if (leftIsDirectory > rightIsDirectory) {
+                return@Comparator -1
+            }
+
+            for ((i, leftPart) in leftParts.withIndex()) {
+                val rightPart = rightParts[i]
+
+                if (leftPart < rightPart) {
+                    return@Comparator -1
+                } else if (leftPart > rightPart) {
+                    return@Comparator 1
+                }
+            }
+
+            0
+        })
 
         for (sortedItem in sortedItems) {
             addItem(sortedItem)
@@ -30,6 +59,19 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
         @Suppress("UNCHECKED_CAST") // it's safe because we insuere that we create the root node for the empty path
         return rootNode as R
     }
+
+    private val Path.partsWithoutFileExtension: List<String>
+        get() {
+            return if (fileName == null) {
+                directories
+            } else {
+                val result = directories.toMutableList()
+
+                result.add(fileName)
+
+                result
+            }
+        }
 
     private fun addItem(item: HasPath) {
         val parentPath = item.path.getParent()
