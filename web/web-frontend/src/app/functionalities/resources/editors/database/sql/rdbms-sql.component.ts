@@ -48,7 +48,7 @@ export class RdbmsSqlComponent extends ResourceComponent<BasicResource> implemen
     }
 
     isFormValid(): boolean {
-        return this.form.valid;
+        return this.form ? this.form.valid : true;
     }
 
     getForm(): NgForm {

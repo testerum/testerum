@@ -51,7 +51,7 @@ export class HttpMockServerComponent extends ResourceComponent<HttpMockServer> i
     }
 
     isFormValid(): boolean {
-        return this.form.valid;
+        return this.form ? this.form.valid : true;
     }
 
     getForm(): NgForm {
