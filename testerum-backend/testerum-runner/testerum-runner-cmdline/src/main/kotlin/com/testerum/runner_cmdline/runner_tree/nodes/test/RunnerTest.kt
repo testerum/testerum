@@ -2,6 +2,7 @@ package com.testerum.runner_cmdline.runner_tree.nodes.test
 
 import com.testerum.common_kotlin.indent
 import com.testerum.model.test.TestModel
+import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
@@ -26,9 +27,8 @@ class RunnerTest(
     val test: TestModel,
     val filePath: JavaPath,
     val indexInParent: Int,
-    val steps: List<RunnerStep>,
     val afterEachTestBasicHooks: List<RunnerHook>
-) : RunnerFeatureOrTest(), TreeNode {
+) : RunnerFeatureOrTest(), ContainerTreeNode {
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(RunnerTest::class.java)
@@ -41,6 +41,19 @@ class RunnerTest(
         get() = _parent
 
     override val positionInParent = PositionInParent(test.id, indexInParent)
+
+    private val _children = mutableListOf<RunnerStep>()
+
+    val children: List<RunnerStep>
+        get() = _children
+
+    override val childrenCount: Int
+        get() = children.size
+
+    override fun addChild(child: TreeNode) {
+        _children += child as? RunnerStep
+            ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
+    }
 
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         try {
@@ -88,11 +101,11 @@ class RunnerTest(
                 throw RuntimeException(errorMessage, e)
             }
 
-            if (steps.isEmpty()) {
+            if (children.isEmpty()) {
                 status = ExecutionStatus.UNDEFINED
                 context.logMessage("marking test [${test.name}] at [${test.path}] as $status because it doesn't have any steps")
             } else {
-                for (step in steps) {
+                for (step in children) {
                     if (status <= ExecutionStatus.PASSED) {
                         val stepStatus: ExecutionStatus = step.run(context, vars)
 
@@ -159,7 +172,7 @@ class RunnerTest(
 
         val startTime = System.currentTimeMillis()
         try {
-            for (step in steps) {
+            for (step in children) {
                 step.skip(context)
             }
         } catch (e: Exception) {
@@ -179,7 +192,7 @@ class RunnerTest(
 
         val startTime = System.currentTimeMillis()
         try {
-            for (step in steps) {
+            for (step in children) {
                 step.disable(context)
             }
         } catch (e: Exception) {
@@ -240,7 +253,7 @@ class RunnerTest(
             beforeEachTestHook.addToString(destination, indentLevel + 1)
         }
 
-        for (step in steps) {
+        for (step in children) {
             step.addToString(destination, indentLevel + 1)
         }
 

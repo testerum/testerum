@@ -14,7 +14,7 @@ abstract class RunnerStep(
     parent: TreeNode,
     val stepCall: StepCall,
     indexInParent: Int
-) : RunnerTreeNode() {
+) : RunnerTreeNode(), TreeNode {
 
     private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
         ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")

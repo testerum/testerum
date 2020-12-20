@@ -281,21 +281,21 @@ class RunnerExecutionTreeBuilder(
             beforeEachTestBasicHooks: List<RunnerBasicHook>,
             afterEachTestBasicHooks: List<RunnerBasicHook>
         ): RunnerTest {
-            val runnerSteps = mutableListOf<RunnerStep>()
-
-            for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
-                runnerSteps += createRunnerStep(parentNode, stepCall, stepIndexInParent)
-            }
-
-            return RunnerTest(
+            val runnerTest = RunnerTest(
                 parent = parentNode,
                 test = test,
                 filePath = filePath,
                 indexInParent = testIndexInParent,
-                steps = runnerSteps,
                 beforeEachTestBasicHooks = beforeEachTestBasicHooks,
                 afterEachTestBasicHooks = afterEachTestBasicHooks
             )
+            for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
+                runnerTest.addChild(
+                    createRunnerStep(runnerTest, stepCall, stepIndexInParent)
+                )
+            }
+
+            return runnerTest
         }
 
 

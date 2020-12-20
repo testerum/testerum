@@ -56,7 +56,7 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
         val rootNode = nodesByPath[""]
             ?: throw IllegalStateException("should not happen: cannot find root node: nodesByPath=$nodesByPath")
 
-        @Suppress("UNCHECKED_CAST") // it's safe because we insuere that we create the root node for the empty path
+        @Suppress("UNCHECKED_CAST") // it's safe because we insure that we create the root node for the empty path
         return rootNode as R
     }
 
