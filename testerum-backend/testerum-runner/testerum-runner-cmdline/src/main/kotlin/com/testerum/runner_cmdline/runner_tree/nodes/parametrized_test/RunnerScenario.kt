@@ -11,7 +11,6 @@ import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.ScenarioEndEvent
 import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
-import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
@@ -20,11 +19,12 @@ import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
-import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
+import com.testerum.model.feature.hooks.HookPhase
 import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamSerializer
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.nio.file.Path as JavaPath
 
 class RunnerScenario(
     parent: TreeNode,
@@ -33,10 +33,10 @@ class RunnerScenario(
     val scenario: Scenario,
     private val originalScenarioIndex: Int,
     private val filteredScenarioIndex: Int,
-    private val filePath: java.nio.file.Path,
+    private val filePath: JavaPath,
     private val steps: List<RunnerStep>,
     private val afterEachTestBasicHooks: List<RunnerHook>
-) : RunnerFeatureOrTest() {
+) : RunnerTreeNode() {
 
     companion object {
         private val LOG: Logger = LoggerFactory.getLogger(RunnerScenario::class.java)
@@ -64,7 +64,7 @@ class RunnerScenario(
         return "scenario [$scenarioName] (index $originalScenarioIndex) of test [${test.name}] at [${test.path}]"
     }
 
-    override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
+    fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         try {
             return tryToRun(context, globalVars)
         } catch (e: Exception) {
@@ -187,7 +187,7 @@ class RunnerScenario(
         return status
     }
 
-    override fun skip(context: RunnerContext): ExecutionStatus {
+    fun skip(context: RunnerContext): ExecutionStatus {
         logScenarioStart(context)
 
         var executionStatus = ExecutionStatus.SKIPPED

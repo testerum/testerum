@@ -13,8 +13,9 @@ class RunnerComposedStep(
     parent: TreeNode,
     stepCall: StepCall,
     indexInParent: Int,
-    val steps: List<RunnerStep>
-) : RunnerStep(parent, stepCall, indexInParent) {
+    val steps: List<RunnerStep>,
+    logEvents: Boolean,
+) : RunnerStep(parent, stepCall, indexInParent, logEvents) {
 
     override fun doRun(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
         if (steps.isEmpty()) {

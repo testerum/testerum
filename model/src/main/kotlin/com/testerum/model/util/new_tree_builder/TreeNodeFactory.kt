@@ -9,7 +9,7 @@ import com.testerum.model.infrastructure.path.Path
  */
 interface TreeNodeFactory<R : ContainerTreeNode, V : ContainerTreeNode> {
 
-    fun createRootNode(): R
+    fun createRootNode(item: HasPath?): R
 
     fun createVirtualContainer(parentNode: ContainerTreeNode, path: Path): V
 

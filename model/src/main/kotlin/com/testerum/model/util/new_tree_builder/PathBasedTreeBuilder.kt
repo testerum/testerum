@@ -74,13 +74,21 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
         }
 
     private fun addItem(item: HasPath) {
-        val parentPath = item.path.getParent()
-        val parentNode = getOrCreateParentNode(parentPath)
+        val path = item.path
+        if (path.isEmpty()) {
+            // this is the root
+            val root = nodeFactory.createRootNode(item)
+            nodesByPath[path.toString()] = root
+        } else {
+            // non-root
+            val parentPath = path.getParent()
+            val parentNode = getOrCreateParentNode(parentPath)
 
-        val node: TreeNode = nodeFactory.createNode(parentNode, item)
-        parentNode.addChild(node)
+            val node: TreeNode = nodeFactory.createNode(parentNode, item)
+            parentNode.addChild(node)
 
-        nodesByPath[item.path.toString()] = node
+            nodesByPath[item.path.toString()] = node
+        }
     }
 
     private fun getOrCreateParentNode(path: Path): ContainerTreeNode {
@@ -91,7 +99,7 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
         }
 
         val newNode = if (path.isEmpty()) {
-            nodeFactory.createRootNode()
+            nodeFactory.createRootNode(null)
         } else {
             val parentNode = getOrCreateParentNode(path.getParent())
 

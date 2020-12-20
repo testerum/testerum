@@ -11,8 +11,9 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 class RunnerUndefinedStep(
     parent: TreeNode,
     stepCall: StepCall,
-    indexInParent: Int
-) : RunnerStep(parent, stepCall, indexInParent) {
+    indexInParent: Int,
+    logEvents: Boolean,
+) : RunnerStep(parent, stepCall, indexInParent, logEvents) {
 
     override fun doRun(context: RunnerContext, vars: VariablesContext) = ExecutionStatus.UNDEFINED
 

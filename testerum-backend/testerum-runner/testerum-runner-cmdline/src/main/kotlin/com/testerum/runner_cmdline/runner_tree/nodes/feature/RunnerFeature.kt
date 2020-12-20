@@ -2,6 +2,7 @@ package com.testerum.runner_cmdline.runner_tree.nodes.feature
 
 import com.testerum.common_kotlin.indent
 import com.testerum.model.feature.Feature
+import com.testerum.model.feature.hooks.HookPhase
 import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.FeatureEndEvent
@@ -9,13 +10,12 @@ import com.testerum.runner.events.model.FeatureStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerComposedHook
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
 import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
-import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
@@ -24,12 +24,11 @@ import org.slf4j.LoggerFactory
 
 class RunnerFeature(
     parent: TreeNode,
+    indexInParent: Int,
     featurePathFromRoot: List<String>,
     val featureName: String,
     val tags: List<String>,
-    indexInParent: Int,
-    private val beforeAllComposedHooks: List<RunnerComposedHook>,
-    private val afterAllComposedHooks: List<RunnerComposedHook>,
+    val feature: Feature
 ) : RunnerFeatureOrTest(), ContainerTreeNode {
 
     companion object {
@@ -55,6 +54,17 @@ class RunnerFeature(
             ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
     }
 
+    private val beforeAllHooks = mutableListOf<RunnerHook>()
+    private val afterAllHooks = mutableListOf<RunnerHook>()
+
+    fun addBeforeAllHook(hook: RunnerHook) {
+        beforeAllHooks += hook
+    }
+
+    fun addAfterAllHook(hook: RunnerHook) {
+        afterAllHooks += hook
+    }
+
     override val positionInParent = PositionInParent(
         id = featurePathFromRoot.joinToString(separator = "/") + "/${Feature.FILE_NAME_WITH_EXTENSION}",
         indexInParent = indexInParent
@@ -78,10 +88,11 @@ class RunnerFeature(
         try {
             val dynamicVars = DynamicVariablesContext()
             val vars = VariablesContext.forTest(dynamicVars, globalVars)
+            context.testVariables.setVariablesContext(vars)
 
             // before hooks
             try {
-                for (hook in beforeAllComposedHooks) {
+                for (hook in beforeAllHooks) {
                     if (status <= PASSED) {
                         val beforeHookStatus: ExecutionStatus = hook.run(context, vars)
 
@@ -102,16 +113,20 @@ class RunnerFeature(
 
             // children
             for (featureOrTest in children) {
-                val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
+                if (status <= PASSED) {
+                    val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
 
-                if (featureOrTestStatus > status) {
-                    status = featureOrTestStatus
+                    if (featureOrTestStatus > status) {
+                        status = featureOrTestStatus
+                    }
+                } else {
+                    featureOrTest.skip(context)
                 }
             }
 
             var overallEndHooksStatus: ExecutionStatus = PASSED
             try {
-                for (hook in afterAllComposedHooks) {
+                for (hook in afterAllHooks) {
                     if (overallEndHooksStatus == PASSED || status == ExecutionStatus.DISABLED) {
                         val endHookStatus: ExecutionStatus = hook.run(context, vars)
 
@@ -200,15 +215,18 @@ class RunnerFeature(
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
         destination.indent(indentLevel).append("feature '").append(featureName).append("'\n")
 
-        for (hook in beforeAllComposedHooks) {
+        // before all hooks
+        for (hook in beforeAllHooks) {
             hook.addToString(destination, indentLevel + 1)
         }
 
+        // children
         for (featureOrTest in children) {
             featureOrTest.addToString(destination, indentLevel + 1)
         }
 
-        for (hook in afterAllComposedHooks) {
+        // after all hooks
+        for (hook in afterAllHooks) {
             hook.addToString(destination, indentLevel + 1)
         }
     }

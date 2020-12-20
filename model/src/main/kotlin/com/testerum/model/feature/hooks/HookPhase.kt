@@ -1,4 +1,4 @@
-package com.testerum.scanner.step_lib_scanner.model.hooks
+package com.testerum.model.feature.hooks
 
 enum class HookPhase {
 

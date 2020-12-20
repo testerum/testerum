@@ -4,21 +4,25 @@ import com.testerum.model.infrastructure.path.Path
 
 sealed class HookSource
 
+object SuiteHookSource : HookSource() {
+    override fun toString(): String = "Suite"
+}
+
 data class FeatureHookSource(
     val featurePath: Path,
 ) : HookSource() {
-    override fun toString(): String = "Feature($featurePath)"
+    override fun toString(): String = "Feature[$featurePath]"
 }
 
 data class TestHookSource(
     val testPath: Path,
 ) : HookSource() {
-    override fun toString(): String = "Test($testPath)"
+    override fun toString(): String = "Test[$testPath]"
 }
 
 data class BasicHookSource(
     val className: String,
     val methodName: String,
 ) : HookSource() {
-    override fun toString(): String = "Basic($className.$methodName())"
+    override fun toString(): String = "Basic[$className.$methodName()]"
 }

@@ -13,7 +13,8 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 abstract class RunnerStep(
     parent: TreeNode,
     val stepCall: StepCall,
-    indexInParent: Int
+    indexInParent: Int,
+    private val logEvents: Boolean
 ) : RunnerTreeNode(), TreeNode {
 
     private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
@@ -91,9 +92,11 @@ abstract class RunnerStep(
     }
 
     private fun logStepStart(context: RunnerContext) {
-        context.logEvent(
-            StepStartEvent(eventKey = eventKey, stepCall = stepCall)
-        )
+        if (logEvents) {
+            context.logEvent(
+                StepStartEvent(eventKey = eventKey, stepCall = stepCall)
+            )
+        }
         context.logMessage("Started executing step [$stepCall]")
     }
 
@@ -104,14 +107,16 @@ abstract class RunnerStep(
         durationMillis: Long
     ) {
         context.logMessage("Finished executing step [$stepCall]; status: [$executionStatus]", exception)
-        context.logEvent(
-            StepEndEvent(
-                eventKey = eventKey,
-                stepCall = stepCall,
-                status = executionStatus,
-                durationMillis = durationMillis
+        if (logEvents) {
+            context.logEvent(
+                StepEndEvent(
+                    eventKey = eventKey,
+                    stepCall = stepCall,
+                    status = executionStatus,
+                    durationMillis = durationMillis
+                )
             )
-        )
+        }
     }
 
 }

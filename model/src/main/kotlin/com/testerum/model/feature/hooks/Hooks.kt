@@ -23,4 +23,13 @@ data class Hooks @JsonCreator constructor(
             || afterEach.isNotEmpty()
             || afterAll.isNotEmpty()
     }
+
+    fun getByPhase(phase: HookPhase): List<StepCall> {
+        return when (phase) {
+            HookPhase.BEFORE_ALL_TESTS -> beforeAll
+            HookPhase.BEFORE_EACH_TEST -> beforeEach
+            HookPhase.AFTER_EACH_TEST -> afterEach
+            HookPhase.AFTER_ALL_TESTS -> afterAll
+        }
+    }
 }

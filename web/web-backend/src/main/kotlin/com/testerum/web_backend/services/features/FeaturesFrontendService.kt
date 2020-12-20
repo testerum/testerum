@@ -108,7 +108,7 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
         val oldPath = feature.oldPath
         val newPath = savedFeature.path
         if (oldPath != null && newPath != oldPath) {
-            webProjectManager.getProjectServices().getTestsCache().directoryWasRenamed(oldPath, newPath)
+            webProjectManager.reloadProject()
         }
 
         return savedFeature

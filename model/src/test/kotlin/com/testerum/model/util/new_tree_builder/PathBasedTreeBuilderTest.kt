@@ -14,6 +14,7 @@ class PathBasedTreeBuilderTest {
 
         val root: MyRootNode = builder.createTree(
             listOf(
+                MyFeature("Root feature", Path.createInstance("")),
                 MyTest("Root test", Path.createInstance("root-test.test")),
                 MyFeature("rest", Path.createInstance("owners/create/rest")),
                 MyFeature("owners", Path.createInstance("owners")),
@@ -26,15 +27,15 @@ class PathBasedTreeBuilderTest {
 
         assertThat(MyNodeRenderer.render(root))
             .isEqualTo(
-                """|[R] Root, parentLabel=[null]
-                   |  [F] owners, parentLabel=[Root]
+                """|[R] Root feature, parentLabel=[null]
+                   |  [F] owners, parentLabel=[Root feature]
                    |    [F] create, parentLabel=[owners]
                    |      [F] rest, parentLabel=[create]
                    |      [F] ui, parentLabel=[create]
                    |        [T] Test, parentLabel=[ui]
                    |        [T] Test add, parentLabel=[ui]
                    |        [T] Test zoo, parentLabel=[ui]
-                   |  [T] Root test, parentLabel=[Root]
+                   |  [T] Root test, parentLabel=[Root feature]
                    |""".trimMargin()
             )
     }
@@ -126,8 +127,14 @@ class PathBasedTreeBuilderTest {
     }
 
     private object MyTreeNodeFactory : TreeNodeFactory<MyRootNode, MyFeatureNode> {
-        override fun createRootNode(): MyRootNode {
-            return MyRootNode("Root")
+        override fun createRootNode(item: HasPath?): MyRootNode {
+            val label = if (item != null) {
+                (item as MyFeature).label
+            } else {
+                "Root"
+            }
+
+            return MyRootNode(label)
         }
 
         override fun createVirtualContainer(parentNode: ContainerTreeNode, path: Path): MyFeatureNode {

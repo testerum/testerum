@@ -4,14 +4,18 @@ import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.model.tests_finder.TestPath
 import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner.events.execution_listener.ExecutionListener
-import com.testerum.runner.events.model.*
+import com.testerum.runner.events.model.RunnerErrorEvent
+import com.testerum.runner.events.model.RunnerEvent
+import com.testerum.runner.events.model.TestEndEvent
+import com.testerum.runner.events.model.TestStartEvent
+import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.junit5.logger.JUnitEventLogger
 import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
 import com.testerum.runner_cmdline.events.execution_listeners.junit.JUnitExecutionListener
 import com.testerum.runner_cmdline.module_di.RunnerModuleBootstrapper
-import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
+import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature
 import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerParametrizedTest
 import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerScenario
@@ -89,7 +93,7 @@ class JunitTestProvider(repositoryDirectory: Path,
         return junitExecutionTree
     }
 
-    private fun defineNode(runnerNode: RunnerFeatureOrTest): DynamicNode {
+    private fun defineNode(runnerNode: RunnerTreeNode): DynamicNode {
         return when (runnerNode) {
             is RunnerFeature -> dynamicContainer(runnerNode.featureName, runnerNode.featuresOrTests.map { defineNode(it) })
             is RunnerParametrizedTest -> dynamicContainer(runnerNode.test.name, runnerNode.scenarios.map { defineNode(it) })

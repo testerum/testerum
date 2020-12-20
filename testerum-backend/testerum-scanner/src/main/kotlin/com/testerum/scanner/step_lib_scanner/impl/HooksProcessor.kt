@@ -1,7 +1,7 @@
 package com.testerum.scanner.step_lib_scanner.impl
 
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
-import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
+import com.testerum.model.feature.hooks.HookPhase
 import com.testerum_api.testerum_steps_api.annotations.hooks.AfterAllTests
 import com.testerum_api.testerum_steps_api.annotations.hooks.AfterEachTest
 import com.testerum_api.testerum_steps_api.annotations.hooks.BeforeAllTests

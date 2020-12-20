@@ -21,8 +21,9 @@ import java.lang.reflect.Parameter
 class RunnerBasicStep(
     parent: TreeNode,
     stepCall: StepCall,
-    indexInParent: Int
-) : RunnerStep(parent, stepCall, indexInParent) {
+    indexInParent: Int,
+    logEvents: Boolean,
+) : RunnerStep(parent, stepCall, indexInParent, logEvents) {
 
     companion object {
         private val PRIMITIVE_TYPES_BY_NAME: Map<String, Class<*>> = run {

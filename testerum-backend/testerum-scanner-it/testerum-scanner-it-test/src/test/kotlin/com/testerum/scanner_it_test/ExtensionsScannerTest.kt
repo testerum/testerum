@@ -13,7 +13,7 @@ import com.testerum.scanner.step_lib_scanner.ExtensionsScanner
 import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanConfig
 import com.testerum.scanner.step_lib_scanner.model.ExtensionsScanResult
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
-import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
+import com.testerum.model.feature.hooks.HookPhase
 import com.testerum_api.testerum_steps_api.annotations.hooks.HooksConstants
 import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingDefinition
 import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingType

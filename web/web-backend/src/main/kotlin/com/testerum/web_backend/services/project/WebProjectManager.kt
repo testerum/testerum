@@ -12,4 +12,10 @@ class WebProjectManager(private val projectManager: ProjectManager) {
         return projectManager.getProjectServices(projectRootDir)
     }
 
+    fun reloadProject() {
+        val projectRootDir = ProjectDirHolder.get()
+
+        projectManager.reloadProject(projectRootDir)
+    }
+
 }

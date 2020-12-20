@@ -11,7 +11,7 @@ import com.testerum.common_fast_serialization.read_write.extensions.writeEnum
 import com.testerum.common_fast_serialization.read_write.extensions.writeNullable
 import com.testerum.common_fast_serialization.read_write.extensions.writeVersion
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
-import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
+import com.testerum.model.feature.hooks.HookPhase
 
 object HookDefMarshaller : FastMarshaller<HookDef> {
 

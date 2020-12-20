@@ -1,6 +1,7 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.suite
 
 import com.testerum.common_kotlin.indent
+import com.testerum.model.feature.Feature
 import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.SuiteEndEvent
@@ -18,10 +19,9 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 
 class RunnerSuite(
-    val beforeAllTestsBasicHooks: List<RunnerHook>,
-    val afterAllTestsBasicHooks: List<RunnerHook>,
     val executionName: String?,
     val glueClassNames: List<String>,
+    val feature: Feature
 ) : RunnerTreeNode(), ContainerTreeNode {
 
     private val children = mutableListOf<RunnerFeatureOrTest>()
@@ -42,6 +42,17 @@ class RunnerSuite(
             ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
     }
 
+    private val beforeAllHooks = mutableListOf<RunnerHook>()
+    private val afterAllHooks = mutableListOf<RunnerHook>()
+
+    fun addBeforeAllHook(hook: RunnerHook) {
+        beforeAllHooks += hook
+    }
+
+    fun addAfterAllHook(hook: RunnerHook) {
+        afterAllHooks += hook
+    }
+
     fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         logSuiteStart(context)
 
@@ -50,8 +61,12 @@ class RunnerSuite(
 
         val startTime = System.currentTimeMillis()
         try {
+            val dynamicVars = DynamicVariablesContext()
+            val vars = VariablesContext.forTest(dynamicVars, globalVars)
+            context.testVariables.setVariablesContext(vars)
+
             // run before all hooks
-            suiteStatus = runHooks(context, globalVars, beforeAllTestsBasicHooks)
+            suiteStatus = runHooks(context, globalVars, beforeAllHooks)
 
             // run tests
             if (suiteStatus == PASSED) {
@@ -61,7 +76,7 @@ class RunnerSuite(
             }
 
             // run after all hooks
-            val afterAllHooksStatus = runHooks(context, globalVars, afterAllTestsBasicHooks)
+            val afterAllHooksStatus = runHooks(context, globalVars, afterAllHooks)
             if (suiteStatus == PASSED && afterAllHooksStatus != PASSED) {
                 suiteStatus = afterAllHooksStatus
             }
@@ -149,7 +164,7 @@ class RunnerSuite(
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
         destination.indent(indentLevel).append("Suite\n")
 
-        for (beforeAllTestsHook in beforeAllTestsBasicHooks) {
+        for (beforeAllTestsHook in beforeAllHooks) {
             beforeAllTestsHook.addToString(destination, indentLevel + 1)
         }
 
@@ -157,7 +172,7 @@ class RunnerSuite(
             test.addToString(destination, indentLevel + 1)
         }
 
-        for (afterAllTestsHook in afterAllTestsBasicHooks) {
+        for (afterAllTestsHook in afterAllHooks) {
             afterAllTestsHook.addToString(destination, indentLevel + 1)
         }
     }

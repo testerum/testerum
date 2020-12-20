@@ -15,7 +15,7 @@ import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
-import com.testerum.scanner.step_lib_scanner.model.hooks.HookPhase
+import com.testerum.model.feature.hooks.HookPhase
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -23,11 +23,9 @@ import java.nio.file.Path as JavaPath
 
 class RunnerTest(
     parent: TreeNode,
-    val beforeEachTestBasicHooks: List<RunnerHook>,
     val test: TestModel,
     val filePath: JavaPath,
     val indexInParent: Int,
-    val afterEachTestBasicHooks: List<RunnerHook>
 ) : RunnerFeatureOrTest(), ContainerTreeNode {
 
     companion object {
@@ -53,6 +51,17 @@ class RunnerTest(
     override fun addChild(child: TreeNode) {
         _children += child as? RunnerStep
             ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
+    }
+
+    private val beforeEachHooks = mutableListOf<RunnerHook>()
+    private val afterEachHooks = mutableListOf<RunnerHook>()
+
+    fun addBeforeEachHook(hook: RunnerHook) {
+        beforeEachHooks += hook
+    }
+
+    fun addAfterEachHook(hook: RunnerHook) {
+        afterEachHooks += hook
     }
 
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
@@ -82,7 +91,7 @@ class RunnerTest(
             context.testVariables.setVariablesContext(vars)
 
             try {
-                for (hook in beforeEachTestBasicHooks) {
+                for (hook in beforeEachHooks) {
                     if (status <= ExecutionStatus.PASSED) {
                         val beforeHookStatus: ExecutionStatus = hook.run(context, vars)
 
@@ -120,7 +129,7 @@ class RunnerTest(
 
             var overallEndHooksStatus: ExecutionStatus = ExecutionStatus.PASSED
             try {
-                for (hook in afterEachTestBasicHooks) {
+                for (hook in afterEachHooks) {
                     if (overallEndHooksStatus == ExecutionStatus.PASSED || status == ExecutionStatus.DISABLED) {
                         val endHookStatus: ExecutionStatus = hook.run(context, vars)
 
@@ -237,7 +246,7 @@ class RunnerTest(
     override fun toString(): String = buildString { addToString(this, 0) }
 
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
-        // show test info
+        // test info
         destination.indent(indentLevel).append("test")
         if (test.properties.isDisabled) {
             destination.append(" DISABLED")
@@ -248,17 +257,19 @@ class RunnerTest(
         }
         destination.append("\n")
 
-        // show children
-        for (beforeEachTestHook in beforeEachTestBasicHooks) {
-            beforeEachTestHook.addToString(destination, indentLevel + 1)
+        // before hooks
+        for (hook in beforeEachHooks) {
+            hook.addToString(destination, indentLevel + 1)
         }
 
+        // children
         for (step in children) {
             step.addToString(destination, indentLevel + 1)
         }
 
-        for (afterEachTestHook in afterEachTestBasicHooks) {
-            afterEachTestHook.addToString(destination, indentLevel + 1)
+        // after hooks
+        for (hook in afterEachHooks) {
+            hook.addToString(destination, indentLevel + 1)
         }
     }
 }
