@@ -43,15 +43,15 @@ class RunnerSuite(
             ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
     }
 
-    private lateinit var beforeAllHooks: RunnerBeforeHooksList
-    private lateinit var afterAllHooks: RunnerAfterHooksList
+    private lateinit var beforeHooks: RunnerBeforeHooksList
+    private lateinit var afterHooks: RunnerAfterHooksList
 
-    fun setBeforeAllHooks(beforeHooksList: RunnerBeforeHooksList) {
-        this.beforeAllHooks = beforeHooksList
+    fun setBeforeHooks(beforeHooksList: RunnerBeforeHooksList) {
+        this.beforeHooks = beforeHooksList
     }
 
-    fun setAfterAllHooks(afterHooksList: RunnerAfterHooksList) {
-        this.afterAllHooks = afterHooksList
+    fun setAfterHooks(afterHooksList: RunnerAfterHooksList) {
+        this.afterHooks = afterHooksList
     }
 
     fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
@@ -66,20 +66,20 @@ class RunnerSuite(
             val vars = VariablesContext.forTest(dynamicVars, globalVars)
             context.testVariables.setVariablesContext(vars)
 
-            // run before all hooks
-            suiteStatus = beforeAllHooks.run(context, globalVars)
+            // before all hooks
+            suiteStatus = beforeHooks.run(context, globalVars)
 
-            // run tests
+            // children
             if (suiteStatus == PASSED) {
                 suiteStatus = runTests(context, globalVars, suiteStatus)
             } else {
                 skipFeaturesOrTests(context)
             }
 
-            // run after all hooks
-            val afterAllHooksStatus = afterAllHooks.run(context, globalVars)
-            if (afterAllHooksStatus > suiteStatus) {
-                suiteStatus = afterAllHooksStatus
+            // after all hooks
+            val afterHooksStatus = afterHooks.run(context, globalVars)
+            if (afterHooksStatus > suiteStatus) {
+                suiteStatus = afterHooksStatus
             }
         } catch (e: Exception) {
             suiteStatus = ExecutionStatus.FAILED
@@ -144,13 +144,13 @@ class RunnerSuite(
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
         destination.indent(indentLevel).append("Suite\n")
 
-        beforeAllHooks.addToString(destination, indentLevel + 1)
+        beforeHooks.addToString(destination, indentLevel + 1)
 
         for (test in children) {
             test.addToString(destination, indentLevel + 1)
         }
 
-        afterAllHooks.addToString(destination, indentLevel + 1)
+        afterHooks.addToString(destination, indentLevel + 1)
     }
 
 }

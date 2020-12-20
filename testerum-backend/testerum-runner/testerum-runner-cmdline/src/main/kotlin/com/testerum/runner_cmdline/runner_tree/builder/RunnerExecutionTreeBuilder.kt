@@ -106,31 +106,31 @@ class RunnerExecutionTreeBuilder(
 
             val runnerSuite = RunnerSuite(executionName, glueClassNames, rootFeature)
 
-            val beforeAllHooks = mutableListOf<RunnerHook>()
+            val beforeHooks = mutableListOf<RunnerHook>()
 
             // hooks: basic before-all
-            beforeAllHooks += beforeAllTestsBasicHooks
+            beforeHooks += beforeAllTestsBasicHooks
 
             // hooks: composed before-all
             for (hookStepCall in rootFeature.hooks.beforeAll) {
-                beforeAllHooks += createRunnerComposedHook(
+                beforeHooks += createRunnerComposedHook(
                     parent = runnerSuite,
-                    indexInParent = beforeAllHooks.size,
+                    indexInParent = beforeHooks.size,
                     stepCall = hookStepCall,
                     phase = HookPhase.BEFORE_ALL_TESTS,
                     source = SuiteHookSource
                 )
             }
-            runnerSuite.setBeforeAllHooks(
-                RunnerBeforeHooksList(beforeAllHooks)
+            runnerSuite.setBeforeHooks(
+                RunnerBeforeHooksList(beforeHooks)
             )
 
             // hooks: composed after-all
-            val afterAllHooks = mutableListOf<RunnerHook>()
+            val afterHooks = mutableListOf<RunnerHook>()
             for (hookStepCall in rootFeature.hooks.afterAll) {
-                afterAllHooks += createRunnerComposedHook(
+                afterHooks += createRunnerComposedHook(
                     parent = runnerSuite,
-                    indexInParent = afterAllHooks.size,
+                    indexInParent = afterHooks.size,
                     stepCall = hookStepCall,
                     phase = HookPhase.AFTER_ALL_TESTS,
                     source = SuiteHookSource
@@ -138,9 +138,9 @@ class RunnerExecutionTreeBuilder(
             }
 
             // hooks: basic after-all
-            afterAllHooks += afterAllTestsBasicHooks
-            runnerSuite.setAfterAllHooks(
-                RunnerAfterHooksList(afterAllHooks)
+            afterHooks += afterAllTestsBasicHooks
+            runnerSuite.setAfterHooks(
+                RunnerAfterHooksList(afterHooks)
             )
 
             return runnerSuite
@@ -188,7 +188,7 @@ class RunnerExecutionTreeBuilder(
                             source = FeatureHookSource(item.path)
                         )
                     }
-                    feature.setBeforeAllHooks(
+                    feature.setBeforeHooks(
                         RunnerBeforeHooksList(beforeAllHooks)
                     )
 
@@ -203,7 +203,7 @@ class RunnerExecutionTreeBuilder(
                             source = FeatureHookSource(item.path)
                         )
                     }
-                    feature.setAfterAllHooks(
+                    feature.setAfterHooks(
                         RunnerAfterHooksList(afterAllHooks)
                     )
 
@@ -354,25 +354,21 @@ class RunnerExecutionTreeBuilder(
                 filePath = filePath,
                 indexInParent = testIndexInParent,
             )
-            var beforeHooksCount = 0
-            var afterHooksCount = 0
+
+            val beforeHooks = mutableListOf<RunnerHook>()
 
             // before hooks: basic before-each
-            for (hook in beforeEachTestBasicHooks) {
-                runnerTest.addBeforeEachHook(hook)
-                beforeHooksCount++
-            }
+            beforeHooks += beforeEachTestBasicHooks
 
             // before hooks: parent features before-each
-            val beforeEachComposedHooks = getInheritedHooks(
+            beforeHooks += getInheritedHooks(
                 parentForHooks = runnerTest,
                 phase = HookPhase.BEFORE_EACH_TEST,
                 descendingFromRoot = true
             )
-            for (hook in beforeEachComposedHooks) {
-                runnerTest.addBeforeEachHook(hook)
-                beforeHooksCount++
-            }
+            runnerTest.setBeforeHooks(
+                RunnerBeforeHooksList(beforeHooks)
+            )
 
             // test steps
             for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
@@ -381,11 +377,13 @@ class RunnerExecutionTreeBuilder(
                 )
             }
 
+            val afterHooks = mutableListOf<RunnerHook>()
+
             //  hooks: test after
             for (hookStepCall in test.afterHooks) {
                 val runnerComposedHook = RunnerComposedHook(
                     parent = runnerTest,
-                    indexInParent = afterHooksCount,
+                    indexInParent = afterHooks.size,
                     phase = HookPhase.AFTER_EACH_TEST,
                     source = TestHookSource(testPath = test.path)
                 )
@@ -397,26 +395,21 @@ class RunnerExecutionTreeBuilder(
                         logEvents = false
                     )
                 )
-                runnerTest.addAfterEachHook(runnerComposedHook)
-                afterHooksCount++
+                afterHooks += runnerComposedHook
             }
 
             // after hooks: parent features after-each
-            val afterEachComposedHooks = getInheritedHooks(
+            afterHooks += getInheritedHooks(
                 parentForHooks = runnerTest,
                 phase = HookPhase.AFTER_EACH_TEST,
                 descendingFromRoot = false
             )
-            for (hook in afterEachComposedHooks) {
-                runnerTest.addAfterEachHook(hook)
-                afterHooksCount++
-            }
 
             // after hooks: basic after-each
-            for (hook in afterEachTestBasicHooks) {
-                runnerTest.addAfterEachHook(hook)
-                afterHooksCount++
-            }
+            afterHooks += afterEachTestBasicHooks
+            runnerTest.setAfterHooks(
+                RunnerAfterHooksList(afterHooks)
+            )
 
             return runnerTest
         }

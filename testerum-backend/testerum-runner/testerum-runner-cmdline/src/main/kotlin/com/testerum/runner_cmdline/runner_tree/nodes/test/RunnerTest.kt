@@ -9,13 +9,13 @@ import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
-import com.testerum.model.feature.hooks.HookPhase
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -53,16 +53,17 @@ class RunnerTest(
             ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
     }
 
-    private val beforeEachHooks = mutableListOf<RunnerHook>()
-    private val afterEachHooks = mutableListOf<RunnerHook>()
+    private lateinit var beforeHooks: RunnerBeforeHooksList
+    private lateinit var afterHooks: RunnerAfterHooksList
 
-    fun addBeforeEachHook(hook: RunnerHook) {
-        beforeEachHooks += hook
+    fun setBeforeHooks(beforeHooksList: RunnerBeforeHooksList) {
+        this.beforeHooks = beforeHooksList
     }
 
-    fun addAfterEachHook(hook: RunnerHook) {
-        afterEachHooks += hook
+    fun setAfterHooks(afterHooksList: RunnerAfterHooksList) {
+        this.afterHooks = afterHooksList
     }
+
 
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         try {
@@ -90,25 +91,8 @@ class RunnerTest(
             val vars = VariablesContext.forTest(dynamicVars, globalVars)
             context.testVariables.setVariablesContext(vars)
 
-            try {
-                for (hook in beforeEachHooks) {
-                    if (status <= ExecutionStatus.PASSED) {
-                        val beforeHookStatus: ExecutionStatus = hook.run(context, vars)
-
-                        if (beforeHookStatus > status) {
-                            status = beforeHookStatus
-                        }
-                    } else {
-                        hook.skip(context)
-                    }
-                }
-            } catch (e: Exception) {
-                val errorMessage = "failed to execute ${HookPhase.BEFORE_EACH_TEST} hooks"
-
-                LOG.error(errorMessage, e)
-
-                throw RuntimeException(errorMessage, e)
-            }
+            // before all hooks
+            status = beforeHooks.run(context, globalVars)
 
             if (children.isEmpty()) {
                 status = ExecutionStatus.UNDEFINED
@@ -127,29 +111,10 @@ class RunnerTest(
                 }
             }
 
-            var overallEndHooksStatus: ExecutionStatus = ExecutionStatus.PASSED
-            try {
-                for (hook in afterEachHooks) {
-                    if (overallEndHooksStatus == ExecutionStatus.PASSED || status == ExecutionStatus.DISABLED) {
-                        val endHookStatus: ExecutionStatus = hook.run(context, vars)
-
-                        if (endHookStatus > overallEndHooksStatus) {
-                            overallEndHooksStatus = endHookStatus
-                        }
-                    } else {
-                        hook.skip(context)
-                    }
-                }
-            } catch (e: Exception) {
-                val errorMessage = "failed to execute ${HookPhase.AFTER_EACH_TEST} hooks"
-
-                LOG.error(errorMessage, e)
-
-                throw RuntimeException(errorMessage, e)
-            }
-
-            if (overallEndHooksStatus > status) {
-                status = overallEndHooksStatus
+            // after all hooks
+            val afterAllHooksStatus = afterHooks.run(context, globalVars)
+            if (afterAllHooksStatus > status) {
+                status = afterAllHooksStatus
             }
         } catch (e: Exception) {
             status = ExecutionStatus.FAILED
@@ -189,8 +154,9 @@ class RunnerTest(
             exception = e
         } finally {
             logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
-            return executionStatus
         }
+
+        return executionStatus
     }
 
     private fun disable(context: RunnerContext): ExecutionStatus {
@@ -209,8 +175,9 @@ class RunnerTest(
             exception = e
         } finally {
             logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
-            return executionStatus
         }
+
+        return executionStatus
     }
 
     private fun logTestStart(context: RunnerContext) {
@@ -257,19 +224,12 @@ class RunnerTest(
         }
         destination.append("\n")
 
-        // before hooks
-        for (hook in beforeEachHooks) {
-            hook.addToString(destination, indentLevel + 1)
-        }
+        beforeHooks.addToString(destination, indentLevel + 1)
 
-        // children
         for (step in children) {
             step.addToString(destination, indentLevel + 1)
         }
 
-        // after hooks
-        for (hook in afterEachHooks) {
-            hook.addToString(destination, indentLevel + 1)
-        }
+        afterHooks.addToString(destination, indentLevel + 1)
     }
 }

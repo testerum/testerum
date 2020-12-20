@@ -54,15 +54,15 @@ class RunnerFeature(
             ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
     }
 
-    private lateinit var beforeAllHooks: RunnerBeforeHooksList
-    private lateinit var afterAllHooks: RunnerAfterHooksList
+    private lateinit var beforeHooks: RunnerBeforeHooksList
+    private lateinit var afterHooks: RunnerAfterHooksList
 
-    fun setBeforeAllHooks(beforeHooksList: RunnerBeforeHooksList) {
-        this.beforeAllHooks = beforeHooksList
+    fun setBeforeHooks(beforeHooksList: RunnerBeforeHooksList) {
+        this.beforeHooks = beforeHooksList
     }
 
-    fun setAfterAllHooks(afterHooksList: RunnerAfterHooksList) {
-        this.afterAllHooks = afterHooksList
+    fun setAfterHooks(afterHooksList: RunnerAfterHooksList) {
+        this.afterHooks = afterHooksList
     }
 
     override val positionInParent = PositionInParent(
@@ -90,8 +90,8 @@ class RunnerFeature(
             val vars = VariablesContext.forTest(dynamicVars, globalVars)
             context.testVariables.setVariablesContext(vars)
 
-            // run before all hooks
-            status = beforeAllHooks.run(context, globalVars)
+            // before all hooks
+            status = beforeHooks.run(context, globalVars)
 
             // children
             for (featureOrTest in children) {
@@ -106,10 +106,10 @@ class RunnerFeature(
                 }
             }
 
-            // run after all hooks
-            val afterAllHooksStatus = afterAllHooks.run(context, globalVars)
-            if (afterAllHooksStatus > status) {
-                status = afterAllHooksStatus
+            // after all hooks
+            val afterHooksStatus = afterHooks.run(context, globalVars)
+            if (afterHooksStatus > status) {
+                status = afterHooksStatus
             }
         } catch (e: Exception) {
             status = ExecutionStatus.FAILED
@@ -141,8 +141,9 @@ class RunnerFeature(
             exception = e
         } finally {
             logFeatureEnd(context, status, exception, durationMillis = System.currentTimeMillis() - startTime)
-            return status
         }
+
+        return status
     }
 
     private fun logFeatureStart(context: RunnerContext) {
@@ -178,13 +179,13 @@ class RunnerFeature(
     override fun addToString(destination: StringBuilder, indentLevel: Int) {
         destination.indent(indentLevel).append("feature '").append(featureName).append("'\n")
 
-        beforeAllHooks.addToString(destination, indentLevel + 1)
+        beforeHooks.addToString(destination, indentLevel + 1)
 
         for (featureOrTest in children) {
             featureOrTest.addToString(destination, indentLevel + 1)
         }
 
-        afterAllHooks.addToString(destination, indentLevel + 1)
+        afterHooks.addToString(destination, indentLevel + 1)
     }
 
 }
