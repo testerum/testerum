@@ -12,14 +12,14 @@ import com.testerum.runner.events.model.ScenarioEndEvent
 import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTestException
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
-import com.testerum.model.feature.hooks.HookPhase
 import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamSerializer
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import org.slf4j.Logger
@@ -28,14 +28,12 @@ import java.nio.file.Path as JavaPath
 
 class RunnerScenario(
     parent: TreeNode,
-    private val beforeEachTestBasicHooks: List<RunnerHook>,
     private val test: TestModel,
     val scenario: Scenario,
     private val originalScenarioIndex: Int,
     private val filteredScenarioIndex: Int,
     private val filePath: JavaPath,
     private val steps: List<RunnerStep>,
-    private val afterEachTestBasicHooks: List<RunnerHook>
 ) : RunnerTreeNode() {
 
     companion object {
@@ -55,6 +53,17 @@ class RunnerScenario(
     override val positionInParent = PositionInParent("${test.id}-$filteredScenarioIndex", filteredScenarioIndex)
 
     val scenarioName = scenario.name ?: "Scenario ${originalScenarioIndex + 1}"
+
+    private lateinit var beforeHooks: RunnerBeforeHooksList
+    private lateinit var afterHooks: RunnerAfterHooksList
+
+    fun setBeforeHooks(beforeHooksList: RunnerBeforeHooksList) {
+        this.beforeHooks = beforeHooksList
+    }
+
+    fun setAfterHooks(afterHooksList: RunnerAfterHooksList) {
+        this.afterHooks = afterHooksList
+    }
 
     private fun getPathForLogging(): String {
         return "scenario [$scenarioName] (index $originalScenarioIndex) of test at [${filePath.toAbsolutePath().normalize()}]"
@@ -104,25 +113,8 @@ class RunnerScenario(
             val vars = VariablesContext.forTest(dynamicVars, globalVars)
             context.testVariables.setVariablesContext(vars)
 
-            try {
-                for (hook in beforeEachTestBasicHooks) {
-                    if (status == ExecutionStatus.PASSED || status == ExecutionStatus.DISABLED) {
-                        val beforeHookStatus: ExecutionStatus = hook.run(context, vars)
-
-                        if (beforeHookStatus > status) {
-                            status = beforeHookStatus
-                        }
-                    } else {
-                        hook.skip(context)
-                    }
-                }
-            } catch (e: Exception) {
-                val errorMessage = "failed to execute ${HookPhase.BEFORE_EACH_TEST} hooks"
-
-                LOG.error(errorMessage, e)
-
-                throw RuntimeException(errorMessage, e)
-            }
+            // before all hooks
+            status = beforeHooks.run(context, globalVars)
 
             if (steps.isEmpty()) {
                 status = ExecutionStatus.UNDEFINED
@@ -141,29 +133,10 @@ class RunnerScenario(
                 }
             }
 
-            var overallEndHooksStatus: ExecutionStatus = ExecutionStatus.PASSED
-            try {
-                for (hook in afterEachTestBasicHooks) {
-                    if (overallEndHooksStatus == ExecutionStatus.PASSED || status == ExecutionStatus.DISABLED) {
-                        val endHookStatus: ExecutionStatus = hook.run(context, vars)
-
-                        if (endHookStatus > overallEndHooksStatus) {
-                            overallEndHooksStatus = endHookStatus
-                        }
-                    } else {
-                        hook.skip(context)
-                    }
-                }
-            } catch (e: Exception) {
-                val errorMessage = "failed to execute ${HookPhase.AFTER_EACH_TEST} hooks"
-
-                LOG.error(errorMessage, e)
-
-                throw RuntimeException(errorMessage, e)
-            }
-
-            if (overallEndHooksStatus > status) {
-                status = overallEndHooksStatus
+            // after all hooks
+            val afterAllHooksStatus = afterHooks.run(context, globalVars)
+            if (afterAllHooksStatus > status) {
+                status = afterAllHooksStatus
             }
         } catch (e: Exception) {
             status = ExecutionStatus.FAILED
@@ -289,17 +262,12 @@ class RunnerScenario(
         }
         destination.append("\n")
 
-        // show children
-        for (beforeEachTestHook in beforeEachTestBasicHooks) {
-            beforeEachTestHook.addToString(destination, indentLevel + 1)
-        }
+        beforeHooks.addToString(destination, indentLevel + 1)
 
         for (step in steps) {
             step.addToString(destination, indentLevel + 1)
         }
 
-        for (afterEachTestHook in afterEachTestBasicHooks) {
-            afterEachTestHook.addToString(destination, indentLevel + 1)
-        }
+        afterHooks.addToString(destination, indentLevel + 1)
     }
 }

@@ -64,7 +64,6 @@ class RunnerTest(
         this.afterHooks = afterHooksList
     }
 
-
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         try {
             return tryToRun(context, globalVars)
