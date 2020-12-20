@@ -177,35 +177,35 @@ class RunnerExecutionTreeBuilder(
                         feature = item
                     )
 
-                    var childrenCount = 0
-
                     // hooks: composed before-all
+                    val beforeAllHooks = mutableListOf<RunnerHook>()
                     for (hookStepCall in item.hooks.beforeAll) {
-                        feature.addBeforeAllHook(
-                            createRunnerComposedHook(
-                                parent = feature,
-                                indexInParent = childrenCount,
-                                stepCall = hookStepCall,
-                                phase = HookPhase.BEFORE_ALL_TESTS,
-                                source = FeatureHookSource(item.path)
-                            )
+                        beforeAllHooks += createRunnerComposedHook(
+                            parent = feature,
+                            indexInParent = beforeAllHooks.size,
+                            stepCall = hookStepCall,
+                            phase = HookPhase.BEFORE_ALL_TESTS,
+                            source = FeatureHookSource(item.path)
                         )
-                        childrenCount++
                     }
+                    feature.setBeforeAllHooks(
+                        RunnerBeforeHooksList(beforeAllHooks)
+                    )
 
                     // hooks: composed after-all
+                    val afterAllHooks = mutableListOf<RunnerHook>()
                     for (hookStepCall in item.hooks.afterAll) {
-                        feature.addAfterAllHook(
-                            createRunnerComposedHook(
-                                parent = feature,
-                                indexInParent = childrenCount,
-                                stepCall = hookStepCall,
-                                phase = HookPhase.AFTER_ALL_TESTS,
-                                source = FeatureHookSource(item.path)
-                            )
+                        afterAllHooks += createRunnerComposedHook(
+                            parent = feature,
+                            indexInParent = afterAllHooks.size,
+                            stepCall = hookStepCall,
+                            phase = HookPhase.AFTER_ALL_TESTS,
+                            source = FeatureHookSource(item.path)
                         )
-                        childrenCount++
                     }
+                    feature.setAfterAllHooks(
+                        RunnerAfterHooksList(afterAllHooks)
+                    )
 
                     feature
                 }
