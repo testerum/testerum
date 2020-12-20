@@ -23,8 +23,11 @@ import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.FeatureHookSource
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.HookSource
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBasicHook
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerComposedHook
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerHook
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.SuiteHookSource
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.TestHookSource
 import com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test.RunnerParametrizedTest
@@ -103,47 +106,42 @@ class RunnerExecutionTreeBuilder(
 
             val runnerSuite = RunnerSuite(executionName, glueClassNames, rootFeature)
 
-            var childrenCount = 0
+            val beforeAllHooks = mutableListOf<RunnerHook>()
 
             // hooks: basic before-all
-            for (hook in beforeAllTestsBasicHooks) {
-                runnerSuite.addBeforeAllHook(hook) // todo: don't we need the correct indexInParent for basic hooks? (not for now, since these are not nodes in the tree)
-                childrenCount++
-            }
+            beforeAllHooks += beforeAllTestsBasicHooks
 
             // hooks: composed before-all
             for (hookStepCall in rootFeature.hooks.beforeAll) {
-                runnerSuite.addBeforeAllHook(
-                    createRunnerComposedHook(
-                        parent = runnerSuite,
-                        indexInParent = childrenCount,
-                        stepCall = hookStepCall,
-                        phase = HookPhase.BEFORE_ALL_TESTS,
-                        source = SuiteHookSource
-                    )
+                beforeAllHooks += createRunnerComposedHook(
+                    parent = runnerSuite,
+                    indexInParent = beforeAllHooks.size,
+                    stepCall = hookStepCall,
+                    phase = HookPhase.BEFORE_ALL_TESTS,
+                    source = SuiteHookSource
                 )
-                childrenCount++
             }
+            runnerSuite.setBeforeAllHooks(
+                RunnerBeforeHooksList(beforeAllHooks)
+            )
 
             // hooks: composed after-all
+            val afterAllHooks = mutableListOf<RunnerHook>()
             for (hookStepCall in rootFeature.hooks.afterAll) {
-                runnerSuite.addAfterAllHook(
-                    createRunnerComposedHook(
-                        parent = runnerSuite,
-                        indexInParent = childrenCount,
-                        stepCall = hookStepCall,
-                        phase = HookPhase.AFTER_ALL_TESTS,
-                        source = SuiteHookSource
-                    )
+                afterAllHooks += createRunnerComposedHook(
+                    parent = runnerSuite,
+                    indexInParent = afterAllHooks.size,
+                    stepCall = hookStepCall,
+                    phase = HookPhase.AFTER_ALL_TESTS,
+                    source = SuiteHookSource
                 )
-                childrenCount++
             }
 
             // hooks: basic after-all
-            for (hook in afterAllTestsBasicHooks) {
-                runnerSuite.addAfterAllHook(hook) // todo: don't we need the correct indexInParent for basic hooks? (not for now, since these are not nodes in the tree)
-                childrenCount++
-            }
+            afterAllHooks += afterAllTestsBasicHooks
+            runnerSuite.setAfterAllHooks(
+                RunnerAfterHooksList(afterAllHooks)
+            )
 
             return runnerSuite
         }
