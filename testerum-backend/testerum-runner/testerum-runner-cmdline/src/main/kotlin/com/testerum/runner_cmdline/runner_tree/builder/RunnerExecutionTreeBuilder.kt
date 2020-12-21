@@ -323,23 +323,73 @@ class RunnerExecutionTreeBuilder(
             val originalScenarioIndex = scenarioWithOriginalIndex.first
             val scenario = scenarioWithOriginalIndex.second
 
-            val runnerSteps = mutableListOf<RunnerStep>()
-
-            for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
-                runnerSteps += createRunnerStep(parentNode, stepIndexInParent, stepCall, logEvents = true)
-            }
-
-            return RunnerScenario(
+            val runnerScenario = RunnerScenario(
                 parent = parentNode,
-                beforeEachTestBasicHooks = beforeEachTestBasicHooks,
                 test = test,
                 scenario = scenario,
                 originalScenarioIndex = originalScenarioIndex,
                 filteredScenarioIndex = filteredScenarioIndex,
                 filePath = filePath,
-                steps = runnerSteps,
-                afterEachTestBasicHooks = afterEachTestBasicHooks
             )
+
+            val beforeHooks = mutableListOf<RunnerHook>()
+
+            // before hooks: basic before-each
+            beforeHooks += beforeEachTestBasicHooks
+
+            // before hooks: parent features before-each
+            beforeHooks += getInheritedHooks(
+                parentForHooks = runnerScenario,
+                phase = HookPhase.BEFORE_EACH_TEST,
+                descendingFromRoot = true
+            )
+            runnerScenario.setBeforeHooks(
+                RunnerBeforeHooksList(beforeHooks)
+            )
+
+            // test
+            val runnerSteps = mutableListOf<RunnerStep>()
+
+            for ((stepIndexInParent, stepCall) in test.stepCalls.withIndex()) {
+                runnerSteps += createRunnerStep(runnerScenario, stepIndexInParent, stepCall, logEvents = true)
+            }
+            runnerScenario.setSteps(runnerSteps)
+
+            val afterHooks = mutableListOf<RunnerHook>()
+
+            //  hooks: test after
+            for (hookStepCall in test.afterHooks) {
+                val runnerComposedHook = RunnerComposedHook(
+                    parent = runnerScenario,
+                    indexInParent = afterHooks.size,
+                    phase = HookPhase.AFTER_EACH_TEST,
+                    source = TestHookSource(testPath = test.path)
+                )
+                runnerComposedHook.setStep(
+                    createRunnerStep(
+                        parentNode = runnerComposedHook,
+                        indexInParent = 0,
+                        stepCall = hookStepCall,
+                        logEvents = false
+                    )
+                )
+                afterHooks += runnerComposedHook
+            }
+
+            // after hooks: parent features after-each
+            afterHooks += getInheritedHooks(
+                parentForHooks = runnerScenario,
+                phase = HookPhase.AFTER_EACH_TEST,
+                descendingFromRoot = false
+            )
+
+            // after hooks: basic after-each
+            afterHooks += afterEachTestBasicHooks
+            runnerScenario.setAfterHooks(
+                RunnerAfterHooksList(afterHooks)
+            )
+
+            return runnerScenario
         }
 
         private fun <P> createRunnerTest(

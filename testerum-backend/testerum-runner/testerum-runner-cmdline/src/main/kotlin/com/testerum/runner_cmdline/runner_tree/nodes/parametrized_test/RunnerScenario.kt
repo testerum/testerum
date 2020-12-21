@@ -22,8 +22,6 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesConte
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamSerializer
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.nio.file.Path as JavaPath
 
 class RunnerScenario(
@@ -33,12 +31,9 @@ class RunnerScenario(
     private val originalScenarioIndex: Int,
     private val filteredScenarioIndex: Int,
     private val filePath: JavaPath,
-    private val steps: List<RunnerStep>,
-) : RunnerTreeNode() {
+) : RunnerTreeNode(), TreeNode {
 
     companion object {
-        private val LOG: Logger = LoggerFactory.getLogger(RunnerScenario::class.java)
-
         private val businessToFileScenarioMapper = BusinessToFileScenarioMapper(
             BusinessToFileScenarioParamMapper()
         )
@@ -49,6 +44,12 @@ class RunnerScenario(
 
     override val parent: RunnerTreeNode
         get() = _parent
+
+    private lateinit var steps: List<RunnerStep>
+
+    fun setSteps(steps: List<RunnerStep>) {
+        this.steps = steps
+    }
 
     override val positionInParent = PositionInParent("${test.id}-$filteredScenarioIndex", filteredScenarioIndex)
 
@@ -100,7 +101,7 @@ class RunnerScenario(
             val dynamicVars = DynamicVariablesContext()
 
             for (param in scenario.params) {
-                val actualValue: Any? = when (param.type) {
+                val actualValue: Any = when (param.type) {
                     ScenarioParamType.TEXT -> param.value
                     ScenarioParamType.JSON -> JsJson(param.value)
                 }
@@ -116,6 +117,7 @@ class RunnerScenario(
             // before all hooks
             status = beforeHooks.run(context, globalVars)
 
+            // scenario
             if (steps.isEmpty()) {
                 status = ExecutionStatus.UNDEFINED
                 context.logMessage("marking ${getNameForLogging()} as $status because it doesn't have any steps")
