@@ -18,7 +18,6 @@ class RunnerParametrizedTest(
     val test: TestModel,
     val filePath: JavaPath,
     val indexInParent: Int,
-    val scenarios: List<RunnerScenario>
 ) : RunnerFeatureOrTest(), TreeNode {
 
     private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
@@ -28,6 +27,12 @@ class RunnerParametrizedTest(
         get() = _parent
 
     override val positionInParent = PositionInParent(test.id, indexInParent)
+
+    private lateinit var scenarios: List<RunnerScenario>
+
+    fun setScenarios(scenarios: List<RunnerScenario>) {
+        this.scenarios = scenarios
+    }
 
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         try {

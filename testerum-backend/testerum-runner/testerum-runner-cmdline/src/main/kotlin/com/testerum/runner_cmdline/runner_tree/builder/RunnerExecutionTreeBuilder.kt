@@ -227,13 +227,20 @@ class RunnerExecutionTreeBuilder(
             parentNode: ContainerTreeNode,
             indexInParent: Int
         ): RunnerParametrizedTest {
+            val runnerParametrizedTest = RunnerParametrizedTest(
+                parent = parentNode,
+                test = item.test,
+                filePath = item.testPath.javaPath,
+                indexInParent = indexInParent,
+            )
+
             verifyScenarioIndexesFromFilter(item)
 
             val filteredTestScenarios = filterScenarios(item)
 
             val runnerScenariosNodes: List<RunnerScenario> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
                 createTestScenarioBranch(
-                    parentNode = parentNode,
+                    parentNode = runnerParametrizedTest,
                     test = item.test,
                     filePath = item.testPath.javaPath,
                     scenarioWithOriginalIndex = scenarioWithOriginalIndex,
@@ -242,14 +249,9 @@ class RunnerExecutionTreeBuilder(
                     afterEachTestBasicHooks = afterEachTestBasicHooks
                 )
             }
+            runnerParametrizedTest.setScenarios(runnerScenariosNodes)
 
-            return RunnerParametrizedTest(
-                parent = parentNode,
-                test = item.test,
-                filePath = item.testPath.javaPath,
-                indexInParent = indexInParent,
-                scenarios = runnerScenariosNodes
-            )
+            return runnerParametrizedTest
         }
 
         private fun <P> createTest(
@@ -312,7 +314,7 @@ class RunnerExecutionTreeBuilder(
         }
 
         private fun createTestScenarioBranch(
-            parentNode: ContainerTreeNode,
+            parentNode: TreeNode,
             test: TestModel,
             filePath: JavaPath,
             scenarioWithOriginalIndex: Pair<Int, Scenario>,

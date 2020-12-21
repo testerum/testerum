@@ -17,7 +17,7 @@ export class UnsavedChangesGuard implements CanDeactivate<ComponentCanDeactivate
         if (!component.canDeactivate()) {
             return this.areYouSureModalService.showAreYouSureModal(
                 "Warning",
-                "You have unsaved changes! If you leave, your changes will be lost."
+                "You may have unsaved changes. If you leave, your changes will be lost!"
             ).pipe(map((val: AreYouSureModalEnum) => val == AreYouSureModalEnum.OK));
         }
         return true;
