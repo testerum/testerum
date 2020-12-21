@@ -42,7 +42,7 @@
         <tree-node-compare-mode *ngIf="shouldShowCompareMode()"
                                 [editMode]="rdbmsVerifyTreeService.editMode"
                                 [selectedCompareMode]="model.compareMode"
-                                (change)="onCompareModeChange($event)">
+                                (compareModeChange)="onCompareModeChange($event)">
         </tree-node-compare-mode>
     </div>
 

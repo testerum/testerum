@@ -12,7 +12,7 @@ export class RdbmsSqlEditorComponent implements OnChanges {
     @Input() sqlText: string = "";
     @Input() editMode: boolean = false;
 
-    @Output() change: EventEmitter<string> = new EventEmitter<string>();
+    @Output() sqlTextChange: EventEmitter<string> = new EventEmitter<string>();
 
     editorOptions: editor.IEditorConstructionOptions = {
         language: 'sql',
@@ -20,7 +20,7 @@ export class RdbmsSqlEditorComponent implements OnChanges {
     };
 
     onChange(code: string) {
-        this.change.emit(code)
+        this.sqlTextChange.emit(code)
     }
 
     ngOnChanges(changes: SimpleChanges): void {

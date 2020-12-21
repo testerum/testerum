@@ -54,8 +54,4 @@ export class RdbmsSqlComponent extends ResourceComponent<BasicResource> implemen
     getForm(): NgForm {
         return this.form;
     }
-
-    sqlChange(sql: string) {
-        this.model.content = sql;
-    }
 }
