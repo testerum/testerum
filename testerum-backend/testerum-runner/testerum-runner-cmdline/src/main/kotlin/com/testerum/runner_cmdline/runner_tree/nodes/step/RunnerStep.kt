@@ -14,14 +14,11 @@ abstract class RunnerStep(
     parent: TreeNode,
     val stepCall: StepCall,
     indexInParent: Int,
-    private val logEvents: Boolean
+    private val logEvents: Boolean // todo: always log events, after we implement composed hooks in the frontend tree
 ) : RunnerTreeNode(), TreeNode {
 
-    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
         ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
-
-    override val parent: RunnerTreeNode
-        get() = _parent
 
     override val positionInParent = PositionInParent(stepCall.id, indexInParent)
 
@@ -42,9 +39,6 @@ abstract class RunnerStep(
         val startTime = System.currentTimeMillis()
         try {
             executionStatus = doRun(context, vars)
-        } catch (e: AssertionError) {
-            executionStatus = ExecutionStatus.FAILED
-            exception = e
         } catch (e: Exception) {
             executionStatus = ExecutionStatus.FAILED
             exception = e

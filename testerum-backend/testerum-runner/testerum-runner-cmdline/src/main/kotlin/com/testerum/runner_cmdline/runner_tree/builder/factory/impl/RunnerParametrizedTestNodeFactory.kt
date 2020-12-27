@@ -42,7 +42,7 @@ object RunnerParametrizedTestNodeFactory {
                 afterEachTestBasicHooks = afterEachTestBasicHooks
             )
         }
-        runnerParametrizedTest.setScenarios(runnerScenariosNodes)
+        runnerParametrizedTest.scenarios = runnerScenariosNodes
 
         return runnerParametrizedTest
     }

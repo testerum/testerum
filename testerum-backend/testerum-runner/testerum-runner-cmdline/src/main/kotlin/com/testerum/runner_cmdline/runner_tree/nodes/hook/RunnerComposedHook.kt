@@ -1,13 +1,13 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.hook
 
 import com.testerum.common_kotlin.indent
+import com.testerum.model.feature.hooks.HookPhase
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
-import com.testerum.model.feature.hooks.HookPhase
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 
 class RunnerComposedHook(
@@ -17,11 +17,8 @@ class RunnerComposedHook(
     override val source: HookSource,
 ) : RunnerHook, RunnerTreeNode(), TreeNode {
 
-    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
         ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
-
-    override val parent: RunnerTreeNode
-        get() = _parent
 
     override val positionInParent = PositionInParent("composed-hook-$phase", indexInParent)
 
@@ -44,9 +41,6 @@ class RunnerComposedHook(
             if (nestedStatus > executionStatus) {
                 executionStatus = nestedStatus
             }
-        } catch (e: AssertionError) {
-            executionStatus = ExecutionStatus.FAILED
-            exception = e
         } catch (e: Exception) {
             executionStatus = ExecutionStatus.FAILED
             exception = e

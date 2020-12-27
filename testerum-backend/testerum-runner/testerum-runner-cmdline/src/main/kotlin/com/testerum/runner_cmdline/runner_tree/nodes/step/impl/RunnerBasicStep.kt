@@ -56,7 +56,6 @@ class RunnerBasicStep(
         val stepMethod: Method = stepClass.getMethod(stepDef.methodName, *stepParamsTypes.toTypedArray())
 
         val stepInstance: Any = context.glueObjectFactory.getInstance(stepClass)
-
         val untransformedStepMethodArguments: List<Any?> = stepCall.args.map { vars.resolveIn(it) }
 
         val stepMethodArguments: List<Any?> = transformMethodArguments(
@@ -102,7 +101,7 @@ class RunnerBasicStep(
 
         val params: Array<Parameter> = stepMethod.parameters
 
-        for (i in 0 until params.size) {
+        for (i in params.indices) {
             val param = params[i]
             try {
                 val untransformedArg: Any? = untransformedArgs[i]

@@ -6,7 +6,7 @@ import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
-import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.UNDEFINED
 
 class RunnerUndefinedStep(
     parent: TreeNode,
@@ -15,7 +15,7 @@ class RunnerUndefinedStep(
     logEvents: Boolean,
 ) : RunnerStep(parent, stepCall, indexInParent, logEvents) {
 
-    override fun doRun(context: RunnerContext, vars: VariablesContext) = ExecutionStatus.UNDEFINED
+    override fun doRun(context: RunnerContext, vars: VariablesContext) = UNDEFINED
 
     override fun toString(): String = buildString { addToString(this, 0) }
 
