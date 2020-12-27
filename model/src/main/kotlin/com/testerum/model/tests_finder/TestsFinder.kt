@@ -33,7 +33,23 @@ object TestsFinder {
             }
         }
 
-        // 1. add those specified in testPaths
+        // 1. add those specified in tagsToInclude
+        for ((path, test) in allTests) {
+            if (test.tags.any { it in tagsToInclude }) {
+                result[path] = test
+            }
+        }
+
+        // 2. remove those specified in tagsToExclude
+        result.iterator().also { iterator ->
+            for ((_, test) in iterator) {
+                if (test.tags.any { it in tagsToExclude }) {
+                    iterator.remove()
+                }
+            }
+        }
+
+        // 3. add those specified in testPaths
         if (testPaths.isEmpty()) {
             result.putAll(allTests)
         } else {
@@ -54,22 +70,6 @@ object TestsFinder {
                             result[path] = test
                         }
                     }
-                }
-            }
-        }
-
-        // 2. add those specified in tagsToInclude
-        for ((path, test) in allTests) {
-            if (test.tags.any { it in tagsToInclude }) {
-                result[path] = test
-            }
-        }
-
-        // 3. remove those specified in tagsToExclude
-        result.iterator().also { iterator ->
-            for ((_, test) in iterator) {
-                if (test.tags.any { it in tagsToExclude }) {
-                    iterator.remove()
                 }
             }
         }
