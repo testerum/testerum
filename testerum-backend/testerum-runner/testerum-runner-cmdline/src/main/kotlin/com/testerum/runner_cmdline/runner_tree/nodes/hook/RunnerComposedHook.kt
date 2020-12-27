@@ -12,7 +12,7 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 
 class RunnerComposedHook(
     parent: TreeNode,
-    private val indexInParent: Int,
+    indexInParent: Int,
     private val phase: HookPhase,
     override val source: HookSource,
 ) : RunnerHook, RunnerTreeNode(), TreeNode {
