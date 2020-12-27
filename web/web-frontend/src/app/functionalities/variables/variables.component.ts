@@ -93,8 +93,10 @@ export class VariablesComponent implements OnInit, OnDestroy {
     addEnvironment(): void {
         this.disableModal = true;
         this.environmentEditModalComponent.addEnvironment(this.projectVariables).subscribe( (selectedEnvironment: string) => {
-            this.selectedEnvironmentName = selectedEnvironment;
-            this.projectVariables.currentEnvironment = this.selectedEnvironmentName;
+            if (selectedEnvironment) {
+                this.selectedEnvironmentName = selectedEnvironment;
+                this.projectVariables.currentEnvironment = this.selectedEnvironmentName;
+            }
 
             this.initState(this.projectVariables);
             this.disableModal = false;

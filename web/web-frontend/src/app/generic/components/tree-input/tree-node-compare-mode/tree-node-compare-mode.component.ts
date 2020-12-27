@@ -12,7 +12,7 @@ export class TreeNodeCompareModeComponent {
 
     @Input() selectedCompareMode = CompareMode.CONTAINS;
     @Input() editMode: boolean;
-    @Output() change: EventEmitter<CompareMode> = new EventEmitter();
+    @Output() compareModeChange: EventEmitter<CompareMode> = new EventEmitter();
     CompareMode=CompareMode;
 
     getAllCompareModes(): Array<CompareMode> {
@@ -21,6 +21,6 @@ export class TreeNodeCompareModeComponent {
 
     setCompareMode(mode: string) {
         this.selectedCompareMode = CompareMode.getByText(mode);
-        this.change.emit(this.selectedCompareMode);
+        this.compareModeChange.emit(this.selectedCompareMode);
     }
 }

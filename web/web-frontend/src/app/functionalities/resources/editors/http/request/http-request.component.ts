@@ -167,7 +167,7 @@ export class HttpRequestComponent extends ResourceComponent<HttpRequest> impleme
     }
 
     isFormValid(): boolean {
-        return this.form.valid;
+        return this.form ? this.form.valid : true;
     }
 
     getForm(): NgForm {

@@ -1,11 +1,6 @@
 package com.testerum.runner_cmdline.cmdline.params
 
-import com.testerum.common_kotlin.doesNotExist
-import com.testerum.common_kotlin.exists
-import com.testerum.common_kotlin.isDirectory
-import com.testerum.common_kotlin.isNotADirectory
-import com.testerum.common_kotlin.isNotReadable
-import com.testerum.common_kotlin.readText
+import com.testerum.common_kotlin.*
 import com.testerum.runner_cmdline.cmdline.params.exception.CmdlineParamsParserException
 import com.testerum.runner_cmdline.cmdline.params.model.CmdlineParams
 import com.testerum.runner_cmdline.cmdline.params.model.HelpRequested
@@ -247,7 +242,7 @@ object CmdlineParamsParser {
         }
 
         return Pair(
-            text.substring(0, indexOfEquals - 1),
+            text.substring(0, indexOfEquals),
             text.substring(indexOfEquals + 1)
         )
     }

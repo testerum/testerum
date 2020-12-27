@@ -10,11 +10,7 @@ import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
 import com.testerum.model.runner.tree.builder.TestPathAndModel
 import com.testerum.model.test.TestModel
-import com.testerum.model.tests_finder.FeatureTestPath
-import com.testerum.model.tests_finder.ScenariosTestPath
-import com.testerum.model.tests_finder.TestPath
-import com.testerum.model.tests_finder.TestTestPath
-import com.testerum.model.tests_finder.TestsFinder
+import com.testerum.model.tests_finder.*
 import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
@@ -29,6 +25,7 @@ import com.testerum.web_backend.services.runner.execution.model.RunningTestExecu
 import com.testerum.web_backend.services.runner.execution.model.TestExecution
 import com.testerum.web_backend.services.runner.execution.model.TestExecutionResponse
 import com.testerum.web_backend.services.runner.execution.stopper.ProcessKillerTestExecutionStopper
+import com.testerum.web_backend.services.runner.execution.util.toPathWithScenarioIndexes
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.zeroturnaround.exec.ProcessExecutor
@@ -94,10 +91,12 @@ class TestsExecutionFrontendService(
             projectId = projectId
         )
 
+        val testToExecute = testsMap.toPathWithScenarioIndexes()
+
         testExecutionsById[executionId] = TestExecution(
             executionId = executionId,
             settings = runConfig.settings,
-            testOrDirectoryPathsToRun = runConfig.pathsToInclude,
+            testOrDirectoryPathsToRun = testToExecute,
             projectRootDir = projectRootDir,
             variablesEnvironment = currentEnvironment
         )

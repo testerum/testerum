@@ -15,7 +15,6 @@ export class DynamicInputComponent implements OnInit{
     @Input() value: string;
     @Input() possibleValues: string[];
     @Output() valueChange = new EventEmitter();
-    @Output() change: EventEmitter<string> = new EventEmitter<string>();
 
     possibleValuesAsSelectItems: SelectItem[] = [];
     InputTypeEnum = InputTypeEnum;
@@ -32,7 +31,6 @@ export class DynamicInputComponent implements OnInit{
 
     onValueChange() {
         this.valueChange.emit(this.value);
-        this.change.emit(this.value);
     }
 
     onNumberChange() {

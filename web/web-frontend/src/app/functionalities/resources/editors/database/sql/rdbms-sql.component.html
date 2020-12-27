@@ -28,8 +28,7 @@
     <div class="my-line full-height-line ">
         <label class="my-label label-size">SQL Script</label>
         <div class="my-value full-height-value">
-            <rdbms-sql-editor-component [sqlText]="model.content"
-                                        (change)="sqlChange($event)"
+            <rdbms-sql-editor-component [(sqlText)]="model.content"
                                         [editMode]="editMode"></rdbms-sql-editor-component>
         </div>
     </div>
