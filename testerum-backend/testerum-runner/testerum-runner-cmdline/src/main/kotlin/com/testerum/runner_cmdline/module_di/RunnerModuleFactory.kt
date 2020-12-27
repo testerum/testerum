@@ -12,7 +12,7 @@ import com.testerum.runner_cmdline.logger.TesterumLoggerImpl
 import com.testerum.runner_cmdline.module_di.submodules.RunnerListenersModuleFactory
 import com.testerum.runner_cmdline.module_di.submodules.RunnerTransformersModuleFactory
 import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
-import com.testerum.runner_cmdline.runner_tree.builder.RunnerExecutionTreeBuilder
+import com.testerum.runner_cmdline.runner_tree.RunnerExecutionTreeBuilder
 import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.settings.RunnerSettingsManagerImpl
 import com.testerum.runner_cmdline.settings.RunnerTesterumDirsImpl

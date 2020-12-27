@@ -16,7 +16,7 @@ import com.testerum.runner_cmdline.events.EventsService
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
 import com.testerum.runner_cmdline.object_factory.GlueObjectFactoryFinder
 import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
-import com.testerum.runner_cmdline.runner_tree.builder.RunnerExecutionTreeBuilder
+import com.testerum.runner_cmdline.runner_tree.RunnerExecutionTreeBuilder
 import com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
