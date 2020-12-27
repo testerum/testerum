@@ -10,7 +10,11 @@ import com.testerum.model.runner.tree.RunnerRootNode
 import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
 import com.testerum.model.runner.tree.builder.TestPathAndModel
 import com.testerum.model.test.TestModel
-import com.testerum.model.tests_finder.*
+import com.testerum.model.tests_finder.FeatureTestPath
+import com.testerum.model.tests_finder.ScenariosTestPath
+import com.testerum.model.tests_finder.TestPath
+import com.testerum.model.tests_finder.TestTestPath
+import com.testerum.model.tests_finder.TestsFinder
 import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
@@ -91,7 +95,8 @@ class TestsExecutionFrontendService(
             projectId = projectId
         )
 
-        val testToExecute = testsMap.toPathWithScenarioIndexes()
+        val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
+        val testToExecute = testsMap.toPathWithScenarioIndexes(featuresDir)
 
         testExecutionsById[executionId] = TestExecution(
             executionId = executionId,
