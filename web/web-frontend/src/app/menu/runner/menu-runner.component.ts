@@ -7,6 +7,7 @@ import {RunConfigComponentService} from "../../functionalities/config/run-config
 import {Subscription} from "rxjs";
 import {ContextService} from "../../service/context.service";
 import {TestsRunnerService} from "../../functionalities/features/tests-runner/tests-runner.service";
+import {UrlService} from "../../service/url.service";
 
 @Component({
     selector: 'menu-runner',
@@ -28,7 +29,8 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
                 private runConfigService: RunConfigService,
                 private runConfigComponentService: RunConfigComponentService,
                 private runConfigModalService: RunConfigModalService,
-                private testsRunnerService: TestsRunnerService) {
+                private testsRunnerService: TestsRunnerService,
+                private urlService: UrlService) {
     }
 
     ngOnInit() {
@@ -118,6 +120,8 @@ export class MenuRunnerComponent implements OnInit, OnDestroy {
     }
 
     onExecuteRunConfig() {
+        this.urlService.navigateToProject();
+
         let selectedRunner = this.getSelectedRunner(this.selectedItem);
         if (selectedRunner != null) {
             this.testsRunnerService.runRunConfig(selectedRunner);
