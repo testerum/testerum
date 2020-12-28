@@ -14,74 +14,74 @@ import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgP
 import com.testerum_api.testerum_steps_api.test_context.test_vars.VariableNotFoundException
 import org.apache.commons.text.StringEscapeUtils
 
-class VariablesContext private constructor(
-    private val argsVars: Map<String, Any?>,
-    private val dynamicVars: DynamicVariablesContext,
-    private val globalVars: GlobalVariablesContext
-) {
+class VariablesContext(globalVarsMap: Map<String, String>) {
 
     companion object {
         private val ARG_PART_PARSER: ParserExecuter<List<FileArgPart>> = ParserExecuter(FileArgPartParserFactory.argParts())
 
-        fun forTest(dynamicVars: DynamicVariablesContext, globalVars: GlobalVariablesContext) = VariablesContext(emptyMap(), dynamicVars, globalVars)
+        fun forTest(dynamicVars: DynamicVarsContext, globalVars: GlobalVarsContext) = VariablesContext(emptyMap(), dynamicVars, globalVars)
     }
 
-    fun getArgsVars(): Map<String, Any?> = argsVars
+    private var _argsVars: ArgsContext = null
+    private var _dynamicVars: DynamicVarsContext? = null
+    private val globalVars = GlobalVarsContext.from(globalVarsMap)
+
+    private val argsVars: ArgsContext
+        get() = _argsVars ?: throw RuntimeException("no args context a")
+
+    fun containsKey(name: String): Boolean {
+        return argsVars.containsKey(name)
+            || dynamicVars.containsKey(name)
+            || globalVars.containsKey(name)
+    }
+
+    fun get(name: String): Any? {
+        return when {
+            argsVars.containsKey(name) -> argsVars.get(name)
+            dynamicVars.containsKey(name) -> dynamicVars.get(name)
+            globalVars.containsKey(name) -> globalVars.get(name)
+            else -> throw VariableNotFoundException(name)
+        }
+    }
+
+    fun setArg(name: String, value: Any?) {
+        argsVars.set(name, value)
+    }
+
+    fun set(name: String, value: Any?) {
+        argsVars.set(name, value)
+
+        // this is needed so that, when we set a dynamic variable with the same name as an argument,
+        // this dynamic variable overrides an ancestor arg
+        var current: ArgsContext? = argsVars.parent
+        while (current != null) {
+            if (current.containsKey(name)) {
+                current.set(name, value)
+            }
+
+            current = current.parent
+        }
+
+        dynamicVars.set(name, value)
+    }
+
+    fun startSuite() {
+    }
+
+    fun endSuite() {
+        // should pop one level of dynamicVars, but we don't care what happens after end suite
+    }
+
+    fun
+
+    // todo: should we make these 3 toMap() methods public API? in any case, it should be an unmodifiable view
+
+    fun getArgsVars(): Map<String, Any?> = argsVars.toMap()
 
     fun getDynamicVars(): Map<String, Any?> = dynamicVars.toMap()
 
     fun getGlobalVars(): Map<String, Any?> = globalVars.toMap()
 
-    fun forStep(stepCall: StepCall): VariablesContext {
-        val argsVars = mutableMapOf<String, Any?>()
-
-        val stepDef: StepDef = stepCall.stepDef
-
-        val params: List<ParamStepPatternPart> = stepDef.stepPattern.getParamStepPattern()
-        val args: List<Arg> = stepCall.args
-
-        for (i in 0 until params.size) {
-            val param: ParamStepPatternPart = params[i]
-            val arg: Arg = args[i]
-
-            val paramName: String = param.name
-
-            argsVars[paramName] = this.resolveIn(arg)
-        }
-
-        return VariablesContext(argsVars, dynamicVars, globalVars)
-    }
-
-    fun contains(name: String): Boolean = argsVars.containsKey(name)
-        || dynamicVars.containsKey(name)
-        || globalVars.containsKey(name)
-
-    operator fun get(name: String): Any? = when {
-        argsVars.containsKey(name) -> argsVars[name]
-        dynamicVars.containsKey(name) -> dynamicVars[name]
-        globalVars.containsKey(name) -> globalVars[name]
-        else -> throw VariableNotFoundException(name)
-    }
-
-    fun setDynamicVariable(name: String, value: Any?): Any? = dynamicVars.set(name, value)
-
-    fun toMap(): Map<String, Any?> {
-        // todo: this looks slow...
-        val result = LinkedHashMap<String, Any?>()
-
-        result.putAll(globalVars.toMap())
-        result.putAll(dynamicVars.toMap())
-        result.putAll(argsVars)
-
-        // evaluate expressions in values
-        for ((key, value) in result) {
-            if (value is String) {
-                result[key] = resolveInText(value, result)
-            }
-        }
-
-        return result
-    }
 
     fun resolveIn(arg: Arg): Any? {
         val escape: (String) -> String = if (arg.typeMeta is ObjectTypeMeta) {

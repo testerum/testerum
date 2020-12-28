@@ -17,8 +17,8 @@ import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTestException
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
+import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVarsContext
+import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVarsContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamSerializer
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
@@ -68,7 +68,7 @@ class RunnerScenario(
         this.afterHooks = afterHooksList
     }
 
-    fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
+    fun run(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
         try {
             return tryToRun(context, globalVars)
         } catch (e: Exception) {
@@ -76,7 +76,7 @@ class RunnerScenario(
         }
     }
 
-    private fun tryToRun(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
+    private fun tryToRun(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
         if (test.properties.isDisabled) {
             return disable(context)
         }
@@ -92,7 +92,7 @@ class RunnerScenario(
 
         val startTime = System.currentTimeMillis()
         try {
-            val dynamicVars = DynamicVariablesContext()
+            val dynamicVars = DynamicVarsContext()
 
             for (param in scenario.params) {
                 val actualValue: Any = when (param.type) {

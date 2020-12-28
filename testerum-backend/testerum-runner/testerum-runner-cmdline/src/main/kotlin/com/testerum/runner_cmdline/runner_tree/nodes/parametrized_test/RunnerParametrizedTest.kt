@@ -9,7 +9,7 @@ import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
+import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVarsContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
@@ -30,7 +30,7 @@ class RunnerParametrizedTest(
 
     lateinit var scenarios: List<RunnerScenario>
 
-    override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
+    override fun run(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
         try {
             return tryToRun(context, globalVars)
         } catch (e: Exception) {
@@ -38,7 +38,7 @@ class RunnerParametrizedTest(
         }
     }
 
-    private fun tryToRun(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
+    private fun tryToRun(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
         logParametrizedTestStart(context)
 
         var status: ExecutionStatus = PASSED

@@ -12,8 +12,8 @@ import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
+import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVarsContext
+import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVarsContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
@@ -61,7 +61,7 @@ class RunnerFeature(
         indexInParent = indexInParent
     )
 
-    override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
+    override fun run(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
         try {
             return tryToRun(context, globalVars)
         } catch (e: Exception) {
@@ -69,7 +69,7 @@ class RunnerFeature(
         }
     }
 
-    private fun tryToRun(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
+    private fun tryToRun(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
         logFeatureStart(context)
 
         var status: ExecutionStatus = PASSED
@@ -77,7 +77,7 @@ class RunnerFeature(
 
         val startTime = System.currentTimeMillis()
         try {
-            val dynamicVars = DynamicVariablesContext()
+            val dynamicVars = DynamicVarsContext()
             val vars = VariablesContext.forTest(dynamicVars, globalVars)
             context.testVariables.setVariablesContext(vars)
 

@@ -19,7 +19,7 @@ import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
 import com.testerum.runner_cmdline.runner_tree.RunnerExecutionTreeBuilder
 import com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
+import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVarsContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.test_context.TestContextImpl
 import com.testerum.runner_cmdline.transformer.TransformerFactory
@@ -120,7 +120,7 @@ class RunnerApplication(
 
         // setup variables
         val projectId = runnerProjectManager.getProjectServices().project.id
-        val globalVars = GlobalVariablesContext.from(
+        val globalVars = GlobalVarsContext.from(
             variablesFileService.getMergedVariables(
                 projectVariablesDir = getProjectVariablesDir(),
                 fileLocalVariablesFile = testerumDirs.getFileLocalVariablesFile(),

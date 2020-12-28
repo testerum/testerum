@@ -1,14 +1,15 @@
 package com.testerum.runner_cmdline.runner_tree.vars_context
 
 import com.testerum_api.testerum_steps_api.test_context.test_vars.VariableNotFoundException
+import java.util.Collections
 
-class DynamicVariablesContext {
+class ArgsContext(val parent: ArgsContext?) {
 
-    private val vars = mutableMapOf<String, Any?>()
+    private val vars = HashMap<String, Any?>()
 
     fun containsKey(name: String): Boolean = vars.containsKey(name)
 
-    operator fun get(name: String): Any? {
+    fun get(name: String): Any? {
         if (!vars.containsKey(name)) {
             throw VariableNotFoundException(name)
         }
@@ -16,10 +17,9 @@ class DynamicVariablesContext {
         return vars[name]
     }
 
-    operator fun set(name: String, value: Any?): Any? {
-        return vars.put(name, value)
+    fun set(name: String, value: Any?) {
+        vars[name] = value
     }
 
-    fun toMap(): Map<String, Any?> = vars
-
+    fun toMap(): Map<String, Any?> = Collections.unmodifiableMap(vars)
 }
