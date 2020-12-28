@@ -11,16 +11,14 @@ import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
-import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTest
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 class RunnerFeature(
     parent: TreeNode,
@@ -31,15 +29,8 @@ class RunnerFeature(
     val feature: Feature
 ) : RunnerFeatureOrTest(), ContainerTreeNode {
 
-    companion object {
-        private val LOG: Logger = LoggerFactory.getLogger(RunnerTest::class.java)
-    }
-
-    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
         ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
-
-    override val parent: RunnerTreeNode
-        get() = _parent
 
     private val children = mutableListOf<RunnerFeatureOrTest>()
 
@@ -112,7 +103,7 @@ class RunnerFeature(
                 status = afterHooksStatus
             }
         } catch (e: Exception) {
-            status = ExecutionStatus.FAILED
+            status = FAILED
             exception = e
         } finally {
             logFeatureEnd(context, status, exception, durationMillis = System.currentTimeMillis() - startTime)
@@ -137,7 +128,7 @@ class RunnerFeature(
                 }
             }
         } catch (e: Exception) {
-            status = ExecutionStatus.FAILED
+            status = FAILED
             exception = e
         } finally {
             logFeatureEnd(context, status, exception, durationMillis = System.currentTimeMillis() - startTime)

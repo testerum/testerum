@@ -150,18 +150,25 @@ export class RunnerTreeUtil {
                 this.getAllNodesMapByEventKeyOfContainer(childNode, result);
             }
 
-            let eventKey = "";
-            let eventKeyParent: RunnerTreeNodeModel = childNode;
-            while (!(eventKeyParent instanceof JsonTreeModel)) {
-                eventKey = this.appendParentNodeToEventKey(eventKey, eventKeyParent);
-                eventKeyParent = eventKeyParent.getParent() as RunnerTreeContainerNodeModel;
-            }
+            let eventKey = this.getNodeFullEventKey(childNode);
             result.set(eventKey, childNode);
         }
     }
 
-    private static appendParentNodeToEventKey(eventKey: string, node: RunnerTreeNodeModel): string {
-        return node.id + "_" + node.parentContainer.getChildren().indexOf(node, 0) + "#" + eventKey
+    private static getNodeFullEventKey(node: RunnerTreeNodeModel) {
+        let eventKey = "";
+
+        let currentNode: RunnerTreeNodeModel = node;
+        while (!(currentNode instanceof JsonTreeModel)) {
+            eventKey = this.getNodeEventKey(currentNode) + "#" + eventKey;
+            currentNode = currentNode.getParent() as RunnerTreeContainerNodeModel;
+        }
+
+        return eventKey;
+    }
+
+    private static getNodeEventKey(node: RunnerTreeNodeModel): string {
+        return node.id + "_" + node.parentContainer.getChildren().indexOf(node, 0);
     }
 
     static getNumberOfSimpleTestsAndScenarios(treeRootNode: RunnerRootTreeNodeModel): number {

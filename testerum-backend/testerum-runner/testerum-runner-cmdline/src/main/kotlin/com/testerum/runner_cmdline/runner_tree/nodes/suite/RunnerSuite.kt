@@ -17,6 +17,7 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesCont
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 
 class RunnerSuite(
@@ -25,15 +26,15 @@ class RunnerSuite(
     val feature: Feature
 ) : RunnerTreeNode(), ContainerTreeNode {
 
-    private val children = mutableListOf<RunnerFeatureOrTest>()
-
-    val featuresOrTests: List<RunnerFeatureOrTest>
-        get() = children
-
     override val parent: RunnerTreeNode? = null
 
     override val positionInParent: PositionInParent
         get() = EventKey.SUITE_POSITION_IN_PARENT
+
+    private val children = mutableListOf<RunnerFeatureOrTest>()
+
+    val featuresOrTests: List<RunnerFeatureOrTest>
+        get() = children
 
     override val childrenCount: Int
         get() = children.size
@@ -71,7 +72,10 @@ class RunnerSuite(
 
             // children
             if (suiteStatus == PASSED) {
-                suiteStatus = runTests(context, globalVars, suiteStatus)
+                val childrenStatus = runChildren(context, globalVars, suiteStatus)
+                if (childrenStatus > suiteStatus) {
+                    suiteStatus = childrenStatus
+                }
             } else {
                 skipFeaturesOrTests(context)
             }
@@ -82,7 +86,7 @@ class RunnerSuite(
                 suiteStatus = afterHooksStatus
             }
         } catch (e: Exception) {
-            suiteStatus = ExecutionStatus.FAILED
+            suiteStatus = FAILED
             exception = e
         } finally {
             val durationMillis = System.currentTimeMillis() - startTime
@@ -93,7 +97,7 @@ class RunnerSuite(
         return suiteStatus
     }
 
-    private fun runTests(
+    private fun runChildren(
         context: RunnerContext,
         globalVars: GlobalVariablesContext,
         suiteExecutionStatus: ExecutionStatus

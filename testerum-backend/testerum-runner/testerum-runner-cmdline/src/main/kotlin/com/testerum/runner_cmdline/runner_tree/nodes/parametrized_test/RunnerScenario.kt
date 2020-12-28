@@ -22,6 +22,11 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesConte
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamSerializer
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.DISABLED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.UNDEFINED
 import java.nio.file.Path as JavaPath
 
 class RunnerScenario(
@@ -39,11 +44,8 @@ class RunnerScenario(
         )
     }
 
-    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
         ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
-
-    override val parent: RunnerTreeNode
-        get() = _parent
 
     private lateinit var steps: List<RunnerStep>
 
@@ -66,14 +68,6 @@ class RunnerScenario(
         this.afterHooks = afterHooksList
     }
 
-    private fun getPathForLogging(): String {
-        return "scenario [$scenarioName] (index $originalScenarioIndex) of test at [${filePath.toAbsolutePath().normalize()}]"
-    }
-
-    private fun getNameForLogging(): String {
-        return "scenario [$scenarioName] (index $originalScenarioIndex) of test [${test.name}] at [${test.path}]"
-    }
-
     fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         try {
             return tryToRun(context, globalVars)
@@ -93,7 +87,7 @@ class RunnerScenario(
 
         logScenarioStart(context)
 
-        var status: ExecutionStatus = ExecutionStatus.PASSED
+        var status: ExecutionStatus = PASSED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
@@ -119,11 +113,11 @@ class RunnerScenario(
 
             // scenario
             if (steps.isEmpty()) {
-                status = ExecutionStatus.UNDEFINED
+                status = UNDEFINED
                 context.logMessage("marking ${getNameForLogging()} as $status because it doesn't have any steps")
             } else {
                 for (step in steps) {
-                    if (status == ExecutionStatus.PASSED || status == ExecutionStatus.DISABLED) {
+                    if (status <= PASSED) {
                         val stepStatus: ExecutionStatus = step.run(context, vars)
 
                         if (stepStatus > status) {
@@ -141,7 +135,7 @@ class RunnerScenario(
                 status = afterAllHooksStatus
             }
         } catch (e: Exception) {
-            status = ExecutionStatus.FAILED
+            status = FAILED
             exception = e
         } finally {
             try {
@@ -165,7 +159,7 @@ class RunnerScenario(
     fun skip(context: RunnerContext): ExecutionStatus {
         logScenarioStart(context)
 
-        var executionStatus = ExecutionStatus.SKIPPED
+        var executionStatus = SKIPPED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
@@ -174,18 +168,19 @@ class RunnerScenario(
                 step.skip(context)
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.FAILED
+            executionStatus = FAILED
             exception = e
         } finally {
             logScenarioEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
-            return executionStatus
         }
+
+        return executionStatus
     }
 
     private fun disable(context: RunnerContext): ExecutionStatus {
         logScenarioStart(context)
 
-        var executionStatus = ExecutionStatus.DISABLED
+        var executionStatus = DISABLED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
@@ -194,12 +189,13 @@ class RunnerScenario(
                 step.disable(context)
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.FAILED
+            executionStatus = FAILED
             exception = e
         } finally {
             logScenarioEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
-            return executionStatus
         }
+
+        return executionStatus
     }
 
     private fun logScenarioStart(context: RunnerContext) {
@@ -247,6 +243,14 @@ class RunnerScenario(
                 durationMillis = durationMillis
             )
         )
+    }
+
+    private fun getPathForLogging(): String {
+        return "scenario [$scenarioName] (index $originalScenarioIndex) of test at [${filePath.toAbsolutePath().normalize()}]"
+    }
+
+    private fun getNameForLogging(): String {
+        return "scenario [$scenarioName] (index $originalScenarioIndex) of test [${test.name}] at [${test.path}]"
     }
 
     override fun toString(): String = buildString { addToString(this, 0) }

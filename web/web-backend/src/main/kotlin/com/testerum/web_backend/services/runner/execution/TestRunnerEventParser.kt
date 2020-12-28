@@ -54,7 +54,7 @@ class TestRunnerEventParser(private val jsonObjectMapper: ObjectMapper,
                     TextLogEvent(
                             time = LocalDateTime.now(),
                             eventKey = eventKeysStack.lastOrNull() ?: EventKey.SUITE_EVENT_KEY,
-                            logLevel = LogLevel.DEBUG,
+                            logLevel = LogLevel.INFO,
                             message = eventAsString,
                             exceptionDetail = null
                     )

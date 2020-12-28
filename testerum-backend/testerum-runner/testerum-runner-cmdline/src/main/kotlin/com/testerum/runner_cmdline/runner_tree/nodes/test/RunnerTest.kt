@@ -17,8 +17,11 @@ import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVariablesCont
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.DISABLED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.UNDEFINED
 import java.nio.file.Path as JavaPath
 
 class RunnerTest(
@@ -28,28 +31,18 @@ class RunnerTest(
     val indexInParent: Int,
 ) : RunnerFeatureOrTest(), ContainerTreeNode {
 
-    companion object {
-        private val LOG: Logger = LoggerFactory.getLogger(RunnerTest::class.java)
-    }
-
-    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
         ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
-
-    override val parent: RunnerTreeNode
-        get() = _parent
 
     override val positionInParent = PositionInParent(test.id, indexInParent)
 
-    private val _children = mutableListOf<RunnerStep>()
-
-    val children: List<RunnerStep>
-        get() = _children
+    private val children = mutableListOf<RunnerStep>()
 
     override val childrenCount: Int
         get() = children.size
 
     override fun addChild(child: TreeNode) {
-        _children += child as? RunnerStep
+        children += child as? RunnerStep
             ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
     }
 
@@ -79,7 +72,7 @@ class RunnerTest(
 
         logTestStart(context)
 
-        var status: ExecutionStatus = ExecutionStatus.PASSED
+        var status: ExecutionStatus = PASSED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
@@ -94,11 +87,11 @@ class RunnerTest(
             status = beforeHooks.run(context, globalVars)
 
             if (children.isEmpty()) {
-                status = ExecutionStatus.UNDEFINED
+                status = UNDEFINED
                 context.logMessage("marking test [${test.name}] at [${test.path}] as $status because it doesn't have any steps")
             } else {
                 for (step in children) {
-                    if (status <= ExecutionStatus.PASSED) {
+                    if (status <= PASSED) {
                         val stepStatus: ExecutionStatus = step.run(context, vars)
 
                         if (stepStatus > status) {
@@ -116,7 +109,7 @@ class RunnerTest(
                 status = afterAllHooksStatus
             }
         } catch (e: Exception) {
-            status = ExecutionStatus.FAILED
+            status = FAILED
             exception = e
         } finally {
             try {
@@ -140,7 +133,7 @@ class RunnerTest(
     override fun skip(context: RunnerContext): ExecutionStatus {
         logTestStart(context)
 
-        var executionStatus = ExecutionStatus.SKIPPED
+        var executionStatus = SKIPPED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
@@ -149,7 +142,7 @@ class RunnerTest(
                 step.skip(context)
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.FAILED
+            executionStatus = FAILED
             exception = e
         } finally {
             logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)
@@ -161,7 +154,7 @@ class RunnerTest(
     private fun disable(context: RunnerContext): ExecutionStatus {
         logTestStart(context)
 
-        var executionStatus = ExecutionStatus.DISABLED
+        var executionStatus = DISABLED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
@@ -170,7 +163,7 @@ class RunnerTest(
                 step.disable(context)
             }
         } catch (e: Exception) {
-            executionStatus = ExecutionStatus.FAILED
+            executionStatus = FAILED
             exception = e
         } finally {
             logTestEnd(context, executionStatus, exception, durationMillis = System.currentTimeMillis() - startTime)

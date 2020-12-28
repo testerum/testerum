@@ -22,21 +22,20 @@ object RunnerStepNodeFactory {
             is UndefinedStepDef -> RunnerUndefinedStep(parentNode, stepCall, indexInParent, logEvents)
             is BasicStepDef -> RunnerBasicStep(parentNode, stepCall, indexInParent, logEvents)
             is ComposedStepDef -> {
-                val nestedSteps = mutableListOf<RunnerStep>()
-
-                for ((nestedIndexInParent, nestedStepCall) in stepDef.stepCalls.withIndex()) {
-                    val nestedRunnerStep = create(parentNode, nestedIndexInParent, nestedStepCall, logEvents)
-
-                    nestedSteps += nestedRunnerStep
-                }
-
-                RunnerComposedStep(
+                val runnerComposedStep = RunnerComposedStep(
                     parent = parentNode,
                     stepCall = stepCall,
                     indexInParent = indexInParent,
-                    steps = nestedSteps,
                     logEvents = logEvents
                 )
+
+                for ((nestedIndexInParent, nestedStepCall) in stepDef.stepCalls.withIndex()) {
+                    runnerComposedStep.addChild(
+                        create(runnerComposedStep, nestedIndexInParent, nestedStepCall, logEvents)
+                    )
+                }
+
+                runnerComposedStep
             }
             else -> throw RuntimeException("unknown StepDef type [${stepDef.javaClass.name}]")
         }

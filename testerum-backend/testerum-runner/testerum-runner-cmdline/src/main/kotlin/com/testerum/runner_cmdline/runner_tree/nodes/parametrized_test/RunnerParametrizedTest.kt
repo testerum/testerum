@@ -11,6 +11,9 @@ import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
+import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
 import java.nio.file.Path as JavaPath
 
 class RunnerParametrizedTest(
@@ -20,19 +23,12 @@ class RunnerParametrizedTest(
     val indexInParent: Int,
 ) : RunnerFeatureOrTest(), TreeNode {
 
-    private val _parent: RunnerTreeNode = parent as? RunnerTreeNode
+    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
         ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
-
-    override val parent: RunnerTreeNode
-        get() = _parent
 
     override val positionInParent = PositionInParent(test.id, indexInParent)
 
-    private lateinit var scenarios: List<RunnerScenario>
-
-    fun setScenarios(scenarios: List<RunnerScenario>) {
-        this.scenarios = scenarios
-    }
+    lateinit var scenarios: List<RunnerScenario>
 
     override fun run(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         try {
@@ -45,7 +41,7 @@ class RunnerParametrizedTest(
     private fun tryToRun(context: RunnerContext, globalVars: GlobalVariablesContext): ExecutionStatus {
         logParametrizedTestStart(context)
 
-        var status: ExecutionStatus = ExecutionStatus.PASSED
+        var status: ExecutionStatus = PASSED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
@@ -58,7 +54,7 @@ class RunnerParametrizedTest(
                 }
             }
         } catch (e: Exception) {
-            status = ExecutionStatus.FAILED
+            status = FAILED
             exception = e
         } finally {
             logParametrizedTestEnd(context, status, exception, durationMillis = System.currentTimeMillis() - startTime)
@@ -70,7 +66,7 @@ class RunnerParametrizedTest(
     override fun skip(context: RunnerContext): ExecutionStatus {
         logParametrizedTestStart(context)
 
-        var status = ExecutionStatus.SKIPPED
+        var status = SKIPPED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
@@ -83,12 +79,13 @@ class RunnerParametrizedTest(
                 }
             }
         } catch (e: Exception) {
-            status = ExecutionStatus.FAILED
+            status = FAILED
             exception = e
         } finally {
             logParametrizedTestEnd(context, status, exception, durationMillis = System.currentTimeMillis() - startTime)
-            return status
         }
+
+        return status
     }
 
     private fun logParametrizedTestStart(context: RunnerContext) {
