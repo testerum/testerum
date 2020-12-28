@@ -13,8 +13,13 @@
     display: inline-block;
 }
 
-.step-action-panel {
-    margin-left: 10px;
+.sub-steps-buttons {
+    display: flex;
+    align-items: center;
+
+    .step-action-panel {
+        margin-left: 10px;
+    }
 }
 
 .phase-input {

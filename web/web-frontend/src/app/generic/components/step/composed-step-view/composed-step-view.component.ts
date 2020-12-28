@@ -214,6 +214,9 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     addStep() {
+        if (!this.isEditMode) {
+            this.setEditMode(true)
+        }
         this.stepCallTreeComponent.stepCallTreeComponentService.addStepCallEditor(this.stepCallTreeComponent.jsonTreeModel);
     }
 
