@@ -1,4 +1,12 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    Input,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {FlowUtil} from "../../../utils/flow.util";
 import {OverlayPanel} from "primeng/overlaypanel";
 
@@ -6,7 +14,8 @@ import {OverlayPanel} from "primeng/overlaypanel";
     selector: 'info-icon',
     templateUrl: './info-icon.component.html',
     styleUrls: ['./info-icon.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush //under certain condition the app throws [Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value:] this is a fix
 })
 export class InfoIconComponent {
 
@@ -31,8 +40,9 @@ export class InfoIconComponent {
         if (!this.isVisible) {
             this.isVisible = true;
             this.overlayPanel.show(event, this.actualTargetElement.nativeElement);
-        }
 
+            this.refresh();
+        }
     }
 
     waitAndHide(event: any) {
@@ -42,9 +52,10 @@ export class InfoIconComponent {
             await FlowUtil.delay(250);
             if (this.isVisible && this.shouldHide) {
                 this.overlayPanel.hide();
-                this.isVisible = false;
 
                 this.refresh();
+
+                this.isVisible = false;
             }
         })();
     }
