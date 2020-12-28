@@ -120,6 +120,7 @@ import {MessageService} from "primeng/api";
 import {StepUsageDialogComponent} from "./components/step/composed-step-view/usage-dialog/step-usage-dialog.component";
 import {StepUsageDialogService} from "./components/step/composed-step-view/usage-dialog/step-usage-dialog.service";
 import {RouterModule} from "@angular/router";
+import {AutoWidthDirective} from "./directives/auto-width.directive";
 
 @NgModule({
     imports: [
@@ -154,6 +155,7 @@ import {RouterModule} from "@angular/router";
         SafeUrlPipe,
 
         FocusDirective,
+        AutoWidthDirective,
 
         ErrorFeedbackModalComponent,
         ErrorComponent,
@@ -218,6 +220,7 @@ import {RouterModule} from "@angular/router";
         SafeUrlPipe,
 
         FocusDirective,
+        AutoWidthDirective,
 
         ErrorFeedbackModalComponent,
         ErrorComponent,
