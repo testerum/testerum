@@ -38,6 +38,9 @@ abstract class RunnerStep(
         val startTime = System.currentTimeMillis()
         try {
             executionStatus = doRun(context)
+        } catch (e: AssertionError) {
+            executionStatus = ExecutionStatus.FAILED
+            exception = e
         } catch (e: Exception) {
             executionStatus = ExecutionStatus.FAILED
             exception = e
