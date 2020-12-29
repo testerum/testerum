@@ -24,6 +24,7 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.UNDEFINED
+import org.apache.commons.text.StringEscapeUtils
 import java.nio.file.Path as JavaPath
 
 class RunnerScenario(
@@ -92,11 +93,16 @@ class RunnerScenario(
         try {
             for (param in scenario.params) {
                 val actualValue: Any = when (param.type) {
-                    ScenarioParamType.TEXT -> param.value
-                    ScenarioParamType.JSON -> JsJson(param.value)
+                    ScenarioParamType.TEXT -> context.variablesContext.resolveIn(param.value)
+                    ScenarioParamType.JSON -> JsJson(
+                        context.variablesContext.resolveIn(param.value) { StringEscapeUtils.escapeJson(it) }
+                    )
                 }
 
-                context.variablesContext.set(param.name, actualValue)
+                context.variablesContext.setArg(
+                    name = param.name,
+                    value = actualValue
+                )
             }
 
             context.glueObjectFactory.beforeTest()

@@ -1,11 +1,15 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.step.impl
 
 import com.testerum.common_kotlin.indent
+import com.testerum.model.arg.Arg
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
+import com.testerum.model.step.StepDef
+import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
+import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.UNDEFINED
@@ -34,6 +38,8 @@ class RunnerComposedStep(
         var status: ExecutionStatus = PASSED
 
         context.variablesContext.startComposedStep()
+        setArgs(stepCall, context.variablesContext)
+
         for (step in steps) {
             if (status <= PASSED) {
                 val nestedStatus: ExecutionStatus = step.execute(context)
@@ -48,6 +54,25 @@ class RunnerComposedStep(
         context.variablesContext.endComposedStep()
 
         return status
+    }
+
+    private fun setArgs(
+        stepCall: StepCall,
+        variablesContext: VariablesContext
+    ) {
+        val stepDef: StepDef = stepCall.stepDef
+
+        val params: List<ParamStepPatternPart> = stepDef.stepPattern.getParamStepPattern()
+        val args: List<Arg> = stepCall.args
+
+        for (i in params.indices) {
+            val param: ParamStepPatternPart = params[i]
+            val arg: Arg = args[i]
+
+            val paramName: String = param.name
+
+            variablesContext.setArg(paramName, variablesContext.resolveIn(arg))
+        }
     }
 
     override fun doSkip(context: RunnerContext) {
