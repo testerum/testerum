@@ -20,7 +20,7 @@ class DynamicVarsContext {
     }
 
     fun containsKey(name: String): Boolean {
-        val iterator = stack.listIterator()
+        val iterator = stack.listIterator(stack.size)
         while (iterator.hasPrevious()) {
             val stackLevel = iterator.previous()
 
@@ -35,7 +35,7 @@ class DynamicVarsContext {
     fun getKeys(): Set<String> {
         val result = HashSet<String>()
 
-        val iterator = stack.listIterator()
+        val iterator = stack.listIterator(stack.size)
         while (iterator.hasPrevious()) {
             val stackLevel = iterator.previous()
 
@@ -46,7 +46,7 @@ class DynamicVarsContext {
     }
 
     fun get(name: String): Any? {
-        val iterator = stack.listIterator()
+        val iterator = stack.listIterator(stack.size)
         while (iterator.hasPrevious()) {
             val stackLevel = iterator.previous()
 

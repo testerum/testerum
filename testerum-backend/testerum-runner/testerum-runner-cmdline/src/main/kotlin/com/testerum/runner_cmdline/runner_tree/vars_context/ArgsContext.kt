@@ -20,6 +20,10 @@ class ArgsContext {
     }
 
     fun containsKey(name: String): Boolean {
+        if (stack.isEmpty()) {
+            return false
+        }
+
         return currentLevel().containsKey(name)
     }
 
