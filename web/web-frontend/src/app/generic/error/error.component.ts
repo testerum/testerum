@@ -29,10 +29,6 @@ export class ErrorComponent implements OnInit {
                 if(error instanceof FullLogErrorResponse ||
                     error instanceof JavaScriptError) {
 
-                    if(this.isErrorToIgnore(error)) {
-                        return;
-                    }
-
                     this.messageService.add({
                         summary: "Oops... One of our bugs has escaped!",
                         detail: "We are making mistakes too!\n" +
@@ -82,26 +78,5 @@ export class ErrorComponent implements OnInit {
 
     refreshPage() {
         this.contextService.refreshPage();
-    }
-
-    private isErrorToIgnore(error: MyError): boolean {
-        if(this.isInfoIconError(error)) {
-            console.log("Error TM-1538 ignored")
-            return true
-        }
-        return false;
-    }
-
-    //Error ticket: TM-1538
-    private isInfoIconError(error: MyError): boolean {
-        if (!(error instanceof JavaScriptError)) return false;
-        if (!error.error) return false;
-        if (!error.error.message) return false;
-        if (error.error.message != "Cannot read property 'offsetHeight' of null") return false;
-        if (!error.error.stack) return false;
-        if (error.error.stack.indexOf("at Function.absolutePosition") < 0) return false;
-        if (error.error.stack.indexOf("onAnimationStart") < 0) return false;
-
-        return true;
     }
 }

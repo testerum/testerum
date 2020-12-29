@@ -38,10 +38,14 @@ export class InfoIconComponent {
         this.shouldHide = false;
 
         if (!this.isVisible) {
-            this.isVisible = true;
-            this.overlayPanel.show(event, this.actualTargetElement.nativeElement);
 
-            this.refresh();
+            //this if is a workaround for bug: TM-1538 [ui] Info icon continues to cause problems in some situations when you hover over
+            if (this.overlayPanel.target === null || this.overlayPanel.target === undefined) {
+                this.isVisible = true;
+                this.overlayPanel.show(event, this.actualTargetElement.nativeElement);
+
+                this.refresh();
+            }
         }
     }
 
