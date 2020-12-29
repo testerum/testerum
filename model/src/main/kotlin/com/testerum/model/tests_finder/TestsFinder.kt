@@ -33,25 +33,25 @@ object TestsFinder {
             }
         }
 
-        // 1. add those specified in tagsToInclude
-        for ((path, test) in allTests) {
-            if (test.tags.any { it in tagsToInclude }) {
-                result[path] = test
-            }
-        }
+        addTestsFromTagsToInclude(result, allTests, tagsToInclude)
 
-        // 2. remove those specified in tagsToExclude
-        result.iterator().also { iterator ->
-            for ((_, test) in iterator) {
-                if (test.tags.any { it in tagsToExclude }) {
-                    iterator.remove()
-                }
-            }
-        }
+        removeTestsFromTagsToExclude(result, tagsToExclude)
 
-        // 3. add those specified in testPaths
-        if (testPaths.isEmpty()) {
+        addTestsThatAreSelected(result, testPaths, allTests, tagsToInclude, tagsToExclude)
+
+        return result
+    }
+
+    private fun addTestsThatAreSelected(
+        result: LinkedHashMap<TestPath, TestModel>,
+        testPaths: List<TestPath>,
+        allTests: LinkedHashMap<TestPath, TestModel>,
+        tagsToInclude: List<String>,
+        tagsToExclude: List<String>
+    ) {
+        if (testPaths.isEmpty() && tagsToInclude.isEmpty()) {
             result.putAll(allTests)
+            removeTestsFromTagsToExclude(result, tagsToExclude)
         } else {
             val canonicalTestFileOrDirPaths = testPaths.map {
                 when (it) {
@@ -73,8 +73,31 @@ object TestsFinder {
                 }
             }
         }
+    }
 
-        return result
+    private fun removeTestsFromTagsToExclude(
+        result: LinkedHashMap<TestPath, TestModel>,
+        tagsToExclude: List<String>
+    ) {
+        result.iterator().also { iterator ->
+            for ((_, test) in iterator) {
+                if (test.tags.any { it in tagsToExclude }) {
+                    iterator.remove()
+                }
+            }
+        }
+    }
+
+    private fun addTestsFromTagsToInclude(
+        result: LinkedHashMap<TestPath, TestModel>,
+        allTests: LinkedHashMap<TestPath, TestModel>,
+        tagsToInclude: List<String>
+    ) {
+        for ((path, test) in allTests) {
+            if (test.tags.any { it in tagsToInclude }) {
+                result[path] = test
+            }
+        }
     }
 
     private fun loadTest(testPath: JavaPath,
@@ -106,5 +129,4 @@ object TestsFinder {
 
         return result
     }
-
 }
