@@ -1,39 +1,66 @@
 package com.testerum.common.expression_evaluator
 
+import com.testerum.common.expression_evaluator.bindings.VarsContainerBindings
+import com.testerum.common.expression_evaluator.bindings.vars_container.CompositeVarsContainer
+import com.testerum.common.expression_evaluator.bindings.vars_container.MapBasedVarsContainer
+import com.testerum.common.expression_evaluator.bindings.vars_container.VarsContainer
 import com.testerum.common.expression_evaluator.helpers.ScriptingHelper
-import com.testerum.common.expression_evaluator.helpers.impl.*
+import com.testerum.common.expression_evaluator.helpers.impl.DataGeneratorScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.DateScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.EscapeHelper
+import com.testerum.common.expression_evaluator.helpers.impl.GenerateStringByRegexScriptingHelper
+import com.testerum.common.expression_evaluator.helpers.impl.TestHelper
+import com.testerum.common.expression_evaluator.helpers.impl.UuidScriptingHelper
 import jdk.nashorn.internal.runtime.ECMAException
 import javax.script.Bindings
 import javax.script.ScriptEngineManager
 
 object ExpressionEvaluator {
 
-    // todo: make these configurable
-    private val helpers: List<ScriptingHelper> = listOf(
+    private val globals: Map<String, Any?> = run {
+        val result = HashMap<String, Any?>()
+
+        // todo: make these configurable
+        val helpers: List<ScriptingHelper> = listOf(
             UuidScriptingHelper,
             DateScriptingHelper,
             DataGeneratorScriptingHelper,
             GenerateStringByRegexScriptingHelper,
             EscapeHelper,
             TestHelper
-    )
+        )
+
+        for (helper in helpers) {
+            for ((name, value) in helper.globalVariables) {
+                result[name] = value
+            }
+        }
+
+        return@run result
+    }
 
     private val jsEngine = ScriptEngineManager().getEngineByName("nashorn")
 
-    fun evaluate(expression: String,
-                 context: Map<String, Any?>): Any? {
-        val bindings: Bindings = jsEngine.createBindings().apply {
-            for (helper in helpers) {
-                val globalVariables = helper.globalVariables
+    fun evaluate(
+        expression: String,
+        context: Map<String, Any?>
+    ): Any? {
+        return evaluate(
+            expression = expression,
+            varsContainer = MapBasedVarsContainer(HashMap(context))
+        )
+    }
 
-                for ((name, value) in globalVariables) {
-                    put(name, value)
-                }
+    fun evaluate(
+        expression: String,
+        varsContainer: VarsContainer,
+    ): Any? {
+        val bindings: Bindings = VarsContainerBindings(
+            CompositeVarsContainer().apply {
+                addMap(globals)
+                addContainer(varsContainer)
             }
-
-            putAll(context)
-            put("vars", context)
-        }
+        )
 
         try {
             return jsEngine.eval(expression, bindings)

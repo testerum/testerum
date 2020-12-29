@@ -13,9 +13,6 @@ import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVarsContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVarsContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
@@ -55,57 +52,56 @@ class RunnerSuite(
         this.afterHooks = afterHooksList
     }
 
-    fun run(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
+    fun execute(context: RunnerContext): ExecutionStatus {
         logSuiteStart(context)
 
-        var suiteStatus: ExecutionStatus = PASSED
+        var status: ExecutionStatus = PASSED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
+        context.variablesContext.startSuite()
         try {
-            val dynamicVars = DynamicVarsContext()
-            val vars = VariablesContext.forTest(dynamicVars, globalVars)
-            context.testVariables.setVariablesContext(vars)
 
             // before all hooks
-            suiteStatus = beforeHooks.run(context, globalVars)
+            status = beforeHooks.execute(context)
 
             // children
-            if (suiteStatus == PASSED) {
-                val childrenStatus = runChildren(context, globalVars, suiteStatus)
-                if (childrenStatus > suiteStatus) {
-                    suiteStatus = childrenStatus
+            if (status == PASSED) {
+                val childrenStatus = runChildren(context, status)
+                if (childrenStatus > status) {
+                    status = childrenStatus
                 }
             } else {
                 skipFeaturesOrTests(context)
             }
 
             // after all hooks
-            val afterHooksStatus = afterHooks.run(context, globalVars)
-            if (afterHooksStatus > suiteStatus) {
-                suiteStatus = afterHooksStatus
+            val afterHooksStatus = afterHooks.execute(context)
+            if (afterHooksStatus > status) {
+                status = afterHooksStatus
             }
         } catch (e: Exception) {
-            suiteStatus = FAILED
+            status = FAILED
             exception = e
         } finally {
+            context.variablesContext.endSuite()
+
             val durationMillis = System.currentTimeMillis() - startTime
 
-            logSuiteEnd(context, suiteStatus, exception, durationMillis)
+            logSuiteEnd(context, status, exception, durationMillis)
         }
 
-        return suiteStatus
+        return status
     }
 
     private fun runChildren(
         context: RunnerContext,
-        globalVars: GlobalVarsContext,
         suiteExecutionStatus: ExecutionStatus
     ): ExecutionStatus {
         var status = suiteExecutionStatus
 
         for (featureOrTest in children) {
-            val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
+            val featureOrTestStatus: ExecutionStatus = featureOrTest.execute(context)
 
             if (featureOrTestStatus > status) {
                 status = featureOrTestStatus

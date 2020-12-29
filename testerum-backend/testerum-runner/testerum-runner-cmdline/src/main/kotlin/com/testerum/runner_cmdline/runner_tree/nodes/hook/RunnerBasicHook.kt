@@ -2,7 +2,6 @@ package com.testerum.runner_cmdline.runner_tree.nodes.hook
 
 import com.testerum.common_kotlin.indent
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import org.slf4j.Logger
@@ -21,7 +20,7 @@ class RunnerBasicHook(private val hookDef: HookDef) : RunnerHook {
         methodName = hookDef.methodName
     )
 
-    override fun run(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
+    override fun execute(context: RunnerContext): ExecutionStatus {
         LOG.info("start executing hook $hookDef")
         try {
             return doRun(context)

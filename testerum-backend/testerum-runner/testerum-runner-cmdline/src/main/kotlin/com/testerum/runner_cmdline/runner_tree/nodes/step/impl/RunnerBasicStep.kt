@@ -8,7 +8,6 @@ import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.runner_cmdline.transformer.TransformerFactory
 import com.testerum_api.testerum_steps_api.annotations.steps.Param
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
@@ -45,7 +44,7 @@ class RunnerBasicStep(
     private val stepDef: BasicStepDef = stepCall.stepDef as? BasicStepDef
         ?: throw IllegalArgumentException("this step call is not a basic step")
 
-    override fun doRun(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
+    override fun doRun(context: RunnerContext): ExecutionStatus {
         val stepClass: Class<*> = try {
             context.stepsClassLoader.loadClass(stepDef.className)
         } catch (e: ClassNotFoundException) {
@@ -56,7 +55,7 @@ class RunnerBasicStep(
         val stepMethod: Method = stepClass.getMethod(stepDef.methodName, *stepParamsTypes.toTypedArray())
 
         val stepInstance: Any = context.glueObjectFactory.getInstance(stepClass)
-        val untransformedStepMethodArguments: List<Any?> = stepCall.args.map { vars.resolveIn(it) }
+        val untransformedStepMethodArguments: List<Any?> = stepCall.args.map { context.variablesContext.resolveIn(it) }
 
         val stepMethodArguments: List<Any?> = transformMethodArguments(
             untransformedStepMethodArguments,

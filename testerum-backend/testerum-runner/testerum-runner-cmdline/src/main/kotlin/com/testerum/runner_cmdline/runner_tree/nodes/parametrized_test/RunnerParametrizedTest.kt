@@ -9,7 +9,6 @@ import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVarsContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
@@ -30,15 +29,15 @@ class RunnerParametrizedTest(
 
     lateinit var scenarios: List<RunnerScenario>
 
-    override fun run(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
+    override fun execute(context: RunnerContext): ExecutionStatus {
         try {
-            return tryToRun(context, globalVars)
+            return tryToRun(context)
         } catch (e: Exception) {
             throw RuntimeException("failed to execute parametrized test at [${filePath.toAbsolutePath().normalize()}]", e)
         }
     }
 
-    private fun tryToRun(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
+    private fun tryToRun(context: RunnerContext): ExecutionStatus {
         logParametrizedTestStart(context)
 
         var status: ExecutionStatus = PASSED
@@ -47,7 +46,7 @@ class RunnerParametrizedTest(
         val startTime = System.currentTimeMillis()
         try {
             for (scenario in scenarios) {
-                val scenarioStatus: ExecutionStatus = scenario.run(context, globalVars)
+                val scenarioStatus: ExecutionStatus = scenario.execute(context)
 
                 if (scenarioStatus > status) {
                     status = scenarioStatus

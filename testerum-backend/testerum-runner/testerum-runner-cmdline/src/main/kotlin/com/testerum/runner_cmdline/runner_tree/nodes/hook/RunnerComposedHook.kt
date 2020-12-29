@@ -7,7 +7,6 @@ import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 
 class RunnerComposedHook(
@@ -28,7 +27,7 @@ class RunnerComposedHook(
         this.step = step
     }
 
-    override fun run(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
+    override fun execute(context: RunnerContext): ExecutionStatus {
         logComposedHookStart(context)
 
         var executionStatus = ExecutionStatus.PASSED
@@ -36,7 +35,7 @@ class RunnerComposedHook(
 
         val startTime = System.currentTimeMillis()
         try {
-            val nestedStatus: ExecutionStatus = step.run(context, vars)
+            val nestedStatus: ExecutionStatus = step.execute(context)
 
             if (nestedStatus > executionStatus) {
                 executionStatus = nestedStatus

@@ -1,9 +1,9 @@
 package selenium.actions.util
 
-import com.testerum.common.expression_evaluator.ExpressionEvaluator
 import com.testerum_api.testerum_steps_api.annotations.steps.Param
 import com.testerum_api.testerum_steps_api.annotations.steps.When
 import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.script_executer.ScriptExecuter
 import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 import org.openqa.selenium.JavascriptExecutor
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
@@ -14,6 +14,7 @@ class WebDriverExpressionSteps {
     private val logger = TesterumServiceLocator.getTesterumLogger()
 
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
+    private val scriptExecuter: ScriptExecuter = TesterumServiceLocator.getScriptExecuter()
     private val webDriverManager: WebDriverManager = SeleniumModuleServiceLocator.bootstrapper.seleniumModuleFactory.webDriverManager
 
     @When(
@@ -26,9 +27,7 @@ class WebDriverExpressionSteps {
                     "- ``failTest(message)`` - function that allows to fail the test with the given message (String).\n" +
                     "- ``webDriver``     - this is a WebDriver instance and allows you to execute any Selenium action you want (e.g. ``webDriver.findElement(By.id('submit').click();``).\n"
     )
-    fun executeWebDriverJsScript(
-            script: String
-    ) {
+    fun executeWebDriverJsScript(script: String) {
         logger.info(
                 "executing JS WebDriver script:\n" +
                 "--------\n" +
@@ -37,19 +36,11 @@ class WebDriverExpressionSteps {
         )
 
         webDriverManager.executeWebDriverStep { driver ->
-            val context = hashMapOf<String, Any?>()
+            val context = mapOf<String, Any?>(
+                "webDriver" to driver
+            )
 
-            // variables
-            context.putAll(variables.toMap())
-
-            // services
-            context["testLogger"] = logger
-            context["testVariables"] = variables
-
-            // misc
-            context["webDriver"] = driver
-
-            ExpressionEvaluator.evaluate(script, context)
+            scriptExecuter.executeScript(script)
         }
     }
 

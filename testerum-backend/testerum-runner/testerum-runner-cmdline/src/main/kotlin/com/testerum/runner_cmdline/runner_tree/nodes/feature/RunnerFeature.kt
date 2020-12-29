@@ -12,9 +12,6 @@ import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVarsContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVarsContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
@@ -61,33 +58,30 @@ class RunnerFeature(
         indexInParent = indexInParent
     )
 
-    override fun run(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
+    override fun execute(context: RunnerContext): ExecutionStatus {
         try {
-            return tryToRun(context, globalVars)
+            return tryToRun(context)
         } catch (e: Exception) {
             throw RuntimeException("failed to execute feature [$featureName]", e)
         }
     }
 
-    private fun tryToRun(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
+    private fun tryToRun(context: RunnerContext): ExecutionStatus {
         logFeatureStart(context)
 
         var status: ExecutionStatus = PASSED
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
+        context.variablesContext.startFeature()
         try {
-            val dynamicVars = DynamicVarsContext()
-            val vars = VariablesContext.forTest(dynamicVars, globalVars)
-            context.testVariables.setVariablesContext(vars)
-
             // before all hooks
-            status = beforeHooks.run(context, globalVars)
+            status = beforeHooks.execute(context)
 
             // children
             for (featureOrTest in children) {
                 if (status <= PASSED) {
-                    val featureOrTestStatus: ExecutionStatus = featureOrTest.run(context, globalVars)
+                    val featureOrTestStatus: ExecutionStatus = featureOrTest.execute(context)
 
                     if (featureOrTestStatus > status) {
                         status = featureOrTestStatus
@@ -98,7 +92,7 @@ class RunnerFeature(
             }
 
             // after all hooks
-            val afterHooksStatus = afterHooks.run(context, globalVars)
+            val afterHooksStatus = afterHooks.execute(context)
             if (afterHooksStatus > status) {
                 status = afterHooksStatus
             }
@@ -106,6 +100,8 @@ class RunnerFeature(
             status = FAILED
             exception = e
         } finally {
+            context.variablesContext.endFeature()
+
             logFeatureEnd(context, status, exception, durationMillis = System.currentTimeMillis() - startTime)
         }
 

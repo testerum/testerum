@@ -1,42 +1,65 @@
 package com.testerum.runner_cmdline.runner_tree.vars_context
 
 import com.testerum_api.testerum_steps_api.test_context.test_vars.VariableNotFoundException
-import java.util.Collections
 
-class DynamicVarsContext(val parent: DynamicVarsContext?) {
+class DynamicVarsContext {
 
-    private val vars = HashMap<String, Any?>()
+    private val stack = ArrayDeque<MutableMap<String, Any?>>()
+
+    private fun currentLevel(): MutableMap<String, Any?> {
+        return stack.lastOrNull()
+            ?: throw RuntimeException("empty stack")
+    }
+
+    fun push() {
+        stack.addLast(HashMap())
+    }
+
+    fun pop() {
+        stack.removeLast()
+    }
 
     fun containsKey(name: String): Boolean {
-        var current: DynamicVarsContext? = this
-        while (current != null) {
-            if (current.vars.containsKey(name)) {
+        val iterator = stack.listIterator()
+        while (iterator.hasPrevious()) {
+            val stackLevel = iterator.previous()
+
+            if (stackLevel.containsKey(name)) {
                 return true
             }
-
-            current = current.parent
         }
 
         return false
     }
 
-    fun get(name: String): Any? {
-        var current: DynamicVarsContext? = this
-        while (current != null) {
-            if (current.vars.containsKey(name)) {
-                return current.vars[name]
-            }
+    fun getKeys(): Set<String> {
+        val result = HashSet<String>()
 
-            current = current.parent
+        val iterator = stack.listIterator()
+        while (iterator.hasPrevious()) {
+            val stackLevel = iterator.previous()
+
+            result.addAll(stackLevel.keys)
+        }
+
+        return result
+    }
+
+    fun get(name: String): Any? {
+        val iterator = stack.listIterator()
+        while (iterator.hasPrevious()) {
+            val stackLevel = iterator.previous()
+
+            if (stackLevel.containsKey(name)) {
+                return stackLevel[name]
+            }
         }
 
         throw VariableNotFoundException(name)
     }
 
-    fun set(name: String, value: Any?): Any? {
-        return vars.put(name, value)
+    fun set(name: String, value: Any?) {
+        currentLevel()[name] = value
     }
-
-    fun toMap(): Map<String, Any?> = Collections.unmodifiableMap(vars)
 
 }

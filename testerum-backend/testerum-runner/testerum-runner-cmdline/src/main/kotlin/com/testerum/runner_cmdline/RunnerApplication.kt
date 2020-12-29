@@ -16,11 +16,12 @@ import com.testerum.runner_cmdline.events.EventsService
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
 import com.testerum.runner_cmdline.object_factory.GlueObjectFactoryFinder
 import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
+import com.testerum.runner_cmdline.runner_api_services.ScriptExecuterImpl
+import com.testerum.runner_cmdline.runner_api_services.TestVariablesImpl
 import com.testerum.runner_cmdline.runner_tree.RunnerExecutionTreeBuilder
 import com.testerum.runner_cmdline.runner_tree.nodes.suite.RunnerSuite
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVarsContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
+import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.runner_cmdline.test_context.TestContextImpl
 import com.testerum.runner_cmdline.transformer.TransformerFactory
 import com.testerum.settings.TesterumDirs
@@ -28,6 +29,7 @@ import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.TestContext
 import com.testerum_api.testerum_steps_api.test_context.logger.TesterumLogger
+import com.testerum_api.testerum_steps_api.test_context.script_executer.ScriptExecuter
 import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsManager
 import com.testerum_api.testerum_steps_api.test_context.settings.RunnerTesterumDirs
 import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
@@ -44,7 +46,6 @@ class RunnerApplication(
     private val eventsService: EventsService,
     private val runnerExecutionTreeBuilder: RunnerExecutionTreeBuilder,
     private val variablesFileService: VariablesFileService,
-    private val testVariables: TestVariablesImpl,
     private val executionListenerFinder: ExecutionListenerFinder,
     private val globalTransformers: List<Transformer<*>>,
     private val testerumLogger: TesterumLogger,
@@ -86,6 +87,33 @@ class RunnerApplication(
         // setup runner services
         val stepsClassLoader: ClassLoader = stepsClassLoader()
         val testContext = TestContextImpl(stepsClassLoader = stepsClassLoader)
+        val glueObjectFactory: GlueObjectFactory = GlueObjectFactoryFinder.findGlueObjectFactory(testContext)
+        val transformerFactory = TransformerFactory(glueObjectFactory, globalTransformers)
+
+        // setup variables
+        val projectId = runnerProjectManager.getProjectServices().project.id
+        val variablesContext = VariablesContext(
+            globalVarsMap = variablesFileService.getMergedVariables(
+                projectVariablesDir = getProjectVariablesDir(),
+                fileLocalVariablesFile = testerumDirs.getFileLocalVariablesFile(),
+                projectId = projectId,
+                currentEnvironment = cmdlineParams.variablesEnvironment,
+                variableOverrides = cmdlineParams.variableOverrides
+            )
+        )
+        val testVariables = TestVariablesImpl(variablesContext)
+        val runnerContext = RunnerContext(
+            eventsService = eventsService,
+            stepsClassLoader = stepsClassLoader,
+            glueObjectFactory = glueObjectFactory,
+            transformerFactory = transformerFactory,
+            variablesContext = variablesContext,
+            testVariables = testVariables,
+            testContext = testContext
+        )
+        val scriptExecuter = ScriptExecuterImpl(variablesContext)
+
+        // register runner services
         @Suppress("DEPRECATION")
         run {
             TesterumServiceLocator.registerService(TestVariables::class.java, testVariables)
@@ -93,19 +121,8 @@ class RunnerApplication(
             TesterumServiceLocator.registerService(RunnerTesterumDirs::class.java, runnerTesterumDirs)
             TesterumServiceLocator.registerService(TesterumLogger::class.java, testerumLogger)
             TesterumServiceLocator.registerService(TestContext::class.java, testContext)
+            TesterumServiceLocator.registerService(ScriptExecuter::class.java, scriptExecuter)
         }
-        val glueObjectFactory: GlueObjectFactory = GlueObjectFactoryFinder.findGlueObjectFactory(testContext)
-        val transformerFactory = TransformerFactory(glueObjectFactory, globalTransformers)
-
-        // create RunnerContext
-        val runnerContext = RunnerContext(
-            eventsService = eventsService,
-            stepsClassLoader = stepsClassLoader,
-            glueObjectFactory = glueObjectFactory,
-            transformerFactory = transformerFactory,
-            testVariables = testVariables,
-            testContext = testContext
-        )
 
         // add steps to GlueObjectFactory
         for (glueClassName in suite.glueClassNames) {
@@ -118,23 +135,11 @@ class RunnerApplication(
             runnerContext.glueObjectFactory.addClass(glueClass)
         }
 
-        // setup variables
-        val projectId = runnerProjectManager.getProjectServices().project.id
-        val globalVars = GlobalVarsContext.from(
-            variablesFileService.getMergedVariables(
-                projectVariablesDir = getProjectVariablesDir(),
-                fileLocalVariablesFile = testerumDirs.getFileLocalVariablesFile(),
-                projectId = projectId,
-                currentEnvironment = cmdlineParams.variablesEnvironment,
-                variableOverrides = cmdlineParams.variableOverrides
-            )
-        )
-
         // execute tests
         eventsService.start()
         println("STARTUP TIME: ${stopWatch.elapsedMillis()}ms")
         val executionStatus: ExecutionStatus = runWithThreadContextClassLoader(stepsClassLoader) {
-            suite.run(runnerContext, globalVars)
+            suite.execute(runnerContext)
         }
 
         // report status

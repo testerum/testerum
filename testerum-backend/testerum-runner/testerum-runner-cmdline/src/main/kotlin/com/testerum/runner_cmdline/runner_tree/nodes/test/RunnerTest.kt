@@ -13,9 +13,6 @@ import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVarsContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVarsContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.DISABLED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
@@ -57,15 +54,15 @@ class RunnerTest(
         this.afterHooks = afterHooksList
     }
 
-    override fun run(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
+    override fun execute(context: RunnerContext): ExecutionStatus {
         try {
-            return tryToRun(context, globalVars)
+            return tryToRun(context)
         } catch (e: Exception) {
             throw RuntimeException("failed to execute test at [${filePath.toAbsolutePath().normalize()}]", e)
         }
     }
 
-    private fun tryToRun(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
+    private fun tryToRun(context: RunnerContext): ExecutionStatus {
         if (test.properties.isDisabled) {
             return disable(context)
         }
@@ -76,15 +73,12 @@ class RunnerTest(
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
+        context.variablesContext.startTest()
         try {
             context.glueObjectFactory.beforeTest()
 
-            val dynamicVars = DynamicVarsContext()
-            val vars = VariablesContext.forTest(dynamicVars, globalVars)
-            context.testVariables.setVariablesContext(vars)
-
             // before all hooks
-            status = beforeHooks.run(context, globalVars)
+            status = beforeHooks.execute(context)
 
             if (children.isEmpty()) {
                 status = UNDEFINED
@@ -92,7 +86,7 @@ class RunnerTest(
             } else {
                 for (step in children) {
                     if (status <= PASSED) {
-                        val stepStatus: ExecutionStatus = step.run(context, vars)
+                        val stepStatus: ExecutionStatus = step.execute(context)
 
                         if (stepStatus > status) {
                             status = stepStatus
@@ -104,7 +98,7 @@ class RunnerTest(
             }
 
             // after all hooks
-            val afterAllHooksStatus = afterHooks.run(context, globalVars)
+            val afterAllHooksStatus = afterHooks.execute(context)
             if (afterAllHooksStatus > status) {
                 status = afterAllHooksStatus
             }
@@ -112,6 +106,8 @@ class RunnerTest(
             status = FAILED
             exception = e
         } finally {
+            context.variablesContext.endTest()
+
             try {
                 context.glueObjectFactory.afterTest()
             } catch (e: Exception) {

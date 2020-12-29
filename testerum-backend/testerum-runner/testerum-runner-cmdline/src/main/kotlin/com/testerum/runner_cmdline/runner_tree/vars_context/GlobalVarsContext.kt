@@ -11,6 +11,10 @@ class GlobalVarsContext private constructor(private val vars: Map<String, String
 
     fun containsKey(name: String): Boolean = vars.containsKey(name)
 
+    fun getKeys(): Set<String> {
+        return vars.keys
+    }
+
     fun get(name: String): String {
         if (!vars.containsKey(name)) {
             throw VariableNotFoundException(name)

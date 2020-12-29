@@ -7,7 +7,6 @@ import com.testerum.runner.events.model.StepStartEvent
 import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 
 abstract class RunnerStep(
@@ -22,11 +21,11 @@ abstract class RunnerStep(
 
     override val positionInParent = PositionInParent(stepCall.id, indexInParent)
 
-    protected abstract fun doRun(context: RunnerContext, vars: VariablesContext): ExecutionStatus
+    protected abstract fun doRun(context: RunnerContext): ExecutionStatus
     protected open fun doSkip(context: RunnerContext) {}
     protected open fun doDisable(context: RunnerContext) {}
 
-    fun run(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
+    fun execute(context: RunnerContext): ExecutionStatus {
         if (!stepCall.enabled) {
             return disable(context)
         }
@@ -38,7 +37,7 @@ abstract class RunnerStep(
 
         val startTime = System.currentTimeMillis()
         try {
-            executionStatus = doRun(context, vars)
+            executionStatus = doRun(context)
         } catch (e: Exception) {
             executionStatus = ExecutionStatus.FAILED
             exception = e

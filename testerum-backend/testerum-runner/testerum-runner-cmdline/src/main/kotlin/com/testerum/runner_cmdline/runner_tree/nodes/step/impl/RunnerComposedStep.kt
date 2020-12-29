@@ -6,7 +6,6 @@ import com.testerum.model.step.StepCall
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.UNDEFINED
@@ -24,7 +23,7 @@ class RunnerComposedStep(
         this.steps += step
     }
 
-    override fun doRun(context: RunnerContext, vars: VariablesContext): ExecutionStatus {
+    override fun doRun(context: RunnerContext): ExecutionStatus {
         if (steps.isEmpty()) {
             val executionStatus = UNDEFINED
             context.logMessage("marking composed step [${(stepCall.stepDef as ComposedStepDef).path}] as $executionStatus because it doesn't have any child steps")
@@ -34,12 +33,10 @@ class RunnerComposedStep(
 
         var status: ExecutionStatus = PASSED
 
-        val subVars = vars.forStep(stepCall)
-        context.testVariables.setVariablesContext(subVars)
-
+        context.variablesContext.startComposedStep()
         for (step in steps) {
             if (status <= PASSED) {
-                val nestedStatus: ExecutionStatus = step.run(context, subVars)
+                val nestedStatus: ExecutionStatus = step.execute(context)
 
                 if (nestedStatus > status) {
                     status = nestedStatus
@@ -48,6 +45,7 @@ class RunnerComposedStep(
                 step.skip(context)
             }
         }
+        context.variablesContext.endComposedStep()
 
         return status
     }

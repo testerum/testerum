@@ -8,12 +8,11 @@ import com.testerum.project_manager.module_di.ProjectManagerModuleFactory
 import com.testerum.runner_cmdline.RunnerApplication
 import com.testerum.runner_cmdline.cmdline.params.model.RunCmdlineParams
 import com.testerum.runner_cmdline.events.EventsService
-import com.testerum.runner_cmdline.logger.TesterumLoggerImpl
+import com.testerum.runner_cmdline.runner_api_services.TesterumLoggerImpl
 import com.testerum.runner_cmdline.module_di.submodules.RunnerListenersModuleFactory
 import com.testerum.runner_cmdline.module_di.submodules.RunnerTransformersModuleFactory
 import com.testerum.runner_cmdline.project_manager.RunnerProjectManager
 import com.testerum.runner_cmdline.runner_tree.RunnerExecutionTreeBuilder
-import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
 import com.testerum.runner_cmdline.settings.RunnerSettingsManagerImpl
 import com.testerum.runner_cmdline.settings.RunnerTesterumDirsImpl
 import com.testerum.settings.module_di.SettingsModuleFactory
@@ -67,7 +66,6 @@ class RunnerModuleFactory(
         eventsService = eventsService,
         runnerExecutionTreeBuilder = runnerExecutionTreeBuilder,
         variablesFileService = fileServiceModuleFactory.variablesFileService,
-        testVariables = TestVariablesImpl,
         executionListenerFinder = runnerListenersModuleFactory.executionListenerFinder,
         globalTransformers = runnerTransformersModuleFactory.globalTransformers,
         testerumLogger = testerumLogger,

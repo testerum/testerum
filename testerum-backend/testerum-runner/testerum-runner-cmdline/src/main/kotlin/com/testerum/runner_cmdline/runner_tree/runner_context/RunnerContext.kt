@@ -7,7 +7,8 @@ import com.testerum.runner.events.model.log_level.LogLevel
 import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner.glue_object_factory.GlueObjectFactory
 import com.testerum.runner_cmdline.events.EventsService
-import com.testerum.runner_cmdline.runner_tree.vars_context.TestVariablesImpl
+import com.testerum.runner_cmdline.runner_api_services.TestVariablesImpl
+import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.runner_cmdline.test_context.TestContextImpl
 import com.testerum.runner_cmdline.transformer.TransformerFactory
 import java.time.LocalDateTime
@@ -17,6 +18,7 @@ data class RunnerContext(
     val stepsClassLoader: ClassLoader,
     val glueObjectFactory: GlueObjectFactory,
     val transformerFactory: TransformerFactory,
+    val variablesContext: VariablesContext,
     val testVariables: TestVariablesImpl,
     val testContext: TestContextImpl
 ) {

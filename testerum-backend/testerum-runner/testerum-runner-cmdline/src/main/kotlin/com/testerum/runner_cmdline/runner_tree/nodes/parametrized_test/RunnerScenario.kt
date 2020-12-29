@@ -17,9 +17,6 @@ import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTestException
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.DynamicVarsContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.GlobalVarsContext
-import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
 import com.testerum.test_file_format.testdef.scenarios.FileScenarioParamSerializer
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.DISABLED
@@ -68,15 +65,15 @@ class RunnerScenario(
         this.afterHooks = afterHooksList
     }
 
-    fun run(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
+    fun execute(context: RunnerContext): ExecutionStatus {
         try {
-            return tryToRun(context, globalVars)
+            return tryToRun(context)
         } catch (e: Exception) {
             throw RuntimeException("failed to execute ${getPathForLogging()}", e)
         }
     }
 
-    private fun tryToRun(context: RunnerContext, globalVars: GlobalVarsContext): ExecutionStatus {
+    private fun tryToRun(context: RunnerContext): ExecutionStatus {
         if (test.properties.isDisabled) {
             return disable(context)
         }
@@ -91,25 +88,21 @@ class RunnerScenario(
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
+        context.variablesContext.startScenario()
         try {
-            val dynamicVars = DynamicVarsContext()
-
             for (param in scenario.params) {
                 val actualValue: Any = when (param.type) {
                     ScenarioParamType.TEXT -> param.value
                     ScenarioParamType.JSON -> JsJson(param.value)
                 }
 
-                dynamicVars[param.name] = actualValue
+                context.variablesContext.set(param.name, actualValue)
             }
 
             context.glueObjectFactory.beforeTest()
 
-            val vars = VariablesContext.forTest(dynamicVars, globalVars)
-            context.testVariables.setVariablesContext(vars)
-
             // before all hooks
-            status = beforeHooks.run(context, globalVars)
+            status = beforeHooks.execute(context)
 
             // scenario
             if (steps.isEmpty()) {
@@ -118,7 +111,7 @@ class RunnerScenario(
             } else {
                 for (step in steps) {
                     if (status <= PASSED) {
-                        val stepStatus: ExecutionStatus = step.run(context, vars)
+                        val stepStatus: ExecutionStatus = step.execute(context)
 
                         if (stepStatus > status) {
                             status = stepStatus
@@ -130,7 +123,7 @@ class RunnerScenario(
             }
 
             // after all hooks
-            val afterAllHooksStatus = afterHooks.run(context, globalVars)
+            val afterAllHooksStatus = afterHooks.execute(context)
             if (afterAllHooksStatus > status) {
                 status = afterAllHooksStatus
             }
@@ -138,6 +131,8 @@ class RunnerScenario(
             status = FAILED
             exception = e
         } finally {
+            context.variablesContext.endScenario()
+
             try {
                 context.glueObjectFactory.afterTest()
             } catch (e: Exception) {
