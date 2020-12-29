@@ -28,6 +28,7 @@ export class ErrorComponent implements OnInit {
             (error: MyError) => {
                 if(error instanceof FullLogErrorResponse ||
                     error instanceof JavaScriptError) {
+
                     this.messageService.add({
                         summary: "Oops... One of our bugs has escaped!",
                         detail: "We are making mistakes too!\n" +

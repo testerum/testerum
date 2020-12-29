@@ -58,8 +58,7 @@
             {{model.expectedStatusCode}} {{getStatusCodeText()?" - " + getStatusCodeText():""}}
         </div>
         <div class="my-value" *ngIf="editMode">
-            <input #statusCodeNgModel="ngModel" [(ngModel)]="model.expectedStatusCode"
-                   type="number" min="1" max="600" class="form-control input-3-letters" name="statusCode">
+            <input #statusCodeNgModel="ngModel" size="3" auto-width [(ngModel)]="model.expectedStatusCode" class="form-control status-code-input" name="statusCode">
             <span *ngIf="getStatusCodeText()" class="status-code-text">{{" - " + getStatusCodeText()}}</span>
         </div>
     </div>

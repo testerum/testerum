@@ -33,9 +33,25 @@ object TestsFinder {
             }
         }
 
-        // 1. add those specified in testPaths
-        if (testPaths.isEmpty()) {
+        addTestsFromTagsToInclude(result, allTests, tagsToInclude)
+
+        removeTestsFromTagsToExclude(result, tagsToExclude)
+
+        addTestsThatAreSelected(result, testPaths, allTests, tagsToInclude, tagsToExclude)
+
+        return result
+    }
+
+    private fun addTestsThatAreSelected(
+        result: LinkedHashMap<TestPath, TestModel>,
+        testPaths: List<TestPath>,
+        allTests: LinkedHashMap<TestPath, TestModel>,
+        tagsToInclude: List<String>,
+        tagsToExclude: List<String>
+    ) {
+        if (testPaths.isEmpty() && tagsToInclude.isEmpty()) {
             result.putAll(allTests)
+            removeTestsFromTagsToExclude(result, tagsToExclude)
         } else {
             val canonicalTestFileOrDirPaths = testPaths.map {
                 when (it) {
@@ -57,15 +73,12 @@ object TestsFinder {
                 }
             }
         }
+    }
 
-        // 2. add those specified in tagsToInclude
-        for ((path, test) in allTests) {
-            if (test.tags.any { it in tagsToInclude }) {
-                result[path] = test
-            }
-        }
-
-        // 3. remove those specified in tagsToExclude
+    private fun removeTestsFromTagsToExclude(
+        result: LinkedHashMap<TestPath, TestModel>,
+        tagsToExclude: List<String>
+    ) {
         result.iterator().also { iterator ->
             for ((_, test) in iterator) {
                 if (test.tags.any { it in tagsToExclude }) {
@@ -73,8 +86,18 @@ object TestsFinder {
                 }
             }
         }
+    }
 
-        return result
+    private fun addTestsFromTagsToInclude(
+        result: LinkedHashMap<TestPath, TestModel>,
+        allTests: LinkedHashMap<TestPath, TestModel>,
+        tagsToInclude: List<String>
+    ) {
+        for ((path, test) in allTests) {
+            if (test.tags.any { it in tagsToInclude }) {
+                result[path] = test
+            }
+        }
     }
 
     private fun loadTest(testPath: JavaPath,
@@ -106,5 +129,4 @@ object TestsFinder {
 
         return result
     }
-
 }

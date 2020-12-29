@@ -43,11 +43,12 @@ export class ResourcesContainerComponent {
         this.urlService.navigateToFeature(this.model.path);
     }
 
-    allowDrop():any {
+    allowDrop(): any {
         return (dragData: ResourcesTreeNode) => {
             return !JsonTreePathUtil.isChildOf(dragData, this.model) &&
-                    !JsonTreePathUtil.isDirectChildOf(this.model, dragData) &&
-                    this.model !== dragData}
+                !JsonTreePathUtil.isDirectChildOf(this.model, dragData) &&
+                this.model !== dragData
+        }
     }
 
     showCreateSubResource() {
@@ -92,8 +93,9 @@ export class ResourcesContainerComponent {
         this.jsonTreeService.triggerUpdateContainerAction(this.model.name, siblingNames).subscribe(
             (updateEvent: JsonTreeContainerEditorEvent) => {
 
+                let resourcePathFromRoot = this.getResourcePathFromRoot()
                 this.resourceService.renameDirectory(
-                    new RenamePath(this.model.path, updateEvent.newName)
+                    new RenamePath(resourcePathFromRoot, updateEvent.newName)
                 ).subscribe(
                     (responsePath: Path) => {
                         this.model.name = updateEvent.newName;
@@ -143,7 +145,7 @@ export class ResourcesContainerComponent {
             (copyEvent: JsonTreeContainerEditorEvent) => {
 
                 let copyPath = new CopyPath(pathToCopy, destinationPath);
-                this.resourceService.moveDirectoryOrFile (
+                this.resourceService.moveDirectoryOrFile(
                     copyPath
                 ).subscribe(
                     it => {
@@ -152,5 +154,11 @@ export class ResourcesContainerComponent {
                 )
             }
         )
+    }
+
+    private getResourcePathFromRoot(): Path {
+        let pathFromRoot = this.model.resourceType.rootFilePath.toDirectoryString() + this.model.path.toString(false);
+        let path = Path.createInstance(pathFromRoot);
+        return path.minusPrefix(Path.createInstance("resources"))
     }
 }
