@@ -13,11 +13,13 @@ object TestsFinder {
 
     private val LOG = LoggerFactory.getLogger(TestsFinder::class.java)
 
-    fun loadTestsToRun(testPaths: List<TestPath>,
-                       tagsToInclude: List<String>,
-                       tagsToExclude: List<String>,
-                       testsDirectoryRoot: JavaPath,
-                       loadTestAtPath: (path: Path) -> TestModel?): Map<TestPath, TestModel> {
+    fun loadTestsToRun(
+        testPaths: List<TestPath>,
+        tagsToInclude: List<String>,
+        tagsToExclude: List<String>,
+        testsDirectoryRoot: JavaPath,
+        loadTestAtPath: (path: Path) -> TestModel?
+    ): Map<TestPath, TestModel> {
         val result = LinkedHashMap<TestPath, TestModel>()
 
         // load all tests (except manual tests)
@@ -26,7 +28,7 @@ object TestsFinder {
 
         for (testPath in allTestPaths) {
             val test = loadTest(testPath, testsDirectoryRoot, loadTestAtPath)
-                    ?: continue
+                ?: continue
 
             if (!test.properties.isManual) {
                 allTests[TestTestPath(testPath)] = test
@@ -100,15 +102,17 @@ object TestsFinder {
         }
     }
 
-    private fun loadTest(testPath: JavaPath,
-                         testsDirectoryRoot: JavaPath,
-                         loadTestAtPath: (path: Path) -> TestModel?): TestModel? {
+    private fun loadTest(
+        testPath: JavaPath,
+        testsDirectoryRoot: JavaPath,
+        loadTestAtPath: (path: Path) -> TestModel?
+    ): TestModel? {
         return try {
             val relativeTestPath = testsDirectoryRoot.relativize(testPath)
             val testerumPath = Path.createInstance(relativeTestPath.toString())
 
             loadTestAtPath(testerumPath)
-                    ?: throw RuntimeException("could not find test at [${testPath.toAbsolutePath().normalize()}]")
+                ?: throw RuntimeException("could not find test at [${testPath.toAbsolutePath().normalize()}]")
         } catch (e: Exception) {
             LOG.warn("failed to load test at [${testPath.toAbsolutePath().normalize()}]", e)
 

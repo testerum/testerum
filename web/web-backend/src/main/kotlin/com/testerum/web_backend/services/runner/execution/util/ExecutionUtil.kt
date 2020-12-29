@@ -11,10 +11,11 @@ import java.nio.file.Path as JavaPath
 fun Map<TestPath, TestModel>.toPathWithScenarioIndexes(featuresDir: JavaPath): List<PathWithScenarioIndexes> {
     val result = mutableListOf<PathWithScenarioIndexes>()
 
+    val canonicalFeaturesDir = featuresDir.canonicalize()
+
     for (key in this.keys) {
         val path = Path.createInstance(
-            key.javaPath.canonicalize()
-                .relativize(featuresDir)
+            canonicalFeaturesDir.relativize(key.javaPath)
                 .toString()
         )
         result += when (key) {
