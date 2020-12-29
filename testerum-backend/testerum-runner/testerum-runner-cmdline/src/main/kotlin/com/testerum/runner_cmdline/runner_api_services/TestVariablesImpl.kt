@@ -5,14 +5,6 @@ import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 
 class TestVariablesImpl(private val variablesContext: VariablesContext) : TestVariables {
 
-//    override fun getArgsVars(): Map<String, Any?> = variablesContext.getArgsVars()
-//
-//    override fun getDynamicVars(): Map<String, Any?> = variablesContext.getDynamicVars()
-//
-//    override fun getGlobalVars(): Map<String, Any?> = variablesContext.getGlobalVars()
-//
-//    override fun toMap(): Map<String, Any?> = variablesContext.toMap()
-
     override fun contains(name: String): Boolean = variablesContext.containsKey(name)
 
     override fun get(name: String): Any? = variablesContext.get(name)
