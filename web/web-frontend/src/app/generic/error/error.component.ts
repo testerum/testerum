@@ -86,6 +86,7 @@ export class ErrorComponent implements OnInit {
 
     private isErrorToIgnore(error: MyError): boolean {
         if(this.isInfoIconError(error)) {
+            console.log("Error TM-1538 ignored")
             return true
         }
         return false;
@@ -98,7 +99,8 @@ export class ErrorComponent implements OnInit {
         if (!error.error.message) return false;
         if (error.error.message != "Cannot read property 'offsetHeight' of null") return false;
         if (!error.error.stack) return false;
-        if (error.error.stack.indexOf("at OverlayPanel") < 0) return false;
+        if (error.error.stack.indexOf("at Function.absolutePosition") < 0) return false;
+        if (error.error.stack.indexOf("onAnimationStart") < 0) return false;
 
         return true;
     }
