@@ -1,0 +1,4 @@
+test-def: assert variable
+
+    step: Given the variable <<varName>> with value <<the variable value>>
+    step: Then <<{{varName}}>> is equal to <<the variable value>>

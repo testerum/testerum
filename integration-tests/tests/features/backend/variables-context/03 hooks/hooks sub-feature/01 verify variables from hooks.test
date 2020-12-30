@@ -1,0 +1,6 @@
+test-def: 01 verify variables from hooks
+
+    step: Given the variable <<{{hooks-beforeAll}}>> with value <<hooks-beforeAll-value>>
+    step: Given the variable <<{{hooks-beforeEach}}>> with value <<hooks-beforeEach-value>>
+    step: Given the variable <<{{hooks-afterEach}}>> with value <<hooks-afterEach-value>>
+    step: Given the variable <<{{hooks-afterAll}}>> with value <<hooks-afterAll-value>>

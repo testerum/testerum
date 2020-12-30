@@ -1,0 +1,3 @@
+test-def: arguments are available in sub-steps
+
+    step: Given the step with <<SuperMan>> and <<Pluto>> attributes

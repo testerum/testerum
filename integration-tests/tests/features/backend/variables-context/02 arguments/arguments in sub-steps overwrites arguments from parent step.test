@@ -1,0 +1,3 @@
+test-def: arguments in sub-steps overwrites arguments from parent step
+
+    step: Given the parent step with <<BatMan>> and <<BatCave>> arguments

@@ -1,0 +1,3 @@
+test-def: sub-sub-steps can assign new values to parent attributes - Copy
+
+    step: Given the parent step with the <<SuperMan>> attribute that can be overwritten by a sub-sub-step

@@ -1,4 +1,4 @@
-step-def: Given the parent step with a sub-step that defines a "name" variable with the value <<nameValue: TEXT>>
+step-def: Given the step with a sub-step that defines a "name" variable with the value <<nameValue: TEXT>>
 
     step: Given the step that defines a "name" variable with the value <<{{nameValue}}>>
     step: Then <<{{name}}>> is equal to <<{{nameValue}}>>
