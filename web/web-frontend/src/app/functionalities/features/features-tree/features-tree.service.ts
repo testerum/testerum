@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import {JsonTreeModel} from "../../../generic/components/json-tree/model/json-tree.model";
-import {JsonTreeNode} from "../../../generic/components/json-tree/model/json-tree-node.model";
-import {TestTreeNodeModel} from "./model/test-tree-node.model";
 import {FeatureTreeContainerModel} from "./model/feature-tree-container.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import FeaturesTreeUtil from "./util/features-tree.util";
@@ -34,7 +32,6 @@ export class FeaturesTreeService {
                 if (selectedNode && selectedNode.isContainer()) {
                     (selectedNode as FeatureTreeContainerModel).getNodeState().showChildren = true
                 }
-                this.sort(newJsonTree);
 
                 this.treeModel = newJsonTree;
 
@@ -48,34 +45,6 @@ export class FeaturesTreeService {
             let selectedNode = JsonTreeExpandUtil.expandTreeToPathAndReturnNode(this.treeModel, path);
             this.jsonTreeService.setSelectedNode(selectedNode);
         }
-    }
-
-    private sort(testsJsonTreeModel: JsonTreeModel): void {
-        this.sortChildren(testsJsonTreeModel.children);
-    }
-
-    private sortChildren(children: Array<JsonTreeNode>) {
-
-        children.sort((left: TestTreeNodeModel, right: TestTreeNodeModel) => {
-            if (left.isContainer() && !right.isContainer()) {
-                return -1;
-            }
-
-            if (!left.isContainer() && right.isContainer()) {
-                return 1;
-            }
-
-            if (left.name.toUpperCase() < right.name.toUpperCase()) return -1;
-            if (left.name.toUpperCase() > right.name.toUpperCase()) return 1;
-
-            return 0;
-        });
-
-        children.forEach(it => {
-            if (it.isContainer()) {
-                this.sortChildren((it as FeatureTreeContainerModel).children)
-            }
-        })
     }
 
     setPathToCut(path: Path) {
