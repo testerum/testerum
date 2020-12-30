@@ -17,7 +17,8 @@ class TreeBuilder(private val customizer: TreeBuilderCustomizer) : HasPath {
     private var pathList: List<String> = emptyList()
     private var payload: Any? = null
 
-    override val path = Path.createInstance(pathList.joinToString(separator = "/"))
+    override val path
+        get() = Path.createInstance(pathList.joinToString(separator = "/"))
 
     private val childrenByPath = hashMapOf<List<String>, TreeBuilder>()
 
