@@ -115,9 +115,16 @@
                     <div *ngIf="isEditMode || model.hooks.beforeAll.length != 0" class="hooks-header my-line">
                         <label class="my-label-top">Before All Tests</label>
 
-                        <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
-                             (click)="addHook(beforeAllHooksCallTree); $event.stopPropagation()">
-                            <i class="fa_my-plus" aria-hidden="true"></i>
+                        <!-- BUTTONS -->
+                        <div class="hooks-action-panel inline btn-group">
+                            <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
+                                 (click)="addHook(beforeAllHooksCallTree); $event.stopPropagation()">
+                                <i class="fa_my-plus" aria-hidden="true"></i>
+                            </div>
+                            <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
+                                 (click)="onPaste(this.beforeAllHooksCallTree); $event.stopPropagation()">
+                                <i class="fa_my-paste" aria-hidden="true"></i>
+                            </div>
                         </div>
 
                         <info-icon [message]="getBeforeAllHooksDescription()"  class="step-description-info-icon"></info-icon>
@@ -136,9 +143,16 @@
                     <div *ngIf="isEditMode || model.hooks.beforeEach.length != 0" class="hooks-header my-line">
                         <label class="my-label-top">Before Each Test</label>
 
-                        <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
-                             (click)="addHook(beforeEachHooksCallTree); $event.stopPropagation()">
-                            <i class="fa_my-plus" aria-hidden="true"></i>
+                        <!-- BUTTONS -->
+                        <div class="hooks-action-panel inline btn-group">
+                            <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
+                                 (click)="addHook(beforeEachHooksCallTree); $event.stopPropagation()">
+                                <i class="fa_my-plus" aria-hidden="true"></i>
+                            </div>
+                            <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
+                                 (click)="onPaste(this.beforeEachHooksCallTree); $event.stopPropagation()">
+                                <i class="fa_my-paste" aria-hidden="true"></i>
+                            </div>
                         </div>
 
                         <info-icon [message]="getBeforeEachHooksDescription()"  class="step-description-info-icon"></info-icon>
@@ -157,9 +171,16 @@
                     <div *ngIf="isEditMode || model.hooks.afterEach.length != 0" class="hooks-header my-line">
                         <label class="my-label-top">After Each Test</label>
 
-                        <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
-                             (click)="addHook(afterEachHooksCallTree); $event.stopPropagation()">
-                            <i class="fa_my-plus" aria-hidden="true"></i>
+                        <!-- BUTTONS -->
+                        <div class="hooks-action-panel inline btn-group">
+                            <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
+                                 (click)="addHook(afterEachHooksCallTree); $event.stopPropagation()">
+                                <i class="fa_my-plus" aria-hidden="true"></i>
+                            </div>
+                            <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
+                                 (click)="onPaste(this.afterEachHooksCallTree); $event.stopPropagation()">
+                                <i class="fa_my-paste" aria-hidden="true"></i>
+                            </div>
                         </div>
 
                         <info-icon [message]="getAfterEachHooksDescription()"  class="step-description-info-icon"></info-icon>
@@ -178,9 +199,16 @@
                     <div *ngIf="isEditMode || model.hooks.afterAll.length != 0" class="hooks-header my-line">
                         <label class="my-label-top">After All Tests</label>
 
-                        <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
-                             (click)="addHook(afterAllHooksCallTree); $event.stopPropagation()">
-                            <i class="fa_my-plus" aria-hidden="true"></i>
+                        <!-- BUTTONS -->
+                        <div class="hooks-action-panel inline btn-group">
+                            <div title="Add After Test Hook" class="btn btn-default btn-xs btn-group"
+                                 (click)="addHook(afterAllHooksCallTree); $event.stopPropagation()">
+                                <i class="fa_my-plus" aria-hidden="true"></i>
+                            </div>
+                            <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
+                                 (click)="onPaste(this.afterAllHooksCallTree); $event.stopPropagation()">
+                                <i class="fa_my-paste" aria-hidden="true"></i>
+                            </div>
                         </div>
 
                         <info-icon [message]="getAfterAllHooksDescription()"  class="step-description-info-icon"></info-icon>

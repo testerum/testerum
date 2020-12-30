@@ -325,4 +325,36 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
             "If one of this Hooks throws an exception the tests are not going to be marked as failed.\n" +
             "All the steps defined at the root level will be executed, regardless if a previews step thrown an exception.";
     }
+
+    canPasteStep(): boolean {
+        return this.contextService.stepToCut != null || this.contextService.stepToCopy != null;
+    }
+
+    onPaste(hooksTreeComponent: StepCallTreeComponent) {
+        let stepCallTreeComponentService = hooksTreeComponent.stepCallTreeComponentService;
+
+        let treeModel = hooksTreeComponent.jsonTreeModel;
+        if (this.contextService.stepToCopy) {
+            let stepToCopyModel = this.contextService.stepToCopy.model;
+
+            let newStepCall = stepToCopyModel.stepCall.clone();
+            newStepCall.stepDef = stepToCopyModel.stepCall.stepDef; //do not clone the StepDef, we still want to point to the same def
+
+            stepCallTreeComponentService.addStepCallToParentContainer(newStepCall, treeModel);
+            this.afterPasteOperation(hooksTreeComponent);
+        }
+        if (this.contextService.stepToCut) {
+            let stepToCutModel = this.contextService.stepToCut.model;
+
+            this.contextService.stepToCut.moveStep(treeModel);
+            this.afterPasteOperation(hooksTreeComponent);
+        }
+    }
+
+    private afterPasteOperation(stepsOrHooksTreeComponent: StepCallTreeComponent) {
+        this.contextService.stepToCut = null;
+        this.contextService.stepToCopy = null;
+
+        stepsOrHooksTreeComponent.stepCallTreeComponentService.setSelectedNode(null);
+    }
 }
