@@ -76,19 +76,17 @@ class RunnerFeature(
         context.variablesContext.startFeature()
         try {
             // before all hooks
-            status = beforeHooks.execute(context)
+            val beforeHooksStatus = beforeHooks.execute(context)
+            status = beforeHooksStatus
 
             // children
-            for (featureOrTest in children) {
-                if (status <= PASSED) {
-                    val featureOrTestStatus: ExecutionStatus = featureOrTest.execute(context)
-
-                    if (featureOrTestStatus > status) {
-                        status = featureOrTestStatus
-                    }
-                } else {
-                    featureOrTest.skip(context)
+            if (beforeHooksStatus == PASSED) {
+                val childrenStatus = runChildren(context, status)
+                if (childrenStatus > status) {
+                    status = childrenStatus
                 }
+            } else {
+                skipChildren(context)
             }
 
             // after all hooks
@@ -106,6 +104,29 @@ class RunnerFeature(
         }
 
         return status
+    }
+
+    private fun runChildren(
+        context: RunnerContext,
+        overallStatus: ExecutionStatus,
+    ): ExecutionStatus {
+        var status = overallStatus
+
+        for (child in children) {
+            val childStatus: ExecutionStatus = child.execute(context)
+
+            if (childStatus > status) {
+                status = childStatus
+            }
+        }
+
+        return status
+    }
+
+    private fun skipChildren(context: RunnerContext) {
+        for (child in children) {
+            child.skip(context)
+        }
     }
 
     override fun skip(context: RunnerContext): ExecutionStatus {

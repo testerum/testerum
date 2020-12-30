@@ -21,14 +21,14 @@ class RunnerComposedStep(
     logEvents: Boolean,
 ) : RunnerStep(parent, stepCall, indexInParent, logEvents) {
 
-    private val steps = mutableListOf<RunnerStep>()
+    private val children = mutableListOf<RunnerStep>()
 
-    fun addChild(step: RunnerStep) {
-        this.steps += step
+    fun addChild(child: RunnerStep) {
+        this.children += child
     }
 
     override fun doRun(context: RunnerContext): ExecutionStatus {
-        if (steps.isEmpty()) {
+        if (children.isEmpty()) {
             val executionStatus = UNDEFINED
             context.logMessage("marking composed step [${(stepCall.stepDef as ComposedStepDef).path}] as $executionStatus because it doesn't have any child steps")
 
@@ -40,17 +40,8 @@ class RunnerComposedStep(
         context.variablesContext.startComposedStep()
         setArgs(stepCall, context.variablesContext)
 
-        for (step in steps) {
-            if (status <= PASSED) {
-                val nestedStatus: ExecutionStatus = step.execute(context)
+        status = runChildren(context, status)
 
-                if (nestedStatus > status) {
-                    status = nestedStatus
-                }
-            } else {
-                step.skip(context)
-            }
-        }
         context.variablesContext.endComposedStep()
 
         return status
@@ -75,14 +66,35 @@ class RunnerComposedStep(
         }
     }
 
+    private fun runChildren(
+        context: RunnerContext,
+        overallStatus: ExecutionStatus,
+    ): ExecutionStatus {
+        var status = overallStatus
+
+        for (child in children) {
+            if (status <= PASSED) {
+                val childStatus: ExecutionStatus = child.execute(context)
+
+                if (childStatus > status) {
+                    status = childStatus
+                }
+            } else {
+                child.skip(context)
+            }
+        }
+
+        return status
+    }
+
     override fun doSkip(context: RunnerContext) {
-        for (step in steps) {
+        for (step in children) {
             step.skip(context)
         }
     }
 
     override fun doDisable(context: RunnerContext) {
-        for (step in steps) {
+        for (step in children) {
             step.disable(context)
         }
     }
@@ -94,7 +106,7 @@ class RunnerComposedStep(
         stepCall.toString(destination, 0)
         destination.append("\n")
 
-        for (step in steps) {
+        for (step in children) {
             step.addToString(destination, indentLevel + 1)
         }
     }

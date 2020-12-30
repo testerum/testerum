@@ -78,22 +78,20 @@ class RunnerTest(
             context.glueObjectFactory.beforeTest()
 
             // before all hooks
-            status = beforeHooks.execute(context)
+            val beforeHooksStatus = beforeHooks.execute(context)
+            status = beforeHooksStatus
 
             if (children.isEmpty()) {
                 status = UNDEFINED
                 context.logMessage("marking test [${test.name}] at [${test.path}] as $status because it doesn't have any steps")
             } else {
-                for (step in children) {
-                    if (status <= PASSED) {
-                        val stepStatus: ExecutionStatus = step.execute(context)
-
-                        if (stepStatus > status) {
-                            status = stepStatus
-                        }
-                    } else {
-                        step.skip(context)
+                if (beforeHooksStatus == PASSED) {
+                    val childrenStatus = runChildren(context, status)
+                    if (childrenStatus > status) {
+                        status = childrenStatus
                     }
+                } else {
+                    skipChildren(context)
                 }
             }
 
@@ -124,6 +122,29 @@ class RunnerTest(
         }
 
         return status
+    }
+
+    private fun runChildren(
+        context: RunnerContext,
+        overallStatus: ExecutionStatus,
+    ): ExecutionStatus {
+        var status = overallStatus
+
+        for (child in children) {
+            val childStatus: ExecutionStatus = child.execute(context)
+
+            if (childStatus > status) {
+                status = childStatus
+            }
+        }
+
+        return status
+    }
+
+    private fun skipChildren(context: RunnerContext) {
+        for (child in children) {
+            child.skip(context)
+        }
     }
 
     override fun skip(context: RunnerContext): ExecutionStatus {

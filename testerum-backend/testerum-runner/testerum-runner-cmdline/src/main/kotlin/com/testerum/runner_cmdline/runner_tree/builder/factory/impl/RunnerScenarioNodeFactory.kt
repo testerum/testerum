@@ -41,7 +41,7 @@ object RunnerScenarioNodeFactory {
         runnerScenario.setBeforeHooks(
             getBeforeHooks(runnerScenario, beforeEachTestBasicHooks)
         )
-        runnerScenario.setSteps(
+        runnerScenario.setChildren(
             getSteps(runnerScenario, test)
         )
         runnerScenario.setAfterHooks(
