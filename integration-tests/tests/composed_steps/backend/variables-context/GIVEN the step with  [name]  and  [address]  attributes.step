@@ -1,0 +1,4 @@
+step-def: Given the step with <<name: TEXT>> and <<address: TEXT>> attributes
+
+    step: Then <<{{name}}>> is equal to <<SuperMan>>
+    step: Then <<{{address}}>> is equal to <<Pluto>>

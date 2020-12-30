@@ -1,0 +1,3 @@
+step-def: Given the step that defines a "name" variable with the value <<nameValue: TEXT>>
+
+    step: Given the variable <<name>> with value <<{{nameValue}}>>

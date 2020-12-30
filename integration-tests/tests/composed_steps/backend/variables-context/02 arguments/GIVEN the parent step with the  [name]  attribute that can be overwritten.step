@@ -1,0 +1,4 @@
+step-def: Given the parent step with the <<name: TEXT>> attribute that can be overwritten
+
+    step: Given the variable <<name>> with value <<SpiderMan>>
+    step: Then <<{{name}}>> is equal to <<SpiderMan>>

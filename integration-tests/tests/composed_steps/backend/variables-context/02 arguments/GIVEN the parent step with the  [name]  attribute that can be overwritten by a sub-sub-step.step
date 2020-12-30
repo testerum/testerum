@@ -1,0 +1,4 @@
+step-def: Given the parent step with the <<name: TEXT>> attribute that can be overwritten by a sub-sub-step
+
+    step: Given Sub-step that overwrites parent attribute
+    step: Then <<{{name}}>> is equal to <<BatMan>>

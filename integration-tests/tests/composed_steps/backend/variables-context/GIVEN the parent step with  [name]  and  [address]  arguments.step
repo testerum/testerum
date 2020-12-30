@@ -1,0 +1,5 @@
+step-def: Given the parent step with <<name: TEXT>> and <<address: TEXT>> arguments
+
+    step: Given the child step with <<SuperMan>> and <<Pluto>> arguments
+    step: Given the variable <<{{name}}>> with value <<BatMan>>
+    step: Given the variable <<{{address}}>> with value <<BatCave>>
