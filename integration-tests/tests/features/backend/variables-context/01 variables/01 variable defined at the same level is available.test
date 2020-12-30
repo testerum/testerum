@@ -1,0 +1,4 @@
+test-def: 01 variable defined at the same level is available
+
+    step: Given the variable <<name>> with value <<the variable value>>
+    step: Then <<{{name}}>> is equal to <<the variable value>>
