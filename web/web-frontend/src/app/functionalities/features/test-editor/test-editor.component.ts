@@ -89,7 +89,10 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
             }
 
             this.isEditMode = isEditMode;
+
             this.stepsCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
+            this.hooksCallTreeComponent.stepCallTreeComponentService.setEditMode(isEditMode);
+
             if(this.descriptionMarkdownEditor) {
                 this.descriptionMarkdownEditor.setEditMode(isEditMode);
             }

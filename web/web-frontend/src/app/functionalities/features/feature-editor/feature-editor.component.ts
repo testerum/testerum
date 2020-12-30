@@ -63,6 +63,8 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
 
     pathForTitle: string = "";
 
+    private editModeEventEmitterSubscription: Subscription;
+
     constructor(private route: ActivatedRoute,
                 private urlService: UrlService,
                 private featureService: FeatureService,
@@ -70,8 +72,34 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
                 private tagsService: TagsService,
                 private contextService: ContextService,
                 private projectService: ProjectService,
-                private areYouSureModalService: AreYouSureModalService,
-                ) { super(); }
+                private areYouSureModalService: AreYouSureModalService) {
+
+        super();
+
+        //should be initialized before we use "setEditMode"
+        this.editModeEventEmitterSubscription = this.editModeEventEmitter.subscribe( (isEditMode: boolean) => {
+
+            if(this.isEditMode == isEditMode) return;
+
+            if (isEditMode) {
+                this.tagsService.getTags().subscribe(tags => {
+                    ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
+                });
+            }
+
+            this.isEditMode = isEditMode;
+
+            this.beforeAllHooksCallTree.stepCallTreeComponentService.setEditMode(isEditMode);
+            this.beforeEachHooksCallTree.stepCallTreeComponentService.setEditMode(isEditMode);
+            this.afterEachHooksCallTree.stepCallTreeComponentService.setEditMode(isEditMode);
+            this.afterAllHooksCallTree.stepCallTreeComponentService.setEditMode(isEditMode);
+
+            if (this.descriptionMarkdownEditor) {
+                this.descriptionMarkdownEditor.setEditMode(isEditMode);
+                this.descriptionMarkdownEditor.setValue(this.model.description);
+            }
+        })
+    }
 
     ngOnInit(): void {
         this.projectName = this.contextService.getProjectName();
@@ -102,6 +130,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
         if(this.routeSubscription) this.routeSubscription.unsubscribe();
         if(this.pathSubscription) this.pathSubscription.unsubscribe();
         if(this.fileUploadSubscription) this.fileUploadSubscription.unsubscribe();
+        if(this.editModeEventEmitterSubscription) this.editModeEventEmitterSubscription.unsubscribe();
     }
 
     canDeactivate(): boolean {
@@ -109,20 +138,6 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     }
 
     setEditMode(value: boolean) {
-        if (value == true) {
-            this.tagsService.getTags().subscribe(tags => {
-                ArrayUtil.replaceElementsInArray(this.allKnownTags, tags);
-            });
-        } else {
-            this.showHooksCategories = this.hasHooks();
-        }
-
-        this.isEditMode = value;
-        if (this.descriptionMarkdownEditor) {
-            this.descriptionMarkdownEditor.setEditMode(value);
-            this.descriptionMarkdownEditor.setValue(this.model.description);
-        }
-
         this.editModeEventEmitter.emit(value);
     }
 
