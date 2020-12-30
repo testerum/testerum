@@ -5,6 +5,9 @@ class CompositeVarsContainer : VarsContainer {
     private val containers = mutableListOf<VarsContainer>()
 
     fun addContainer(container: VarsContainer) {
+        if (container == this) {
+            throw IllegalArgumentException("cannot add a container to itself")
+        }
         containers += container
     }
 

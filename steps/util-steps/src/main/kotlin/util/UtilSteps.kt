@@ -1,10 +1,8 @@
 package util
 
-import com.testerum.common.expression_evaluator.ExpressionEvaluator
-import com.testerum.common.expression_evaluator.bindings.vars_container.CompositeVarsContainer
-import com.testerum.common.expression_evaluator.bindings.vars_container.VarsContainer
 import com.testerum_api.testerum_steps_api.annotations.steps.When
 import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
+import com.testerum_api.testerum_steps_api.test_context.script_executer.ScriptExecuter
 import com.testerum_api.testerum_steps_api.test_context.test_vars.TestVariables
 
 @Suppress("unused")
@@ -13,19 +11,7 @@ class UtilSteps {
     private val logger = TesterumServiceLocator.getTesterumLogger()
 
     private val variables: TestVariables = TesterumServiceLocator.getTestVariables()
-    private val varsContainer: VarsContainer = object : VarsContainer {
-        override fun containsKey(name: String): Boolean {
-            return variables.contains(name)
-        }
-
-        override fun get(name: String): Any? {
-            return variables.get(name)
-        }
-
-        override fun set(name: String, value: Any?): Any? {
-            return variables.set(name, value)
-        }
-    }
+    private val scriptExecuter: ScriptExecuter = TesterumServiceLocator.getScriptExecuter()
 
     @When(
         value = "I execute the JS script <<script>>",
@@ -75,20 +61,12 @@ class UtilSteps {
     }
 
     private fun executeJsScript(script: String): Any? {
-        val compositeVarsContainer = CompositeVarsContainer()
-
-        // variables
-        compositeVarsContainer.addContainer(compositeVarsContainer)
-
-        // services
-        compositeVarsContainer.addMap(
-            mapOf(
-                "testLogger" to logger,
-                "testVariables" to variables
-            )
+        val context = mapOf(
+            "testLogger" to logger,
+            "testVariables" to variables
         )
 
-        return ExpressionEvaluator.evaluate(script, compositeVarsContainer)
+        return scriptExecuter.executeScript(script, context)
     }
 
 }
