@@ -1,3 +1,0 @@
-test-def: sub-steps can assign new values to parent attributes
-
-    step: Given the parent step with the <<SuperMan>> attribute that can be overwritten

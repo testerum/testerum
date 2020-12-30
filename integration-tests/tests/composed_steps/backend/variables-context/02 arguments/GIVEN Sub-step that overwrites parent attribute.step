@@ -1,3 +1,0 @@
-step-def: Given Sub-step that overwrites parent attribute
-
-    step: Given the variable <<name>> with value <<BatMan>>

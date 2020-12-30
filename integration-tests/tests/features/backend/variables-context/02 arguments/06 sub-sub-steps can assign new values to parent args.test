@@ -1,0 +1,4 @@
+test-def: 06 sub-sub-steps can assign new values to parent args
+
+    step: Given the parent step with the <<SuperMan>> attribute that can be overwritten by a sub-sub-step
+    step: Then <<{{name}}>> is equal to <<BatMan>>

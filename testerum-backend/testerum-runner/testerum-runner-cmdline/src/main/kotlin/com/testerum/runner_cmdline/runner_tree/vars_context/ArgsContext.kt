@@ -45,7 +45,7 @@ class ArgsContext {
     }
 
     fun overwriteArgAtAllLevels(name: String, value: Any?) {
-        val iterator = stack.listIterator()
+        val iterator = stack.listIterator(stack.size)
         while (iterator.hasPrevious()) {
             val stackLevel = iterator.previous()
 
