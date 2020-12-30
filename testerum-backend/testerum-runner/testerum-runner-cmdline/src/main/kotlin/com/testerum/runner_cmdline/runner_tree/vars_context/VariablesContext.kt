@@ -152,7 +152,7 @@ class VariablesContext(globalVarsMap: Map<String, String>) {
 
         return when {
             resolvedArgParts.isEmpty() -> ""
-            resolvedArgParts.size == 1 -> resolvedArgParts[0] // not doing joinToString() to preserve the type
+            resolvedArgParts.size == 1 -> resolvedArgParts[0] // we are not doing "joinToString()" because we want to preserve the type
             else -> {
                 resolvedArgParts.joinToString(
                     separator = "",

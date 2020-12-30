@@ -37,8 +37,9 @@ class RunnerComposedStep(
 
         var status: ExecutionStatus = PASSED
 
+        val resolvedArgs = resolveArgs(stepCall, context.variablesContext)
         context.variablesContext.startComposedStep()
-        setArgs(stepCall, context.variablesContext)
+        setArgs(context.variablesContext, resolvedArgs)
 
         status = runChildren(context, status)
 
@@ -47,10 +48,12 @@ class RunnerComposedStep(
         return status
     }
 
-    private fun setArgs(
+    private fun resolveArgs(
         stepCall: StepCall,
         variablesContext: VariablesContext
-    ) {
+    ): Map<String, Any?> {
+        val result = HashMap<String, Any?>()
+
         val stepDef: StepDef = stepCall.stepDef
 
         val params: List<ParamStepPatternPart> = stepDef.stepPattern.getParamStepPattern()
@@ -62,7 +65,18 @@ class RunnerComposedStep(
 
             val paramName: String = param.name
 
-            variablesContext.setArg(paramName, variablesContext.resolveIn(arg))
+            result[paramName] = variablesContext.resolveIn(arg)
+        }
+
+        return result
+    }
+
+    private fun setArgs(
+        variablesContext: VariablesContext,
+        args: Map<String, Any?>,
+    ) {
+        for ((name, value) in args) {
+            variablesContext.setArg(name, value)
         }
     }
 
