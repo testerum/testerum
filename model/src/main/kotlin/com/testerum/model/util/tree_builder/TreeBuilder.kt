@@ -1,8 +1,11 @@
 package com.testerum.model.util.tree_builder
 
 import com.testerum.common_kotlin.indent
+import com.testerum.model.infrastructure.path.HasPath
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.util.new_tree_builder.PathBasedTreeBuilder
 
-class TreeBuilder(private val customizer: TreeBuilderCustomizer) {
+class TreeBuilder(private val customizer: TreeBuilderCustomizer) : HasPath {
 
     private enum class TreeBuilderNodeType {
         ROOT,
@@ -11,64 +14,42 @@ class TreeBuilder(private val customizer: TreeBuilderCustomizer) {
     }
 
     private val children = mutableListOf<TreeBuilder>()
-    private var path: List<String> = emptyList()
+    private var pathList: List<String> = emptyList()
     private var payload: Any? = null
 
+    override val path = Path.createInstance(pathList.joinToString(separator = "/"))
+
     private val childrenByPath = hashMapOf<List<String>, TreeBuilder>()
+
     init {
         childrenByPath[emptyList()] = this // add root
     }
 
-    private val comparator = run {
-        val leafPayloadComparator = customizer.getLeafPayloadComparator()
-
-        Comparator<TreeBuilder> { left, right ->
-            if (left.isContainer) {
-                if (right.isContainer) {
-                    compareValues(left.label, right.label)
-                } else {
-                    -1
-                }
-            } else {
-                if (right.isContainer) {
-                    1
-                } else {
-                    // neither left, nor right is container
-                    // therefore neither has a null payload (since payloads are null only for virtual containers)
-                    val leftPayload: Any = left.payload!!
-                    val rightPayload: Any = right.payload!!
-
-                    leafPayloadComparator.compare(leftPayload, rightPayload)
-                }
-            }
-        }
-    }
-
     private val sortedChildren: List<TreeBuilder>
-        get() = children.sortedWith(comparator)
+        get() = children.sortedWith(PathBasedTreeBuilder.NODES_COMPARATOR)
 
     private val isRoot: Boolean
-        get() = path.isEmpty()
+        get() = pathList.isEmpty()
 
     private val isContainer: Boolean
         get() {
             val payload = this.payload
 
             return (payload == null)                   // virtual container
-                    || customizer.isContainer(payload) // real container
+                || customizer.isContainer(payload) // real container
         }
 
     private val nodeType: TreeBuilderNodeType
         get() = when {
-            isRoot      -> TreeBuilderNodeType.ROOT
+            isRoot -> TreeBuilderNodeType.ROOT
             isContainer -> TreeBuilderNodeType.CONTAINER
-            else        -> TreeBuilderNodeType.LEAF
+            else -> TreeBuilderNodeType.LEAF
         }
 
     private val label: String
         get() = when (nodeType) {
             TreeBuilderNodeType.ROOT -> customizer.getRootLabel()
-            TreeBuilderNodeType.CONTAINER -> payload?.let { customizer.getLabel(it) } ?: path.last()
+            TreeBuilderNodeType.CONTAINER -> payload?.let { customizer.getLabel(it) } ?: pathList.last()
             TreeBuilderNodeType.LEAF -> customizer.getLabel(payload!!)
         }
 
@@ -91,7 +72,7 @@ class TreeBuilder(private val customizer: TreeBuilderCustomizer) {
         val parentNode: TreeBuilder = getOrCreateNode(path.subList(0, path.size - 1))
 
         val newNode = TreeBuilder(customizer)
-        newNode.path = path
+        newNode.pathList = path
 
         parentNode.children += newNode
 
@@ -113,7 +94,7 @@ class TreeBuilder(private val customizer: TreeBuilderCustomizer) {
         return if (this.isRoot) {
             customizer.createRootNode(payload, childrenNodes)
         } else {
-            customizer.createNode(payload, label, path, childrenNodes, indexInParent)
+            customizer.createNode(payload, label, pathList, childrenNodes, indexInParent)
         }
     }
 

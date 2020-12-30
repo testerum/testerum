@@ -6,6 +6,7 @@ import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioP
 import com.testerum.model.expressions.json.JsJson
 import com.testerum.model.test.TestModel
 import com.testerum.model.test.scenario.Scenario
+import com.testerum.model.test.scenario.param.ScenarioParam
 import com.testerum.model.test.scenario.param.ScenarioParamType
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.ScenarioEndEvent
@@ -45,10 +46,10 @@ class RunnerScenario(
     override val parent: RunnerTreeNode = parent as? RunnerTreeNode
         ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
 
-    private lateinit var steps: List<RunnerStep>
+    private lateinit var children: List<RunnerStep>
 
-    fun setSteps(steps: List<RunnerStep>) {
-        this.steps = steps
+    fun setChildren(children: List<RunnerStep>) {
+        this.children = children
     }
 
     override val positionInParent = PositionInParent("${test.id}-$filteredScenarioIndex", filteredScenarioIndex)
@@ -91,40 +92,25 @@ class RunnerScenario(
         val startTime = System.currentTimeMillis()
         context.variablesContext.startScenario()
         try {
-            for (param in scenario.params) {
-                val actualValue: Any = when (param.type) {
-                    ScenarioParamType.TEXT -> context.variablesContext.resolveIn(param.value)
-                    ScenarioParamType.JSON -> JsJson(
-                        context.variablesContext.resolveIn(param.value) { StringEscapeUtils.escapeJson(it) }
-                    )
-                }
-
-                context.variablesContext.setArg(
-                    name = param.name,
-                    value = actualValue
-                )
-            }
-
             context.glueObjectFactory.beforeTest()
+            setArgs(context)
 
             // before all hooks
-            status = beforeHooks.execute(context)
+            val beforeHooksStatus = beforeHooks.execute(context)
+            status = beforeHooksStatus
 
             // scenario
-            if (steps.isEmpty()) {
+            if (children.isEmpty()) {
                 status = UNDEFINED
                 context.logMessage("marking ${getNameForLogging()} as $status because it doesn't have any steps")
             } else {
-                for (step in steps) {
-                    if (status <= PASSED) {
-                        val stepStatus: ExecutionStatus = step.execute(context)
-
-                        if (stepStatus > status) {
-                            status = stepStatus
-                        }
-                    } else {
-                        step.skip(context)
+                if (beforeHooksStatus == PASSED) {
+                    val childrenStatus = runChildren(context, status)
+                    if (childrenStatus > status) {
+                        status = childrenStatus
                     }
+                } else {
+                    skipChildren(context)
                 }
             }
 
@@ -157,6 +143,52 @@ class RunnerScenario(
         return status
     }
 
+    private fun setArgs(context: RunnerContext) {
+        for (param in scenario.params) {
+            setArg(context, param)
+        }
+    }
+
+    private fun setArg(
+        context: RunnerContext,
+        param: ScenarioParam
+    ) {
+        val actualValue: Any = when (param.type) {
+            ScenarioParamType.TEXT -> context.variablesContext.resolveIn(param.value)
+            ScenarioParamType.JSON -> JsJson(
+                context.variablesContext.resolveIn(param.value) { StringEscapeUtils.escapeJson(it) }
+            )
+        }
+
+        context.variablesContext.setArg(
+            name = param.name,
+            value = actualValue
+        )
+    }
+
+    private fun runChildren(
+        context: RunnerContext,
+        overallStatus: ExecutionStatus,
+    ): ExecutionStatus {
+        var status = overallStatus
+
+        for (child in children) {
+            val childStatus: ExecutionStatus = child.execute(context)
+
+            if (childStatus > status) {
+                status = childStatus
+            }
+        }
+
+        return status
+    }
+
+    private fun skipChildren(context: RunnerContext) {
+        for (child in children) {
+            child.skip(context)
+        }
+    }
+
     fun skip(context: RunnerContext): ExecutionStatus {
         logScenarioStart(context)
 
@@ -165,7 +197,7 @@ class RunnerScenario(
 
         val startTime = System.currentTimeMillis()
         try {
-            for (step in steps) {
+            for (step in children) {
                 step.skip(context)
             }
         } catch (e: Exception) {
@@ -186,7 +218,7 @@ class RunnerScenario(
 
         val startTime = System.currentTimeMillis()
         try {
-            for (step in steps) {
+            for (step in children) {
                 step.disable(context)
             }
         } catch (e: Exception) {
@@ -271,7 +303,7 @@ class RunnerScenario(
 
         beforeHooks.addToString(destination, indentLevel + 1)
 
-        for (step in steps) {
+        for (step in children) {
             step.addToString(destination, indentLevel + 1)
         }
 

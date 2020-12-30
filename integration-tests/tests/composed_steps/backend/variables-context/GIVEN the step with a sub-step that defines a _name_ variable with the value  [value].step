@@ -1,0 +1,4 @@
+step-def: Given the step with a sub-step that defines a "name" variable with the value <<value: TEXT>>
+
+    step: Given the step that defines a "name" variable with the value <<{{value}}>>
+    step: Then <<{{name}}>> is equal to <<{{value}}>>

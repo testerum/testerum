@@ -7,10 +7,6 @@ interface TreeBuilderCustomizer {
     fun getRootLabel(): String
     fun getLabel(payload: Any): String
 
-    fun getLeafPayloadComparator(): Comparator<Any> {
-        return compareBy { getLabel(it) }
-    }
-
     fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any
     fun createNode(payload: Any?, label: String, path: List<String>, childrenNodes: List<Any>, indexInParent: Int): Any
 

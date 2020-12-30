@@ -1,4 +1,4 @@
 test-def: the variables defined in sub-steps are available other steps
 
-    step: Given the step with a sub-step that defines a "name" variable with the value <<SuperMan>>
+    step: Given the step that defines a "name" variable with the value <<SuperMan>>
     step: Then <<{{name}}>> is equal to <<SuperMan>>

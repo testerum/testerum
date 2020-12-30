@@ -28,14 +28,6 @@ class BasicStepTreeBuilder {
 
         override fun getLabel(payload: Any): String = (payload as BasicStepDef).toString()
 
-        override fun getLeafPayloadComparator(): Comparator<Any> = compareBy {
-            val stepDef: BasicStepDef = it as BasicStepDef
-
-            // using ordinal because we want the order in the enum (GIVEN, WHEN, THEN)
-            // the lexicographic order is wrong (GIVEN, THEN, WHEN)
-            stepDef.phase.ordinal.toString() + getLabel(it)
-        }
-
         override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
             @Suppress("UNCHECKED_CAST")
             val children: List<BasicStepNode> = childrenNodes as List<BasicStepNode>

@@ -61,18 +61,18 @@ class RunnerSuite(
         val startTime = System.currentTimeMillis()
         context.variablesContext.startSuite()
         try {
-
             // before all hooks
-            status = beforeHooks.execute(context)
+            val beforeHooksStatus = beforeHooks.execute(context)
+            status = beforeHooksStatus
 
             // children
-            if (status == PASSED) {
+            if (beforeHooksStatus == PASSED) {
                 val childrenStatus = runChildren(context, status)
                 if (childrenStatus > status) {
                     status = childrenStatus
                 }
             } else {
-                skipFeaturesOrTests(context)
+                skipChildren(context)
             }
 
             // after all hooks
@@ -96,24 +96,24 @@ class RunnerSuite(
 
     private fun runChildren(
         context: RunnerContext,
-        suiteExecutionStatus: ExecutionStatus
+        overallStatus: ExecutionStatus,
     ): ExecutionStatus {
-        var status = suiteExecutionStatus
+        var status = overallStatus
 
-        for (featureOrTest in children) {
-            val featureOrTestStatus: ExecutionStatus = featureOrTest.execute(context)
+        for (child in children) {
+            val childStatus: ExecutionStatus = child.execute(context)
 
-            if (featureOrTestStatus > status) {
-                status = featureOrTestStatus
+            if (childStatus > status) {
+                status = childStatus
             }
         }
 
         return status
     }
 
-    private fun skipFeaturesOrTests(context: RunnerContext) {
-        for (featureOrTest in children) {
-            featureOrTest.skip(context)
+    private fun skipChildren(context: RunnerContext) {
+        for (child in children) {
+            child.skip(context)
         }
     }
 
