@@ -11,14 +11,8 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
     private val nodeFactory: TreeNodeFactory<R, V>,
 ) {
 
-    private val nodesByPath = HashMap<String, TreeNode>()
-
-    fun createTree(items: List<HasPath>): R {
-        // It's very important that Features are sorted to be before Tests, otherwise it will create a virtual container instead of the real one.
-        // This is accomplished by just sorting by path, because the parent feature path is a prefix of the child test path.
-        // The "withoutFileExtension" is important, because otherwise
-        //     "backend/expressions/escapeXml 1_1/to escape.test" > "backend/expressions/escapeXml 1_1/to escape XML 1_1.test"
-        val sortedItems = items.sortedWith(Comparator { left, right ->
+    companion object {
+        val NODES_COMPARATOR = Comparator<HasPath> { left, right ->
             val leftParts = left.path.partsWithoutFileExtension
             val rightParts = right.path.partsWithoutFileExtension
 
@@ -47,7 +41,30 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
             }
 
             0
-        })
+        }
+
+        private val Path.partsWithoutFileExtension: List<String>
+            get() {
+                return if (fileName == null) {
+                    directories
+                } else {
+                    val result = directories.toMutableList()
+
+                    result.add(fileName)
+
+                    result
+                }
+            }
+    }
+
+    private val nodesByPath = HashMap<String, TreeNode>()
+
+    fun createTree(items: List<HasPath>): R {
+        // It's very important that Features are sorted to be before Tests, otherwise it will create a virtual container instead of the real one.
+        // This is accomplished by just sorting by path, because the parent feature path is a prefix of the child test path.
+        // The "withoutFileExtension" is important, because otherwise
+        //     "backend/expressions/escapeXml 1_1/to escape.test" > "backend/expressions/escapeXml 1_1/to escape XML 1_1.test"
+        val sortedItems = items.sortedWith(NODES_COMPARATOR)
 
         for (sortedItem in sortedItems) {
             addItem(sortedItem)
@@ -59,19 +76,6 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
         @Suppress("UNCHECKED_CAST") // it's safe because we insure that we create the root node for the empty path
         return rootNode as R
     }
-
-    private val Path.partsWithoutFileExtension: List<String>
-        get() {
-            return if (fileName == null) {
-                directories
-            } else {
-                val result = directories.toMutableList()
-
-                result.add(fileName)
-
-                result
-            }
-        }
 
     private fun addItem(item: HasPath) {
         val path = item.path
