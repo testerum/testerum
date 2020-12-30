@@ -1,0 +1,3 @@
+test-def: composed step can use args from parent step
+
+    step: Given the parent step with arg <<parent arg value>>

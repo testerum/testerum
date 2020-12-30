@@ -1,0 +1,3 @@
+step-def: Then the child step can access the parent arg <<childArg: TEXT>>
+
+    step: Then <<{{childArg}}>> is equal to <<parent arg value>>
