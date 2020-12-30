@@ -131,10 +131,14 @@ class RunnerTest(
         var status = overallStatus
 
         for (child in children) {
-            val childStatus: ExecutionStatus = child.execute(context)
+            if (status <= PASSED) {
+                val childStatus: ExecutionStatus = child.execute(context)
 
-            if (childStatus > status) {
-                status = childStatus
+                if (childStatus > status) {
+                    status = childStatus
+                }
+            } else {
+                child.skip(context)
             }
         }
 
