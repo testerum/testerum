@@ -1,0 +1,4 @@
+test-def: 02 variable defined in sub-step is available in test
+
+    step: Given the step that defines a "name" variable with the value <<the variable value>>
+    step: Then <<{{name}}>> is equal to <<the variable value>>
