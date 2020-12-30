@@ -43,18 +43,18 @@ object EscapeHelper : ScriptingHelper {
     }
 
     override val globalVariables: Map<String, Any?> = mapOf(
-            escapeJson.name          to escapeJson,
-            unescapeJson.name        to unescapeJson,
+        escapeJson.name to escapeJson,
+        unescapeJson.name to unescapeJson,
 
-            escapeXml.name           to escapeXml,
-            escapeXml11.name         to escapeXml11,
-            unescapeXml.name         to unescapeXml,
+        escapeXml.name to escapeXml,
+        escapeXml11.name to escapeXml11,
+        unescapeXml.name to unescapeXml,
 
-            escapeJavaScript.name    to escapeJavaScript,
-            unescapeJavaScript.name  to unescapeJavaScript,
+        escapeJavaScript.name to escapeJavaScript,
+        unescapeJavaScript.name to unescapeJavaScript,
 
-            escapeHtml.name          to escapeHtml,
-            unescapeHtml.name        to unescapeHtml
+        escapeHtml.name to escapeHtml,
+        unescapeHtml.name to unescapeHtml
     )
 
 }

@@ -1,0 +1,3 @@
+test-def: 01 arguments are available in sub-steps
+
+    step: Given the step with the arg <<SuperMan>>

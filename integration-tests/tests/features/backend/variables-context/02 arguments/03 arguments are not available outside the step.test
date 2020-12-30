@@ -1,0 +1,9 @@
+test-def: 03 arguments are not available outside the step
+
+    step: Given the step with the arg <<SuperMan>>
+    step: When I execute the JS script <<{{script}}>>
+        var script = <<
+            if (testVariables.contains("name")) {
+                failTest("the arg [name] should not be available in a parent step");
+            }
+        >>
