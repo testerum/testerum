@@ -1,4 +1,4 @@
 test-def: arguments are not available outside the step
 
     step: Given the step with <<SuperMan>> and <<Pluto>> attributes
-    step: Given the variable <<{{name}}>> with value <<>>
+    step: Given the variable <<{{name}}>> with value <<SuperMan>>
