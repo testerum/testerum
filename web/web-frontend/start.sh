@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-# ng serve --proxy-config proxy-conf.json --configuration hmr \
-npx ng serve --proxy-config proxy-conf.json --live-reload false \
-    | tee /dev/tty \
-    | gawk '/Compiled successfully./ { system("notify-send ng\\ serve Compiled\\ successfully." timeTaken " -i info --expire-time 2000") }
-           /ERROR in/ { system("notify-send ng\\ serve ERROR -i error --expire-time 999999999") }'
+unbuffer \
+    npx ng serve \
+    --proxy-config proxy-conf.json \
+    --live-reload false \
+    --sourceMap false \
+    --progress true \
+    | sed 's/\x1b\[33m/\x1b\[38;2;180;90;0m/g'
 
