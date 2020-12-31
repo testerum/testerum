@@ -23,6 +23,7 @@
 
 .node-text {
     display: inline-block;
+    white-space: normal;
 }
 
 .node {
@@ -32,6 +33,8 @@
 
 .full-line {
     width: 100%;
+    white-space: nowrap;
+    display: flex;
 }
 
 

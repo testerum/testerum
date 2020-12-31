@@ -1,4 +1,4 @@
-<div class="node"
+<div class="feature-container node"
      dnd-draggable [dragEnabled]="hasMouseOver" [dragData]="model" >
 
     <div class="full-line"
@@ -9,7 +9,7 @@
 
          dnd-droppable [allowDrop]="allowDrop()" (onDropSuccess)="moveResource($event)">
 
-        <i aria-hidden="true"
+        <i aria-hidden="true" class="tree-node-icon"
            [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
            [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
 

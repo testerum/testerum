@@ -1,10 +1,15 @@
-.node {
+.feature-container {
     .flip {
         -moz-transform: scale(1, -1);
         -webkit-transform: scale(1, -1);
         -o-transform: scale(1, -1);
         -ms-transform: scale(1, -1);
         transform: scale(1, -1);
+    }
+
+    .tree-node-icon {
+        width: 15px;
+        margin-top: 4px;
     }
 
     .hook-icon-container {
@@ -26,5 +31,4 @@
     .my-button-panel {
         margin-left: 5px;
     }
-
 }
