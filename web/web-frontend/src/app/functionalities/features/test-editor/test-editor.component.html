@@ -159,7 +159,7 @@
                         <div *ngIf="isEditMode && !testModel.properties.isManual && this.hooksCallTreeComponent.jsonTreeModel.children.length == 0"
                             title="Add Hook" class="btn btn-default btn-xs btn-group"
                              (click)="addAfterTestHook(); $event.stopPropagation()">
-                            <i class="tree-node-icon nf nf-mdi-hook" style="width: auto"></i>
+                            <i class="nf nf-mdi-hook" style="width: auto"></i>
                         </div>
 
                         <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"

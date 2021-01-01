@@ -7,7 +7,8 @@
            [class.fa_my-tree-folder-closed-colored]="!isOpenedNode()"
            [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
 
-        <span [class.error_squiggly]="model.hasOwnOrDescendantWarnings">
+        <span class="text"
+              [class.error_squiggly]="model.hasOwnOrDescendantWarnings">
             {{model.name}}
         </span>
     </div>
