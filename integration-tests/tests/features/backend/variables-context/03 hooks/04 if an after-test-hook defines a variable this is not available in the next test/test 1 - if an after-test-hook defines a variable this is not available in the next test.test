@@ -1,0 +1,5 @@
+test-def: test 1 - if an after-test-hook defines a variable this is not available in the next test
+
+    step: Then <<1>> is equal to <<1>>
+
+    after-hook: Given the variable <<name>> with value <<SuperMan>>

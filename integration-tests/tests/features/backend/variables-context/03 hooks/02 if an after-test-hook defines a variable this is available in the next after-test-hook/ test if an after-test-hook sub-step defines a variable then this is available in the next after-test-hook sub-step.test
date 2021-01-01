@@ -1,0 +1,6 @@
+test-def:  test if an after-test-hook sub-step defines a variable then this is available in the next after-test-hook sub-step
+
+    step: Then <<1>> is equal to <<1>>
+
+    after-hook: Given the step that defines a "name" variable with the value <<SuperMan>>
+    after-hook: Then the step can access the "name" variable that has the value <<SuperMan>>

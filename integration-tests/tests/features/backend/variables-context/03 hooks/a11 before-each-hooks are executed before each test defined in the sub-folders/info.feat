@@ -1,0 +1,3 @@
+
+before-each-hook: When I execute the JS script <<{{script}}>> and save the result into the variable <<hooksBeforeEachIndex>>
+    var script = <<{{ if(var["hooksBeforeEachIndex"]) { return var["hooksBeforeEachIndex"] + 1 } else { return 1 } }}>>

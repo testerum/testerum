@@ -1,0 +1,5 @@
+test-def: test defined variables are available in the after-test-hooks
+
+    step: Given the step that defines a "name" variable with the value <<SuperMan>>
+
+    after-hook: Then the step can access the "name" variable that has the value <<SuperMan>>

@@ -1,0 +1,6 @@
+test-def:  test if an after-test-hook defines a variable this is available in the next after-test-hook
+
+    step: Then <<1>> is equal to <<1>>
+
+    after-hook: Given the variable <<afterHookVar>> with value <<After hook var value>>
+    after-hook: Then <<{{afterHookVar}}>> is equal to <<After hook var value>>

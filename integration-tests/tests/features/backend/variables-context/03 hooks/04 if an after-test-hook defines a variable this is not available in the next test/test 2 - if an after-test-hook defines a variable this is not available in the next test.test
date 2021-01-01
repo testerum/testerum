@@ -1,0 +1,8 @@
+test-def: test 2 - if an after-test-hook defines a variable this is not available in the next test
+
+    step: When I execute the JS script <<{{script}}>>
+        var script = <<
+            if (testVariables.contains("name")) {
+                failTest("the arg [name] should not be available in a parent step");
+            }
+        >>

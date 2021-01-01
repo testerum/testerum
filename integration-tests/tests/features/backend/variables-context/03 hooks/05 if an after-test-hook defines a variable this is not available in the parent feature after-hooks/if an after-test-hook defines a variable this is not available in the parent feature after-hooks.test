@@ -1,0 +1,3 @@
+test-def: if an after-test-hook defines a variable this is not available in the parent feature after-hooks
+
+    step: Given the variable <<name>> with value <<SuperMan>>

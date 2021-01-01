@@ -1,0 +1,5 @@
+test-def: test with an after hook
+
+    step: Given the variable <<testVar>> with value <<test variable value>>
+
+    after-hook: Then <<{{testVar}}>> is equal to <<test variable value>>
