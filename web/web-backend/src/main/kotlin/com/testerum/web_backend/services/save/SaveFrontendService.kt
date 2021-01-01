@@ -33,6 +33,7 @@ class SaveFrontendService(private val webProjectManager: WebProjectManager,
     private fun saveTestWithoutReinitializingCaches(test: TestModel, recursiveSave: Boolean = true): TestModel {
         if (recursiveSave) {
             saveStepCallsRecursively(test.stepCalls)
+            saveStepCallsRecursively(test.afterHooks)
         }
 
         val testToSave = if (recursiveSave) {
