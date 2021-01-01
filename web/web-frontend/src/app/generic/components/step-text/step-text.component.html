@@ -7,7 +7,8 @@
         {{getStepPhaseAsString()}}
     </div>
 
-    <div class="step-text">
+    <div class="step-text-without-phase"
+         [class.undefined-step-text-color]="isUndefinedStepDef() && !isManualStep">
         <ng-container *ngFor="let patternPart of stepDef.stepPattern.patternParts; let i = index">
             <div *ngIf="isParamPatternPart(patternPart)" class="step-text-parameter">
                 <step-text-param
@@ -16,11 +17,9 @@
                     [paramStepPart]="patternPart"
                     [variableHolder]="stepCall?.variableHolder"></step-text-param>
             </div>
-            <div *ngIf="!isParamPatternPart(patternPart)"
-                 [class.undefined-step-text-color]="isUndefinedStepDef() && !isManualStep"
-                 class="step-text-pattern">
+            <ng-container *ngIf="!isParamPatternPart(patternPart)">
                 {{patternPart.text}}
-            </div>
+            </ng-container>
         </ng-container>
     </div>
 </div>

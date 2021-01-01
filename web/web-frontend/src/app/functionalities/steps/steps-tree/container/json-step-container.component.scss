@@ -1,15 +1,17 @@
-.flip {
-    -moz-transform: scale(1, -1);
-    -webkit-transform: scale(1, -1);
-    -o-transform: scale(1, -1);
-    -ms-transform: scale(1, -1);
-    transform: scale(1, -1);
-}
+.json-step-container {
+    .flip {
+        -moz-transform: scale(1, -1);
+        -webkit-transform: scale(1, -1);
+        -o-transform: scale(1, -1);
+        -ms-transform: scale(1, -1);
+        transform: scale(1, -1);
+    }
 
-.node-text {
-    margin-left: 5px;
-}
+    .node-text {
+        margin-left: 5px;
+    }
 
-.my-button-panel {
-    margin-left: 5px;
+    .my-button-panel {
+        margin-left: 5px;
+    }
 }

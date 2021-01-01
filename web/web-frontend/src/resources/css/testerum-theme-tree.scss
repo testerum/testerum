@@ -1,14 +1,16 @@
 .tree-node-icon {
-    width: 18px;
+    width: 15px;
+    padding: 0;
+    margin: 4px 0 0;
 
     background-repeat: no-repeat;
 
     display: inline-block;
     text-decoration: none;
-    margin: 0;
-    padding: 0;
     vertical-align: middle;
     text-align: left;
+
+    align-self: flex-start;
 }
 
 .tree-leaf-selected {
@@ -34,7 +36,9 @@
 .full-line {
     width: 100%;
     white-space: nowrap;
+
     display: flex;
+    align-items: center;
 }
 
 

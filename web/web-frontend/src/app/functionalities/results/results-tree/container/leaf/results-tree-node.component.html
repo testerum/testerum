@@ -5,7 +5,7 @@
          (click)="showResultFile()"
          [class.tree-node-selected]="isSelected">
 
-        <i aria-hidden="true"
+        <i aria-hidden="true" class="tree-node-icon"
            [class.my-node-executing-color]="model.executionResult == ExecutionStatusEnum.EXECUTING"
 
            [class.fa_my-runner-waiting-colored]="model.executionResult == ExecutionStatusEnum.WAITING

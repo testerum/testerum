@@ -8,7 +8,7 @@
     list-style-image: none;
     white-space: nowrap;
 
-    line-height: 24px;
+    line-height: 1.75em;
 }
 .horizontal-line {
     width: 7px;
@@ -19,7 +19,7 @@
     border-bottom: 1px dotted black;
 }
 .horizontal-line-distance-from-top {
-    height: 12px;
+    height: 0.8em;
     display: flex;
 }
 .show-dots .last-horizontal-line {
@@ -28,7 +28,7 @@
 .tree-node-line {
     border-left: 1px dotted black;
     margin-top: 1px;
-    margin-left: 5px;
+    margin-left: 2px;
 }
 
 .tree-node-last {
@@ -47,14 +47,14 @@
 
 .toggle-icon {
     width: 5px;
-    margin-top: 5px;
+    margin-top: 0.3em;
 }
 
 .fa_my-tree-node-open {
-    margin-left: -5px;
+    margin-left: -0.4em;
 
     + .horizontal-line {
-        width: 10px;
+        width: 0.7em;
     }
 }
 .fa_my-tree-node-close {

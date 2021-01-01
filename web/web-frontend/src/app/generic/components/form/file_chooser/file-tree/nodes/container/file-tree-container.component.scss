@@ -23,6 +23,7 @@
     position: relative;
     vertical-align: middle;
     width: 15px;
+    margin-right: 4px;
 }
 
 .fa-stack-1x {
@@ -31,7 +32,9 @@
      color: #ff6161 !important;
  }
 
-
+.tree-node-icon {
+    margin-top: 0;
+}
 .testerum-icon {
 
     position: absolute;
@@ -40,6 +43,7 @@
     color: $testerum-color;
     left: -3px;
     top: -1px;
+    margin-top: 1px;
 
     .fa-angle-double-left {
     }

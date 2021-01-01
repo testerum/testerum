@@ -8,7 +8,8 @@
            [class.fa-caret-down]="animationState == 'open'"
            aria-hidden="true"></i>
 
-        <span [class.error_squiggly]="model.arg.hasOwnOrDescendantWarnings">
+        <span [class.error_squiggly]="model.arg.hasOwnOrDescendantWarnings"
+              class="arg-title">
             <span>{{getArgName()}}</span>
             <span *ngIf="getArgName()">:&nbsp;</span>
             <span>{{getArgUiType()}}</span>
@@ -41,7 +42,7 @@
         </div>
     </legend>
 
-    <div class="content-shell"
+    <div class="content-shell condensed-view-container"
          [class.content-shell-close]="animationState == 'close'"
          [@expandCollapse]="animationState"
          (@expandCollapse.done)="onAnimateEnd()">

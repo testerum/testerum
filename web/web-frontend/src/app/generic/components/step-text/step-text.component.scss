@@ -1,5 +1,7 @@
 .step-text {
     position: relative;
+    display: flex;
+    flex-wrap: nowrap;
 
     .step-text-phase {
         color: mediumblue;
@@ -14,7 +16,7 @@
         text-align: right;
     }
 
-    .step-text {
+    .step-text-without-phase {
         white-space: normal;
         display: inline-block;
     }

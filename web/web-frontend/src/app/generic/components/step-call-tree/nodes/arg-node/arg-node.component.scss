@@ -41,6 +41,12 @@
         }
     }
 
+    .condensed-view-container {
+        white-space: pre;
+        line-height: 12px;
+        font-size: 12px;
+    }
+
     .arg-error-icon {
         margin-left: 5px;
     }
@@ -51,8 +57,12 @@
     }
 
     .toggle-icon {
-        width: 8px;
-        margin-right: 5px;
+        width: 1px;
+        margin-right: 3px;
+    }
+
+    .arg-title {
+        margin-left: 8px;
     }
 
     .param-info-icon {
