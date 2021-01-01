@@ -8,13 +8,14 @@
     }
 
     .hook-icon-container {
+        align-self: flex-start;
         position: relative;
         display: inline;
         margin-right: 4px;
 
         .hook-icon {
             position: absolute;
-            top: 5px;
+            top: 8px;
             left: -3px;
         }
     }
