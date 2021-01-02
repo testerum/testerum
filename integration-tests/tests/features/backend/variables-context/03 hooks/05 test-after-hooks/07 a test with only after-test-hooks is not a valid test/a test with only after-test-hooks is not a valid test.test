@@ -1,0 +1,3 @@
+test-def: a test with only after-test-hooks is not a valid test
+
+    after-hook: Then <<true>> is true

@@ -1,0 +1,3 @@
+step-def: Given a dummy step
+
+    step: Then <<1>> is equal to <<1>>

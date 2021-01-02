@@ -1,0 +1,2 @@
+
+before-all-hook: Then this step can not access the "name" variable

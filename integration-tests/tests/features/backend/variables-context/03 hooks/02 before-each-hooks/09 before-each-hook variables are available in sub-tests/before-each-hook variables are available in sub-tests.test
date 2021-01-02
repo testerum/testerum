@@ -1,0 +1,4 @@
+test-def: before-each-hook variables are available in sub-tests
+
+    step: Then <<{{name}}>> is equal to <<SuperMan>>
+    step: Then the step can access the "name" variable that has the value <<SuperMan>>

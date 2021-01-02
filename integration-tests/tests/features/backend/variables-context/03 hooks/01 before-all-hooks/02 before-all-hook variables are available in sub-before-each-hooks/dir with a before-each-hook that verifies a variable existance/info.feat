@@ -1,0 +1,3 @@
+
+before-each-hook: Then <<{{name}}>> is equal to <<SuperMan>>
+before-each-hook: Then the step can access the "name" variable that has the value <<SuperMan>>

@@ -1,0 +1,5 @@
+test-def: if after-test-hook fails then the test fails
+
+    step: Then <<true>> is true
+
+    after-hook: Then <<false>> is true

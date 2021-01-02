@@ -1,0 +1,5 @@
+
+before-all-hook: Given the step with a sub-step that defines a "name" variable with the value <<SuperMan>>
+
+after-all-hook: Then the step can access the "name" variable that has the value <<SuperMan>>
+after-all-hook: Then <<{{name}}>> is equal to <<SuperMan>>
