@@ -297,6 +297,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     }
 
     addHook(hooksStepCallTree: StepCallTreeComponent) {
+        this.enableEditMode();
         hooksStepCallTree.stepCallTreeComponentService.addStepCallEditor(hooksStepCallTree.jsonTreeModel);
     }
 
@@ -331,9 +332,11 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     }
 
     onPaste(hooksTreeComponent: StepCallTreeComponent) {
-        let stepCallTreeComponentService = hooksTreeComponent.stepCallTreeComponentService;
+        this.enableEditMode();
 
+        let stepCallTreeComponentService = hooksTreeComponent.stepCallTreeComponentService;
         let treeModel = hooksTreeComponent.jsonTreeModel;
+
         if (this.contextService.stepToCopy) {
             let stepToCopyModel = this.contextService.stepToCopy.model;
 
@@ -343,6 +346,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
             stepCallTreeComponentService.addStepCallToParentContainer(newStepCall, treeModel);
             this.afterPasteOperation(hooksTreeComponent);
         }
+
         if (this.contextService.stepToCut) {
             let stepToCutModel = this.contextService.stepToCut.model;
 

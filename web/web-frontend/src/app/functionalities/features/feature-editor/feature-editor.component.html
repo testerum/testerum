@@ -121,8 +121,8 @@
                                  (click)="addHook(beforeAllHooksCallTree); $event.stopPropagation()">
                                 <i class="fa_my-plus" aria-hidden="true"></i>
                             </div>
-                            <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
-                                 (click)="onPaste(this.beforeAllHooksCallTree); $event.stopPropagation()">
+                            <div *ngIf="canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
+                                 (click)="onPaste(beforeAllHooksCallTree); $event.stopPropagation()">
                                 <i class="fa_my-paste" aria-hidden="true"></i>
                             </div>
                         </div>
@@ -150,7 +150,7 @@
                                 <i class="fa_my-plus" aria-hidden="true"></i>
                             </div>
                             <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
-                                 (click)="onPaste(this.beforeEachHooksCallTree); $event.stopPropagation()">
+                                 (click)="onPaste(beforeEachHooksCallTree); $event.stopPropagation()">
                                 <i class="fa_my-paste" aria-hidden="true"></i>
                             </div>
                         </div>
@@ -178,7 +178,7 @@
                                 <i class="fa_my-plus" aria-hidden="true"></i>
                             </div>
                             <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
-                                 (click)="onPaste(this.afterEachHooksCallTree); $event.stopPropagation()">
+                                 (click)="onPaste(afterEachHooksCallTree); $event.stopPropagation()">
                                 <i class="fa_my-paste" aria-hidden="true"></i>
                             </div>
                         </div>
@@ -206,7 +206,7 @@
                                 <i class="fa_my-plus" aria-hidden="true"></i>
                             </div>
                             <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
-                                 (click)="onPaste(this.afterAllHooksCallTree); $event.stopPropagation()">
+                                 (click)="onPaste(afterAllHooksCallTree); $event.stopPropagation()">
                                 <i class="fa_my-paste" aria-hidden="true"></i>
                             </div>
                         </div>
