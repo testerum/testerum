@@ -278,18 +278,19 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             jdbcDriversCache = rdbmsDriverConfigCache
     )
 
+    private val saveFrontendService = SaveFrontendService(
+        webProjectManager = webProjectManager,
+        resourceFileService = fileServiceModuleFactory.resourceFileService
+    )
+
     private val featuresFrontendService = FeaturesFrontendService(
             webProjectManager = webProjectManager,
-            featureFileService = fileServiceModuleFactory.featuresFileService
+            featureFileService = fileServiceModuleFactory.featuresFileService,
+            saveFrontendService = saveFrontendService
     )
 
     private val tagsFrontendService = TagsFrontendService(
             webProjectManager = webProjectManager
-    )
-
-    private val saveFrontendService = SaveFrontendService(
-            webProjectManager = webProjectManager,
-            resourceFileService = fileServiceModuleFactory.resourceFileService
     )
 
     private val testsFrontendService = TestsFrontendService(

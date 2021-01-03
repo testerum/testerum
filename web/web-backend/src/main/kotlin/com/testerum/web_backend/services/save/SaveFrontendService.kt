@@ -5,6 +5,7 @@ import com.testerum.file_service.util.isChangedRequiringSave
 import com.testerum.file_service.util.isStepPatternChangeCompatible
 import com.testerum.model.arg.Arg
 import com.testerum.model.exception.ValidationException
+import com.testerum.model.feature.Feature
 import com.testerum.model.resources.ResourceContext
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
@@ -21,6 +22,26 @@ class SaveFrontendService(private val webProjectManager: WebProjectManager,
     private fun stepsCache() = webProjectManager.getProjectServices().getStepsCache()
 
     private fun getResourcesDir() = webProjectManager.getProjectServices().dirs().getResourcesDir()
+
+    fun saveFeature(feature: Feature): Feature {
+        saveStepCallsRecursively(feature.hooks.beforeAll)
+        saveStepCallsRecursively(feature.hooks.beforeEach)
+        saveStepCallsRecursively(feature.hooks.afterEach)
+        saveStepCallsRecursively(feature.hooks.afterAll)
+
+        val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
+
+        val savedFeature = webProjectManager.getProjectServices().getFeatureCache().save(feature, featuresDir)
+
+        // if the feature was renamed, notify tests cache
+        val oldPath = feature.oldPath
+        val newPath = savedFeature.path
+        if (oldPath != null && newPath != oldPath) {
+            webProjectManager.reloadProject()
+        }
+
+        return savedFeature
+    }
 
     fun saveTest(test: TestModel): TestModel {
         val savedTest = saveTestWithoutReinitializingCaches(test)

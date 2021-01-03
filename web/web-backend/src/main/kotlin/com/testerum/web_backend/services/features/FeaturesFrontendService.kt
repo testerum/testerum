@@ -12,13 +12,15 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.test.TestModel
 import com.testerum.web_backend.services.features.filterer.FeaturesTreeFilterer
 import com.testerum.web_backend.services.project.WebProjectManager
+import com.testerum.web_backend.services.save.SaveFrontendService
 import org.apache.commons.io.IOUtils
 import javax.imageio.ImageIO
 import javax.servlet.http.HttpServletResponse
 import java.nio.file.Path as JavaPath
 
 class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
-                              private val featureFileService: FeatureFileService) {
+                              private val featureFileService: FeatureFileService,
+                              private val saveFrontendService: SaveFrontendService) {
 
     companion object {
         private const val ATTACHMENT_THUMBNAIL_WIDTH = 200
@@ -89,7 +91,7 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
     fun save(feature: Feature,
              attachmentsPathsToDelete: List<Path>,
              attachmentFiles: List<FileToUpload>): Feature {
-        val savedFeature = saveFeature(feature)
+        val savedFeature = saveFrontendService.saveFeature(feature)
 
         deleteFeatureAttachments(attachmentsPathsToDelete)
 
@@ -97,21 +99,6 @@ class FeaturesFrontendService(private val webProjectManager: WebProjectManager,
 
         // get feature again (rather than just returning "savedFeature"), to include the correct list of attachments
         return getFeatureAtPath(savedFeature.path)!!
-    }
-
-    private fun saveFeature(feature: Feature): Feature {
-        val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
-
-        val savedFeature = webProjectManager.getProjectServices().getFeatureCache().save(feature, featuresDir)
-
-        // if the feature was renamed, notify tests cache
-        val oldPath = feature.oldPath
-        val newPath = savedFeature.path
-        if (oldPath != null && newPath != oldPath) {
-            webProjectManager.reloadProject()
-        }
-
-        return savedFeature
     }
 
     private fun deleteFeatureAttachments(attachmentsPathsToDelete: List<Path>) {
