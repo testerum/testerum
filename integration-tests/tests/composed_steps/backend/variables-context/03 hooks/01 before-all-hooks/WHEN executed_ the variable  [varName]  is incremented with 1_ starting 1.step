@@ -1,4 +1,4 @@
 step-def: When executed, the variable <<varName: TEXT>> is incremented with 1, starting 1
 
     step: When I execute the JS script <<{{script}}>> and save the result into the variable <<{{varName}}>>
-        var script = <<if(testVariables.contains("{{varName}}")) { return testVariables.get("{{varName}}") + 1 } else { return 1 }>>
+        var script = <<(function() { if(testVariables.contains("{{varName}}")) { return testVariables.get("{{varName}}") + 1 } else { return 1 } })()>>

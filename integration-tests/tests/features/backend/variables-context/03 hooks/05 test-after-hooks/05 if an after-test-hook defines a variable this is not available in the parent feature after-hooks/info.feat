@@ -1,10 +1,5 @@
 
-after-each-hook: When I execute the JS script <<{{script}}>>
-    var script = <<
-        if (testVariables.contains("name")) {
-            failTest("the arg [name] should not be available in a parent step");
-        }
-    >>
+after-each-hook: Then <<{{name}}>> is equal to <<SuperMan>>
 
 after-all-hook: When I execute the JS script <<{{script}}>>
     var script = <<

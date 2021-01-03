@@ -1,3 +1,12 @@
 test-def: a test with only after-test-hooks is not a valid test
 
+    test-properties = <<manual>>
+
+    description = <<
+        This test allows us to check that a tests is marked UNDEFINED if it doesn't have steps, even if it has hooks.
+        
+        Because this will make the entire test fail, we mark this test as manual.
+        To check, un-mark as manual, run the test, and then mark manual again.
+    >>
+
     after-hook: Then <<true>> is true

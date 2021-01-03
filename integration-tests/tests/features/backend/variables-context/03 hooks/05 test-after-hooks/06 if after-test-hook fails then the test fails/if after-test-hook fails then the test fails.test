@@ -1,5 +1,14 @@
 test-def: if after-test-hook fails then the test fails
 
+    test-properties = <<manual>>
+
+    description = <<
+        This test allows us to check that the test fails if an after-hook fails (even if the steps were successful).
+        
+        Because this will make the entire test fail, we mark this test as manual.
+        To check, un-mark as manual, run the test, and then mark manual again.
+    >>
+
     step: Then <<true>> is true
 
     after-hook: Then <<false>> is true
