@@ -40,7 +40,7 @@ class WebDriverExpressionSteps {
                 "webDriver" to driver
             )
 
-            scriptExecuter.executeScript(script)
+            scriptExecuter.executeScript(script, context)
         }
     }
 
