@@ -1,11 +1,2 @@
 
 before-all-hook: Then this step can not access the "name" variable
-before-all-hook: When I execute the JS script <<{{script}}>>
-    var script = <<
-        if (testVariables.contains("name")) {
-            failTest("the arg [name] should not be available in a parent step");
-        }
-    >>
-
-after-each-hook: Then <<{{name}}>> is equal to <<SuperMan>>
-after-each-hook: Then the step can access the "name" variable that has the value <<SuperMan>>

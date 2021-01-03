@@ -1,3 +1,0 @@
-
-after-all-hook: Then <<{{name}}>> is equal to <<SuperMan>>
-after-all-hook: Then the step can access the "name" variable that has the value <<SuperMan>>

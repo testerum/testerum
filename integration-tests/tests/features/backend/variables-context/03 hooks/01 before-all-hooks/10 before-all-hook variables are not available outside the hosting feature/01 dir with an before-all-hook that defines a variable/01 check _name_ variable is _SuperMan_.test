@@ -1,0 +1,3 @@
+test-def: 01 check "name" variable is "SuperMan"
+
+    step: Then <<{{name}}>> is equal to <<SuperMan>>
