@@ -1,3 +1,4 @@
 test-def: 01 set "name" variable to "BatMan"
 
     step: Given the step that defines a "name" variable with the value <<BatMan>>
+    step: Then <<{{name}}>> is equal to <<BatMan>>

@@ -1,0 +1,5 @@
+test-def: check "name" variable is "SuperMan"
+
+    description = <<we are setting the variable "name" to "BatMan" in the previous test, but this change shouldn't be visible between tests>>
+
+    step: Then <<{{name}}>> is equal to <<SuperMan>>
