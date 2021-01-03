@@ -29,6 +29,10 @@ class RunnerAfterHooksList(
     override fun toString(): String = buildString { addToString(this, 0) }
 
     fun addToString(destination: StringBuilder, indentLevel: Int) {
+        if (hooks.isEmpty()) {
+            return
+        }
+
         destination.indent(indentLevel).append("after-hooks\n")
 
         for (hook in hooks) {
