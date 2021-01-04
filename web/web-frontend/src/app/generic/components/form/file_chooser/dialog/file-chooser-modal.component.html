@@ -14,7 +14,7 @@
                     <input name="name"
                            [(ngModel)]="selectedPathAsString"
                            (ngModelChange)="onSelectedPathChanges($event)"
-                           type="text" class="form-control"
+                           type="text" class="form-control test_selected-project-path"
                            (keydown.enter)="$event.preventDefault()">
                 </div>
 
@@ -34,7 +34,7 @@
                         Create Directory
                     </button>
                     <button (click)="onCancelAction();" type="button" class="btn btn-default">Cancel</button>
-                    <button (click)="onDirectoryChooseAction()" class="btn btn-primary"
+                    <button (click)="onDirectoryChooseAction()" class="btn btn-primary test_select-btn"
                             [disabled]="!isValidSelectedPath">Select</button>
                 </div>
             </div>
