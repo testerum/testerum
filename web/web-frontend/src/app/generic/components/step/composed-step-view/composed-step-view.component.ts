@@ -368,36 +368,15 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         return this.contextService.stepToCut != null || this.contextService.stepToCopy != null;
     }
 
-    onPasteStep() {
+    onPaste() {
         let stepCallTreeComponentService = this.stepCallTreeComponent.stepCallTreeComponentService;
-
         let treeModel = this.stepCallTreeComponent.jsonTreeModel;
-        if (this.contextService.stepToCopy) {
-            let stepToCopyModel = this.contextService.stepToCopy.model;
 
-            let newStepCall = stepToCopyModel.stepCall.clone();
-            newStepCall.stepDef = stepToCopyModel.stepCall.stepDef; //do not clone the StepDef, we still want to point to the same def
-
-            stepCallTreeComponentService.addStepCallToParentContainer(newStepCall, treeModel);
-            this.afterPasteOperation();
+        let stepToPaste = this.contextService.stepToCopy || this.contextService.stepToCut
+        if (stepToPaste) {
+            stepCallTreeComponentService.addStepCallToParentContainer(stepToPaste, treeModel);
+            this.contextService.onPaste();
         }
-        if (this.contextService.stepToCut) {
-            let stepToCutModel = this.contextService.stepToCut.model;
-
-            this.contextService.stepToCut.moveStep(treeModel);
-            this.afterPasteOperation();
-        }
-    }
-
-    private afterPasteOperation() {
-        let stepForOperation = this.contextService.stepToCopy? this.contextService.stepToCopy: this.contextService.stepToCut;
-
-        if (stepForOperation) {
-            stepForOperation.stepCallTreeComponentService.setSelectedNode(null);
-        }
-
-        this.contextService.stepToCut = null;
-        this.contextService.stepToCopy = null;
     }
 
     showUsage() {

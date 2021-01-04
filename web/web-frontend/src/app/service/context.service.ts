@@ -6,7 +6,8 @@ import {LicenseInfo} from "../model/user/license/license-info.model";
 import {UserService} from "./user.service";
 import {UserLicenseInfo} from "../model/user/license/user-license-info.model";
 import {JsonUtil} from "../utils/json.util";
-import {DateUtil} from "../utils/date.util";
+import {StepCall} from "../model/step/step-call.model";
+import {JsonTreeContainer} from "../generic/components/json-tree/model/json-tree-container.model";
 
 @Injectable()
 export class ContextService {
@@ -17,8 +18,9 @@ export class ContextService {
     license: LicenseContext;
     runConfigContext: RunConfigContext;
 
-    stepToCut: StepCallContainerComponent = null;
-    stepToCopy: StepCallContainerComponent = null;
+    stepToCut: StepCall = null;
+    stepToCopy: StepCall = null;
+    private stepCallContainerToCopy: StepCallContainerComponent
 
     constructor(private userService: UserService) {
         this.license = new LicenseContext(userService);
@@ -58,19 +60,13 @@ export class ContextService {
         return this.currentProject ? this.currentProject.path: null;
     }
 
-    setPathToCut(stepCallContainerComponent: StepCallContainerComponent) {
-        this.stepToCopy = null;
-        this.stepToCut = stepCallContainerComponent;
-    }
 
-    setPathToCopy(stepCallContainerComponent: StepCallContainerComponent) {
-        this.stepToCopy = stepCallContainerComponent;
-        this.stepToCut = null;
-    }
-
-    canPaste(stepCallContainerModel: StepCallContainerModel): boolean {
-        return (this.stepToCopy != null && !(this.stepToCopy.model.stepCall == stepCallContainerModel.stepCall))
-            || (this.stepToCut != null && !(this.stepToCut.model.stepCall == stepCallContainerModel.stepCall));
+    refreshPage() {
+        if (this.isProjectSelected()) {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/" + this.getProjectName() + "/" ;
+        } else {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/";
+        }
     }
 
     private setPageTitle(currentProject: Project) {
@@ -82,12 +78,53 @@ export class ContextService {
         document.title = currentProject.name + " - Testerum" ;
     }
 
-    refreshPage() {
-        if (this.isProjectSelected()) {
-            window.location.href = window.location.protocol + "//" + window.location.host + "/" + this.getProjectName() + "/" ;
-        } else {
-            window.location.href = window.location.protocol + "//" + window.location.host + "/";
+// == COPY & PASTE ========================================================
+    setPathToCopy(stepCallContainerComponent: StepCallContainerComponent) {
+        this.stepCallContainerToCopy = stepCallContainerComponent;
+        this.stepToCopy = this.cloneStepCall(stepCallContainerComponent);
+        this.stepToCut = null;
+    }
+
+    setPathToCut(stepCallContainerComponent: StepCallContainerComponent) {
+        stepCallContainerComponent.removeStep()
+
+        this.stepCallContainerToCopy = stepCallContainerComponent;
+        this.stepToCopy = null;
+        this.stepToCut = this.cloneStepCall(stepCallContainerComponent);
+    }
+
+    private cloneStepCall(stepCallContainer: StepCallContainerComponent) {
+        let stepToCopyModel = stepCallContainer.model;
+        let stepCallClone = stepToCopyModel.stepCall.clone();
+        stepCallClone.stepDef = stepToCopyModel.stepCall.stepDef; //do not clone the StepDef, we still want to point to the same def
+
+        return stepCallClone;
+    }
+
+    canPaste(stepCallContainerModel: StepCallContainerModel): boolean {
+        return (this.stepToCopy != null && !(this.stepToCopy.id == stepCallContainerModel.stepCall.id))
+            || (this.stepToCut != null && !(this.stepToCut.id == stepCallContainerModel.stepCall.id));
+    }
+
+    onPaste() {
+        if (this.stepCallContainerToCopy) {
+            this.stepCallContainerToCopy.stepCallTreeComponentService.setSelectedNode(null)
         }
+    }
+
+    isPasteOperationCreatingACycle(parent: JsonTreeContainer): boolean {
+        let stepToCopyOrCut: StepCallContainerComponent = this.stepCallContainerToCopy;
+        if(!stepToCopyOrCut) {
+            return false;
+        }
+
+        while (parent) {
+            if(parent === stepToCopyOrCut.model) {
+                return true
+            }
+            parent = parent.getParent();
+        }
+        return false;
     }
 }
 

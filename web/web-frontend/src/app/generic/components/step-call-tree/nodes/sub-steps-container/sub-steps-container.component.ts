@@ -50,7 +50,7 @@ export class SubStepsContainerComponent {
     onPasteStep() {
         let parentContainer = this.model.parentContainer as StepCallContainerModel;
 
-        if (this.isPasteOperationCreatingACycle(this.model)) {
+        if (this.contextService.isPasteOperationCreatingACycle(this.model)) {
             this.infoModalService.showInfoModal(
                 "Operation not allowed",
                 "You are not allowed to paste a step as its own child/descendant.\n" +
@@ -60,51 +60,19 @@ export class SubStepsContainerComponent {
             return;
         }
 
-        if (this.contextService.stepToCopy) {
-            let stepCallContainerComponent = this.contextService.stepToCopy;
-            let parentSubStepsContainerModel = parentContainer.getSubStepsContainerModel();
+        let parentSubStepsContainerModel = parentContainer.getSubStepsContainerModel();
 
-            let newStepCall = stepCallContainerComponent.model.stepCall.clone();
-            newStepCall.stepDef = stepCallContainerComponent.model.stepCall.stepDef; //do not clone the StepDef, we still want to point to the same def
-
-            this.stepCallTreeComponentService.addStepCallToParentContainer(newStepCall, parentSubStepsContainerModel);
-            parentSubStepsContainerModel.jsonTreeNodeState.showChildren = true;
-            this.afterPasteOperation();
+        let stepToPaste = this.contextService.stepToCopy || this.contextService.stepToCut
+        if (stepToPaste) {
+            this.stepCallTreeComponentService.addStepCallToParentContainer(stepToPaste, parentSubStepsContainerModel);
+            this.contextService.onPaste();
         }
-        if (this.contextService.stepToCut) {
-            let stepCallContainerComponent = this.contextService.stepToCut;
-            let parentSubStepsContainerModel = parentContainer.getSubStepsContainerModel();
 
-            stepCallContainerComponent.moveStep(parentSubStepsContainerModel);
-
-            parentSubStepsContainerModel.jsonTreeNodeState.showChildren = true;
-            this.afterPasteOperation();
-        }
-    }
-
-    private afterPasteOperation() {
-        this.contextService.stepToCut = null;
-        this.contextService.stepToCopy = null;
-        this.stepCallTreeComponentService.setSelectedNode(null);
+        parentSubStepsContainerModel.jsonTreeNodeState.showChildren = true;
     }
 
     canPaste(): boolean {
         let destinationContainer = this.model.parentContainer as StepCallContainerModel;
         return this.contextService.canPaste(destinationContainer);
-    }
-
-    private isPasteOperationCreatingACycle(parent: JsonTreeContainer): boolean {
-        let stepToCopyOrCut: StepCallContainerComponent = this.contextService.stepToCopy ? this.contextService.stepToCopy: this.contextService.stepToCut;
-        if(!stepToCopyOrCut) {
-            return false;
-        }
-
-        while (parent) {
-            if(parent == stepToCopyOrCut.model) {
-                return true
-            }
-            parent = parent.getParent();
-        }
-        return false;
     }
 }

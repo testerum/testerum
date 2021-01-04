@@ -136,16 +136,6 @@ export class StepCallTreeComponentService {
         }
     }
 
-    moveStep(stepCallContainerModel: StepCallContainerModel, newParentContainer: JsonTreeContainer) {
-        ArrayUtil.removeElementFromArray(stepCallContainerModel.parentContainer.getChildren(), stepCallContainerModel);
-        this.removeStepCallFromParent(stepCallContainerModel.stepCall, stepCallContainerModel.parentContainer);
-
-        this.addStepCallToParentContainer(stepCallContainerModel.stepCall, newParentContainer);
-
-        this.triggerStepCallOrderChangeEvent();
-        this.triggerChangeEvent();
-    }
-
     private getFirstParentOfTypeStepCallContainerModel(parentContainer: JsonTreeContainer): StepCallContainerModel {
         if (parentContainer instanceof StepCallContainerModel) {
             return parentContainer;

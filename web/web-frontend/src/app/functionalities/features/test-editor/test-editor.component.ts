@@ -315,32 +315,15 @@ export class TestEditorComponent extends AbstractComponentCanDeactivate implemen
         return this.contextService.stepToCut != null || this.contextService.stepToCopy != null;
     }
 
-    onPaste(stepsOrHooksTreeComponent: StepCallTreeComponent) {
-        let stepCallTreeComponentService = stepsOrHooksTreeComponent.stepCallTreeComponentService;
+    onPaste(stepsOrHooksTree: StepCallTreeComponent) {
+        let stepCallTreeComponentService = stepsOrHooksTree.stepCallTreeComponentService;
+        let treeModel = stepsOrHooksTree.jsonTreeModel;
 
-        let treeModel = stepsOrHooksTreeComponent.jsonTreeModel;
-        if (this.contextService.stepToCopy) {
-            let stepToCopyModel = this.contextService.stepToCopy.model;
-
-            let newStepCall = stepToCopyModel.stepCall.clone();
-            newStepCall.stepDef = stepToCopyModel.stepCall.stepDef; //do not clone the StepDef, we still want to point to the same def
-
-            stepCallTreeComponentService.addStepCallToParentContainer(newStepCall, treeModel);
-            this.afterPasteOperation(stepsOrHooksTreeComponent);
+        let stepToPaste = this.contextService.stepToCopy || this.contextService.stepToCut
+        if (stepToPaste) {
+            stepCallTreeComponentService.addStepCallToParentContainer(stepToPaste, treeModel);
+            this.contextService.onPaste();
         }
-        if (this.contextService.stepToCut) {
-            let stepToCutModel = this.contextService.stepToCut.model;
-
-            this.contextService.stepToCut.moveStep(treeModel);
-            this.afterPasteOperation(stepsOrHooksTreeComponent);
-        }
-    }
-
-    private afterPasteOperation(stepsOrHooksTreeComponent: StepCallTreeComponent) {
-        this.contextService.stepToCut = null;
-        this.contextService.stepToCopy = null;
-
-        stepsOrHooksTreeComponent.stepCallTreeComponentService.setSelectedNode(null);
     }
 
     addScenario() {

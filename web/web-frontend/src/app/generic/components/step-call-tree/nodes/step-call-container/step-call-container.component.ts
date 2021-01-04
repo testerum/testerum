@@ -272,13 +272,6 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         this.stepCallTreeComponentService.removeStepCall(this.model);
     }
 
-    public moveStep(newParentContainer: JsonTreeContainer ) {
-        if (this.stepCallOrderChangeSubscription) {
-            this.stepCallOrderChangeSubscription.unsubscribe();
-        }
-        this.stepCallTreeComponentService.moveStep(this.model, newParentContainer);
-    }
-
     private findStepIndex(): number {
         return this.model.parentContainer.getChildren().indexOf(this.model);
     }
