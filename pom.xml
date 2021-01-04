@@ -433,7 +433,7 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>testerum-junit-all</artifactId>
-                <version>${testerum.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <!--==================== testerum dependencies ====================-->
