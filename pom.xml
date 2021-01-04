@@ -12,7 +12,6 @@
         <module>cloud-client</module>
         <module>common</module>
         <module>file-service</module>
-        <module>integration-tests</module>
         <module>model</module>
         <module>project-manager</module>
         <module>report</module>
@@ -1499,9 +1498,32 @@
             </build>
         </profile>
 
+        <!-- not-release -->
+        <profile>
+            <id>not-release</id>
+
+            <!-- activated by the absence of the "release" system property -->
+            <activation>
+                <property>
+                    <name>!release</name>
+                </property>
+            </activation>
+
+            <modules>
+                <module>integration-tests</module>
+            </modules>
+        </profile>
+
         <!-- release -->
         <profile>
             <id>release</id>
+
+            <!-- activated by the presence of the "release" system property -->
+            <activation>
+                <property>
+                    <name>release</name>
+                </property>
+            </activation>
 
             <properties>
                 <maven.javadoc.skip>false</maven.javadoc.skip>
