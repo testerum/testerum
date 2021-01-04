@@ -205,7 +205,7 @@
                 <artifactId>common-parsing</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>common-profiles</artifactId>
@@ -326,7 +326,7 @@
                 <artifactId>testerum-scanner-it-steplib2</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>testerum-scanner-it-steplib3-java</artifactId>
@@ -422,12 +422,6 @@
                 <artifactId>report-server-frontend</artifactId>
                 <version>${project.version}</version>
                 <classifier>dist</classifier>
-            </dependency>
-
-            <dependency>
-                <groupId>com.testerum</groupId>
-                <artifactId>testerum-junit</artifactId>
-                <version>${project.version}</version>
             </dependency>
 
             <dependency>
