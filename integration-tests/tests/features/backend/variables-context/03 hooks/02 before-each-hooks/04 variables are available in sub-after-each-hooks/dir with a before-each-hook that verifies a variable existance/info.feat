@@ -1,0 +1,2 @@
+
+before-each-hook: Then <<{{name}}>> is equal to <<Testerum>>
