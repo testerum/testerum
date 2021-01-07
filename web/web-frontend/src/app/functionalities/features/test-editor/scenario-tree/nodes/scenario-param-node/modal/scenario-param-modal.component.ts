@@ -126,7 +126,7 @@ export class ScenarioParamModalComponent {
     deleteAction() {
         this.areYouSureModalService.showAreYouSureModal(
             "Delete",
-            "Are you sure you want to delete this scenario?"
+            "Are you sure you want to delete this parameter?"
         ).subscribe((action: AreYouSureModalEnum) => {
             if (action == AreYouSureModalEnum.OK) {
                 let result = new ScenarioParamChangeModel();

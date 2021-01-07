@@ -21,7 +21,7 @@
                             <input name="name"
                                    required isNotBlankValidator urlNameValidator
                                    #nameNgModel="ngModel" [(ngModel)]="name"
-                                   type="text" class="form-control" >
+                                   type="text" class="form-control test_project-name" >
                             <input-error [model]="nameNgModel"
                                          [errorMessages]="{
                                         required: 'A name for the new project is required',
@@ -52,7 +52,7 @@
             <!-- FOOTER Buttons-->
             <div class="modal-footer">
                 <button (click)="onCancelAction()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button (click)="onCreateProjectAction()" [disabled]="!form.form.valid" type="button" class="btn btn-primary">Create Project</button>
+                <button (click)="onCreateProjectAction()" [disabled]="!form.form.valid" type="button" class="btn btn-primary test_create-project-btn">Create Project</button>
             </div>
         </div>
     </div>

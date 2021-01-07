@@ -12,7 +12,6 @@
         <module>cloud-client</module>
         <module>common</module>
         <module>file-service</module>
-        <module>integration-tests</module>
         <module>model</module>
         <module>project-manager</module>
         <module>report</module>
@@ -205,7 +204,7 @@
                 <artifactId>common-parsing</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>common-profiles</artifactId>
@@ -326,7 +325,7 @@
                 <artifactId>testerum-scanner-it-steplib2</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>testerum-scanner-it-steplib3-java</artifactId>
@@ -432,14 +431,8 @@
 
             <dependency>
                 <groupId>com.testerum</groupId>
-                <artifactId>testerum-junit</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.testerum</groupId>
                 <artifactId>testerum-junit-all</artifactId>
-                <version>${testerum.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <!--==================== testerum dependencies ====================-->
@@ -1505,9 +1498,32 @@
             </build>
         </profile>
 
+        <!-- not-release -->
+        <profile>
+            <id>not-release</id>
+
+            <!-- activated by the absence of the "release" system property -->
+            <activation>
+                <property>
+                    <name>!release</name>
+                </property>
+            </activation>
+
+            <modules>
+                <module>integration-tests</module>
+            </modules>
+        </profile>
+
         <!-- release -->
         <profile>
             <id>release</id>
+
+            <!-- activated by the presence of the "release" system property -->
+            <activation>
+                <property>
+                    <name>release</name>
+                </property>
+            </activation>
 
             <properties>
                 <maven.javadoc.skip>false</maven.javadoc.skip>

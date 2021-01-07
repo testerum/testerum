@@ -1,0 +1,3 @@
+test-def: variables are available in sub-tests
+
+    step: Then <<{{name}}>> is equal to <<Testerum>>

@@ -24,9 +24,9 @@
                         <li *ngFor="let recentProject of recentProjects"
                             class="recent-project"
                             (click)="navigateToProject(recentProject)">
-                            <div class="project-name">{{recentProject.name}}</div>
+                            <div class="project-name test_recent-project-name">{{recentProject.name}}</div>
                             <div class="project-path">{{recentProject.path.toString()}}</div>
-                            <div class="button-panel btn-group my-project-button-panel">
+                            <div class="button-panel btn-group my-project-button-panel test_recent-project-remove-btn">
                                 <div title="Remove project from list" class="btn btn-default btn-xs btn-group"
                                      (click)="removeProject(recentProject);$event.stopPropagation();">
                                     <i class="fas fa-times"></i>
@@ -44,11 +44,11 @@
                 <div class="panel-heading">Quick Start</div>
                 <div class="quick-start panel-body">
                     <ul>
-                        <li (click)="onCreateNewProject()">
+                        <li class="test_create-new-project" (click)="onCreateNewProject()">
                             <i class="fas fa-star"></i>
                             Create New Project
                         </li>
-                        <li (click)="onOpenProject()">
+                        <li class="test_open-project" (click)="onOpenProject()">
                             <i class="fas fa-folder-open"></i>
                             Open Project
                         </li>
