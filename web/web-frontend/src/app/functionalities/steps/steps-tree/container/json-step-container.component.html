@@ -13,6 +13,7 @@
            [class.fa_my-tree-folder-opened-colored]="isOpenedNode()"></i>
 
         <span class="node-text"
+              [class.is-selected-to-be-cut-paste]="isStepSelectedForCut()"
               [class.error_squiggly]="model.hasOwnOrDescendantWarnings">{{model.name}}</span>
 
         <!-- BUTTONS RENDERING -->
@@ -34,6 +35,12 @@
                  *ngIf="!model.isRootPackage"
                  (click)="showEditDirectoryNameModal(); $event.stopPropagation()">
                 <i class="fa_my-edit" aria-hidden="true"></i>
+            </div>
+
+            <div *ngIf="!model.isRootPackage"
+                 title="Cut Steps Directory" class="btn btn-default btn-xs btn-group"
+                 (click)="onCut(); $event.stopPropagation()">
+                <i class="fa_my-cut" aria-hidden="true"></i>
             </div>
 
             <div title="Delete Folder" class="btn btn-default btn-xs btn-group"

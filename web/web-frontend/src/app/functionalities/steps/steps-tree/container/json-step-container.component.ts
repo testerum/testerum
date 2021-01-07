@@ -185,15 +185,30 @@ export class JsonStepContainerComponent {
         this.stepsTreeService.pathToCopy = null;
 
         this.stepsTreeService.initializeStepsTreeFromServer(resultPath);
-        this.urlService.navigateToComposedStep(resultPath);
+        if (resultPath.isFile()) {
+            this.urlService.navigateToComposedStep(resultPath);
+        }
     }
 
     canPaste(): boolean {
-        let hasSomeStepToPaste = this.stepsTreeService.canPaste(this.model.path);
-        if (hasSomeStepToPaste == null) {
+        let pathToCopyOrCut = this.stepsTreeService.getPathToCopyOrCut();
+
+        if(!pathToCopyOrCut) {
             return false;
         }
-        return this.stepsTreeService.isCopyOrPasteAComposedStep;
 
+        if(this.model.path.toString().startsWith(pathToCopyOrCut.toString())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    onCut() {
+        this.stepsTreeService.setPathToCut(this.model.path);
+    }
+
+    isStepSelectedForCut():boolean {
+        return this.model.path.equals(this.stepsTreeService.getPathToCopyOrCut())
     }
 }

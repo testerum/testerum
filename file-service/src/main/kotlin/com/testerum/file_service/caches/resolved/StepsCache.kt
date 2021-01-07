@@ -301,22 +301,47 @@ class StepsCache(
                 ?: throw IllegalStateException("cannot move composed step directory or file because the composedStepsDir is not set")
 
             // lookup step def
-            val stepDef = getComposedStepAtPathOrFailWithError(sourcePath)
+            val stepDefs = getComposedStepsAtPathOrFailWithError(sourcePath)
 
-            // update path to tell "save" to move
-            val newPath = destinationDirPath.copy(
-                fileName = sourcePath.fileName,
-                fileExtension = sourcePath.fileExtension
-            )
-            val stepDefToSave = stepDef.copy(path = newPath)
+            val oldPath = sourcePath.getParent()
+            for (stepDef in stepDefs) {
 
-            // save
-            val savedComposedStepDef = composedStepFileService.save(stepDefToSave, composedStepsDir)
+                val stepDefNewPath = stepDef.path.replaceDirs(oldPath, destinationDirPath)
 
-            // reload steps
-            reinitializeComposedSteps()
+                val stepDefToSave = stepDef.copy(path = stepDefNewPath)
 
-            return savedComposedStepDef.path
+                // save
+                composedStepFileService.save(stepDefToSave, composedStepsDir)
+
+                // reload steps
+                reinitializeComposedSteps()
+            }
+
+            return sourcePath.replaceDirs(oldPath, destinationDirPath)
+        }
+    }
+
+    private fun getComposedStepsAtPathOrFailWithError(sourcePath: Path): Collection<ComposedStepDef> {
+        lock.read {
+            if (sourcePath.isFile()) {
+                val composedStepDef = getComposedStepAtPathOrFailWithError(sourcePath)
+                return listOf(composedStepDef)
+            }
+
+            val stepsToMove = stepsByPath
+                .filter { it.key.isChildOrSelf(sourcePath) }
+                .filter { it.value is ComposedStepDef}
+                .mapValues { it.value as ComposedStepDef }
+                .values.toList()
+
+            if (stepsToMove.isEmpty()) {
+                throw ValidationException(
+                    globalMessage = "The path [$sourcePath] does not contain any steps.",
+                    globalHtmlMessage = "The step at path<br/><code>$sourcePath</code><br/>does not exist."
+                )
+            }
+
+            return stepsToMove
         }
     }
 

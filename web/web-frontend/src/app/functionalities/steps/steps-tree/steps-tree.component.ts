@@ -2,7 +2,6 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ModelComponentMapping} from "../../../model/infrastructure/model-component-mapping.model";
 import {JsonTreeModel} from "../../../generic/components/json-tree/model/json-tree.model";
 import {ActivatedRoute, NavigationEnd, Params, Router} from "@angular/router";
-import {UrlUtil} from "../../../utils/url.util";
 import {StepsTreeService} from "./steps-tree.service";
 import {filter, map} from "rxjs/operators";
 import {Path} from "../../../model/infrastructure/path/path.model";

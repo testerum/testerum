@@ -5,6 +5,7 @@
 
     <div (click)="setSelected();$event.stopPropagation();"
          class="step-node-text"
+         [class.is-selected-to-be-cut-paste]="isStepSelectedForCut()"
          [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
          [class.tree-leaf-selected]="model.isSelected()">
         <step-text [stepDef]="model.stepDef"></step-text>
