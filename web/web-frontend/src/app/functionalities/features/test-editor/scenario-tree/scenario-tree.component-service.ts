@@ -31,8 +31,10 @@ export class ScenarioTreeComponentService {
     }
 
     setEditMode(editMode: boolean) {
-        this.editModeEventEmitter.emit(editMode);
-        this.isEditMode = editMode
+        if (this.isEditMode != editMode) {
+            this.editModeEventEmitter.emit(editMode);
+            this.isEditMode = editMode
+        }
     }
 
     addNewScenario() {

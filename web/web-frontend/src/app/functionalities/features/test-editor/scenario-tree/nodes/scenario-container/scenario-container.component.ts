@@ -70,12 +70,12 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     }
 
     editScenarioName() {
-        if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); }
+        this.scenarioTreeComponentService.setEditMode(true);
         this.treeTextEditComponent.setTextEditMode(true)
     }
 
     public moveScenarioUp(): void {
-        if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); }
+        this.scenarioTreeComponentService.setEditMode(true);
 
         let parentContainer = this.model.parentContainer;
         let currentNodeIndexInParent = parentContainer.getChildren().indexOf(this.model);
@@ -93,7 +93,7 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     }
 
     public moveScenarioDown(): void {
-        if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); }
+        this.scenarioTreeComponentService.setEditMode(true);
 
         let parentContainer = this.model.parentContainer;
         let currentNodeIndexInParent = parentContainer.getChildren().indexOf(this.model);
@@ -123,12 +123,14 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     }
 
     public removeScenario(): void {
-        if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); }
+        this.scenarioTreeComponentService.setEditMode(true);
 
         this.scenarioTreeComponentService.removeScenario(this.model);
     }
 
     onCopyScenario() {
+        this.scenarioTreeComponentService.setEditMode(true);
+
         this.setSelected();
         this.scenarioTreeComponentService.setScenarioToCopy(this);
     }
@@ -154,7 +156,7 @@ export class ScenarioContainerComponent implements OnInit, AfterViewInit {
     }
 
     disableOrEnableScenario() {
-        if (!this.isEditMode()) { this.scenarioTreeComponentService.setEditMode(true); }
+        this.scenarioTreeComponentService.setEditMode(true);
 
         this.model.scenario.enabled = !this.model.scenario.enabled;
     }
