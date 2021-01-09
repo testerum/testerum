@@ -143,41 +143,42 @@ export class JsonStepContainerComponent {
         let stepToCopyTreeNode: StepTreeNodeModel = event.dragData;
         let pathToCopy = stepToCopyTreeNode.path;
         let destinationPath = this.model.path;
-        this.jsonTreeService.triggerCopyAction(pathToCopy, destinationPath).subscribe(
-            (copyEvent: JsonTreeContainerEditorEvent) => {
 
-                let copyPath = new CopyPath(pathToCopy, destinationPath);
-                this.stepsService.moveDirectoryOrFile (
-                    copyPath
-                ).subscribe(
-                    it => {
-                        this.stepsTreeService.copy(pathToCopy, destinationPath);
-                    }
-                )
-            }
-        )
+        if (pathToCopy.isFile()) {
+            this.copyStepOrDirectory(pathToCopy, destinationPath)
+        } else {
+            this.moveStepOrDirectory(pathToCopy, destinationPath)
+        }
     }
 
     onPaste() {
         let destinationPath = this.model.path;
         if (this.stepsTreeService.pathToCopy) {
             let sourcePath = this.stepsTreeService.pathToCopy;
-            this.jsonTreeService.triggerCopyAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
-                    this.stepsService.copy(sourcePath, destinationPath).subscribe( (resultPath: Path) => {
-                        this.afterPasteOperation(resultPath);
-                    });
-                }
-            )
+            this.copyStepOrDirectory(sourcePath, destinationPath);
         }
         if (this.stepsTreeService.pathToCut) {
             let sourcePath = this.stepsTreeService.pathToCut;
-            this.jsonTreeService.triggerMoveAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
-                    this.stepsService.move(sourcePath, destinationPath).subscribe( (resultPath: Path) => {
-                        this.afterPasteOperation(resultPath);
-                    });
-                }
-            )
+            this.moveStepOrDirectory(sourcePath, destinationPath);
         }
+    }
+
+    private moveStepOrDirectory(sourcePath: Path, destinationPath: Path) {
+        this.jsonTreeService.triggerMoveAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
+                this.stepsService.move(sourcePath, destinationPath).subscribe((resultPath: Path) => {
+                    this.afterPasteOperation(resultPath);
+                });
+            }
+        )
+    }
+
+    private copyStepOrDirectory(sourcePath: Path, destinationPath: Path) {
+        this.jsonTreeService.triggerCopyAction(sourcePath, destinationPath).subscribe((copyEvent: JsonTreeContainerEditorEvent) => {
+                this.stepsService.copy(sourcePath, destinationPath).subscribe((resultPath: Path) => {
+                    this.afterPasteOperation(resultPath);
+                });
+            }
+        )
     }
 
     private afterPasteOperation(resultPath: Path) {
