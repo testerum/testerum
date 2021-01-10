@@ -19,6 +19,7 @@ export class StepTextComponent<T extends StepDef> {
     @Input() stepCall:StepCall;
     @Input() showPhase:boolean = true;
     @Input() isManualStep: boolean = false;
+    @Input() isStepUsed: boolean = true;
 
     @Input() showAsListItem = false;
     @Input() showPhaseAsAnd = false;

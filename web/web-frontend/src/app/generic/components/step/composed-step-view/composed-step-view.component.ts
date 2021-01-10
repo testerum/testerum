@@ -48,7 +48,6 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     @Input() stepContext: StepContext = new StepContext();
     @Input() isEditMode: boolean;
 
-
     @ViewChild(NgForm, { static: true }) form: NgForm;
     StepPhaseEnum = StepPhaseEnum;
 

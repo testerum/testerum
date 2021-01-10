@@ -8,7 +8,7 @@
          [class.is-selected-to-be-cut-paste]="isStepSelectedForCut()"
          [class.error_squiggly]="model.hasOwnOrDescendantWarnings"
          [class.tree-leaf-selected]="model.isSelected()">
-        <step-text [stepDef]="model.stepDef"></step-text>
+        <step-text [stepDef]="model.stepDef" [isStepUsed]="model.isUsedStep"></step-text>
     </div>
 
     <!-- BUTTONS RENDERING -->

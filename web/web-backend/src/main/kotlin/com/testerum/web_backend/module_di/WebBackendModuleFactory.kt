@@ -303,12 +303,13 @@ class WebBackendModuleFactory(context: ModuleFactoryContext,
             webProjectManager = webProjectManager
     )
 
-    private val stepsTreeFrontendService = StepsTreeFrontendService(
+    private val composedStepUpdateCompatibilityFrontendService = ComposedStepUpdateCompatibilityFrontendService(
             webProjectManager = webProjectManager
     )
 
-    private val composedStepUpdateCompatibilityFrontendService = ComposedStepUpdateCompatibilityFrontendService(
-            webProjectManager = webProjectManager
+    private val stepsTreeFrontendService = StepsTreeFrontendService(
+        webProjectManager = webProjectManager,
+        composedStepUpdateCompatibilityFrontendService = composedStepUpdateCompatibilityFrontendService
     )
 
     private val composedStepsFrontendService = ComposedStepsFrontendService(

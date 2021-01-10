@@ -59,7 +59,8 @@ export default class StepsTreeUtil {
                     composedStepNode.path,
                     composedStepNode.stepDef,
                     true,
-                    composedStepNode.hasOwnOrDescendantWarnings
+                    composedStepNode.hasOwnOrDescendantWarnings,
+                    composedStepNode.isUsedStep
                 );
 
                 parentContainer.children.push(composedStepTreeNode);

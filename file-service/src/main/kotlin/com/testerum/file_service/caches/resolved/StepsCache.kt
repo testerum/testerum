@@ -1,6 +1,5 @@
 package com.testerum.file_service.caches.resolved
 
-import com.testerum.common_kotlin.walk
 import com.testerum.file_service.caches.resolved.resolvers.StepsResolver
 import com.testerum.file_service.caches.warnings.WarningService
 import com.testerum.file_service.file.ComposedStepFileService
@@ -14,15 +13,12 @@ import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepDef
 import com.testerum.model.step.UndefinedStepDef
-import com.testerum.model.step.tree.ComposedContainerStepNode
-import com.testerum.model.step.tree.builder.ComposedStepDirectoryTreeBuilder
 import com.testerum.model.text.StepPattern
 import com.testerum.model.text.parts.TextStepPatternPart
 import com.testerum.model.util.StepHashUtil
 import com.testerum.model.util.escape
 import com.testerum.scanner.step_lib_scanner.model.hooks.HookDef
 import org.slf4j.LoggerFactory
-import java.nio.file.Files
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
@@ -409,25 +405,6 @@ class StepsCache(
 
             return stepsByHash[stepHash] != null
         }
-    }
-
-    fun getComposedStepsDirectoriesTree(): ComposedContainerStepNode {
-        val composedStepsDir = this.composedStepsDir
-            ?: throw IllegalStateException("cannot get composed steps directories tree because the composedStepsDir is not set")
-
-        val treeBuilder = ComposedStepDirectoryTreeBuilder()
-
-
-        composedStepsDir.walk { path ->
-            if (Files.isDirectory(path) && (path != composedStepsDir)) {
-                val relativeDirectory = composedStepsDir.relativize(path)
-                val relativeDirectoryPathParts: List<String> = relativeDirectory.map { it.fileName.toString() }
-
-                treeBuilder.addComposedStepDirectory(relativeDirectoryPathParts)
-            }
-        }
-
-        return treeBuilder.createTree()
     }
 
     private val StepDef.hash: String

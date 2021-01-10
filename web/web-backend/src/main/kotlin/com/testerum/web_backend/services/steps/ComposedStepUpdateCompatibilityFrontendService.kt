@@ -59,6 +59,22 @@ class ComposedStepUpdateCompatibilityFrontendService(private val webProjectManag
         )
     }
 
+    fun checkUsage(composedStepDef: ComposedStepDef): CheckComposedStepDefUsageResponse {
+        val stepPattern = composedStepDef.stepPattern
+        val pathsForParentTests: List<Path> = findTestsThatUsesStepPatternAsChild(stepPattern).map { it.path }
+        val pathsForDirectParentSteps: List<Path> = findStepsThatUsesStepPatternAsDirectChild(stepPattern).map { it.path }
+        val pathsForTransitiveParentSteps: List<Path> = findStepsThatUsesStepPatternAsTransitiveChild(stepPattern) - pathsForDirectParentSteps
+
+        val isStepUsed = pathsForParentTests.isNotEmpty() || pathsForDirectParentSteps.isNotEmpty() || pathsForTransitiveParentSteps.isNotEmpty()
+
+        return CheckComposedStepDefUsageResponse(
+            isUsed = isStepUsed,
+            pathsForParentTests = pathsForParentTests,
+            pathsForDirectParentSteps = pathsForDirectParentSteps,
+            pathsForTransitiveParentSteps = pathsForTransitiveParentSteps
+        )
+    }
+
     private fun findTestsThatUsesStepPatternAsChild(searchedStepPattern: StepPattern): List<TestModel> {
         val result: MutableList<TestModel> = mutableListOf()
 
@@ -99,19 +115,48 @@ class ComposedStepUpdateCompatibilityFrontendService(private val webProjectManag
         return result
     }
 
-    fun checkUsage(composedStepDef: ComposedStepDef): CheckComposedStepDefUsageResponse {
+    fun isStepUsed(composedStepDef: ComposedStepDef): Boolean {
         val stepPattern = composedStepDef.stepPattern
-        val pathsForParentTests: List<Path> = findTestsThatUsesStepPatternAsChild(stepPattern).map { it.path }
-        val pathsForDirectParentSteps: List<Path> = findStepsThatUsesStepPatternAsDirectChild(stepPattern).map { it.path }
-        val pathsForTransitiveParentSteps: List<Path> = findStepsThatUsesStepPatternAsTransitiveChild(stepPattern) - pathsForDirectParentSteps
 
-        val isStepUsed = pathsForParentTests.isNotEmpty() || pathsForDirectParentSteps.isNotEmpty() || pathsForTransitiveParentSteps.isNotEmpty()
+        if (areTestsThatUsesTheStepPatternAsChild(stepPattern)) return true
+        if (areStepsThatUsesStepPatternAsDirectChild(stepPattern)) return true
+        if (areStepsThatUsesStepPatternAsTransitiveChild(stepPattern)) return true
 
-        return CheckComposedStepDefUsageResponse(
-            isUsed = isStepUsed,
-            pathsForParentTests = pathsForParentTests,
-            pathsForDirectParentSteps = pathsForDirectParentSteps,
-            pathsForTransitiveParentSteps = pathsForTransitiveParentSteps
-        )
+        return false
+    }
+
+    private fun areTestsThatUsesTheStepPatternAsChild(searchedStepPattern: StepPattern): Boolean {
+        val allTests = webProjectManager.getProjectServices().getTestsCache().getAllTests()
+        for (test in allTests) {
+            if (test.isTestUsingStepPattern(searchedStepPattern)) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    private fun areStepsThatUsesStepPatternAsDirectChild(searchedStepPattern: StepPattern): Boolean {
+        val composedSteps = stepsCache().getComposedSteps()
+        for (composedStep in composedSteps) {
+            for (stepCall in composedStep.stepCalls) {
+                if (stepCall.stepDef.stepPattern == searchedStepPattern) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    private fun areStepsThatUsesStepPatternAsTransitiveChild(searchedStepPattern: StepPattern): Boolean {
+        val composedSteps = stepsCache().getComposedSteps()
+
+        for (composedStep in composedSteps) {
+            if(composedStep.isCallingStepPattern(searchedStepPattern)) {
+                return true
+            }
+        }
+
+        return false
     }
 }

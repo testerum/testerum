@@ -10,17 +10,20 @@ export class StepTreeNodeModel extends JsonTreePathNode {
     isComposedStep: boolean;
 
     hasOwnOrDescendantWarnings: boolean = false;
+    isUsedStep: boolean = false;
 
     constructor(parentContainer: JsonTreePathContainer,
                 path: Path,
                 stepDef: StepDef,
                 isComposedStep: boolean,
-                hasOwnOrDescendantWarnings: boolean = false) {
+                hasOwnOrDescendantWarnings: boolean = false,
+                isUsedStep: boolean = true) {
 
         super(parentContainer, path);
         this.stepDef = stepDef;
         this.isComposedStep = isComposedStep;
         this.hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings;
+        this.isUsedStep = isUsedStep;
     }
 
     toString(): string {

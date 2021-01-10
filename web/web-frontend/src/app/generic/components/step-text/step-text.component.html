@@ -1,16 +1,18 @@
 <div class="step-text">
     <div *ngIf="isDisabled()" class="disabled"></div>
 
-    <div *ngIf="showPhase"
-         class="step-text-phase"
+    <div *ngIf="showPhase" class="step-text-phase"
+         [class.unused-step-text-phase]="!isStepUsed"
          [class.fixed-phase-with]="showAsListItem">
         {{getStepPhaseAsString()}}
     </div>
 
     <div class="step-text-without-phase"
+         [class.unused-step-text-without-phase]="!isStepUsed"
          [class.undefined-step-text-color]="isUndefinedStepDef() && !isManualStep">
         <ng-container *ngFor="let patternPart of stepDef.stepPattern.patternParts; let i = index">
-            <div *ngIf="isParamPatternPart(patternPart)" class="step-text-parameter">
+            <div *ngIf="isParamPatternPart(patternPart)" class="step-text-parameter"
+                 [class.unused-step-text-parameter]="!isStepUsed">
                 <step-text-param
                     [isStepCall]="stepCall != null"
                     [arg]="stepCall?.args[getParamIndexFromTextPartIndex(i)]"

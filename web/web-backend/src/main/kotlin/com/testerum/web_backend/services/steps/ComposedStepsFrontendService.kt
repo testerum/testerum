@@ -1,5 +1,6 @@
 package com.testerum.web_backend.services.steps
 
+import com.testerum.common_kotlin.walk
 import com.testerum.file_service.caches.warnings.WarningService
 import com.testerum.model.infrastructure.path.CopyPath
 import com.testerum.model.infrastructure.path.Path
@@ -11,7 +12,9 @@ import com.testerum.model.step.operation.response.CheckComposedStepDefUsageRespo
 import com.testerum.model.step.tree.ComposedContainerStepNode
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.services.save.SaveFrontendService
+import com.testerum.web_backend.services.steps.builder.ComposedStepDirectoryTreeBuilder
 import com.testerum.web_backend.services.steps.filterer.StepsTreeFilterer
+import java.nio.file.Files
 
 class ComposedStepsFrontendService(
     private val webProjectManager: WebProjectManager,
@@ -70,7 +73,22 @@ class ComposedStepsFrontendService(
         reinitializeCaches()
     }
 
-    fun getDirectoriesTree(): ComposedContainerStepNode = stepsCache().getComposedStepsDirectoriesTree()
+    fun getDirectoriesTree(): ComposedContainerStepNode {
+        val composedStepsDir = webProjectManager.getProjectServices().dirs().getComposedStepsDir()
+
+        val treeBuilder = ComposedStepDirectoryTreeBuilder()
+
+        composedStepsDir.walk { path ->
+            if (Files.isDirectory(path) && (path != composedStepsDir)) {
+                val relativeDirectory = composedStepsDir.relativize(path)
+                val relativeDirectoryPathParts: List<String> = relativeDirectory.map { it.fileName.toString() }
+
+                treeBuilder.addComposedStepDirectory(relativeDirectoryPathParts)
+            }
+        }
+
+        return treeBuilder.createTree()
+    }
 
     fun getWarnings(composedStep: ComposedStepDef): ComposedStepDef {
         return warningService.composedStepWithWarnings(composedStep)

@@ -7,4 +7,5 @@ import com.testerum.model.step.ComposedStepDef
 
 data class ComposedStepStepNode @JsonCreator constructor(@JsonProperty("path") override val path: Path,
                                                          @JsonProperty("hasOwnOrDescendantWarnings") override val hasOwnOrDescendantWarnings: Boolean = false,
-                                                         @JsonProperty("stepDef") val stepDef: ComposedStepDef): ComposedStepNode
+                                                         @JsonProperty("stepDef") val stepDef: ComposedStepDef,
+                                                         @JsonProperty("isUsedStep") val isUsedStep: Boolean = true): ComposedStepNode

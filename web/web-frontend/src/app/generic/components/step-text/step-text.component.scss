@@ -11,6 +11,10 @@
         margin-right: 5px;
     }
 
+    .unused-step-text-phase {
+        color: #5d7f9c;
+    }
+
     .fixed-phase-with {
         width: 40px;
         text-align: right;
@@ -21,10 +25,18 @@
         display: inline-block;
     }
 
+    .unused-step-text-without-phase {
+        color: #8e8e8e;
+    }
+
     .step-text-parameter {
         color: royalblue;
         display: inline-block;
         margin-right: 5px;
+    }
+
+    .unused-step-text-parameter {
+        color: #7e92ce;
     }
 
     .step-text-pattern {
