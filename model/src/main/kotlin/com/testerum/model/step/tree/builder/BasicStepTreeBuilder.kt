@@ -1,73 +1,50 @@
 package com.testerum.model.step.tree.builder
 
-import com.testerum.common_kotlin.withAdditional
+import com.testerum.model.infrastructure.path.HasPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.tree.BasicContainerStepNode
-import com.testerum.model.step.tree.BasicStepNode
 import com.testerum.model.step.tree.BasicStepStepNode
-import com.testerum.model.util.tree_builder.TreeBuilder
-import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
+import com.testerum.model.util.new_tree_builder.ContainerTreeNode
+import com.testerum.model.util.new_tree_builder.PathBasedTreeBuilder
+import com.testerum.model.util.new_tree_builder.TreeNode
+import com.testerum.model.util.new_tree_builder.TreeNodeFactory
 
 class BasicStepTreeBuilder {
 
-    private val builder = TreeBuilder(BasicStepTreeBuilderCustomizer)
 
-    fun addBasicStepDef(basicStepDef: BasicStepDef): Unit = builder.add(basicStepDef)
 
-    fun build(): BasicContainerStepNode = builder.build() as BasicContainerStepNode
+    fun createTree(items: List<BasicStepDef>): BasicContainerStepNode {
+        val basicStepsTreeBuilder = PathBasedTreeBuilder(
+            BasicStepTreeNodeFactory()
+        )
+        return basicStepsTreeBuilder.createTree(items)
+    }
+}
 
-    override fun toString(): String = builder.toString()
+private class BasicStepTreeNodeFactory: TreeNodeFactory<BasicContainerStepNode, BasicContainerStepNode> {
+    override fun createRootNode(item: HasPath?): BasicContainerStepNode {
+        return BasicContainerStepNode(
+            path = Path.EMPTY,
+            name = "Basic Steps"
+        )
+    }
 
-    private object BasicStepTreeBuilderCustomizer : TreeBuilderCustomizer {
-        override fun getPath(payload: Any): List<String> = (payload as BasicStepDef).path.directories.withAdditional(getLabel(payload))
+    override fun createVirtualContainer(parentNode: ContainerTreeNode, path: Path): BasicContainerStepNode {
+        return BasicContainerStepNode(
+            path = path,
+            name = path.directories.last()
+        )
+    }
 
-        override fun isContainer(payload: Any): Boolean = false
+    override fun createNode(parentNode: ContainerTreeNode, item: HasPath): TreeNode {
+        val itemAsBasicStepDef = item as? BasicStepDef
+            ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${item.javaClass}]: [$item]")
 
-        override fun getRootLabel(): String = "Basic Steps"
-
-        override fun getLabel(payload: Any): String = (payload as BasicStepDef).toString()
-
-        override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
-            @Suppress("UNCHECKED_CAST")
-            val children: List<BasicStepNode> = childrenNodes as List<BasicStepNode>
-
-            val hasOwnOrDescendantWarnings: Boolean = children.any { it.hasOwnOrDescendantWarnings }
-
-            return BasicContainerStepNode(
-                    path = Path.EMPTY,
-                    hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings,
-                    name = getRootLabel(),
-                    children = children
-            )
-        }
-
-        override fun createNode(payload: Any?, label: String, path: List<String>, childrenNodes: List<Any>, indexInParent: Int): Any {
-            return when (payload) {
-                null -> {
-                    @Suppress("UNCHECKED_CAST")
-                    val children: List<BasicStepNode> = childrenNodes as List<BasicStepNode>
-
-                    val hasOwnOrDescendantWarnings: Boolean = children.any { it.hasOwnOrDescendantWarnings }
-
-                    BasicContainerStepNode(
-                            path = Path(
-                                    directories = path,
-                                    fileName = null,
-                                    fileExtension = null
-                            ),
-                            hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings,
-                            name = label,
-                            children = children
-                    )
-                }
-                is BasicStepDef -> BasicStepStepNode(
-                        path = payload.path,
-                        hasOwnOrDescendantWarnings = payload.hasOwnOrDescendantWarnings,
-                        stepDef = payload
-                )
-                else -> throw unknownPayloadException(payload)
-            }
-        }
+        return BasicStepStepNode(
+            path = itemAsBasicStepDef.path,
+            hasOwnOrDescendantWarnings = itemAsBasicStepDef.hasOwnOrDescendantWarnings,
+            stepDef = itemAsBasicStepDef
+        )
     }
 }

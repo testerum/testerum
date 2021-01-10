@@ -1,74 +1,49 @@
 package com.testerum.model.step.tree.builder
 
-import com.testerum.common_kotlin.withAdditional
+import com.testerum.model.infrastructure.path.HasPath
 import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.tree.ComposedContainerStepNode
-import com.testerum.model.step.tree.ComposedStepNode
 import com.testerum.model.step.tree.ComposedStepStepNode
-import com.testerum.model.util.tree_builder.TreeBuilder
-import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
+import com.testerum.model.util.new_tree_builder.ContainerTreeNode
+import com.testerum.model.util.new_tree_builder.PathBasedTreeBuilder
+import com.testerum.model.util.new_tree_builder.TreeNode
+import com.testerum.model.util.new_tree_builder.TreeNodeFactory
 
 class ComposedStepTreeBuilder {
 
-    private val builder = TreeBuilder(ComposedStepTreeBuilderCustomizer)
+    fun createTree(items: List<ComposedStepDef>): ComposedContainerStepNode {
+        val composedStepsTreeBuilder = PathBasedTreeBuilder(
+            ComposedStepsTreeNodeFactory()
+        )
+        return composedStepsTreeBuilder.createTree(items)
+    }
+}
 
-    fun addComposedStepDef(composedStepDef: ComposedStepDef): Unit = builder.add(composedStepDef)
-
-    fun build(): ComposedContainerStepNode = builder.build() as ComposedContainerStepNode
-
-    override fun toString(): String = builder.toString()
-
-    private object ComposedStepTreeBuilderCustomizer : TreeBuilderCustomizer {
-        override fun getPath(payload: Any): List<String> = (payload as ComposedStepDef).path.directories.withAdditional(getLabel(payload))
-
-        override fun isContainer(payload: Any): Boolean = false
-
-        override fun getRootLabel(): String = "Composed Steps"
-
-        override fun getLabel(payload: Any): String = (payload as ComposedStepDef).toString()
-
-        override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
-            @Suppress("UNCHECKED_CAST")
-            val children: List<ComposedStepNode> = childrenNodes as List<ComposedStepNode>
-
-            val hasOwnOrDescendantWarnings: Boolean = children.any { it.hasOwnOrDescendantWarnings }
-
-            return ComposedContainerStepNode(
-                    path = Path.EMPTY,
-                    hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings,
-                    name = getRootLabel(),
-                    children = children
-            )
-        }
-
-        override fun createNode(payload: Any?, label: String, path: List<String>, childrenNodes: List<Any>, indexInParent: Int): Any {
-            return when (payload) {
-                null -> {
-                    @Suppress("UNCHECKED_CAST")
-                    val children: List<ComposedStepNode> = childrenNodes as List<ComposedStepNode>
-
-                    val hasOwnOrDescendantWarnings: Boolean = children.any { it.hasOwnOrDescendantWarnings }
-
-                    ComposedContainerStepNode(
-                            path = Path(
-                                    directories = path,
-                                    fileName = null,
-                                    fileExtension = null
-                            ),
-                            hasOwnOrDescendantWarnings = hasOwnOrDescendantWarnings,
-                            name = label,
-                            children = children
-                    )
-                }
-                is ComposedStepDef -> ComposedStepStepNode(
-                        path = payload.path,
-                        hasOwnOrDescendantWarnings = payload.hasOwnOrDescendantWarnings,
-                        stepDef = payload
-                )
-                else -> throw unknownPayloadException(payload)
-            }
-        }
+private class ComposedStepsTreeNodeFactory : TreeNodeFactory<ComposedContainerStepNode, ComposedContainerStepNode> {
+    override fun createRootNode(item: HasPath?): ComposedContainerStepNode {
+        return ComposedContainerStepNode(
+            path = Path.EMPTY,
+            name = "Basic Steps"
+        )
     }
 
+    override fun createVirtualContainer(parentNode: ContainerTreeNode, path: Path): ComposedContainerStepNode {
+        return ComposedContainerStepNode(
+            path = path,
+            name = path.directories.last()
+        )
+    }
+
+    override fun createNode(parentNode: ContainerTreeNode, item: HasPath): TreeNode {
+        val itemAsComposedStepDef = item as? ComposedStepDef
+            ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${item.javaClass}]: [$item]")
+
+        return ComposedStepStepNode(
+            path = itemAsComposedStepDef.path,
+            hasOwnOrDescendantWarnings = itemAsComposedStepDef.hasOwnOrDescendantWarnings,
+            stepDef = itemAsComposedStepDef
+        )
+    }
 }
+

@@ -149,7 +149,9 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     setEditMode(editMode: boolean) {
-        this.editModeEventEmitter.emit(editMode);
+        if (this.isEditMode != editMode) {
+            this.editModeEventEmitter.emit(editMode);
+        }
     }
 
     ngAfterContentChecked(): void {
@@ -300,6 +302,8 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     }
 
     onSelectStepPath() {
+        this.setEditMode(true);
+
         this.stepPathModalService.showModal().subscribe((selectedPath: Path)=> {
             this.model.path = selectedPath;
         })

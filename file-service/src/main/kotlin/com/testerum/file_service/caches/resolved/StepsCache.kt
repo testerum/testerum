@@ -134,11 +134,11 @@ class StepsCache(
         return result
     }
 
-    fun getBasicSteps(): Collection<BasicStepDef> = lock.read { basicStepsCache.getBasicSteps() }
+    fun getBasicSteps(): List<BasicStepDef> = lock.read { basicStepsCache.getBasicSteps() }
 
     fun getBasicStepAtPath(basicStepPath: Path): BasicStepDef? = lock.read { basicStepsCache.getStepAtPath(basicStepPath) }
 
-    fun getHooks(): Collection<HookDef> = lock.read { basicStepsCache.getHooks() }
+    fun getHooks(): List<HookDef> = lock.read { basicStepsCache.getHooks() }
 
     fun getAllSteps(): Collection<StepDef> = lock.read { stepsByHash.values }
 
@@ -417,6 +417,7 @@ class StepsCache(
 
         val treeBuilder = ComposedStepDirectoryTreeBuilder()
 
+
         composedStepsDir.walk { path ->
             if (Files.isDirectory(path) && (path != composedStepsDir)) {
                 val relativeDirectory = composedStepsDir.relativize(path)
@@ -426,8 +427,7 @@ class StepsCache(
             }
         }
 
-        return treeBuilder.build()
-
+        return treeBuilder.createTree()
     }
 
     private val StepDef.hash: String

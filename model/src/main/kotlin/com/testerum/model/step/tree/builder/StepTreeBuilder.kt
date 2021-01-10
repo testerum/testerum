@@ -9,17 +9,9 @@ class StepTreeBuilder {
     private val basicStepTreeBuilder = BasicStepTreeBuilder()
     private val composedStepTreeBuilder = ComposedStepTreeBuilder()
 
-    fun addBasicStepDef(basicStepDef: BasicStepDef) {
-        basicStepTreeBuilder.addBasicStepDef(basicStepDef)
-    }
-
-    fun addComposedStepDef(composedStepDef: ComposedStepDef) {
-        composedStepTreeBuilder.addComposedStepDef(composedStepDef)
-    }
-
-    fun build(): RootStepNode {
-        val basicStepsRoot = basicStepTreeBuilder.build()
-        val composedStepsRoot = composedStepTreeBuilder.build()
+    fun build(basicSteps: List<BasicStepDef>, composedStep: List<ComposedStepDef>): RootStepNode {
+        val basicStepsRoot = basicStepTreeBuilder.createTree(basicSteps)
+        val composedStepsRoot = composedStepTreeBuilder.createTree(composedStep)
 
         return RootStepNode(
                 name = "Steps",

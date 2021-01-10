@@ -27,9 +27,9 @@ class BasicStepsCache(
 
     private var stepsByPath: MutableMap<Path, BasicStepDef> = hashMapOf()
 
-    fun getBasicSteps(): Collection<BasicStepDef> = lock.read { basicSteps }
+    fun getBasicSteps(): List<BasicStepDef> = lock.read { basicSteps }
 
-    fun getHooks(): Collection<HookDef> = lock.read { hooks }
+    fun getHooks(): List<HookDef> = lock.read { hooks }
 
     fun getStepAtPath(basicStepPath: Path): BasicStepDef? = lock.read { stepsByPath[basicStepPath] }
 
