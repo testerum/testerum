@@ -24,6 +24,7 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
 
     warnings: Array<Warning> = [];
     descendantsHaveWarnings: boolean = false;
+    isUsed: boolean = true;
 
     get hasOwnOrDescendantWarnings(): boolean {
         return this.warnings.length > 0 || this.descendantsHaveWarnings;
@@ -62,6 +63,7 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
         }
 
         this.descendantsHaveWarnings = input['descendantsHaveWarnings'];
+        this.isUsed = input['isUsed'];
 
         return this;
     }
@@ -78,7 +80,8 @@ export class ComposedStepDef implements StepDef, Serializable<ComposedStepDef> {
             '"description":' + JsonUtil.stringify(this.description) + ',' +
             '"tags":' + JsonUtil.stringify(this.tags) + ',' +
             '"stepCalls":' + JsonUtil.serializeArrayOfSerializable(this.stepCalls) + ',' +
-            '"warnings": []' +
+            '"warnings": []' + ',' +
+            '"isUsed":' + JsonUtil.stringify(this.isUsed) +
             '}'
     }
 

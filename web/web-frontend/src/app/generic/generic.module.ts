@@ -121,6 +121,7 @@ import {StepUsageDialogComponent} from "./components/step/composed-step-view/usa
 import {StepUsageDialogService} from "./components/step/composed-step-view/usage-dialog/step-usage-dialog.service";
 import {RouterModule} from "@angular/router";
 import {AutoWidthDirective} from "./directives/auto-width.directive";
+import {MessagesModule} from "primeng/messages";
 
 @NgModule({
     imports: [
@@ -149,6 +150,7 @@ import {AutoWidthDirective} from "./directives/auto-width.directive";
         KeyFilterModule,
         InputSwitchModule,
         DropdownModule,
+        MessagesModule,
     ],
     exports: [
         SafeHtmlPipe,

@@ -32,7 +32,15 @@ class ComposedStepsFrontendService(
     }
 
     fun getComposedStepAtPath(path: Path): ComposedStepDef? {
-        return stepsCache().getComposedStepAtPath(path)
+        val composedStep = stepsCache().getComposedStepAtPath(path)
+
+        if (composedStep != null) {
+            val stepUsed = composedStepUpdateCompatibilityFrontendService.isStepUsed(composedStep)
+            if (!stepUsed) {
+                return composedStep.copy(isUsed = stepUsed)
+            }
+        }
+        return composedStep
     }
 
     fun deleteComposedStep(path: Path) {

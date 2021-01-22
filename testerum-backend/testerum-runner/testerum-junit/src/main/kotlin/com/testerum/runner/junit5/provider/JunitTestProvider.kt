@@ -6,6 +6,7 @@ import com.testerum.report_generators.reports.utils.console_output_capture.Conso
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
+import com.testerum.runner.events.model.ScenarioEndEvent
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
@@ -191,18 +192,25 @@ class JunitTestProvider(repositoryDirectory: Path,
             }
 
             if (event is TestEndEvent) {
-                isTestStarted = false
-
-                when (event.status) {
-                    ExecutionStatus.FAILED -> fail("Test FAILED")
-                    ExecutionStatus.UNDEFINED -> fail("Test is UNDEFINED")
-                    ExecutionStatus.DISABLED -> println("Test is DISABLED")
-                    ExecutionStatus.SKIPPED -> println("Test is marked to be SKIPPED")
-                    ExecutionStatus.PASSED -> println("Test is PASSED")
-                }
-
+                handleTestEnd(event.status)
                 return
             }
+
+            if (event is ScenarioEndEvent) {
+                handleTestEnd(event.status)
+                return
+            }
+        }
+    }
+
+    private fun handleTestEnd(status: ExecutionStatus) {
+        isTestStarted = false
+        when (status) {
+            ExecutionStatus.FAILED -> fail("Test FAILED")
+            ExecutionStatus.UNDEFINED -> fail("Test is UNDEFINED")
+            ExecutionStatus.DISABLED -> println("Test is DISABLED")
+            ExecutionStatus.SKIPPED -> println("Test is marked to be SKIPPED")
+            ExecutionStatus.PASSED -> println("Test is PASSED")
         }
     }
 

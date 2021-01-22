@@ -16,7 +16,8 @@ data class ComposedStepDef @JsonCreator constructor(@JsonProperty("path")       
                                                     @JsonProperty("description") override val description: String? = null,
                                                     @JsonProperty("tags")        val tags: List<String> = emptyList(),
                                                     @JsonProperty("stepCalls")   val stepCalls: List<StepCall>,
-                                                    @JsonProperty("warnings")    override val warnings: List<Warning> = emptyList()): StepDef {
+                                                    @JsonProperty("warnings")    override val warnings: List<Warning> = emptyList(),
+                                                    @JsonProperty("isUsed")      val isUsed: Boolean = true): StepDef {
 
     companion object {
         val COMPOSED_STEP_FILE_EXTENSION = "step"
@@ -45,5 +46,4 @@ data class ComposedStepDef @JsonCreator constructor(@JsonProperty("path")       
         append(stepPattern.toDebugString(varPrefix = "<<", varSuffix = ">>"))
         append(" (").append(stepCalls.size).append(" calls)")
     }
-
 }

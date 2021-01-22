@@ -126,6 +126,14 @@
 
     <p-messages *ngIf="warnings.length > 0" [(value)]="warnings" styleClass="error-message"></p-messages>
 
+    <p-messages severity="info" *ngIf="!model.isUsed">
+        <ng-template pTemplate>
+            <span class="custom-message">
+                This steps is not used.<br/>
+                This is also the reason why it's drawn with faded colors in the steps tree, on the left.</span>
+        </ng-template>
+    </p-messages>
+
     <!-- SUB-STEPS-->
     <div dnd-droppable [allowDrop]="allowDrop()" (onDropSuccess)="onTreeNodeDrop($event)">
         <div class="sub-steps-buttons">
