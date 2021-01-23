@@ -7,6 +7,7 @@ import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.ScenarioEndEvent
+import com.testerum.runner.events.model.ScenarioStartEvent
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
 import com.testerum.runner.events.model.TextLogEvent
@@ -166,7 +167,7 @@ class JunitTestProvider(repositoryDirectory: Path,
         while (true) {
             val event = takeNextEventFromQueue()
 
-            if (event is TestStartEvent) {
+            if (event is TestStartEvent || event is ScenarioStartEvent) {
                 eventQueue.putFirst(event)
 
                 isTestStarted = true
@@ -183,7 +184,7 @@ class JunitTestProvider(repositoryDirectory: Path,
         while (true) {
             val event = takeNextEventFromQueue()
 
-            if (event is TestStartEvent) {
+            if (event is TestStartEvent || event is ScenarioStartEvent) {
                 isTestStarted = true
             }
 

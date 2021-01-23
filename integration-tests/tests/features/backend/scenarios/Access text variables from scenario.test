@@ -1,0 +1,14 @@
+test-def: Access text variables from scenario
+
+    scenario: First scenario
+        param firstParam = <<firstScenario_firstParamValue>>
+        param secondParam = <<firstScenario_secondParamValue>>
+        param scenarioPrefix = <<firstScenario>>
+
+    scenario: Second scenario
+        param firstParam = <<secondScenario_firstParamValue>>
+        param secondParam = <<secondScenario_secondParamValue>>
+        param scenarioPrefix = <<secondScenario>>
+
+    step: Then <<{{firstParam}}>> is equal to <<{{scenarioPrefix}}_firstParamValue>>
+    step: Then <<{{secondParam}}>> is equal to <<{{scenarioPrefix}}_secondParamValue>>
