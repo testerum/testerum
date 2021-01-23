@@ -25,7 +25,7 @@ private class ComposedStepsTreeNodeFactory(private val composedStepUpdateCompati
     override fun createRootNode(item: HasPath?): ComposedContainerStepNode {
         return ComposedContainerStepNode(
             path = Path.EMPTY,
-            name = "Basic Steps"
+            name = "Composed Steps"
         )
     }
 
