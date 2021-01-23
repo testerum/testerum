@@ -147,8 +147,8 @@
                 </div>
             </div>
 
-            <div *ngIf="isEditMode && canPasteStep()" title="Paste Step" class="btn btn-default btn-xs btn-group"
-                 (click)="onPasteStep(); $event.stopPropagation()">
+            <div *ngIf="isEditMode && canPaste()" title="Paste Step" class="btn btn-default btn-xs btn-group"
+                 (click)="onPaste(); $event.stopPropagation()">
                 <i class="fa_my-paste" aria-hidden="true"></i>
             </div>
         </div>

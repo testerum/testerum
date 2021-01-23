@@ -367,7 +367,7 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         this.model.description = this.descriptionMarkdownEditor.getValue()
     }
 
-    canPasteStep(): boolean {
+    canPaste(): boolean {
         return this.contextService.stepToCut != null || this.contextService.stepToCopy != null;
     }
 
