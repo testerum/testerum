@@ -28,10 +28,16 @@ class ArgsContext {
     }
 
     fun getKeys(): Set<String> {
+        //get method is called from "log all variables" step. Should not fail if the context is empty.
+        if(stack.isEmpty()) return emptySet()
+
         return currentLevel().keys
     }
 
     fun get(name: String): Any? {
+        //get method is called from "log all variables" step. Should not fail if the context is empty.
+        if(stack.isEmpty()) return null
+
         val currentLevel = currentLevel()
         if (!currentLevel.containsKey(name)) {
             throw VariableNotFoundException(name)
@@ -54,5 +60,4 @@ class ArgsContext {
             }
         }
     }
-
 }
