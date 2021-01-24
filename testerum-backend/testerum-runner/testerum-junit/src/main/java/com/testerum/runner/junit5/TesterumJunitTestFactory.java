@@ -86,7 +86,8 @@ public class TesterumJunitTestFactory {
             packagesToScan,
             testPaths,
             tagsToInclude,
-            tagsToExclude
+            tagsToExclude,
+            reportServerUrl
         ).getTesterumTests();
     }
 }
