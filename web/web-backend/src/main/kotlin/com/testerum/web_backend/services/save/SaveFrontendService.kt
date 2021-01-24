@@ -418,6 +418,7 @@ class SaveFrontendService(private val webProjectManager: WebProjectManager,
         // to optimize, we could re-load only the affected tests and/or steps
         webProjectManager.getProjectServices().reinitializeStepsCache()
         webProjectManager.getProjectServices().reinitializeTestsCache()
+        webProjectManager.getProjectServices().reinitializeFeatureCache()
     }
 
 }
