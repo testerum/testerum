@@ -43,6 +43,10 @@ fun TestModel.isChangedRequiringSave(existingTest: TestModel?): Boolean {
         return true
     }
 
+    if (stepCalls.isChangedRequiringSave(existingTest.afterHooks)) {
+        return true
+    }
+
     return false
 }
 

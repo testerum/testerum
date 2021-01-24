@@ -12,7 +12,7 @@ import com.testerum.model.test.TestModel
 import com.testerum.model.text.StepPattern
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.util.isOtherStepWithTheSameStepPatternAsTheNew
-import com.testerum.web_backend.util.isTestUsingStepPattern
+import com.testerum.web_backend.util.isStepPatternUsed
 
 class ComposedStepUpdateCompatibilityFrontendService(private val webProjectManager: WebProjectManager) {
 
@@ -80,7 +80,11 @@ class ComposedStepUpdateCompatibilityFrontendService(private val webProjectManag
 
         val allTests = webProjectManager.getProjectServices().getTestsCache().getAllTests()
         for (test in allTests) {
-            if (test.isTestUsingStepPattern(searchedStepPattern)) {
+            if (test.stepCalls.isStepPatternUsed(searchedStepPattern)) {
+                result.add(test)
+                continue
+            }
+            if (test.afterHooks.isStepPatternUsed(searchedStepPattern)) {
                 result.add(test)
             }
         }
@@ -118,6 +122,7 @@ class ComposedStepUpdateCompatibilityFrontendService(private val webProjectManag
     fun isStepUsed(composedStepDef: ComposedStepDef): Boolean {
         val stepPattern = composedStepDef.stepPattern
 
+        if (areFeaturesThatUsesTheStepPatternAsChild(stepPattern)) return true
         if (areTestsThatUsesTheStepPatternAsChild(stepPattern)) return true
         if (areStepsThatUsesStepPatternAsDirectChild(stepPattern)) return true
         if (areStepsThatUsesStepPatternAsTransitiveChild(stepPattern)) return true
@@ -125,10 +130,33 @@ class ComposedStepUpdateCompatibilityFrontendService(private val webProjectManag
         return false
     }
 
+    private fun areFeaturesThatUsesTheStepPatternAsChild(searchedStepPattern: StepPattern): Boolean {
+        val allFeatures = webProjectManager.getProjectServices().getFeatureCache().getAllFeatures()
+        for (feature in allFeatures) {
+            if (feature.hooks.beforeAll.isStepPatternUsed(searchedStepPattern)) {
+                return true
+            }
+            if (feature.hooks.beforeEach.isStepPatternUsed(searchedStepPattern)) {
+                return true
+            }
+            if (feature.hooks.afterEach.isStepPatternUsed(searchedStepPattern)) {
+                return true
+            }
+            if (feature.hooks.afterAll.isStepPatternUsed(searchedStepPattern)) {
+                return true
+            }
+        }
+
+        return false
+    }
+
     private fun areTestsThatUsesTheStepPatternAsChild(searchedStepPattern: StepPattern): Boolean {
         val allTests = webProjectManager.getProjectServices().getTestsCache().getAllTests()
         for (test in allTests) {
-            if (test.isTestUsingStepPattern(searchedStepPattern)) {
+            if (test.stepCalls.isStepPatternUsed(searchedStepPattern)) {
+                return true
+            }
+            if (test.afterHooks.isStepPatternUsed(searchedStepPattern)) {
                 return true
             }
         }

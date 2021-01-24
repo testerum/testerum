@@ -14,7 +14,7 @@ import com.testerum.model.text.StepPattern
 import com.testerum.test_file_format.stepdef.signature.FileStepDefSignatureParserFactory
 import com.testerum.web_backend.services.project.WebProjectManager
 import com.testerum.web_backend.util.isOtherStepWithTheSameStepPatternAsTheNew
-import com.testerum.web_backend.util.isTestUsingStepPattern
+import com.testerum.web_backend.util.isStepPatternUsed
 
 class SaveFrontendService(private val webProjectManager: WebProjectManager,
                           private val resourceFileService: ResourceFileService) {
@@ -23,21 +23,33 @@ class SaveFrontendService(private val webProjectManager: WebProjectManager,
 
     private fun getResourcesDir() = webProjectManager.getProjectServices().dirs().getResourcesDir()
 
-    fun saveFeature(feature: Feature): Feature {
-        saveStepCallsRecursively(feature.hooks.beforeAll)
-        saveStepCallsRecursively(feature.hooks.beforeEach)
-        saveStepCallsRecursively(feature.hooks.afterEach)
-        saveStepCallsRecursively(feature.hooks.afterAll)
+    fun saveFeature(feature: Feature, recursiveSave: Boolean = true): Feature {
+        if (recursiveSave) {
+            saveStepCallsRecursively(feature.hooks.beforeAll)
+            saveStepCallsRecursively(feature.hooks.beforeEach)
+            saveStepCallsRecursively(feature.hooks.afterEach)
+            saveStepCallsRecursively(feature.hooks.afterAll)
+        }
+
+        val featureToSave = if (recursiveSave) {
+            saveFeatureExternalResources(feature)
+        } else {
+            feature
+        }
 
         val featuresDir = webProjectManager.getProjectServices().dirs().getFeaturesDir()
 
-        val savedFeature = webProjectManager.getProjectServices().getFeatureCache().save(feature, featuresDir)
+        val savedFeature = webProjectManager.getProjectServices().getFeatureCache().save(featureToSave, featuresDir)
 
         // if the feature was renamed, notify tests cache
-        val oldPath = feature.oldPath
+        val oldPath = featureToSave.oldPath
         val newPath = savedFeature.path
         if (oldPath != null && newPath != oldPath) {
             webProjectManager.reloadProject()
+        }
+
+        if (featureToSave.hooks.hasHooks()) {
+            reinitializeCaches()
         }
 
         return savedFeature
@@ -58,7 +70,7 @@ class SaveFrontendService(private val webProjectManager: WebProjectManager,
         }
 
         val testToSave = if (recursiveSave) {
-            saveExternalResources(test)
+            saveTestExternalResources(test)
         } else {
             test
         }
@@ -98,6 +110,7 @@ class SaveFrontendService(private val webProjectManager: WebProjectManager,
                 val newStepPattern = savedComposedStep.stepPattern
 
                 if (existingStepPattern.isStepPatternChangeCompatible(newStepPattern)) {
+                    updateFeaturesThatUseOldStep(existingStep, savedComposedStep)
                     updateTestsThatUseOldStep(existingStep, savedComposedStep)
                     updateStepsThatUsesOldStep(existingStep, savedComposedStep)
                 }
@@ -107,14 +120,105 @@ class SaveFrontendService(private val webProjectManager: WebProjectManager,
         return savedComposedStep
     }
 
+    private fun updateFeaturesThatUseOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef) {
+        val featuresThatUsesOldStep = findFeaturesThatCall(oldStep.stepPattern)
+
+        for (featureToUpdate in featuresThatUsesOldStep) {
+            var updatedFeature = featureToUpdate
+
+            for ((index, stepCall) in featureToUpdate.hooks.beforeAll.withIndex()) {
+                if (stepCall.stepDef.stepPattern == oldStep.stepPattern) {
+                    updatedFeature = updateStepPatternForFeatureBeforeAllHooks(updatedFeature, index, newStep)
+                }
+            }
+
+            for ((index, stepCall) in featureToUpdate.hooks.beforeEach.withIndex()) {
+                if (stepCall.stepDef.stepPattern == oldStep.stepPattern) {
+                    updatedFeature = updateStepPatternForFeatureBeforeEachHooks(updatedFeature, index, newStep)
+                }
+            }
+            for ((index, stepCall) in featureToUpdate.hooks.afterEach.withIndex()) {
+                if (stepCall.stepDef.stepPattern == oldStep.stepPattern) {
+                    updatedFeature = updateStepPatternForFeatureAfterEachHooks(updatedFeature, index, newStep)
+                }
+            }
+
+            for ((index, stepCall) in featureToUpdate.hooks.afterAll.withIndex()) {
+                if (stepCall.stepDef.stepPattern == oldStep.stepPattern) {
+                    updatedFeature = updateStepPatternForFeatureAfterAllHooks(updatedFeature, index, newStep)
+                }
+            }
+
+            saveFeature(updatedFeature, recursiveSave = false)
+        }
+    }
+
+    private fun findFeaturesThatCall(searchedStepPattern: StepPattern): List<Feature> {
+        val result: MutableList<Feature> = mutableListOf()
+
+        val allFeatures = webProjectManager.getProjectServices().getFeatureCache().getAllFeatures()
+
+        for (feature in allFeatures) {
+            if (feature.hooks.beforeAll.isStepPatternUsed(searchedStepPattern)) {
+                result.add(feature)
+            } else
+            if (feature.hooks.beforeEach.isStepPatternUsed(searchedStepPattern)) {
+                result.add(feature)
+            } else
+            if (feature.hooks.afterEach.isStepPatternUsed(searchedStepPattern)) {
+                result.add(feature)
+            } else
+            if (feature.hooks.afterAll.isStepPatternUsed(searchedStepPattern)) {
+                result.add(feature)
+            }
+        }
+
+        return result
+    }
+
+    private fun updateStepPatternForFeatureBeforeAllHooks(featureToUpdate: Feature, stepCallIndexToUpdate: Int, newStep: ComposedStepDef): Feature {
+        val updatedCalls = featureToUpdate.hooks.beforeAll.toMutableList()
+        updatedCalls[stepCallIndexToUpdate] = updatedCalls[stepCallIndexToUpdate].copy(stepDef = newStep)
+
+        return featureToUpdate.copy(hooks = featureToUpdate.hooks.copy(beforeAll = updatedCalls))
+    }
+
+    private fun updateStepPatternForFeatureBeforeEachHooks(featureToUpdate: Feature, stepCallIndexToUpdate: Int, newStep: ComposedStepDef): Feature {
+        val updatedCalls = featureToUpdate.hooks.beforeEach.toMutableList()
+        updatedCalls[stepCallIndexToUpdate] = updatedCalls[stepCallIndexToUpdate].copy(stepDef = newStep)
+
+        return featureToUpdate.copy(hooks = featureToUpdate.hooks.copy(beforeEach = updatedCalls))
+    }
+
+    private fun updateStepPatternForFeatureAfterEachHooks(featureToUpdate: Feature, stepCallIndexToUpdate: Int, newStep: ComposedStepDef): Feature {
+        val updatedCalls = featureToUpdate.hooks.afterEach.toMutableList()
+        updatedCalls[stepCallIndexToUpdate] = updatedCalls[stepCallIndexToUpdate].copy(stepDef = newStep)
+
+        return featureToUpdate.copy(hooks = featureToUpdate.hooks.copy(afterEach = updatedCalls))
+    }
+
+    private fun updateStepPatternForFeatureAfterAllHooks(featureToUpdate: Feature, stepCallIndexToUpdate: Int, newStep: ComposedStepDef): Feature {
+        val updatedCalls = featureToUpdate.hooks.afterAll.toMutableList()
+        updatedCalls[stepCallIndexToUpdate] = updatedCalls[stepCallIndexToUpdate].copy(stepDef = newStep)
+
+        return featureToUpdate.copy(hooks = featureToUpdate.hooks.copy(afterAll = updatedCalls))
+    }
+
     private fun updateTestsThatUseOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef) {
         val testsThatUsesOldStep = findTestsThatCall(oldStep.stepPattern)
 
         for (testToUpdate in testsThatUsesOldStep) {
             var updatedTest = testToUpdate
+
             for ((index, stepCall) in testToUpdate.stepCalls.withIndex()) {
                 if (stepCall.stepDef.stepPattern == oldStep.stepPattern) {
                     updatedTest = updateStepPatternAtStepCallForTest(updatedTest, index, newStep)
+                }
+            }
+
+            for ((index, stepCall) in testToUpdate.afterHooks.withIndex()) {
+                if (stepCall.stepDef.stepPattern == oldStep.stepPattern) {
+                    updatedTest = updateStepPatternAtAfterHookForTest(updatedTest, index, newStep)
                 }
             }
 
@@ -128,7 +232,11 @@ class SaveFrontendService(private val webProjectManager: WebProjectManager,
         val allTests = webProjectManager.getProjectServices().getTestsCache().getAllTests()
 
         for (test in allTests) {
-            if (test.isTestUsingStepPattern(searchedStepPattern)) {
+            if (test.stepCalls.isStepPatternUsed(searchedStepPattern)) {
+                result.add(test)
+                continue
+            }
+            if (test.afterHooks.isStepPatternUsed(searchedStepPattern)) {
                 result.add(test)
             }
         }
@@ -141,6 +249,13 @@ class SaveFrontendService(private val webProjectManager: WebProjectManager,
         updatedCalls[stepCallIndexToUpdate] = updatedCalls[stepCallIndexToUpdate].copy(stepDef = newStep)
 
         return testToUpdate.copy(stepCalls = updatedCalls)
+    }
+
+    private fun updateStepPatternAtAfterHookForTest(testToUpdate: TestModel, stepCallIndexToUpdate: Int, newStep: ComposedStepDef): TestModel {
+        val updatedAfterHook = testToUpdate.afterHooks.toMutableList()
+        updatedAfterHook[stepCallIndexToUpdate] = updatedAfterHook[stepCallIndexToUpdate].copy(stepDef = newStep)
+
+        return testToUpdate.copy(afterHooks = updatedAfterHook)
     }
 
     private fun updateStepsThatUsesOldStep(oldStep: ComposedStepDef, newStep: ComposedStepDef) {
@@ -241,12 +356,30 @@ class SaveFrontendService(private val webProjectManager: WebProjectManager,
         return composedStep.copy(stepCalls = stepCalls)
     }
 
-    private fun saveExternalResources(testModel: TestModel): TestModel {
+    private fun saveTestExternalResources(testModel: TestModel): TestModel {
         val stepCalls: List<StepCall> = testModel.stepCalls.map { stepCall ->
             saveExternalResources(stepCall)
         }
 
-        return testModel.copy(stepCalls = stepCalls)
+        val afterHooks: List<StepCall> = testModel.afterHooks.map { stepCall ->
+            saveExternalResources(stepCall)
+        }
+
+        return testModel.copy(stepCalls = stepCalls, afterHooks = afterHooks)
+    }
+
+    private fun saveFeatureExternalResources(feature: Feature): Feature {
+        val beforeAll: List<StepCall> = feature.hooks.beforeAll.map { stepCall -> saveExternalResources(stepCall)}
+        val beforeEach: List<StepCall> = feature.hooks.beforeEach.map { stepCall -> saveExternalResources(stepCall)}
+        val afterEach: List<StepCall> = feature.hooks.afterEach.map { stepCall -> saveExternalResources(stepCall)}
+        val afterAll: List<StepCall> = feature.hooks.afterAll.map { stepCall -> saveExternalResources(stepCall)}
+
+        return feature.copy(hooks = feature.hooks.copy(
+            beforeAll = beforeAll,
+            beforeEach = beforeEach,
+            afterEach = afterEach,
+            afterAll = afterAll
+        ))
     }
 
     private fun saveExternalResources(stepCall: StepCall): StepCall {
