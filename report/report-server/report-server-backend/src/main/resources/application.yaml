@@ -1,6 +1,7 @@
 
 server:
     port: 7788
+    shutdown: graceful
 
 logging:
     pattern:
@@ -20,3 +21,5 @@ management:
 spring:
     resources:
         static-locations: "classpath:/frontend"
+    banner:
+        location: testerum-report-server-banner.txt
