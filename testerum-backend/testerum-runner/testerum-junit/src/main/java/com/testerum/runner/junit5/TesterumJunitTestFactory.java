@@ -2,14 +2,15 @@ package com.testerum.runner.junit5;
 
 import com.testerum.model.tests_finder.TestPath;
 import com.testerum.runner.junit5.provider.JunitTestProvider;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.DynamicNode;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.DynamicNode;
 
 import static com.testerum.runner_cmdline.cmdline.params.parser.TestPathParserKt.parseStringToTestPath;
 
@@ -24,6 +25,7 @@ public class TesterumJunitTestFactory {
     private List<TestPath> testPaths = Collections.emptyList();
     private List<String> tagsToInclude = Collections.emptyList();
     private List<String> tagsToExclude = Collections.emptyList();
+    private String reportServerUrl = null;
 
     public TesterumJunitTestFactory(String repositoryDirectory) {
         this.repositoryDirectory = Paths.get(repositoryDirectory);
@@ -66,6 +68,11 @@ public class TesterumJunitTestFactory {
 
     public @NotNull TesterumJunitTestFactory tagsToExclude(@NotNull List<String> tagsToExclude) {
         this.tagsToExclude = tagsToExclude;
+        return this;
+    }
+
+    public @NotNull TesterumJunitTestFactory sendReportsToServer(@NotNull final String reportServerUrl) {
+        this.reportServerUrl = reportServerUrl;
         return this;
     }
 

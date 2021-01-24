@@ -3,6 +3,8 @@ package com.testerum.runner.junit5.provider
 import com.testerum.common_jdk.stopwatch.StopWatch
 import com.testerum.model.tests_finder.TestPath
 import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
+import com.testerum.runner.cmdline.report_type.builder.impl.JUnitReportTypeBuilder
+import com.testerum.runner.cmdline.report_type.builder.impl.RemoteServerReportTypeBuilder
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.model.RunnerErrorEvent
 import com.testerum.runner.events.model.RunnerEvent
@@ -36,32 +38,48 @@ import kotlin.concurrent.thread
 
 //We expect the tests in JUnit to be executed in the same order as in Testerum,
 //and if this is not the case, this class will do the wrong thing without warning.
-class JunitTestProvider(repositoryDirectory: Path,
-                        variablesEnvironment: String? = null,
-                        variableOverrides: Map<String, String> = emptyMap(),
-                        settingsFile: Path? = null,
-                        settingOverrides: Map<String, String> = emptyMap(),
-                        packagesWithAnnotations: List<String> = emptyList(),
-                        testPaths: List<TestPath> = emptyList(),
-                        tagsToInclude: List<String> = emptyList(),
-                        tagsToExclude: List<String> = emptyList()
+class JunitTestProvider(
+    repositoryDirectory: Path,
+    variablesEnvironment: String?,
+    variableOverrides: Map<String, String>,
+    settingsFile: Path?,
+    settingOverrides: Map<String, String>,
+    packagesWithAnnotations: List<String>,
+    testPaths: List<TestPath>,
+    tagsToInclude: List<String>,
+    tagsToExclude: List<String>,
+    reportServerUrl: String?,
 ) {
 
     private val cmdlineParams: RunCmdlineParams = RunCmdlineParams(
-            verbose = false,
-            repositoryDirectory = repositoryDirectory,
-            variablesEnvironment = variablesEnvironment,
-            variableOverrides = variableOverrides,
-            settingsFile = settingsFile,
-            settingOverrides = settingOverrides,
-            testPaths = testPaths,
-            packagesWithAnnotations = packagesWithAnnotations,
-            includeTags = tagsToInclude,
-            excludeTags = tagsToExclude,
-            reportsWithProperties = listOf("JUNIT"),
-            managedReportsDir = null,
-            executionName = null
+        verbose = false,
+        repositoryDirectory = repositoryDirectory,
+        variablesEnvironment = variablesEnvironment,
+        variableOverrides = variableOverrides,
+        settingsFile = settingsFile,
+        settingOverrides = settingOverrides,
+        testPaths = testPaths,
+        packagesWithAnnotations = packagesWithAnnotations,
+        includeTags = tagsToInclude,
+        excludeTags = tagsToExclude,
+        reportsWithProperties = reportsWithProperties(reportServerUrl),
+        managedReportsDir = null,
+        executionName = null
     )
+
+    private fun reportsWithProperties(reportServerUrl: String?): List<String> {
+        val result = mutableListOf<String>()
+
+        result += JUnitReportTypeBuilder().build()
+
+        if (reportServerUrl != null) {
+            result += RemoteServerReportTypeBuilder().apply {
+                this.reportServerUrl = reportServerUrl
+            }.build()
+        }
+
+        return result
+    }
 
     private val bootstrapper: RunnerModuleBootstrapper = RunnerModuleBootstrapper(cmdlineParams, StopWatch.start())
 
@@ -86,7 +104,7 @@ class JunitTestProvider(repositoryDirectory: Path,
             return junitExecutionTree
         }
 
-        thread(start = true, name="Testerum Runner") {
+        thread(start = true, name = "Testerum Runner") {
             tryExecuteTesterumTests()
         }
 
@@ -121,7 +139,7 @@ class JunitTestProvider(repositoryDirectory: Path,
     private fun executeTesterumTests() {
         val executionListeners = bootstrapper.runnerListenersModuleFactory.executionListenerFinder.executionListeners
         val jUnitExecutionListener: ExecutionListener = executionListeners.find { listener -> listener is JUnitExecutionListener }
-                ?: throw RuntimeException("JUnitExecutionListener is not registered")
+            ?: throw RuntimeException("JUnitExecutionListener is not registered")
 
         eventQueue = (jUnitExecutionListener as JUnitExecutionListener).eventQueue
         eventQueueInitialized.countDown()
@@ -137,13 +155,13 @@ class JunitTestProvider(repositoryDirectory: Path,
                 try {
                     for (line in remainingConsoleCapturedText.lines()) {
                         bootstrapper.runnerModuleFactory.eventsService.logEvent(
-                                TextLogEvent(
-                                        time = LocalDateTime.now(),
-                                        eventKey = EventKey.LOG_EVENT_KEY,
-                                        logLevel = LogLevel.INFO,
-                                        message = line,
-                                        exceptionDetail = null
-                                )
+                            TextLogEvent(
+                                time = LocalDateTime.now(),
+                                eventKey = EventKey.LOG_EVENT_KEY,
+                                logLevel = LogLevel.INFO,
+                                message = line,
+                                exceptionDetail = null
+                            )
                         )
                     }
                 } catch (e: Exception) {
