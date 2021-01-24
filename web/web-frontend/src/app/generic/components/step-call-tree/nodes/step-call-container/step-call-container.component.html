@@ -15,7 +15,7 @@
             </step-text>
 
             <!-- WARNING ICON -->
-            <i *ngIf="hasOwnWarnings() && !isManualStep()" class="fas fa-exclamation-triangle error_color" aria-hidden="true"
+            <i *ngIf="hasOwnWarnings() && !isManualStep()" class="warning-icon fas fa-exclamation-triangle error_color" aria-hidden="true"
                [popover]="warningPopTemplate" containerClass="popover-warning" triggers="" #pop="bs-popover"
                (mouseenter)="model.stepCall.getAllWarnings().length > 0 ? pop.show():null"
                (mouseleave)="model.stepCall.getAllWarnings().length > 0 ? pop.hide():null">
