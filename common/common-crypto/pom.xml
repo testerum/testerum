@@ -6,7 +6,7 @@
     <parent>
         <artifactId>common</artifactId>
         <groupId>com.testerum</groupId>
-        <version>develop-SNAPSHOT</version>
+        <version>5.0.5</version>
     </parent>
 
     <artifactId>common-crypto</artifactId>
