@@ -107,6 +107,7 @@ class ComposedStepsFrontendService(
         // to optimize, we could re-load only the affected tests and/or steps
         webProjectManager.getProjectServices().reinitializeStepsCache()
         webProjectManager.getProjectServices().reinitializeTestsCache()
+        webProjectManager.getProjectServices().reinitializeFeatureCache()
     }
 
     fun copyComposedStep(sourcePath: Path, destinationDirPath: Path): Path {
