@@ -26,7 +26,7 @@
                     <div class="my-value" *ngIf="isEditMode">
                         <input required isNotBlankValidator
                                #testName="ngModel" [(ngModel)]="testModel.name"
-                               type="text" class="form-control" name="testName"
+                               type="text" class="form-control test_create-test-name" name="testName"
                                (keydown.enter)="$event.preventDefault()">
                         <input-error [model]="testName"
                                      [errorMessages]="{
@@ -39,7 +39,7 @@
                 <div class="my-line">
                     <label class="my-label label-size">Type</label>
                     <div class="type-value-container my-value">
-                        <div *ngIf="!isEditMode" class="type-container">
+                        <div *ngIf="!isEditMode" class="type-container test_label-type">
                             <span *ngIf="!testModel.properties.isManual" class="label label-success">Automated</span>
                             <span *ngIf="testModel.properties.isManual" class="label label-warning">Manual</span>
                         </div>
@@ -48,7 +48,7 @@
                                             onIcon="fa_my-manual-test_white" offIcon="fa_my-automated-test_white"
                                             [ngModel]="testModel.properties.isManual"
                                             (onChange)="onManualAutomatedTestToggle()"
-                                            styleClass="toggle-test-type"
+                                            styleClass="toggle-test-type" class="test_toggle-manual-or-automated"
                                             name="testTypeSwitch"></p-toggleButton>
                         </div>
 
@@ -78,7 +78,7 @@
                 </div>
                 <div class="my-line" *ngIf="isEditMode">
                     <label class="my-label label-size">Tags</label>
-                    <div class="my-value my-default-line-height">
+                    <div class="my-value my-default-line-height test_create-test-name">
                         <p-autoComplete #tagsElement
                                         [(ngModel)]="testModel.tags"
                                         [suggestions]="tagsToShow"
@@ -116,7 +116,7 @@
 
                         <div title="Add Scenario" class="btn btn-default btn-xs btn-group"
                              (click)="addScenario(); $event.stopPropagation()">
-                            <i class="fa_my-plus" aria-hidden="true"></i>
+                            <i class="fa_my-plus test_add-scenario-button" aria-hidden="true"></i>
                         </div>
 
                         <div *ngIf="isEditMode && canPasteScenario()" title="Paste Scenario" class="btn btn-default btn-xs btn-group"
@@ -146,12 +146,12 @@
                     <div class="step-action-panel inline btn-group">
 
                         <div *ngIf="!isEditMode && !testModel.properties.isManual && testModel.stepCalls.length != 0 && !hasScenarios()"
-                             title="Run Test" class="btn btn-default btn-xs btn-group"
+                             title="Run Test" class="btn btn-default btn-xs btn-group test_run-test-button"
                              (click)="runTest(); $event.stopPropagation()">
                             <i class="fa_my-run" aria-hidden="true"></i>
                         </div>
 
-                        <div title="Add Step" class="btn btn-default btn-xs btn-group"
+                        <div title="Add Step" class="btn btn-default btn-xs btn-group test_add-step-button"
                              (click)="addStep(); $event.stopPropagation()">
                             <i class="fa_my-plus" aria-hidden="true"></i>
                         </div>
@@ -224,7 +224,7 @@
                         <ng-container *ngIf="isEditMode">
                             <button (click)="cancelAction();" type="button" class="btn btn-default">Cancel</button>
                             <button *ngIf="!isCreateAction" (click)="deleteAction();;$event.stopPropagation();" type="button" class="btn btn-danger">Delete</button>
-                            <button [disabled]="!stepForm.form.valid" (click)="saveAction();$event.stopPropagation();" class="btn btn-primary">Save</button>
+                            <button [disabled]="!stepForm.form.valid" (click)="saveAction();$event.stopPropagation();" class="btn btn-primary test_edit-mode-save-button">Save</button>
                         </ng-container>
                     </div>
                 </div>
