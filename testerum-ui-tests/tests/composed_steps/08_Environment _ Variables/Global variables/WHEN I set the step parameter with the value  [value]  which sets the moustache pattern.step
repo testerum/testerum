@@ -1,0 +1,7 @@
+step-def: When I set the step parameter with the value <<value: TEXT>> which sets the moustache pattern
+
+    step: When I move the mouse pointer over the element <<.test_step-parameter-edit-button>>
+    step: When I click the element <<.test_step-parameter-edit-button>>
+    step: When I type <<{>> into the field <<.test_input-parameter-text>>
+    step: When I type <<{{varName}}>> into the field <<.test_input-parameter-text>>
+    step: When I type <<}>> into the field <<.test_input-parameter-text>>
