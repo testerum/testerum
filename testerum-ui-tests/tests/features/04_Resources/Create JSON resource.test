@@ -1,0 +1,3 @@
+test-def: Create JSON resource
+
+    test-properties = <<manual>>

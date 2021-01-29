@@ -1,0 +1,3 @@
+test-def: Delete RDMBS resource
+
+    test-properties = <<manual>>

@@ -1,0 +1,3 @@
+step-def: When I add the tag <<tagName: TEXT>>
+
+    step: When I type <<{{tagName}}>> into the field <<.ui-autocomplete-input-token>>

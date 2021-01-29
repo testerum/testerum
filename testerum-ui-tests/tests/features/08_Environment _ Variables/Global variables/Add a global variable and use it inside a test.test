@@ -1,0 +1,5 @@
+test-def: Add a global variable and use it inside a test
+
+    step: Given I am on Home screen page
+    step: When I continue with free license
+    step: When I create a new project <<Environments-and-variables>> with the path <<{{PATH_TO_NEW_PROJECT}}>>

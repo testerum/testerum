@@ -1,0 +1,3 @@
+step-def: When I click on Testerum logo to navigate back to welcome page
+
+    step: When I click the element <<.testerum-logo>>

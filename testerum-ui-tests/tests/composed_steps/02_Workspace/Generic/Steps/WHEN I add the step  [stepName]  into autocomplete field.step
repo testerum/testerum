@@ -1,0 +1,5 @@
+step-def: When I add the step <<stepName: TEXT>> into autocomplete field
+
+    step: When I click the element <<.test_add-step-button>>
+    step: When I type <<{{stepName}}>> into the field <<.ui-autocomplete-input>>
+    step: When I click the element <<.test_add-step-button>>

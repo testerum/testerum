@@ -1,0 +1,4 @@
+step-def: Then the test label should be Automated
+
+    step: When I wait until the element <<.test_label-type>> is visible
+    step: Then the text of element <<.test_label-type>> should be <<Automated>>

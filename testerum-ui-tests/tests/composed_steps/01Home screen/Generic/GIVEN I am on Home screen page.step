@@ -1,0 +1,3 @@
+step-def: Given I am on Home screen page
+
+    step: Given the page at url <<{{WELCOME_PAGE}}>> is open

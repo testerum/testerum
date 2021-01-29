@@ -1,0 +1,2 @@
+
+before-each-hook: When I delete the file <<{{PATH_TO_AUTOMATED_TESTS_PROJECT}}>> from the hard drive

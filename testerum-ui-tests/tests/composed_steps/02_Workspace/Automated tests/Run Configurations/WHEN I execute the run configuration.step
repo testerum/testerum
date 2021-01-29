@@ -1,0 +1,3 @@
+step-def: When I execute the run configuration
+
+    step: When I click the element <<.test_execute-run-config-btn>>

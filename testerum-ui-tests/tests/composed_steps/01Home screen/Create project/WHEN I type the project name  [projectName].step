@@ -1,0 +1,3 @@
+step-def: When I type the project name <<projectName: TEXT>>
+
+    step: When I type <<{{projectName}}>> into the field <<.test_project-name>>

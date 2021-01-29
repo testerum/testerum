@@ -1,0 +1,5 @@
+step-def: When I create a manual test in the root directory
+
+    step: When I create a test in the root directory
+    step: When I type <<First manual test created outside any feature>> into the field <<.test_create-test-name>>
+    step: When I click the element <<.test_toggle-manual-or-automated>>

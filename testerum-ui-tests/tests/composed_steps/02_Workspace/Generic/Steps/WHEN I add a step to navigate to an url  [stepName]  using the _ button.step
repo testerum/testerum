@@ -1,0 +1,14 @@
+step-def: When I add a step to navigate to an url <<stepName: TEXT>> using the + button
+
+    step: When I click the element <<.test_add-step-button>>
+    step: When I move the mouse pointer over the element <<.step-text-container>>
+    step: When I wait until the element <<.test_select-step-from-the-tree>> is visible
+    step: When I click the element <<.test_select-step-from-the-tree>>
+    step: When I wait until the element <<xpath=//span[contains(text(),'selenium')]>> is visible
+    step: When I click the element <<xpath=//span[contains(text(),'selenium')]>>
+    step: When I wait until the element <<xpath=//span[contains(text(),'actions')]>> is visible
+    step: When I click the element <<xpath=//span[contains(text(),'actions')]>>
+    step: When I click the element <<xpath=//span[contains(text(),'page')]>>
+    step: When I click the element <<xpath=//div[contains(text(),'the page at url')]>>
+    step: When I wait until the element <<.test_step-chooser-add-step-button>> is visible
+    step: When I click the element <<.test_step-chooser-add-step-button>>

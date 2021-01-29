@@ -1,0 +1,12 @@
+description = <<
+    From steps tab:
+    
+    Create a new step
+    Edit an existing one
+    Delete a step
+    
+    Disable
+    Move up and down
+    
+    Verify the impact on the steps used in the project
+>>
