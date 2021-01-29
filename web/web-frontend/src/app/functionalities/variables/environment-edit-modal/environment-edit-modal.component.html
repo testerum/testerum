@@ -15,7 +15,7 @@
                             <input required isNotBlankValidator
                                    #nameNgModel="ngModel" [(ngModel)]="newEnvironmentName"
                                    (change)="onEnvironmentNameChange($event)"
-                                   type="text" class="form-control" name="name">
+                                   type="text" class="form-control test_add-environment-name-input" name="name">
                             <input-error [model]="nameNgModel"
                                          [errorMessages]="{
                                             required: 'A name for this environment is required',
@@ -30,7 +30,7 @@
             <div class="modal-footer">
                 <button (click)="cancel();" type="button" class="btn btn-default">Cancel</button>
                 <button *ngIf="!isAddEnvironmentMode()" (click)="delete();" type="button" class="btn btn-danger">Delete</button>
-                <button (click)="save()" [disabled]="!isValid()" class="btn btn-primary">Save</button>
+                <button (click)="save()" [disabled]="!isValid()" class="btn btn-primary test_save-new-environment">Save</button>
             </div>
         </div>
     </div>

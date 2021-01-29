@@ -1,0 +1,5 @@
+step-def: When I add a new environment <<environmentName: TEXT>> in the environment and variables
+
+    step: When I click the element <<.test_add-environment>>
+    step: When I type <<{{environmentName}}>> into the field <<.test_add-environment-name-input>>
+    step: When I click the element <<.test_save-new-environment>>

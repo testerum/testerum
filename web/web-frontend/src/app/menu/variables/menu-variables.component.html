@@ -1,5 +1,5 @@
 <div class="menu-variables">
-    <select class="form-control"
+    <select class="form-control test_select-environment"
             [(ngModel)]="selectedEnvironment"
             (change)="onEnvironmentChange($event)">
         <option *ngFor="let availableEnvironment of availableEnvironments" [value]="availableEnvironment">
