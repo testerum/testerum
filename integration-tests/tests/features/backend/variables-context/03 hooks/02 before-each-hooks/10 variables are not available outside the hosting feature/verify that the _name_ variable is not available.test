@@ -1,0 +1,3 @@
+test-def: verify that the "name" variable is not available
+
+    step: Then this step can not access the "name" variable

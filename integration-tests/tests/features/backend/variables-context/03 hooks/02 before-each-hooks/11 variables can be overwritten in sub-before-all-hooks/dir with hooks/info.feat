@@ -1,0 +1,8 @@
+
+before-all-hook: Given the step that defines a "name" variable with the value <<BatMan>>
+
+before-each-hook: Then <<{{name}}>> is equal to <<BatMan>>
+
+after-each-hook: Then <<{{name}}>> is equal to <<BatMan>>
+
+after-all-hook: Then <<{{name}}>> is equal to <<BatMan>>
