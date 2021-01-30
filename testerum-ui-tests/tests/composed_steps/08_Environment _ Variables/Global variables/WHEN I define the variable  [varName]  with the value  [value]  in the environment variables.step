@@ -2,3 +2,4 @@ step-def: When I define the variable <<varName: TEXT>> with the value <<value: T
 
     step: When I type <<{{varName}}>> into the field <<.test_var-name-input-field>>
     step: When I type <<true>> into the field <<.test_var-value-input-field>>
+    step: When I wait <<1000>> milliseconds

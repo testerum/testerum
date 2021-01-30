@@ -29,7 +29,7 @@
             <!-- BUTTONS -->
             <div class="modal-footer">
                 <button (click)="cancel();" type="button" class="btn btn-default">Cancel</button>
-                <button *ngIf="!isAddEnvironmentMode()" (click)="delete();" type="button" class="btn btn-danger">Delete</button>
+                <button *ngIf="!isAddEnvironmentMode()" (click)="delete();" type="button" class="btn btn-danger test_delete-environment">Delete</button>
                 <button (click)="save()" [disabled]="!isValid()" class="btn btn-primary test_save-new-environment">Save</button>
             </div>
         </div>
