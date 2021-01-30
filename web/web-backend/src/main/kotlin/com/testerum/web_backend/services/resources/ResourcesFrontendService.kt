@@ -64,10 +64,10 @@ class ResourcesFrontendService(private val webProjectManager: WebProjectManager,
         return result
     }
 
-    fun deleteDirectory(path: Path) {
+    fun deleteDirectory(path: Path, resourceType: ResourceType) {
         val resourcesDir = getResourcesDir()
 
-        resourceFileService.deleteDirectory(path, resourcesDir)
+        resourceFileService.deleteDirectory(path, resourceType, resourcesDir)
 
         reinitializeCaches()
     }

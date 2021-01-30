@@ -9,6 +9,7 @@ import {CopyPath} from "../../model/infrastructure/path/copy-path.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "../url.service";
 import {Serializable} from "../../model/infrastructure/serializable.model";
+import {ResourceType} from "../../functionalities/resources/tree/model/type/resource-type.model";
 
 @Injectable()
 export class ResourceService {
@@ -112,10 +113,11 @@ export class ResourceService {
             map(res => Path.deserialize(res)));
     }
 
-    deleteDirectory(pathToDelete: Path): Observable<void> {
+    deleteDirectory(pathToDelete: Path, resourceType: ResourceType): Observable<void> {
         const httpOptions = {
             params: new HttpParams()
                 .append('path', pathToDelete.toString())
+                .append("resourceFileExtension", resourceType.fileExtension)
         };
 
         return this.http
