@@ -1,5 +1,6 @@
 package http.mock
 
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.testerum.model.resources.http.mock.server.HttpMockServer
 import com.testerum.model.resources.http.mock.stub.HttpMock
 import com.testerum_api.testerum_steps_api.annotations.hooks.BeforeEachTest
@@ -48,5 +49,6 @@ class HttpMockSteps {
                 "${httpMock.prettyPrint()}\n"
         )
         httpMockService.addHttpStub(httpMockServer, httpMock)
+        WireMock.getAllServeEvents()
     }
 }
