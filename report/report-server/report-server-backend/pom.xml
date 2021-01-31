@@ -9,6 +9,10 @@
 
     <artifactId>report-server-backend</artifactId>
 
+    <properties>
+        <spring-boot.version>2.4.2</spring-boot.version>
+    </properties>
+
     <dependencies>
         <!--==================== internal dependencies ====================-->
 
@@ -47,7 +51,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
-            <version>2.3.3.RELEASE</version>
+            <version>${spring-boot.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -64,7 +68,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>2.3.3.RELEASE</version>
+            <version>${spring-boot.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -130,7 +134,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.3.3.RELEASE</version>
+                <version>${spring-boot.version}</version>
 
                 <executions>
                     <execution>
