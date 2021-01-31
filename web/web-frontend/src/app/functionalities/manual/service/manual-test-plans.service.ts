@@ -133,14 +133,11 @@ export class ManualTestPlansService {
                 map(res => new ManualTest().deserialize(res)));
     }
 
-    getPathOfUnExecutedTest(planPath: Path, currentTestPath: Path): Observable<Path> {
+    getPathOfUnExecutedTest(planPath: Path, currentTestPath: string): Observable<Path> {
 
         let httpParams = new HttpParams()
-            .append('planPath', planPath.toString());
-
-        if (currentTestPath) {
-            httpParams.append('currentTestPath', currentTestPath.toString())
-        }
+            .append('planPath', planPath.toString())
+            .append('currentTestPath', currentTestPath)
 
         const httpOptions = {
             params: httpParams

@@ -31,6 +31,7 @@ export class ManualRunnerEditorComponent implements OnInit {
     planPath: Path;
     testPath: Path;
     isEditMode = false;
+    isLastUnExecutedTest = true
 
     testStatusDropdownOptions = [
         {label:'Not Executed', value: ManualTestStatus.NOT_EXECUTED},
@@ -103,6 +104,12 @@ export class ManualRunnerEditorComponent implements OnInit {
                     previewsStepPhase = manualStepCall.stepCall.stepDef.phase;
                     this.steps.push([stepCallForView])
                 }
+
+                this.manualExecPlansService
+                .getPathOfUnExecutedTest(this.planPath, manualTest.path.toString())
+                .subscribe((nextPath: Path) => {
+                    this.isLastUnExecutedTest = nextPath == null
+                });
             });
         } else {
             this.model = null;
@@ -195,7 +202,7 @@ export class ManualRunnerEditorComponent implements OnInit {
 
     private showNextUnExecutedTest(): void {
         this.manualExecPlansService
-            .getPathOfUnExecutedTest(this.planPath, this.testPath)
+            .getPathOfUnExecutedTest(this.planPath, this.testPath.toString())
             .subscribe((nextPath: Path) => {
                 this.urlService.navigateToManualExecPlanTestRunner(this.planPath, nextPath)
             });

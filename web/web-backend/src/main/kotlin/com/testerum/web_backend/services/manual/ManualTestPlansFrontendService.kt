@@ -243,21 +243,30 @@ class ManualTestPlansFrontendService(private val webProjectManager: WebProjectMa
 
         val indexOfCurrentTestPath: Int = if (currentTestPath != null) testPaths.indexOf(currentTestPath) else -1
 
-        if (indexOfCurrentTestPath == -1) {
-            val manualTestsDir = getManualTestsDir()
-            val tests = manualTestFileService.getTestsAtPlanPath(plan.path, manualTestsDir);
-            val notExecutedTests = tests.find { it.status == ManualTestStatus.NOT_EXECUTED }
-            if (notExecutedTests != null) {
-                val indexOfUneExecutedTest = testPaths.indexOf(notExecutedTests.path)
-                return testPaths[indexOfUneExecutedTest]
+        val manualTestsDir = getManualTestsDir()
+        val tests = manualTestFileService.getTestsAtPlanPath(plan.path, manualTestsDir);
+        val notExecutedTests = tests.filter { it.status == ManualTestStatus.NOT_EXECUTED }
+
+        if (notExecutedTests.isEmpty()) {
+            return null
+        }
+        val notExecutedTestsPath = notExecutedTests.map { it.path }
+
+        var indexOfTheNextTestToExecute = if(indexOfCurrentTestPath + 1 < testPaths.size) indexOfCurrentTestPath + 1 else 0
+        while ((indexOfTheNextTestToExecute < indexOfCurrentTestPath) ||
+               (indexOfCurrentTestPath < indexOfTheNextTestToExecute && indexOfCurrentTestPath < testPaths.size)) {
+
+            val possibleTheNextNotExecutedTestPath = testPaths.get(indexOfTheNextTestToExecute)
+            if (notExecutedTestsPath.contains(possibleTheNextNotExecutedTestPath)) {
+                return possibleTheNextNotExecutedTestPath
             }
 
-            return testPaths[0]
-        } else if (indexOfCurrentTestPath == testPaths.size - 1) {
-            return testPaths[0]
-        } else {
-            return testPaths[indexOfCurrentTestPath + 1]
+            if(currentTestPath != null && indexOfTheNextTestToExecute == testPaths.size - 1) {
+                indexOfTheNextTestToExecute = 0;
+            } else {
+                indexOfTheNextTestToExecute += 1
+            }
         }
+        return null
     }
-
 }
