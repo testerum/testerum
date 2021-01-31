@@ -14,4 +14,4 @@ test-def: Execute an automated test from the root directory which triggers a pas
     step: When I save the test
     step: When I execute the test
     step: When wait until the execution has finished
-    step: Then the test should pass
+    step: Then the number of executed passed tests should be <<1>>

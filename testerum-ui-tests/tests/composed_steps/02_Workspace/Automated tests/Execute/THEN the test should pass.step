@@ -1,3 +1,0 @@
-step-def: Then the test should pass
-
-    step: Then the text of element <<.test_number-of-passed-tests>> should be <<1>>
