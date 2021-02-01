@@ -1,6 +1,6 @@
 <div class="my-line string-input-basic-resource"
      [class.multiline-text-line]="isMultilineText()">
-    <label class="my-label label-size">Value:</label>
+    <label class="my-label">{{name}}:</label>
     <div class="my-value" *ngIf="!editMode">
         {{model.content || ""}}
     </div>

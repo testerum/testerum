@@ -3,42 +3,42 @@
 
     <form *ngIf="!condensedViewMode" class="form-horizontal flex-panel">
 
+<!-- TODO: THIS IS THE EDIT PARAM NAME FUNCTIONALITY. I have commented this code just because is to confusing for the users. This functionality should be properly removed from everywhere. -->
+<!--        <div class="my-line">-->
+<!--            <label class="my-label label-size">Name:</label>-->
 
-        <div class="my-line">
-            <label class="my-label label-size">Name:</label>
+<!--            <div class="my-value full-line" *ngIf="!editNameMode">-->
+<!--                {{name}}-->
+<!--                <div class="button-panel btn-group my-button-panel">-->
 
-            <div class="my-value full-line" *ngIf="!editNameMode">
-                {{name}}
-                <div class="button-panel btn-group my-button-panel">
+<!--                    <div title="Set custom name" class="btn btn-default btn-xs btn-group"-->
+<!--                         (click)="onEditName();$event.stopPropagation();">-->
+<!--                        <i class="fa_my-edit" aria-hidden="true"></i>-->
+<!--                    </div>-->
+<!--                    <div *ngIf="name != stepParameter.name"-->
+<!--                         title="Remove custom name" class="btn btn-default btn-xs btn-group"-->
+<!--                         (click)="onRemoveCustomName(); $event.stopPropagation()">-->
+<!--                        <i class="fa_my-delete" aria-hidden="true"></i>-->
+<!--                    </div>-->
 
-                    <div title="Set custom name" class="btn btn-default btn-xs btn-group"
-                         (click)="onEditName();$event.stopPropagation();">
-                        <i class="fa_my-edit" aria-hidden="true"></i>
-                    </div>
-                    <div *ngIf="name != stepParameter.name"
-                         title="Remove custom name" class="btn btn-default btn-xs btn-group"
-                         (click)="onRemoveCustomName(); $event.stopPropagation()">
-                        <i class="fa_my-delete" aria-hidden="true"></i>
-                    </div>
+<!--                    <info-icon *ngIf="stepParameter.description"-->
+<!--                               [message]="stepParameter.description"-->
+<!--                               class="param-info-icon"></info-icon>-->
+<!--                </div>-->
+<!--            </div>-->
 
-                    <info-icon *ngIf="stepParameter.description"
-                               [message]="stepParameter.description"
-                               class="param-info-icon"></info-icon>
-                </div>
-            </div>
-
-            <div class="my-value" *ngIf="editNameMode">
-                <input paramNameValidator
-                       #nameNgModel="ngModel"
-                       [(ngModel)]="name"
-                       type="text"
-                       class="form-control" name="name">
-                <input-error [model]="nameNgModel"
-                             [errorMessages]="{
-                                invalidParamName: 'Invalid parameter name. A parameter can start only with a letter or _ and can contain only letters, numbers and the _ sign'
-                             }"></input-error>
-            </div>
-        </div>
+<!--            <div class="my-value" *ngIf="editNameMode">-->
+<!--                <input paramNameValidator-->
+<!--                       #nameNgModel="ngModel"-->
+<!--                       [(ngModel)]="name"-->
+<!--                       type="text"-->
+<!--                       class="form-control" name="name">-->
+<!--                <input-error [model]="nameNgModel"-->
+<!--                             [errorMessages]="{-->
+<!--                                invalidParamName: 'Invalid parameter name. A parameter can start only with a letter or _ and can contain only letters, numbers and the _ sign'-->
+<!--                             }"></input-error>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <string-input-basic-resource *ngIf="isStringResource()"
                                      [name]="name"
