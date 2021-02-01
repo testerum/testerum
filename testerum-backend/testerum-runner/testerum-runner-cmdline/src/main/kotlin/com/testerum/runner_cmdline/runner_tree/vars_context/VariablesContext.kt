@@ -11,7 +11,12 @@ import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressi
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
 import com.testerum_api.testerum_steps_api.test_context.test_vars.VariableNotFoundException
 import org.apache.commons.text.StringEscapeUtils
-import java.util.TreeMap
+import java.util.*
+import kotlin.collections.HashMap
+import kotlin.collections.HashSet
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.set
 
 class VariablesContext(globalVarsMap: Map<String, String>) {
 
@@ -94,12 +99,10 @@ class VariablesContext(globalVarsMap: Map<String, String>) {
     }
 
     fun startScenario() {
-        argsVars.push()
         dynamicVars.push()
     }
 
     fun endScenario() {
-        argsVars.pop()
         dynamicVars.pop()
     }
 
