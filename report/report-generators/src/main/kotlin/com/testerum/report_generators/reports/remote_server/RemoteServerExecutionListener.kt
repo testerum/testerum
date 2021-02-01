@@ -13,19 +13,25 @@ import com.testerum.runner.cmdline.report_type.RunnerReportType
 import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties.RemoteServer.REPORT_SERVER_URL
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.model.RunnerEvent
+import org.slf4j.LoggerFactory
 
-class RemoteServerExecutionListener(private val properties: Map<String, String>) : ExecutionListener {
+class RemoteServerExecutionListener(properties: Map<String, String>) : ExecutionListener {
+
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(RemoteServerExecutionListener::class.java)
+    }
 
     private val reportServerUrl = properties[REPORT_SERVER_URL]
         ?: throw IllegalArgumentException("${RunnerReportType.REMOTE_SERVER} requires the property \"$REPORT_SERVER_URL\"")
 
-    private var isServerHealthy = false;
+    private var isServerHealthy = false
     private val eventsAsStringBuilder = StringBuilder()
 
     override fun start() {
         TesterumHttpClientFactory.createHttpClient().use { httpClient ->
             val httpClientService = HttpClientService(httpClient)
 
+            LOGGER.info("checking if the report server at [$reportServerUrl] is up and healthy...")
             val request = HttpRequest(
                 method = HttpRequestMethod.GET,
                 url = "$reportServerUrl/management/health",
@@ -43,6 +49,7 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
                     )
                 }
 
+                LOGGER.info("... the report server is up and healthy")
                 isServerHealthy = true
             } catch (e: Exception) {
                 throw RuntimeException(
@@ -74,9 +81,11 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
 
     override fun stop() {
         if (!isServerHealthy) {
+            LOGGER.warn("not sending the reports to the report server because the report server is not up or is not healthy")
             return
         }
 
+        LOGGER.info("sending reports to the report server at [$reportServerUrl]")
         TesterumHttpClientFactory.createHttpClient().use { httpClient ->
             val httpClientService = HttpClientService(httpClient)
 
@@ -88,13 +97,15 @@ class RemoteServerExecutionListener(private val properties: Map<String, String>)
             )
             val response = httpClientService.executeHttpRequest(request)
 
-            if (400 <= response.statusCode) {
+            if (response.statusCode >= 400) {
                 throw RuntimeException(
-                    """|An error occurred while calling the Report Server at URL: ${reportServerUrl}
+                    """|An error occurred while calling the Report Server at URL: $reportServerUrl
                        |HTTP Request: $request
                        |HTTP Response: $response""".trimMargin()
                 )
             }
+
+            LOGGER.info("reports sent to the report server")
         }
     }
 

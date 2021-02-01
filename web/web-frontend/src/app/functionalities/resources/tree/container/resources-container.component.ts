@@ -122,7 +122,7 @@ export class ResourcesContainerComponent {
             (deleteEvent: JsonTreeContainerEditorEvent) => {
 
                 this.resourceService.deleteDirectory(
-                    this.model.path
+                    this.model.path, this.model.resourceType
                 ).subscribe(
                     it => {
                         this.resourceService.showResourcesScreen();

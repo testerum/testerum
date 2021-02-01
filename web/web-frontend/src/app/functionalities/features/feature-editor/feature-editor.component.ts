@@ -318,13 +318,13 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
 
     getAfterEachHooksDescription(): string {
         return "**After Each Test Hooks** are executed after each test no mather what the test outcome is.\n" +
-            "If one of this Hooks throws an exception the test is not going to be marked as failed.";
+            "If one of this Hooks throws an exception the test will be marked as failed.";
     }
 
     getAfterAllHooksDescription(): string {
         return "**After All Tests Hooks** are executed only once after all the tests in this Functionality has been executed.\n" +
-            "If one of this Hooks throws an exception the tests are not going to be marked as failed.\n" +
-            "All the steps defined at the root level will be executed, regardless if a previews step thrown an exception.";
+            "If one of this Hooks throws an exception the test will be marked as failed.\n" +
+            "All of the hook steps defined at the root level will be executed, regardless if a previews step thrown an exception.";
     }
 
     canPasteStep(): boolean {

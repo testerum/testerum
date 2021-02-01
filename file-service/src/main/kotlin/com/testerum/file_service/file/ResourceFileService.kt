@@ -9,7 +9,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.testerum.common_kotlin.*
+import com.testerum.common_kotlin.createDirectories
+import com.testerum.common_kotlin.deleteIfExists
+import com.testerum.common_kotlin.deleteRecursivelyIfExists
+import com.testerum.common_kotlin.doesNotExist
+import com.testerum.common_kotlin.exists
+import com.testerum.common_kotlin.getContentOrNull
+import com.testerum.common_kotlin.hasExtension
+import com.testerum.common_kotlin.isRegularFile
+import com.testerum.common_kotlin.smartMoveTo
+import com.testerum.common_kotlin.walkAndCollect
 import com.testerum.file_service.caches.resolved.resolvers.file_arg_transformer.FileArgTransformer
 import com.testerum.file_service.file.util.isCreateResource
 import com.testerum.file_service.file.util.isRelocateResource
@@ -238,12 +247,15 @@ class ResourceFileService {
     }
 
     fun deleteDirectory(path: Path,
+                        resourceType: ResourceType,
                         resourcesDir: JavaPath) {
-        val javaDirToDelete = resourcesDir.resolve(
+        val resourceRootPath = resourcesDir.resolve(resourceType.relativeRootDir)
+
+        val javaDirToDelete = resourceRootPath.resolve(
                 path.escape().toString()
         )
 
-        javaDirToDelete.deleteIfExists()
+        javaDirToDelete.deleteRecursivelyIfExists()
     }
 
     // todo: remove duplication with ComposedStepFileService.moveComposedStepDirectoryOrFile

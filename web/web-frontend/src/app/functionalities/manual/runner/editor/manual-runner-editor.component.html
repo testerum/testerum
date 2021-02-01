@@ -144,7 +144,7 @@
                 <div class="panel-footer-button" *ngIf="!isFinalized()">
                     <ng-container *ngIf="!isEditMode">
                         <button *ngIf="!isEditMode" (click)="setEditMode(true)" class="btn btn-primary">Edit</button>
-                        <button (click)="showNextUnExecutedTest();" class="btn btn-primary">Next</button>
+                        <button *ngIf="!isLastUnExecutedTest" (click)="showNextUnExecutedTest();" class="btn btn-primary">Next</button>
                     </ng-container>
 
                     <ng-container *ngIf="isEditMode">

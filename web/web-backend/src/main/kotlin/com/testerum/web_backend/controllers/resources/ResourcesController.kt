@@ -8,7 +8,13 @@ import com.testerum.model.resources.ResourceType
 import com.testerum.web_backend.services.resources.ResourcesFrontendService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/resources")
@@ -62,10 +68,17 @@ class ResourcesController(private val resourcesFrontendService: ResourcesFronten
     }
 
     @RequestMapping(method = [RequestMethod.DELETE], path = ["/directory"])
-    fun deleteDirectory(@RequestParam("path") pathAsString: String) {
+    fun deleteDirectory(@RequestParam("path") pathAsString: String,
+                        @RequestParam("resourceFileExtension") resourceFileExtension: String): ResponseEntity<Unit> {
+        val resourceType = ResourceType.getByFileExtension(resourceFileExtension)
+            ?: return ResponseEntity(HttpStatus.BAD_REQUEST)
+
         resourcesFrontendService.deleteDirectory(
-                Path.createInstance(pathAsString)
+                Path.createInstance(pathAsString),
+                resourceType
         )
+
+        return ResponseEntity(HttpStatus.OK)
     }
 
     @RequestMapping(method = [RequestMethod.POST], path = ["/directory/move"])
