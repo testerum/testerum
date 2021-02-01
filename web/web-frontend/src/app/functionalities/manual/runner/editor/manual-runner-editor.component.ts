@@ -42,7 +42,7 @@ export class ManualRunnerEditorComponent implements OnInit {
     ];
 
     descriptionMarkdownEditor: MarkdownEditorComponent;
-    @ViewChild("descriptionMarkdownEditor", { static: true }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
+    @ViewChild("descriptionMarkdownEditor") set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
         if (descriptionMarkdownEditor != null) {
             descriptionMarkdownEditor.setEditMode(this.isEditMode);
             descriptionMarkdownEditor.setValue(this.model.description);
@@ -52,8 +52,8 @@ export class ManualRunnerEditorComponent implements OnInit {
     commentMarkdownEditor: MarkdownEditorComponent;
     @ViewChild("commentMarkdownEditor") set setCommentMarkdownEditor(commentMarkdownEditor: MarkdownEditorComponent) {
         if (commentMarkdownEditor != null) {
-            commentMarkdownEditor.setEditMode(this.isEditMode);
             commentMarkdownEditor.setValue(this.model.comments);
+            commentMarkdownEditor.setEditMode(this.isEditMode);
         }
         this.commentMarkdownEditor = commentMarkdownEditor;
     }
@@ -87,12 +87,12 @@ export class ManualRunnerEditorComponent implements OnInit {
             this.manualExecPlansService.getManualTest(this.planPath, this.testPath).subscribe((manualTest: ManualTest) => {
                 this.model = manualTest;
                 if (this.descriptionMarkdownEditor) {
-                    this.descriptionMarkdownEditor.setEditMode(this.isEditMode);
                     this.descriptionMarkdownEditor.setValue(this.model.description);
+                    this.descriptionMarkdownEditor.setEditMode(this.isEditMode);
                 }
                 if (this.commentMarkdownEditor) {
-                    this.commentMarkdownEditor.setEditMode(this.isEditMode);
                     this.commentMarkdownEditor.setValue(this.model.comments);
+                    this.commentMarkdownEditor.setEditMode(this.isEditMode);
                 }
 
                 let previewsStepPhase: StepPhaseEnum = null;
@@ -122,9 +122,13 @@ export class ManualRunnerEditorComponent implements OnInit {
         }
 
         this.isEditMode = editMode;
+        if (this.descriptionMarkdownEditor) {
+            this.descriptionMarkdownEditor.setValue(this.model.description);
+            this.descriptionMarkdownEditor.setEditMode(editMode);
+        }
         if (this.commentMarkdownEditor) {
-            this.commentMarkdownEditor.setEditMode(editMode);
             this.commentMarkdownEditor.setValue(this.model.comments);
+            this.commentMarkdownEditor.setEditMode(editMode);
         }
     }
 
