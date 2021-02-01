@@ -1,0 +1,7 @@
+step-def: When I configure the HTTP Request <<httpRequestName: TEXT>>
+
+    step: When I click the element <<.test_step-parameter-edit-button>>
+    step: When I clear the text from the field <<.test_http-request-name>>
+    step: When I type <<{{httpRequestName}}>> into the field <<.test_http-request-name>>
+    step: When I type <<{{MOCK_URL}}/owners>> into the field <<.test_http-request-url>>
+    step: When I click the element <<.test_input-parameter-ok-button>>

@@ -1,0 +1,18 @@
+test-def: Execute an automated test using HTTP
+
+    description = <<
+        The behavior of this execution should fail a test in Testerum.
+        
+        If this test is executing another test which fails than our test case is valid.
+    >>
+
+    step: Given I am on Home screen page
+    step: When I continue with free license
+    step: When I create a new project <<http-request>> with the path <<{{PATH_TO_AUTOMATED_TESTS_PROJECT}}>>
+    step: When I create an automated test <<Executing an HTTP Request>> in the root directory
+    step: When I add the step <<When I execute the HTTP request <<httpRequest\>\>>> into autocomplete field
+    step: When I configure the HTTP Request <<get owners>>
+    step: When I save the test
+    step: When I execute the test
+    step: When wait until the execution has finished
+    step: Then the number of executed passed tests should be <<1>>

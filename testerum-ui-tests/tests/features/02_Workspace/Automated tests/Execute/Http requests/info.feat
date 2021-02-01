@@ -1,0 +1,21 @@
+
+before-all-hook: Given the HTTP mock server <<{{httpMockServer}}>> with the mock request <<{{httpMock}}>>
+    var httpMockServer = <<
+        port: "5555"
+        
+    >>
+    var httpMock = <<
+        expectedRequest:
+          method: GET
+          url: /owners
+        mockResponse:
+          statusCode: 200
+          headers:
+            Content-Type: application/json
+          body:
+            bodyType: JSON
+            content: "[\r\n  {\r\n  \"id\": \"1\",\r\n  \"name\": \"Tom Doe\"\r\n  },\r\n\
+              \  {\r\n    \"id\": \"2\",\r\n    \"name\": \"John Doe\"\r\n  },\r\n  {\r\n\
+              \  \"id\": \"3\",\r\n  \"name\": \"Robert Doe\"\r\n  }\r\n]"
+        
+    >>
