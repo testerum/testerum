@@ -160,7 +160,7 @@ class RunnerScenario(
             )
         }
 
-        context.variablesContext.setArg(
+        context.variablesContext.set(
             name = param.name,
             value = actualValue
         )
