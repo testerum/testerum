@@ -75,7 +75,7 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
             this.descriptionMarkdownEditor.setValue(manualTestsRunner.description);
         }
 
-        this.isFinalized = manualTestsRunner.finalized;
+        this.isFinalized = manualTestsRunner.isFinalized;
 
         this.isCreateAction = this.model.path.isEmpty();
 
@@ -106,7 +106,12 @@ export class ManualTestPlanEditorComponent extends AbstractComponentCanDeactivat
         this.manualExecPlansService
             .getPathOfUnExecutedTest(this.model.path, null)
             .subscribe((nextPath: Path) => {
-                this.urlService.navigateToManualExecPlanTestRunner(this.model.path, nextPath)
+                if (nextPath == null) {
+                    this.urlService.navigateToManualExecPlanRunner(this.model.path);
+
+                } else {
+                    this.urlService.navigateToManualExecPlanTestRunner(this.model.path, nextPath);
+                }
             });
     }
 
