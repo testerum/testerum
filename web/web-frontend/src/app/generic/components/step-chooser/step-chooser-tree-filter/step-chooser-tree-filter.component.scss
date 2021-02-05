@@ -1,62 +1,71 @@
-.line-filters {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.step-chooser-tree-filter {
+    .line-filters {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .filters-group {
+            display: flex;
+            align-items: center;
+
+            .filters-label {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .color-inherit {
+        color: inherit;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .p-inputgroup {
+        margin-top: 1px;
+
+        .p-inputgroup-addon {
+            cursor: pointer;
+
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 0 !important;
+        }
+
+        .p-inputtext {
+            padding: 0 0 0 .5em;
+        }
+    }
+
+    p-autocomplete {
+        width: 100%;
+
+        .p-autocomplete {
+            height: 100%;
+            display: flex;
+            align-items: center;
+
+            .p-autocomplete-multiple-container {
+                height: 100%;
+                border-radius: 0;
+
+                .p-autocomplete-input-token {
+                    padding: 0 .25em 0 0;
+                }
+            }
+
+            .p-autocomplete-dropdown {
+                height: 100%;
+                padding: 0.17rem 0;
+            }
+        }
+    }
+
+    .tags-search-icon {
+        font-size: 1rem;
+    }
 }
 
-.filters-label {
-    margin-right: 10px;
-}
-
-.color-inherit {
-    color: inherit;
-}
-
-.full-width {
-    width: 100%;
-}
-
-.my-filter-input .ui-autocomplete {
-    display: flex;
-    align-items: center;
-    height: auto !important;
-}
-
-.my-filter-input .ui-autocomplete-input-token {
-    padding: 0 .25em 0 0;
-}
-
-.my-filter-input .ui-autocomplete .ui-autocomplete-dropdown {
-    height: 100%;
-}
-
-.my-filter-input .ui-inputgroup {
-    margin-top: 1px;
-}
-
-.my-filter-input .ui-autocomplete-multiple-container {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    margin: -1px;
-}
-
-.my-filter-input .ui-inputgroup-addon {
-    cursor: pointer;
-
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    padding: 0 !important;
-}
-
-.my-filter-input .ui-inputtext {
-    padding: 0;
-}
-
-.my-filter-input .ui-button-text {
-    padding: 0 !important;
-}
-
-.tags-search-icon {
-    font-size: 1rem;
-}
