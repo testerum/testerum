@@ -21,11 +21,24 @@
     }
 
     .p-autocomplete-dropdown {
-        height: 25px;
+        height: 100%;
+        padding: 0;
+    }
+
+    .p-autocomplete-panel {
+        .p-autocomplete-item {
+            padding: 0.4em 0.5em;
+        }
     }
 }
 
-.autocomplete-full-width input {
-    width: 100%;
+.autocomplete-full-width {
+    .p-autocomplete {
+        width: 100%;
+
+        input {
+            width: 100%;
+        }
+    }
 }
 
