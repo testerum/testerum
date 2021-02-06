@@ -29,17 +29,19 @@
             width: 600px;
             left: 0;
 
-            .p-autocomplete-items .p-autocomplete-list-item {
-                padding: 0 0.857em;
+            .p-autocomplete-items {
+                .p-autocomplete-item {
+                    padding: 0 0.857em;
 
-                .suggestion-line-container {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                }
+                    .suggestion-line-container {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                    }
 
-                &.p-state-highlight .step-call-action-text{
-                    color: #A9EB9F;
+                    &.p-state-highlight .step-call-action-text{
+                        color: #A9EB9F;
+                    }
                 }
             }
         }
