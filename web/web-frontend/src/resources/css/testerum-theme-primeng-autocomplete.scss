@@ -11,8 +11,12 @@
         border-bottom-left-radius: 4px;
 
         .p-autocomplete-token {
-            padding: 0.2rem 0.25rem;
+            height: 90%;
             border-radius: 4px;
+        }
+
+        .p-autocomplete-input-token {
+            height: 90%;
         }
     }
 

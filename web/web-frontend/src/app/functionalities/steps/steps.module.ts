@@ -25,6 +25,7 @@ import {TooltipModule} from "primeng/tooltip";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {AutoCompleteModule} from "primeng/autocomplete";
 import {InputTextModule} from "primeng/inputtext";
+import {MarkdownModule} from "ngx-markdown";
 
 @NgModule({
     imports: [
@@ -36,6 +37,7 @@ import {InputTextModule} from "primeng/inputtext";
         DndModule.forRoot(),
         PopoverModule.forRoot(),
         AngularSplitModule.forRoot(),
+        MarkdownModule.forRoot(),
 
         TooltipModule,
         ToolbarModule,
