@@ -33,8 +33,7 @@ export class ErrorComponent implements OnInit {
                         summary: "Oops... One of our bugs has escaped!",
                         detail: "We are making mistakes too!\n" +
                             "We are very sorry for any inconvenience we may have caused.\n" +
-                            "Please report this issue to us and we will fix it as soon as possible.\n" +
-                            "We recommend you to refresh the page",
+                            "Please report this issue to us and we will fix it as soon as possible.",
                         data: error,
                         key: "error",
                         sticky: true,
