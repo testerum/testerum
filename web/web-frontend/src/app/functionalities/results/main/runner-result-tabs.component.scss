@@ -2,13 +2,13 @@
     height: calc(100% - 3px);
 
     /* STYLE FOR TAB COMPONENT */
-    .ui-tabview {
+    .p-tabview {
         height: 100%;
 
-        .ui-tabview-panels {
+        .p-tabview-panels {
             height: calc(100% - 35px);
 
-            .ui-tabview-panel {
+            .p-tabview-panel {
                 height: 100%;
             }
         }
