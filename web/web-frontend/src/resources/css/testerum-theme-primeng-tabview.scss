@@ -57,6 +57,9 @@
     }
 
     .p-tabview-panels {
+        height: 100%;
+        overflow: auto;
+        padding: .571em 1em;
         border: 1px solid #c8c8c8;
         border-top: 0;
     }
