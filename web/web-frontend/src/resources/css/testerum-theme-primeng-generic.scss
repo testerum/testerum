@@ -1,15 +1,14 @@
 
-.ui-dialog-mask {
+.p-component {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.p-dialog-mask {
     z-index: 1;
 }
 
-.ui-tooltip {
+.p-tooltip {
     z-index: 10000 !important;
-}
-
-//P-TABLE
-body .ui-table .ui-table-tbody > tr > td {
-    padding: .25em .5em;
 }
 
 //P-TOOLBAR
@@ -18,15 +17,15 @@ body .ui-table .ui-table-tbody > tr > td {
 }
 
 //P-MESSAGES
-.ui-messages.ui-messages-error {
+.p-messages.p-messages-error {
     color: $alert-text-color !important;
     background-color: $alert-background-color !important;
 
-    .ui-messages-icon {
+    .p-messages-icon {
         color: $alert-color !important;
     }
 
-    .ui-messages-close {
+    .p-messages-close {
         color: $alert-text-color !important;
     }
 }
