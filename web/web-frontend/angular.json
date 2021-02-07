@@ -107,8 +107,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Testerum:build",
-            "hmrWarning": false
+            "browserTarget": "Testerum:build"
           },
           "configurations": {
             "production": {
