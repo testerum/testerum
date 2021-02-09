@@ -14,8 +14,7 @@
                     <label class="my-label label-size">Environment:</label>
 
                     <div class="environment my-value">
-                        <p-dropdown [options]="availableEnvironmentsAsSelectedItems" [ngModel]="selectedEnvironmentName" (onChange)="onEnvironmentChange($event)"
-                                    [style]="{'width':'7.8em'}">
+                        <p-dropdown [options]="availableEnvironmentsAsSelectedItems" [ngModel]="selectedEnvironmentName" (onChange)="onEnvironmentChange($event)">
                             <ng-template let-item pTemplate="selectedItem">
                                 <div class="my-dropdown-option">
                                     <div class="environment-name">{{item.label}}</div>
