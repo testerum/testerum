@@ -3,7 +3,7 @@
 <p-toast class="error-toast my-toast" (onClose)="refresh()" key="error" position="bottom-right" [baseZIndex]="5000">
     <ng-template let-message pTemplate="message">
         <div style="text-align: center">
-            <i class="alert-image pi pi-exclamation-triangle" style="font-size: 3em"></i>
+
             <h3 class="title">{{message.summary}}</h3>
             <p class="message-details">{{message.detail}}</p>
         </div>
@@ -17,7 +17,7 @@
 
 
 <!-- VALIDATION EXCEPTION VIEW-->
-<p-toast class="validation-exception-toast my-toast" (onClose)="refresh()" key="validationException" position="top-center" [modal]="true" [baseZIndex]="5000">
+<p-toast class="validation-exception-toast my-toast" (onClose)="refresh()" key="validationException" position="center" [baseZIndex]="5000">
     <ng-template let-message pTemplate="message">
         <div style="text-align: center">
             <i class="alert-image pi pi-exclamation-triangle" style="font-size: 3em"></i>

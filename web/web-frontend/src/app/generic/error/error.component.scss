@@ -3,6 +3,7 @@
 .my-toast {
 
     .title {
+        font-size: 1.6em;
         font-weight: bold;
         margin-top: 0;
     }
@@ -18,26 +19,34 @@
 
         .btn {
             padding: 3px 12px;
-            width: 10em;
+            width: 9em;
         }
     }
 
-    .ui-toast {
+    .p-toast {
         width: 35em;
 
-        .ui-toast-message-error {
+        .p-toast-message-error {
             border:0;
 
-            .ui-toast-close-icon {
-                font-size: 1.5em;
-                &:hover {
-                    text-shadow: 0 1px 0 #fff;
-                    background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
-                    background-repeat: repeat-x;
-                    border-color: #ccc;
-                    text-decoration: none;
+            .p-toast-message-content {
+                flex-direction: column;
+                align-items: center;
+
+                .p-toast-icon-close {
+                    font-size: 1.5em;
+                    align-self: flex-end;
+
+                    &:hover {
+                        text-shadow: 0 1px 0 #fff;
+                        background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
+                        background-repeat: repeat-x;
+                        border-color: #ccc;
+                        text-decoration: none;
+                    }
                 }
             }
+
         }
     }
 }
@@ -47,12 +56,12 @@
         color: #c12e2a;
     }
 
-    .ui-toast {
-        .ui-toast-message-error {
+    .p-toast {
+        .p-toast-message-error {
             color: $alert-text-color;
             background-color: $alert-background-color;
 
-            .ui-toast-close-icon {
+            .p-toast-close-icon {
                 color: #721c24;
             }
         }
@@ -68,12 +77,12 @@
         color: #c12e2a;
     }
 
-    .ui-toast {
-        .ui-toast-message-error {
+    .p-toast {
+        .p-toast-message-error {
             color: $alert-text-color;
             background-color: $alert-background-color;
 
-            .ui-toast-close-icon {
+            .p-toast-close-icon {
                 color: #721c24;
             }
         }

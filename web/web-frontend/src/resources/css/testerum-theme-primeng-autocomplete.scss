@@ -1,20 +1,44 @@
-.ui-autocomplete {
+.p-autocomplete {
     display: flex;
     height: 25px;
     align-items: center;
 
-    .ui-autocomplete-multiple-container {
+    .p-autocomplete-multiple-container {
         height: 25px;
         padding: 0 0.4em !important;
         font-size: 12px;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+
+        .p-autocomplete-token {
+            height: 90%;
+            border-radius: 4px;
+        }
+
+        .p-autocomplete-input-token {
+            height: 90%;
+        }
     }
 
-    .ui-autocomplete-dropdown {
-        height: 25px;
+    .p-autocomplete-dropdown {
+        height: 100%;
+        padding: 0;
+    }
+
+    .p-autocomplete-panel {
+        .p-autocomplete-item {
+            padding: 0.4em 0.5em;
+        }
     }
 }
 
-.autocomplete-full-width input {
-    width: 100%;
+.autocomplete-full-width {
+    .p-autocomplete {
+        width: 100%;
+
+        input {
+            width: 100%;
+        }
+    }
 }
 

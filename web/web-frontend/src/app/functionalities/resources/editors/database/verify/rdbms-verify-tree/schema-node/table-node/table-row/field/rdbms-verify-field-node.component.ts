@@ -5,7 +5,7 @@ import {ModelComponentMapping} from "../../../../../../../../../../model/infrast
 
 @Component({
     moduleId: module.id,
-    selector: 'json-verify-table-row-node',
+    selector: 'json-verify-field-node',
     templateUrl: 'rdbms-verify-field-node.component.html',
     styleUrls:['../../../../rdbms-verify-tree.generic.scss', '../../../../../../../../../../generic/css/tree.scss']
 })

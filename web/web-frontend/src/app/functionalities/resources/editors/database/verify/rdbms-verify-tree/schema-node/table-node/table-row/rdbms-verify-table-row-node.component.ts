@@ -8,7 +8,7 @@ import {ModelComponentMapping} from "../../../../../../../../../model/infrastruc
     moduleId: module.id,
     selector: 'json-verify-table-row-node',
     templateUrl: 'rdbms-verify-table-row-node.component.html',
-    styleUrls:['../../../../../../../../../generic/css/tree.scss']
+    styleUrls:['../../../rdbms-verify-tree.generic.scss', '../../../../../../../../../generic/css/tree.scss']
 })
 export class RdbmsVerifyTableRowNodeComponent implements OnInit {
 

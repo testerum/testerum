@@ -45,7 +45,7 @@
         justify-content: center;
         height: 25px;
         font-size: 16px !important;
-        .ui-button-text {
+        .p-button-label {
             padding-top: 0 !important;
             padding-bottom: 0 !important;
             line-height: 1.6em;
@@ -53,9 +53,13 @@
         }
     }
 
-    .toggle-test-type.ui-state-active {
+    .toggle-test-type.p-highlight {
         background-color: $warning-color !important;
         color: white !important;
+
+        .p-button-icon {
+            color: white !important;
+        }
     }
 
     .toggle-test-state {
@@ -64,9 +68,13 @@
         color: white !important;
     }
 
-    .toggle-test-state.ui-state-active {
+    .toggle-test-state.p-highlight {
         background-color: $error-color !important;
         color: white !important;
+
+        .p-button-icon {
+            color: white !important;
+        }
     }
 
     .actions-header {

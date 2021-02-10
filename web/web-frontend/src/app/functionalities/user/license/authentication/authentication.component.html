@@ -1,45 +1,48 @@
 <p-tabView class="authentication" (onChange)="onTabChanged()">
     <p-tabPanel class="login-tab" header="Log in">
-        <div class="error-panel">{{errorMessage}}</div>
+        <div class="root-tab-panel">
+            <div class="error-panel">{{errorMessage}}</div>
 
-        <div class="login-inputs">
-            <div class="ui-inputgroup">
-                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-                <input [(ngModel)]="email" type="text" pInputText placeholder="Email" style="width: 100%">
-            </div>
+            <div class="login-inputs">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="fa fa-user"></i></span>
+                    <input [(ngModel)]="email" type="text" pInputText placeholder="Email" style="width: 100%">
+                </div>
 
-            <div class="ui-inputgroup">
-                <span class="ui-inputgroup-addon"><i class="fas fa-lock"></i></span>
-                <input [(ngModel)]="password" type="password" pInputText placeholder="Password" style="width: 100%">
-            </div>
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="fas fa-lock"></i></span>
+                    <input [(ngModel)]="password" type="password" pInputText placeholder="Password" style="width: 100%">
+                </div>
 
-            <div class="checkbox-login-container">
-                <a href="https://testerum.com/auth/reset-password-email/?nextUrl=https%3A%2F%2Ftesterum.com%2Fuser%2F" target="_blank">Forgot password?</a>
-                <button type="button"
-                        class="btn btn-primary login-button"
-                        [class.disabled]="!isLoginValid()"
-                        (click)="onLogin()">LOGIN</button>
+                <div class="checkbox-login-container">
+                    <a href="https://testerum.com/auth/reset-password-email/?nextUrl=https%3A%2F%2Ftesterum.com%2Fuser%2F"
+                       target="_blank">Forgot password?</a>
+                    <button type="button"
+                            class="btn btn-primary login-button"
+                            [class.disabled]="!isLoginValid()"
+                            (click)="onLogin()">LOGIN
+                    </button>
+                </div>
             </div>
         </div>
     </p-tabPanel>
 
     <p-tabPanel class="upload-file-tab" header="Upload License File">
-        <div class="error-panel">{{errorMessage}}</div>
+        <div class="root-tab-panel">
+            <div class="error-panel">{{errorMessage}}</div>
 
-        <div class="choose-file">
-            <p-fileUpload #licenseFileUpload
-                          mode="basic"
-                          [multiple]="false"
-                          name="licenseFileUpload"
-                          [maxFileSize]="1000000"
-                          [customUpload]="true"
-                          [auto]="true"
-                          [chooseLabel] = "'Upload license file'"
-                          (uploadHandler)="onLicenseKeyUpload($event)">
-            </p-fileUpload>
+            <div class="choose-file">
+                <p-fileUpload #licenseFileUpload
+                              mode="basic"
+                              [multiple]="false"
+                              name="licenseFileUpload"
+                              [maxFileSize]="1000000"
+                              [customUpload]="true"
+                              [auto]="true"
+                              [chooseLabel] = "'Upload license file'"
+                              (uploadHandler)="onLicenseKeyUpload($event)">
+                </p-fileUpload>
+            </div>
         </div>
     </p-tabPanel>
-
-
-
 </p-tabView>

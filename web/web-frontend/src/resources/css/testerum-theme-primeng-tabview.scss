@@ -1,10 +1,40 @@
-.ui-tabview {
+.p-tabview {
+    padding: 3px;
+    border-radius: 3px;
 
-    .ui-tabview-nav {
-        border: 0;
+    .p-tabview-nav {
         border-bottom: 1px solid #bebebe;
+        background: transparent;
 
-        .ui-state-active {
+        li {
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            border: 1px solid #c8c8c8;
+            border-bottom: 0;
+            background-color: #f4f4f4;
+            transition: background-color .2s,box-shadow .2s;
+            top: 1px;
+            list-style: none;
+            float: left;
+            position: relative;
+            margin: 0 .125em 1px 0;
+            padding: 0;
+            white-space: nowrap;
+
+            .p-tabview-nav-link {
+                border: 0;
+                background: inherit;
+                margin: 0;
+                padding: .6rem;
+
+                &:hover {
+                    background-color: #dbdbdb !important;
+                    text-decoration: none;
+                }
+            }
+        }
+
+        .p-highlight {
             background-color: #ffffff !important;
             border: 1px solid #c8c8c8 !important;
             border-bottom: 1px solid white !important;
@@ -13,12 +43,25 @@
             &:focus {
                 outline: none;
             }
-            &:hover {
-                border: 0;
-            }
-            a {
+
+            .p-tabview-nav-link {
                 color: #333333 !important;
+                &:hover {
+                    background-color: #ffffff !important;
+                }
+                &:focus {
+                    box-shadow: none !important;
+                    text-decoration: none !important;
+                }
             }
         }
+    }
+
+    .p-tabview-panels {
+        height: 100%;
+        overflow: auto;
+        padding: .571em 1em;
+        border: 1px solid #c8c8c8;
+        border-top: 0;
     }
 }

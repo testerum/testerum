@@ -1,24 +1,32 @@
 .info-icon {
 }
 
-body .ui-overlaypanel:before {
-    left: 1.05em;
-    margin-left: -10px;
+body .p-overlaypanel {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+
+    &:before {
+        border-bottom-color: transparent;
+        border-top-color: transparent;
+    }
+
+    &:after {
+        border-bottom-color: transparent;
+        border-top-color: transparent;
+    }
+}
+.p-overlaypanel.p-overlaypanel-flipped:before {
+    border-bottom-color: transparent;
+    border-top-color: transparent;
 }
 
-body .ui-overlaypanel:after {
-    left: 1.05em;
-    margin-left:  -8px;
-}
-
-
-body .ui-overlaypanel .ui-overlaypanel-content {
+body .p-overlaypanel .p-overlaypanel-content {
     line-height: 1.2em;
     padding: 0;
 
     .content {
         white-space: normal;
-        padding: 0.571em 1em;
+        padding: .5em .5em 0 0.5em;
 
         ul {
             padding-left: 1.3em;

@@ -10,14 +10,16 @@
                     appendTo="body"
                     baseZIndex="9999"
                     autoZIndex="false">
-        <div class="content"
-             [style.max-width]="maxWidth"
-             [style.max-height]="maxHeight"
-             [style.width]="width"
-             [style.height]="height"
-             style="overflow: auto; white-space: nowrap;"
-             [innerHtml]="message | markdown"
-             (mouseenter)="show($event);"
-             (mouseleave)="waitAndHide($event);"></div>
+        <ng-template pTemplate>
+            <div class="content"
+                 [style.max-width]="maxWidth"
+                 [style.max-height]="maxHeight"
+                 [style.width]="width"
+                 [style.height]="height"
+                 style="overflow: auto; white-space: nowrap;"
+                 [innerHtml]="message | markdown"
+                 (mouseenter)="show($event);"
+                 (mouseleave)="waitAndHide($event);"></div>
+        </ng-template>
     </p-overlayPanel>
 </div>

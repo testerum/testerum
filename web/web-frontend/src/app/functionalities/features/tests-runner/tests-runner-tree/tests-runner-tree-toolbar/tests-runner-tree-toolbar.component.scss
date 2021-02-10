@@ -1,13 +1,17 @@
-.line-filters {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.test-runner-logs-toolbar {
+    .line-filters {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .filters-label {
+        margin-right: 10px;
+    }
+
+    .color-inherit {
+        color: inherit;
+    }
 }
 
-.filters-label {
-    margin-right: 10px;
-}
-
-.color-inherit {
-    color: inherit;
-}
