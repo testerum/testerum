@@ -33,7 +33,7 @@ export class JsonVerifyEditorComponent implements OnInit, OnChanges {
 
     @ViewChild("monacoEditorComponent", { static: true }) monacoEditorComponent: MonacoEditorComponent;
 
-    editorOptions: editor.IEditorConstructionOptions = {
+    editorOptions: editor.IStandaloneEditorConstructionOptions = {
         language: 'json',
         readOnly: !this.isEditMode
     };

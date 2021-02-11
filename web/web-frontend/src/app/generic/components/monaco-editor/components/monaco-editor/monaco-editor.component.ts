@@ -58,7 +58,7 @@ declare const monaco: any;
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() options: editor.IEditorConstructionOptions;
+    @Input() options: editor.IStandaloneEditorConstructionOptions;
     @Input() value: string;
     @Input() parentElemntRef: HTMLElement;
     @Input() autoSizing: boolean = true;
@@ -111,11 +111,14 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
 
     private initMonaco() {
 
-        let opts: editor.IEditorConstructionOptions = {
+        let opts: editor.IStandaloneEditorConstructionOptions = {
             value: [this.value].join('\n'),
             language: 'text',
             theme: 'vc',
             automaticLayout: true,
+            scrollbar: {
+                handleMouseWheel: false
+            },
             scrollBeyondLastLine: false,
             minimap: {
                 enabled: false,
@@ -239,13 +242,10 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
         if (!this.autoSizing) {
             return hostNode.offsetHeight;
         }
-        const configuration = this.editor.getConfiguration();
 
-        const lineHeight = configuration.lineHeight;
-        const lineCount = this.editor.getModel().getLineCount();
-        const contentHeight = lineHeight * lineCount;
+        const contentHeight = this.editor.getContentHeight();
 
-        const horizontalScrollbarHeight = configuration.layoutInfo.horizontalScrollbarHeight;
+        const horizontalScrollbarHeight = this.editor.getLayoutInfo().horizontalScrollbarHeight;
 
         const editorHeight = contentHeight + horizontalScrollbarHeight;
         if (this.minHeight < 0) {

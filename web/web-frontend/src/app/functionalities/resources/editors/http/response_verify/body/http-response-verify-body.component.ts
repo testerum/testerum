@@ -18,7 +18,7 @@ export class HttpResponseVerifyBodyComponent implements OnInit, OnDestroy {
 
     @Input() expectedBody: HttpResponseBodyVerify;
 
-    editorOptions: editor.IEditorConstructionOptions = {};
+    editorOptions: editor.IStandaloneEditorConstructionOptions = {};
 
     HttpBodyVerifyMatchingType = HttpBodyVerifyMatchingType;
 

@@ -14,7 +14,7 @@ export class RdbmsSqlEditorComponent implements OnChanges {
 
     @Output() sqlTextChange: EventEmitter<string> = new EventEmitter<string>();
 
-    editorOptions: editor.IEditorConstructionOptions = {
+    editorOptions: editor.IStandaloneEditorConstructionOptions = {
         language: 'sql',
         readOnly: !this.editMode
     };

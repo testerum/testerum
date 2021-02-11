@@ -18,7 +18,7 @@ import {HttpBodyVerifyType} from "../../../../response_verify/model/enums/http-b
 })
 export class HttpMockRequestBodyComponent implements OnInit, OnDestroy{
 
-    editorOptions: editor.IEditorConstructionOptions = {};
+    editorOptions: editor.IStandaloneEditorConstructionOptions = {};
 
     HttpMockRequestBodyMatchingType = HttpMockRequestBodyMatchingType;
 
