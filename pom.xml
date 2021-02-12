@@ -104,8 +104,8 @@
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 
         <!--node versions -->
-        <testerumNodeVersion>v10.14.2</testerumNodeVersion>
-        <testerumNpmVersion>6.4.1</testerumNpmVersion>
+        <testerumNodeVersion>v14.15.5</testerumNodeVersion>
+        <testerumNpmVersion>7.5.3</testerumNpmVersion>
 
         <!--========== testerum dependencies versions ==========-->
         <testerum-steps-api.version>5.0.0</testerum-steps-api.version>
