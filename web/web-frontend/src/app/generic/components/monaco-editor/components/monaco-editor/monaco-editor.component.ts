@@ -39,8 +39,6 @@ declare const monaco: any;
 	flex-direction: column;
 	display: flex;
 	overflow: hidden;
-	max-width: 100%;
-	min-wdith: 0;
 }
 .wrapper {
 	width: 0px; height: 0px;
@@ -51,7 +49,6 @@ declare const monaco: any;
 	position: relative;
 	min-width: 0;
 	display: table;
-	width: 100%;
 	height: 100%;
 }`
     ],
@@ -117,7 +114,9 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
             theme: 'vc',
             automaticLayout: true,
             scrollbar: {
-                handleMouseWheel: false
+                handleMouseWheel: false,
+                vertical: 'hidden',
+                horizontal: 'auto',
             },
             scrollBeyondLastLine: false,
             minimap: {
