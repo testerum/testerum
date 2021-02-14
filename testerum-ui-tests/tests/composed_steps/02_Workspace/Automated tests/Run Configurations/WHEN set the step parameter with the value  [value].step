@@ -2,5 +2,12 @@ step-def: When set the step parameter with the value <<value: TEXT>>
 
     step: When I move the mouse pointer over the element <<.test_step-parameter-edit-button>>
     step: When I click the element <<.test_step-parameter-edit-button>>
+    step: When I execute the WebDriver JS script <<{{script}}>>
+        var script = <<
+            var WebDriverWait = Java.type("org.openqa.selenium.support.ui.WebDriverWait");
+            var ExpectedCondition = Java.type("org.openqa.selenium.support.ui.ExpectedCondition");
+            
+            new WebDriverWait(webDriver, 60).until(function(wd) { wd.executeScript("return window.getAllAngularTestabilities().findIndex(x=\>!x.isStable()) === -1") });
+        >>
     step: When I type <<{{value}}>> into the field <<.test_input-parameter-text>>
     step: When I click the element <<.test_input-parameter-ok-button>>
