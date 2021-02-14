@@ -105,7 +105,7 @@
 
         <!--node versions -->
         <testerumNodeVersion>v14.15.5</testerumNodeVersion>
-        <testerumNpmVersion>7.5.3</testerumNpmVersion>
+        <testerumNpmVersion>7.5.4</testerumNpmVersion>
 
         <!--========== testerum dependencies versions ==========-->
         <testerum-steps-api.version>5.0.0</testerum-steps-api.version>
