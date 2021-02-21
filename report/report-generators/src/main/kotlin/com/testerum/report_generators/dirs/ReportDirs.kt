@@ -1,6 +1,5 @@
 package com.testerum.report_generators.dirs
 
-import com.testerum.common_jdk.OsUtils
 import com.testerum.common_kotlin.doesNotExist
 import com.testerum.common_kotlin.isNotADirectory
 import java.nio.file.Files
@@ -35,18 +34,6 @@ object ReportDirs {
     }
 
     private fun getRunnerDir(): JavaPath = getInstallDir().resolve("runner")
-
-    private fun getRunnerNodeDir(): JavaPath = getRunnerDir().resolve("node")
-
-    fun getNodeBinaryPath(): JavaPath {
-        val nodeDir: JavaPath = getRunnerNodeDir()
-
-        return if (OsUtils.IS_WINDOWS) {
-            nodeDir.resolve("node.exe")
-        } else {
-            nodeDir.resolve("node")
-        }
-    }
 
     fun getReportTemplatesDir(): JavaPath = getRunnerDir().resolve("report_templates")
 

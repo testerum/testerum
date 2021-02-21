@@ -1,5 +1,7 @@
 package com.testerum.report_generators.reports.report_model.json_model
 
+import com.testerum.common_kotlin.createDirectories
+import com.testerum.common_kotlin.writeText
 import com.testerum.report_generators.reports.report_model.base.BaseReportModelExecutionListener
 import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import java.nio.file.Paths
@@ -27,4 +29,12 @@ class JsonModelExecutionListener(private val properties: Map<String, String>) : 
     override val formatted: Boolean
         get() = _formatted
 
+    override fun afterModelSavedToFile() {
+
+        // write data file
+        destinationDirectory.createDirectories()
+        destinationDirectory.resolve(MODEL_DESTINATION_FILE_NAME).writeText(
+            modelAsJsonString?: throw RuntimeException("Data Model should not be null")
+        )
+    }
 }

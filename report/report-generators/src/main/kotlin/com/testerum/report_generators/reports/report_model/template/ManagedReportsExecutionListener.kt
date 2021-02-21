@@ -10,8 +10,8 @@ import com.testerum.common_kotlin.writeText
 import com.testerum.report_generators.dirs.ReportDirs
 import com.testerum.report_generators.reports.json_stats.JsonStatsExecutionListener
 import com.testerum.report_generators.reports.report_model.template.custom_template.CustomTemplateExecutionListener
+import com.testerum.report_generators.reports.report_model.template.instance.ReportInstance
 import com.testerum.report_generators.reports.utils.EXECUTION_LISTENERS_OBJECT_MAPPER
-import com.testerum.report_generators.reports.utils.node.RunnerNodeExecuter
 import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import com.testerum.runner.events.execution_listener.ExecutionListener
 import com.testerum.runner.events.model.RunnerEvent
@@ -44,13 +44,13 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     private val reportsDestinationDirectory = ReportDirs.createResultsDirectoryName(managedReportsDir)
 
     private val managedPrettyListener = run {
-        val scriptFileName: JavaPath = ReportDirs.getReportTemplatesDir()
+        val templateDirectory: JavaPath = ReportDirs.getReportTemplatesDir()
                 .resolve("pretty")
-                .resolve("main.bundle.js")
+                .resolve("report-template")
                 .toAbsolutePath().normalize()
 
         val properties = HashMap<String, String>()
-        properties[EventListenerProperties.CustomTemplate.SCRIPT_FILE] = scriptFileName.toString()
+        properties[EventListenerProperties.CustomTemplate.TEMPLATE_DIRECTORY] = templateDirectory.toString()
         properties[EventListenerProperties.Pretty.DESTINATION_DIRECTORY] = reportsDestinationDirectory.resolve("pretty").toString()
 
         CustomTemplateExecutionListener(properties)
@@ -59,13 +59,13 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     private val statsAggregator = StatsEventsAggregator()
 
     private val managedStatsListener = run {
-        val scriptFileName: JavaPath = ReportDirs.getReportTemplatesDir()
+        val templateDirectory: JavaPath = ReportDirs.getReportTemplatesDir()
                 .resolve("pretty")
-                .resolve("main.bundle.js")
+                .resolve("report-template")
                 .toAbsolutePath().normalize()
 
         val properties = HashMap<String, String>()
-        properties[EventListenerProperties.CustomTemplate.SCRIPT_FILE] = scriptFileName.toString()
+        properties[EventListenerProperties.CustomTemplate.TEMPLATE_DIRECTORY] = templateDirectory.toString()
         properties[EventListenerProperties.JsonStats.DESTINATION_FILE_NAME] = reportsDestinationDirectory.resolve("json_stats").resolve("stats.json").toString()
 
         JsonStatsExecutionListener(properties)
@@ -230,17 +230,21 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     }
 
     private fun writeFullStatsApp() {
-        val scriptFileName: JavaPath = ReportDirs.getReportTemplatesDir()
-                .resolve("stats")
-                .resolve("main.bundle.js")
-                .toAbsolutePath().normalize()
-        val modelFile = ReportDirs.getAggregatedStatisticsJsonFile(managedReportsDir)
+        val dataModelPatternToReplace = Regex("<!--### START: testerumRunnerStatisticsModel ### -->[\\s\\S]*<!--### END: testerumRunnerStatisticsModel ### -->")
+        val dataModelAsString = EXECUTION_LISTENERS_OBJECT_MAPPER.writeValueAsString(aggregateStats())
+        val dataModelPatternReplacement = "<script type='text/javascript'>\n    window.testerumRunnerStatisticsModel = ${dataModelAsString};\n  </script>"
+
+        val statsReportTemplate: JavaPath = ReportDirs.getReportTemplatesDir()
+            .resolve("stats")
+            .resolve("report-template")
+            .toAbsolutePath().normalize()
         val destinationDirectory = ReportDirs.getAggregatedStatisticsDir(managedReportsDir)
 
-        RunnerNodeExecuter.executeNode(
-                scriptFileName,
-                modelFile.toString(),
-                destinationDirectory.toString()
+        ReportInstance.create(
+            templateDirectory = statsReportTemplate,
+            destinationDirectory = destinationDirectory,
+            dataModelPatternToReplace = dataModelPatternToReplace,
+            dataModelPatternReplacement = dataModelPatternReplacement
         )
     }
 }

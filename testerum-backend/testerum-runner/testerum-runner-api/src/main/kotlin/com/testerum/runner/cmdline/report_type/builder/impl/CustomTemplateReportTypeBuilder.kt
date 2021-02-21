@@ -7,13 +7,13 @@ import java.nio.file.Path
 
 class CustomTemplateReportTypeBuilder {
 
-    var scriptFile: Path? = null
+    var templateDirectory: Path? = null
 
     fun build(): String {
         val builder = GenericReportTypeBuilder(RunnerReportType.CUSTOM_TEMPLATE)
 
-        scriptFile?.let {
-            builder.properties[EventListenerProperties.CustomTemplate.SCRIPT_FILE] = it.toAbsolutePath().normalize().toString()
+        templateDirectory?.let {
+            builder.properties[EventListenerProperties.CustomTemplate.TEMPLATE_DIRECTORY] = it.toAbsolutePath().normalize().toString()
         }
 
         return builder.build()
