@@ -26,7 +26,7 @@ export class ReportGridComponent implements OnInit, OnDestroy {
     suiteGridRootNodes: ReportGridNode[];
     filter: ReportGridFilter = new ReportGridFilter();
 
-    @ViewChild("tagsElement") tagsAutoComplete: AutoComplete;
+    @ViewChild("tagsElement", { static: false }) tagsAutoComplete: AutoComplete;
     allKnownTags: Array<string> = [];
     tagsToShow:string[] = [];
     currentTagSearch:string;
