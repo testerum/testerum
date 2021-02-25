@@ -10,29 +10,30 @@
             "prefix": "app",
             "schematics": {
                 "@schematics/angular:component": {
-                    "styleext": "scss",
-                    "spec": false
+                    "style": "scss",
+                    "skipTests": true
                 },
                 "@schematics/angular:module": {
-                    "spec": false
+                    "skipTests": true
                 },
                 "@schematics/angular:service": {
-                    "spec": false
+                    "skipTests": true
                 },
                 "@schematics/angular:pipe": {
-                    "spec": false
+                    "skipTests": true
                 },
                 "@schematics/angular:directive": {
-                    "spec": false
+                    "skipTests": true
                 },
                 "@schematics/angular:class": {
-                    "spec": false
+                    "skipTests": true
                 }
             },
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+            "aot": true,
                         "outputPath": "dist/runner-report-app",
                         "index": "src/index.html",
                         "main": "src/main.ts",
@@ -79,7 +80,11 @@
                                     "type": "initial",
                                     "maximumWarning": "2mb",
                                     "maximumError": "5mb"
-                                }
+                                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
                             ]
                         }
                     }
