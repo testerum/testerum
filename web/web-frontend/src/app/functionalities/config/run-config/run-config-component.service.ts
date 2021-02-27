@@ -59,7 +59,7 @@ export class RunConfigComponentService {
 
     removeSelectedRunnerConfig() {
         if (!this.areRunnersSelected()) { return; }
-        
+
         for (const selectedRunner of this.selectedRunners) {
             ArrayUtil.removeElementFromArray(this.runners, selectedRunner);
         }
@@ -103,6 +103,8 @@ export class RunConfigComponentService {
         let tempUpperItem = this.runners[itemIndexInRunners - 1];
         this.runners[itemIndexInRunners - 1] = this.runners[itemIndexInRunners];
         this.runners[itemIndexInRunners] = tempUpperItem;
+
+        this.setSelectedRunner([selectedItem])
     }
 
     moveDown() {
@@ -113,6 +115,8 @@ export class RunConfigComponentService {
         let tempLowerItem = this.runners[itemIndexInRunners + 1];
         this.runners[itemIndexInRunners + 1] = this.runners[itemIndexInRunners];
         this.runners[itemIndexInRunners] = tempLowerItem;
+
+        this.setSelectedRunner([selectedItem])
     }
 
     getRunnerConfigByName(runnerConfigName: string): RunConfig|null {

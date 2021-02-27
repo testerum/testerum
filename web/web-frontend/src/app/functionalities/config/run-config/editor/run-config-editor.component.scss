@@ -31,18 +31,18 @@
             }
         }
 
-        .ui-tabview {
+        .p-tabview {
             height: calc(100% - 40px);
             padding: 0 0.25em;
 
-            .ui-tabview-nav {
-                .ui-state-active {
+            .p-tabview-nav {
+                .p-highlight {
                     &:hover {
-                        .ui-tabview-left-icon {
+                        .p-tabview-left-icon {
                             color: black;
                         }
                     }
-                    .ui-tabview-left-icon {
+                    .p-tabview-left-icon {
                         margin-right: 0.3em;
                     }
                 }
@@ -53,12 +53,12 @@
                 }
             }
 
-            .ui-tabview-panels {
-                height: calc(100% - 39px);
+            .p-tabview-panels {
+                height: calc(100% - 24px);
                 width: 100%;
                 padding: 0;
 
-                .ui-tabview-panel {
+                .p-tabview-panel {
                     height: 100%;
                     overflow: auto;
                     padding: 0.571em 1em;

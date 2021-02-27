@@ -39,8 +39,6 @@ declare const monaco: any;
 	flex-direction: column;
 	display: flex;
 	overflow: hidden;
-	max-width: 100%;
-	min-wdith: 0;
 }
 .wrapper {
 	width: 0px; height: 0px;
@@ -51,14 +49,13 @@ declare const monaco: any;
 	position: relative;
 	min-width: 0;
 	display: table;
-	width: 100%;
 	height: 100%;
 }`
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() options: editor.IEditorConstructionOptions;
+    @Input() options: editor.IStandaloneEditorConstructionOptions;
     @Input() value: string;
     @Input() parentElemntRef: HTMLElement;
     @Input() autoSizing: boolean = true;
@@ -111,11 +108,16 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
 
     private initMonaco() {
 
-        let opts: editor.IEditorConstructionOptions = {
+        let opts: editor.IStandaloneEditorConstructionOptions = {
             value: [this.value].join('\n'),
             language: 'text',
             theme: 'vc',
             automaticLayout: true,
+            scrollbar: {
+                handleMouseWheel: false,
+                vertical: 'hidden',
+                horizontal: 'auto',
+            },
             scrollBeyondLastLine: false,
             minimap: {
                 enabled: false,
@@ -239,13 +241,10 @@ export class MonacoEditorComponent implements OnInit, OnChanges, OnDestroy {
         if (!this.autoSizing) {
             return hostNode.offsetHeight;
         }
-        const configuration = this.editor.getConfiguration();
 
-        const lineHeight = configuration.lineHeight;
-        const lineCount = this.editor.getModel().getLineCount();
-        const contentHeight = lineHeight * lineCount;
+        const contentHeight = this.editor.getContentHeight();
 
-        const horizontalScrollbarHeight = configuration.layoutInfo.horizontalScrollbarHeight;
+        const horizontalScrollbarHeight = this.editor.getLayoutInfo().horizontalScrollbarHeight;
 
         const editorHeight = contentHeight + horizontalScrollbarHeight;
         if (this.minHeight < 0) {

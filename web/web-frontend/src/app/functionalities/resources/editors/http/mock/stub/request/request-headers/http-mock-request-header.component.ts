@@ -26,7 +26,7 @@ export class HttpMockRequestHeaderComponent {
         return this.httpMockService.editMode
     }
 
-    onNewKeyChange(value: any, other: any) {
+    onNewKeyChange(value: any) {
         this.checkNewKeyValueComplitness();
     }
 

@@ -12,7 +12,6 @@ import {ComposedStepEditorResolver} from "./composed-step-editor/composed-step-e
 import {ResourcesModule} from "../resources/resources.module";
 import {JsonStepContainerComponent} from "./steps-tree/container/json-step-container.component";
 import {JsonStepNodeComponent} from "./steps-tree/container/node/json-step-node.component";
-import {StepUsageDialogComponent} from "../../generic/components/step/composed-step-view/usage-dialog/step-usage-dialog.component";
 import {BasicStepEditorComponent} from "./basic-step-editor/basic-step-editor.component";
 import {BasicStepEditorResolver} from "./basic-step-editor/basic-step-editor.resolver";
 import {BasicStepParametersComponent} from "./basic-step-editor/basic-step-parameters/basic-step-parameters.component";
@@ -20,14 +19,13 @@ import {CollapseModule, ModalModule, PopoverModule, SortableModule} from "ngx-bo
 import {StepsTreeComponent} from "./steps-tree/steps-tree.component";
 import {StepsTreeFilterComponent} from "./steps-tree/steps-tree-filter/steps-tree-filter.component";
 import {ComposedStepViewComponent} from "../../generic/components/step/composed-step-view/composed-step-view.component";
-import {MarkdownModule} from 'ngx-markdown'
 import {AngularSplitModule} from "angular-split";
 import {ToolbarModule} from "primeng/toolbar";
 import {TooltipModule} from "primeng/tooltip";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {AutoCompleteModule} from "primeng/autocomplete";
 import {InputTextModule} from "primeng/inputtext";
-import {StepUsageDialogService} from "../../generic/components/step/composed-step-view/usage-dialog/step-usage-dialog.service";
+import {MarkdownModule} from "ngx-markdown";
 
 @NgModule({
     imports: [

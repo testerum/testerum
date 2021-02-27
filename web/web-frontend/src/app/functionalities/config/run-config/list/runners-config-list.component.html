@@ -5,6 +5,7 @@
         <p-orderList [value]="runners"
                      [selection]="selectedRunners"
                      (onSelectionChange)="onOrderItemsSelected($event)"
+                     dragdrop="true"
                      metaKeySelection="false">
             <ng-template let-runner pTemplate="item">
                 <div class="runner-item">

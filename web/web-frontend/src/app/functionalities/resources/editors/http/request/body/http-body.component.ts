@@ -28,7 +28,7 @@ export class HttpBodyComponent implements OnInit, OnDestroy {
     editorMode = HttpContentType.TEXT.editorMode;
     isValidJson: boolean = true;
 
-    editorOptions: editor.IEditorConstructionOptions = {
+    editorOptions: editor.IStandaloneEditorConstructionOptions = {
         language: this.editorMode,
         readOnly: !this.httpRequestService.editMode,
 

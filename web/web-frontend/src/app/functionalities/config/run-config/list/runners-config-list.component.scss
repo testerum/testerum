@@ -1,24 +1,26 @@
+@import "../../../../../resources/css/testerum-variables";
+
 .runners-config-list {
     height: 100%;
 
     .runners-container {
         height: calc(100% - 28px);
-        .ui-orderlist {
+        .p-orderlist {
             height: 100%;
 
-            .ui-orderlist-controls {
+            .p-orderlist-controls {
                 display: none;
             }
 
-            .ui-orderlist-list-container {
+            .p-orderlist-list-container {
                 width: 100%;
                 height: 100%;
 
-                .ui-orderlist-list {
+                .p-orderlist-list {
                     border: 0;
                     height: 100%;
 
-                    .ui-orderlist-item {
+                    .p-orderlist-item {
                         font-size: 1.3em;
 
                         .runner-item {
@@ -30,6 +32,11 @@
                                 vertical-align: text-top;
                             }
                         }
+                    }
+
+                    & .p-highlight {
+                        background-color: $primary-color;
+                        color: white;
                     }
                 }
             }

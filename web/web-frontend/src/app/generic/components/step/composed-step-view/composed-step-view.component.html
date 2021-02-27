@@ -126,7 +126,7 @@
 
     <p-messages *ngIf="warnings.length > 0" [(value)]="warnings" styleClass="error-message"></p-messages>
 
-    <p-messages severity="info" *ngIf="!model.isUsed">
+    <p-messages severity="info" *ngIf="!model.isUsed" [closable]="false">
         <ng-template pTemplate>
             <span class="custom-message">
                 This steps is not used.<br/>
