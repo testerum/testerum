@@ -87,6 +87,7 @@ class RunnerScenario(
         logScenarioStart(context)
 
         var status: ExecutionStatus = PASSED
+        context.testContext.testStatus = status
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
@@ -115,7 +116,7 @@ class RunnerScenario(
             }
 
             // after all hooks
-            val afterAllHooksStatus = afterHooks.execute(context)
+            val afterAllHooksStatus = afterHooks.execute(context, status)
             if (afterAllHooksStatus > status) {
                 status = afterAllHooksStatus
             }
