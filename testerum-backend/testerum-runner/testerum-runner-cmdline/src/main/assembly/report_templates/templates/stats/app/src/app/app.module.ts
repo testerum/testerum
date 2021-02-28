@@ -13,7 +13,10 @@ import {StatsService} from "./service/stats.service";
 import {TagUptimeComponent} from './stats/tag-uptime/tag-uptime.component';
 import {TableModule} from "primeng/table";
 import {CalendarModule} from "primeng/calendar";
-import {CheckboxModule, ToggleButtonModule, TooltipModule, TreeTableModule} from "primeng/primeng";
+import {TreeTableModule} from "primeng/treetable";
+import {TooltipModule} from "primeng/tooltip";
+import {ToggleButtonModule} from "primeng/togglebutton";
+import {CheckboxModule} from "primeng/checkbox";
 
 @NgModule({
     imports: [
