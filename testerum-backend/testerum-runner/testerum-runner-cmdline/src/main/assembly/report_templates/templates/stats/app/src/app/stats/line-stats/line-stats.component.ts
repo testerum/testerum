@@ -44,7 +44,7 @@ export class LineStatsComponent implements OnInit, OnChanges {
 
     @HostBinding('class.full-width') fullWidth: boolean = false;
 
-    @ViewChild("chart") chart: UIChart;
+    @ViewChild("chart", { static: false }) chart: UIChart;
 
     constructor(private element: ElementRef,
                 private statsService: StatsService) {
