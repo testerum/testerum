@@ -71,9 +71,10 @@ class RunnerTest(
 
         var status: ExecutionStatus = PASSED
         context.testContext.apply {
-            testStatus = status
             testName = test.name
             testPath = test.path.toString()
+
+            testStatus = status
         }
         var exception: Throwable? = null
 
