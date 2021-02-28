@@ -49,7 +49,7 @@
                             "node_modules/primeng/resources/primeng.min.css",
                             "src/assets/css/bootstrap.min.css",
                             "src/assets/css/bootstrap-theme.min.css",
-                            "src/assets/css/testerum-pretty-report.scss"
+                            "src/assets/css/testerum-pretty.scss"
                         ],
                         "scripts": [
                             "node_modules/chart.js/dist/Chart.js"
