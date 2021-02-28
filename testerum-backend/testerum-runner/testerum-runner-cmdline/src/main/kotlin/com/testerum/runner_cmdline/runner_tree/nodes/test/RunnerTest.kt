@@ -70,7 +70,11 @@ class RunnerTest(
         logTestStart(context)
 
         var status: ExecutionStatus = PASSED
-        context.testContext.testStatus = status
+        context.testContext.apply {
+            testStatus = status
+            testName = test.name
+            testPath = test.path.toString()
+        }
         var exception: Throwable? = null
 
         val startTime = System.currentTimeMillis()
