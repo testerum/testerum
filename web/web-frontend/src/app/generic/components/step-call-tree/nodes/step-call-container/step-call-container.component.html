@@ -42,7 +42,7 @@
                    [message]="model.stepCall.stepDef.description"
                    class="step-description-info-icon"></info-icon>
 
-        <div class="step-button-panel btn-group">
+        <div *ngIf="!isManualExecutionMode()" class="step-button-panel btn-group">
 
             <div *ngIf="!isBasicStep()"
                  title="{{isUndefinedStep() ? 'Define Step': 'Edit Step'}}"

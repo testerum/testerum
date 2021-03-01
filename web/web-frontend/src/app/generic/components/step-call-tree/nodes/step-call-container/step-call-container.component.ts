@@ -99,6 +99,10 @@ export class StepCallContainerComponent implements OnInit, OnDestroy {
         return this.stepCallTreeComponentService.areManualSteps;
     }
 
+    isManualExecutionMode(): boolean {
+        return this.stepCallTreeComponentService.isManualExecutionMode;
+    }
+
     setEditModeToTrue() {
         this.stepCallTreeComponentService.editModeEventEmitter.emit(true);
     }
