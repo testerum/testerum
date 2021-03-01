@@ -76,7 +76,7 @@ class RunnerSuite(
             }
 
             // after all hooks
-            val afterHooksStatus = afterHooks.execute(context)
+            val afterHooksStatus = afterHooks.execute(context, status)
             if (afterHooksStatus > status) {
                 status = afterHooksStatus
             }
