@@ -18,10 +18,8 @@
 
     <property name="package_dir_runner"      location="../../../package/runner/" />
 
-    <property name="app_dirs.pretty_app"       location="src/main/assembly/report_templates/templates/pretty/app/" />
-    <property name="app_dirs.pretty_generator" location="src/main/assembly/report_templates/templates/pretty/generator/" />
-    <property name="app_dirs.stats_app"        location="src/main/assembly/report_templates/templates/stats/app/" />
-    <property name="app_dirs.stats_generator"  location="src/main/assembly/report_templates/templates/stats/generator/" />
+    <property name="app_dirs.pretty_app"       location="src/main/assembly/report_templates/templates/pretty/" />
+    <property name="app_dirs.stats_app"        location="src/main/assembly/report_templates/templates/stats/" />
 
     <!-- node_package_dir.current_os -->
     <condition property="node_package_dir.current_os" value="${dest.node_package_dir.windows}">
@@ -66,14 +64,8 @@
     <condition property="pretty-app.should_not_build">
         <available file="${app_dirs.pretty_app}/dist/" type="dir" />
     </condition>
-    <condition property="pretty-generator.should_not_build">
-        <available file="${app_dirs.pretty_generator}/dist/" type="dir" />
-    </condition>
     <condition property="stats-app.should_not_build">
         <available file="${app_dirs.stats_app}/dist/" type="dir" />
-    </condition>
-    <condition property="stats-generator.should_not_build">
-        <available file="${app_dirs.stats_generator}/dist/" type="dir" />
     </condition>
 
     <!-- conditions to extract downloaded node -->
@@ -157,20 +149,9 @@
     </target>
 
     <target name="copy-to-dev-package-dir">
-        <antcall target="copy-to-dev-package-dir.extracted-node" />
         <antcall target="copy-to-dev-package-dir.shell-scripts" />
-        <antcall target="copy-to-dev-package-dir.pretty-generator" />
-        <antcall target="copy-to-dev-package-dir.stats-generator" />
-    </target>
-
-    <target name="copy-to-dev-package-dir.extracted-node">
-        <mkdir dir="${package_dir_runner}/node/"/>
-        <copy todir="${package_dir_runner}/node/" overwrite="true" force="true">
-            <fileset dir="${node_package_dir.current_os}">
-                <exclude name="node_modules/**"/>
-            </fileset>
-        </copy>
-        <chmod file="${package_dir_runner}/node/node" perm="ugo+rx" />
+        <antcall target="copy-to-dev-package-dir.pretty-app-template" />
+        <antcall target="copy-to-dev-package-dir.stats-template" />
     </target>
 
     <target name="copy-to-dev-package-dir.shell-scripts">
@@ -198,25 +179,23 @@
         <chmod dir="${package_dir_runner}/bin/" includes="**/*.sh" perm="ugo+rx" />
     </target>
 
-    <target name="copy-to-dev-package-dir.pretty-generator">
+    <target name="copy-to-dev-package-dir.pretty-app-template">
         <mkdir dir="${package_dir_runner}/report_templates/pretty" />
         <copy todir="${package_dir_runner}/report_templates/pretty" overwrite="true" force="true">
-            <fileset dir="src/main/assembly/report_templates/templates/pretty/generator/dist" />
+            <fileset dir="src/main/assembly/report_templates/templates/pretty/dist/runner-report-app" />
         </copy>
     </target>
 
-    <target name="copy-to-dev-package-dir.stats-generator">
+    <target name="copy-to-dev-package-dir.stats-template">
         <mkdir dir="${package_dir_runner}/report_templates/stats" />
         <copy todir="${package_dir_runner}/report_templates/stats" overwrite="true" force="true">
-            <fileset dir="src/main/assembly/report_templates/templates/stats/generator/dist" />
+            <fileset dir="src/main/assembly/report_templates/templates/stats/dist/runner-stats-app" />
         </copy>
     </target>
 
     <target name="build-runner-reports">
         <antcall target="build-runner-pretty-app" />
-        <antcall target="build-runner-pretty-generator" />
         <antcall target="build-runner-stats-app" />
-        <antcall target="build-runner-stats-generator" />
     </target>
 
     <target name="build-runner-pretty-app" unless="pretty-app.should_not_build">
@@ -233,24 +212,6 @@
         </antcall>
     </target>
 
-    <target name="build-runner-pretty-generator" unless="pretty-generator.should_not_build">
-        <local name="current_dir"/>
-        <property name="current_dir" value="${app_dirs.pretty_generator}"/>
-
-        <antcall target="npm">
-            <param name="args"        value="install" />
-            <param name="current_dir" value="${current_dir}" />
-        </antcall>
-        <antcall target="npm">
-            <param name="args"        value="run build-prod" />
-            <param name="current_dir" value="${current_dir}" />
-        </antcall>
-        <antcall target="npm">
-            <param name="args"        value="install --only=production" />
-            <param name="current_dir" value="${app_dirs.pretty_generator}/dist/" />
-        </antcall>
-    </target>
-
     <target name="build-runner-stats-app" unless="stats-app.should_not_build">
         <local name="current_dir"/>
         <property name="current_dir" value="${app_dirs.stats_app}"/>
@@ -262,24 +223,6 @@
         <antcall target="npm">
             <param name="args"        value="run build-prod" />
             <param name="current_dir" value="${current_dir}" />
-        </antcall>
-    </target>
-
-    <target name="build-runner-stats-generator" unless="stats-generator.should_not_build">
-        <local name="current_dir"/>
-        <property name="current_dir" value="${app_dirs.stats_generator}"/>
-
-        <antcall target="npm">
-            <param name="args"        value="install" />
-            <param name="current_dir" value="${current_dir}" />
-        </antcall>
-        <antcall target="npm">
-            <param name="args"        value="run build-prod" />
-            <param name="current_dir" value="${current_dir}" />
-        </antcall>
-        <antcall target="npm">
-            <param name="args"        value="install --only=production" />
-            <param name="current_dir" value="${app_dirs.stats_generator}/dist/" />
         </antcall>
     </target>
 
@@ -298,4 +241,3 @@
     </target>
 
 </project>
-

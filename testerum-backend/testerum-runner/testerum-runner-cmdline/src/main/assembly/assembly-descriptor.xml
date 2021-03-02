@@ -4,7 +4,7 @@
               http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0     http://maven.apache.org/xsd/assembly-1.1.0.xsd
           ">
 
-    <id>dist-windows</id>
+    <id>dist</id>
 
     <includeBaseDirectory>false</includeBaseDirectory>
 
@@ -31,17 +31,6 @@
             <includes>
                 <include>**/*</include>
             </includes>
-        </fileSet>
-
-        <!-- nodejs -->
-        <fileSet>
-            <directory>${project.basedir}/src/main/assembly/node/windows</directory>
-            <outputDirectory>/node</outputDirectory>
-            <useDefaultExcludes>false</useDefaultExcludes>
-
-            <excludes>
-                <exclude>node_modules/</exclude>
-            </excludes>
         </fileSet>
 
         <!-- compiled report templates: pretty -->

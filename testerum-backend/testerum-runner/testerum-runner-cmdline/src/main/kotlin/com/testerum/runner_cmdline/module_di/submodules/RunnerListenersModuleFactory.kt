@@ -44,7 +44,6 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
     private fun builtInTemplateExecutionListenerFactory(name: String): ExecutionListenerFactory = { properties: Map<String, String> ->
         val templateDirectory: JavaPath = ReportDirs.getReportTemplatesDir()
                 .resolve(name)
-                .resolve("report-template")
                 .toAbsolutePath().normalize()
 
         val propertiesIncludingScriptFile = LinkedHashMap<String, String>(properties)

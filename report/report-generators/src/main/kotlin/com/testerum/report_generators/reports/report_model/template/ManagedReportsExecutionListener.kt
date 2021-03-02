@@ -46,7 +46,6 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     private val managedPrettyListener = run {
         val templateDirectory: JavaPath = ReportDirs.getReportTemplatesDir()
                 .resolve("pretty")
-                .resolve("report-template")
                 .toAbsolutePath().normalize()
 
         val properties = HashMap<String, String>()
@@ -61,7 +60,6 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     private val managedStatsListener = run {
         val templateDirectory: JavaPath = ReportDirs.getReportTemplatesDir()
                 .resolve("pretty")
-                .resolve("report-template")
                 .toAbsolutePath().normalize()
 
         val properties = HashMap<String, String>()
@@ -236,7 +234,6 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
 
         val statsReportTemplate: JavaPath = ReportDirs.getReportTemplatesDir()
             .resolve("stats")
-            .resolve("report-template")
             .toAbsolutePath().normalize()
         val destinationDirectory = ReportDirs.getAggregatedStatisticsDir(managedReportsDir)
 
