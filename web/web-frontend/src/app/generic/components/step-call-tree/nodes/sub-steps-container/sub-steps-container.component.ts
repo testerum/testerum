@@ -75,4 +75,8 @@ export class SubStepsContainerComponent {
         let destinationContainer = this.model.parentContainer as StepCallContainerModel;
         return this.contextService.canPaste(destinationContainer);
     }
+
+    isManualExecutionMode(): boolean {
+        return this.stepCallTreeComponentService.isManualExecutionMode;
+    }
 }

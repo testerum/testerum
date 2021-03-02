@@ -1,21 +1,20 @@
-$fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts/';
-@import '../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
-@import '../../../node_modules/@fortawesome/fontawesome-free/scss/regular';
-@import '../../../node_modules/@fortawesome/fontawesome-free/scss/solid';
-@import '../../../node_modules/@fortawesome/fontawesome-free/scss/brands';
+@import 'testerum-stats-fontawesome';
 
 @import "nerd-fonts-generated-2.0.0.min";
 @import "testerum-stats-variables";
 
-// OVERWRITING PRIMENG STYLING
-.ui-calendar {
-    .ui-inputtext {
-        padding: 0 !important;
-        font-family: inherit !important;
-        text-align: center !important;
-        cursor: pointer;
-    }
+
+html {
+    height: 100%;
+    font-size: 14px;
 }
+
+body {
+    height: 100%;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1;
+}
+
 p-checkbox {
     label {
         cursor: pointer;

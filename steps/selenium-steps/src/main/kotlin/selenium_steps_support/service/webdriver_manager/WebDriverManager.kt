@@ -243,6 +243,16 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
             _webDriver!!
         }
 
+    fun doIfDriverIsInitialized(block: () -> Unit) {
+        synchronized(lock) {
+            if (_webDriver == null) {
+                return
+            }
+
+            block()
+        }
+    }
+
     fun takeScreenshotToFile(): JavaPath {
         val driver = currentWebDriver
 

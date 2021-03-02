@@ -34,6 +34,13 @@
             <artifactId>common-angular</artifactId>
         </dependency>
 
+        <!-- report-server-frontend -->
+        <dependency>
+            <groupId>com.testerum</groupId>
+            <artifactId>report-server-frontend</artifactId>
+            <classifier>dist</classifier>
+        </dependency>
+
 
         <!--==================== 3rd party dependencies ====================-->
 
@@ -212,28 +219,5 @@
             </plugin>
         </plugins>
     </build>
-
-
-    <profiles>
-        <!-- production -->
-        <profile>
-            <id>production</id>
-
-            <!-- activated by the presence of the "production" system property -->
-            <activation>
-                <property>
-                    <name>production</name>
-                </property>
-            </activation>
-
-            <dependencies>
-                <dependency>
-                    <groupId>com.testerum</groupId>
-                    <artifactId>report-server-frontend</artifactId>
-                    <classifier>dist</classifier>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 
 </project>

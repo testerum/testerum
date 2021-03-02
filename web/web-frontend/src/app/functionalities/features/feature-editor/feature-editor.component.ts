@@ -32,7 +32,7 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
         spellChecker: false
     };
 
-    model: Feature;
+    model: Feature = new Feature();
     fileAttachmentsAdded: File[] = [];
     attachmentsPathsToDelete: Path[] = [];
 
@@ -53,7 +53,15 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
     fileUploadSubscription: Subscription;
 
     @ViewChild(NgForm, { static: true }) form: NgForm;
-    @ViewChild(MarkdownEditorComponent, { static: true }) descriptionMarkdownEditor: MarkdownEditorComponent;
+
+    descriptionMarkdownEditor: MarkdownEditorComponent;
+    @ViewChild("descriptionMarkdownEditor", { static: true }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
+        if (descriptionMarkdownEditor != null) {
+            descriptionMarkdownEditor.setEditMode(this.isEditMode);
+            descriptionMarkdownEditor.setValue(this.model.description);
+        }
+        this.descriptionMarkdownEditor = descriptionMarkdownEditor;
+    }
 
     @ViewChild('beforeAllHooksCallTree', { static: true }) beforeAllHooksCallTree: StepCallTreeComponent;
     @ViewChild('beforeEachHooksCallTree', { static: true }) beforeEachHooksCallTree: StepCallTreeComponent;
@@ -96,7 +104,6 @@ export class FeatureEditorComponent extends AbstractComponentCanDeactivate imple
 
             if (this.descriptionMarkdownEditor) {
                 this.descriptionMarkdownEditor.setEditMode(isEditMode);
-                this.descriptionMarkdownEditor.setValue(this.model.description);
             }
         })
     }
