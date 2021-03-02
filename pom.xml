@@ -108,7 +108,7 @@
         <testerumNpmVersion>6.14.11</testerumNpmVersion>
 
         <!--========== testerum dependencies versions ==========-->
-        <testerum-steps-api.version>5.0.0</testerum-steps-api.version>
+        <testerum-steps-api.version>6.0.0</testerum-steps-api.version>
 
         <!--========== dependencies versions ==========-->
         <slf4j.version>1.7.25</slf4j.version>

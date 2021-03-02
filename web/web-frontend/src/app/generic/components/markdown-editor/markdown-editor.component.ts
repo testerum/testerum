@@ -1,4 +1,12 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import * as SimpleMDE from 'simplemde'
 
 @Component({
@@ -19,28 +27,8 @@ export class MarkdownEditorComponent implements AfterViewInit {
     @ViewChild('descriptionArea', { static: true }) textarea: ElementRef;
     simpleMDE: SimpleMDE;
 
-    setValue(value: string, isCreateMode: boolean = false): void {
-        if (this.simpleMDE) {
-            if (this.simpleMDE.isPreviewActive()) {
-                this.simpleMDE.togglePreview();
-                this.simpleMDE.value(value ? value : "");
-                this.simpleMDE.togglePreview();
-            } else {
-                this.simpleMDE.value(value ? value : "");
-            }
-        }
-        this.value = value;
-    }
-
-    getValue(): string {
-        if (!this.simpleMDE) {
-            return null;
-        }
-        return this.simpleMDE.value();
-    }
-
     ngAfterViewInit(): void {
-        this.initMarkdownEditor()
+        this.initMarkdownEditor();
     }
 
     initMarkdownEditor() {
@@ -68,9 +56,23 @@ export class MarkdownEditorComponent implements AfterViewInit {
         this.handleEditModeChanged();
     }
 
+    setValue(value: string, isCreateMode: boolean = false): void {
+        if (this.simpleMDE) {
+            this.simpleMDE.value(value ? value : "");
+        }
+        this.value = value;
+    }
+
+    getValue(): string {
+        if (!this.simpleMDE) {
+            return null;
+        }
+        return this.simpleMDE.value();
+    }
+
     setEditMode(value: boolean) {
         this.editMode = value;
-        this.handleEditModeChanged()
+        this.handleEditModeChanged();
     }
 
     private handleEditModeChanged() {

@@ -5,7 +5,8 @@ import {StatsType} from "../model/stats-type.enum";
 @Component({
     selector: 'app-stats',
     templateUrl: './stats.component.html',
-    styleUrls: ['./stats.component.scss']
+    styleUrls: ['./stats.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class StatsComponent implements OnInit{
 

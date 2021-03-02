@@ -43,7 +43,7 @@ import {StepUsageDialogResponseEnum} from "./usage-dialog/model/step-usage-dialo
 })
 export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterContentChecked, DoCheck {
 
-    @Input() model: ComposedStepDef;
+    @Input() model: ComposedStepDef = new ComposedStepDef();
     @Input() isCreateAction: boolean = false;
     @Input() stepContext: StepContext = new StepContext();
     @Input() isEditMode: boolean;
@@ -69,7 +69,15 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     @ViewChild(StepCallTreeComponent, { static: true }) stepCallTreeComponent: StepCallTreeComponent;
     readonly editModeEventEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    @ViewChild("descriptionMarkdownEditor", { static: true }) descriptionMarkdownEditor: MarkdownEditorComponent;
+
+    descriptionMarkdownEditor: MarkdownEditorComponent;
+    @ViewChild("descriptionMarkdownEditor", { static: true }) set setDescriptionMarkdownEditor(descriptionMarkdownEditor: MarkdownEditorComponent) {
+        if (descriptionMarkdownEditor != null) {
+            descriptionMarkdownEditor.setEditMode(this.isEditMode);
+            descriptionMarkdownEditor.setValue(this.model.description);
+        }
+        this.descriptionMarkdownEditor = descriptionMarkdownEditor;
+    }
 
     private editModeEventEmitterSubscription: Subscription;
     private warningRecalculationChangesSubscription: Subscription;
@@ -115,6 +123,25 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
         })
     }
 
+    ngAfterContentChecked(): void {
+        this.pattern = this.model.stepPattern.getPatternText();
+    }
+
+    ngOnDestroy(): void {
+        if(this.editModeEventEmitterSubscription) this.editModeEventEmitterSubscription.unsubscribe();
+        if(this.warningRecalculationChangesSubscription) this.warningRecalculationChangesSubscription.unsubscribe();
+    }
+
+    ngDoCheck(): void {
+        if (this.oldModel != this.model) {
+            this.refreshWarnings();
+            this.oldModel = this.model;
+            this.validate();
+
+            this.refreshDescription();
+        }
+    }
+
     private recalculateWarnings() {
         if (this.stepContext.isPartOfManualTest) {
             return;
@@ -150,25 +177,6 @@ export class ComposedStepViewComponent implements OnInit, OnDestroy, AfterConten
     setEditMode(editMode: boolean) {
         if (this.isEditMode != editMode) {
             this.editModeEventEmitter.emit(editMode);
-        }
-    }
-
-    ngAfterContentChecked(): void {
-        this.pattern = this.model.stepPattern.getPatternText();
-    }
-
-    ngOnDestroy(): void {
-        if(this.editModeEventEmitterSubscription) this.editModeEventEmitterSubscription.unsubscribe();
-        if(this.warningRecalculationChangesSubscription) this.warningRecalculationChangesSubscription.unsubscribe();
-    }
-
-    ngDoCheck(): void {
-        if (this.oldModel != this.model) {
-            this.refreshWarnings();
-            this.oldModel = this.model;
-            this.validate();
-
-            this.refreshDescription();
         }
     }
 

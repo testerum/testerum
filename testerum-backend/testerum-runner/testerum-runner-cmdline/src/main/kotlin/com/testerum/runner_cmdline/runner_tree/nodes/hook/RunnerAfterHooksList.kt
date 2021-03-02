@@ -8,14 +8,18 @@ class RunnerAfterHooksList(
     private val hooks: List<RunnerHook>,
 ) {
 
-    fun execute(context: RunnerContext): ExecutionStatus {
+    fun execute(
+        context: RunnerContext,
+        statusUntilNow: ExecutionStatus
+    ): ExecutionStatus {
         if (hooks.isEmpty()) {
-            return ExecutionStatus.PASSED
+            return statusUntilNow
         }
 
-        var status = ExecutionStatus.PASSED
+        var status = statusUntilNow
 
         for (hook in hooks) {
+            context.testContext.testStatus = status
             val hookStatus: ExecutionStatus = hook.execute(context)
 
             if (hookStatus > status) {

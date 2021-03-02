@@ -1,0 +1,45 @@
+$error-color: #d9534f;
+$success-color: #5cb85c;
+$info-color: #31b0d5;
+$warning-color: #f0ad4e;
+$primary-color: #337ab7;
+$gray-color: #c0bebc;
+
+$passed-color: #5cb85c;
+$failed-color: #E6302C;
+$disabled-color: #FF7800;
+$undefined-color: #FFCE56;
+$skipped-color: #aae8ff;
+$waiting-color: #c0bebc;
+
+$log-type-debug-color: #808080;
+$log-type-info-color: #000000;
+$log-type-warning-color: #e05500;
+$log-type-exception-color: #ff0000;
+
+$alert-color: #a94442;
+$alert-text-color: #721c24;
+$alert-background-color: #f8d7da;
+
+$manual-test-color: #333333;
+$automated-test-color: #333333;
+
+$http-method-color: #2b1bfb;
+
+$testerum-color: #ff9800;
+$hover-color: #eee;
+
+$background-color: #f4f4f4;
+$border-color: #c8c8c8;
+
+.error_color {color: $error-color;}
+.success-color {color: $success-color;}
+.info-color {color: $info-color;}
+.disabled-color {color: $disabled-color;}
+.warning-color {color: $warning-color;}
+.primary-color {color: $primary-color;}
+.gray-color {color: $gray-color;}
+.manual-test-background-color {background-color: $manual-test-color;}
+.automated-test-background-color {background-color: $automated-test-color;}
+.http-method-color {color: $http-method-color;}
+

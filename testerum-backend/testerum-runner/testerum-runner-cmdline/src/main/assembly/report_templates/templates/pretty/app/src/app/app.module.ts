@@ -19,7 +19,8 @@ import {TagOverviewComponent} from './tag-overview/tag-overview.component';
 import {ReportUrlService} from "./service/report-url.service";
 import {FormsModule} from "@angular/forms";
 import {ReportTagPieComponent} from "./tag-overview/pie/report-tag-pie.component";
-import {TooltipModule, TreeTableModule} from "primeng/primeng";
+import {TooltipModule} from "primeng/tooltip";
+import {TreeTableModule} from "primeng/treetable";
 
 @NgModule({
     imports: [

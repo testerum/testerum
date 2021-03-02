@@ -39,13 +39,31 @@
                         margin: 0;
                     }
                     .date-value {
-
+                        p-calendar {
+                            .p-inputtext {
+                                padding: 0;
+                                text-align: center;
+                                color: #333;
+                                border-radius: 3px;
+                                border: 1px solid #a6a6a6;
+                            }
+                        }
                     }
                 }
                 .show-details {
                     display: flex;
                     align-items: center;
                     margin-top: 3px;
+
+                    p-checkbox {
+                        .p-checkbox-box {
+                            border-radius: 3px;
+                            border: 1px solid #a6a6a6;
+                        }
+                        .p-checkbox-label {
+                            margin-bottom: 0;
+                        }
+                    }
                 }
             }
         }

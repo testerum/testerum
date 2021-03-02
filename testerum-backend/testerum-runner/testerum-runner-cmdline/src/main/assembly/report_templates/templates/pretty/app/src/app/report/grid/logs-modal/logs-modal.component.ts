@@ -10,7 +10,7 @@ import {ReportLog} from "../../../../../../../../common/testerum-model/report-mo
 })
 export class LogsModalComponent implements AfterViewInit {
 
-    @ViewChild("infoModal") modal:ModalDirective;
+    @ViewChild("infoModal", { static: true }) modal:ModalDirective;
 
     logs: Array<ReportLog>;
 

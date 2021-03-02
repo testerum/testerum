@@ -1,4 +1,4 @@
-@import "../../../assets/css/testerum-pretty-variables";
+@import "src/assets/css/testerum-variables";
 
 .my-report-grid {
     display: flex;
@@ -13,27 +13,8 @@
         }
 
         .my-filter-input {
-
-            .ui-autocomplete-multiple-container {
-                padding: 0 3px;
-                font-size: 12px;
-                .ui-autocomplete-input-token{
-                    padding: 0 3px;
-                    border-radius: 3px;
-                    border-right: 0;
-                }
-                .ui-autocomplete-token {
-                    font-size: 9px;
-                    padding: .125em .5em;
-                }
-            }
-            .ui-autocomplete-dropdown {
-                line-height: 1.5;
+            .p-autocomplete {
                 height: 22px;
-                width: 22px;
-                .ui-button-text{
-                    padding: 0;
-                }
             }
         }
     }
@@ -41,15 +22,10 @@
     .my-name-cell {
         display: flex;
         flex-direction: row;
+        align-items: center;
     }
 
     thead {
-        tr {
-            th {
-                padding: 0 5px !important;
-                text-align: center;
-            }
-        }
         .my-name-col {
             display: flex;
             justify-content: space-between;
@@ -76,9 +52,7 @@
 
     tbody {
         tr {
-            td {
-                padding: 0 !important;
-            }
+            height: 21px;
 
             .my-name-cell {
                 .ui-treetable-toggler {

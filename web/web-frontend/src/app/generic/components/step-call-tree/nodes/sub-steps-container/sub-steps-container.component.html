@@ -9,7 +9,7 @@
         <span [class.error_squiggly]="model.descendantsHaveWarnings">Sub-Steps</span>
 
         <!-- BUTTONS -->
-        <div class="sub-steps-button-panel btn-group ">
+        <div *ngIf="!isManualExecutionMode()" class="sub-steps-button-panel btn-group ">
 
             <div title="Add Sub Step" class="btn btn-default btn-xs btn-group"
                  (click)="addSubStep(); $event.stopPropagation()">
