@@ -3,7 +3,7 @@ import {ReportService} from "../../service/report.service";
 import {ReportGridNode} from "./model/report-grid-node.model";
 import {ReportGridNodeMapper} from "./util/report-grid-node.mapper";
 import {DateUtil} from "../../util/date.util";
-import {ExecutionStatus} from "../../../../../../../common/testerum-model/report-model/model/report/execution-status";
+import {ExecutionStatus} from "../../../../../../common/testerum-model/report-model/model/report/execution-status";
 import {ReportGridNodeType} from "./model/enums/report-grid-node-type.enum";
 import {LogsModalService} from "./logs-modal/logs-modal.service";
 import {ReportGridNodeData} from "./model/report-grid-node-data.model";
@@ -13,7 +13,7 @@ import {AutoComplete} from "primeng/autocomplete";
 import {ReportGridTagsUtil} from "./util/report-grid-tags.util";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
-import {ReportLog} from "../../../../../../../common/testerum-model/report-model/model/report/report-log";
+import {ReportLog} from "../../../../../../common/testerum-model/report-model/model/report/report-log";
 
 @Component({
     selector: 'report-grid',

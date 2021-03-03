@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ReportPieModel} from "./model/report-pie.model";
 import {ReportService} from "../../service/report.service";
-import {ExecutionStatus} from "../../../../../../../common/testerum-model/report-model/model/report/execution-status";
+import {ExecutionStatus} from "../../../../../../common/testerum-model/report-model/model/report/execution-status";
 
 @Component({
     selector: 'report-pie',

@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ComponentRef, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Subject} from "rxjs";
-import {ReportLog} from "../../../../../../../../common/testerum-model/report-model/model/report/report-log";
+import {ReportLog} from "../../../../../../../common/testerum-model/report-model/model/report/report-log";
 
 @Component({
     selector: 'logs-modal',

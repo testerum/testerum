@@ -1,5 +1,3 @@
-import {EventEmitter} from "@angular/core";
-
 export class ReportPieModel {
     totalTests: number = 0;
     passed: number = 0;

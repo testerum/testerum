@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ReportPieModel} from "./model/report-pie.model";
-import {ExecutionStatus} from "../../../../../../../common/testerum-model/report-model/model/report/execution-status";
+import {ExecutionStatus} from "../../../../../../common/testerum-model/report-model/model/report/execution-status";
 
 @Component({
     selector: 'report-tag-pie',

@@ -1,9 +1,9 @@
-import {Stats} from "../../../../../../../common/testerum-model/statistics-model/model/stats";
-import {ExecutionStatus} from "../../../../../../../common/testerum-model/report-model/model/report/execution-status";
+import {Stats} from "../../../../../../common/testerum-model/statistics-model/model/stats";
+import {ExecutionStatus} from "../../../../../../common/testerum-model/report-model/model/report/execution-status";
 import {DataPointModel} from "../data-point.model";
-import {StatsAll} from "../../../../../../../common/testerum-model/statistics-model/model/stats-all";
-import {StatsCountByStatus} from "../../../../../../../common/testerum-model/statistics-model/model/stats-count-by-status";
-import {ArrayUtil} from "../../../../../../pretty/app/src/app/util/array.util";
+import {StatsAll} from "../../../../../../common/testerum-model/statistics-model/model/stats-all";
+import {StatsCountByStatus} from "../../../../../../common/testerum-model/statistics-model/model/stats-count-by-status";
+import {ArrayUtil} from "../../../../../pretty/src/app/util/array.util";
 
 export class StatsModelExtractor {
 

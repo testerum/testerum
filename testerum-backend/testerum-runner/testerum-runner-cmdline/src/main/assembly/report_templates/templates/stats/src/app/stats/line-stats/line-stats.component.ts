@@ -1,9 +1,8 @@
 import {Component, ElementRef, HostBinding, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {StatsService} from "../../service/stats.service";
-import {ExecutionStatus} from "../../../../../../../common/testerum-model/report-model/model/report/execution-status";
+import {ExecutionStatus} from "../../../../../../common/testerum-model/report-model/model/report/execution-status";
 import {DataPointModel} from "../../model/data-point.model";
 import {StatsType} from "../../model/stats-type.enum";
-import {ArrayUtil} from "../../../../../../pretty/app/src/app/util/array.util";
 import {UIChart} from "primeng/chart";
 
 @Component({

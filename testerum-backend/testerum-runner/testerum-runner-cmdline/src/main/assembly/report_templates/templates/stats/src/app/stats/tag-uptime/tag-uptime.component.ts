@@ -1,10 +1,6 @@
 import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation} from '@angular/core';
 import {StatsService} from "../../service/stats.service";
-import {ExecutionStatus} from "../../../../../../../common/testerum-model/report-model/model/report/execution-status";
-import {DataPointModel} from "../../model/data-point.model";
 import {TagUptime} from "./tag-uptime/tag-uptime.modal";
-import {ArrayUtil} from "../../../../../../pretty/app/src/app/util/array.util";
-import {StatsAll} from "../../../../../../../common/testerum-model/statistics-model/model/stats-all";
 
 @Component({
     selector: 'tag-uptime',

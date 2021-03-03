@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {StatsModelExtractor} from "../model/model-extractor/stats-model-extractor";
-import {Stats} from "../../../../../../common/testerum-model/statistics-model/model/stats";
+import {Stats} from "../../../../../common/testerum-model/statistics-model/model/stats";
 
 @Injectable()
 export class StatsService {

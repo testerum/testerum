@@ -1,10 +1,10 @@
-import {ParamStepPatternPart} from "../../../../../../common/testerum-model/report-model/model/step/def/pattern/part/param-step-pattern-part";
-import {TextStepPatternPart} from "../../../../../../common/testerum-model/report-model/model/step/def/pattern/part/text-step-pattern-part";
-import {StepPhaseEnum} from "../../../../../../common/testerum-model/report-model/model/step/def/step-phase-enum";
+import {ParamStepPatternPart} from "../../../../../common/testerum-model/report-model/model/step/def/pattern/part/param-step-pattern-part";
+import {TextStepPatternPart} from "../../../../../common/testerum-model/report-model/model/step/def/pattern/part/text-step-pattern-part";
+import {StepPhaseEnum} from "../../../../../common/testerum-model/report-model/model/step/def/step-phase-enum";
 import {HtmlUtil} from "./html.util";
-import {ReportStepCall} from "../../../../../../common/testerum-model/report-model/model/step/call/report-step-call";
-import {ReportStepCallArg} from "../../../../../../common/testerum-model/report-model/model/step/call/report-step-call-arg";
-import {ReportStepDef} from "../../../../../../common/testerum-model/report-model/model/step/def/report-step-def";
+import {ReportStepCall} from "../../../../../common/testerum-model/report-model/model/step/call/report-step-call";
+import {ReportStepCallArg} from "../../../../../common/testerum-model/report-model/model/step/call/report-step-call-arg";
+import {ReportStepDef} from "../../../../../common/testerum-model/report-model/model/step/def/report-step-def";
 
 export class StepCallUtil {
     static getStepCallAsHtmlText(stepCall: ReportStepCall, reportStepDef: ReportStepDef): string {
