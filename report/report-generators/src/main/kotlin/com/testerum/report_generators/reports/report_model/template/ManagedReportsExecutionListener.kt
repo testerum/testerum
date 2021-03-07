@@ -20,6 +20,7 @@ import com.testerum.runner.statistics_model.events_aggregators.StatsEventsAggreg
 import com.testerum.runner.statistics_model.stats_aggregator.StatsStatsAggregator
 import org.apache.commons.io.IOUtils
 import org.slf4j.LoggerFactory
+import java.util.regex.Matcher
 import java.nio.file.Path as JavaPath
 
 class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) : ExecutionListener {
@@ -230,7 +231,7 @@ class ManagedReportsExecutionListener(private val managedReportsDir: JavaPath) :
     private fun writeFullStatsApp() {
         val dataModelPatternToReplace = Regex("<!--### START: testerumRunnerStatisticsModel ### -->[\\s\\S]*<!--### END: testerumRunnerStatisticsModel ### -->")
         val dataModelAsString = EXECUTION_LISTENERS_OBJECT_MAPPER.writeValueAsString(aggregateStats())
-        val dataModelPatternReplacement = "<script type='text/javascript'>\n    window.testerumRunnerStatisticsModel = ${dataModelAsString};\n  </script>"
+        val dataModelPatternReplacement = Matcher.quoteReplacement("<script type='text/javascript'>\n    window.testerumRunnerStatisticsModel = ${dataModelAsString};\n  </script>")
 
         val statsReportTemplate: JavaPath = ReportDirs.getReportTemplatesDir()
             .resolve("stats")

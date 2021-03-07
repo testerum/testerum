@@ -5,6 +5,7 @@ import com.testerum.report_generators.reports.report_model.base.BaseReportModelE
 import com.testerum.report_generators.reports.report_model.template.instance.ReportInstance
 import com.testerum.runner.cmdline.report_type.builder.EventListenerProperties
 import java.nio.file.Paths
+import java.util.regex.Matcher
 import java.nio.file.Path as JavaPath
 
 class CustomTemplateExecutionListener(private val properties: Map<String, String>) : BaseReportModelExecutionListener() {
@@ -39,7 +40,7 @@ class CustomTemplateExecutionListener(private val properties: Map<String, String
 
         val dataModelPatternToReplace = Regex("<!--### START: testerumRunnerReportModel ### -->[\\s\\S]*<!--### END: testerumRunnerReportModel ### -->")
         val dataModelAsString = modelAsJsonString?: throw RuntimeException("Data Model should not be null")
-        val dataModelPatternReplacement = "<script type='text/javascript'>\n    window.testerumRunnerReportModel = ${dataModelAsString};\n  </script>"
+        val dataModelPatternReplacement = Matcher.quoteReplacement("<script type='text/javascript'>\n    window.testerumRunnerReportModel = ${dataModelAsString};\n  </script>")
 
         ReportInstance.create(
             templateDirectory = normalizedTemplateDirectoryPath,
@@ -49,5 +50,3 @@ class CustomTemplateExecutionListener(private val properties: Map<String, String
         )
     }
 }
-
-
