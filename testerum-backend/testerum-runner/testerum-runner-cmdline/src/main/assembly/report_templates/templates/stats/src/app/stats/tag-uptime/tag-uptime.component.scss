@@ -3,9 +3,12 @@
 
     .header {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
         align-items: center;
         margin-right: 1em;
+        margin-bottom: 5px;
+        height: auto;
 
         .title {
             font-size: 2em;
@@ -14,21 +17,32 @@
         }
     }
 
-    .ui-table  {
-        font-size: 0.8em;
+    p-table  {
+        .p-datatable {
+            font-size: 1em;
 
-        .uptime-cell {
-            text-align: center;
+            .p-datatable-thead  > tr > th {
+                padding: .35em .5em;
+            }
+
+            .p-datatable-tbody tr {
+                .uptime-cell {
+                    text-align: center;
+                }
+            }
+
+            p-paginator {
+                .p-paginator {
+                    padding: 0;
+
+                    button {
+                        height: 1em;
+                    }
+                }
+            }
         }
 
-        .ui-table-thead > tr > th {
-            padding: .35em .5em;
-        }
-        .ui-table-tbody tr td {
-            padding: .25em .5em;
-        }
-
-        .ui-paginator {
+        .p-paginator {
             font-size: 0.8em;
         }
     }

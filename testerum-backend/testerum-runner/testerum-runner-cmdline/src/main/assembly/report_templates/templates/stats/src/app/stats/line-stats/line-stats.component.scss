@@ -8,14 +8,17 @@
 .my-tests-stats {
     .header {
         display: flex;
+        flex-flow: row;
         justify-content: space-between;
         align-items: center;
         margin-right: 1em;
+        height: fit-content;
 
         .title {
             font-size: 2em;
             font-weight: bold;
             text-align: center;
+            margin: 0;
         }
     }
 }

@@ -5,7 +5,7 @@
     </div>
 
     <div class="body">
-        <p-table [columns]="cols" [value]="tagsUptime" [paginator]="true" [rows]="9">
+        <p-table [columns]="cols" [value]="tagsUptime" [paginator]="true" [rows]="9" styleClass="p-datatable-striped">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th [pSortableColumn]="'tag'">
