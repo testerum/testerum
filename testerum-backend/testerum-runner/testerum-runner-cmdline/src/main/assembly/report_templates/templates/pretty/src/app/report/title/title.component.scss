@@ -1,0 +1,22 @@
+
+.my-report-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .table {
+        width: auto;
+        line-height: 30px;
+        font-size: 16px;
+
+        tr {
+            td {
+                border-bottom: 1px solid #ddd;
+
+                .my-label {
+                    margin-right: 2em;
+                }
+            }
+        }
+    }
+}

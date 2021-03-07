@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {ManualTestPlan} from "../../model/manual-test-plan.model";
 import {UrlService} from "../../../../../service/url.service";
 import {Path} from "../../../../../model/infrastructure/path/path.model";
@@ -7,7 +7,8 @@ import {ManualTestPlansService} from "../../../service/manual-test-plans.service
 @Component({
     selector: 'manual-test-plan-overview',
     templateUrl: './manual-test-plan-overview.component.html',
-    styleUrls: ['./manual-test-plan-overview.component.scss']
+    styleUrls: ['./manual-test-plan-overview.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class ManualTestPlanOverviewComponent implements OnInit {
 

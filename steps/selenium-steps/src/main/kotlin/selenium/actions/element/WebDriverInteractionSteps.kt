@@ -3,7 +3,6 @@ package selenium.actions.element
 import com.testerum_api.testerum_steps_api.annotations.steps.Param
 import com.testerum_api.testerum_steps_api.annotations.steps.When
 import com.testerum_api.testerum_steps_api.services.TesterumServiceLocator
-import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.interactions.Actions
 import selenium_steps_support.service.descriptions.SeleniumSharedDescriptions
@@ -36,6 +35,7 @@ class WebDriverInteractionSteps {
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.scrollToElement(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
@@ -89,6 +89,7 @@ class WebDriverInteractionSteps {
     }
 
         webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.scrollToElement(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
@@ -120,6 +121,7 @@ class WebDriverInteractionSteps {
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.scrollToElement(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
@@ -173,6 +175,7 @@ class WebDriverInteractionSteps {
         }
 
         webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.scrollToElement(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
@@ -205,19 +208,6 @@ class WebDriverInteractionSteps {
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
-        webDriverManager.executeWebDriverStep { driver ->
-            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
-                    ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
-
-            val javascriptExecutor = driver as? JavascriptExecutor
-            if (javascriptExecutor != null) {
-                javascriptExecutor.executeScript("arguments[0].scrollIntoView(true);", element)
-            } else {
-                throw RuntimeException(
-                        "the current WebDriver driver cannot execute JavaScript" +
-                        ": scrolling an element into view is not possible"
-                )
-            }
-        }
+        webDriverManager.scrollToElement(elementLocator)
     }
 }

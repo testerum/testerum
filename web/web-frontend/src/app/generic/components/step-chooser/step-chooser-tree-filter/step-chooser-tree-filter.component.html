@@ -1,4 +1,4 @@
-<p-toolbar>
+<p-toolbar class="step-chooser-tree-filter">
     <div class="line-filters">
         <div class="filters-group">
             <span class="filters-label">Filters:</span>
@@ -67,9 +67,9 @@
         </div>
     </div>
 
-    <div class="my-filter-input ui-inputgroup line-search full-width"
+    <div class="my-filter-input p-inputgroup line-search full-width"
          *ngIf="isSearchButtonActive">
-        <span class="ui-inputgroup-addon"
+        <span class="p-inputgroup-addon"
               pTooltip="Search"
               tooltipPosition="bottom"
               (click)="filter()">
@@ -86,9 +86,9 @@
                class="full-width">
     </div>
 
-    <div class="my-filter-input ui-inputgroup line-tags full-width"
+    <div class="my-filter-input p-inputgroup line-tags full-width"
          *ngIf="isTagsButtonActive">
-        <span class="ui-inputgroup-addon"
+        <span class="p-inputgroup-addon"
               tooltipPosition="bottom"
               pTooltip="Tags"
               (click)="filter()">

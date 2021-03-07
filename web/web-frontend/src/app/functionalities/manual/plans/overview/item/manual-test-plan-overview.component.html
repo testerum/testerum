@@ -1,4 +1,4 @@
-<p-panel *ngIf="model" [toggleable]="false">
+<p-panel *ngIf="model" [toggleable]="false" class="manual-test-plan-overview">
     <p-header>
         <div class="header-container">
             <div class="header-title">
@@ -12,7 +12,7 @@
                 </button>
 
                 <button type="button" class="btn btn-success"
-                        *ngIf="!model.finalized"
+                        *ngIf="!model.isFinalized"
                         (click)="navigateToManualExecPlanRunner();$event.stopPropagation();">
                     Execute
                 </button>

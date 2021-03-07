@@ -9,7 +9,7 @@ export class ManualTestPlan implements Serializable<ManualTestPlan>{
     oldPath: Path;
     name: string;
     description: string;
-    finalized: boolean;
+    isFinalized: boolean;
     createdDate: Date;
     finalizedDate: Date;
 
@@ -29,7 +29,7 @@ export class ManualTestPlan implements Serializable<ManualTestPlan>{
         this.oldPath = Path.deserialize(input["oldPath"]);
         this.name = input['name'];
         this.description = input['description'];
-        this.finalized = input['finalized'];
+        this.isFinalized = input['isFinalized'];
 
         if (input['createdDate']) {
             this.createdDate = new Date(input['createdDate']);
@@ -58,7 +58,7 @@ export class ManualTestPlan implements Serializable<ManualTestPlan>{
             ',"oldPath":' + JsonUtil.serializeSerializable(this.oldPath) +
             ',"name":' + JsonUtil.stringify(this.name) +
             ',"description":' + JsonUtil.stringify(this.description) +
-            ',"finalized":' + JsonUtil.stringify(this.finalized);
+            ',"finalized":' + JsonUtil.stringify(this.isFinalized);
 
         if (this.createdDate) {
             response += ',"createdDate":' + JsonUtil.stringify(this.createdDate.toJSON());

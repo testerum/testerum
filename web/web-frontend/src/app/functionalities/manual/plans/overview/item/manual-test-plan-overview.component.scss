@@ -1,38 +1,57 @@
+.manual-test-plan-overview {
+    .p-panel {
+        .p-panel-header {
+            padding: 0.6rem 1rem;
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
 
-.button-container {
-    display: flex;
-    justify-content: flex-end;
+            p-header {
+                width: 100%;
+            }
+        }
+
+        .p-panel-content {
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .button-container button {
+        margin-left: 5px;
+    }
+
+    button {
+        height: 30px;
+        padding: 0 5px;
+    }
+
+    .back-icon {
+        cursor: pointer;
+    }
+
+    .header-container {
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header-title {
+        font-weight: bold;
+    }
+
+    .progress {
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .p-tooltip .p-tooltip-text {
+        white-space: pre-line;
+    }
 }
 
-.button-container button {
-    margin-left: 20px;
-}
-
-button {
-    height: 30px;
-    padding: 0 5px;
-}
-
-.back-icon {
-    cursor: pointer;
-}
-
-.header-container {
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.header-title {
-    font-weight: bold;
-}
-
-.progress {
-    margin: 0;
-    cursor: pointer;
-}
-
-.ui-tooltip .ui-tooltip-text {
-    white-space: pre-line;
-}

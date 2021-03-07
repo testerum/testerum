@@ -1,0 +1,38 @@
+
+
+p-table {
+
+    .p-datatable {
+        font-size: 100%;
+
+        .p-datatable-header {
+            background-color: $background-color;
+            color: #333;
+            border: 1px solid $border-color;
+            padding: .571em 1em;
+            text-align: center;
+            border-bottom: 0;
+            font-weight: 700;
+        }
+
+        .p-datatable-thead {
+            tr {
+                th {
+                    padding: .571em .857em;
+                    border: 1px solid $border-color;
+                    font-weight: 700;
+                    color: #333;
+                    background-color: $background-color;
+                }
+            }
+        }
+        .p-datatable-tbody {
+            tr {
+                td {
+                    border: 1px solid $border-color;
+                    padding: .25em .5em;
+                }
+            }
+        }
+    }
+}

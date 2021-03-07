@@ -50,7 +50,6 @@
             ],
             "styles": [
               "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/nova-light/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/ng2-dnd/bundles/style.css",
               "node_modules/simplemde/dist/simplemde.min.css",
@@ -77,7 +76,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -109,8 +107,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Testerum:build",
-            "hmrWarning": false
+            "browserTarget": "Testerum:build"
           },
           "configurations": {
             "production": {

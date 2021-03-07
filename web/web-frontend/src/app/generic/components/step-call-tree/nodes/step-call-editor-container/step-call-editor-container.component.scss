@@ -15,30 +15,33 @@
 
 .step-suggestion {
 
-    .ui-autocomplete {
+    .p-autocomplete {
         width: 600px;
 
-        .ui-autocomplete-input{
+        .p-autocomplete-input{
             width: 600px;
             padding-top: 0;
             padding-bottom: 0;
+            border-radius: 4px;
         }
 
-        .ui-autocomplete-panel{
+        .p-autocomplete-panel{
             width: 600px;
             left: 0;
 
-            .ui-autocomplete-items .ui-autocomplete-list-item {
-                padding: 0 0.857em;
+            .p-autocomplete-items {
+                .p-autocomplete-item {
+                    padding: 0 0.857em;
 
-                .suggestion-line-container {
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                }
+                    .suggestion-line-container {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                    }
 
-                &.ui-state-highlight .step-call-action-text{
-                    color: #A9EB9F;
+                    &.p-state-highlight .step-call-action-text{
+                        color: #A9EB9F;
+                    }
                 }
             }
         }

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 import selenium_steps_support.service.module_di.SeleniumModuleServiceLocator
 import selenium_steps_support.service.webdriver_manager.WebDriverManager
 import selenium_steps_support.service.webdriver_manager.WebDriverManager.Companion.SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST
-import java.nio.file.Path as JavaPath
+import java.nio.file.Path
 
 class WebDriverShutdownHook {
 
@@ -36,31 +36,35 @@ class WebDriverShutdownHook {
     }
 
     private fun takeScreenshotIfFailed() {
-        if (TesterumServiceLocator.getTestContext().testStatus == ExecutionStatus.FAILED) {
-            val screenshotFile: JavaPath = webDriverManager.takeScreenshotToFile()
-            LOG.info("failed test: screenshot saved at [${screenshotFile.toAbsolutePath()}]")
+        webDriverManager.doIfDriverIsInitialized {
+            if (TesterumServiceLocator.getTestContext().testStatus == ExecutionStatus.FAILED) {
+                val screenshotFile: Path = webDriverManager.takeScreenshotToFile()
+                LOG.info("failed test: screenshot saved at [${screenshotFile.toAbsolutePath()}]")
+            }
         }
     }
 
     private fun closeBrowserIfNeeded() {
-        val leaveBrowserOpenAfterTest: String = TesterumServiceLocator.getSettingsManager().getRequiredSetting(SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST).resolvedValue
+        webDriverManager.doIfDriverIsInitialized {
+            val leaveBrowserOpenAfterTest: String = TesterumServiceLocator.getSettingsManager().getRequiredSetting(SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST).resolvedValue
 
-        val leaveBrowserOpen: Boolean = when (leaveBrowserOpenAfterTest) {
-            "true"      -> true
-            "false"     -> false
-            "onFailure" -> TesterumServiceLocator.getTestContext().testStatus == ExecutionStatus.FAILED
-            else        -> {
-                LOG.error(
+            val leaveBrowserOpen: Boolean = when (leaveBrowserOpenAfterTest) {
+                "true"      -> true
+                "false"     -> false
+                "onFailure" -> TesterumServiceLocator.getTestContext().testStatus == ExecutionStatus.FAILED
+                else        -> {
+                    LOG.error(
                         "error reading property [$SETTING_KEY_LEAVE_BROWSER_OPEN_AFTER_TEST]" +
-                        ": the value [$leaveBrowserOpenAfterTest] is not valid; valid values are [true], [false], or [onFailure]"
-                )
+                            ": the value [$leaveBrowserOpenAfterTest] is not valid; valid values are [true], [false], or [onFailure]"
+                    )
 
-                true
+                    true
+                }
             }
-        }
 
-        if (!leaveBrowserOpen) {
-            webDriverManager.destroyCurrentWebDriverIfNeeded()
+            if (!leaveBrowserOpen) {
+                webDriverManager.destroyCurrentWebDriverIfNeeded()
+            }
         }
     }
 }

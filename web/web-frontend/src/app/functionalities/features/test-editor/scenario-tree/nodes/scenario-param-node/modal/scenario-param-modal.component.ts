@@ -41,7 +41,7 @@ export class ScenarioParamModalComponent {
     @ViewChild("resourceModal", { static: true }) modal: ModalDirective;
     @ViewChild(NgForm, { static: true }) form: NgForm;
 
-    editorOptions: editor.IEditorConstructionOptions = {
+    editorOptions: editor.IStandaloneEditorConstructionOptions = {
         language: 'text'
     };
 

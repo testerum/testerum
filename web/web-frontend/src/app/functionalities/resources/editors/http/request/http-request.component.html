@@ -29,7 +29,7 @@
             <div class="my-value" *ngIf="isEditMode() && !isSharedResource">
                 <input required isNotBlankValidator
                        #nameNgModel="ngModel" [(ngModel)]="name"
-                       type="text" class="form-control" name="name">
+                       type="text" class="form-control test_http-request-name" name="name">
                 <input-error [model]="nameNgModel"
                              [errorMessages]="{
                                         required: 'A name for this resource is required',
@@ -74,7 +74,7 @@
             <div class="full-width">
                 <input required isNotBlankValidator
                        #urlNgModel="ngModel" [(ngModel)]="getModel().url" (ngModelChange)="urlChanged()"
-                       type="text" class="form-control" name="url" placeholder="URL">
+                       type="text" class="form-control test_http-request-url" name="url" placeholder="URL">
                 <input-error [model]="urlNgModel"
                              [errorMessages]="{
                     required: 'An URL is required'

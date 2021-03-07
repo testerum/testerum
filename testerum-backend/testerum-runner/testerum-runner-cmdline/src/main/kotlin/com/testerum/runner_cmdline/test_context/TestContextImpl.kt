@@ -5,6 +5,9 @@ import com.testerum_api.testerum_steps_api.test_context.TestContext
 
 class TestContextImpl(override val stepsClassLoader: ClassLoader) : TestContext {
 
-    override var testStatus: ExecutionStatus = ExecutionStatus.PASSED
+    override var testName: String? = null
+    override var testPath : String? = null
+
+    override var testStatus: ExecutionStatus? = null
 
 }

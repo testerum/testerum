@@ -2,7 +2,7 @@
   <configuration default="false" name="Runner (testerum backend)" type="JetRunConfigurationType">
     <module name="testerum-runner-cmdline-debug" />
     <option name="VM_PARAMETERS" value="-Dtesterum.packageDirectory=$PROJECT_DIR$/package" />
-    <option name="PROGRAM_PARAMETERS" value="--repository-directory $PROJECT_DIR$/integration-tests/tests --test-path backend" />
+    <option name="PROGRAM_PARAMETERS" value="--repository-directory $PROJECT_DIR$/integration-tests/tests --test-path &quot;steps/http/mock/Mock Step with Query Params.test&quot;" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <option name="PASS_PARENT_ENVS" value="true" />

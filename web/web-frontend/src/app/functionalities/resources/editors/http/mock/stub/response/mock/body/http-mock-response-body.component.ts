@@ -18,7 +18,7 @@ import {HttpBodyVerifyType} from "../../../../../response_verify/model/enums/htt
 
 export class HttpMockResponseBodyComponent implements OnInit, OnDestroy {
 
-    editorOptions: editor.IEditorConstructionOptions = {};
+    editorOptions: editor.IStandaloneEditorConstructionOptions = {};
 
     private editModeSubscription: Subscription;
     constructor(private httpMockService:HttpMockService) {

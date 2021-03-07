@@ -1,0 +1,51 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="
+              http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0     http://maven.apache.org/xsd/assembly-1.1.0.xsd
+          ">
+
+    <id>dist</id>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/lib</outputDirectory>
+            <useProjectArtifact>true</useProjectArtifact>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <!-- shell scripts -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/assembly/package</directory>
+            <outputDirectory>/</outputDirectory>
+            <useDefaultExcludes>false</useDefaultExcludes>
+
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+
+        <!-- compiled report templates: pretty -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/dist/runner-report-app</directory>
+            <outputDirectory>report_templates/pretty</outputDirectory>
+            <useDefaultExcludes>false</useDefaultExcludes>
+        </fileSet>
+
+        <!-- compiled report templates: stats -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/assembly/report_templates/templates/stats/dist/runner-stats-app</directory>
+            <outputDirectory>report_templates/stats</outputDirectory>
+            <useDefaultExcludes>false</useDefaultExcludes>
+        </fileSet>
+    </fileSets>
+
+</assembly>

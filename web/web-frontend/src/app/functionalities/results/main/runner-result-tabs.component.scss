@@ -1,14 +1,15 @@
 .runner-results-tabs {
-    height: calc(100% - 3px);
+    height: calc(100% - 9px);
 
     /* STYLE FOR TAB COMPONENT */
-    .ui-tabview {
+    .p-tabview {
         height: 100%;
 
-        .ui-tabview-panels {
+        .p-tabview-panels {
             height: calc(100% - 35px);
+            padding: 0;
 
-            .ui-tabview-panel {
+            .p-tabview-panel {
                 height: 100%;
             }
         }

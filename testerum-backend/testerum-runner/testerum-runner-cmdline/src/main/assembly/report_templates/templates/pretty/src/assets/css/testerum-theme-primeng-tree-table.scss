@@ -1,0 +1,34 @@
+
+
+p-treetable > .p-treetable {
+    font-family: "Open Sans","Helvetica Neue",sans-serif;
+
+    .p-treetable-thead {
+        tr {
+            th {
+                padding: 0 5px;
+                border: 1px solid $border-color;
+                font-weight: 700;
+                color: #333;
+                background-color: $background-color;
+                text-align: center;
+            }
+        }
+    }
+    .p-treetable-tbody {
+        tr {
+            td {
+                border: 1px solid $border-color;
+                padding: 0 !important;
+                color: #333;
+
+                .p-treetable-toggler {
+                    width: 1em;
+                    height: 1em;
+                }
+            }
+        }
+    }
+
+
+}

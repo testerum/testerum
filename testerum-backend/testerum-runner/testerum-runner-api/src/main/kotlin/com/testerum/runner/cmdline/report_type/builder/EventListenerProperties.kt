@@ -39,7 +39,7 @@ object EventListenerProperties {
     }
 
     object CustomTemplate {
-        const val SCRIPT_FILE = "scriptFile"
+        const val TEMPLATE_DIRECTORY = "templateDirectory"
     }
 
     object Pretty {

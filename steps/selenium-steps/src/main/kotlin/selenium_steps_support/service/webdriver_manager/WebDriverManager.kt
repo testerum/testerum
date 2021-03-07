@@ -17,9 +17,11 @@ import com.testerum_api.testerum_steps_api.test_context.settings.RunnerSettingsM
 import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumBrowserType
 import com.testerum_api.testerum_steps_api.test_context.settings.model.SeleniumDriverSettingValue
 import com.testerum_api.testerum_steps_api.test_context.settings.model.SettingType
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.WebDriverWait
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -241,6 +243,16 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
             _webDriver!!
         }
 
+    fun doIfDriverIsInitialized(block: () -> Unit) {
+        synchronized(lock) {
+            if (_webDriver == null) {
+                return
+            }
+
+            block()
+        }
+    }
+
     fun takeScreenshotToFile(): JavaPath {
         val driver = currentWebDriver
 
@@ -312,6 +324,23 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
         }
     }
 
+    fun scrollToElement(elementLocator: String) {
+        executeWebDriverStep { driver ->
+            val element: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
+                ?: throw AssertionError("the element [$elementLocator] should be present on the page, but is not")
+
+            val javascriptExecutor = driver as? JavascriptExecutor
+            if (javascriptExecutor != null) {
+                javascriptExecutor.executeScript("arguments[0].scrollIntoView(true);", element)
+            } else {
+                throw RuntimeException(
+                    "the current WebDriver driver cannot execute JavaScript" +
+                        ": scrolling an element into view is not possible"
+                )
+            }
+        }
+    }
+
     private fun getSeleniumDriverSetting(): SeleniumDriverSettingValue {
         val unparsedDriver = runnerSettingsManager.getRequiredSetting(SETTING_KEY_DRIVER).resolvedValue
 
@@ -357,5 +386,4 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
 
         return seleniumDriverSettingValue
     }
-
 }

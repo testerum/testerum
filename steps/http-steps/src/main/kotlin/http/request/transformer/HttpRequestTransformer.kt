@@ -23,5 +23,4 @@ class HttpRequestTransformer: Transformer<HttpRequest> {
 
         return objectMapper.treeToValue(rootNode, HttpRequest::class.java)
     }
-
 }

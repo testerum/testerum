@@ -41,6 +41,7 @@ class WebDriverSelectFormSteps {
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.scrollToElement(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val field: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the field [$elementLocator] should be present on the page, but is not")
@@ -97,6 +98,7 @@ class WebDriverSelectFormSteps {
         )
 
         webDriverManager.waitForElementPresent(elementLocator)
+        webDriverManager.scrollToElement(elementLocator)
         webDriverManager.executeWebDriverStep { driver ->
             val field: WebElement = ElementLocatorService.locateElement(driver, elementLocator)
                     ?: throw AssertionError("the field [$elementLocator] should be present on the page, but is not")

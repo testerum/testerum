@@ -19,7 +19,7 @@ export class JsonEditorComponent implements OnInit, OnChanges {
 
     isValidJson: boolean = true;
 
-    editorOptions: editor.IEditorConstructionOptions = {
+    editorOptions: editor.IStandaloneEditorConstructionOptions = {
         language: 'json',
         readOnly: !this.editMode,
     };
