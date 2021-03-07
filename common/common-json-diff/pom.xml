@@ -6,7 +6,7 @@
     <parent>
         <artifactId>common</artifactId>
         <groupId>com.testerum</groupId>
-        <version>develop-SNAPSHOT</version>
+        <version>5.2.0</version>
     </parent>
 
     <artifactId>common-json-diff</artifactId>
