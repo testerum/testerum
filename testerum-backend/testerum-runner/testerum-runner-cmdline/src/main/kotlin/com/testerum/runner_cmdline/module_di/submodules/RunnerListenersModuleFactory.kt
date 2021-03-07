@@ -42,13 +42,12 @@ class RunnerListenersModuleFactory(context: ModuleFactoryContext) : BaseModuleFa
     )
 
     private fun builtInTemplateExecutionListenerFactory(name: String): ExecutionListenerFactory = { properties: Map<String, String> ->
-        val scriptFileName: JavaPath = ReportDirs.getReportTemplatesDir()
+        val templateDirectory: JavaPath = ReportDirs.getReportTemplatesDir()
                 .resolve(name)
-                .resolve("main.bundle.js")
                 .toAbsolutePath().normalize()
 
         val propertiesIncludingScriptFile = LinkedHashMap<String, String>(properties)
-        propertiesIncludingScriptFile[EventListenerProperties.CustomTemplate.SCRIPT_FILE] = scriptFileName.toString()
+        propertiesIncludingScriptFile[EventListenerProperties.CustomTemplate.TEMPLATE_DIRECTORY] = templateDirectory.toString()
 
         CustomTemplateExecutionListener(propertiesIncludingScriptFile)
     }

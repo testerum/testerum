@@ -1,8 +1,6 @@
 package com.testerum.report_generators.reports.report_model.base
 
 import com.fasterxml.jackson.databind.ObjectWriter
-import com.testerum.common_kotlin.createDirectories
-import com.testerum.common_kotlin.writeText
 import com.testerum.report_generators.reports.report_model.base.logger.ReportToFileLoggerStack
 import com.testerum.report_generators.reports.report_model.base.mapper.ReportFeatureMapper
 import com.testerum.report_generators.reports.report_model.base.mapper.ReportParametrizedTestMapper
@@ -32,15 +30,15 @@ import com.testerum.runner.report_model.FeatureOrTestRunnerReportNode
 import com.testerum.runner.report_model.ReportLog
 import com.testerum.runner.report_model.ReportScenario
 import com.testerum.runner.report_model.ReportStep
-import java.util.ArrayDeque
+import java.util.*
 import java.nio.file.Path as JavaPath
 
 abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
 
     companion object {
-        private val MODEL_DESTINATION_FILE_NAME = "model.json"
-        private val LOG_TEXT_EXTENSION = "txt"
-        private val LOG_MODEL_EXTENSION = "js"
+        val MODEL_DESTINATION_FILE_NAME = "model.json"
+        val LOG_TEXT_EXTENSION = "txt"
+        val LOG_MODEL_EXTENSION = "js"
     }
 
     private val eventsStack = ExecutionEventsStack() // contains both RunnerEvent and RunnerReportNode
@@ -53,6 +51,8 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
 
     private fun getTextLogsDirectory(): JavaPath = destinationDirectory.resolve("logs/text")
     private fun getModelLogsDirectory(): JavaPath = destinationDirectory.resolve("logs/model")
+
+    var modelAsJsonString: String? = null
 
     override fun start() {
         // Starting to record suite logs here, rather than in onSuiteStart(),
@@ -442,11 +442,7 @@ abstract class BaseReportModelExecutionListener : BaseExecutionListener() {
         } else {
             EXECUTION_LISTENERS_OBJECT_MAPPER.writer()
         }
-        val serializedModel = objectWriter.writeValueAsString(reportSuite)
-
-        // write data file
-        destinationDirectory.createDirectories()
-        destinationDirectory.resolve(MODEL_DESTINATION_FILE_NAME).writeText(serializedModel)
+        modelAsJsonString = objectWriter.writeValueAsString(reportSuite)
 
         afterModelSavedToFile()
     }

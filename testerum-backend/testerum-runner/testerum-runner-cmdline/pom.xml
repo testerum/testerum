@@ -253,13 +253,7 @@
                                     <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/app/dist/</directory>
                                 </fileset>
                                 <fileset>
-                                    <directory>${project.basedir}/src/main/assembly/report_templates/templates/pretty/generator/dist/</directory>
-                                </fileset>
-                                <fileset>
                                     <directory>${project.basedir}/src/main/assembly/report_templates/templates/stats/app/dist/</directory>
-                                </fileset>
-                                <fileset>
-                                    <directory>${project.basedir}/src/main/assembly/report_templates/templates/stats/generator/dist/</directory>
                                 </fileset>
                             </filesets>
                         </configuration>
@@ -298,9 +292,9 @@
                         </configuration>
 
                         <executions>
-                            <!-- assemble-dist-linux -->
+                            <!-- assemble-dist -->
                             <execution>
-                                <id>assemble-dist-linux</id>
+                                <id>assemble-dist</id>
                                 <phase>package</phase>
 
                                 <goals>
@@ -309,43 +303,10 @@
 
                                 <configuration>
                                     <descriptors>
-                                        <descriptor>src/main/assembly/assembly-descriptor-linux.xml</descriptor>
+                                        <descriptor>src/main/assembly/assembly-descriptor.xml</descriptor>
                                     </descriptors>
                                 </configuration>
                             </execution>
-
-                            <!-- assemble-dist-mac -->
-                            <execution>
-                                <id>assemble-dist-mac</id>
-                                <phase>package</phase>
-
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-
-                                <configuration>
-                                    <descriptors>
-                                        <descriptor>src/main/assembly/assembly-descriptor-mac.xml</descriptor>
-                                    </descriptors>
-                                </configuration>
-                            </execution>
-
-                            <!-- assemble-dist-windows -->
-                            <execution>
-                                <id>assemble-dist-windows</id>
-                                <phase>package</phase>
-
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-
-                                <configuration>
-                                    <descriptors>
-                                        <descriptor>src/main/assembly/assembly-descriptor-windows.xml</descriptor>
-                                    </descriptors>
-                                </configuration>
-                            </execution>
-
                         </executions>
                     </plugin>
                 </plugins>

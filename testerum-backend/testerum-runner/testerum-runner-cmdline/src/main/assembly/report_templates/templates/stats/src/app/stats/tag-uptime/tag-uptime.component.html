@@ -1,0 +1,33 @@
+<div class="my-tag-uptime">
+    <div class="header">
+
+        <div class="title">Tags Uptime</div>
+    </div>
+
+    <div class="body">
+        <p-table [columns]="cols" [value]="tagsUptime" [paginator]="true" [rows]="9" styleClass="p-datatable-striped">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th [pSortableColumn]="'tag'">
+                        Tag Name
+                        <p-sortIcon [field]="'tag'" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                    </th>
+                    <th [pSortableColumn]="'uptime'" style="width:8em">
+                        Uptime
+                        <p-sortIcon [field]="'uptime'" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                    <td>
+                        {{rowData["tag"]}}
+                    </td>
+                    <td class="uptime-cell">
+                        {{rowData["uptime"] | number : '1.2-2'}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
