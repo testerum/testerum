@@ -1,3 +1,3 @@
-package com.testerum.model.runner.tree
+package com.testerum.model.runner.old_tree
 
 interface RunnerTestOrFeatureNode : RunnerNode

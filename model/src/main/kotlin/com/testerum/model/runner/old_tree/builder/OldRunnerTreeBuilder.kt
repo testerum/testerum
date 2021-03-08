@@ -1,17 +1,17 @@
-package com.testerum.model.runner.tree.builder
+package com.testerum.model.runner.old_tree.builder
 
 import com.testerum.model.feature.Feature
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.runner.tree.RunnerBasicStepNode
-import com.testerum.model.runner.tree.RunnerComposedStepNode
-import com.testerum.model.runner.tree.RunnerFeatureNode
-import com.testerum.model.runner.tree.RunnerParametrizedTestNode
-import com.testerum.model.runner.tree.RunnerRootNode
-import com.testerum.model.runner.tree.RunnerScenarioNode
-import com.testerum.model.runner.tree.RunnerStepNode
-import com.testerum.model.runner.tree.RunnerTestNode
-import com.testerum.model.runner.tree.RunnerTestOrFeatureNode
-import com.testerum.model.runner.tree.RunnerUndefinedStepNode
+import com.testerum.model.runner.old_tree.RunnerBasicStepNode
+import com.testerum.model.runner.old_tree.RunnerComposedStepNode
+import com.testerum.model.runner.old_tree.RunnerFeatureNode
+import com.testerum.model.runner.old_tree.RunnerParametrizedTestNode
+import com.testerum.model.runner.old_tree.RunnerRootNode
+import com.testerum.model.runner.old_tree.RunnerScenarioNode
+import com.testerum.model.runner.old_tree.RunnerStepNode
+import com.testerum.model.runner.old_tree.RunnerTestNode
+import com.testerum.model.runner.old_tree.RunnerTestOrFeatureNode
+import com.testerum.model.runner.old_tree.RunnerUndefinedStepNode
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
@@ -22,7 +22,7 @@ import com.testerum.model.tests_finder.ScenariosTestPath
 import com.testerum.model.util.tree_builder.TreeBuilder
 import com.testerum.model.util.tree_builder.TreeBuilderCustomizer
 
-class RunnerTreeBuilder {
+class OldRunnerTreeBuilder {
 
     val builder = TreeBuilder(RunnerTreeBuilderCustomizer)
 

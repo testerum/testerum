@@ -1,4 +1,4 @@
-package com.testerum.model.runner.tree
+package com.testerum.model.runner.old_tree
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty

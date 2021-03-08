@@ -1,4 +1,4 @@
-package com.testerum.model.runner.tree.builder
+package com.testerum.model.runner.old_tree.builder
 
 import com.testerum.model.test.TestModel
 import com.testerum.model.tests_finder.TestPath

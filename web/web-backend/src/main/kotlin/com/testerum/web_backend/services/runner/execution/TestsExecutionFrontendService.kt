@@ -6,9 +6,9 @@ import com.testerum.common_jdk.toStringWithStacktrace
 import com.testerum.common_kotlin.isDirectory
 import com.testerum.file_service.file.LocalVariablesFileService
 import com.testerum.model.runner.config.RunConfig
-import com.testerum.model.runner.tree.RunnerRootNode
-import com.testerum.model.runner.tree.builder.RunnerTreeBuilder
-import com.testerum.model.runner.tree.builder.TestPathAndModel
+import com.testerum.model.runner.old_tree.RunnerRootNode
+import com.testerum.model.runner.old_tree.builder.OldRunnerTreeBuilder
+import com.testerum.model.runner.old_tree.builder.TestPathAndModel
 import com.testerum.model.test.TestModel
 import com.testerum.model.tests_finder.FeatureTestPath
 import com.testerum.model.tests_finder.ScenariosTestPath
@@ -115,7 +115,7 @@ class TestsExecutionFrontendService(
     }
 
     private fun getRunnerRootNode(testsMap: Map<TestPath, TestModel>): RunnerRootNode {
-        val builder = RunnerTreeBuilder()
+        val builder = OldRunnerTreeBuilder()
 
         for ((path, model) in testsMap) {
             builder.addTest(
