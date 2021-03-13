@@ -1,0 +1,26 @@
+{
+  "defaultVariables" : {
+    "PATH_FOR_NEW_PROJECT" : "",
+    "PATH_TO_AUTOMATED_TESTS_PROJECT" : "",
+    "PATH_TO_MANUAL_TESTS_PROJECT" : "",
+    "PROJECT_PATH" : "C:\\temp\\Testerum-ui-tests",
+    "PROJECT_TO_OPEN_PATH" : "",
+    "WELCOME_PAGE" : ""
+  },
+  "environments" : {
+    "development" : {
+      "PATH_FOR_NEW_PROJECT" : "C:\\temp",
+      "PATH_TO_AUTOMATED_TESTS_PROJECT" : "C:\\temp\\Testerum-automated-tests",
+      "PATH_TO_MANUAL_TESTS_PROJECT" : "C:\\temp\\Testerum-manual-tests",
+      "PROJECT_TO_OPEN_PATH" : "C:\\temp\\Project-to-be-opened",
+      "WELCOME_PAGE" : "http://localhost:4200/"
+    },
+    "production" : {
+      "PATH_FOR_NEW_PROJECT" : "C:\\temp\\Empty-Testerum-Project",
+      "PATH_TO_AUTOMATED_TESTS_PROJECT" : "C:\\temp\\Testerum-automated-tests",
+      "PATH_TO_MANUAL_TESTS_PROJECT" : "C:\\temp\\Testerum-manual-tests",
+      "PROJECT_TO_OPEN_PATH" : "C:\\temp\\Project-to-be-opened",
+      "WELCOME_PAGE" : "http://localhost:9997/"
+    }
+  }
+}

@@ -35,7 +35,7 @@
              [attr.title]="model.arg.content?'Edit':'Add'"
              class="btn btn-default btn-xs btn-group"
              (click)="editOrViewResourceInModal(); $event.stopPropagation()">
-            <span class="fas"
+            <span class="fas test_step-parameter-edit-button"
                   [class.fa-plus]="!model.arg.content"
                   [class.fa-pencil-alt]="model.arg.content">
             </span>

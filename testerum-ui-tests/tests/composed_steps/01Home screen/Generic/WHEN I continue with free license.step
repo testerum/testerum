@@ -1,0 +1,4 @@
+step-def: When I continue with free license
+
+    step: When I wait until the element <<.test_continue-without-license>> is visible
+    step: When I click the element <<.test_continue-without-license>>

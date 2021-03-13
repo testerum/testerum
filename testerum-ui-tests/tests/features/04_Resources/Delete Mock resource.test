@@ -1,0 +1,3 @@
+test-def: Delete Mock resource
+
+    test-properties = <<manual>>

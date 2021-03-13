@@ -1,0 +1,3 @@
+step-def: When I edit the current environment
+
+    step: When I click the element <<.test_edit-environment>>

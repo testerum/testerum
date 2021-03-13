@@ -1,0 +1,4 @@
+step-def: Then I override the value <<defaultValue: TEXT>> of the global variable <<varName: TEXT>> with new value <<newValue: TEXT>>
+
+    step: When I clear the text from the field <<.test_var-value-input-field>>
+    step: When I type <<{{newValue}}>> into the field <<.test_var-value-input-field>>

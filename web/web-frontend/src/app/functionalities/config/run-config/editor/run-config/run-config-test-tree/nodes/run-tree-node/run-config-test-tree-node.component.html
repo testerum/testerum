@@ -5,7 +5,7 @@
          (dblclick)="collapseNode()"
          title="{{getStatusTooltip()}}">
 
-        <i aria-hidden="true"
+        <i aria-hidden="true" class="test_select-test-to-add-to-run-config"
            [class.fa_my-runner-config-test-selected]="model.status == RunnerConfigTestTreeNodeStatusEnum.SELECTED"
            [class.fa_my-runner-config-test-partial-selected]="model.status == RunnerConfigTestTreeNodeStatusEnum.PARTIAL_SELECTED"
            [class.fa_my-runner-config-test-not-selected]="model.status == RunnerConfigTestTreeNodeStatusEnum.NOT_SELECTED"></i>

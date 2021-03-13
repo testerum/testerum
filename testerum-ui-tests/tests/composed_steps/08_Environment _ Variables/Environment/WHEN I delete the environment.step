@@ -1,0 +1,3 @@
+step-def: When I delete the environment
+
+    step: When I click the element <<.test_delete-environment>>

@@ -1,0 +1,2 @@
+
+before-each-hook: When I delete the file <<{{PROJECT_PATH}}>> from the hard drive

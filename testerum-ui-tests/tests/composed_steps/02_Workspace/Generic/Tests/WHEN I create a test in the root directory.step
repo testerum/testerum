@@ -1,0 +1,5 @@
+step-def: When I create a test in the root directory
+
+    step: When I move the mouse pointer over the element <<.test_full-line>>
+    step: When I wait until the element <<.test_create-test-button>> is present
+    step: When I click the element <<.test_create-test-button>>

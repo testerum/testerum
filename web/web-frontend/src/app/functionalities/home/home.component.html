@@ -20,7 +20,7 @@
             <div class="panel panel-info">
                 <div class="panel-heading">Recent Projects</div>
                 <div class="recent-projects panel-body">
-                    <ul>
+                    <ul class="test_recent-project-container">
                         <li *ngFor="let recentProject of recentProjects"
                             class="recent-project"
                             (click)="navigateToProject(recentProject)">
@@ -65,7 +65,7 @@
                     <div class="panel-heading">Knowledge</div>
                     <div class="quick-start panel-body">
                         <ul class="knowledge-list">
-                            <li class="sample-project-option" (click)="onOpenDemoProject()">
+                            <li class="sample-project-option test_sample-project-option" (click)="onOpenDemoProject()">
                                 <i class="fas fa-eye"></i>
                                 Sample Project
                                 <info-icon class="info-sample-project"
@@ -74,7 +74,7 @@
 
                                 <bubble-tip *ngIf="recentProjects.length == 0"></bubble-tip>
                             </li>
-                            <li (click)="navigateToVideos()">
+                            <li (click)="navigateToVideos()" class="test_videos-option">
                                 <i class="fab fa-youtube"></i> Videos</li>
                             <li class ="documentation-option" (click)="navigateToDocumentation()">
                                 <i class="fas fa-book"></i> Documentation</li>

@@ -1,0 +1,3 @@
+step-def: When I select the project index <<projectIndex: TEXT>> from the recent projects list
+
+    step: When I click the element <<.test_recent-project-container \> li:nth-child({{projectIndex}})>>

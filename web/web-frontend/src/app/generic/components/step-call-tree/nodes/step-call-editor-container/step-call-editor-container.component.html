@@ -30,8 +30,8 @@
                         [placeholder]="'Type to add step'"
                         class="step-suggestion">
             <ng-template let-stepCallSuggestion pTemplate="item">
-                <div class="ui-helper-clearfix suggestion-line-container" style="border-bottom:1px solid #D5D5D5">
-                    <span *ngIf="stepCallSuggestion.actionText" class="step-call-action-text" [innerHTML]="stepCallSuggestion.actionText"></span>
+                <div class="ui-helper-clearfix suggestion-line-container test_step-suggestion-autocomplete" style="border-bottom:1px solid #D5D5D5">
+                    <span *ngIf="stepCallSuggestion.actionText" class="step-call-action-text test_step-suggestion-autocomplete" [innerHTML]="stepCallSuggestion.actionText"></span>
                     <span>{{stepCallSuggestion.stepText}}</span>
                 </div>
             </ng-template>
@@ -40,7 +40,7 @@
         <!-- BUTTONS -->
         <div class="step-editor-button-panel btn-group">
 
-            <div title="Select Step" class="btn btn-default btn-group"
+            <div title="Select Step" class="btn btn-default btn-group test_select-step-from-the-tree"
                  (click)="selectStepFromPopup(); $event.stopPropagation()">
                 <i class="fa_my-plus" aria-hidden="true"></i>
             </div>

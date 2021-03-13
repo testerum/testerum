@@ -1,0 +1,3 @@
+step-def: Then the number of executed passed tests should be <<numberOfExecutedTests: TEXT>>
+
+    step: Then the text of element <<.test_number-of-total-tests>> should be <<{{numberOfExecutedTests}}>>

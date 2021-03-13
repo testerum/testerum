@@ -1,0 +1,15 @@
+test-def: Create an empty manual test in the root directory.
+
+    description = <<
+        Create an empty manual test in the root directory without any steps.
+        
+        The test name will be a given name : First manual test created outside any feature.
+        
+        Then the type should be Manual.
+    >>
+
+    step: Given I am on Home screen page
+    step: When I continue with free license
+    step: When I create a new project <<Testerum-manual-tests>> with the path <<{{PATH_TO_MANUAL_TESTS_PROJECT}}>>
+    step: When I create a manual test in the root directory without any steps inside
+    step: Then the test label should be Manual

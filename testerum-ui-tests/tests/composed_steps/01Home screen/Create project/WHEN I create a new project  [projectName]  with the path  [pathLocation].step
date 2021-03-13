@@ -1,0 +1,15 @@
+step-def: When I create a new project <<projectName: TEXT>> with the path <<pathLocation: TEXT>>
+
+    step: When I wait until the element <<.test_create-new-project>> is visible
+    step: When I execute the WebDriver JS script <<{{script}}>>
+        var script = <<
+            var WebDriverWait = Java.type("org.openqa.selenium.support.ui.WebDriverWait");
+            var ExpectedCondition = Java.type("org.openqa.selenium.support.ui.ExpectedCondition");
+            
+            new WebDriverWait(webDriver, 60).until(function(wd) { wd.executeScript("return window.getAllAngularTestabilities().findIndex(x=\>!x.isStable()) === -1") });
+        >>
+    step: When I click the element <<.test_create-new-project>>
+    step: When I wait until the element <<.test_project-name>> is visible
+    step: When I type the project name <<{{projectName}}>>
+    step: When I type the path <<{{pathLocation}}>>
+    step: When I click the element <<.test_create-project-btn>>

@@ -1,0 +1,3 @@
+test-def: Check Tests Results
+
+    test-properties = <<manual>>

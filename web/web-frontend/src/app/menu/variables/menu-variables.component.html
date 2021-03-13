@@ -1,5 +1,5 @@
 <div class="menu-variables">
-    <select class="form-control"
+    <select class="form-control test_select-environment"
             [(ngModel)]="selectedEnvironment"
             (change)="onEnvironmentChange($event)">
         <option *ngFor="let availableEnvironment of availableEnvironments" [value]="availableEnvironment">
@@ -9,7 +9,7 @@
 
     <a href="" (click)="showVariables(); false;"
        title="View & Edit variables">
-        <i class="icon-menu-item fas fa-edit"></i>
+        <i class="icon-menu-item fas fa-edit test_vars-and-env-icon"></i>
     </a>
 
     <variables></variables>

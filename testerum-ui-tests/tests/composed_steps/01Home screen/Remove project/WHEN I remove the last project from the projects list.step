@@ -1,0 +1,5 @@
+step-def: When I remove the last project from the projects list
+
+    step: When I move the mouse pointer over the element <<.test_recent-project-name>>
+    step: When I click the element <<.test_recent-project-remove-btn>>
+    step: When I click the element <<.test_ok-option>>

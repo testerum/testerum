@@ -1,0 +1,9 @@
+test-def: 02 check "name" variable is "SuperMan"
+
+    description = <<
+        We have an after hook on ``dir with hooks`` that sets the ``name`` variable to ``BatMan``.
+        
+        This test checks that that change is not visible between tests.
+    >>
+
+    step: Then <<{{name}}>> is equal to <<SuperMan>>

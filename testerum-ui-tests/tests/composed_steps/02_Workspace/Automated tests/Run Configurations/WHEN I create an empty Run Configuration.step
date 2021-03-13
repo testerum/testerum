@@ -1,0 +1,5 @@
+step-def: When I create an empty Run Configuration
+
+    step: When I click the element <<.test_add-run-config>>
+    step: When I click the element <<.test_add-run-config-btn>>
+    step: When I click the element <<.test_save-run-configuration-btn>>

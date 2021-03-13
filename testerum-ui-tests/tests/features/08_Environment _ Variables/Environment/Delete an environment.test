@@ -1,0 +1,31 @@
+test-def: Delete an environment
+
+    description = <<
+        1. We will create a global variable in Default environment FIRST_DEFINED_VAR which has the value "true".
+        2. We create a new environment called Production which overrides the FIRST_DEFINED_VAR with the value "false".
+        3. We delete the environment Production.
+        4. .We expect too see the default environment.
+    >>
+
+    step: Given I am on Home screen page
+    step: When I continue with free license
+    step: When I create a new project <<Environments-and-variables>> with the path <<{{PATH_FOR_NEW_PROJECT}}>>
+    step: When I open the environment variables menu
+    step: When I define the variable <<FIRST_DEFINED_VAR>> with the value <<true>> in the environment variables
+    step: When I save the environment variables
+    step: When I open the environment variables menu
+    step: When I add a new environment <<production>> in the environment and variables
+    step: Then I override the value <<true>> of the global variable <<FIRST_DEFINED_VAR>> with new value <<false>>
+    step: When I save the environment variables
+    step: When I open the environment variables menu
+    step: When I edit the current environment
+    step: When I delete the environment
+    step: When I save the environment variables
+    step: When I create an automated test <<Environment variables test, add a global variable and use it inside the test>> in the root directory
+    step: When I add the step <<Then <<actualValue\>\> is true>> into autocomplete field
+    step: When I set the step parameter with the value <<FIRST_DEFINED_VAR>> which sets the moustache pattern
+    step: When I save the test
+    step: When I execute the test
+    step: When wait until the execution has finished
+    step: Then the number of executed passed tests should be <<1>>
+    step: Then the current environment name should be "Default"

@@ -1,3 +1,2 @@
 
-after-all-hook: Then <<{{name}}>> is equal to <<Testerum>>
-after-all-hook: Then the step can access the "name" variable that has the value <<Testerum>>
+after-all-hook: Then this step can not access the "name" variable

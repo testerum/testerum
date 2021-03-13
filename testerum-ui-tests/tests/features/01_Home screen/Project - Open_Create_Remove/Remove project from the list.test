@@ -1,0 +1,9 @@
+test-def: Remove project from the list
+
+    step: When I delete the file <<{{PATH_FOR_NEW_PROJECT}}>> from the hard drive
+    step: Given I am on Home screen page
+    step: When I continue with free license
+    step: When I create a new project <<Empty-Testerum-Project>> with the path <<{{PATH_FOR_NEW_PROJECT}}>>
+    step: When I click on Testerum logo to navigate back to welcome page
+    step: When I remove the last project from the projects list
+    step: Then the project <<Empty-Testerum-Project>> should not be in the list

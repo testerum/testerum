@@ -1,0 +1,6 @@
+test-def: Create project
+
+    step: Given I am on Home screen page
+    step: When I continue with free license
+    step: When I create a new project <<Testerum-ui-tests>> with the path <<{{PROJECT_PATH}}>>
+    step: Then the url of the current page should be <<{{WELCOME_PAGE}}Testerum-ui-tests/project>>
