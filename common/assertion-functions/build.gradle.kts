@@ -10,12 +10,12 @@ dependencies {
     implementation(project(":common-json-diff-util"))
 
     implementation(kotlin("stdlib-jdk8"))
+
     implementation("org.slf4j:slf4j-api")
     implementation("org.apache.commons:commons-lang3")
     implementation("com.fasterxml.jackson.core:jackson-databind")
-
     implementation("org.jparsec:jparsec")
-    implementation("org.codehaus.janino:janino:3.0.7")
+    implementation("org.codehaus.janino:janino")
     implementation("com.google.guava:guava")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api")

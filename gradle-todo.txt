@@ -8,11 +8,11 @@
 [v] cloud-client
 [v] common-parsing
 [v] common-json-diff-util
-[ ] assertion-functions
-[ ] common-angular
-[ ] common-cmdline
-[ ] common-fsnotifier
-[ ] common-httpclient
+[v] assertion-functions
+[v] common-angular
+[v] common-cmdline
+[v] common-fsnotifier
+[v] common-httpclient
 [ ] common-rdbms
 [ ] common-json-diff
 [ ] common-profiles

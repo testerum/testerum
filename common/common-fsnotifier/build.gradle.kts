@@ -9,6 +9,7 @@ dependencies {
     implementation(project(":common-kotlin"))
 
     implementation(kotlin("stdlib-jdk8"))
+
     implementation("org.slf4j:slf4j-api")
     implementation("org.zeroturnaround:zt-exec")
     implementation("org.zeroturnaround:zt-process-killer")
