@@ -22,8 +22,8 @@
 [v] common-encrypted-prefs
 [v] test-file-format
 [v] settings
-[ ] testerum-scanner
-[ ] testerum-runner-api
+[v] testerum-scanner
+[v] testerum-runner-api
 [ ] file-service
 [ ] project-manager
 [ ] report-generators

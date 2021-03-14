@@ -35,6 +35,7 @@ dependencies {
         api("org.slf4j:jcl-over-slf4j:$slf4jVersion")
         api("ch.qos.logback:logback-core:$logbackVersion")
         api("ch.qos.logback:logback-classic:$logbackVersion")
+        api("org.logback-extensions:logback-ext-spring:0.1.1")
 
         // nashorn
         api("org.javadelight:delight-nashorn-sandbox:0.1.19")
@@ -49,7 +50,6 @@ dependencies {
         api("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
         api("com.fasterxml.jackson.datatype:jackson-datatype-guava:$jacksonVersion")
         api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
-        api("org.logback-extensions:logback-ext-spring:0.1.1")
 
         // xml
         api("org.jdom:jdom2:2.0.6")
@@ -71,7 +71,7 @@ dependencies {
         api("javax.servlet:javax.servlet-api:4.0.1")
 
         // wiremock
-        api("com.github.tomakehurst:wiremock-standalone:2.18.0")
+        api("com.github.tomakehurst:wiremock-standalone:2.27.2")
 
         // database
         api("org.flywaydb:flyway-core:4.1.2")
@@ -99,15 +99,15 @@ dependencies {
         api("org.apache.commons:commons-text:1.6")
         api("commons-io:commons-io:2.6")
         api("com.google.guava:guava:22.0")
-        api("com.github.javafaker:javafaker:0.16")
+        api("com.github.javafaker:javafaker:1.0.2")
         api("com.github.mifmif:generex:1.0.2")
 
         // test libraries
         val junitJupiterVersion = "5.6.2"
         api("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
         api("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-        api("org.assertj:assertj-core:3.18.1")
         api("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+        api("org.assertj:assertj-core:3.18.1")
     }
 }
 
