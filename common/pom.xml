@@ -21,6 +21,7 @@
         <module>common-expression-evaluator</module>
         <module>common-fsnotifier</module>
         <module>common-httpclient</module>
+        <module>common-logging</module>
         <module>common-rdbms</module>
         <module>common-di</module>
         <module>common-json-diff</module>

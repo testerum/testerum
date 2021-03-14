@@ -98,6 +98,8 @@ class RemoteServerExecutionListener(properties: Map<String, String>) : Execution
             val response = httpClientService.executeHttpRequest(request)
 
             if (response.statusCode >= 400) {
+                LOGGER.error("Report Server responded with status code: ${response.statusCode}")
+
                 throw RuntimeException(
                     """|An error occurred while calling the Report Server at URL: $reportServerUrl
                        |HTTP Request: $request
