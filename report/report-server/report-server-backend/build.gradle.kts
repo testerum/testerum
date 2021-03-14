@@ -2,7 +2,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     id("org.springframework.boot")
-    id("io.spring.dependency-management")
 }
 
 val frontendClasspath: Configuration by configurations.creating {
@@ -15,6 +14,8 @@ configurations.implementation.configure {
 
 dependencies {
     implementation(platform(project(":build-platform")))
+
+    implementation(platform("org.springframework.boot:spring-boot-dependencies"))
 
     implementation(project(":common-angular"))
     implementation(project(":common-kotlin"))
@@ -29,17 +30,12 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("org.logback-extensions:logback-ext-spring")
     implementation("com.fasterxml.jackson.core:jackson-annotations")
-    implementation("com.fasterxml.jackson.module:jackson-module-afterburner")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-//    implementation("org.springframework:spring-core:5.2.8.RELEASE")
-
 
     frontendClasspath(project(mapOf(
         "path" to ":report-server-frontend",
         "configuration" to "frontendJars"
     )))
 }
-

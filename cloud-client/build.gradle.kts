@@ -11,7 +11,6 @@ dependencies {
     implementation(project(":common-di"))
 
     implementation(kotlin("stdlib-jdk8"))
-
     implementation("com.fasterxml.jackson.core:jackson-annotations")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.module:jackson-module-afterburner")

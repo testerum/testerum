@@ -6,7 +6,6 @@ dependencies {
     implementation(platform(project(":build-platform")))
 
     implementation(kotlin("stdlib-jdk8"))
-
     implementation("org.bouncycastle:bcpkix-jdk15on")
     implementation("org.apache.commons:commons-text")
 

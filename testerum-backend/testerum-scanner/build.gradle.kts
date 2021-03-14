@@ -15,7 +15,6 @@ dependencies {
     implementation("com.testerum:testerum-steps-api")
 
     implementation(kotlin("stdlib-jdk8"))
-
     implementation("org.slf4j:slf4j-api")
     implementation("com.fasterxml.jackson.core:jackson-annotations")
     implementation("com.fasterxml.jackson.core:jackson-core")

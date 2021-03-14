@@ -24,13 +24,13 @@
 [v] settings
 [v] testerum-scanner
 [v] testerum-runner-api
-[ ] file-service
-[ ] project-manager
-[ ] report-generators
-[ ] report-server-frontend
-[ ] report-server-backend
-[ ] step-rdbms-util
-[ ] step-transformer-utils
+[v] file-service
+[v] project-manager
+[v] report-generators
+[v] report-server-frontend
+[v] report-server-backend
+[v] step-rdbms-util
+[v] step-transformer-utils
 [ ] testerum-extensions-maven-plugin
 [ ] assertion-steps
 [ ] debug-steps

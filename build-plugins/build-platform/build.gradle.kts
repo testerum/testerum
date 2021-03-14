@@ -67,6 +67,9 @@ dependencies {
         // http client
         api("org.apache.httpcomponents:httpclient:4.5.6")
 
+        // spring boot
+        api("org.springframework.boot:spring-boot-dependencies:2.3.3.RELEASE")
+
         // http server
         api("javax.servlet:javax.servlet-api:4.0.1")
 
