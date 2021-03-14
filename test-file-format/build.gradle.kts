@@ -9,6 +9,7 @@ dependencies {
     api(project(":common-parsing"))
 
     implementation(kotlin("stdlib-jdk8"))
+
     implementation("org.slf4j:slf4j-api")
     implementation("org.jparsec:jparsec")
 

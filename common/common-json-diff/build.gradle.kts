@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":assertion-functions"))
 
     implementation(kotlin("stdlib-jdk8"))
+
     implementation("org.slf4j:slf4j-api")
     implementation("com.fasterxml.jackson.core:jackson-databind")
 
