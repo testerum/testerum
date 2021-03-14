@@ -67,35 +67,6 @@ Date:   Sat Mar 13 23:39:12 2021 +0100
 [INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
 [INFO] \- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
 [INFO] 
-[INFO] --------------------< com.testerum:assertion-steps >--------------------
-[INFO] Building assertion-steps develop-SNAPSHOT                        [44/67]
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ assertion-steps ---
-[INFO] com.testerum:assertion-steps:jar:develop-SNAPSHOT
-[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
-[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
-[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
-[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
-[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
-[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
-[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
-[INFO] 
-[INFO] ----------------------< com.testerum:debug-steps >----------------------
-[INFO] Building debug-steps develop-SNAPSHOT                            [45/67]
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ debug-steps ---
-[INFO] com.testerum:debug-steps:jar:develop-SNAPSHOT
-[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
-[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
-[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
-[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
-[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
-[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
-[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
-[INFO] \- org.apache.commons:commons-lang3:jar:3.8.1:compile
-[INFO] 
 [INFO] ----------------------< com.testerum:json-steps >-----------------------
 [INFO] Building json-steps develop-SNAPSHOT                             [46/67]
 [INFO] --------------------------------[ jar ]---------------------------------
@@ -382,104 +353,6 @@ Date:   Sat Mar 13 23:39:12 2021 +0100
 [INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
 [INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
 [INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
-[INFO] 
-[INFO] ------------------< com.testerum:testerum-scanner-it >------------------
-[INFO] Building testerum-scanner-it develop-SNAPSHOT                    [53/67]
-[INFO] --------------------------------[ pom ]---------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner-it ---
-[INFO] com.testerum:testerum-scanner-it:pom:develop-SNAPSHOT
-[INFO] 
-[INFO] -------------< com.testerum:testerum-scanner-it-steplib1 >--------------
-[INFO] Building testerum-scanner-it-steplib1 develop-SNAPSHOT           [54/67]
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner-it-steplib1 ---
-[INFO] com.testerum:testerum-scanner-it-steplib1:jar:develop-SNAPSHOT
-[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
-[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
-[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
-[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
-[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
-[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
-[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
-[INFO] 
-[INFO] -------------< com.testerum:testerum-scanner-it-steplib2 >--------------
-[INFO] Building testerum-scanner-it-steplib2 develop-SNAPSHOT           [55/67]
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner-it-steplib2 ---
-[INFO] com.testerum:testerum-scanner-it-steplib2:jar:develop-SNAPSHOT
-[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
-[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
-[INFO] \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
-[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
-[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
-[INFO]    |  \- org.jetbrains:annotations:jar:13.0:compile
-[INFO]    \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
-[INFO] 
-[INFO] -----------< com.testerum:testerum-scanner-it-steplib3-java >-----------
-[INFO] Building testerum-scanner-it-steplib3-java develop-SNAPSHOT      [56/67]
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner-it-steplib3-java ---
-[INFO] com.testerum:testerum-scanner-it-steplib3-java:jar:develop-SNAPSHOT
-[INFO] \- com.testerum:testerum-steps-api:jar:5.2.0:compile
-[INFO]    +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
-[INFO]    |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
-[INFO]    |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
-[INFO]    |  |  \- org.jetbrains:annotations:jar:13.0:compile
-[INFO]    |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
-[INFO]    \- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
-[INFO] 
-[INFO] ---------------< com.testerum:testerum-scanner-it-test >----------------
-[INFO] Building testerum-scanner-it-test develop-SNAPSHOT               [57/67]
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ testerum-scanner-it-test ---
-[INFO] com.testerum:testerum-scanner-it-test:jar:develop-SNAPSHOT
-[INFO] +- com.testerum:testerum-scanner:jar:develop-SNAPSHOT:compile
-[INFO] |  +- com.testerum:common-kotlin:jar:develop-SNAPSHOT:compile
-[INFO] |  |  +- com.testerum:common-jdk:jar:develop-SNAPSHOT:compile
-[INFO] |  |  +- org.jetbrains.kotlin:kotlin-reflect:jar:1.4.31:compile
-[INFO] |  |  \- commons-io:commons-io:jar:2.6:compile
-[INFO] |  +- com.testerum:common-di:jar:develop-SNAPSHOT:compile
-[INFO] |  +- com.testerum:settings:jar:develop-SNAPSHOT:compile
-[INFO] |  |  \- org.apache.commons:commons-lang3:jar:3.8.1:compile
-[INFO] |  +- com.testerum:model:jar:develop-SNAPSHOT:compile
-[INFO] |  |  +- com.testerum:common-nashorn:jar:develop-SNAPSHOT:compile
-[INFO] |  |  +- org.jdom:jdom2:jar:2.0.6:compile
-[INFO] |  |  \- jaxen:jaxen:jar:1.2.0:compile
-[INFO] |  +- com.testerum:common-parsing:jar:develop-SNAPSHOT:compile
-[INFO] |  +- com.testerum:common-fast-serialization:jar:develop-SNAPSHOT:compile
-[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.25:compile
-[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.11.3:compile
-[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.11.3:compile
-[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.11.3:compile
-[INFO] |  +- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.11.3:compile
-[INFO] |  +- com.fasterxml.jackson.module:jackson-module-kotlin:jar:2.11.3:compile
-[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.11.3:compile
-[INFO] |  +- io.github.classgraph:classgraph:jar:4.8.90:compile
-[INFO] |  \- org.jparsec:jparsec:jar:3.0:compile
-[INFO] +- com.testerum:testerum-scanner-it-steplib1:jar:develop-SNAPSHOT:compile
-[INFO] +- com.testerum:testerum-scanner-it-steplib2:jar:develop-SNAPSHOT:compile
-[INFO] +- com.testerum:testerum-scanner-it-steplib3-java:jar:develop-SNAPSHOT:compile
-[INFO] +- com.testerum:testerum-steps-api:jar:5.2.0:compile
-[INFO] +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.4.31:compile
-[INFO] |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.31:compile
-[INFO] |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.31:compile
-[INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
-[INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
-[INFO] +- org.slf4j:slf4j-simple:jar:1.7.25:test
-[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:5.6.2:test
-[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
-[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
-[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.6.2:test
-[INFO] +- org.junit.jupiter:junit-jupiter-params:jar:5.6.2:test
-[INFO] +- org.junit.jupiter:junit-jupiter-engine:jar:5.6.2:test
-[INFO] |  \- org.junit.platform:junit-platform-engine:jar:1.6.2:test
-[INFO] +- org.junit.platform:junit-platform-launcher:jar:1.6.2:test
-[INFO] \- org.assertj:assertj-core:jar:3.18.1:test
 [INFO] 
 [INFO] ----------------< com.testerum:testerum-runner-cmdline >----------------
 [INFO] Building testerum-runner-cmdline develop-SNAPSHOT                [58/67]
@@ -912,13 +785,6 @@ Date:   Sat Mar 13 23:39:12 2021 +0100
 [INFO] |  \- org.springframework:spring-expression:jar:5.2.8.RELEASE:compile
 [INFO] \- org.springframework:spring-context-support:jar:5.2.8.RELEASE:compile
 [INFO] 
-[INFO] --------------------------< com.testerum:web >--------------------------
-[INFO] Building web develop-SNAPSHOT                                    [63/67]
-[INFO] --------------------------------[ pom ]---------------------------------
-[INFO] 
-[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ web ---
-[INFO] com.testerum:web:pom:develop-SNAPSHOT
-[INFO] 
 [INFO] ---------------------< com.testerum:web-frontend >----------------------
 [INFO] Building web-frontend develop-SNAPSHOT                           [64/67]
 [INFO] --------------------------------[ jar ]---------------------------------
@@ -1219,79 +1085,3 @@ Date:   Sat Mar 13 23:39:12 2021 +0100
 [INFO] |  |  \- org.jetbrains:annotations:jar:13.0:compile
 [INFO] |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.4.31:compile
 [INFO] \- org.apache.commons:commons-lang3:jar:3.8.1:compile
-[INFO] ------------------------------------------------------------------------
-[INFO] Reactor Summary for testerum develop-SNAPSHOT:
-[INFO] 
-[INFO] testerum ........................................... SUCCESS [  0.516 s]
-[INFO] common ............................................. SUCCESS [  0.006 s]
-[INFO] common-jdk ......................................... SUCCESS [  0.016 s]
-[INFO] common-kotlin ...................................... SUCCESS [  0.021 s]
-[INFO] common-nashorn ..................................... SUCCESS [  0.009 s]
-[INFO] common-expression-evaluator ........................ SUCCESS [  0.038 s]
-[INFO] model .............................................. SUCCESS [  0.047 s]
-[INFO] common-crypto ...................................... SUCCESS [  0.012 s]
-[INFO] common-di .......................................... SUCCESS [  0.007 s]
-[INFO] cloud-client ....................................... SUCCESS [  0.042 s]
-[INFO] common-parsing ..................................... SUCCESS [  0.006 s]
-[INFO] common-json-diff-util .............................. SUCCESS [  0.005 s]
-[INFO] assertion-functions ................................ SUCCESS [  0.020 s]
-[INFO] common-angular ..................................... SUCCESS [  0.006 s]
-[INFO] common-cmdline ..................................... SUCCESS [  0.005 s]
-[INFO] common-fsnotifier .................................. SUCCESS [  0.011 s]
-[INFO] common-httpclient .................................. SUCCESS [  0.011 s]
-[INFO] common-rdbms ....................................... SUCCESS [  0.008 s]
-[INFO] common-json-diff ................................... SUCCESS [  0.015 s]
-[INFO] common-profiles .................................... SUCCESS [  0.005 s]
-[INFO] common-json ........................................ SUCCESS [  0.010 s]
-[INFO] common-fast-serialization .......................... SUCCESS [  0.007 s]
-[INFO] common-stats ....................................... SUCCESS [  0.009 s]
-[INFO] common-encrypted-prefs ............................. SUCCESS [  0.005 s]
-[INFO] test-file-format ................................... SUCCESS [  0.011 s]
-[INFO] settings ........................................... SUCCESS [  0.010 s]
-[INFO] testerum-backend ................................... SUCCESS [  0.003 s]
-[INFO] testerum-scanner ................................... SUCCESS [  0.017 s]
-[INFO] testerum-runner .................................... SUCCESS [  0.003 s]
-[INFO] testerum-runner-api ................................ SUCCESS [  0.010 s]
-[INFO] file-service ....................................... SUCCESS [  0.020 s]
-[INFO] project-manager .................................... SUCCESS [  0.015 s]
-[INFO] report ............................................. SUCCESS [  0.002 s]
-[INFO] report-generators .................................. SUCCESS [  0.011 s]
-[INFO] report-server ...................................... SUCCESS [  0.002 s]
-[INFO] report-server-frontend ............................. SUCCESS [  0.007 s]
-[INFO] report-server-backend .............................. SUCCESS [  0.081 s]
-[INFO] step-util .......................................... SUCCESS [  0.003 s]
-[INFO] step-rdbms-util .................................... SUCCESS [  0.009 s]
-[INFO] step-transformer-utils ............................. SUCCESS [  0.004 s]
-[INFO] steps .............................................. SUCCESS [  0.003 s]
-[INFO] tools .............................................. SUCCESS [  0.003 s]
-[INFO] testerum-extensions-maven-plugin ................... SUCCESS [  0.062 s]
-[INFO] assertion-steps .................................... SUCCESS [  0.011 s]
-[INFO] debug-steps ........................................ SUCCESS [  0.005 s]
-[INFO] json-steps ......................................... SUCCESS [  0.014 s]
-[INFO] rdbms-steps ........................................ SUCCESS [  0.014 s]
-[INFO] http-steps ......................................... SUCCESS [  0.014 s]
-[INFO] selenium-steps ..................................... SUCCESS [  0.040 s]
-[INFO] test-steps ......................................... SUCCESS [  0.004 s]
-[INFO] util-steps ......................................... SUCCESS [  0.008 s]
-[INFO] vars-steps ......................................... SUCCESS [  0.004 s]
-[INFO] testerum-scanner-it ................................ SUCCESS [  0.002 s]
-[INFO] testerum-scanner-it-steplib1 ....................... SUCCESS [  0.004 s]
-[INFO] testerum-scanner-it-steplib2 ....................... SUCCESS [  0.006 s]
-[INFO] testerum-scanner-it-steplib3-java .................. SUCCESS [  0.004 s]
-[INFO] testerum-scanner-it-test ........................... SUCCESS [  0.014 s]
-[INFO] testerum-runner-cmdline ............................ SUCCESS [  0.020 s]
-[INFO] testerum-junit ..................................... SUCCESS [  0.033 s]
-[INFO] testerum-junit-all ................................. SUCCESS [  0.032 s]
-[INFO] testerum-runner-cmdline-debug ...................... SUCCESS [  0.046 s]
-[INFO] testerum-runner-spring ............................. SUCCESS [  0.037 s]
-[INFO] web ................................................ SUCCESS [  0.004 s]
-[INFO] web-frontend ....................................... SUCCESS [  0.003 s]
-[INFO] web-launcher ....................................... SUCCESS [  0.012 s]
-[INFO] web-backend ........................................ SUCCESS [  0.148 s]
-[INFO] integration-tests .................................. SUCCESS [  0.054 s]
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  2.380 s
-[INFO] Finished at: 2021-03-14T15:52:43+01:00
-[INFO] ------------------------------------------------------------------------

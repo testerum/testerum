@@ -6,7 +6,8 @@ plugins {
 dependencies {
     implementation(platform(project(":build-platform")))
 
-    implementation(kotlin("stdlib-jdk8"))
     implementation("com.testerum:testerum-steps-api")
+
+    implementation(kotlin("stdlib-jdk8"))
     implementation("org.apache.commons:commons-lang3")
 }

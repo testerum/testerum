@@ -41,10 +41,10 @@
 [ ] test-steps
 [ ] util-steps
 [ ] vars-steps
-[ ] testerum-scanner-it-steplib1
-[ ] testerum-scanner-it-steplib2
-[ ] testerum-scanner-it-steplib3-java
-[ ] testerum-scanner-it-test
+[v] testerum-scanner-it-steplib1
+[v] testerum-scanner-it-steplib2
+[v] testerum-scanner-it-steplib3-java
+[v] testerum-scanner-it-test
 [ ] testerum-runner-cmdline
 [ ] testerum-junit
 [ ] testerum-junit-all
@@ -54,3 +54,6 @@
 [ ] web-launcher
 [ ] web-backend
 [ ] integration-tests
+
+https://www.google.com/search?q=compile+maven+plugin+with+gradle
+https://www.google.com/search?q=gradle+find+unused+dependencies
