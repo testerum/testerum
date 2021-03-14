@@ -6,8 +6,8 @@
 [v] common-crypto
 [v] common-di
 [v] cloud-client
-[ ] common-parsing
-[ ] common-json-diff-util
+[v] common-parsing
+[v] common-json-diff-util
 [ ] assertion-functions
 [ ] common-angular
 [ ] common-cmdline

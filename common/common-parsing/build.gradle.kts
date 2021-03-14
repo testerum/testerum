@@ -5,7 +5,8 @@ plugins {
 dependencies {
     implementation(platform(project(":build-platform")))
 
-    api("org.jparsec:jparsec")
     implementation(kotlin("stdlib-jdk8"))
+
+    api("org.jparsec:jparsec")
     implementation("commons-io:commons-io")
 }
