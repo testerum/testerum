@@ -1,0 +1,65 @@
+[v] common-jdk
+[v] common-kotlin
+[v] common-nashorn
+[v] common-expression-evaluator
+[v] model
+[v] common-crypto
+[v] common-di
+[v] cloud-client
+[ ] common-parsing
+[ ] common-json-diff-util
+[ ] assertion-functions
+[ ] common-angular
+[ ] common-cmdline
+[ ] common-fsnotifier
+[ ] common-httpclient
+[ ] common-rdbms
+[ ] common-json-diff
+[ ] common-profiles
+[ ] common-json
+[ ] common-fast-serialization
+[ ] common-stats
+[ ] common-encrypted-prefs
+[ ] test-file-format
+[ ] settings
+[ ] testerum-backend
+[ ] testerum-scanner
+[ ] testerum-runner
+[ ] testerum-runner-api
+[ ] file-service
+[ ] project-manager
+[ ] report
+[ ] report-generators
+[ ] report-server
+[ ] report-server-frontend
+[ ] report-server-backend
+[ ] step-util
+[ ] step-rdbms-util
+[ ] step-transformer-utils
+[ ] steps
+[ ] tools
+[ ] testerum-extensions-maven-plugin
+[ ] assertion-steps
+[ ] debug-steps
+[ ] json-steps
+[ ] rdbms-steps
+[ ] http-steps
+[ ] selenium-steps
+[ ] test-steps
+[ ] util-steps
+[ ] vars-steps
+[ ] testerum-scanner-it
+[ ] testerum-scanner-it-steplib1
+[ ] testerum-scanner-it-steplib2
+[ ] testerum-scanner-it-steplib3-java
+[ ] testerum-scanner-it-test
+[ ] testerum-runner-cmdline
+[ ] testerum-junit
+[ ] testerum-junit-all
+[ ] testerum-runner-cmdline-debug
+[ ] testerum-runner-spring
+[ ] web
+[ ] web-frontend
+[ ] web-launcher
+[ ] web-backend
+[ ] integration-tests

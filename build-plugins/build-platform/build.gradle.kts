@@ -19,7 +19,7 @@ dependencies {
         }
 
         // testerum-api
-        api("com.testerum:testerum-steps-api:develop-SNAPSHOT")
+        api("com.testerum:testerum-steps-api:5.2.0")
 
         // kotlin
         val kotlinVersion: String by project
@@ -90,6 +90,9 @@ dependencies {
 
         // quartz
         api("org.quartz-scheduler:quartz:2.3.1")
+
+        // BouncyCastle
+        api("org.bouncycastle:bcpkix-jdk15on:1.60")
 
         // misc libraries
         api("org.apache.commons:commons-lang3:3.8.1")
