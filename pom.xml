@@ -97,7 +97,7 @@
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
         <!-- Kotlin settings -->
-        <kotlin.version>1.4.20</kotlin.version>
+        <kotlin.version>1.4.31</kotlin.version>
         <kotlin.apiVersion>1.4</kotlin.apiVersion>
         <kotlin.languageVersion>1.4</kotlin.languageVersion>
         <kotlin.jvmTarget>${maven.compiler.target}</kotlin.jvmTarget>
@@ -179,6 +179,12 @@
             <dependency>
                 <groupId>com.testerum</groupId>
                 <artifactId>common-httpclient</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.testerum</groupId>
+                <artifactId>common-logging</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

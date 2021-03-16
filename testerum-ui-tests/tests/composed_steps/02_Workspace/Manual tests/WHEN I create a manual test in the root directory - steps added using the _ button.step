@@ -1,0 +1,8 @@
+step-def: When I create a manual test in the root directory - steps added using the + button
+
+    step: When I create a test in the root directory
+    step: When I type <<First manual test created outside any feature>> into the field <<.test_create-test-name>>
+    step: When I click the element <<.test_toggle-manual-or-automated>>
+    step: When I click the element <<.test_edit-mode-save-button>>
+    step: When I add a step to navigate to an url <<Given the page at url <<url\>\> is open>> using the + button
+    step: When I save the test

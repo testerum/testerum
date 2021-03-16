@@ -1,5 +1,5 @@
 <div class="menu-runner">
-    <p-dropdown
+    <p-dropdown class="test_add-run-config"
         [options]="runnersSelectItems"
         [(ngModel)]="selectedItem"
         (onClick)="onRunnersDropDownClick()"
@@ -21,7 +21,7 @@
     </p-dropdown>
 
 
-    <i class="run-button fas fa-play"
+    <i class="run-button fas fa-play test_execute-run-config-btn"
        (click)="onExecuteRunConfig()"
        [class.run-button-disabled]="!isRunnableConfigSelected()"></i>
 </div>

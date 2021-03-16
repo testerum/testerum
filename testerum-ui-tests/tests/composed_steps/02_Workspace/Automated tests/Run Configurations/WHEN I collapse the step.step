@@ -1,0 +1,3 @@
+step-def: When I collapse the step
+
+    step: When I click the element <<.step-text-container>>

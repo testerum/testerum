@@ -44,7 +44,7 @@
                                    #nameNgModel="ngModel"
                                    [ngModel]="newParam.name"
                                    (ngModelChange)="onNameChange($event)"
-                                   type="text" class="form-control" name="name">
+                                   type="text" class="form-control test_scenario-add-param-name" name="name">
                             <input-error [model]="nameNgModel"
                                          [errorMessages]="{
                                         required: 'A name is required',
@@ -81,7 +81,7 @@
                                          (valueChange)="onValueChange($event)"></json-editor>
 
                             <!-- TEXT VALUE -->
-                            <div *ngIf="!isJsonValueType()" #parentElement class="my-text-editor-container">
+                            <div *ngIf="!isJsonValueType()" #parentElement class="my-text-editor-container test_text-editor">
                                 <monaco-editor #monacoEditorComponent
                                                [options]="editorOptions"
                                                [value]="newParam.value"
@@ -101,7 +101,7 @@
                 <button (click)="onCancel();$event.stopPropagation();" type="button" class="btn btn-default">Cancel</button>
                 <button (click)="onOk();$event.stopPropagation();"
                         [disabled]="!isValid()"
-                        type="button" class="btn btn-primary">Ok</button>
+                        type="button" class="btn btn-primary test_scenario-add-param-ok-button">Ok</button>
             </div>
         </div>
     </div>

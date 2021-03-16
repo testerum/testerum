@@ -1,0 +1,3 @@
+step-def: When I type the path <<pathLocation: TEXT>>
+
+    step: When I type <<{{pathLocation}}>> into the field <<.test_directory-chooser>>

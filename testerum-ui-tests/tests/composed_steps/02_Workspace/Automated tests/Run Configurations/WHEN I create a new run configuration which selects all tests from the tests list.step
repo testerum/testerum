@@ -1,0 +1,6 @@
+step-def: When I create a new run configuration which selects all tests from the tests list
+
+    step: When I click the element <<.test_add-run-config>>
+    step: When I click the element <<.test_add-run-config-btn>>
+    step: When I click the element <<xpath=//*[contains(@class, 'test_select-test-to-add-to-run-config')][1]>>
+    step: When I click the element <<.test_save-run-configuration-btn>>

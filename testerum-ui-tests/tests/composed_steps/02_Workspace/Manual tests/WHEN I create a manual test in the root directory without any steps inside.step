@@ -1,0 +1,7 @@
+step-def: When I create a manual test in the root directory without any steps inside
+
+    step: When I move the mouse pointer over the element <<.test_full-line>>
+    step: When I click the element <<.test_create-test-button>>
+    step: When I type <<First manual test created outside any feature>> into the field <<.test_create-test-name>>
+    step: When I click the element <<.test_toggle-manual-or-automated>>
+    step: When I click the element <<.test_edit-mode-save-button>>

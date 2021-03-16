@@ -1,0 +1,3 @@
+test-def: Create Mock resource
+
+    test-properties = <<manual>>

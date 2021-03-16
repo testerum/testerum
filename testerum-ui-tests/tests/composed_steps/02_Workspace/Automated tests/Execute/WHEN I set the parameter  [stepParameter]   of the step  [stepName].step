@@ -1,0 +1,5 @@
+step-def: When I set the parameter <<stepParameter: TEXT>>  of the step <<stepName: TEXT>>
+
+    step: When I click the element <<.test_step-parameter-edit-button>>
+    step: When I type <<https://www.google.com/>> into the field <<.test_input-parameter-text>>
+    step: When I click the element <<.test_input-parameter-ok-button>>

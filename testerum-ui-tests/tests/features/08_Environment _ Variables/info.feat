@@ -1,0 +1,2 @@
+
+before-each-hook: When I delete the file <<{{PATH_FOR_NEW_PROJECT}}/Environments-and-variables>> from the hard drive

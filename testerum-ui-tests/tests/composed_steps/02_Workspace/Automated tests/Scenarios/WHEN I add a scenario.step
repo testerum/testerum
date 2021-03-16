@@ -1,0 +1,9 @@
+step-def: When I add a scenario
+
+    step: When I click the element <<.test_add-scenario-button>>
+    step: When I move the mouse pointer over the element <<.text_and_buttons>>
+    step: When I wait until the element <<.test_scenarios-add-parameter-button>> is visible
+    step: When I click the element <<.test_scenarios-add-parameter-button>>
+    step: When I type <<URL_FROM_SCENARIO>> into the field <<.test_scenario-add-param-name>>
+    step: When I type <<https://www.youtube.com/>> into the field <<.view-lines>>
+    step: When I click the element <<.test_scenario-add-param-ok-button>>

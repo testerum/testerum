@@ -1,0 +1,3 @@
+step-def: When I open the environment variables menu
+
+    step: When I click the element <<.test_vars-and-env-icon>>

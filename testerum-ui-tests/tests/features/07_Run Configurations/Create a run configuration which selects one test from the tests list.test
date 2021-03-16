@@ -1,0 +1,17 @@
+test-def: Create a run configuration which selects one test from the tests list
+
+    step: Given I am on Home screen page
+    step: When I continue with free license
+    step: When I create a new project <<Run-configuration>> with the path <<{{PATH_FOR_NEW_PROJECT}}/Run-configuration>>
+    step: When I create an automated test <<01. This is a test which should pass>> in the root directory
+    step: When I add the step <<Then <<actualValue\>\> is true>> into autocomplete field
+    step: When set the step parameter with the value <<true>>
+    step: When I save the test
+    step: When I create an automated test <<02. This is a test which should fail>> in the root directory
+    step: When I add the step <<Then <<actualValue\>\> is true>> into autocomplete field
+    step: When set the step parameter with the value <<false>>
+    step: When I save the test
+    step: When I create a new run configuration which selects one test from the tests list
+    step: When I execute the run configuration
+    step: When wait until the execution has finished
+    step: Then the number of executed passed tests should be <<1>>

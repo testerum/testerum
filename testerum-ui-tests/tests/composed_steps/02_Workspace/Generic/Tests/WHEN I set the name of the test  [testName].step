@@ -1,0 +1,3 @@
+step-def: When I set the name of the test <<testName: TEXT>>
+
+    step: When I type <<{{testName}}>> into the field <<.test_create-test-name>>

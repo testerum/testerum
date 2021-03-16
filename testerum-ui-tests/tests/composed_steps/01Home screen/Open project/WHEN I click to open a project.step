@@ -1,0 +1,3 @@
+step-def: When I click to open a project
+
+    step: When I click the element <<.test_open-project>>

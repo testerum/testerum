@@ -1,0 +1,2 @@
+
+before-each-hook: When I delete the file <<{{PATH_FOR_NEW_PROJECT}}/Run-configuration>> from the hard drive

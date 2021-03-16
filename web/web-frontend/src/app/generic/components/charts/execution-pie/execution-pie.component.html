@@ -8,29 +8,29 @@
     </p-chart>
 
     <div class="legend-container">
-        <table class="table-striped">
+        <table class="table-striped test_table-labels">
             <tbody>
                 <tr>
                     <td colspan="3" class="total_tests_label">Total Tests:</td>
-                    <td>{{model().totalTests}}</td>
+                    <td class="test_number-of-total-tests">{{model().totalTests}}</td>
                 </tr>
                 <tr>
                     <td><div class="legend waiting"></div></td>
                     <td><i class="fa_my-runner-waiting-colored" aria-hidden="true"></i></td>
                     <td class="legend_label">Waiting:</td>
-                    <td>{{model().waitingToExecute}}</td>
+                    <td class="test_number-of-waiting-tests">{{model().waitingToExecute}}</td>
                 </tr>
                 <tr>
                     <td><div class="legend passed"></div></td>
                     <td><i class="fa_my-runner-passed-colored" aria-hidden="true"></i></td>
                     <td class="legend_label">Passed:</td>
-                    <td>{{model().passed}}</td>
+                    <td class="test_number-of-passed-tests">{{model().passed}}</td>
                 </tr>
                 <tr>
                     <td><div class="legend failed"></div></td>
                     <td><i class="fa_my-runner-failed-colored" aria-hidden="true"></i></td>
-                    <td class="legend_label">Failed:</td>
-                    <td>{{model().failed}}</td>
+                    <td class="legend_label test_legend-label-failed">Failed:</td>
+                    <td class="test_number-of-failed-tests">{{model().failed}}</td>
                 </tr>
 
                 <tr>

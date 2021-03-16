@@ -220,4 +220,32 @@ class WebDriverWaitSteps {
             !TextMatcherService.matches(textMatchExpression, actualText)
         }
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+//@When(
+//    value = "I wait until the JS script <<script>> returns true.",
+//    description = "Executes the provided JS script expression in the context of the current selected frame or window. " +
+//        "This step will wait until the script returns the value true."
+//)
+//fun evaluateJavaScriptExpresion(
+//    script: String
+//) {
+//    logger.info(
+//        "executing JavaScript script:\n" +
+//            "----------------------------\n" +
+//            "script : $script\n" +
+//            "\n"
+//    )
+//    WebDriverWait(
+//        driver,
+//        60
+//    ).until(ExpectedCondition<WebElement?> { wd: WebDriver? -> (wd as JavascriptExecutor?)!!.executeScript("return document.getElementById(someid)") })
+//
+//    webDriverManager.waitUntil {  }
+//
+//    webDriverManager.executeWebDriverStep { driver ->
+//        (driver as JavascriptExecutor).executeScript(script)
+//    }
+//}
+
 }

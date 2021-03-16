@@ -1,0 +1,4 @@
+
+before-all-hook: When executed, the variable <<beforeAllHookVar>> is incremented with 1, starting 1
+
+after-all-hook: Then <<{{beforeAllHookVar}}>> is equal to <<1>>

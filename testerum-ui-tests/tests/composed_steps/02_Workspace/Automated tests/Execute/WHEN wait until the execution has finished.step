@@ -1,0 +1,4 @@
+step-def: When wait until the execution has finished
+
+    step: When I wait until the text of element <<.test_number-of-waiting-tests>> should be <<0>>
+    step: Then the text of element <<.test_number-of-waiting-tests>> should be <<0>>

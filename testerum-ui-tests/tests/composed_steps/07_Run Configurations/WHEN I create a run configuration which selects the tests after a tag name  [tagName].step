@@ -1,0 +1,7 @@
+step-def: When I create a run configuration which selects the tests after a tag name <<tagName: TEXT>>
+
+    step: When I click the element <<.test_add-run-config>>
+    step: When I click the element <<.test_add-run-config-btn>>
+    step: When I add the tag <<{{tagName}}>>
+    step: When I wait <<3000>> milliseconds
+    step: When I click the element <<.test_save-run-configuration-btn>>

@@ -1,0 +1,3 @@
+test-def: Create an automated test connecting to a DB
+
+    test-properties = <<manual>>
