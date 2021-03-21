@@ -16,12 +16,6 @@ data class Feature @JsonCreator constructor(@JsonProperty("name") val name: Stri
                                             @JsonProperty("attachments") val attachments: List<Attachment> = emptyList(),
                                             @JsonProperty("hooks") val hooks: Hooks = Hooks.EMPTY) : HasPath {
 
-    companion object {
-        const val FILE_NAME_WITHOUT_EXTENSION: String = "info"
-        const val FILE_EXTENSION: String = "feat"
-        const val FILE_NAME_WITH_EXTENSION: String = FILE_NAME_WITHOUT_EXTENSION + "." + FILE_EXTENSION
-    }
-
     private val _id = path.toString()
 
     val id: String
@@ -54,5 +48,4 @@ data class Feature @JsonCreator constructor(@JsonProperty("name") val name: Stri
     }
 
     override fun toString() = "Feature(name=$name, path=$path)"
-
 }

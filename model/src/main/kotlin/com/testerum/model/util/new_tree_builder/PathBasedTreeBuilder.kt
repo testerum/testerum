@@ -23,18 +23,18 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
 
             val leftIsDirectory = left.path.isDirectory()
             val rightIsDirectory = right.path.isDirectory()
-            if (leftIsDirectory && !rightIsDirectory) {
-                return@Comparator -1
-            }
-            if (!leftIsDirectory && rightIsDirectory) {
-                return@Comparator 1
-            }
 
             if (leftDirs.size < rightDirs.size) {
-                return@Comparator -1
+                if (leftIsDirectory && rightIsDirectory) { return@Comparator -1 }
+                if (leftIsDirectory && !rightIsDirectory) { return@Comparator -1 }
+                if (!leftIsDirectory && rightIsDirectory) { return@Comparator 1 }
+                if (!leftIsDirectory && !rightIsDirectory) { return@Comparator 1 }
             }
             if (leftDirs.size > rightDirs.size) {
-                return@Comparator 1
+                if (leftIsDirectory && rightIsDirectory) { return@Comparator 1 }
+                if (leftIsDirectory && !rightIsDirectory) { return@Comparator -1 }
+                if (!leftIsDirectory && rightIsDirectory) { return@Comparator 1 }
+                if (!leftIsDirectory && !rightIsDirectory) { return@Comparator -1 }
             }
 
             val leftFile = left.path.fileName ?: ""

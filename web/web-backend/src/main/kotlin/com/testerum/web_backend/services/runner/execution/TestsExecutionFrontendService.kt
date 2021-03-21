@@ -116,15 +116,6 @@ class TestsExecutionFrontendService(
     }
 
     private fun getRunnerRootNode(testsMap: Map<TestPath, TestModel>, featureCache: FeaturesCache): RunnerRootNode {
-//        val builder = OldRunnerTreeBuilder()
-//
-//        for ((path, model) in testsMap) {
-//            builder.addTest(
-//                TestPathAndModel(path, model)
-//            )
-//        }
-//
-//        return builder.build()
         val testPathAndModels = testsMap.map { TestPathAndModel(it.key, it.value) }
         return RunnerTreeBuilder(featureCache)
             .build(tests = testPathAndModels)

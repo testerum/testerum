@@ -69,6 +69,21 @@ class PathBasedTreeBuilderComparatorTest {
     }
 
     @Test
+    fun `folder should have priority over test`() {
+        assertThat(
+            sortItemsList(
+                "Check SuperMan.test",
+                "MyFolder/Wiremock.test",
+            )
+        ).isEqualTo(
+            listOf(
+                "MyFolder/Wiremock.test",
+                "Check SuperMan.test",
+            )
+        )
+    }
+
+    @Test
     fun `should sort directories and files at the same level by name, directories first`() {
         assertThat(
             sortItemsList(
@@ -129,6 +144,78 @@ class PathBasedTreeBuilderComparatorTest {
             listOf(
                 "a/b/c",
                 "a/b/c/d",
+            )
+        )
+    }
+
+    @Test
+    fun `empty path should be first compared with a dir`() {
+        assertThat(
+            sortItemsList(
+                "a",
+                "",
+            )
+        ).isEqualTo(
+            listOf(
+                "",
+                "a",
+            )
+        )
+    }
+
+    @Test
+    fun `empty path should be first compared with a test`() {
+        assertThat(
+            sortItemsList(
+                "",
+                "owners/create/ui/t.test",
+            )
+        ).isEqualTo(
+            listOf(
+                "",
+                "owners/create/ui/t.test",
+            )
+        )
+    }
+
+    @Test
+    fun `empty path should be first compared with a test 1`() {
+        assertThat(
+            sortItemsList(
+                "owners/create/ui/t.test",
+                "",
+            )
+        ).isEqualTo(
+            listOf(
+                "",
+                "owners/create/ui/t.test",
+            )
+        )
+    }
+
+    @Test
+    fun `complex case`() {
+        assertThat(
+            sortItemsList(
+                "",
+                "owners/create/ui/t.test",
+                "owners/create/rest",
+                "root-test.text",
+                "owners/create/ui/t add.test",
+                "owners",
+                "owners/create/ui/t zoo.test",
+                "owners/create",
+            )
+        ).isEqualTo(
+            listOf(
+                "",
+                "owners",
+                "owners/create",
+                "owners/create/rest",
+                "owners/create/ui/t.test",
+                "owners/create/ui/t add.test",
+                "owners/create/ui/t zoo.test",
+                "root-test.text",
             )
         )
     }

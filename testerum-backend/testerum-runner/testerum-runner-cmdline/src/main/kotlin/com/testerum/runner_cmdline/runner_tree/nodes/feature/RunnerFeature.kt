@@ -54,7 +54,7 @@ class RunnerFeature(
     }
 
     override val positionInParent = PositionInParent(
-        id = featurePathFromRoot.joinToString(separator = "/") + "/${Feature.FILE_NAME_WITH_EXTENSION}",
+        id = featurePathFromRoot.joinToString(separator = "/"),
         indexInParent = indexInParent
     )
 
