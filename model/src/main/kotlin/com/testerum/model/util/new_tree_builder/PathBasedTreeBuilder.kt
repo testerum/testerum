@@ -14,10 +14,9 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
 
     companion object {
         val NODES_COMPARATOR = Comparator<HasPath> { left, right ->
-
             val leftDirs = left.path.directories
             val rightDirs = right.path.directories
-            val directoryComparisonResult = compareByDirectory(leftDirs, rightDirs)
+            val directoryComparisonResult = compareCommonDirParts(leftDirs, rightDirs)
             if (directoryComparisonResult != 0) {
                 return@Comparator directoryComparisonResult
             }
@@ -26,7 +25,15 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
             val rightIsDirectory = right.path.isDirectory()
             if (leftIsDirectory && !rightIsDirectory) {
                 return@Comparator -1
-            } else if (!leftIsDirectory && rightIsDirectory) {
+            }
+            if (!leftIsDirectory && rightIsDirectory) {
+                return@Comparator 1
+            }
+
+            if (leftDirs.size < rightDirs.size) {
+                return@Comparator -1
+            }
+            if (leftDirs.size > rightDirs.size) {
                 return@Comparator 1
             }
 
@@ -41,11 +48,10 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
             val leftFileExtension = left.path.fileExtension ?: ""
             val rightFileExtension = right.path.fileExtension ?: ""
 
-            val fileNameExtensionComparisonResult = leftFileExtension.compareTo(rightFileExtension, true)
-            return@Comparator fileNameExtensionComparisonResult
+            return@Comparator leftFileExtension.compareTo(rightFileExtension, true)
         }
 
-        private fun compareByDirectory(leftDirs: List<String>, rightDirs: List<String>): Int {
+        private fun compareCommonDirParts(leftDirs: List<String>, rightDirs: List<String>): Int {
             val minDirSize = min(leftDirs.size, rightDirs.size)
 
             for (index in 0 until minDirSize) {
@@ -57,9 +63,6 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
                     return dirNameComparisonResult
                 }
             }
-
-            if (leftDirs.size < rightDirs.size) { return 1 }
-            if (leftDirs.size > rightDirs.size) { return -1 }
 
             return 0
         }
