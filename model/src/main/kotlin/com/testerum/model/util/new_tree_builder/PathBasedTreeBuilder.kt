@@ -2,6 +2,7 @@ package com.testerum.model.util.new_tree_builder
 
 import com.testerum.model.infrastructure.path.HasPath
 import com.testerum.model.infrastructure.path.Path
+import java.lang.Integer.min
 
 /**
  * @param R root node
@@ -13,48 +14,55 @@ class PathBasedTreeBuilder<R : ContainerTreeNode, V : ContainerTreeNode>(
 
     companion object {
         val NODES_COMPARATOR = Comparator<HasPath> { left, right ->
-            val leftParts = left.path.partsWithoutFileExtension
-            val rightParts = right.path.partsWithoutFileExtension
 
-            if (leftParts.size < rightParts.size) {
-                return@Comparator -1
-            } else if (leftParts.size > rightParts.size) {
-                return@Comparator 1
+            val leftDirs = left.path.directories
+            val rightDirs = right.path.directories
+            val directoryComparisonResult = compareByDirectory(leftDirs, rightDirs)
+            if (directoryComparisonResult != 0) {
+                return@Comparator directoryComparisonResult
             }
 
             val leftIsDirectory = left.path.isDirectory()
             val rightIsDirectory = right.path.isDirectory()
-            if (leftIsDirectory < rightIsDirectory) {
-                return@Comparator 1
-            } else if (leftIsDirectory > rightIsDirectory) {
+            if (leftIsDirectory && !rightIsDirectory) {
                 return@Comparator -1
+            } else if (!leftIsDirectory && rightIsDirectory) {
+                return@Comparator 1
             }
 
-            for ((i, leftPart) in leftParts.withIndex()) {
-                val rightPart = rightParts[i]
+            val leftFile = left.path.fileName ?: ""
+            val rightFile = right.path.fileName ?: ""
 
-                if (leftPart < rightPart) {
-                    return@Comparator -1
-                } else if (leftPart > rightPart) {
-                    return@Comparator 1
-                }
+            val fileNameComparisonResult = leftFile.compareTo(rightFile, true)
+            if (fileNameComparisonResult != 0) {
+                return@Comparator fileNameComparisonResult
             }
 
-            0
+            val leftFileExtension = left.path.fileExtension ?: ""
+            val rightFileExtension = right.path.fileExtension ?: ""
+
+            val fileNameExtensionComparisonResult = leftFileExtension.compareTo(rightFileExtension, true)
+            return@Comparator fileNameExtensionComparisonResult
         }
 
-        private val Path.partsWithoutFileExtension: List<String>
-            get() {
-                return if (fileName == null) {
-                    directories
-                } else {
-                    val result = directories.toMutableList()
+        private fun compareByDirectory(leftDirs: List<String>, rightDirs: List<String>): Int {
+            val minDirSize = min(leftDirs.size, rightDirs.size)
 
-                    result.add(fileName)
+            for (index in 0 until minDirSize) {
+                val leftDir = leftDirs[index]
+                val rightDir = rightDirs[index]
 
-                    result
+                val dirNameComparisonResult = leftDir.compareTo(rightDir, true)
+                if (dirNameComparisonResult != 0) {
+                    return dirNameComparisonResult
                 }
             }
+
+            if (leftDirs.size < rightDirs.size) { return 1 }
+            if (leftDirs.size > rightDirs.size) { return -1 }
+
+            return 0
+        }
     }
 
     private val nodesByPath = HashMap<String, TreeNode>()

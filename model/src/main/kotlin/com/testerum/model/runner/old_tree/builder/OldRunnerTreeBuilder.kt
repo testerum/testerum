@@ -2,16 +2,17 @@ package com.testerum.model.runner.old_tree.builder
 
 import com.testerum.model.feature.Feature
 import com.testerum.model.infrastructure.path.Path
-import com.testerum.model.runner.old_tree.RunnerBasicStepNode
-import com.testerum.model.runner.old_tree.RunnerComposedStepNode
-import com.testerum.model.runner.old_tree.RunnerFeatureNode
-import com.testerum.model.runner.old_tree.RunnerParametrizedTestNode
-import com.testerum.model.runner.old_tree.RunnerRootNode
-import com.testerum.model.runner.old_tree.RunnerScenarioNode
-import com.testerum.model.runner.old_tree.RunnerStepNode
-import com.testerum.model.runner.old_tree.RunnerTestNode
-import com.testerum.model.runner.old_tree.RunnerTestOrFeatureNode
-import com.testerum.model.runner.old_tree.RunnerUndefinedStepNode
+import com.testerum.model.runner.old_tree.OldRunnerBasicStepNode
+import com.testerum.model.runner.old_tree.OldRunnerComposedStepNode
+import com.testerum.model.runner.old_tree.OldRunnerFeatureNode
+import com.testerum.model.runner.old_tree.OldRunnerParametrizedTestNode
+import com.testerum.model.runner.old_tree.OldRunnerRootNode
+import com.testerum.model.runner.old_tree.OldRunnerScenarioNode
+import com.testerum.model.runner.old_tree.OldRunnerStepNode
+import com.testerum.model.runner.old_tree.OldRunnerTestNode
+import com.testerum.model.runner.old_tree.OldRunnerTestOrFeatureNode
+import com.testerum.model.runner.old_tree.OldRunnerUndefinedStepNode
+import com.testerum.model.runner.tree.TestPathAndModel
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
@@ -34,7 +35,7 @@ class OldRunnerTreeBuilder {
         builder.add(test)
     }
 
-    fun build(): RunnerRootNode = builder.build() as RunnerRootNode
+    fun build(): OldRunnerRootNode = builder.build() as OldRunnerRootNode
 
     private object RunnerTreeBuilderCustomizer : TreeBuilderCustomizer {
         override fun getPath(payload: Any): List<String> = when (payload) {
@@ -56,9 +57,9 @@ class OldRunnerTreeBuilder {
 
         override fun createRootNode(payload: Any?, childrenNodes: List<Any>): Any {
             @Suppress("UNCHECKED_CAST")
-            val children: List<RunnerTestOrFeatureNode> = childrenNodes as List<RunnerTestOrFeatureNode>
+            val children: List<OldRunnerTestOrFeatureNode> = childrenNodes as List<OldRunnerTestOrFeatureNode>
 
-            return RunnerRootNode(
+            return OldRunnerRootNode(
                     name = getRootLabel(),
                     children = children
             )
@@ -69,14 +70,14 @@ class OldRunnerTreeBuilder {
             return when (payload) {
                 null -> {
                     @Suppress("UNCHECKED_CAST")
-                    val children: List<RunnerTestOrFeatureNode> = childrenNodes as List<RunnerTestOrFeatureNode>
+                    val children: List<OldRunnerTestOrFeatureNode> = childrenNodes as List<OldRunnerTestOrFeatureNode>
 
                     val featurePath = Path(
                             directories = path,
                             fileName = Feature.FILE_NAME_WITHOUT_EXTENSION,
                             fileExtension = Feature.FILE_EXTENSION
                     )
-                    RunnerFeatureNode(
+                    OldRunnerFeatureNode(
                             id = featurePath.toString(),
                             name = label,
                             path = featurePath,
@@ -91,13 +92,13 @@ class OldRunnerTreeBuilder {
                             index to scenario
                         }
 
-                        val filteredTestScenarios = if (payload.path is ScenariosTestPath) {
-                            if (payload.path.scenarioIndexes.isEmpty()) {
+                        val filteredTestScenarios = if (payload.testPath is ScenariosTestPath) {
+                            if (payload.testPath.scenarioIndexes.isEmpty()) {
                                 // there is no filter on scenarios
                                 scenariosWithOriginalIndex
                             } else {
                                 scenariosWithOriginalIndex.filterIndexed { scenarioIndex, _ ->
-                                    scenarioIndex in payload.path.scenarioIndexes
+                                    scenarioIndex in payload.testPath.scenarioIndexes
                                 }
                             }
                         } else {
@@ -105,20 +106,20 @@ class OldRunnerTreeBuilder {
                         }
 
 
-                        val runnerScenariosNodes: List<RunnerScenarioNode> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
+                        val runnerScenariosNodes: List<OldRunnerScenarioNode> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
                             createTestScenarioBranch(payload.model, scenarioWithOriginalIndex, filteredScenarioIndex)
                         }
 
-                        RunnerParametrizedTestNode(
+                        OldRunnerParametrizedTestNode(
                                 id = payload.model.id,
                                 name = label,
                                 path = payload.model.path,
                                 children = runnerScenariosNodes
                         )
                     } else {
-                        val stepCalls: List<RunnerStepNode> = payload.model.stepCalls.map(this::createStepCallBranch)
+                        val stepCalls: List<OldRunnerStepNode> = payload.model.stepCalls.map(this::createStepCallBranch)
 
-                        RunnerTestNode(
+                        OldRunnerTestNode(
                                 id = payload.model.id,
                                 name = label,
                                 path = payload.model.path,
@@ -133,13 +134,13 @@ class OldRunnerTreeBuilder {
 
         private fun createTestScenarioBranch(test: TestModel,
                                              scenarioWithOriginalIndex: Pair<Int, Scenario>,
-                                             filteredScenarioIndex: Int): RunnerScenarioNode {
+                                             filteredScenarioIndex: Int): OldRunnerScenarioNode {
             val originalScenarioIndex = scenarioWithOriginalIndex.first
             val scenario = scenarioWithOriginalIndex.second
 
-            val stepCalls: List<RunnerStepNode> = test.stepCalls.map(this::createStepCallBranch)
+            val stepCalls: List<OldRunnerStepNode> = test.stepCalls.map(this::createStepCallBranch)
 
-            return RunnerScenarioNode(
+            return OldRunnerScenarioNode(
                     id = "${test.id}-$filteredScenarioIndex",
                     path = test.path,
                     scenarioIndex = filteredScenarioIndex,
@@ -149,26 +150,26 @@ class OldRunnerTreeBuilder {
             )
         }
 
-        private fun createStepCallBranch(stepCall: StepCall): RunnerStepNode {
+        private fun createStepCallBranch(stepCall: StepCall): OldRunnerStepNode {
             val stepDef = stepCall.stepDef
             val id = stepCall.id
             val path = stepDef.path
 
             return when (stepDef) {
-                is UndefinedStepDef -> RunnerUndefinedStepNode(
+                is UndefinedStepDef -> OldRunnerUndefinedStepNode(
                         id = id,
                         path = path,
                         stepCall = stepCall
                 )
-                is BasicStepDef -> RunnerBasicStepNode(
+                is BasicStepDef -> OldRunnerBasicStepNode(
                         id = id,
                         path = path,
                         stepCall = stepCall
                 )
                 is ComposedStepDef -> {
-                    val childrenNodes: List<RunnerStepNode> = stepDef.stepCalls.map(this::createStepCallBranch)
+                    val childrenNodes: List<OldRunnerStepNode> = stepDef.stepCalls.map(this::createStepCallBranch)
 
-                    RunnerComposedStepNode(
+                    OldRunnerComposedStepNode(
                             id = id,
                             path = path,
                             stepCall = stepCall,
