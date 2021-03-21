@@ -6,7 +6,14 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.model.util.new_tree_builder.TreeNode
 
-data class RunnerRootNode @JsonCreator constructor(@JsonProperty("name") val name: String): RunnerNode, ContainerTreeNode {
+data class RunnerRootNode @JsonCreator constructor(
+    @JsonProperty("name") val name: String,
+    @JsonProperty("beforeAllHooks") val beforeAllHooks: List<RunnerStepNode>,
+    @JsonProperty("beforeEachHooks") val beforeEachHooks: List<RunnerStepNode>,
+    @JsonProperty("afterEachHooks") val afterEachHooks: List<RunnerStepNode>,
+    @JsonProperty("afterAllHooks") val afterAllHooks: List<RunnerStepNode>,
+): RunnerNode, ContainerTreeNode {
+
     override val id: String = "rootNode"
     override val path: Path = Path.EMPTY
 

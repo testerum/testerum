@@ -14,9 +14,8 @@ data class RunnerFeatureNode @JsonCreator constructor(
     @JsonProperty("beforeEachHooks") val beforeEachHooks: List<RunnerStepNode>,
     @JsonProperty("afterEachHooks") val afterEachHooks: List<RunnerStepNode>,
     @JsonProperty("afterAllHooks") val afterAllHooks: List<RunnerStepNode>,
-
-
 ) : RunnerTestOrFeatureNode, ContainerTreeNode {
+
     @JsonProperty("children") val children: MutableList<RunnerTestOrFeatureNode> = mutableListOf()
 
     override val childrenCount: Int

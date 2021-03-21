@@ -36,7 +36,21 @@ class RunnerTreeBuilder(val featureCache: FeaturesCache) {
 
 private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFactory<RunnerRootNode, RunnerFeatureNode> {
     override fun createRootNode(item: HasPath?): RunnerRootNode {
-        return RunnerRootNode("Runner")
+        val feature = featureCache.getFeatureAtPath(Path.EMPTY) ?: throw RuntimeException("Root feature could not be found in cache")
+        val hooks = feature.hooks
+
+        val beforeAllHooks = hooks.beforeAll.map { createStepCallBranch(it) }
+        val beforeEachHooks = hooks.beforeEach.map { createStepCallBranch(it) }
+        val afterEachHooks = hooks.afterEach.map { createStepCallBranch(it) }
+        val afterAllHooks = hooks.afterAll.map { createStepCallBranch(it) }
+
+        return RunnerRootNode(
+            name = "Runner",
+            beforeAllHooks = beforeAllHooks,
+            beforeEachHooks = beforeEachHooks,
+            afterEachHooks = afterEachHooks,
+            afterAllHooks = afterAllHooks
+        )
     }
 
     override fun createVirtualContainer(parentNode: ContainerTreeNode, path: Path): RunnerFeatureNode {
