@@ -126,7 +126,7 @@
                 </executions>
 
                 <configuration>
-                    <mainClass>com.testerum.report_server.Application</mainClass>
+                    <mainClass>com.testerum.report_server.ApplicationKt</mainClass>
                 </configuration>
             </plugin>
 
