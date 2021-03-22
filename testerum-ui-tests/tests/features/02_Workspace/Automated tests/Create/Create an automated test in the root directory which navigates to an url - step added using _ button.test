@@ -13,7 +13,7 @@ test-def: Create an automated test in the root directory which navigates to an u
     >>
 
     step: Given I am on Home screen page
-    step: When I continue with free license
+    step [disabled]: When I continue with free license
     step: When I create a new project <<Testerum-ui-automated-tests>> with the path <<{{PATH_TO_AUTOMATED_TESTS_PROJECT}}>>
     step: When I create an automated test in the root directory which will open a page - steps added using the + button
     step: When I save the test

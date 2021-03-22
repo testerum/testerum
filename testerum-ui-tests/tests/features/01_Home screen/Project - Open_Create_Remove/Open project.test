@@ -1,7 +1,7 @@
 test-def: Open project
 
     step: Given I am on Home screen page
-    step: When I continue with free license
+    step [disabled]: When I continue with free license
     step: When I click to open a project
     step: When I type the path <<{{PROJECT_TO_OPEN_PATH}}>> in select project path
     step: When I wait until the element <<.test_select-btn>> is visible

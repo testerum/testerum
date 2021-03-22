@@ -7,7 +7,7 @@ test-def: Select project from the list
 
     step [disabled]: Given I have the Recent Project List is empty
     step: Given I am on Home screen page
-    step: When I continue with free license
+    step [disabled]: When I continue with free license
     step: When I save into the variable <<selectedProjectName>> the text of the element <<.test_recent-project-container \> li:nth-child(3) \> .test_recent-project-name>>
     step: When I select the project index <<3>> from the recent projects list
     step: When I click on Testerum logo to navigate back to welcome page
