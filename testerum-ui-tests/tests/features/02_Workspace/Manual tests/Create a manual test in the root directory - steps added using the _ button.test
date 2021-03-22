@@ -9,7 +9,7 @@ test-def: Create a manual test in the root directory - steps added using the + b
     >>
 
     step: Given I am on Home screen page
-    step [disabled]: When I continue with free license
+    step: When I continue with free license
     step: When I create a new project <<Testerum-manual-tests>> with the path <<{{PATH_TO_MANUAL_TESTS_PROJECT}}>>
     step: When I create a manual test in the root directory - steps added using the + button
     step: Then the test label should be Manual

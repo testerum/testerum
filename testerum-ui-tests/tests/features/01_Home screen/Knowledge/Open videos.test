@@ -1,7 +1,7 @@
 test-def: Open videos
 
     step: Given I am on Home screen page
-    step [disabled]: When I continue with free license
+    step: When I continue with free license
     step: When I click the element <<.test_videos-option>>
     step: When I wait <<2222>> milliseconds
     step: When I switch the context to the window with the title <<videos>>

@@ -1,7 +1,7 @@
 test-def: Add a global variable and use it inside a test
 
     step: Given I am on Home screen page
-    step [disabled]: When I continue with free license
+    step: When I continue with free license
     step: When I create a new project <<Environments-and-variables>> with the path <<{{PATH_FOR_NEW_PROJECT}}>>
     step: When I open the environment variables menu
     step: When I define the variable <<FIRST_DEFINED_VAR>> with the value <<true>> in the environment variables

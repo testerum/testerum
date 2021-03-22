@@ -1,6 +1,6 @@
 test-def: Open sample project
 
     step: Given I am on Home screen page
-    step [disabled]: When I continue with free license
+    step: When I continue with free license
     step: When I click the element <<.test_sample-project-option>>
     step: Then the text of element <<.test_feature-container>> should be <<sample_application_tests>>
