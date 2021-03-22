@@ -4,5 +4,6 @@ test-def: Open videos
     step [disabled]: When I continue with free license
     step: When I click the element <<.test_videos-option>>
     step: When I wait <<2222>> milliseconds
+    step: When I switch the context to the window with the title <<videos>>
     step: Then the url of the current page should be <<https://testerum.com/videos/>>
     step: Then the text of element <<.section-title>> should be <<Testerum Video Tutorials>>

@@ -3,5 +3,5 @@ step-def: When I create a new run configuration which selects one test from the 
     step: When I click the element <<.test_add-run-config>>
     step: When I click the element <<.test_add-run-config-btn>>
     step: When I click the element <<{{elementLocator}}>>
-        var elementLocator = <<xpath=//*[@id="ui-tabpanel-0"]/run-config-tests-to-execute/div/div[3]/run-config-test-tree/div/json-tree/div/json-tree-node/json-container-node/div/div[2]/run-tree-node/div/json-children/div/json-tree-node[1]/json-leaf-node/div/div[2]/run-tree-node/div/div/i[1]>>
+        var elementLocator = <<xpath=//*[@id="p-tabpanel-0"]/run-config-tests-to-execute/div/div[3]/run-config-test-tree/div/json-tree/div/json-tree-node/json-container-node/div/div[2]/run-tree-node/div/json-children/div/json-tree-node[1]/json-leaf-node/div/div[2]/run-tree-node/div/div/i[1]>>
     step: When I click the element <<.test_save-run-configuration-btn>>

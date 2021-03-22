@@ -4,5 +4,5 @@ test-def: Open documentation
     step [disabled]: When I continue with free license
     step: When I click the element <<.test_documentation-option>>
     step: When I wait <<2222>> milliseconds
+    step [disabled]: When I switch the context to the window with the title <<Testerum - FREE API>>
     step: Then the url of the current page should be <<https://testerum.com/documentation/ui/why-testerum/>>
-    step: Then the text of element <<.first-headline>> should be <<Why Testerum?>>
