@@ -16,6 +16,7 @@ pluginManagement {
 }
 
 includeBuild("build-plugins/build-dev-copy-steps-to-package-dir")
+includeBuild("build-plugins/build-dev-copy-runner-to-package-dir")
 
 includeWithDir("build-platform", "build-plugins")
 

@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    id("com.testerum.build-dev-copy-runner-to-package-dir")
 }
 
 dependencies {

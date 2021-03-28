@@ -6,7 +6,6 @@ dependencies {
     implementation(platform(project(":build-platform")))
 
     implementation(project(":common-kotlin"))
-    implementation(project(":common-di"))
     implementation(project(":settings"))
     implementation(project(":model"))
     implementation(project(":common-parsing"))

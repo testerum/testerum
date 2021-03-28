@@ -14,16 +14,10 @@
     <dependencies>
         <!--==================== Internal Dependencies ====================-->
 
-        <!-- common-di -->
+        <!-- common-kotlin -->
         <dependency>
             <groupId>com.testerum</groupId>
             <artifactId>common-kotlin</artifactId>
-        </dependency>
-
-        <!-- common-di -->
-        <dependency>
-            <groupId>com.testerum</groupId>
-            <artifactId>common-di</artifactId>
         </dependency>
 
         <!-- config -->

@@ -7,7 +7,6 @@ import com.testerum.common_fast_serialization.read_write.extensions.readObject
 import com.testerum.common_fast_serialization.read_write.extensions.requireExactVersion
 import com.testerum.common_fast_serialization.read_write.extensions.writeObject
 import com.testerum.common_fast_serialization.read_write.extensions.writeVersion
-import com.testerum.common_kotlin.exhaustive
 import com.testerum.model.text.parts.ParamStepPatternPart
 import com.testerum.model.text.parts.StepPatternPart
 import com.testerum.model.text.parts.TextStepPatternPart
@@ -41,5 +40,7 @@ object StepPatternPartMarshaller : FastMarshaller<StepPatternPart> {
             else -> throw RuntimeException("unknown type [$type]")
         }
     }
+
+    private fun Any?.exhaustive() = Unit
 
 }
