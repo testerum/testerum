@@ -6,7 +6,7 @@ pluginManagement {
     plugins {
         kotlin("jvm") version kotlinVersion
         kotlin("plugin.spring") version kotlinVersion
-        id("org.siouan.frontend-jdk8") version "4.0.1"
+        id("org.siouan.frontend-jdk8") version "5.0.1"
         id("org.springframework.boot") version "2.3.3.RELEASE"
     }
 
@@ -17,6 +17,7 @@ pluginManagement {
 
 includeBuild("build-plugins/build-dev-copy-steps-to-package-dir")
 includeBuild("build-plugins/build-dev-copy-runner-to-package-dir")
+includeBuild("build-plugins/build-frontend")
 
 includeWithDir("build-platform", "build-plugins")
 

@@ -57,3 +57,8 @@
 
 https://www.google.com/search?q=compile+maven+plugin+with+gradle
 https://www.google.com/search?q=gradle+find+unused+dependencies
+
+frontend
+--------
+[ ] shared node/npm dir
+[ ]

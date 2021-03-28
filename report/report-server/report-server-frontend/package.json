@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "maven-build": "node --max_old_space_size=4096 maven-build.js",
+    "gradle-build": "node --max_old_space_size=4096 gradle-build.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

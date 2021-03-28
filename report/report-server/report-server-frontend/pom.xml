@@ -43,7 +43,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>run-script maven-build</arguments>
+                            <arguments>run-script gradle-build</arguments>
                         </configuration>
                     </execution>
                 </executions>

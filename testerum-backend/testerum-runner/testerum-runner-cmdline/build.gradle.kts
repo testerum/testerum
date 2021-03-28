@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm")
     id("com.testerum.build-dev-copy-runner-to-package-dir")
+//    id("org.siouan.frontend-jdk8")
 }
 
 dependencies {
@@ -42,3 +43,15 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.assertj:assertj-core")
 }
+
+//frontend {
+//    val nodeVersion: String by project
+//
+//    nodeDistributionProvided.set(false)
+//    this@frontend.nodeVersion.set(nodeVersion)
+//    assembleScript.set("run gradle-build")
+//
+//    yarnEnabled.set(false)
+//
+//    this@frontend.
+//}
