@@ -17,8 +17,8 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.slf4j:slf4j-api")
-    implementation("org.zeroturnaround:zt-exec")
     implementation("com.fasterxml.jackson.module:jackson-module-afterburner")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("commons-io:commons-io")
 }

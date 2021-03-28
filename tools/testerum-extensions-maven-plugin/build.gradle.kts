@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    id("com.liferay.maven.plugin.builder") version "1.2.8"
 }
 
 dependencies {
