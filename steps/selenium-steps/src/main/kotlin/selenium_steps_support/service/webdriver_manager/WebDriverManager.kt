@@ -286,7 +286,6 @@ class WebDriverManager(private val runnerSettingsManager: RunnerSettingsManager,
     }
 
     fun switchCurrentWebDriver(block: (current: WebDriver) -> WebDriver) {
-        switchCurrentWebDriverToTop()
         _webDriver = block(currentWebDriver)
     }
 

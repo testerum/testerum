@@ -27,8 +27,8 @@ class WebDriverContextSwitchSteps {
             )
             frameLocator: String
     ) {
-        webDriverManager.switchCurrentWebDriver { topWebDriver ->
-            return@switchCurrentWebDriver FrameSwitcher.switchToFrame(topWebDriver, frameLocator)
+        webDriverManager.switchCurrentWebDriver { driver ->
+            return@switchCurrentWebDriver FrameSwitcher.switchToFrame(driver, frameLocator)
         }
     }
 
