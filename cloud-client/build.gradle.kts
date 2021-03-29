@@ -17,7 +17,6 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava")
-    implementation("org.apache.httpcomponents:httpclient:4.5.6")
-    implementation("org.quartz-scheduler:quartz:2.3.1")
+    implementation("org.apache.httpcomponents:httpclient")
+    implementation("org.quartz-scheduler:quartz")
 }
-

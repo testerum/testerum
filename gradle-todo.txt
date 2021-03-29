@@ -1,0 +1,59 @@
+[v] common-jdk
+[v] common-kotlin
+[v] common-nashorn
+[v] common-expression-evaluator
+[v] model
+[v] common-crypto
+[v] common-di
+[v] cloud-client
+[v] common-parsing
+[v] common-json-diff-util
+[v] assertion-functions
+[v] common-angular
+[v] common-cmdline
+[v] common-fsnotifier
+[v] common-httpclient
+[v] common-rdbms
+[v] common-json-diff
+[v] common-profiles
+[v] common-json
+[v] common-fast-serialization
+[v] common-stats
+[v] common-encrypted-prefs
+[v] test-file-format
+[v] settings
+[v] testerum-scanner
+[v] testerum-runner-api
+[v] file-service
+[v] project-manager
+[v] report-generators
+[v] report-server-frontend
+[v] report-server-backend
+[v] step-rdbms-util
+[v] step-transformer-utils
+[ ] testerum-extensions-maven-plugin
+[ ] assertion-steps
+[ ] debug-steps
+[ ] json-steps
+[ ] rdbms-steps
+[ ] http-steps
+[ ] selenium-steps
+[ ] test-steps
+[ ] util-steps
+[ ] vars-steps
+[v] testerum-scanner-it-steplib1
+[v] testerum-scanner-it-steplib2
+[v] testerum-scanner-it-steplib3-java
+[v] testerum-scanner-it-test
+[ ] testerum-runner-cmdline
+[ ] testerum-junit
+[ ] testerum-junit-all
+[ ] testerum-runner-cmdline-debug
+[ ] testerum-runner-spring
+[ ] web-frontend
+[ ] web-launcher
+[ ] web-backend
+[ ] integration-tests
+
+https://www.google.com/search?q=compile+maven+plugin+with+gradle
+https://www.google.com/search?q=gradle+find+unused+dependencies
