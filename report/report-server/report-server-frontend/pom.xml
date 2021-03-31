@@ -3,7 +3,7 @@
     <parent>
         <artifactId>report-server</artifactId>
         <groupId>com.testerum</groupId>
-        <version>develop-SNAPSHOT</version>
+        <version>5.2.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
