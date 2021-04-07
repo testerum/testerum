@@ -14,7 +14,8 @@ import com.testerum.model.util.new_tree_builder.TreeNode
     JsonSubTypes.Type(value = RunnerScenarioNode::class        , name = "RUNNER_TEST_SCENARIO"),
     JsonSubTypes.Type(value = RunnerUndefinedStepNode::class   , name = "RUNNER_UNDEFINED_STEP"),
     JsonSubTypes.Type(value = RunnerBasicStepNode::class       , name = "RUNNER_BASIC_STEP"),
-    JsonSubTypes.Type(value = RunnerComposedStepNode::class    , name = "RUNNER_COMPOSED_STEP")
+    JsonSubTypes.Type(value = RunnerComposedStepNode::class    , name = "RUNNER_COMPOSED_STEP"),
+    JsonSubTypes.Type(value = RunnerHooksNode::class           , name = "RUNNER_HOOKS_NODE"),
 ])
 interface RunnerNode: TreeNode {
     val id: String

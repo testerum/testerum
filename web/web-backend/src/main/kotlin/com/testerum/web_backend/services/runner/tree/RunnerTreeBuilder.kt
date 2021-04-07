@@ -1,17 +1,27 @@
 package com.testerum.model.runner.tree
 
 import com.testerum.file_service.caches.resolved.FeaturesCache
+import com.testerum.model.feature.hooks.HookPhase
 import com.testerum.model.infrastructure.path.HasPath
 import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.model.runner.tree.model.RunnerBasicStepNode
 import com.testerum.model.runner.tree.model.RunnerComposedStepNode
 import com.testerum.model.runner.tree.model.RunnerFeatureNode
+import com.testerum.model.runner.tree.model.RunnerHooksContainerNode
+import com.testerum.model.runner.tree.model.RunnerHooksNode
+import com.testerum.model.runner.tree.model.RunnerNode
 import com.testerum.model.runner.tree.model.RunnerParametrizedTestNode
 import com.testerum.model.runner.tree.model.RunnerRootNode
 import com.testerum.model.runner.tree.model.RunnerScenarioNode
 import com.testerum.model.runner.tree.model.RunnerStepNode
 import com.testerum.model.runner.tree.model.RunnerTestNode
 import com.testerum.model.runner.tree.model.RunnerUndefinedStepNode
+import com.testerum.model.runner.tree.model.enums.HooksType.AFTER_ALL_HOOKS
+import com.testerum.model.runner.tree.model.enums.HooksType.AFTER_EACH_HOOKS
+import com.testerum.model.runner.tree.model.enums.HooksType.AFTER_HOOKS
+import com.testerum.model.runner.tree.model.enums.HooksType.BEFORE_ALL_HOOKS
+import com.testerum.model.runner.tree.model.enums.HooksType.BEFORE_EACH_HOOKS
 import com.testerum.model.step.BasicStepDef
 import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
@@ -35,47 +45,51 @@ class RunnerTreeBuilder(val featureCache: FeaturesCache) {
 }
 
 private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFactory<RunnerRootNode, RunnerFeatureNode> {
-    override fun createRootNode(item: HasPath?): RunnerRootNode {
-        val feature = featureCache.getFeatureAtPath(Path.EMPTY) ?: throw RuntimeException("Root feature could not be found in cache")
-        val hooks = feature.hooks
 
-        val beforeAllHooks = hooks.beforeAll.map { createStepCallBranch(it) }
-        val beforeEachHooks = hooks.beforeEach.map { createStepCallBranch(it) }
-        val afterEachHooks = hooks.afterEach.map { createStepCallBranch(it) }
-        val afterAllHooks = hooks.afterAll.map { createStepCallBranch(it) }
+    override fun createRootNode(item: HasPath?): RunnerRootNode {
+        val root = featureCache.getFeatureAtPath(Path.EMPTY) ?: throw RuntimeException("Root feature could not be found in cache")
+
+        val rootNodeId = RunnerIdCreator.createRootId()
+        val beforeAllId = RunnerIdCreator.createHookContainerId(rootNodeId, HookPhase.BEFORE_ALL_TESTS)
+        val afterAllId = RunnerIdCreator.createHookContainerId(rootNodeId, HookPhase.AFTER_ALL_TESTS)
+
+        val beforeAllHooks = root.hooks.beforeAll.mapIndexed {idx, it -> createStepCallBranch(it, idx, beforeAllId)}
+        val afterAllHooks = root.hooks.afterAll.mapIndexed {idx, it -> createStepCallBranch(it, idx, afterAllId)}
 
         return RunnerRootNode(
+            id = rootNodeId,
             name = "Runner",
-            beforeAllHooks = beforeAllHooks,
-            beforeEachHooks = beforeEachHooks,
-            afterEachHooks = afterEachHooks,
-            afterAllHooks = afterAllHooks
+            beforeAllHooks = RunnerHooksNode(beforeAllId, BEFORE_ALL_HOOKS, Path.EMPTY, beforeAllHooks),
+            beforeEachStepCalls = root.hooks.beforeEach,
+            afterEachStepCalls = root.hooks.afterEach,
+            afterAllHooks = RunnerHooksNode(afterAllId, AFTER_ALL_HOOKS, Path.EMPTY, afterAllHooks)
         )
     }
 
     override fun createVirtualContainer(parentNode: ContainerTreeNode, path: Path): RunnerFeatureNode {
         val feature = featureCache.getFeatureAtPath(path) ?: throw RuntimeException("Feature at path [${path.toString()}] is not found in cache")
-        val hooks = feature.hooks
 
-        val beforeAllHooks = hooks.beforeAll.map { createStepCallBranch(it) }
-        val beforeEachHooks = hooks.beforeEach.map { createStepCallBranch(it) }
-        val afterEachHooks = hooks.afterEach.map { createStepCallBranch(it) }
-        val afterAllHooks = hooks.afterAll.map { createStepCallBranch(it) }
+        val parentNodeAsHooksContainer = parentNode as RunnerHooksContainerNode
+        val featureId = RunnerIdCreator.createFeatureId(parentNodeAsHooksContainer.id, path)
+        val beforeAllId = RunnerIdCreator.createHookContainerId(featureId, HookPhase.BEFORE_ALL_TESTS)
+        val afterAllId = RunnerIdCreator.createHookContainerId(featureId, HookPhase.AFTER_ALL_TESTS)
+
+        val beforeAllHooks = feature.hooks.beforeAll.mapIndexed {idx, it -> createStepCallBranch(it, idx, beforeAllId)}
+        val afterAllHooks = feature.hooks.afterAll.mapIndexed {idx, it -> createStepCallBranch(it, idx, afterAllId)}
 
         return RunnerFeatureNode(
-            id = path.toString(),
+            id = featureId,
             name = path.directories.last(),
             path = path,
-            beforeAllHooks = beforeAllHooks,
-            beforeEachHooks = beforeEachHooks,
-            afterEachHooks = afterEachHooks,
-            afterAllHooks = afterAllHooks
+            beforeAllHooks = RunnerHooksNode(beforeAllId, BEFORE_ALL_HOOKS, Path.EMPTY, beforeAllHooks),
+            beforeEachStepCalls = parentNodeAsHooksContainer.beforeEachStepCalls + feature.hooks.beforeEach,
+            afterEachStepCalls = feature.hooks.afterEach + parentNodeAsHooksContainer.afterEachStepCalls,
+            afterAllHooks = RunnerHooksNode(afterAllId, AFTER_ALL_HOOKS, Path.EMPTY, afterAllHooks)
         )
     }
 
     override fun createNode(parentNode: ContainerTreeNode, item: HasPath): TreeNode {
         val testPathAndModel = item as TestPathAndModel
-            ?: throw IllegalArgumentException("unexpected type")
 
         val isParametrizedTest = testPathAndModel.model.scenarios.isNotEmpty()
 
@@ -99,14 +113,15 @@ private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFacto
 
             val runnerScenariosNodes: List<RunnerScenarioNode> = filteredTestScenarios.mapIndexed { filteredScenarioIndex, scenarioWithOriginalIndex ->
                 createTestScenarioBranch(
-                    testPathAndModel.model,
-                    scenarioWithOriginalIndex,
-                    filteredScenarioIndex
+                    parentNode = parentNode,
+                    test = testPathAndModel.model,
+                    scenarioWithOriginalIndex = scenarioWithOriginalIndex,
+                    filteredScenarioIndex = filteredScenarioIndex
                 )
             }
 
             val runnerParametrizedTestNode = RunnerParametrizedTestNode(
-                id = testPathAndModel.model.id,
+                id = RunnerIdCreator.createParametrizedTestId((parentNode as RunnerNode).id, testPathAndModel.model),
                 name = testPathAndModel.model.name,
                 path = testPathAndModel.model.path
             )
@@ -115,13 +130,28 @@ private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFacto
             return runnerParametrizedTestNode
 
         } else {
-            val stepCalls: List<RunnerStepNode> = testPathAndModel.model.stepCalls.map(this::createStepCallBranch)
+            val stepCalls: List<RunnerStepNode> = testPathAndModel.model.stepCalls.mapIndexed {idx, it -> createStepCallBranch(it, idx, (parentNode as RunnerNode).id)}
+
+            val testId = RunnerIdCreator.createTestId((parentNode as RunnerNode).id, testPathAndModel.model)
+            val parentNodeAsHooksContainer = parentNode as RunnerHooksContainerNode
+            val beforeEachId = RunnerIdCreator.createHookContainerId(testId, HookPhase.BEFORE_EACH_TEST)
+            val afterEachId = RunnerIdCreator.createHookContainerId(testId, HookPhase.AFTER_EACH_TEST)
+            val afterHooksId = RunnerIdCreator.createAfterTestHookContainerId(testId)
+
+            val beforeEachHooks = parentNodeAsHooksContainer.beforeEachStepCalls.mapIndexed {idx, it -> createStepCallBranch(it, idx, beforeEachId)}
+            val afterEachHooks = parentNodeAsHooksContainer.afterEachStepCalls.mapIndexed {idx, it -> createStepCallBranch(it, idx, afterEachId)}
+
+            val afterHooks = testPathAndModel.model.afterHooks.mapIndexed {idx, it -> createStepCallBranch(it, idx, (parentNode as RunnerNode).id)}
+            val testPath = testPathAndModel.model.path
 
             val runnerTestNode = RunnerTestNode(
-                id = testPathAndModel.model.id,
+                id = testId,
                 name = testPathAndModel.model.name,
-                path = testPathAndModel.model.path,
-                enabled = !testPathAndModel.model.properties.isDisabled
+                path = testPath,
+                enabled = !testPathAndModel.model.properties.isDisabled,
+                beforeEachHooks = RunnerHooksNode(beforeEachId, BEFORE_EACH_HOOKS, testPath, beforeEachHooks),
+                afterEachHooks = RunnerHooksNode(afterEachId, AFTER_EACH_HOOKS, testPath, afterEachHooks),
+                afterHooks = RunnerHooksNode(afterHooksId, AFTER_HOOKS, testPath, afterHooks)
             )
             stepCalls.forEach {runnerTestNode.addChild(it)}
 
@@ -129,29 +159,44 @@ private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFacto
         }
     }
 
-    private fun createTestScenarioBranch(test: TestModel,
+    private fun createTestScenarioBranch(parentNode: ContainerTreeNode,
+                                         test: TestModel,
                                          scenarioWithOriginalIndex: Pair<Int, Scenario>,
                                          filteredScenarioIndex: Int): RunnerScenarioNode {
         val originalScenarioIndex = scenarioWithOriginalIndex.first
         val scenario = scenarioWithOriginalIndex.second
 
-        val stepCalls: List<RunnerStepNode> = test.stepCalls.map(this::createStepCallBranch)
+        val scenarioId = RunnerIdCreator.createScenarioId((parentNode as RunnerNode).id, filteredScenarioIndex, test)
+        val parentNodeAsHooksContainer = parentNode as RunnerHooksContainerNode
+        val beforeEachId = RunnerIdCreator.createHookContainerId(scenarioId, HookPhase.BEFORE_EACH_TEST)
+        val afterEachId = RunnerIdCreator.createHookContainerId(scenarioId, HookPhase.AFTER_EACH_TEST)
+        val afterHooksId = RunnerIdCreator.createAfterTestHookContainerId(scenarioId)
+
+        val beforeEachHooks = parentNodeAsHooksContainer.beforeEachStepCalls.mapIndexed {idx, it -> createStepCallBranch(it, idx, beforeEachId)}
+        val afterEachHooks = parentNodeAsHooksContainer.afterEachStepCalls.mapIndexed {idx, it -> createStepCallBranch(it, idx, afterEachId)}
+        
+        val stepCalls: List<RunnerStepNode> = test.stepCalls.mapIndexed {index, it -> createStepCallBranch(it, index, (parentNode as RunnerNode).id)}
+        val afterHooks = test.afterHooks.mapIndexed {index, it -> createStepCallBranch(it, index, (parentNode as RunnerNode).id)}
+        val scenarioPath = test.path
 
         val runnerScenarioNode = RunnerScenarioNode(
-            id = "${test.id}-$filteredScenarioIndex",
-            path = test.path,
+            id = scenarioId,
+            path = scenarioPath,
             scenarioIndex = filteredScenarioIndex,
             name = scenario.name ?: "Scenario ${originalScenarioIndex + 1}",
-            enabled = scenario.enabled
+            enabled = scenario.enabled,
+            beforeEachHooks = RunnerHooksNode(beforeEachId, BEFORE_EACH_HOOKS, scenarioPath, beforeEachHooks),
+            afterEachHooks = RunnerHooksNode(afterEachId, AFTER_EACH_HOOKS, scenarioPath, afterEachHooks),
+            afterHooks = RunnerHooksNode(afterHooksId, AFTER_HOOKS, scenarioPath, afterHooks)
         )
         stepCalls.forEach { runnerScenarioNode.addChild(it) }
 
         return runnerScenarioNode
     }
 
-    private fun createStepCallBranch(stepCall: StepCall): RunnerStepNode {
+    private fun createStepCallBranch(stepCall: StepCall, indexInParent: Int, parentId: String): RunnerStepNode {
         val stepDef = stepCall.stepDef
-        val id = stepCall.id
+        val id = RunnerIdCreator.createStepId(parentId, indexInParent, stepCall)
         val path = stepDef.path
 
         return when (stepDef) {
@@ -166,7 +211,7 @@ private class RunnerTreeFactory(val featureCache: FeaturesCache) : TreeNodeFacto
                 stepCall = stepCall
             )
             is ComposedStepDef -> {
-                val childrenNodes: List<RunnerStepNode> = stepDef.stepCalls.map(this::createStepCallBranch)
+                val childrenNodes: List<RunnerStepNode> = stepDef.stepCalls.mapIndexed {idx, it -> createStepCallBranch(it, idx, id)}
 
                 val runnerComposedStepNode = RunnerComposedStepNode(
                     id = id,

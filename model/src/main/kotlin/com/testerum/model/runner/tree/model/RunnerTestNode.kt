@@ -6,10 +6,15 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.model.util.new_tree_builder.TreeNode
 
-data class RunnerTestNode @JsonCreator constructor(@JsonProperty("id") override val id: String,
-                                                   @JsonProperty("path") override val path: Path,
-                                                   @JsonProperty("name") val name: String,
-                                                   @JsonProperty("enabled") val enabled: Boolean): RunnerTestOrFeatureNode, ContainerTreeNode {
+data class RunnerTestNode @JsonCreator constructor(
+    @JsonProperty("id") override val id: String,
+    @JsonProperty("path") override val path: Path,
+    @JsonProperty("name") val name: String,
+    @JsonProperty("enabled") val enabled: Boolean,
+    @JsonProperty("beforeEachHooks") val beforeEachHooks: RunnerHooksNode,
+    @JsonProperty("afterEachHooks") val afterEachHooks: RunnerHooksNode,
+    @JsonProperty("afterHooks") val afterHooks: RunnerHooksNode,
+): RunnerTestOrFeatureNode, ContainerTreeNode {
 
     @JsonProperty("children") val children: MutableList<RunnerStepNode> = mutableListOf()
 
