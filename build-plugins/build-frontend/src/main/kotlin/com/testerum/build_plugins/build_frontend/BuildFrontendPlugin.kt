@@ -4,7 +4,7 @@ import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.plugins.ExtensionAware
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.closureOf
 import org.siouan.frontendgradleplugin.infrastructure.gradle.FrontendExtension
@@ -20,12 +20,14 @@ class BuildFrontendPlugin : Plugin<Project> {
     }
 
     private fun Project.doApply() {
+        val nodeJsDestinationDirectory = "${rootProject.projectDir}/build/node"
+
         // apply and configure the frontend plugin
         pluginManager.apply("org.siouan.frontend-jdk8")
         frontend {
             nodeDistributionProvided.set(false)
             nodeVersion.set(NODE_VERSION)
-            nodeInstallDirectory.set(file("${rootProject.projectDir}/build/node"))
+            nodeInstallDirectory.set(file(nodeJsDestinationDirectory))
 
             yarnEnabled.set(false)
 
@@ -36,10 +38,54 @@ class BuildFrontendPlugin : Plugin<Project> {
         tasks.findAll(closureOf<Task> { name.endsWith("Frontend") })
             .forEach { task ->
                 task.onlyIf {
-                    project.hasProperty("production")
+                    !project.hasProperty("skipFrontend")
                 }
             }
 
+        tasks.named("installNode")
+            .configure {
+                inputs.property("nodeVersion", NODE_VERSION)
+                outputs.files(fileTree(nodeJsDestinationDirectory))
+                    .withPropertyName("nodeJsDestinationDir")
+            }
+
+        tasks.named("installFrontend")
+            .configure {
+                inputs.file("package.json")
+                    .withPropertyName("packageJsonFile")
+                    .withPathSensitivity(PathSensitivity.RELATIVE)
+
+                outputs.files(fileTree("node_modules"))
+                    .withPropertyName("nodeModulesDir")
+            }
+
+        tasks.named("assembleFrontend")
+            .configure {
+                inputs
+                    .files(
+                        fileTree("src"),
+                        fileTree("e2e")
+                    )
+                    .withPropertyName("sourceDirs")
+                    .withPathSensitivity(PathSensitivity.RELATIVE)
+                inputs
+                    .files(
+                        ".browserslistrc",
+                        "angular.json",
+                        "gradle-build.js",
+                        "karma.conf.js",
+                        "package.json",
+                        "tsconfig.app.json",
+                        "tsconfig.json",
+                        "tsconfig.spec.json",
+                        "tslint.json"
+                    )
+                    .withPropertyName("configFiles")
+                    .withPathSensitivity(PathSensitivity.RELATIVE)
+
+                outputs.files(fileTree("dist"))
+                    .withPropertyName("distDir")
+            }
 
         val packageFrontendToJar = tasks.register("packageFrontendToJar", Jar::class.java) {
             onlyIf {
@@ -69,7 +115,6 @@ class BuildFrontendPlugin : Plugin<Project> {
     }
 
     private fun Project.frontend(configure: Action<FrontendExtension>): Unit =
-        (this as ExtensionAware).extensions.configure("frontend", configure)
-
+        extensions.configure("frontend", configure)
 
 }
