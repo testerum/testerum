@@ -11,19 +11,22 @@ import {map} from "rxjs/operators";
 import {ManualTestsStatusTreeRoot} from "../plans/model/status-tree/manual-tests-status-tree-root.model";
 import {ManualTest} from "../plans/model/manual-test.model";
 import {ManualTreeStatusFilterModel} from "../common/manual-tests-status-tree/model/filter/manual-tree-status-filter.model";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class ManualTestPlansService {
 
-    private BASE_URL = "/rest/manual";
+    private readonly baseUrl: string;
 
     constructor(private http: HttpClient,
-                private featureService:FeatureService) {
+                private featureService:FeatureService,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/manual");
     }
 
     getExecPlans(): Observable<ManualTestPlans> {
         return this.http
-            .get<ManualTestPlans>(this.BASE_URL + "/plans")
+            .get<ManualTestPlans>(this.baseUrl + "/plans")
             .pipe(map(it => {return new ManualTestPlans().deserialize(it)}));
     }
 
@@ -34,7 +37,7 @@ export class ManualTestPlansService {
         };
 
         return this.http
-            .get<ManualTestPlan>(this.BASE_URL + "/plans", httpOptions)
+            .get<ManualTestPlan>(this.baseUrl + "/plans", httpOptions)
             .pipe(map(it => {return new ManualTestPlan().deserialize(it)}));
     }
 
@@ -52,7 +55,7 @@ export class ManualTestPlansService {
         };
 
         return this.http
-            .delete<void>(this.BASE_URL + "/plans", httpOptions);
+            .delete<void>(this.baseUrl + "/plans", httpOptions);
     }
 
     getManualTestsStatusTree(planPath: Path, filter: ManualTreeStatusFilterModel): Observable<ManualTestsStatusTreeRoot> {
@@ -67,7 +70,7 @@ export class ManualTestPlansService {
         };
 
         return this.http
-            .post<ManualTestPlan>(this.BASE_URL + "/status_tree", body, httpOptions)
+            .post<ManualTestPlan>(this.baseUrl + "/status_tree", body, httpOptions)
             .pipe(map(it => {return new ManualTestsStatusTreeRoot().deserialize(it)}));
     }
 
@@ -79,7 +82,7 @@ export class ManualTestPlansService {
         };
 
         return this.http
-            .get<ManualTestPlan>(this.BASE_URL + "/plans/runner", httpOptions)
+            .get<ManualTestPlan>(this.baseUrl + "/plans/runner", httpOptions)
             .pipe(map(it => {return new ManualTest().deserialize(it)}));
     }
 
@@ -92,7 +95,7 @@ export class ManualTestPlansService {
         };
 
         return this.http
-            .put<ManualTestPlan>(this.BASE_URL + "/plans", body, httpOptions).pipe(
+            .put<ManualTestPlan>(this.baseUrl + "/plans", body, httpOptions).pipe(
                 map(res => new ManualTestPlan().deserialize(res)));
     }
 
@@ -103,7 +106,7 @@ export class ManualTestPlansService {
         };
 
         return this.http
-            .get<ManualTestPlan>(this.BASE_URL + "/plans/finalize", httpOptions)
+            .get<ManualTestPlan>(this.baseUrl + "/plans/finalize", httpOptions)
             .pipe(map(it => {return new ManualTestPlan().deserialize(it)}));
     }
 
@@ -114,7 +117,7 @@ export class ManualTestPlansService {
         };
 
         return this.http
-            .get<ManualTestPlan>(this.BASE_URL + "/plans/activate", httpOptions)
+            .get<ManualTestPlan>(this.baseUrl + "/plans/activate", httpOptions)
             .pipe(map(it => {return new ManualTestPlan().deserialize(it)}));
     }
 
@@ -129,7 +132,7 @@ export class ManualTestPlansService {
         };
 
         return this.http
-            .put<ManualTest>(this.BASE_URL + "/plans/runner", body, httpOptions).pipe(
+            .put<ManualTest>(this.baseUrl + "/plans/runner", body, httpOptions).pipe(
                 map(res => new ManualTest().deserialize(res)));
     }
 
@@ -144,7 +147,7 @@ export class ManualTestPlansService {
         };
 
         return this.http
-            .get<string>(this.BASE_URL + "/plans/runner/next", httpOptions)
+            .get<string>(this.baseUrl + "/plans/runner/next", httpOptions)
             .pipe(map(it => {return Path.deserialize(it)}));
     }
 

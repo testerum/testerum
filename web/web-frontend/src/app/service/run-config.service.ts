@@ -4,17 +4,21 @@ import {Observable} from "rxjs";
 import {RunConfig} from "../functionalities/config/run-config/model/runner-config.model";
 import {map} from "rxjs/operators";
 import {JsonUtil} from "../utils/json.util";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class RunConfigService {
 
-    private BASE_URL = "/rest/run-configs";
+    private readonly baseUrl: string;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/run-configs");
+    }
 
     getRunnerConfig(): Observable<RunConfig[]> {
         return this.http
-            .get<RunConfig[]>(this.BASE_URL)
+            .get<RunConfig[]>(this.baseUrl)
             .pipe(map(RunConfigService.extractSettings));
     }
 
@@ -38,7 +42,7 @@ export class RunConfigService {
         };
 
         return this.http
-            .post<any>(this.BASE_URL, body, httpOptions).pipe(
+            .post<any>(this.baseUrl, body, httpOptions).pipe(
                 map(RunConfigService.extractSettings));
     }
 }

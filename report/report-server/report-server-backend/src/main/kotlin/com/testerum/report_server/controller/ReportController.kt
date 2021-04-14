@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 class ReportController(private val addReportService: AddReportService,
                        private val getReportsInfoService: GetReportsInfoService) {
 
-    val log = getLogger()
+    companion object {
+        private val LOGGER = getLogger()
+    }
 
     @GetMapping
     fun getReportsInfo(): List<ReportInfo> {
@@ -24,9 +26,9 @@ class ReportController(private val addReportService: AddReportService,
 
     @PostMapping
     fun addReport(@RequestBody events: String) {
-        log.info("Add Report endpoint was called")
+        LOGGER.info("Add Report endpoint was called")
         val eventsList = events.lines()
         addReportService.addReport(eventsList)
-        log.info("Add Report endpoint has finsed")
+        LOGGER.info("Add Report endpoint has finsed")
     }
 }

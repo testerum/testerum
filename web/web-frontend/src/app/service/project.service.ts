@@ -4,14 +4,17 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {Project} from "../model/home/project.model";
 import {CreateProjectRequest} from "../model/home/create-project-request.model";
-
+import {Location} from "@angular/common";
 
 @Injectable()
 export class ProjectService {
 
-    private BASE_URL = "/rest/projects";
+    private readonly baseUrl: string;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/projects");
+    }
 
     getAllProjects(): Observable<Array<Project>> {
         const httpOptions = {
@@ -21,7 +24,7 @@ export class ProjectService {
         };
 
         return this.http
-            .get<Array<Project>>(this.BASE_URL, httpOptions)
+            .get<Array<Project>>(this.baseUrl, httpOptions)
             .pipe(map(it => ProjectService.extractProject(it)));
     }
 
@@ -44,7 +47,7 @@ export class ProjectService {
         };
 
         return this.http
-            .post<any>(this.BASE_URL, body, httpOptions)
+            .post<any>(this.baseUrl, body, httpOptions)
             .pipe(map(it => Project.deserialize(it)));
     }
 
@@ -55,7 +58,7 @@ export class ProjectService {
         };
 
         return this.http
-            .post<any>(this.BASE_URL+"/open", null, httpOptions)
+            .post<any>(this.baseUrl+"/open", null, httpOptions)
             .pipe(map(it => Project.deserialize(it)));
     }
 
@@ -66,7 +69,7 @@ export class ProjectService {
         };
 
         return this.http
-            .delete<any>(this.BASE_URL+"/recent", httpOptions);
+            .delete<any>(this.baseUrl+"/recent", httpOptions);
     }
 
     renameProject(renameProject: Project): Observable<Project> {
@@ -78,7 +81,7 @@ export class ProjectService {
         };
 
         return this.http
-            .put<any>(this.BASE_URL+"/rename", body, httpOptions)
+            .put<any>(this.baseUrl+"/rename", body, httpOptions)
             .pipe(map(it => Project.deserialize(it)));
     }
 }

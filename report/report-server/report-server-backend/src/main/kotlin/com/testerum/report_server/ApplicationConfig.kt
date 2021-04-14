@@ -1,10 +1,13 @@
 package com.testerum.report_server
 
 import com.testerum.common_angular.AngularForwarderFilter
+import com.testerum.common_angular.IndexHtmlServlet
+import com.testerum.common_kotlin.contentOfClasspathResourceAt
+import javax.servlet.DispatcherType
 import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.boot.web.servlet.ServletRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import javax.servlet.DispatcherType
 
 @Configuration
 class ApplicationConfig {
@@ -28,6 +31,15 @@ class ApplicationConfig {
         addUrlPatterns("/*")
 
         setDispatcherTypes(DispatcherType.REQUEST)
+    }
+
+    @Bean
+    fun indexHtmlServlet() = ServletRegistrationBean<IndexHtmlServlet>().apply {
+        servlet = IndexHtmlServlet(
+            indexHtmlContent = contentOfClasspathResourceAt("frontend/index.html")
+        )
+
+        addUrlMappings("/index.html")
     }
 
 }

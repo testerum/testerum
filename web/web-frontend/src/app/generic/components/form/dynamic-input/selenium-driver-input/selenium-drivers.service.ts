@@ -4,17 +4,21 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {SeleniumBrowserType} from "./model/selenium-browser-type.enum";
 import {SeleniumDriverInfo} from "./model/selenium-driver-info.model";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class SeleniumDriversService {
 
-    private BASE_URL = "/rest/selenium-drivers";
+    private readonly baseUrl: string;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/selenium-drivers");
+    }
 
     getDriversInfo(): Observable<Map<SeleniumBrowserType, SeleniumDriverInfo[]>> {
         return this.http
-            .get<Object>(this.BASE_URL)
+            .get<Object>(this.baseUrl)
             .pipe(map(SeleniumDriversService.extractDriversInfo));
     }
 

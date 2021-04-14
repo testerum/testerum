@@ -1,12 +1,16 @@
 package com.testerum.web_backend
 
 import com.testerum.common_angular.AngularForwarderFilter
+import com.testerum.common_angular.IndexHtmlServlet
 import com.testerum.common_cmdline.banner.TesterumBanner
+import com.testerum.common_kotlin.contentOfClasspathResourceAt
 import com.testerum.web_backend.filter.cache.DisableCacheFilter
 import com.testerum.web_backend.filter.project.CurrentProjectFilter
 import com.testerum.web_backend.filter.project_fswatcher_pause.ProjectFsWatcherPauseFilter
 import com.testerum.web_backend.filter.security.CurrentUserFilter
 import com.testerum.web_backend.services.version_info.VersionInfoFrontendService
+import java.util.EnumSet
+import javax.servlet.DispatcherType
 import org.eclipse.jetty.security.SecurityHandler
 import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.HandlerContainer
@@ -28,8 +32,6 @@ import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainer
 import org.slf4j.LoggerFactory
 import org.springframework.web.filter.CharacterEncodingFilter
 import org.springframework.web.servlet.DispatcherServlet
-import java.util.EnumSet
-import javax.servlet.DispatcherType
 
 object TesterumWebMain {
 
@@ -40,7 +42,9 @@ object TesterumWebMain {
     @JvmStatic
     fun main(args: Array<String>) {
         val port = getPort()
-        val server = createServer(port)
+        val contextPath = getContextPath()
+
+        val server = createServer(port, contextPath)
 
         server.start()
 
@@ -69,7 +73,7 @@ object TesterumWebMain {
         }
 
         LOG.info("Testerum server started.")
-        LOG.info("Testerum (version $versionInfo) is available at http://localhost:$actualPort/")
+        LOG.info("Testerum (version $versionInfo) is available at http://localhost:$actualPort$contextPath")
         LOG.info("Press Ctrl+C to stop.")
 
         server.join()
@@ -79,10 +83,16 @@ object TesterumWebMain {
         val syspropValue: String = System.getProperty(PORT_SYSTEM_PROPERTY) ?: "9999"
 
         return syspropValue.toIntOrNull()
-                ?: throw IllegalArgumentException("port [$syspropValue] is not a valid number (given as system property [$PORT_SYSTEM_PROPERTY])")
+            ?: throw IllegalArgumentException("port [$syspropValue] is not a valid number (given as system property [$PORT_SYSTEM_PROPERTY])")
     }
 
-    private fun createServer(port: Int): Server {
+    private fun getContextPath() = System.getProperty("contextPath")
+        ?: "/"
+
+    private fun createServer(
+        port: Int,
+        contextPath: String
+    ): Server {
         val server = Server(port)
         server.isDumpAfterStart = false
         server.isDumpBeforeStop = false
@@ -90,17 +100,22 @@ object TesterumWebMain {
         // thread pool scheduler
         server.addBean(ScheduledExecutorScheduler())
 
-        server.handler = createHandler(server)
+        server.handler = createHandler(server, contextPath)
 
         doNotReturnSensitiveHeaders(server)
 
         return server
     }
 
-    private fun createHandler(server: Server): Handler {
+    private fun createHandler(
+        server: Server,
+        contextPath: String
+    ): Handler {
         val handlerList = HandlerList()
 
-        handlerList.addHandler(createWebAppContext(server))
+        handlerList.addHandler(
+            createWebAppContext(server, contextPath)
+        )
 
         // StatisticsHandler must wrap all other handlers, in order for graceful shutdown to work
         val statisticsHandler = StatisticsHandler()
@@ -109,7 +124,10 @@ object TesterumWebMain {
         return statisticsHandler
     }
 
-    private fun createWebAppContext(server: Server): Handler {
+    private fun createWebAppContext(
+        server: Server,
+        contextPath: String
+    ): Handler {
         val webAppContext = createEmptyWebAppContext(server)
 
         // add CharacterEncodingFilter
@@ -186,12 +204,25 @@ object TesterumWebMain {
         // add DispatcherServlet
         webAppContext.addServlet(
             ServletHolder().apply {
+                servlet = IndexHtmlServlet(
+                    indexHtmlContent = contentOfClasspathResourceAt("frontend/index.html")
+                )
+                name = "indexHtmlServlet"
+
+                initOrder = 1
+            },
+            "/index.html"
+        )
+
+        // add DispatcherServlet
+        webAppContext.addServlet(
+            ServletHolder().apply {
                 servlet = DispatcherServlet()
                 name = "springDispatcherServlet"
 
                 initParameters["contextConfigLocation"] = "classpath:/spring/spring_web.xml"
 
-                initOrder = 1
+                initOrder = 2
             },
             "/rest/*"
         )
@@ -216,6 +247,8 @@ object TesterumWebMain {
 
         // enable WebSocket communication
         WebSocketServerContainerInitializer.initialize(webAppContext)
+
+        webAppContext.contextPath = contextPath
 
         return webAppContext
 
@@ -250,4 +283,3 @@ object TesterumWebMain {
     }
 
 }
-

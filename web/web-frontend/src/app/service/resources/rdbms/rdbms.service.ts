@@ -9,15 +9,21 @@ import {RdbmsSchemas} from "../../../functionalities/resources/editors/database/
 import {RdbmsSchema} from "../../../model/resource/rdbms/schema/rdbms-schema.model";
 import {Path} from "../../../model/infrastructure/path/path.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class RdbmsService {
 
-    private DB_CONNECTION_URL = "/rest/rdbms";
-    private DB_DRIVES_URL = "/rest/rdbms/drivers";
-    private DB_SCHEMA_URL = "/rest/rdbms/schema";
+    private readonly dbConnectionUrl: string;
+    private readonly dbDrivesUrl: string;
+    private readonly dbSchemaUrl: string;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.dbConnectionUrl = location.prepareExternalUrl("/rest/rdbms");
+        this.dbDrivesUrl = location.prepareExternalUrl("/rest/rdbms/drivers");
+        this.dbSchemaUrl = location.prepareExternalUrl("/rest/rdbms/schema");
+    }
 
     showSchemasChooser(dbConnection:RdbmsConnectionConfig): Observable<RdbmsSchemas> {
         let body = dbConnection.serialize();
@@ -28,7 +34,7 @@ export class RdbmsService {
         };
 
         return this.http
-            .post<RdbmsSchemas>(this.DB_CONNECTION_URL + "/schemas", body, httpOptions).pipe(
+            .post<RdbmsSchemas>(this.dbConnectionUrl + "/schemas", body, httpOptions).pipe(
             map(response => new RdbmsSchemas().deserialize(response)));
     }
 
@@ -41,12 +47,12 @@ export class RdbmsService {
         };
 
         return this.http
-            .get<boolean>(this.DB_CONNECTION_URL + "/ping", httpOptions)
+            .get<boolean>(this.dbConnectionUrl + "/ping", httpOptions)
     }
 
     getDrivers(): Observable<Array<RdbmsDriver>> {
         return this.http
-            .get<Array<RdbmsDriver>>(this.DB_DRIVES_URL).pipe(
+            .get<Array<RdbmsDriver>>(this.dbDrivesUrl).pipe(
             map(RdbmsService.extractDrivers));
     }
 
@@ -67,7 +73,7 @@ export class RdbmsService {
         };
 
         return this.http
-            .get<RdbmsSchema>(this.DB_SCHEMA_URL, httpOptions).pipe(
+            .get<RdbmsSchema>(this.dbSchemaUrl, httpOptions).pipe(
             map(res => new RdbmsSchema().deserialize(res)));
     }
 }

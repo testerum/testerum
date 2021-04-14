@@ -3,6 +3,7 @@ import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SelectedReport} from "./model/selected-report.model";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'report',
@@ -19,14 +20,15 @@ export class ReportComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private location: Location) {
   }
 
   ngOnInit(): void {
     this.routeSubscription = this.route.data.subscribe(data => {
       this.selectedReport = data['selectedReport'];
 
-      let reportUrl = "/static-reports"
+      let reportUrl = this.location.prepareExternalUrl("/static-reports");
       switch (this.selectedReport.reportType) {
         case "statistics": { reportUrl += this.selectedReport.reportInfo.statisticsReportPath; break; }
         case "dashboard": { reportUrl += this.selectedReport.reportInfo.autoRefreshDashboardPath; break; }

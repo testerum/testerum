@@ -10,14 +10,17 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "../url.service";
 import {Serializable} from "../../model/infrastructure/serializable.model";
 import {ResourceType} from "../../functionalities/resources/tree/model/type/resource-type.model";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class ResourceService {
 
-    private RESOURCES_URL = "/rest/resources";
+    private readonly baseUrl: string;
 
     constructor(private urlService: UrlService,
-                private http: HttpClient) {
+                private http: HttpClient,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/resources");
     }
 
     /**
@@ -30,7 +33,7 @@ export class ResourceService {
         };
 
         return this.http
-            .get<ResourceContext<any>>(this.RESOURCES_URL, httpOptions).pipe(
+            .get<ResourceContext<any>>(this.baseUrl, httpOptions).pipe(
             map((res: ResourceContext<any>) => ResourceService.extractResource(res, resourceBodyInstanceForDeserialization)));
     }
 
@@ -41,7 +44,7 @@ export class ResourceService {
         };
 
         return this.http
-            .delete<void>(this.RESOURCES_URL, httpOptions);
+            .delete<void>(this.baseUrl, httpOptions);
     }
 
     /**
@@ -61,7 +64,7 @@ export class ResourceService {
         };
 
         return this.http
-            .post<any>(this.RESOURCES_URL, body, httpOptions).pipe(
+            .post<any>(this.baseUrl, body, httpOptions).pipe(
             map(res => ResourceService.extractResource(res, resourceBodyInstanceForDeserialization)));
     }
 
@@ -85,7 +88,7 @@ export class ResourceService {
 
     getResourcePaths(resourceType: string): Observable<Array<Path>> {
         return this.http
-            .get<Array<string>>(this.RESOURCES_URL + "/shared/paths/" + resourceType).pipe(
+            .get<Array<string>>(this.baseUrl + "/shared/paths/" + resourceType).pipe(
             map(ResourceService.extractPaths));
     }
 
@@ -109,7 +112,7 @@ export class ResourceService {
         };
 
         return this.http
-            .put<Path>(this.RESOURCES_URL + "/directory", body, httpOptions).pipe(
+            .put<Path>(this.baseUrl + "/directory", body, httpOptions).pipe(
             map(res => Path.deserialize(res)));
     }
 
@@ -121,7 +124,7 @@ export class ResourceService {
         };
 
         return this.http
-            .delete<void>(this.RESOURCES_URL + "/directory", httpOptions);
+            .delete<void>(this.baseUrl + "/directory", httpOptions);
     }
 
     moveDirectoryOrFile(copyPath: CopyPath): Observable<void> {
@@ -133,7 +136,7 @@ export class ResourceService {
         };
 
         return this.http
-            .post<void>(this.RESOURCES_URL + "/directory/move", body, httpOptions);
+            .post<void>(this.baseUrl + "/directory/move", body, httpOptions);
     }
 
     showResourcesScreen() {
