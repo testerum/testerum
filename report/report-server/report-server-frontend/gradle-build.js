@@ -32,6 +32,8 @@ let osType = getOs();
 let ngBinary = osBinaries[osType]["ng"];
 
 var env = Object.create( process.env );
+env.NG_BUILD_CACHE = `${process.cwd()}/.ng_cache`;
+console.log(`env.NG_BUILD_CACHE=[${env.NG_BUILD_CACHE}`);
 
 if (osType === "windows") {
   env.PATH = 'node;' + env.PATH;

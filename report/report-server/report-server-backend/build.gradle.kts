@@ -8,7 +8,7 @@ val frontendClasspath: Configuration by configurations.creating {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
-configurations.implementation.configure {
+configurations.runtimeOnly.configure {
     extendsFrom(frontendClasspath)
 }
 

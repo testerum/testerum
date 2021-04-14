@@ -45,8 +45,11 @@ class BuildFrontendPlugin : Plugin<Project> {
         tasks.named("installNode")
             .configure {
                 inputs.property("nodeVersion", NODE_VERSION)
-                outputs.files(fileTree(nodeJsDestinationDirectory))
+
+                outputs.dir(nodeJsDestinationDirectory)
                     .withPropertyName("nodeJsDestinationDir")
+
+                outputs.cacheIf { true }
             }
 
         tasks.named("installFrontend")
@@ -55,8 +58,10 @@ class BuildFrontendPlugin : Plugin<Project> {
                     .withPropertyName("packageJsonFile")
                     .withPathSensitivity(PathSensitivity.RELATIVE)
 
-                outputs.files(fileTree("node_modules"))
+                outputs.dir(layout.projectDirectory.dir("node_modules"))
                     .withPropertyName("nodeModulesDir")
+
+                outputs.cacheIf { true }
             }
 
         tasks.named("assembleFrontend")
@@ -83,8 +88,10 @@ class BuildFrontendPlugin : Plugin<Project> {
                     .withPropertyName("configFiles")
                     .withPathSensitivity(PathSensitivity.RELATIVE)
 
-                outputs.files(fileTree("dist"))
+                outputs.dir("dist")
                     .withPropertyName("distDir")
+
+                outputs.cacheIf { true }
             }
 
         val packageFrontendToJar = tasks.register("packageFrontendToJar", Jar::class.java) {
