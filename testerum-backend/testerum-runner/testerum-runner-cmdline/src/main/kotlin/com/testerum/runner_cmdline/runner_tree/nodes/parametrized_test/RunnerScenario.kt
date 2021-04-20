@@ -4,6 +4,7 @@ import com.testerum.common_kotlin.indent
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioMapper
 import com.testerum.file_service.mapper.business_to_file.BusinessToFileScenarioParamMapper
 import com.testerum.model.expressions.json.JsJson
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.model.test.TestModel
 import com.testerum.model.test.scenario.Scenario
 import com.testerum.model.test.scenario.param.ScenarioParam
@@ -11,10 +12,9 @@ import com.testerum.model.test.scenario.param.ScenarioParamType
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.ScenarioEndEvent
 import com.testerum.runner.events.model.ScenarioStartEvent
-import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooks
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooks
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.nodes.test.RunnerTestException
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
@@ -29,7 +29,7 @@ import org.apache.commons.text.StringEscapeUtils
 import java.nio.file.Path as JavaPath
 
 class RunnerScenario(
-    parent: TreeNode,
+    override val parent: RunnerTreeNode,
     private val test: TestModel,
     val scenario: Scenario,
     private val originalScenarioIndex: Int,
@@ -43,8 +43,7 @@ class RunnerScenario(
         )
     }
 
-    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
-        ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
+    override val id: String = RunnerIdCreator.getScenarioId(parent.id, filteredScenarioIndex, test)
 
     private lateinit var children: List<RunnerStep>
 
@@ -52,19 +51,22 @@ class RunnerScenario(
         this.children = children
     }
 
-    override val positionInParent = PositionInParent("${test.id}-$filteredScenarioIndex", filteredScenarioIndex)
-
     val scenarioName = scenario.name ?: "Scenario ${originalScenarioIndex + 1}"
 
-    private lateinit var beforeHooks: RunnerBeforeHooksList
-    private lateinit var afterHooks: RunnerAfterHooksList
+    private lateinit var beforeHooks: RunnerBeforeHooks
+    private lateinit var afterTestHooks: RunnerAfterHooks
+    private lateinit var afterEachHooks: RunnerAfterHooks
 
-    fun setBeforeHooks(beforeHooksList: RunnerBeforeHooksList) {
-        this.beforeHooks = beforeHooksList
+    fun setBeforeHooks(beforeHooks: RunnerBeforeHooks) {
+        this.beforeHooks = beforeHooks
     }
 
-    fun setAfterHooks(afterHooksList: RunnerAfterHooksList) {
-        this.afterHooks = afterHooksList
+    fun setAfterTestHooks(afterTestHooks: RunnerAfterHooks) {
+        this.afterTestHooks = afterTestHooks
+    }
+
+    fun setAfterEachHooks(afterEachHooks: RunnerAfterHooks) {
+        this.afterEachHooks = afterEachHooks
     }
 
     fun execute(context: RunnerContext): ExecutionStatus {
@@ -120,10 +122,15 @@ class RunnerScenario(
                 }
             }
 
-            // after hooks
-            val afterAllHooksStatus = afterHooks.execute(context, status)
-            if (afterAllHooksStatus > status) {
-                status = afterAllHooksStatus
+            // after test hooks
+            val afterTestHooksStatus = afterTestHooks.execute(context, status)
+            if (afterTestHooksStatus > status) {
+                status = afterTestHooksStatus
+            }
+            // after each test hooks
+            val afterEachTestHooksStatus = afterEachHooks.execute(context, status)
+            if (afterEachTestHooksStatus > status) {
+                status = afterEachTestHooksStatus
             }
         } catch (e: Exception) {
             status = FAILED
@@ -317,6 +324,7 @@ class RunnerScenario(
             step.addToString(destination, indentLevel + 1)
         }
 
-        afterHooks.addToString(destination, indentLevel + 1)
+        afterTestHooks.addToString(destination, indentLevel + 1)
+        afterEachHooks.addToString(destination, indentLevel + 1)
     }
 }

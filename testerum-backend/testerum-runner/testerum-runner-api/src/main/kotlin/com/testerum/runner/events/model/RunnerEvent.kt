@@ -2,7 +2,6 @@ package com.testerum.runner.events.model
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.testerum.runner.events.model.position.EventKey
 import java.time.LocalDateTime
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
@@ -12,6 +11,8 @@ import java.time.LocalDateTime
         JsonSubTypes.Type(value = SuiteEndEvent::class              , name = "TEST_SUITE_END_EVENT"),
         JsonSubTypes.Type(value = FeatureStartEvent::class          , name = "FEATURE_START_EVENT"),
         JsonSubTypes.Type(value = FeatureEndEvent::class            , name = "FEATURE_END_EVENT"),
+        JsonSubTypes.Type(value = HooksStartEvent::class            , name = "HOOKS_START_EVENT"),
+        JsonSubTypes.Type(value = HooksEndEvent::class              , name = "HOOKS_END_EVENT"),
         JsonSubTypes.Type(value = TestStartEvent::class             , name = "TEST_START_EVENT"),
         JsonSubTypes.Type(value = TestEndEvent::class               , name = "TEST_END_EVENT"),
         JsonSubTypes.Type(value = ParametrizedTestStartEvent::class , name = "PARAMETRIZED_TEST_START_EVENT"),
@@ -28,6 +29,5 @@ interface RunnerEvent {
 
     val time: LocalDateTime
 
-    val eventKey: EventKey
-
+    val eventKey: String
 }

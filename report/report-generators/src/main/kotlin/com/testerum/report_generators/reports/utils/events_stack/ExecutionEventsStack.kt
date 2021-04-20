@@ -5,11 +5,6 @@ import com.testerum.runner.report_model.ReportStep
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.collections.ArrayList
-import kotlin.collections.List
-import kotlin.collections.iterator
-import kotlin.collections.joinToString
-import kotlin.collections.plusAssign
-import kotlin.collections.reverse
 
 class ExecutionEventsStack {
 
@@ -55,6 +50,19 @@ class ExecutionEventsStack {
         }
     }
 
+    fun computeCurrentHooksLogBaseName(): String {
+        val featurePath = getCurrentFeaturePath()
+        val testFileName = getCurrentTestFileName()
+        val hooksName = getCurrentHooksName()
+
+        val result = StringBuilder()
+        if(featurePath.isNotEmpty()) result.append("$featurePath/")
+        if(testFileName.isNullOrEmpty()) result.append("$testFileName/")
+        if(hooksName.isNullOrEmpty()) result.append("$hooksName-logs")
+
+        return result.toString()
+    }
+
     fun computeCurrentParametrizedTestLogBaseName(): String {
         val featurePath = getCurrentFeaturePath()
         val testFileName = getCurrentTestFileName()
@@ -78,7 +86,7 @@ class ExecutionEventsStack {
         }
     }
 
-    private fun getCurrentTestFileName(): String {
+    private fun getCurrentTestFileName(): String? {
         for (event in stack.descendingIterator()) {
             if (event is TestStartEvent) {
                 return event.testFilePath.fileName!!
@@ -87,7 +95,7 @@ class ExecutionEventsStack {
             }
         }
 
-        throw IllegalArgumentException("there is no test in execution")
+        return null
     }
 
     private fun getCurrentScenarioIndex(): Int {
@@ -98,7 +106,16 @@ class ExecutionEventsStack {
         }
 
         throw IllegalArgumentException("there is no scenario in execution")
+    }
 
+    private fun getCurrentHooksName(): String? {
+        for (event in stack.descendingIterator()) {
+            if (event is HooksStartEvent) {
+                return event.hookPhase.toString()
+            }
+        }
+
+        return null
     }
 
     fun computeCurrentStepLogBaseName(): String {
@@ -106,11 +123,18 @@ class ExecutionEventsStack {
         val testName = getCurrentTestFileName()
         val stepPath = getCurrentStepPath()
 
-        if (featurePath == "") {
-            return "$testName/step-$stepPath-logs"
-        } else {
-            return "$featurePath/$testName/step-$stepPath-logs"
+        val result = StringBuilder()
+        if (featurePath.isNotEmpty()) {
+            result.append("$featurePath/")
         }
+
+        if (testName != null) {
+            result.append("$testName/")
+        }
+
+        result.append("step-$stepPath-logs")
+
+        return result.toString()
     }
 
     private fun getCurrentStepPath(): String {

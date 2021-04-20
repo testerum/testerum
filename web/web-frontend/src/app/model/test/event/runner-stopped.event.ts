@@ -1,15 +1,14 @@
 import {RunnerEvent} from "./runner.event";
-import {EventKey} from "./fields/event-key.model";
 import {RunnerEventTypeEnum} from "./enums/runner-event-type.enum";
 import {Serializable} from "../../infrastructure/serializable.model";
 
 export class RunnerStoppedEvent implements RunnerEvent, Serializable<RunnerStoppedEvent> {
     time: Date;
-    eventKey: EventKey;
+    eventKey: string;
     eventType: RunnerEventTypeEnum = RunnerEventTypeEnum.RUNNER_STOPPED_EVENT;
 
     deserialize(input: Object): RunnerStoppedEvent {
-        this.eventKey = new EventKey().deserialize(input["eventKey"]);
+        this.eventKey = input["eventKey"];
         this.time = new Date(input["time"]);
 
         return this;
@@ -18,5 +17,4 @@ export class RunnerStoppedEvent implements RunnerEvent, Serializable<RunnerStopp
     serialize(): string {
         return undefined;
     }
-
 }

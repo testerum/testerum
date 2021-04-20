@@ -6,7 +6,7 @@ import com.testerum.model.step.ComposedStepDef
 import com.testerum.model.step.StepCall
 import com.testerum.model.step.StepDef
 import com.testerum.model.text.parts.ParamStepPatternPart
-import com.testerum.model.util.new_tree_builder.TreeNode
+import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum.runner_cmdline.runner_tree.vars_context.VariablesContext
@@ -15,11 +15,10 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.UNDEFINED
 
 class RunnerComposedStep(
-    parent: TreeNode,
+    override val parent: RunnerTreeNode,
     stepCall: StepCall,
-    indexInParent: Int,
-    logEvents: Boolean,
-) : RunnerStep(parent, stepCall, indexInParent, logEvents) {
+    indexInParent: Int
+) : RunnerStep(parent, stepCall, indexInParent) {
 
     private val children = mutableListOf<RunnerStep>()
 

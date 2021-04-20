@@ -1,11 +1,11 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.parametrized_test
 
 import com.testerum.common_kotlin.indent
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.model.test.TestModel
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.ParametrizedTestEndEvent
 import com.testerum.runner.events.model.ParametrizedTestStartEvent
-import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
@@ -16,16 +16,13 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
 import java.nio.file.Path as JavaPath
 
 class RunnerParametrizedTest(
-    parent: TreeNode,
+    override val parent: RunnerTreeNode,
     val test: TestModel,
     val filePath: JavaPath,
     val indexInParent: Int,
 ) : RunnerFeatureOrTest(), TreeNode {
 
-    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
-        ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
-
-    override val positionInParent = PositionInParent(test.id, indexInParent)
+    override val id: String = RunnerIdCreator.getParametrizedTestId(parent.id, test)
 
     lateinit var scenarios: List<RunnerScenario>
 
@@ -136,5 +133,4 @@ class RunnerParametrizedTest(
             scenario.addToString(destination, indentLevel + 1)
         }
     }
-
 }

@@ -194,25 +194,8 @@ export class RunnerTreeUtil {
                 this.getAllNodesMapByEventKeyOfContainer(childNode, result);
             }
 
-            let eventKey = this.getNodeFullEventKey(childNode);
-            result.set(eventKey, childNode);
+            result.set(childNode.id, childNode);
         }
-    }
-
-    private static getNodeFullEventKey(node: RunnerTreeNodeModel) {
-        let eventKey = "";
-
-        let currentNode: RunnerTreeNodeModel = node;
-        while (!(currentNode instanceof JsonTreeModel)) {
-            eventKey = this.getNodeEventKey(currentNode) + "#" + eventKey;
-            currentNode = currentNode.getParent() as RunnerTreeContainerNodeModel;
-        }
-
-        return eventKey;
-    }
-
-    private static getNodeEventKey(node: RunnerTreeNodeModel): string {
-        return node.id + "_" + node.parentContainer.getChildren().indexOf(node, 0);
     }
 
     static getNumberOfSimpleTestsAndScenarios(treeRootNode: RunnerRootTreeNodeModel): number {

@@ -1,16 +1,16 @@
 package com.testerum.runner_cmdline.runner_tree.nodes.test
 
 import com.testerum.common_kotlin.indent
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.model.test.TestModel
 import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.TestEndEvent
 import com.testerum.runner.events.model.TestStartEvent
-import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooks
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooks
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
@@ -22,16 +22,13 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.UNDEFINE
 import java.nio.file.Path as JavaPath
 
 class RunnerTest(
-    parent: TreeNode,
+    override val parent: RunnerTreeNode,
     val test: TestModel,
     val filePath: JavaPath,
     val indexInParent: Int,
 ) : RunnerFeatureOrTest(), ContainerTreeNode {
 
-    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
-        ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
-
-    override val positionInParent = PositionInParent(test.id, indexInParent)
+    override val id: String = RunnerIdCreator.getTestId(parent.id, test)
 
     private val children = mutableListOf<RunnerStep>()
 
@@ -43,15 +40,20 @@ class RunnerTest(
             ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
     }
 
-    private lateinit var beforeHooks: RunnerBeforeHooksList
-    private lateinit var afterHooks: RunnerAfterHooksList
+    private lateinit var beforeHooks: RunnerBeforeHooks
+    private lateinit var afterTestHooks: RunnerAfterHooks
+    private lateinit var afterEachHooks: RunnerAfterHooks
 
-    fun setBeforeHooks(beforeHooksList: RunnerBeforeHooksList) {
-        this.beforeHooks = beforeHooksList
+    fun setBeforeHooks(beforeHooks: RunnerBeforeHooks) {
+        this.beforeHooks = beforeHooks
     }
 
-    fun setAfterHooks(afterHooksList: RunnerAfterHooksList) {
-        this.afterHooks = afterHooksList
+    fun setAfterTestHooks(afterTestHooks: RunnerAfterHooks) {
+        this.afterTestHooks = afterTestHooks
+    }
+
+    fun setAfterEachHooks(afterEachHooks: RunnerAfterHooks) {
+        this.afterEachHooks = afterEachHooks
     }
 
     override fun execute(context: RunnerContext): ExecutionStatus {
@@ -101,10 +103,15 @@ class RunnerTest(
                 }
             }
 
-            // after hooks
-            val afterAllHooksStatus = afterHooks.execute(context, status)
-            if (afterAllHooksStatus > status) {
-                status = afterAllHooksStatus
+            // after test hooks
+            val afterTestHooksStatus = afterTestHooks.execute(context, status)
+            if (afterTestHooksStatus > status) {
+                status = afterTestHooksStatus
+            }
+            // after each test hooks
+            val afterEachTestHooksStatus = afterEachHooks.execute(context, status)
+            if (afterEachTestHooksStatus > status) {
+                status = afterEachTestHooksStatus
             }
         } catch (e: Exception) {
             status = FAILED
@@ -249,6 +256,7 @@ class RunnerTest(
             step.addToString(destination, indentLevel + 1)
         }
 
-        afterHooks.addToString(destination, indentLevel + 1)
+        afterTestHooks.addToString(destination, indentLevel + 1)
+        afterEachHooks.addToString(destination, indentLevel + 1)
     }
 }

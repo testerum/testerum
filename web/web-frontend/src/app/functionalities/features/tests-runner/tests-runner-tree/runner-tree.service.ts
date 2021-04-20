@@ -33,6 +33,8 @@ import {ScenarioEndEvent} from "../../../../model/test/event/scenario-end.event"
 import {JsonTreeExpandUtil} from "../../../../generic/components/json-tree/util/json-tree-expand.util";
 import {RunnerScenarioTreeNodeModel} from "./model/runner-scenario-tree-node.model";
 import {PathWithScenarioIndexes} from "../../../config/run-config/model/path-with-scenario-indexes.model";
+import {HooksStartEvent} from "../../../../model/test/event/hooks-start.event";
+import {HooksEndEvent} from "../../../../model/test/event/hooks-end.event";
 
 @Injectable()
 export class RunnerTreeService {
@@ -91,11 +93,10 @@ export class RunnerTreeService {
     }
 
     private onRunnerEvent(runnerEvent: RunnerEvent): void {
-        let eventKey: string = runnerEvent.eventKey.eventKeyAsString;
+        let eventKey: string = runnerEvent.eventKey;
 
         if (runnerEvent instanceof SuiteStartEvent) {
             let runnerTreeNode: RunnerTreeNodeModel = this.treeRootNode;
-            runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
             return;
@@ -110,7 +111,6 @@ export class RunnerTreeService {
 
         if (runnerEvent instanceof FeatureStartEvent) {
             let runnerTreeNode: RunnerTreeNodeModel = this.getNodeByEventKey(eventKey);
-            runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
             return;
@@ -125,7 +125,6 @@ export class RunnerTreeService {
 
         if (runnerEvent instanceof TestStartEvent) {
             let runnerTreeNode: RunnerTreeNodeModel = this.getNodeByEventKey(eventKey);
-            runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
             return;
@@ -148,7 +147,6 @@ export class RunnerTreeService {
 
         if (runnerEvent instanceof ParametrizedTestStartEvent) {
             let runnerTreeNode: RunnerTreeNodeModel = this.getNodeByEventKey(eventKey);
-            runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
             return;
@@ -163,7 +161,6 @@ export class RunnerTreeService {
 
         if (runnerEvent instanceof ScenarioStartEvent) {
             let runnerTreeNode: RunnerTreeNodeModel = this.getNodeByEventKey(eventKey);
-            runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
             return;
@@ -184,9 +181,22 @@ export class RunnerTreeService {
             return;
         }
 
+        if (runnerEvent instanceof HooksStartEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.getNodeByEventKey(eventKey);
+            runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
+            runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
+        }
+
+        if (runnerEvent instanceof HooksEndEvent) {
+            let runnerTreeNode: RunnerTreeNodeModel = this.getNodeByEventKey(eventKey);
+            runnerTreeNode.changeState(runnerEvent.status);
+            runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
+            return;
+        }
+
         if (runnerEvent instanceof StepStartEvent) {
             let runnerTreeNode: RunnerTreeNodeModel = this.getNodeByEventKey(eventKey);
-            runnerTreeNode.eventKey = runnerEvent.eventKey;
             runnerTreeNode.changeState(ExecutionStatusEnum.EXECUTING);
             runnerTreeNode.calculateNodeVisibilityBasedOnFilter(this.currentTreeFilter);
             return;

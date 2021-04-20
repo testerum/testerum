@@ -1,11 +1,11 @@
 package com.testerum.runner_cmdline.events
 
+import com.testerum.model.runner.tree.id.RunnerIdCreator
+import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner.events.model.RunnerEvent
 import com.testerum.runner.events.model.TextLogEvent
 import com.testerum.runner.events.model.log_level.LogLevel
-import com.testerum.runner.events.model.position.EventKey
 import com.testerum.runner_cmdline.events.execution_listeners.ExecutionListenerFinder
-import com.testerum.report_generators.reports.utils.console_output_capture.ConsoleOutputCapturer
 import com.testerum.runner_cmdline.module_di.submodules.RunnerListenersModuleFactory
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
@@ -35,7 +35,7 @@ class EventsService(private val executionListenerFinder: ExecutionListenerFinder
         }
 
         val lines = capturedText.lines()
-        val events = lines.map { TextLogEvent(LocalDateTime.now(), EventKey.LOG_EVENT_KEY, LogLevel.INFO, it, null) }
+        val events = lines.map { TextLogEvent(LocalDateTime.now(), RunnerIdCreator.getRootId(), LogLevel.INFO, it, null) }
 
         for (event in events) {
             informEventListeners(event)

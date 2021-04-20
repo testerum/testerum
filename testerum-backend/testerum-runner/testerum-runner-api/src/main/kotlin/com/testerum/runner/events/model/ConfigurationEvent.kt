@@ -3,12 +3,11 @@ package com.testerum.runner.events.model
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.testerum.model.tests_finder.TestPath
-import com.testerum.runner.events.model.position.EventKey
 import java.time.LocalDateTime
 
 data class ConfigurationEvent @JsonCreator constructor(
     @JsonProperty("time")         override val time: LocalDateTime = LocalDateTime.now(),
-    @JsonProperty("eventKey")     override val eventKey: EventKey,
+    @JsonProperty("eventKey")     override val eventKey: String,
     @JsonProperty("projectId")             val projectId: String,
     @JsonProperty("projectName")           val projectName: String,
     @JsonProperty("verbose")               val verbose: Boolean,

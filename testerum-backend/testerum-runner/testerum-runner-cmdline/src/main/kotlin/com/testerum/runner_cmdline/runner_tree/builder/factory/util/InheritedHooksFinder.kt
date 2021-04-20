@@ -1,7 +1,6 @@
 package com.testerum.runner_cmdline.runner_tree.builder.factory.util
 
 import com.testerum.model.feature.hooks.HookPhase
-import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner_cmdline.runner_tree.builder.factory.impl.RunnerComposedHookNodeFactory
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.feature.RunnerFeature
@@ -16,7 +15,7 @@ object InheritedHooksFinder {
         parentForHooks: P,
         phase: HookPhase,
         descendingFromRoot: Boolean,
-    ): List<RunnerComposedHook> where P : TreeNode, P: RunnerTreeNode {
+    ): List<RunnerComposedHook> where P : RunnerTreeNode {
         val featuresOrSuite = mutableListOf<RunnerTreeNode>()
 
         var currentNode: RunnerTreeNode? = parentForHooks

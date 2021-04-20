@@ -7,53 +7,53 @@ import com.testerum.model.test.TestModel
 
 object RunnerIdCreator {
 
-    fun createRootId(): String {
+    fun getRootId(): String {
         return "root"
     }
 
-    fun createFeatureId(
+    fun getFeatureId(
         parentNodeId: String,
         nodePath: Path
     ): String {
         return "$parentNodeId/${nodePath.directories.last()}"
     }
 
-    fun createTestId(
+    fun getTestId(
         parentNodeId: String,
         test: TestModel
     ): String {
-        return "$parentNodeId/${test.id}"
+        return "${getRootId()}/${test.id}"
     }
 
-    fun createParametrizedTestId(
+    fun getParametrizedTestId(
         parentNodeId: String,
         test: TestModel
     ): String {
-        return "$parentNodeId/${test.id}"
+        return "${getRootId()}/${test.id}"
     }
 
-    fun createScenarioId(
+    fun getScenarioId(
         parentNodeId: String,
         nodeIndexInParent: Int,
         test: TestModel
     ): String {
-        return "$parentNodeId/${test.id}-$nodeIndexInParent"
+        return "${getRootId()}/${test.id}-$nodeIndexInParent"
     }
 
-    fun createHookContainerId(
+    fun getHookContainerId(
         parentNodeId: String,
         hookPhase: HookPhase,
     ): String {
         return "$parentNodeId/$hookPhase"
     }
 
-    fun createAfterTestHookContainerId(
+    fun getAfterTestHookContainerId(
         parentNodeId: String,
     ): String {
         return "$parentNodeId/AFTER_TEST"
     }
 
-    fun createStepId(
+    fun getStepId(
         parentNodeId: String,
         nodeIndexInParent: Int,
         stepCall: StepCall

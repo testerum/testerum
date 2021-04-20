@@ -3,6 +3,8 @@ package com.testerum.runner.events.execution_listener
 import com.testerum.runner.events.model.ConfigurationEvent
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
+import com.testerum.runner.events.model.HooksEndEvent
+import com.testerum.runner.events.model.HooksStartEvent
 import com.testerum.runner.events.model.ParametrizedTestEndEvent
 import com.testerum.runner.events.model.ParametrizedTestStartEvent
 import com.testerum.runner.events.model.RunnerEvent
@@ -41,6 +43,9 @@ open class BaseExecutionListener : ExecutionListener {
             is StepStartEvent             -> onStepStart(event)
             is StepEndEvent               -> onStepEnd(event)
 
+            is HooksStartEvent            -> onHooksStart(event)
+            is HooksEndEvent              -> onHooksEnd(event)
+
             is TextLogEvent               -> onTextLog(event)
 
             else                          -> onUnknownEvent(event)
@@ -67,6 +72,9 @@ open class BaseExecutionListener : ExecutionListener {
 
     protected open fun onStepStart(event: StepStartEvent) {}
     protected open fun onStepEnd(event: StepEndEvent) {}
+
+    protected open fun onHooksStart(event: HooksStartEvent) {}
+    protected open fun onHooksEnd(event: HooksEndEvent) {}
 
     protected open fun onTextLog(event: TextLogEvent) {}
 

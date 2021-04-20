@@ -3,23 +3,18 @@ package com.testerum.runner_cmdline.runner_tree.nodes.hook
 import com.testerum.common_kotlin.indent
 import com.testerum.model.feature.hooks.HookPhase
 import com.testerum.model.util.new_tree_builder.TreeNode
-import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
 import com.testerum.runner_cmdline.runner_tree.nodes.step.RunnerStep
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 
 class RunnerComposedHook(
-    parent: TreeNode,
-    indexInParent: Int,
+    override val parent: RunnerTreeNode,
     private val phase: HookPhase,
     override val source: HookSource,
 ) : RunnerHook, RunnerTreeNode(), TreeNode {
 
-    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
-        ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
-
-    override val positionInParent = PositionInParent("composed-hook-$phase", indexInParent)
+    override val id: String = parent.id
 
     private lateinit var step: RunnerStep
 
@@ -77,5 +72,4 @@ class RunnerComposedHook(
         destination.append(" (source=").append(source).append(") ")
         step.addToString(destination, 0)
     }
-
 }

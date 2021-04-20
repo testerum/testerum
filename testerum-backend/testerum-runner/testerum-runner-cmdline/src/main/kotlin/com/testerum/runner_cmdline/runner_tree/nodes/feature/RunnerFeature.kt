@@ -2,15 +2,16 @@ package com.testerum.runner_cmdline.runner_tree.nodes.feature
 
 import com.testerum.common_kotlin.indent
 import com.testerum.model.feature.Feature
+import com.testerum.model.infrastructure.path.Path
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.FeatureEndEvent
 import com.testerum.runner.events.model.FeatureStartEvent
-import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooks
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooks
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
@@ -18,16 +19,14 @@ import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.PASSED
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.SKIPPED
 
 class RunnerFeature(
-    parent: TreeNode,
-    indexInParent: Int,
-    featurePathFromRoot: List<String>,
+    override val parent: RunnerTreeNode,
+    path: Path,
     val featureName: String,
     val tags: List<String>,
     val feature: Feature
 ) : RunnerFeatureOrTest(), ContainerTreeNode {
 
-    override val parent: RunnerTreeNode = parent as? RunnerTreeNode
-        ?: throw IllegalArgumentException("unexpected parent note type [${parent.javaClass}]: [$parent]")
+    override val id: String = RunnerIdCreator.getFeatureId(parent.id, path)
 
     private val children = mutableListOf<RunnerFeatureOrTest>()
 
@@ -42,21 +41,16 @@ class RunnerFeature(
             ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
     }
 
-    private lateinit var beforeHooks: RunnerBeforeHooksList
-    private lateinit var afterHooks: RunnerAfterHooksList
+    private lateinit var beforeHooks: RunnerBeforeHooks
+    private lateinit var afterHooks: RunnerAfterHooks
 
-    fun setBeforeHooks(beforeHooksList: RunnerBeforeHooksList) {
-        this.beforeHooks = beforeHooksList
+    fun setBeforeHooks(beforeHooks: RunnerBeforeHooks) {
+        this.beforeHooks = beforeHooks
     }
 
-    fun setAfterHooks(afterHooksList: RunnerAfterHooksList) {
-        this.afterHooks = afterHooksList
+    fun setAfterHooks(afterHooks: RunnerAfterHooks) {
+        this.afterHooks = afterHooks
     }
-
-    override val positionInParent = PositionInParent(
-        id = featurePathFromRoot.joinToString(separator = "/"),
-        indexInParent = indexInParent
-    )
 
     override fun execute(context: RunnerContext): ExecutionStatus {
         try {
@@ -195,5 +189,4 @@ class RunnerFeature(
 
         afterHooks.addToString(destination, indentLevel + 1)
     }
-
 }

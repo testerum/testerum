@@ -6,9 +6,11 @@ import com.testerum.model.infrastructure.path.Path
 import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.model.util.new_tree_builder.TreeNode
 
-data class RunnerParametrizedTestNode @JsonCreator constructor(@JsonProperty("id") override val id: String,
-                                                               @JsonProperty("path") override val path: Path,
-                                                               @JsonProperty("name") val name: String): RunnerTestOrFeatureNode, ContainerTreeNode {
+data class RunnerParametrizedTestNode @JsonCreator constructor(
+    @JsonProperty("id") override val id: String,
+    @JsonProperty("path") override val path: Path,
+    @JsonProperty("name") val name: String
+): RunnerTestOrFeatureNode, ContainerTreeNode {
 
     @JsonProperty("children") val children: MutableList<RunnerScenarioNode> = mutableListOf()
 

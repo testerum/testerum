@@ -2,16 +2,15 @@ package com.testerum.runner_cmdline.runner_tree.nodes.suite
 
 import com.testerum.common_kotlin.indent
 import com.testerum.model.feature.Feature
+import com.testerum.model.runner.tree.id.RunnerIdCreator
 import com.testerum.model.util.new_tree_builder.ContainerTreeNode
 import com.testerum.model.util.new_tree_builder.TreeNode
 import com.testerum.runner.events.model.SuiteEndEvent
 import com.testerum.runner.events.model.SuiteStartEvent
-import com.testerum.runner.events.model.position.EventKey
-import com.testerum.runner.events.model.position.PositionInParent
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerFeatureOrTest
 import com.testerum.runner_cmdline.runner_tree.nodes.RunnerTreeNode
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooksList
-import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooksList
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerAfterHooks
+import com.testerum.runner_cmdline.runner_tree.nodes.hook.RunnerBeforeHooks
 import com.testerum.runner_cmdline.runner_tree.runner_context.RunnerContext
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus
 import com.testerum_api.testerum_steps_api.test_context.ExecutionStatus.FAILED
@@ -23,10 +22,8 @@ class RunnerSuite(
     val feature: Feature
 ) : RunnerTreeNode(), ContainerTreeNode {
 
+    override val id: String = RunnerIdCreator.getRootId()
     override val parent: RunnerTreeNode? = null
-
-    override val positionInParent: PositionInParent
-        get() = EventKey.SUITE_POSITION_IN_PARENT
 
     private val children = mutableListOf<RunnerFeatureOrTest>()
 
@@ -41,15 +38,15 @@ class RunnerSuite(
             ?: throw IllegalArgumentException("attempted to add child node of unexpected type [${child.javaClass}]: [$child]")
     }
 
-    private lateinit var beforeHooks: RunnerBeforeHooksList
-    private lateinit var afterHooks: RunnerAfterHooksList
+    private lateinit var beforeHooks: RunnerBeforeHooks
+    private lateinit var afterHooks: RunnerAfterHooks
 
-    fun setBeforeHooks(beforeHooksList: RunnerBeforeHooksList) {
-        this.beforeHooks = beforeHooksList
+    fun setBeforeHooks(beforeHooks: RunnerBeforeHooks) {
+        this.beforeHooks = beforeHooks
     }
 
-    fun setAfterHooks(afterHooksList: RunnerAfterHooksList) {
-        this.afterHooks = afterHooksList
+    fun setAfterHooks(afterHooks: RunnerAfterHooks) {
+        this.afterHooks = afterHooks
     }
 
     fun execute(context: RunnerContext): ExecutionStatus {
