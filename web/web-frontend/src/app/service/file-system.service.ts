@@ -1,7 +1,6 @@
 import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs';
-import {Path} from "../model/infrastructure/path/path.model";
 import {FileTreeContainer} from "../generic/components/form/file_chooser/file-tree/model/file-tree.container";
 import {FileSystemDirectory} from "../model/file/file-system-directory.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
@@ -10,13 +9,16 @@ import {PathInfo} from "../model/infrastructure/path/path-info.model";
 import {FileSystemEntry} from "../model/file/file-system-entry.model";
 import {FileSystemFile} from "../model/file/file-system-file.model";
 import {FileTreeNode} from "../generic/components/form/file_chooser/file-tree/model/file-tree-node.model";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class FileSystemService {
 
-    private BASE_URL = "/rest/file_system";
+    private readonly baseUrl: string;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/file_system");
     }
 
     getDirectoryTree(absoluteJavaPathAsString: string, showFiles: boolean = false): Observable<FileTreeContainer> {
@@ -27,7 +29,7 @@ export class FileSystemService {
         };
 
         return this.http
-            .get<FileTreeContainer>(this.BASE_URL + "/directory_tree", httpOptions).pipe(
+            .get<FileTreeContainer>(this.baseUrl + "/directory_tree", httpOptions).pipe(
             map(FileSystemService.extractFileDirectory));
     }
 
@@ -90,7 +92,7 @@ export class FileSystemService {
         };
 
         return this.http
-            .post<FileSystemDirectory>(this.BASE_URL + '/create_directory', body, httpOptions);
+            .post<FileSystemDirectory>(this.baseUrl + '/create_directory', body, httpOptions);
     }
 
     getPathInfo(pathAsString: string): Observable<PathInfo> {
@@ -100,7 +102,7 @@ export class FileSystemService {
         };
 
         return this.http
-            .get<PathInfo>(this.BASE_URL + "/path/info", httpOptions)
+            .get<PathInfo>(this.baseUrl + "/path/info", httpOptions)
             .pipe(map( it => new PathInfo().deserialize(it)));
     }
 }

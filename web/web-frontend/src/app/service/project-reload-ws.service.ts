@@ -1,14 +1,19 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import {$WebSocket, WebSocketConfig} from "angular2-websocket/angular2-websocket";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class ProjectReloadWsService {
 
-    private static URL = "/rest/project-reloaded-ws";
+    private readonly baseUrl: string;
 
     readonly projectReloadedEventEmitter: EventEmitter</*projectRootDir: */string> = new EventEmitter<string>();
 
     private webSocket:$WebSocket = null;
+
+    constructor(location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/project-reloaded-ws");
+    }
 
     start() {
         this.connect();
@@ -19,7 +24,7 @@ export class ProjectReloadWsService {
             this.webSocket.close(true);
             this.webSocket = null;
         }
-        let webSocketUrl = ProjectReloadWsService.getWebSocketUrl();
+        let webSocketUrl = this.getWebSocketUrl();
         this.webSocket = new $WebSocket(webSocketUrl, null, { reconnectIfNotNormalClose: true } as WebSocketConfig);
 
         this.webSocket.onError((error) => {
@@ -37,7 +42,7 @@ export class ProjectReloadWsService {
         this.projectReloadedEventEmitter.emit(message.data);
     }
 
-    private static getWebSocketUrl(): string {
+    private getWebSocketUrl(): string {
         let loc = window.location;
 
         let result: string = "";
@@ -47,7 +52,7 @@ export class ProjectReloadWsService {
             result = "ws:";
         }
         result += "//" + loc.host;
-        result += ProjectReloadWsService.URL;
+        result += this.baseUrl;
 
         return result;
     }

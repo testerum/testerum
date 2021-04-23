@@ -1,7 +1,26 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # resolve links - $0 may be a softlink
 PRG="$0"
+
+CONTEXT_PATH=/
+POSITIONAL_ARGS=()
+while [[ $# -gt 0 ]] ; do
+    key="${1}"
+
+    case $key in
+        --context-path)
+            CONTEXT_PATH="${2}"
+            shift # past argument
+            shift # past value
+            ;;
+        *) # unknown option
+            POSITIONAL_ARGS+=("${1}")
+            shift # past argument
+            ;;
+    esac
+done
+set -- "${POSITIONAL_ARGS[@]}" # restore positional arguments
 
 while [ -h "$PRG" ]; do
   ls=`ls -ld "$PRG"`
@@ -34,4 +53,5 @@ exec "$JAVACMD" \
     -Duser.timezone=GMT \
     -Dtesterum.packageDirectory="${BASEDIR}" \
     -jar "${BASEDIR}/lib/report-server-backend.jar" \
+    --contextPath="${CONTEXT_PATH}" \
     "$@"

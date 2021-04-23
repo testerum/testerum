@@ -66,7 +66,7 @@ class AngularForwarderFilter(
         response: HttpServletResponse,
         chain: FilterChain
     ) {
-        val requestUri = request.requestURI
+        val requestUri = request.requestURI.substring(request.contextPath.length)
 
         if (shouldForward(requestUri)) {
             val requestDispatcher = request.getRequestDispatcher(forwardToUrl)

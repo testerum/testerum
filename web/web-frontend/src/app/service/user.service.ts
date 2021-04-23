@@ -5,18 +5,21 @@ import {map} from "rxjs/operators";
 import {LicenseInfo} from "../model/user/license/license-info.model";
 import {AuthRequest} from "../model/user/auth/auth-request.model";
 import {AuthResponse} from "../model/user/auth/auth-response.model";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class UserService {
 
-    private USER_URL = "/rest/user";
+    private readonly baseUrl: string;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/user");
     }
 
     getLicenseInfo(): Observable<LicenseInfo> {
         return this.http
-            .get<LicenseInfo>(this.USER_URL + "/license-info")
+            .get<LicenseInfo>(this.baseUrl + "/license-info")
             .pipe(map(res => new LicenseInfo().deserialize(res)));
     }
 
@@ -29,7 +32,7 @@ export class UserService {
         };
 
         return this.http
-            .post<AuthResponse>(this.USER_URL + "/login/credentials", body, httpOptions)
+            .post<AuthResponse>(this.baseUrl + "/login/credentials", body, httpOptions)
             .pipe(map(res => new AuthResponse().deserialize(res)));
     }
 
@@ -38,7 +41,7 @@ export class UserService {
         formData.append("licenseFile", file);
 
         return this.http
-            .post<AuthResponse>(this.USER_URL + "/login/file", formData)
+            .post<AuthResponse>(this.baseUrl + "/login/file", formData)
             .pipe(map(res => new AuthResponse().deserialize(res)));
     }
 }

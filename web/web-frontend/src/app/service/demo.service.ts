@@ -3,13 +3,17 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {Project} from "../model/home/project.model";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class DemoService {
 
-    private BASE_URL = "/rest/demo";
+    private readonly baseUrl: string;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/demo");
+    }
 
     openDemoProject(): Observable<Project> {
         const httpOptions = {
@@ -19,7 +23,7 @@ export class DemoService {
         };
 
         return this.http
-            .post<any>(this.BASE_URL+"/start", null, httpOptions)
+            .post<any>(this.baseUrl+"/start", null, httpOptions)
             .pipe(map(it => Project.deserialize(it)));
     }
 }

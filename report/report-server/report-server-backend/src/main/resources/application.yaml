@@ -2,6 +2,8 @@
 server:
     port: 7788
     shutdown: graceful
+    servlet:
+        context-path: "${contextPath:/}"
 
 logging:
     pattern:

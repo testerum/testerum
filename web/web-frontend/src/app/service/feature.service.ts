@@ -1,21 +1,23 @@
 import {map} from 'rxjs/operators';
 import {Injectable} from "@angular/core";
 import {Observable} from 'rxjs';
-
-
 import {Feature} from "../model/feature/feature.model";
 import {Path} from "../model/infrastructure/path/path.model";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {RootFeatureNode} from "../model/feature/tree/root-feature-node.model";
 import {FeaturesTreeFilter} from "../model/feature/filter/features-tree-filter.model";
 import {JsonUtil} from "../utils/json.util";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class FeatureService {
 
-    private FEATURE_URL = "/rest/features";
+    private readonly baseUrl: string;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                location: Location) {
+        this.baseUrl = location.prepareExternalUrl("/rest/features");
+    }
 
     getFeatureTree(featureTreeFilter: FeaturesTreeFilter): Observable<RootFeatureNode> {
         let body = featureTreeFilter.serialize();
@@ -26,7 +28,7 @@ export class FeatureService {
         };
 
         return this.http
-            .post<RootFeatureNode>(this.FEATURE_URL+"/tree", body, httpOptions).pipe(
+            .post<RootFeatureNode>(this.baseUrl+"/tree", body, httpOptions).pipe(
             map(FeatureService.extractFeaturesTree));
     }
 
@@ -38,7 +40,7 @@ export class FeatureService {
         };
 
         return this.http
-            .get<Feature>(this.FEATURE_URL, httpOptions).pipe(
+            .get<Feature>(this.baseUrl, httpOptions).pipe(
             map(FeatureService.extractFeature));
     }
 
@@ -53,7 +55,7 @@ export class FeatureService {
         }
 
         return this.http
-            .post<Feature>(this.FEATURE_URL, formdata).pipe(
+            .post<Feature>(this.baseUrl, formdata).pipe(
             map(res => new Feature().deserialize(res)));
     }
 
@@ -64,7 +66,7 @@ export class FeatureService {
         };
 
         return this.http
-            .delete<void>(this.FEATURE_URL, httpOptions)
+            .delete<void>(this.baseUrl, httpOptions)
     }
 
     private static extractFeature(res: Feature): Feature {
@@ -85,7 +87,7 @@ export class FeatureService {
         };
 
         return this.http
-            .post<Path>(this.FEATURE_URL+"/copy", null, httpOptions).pipe(
+            .post<Path>(this.baseUrl+"/copy", null, httpOptions).pipe(
                 map(res => Path.deserialize(res)));
     }
 
@@ -97,9 +99,7 @@ export class FeatureService {
         };
 
         return this.http
-            .post<Path>(this.FEATURE_URL+"/move", null, httpOptions).pipe(
+            .post<Path>(this.baseUrl+"/move", null, httpOptions).pipe(
                 map(res => Path.deserialize(res)));
     }
 }
-
-
