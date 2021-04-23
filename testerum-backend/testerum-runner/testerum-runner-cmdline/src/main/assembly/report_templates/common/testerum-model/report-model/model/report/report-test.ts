@@ -24,8 +24,8 @@ export class ReportTest implements FeatureOrTestRunnerReportNode {
         const testName = input["testName"];
         const testFilePath = input["testFilePath"];
         const tags = MarshallingUtils.parseListOfStrings(input["tags"]);
-        const startTime = MarshallingUtils.parseLocalDateTime(input["startTime"]);
-        const endTime = MarshallingUtils.parseLocalDateTime(input["endTime"]);
+        const startTime = MarshallingUtils.parseUtcToLocalDateTime(input["startTime"]);
+        const endTime = MarshallingUtils.parseUtcToLocalDateTime(input["endTime"]);
         const durationMillis = input["durationMillis"];
         const status = MarshallingUtils.parseEnum(input["status"], ExecutionStatus);
         const textLogFilePath = input["textLogFilePath"];

@@ -14,7 +14,7 @@ export class ReportLog {
             return null;
         }
 
-        const time = MarshallingUtils.parseLocalDateTime(input["time"]);
+        const time = MarshallingUtils.parseUtcToLocalDateTime(input["time"]);
         const logLevel = MarshallingUtils.parseEnum(input["logLevel"], LogLevel);
         const message = input["message"];
         const exceptionDetail = ExceptionDetail.parse(input["exceptionDetail"]);
