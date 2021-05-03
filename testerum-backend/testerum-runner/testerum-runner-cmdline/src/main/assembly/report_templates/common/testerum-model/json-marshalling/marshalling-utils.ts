@@ -1,19 +1,9 @@
 export class MarshallingUtils {
 
     static parseUtcToLocalDateTime(input: string): Date {
-        input = input+"z";
-        return MarshallingUtils.convertUtcDateToLocalDate(new Date(input));
-    }
+        input = input + "Z";
 
-    private static convertUtcDateToLocalDate(date:Date) {
-        var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
-
-        var offset = date.getTimezoneOffset() / 60;
-        var hours = date.getHours();
-
-        newDate.setHours(hours - offset);
-
-        return newDate;
+        return new Date(input);
     }
 
     static parseLocalDate(input: string): Date {
