@@ -10,13 +10,11 @@ import com.testerum.test_file_format.common.step_call.part.arg_part.FileArgPartP
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileExpressionArgPart
 import com.testerum.test_file_format.common.step_call.part.arg_part.FileTextArgPart
 import com.testerum_api.testerum_steps_api.test_context.test_vars.VariableNotFoundException
-import org.apache.commons.text.StringEscapeUtils
-import java.util.*
-import kotlin.collections.HashMap
-import kotlin.collections.HashSet
+import java.util.TreeMap
 import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.set
+import org.apache.commons.text.StringEscapeUtils
 
 class VariablesContext(globalVarsMap: Map<String, String>) {
 
@@ -52,8 +50,8 @@ class VariablesContext(globalVarsMap: Map<String, String>) {
 
     fun containsKey(name: String): Boolean {
         return argsVars.containsKey(name)
-            || dynamicVars.containsKey(name)
-            || globalVars.containsKey(name)
+                || dynamicVars.containsKey(name)
+                || globalVars.containsKey(name)
     }
 
     fun get(name: String): Any? {
@@ -133,43 +131,65 @@ class VariablesContext(globalVarsMap: Map<String, String>) {
             return null
         }
 
-        val resolvedArgParts = mutableListOf<Any?>()
+        var result: String = text
 
-        val parts: List<FileArgPart> = ARG_PART_PARSER.parse(text)
+        // this is a LinkedHashSet to keep the order of resolving,
+        // since this is more informative for the user
+        val seenParts = LinkedHashSet<String>()
 
-        for (part: FileArgPart in parts) {
-            val resolvedArgPartPart: Any? = when (part) {
-                is FileTextArgPart -> part.text
-                is FileExpressionArgPart -> {
-                    val expressionResult = ExpressionEvaluator.evaluate(part.text, varsContainer)
-                    if (expressionResult is String) {
-                        escape(expressionResult)
-                    } else {
-                        expressionResult
+        do {
+            var done = true
+
+            val resolvedArgParts = mutableListOf<Any?>()
+
+            val parts: List<FileArgPart> = ARG_PART_PARSER.parse(result)
+
+            for (part: FileArgPart in parts) {
+                val resolvedArgPartPart: Any? = when (part) {
+                    is FileTextArgPart -> part.text
+                    is FileExpressionArgPart -> {
+                        if (part.text in seenParts) {
+                            throw RuntimeException("cannot resolve expression [$text]: detected cycle $seenParts")
+                        }
+                        seenParts += part.text
+                        done = false
+
+                        val expressionResult = ExpressionEvaluator.evaluate(part.text, varsContainer)
+                        if (expressionResult is String) {
+                            escape(expressionResult)
+                        } else {
+                            expressionResult
+                        }
                     }
                 }
+
+                resolvedArgParts += resolvedArgPartPart
             }
 
-            resolvedArgParts += resolvedArgPartPart
-        }
+            if (resolvedArgParts.size == 1 && resolvedArgParts[0] !is String?) {
+                // in this case it's possible to preserve the type
+                return resolvedArgParts[0]
+            }
 
-        return when {
-            resolvedArgParts.isEmpty() -> ""
-            resolvedArgParts.size == 1 -> resolvedArgParts[0] // we are not doing "joinToString()" because we want to preserve the type
-            else -> {
-                resolvedArgParts.joinToString(
-                    separator = "",
-                    transform = {
-                        if (it is CharSequence) {
-                            it
-                        } else {
-                            escape(it.toString())
+            result = when {
+                resolvedArgParts.isEmpty() -> ""
+                else -> {
+                    resolvedArgParts.joinToString(
+                        separator = "",
+                        transform = {
+                            if (it is CharSequence) {
+                                it
+                            } else {
+                                escape(it.toString())
+                            }
+
                         }
-
-                    }
-                )
+                    )
+                }
             }
-        }
+        } while (!done);
+
+        return result
     }
 
     // todo: why do we need this, and can we replace it?
@@ -203,7 +223,7 @@ class VariablesContext(globalVarsMap: Map<String, String>) {
             return@buildString
         }
 
-        val biggestKeySize = map.keys.map { it.length }.max()!!
+        val biggestKeySize = map.keys.maxOf { it.length }
 
         val mapSortedByKeys = TreeMap(map)
         for ((key, value) in mapSortedByKeys) {
